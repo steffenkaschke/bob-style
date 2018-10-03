@@ -7,6 +7,7 @@ describe('WelcomeComponent', () => {
   let fixture: ComponentFixture<WelcomeComponent>;
 
   beforeEach(async(() => {
+    console.log('=pp=======================');
     TestBed.configureTestingModule({
       declarations: [ WelcomeComponent ]
     })
@@ -21,6 +22,7 @@ describe('WelcomeComponent', () => {
 
   it('should create', () => {
     console.log('--------------');
-    expect(true).toEqual(true);
+    const expected = component.test();
+    expect(expected).toEqual(true);
   });
 });
