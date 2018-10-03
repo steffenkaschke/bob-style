@@ -10,9 +10,7 @@
     "storybook": "start-storybook -p 9001 -c .storybook",
     "deploy": "storybook-to-ghpages",
     "build-storybook": "build-storybook -s public -o .out"
-
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^6.1.0",
     "@angular/common": "^6.1.0",
