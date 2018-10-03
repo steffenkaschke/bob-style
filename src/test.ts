@@ -9,15 +9,12 @@ import {
 import {} from 'jasmine';
 declare const require: any;
 
-console.log('I AM HERE');
-
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting()
 );
 // Then we find all the tests.
-const context = require.context('./src', true, /\.spec\.ts$/);
-console.log('OKOKOKOKOKOK');
+const context = require.context('./', true, /\.spec\.ts$/);
 // And load the modules.
 context.keys().map(context);
