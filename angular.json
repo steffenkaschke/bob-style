@@ -4,7 +4,7 @@
   "newProjectRoot": "projects",
   "projects": {
     "bob-style": {
-      "root": "",
+      "root": "./",
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "b",
