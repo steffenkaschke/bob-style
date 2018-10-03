@@ -15,7 +15,6 @@
     "gitEmail": "admin@hibob.io",
     "commitMessage": "Deploy Storybook to GitHub Pages"
   },
-  "private": false,
   "dependencies": {
     "@angular/animations": "^6.1.0",
     "@angular/common": "^6.1.0",
