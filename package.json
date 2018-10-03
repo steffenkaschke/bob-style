@@ -7,15 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-<<<<<<< HEAD
     "build-storybook": "build-storybook",
     "deploy-storybook": "storybook-to-ghpages"
-=======
-    "storybook": "start-storybook -p 9001 -c .storybook",
-    "deploy": "storybook-to-ghpages",
-    "build-storybook": "build-storybook -s public -o .out"
-
->>>>>>> master
   },
   "storybook-deployer": {
     "gitUsername": "bob-admin",
