@@ -1,11 +1,6 @@
 {
   "name": "bob-style",
   "version": "0.0.1",
-  "storybook-deployer": {
-    "gitUsername": "bob-admin",
-    "gitEmail": "admin@hibob.io",
-    "commitMessage": "Deploy Storybook to GitHub Pages"
-  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -14,6 +9,11 @@
     "lint": "ng lint",
     "build-storybook": "build-storybook",
     "deploy-storybook": "storybook-to-ghpages"
+  },
+  "storybook-deployer": {
+    "gitUsername": "bob-admin",
+    "gitEmail": "admin@hibob.io",
+    "commitMessage": "Deploy Storybook to GitHub Pages"
   },
   "private": false,
   "dependencies": {
