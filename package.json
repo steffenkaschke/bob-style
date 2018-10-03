@@ -1,18 +1,21 @@
 {
   "name": "bob-style",
   "version": "0.0.1",
+  "storybook-deployer": {
+    "gitUsername": "bob-admin",
+    "gitEmail": "admin@hibob.io",
+    "commitMessage": "Deploy Storybook to GitHub Pages"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "storybook": "start-storybook -p 9001 -c .storybook",
-    "deploy": "storybook-to-ghpages",
-    "build-storybook": "build-storybook -s public -o .out"
-
+    "build-storybook": "build-storybook",
+    "deploy-storybook": "storybook-to-ghpages"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/animations": "^6.1.0",
     "@angular/common": "^6.1.0",
