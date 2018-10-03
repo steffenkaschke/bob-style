@@ -7,8 +7,15 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
+<<<<<<< HEAD
     "build-storybook": "build-storybook",
     "deploy-storybook": "storybook-to-ghpages"
+=======
+    "storybook": "start-storybook -p 9001 -c .storybook",
+    "deploy": "storybook-to-ghpages",
+    "build-storybook": "build-storybook -s public -o .out"
+
+>>>>>>> master
   },
   "storybook-deployer": {
     "gitUsername": "bob-admin",
@@ -35,9 +42,9 @@
     "@angular/language-service": "^6.1.0",
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
-    "@storybook/addon-actions": "^3.4.11",
-    "@storybook/addon-knobs": "^3.4.11",
-    "@storybook/addon-notes": "^3.4.11",
+    "@storybook/addon-actions": "^4.0.0-alpha.23",
+    "@storybook/addon-knobs": "^4.0.0-alpha.23",
+    "@storybook/addon-notes": "^4.0.0-alpha.23",
     "@storybook/addons": "^4.0.0-alpha.23",
     "@storybook/angular": "^4.0.0-alpha.23",
     "@storybook/storybook-deployer": "^2.3.0",
