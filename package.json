@@ -6,10 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "ng lint",
-    "storybook": "start-storybook -p 9001 -c .storybook",
-    "deploy": "storybook-to-ghpages",
-    "build-storybook": "build-storybook -s public -o .out"
+    "lint": "ng lint"
   },
   "storybook-deployer": {
     "gitUsername": "bob-admin",
