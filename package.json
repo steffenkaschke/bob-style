@@ -7,9 +7,15 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "storybook": "start-storybook -p 9001 -c .storybook"
+    "build-storybook": "build-storybook",
+    "deploy-storybook": "storybook-to-ghpages"
   },
-  "private": true,
+  "storybook-deployer": {
+    "gitUsername": "bob-admin",
+    "gitEmail": "admin@hibob.io",
+    "commitMessage": "Deploy Storybook to GitHub Pages"
+  },
+  "private": false,
   "dependencies": {
     "@angular/animations": "^6.1.0",
     "@angular/common": "^6.1.0",
@@ -34,6 +40,7 @@
     "@storybook/addon-notes": "^4.0.0-alpha.23",
     "@storybook/addons": "^4.0.0-alpha.23",
     "@storybook/angular": "^4.0.0-alpha.23",
+    "@storybook/storybook-deployer": "^2.3.0",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
