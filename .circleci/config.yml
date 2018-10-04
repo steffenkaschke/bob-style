@@ -22,9 +22,9 @@ jobs:
       
       - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI 
       - store_test_results:
-          path: ~/junit
+          path: ~/repo/test-results/
       - store_artifacts:
-          path: ~/test-results 
+          path: ~/repo/test-results/
       - persist_to_workspace:
             root: ~/repo
             paths:
