@@ -34,11 +34,12 @@ jobs:
      - image: circleci/node:8.9
     working_directory: ~/repo
     steps:
-      - checkout
+      - checkout 
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
          at: .
       # deploy!
+      - run: git config --global github.token ${GITHUB_TOKEN}
       - run: npm run deploy-storybook -- --ci --host-token-env-variable=${GITHUB_TOKEN}
 
         
