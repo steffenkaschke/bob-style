@@ -24,7 +24,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # run tests!
-      - run: echo test #ng test
+      - run: ng test — single-run true
       - persist_to_workspace:
             root: ~/repo
             paths:
