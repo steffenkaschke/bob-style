@@ -26,6 +26,12 @@ module.exports = function (config) {
     logLevel: config.LOG_DEBUG,
     autoWatch: true,
     browsers: ['Chrome'],
+    customLaunchers: {
+      ChromeHeadlessCI: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-gpu']
+      }
+    },
     singleRun: false,
     mime: {
       'text/x-typescript': ['ts', 'tsx']
