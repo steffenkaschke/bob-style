@@ -19,17 +19,12 @@ jobs:
         
       # run tests!
        #npm run to run ng because @angular/cli is not installed globally.
-      - run: mkdir ~/junit
-      - run:
-         command: npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI 
-         environment:
-            JUNIT_REPORT_PATH: ./junit/
-            JUNIT_REPORT_NAME: test-results.xml
-         when: always  
+      
+      - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI 
       - store_test_results:
           path: ~/junit
       - store_artifacts:
-          path: ./junit 
+          path: ~/test-results 
       - persist_to_workspace:
             root: ~/repo
             paths:
