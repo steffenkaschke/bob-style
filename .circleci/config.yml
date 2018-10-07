@@ -21,6 +21,7 @@ jobs:
        #npm run to run ng because @angular/cli is not installed globally.
       
       - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI 
+      
       - store_test_results:
           path: ~/repo/test-results/
       - store_artifacts:
@@ -39,7 +40,9 @@ jobs:
           # Must be absolute path or relative path from working_directory
          at: .
       # deploy!
+      - run: mkdir -p .out/.circleci && cp -a .circleci/. .out/.circleci/.
       - run: npm run deploy-storybook -- --ci --host-token-env-variable=${GITHUB_TOKEN}
+      
 
         
 workflows:
