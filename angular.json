@@ -13,7 +13,8 @@
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
             "tsConfig": "projects/bob-ui-framework/tsconfig.lib.json",
-            "project": "projects/bob-ui-framework/ng-package.json"
+            "project": "projects/bob-ui-framework/ng-package.json",
+            "polyfills": "projects/bob-ui-framework/polyfills.ts"
           }
         },
         "test": {
@@ -21,7 +22,8 @@
           "options": {
             "main": "projects/bob-ui-framework/src/test.ts",
             "tsConfig": "projects/bob-ui-framework/tsconfig.spec.json",
-            "karmaConfig": "projects/bob-ui-framework/karma.conf.js"
+            "karmaConfig": "projects/bob-ui-framework/karma.conf.js",
+            "polyfills": "projects/bob-ui-framework/polyfills.ts"
           }
         },
         "lint": {
