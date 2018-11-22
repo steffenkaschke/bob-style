@@ -1,6 +1,6 @@
 import { configure } from '@storybook/angular';
 import { setOptions } from '@storybook/addon-options';
-import '!style-loader!css-loader!../src/style.css';
+import '!style-loader!css-loader!../style.css';
 
 setOptions({
   hierarchyRootSeparator: /\|/,
@@ -8,7 +8,7 @@ setOptions({
 });
 
 //automatically import all files ending in *.stories.ts
-const req = require.context('../src', true, /.stories.ts$/);
+const req = require.context('../projects/bob-ui-framework', true, /.stories.ts$/);
 function loadStories() {
   req.keys().forEach(filename => req(filename));
 }

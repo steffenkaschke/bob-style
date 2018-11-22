@@ -3,76 +3,33 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "bob-style": {
-      "root": "./",
-      "sourceRoot": "src",
-      "projectType": "application",
+    "bob-ui-framework": {
+      "root": "projects/bob-ui-framework",
+      "sourceRoot": "projects/bob-ui-framework/src",
+      "projectType": "library",
       "prefix": "b",
-      "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "outputPath": "dist/bob-style",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
-            "scripts": []
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
-            }
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "bob-style:build"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "bob-style:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "bob-style:build"
+            "tsConfig": "projects/bob-ui-framework/tsconfig.lib.json",
+            "project": "projects/bob-ui-framework/ng-package.json"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
-            "scripts": []
+            "main": "projects/bob-ui-framework/src/test.ts",
+            "tsConfig": "projects/bob-ui-framework/tsconfig.spec.json",
+            "karmaConfig": "projects/bob-ui-framework/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
+              "projects/bob-ui-framework/tsconfig.lib.json",
+              "projects/bob-ui-framework/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -82,7 +39,7 @@
       }
     }
   },
-  "defaultProject": "bob-style",
+  "defaultProject": "bob-ui-framework",
   "schematics": {
     "@schematics/angular:component": {
       "styleext": "scss"

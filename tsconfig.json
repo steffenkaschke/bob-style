@@ -16,6 +16,14 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "paths": {
+      "bob-ui-framework": [
+        "dist/bob-ui-framework"
+      ],
+      "bob-ui-framework/*": [
+        "dist/bob-ui-framework/*"
+      ]
+    }
   }
 }
