@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../dist/bob-ui-framework",
+  "dest": "../../dist/ui-framework",
   "lib": {
     "entryFile": "src/public_api.ts"
   }
