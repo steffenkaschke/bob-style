@@ -22,5 +22,4 @@ export class AvatarComponent implements OnInit {
   ngOnInit() {
     console.log('this.handleClick', this.handleClick);
   }
-
 }

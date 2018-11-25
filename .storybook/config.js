@@ -1,14 +1,16 @@
-import { configure } from '@storybook/angular';
-import { setOptions } from '@storybook/addon-options';
-import '!style-loader!css-loader!../src/style.css';
+import { configure, addDecorator } from '@storybook/angular';
+import { withOptions } from '@storybook/addon-options';
+import '!style-loader!css-loader!../style.css';
 
-setOptions({
-  hierarchyRootSeparator: /\|/,
-  name: 'bob style guide'
-});
+addDecorator(
+  withOptions({
+    name: 'bob ui framework',
+    hierarchyRootSeparator: /\|/,
+  })
+)
 
-//automatically import all files ending in *.stories.ts
-const req = require.context('../src', true, /.stories.ts$/);
+// automatically import all files ending in *.stories.ts
+const req = require.context('../projects/ui-framework', true, /.stories.ts$/);
 function loadStories() {
   req.keys().forEach(filename => req(filename));
 }
