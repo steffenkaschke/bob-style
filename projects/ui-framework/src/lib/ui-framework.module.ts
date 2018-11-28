@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
-import { UiFrameworkComponent } from './ui-framework.component';
 import { AvatarComponent } from './avatar/avatar.component';
 
 @NgModule({
-  declarations: [UiFrameworkComponent, AvatarComponent],
+  declarations: [AvatarComponent],
   imports: [
   ],
-  exports: [UiFrameworkComponent]
+  exports: []
 })
 export class UiFrameworkModule { }
