@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { isEmpty } from 'lodash';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 export enum AvatarSize {
   mini = 'mini',
@@ -13,18 +12,13 @@ export enum AvatarSize {
   templateUrl: './avatar.component.html',
   styleUrls: ['./avatar.component.scss']
 })
-export class AvatarComponent implements OnInit {
+export class AvatarComponent {
   @Input() imageSource: string;
   @Input() size?: AvatarSize = AvatarSize.mini;
+  @Input() isClickable ? = false;
   @Output() handleClick?: EventEmitter<void> = new EventEmitter<void>();
 
-  public isClickable: boolean;
-
   constructor() { }
-
-  ngOnInit() {
-    this.isClickable = !isEmpty(this.handleClick.observers);
-  }
 
   onClick(event) {
     this.handleClick.emit(event);

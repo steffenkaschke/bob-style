@@ -15,7 +15,17 @@ npm install bobStyle
 ```
 
 ## Contribute Instructions
-TBD
+- Generate the new component source files
+```sh
+ng generate component newComponent --project=ui-framework
+```
+- Add the new component to the exports collection of the ui framework module
+- Add to the peer dependencies collection of the library package.json any new dependencies
+- Add also to the main package.json the new dependency
+- Add the component stories file
+
+
+
 
 
 

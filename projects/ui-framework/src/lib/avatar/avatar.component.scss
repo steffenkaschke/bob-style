@@ -1,4 +1,7 @@
 .b-avatar{
+  &.clickable {
+    cursor: pointer;
+  }
   .avatar-image{
     border-radius: 50%;
     margin-right: 8px;

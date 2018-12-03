@@ -26,20 +26,6 @@ describe('AvatarComponent', () => {
     expect(component.size).toEqual(AvatarSize.mini);
   });
 
-  describe('ngOnInit', () => {
-    it('should set the isClickable flag to true if a subscriber for the handleClick emit exist', () => {
-      component.handleClick.observers = [{} as Observer<void>];
-      component.ngOnInit();
-      expect(component.isClickable).toBeTruthy();
-    });
-
-    it('should set the isClickable flag to true if a subscriber for the handleClick emit exist', () => {
-      component.handleClick.observers = [];
-      component.ngOnInit();
-      expect(component.isClickable).toBeFalsy();
-    });
-  });
-
   describe('onClick', () => {
     it('Should emit the click event', () => {
       const e = {
