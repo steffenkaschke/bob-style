@@ -21,7 +21,9 @@ export class AvatarComponent {
   constructor() { }
 
   onClick(event) {
-    this.handleClick.emit(event);
+    if (this.isClickable) {
+      this.handleClick.emit(event);
+    }
   }
 
   getClassNames() {

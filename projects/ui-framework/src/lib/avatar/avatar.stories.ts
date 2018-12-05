@@ -10,6 +10,14 @@ const avatarStories = storiesOf('Buttons & Indicators', module)
   .addDecorator(withKnobs);
 
 const sizeOptions = values(AvatarSize);
+const template = `
+  <b-avatar
+    [imageSource]="imageSource"
+    [size]="size"
+    [isClickable]="isClickable"
+    (handleClick)="clickHandler($event)">
+  </b-avatar>
+`;
 const note = `
   ## Avatar Element
   ##### Basic component for display image avatar
@@ -22,24 +30,22 @@ const note = `
   handleClick | Function | callback for clicking on the avatar | no click (optional)
 
   ~~~
-  <b-avatar
-    [imageSource] = "imageUrl"
-    [size] = "medium"
-    [isClickable] = "false"
-    (handleClick) = "clickHandler()">
-  </b-avatar>
+  ${template}
   ~~~
 `;
 avatarStories.add(
     'Avatar',
     () => {
       return {
-        component: AvatarComponent,
+        template,
         props: {
           imageSource: text('imageSource', 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'),
-          size: select('size', sizeOptions, AvatarSize.small),
+          size: select('size', sizeOptions, AvatarSize.medium),
           isClickable: boolean('isClickable', false),
-          handleClick: action()
+          clickHandler: action()
+        },
+        moduleMetadata: {
+          declarations: [AvatarComponent]
         }
       };
     },

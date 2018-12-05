@@ -1,0 +1,55 @@
+@import './colors.scss';
+@import './variables.scss';
+@import '~@angular/material/theming';
+
+$primary-palette: (
+  50: #e0ebf3,
+  100: #b3cee1,
+  200: #80adce,
+  300: #4d8cba,
+  400: #2673ab,
+  500: $orange,
+  600: #FEA54A,
+  700: #00488a,
+  800: #3DBAFC,
+  A200: #6a9bff,
+  A400: #3778ff,
+  A700: #1e67ff,
+  contrast: (
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A700: white,
+  )
+);
+
+$accent-palette: (
+  50: #e0ebf3,
+  100: #b3cee1,
+  200: #80adce,
+  300: #4d8cba,
+  400: #2673ab,
+  500: $red,
+  600: #FEA54A,
+  700: #00488a,
+  800: #3DBAFC,
+  A200: #6a9bff,
+  A400: #3778ff,
+  A700: #1e67ff,
+  contrast: (
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A700: white,
+  )
+);
+
+@include mat-core();
+$bob-theme-primary: mat-palette($primary-palette);
+$bob-theme-accent:  mat-palette($accent-palette);
+$bob-theme: mat-light-theme($bob-theme-primary, $bob-theme-accent);
+@include angular-material-theme($bob-theme);

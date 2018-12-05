@@ -27,12 +27,22 @@ describe('AvatarComponent', () => {
   });
 
   describe('onClick', () => {
-    it('Should emit the click event', () => {
+    it('Should emit the click event iof the component is set to be clickable', () => {
+      component.isClickable = true;
       const e = {
         id: 1
       };
       component.onClick(e);
       expect(component.handleClick.emit).toHaveBeenCalledWith(e);
+    });
+
+    it('Should not emit the click event iof the component is set to not be clickable', () => {
+      component.isClickable = false;
+      const e = {
+        id: 1
+      };
+      component.onClick(e);
+      expect(component.handleClick.emit).not.toHaveBeenCalled();
     });
   });
 
