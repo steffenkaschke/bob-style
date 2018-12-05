@@ -2,7 +2,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/node:8.9-browsers
+      - image: circleci/node:8.11-browsers
     working_directory: ~/repo
     
     steps:
@@ -20,7 +20,7 @@ jobs:
       # run tests!
        #npm run to run ng because @angular/cli is not installed globally.
       
-      - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI 
+      - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadless 
       
       - store_test_results:
           path: ~/repo/test-results/

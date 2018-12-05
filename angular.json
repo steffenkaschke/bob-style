@@ -139,12 +139,20 @@
       "sourceRoot": "projects/ui-framework/src",
       "projectType": "library",
       "prefix": "b",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
             "tsConfig": "projects/ui-framework/tsconfig.lib.json",
-            "project": "projects/ui-framework/ng-package.json"
+            "project": "projects/ui-framework/ng-package.json",
+            "styles": [
+              "src/lib/style/theme.scss"
+            ]
           }
         },
         "test": {

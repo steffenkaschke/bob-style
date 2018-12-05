@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
+import './style/style.scss';
 import { AvatarComponent } from './avatar/avatar.component';
-import { ButtonComponent } from './button/button.component';
+import { ButtonModule } from './button/button.module';
 
 @NgModule({
   declarations: [
     AvatarComponent,
-    ButtonComponent
   ],
   imports: [
+    ButtonModule
   ],
   exports: [
     AvatarComponent,
-    ButtonComponent
   ]
 })
 export class UiFrameworkModule { }
