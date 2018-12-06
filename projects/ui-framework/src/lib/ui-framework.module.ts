@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import './style/style.scss';
+import './style/theme.scss';
 import { AvatarComponent } from './avatar/avatar.component';
 import { ButtonModule } from './button/button.module';
 import { TypographyModule } from './typography/typography.module';
