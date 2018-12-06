@@ -1,0 +1,13 @@
+@mixin FontDefault($style, $weight, $size, $lineHeight, $letterSpacing) {
+  font-style: $style;
+  font-weight: $weight;
+  font-size: $size;
+  line-height: $lineHeight;
+  letter-spacing: $letterSpacing;
+  color: var(--text-color);
+}
+
+@mixin DisplayFont($style, $weight, $size, $lineHeight, $letterSpacing) {
+  font-family: var(--display-font-family);
+  @include FontDefault($style, $weight, $size, $lineHeight, $letterSpacing);
+}
