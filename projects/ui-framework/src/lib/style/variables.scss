@@ -1,5 +1,7 @@
 @import './colors.scss';
 
 :root {
+  --text-color: $greyText;
   --primary-color: $orange;
+  --display-font-family: 'Roboto, monospace'
 }
