@@ -1,6 +1,5 @@
 import { configure, addDecorator } from '@storybook/angular';
 import { withOptions } from '@storybook/addon-options';
-import '!style-loader!css-loader!../style.css';
 import '!style-loader!css-loader!sass-loader!../projects/ui-framework/src/lib/style/theme.scss';
 
 addDecorator(
