@@ -8,24 +8,68 @@ const typographyStories = storiesOf('Typography', module)
   .addDecorator(withKnobs);
 
 const displayTemplate = `
-  <b-display-1>{{label}}</b-display-1>
+  <style>
+    div { border-bottom: 1px solid #C4CDD5; }
+    div > * { line-height: 70px !important; }
+  </style>
+  <div>
+    <b-display-1>Display XLarge</b-display-1>
+  </div>
+  <div>
+    <b-display-2>Display Large</b-display-2>
+  </div>
+  <div>
+    <b-display-3>Display Medium</b-display-3>
+  </div>
+  <div>
+    <b-display-4>Display Small</b-display-4>
+  </div>
+  <div>
+    <b-heading>Heading</b-heading>
+  </div>
+  <div>
+    <b-subheading>Sub heading</b-subheading>
+  </div>
+  <div>
+    <span>Body</span>
+  </div>
+  <div>
+    <b-caption>Caption</b-caption>
+  </div>
+  <ul>
 `;
 const note = `
-  ## Basic Typography Elements
-  #####
+  ## Typography
+  The typography is arranged into multiple levels:
+  - display: Which are large titles (usually top of page)
+  - heading: Which are section headings
 
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
+
+  #### Style customization
+
+
+  property name | Description
+  --- | ---
+  display-font-family | The display elements font family
+  heading-font-family | The heading elements font family
+  body-font-family | The body elements font family
+  text-color | The font color
 
   ~~~
-  ${displayTemplate}
+  <b-display-1>Display XLarge</b-display-1>
+  <b-display-2>Display Large</b-display-2>
+  <b-display-3>Display Medium</b-display-3>
+  <b-display-4>Display Small</b-display-4>
+  <b-heading>Heading</b-heading>
+  <b-subheading>Sub heading</b-subheading>
+  Body
+  <b-caption>Caption</b-caption>
   ~~~
 `;
 typographyStories.add(
-    'Display Text', () => ({
+    'Text', () => ({
       template: displayTemplate,
       props: {
-        label: text('label', 'This is Display text')
       },
       moduleMetadata: {
         imports: [TypographyModule]
