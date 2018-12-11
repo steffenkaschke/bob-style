@@ -3,6 +3,8 @@
 :root {
   --text-color: #{$greyText};
   --primary-color: #{$orange};
+  --primary-color-dark: #{$orangeDark};
+  --primary-color-darker: #{$orangeDarker};
   --display-font-family: 'Roboto, monospace';
   --heading-font-family: 'Roboto, monospace';
   --body-font-family: 'Roboto, monospace';

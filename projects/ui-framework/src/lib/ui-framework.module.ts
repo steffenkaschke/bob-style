@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import './style/theme.scss';
+import { BrowserModule } from '@angular/platform-browser';
+import './style/style.scss';
 import { AvatarComponent } from './avatar/avatar.component';
 import { ButtonModule } from './button/button.module';
 import { TypographyModule } from './typography/typography.module';
@@ -9,6 +10,7 @@ import { TypographyModule } from './typography/typography.module';
     AvatarComponent,
   ],
   imports: [
+    BrowserModule,
     ButtonModule,
     TypographyModule
   ],

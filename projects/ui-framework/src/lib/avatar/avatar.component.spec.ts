@@ -17,7 +17,7 @@ describe('AvatarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AvatarComponent);
     component = fixture.componentInstance;
-    spyOn(component.handleClick, 'emit');
+    spyOn(component.clicked, 'emit');
     fixture.detectChanges();
   });
 
@@ -33,7 +33,7 @@ describe('AvatarComponent', () => {
         id: 1
       };
       component.onClick(e);
-      expect(component.handleClick.emit).toHaveBeenCalledWith(e);
+      expect(component.clicked.emit).toHaveBeenCalledWith(e);
     });
 
     it('Should not emit the click event iof the component is set to not be clickable', () => {
@@ -42,7 +42,7 @@ describe('AvatarComponent', () => {
         id: 1
       };
       component.onClick(e);
-      expect(component.handleClick.emit).not.toHaveBeenCalled();
+      expect(component.clicked.emit).not.toHaveBeenCalled();
     });
   });
 

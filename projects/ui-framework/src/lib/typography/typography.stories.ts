@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { text, withKnobs } from '@storybook/addon-knobs/angular';
+import { withKnobs } from '@storybook/addon-knobs/angular';
 import { TypographyModule } from './typography.module';
 
 const typographyStories = storiesOf('Typography', module)
@@ -46,7 +46,6 @@ const note = `
 
 
   #### Style customization
-
 
   property name | Description
   --- | ---
