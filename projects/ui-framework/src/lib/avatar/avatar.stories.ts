@@ -15,18 +15,19 @@ const template = `
     [imageSource]="imageSource"
     [size]="size"
     [isClickable]="isClickable"
-    (handleClick)="clickHandler($event)">
+    (clicked)="clickHandler($event)">
   </b-avatar>
 `;
 const note = `
   ## Avatar Element
-  ##### Basic component for display image avatar
+
+  #### Properties
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
   imageSource | String | url of the image |
   size | AvatarSize | enum for setting the avatar size | mini (optional)
-  isClickable | Boolean | boolean flag for indicating if the avatar is clickable or not | false (optional)
+  clicked | Boolean | boolean flag for indicating if the avatar is clickable or not | false (optional)
   handleClick | Function | callback for clicking on the avatar | no click (optional)
 
   ~~~

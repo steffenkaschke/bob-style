@@ -16,13 +16,13 @@ export class AvatarComponent {
   @Input() imageSource: string;
   @Input() size?: AvatarSize = AvatarSize.mini;
   @Input() isClickable ? = false;
-  @Output() handleClick?: EventEmitter<void> = new EventEmitter<void>();
+  @Output() clicked?: EventEmitter<void> = new EventEmitter<void>();
 
   constructor() { }
 
   onClick(event) {
     if (this.isClickable) {
-      this.handleClick.emit(event);
+      this.clicked.emit(event);
     }
   }
 

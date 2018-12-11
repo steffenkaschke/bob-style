@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
 import { ButtonComponent } from './button.component';
-import { MatButtonModule } from '@angular/material';
+import { BrowserModule } from '@angular/platform-browser';
+import { MatButtonModule, MatRippleModule } from '@angular/material';
 
 @NgModule({
   declarations: [
     ButtonComponent
   ],
   imports: [
-    MatButtonModule
+    BrowserModule,
+    MatButtonModule,
+    MatRippleModule
   ],
   exports: [
     ButtonComponent

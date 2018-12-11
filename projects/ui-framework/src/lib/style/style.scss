@@ -1,0 +1,8 @@
+@import './colors.scss';
+@import './variables.scss';
+@import './typography.scss';
+
+body {
+  font-family: var(--body-font-family);
+  @include FontDefault(normal, normal, 12px, 14px, 0);
+}
