@@ -1,0 +1,21 @@
+@import '../../style/typography.scss';
+@import '../buttons.scss';
+
+.mat-button {
+  height: 36px;
+  width: 36px;
+  min-width: 36px;
+  text-align: center;
+  padding: 0;
+
+  &.primary {
+    @include Button(primary);
+  }
+  &.secondary {
+    @include Button(secondary);
+  }
+  &.tertiary {
+    @include Button(tertiary);
+  }
+}
+

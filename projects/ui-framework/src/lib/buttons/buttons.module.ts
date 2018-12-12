@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
-import { ButtonComponent } from './button.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatButtonModule, MatRippleModule } from '@angular/material';
+import { ButtonComponent } from './button/button.component';
+import { SquareButtonComponent } from '../buttons/square/square.component';
+
+import './buttons.scss';
 
 @NgModule({
   declarations: [
-    ButtonComponent
+    ButtonComponent,
+    SquareButtonComponent
   ],
   imports: [
     BrowserModule,
@@ -13,7 +17,8 @@ import { MatButtonModule, MatRippleModule } from '@angular/material';
     MatRippleModule
   ],
   exports: [
-    ButtonComponent
+    ButtonComponent,
+    SquareButtonComponent
   ]
 })
-export class ButtonModule { }
+export class ButtonsModule { }

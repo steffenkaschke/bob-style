@@ -2,8 +2,8 @@ import { storiesOf, moduleMetadata } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
 import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { ButtonModule } from './button.module';
-import { ButtonType, ButtonSize } from './button.component';
+import { ButtonsModule } from '../buttons.module';
+import { ButtonType, ButtonSize } from '../buttons.types';
 import { values } from 'lodash';
 
 const buttonStories = storiesOf('Buttons & Indicators', module)
@@ -13,22 +13,20 @@ const buttonStories = storiesOf('Buttons & Indicators', module)
 const typeOptions = values(ButtonType);
 const sizeOptions = values(ButtonSize);
 const template = `
-  <b-button
+  <b-square-button
     (clicked)="onClick($event)"
-    [type]="type"
-    [size]="size">
-      {{label}}
-  </b-button>
+    [type]="type">
+      +
+  </b-square-button>
 `;
 const note = `
-  ## Button Element
+  ## Square Button Element
 
   #### Properties
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
   type | ButtonType | enum for setting the button type | primary (optional)
-  size | ButtonSize | enum for setting the button size | medium (optional)
   clicked | Function | callback for clicking on the button |
 
   #### Style customization
@@ -44,16 +42,14 @@ const note = `
   ~~~
 `;
 buttonStories.add(
-    'Regular Button', () => ({
+    'Square Button', () => ({
       template,
       props: {
         onClick: action(),
-        label: text('label', 'Click me'),
         type: select('type', typeOptions, ButtonType.primary),
-        size: select('size', sizeOptions, ButtonSize.medium),
       },
       moduleMetadata: {
-        imports: [ButtonModule]
+        imports: [ButtonsModule]
       }
     }),
     { notes: { markdown: note }  }
