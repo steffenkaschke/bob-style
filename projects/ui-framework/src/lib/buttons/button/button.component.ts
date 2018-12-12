@@ -1,20 +1,15 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-
-export enum ButtonType {
-  primary = 'primary',
-  secondary = 'secondary',
-  tertiary  = 'tertiary'
-}
-
-export enum ButtonSize {
-  small = 'small',
-  medium  = 'medium',
-  large  = 'large',
-}
+import { ButtonType, ButtonSize } from '../buttons.types';
 
 @Component({
   selector: 'b-button',
-  templateUrl: './button.component.html',
+  template: `
+    <button mat-button [disableRipple]="true"
+      [ngClass]="getClassNames()"
+      (click)="onClick($event)">
+      <ng-content></ng-content>
+    </button>
+  `,
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent {
