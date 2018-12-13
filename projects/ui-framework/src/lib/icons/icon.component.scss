@@ -1,0 +1,55 @@
+@import '../style/colors.scss';
+
+:host ::ng-deep {
+  .mat-icon {
+    svg {
+      pointer-events: none;
+      g {
+        path {
+          transition: fill .2s ease;
+        }
+        line {
+          transition: stroke .2s ease;
+        }
+      }
+    }
+    &.dark {
+      svg g {
+        path {
+          fill: $greyText !important;
+        }
+        line {
+          stroke: $greyText !important;
+        }
+      }
+    }
+    &.light {
+      svg g {
+        path {
+          fill: white !important;
+        }
+        line {
+          stroke: white !important;
+        }
+      }
+    }
+    &.primary {
+      svg g {
+        path {
+          fill: var(--primary-color) !important;
+        }
+        line {
+          stroke: var(--primary-color) !important;
+        }
+      }
+    }
+    &.mini {
+      height: 16px;
+      width: 16px;
+    }
+    &.small{
+      height: 24px;
+      width: 24px;
+    }
+  }
+}

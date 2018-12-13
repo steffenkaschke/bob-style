@@ -1,9 +1,9 @@
-import { storiesOf, moduleMetadata } from '@storybook/angular';
+import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import { select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
-import { ButtonType, ButtonSize } from '../buttons.types';
+import { ButtonType } from '../buttons.types';
 import { values } from 'lodash';
 
 const buttonStories = storiesOf('Buttons & Indicators', module)
@@ -11,7 +11,6 @@ const buttonStories = storiesOf('Buttons & Indicators', module)
   .addDecorator(withKnobs);
 
 const typeOptions = values(ButtonType);
-const sizeOptions = values(ButtonSize);
 const template = `
   <b-square-button
     (clicked)="onClick($event)"
