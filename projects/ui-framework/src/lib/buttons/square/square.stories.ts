@@ -5,17 +5,20 @@ import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import { ButtonType } from '../buttons.types';
 import { values } from 'lodash';
+import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
+import { IconsModule } from '../../icons/icons.module';
 
 const buttonStories = storiesOf('Buttons & Indicators', module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
 const typeOptions = values(ButtonType);
+const IconColors = values(IconColor);
 const template = `
   <b-square-button
     (clicked)="onClick($event)"
     [type]="type">
-      +
+    <b-icon icon="${Icons.phone_link}" size="${IconSize.mini}" [color]="iconColor"></b-icon>
   </b-square-button>
 `;
 const note = `
@@ -46,9 +49,10 @@ buttonStories.add(
       props: {
         onClick: action(),
         type: select('type', typeOptions, ButtonType.primary),
+        iconColor: select('color', IconColors, IconColor.light),
       },
       moduleMetadata: {
-        imports: [ButtonsModule]
+        imports: [ButtonsModule, IconsModule]
       }
     }),
     { notes: { markdown: note }  }
