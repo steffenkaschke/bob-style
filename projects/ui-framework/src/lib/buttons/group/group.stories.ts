@@ -1,7 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { select, withKnobs } from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
+import { withKnobs } from '@storybook/addon-knobs/angular';
 import { ButtonsModule } from '../buttons.module';
 import { IconsModule } from '../../icons/icons.module';
 import { ButtonType } from '../buttons.types';
