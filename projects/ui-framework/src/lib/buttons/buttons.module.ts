@@ -3,13 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatButtonModule, MatRippleModule } from '@angular/material';
 import { ButtonComponent } from './button/button.component';
 import { SquareButtonComponent } from '../buttons/square/square.component';
+import { GroupComponent } from './group/group.component';
 
 import './buttons.scss';
 
 @NgModule({
   declarations: [
     ButtonComponent,
-    SquareButtonComponent
+    SquareButtonComponent,
+    GroupComponent
   ],
   imports: [
     BrowserModule,
@@ -18,7 +20,8 @@ import './buttons.scss';
   ],
   exports: [
     ButtonComponent,
-    SquareButtonComponent
+    SquareButtonComponent,
+    GroupComponent
   ]
 })
 export class ButtonsModule { }

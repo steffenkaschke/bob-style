@@ -5,6 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import { ButtonType } from '../buttons.types';
 import { values } from 'lodash';
+import { Icons, IconSize } from '../../icons/icons.enum';
 
 const buttonStories = storiesOf('Buttons & Indicators', module)
   .addDecorator(withNotes)
@@ -15,7 +16,7 @@ const template = `
   <b-square-button
     (clicked)="onClick($event)"
     [type]="type">
-      +
+    <b-icon icon="${Icons.phone_link}" size="${IconSize.mini}"></b-icon>
   </b-square-button>
 `;
 const note = `
