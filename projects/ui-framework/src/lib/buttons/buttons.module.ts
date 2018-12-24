@@ -5,8 +5,6 @@ import { ButtonComponent } from './button/button.component';
 import { SquareButtonComponent } from '../buttons/square/square.component';
 import { GroupComponent } from './group/group.component';
 
-// import './buttons.scss';
-
 @NgModule({
   declarations: [
     ButtonComponent,
