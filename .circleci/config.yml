@@ -40,7 +40,7 @@ jobs:
           # Must be absolute path or relative path from working_directory
          at: .
       # deploy!
-      - run: mkdir -p .out/.circleci && cp -a .circleci/. .out/.circleci/.=
+      - run: mkdir -p .out/.circleci && cp -a .circleci/. .out/.circleci/.
       - run: npm run build-storybook
       - run: npm run deploy-storybook --  --existing-output-dir=.out --ci --host-token-env-variable=${GITHUB_TOKEN}
       - run: npm run build
