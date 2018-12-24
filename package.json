@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build ui-framework --prod",
+    "build": "ng build ui-framework",
     "test": "ng test ui-framework",
     "lint": "ng lint ui-framework",
     "e2e": "ng e2e",
