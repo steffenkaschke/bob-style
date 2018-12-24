@@ -2,17 +2,6 @@
 @import '../buttons.scss';
 
 .mat-button {
-  &.small {
-    padding: 8px 16px;
-  }
-  &.medium {
-    padding: 12px 21px;
-  }
-  &.large {
-    padding: 16px 32px;
-    @include BodyFont(normal, normal, 12px, 12px, 0.4px);
-    text-transform: uppercase;
-  }
   &.primary {
     @include Button(primary);
   }
@@ -21,6 +10,17 @@
   }
   &.tertiary {
     @include Button(tertiary);
+  }
+  &.small {
+    padding: 8px 16px;
+  }
+  &.medium {
+    padding: 12px 21px;
+  }
+  &.large {
+    padding: 16px 32px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
   }
 }
 

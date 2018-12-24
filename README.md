@@ -1,7 +1,7 @@
 
 
 <div style="text-align:center">
-  <img src="logo.png" alt="UI Framework Logo" width="250" height="250">
+  <img src="https://images.hibob.com/icons/style-logo.png" alt="UI Framework Logo" width="250" height="250">
 </div>
 
 
