@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders, InjectionToken } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import './style/style.scss';
+// import './style/style.scss';
 import { UIFrameworkConfig } from './ui-framework.types';
 import { AvatarComponent } from './avatar/avatar.component';
 import { ButtonsModule } from './buttons/buttons.module';
