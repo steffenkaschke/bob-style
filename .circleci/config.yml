@@ -34,18 +34,26 @@ jobs:
     docker:
      - image: circleci/node:11.4
     working_directory: ~/repo
+    parameters: 
+         bobStylePackageJson: "./projects/ui-framework/package.json"
     steps:
       - checkout
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
          at: .
-      - run:
-          name: "bump version"
-          command: npm version prerelease  --preid=unstable --no-git-tag-version
+      
       # deploy!
       - run: mkdir -p .out/.circleci && cp -a .circleci/. .out/.circleci/.
       - run: npm run build-storybook
       - run: npm run deploy-storybook --  --existing-output-dir=.out --ci --host-token-env-variable=${GITHUB_TOKEN}
+
+
+      #deploy to npm
+      - run: 
+          name: "bump"
+          command: |
+               PACKAGE_VERSION=$(node -p -e "require('${bobStylePackageJson}').version")
+               yarn version --new-version ${PACKAGE_VERSION}-unstable-${CIRCLE_BUILD_NUM} --no-git-tag-version --package-file ${bobStylePackageJson}
       - run: npm run package
       - run:
           name: "Deploy to npm"
