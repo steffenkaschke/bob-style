@@ -52,8 +52,8 @@ jobs:
       - run: 
           name: "bump"
           command: |
-               PACKAGE_VERSION=$(node -p -e "require('${bobStylePackageJson}').version")
-               yarn version --new-version ${PACKAGE_VERSION}-unstable-${CIRCLE_BUILD_NUM} --no-git-tag-version --package-file ${bobStylePackageJson}
+               PACKAGE_VERSION=$(node -p -e "require('./projects/ui-framework/package.json').version")
+               yarn version --new-version ${PACKAGE_VERSION}-unstable-${CIRCLE_BUILD_NUM} --no-git-tag-version --package-file ./projects/ui-framework/package.json
       - run: npm run package
       - run:
           name: "Deploy to npm"
