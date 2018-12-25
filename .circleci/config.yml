@@ -39,7 +39,7 @@ jobs:
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
          at: .
-      - run: 
+      - run:
           name: "bump version"
           command: npm version prerelease  --preid=unstable --no-git-tag-version           
       # deploy!
@@ -47,14 +47,13 @@ jobs:
       - run: npm run build-storybook
       - run: npm run deploy-storybook --  --existing-output-dir=.out --ci --host-token-env-variable=${GITHUB_TOKEN}
       - run: npm run package
-     
-      - run: 
+      - run:
           name: "Deploy to npm"
           command: |
                   echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
                   npm publish --scope=hibob
-                  
-                  
+
+
 
 
 
