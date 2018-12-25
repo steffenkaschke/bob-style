@@ -41,7 +41,7 @@ jobs:
          at: .
       - run:
           name: "bump version"
-          command: npm version prerelease  --preid=unstable --no-git-tag-version           
+          command: npm version prerelease  --preid=unstable --no-git-tag-version
       # deploy!
       - run: mkdir -p .out/.circleci && cp -a .circleci/. .out/.circleci/.
       - run: npm run build-storybook
@@ -51,7 +51,7 @@ jobs:
           name: "Deploy to npm"
           command: |
                   echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
-                  npm publish --scope=hibob
+                  npm publish ./dist/ui-framework/*.tgz --scope=hibob
 
 
 
