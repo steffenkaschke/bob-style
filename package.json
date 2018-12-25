@@ -1,6 +1,6 @@
 {
   "name": "bob-storybook",
-  "version": "0.0.1-unstable-200",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
