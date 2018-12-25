@@ -53,7 +53,9 @@ jobs:
           name: "bump"
           command: |
                PACKAGE_VERSION=$(node -p -e "require('./projects/ui-framework/package.json').version")
-               yarn version --new-version ${PACKAGE_VERSION}-unstable-${CIRCLE_BUILD_NUM} --no-git-tag-version --package-file ./projects/ui-framework/package.json
+               cd ./projects/ui-framework
+               yarn version --new-version "${PACKAGE_VERSION}-unstable-${CIRCLE_BUILD_NUM}" --no-git-tag-version
+               cd ../..
       - run: npm run package
       - run:
           name: "Deploy to npm"
