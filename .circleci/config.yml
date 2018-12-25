@@ -47,6 +47,8 @@ jobs:
       - run: 
           name: "bump version"
           command: | 
+                     git config --global user.email "admins@hibob.com"
+                     git config --global user.name "CircleCI"
                      git add . && git commit .
                      npm version prerelease  --preid=unstable         
       - run: 
