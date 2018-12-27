@@ -3,7 +3,7 @@ import { withNotes } from '@storybook/addon-notes';
 import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
-import { ButtonType, ButtonSize } from '../buttons.types';
+import { ButtonType, ButtonSize } from '../buttons.enum';
 import { values } from 'lodash';
 
 const buttonStories = storiesOf('Buttons & Indicators', module)

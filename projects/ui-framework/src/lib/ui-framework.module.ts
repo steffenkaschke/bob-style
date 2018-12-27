@@ -21,10 +21,6 @@ export const UI_FRAMEWORK_CONFIG = new InjectionToken<UIFrameworkConfig>('UI Fra
   ],
   exports: [
     AvatarComponent,
-    ButtonsModule,
-    TypographyModule,
-    IconsModule,
-    InputModule,
   ]
 })
 export class UIFrameworkModule {

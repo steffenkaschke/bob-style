@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SquareButtonComponent } from './square.component';
-import { ButtonType } from '../buttons.types';
+import { ButtonType } from '../buttons.enum';
 
 describe('ButtonComponent', () => {
   let component: SquareButtonComponent;

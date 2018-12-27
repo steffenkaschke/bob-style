@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
-import { IconComponent } from './icon.component';
 import { MatIconModule, MatTooltipModule } from '@angular/material';
-import { IconService } from './icon.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { IconComponent } from './icon.component';
+import IconsEnum from './icons.enum';
+import { IconService } from './icon.service';
 
 @NgModule({
   declarations: [IconComponent],
@@ -14,7 +15,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatIconModule,
     FlexLayoutModule,
     MatTooltipModule],
-  exports: [IconComponent],
+  exports: [
+    IconComponent,
+    IconsEnum
+  ],
   providers: [IconService],
 })
 export class IconsModule {
