@@ -4,7 +4,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconComponent } from './icon.component';
-import IconsEnum from './icons.enum';
 import { IconService } from './icon.service';
 
 @NgModule({
@@ -17,7 +16,6 @@ import { IconService } from './icon.service';
     MatTooltipModule],
   exports: [
     IconComponent,
-    IconsEnum
   ],
   providers: [IconService],
 })
