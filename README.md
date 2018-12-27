@@ -11,7 +11,12 @@ View it here [https://hibobio.github.io/bob-style/](https://hibobio.github.io/bo
 
 ## Installation and Usage
 ```sh
-npm install bobStyle
+npm install bob-style
+```
+
+## Run the storybook project locally
+```sh
+npm run storybook
 ```
 
 ## Contribute Instructions
@@ -23,6 +28,11 @@ ng generate component newComponent --project=ui-framework
 - Add to the peer dependencies collection of the library package.json any new dependencies
 - Add also to the main package.json the new dependency
 - Add the component stories file
+
+## Run tests
+```sh
+npm run test
+```
 
 
 
