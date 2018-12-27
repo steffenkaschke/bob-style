@@ -3,5 +3,9 @@
   "dest": "../../dist/ui-framework",
   "lib": {
     "entryFile": "src/public_api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+    "angular",
+    "lodash"
+  ]
 }
