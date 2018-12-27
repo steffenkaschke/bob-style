@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ButtonComponent } from './button.component';
-import { ButtonType, ButtonSize } from '../buttons.types';
+import { ButtonType, ButtonSize } from '../buttons.enum';
 
 describe('ButtonComponent', () => {
   let component: ButtonComponent;

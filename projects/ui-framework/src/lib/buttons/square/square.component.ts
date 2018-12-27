@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { ButtonType } from '../buttons.types';
+import { ButtonType } from '../buttons.enum';
 
 @Component({
   selector: 'b-square-button',

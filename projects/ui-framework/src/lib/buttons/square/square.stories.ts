@@ -3,7 +3,7 @@ import { withNotes } from '@storybook/addon-notes';
 import { select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
-import { ButtonType } from '../buttons.types';
+import { ButtonType } from '../buttons.enum';
 import { values } from 'lodash';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
