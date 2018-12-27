@@ -5,6 +5,7 @@ import { AvatarComponent } from './avatar/avatar.component';
 import { ButtonsModule } from './buttons/buttons.module';
 import { TypographyModule } from './typography/typography.module';
 import { IconsModule } from './icons/icons.module';
+import { InputModule } from './input/input.module';
 
 export const UI_FRAMEWORK_CONFIG = new InjectionToken<UIFrameworkConfig>('UI Framework config');
 @NgModule({
@@ -15,7 +16,8 @@ export const UI_FRAMEWORK_CONFIG = new InjectionToken<UIFrameworkConfig>('UI Fra
     BrowserModule,
     ButtonsModule,
     TypographyModule,
-    IconsModule
+    IconsModule,
+    InputModule,
   ],
   exports: [
     AvatarComponent,
