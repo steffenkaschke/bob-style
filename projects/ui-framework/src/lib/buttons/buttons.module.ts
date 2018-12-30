@@ -4,12 +4,14 @@ import { MatButtonModule, MatRippleModule } from '@angular/material';
 import { ButtonComponent } from './button/button.component';
 import { SquareButtonComponent } from '../buttons/square/square.component';
 import { GroupComponent } from './group/group.component';
+import { BackButtonComponent } from '../buttons/back-button/back-button.component';
 
 @NgModule({
   declarations: [
     ButtonComponent,
     SquareButtonComponent,
-    GroupComponent
+    GroupComponent,
+    BackButtonComponent
   ],
   imports: [
     BrowserModule,
@@ -19,7 +21,8 @@ import { GroupComponent } from './group/group.component';
   exports: [
     ButtonComponent,
     SquareButtonComponent,
-    GroupComponent
+    GroupComponent,
+    BackButtonComponent
   ]
 })
 export class ButtonsModule { }
