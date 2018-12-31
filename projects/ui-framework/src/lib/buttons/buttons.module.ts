@@ -4,6 +4,7 @@ import { MatButtonModule, MatRippleModule } from '@angular/material';
 import { ButtonComponent } from './button/button.component';
 import { SquareButtonComponent } from '../buttons/square/square.component';
 import { GroupComponent } from './group/group.component';
+import '../style/style.scss';
 
 @NgModule({
   declarations: [
