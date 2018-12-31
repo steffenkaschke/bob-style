@@ -9,3 +9,8 @@ export enum ButtonSize {
   medium  = 'medium',
   large  = 'large',
 }
+
+export enum BackButtonType {
+  secondary = 'secondary',
+  tertiary = 'tertiary'
+}

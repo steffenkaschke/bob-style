@@ -5,18 +5,20 @@ import { ButtonComponent } from './button/button.component';
 import { SquareButtonComponent } from '../buttons/square/square.component';
 import { GroupComponent } from './group/group.component';
 import { BackButtonComponent } from '../buttons/back-button/back-button.component';
+import {IconsModule} from '../icons/icons.module';
 
 @NgModule({
   declarations: [
     ButtonComponent,
     SquareButtonComponent,
     GroupComponent,
-    BackButtonComponent
+    BackButtonComponent,
   ],
   imports: [
     BrowserModule,
     MatButtonModule,
-    MatRippleModule
+    MatRippleModule,
+    IconsModule
   ],
   exports: [
     ButtonComponent,
