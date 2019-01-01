@@ -44,10 +44,14 @@
       }
     }
     &.mini {
+      height: 12px;
+      width: 12px;
+    }
+    &.small{
       height: 16px;
       width: 16px;
     }
-    &.small{
+    &.medium{
       height: 24px;
       width: 24px;
     }
