@@ -6,6 +6,7 @@ import { SquareButtonComponent } from '../buttons/square/square.component';
 import { GroupComponent } from './group/group.component';
 import { BackButtonComponent } from '../buttons/back-button/back-button.component';
 import {IconsModule} from '../icons/icons.module';
+import '../style/style.scss';
 
 @NgModule({
   declarations: [
