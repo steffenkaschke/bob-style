@@ -11,7 +11,6 @@ const backButtonStories = storiesOf('Buttons & Indicators', module)
   .addDecorator(withKnobs);
 
 const typeOptions = values(BackButtonType);
-console.log('typeOptions', typeOptions);
 
 const template = `
   <b-back-button
@@ -28,7 +27,7 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  type | ButtonType | enum for setting the button type | secondary (optional)
+  type | BackButtonType | enum for setting the button type | secondary (optional)
   clicked | Function | callback for clicking on the back button |
 
   ~~~
