@@ -1,7 +1,6 @@
 /*
  * Public API Surface of ui-framework
  */
-export * from './lib/ui-framework.module';
 export * from './lib/typography/typography.module';
 export * from './lib/avatar/index';
 export * from './lib/icons/index';
