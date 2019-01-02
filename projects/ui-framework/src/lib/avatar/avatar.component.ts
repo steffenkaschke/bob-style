@@ -1,11 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-
-export enum AvatarSize {
-  mini = 'mini',
-  small = 'small',
-  medium  = 'medium',
-  large  = 'large',
-}
+import { AvatarSize } from './avatar.enum';
 
 @Component({
   selector: 'b-avatar',

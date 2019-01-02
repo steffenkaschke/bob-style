@@ -5,8 +5,7 @@ import { Icons, IconSize, IconColor } from './icons.enum';
 @Component({
   selector: 'b-icon',
   template: `
-  <div fxLayout="row" fxLayoutAlign="center center"
-    [matTooltip]="toolTipSummary" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300">
+  <div [matTooltip]="toolTipSummary" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300">
     <mat-icon [svgIcon]="icon" [ngClass]="getClassNames()"></mat-icon>
   </div>
   `,

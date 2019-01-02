@@ -2,8 +2,9 @@ import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
 import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { AvatarComponent, AvatarSize } from './avatar.component';
+import { AvatarComponent } from './avatar.component';
 import { values } from 'lodash';
+import { AvatarSize } from './avatar.enum';
 
 const avatarStories = storiesOf('Buttons & Indicators', module)
   .addDecorator(withNotes)

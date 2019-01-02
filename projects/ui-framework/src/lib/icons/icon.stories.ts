@@ -21,14 +21,7 @@ const template = `
     [color]="color">
   </b-icon>
 `;
-const displayTemplate = `
-  <style>
-    .icon-wrapper { background-color: #F8F7F7; border: 1px solid #535353; padding: 20px; }
-  </style>
-  <div class="icon-wrapper">
-  ${template}
-  </div>
-`;
+const displayTemplate = `${template}`;
 const note = `
   ## Icon Element
 
@@ -53,7 +46,7 @@ iconStories.add(
         props: {
           toolTipSummary: text('toolTipSummary', 'This is the icon element'),
           icon: select('icon', icons, Icons.docs_link),
-          size: select('size', size, IconSize.small),
+          size: select('size', size, IconSize.medium),
           color: select('color', color, IconColor.dark),
         },
         moduleMetadata: {
@@ -65,7 +58,9 @@ iconStories.add(
   );
 
   const listHtml = reduce(icons, (iconsTemplate, icon) => {
-    return iconsTemplate + `<div class="icon-wrapper"><b-icon icon=${icon}></b-icon><div class="icon-title">${icon}</div></div>`;
+    return iconsTemplate + `<div class="icon-wrapper">
+      <b-icon icon=${icon} size="medium"></b-icon><div class="icon-title">${icon}</div>
+    </div>`;
   }, '');
   const iconsListTemplate = `
     <style>
@@ -74,8 +69,9 @@ iconStories.add(
         grid-template-columns: repeat(4, 1fr);
         grid-gap: 10px;
       }
+      b-icon { text-align: center; }
       .icon-title { text-align: center; padding-top:12px; }
-      .icon-wrapper { background-color: #F8F7F7; border: 1px solid #535353; padding: 20px; }
+      .icon-wrapper { background-color: #F8F7F7; border: 1px solid #535353; padding: 20px; border-radius: 4px; }
     </style>
     <div class="icons-list">
       ${listHtml}

@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { AvatarComponent, AvatarSize } from './avatar.component';
-import { Observer } from 'rxjs';
+import { AvatarComponent } from './avatar.component';
+import { AvatarSize } from './avatar.enum';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
