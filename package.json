@@ -11,7 +11,7 @@
     "build-storybook": "build-storybook -o .out",
     "deploy-storybook": "storybook-to-ghpages",
     "npm_pack": "cd dist/ui-framework && npm pack",
-    "package": "npm run build && npm run npm_pack",
+    "package": "npm run build && npm run copy-style && npm run npm_pack",
     "copy-style": "cpx \"projects/ui-framework/src/lib/style/*.*\" \"dist/ui-framework/style/\""
   },
   "private": false,
