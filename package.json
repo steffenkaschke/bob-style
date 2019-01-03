@@ -11,7 +11,8 @@
     "build-storybook": "build-storybook -o .out",
     "deploy-storybook": "storybook-to-ghpages",
     "npm_pack": "cd dist/ui-framework && npm pack",
-    "package": "npm run build && npm run npm_pack"
+    "package": "npm run build && npm run npm_pack",
+    "copy-style": "cpx \"projects/ui-framework/src/lib/style/*.*\" \"dist/ui-framework/style/\""
   },
   "private": false,
   "storybook-deployer": {
@@ -39,6 +40,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.11.4",
     "@angular-devkit/build-ng-packagr": "~0.11.4",
+    "@angular-devkit/core": "^7.1.4",
     "@angular/cli": "~7.1.4",
     "@angular/compiler-cli": "~7.1.4",
     "@angular/language-service": "~7.1.4",
@@ -49,13 +51,14 @@
     "@storybook/addon-notes": "^4.1.3",
     "@storybook/addon-options": "^4.1.3",
     "@storybook/addons": "^4.1.3",
-    "@storybook/angular": "^4.1.3",
+    "@storybook/angular": "^4.1.4",
     "@storybook/storybook-deployer": "^2.8.1",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "babel-loader": "^8.0.4",
     "codelyzer": "~4.5.0",
+    "cpx": "^1.5.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.0.0",
