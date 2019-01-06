@@ -9,8 +9,6 @@ const buttonStories = storiesOf('Buttons & Indicators', module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
-// const typeOptions = values(ButtonType);
-// const sizeOptions = values(ButtonSize);
 const template = `<b-switch-toggle
   [isDisabled]="isDisabled"
   [isChecked]="isChecked"
