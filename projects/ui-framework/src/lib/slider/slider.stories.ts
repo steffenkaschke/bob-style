@@ -8,7 +8,12 @@ import { SliderModule } from './slider.module';
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 const template = `
-  <b-slider [value]="value"  [min]="min " [max]="max" [step]="step">
+  <b-slider
+    [value]="value"
+    [min]="min"
+    [max]="max"
+    [step]="step"
+    (progressChange)="onProgressChange($event)">
   </b-slider>
 `;
 const note = `
