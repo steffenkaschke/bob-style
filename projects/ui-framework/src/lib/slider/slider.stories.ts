@@ -2,14 +2,13 @@ import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
 import { text, select, withKnobs, number} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import {SliderComponent} from './slider.component';
-import {AvatarSize} from '../avatar';
+import { SliderModule } from './slider.module';
 
   const sliderStories = storiesOf('Buttons & Indicators', module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 const template = `
-  <b-slider [value]="0"  [min]="0" [max]="100" [step]="1">
+  <b-slider [value]="value"  [min]="min " [max]="max" [step]="step">
   </b-slider>
 `;
 const note = `
@@ -43,7 +42,7 @@ sliderStories.add(
         progressChange: action(),
       },
       moduleMetadata: {
-        declarations: [SliderComponent]
+        imports: [SliderModule]
       }
     };
   },

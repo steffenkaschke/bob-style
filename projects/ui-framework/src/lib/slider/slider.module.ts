@@ -4,6 +4,7 @@ import {MatSliderModule} from '@angular/material';
 import {CommonModule} from '@angular/common';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import 'hammerjs';
 
 @NgModule({
   declarations: [SliderComponent],

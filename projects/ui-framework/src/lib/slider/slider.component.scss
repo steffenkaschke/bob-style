@@ -1,7 +1,7 @@
 @import '../style/colors.scss';
 
 .b-slider {
-  mat-slider{
+  .mat-slider{
     &.mat-slider-horizontal {
       .mat-slider-track-wrapper {
         height: 8px;
@@ -27,18 +27,18 @@
 
     &.in-progress {
       .mat-slider-track-fill {
-        background-color: $orange;
+        background-color: var(--primary-color);;
       }
     }
 
     &.completed {
       .mat-slider-track-fill {
-        background-color: $orange;
+        background-color: var(--primary-color);;
       }
     }
   }
 
-  mat-slider:hover {
+  .mat-slider:hover {
     &.mat-slider-horizontal {
       .mat-slider-track-background {
         background-color: $lightGray;
