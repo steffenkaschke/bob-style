@@ -36,9 +36,9 @@ sliderStories.add(
     return {
       template,
       props: {
-        value: number('value', 20),
+        value: number('value', 0),
         min: number('min', 0),
-        max: number('max', 0),
+        max: number('max', 100),
         step: number('step', 1),
         progressChange: action(),
       },
