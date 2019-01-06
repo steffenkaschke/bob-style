@@ -13,7 +13,7 @@ const template = `
     [min]="min"
     [max]="max"
     [step]="step"
-    (progressChange)="onProgressChange($event)">
+    (progressChange)="progressChange($event)">
   </b-slider>
 `;
 const note = `
