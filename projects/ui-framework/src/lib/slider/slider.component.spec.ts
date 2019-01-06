@@ -6,7 +6,7 @@ import {
 } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-describe('IconElementComponent', () => {
+describe('SliderModule', () => {
   let fixture: ComponentFixture<SliderComponent>;
   let component: SliderComponent;
 
