@@ -6,3 +6,4 @@ export * from './lib/avatar/index';
 export * from './lib/icons/index';
 export * from './lib/buttons/index';
 export * from './lib/slider/index';
+export * from './lib/switch-toggle/index';
