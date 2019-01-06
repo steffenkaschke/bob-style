@@ -19,7 +19,7 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  progressChange | EventEmitter | onChange callback |
+  progressChange | EventEmitter | Progress change callback |
   value | number | Current slider value | 0 (optional)
   min | number | Minimum value of the slider | 0 (optional)
   max | number | Maximum value of the slider | 100 (optional)
