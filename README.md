@@ -14,6 +14,11 @@ View it here [https://hibobio.github.io/bob-style/](https://hibobio.github.io/bo
 npm install bob-style
 ```
 
+## Install the storybook project locally (If first time)
+```sh
+npm install
+```
+
 ## Run the storybook project locally
 ```sh
 npm run storybook
