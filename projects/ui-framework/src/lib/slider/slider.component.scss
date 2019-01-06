@@ -1,7 +1,6 @@
 @import '../style/colors.scss';
-
-.b-slider {
-  .mat-slider{
+:host ::ng-deep {
+  .mat-slider {
     &.mat-slider-horizontal {
       .mat-slider-track-wrapper {
         height: 8px;
@@ -9,6 +8,7 @@
       }
       .mat-slider-track-fill, .mat-slider-track-background {
         height: 100%;
+        background-color: var(--primary-color);
       }
 
       .mat-slider-track-background {
@@ -22,18 +22,6 @@
         border: 2px solid $grey;
         bottom: -12px;
         box-shadow: 0 0 8px 6px rgba(0, 0, 0, 0.07);
-      }
-    }
-
-    &.in-progress {
-      .mat-slider-track-fill {
-        background-color: var(--primary-color);;
-      }
-    }
-
-    &.completed {
-      .mat-slider-track-fill {
-        background-color: var(--primary-color);;
       }
     }
   }

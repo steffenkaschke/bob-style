@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { text, select, withKnobs, number} from '@storybook/addon-knobs/angular';
+import { text, select, withKnobs, number, boolean} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { SliderModule } from './slider.module';
 
@@ -18,11 +18,11 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  progressChange | EventEmitter | Progress change callback |
   value | number | Current slider value | 0 (optional)
   min | number | Minimum value of the slider | 0 (optional)
   max | number | Maximum value of the slider | 100 (optional)
   step | number | Step for each slider change | 1 (optional)
+  progressChange | EventEmitter | Progress change callback |
 
   ~~~
   ${template}
