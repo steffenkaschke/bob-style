@@ -13,6 +13,7 @@ const template = `
     [min]="min"
     [max]="max"
     [step]="step"
+    [disabled]="disabled"
     (progressChange)="progressChange($event)">
   </b-slider>
 `;
@@ -27,6 +28,7 @@ const note = `
   min | number | Minimum value of the slider | 0 (optional)
   max | number | Maximum value of the slider | 100 (optional)
   step | number | Step for each slider change | 1 (optional)
+  disabled | boolean | Disabled mode | false (optional)
   progressChange | EventEmitter | Progress change callback |
 
   ~~~
@@ -44,6 +46,7 @@ sliderStories.add(
         min: number('min', 0),
         max: number('max', 100),
         step: number('step', 1),
+        disabled: boolean('disabled', false),
         progressChange: action(),
       },
       moduleMetadata: {

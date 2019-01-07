@@ -12,6 +12,7 @@ export class SliderComponent implements OnInit {
   @Input() min?: Number = 0;
   @Input() max?: Number = 100;
   @Input() step?: Number = 1;
+  @Input() disabled?: Boolean = false;
   constructor() {
   }
 

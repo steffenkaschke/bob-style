@@ -2,6 +2,20 @@
 
 :host ::ng-deep {
   .mat-slider {
+    &.mat-slider-disabled {
+      &.mat-slider-horizontal {
+        .mat-slider-track-fill {
+          background-color: $grey-500;
+        }
+        .mat-slider-track-background {
+          background-color: $grey-300;
+        }
+        .mat-slider-thumb {
+          transform: scale(0.7);
+        }
+      }
+    }
+
     &.mat-slider-horizontal {
       .mat-slider-track-wrapper {
         height: 8px;
@@ -27,10 +41,10 @@
     }
   }
 
-  .mat-slider:hover {
+  .mat-slider:hover:not(.mat-slider-disabled) {
     &.mat-slider-horizontal {
       .mat-slider-track-background {
-        background-color: $grey-300;
+        background-color: $grey-500;
       }
     }
   }
