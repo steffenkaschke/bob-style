@@ -1,0 +1,14 @@
+<mat-form-field
+  [ngClass]="{'required': required, 'error': errorMessage}">
+  <input matInput
+         disabled="{{disabled}}"
+         type="{{inputType}}"
+         placeholder="{{placeholder}}"
+         [(ngModel)]="value"
+         (blur)="emitInputEvent(inputEventType.onBlur, value)"
+         (focus)="emitInputEvent(inputEventType.onFocus, value)"
+         (ngModelChange)="emitInputEvent(inputEventType.onChange, value)">
+  <div class="error-message" *ngIf="errorMessage">
+    {{errorMessage}}
+  </div>
+</mat-form-field>

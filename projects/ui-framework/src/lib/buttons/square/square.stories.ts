@@ -49,7 +49,7 @@ buttonStories.add(
       props: {
         onClick: action(),
         type: select('type', typeOptions, ButtonType.primary),
-        iconColor: select('color', IconColors, IconColor.light),
+        iconColor: select('color', IconColors, IconColor.white),
       },
       moduleMetadata: {
         imports: [ButtonsModule, IconsModule]

@@ -6,11 +6,8 @@
     svg {
       pointer-events: none;
       g {
-        path {
-          transition: fill .2s ease;
-        }
-        line {
-          transition: stroke .2s ease;
+        path, line {
+          transition: fill .2s ease, stroke .2s ease;
         }
       }
     }
@@ -25,6 +22,16 @@
       }
     }
     &.light {
+      svg g {
+        path {
+          fill: $grey-500 !important;
+        }
+        line {
+          stroke: $grey-500 !important;
+        }
+      }
+    }
+    &.white {
       svg g {
         path {
           fill: $white !important;

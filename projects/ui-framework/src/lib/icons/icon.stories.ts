@@ -5,7 +5,7 @@ import { IconsModule } from './icons.module';
 import { Icons, IconSize, IconColor } from './icons.enum';
 import { values, reduce } from 'lodash';
 
-const iconStories = storiesOf('Buttons & Indicators', module)
+const iconStories = storiesOf('Icons', module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
