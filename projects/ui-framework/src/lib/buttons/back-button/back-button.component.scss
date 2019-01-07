@@ -3,11 +3,8 @@
 
 b-button {
   .back-button-content-wrapper {
-    display: flex;
-    flex-direction: row;
     .back-button-content {
-      padding-left: 6px;
+      margin-left: 6px;
     }
   }
 }
-

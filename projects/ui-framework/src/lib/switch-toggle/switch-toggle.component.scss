@@ -4,10 +4,10 @@
   cursor: pointer;
   .mat-slide-toggle-bar {
     box-sizing: border-box;
-    height: 20px !important;
-    border-radius: 9px;
-    border: 1px solid #C1C1C1;
-    background-color: white;
+    height: 20px;
+    border-radius: 10px;
+    border: 1px solid $grey-600;
+    background-color: $white;
   }
   .mat-slide-toggle-label:hover {
     .mat-slide-toggle-bar {
@@ -16,55 +16,56 @@
   }
 
   .mat-slide-toggle-content {
-    @include BodyFont(normal, normal, 12px, 12px, 0px);
+    @include BodyFont(normal, normal, 12px);
     &:first-letter {
       text-transform: uppercase;
     }
   }
 
   .mat-slide-toggle-ripple.mat-ripple {
-    display: none !important;
+    display: none;
   }
 
   .mat-slide-toggle-thumb-container {
     cursor: pointer;
-    width: 14px !important;
-    height: 14px !important;
-    top: 2px !important;
-    left: 1px !important;
+    width: 14px;
+    height: 14px;
+    top: 2px;
+    left: 1px;
     .mat-slide-toggle-thumb {
       box-sizing: border-box;
-      background-color: white !important;
+      background-color: white;
       width: 14px;
       height: 14px;
       box-shadow: none;
-      border: 1px solid #C1C1C1 !important;
+      border: 1px solid $grey-600;
     }
   }
 
   &.mat-checked {
     .mat-slide-toggle-bar {
-      background-color: var(--primary-color) !important;
+      background-color: var(--primary-500) !important;
     }
     .mat-slide-toggle-thumb-container {
       .mat-slide-toggle-thumb {
-        border: none !important;
+        border-color: transparent;
       }
     }
   }
 
   &.mat-disabled {
     .mat-slide-toggle-bar {
-      border: 1px solid rgba(151,151,151,0.42);
-      background-color: #F9F9F9 !important;
+      border-color: $grey-600;
+      background-color: $grey-100 !important;
     }
-
-    .mat-slide-toggle-thumb {
-      background-color: #DCDCDC !important;
-      border: none !important;
+    .mat-slide-toggle-thumb-container {
+      .mat-slide-toggle-thumb {
+        background-color: $grey-500;
+        border: none;
+      }
     }
     .mat-slide-toggle-content {
-      color: #C1C1C1 !important;
+      color: $grey-500;
     }
   }
 }
