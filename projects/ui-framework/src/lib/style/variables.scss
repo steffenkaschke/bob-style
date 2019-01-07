@@ -1,10 +1,26 @@
 @import './colors.scss';
 
 :root {
-  --text-color: #{$greyText};
-  --primary-color: #{$orange};
-  --primary-color-dark: #{$orangeDark};
-  --primary-color-darker: #{$orangeDarker};
+  --primary-500: #FEA54A;
+  --primary-600: #FF962B;
+  --primary-700: #FF8100;
+
+  --secondary-500: #FECC4A;
+  --secondary-600: #F8BC20;
+  --secondary-700: #F0AD00;
+
+  --positive-500: #1BD164;
+  --positive-600: #17B456;
+  --positive-700: #0D853D;
+
+  --negative-500: #FF476D;
+  --negative-600: #E52C51;
+  --negative-700: #CC2748;
+
+  --inform-500: #9BC3F2;
+  --inform-600: #70ABF0;
+  --inform-700: #4B95EC;
+
   --display-font-family: 'Roboto, monospace';
   --heading-font-family: 'Roboto, monospace';
   --body-font-family: 'Roboto, monospace';

@@ -3,5 +3,5 @@
 
 body {
   font-family: var(--body-font-family);
-  @include FontDefault(normal, normal, 12px, 14px, 0);
+  @include BodyFont(normal, normal, 12px);
 }

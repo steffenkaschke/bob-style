@@ -1,6 +1,7 @@
 @import '../style/colors.scss';
 
 :host ::ng-deep {
+  line-height: 1;
   .mat-icon {
     svg {
       pointer-events: none;
@@ -16,30 +17,30 @@
     &.dark {
       svg g {
         path {
-          fill: $greyText !important;
+          fill: $grey-700 !important;
         }
         line {
-          stroke: $greyText !important;
+          stroke: $grey-700 !important;
         }
       }
     }
     &.light {
       svg g {
         path {
-          fill: white !important;
+          fill: $white !important;
         }
         line {
-          stroke: white !important;
+          stroke: $white !important;
         }
       }
     }
     &.primary {
       svg g {
         path {
-          fill: var(--primary-color) !important;
+          fill: var(--primary-500) !important;
         }
         line {
-          stroke: var(--primary-color) !important;
+          stroke: var(--primary-500) !important;
         }
       }
     }
@@ -47,11 +48,11 @@
       height: 12px;
       width: 12px;
     }
-    &.small{
+    &.small {
       height: 16px;
       width: 16px;
     }
-    &.medium{
+    &.medium {
       height: 24px;
       width: 24px;
     }

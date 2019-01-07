@@ -1,4 +1,4 @@
 @import '../../style/typography.scss';
 :host {
-  @include DisplayFont(normal, 900, 42px, 44px, 0.4px);
+  @include DisplayFont(normal, 900, 42px);
 }

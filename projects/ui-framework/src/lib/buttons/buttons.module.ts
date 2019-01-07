@@ -6,6 +6,7 @@ import { SquareButtonComponent } from '../buttons/square/square.component';
 import { GroupComponent } from './group/group.component';
 import { BackButtonComponent } from '../buttons/back-button/back-button.component';
 import {IconsModule} from '../icons/icons.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -18,13 +19,14 @@ import {IconsModule} from '../icons/icons.module';
     BrowserModule,
     MatButtonModule,
     MatRippleModule,
-    IconsModule
+    IconsModule,
+    FlexLayoutModule,
   ],
   exports: [
     ButtonComponent,
     SquareButtonComponent,
     GroupComponent,
-    BackButtonComponent
+    BackButtonComponent,
   ]
 })
 export class ButtonsModule { }

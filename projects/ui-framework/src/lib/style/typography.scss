@@ -1,29 +1,28 @@
 @import '../style/colors.scss';
 
-@mixin FontDefault($style, $weight, $size, $lineHeight, $letterSpacing) {
+@mixin FontDefault($style, $weight, $size, $lineHeight) {
   font-style: $style;
   font-weight: $weight;
   font-size: $size;
   line-height: $lineHeight;
-  letter-spacing: $letterSpacing;
-  color: var(--text-color);
+  color: $grey-700;
 }
 
-@mixin DisplayFont($style, $weight, $size, $lineHeight, $letterSpacing) {
-  @include FontDefault($style, $weight, $size, $lineHeight, $letterSpacing);
+@mixin DisplayFont($style, $weight, $size, $lineHeight: 1.3) {
+  @include FontDefault($style, $weight, $size, $lineHeight);
   font-family: var(--display-font-family);
   display: block;
   text-transform: capitalize;
 }
 
-@mixin HeadingFont($style, $weight, $size, $lineHeight, $letterSpacing) {
-  @include FontDefault($style, $weight, $size, $lineHeight, $letterSpacing);
+@mixin HeadingFont($style, $weight, $size, $lineHeight: 1.3) {
+  @include FontDefault($style, $weight, $size, $lineHeight);
   font-family: var(--heading-font-family);
   display: block;
   text-transform: uppercase;
 }
 
-@mixin BodyFont($style, $weight, $size, $lineHeight, $letterSpacing) {
-  @include FontDefault($style, $weight, $size, $lineHeight, $letterSpacing);
+@mixin BodyFont($style, $weight, $size, $lineHeight: 1.3) {
+  @include FontDefault($style, $weight, $size, $lineHeight);
   font-family: var(--body-font-family);
 }
