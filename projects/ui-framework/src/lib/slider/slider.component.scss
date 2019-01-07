@@ -10,6 +10,9 @@
         .mat-slider-track-background {
           background-color: $grey-300;
         }
+        .mat-slider-thumb {
+          transform: scale(0.7);
+        }
       }
     }
 
