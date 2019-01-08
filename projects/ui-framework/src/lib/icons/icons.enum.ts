@@ -11,6 +11,7 @@ export enum IconColor {
 }
 
 export enum Icons {
+  calendar = 'calendar',
   toDos_link = 'todos_link',
   docs_link = 'docs_link',
   timeOff_link = 'time_off_icon',
