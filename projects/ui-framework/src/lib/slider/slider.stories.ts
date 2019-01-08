@@ -14,7 +14,9 @@ const template = `
     [max]="max"
     [step]="step"
     [disabled]="disabled"
-    [showPercentage]="showPercentage"
+    [showLabel]="showLabel"
+    [readOnly]="readOnly"
+    [labelSymbol]="labelSymbol"
     (progressChange)="progressChange($event)">
   </b-slider>
 `;
@@ -30,7 +32,9 @@ const note = `
   max | number | Maximum value of the slider | 100 (optional)
   step | number | Step for each slider change | 1 (optional)
   disabled | boolean | Disabled mode | false (optional)
-  showPercentage | boolean | Show percentage label | true (optional)
+  showLabel | boolean | Show the value label with symbol | true (optional)
+  readOnly | boolean | Set slider to read only | false (optional)
+  labelSymbol | string | The symbol for the label | '%' (optional)
   progressChange | EventEmitter | Progress change callback |
 
   ~~~
@@ -49,7 +53,9 @@ sliderStories.add(
         max: number('max', 100),
         step: number('step', 1),
         disabled: boolean('disabled', false),
-        showPercentage: boolean('showPercentage', true),
+        showLabel: boolean('showLabel', true),
+        readOnly: boolean('readOnly', false),
+        labelSymbol: text('labelSymbol', '%'),
         progressChange: action(),
       },
       moduleMetadata: {
