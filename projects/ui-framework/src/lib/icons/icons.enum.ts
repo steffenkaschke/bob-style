@@ -7,6 +7,7 @@ export enum IconSize {
 export enum IconColor {
   dark = 'dark',
   light = 'light',
+  white = 'white',
   primary = 'primary'
 }
 
@@ -23,4 +24,6 @@ export enum Icons {
   skype_link = 'skype_link',
   slack_link = 'slack_link',
   back_arrow_link = 'back_Icon',
+  close = 'x',
+  reset_x = 'reset_x',
 }
