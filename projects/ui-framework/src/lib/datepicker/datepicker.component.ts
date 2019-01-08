@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatDatepickerInputEvent} from '@angular/material';
 import {IconColor, Icons, IconSize} from '../icons';
+import * as moment from 'moment';
+
 
 @Component({
   selector: 'b-datepicker',
@@ -20,7 +22,15 @@ export class DatepickerComponent implements OnInit {
   }
 
 
-  public onDateChange(event: MatDatepickerInputEvent<Date>) {
+  public onDateChange(event: MatDatepickerInputEvent<Date>): void {
     this.dateChange.emit(event);
+  }
+
+  public dateClass (d: Date): string {
+    const today = moment(new Date());
+    const date = moment(d);
+    const diff = date.diff(today, 'days');
+    const same = date.isSame(today, 'day');
+    return same ? 'today' : diff < 0 ? 'past' : 'future';
   }
 }
