@@ -1,1 +1,40 @@
 @import '../style/colors.scss';
+:host {
+  b-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+  }
+}
+
+::ng-deep {
+  .mat-datepicker-content{
+    .past{
+      .mat-calendar-body-cell-content {
+        color: $grey-500;
+        background-color: $grey-100;
+      }
+    }
+    .today{
+      .mat-calendar-body-cell-content {
+        color: $grey-700;
+        background-color: $grey-100;
+      }
+    }
+    .future{
+      .mat-calendar-body-cell-content {
+        color: $grey-600;
+        background-color: $grey-100;
+      }
+    }
+    .mat-calendar-body-cell-content {
+      &.mat-calendar-body-selected {
+        background-color: var(--primary-500);
+        color: $white;
+      }
+    }
+  }
+}
+
+

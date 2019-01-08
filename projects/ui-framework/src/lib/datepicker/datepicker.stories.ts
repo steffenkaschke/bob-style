@@ -9,7 +9,7 @@ import { DatepickerModule } from './datepicker.module';
   .addDecorator(withKnobs);
 const template = `
   <b-datepicker
-  (dateChange)="dateChange($event)">
+  (dateChange)="dateChange($event)" [inputPlaceholder]="inputPlaceholder">
   </b-datepicker>
 `;
 const note = `
@@ -19,6 +19,7 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
+  inputPlaceholder | string | Input placeholder | mandatory |
   dateChange | EventEmitter | Date change callback |
 
   ~~~
@@ -32,6 +33,7 @@ datepickerStories.add(
     return {
       template,
       props: {
+        inputPlaceholder: text('inputPlaceholder', 'Choose a date'),
         dateChange: action(),
       },
       moduleMetadata: {
