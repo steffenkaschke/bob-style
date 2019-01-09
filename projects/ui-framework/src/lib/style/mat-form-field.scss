@@ -55,6 +55,13 @@
       .mat-form-field-suffix {
         padding: 0 5px;
       }
+      .error-message, .hint-message {
+        padding: 0 16px;
+        margin-top: 8px;
+      }
+      .error-message {
+        color: var(--negative-500);
+      }
     }
     .mat-form-field-underline {
       display: none;

@@ -1,28 +1,23 @@
 @import '../../style/colors';
+
 :host {
-  b-icon {
-    position: absolute;
-    right: 10px;
-    top: 12px;
-    cursor: pointer;
-  }
 }
 
 ::ng-deep {
-  .mat-datepicker-content{
-    .past{
+  .mat-datepicker-content {
+    .past {
       .mat-calendar-body-cell-content {
         color: $grey-500;
         background-color: $grey-100;
       }
     }
-    .today{
+    .today {
       .mat-calendar-body-cell-content {
         color: $grey-700;
         background-color: $grey-100;
       }
     }
-    .future{
+    .future {
       .mat-calendar-body-cell-content {
         color: $grey-600;
         background-color: $grey-100;

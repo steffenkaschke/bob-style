@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {InputEvent, InputEventType, InputTypes} from './input.enum';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { InputEvent, InputEventType, InputTypes } from './input.enum';
 
 export const baseInputTemplate = require('./input.component.html');
 
@@ -15,6 +15,7 @@ export class InputComponent implements OnInit {
   @Input() value: string;
   @Input() disabled: boolean;
   @Input() required: boolean;
+  @Input() hintMessage: string;
   @Input() errorMessage: string;
   @Output() inputEvents: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
 
