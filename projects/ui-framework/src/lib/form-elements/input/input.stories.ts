@@ -21,6 +21,7 @@ const template = `
     [disabled]="disabled"
     [required]="required"
     [errorMessage]="errorMessage"
+    [hintMessage]="hintMessage"
     (inputEvents)="inputEvents($event)">
  </b-input>
 `;
@@ -38,7 +39,8 @@ const note = `
   placeholder | string | placeholder text
   disabled | boolean | is field disabled
   required | boolean | is field required
-  error | text | error text
+  hintMessage | text | hint text
+  errorMessage | text | error text
   inputEvents | InputEvents | input events emitter
 
   ~~~
@@ -57,6 +59,7 @@ avatarStories.add(
         placeholder: text('placeholder', 'placeholder text'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
+        hintMessage: text('hintMessage', 'this field should contain something'),
         errorMessage: text('errorMessage', ''),
       },
       moduleMetadata: {

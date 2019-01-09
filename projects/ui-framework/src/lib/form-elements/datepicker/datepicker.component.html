@@ -7,6 +7,15 @@
   [errorMessage]=""
   (inputEvents)="inputEvents($event, picker)"
   [datePickerId]="picker">
+
+  <div input-suffix>
+    <b-icon [icon]="calendarIcon"
+            [color]="calendarIconColor"
+            [size]="calendarIconSize"
+            (click)="picker.open()">
+    </b-icon>
+  </div>
+
   <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
-  <b-icon [icon]="calendarIcon" [color]="calendarIconColor" [size]="calendarIconSize" (click)="picker.open()"></b-icon>
+
 </b-datepicker-input>

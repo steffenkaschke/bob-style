@@ -8,8 +8,17 @@
          (blur)="emitInputEvent(eventType.onBlur, value)"
          (focus)="emitInputEvent(eventType.onFocus, value)"
          (ngModelChange)="emitInputEvent(eventType.onChange, value)">
+
   <div class="error-message" *ngIf="errorMessage">
     {{errorMessage}}
   </div>
-  <ng-content></ng-content>
+
+  <div class="hint-message" *ngIf="hintMessage && !errorMessage">
+    {{hintMessage}}
+  </div>
+
+  <div matSuffix>
+    <ng-content select="[input-suffix]"></ng-content>
+  </div>
+
 </mat-form-field>
