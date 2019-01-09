@@ -5,7 +5,7 @@ export const baseInputTemplate = require('./input.component.html');
 
 @Component({
   selector: 'b-input',
-  template: baseInputTemplate.replace('{{attributes-replace}}', ''),
+  templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
 })
 export class InputComponent implements OnInit {
@@ -18,6 +18,7 @@ export class InputComponent implements OnInit {
   @Input() errorMessage: string;
   @Output() inputEvents: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
 
+  eventType = InputEventType
   constructor() {
   }
 
