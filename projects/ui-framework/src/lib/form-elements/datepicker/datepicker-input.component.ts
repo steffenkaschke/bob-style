@@ -4,7 +4,7 @@ import {baseInputTemplate, InputComponent} from '../input/input.component';
 @Component({
   selector: 'b-datepicker-input',
   template: baseInputTemplate
-    .replace('{{attributes-replace}}', '[matDatepicker]="datePickerId"'),
+    .replace('<input matInput', '<input matInput [matDatepicker]="datePickerId"'),
   styleUrls: ['../input/input.component.scss']
 })
 export class DatepickerInputComponent extends InputComponent implements OnInit {
