@@ -5,8 +5,9 @@ import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import { ButtonType, ButtonSize } from '../buttons.enum';
 import { values } from 'lodash';
+import {ComponentGroupType} from '../../consts';
 
-const buttonStories = storiesOf('Buttons & Indicators', module)
+const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 

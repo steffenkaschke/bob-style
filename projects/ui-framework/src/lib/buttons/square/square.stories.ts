@@ -7,8 +7,9 @@ import { ButtonType } from '../buttons.enum';
 import { values } from 'lodash';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
+import {ComponentGroupType} from '../../consts';
 
-const buttonStories = storiesOf('Buttons & Indicators', module)
+const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 

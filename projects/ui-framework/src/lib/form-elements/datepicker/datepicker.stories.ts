@@ -3,8 +3,9 @@ import { withNotes } from '@storybook/addon-notes';
 import { text, select, withKnobs, number, boolean} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { DatepickerModule } from './datepicker.module';
+import {ComponentGroupType} from '../../consts';
 
-  const datepickerStories = storiesOf('Buttons & Indicators', module)
+  const datepickerStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 const template = `

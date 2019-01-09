@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { InputEvent, InputEventType, InputTypes } from './input.enum';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {InputEvent, InputEventType, InputTypes} from './input.enum';
+
+export const baseInputTemplate = require('./input.component.html');
 
 @Component({
   selector: 'b-input',
-  templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss']
+  template: baseInputTemplate.replace('{{attributes-replace}}', ''),
+  styleUrls: ['./input.component.scss'],
 })
 export class InputComponent implements OnInit {
 
@@ -15,8 +17,6 @@ export class InputComponent implements OnInit {
   @Input() required: boolean;
   @Input() errorMessage: string;
   @Output() inputEvents: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
-
-  inputEventType = InputEventType;
 
   constructor() {
   }

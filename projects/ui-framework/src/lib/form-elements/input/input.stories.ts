@@ -3,10 +3,11 @@ import { withNotes } from '@storybook/addon-notes';
 import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
-import { FormElementsModule } from '../form-elements.module';
+import { InputModule } from './input.module';
 import { InputTypes } from './input.enum';
+import {ComponentGroupType} from '../../consts';
 
-const avatarStories = storiesOf('Form Elements', module)
+const avatarStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
@@ -20,7 +21,7 @@ const template = `
     [disabled]="disabled"
     [required]="required"
     [errorMessage]="errorMessage"
-    (inputEvents)="inputEvents()">
+    (inputEvents)="inputEvents($event)">
  </b-input>
 `;
 
@@ -39,7 +40,7 @@ const note = `
   required | boolean | is field required
   error | text | error text
   inputEvents | InputEvents | input events emitter
-  
+
   ~~~
   ${ template }
   ~~~
@@ -59,7 +60,7 @@ avatarStories.add(
         errorMessage: text('errorMessage', ''),
       },
       moduleMetadata: {
-        imports: [FormElementsModule]
+        imports: [InputModule]
       }
     };
   },
