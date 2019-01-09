@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatDatepickerInputEvent} from '@angular/material';
+import {MatDatepicker, MatDatepickerInputEvent} from '@angular/material';
 import {IconColor, Icons, IconSize} from '../../icons';
 import * as moment from 'moment';
 import {InputEvent, InputEventType, InputTypes} from '../input/input.enum';
@@ -12,7 +12,7 @@ import {InputEvent, InputEventType, InputTypes} from '../input/input.enum';
 })
 export class DatepickerComponent implements OnInit {
 
-  @Output() dateChange: EventEmitter<MatDatepickerInputEvent<Date>> = new EventEmitter<MatDatepickerInputEvent<Date>>();
+  @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
   @Input() inputPlaceholder: String;
 
   private readonly calendarIcon: String = Icons.calendar;
@@ -27,12 +27,17 @@ export class DatepickerComponent implements OnInit {
   ngOnInit(): void {
   }
 
-// todo: ishai
-  // public onDateChange(event: MatDatepickerInputEvent<Date>): void {
-  //   this.dateChange.emit(event);
-  // }
-
-  inputEvents(inputEvent: InputEvent): void {
+  inputEvents(inputEvent: InputEvent, picker: MatDatepicker<any>): void {
+    switch (inputEvent.event) {
+      case InputEventType.onBlur:
+        break;
+      case InputEventType.onChange:
+        this.dateChange.emit(inputEvent);
+        break;
+      case InputEventType.onFocus:
+        picker.open();
+        break;
+    }
   }
 
   public dateClass(d: Date): string {

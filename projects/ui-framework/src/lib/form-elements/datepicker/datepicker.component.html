@@ -5,7 +5,7 @@
   [disabled]="false"
   [required]="false"
   [errorMessage]=""
-  (inputEvents)="inputEvents($event)"
+  (inputEvents)="inputEvents($event, picker)"
   [datePickerId]="picker">
   <mat-datepicker [dateClass]="dateClass" #picker></mat-datepicker>
   <b-icon [icon]="calendarIcon" [color]="calendarIconColor" [size]="calendarIconSize" (click)="picker.open()"></b-icon>
