@@ -5,8 +5,9 @@ import { action } from '@storybook/addon-actions';
 import { AvatarComponent } from './avatar.component';
 import { values } from 'lodash';
 import { AvatarSize } from './avatar.enum';
+import {ComponentGroupType} from '../consts';
 
-const avatarStories = storiesOf('Buttons & Indicators', module)
+const avatarStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 

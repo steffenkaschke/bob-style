@@ -1,22 +1,18 @@
 import { NgModule } from '@angular/core';
-import { InputComponent } from './input/input.component';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
-import { FormsModule } from '@angular/forms';
+import {InputModule} from './input/input.module';
+import {DatepickerModule} from './datepicker';
+import {DatepickerComponent} from './datepicker/datepicker.component';
+import {InputComponent} from './input/input.component';
 
 @NgModule({
-  declarations: [InputComponent],
   imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatIconModule,
-    FormsModule,
+    InputModule,
+    DatepickerModule,
   ],
-  exports: [InputComponent],
-  providers: [InputComponent],
+  exports: [
+    InputComponent,
+    DatepickerComponent,
+  ],
 })
 export class FormElementsModule {
 }

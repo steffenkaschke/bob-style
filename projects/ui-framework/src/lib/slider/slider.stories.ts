@@ -3,8 +3,9 @@ import { withNotes } from '@storybook/addon-notes';
 import { text, select, withKnobs, number, boolean} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { SliderModule } from './slider.module';
+import {ComponentGroupType} from '../consts';
 
-  const sliderStories = storiesOf('Buttons & Indicators', module)
+  const sliderStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 const template = `

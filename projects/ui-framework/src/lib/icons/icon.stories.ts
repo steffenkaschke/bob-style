@@ -4,8 +4,9 @@ import { text, select, withKnobs } from '@storybook/addon-knobs/angular';
 import { IconsModule } from './icons.module';
 import { Icons, IconSize, IconColor } from './icons.enum';
 import { values, reduce } from 'lodash';
+import {ComponentGroupType} from '../consts';
 
-const iconStories = storiesOf('Icons', module)
+const iconStories = storiesOf(ComponentGroupType.Icons, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 

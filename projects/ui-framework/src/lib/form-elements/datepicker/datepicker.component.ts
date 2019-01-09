@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatDatepickerInputEvent} from '@angular/material';
-import {IconColor, Icons, IconSize} from '../icons';
+import {IconColor, Icons, IconSize} from '../../icons';
 import * as moment from 'moment';
+import {InputEvent, InputEventType, InputTypes} from '../input/input.enum';
 
 
 @Component({
@@ -10,23 +11,31 @@ import * as moment from 'moment';
   styleUrls: ['./datepicker.component.scss'],
 })
 export class DatepickerComponent implements OnInit {
+
   @Output() dateChange: EventEmitter<MatDatepickerInputEvent<Date>> = new EventEmitter<MatDatepickerInputEvent<Date>>();
   @Input() inputPlaceholder: String;
+
   private readonly calendarIcon: String = Icons.calendar;
   private readonly calendarIconSize: String = IconSize.small;
   private readonly calendarIconColor: String = IconColor.dark;
+
+  inputTypes = InputTypes;
+
   constructor() {
   }
 
   ngOnInit(): void {
   }
 
+// todo: ishai
+  // public onDateChange(event: MatDatepickerInputEvent<Date>): void {
+  //   this.dateChange.emit(event);
+  // }
 
-  public onDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.dateChange.emit(event);
+  inputEvents(inputEvent: InputEvent): void {
   }
 
-  public dateClass (d: Date): string {
+  public dateClass(d: Date): string {
     const today = moment(new Date());
     const date = moment(d);
     const diff = date.diff(today, 'days');

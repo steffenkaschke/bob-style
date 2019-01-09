@@ -1,14 +1,19 @@
 import {NgModule} from '@angular/core';
 import {DatepickerComponent} from './datepicker.component';
 import {MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule} from '@angular/material';
-import 'hammerjs';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {IconsModule} from '../icons';
+import {IconsModule} from '../../icons';
 import {BrowserModule} from '@angular/platform-browser';
 import {CommonModule} from '@angular/common';
+import {InputModule} from '../input/input.module';
+import {DatepickerInputComponent} from './datepicker-input.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
-  declarations: [DatepickerComponent],
+  declarations: [
+    DatepickerInputComponent,
+    DatepickerComponent,
+  ],
   imports: [
     BrowserModule,
     CommonModule,
@@ -17,9 +22,15 @@ import {CommonModule} from '@angular/common';
     MatInputModule,
     MatFormFieldModule,
     MatNativeDateModule,
-    IconsModule
+    IconsModule,
+    MatInputModule,
+    InputModule,
+    FormsModule
   ],
   exports: [
+    DatepickerComponent,
+  ],
+  entryComponents: [
     DatepickerComponent,
   ],
   providers: [],
