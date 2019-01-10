@@ -1,19 +1,29 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatDatepicker, MatDatepickerInputEvent} from '@angular/material';
+import {DateAdapter, MAT_DATE_FORMATS, MatDatepicker} from '@angular/material';
 import {IconColor, Icons, IconSize} from '../../icons';
 import * as moment from 'moment';
 import {InputEvent, InputEventType, InputTypes} from '../input/input.enum';
+import {B_DATE_FORMATS, BDateAdapter} from './date.adapter';
 
 
 @Component({
   selector: 'b-datepicker',
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.scss'],
+  providers: [
+    {
+      provide: DateAdapter, useClass: BDateAdapter
+    },
+    {
+      provide: MAT_DATE_FORMATS, useValue: B_DATE_FORMATS
+    }
+  ]
 })
 export class DatepickerComponent implements OnInit {
 
   @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
   @Input() inputPlaceholder: String;
+  @Input() dateFormat?: string;
 
   private readonly calendarIcon: String = Icons.calendar;
   private readonly calendarIconSize: String = IconSize.small;
@@ -25,6 +35,9 @@ export class DatepickerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.dateFormat) {
+      BDateAdapter.bFormat = this.dateFormat;
+    }
   }
 
   inputEvents(inputEvent: InputEvent, picker: MatDatepicker<any>): void {
