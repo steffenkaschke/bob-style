@@ -21,7 +21,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   inputPlaceholder | string | Input placeholder | mandatory |
-  dateFormat | string | Input date format | 'DD/MM/YYYY' (optional) |
+  dateFormat | string | Input date format | DD/MM/YYYY (optional) |
   dateChange | EventEmitter | Date change callback |
 
   ~~~
