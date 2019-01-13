@@ -1,6 +1,9 @@
 @import '../../style/colors';
 
 :host {
+  b-icon {
+    cursor: pointer;
+  }
 }
 
 ::ng-deep {
