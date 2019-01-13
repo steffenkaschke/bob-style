@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { InputEvent, InputEventType, InputTypes } from './input.enum';
+import { inputAttributesPlaceholder } from '../../consts';
 
 export const baseInputTemplate = require('./input.component.html');
 
@@ -22,6 +23,10 @@ export class InputComponent implements OnInit {
   eventType = InputEventType;
 
   constructor() {
+  }
+
+  static addAttributesToBaseInput(attributes: string): string {
+    return baseInputTemplate.replace(inputAttributesPlaceholder, attributes);
   }
 
   ngOnInit() {
