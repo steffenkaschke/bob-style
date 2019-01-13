@@ -30,6 +30,7 @@ describe('InputComponent', () => {
       });
   }));
 
+
   describe('emitInputEvent', () => {
     beforeEach(() => {
       inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
@@ -58,6 +59,13 @@ describe('InputComponent', () => {
         event: InputEventType.onChange,
         value: 'change input value',
       });
+    });
+  });
+
+  describe('addAttributesToBaseInput', () => {
+    it('Should add attributes to base input', () => {
+      const inputTemplate = InputComponent.addAttributesToBaseInput('[myCustomAttribute1]="1" [myCustomAttribute2]="2"');
+      expect(inputTemplate).toContain('[myCustomAttribute1]="1" [myCustomAttribute2]="2">');
     });
   });
 });

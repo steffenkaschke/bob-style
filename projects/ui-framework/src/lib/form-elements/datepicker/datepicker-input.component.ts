@@ -1,10 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
-import BUtils from '../input/utils/utils';
-import {InputComponent} from '../input/input.component';
+import { Component, Input, OnInit } from '@angular/core';
+import { InputComponent } from '../input/input.component';
 
 @Component({
   selector: 'b-datepicker-input',
-  template: BUtils.addAttributesToBaseInput('[matDatepicker]="datePickerId"'),
+  template: InputComponent.addAttributesToBaseInput('[matDatepicker]="datePickerId"'),
   styleUrls: ['../input/input.component.scss']
 })
 export class DatepickerInputComponent extends InputComponent implements OnInit {
