@@ -1,4 +1,18 @@
 <div>
-  <b-display-1>Hello</b-display-1>
-  <b-datepicker></b-datepicker>
+  <form [formGroup]="form">
+    <b-input [maxlength]="10" [minlength]="5" [validateFn]="validateFunc('hibob')" formControlName="firstName"
+             required></b-input>
+    <b-input [maxlength]="10" [minlength]="5" [validateFn]="validateFunc('bobhi')" formControlName="lastName"
+             required></b-input>
+  </form>
+  <pre>{{ form.value | json }}</pre>
+  <p>
+    form.status: {{ form.status }}
+  </p>
+  <p>
+    form.controls['firstName'].valid (5-10 chars): {{ form.controls['firstName'].valid }}
+  </p>
+  <p>
+    form.controls['lastName'].valid (5-10 chars): {{ form.controls['lastName'].valid }}
+  </p>
 </div>

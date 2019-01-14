@@ -4,8 +4,10 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TypographyModule } from '../../../ui-framework/src/lib/typography/typography.module';
-import { InputModule } from '../../../ui-framework/src/lib/form-elements/input';
 import { DatepickerModule } from '../../../ui-framework/src/lib/form-elements/datepicker/datepicker.module';
+import { FormElementsModule } from '../../../ui-framework/src/lib/form-elements/form-elements.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material';
 
 
 @NgModule({
@@ -16,9 +18,14 @@ import { DatepickerModule } from '../../../ui-framework/src/lib/form-elements/da
     BrowserModule,
     BrowserAnimationsModule,
     TypographyModule,
-    DatepickerModule
+    DatepickerModule,
+    FormElementsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    FormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [AppComponent]
 })
 export class AppModule { }

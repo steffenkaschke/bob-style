@@ -2,7 +2,7 @@ import { Component, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild }
 import { InputAutoCompleteOptions, InputEventType, InputTypes } from './input.enum';
 import { inputAttributesPlaceholder } from '../../consts';
 import { MatInput } from '@angular/material';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { InputEvent } from './input.interface';
 
 
@@ -17,10 +17,18 @@ export const baseInputTemplate = require('./input.component.html');
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => InputComponent),
       multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => InputComponent),
+      multi: true
     }
   ]
 })
 export class InputComponent implements OnInit, ControlValueAccessor {
+
+  constructor() {
+  }
 
   @Input() inputType: InputTypes;
   @Input() placeholder: string;
@@ -36,13 +44,12 @@ export class InputComponent implements OnInit, ControlValueAccessor {
   @ViewChild('bInput') bInput: MatInput;
   eventType = InputEventType;
 
-  constructor() {
-  }
-
   static addAttributesToBaseInput(attributes: string): string {
     return baseInputTemplate.replace(inputAttributesPlaceholder, attributes);
   }
 
+  @Input() validateFn: Function = (_: FormControl) => {
+  };
   propagateChange: Function = (_: InputEvent) => {
   };
 
@@ -75,5 +82,9 @@ export class InputComponent implements OnInit, ControlValueAccessor {
 
   writeValue(val: string): void {
     this.value = val;
+  }
+
+  validate(c: FormControl) {
+    return this.validateFn(c);
   }
 }
