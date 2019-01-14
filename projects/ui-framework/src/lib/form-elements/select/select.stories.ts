@@ -4,6 +4,7 @@ import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { SelectModule } from './select.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const selectStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
@@ -34,6 +35,7 @@ selectStories.add(
       props: {},
       moduleMetadata: {
         imports: [
+          BrowserAnimationsModule,
           SelectModule,
         ]
       }

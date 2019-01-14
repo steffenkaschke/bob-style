@@ -3,8 +3,9 @@ import { By } from '@angular/platform-browser';
 import { InputComponent } from './input.component';
 import { InputEventType } from './input.enum';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatInputModule } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatFormFieldModule, MatInputModule, MatIconModule } from '@angular/material';
+import { CommonModule } from '@angular/common';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('InputComponent', () => {
   let component: InputComponent;
@@ -15,10 +16,12 @@ describe('InputComponent', () => {
     TestBed.configureTestingModule({
       declarations: [InputComponent],
       imports: [
+        NoopAnimationsModule,
+        CommonModule,
         FormsModule,
         MatFormFieldModule,
         MatInputModule,
-        BrowserAnimationsModule,
+        MatIconModule
       ],
     })
       .compileComponents()

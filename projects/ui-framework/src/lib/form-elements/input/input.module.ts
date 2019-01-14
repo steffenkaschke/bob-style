@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { InputComponent } from './input.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
     InputComponent,
   ],
   imports: [
-    BrowserAnimationsModule,
+    CommonModule,
     MatInputModule,
     MatFormFieldModule,
     MatIconModule,

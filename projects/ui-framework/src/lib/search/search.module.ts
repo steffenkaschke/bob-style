@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SearchComponent } from './search.component';
 import { CommonModule } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsModule } from '../icons';
 import { InputModule } from '../form-elements/input';
 
@@ -11,9 +10,8 @@ import { InputModule } from '../form-elements/input';
   ],
   imports: [
     CommonModule,
-    BrowserAnimationsModule,
     IconsModule,
-    InputModule,
+    InputModule
   ],
   exports: [
     SearchComponent,
