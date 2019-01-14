@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { InputAutoCompleteOptions, InputEventType, InputTypes } from './input.enum';
 import { inputAttributesPlaceholder } from '../../consts';
 import { MatInput } from '@angular/material';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { InputEvent } from './input.interface';
+
 
 export const baseInputTemplate = require('./input.component.html');
 
@@ -10,8 +12,15 @@ export const baseInputTemplate = require('./input.component.html');
   selector: 'b-input',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => InputComponent),
+      multi: true
+    }
+  ]
 })
-export class InputComponent implements OnInit {
+export class InputComponent implements OnInit, ControlValueAccessor {
 
   @Input() inputType: InputTypes;
   @Input() placeholder: string;
@@ -34,6 +43,9 @@ export class InputComponent implements OnInit {
     return baseInputTemplate.replace(inputAttributesPlaceholder, attributes);
   }
 
+  propagateChange: Function = (_: InputEvent) => {
+  };
+
   ngOnInit() {
   }
 
@@ -45,5 +57,23 @@ export class InputComponent implements OnInit {
       event,
       value,
     });
+    if (event === InputEventType.onChange) {
+      this.propagateChange(value);
+    }
+  }
+
+  registerOnChange(fn: any): void {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  writeValue(val: string): void {
+    this.value = val;
   }
 }
