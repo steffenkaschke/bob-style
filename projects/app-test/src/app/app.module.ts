@@ -5,9 +5,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TypographyModule } from '../../../ui-framework/src/lib/typography/typography.module';
 import { DatepickerModule } from '../../../ui-framework/src/lib/form-elements/datepicker/datepicker.module';
-import { FormElementsModule } from '../../../ui-framework/src/lib/form-elements/form-elements.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material';
 
 
 @NgModule({
@@ -18,14 +15,9 @@ import { MatFormFieldModule } from '@angular/material';
     BrowserModule,
     BrowserAnimationsModule,
     TypographyModule,
-    DatepickerModule,
-    FormElementsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    FormsModule
+    DatepickerModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
-  entryComponents: [AppComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
