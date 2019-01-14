@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "npm run storybook",
+    "start:app-test": "ng serve --project=app-test",
     "build": "ng build ui-framework",
     "test": "ng test ui-framework",
     "lint": "ng lint ui-framework",
@@ -12,7 +13,8 @@
     "deploy-storybook": "storybook-to-ghpages",
     "npm_pack": "cd dist/ui-framework && npm pack",
     "package": "npm run build && npm run copy-style && npm run npm_pack",
-    "copy-style": "cpx \"projects/ui-framework/src/lib/style/*.*\" \"dist/ui-framework/style/\""
+    "copy-style": "cpx \"projects/ui-framework/src/lib/style/*.*\" \"dist/ui-framework/style/\"",
+    "start-app-test": "ng serve --project=app-test"
   },
   "private": false,
   "storybook-deployer": {
