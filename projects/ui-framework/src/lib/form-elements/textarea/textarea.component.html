@@ -1,13 +1,13 @@
 <mat-form-field [ngClass]="{'required': required, 'error': errorMessage}"
                 class="text-area">
   <textarea #textarea
-            (blur)="emitInputEvent(eventType.onBlur, value)"
-            (focus)="emitInputEvent(eventType.onFocus, value)"
             (ngModelChange)="emitInputEvent(eventType.onChange, value)"
             [(ngModel)]="value"
             [disabled]="disabled"
             [maxlength]="maxChars"
             [placeholder]="placeholder"
+            (blur)="emitInputEvent(eventType.onBlur, value)"
+            (focus)="emitInputEvent(eventType.onFocus, value)"
             matInput>
   </textarea>
 
