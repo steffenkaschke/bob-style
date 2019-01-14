@@ -6,6 +6,7 @@ import { InputEventType } from '../form-elements/input/input.enum';
 import { IconsModule } from '../icons';
 import { By } from '@angular/platform-browser';
 import { InputEvent } from '../form-elements/input/input.interface';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -17,6 +18,7 @@ describe('SearchComponent', () => {
         SearchComponent,
       ],
       imports: [
+        NoopAnimationsModule,
         FormsModule,
         InputModule,
         IconsModule,
