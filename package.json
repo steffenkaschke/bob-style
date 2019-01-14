@@ -58,7 +58,7 @@
     "@storybook/storybook-deployer": "^2.8.1",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~8.9.4",
+    "@types/node": "^8.9.5",
     "babel-loader": "^8.0.4",
     "codelyzer": "~4.5.0",
     "cpx": "^1.5.0",
