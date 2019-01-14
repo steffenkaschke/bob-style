@@ -1,14 +1,14 @@
-<mat-form-field [ngClass]="{'required': required, 'error': errorMessage}"
-                class="text-area">
-  <textarea #textarea
-            (ngModelChange)="emitInputEvent(eventType.onChange, value)"
-            [(ngModel)]="value"
-            [disabled]="disabled"
+<mat-form-field class="text-area"
+                [ngClass]="{'required': required, 'error': errorMessage}">
+  <textarea matInput
+            #textarea
             [maxlength]="maxChars"
+            [disabled]="disabled"
             [placeholder]="placeholder"
+            [(ngModel)]="value"
             (blur)="emitInputEvent(eventType.onBlur, value)"
             (focus)="emitInputEvent(eventType.onFocus, value)"
-            matInput>
+            (ngModelChange)="emitInputEvent(eventType.onChange, value)">
   </textarea>
 
   <mat-hint *ngIf="errorMessage"
