@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchComponent } from './search.component';
 import { InputModule } from '../form-elements/input';
 import { InputEventType } from '../form-elements/input/input.enum';
@@ -20,7 +19,6 @@ describe('SearchComponent', () => {
       imports: [
         FormsModule,
         InputModule,
-        BrowserAnimationsModule,
         IconsModule,
       ],
     })

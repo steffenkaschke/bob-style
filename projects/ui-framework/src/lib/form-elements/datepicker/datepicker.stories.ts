@@ -5,6 +5,8 @@ import { action } from '@storybook/addon-actions';
 import { DatepickerModule } from './datepicker.module';
 import {ComponentGroupType} from '../../consts';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
   const datepickerStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
@@ -42,7 +44,10 @@ datepickerStories.add(
         dateChange: action(),
       },
       moduleMetadata: {
-        imports: [DatepickerModule]
+        imports: [
+          BrowserAnimationsModule,
+          DatepickerModule
+        ]
       }
     };
   },

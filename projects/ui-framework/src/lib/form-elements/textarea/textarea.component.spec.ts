@@ -4,7 +4,6 @@ import { TextareaComponent } from './textarea.component';
 import { InputEventType } from '../input/input.enum';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('TextareaComponent', () => {
   let component: TextareaComponent;
@@ -17,8 +16,7 @@ describe('TextareaComponent', () => {
       imports: [
         FormsModule,
         MatFormFieldModule,
-        MatInputModule,
-        BrowserAnimationsModule,
+        MatInputModule
       ],
     })
       .compileComponents()

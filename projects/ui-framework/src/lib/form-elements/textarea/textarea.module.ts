@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { TextareaComponent } from './textarea.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 
@@ -9,7 +8,6 @@ import { FormsModule } from '@angular/forms';
     TextareaComponent,
   ],
   imports: [
-    BrowserAnimationsModule,
     MatInputModule,
     MatFormFieldModule,
     MatIconModule,

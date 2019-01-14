@@ -6,6 +6,7 @@ import { values } from 'lodash';
 import { InputModule } from './input.module';
 import { InputAutoCompleteOptions, InputTypes } from './input.enum';
 import {ComponentGroupType} from '../../consts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const inputStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
@@ -70,7 +71,7 @@ inputStories.add(
         enableBrowserAutoComplete: select('enableBrowserAutoComplete', inputAutoCompleteOptions, InputAutoCompleteOptions.off),
       },
       moduleMetadata: {
-        imports: [InputModule]
+        imports: [BrowserAnimationsModule, InputModule]
       }
     };
   },

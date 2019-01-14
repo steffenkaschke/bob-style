@@ -5,6 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { TextareaModule } from './textarea.module';
 import { ComponentGroupType } from '../../consts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const textareaStories = storiesOf(ComponentGroupType.FormElements, module)
   .addDecorator(withNotes)
@@ -61,7 +62,8 @@ textareaStories.add(
       },
       moduleMetadata: {
         imports: [
-          TextareaModule,
+          BrowserAnimationsModule,
+          TextareaModule
         ]
       }
     };

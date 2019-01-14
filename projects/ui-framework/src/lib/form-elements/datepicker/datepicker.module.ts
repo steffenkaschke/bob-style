@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {DatepickerComponent} from './datepicker.component';
 import {MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule} from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {IconsModule} from '../../icons';
 import {CommonModule} from '@angular/common';
 import {InputModule} from '../input/input.module';
@@ -15,7 +14,6 @@ import {FormsModule} from '@angular/forms';
   ],
   imports: [
     CommonModule,
-    BrowserAnimationsModule,
     MatDatepickerModule,
     MatInputModule,
     MatFormFieldModule,

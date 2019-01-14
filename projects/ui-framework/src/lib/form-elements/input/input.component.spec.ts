@@ -4,7 +4,6 @@ import { InputComponent } from './input.component';
 import { InputEventType } from './input.enum';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('InputComponent', () => {
   let component: InputComponent;
@@ -17,8 +16,7 @@ describe('InputComponent', () => {
       imports: [
         FormsModule,
         MatFormFieldModule,
-        MatInputModule,
-        BrowserAnimationsModule,
+        MatInputModule
       ],
     })
       .compileComponents()
