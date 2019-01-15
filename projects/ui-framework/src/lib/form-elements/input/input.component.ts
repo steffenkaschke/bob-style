@@ -2,8 +2,9 @@ import { Component, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild }
 import { InputAutoCompleteOptions, InputEventType, InputTypes } from './input.enum';
 import { inputAttributesPlaceholder } from '../../consts';
 import { MatInput } from '@angular/material';
-import { ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { InputEvent } from './input.interface';
+import { BaseFormElement } from '../base-form-element';
 
 
 export const baseInputTemplate = require('./input.component.html');
@@ -25,15 +26,14 @@ export const baseInputTemplate = require('./input.component.html');
     }
   ]
 })
-export class InputComponent implements OnInit, ControlValueAccessor {
+export class InputComponent extends BaseFormElement implements OnInit, ControlValueAccessor {
 
   constructor() {
+    super();
   }
 
   @Input() inputType: InputTypes;
   @Input() placeholder: string;
-  @Input() value: string;
-  @Input() disabled: boolean;
   @Input() required: boolean;
   @Input() hideLabelOnFocus = false;
   @Input() hintMessage: string;
@@ -47,11 +47,6 @@ export class InputComponent implements OnInit, ControlValueAccessor {
   static addAttributesToBaseInput(attributes: string): string {
     return baseInputTemplate.replace(inputAttributesPlaceholder, attributes);
   }
-
-  @Input() validateFn: Function = (_: FormControl) => {
-  };
-  propagateChange: Function = (_: InputEvent) => {
-  };
 
   ngOnInit() {
   }
@@ -67,24 +62,5 @@ export class InputComponent implements OnInit, ControlValueAccessor {
     if (event === InputEventType.onChange) {
       this.propagateChange(value);
     }
-  }
-
-  registerOnChange(fn: any): void {
-    this.propagateChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-  }
-
-  writeValue(val: string): void {
-    this.value = val;
-  }
-
-  validate(c: FormControl) {
-    return this.validateFn(c);
   }
 }
