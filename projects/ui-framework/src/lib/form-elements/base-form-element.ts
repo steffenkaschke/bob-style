@@ -6,6 +6,7 @@ export abstract class BaseFormElement implements ControlValueAccessor {
 
   @Input() value: string;
   @Input() disabled: boolean;
+  @Input() required: boolean;
   @Input() validateFn: Function = (_: FormControl) => {
   };
 

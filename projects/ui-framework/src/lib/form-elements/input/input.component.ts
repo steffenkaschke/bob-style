@@ -2,7 +2,7 @@ import { Component, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild }
 import { InputAutoCompleteOptions, InputEventType, InputTypes } from './input.enum';
 import { inputAttributesPlaceholder } from '../../consts';
 import { MatInput } from '@angular/material';
-import { ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { InputEvent } from './input.interface';
 import { BaseFormElement } from '../base-form-element';
 
@@ -26,7 +26,7 @@ export const baseInputTemplate = require('./input.component.html');
     }
   ]
 })
-export class InputComponent extends BaseFormElement implements OnInit, ControlValueAccessor {
+export class InputComponent extends BaseFormElement implements OnInit {
 
   constructor() {
     super();
@@ -34,7 +34,6 @@ export class InputComponent extends BaseFormElement implements OnInit, ControlVa
 
   @Input() inputType: InputTypes;
   @Input() placeholder: string;
-  @Input() required: boolean;
   @Input() hideLabelOnFocus = false;
   @Input() hintMessage: string;
   @Input() errorMessage: string;
