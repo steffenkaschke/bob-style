@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS, MatDatepicker } from '@angular/material';
 import { IconColor, Icons, IconSize } from '../../icons';
 import * as moment from 'moment';
@@ -6,6 +6,8 @@ import { InputEventType, InputTypes } from '../input/input.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
 import { invoke } from 'lodash';
 import { InputEvent } from '../input/input.interface';
+import { BaseFormElement } from '../base-form-element';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'b-datepicker',
@@ -17,10 +19,20 @@ import { InputEvent } from '../input/input.interface';
     },
     {
       provide: MAT_DATE_FORMATS, useValue: B_DATE_FORMATS
+    },
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DatepickerComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => DatepickerComponent),
+      multi: true
     }
   ]
 })
-export class DatepickerComponent implements OnInit {
+export class DatepickerComponent extends BaseFormElement implements OnInit {
 
   @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
   @Input() inputPlaceholder: String;
@@ -34,6 +46,7 @@ export class DatepickerComponent implements OnInit {
   @ViewChild('datePickerInput') datePickerInput: ElementRef;
 
   constructor() {
+    super();
   }
 
   ngOnInit(): void {
@@ -50,6 +63,7 @@ export class DatepickerComponent implements OnInit {
         }
         break;
       case InputEventType.onChange:
+        this.propagateChange(inputEvent.value);
         this.dateChange.emit(inputEvent);
         break;
       case InputEventType.onFocus:

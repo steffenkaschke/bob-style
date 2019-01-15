@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { InputComponent } from './input.component';
 import { InputEventType } from './input.enum';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatInputModule, MatIconModule } from '@angular/material';
+import { MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -29,6 +29,7 @@ describe('InputComponent', () => {
         fixture = TestBed.createComponent(InputComponent);
         component = fixture.componentInstance;
         spyOn(component.inputEvents, 'emit');
+        spyOn(component, 'propagateChange');
         fixture.detectChanges();
       });
   }));
@@ -62,6 +63,7 @@ describe('InputComponent', () => {
         event: InputEventType.onChange,
         value: 'change input value',
       });
+      expect(component.propagateChange).toHaveBeenCalledWith('change input value');
     });
   });
 
