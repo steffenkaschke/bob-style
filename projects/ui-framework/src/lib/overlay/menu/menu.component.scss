@@ -1,0 +1,54 @@
+@import '../../style/colors.scss';
+@import '../../style/shapes.scss';
+@import '../overlay.scss';
+
+::ng-deep {
+  border: 1px solid red;
+  .cdk-overlay-container {
+    .mat-menu-panel {
+      @include OverlayPanel();
+      .mat-menu-content {
+        position: relative;
+        overflow: auto;
+        max-height: 500px;
+        padding: 0;
+      }
+    }
+
+    > .cdk-overlay-connected-position-bounding-box {
+      .mat-menu-panel {
+        @include OverlayPointerHolders();
+
+        &.mat-menu-below {
+          @include OverlayPositionBounding('below');
+        }
+
+        // opens above
+        &.mat-menu-above {
+          @include OverlayPositionBounding('above');
+        }
+
+        // opens to the right - default
+        &.mat-menu-after {
+          @include OverlayPositionBounding('after');
+        }
+
+        // opens to the left {
+        &.mat-menu-before {
+          @include OverlayPositionBounding('before');
+        }
+      }
+    }
+  }
+
+  > .cdk-overlay-connected-position-bounding-box ~ .cdk-overlay-connected-position-bounding-box {
+    .mat-menu-panel {
+      top: auto;
+      bottom: auto;
+      &:before, &:after {
+        content: none;
+      }
+    }
+  }
+
+}

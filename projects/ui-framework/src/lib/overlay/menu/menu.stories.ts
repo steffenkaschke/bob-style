@@ -2,15 +2,15 @@ import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
 import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../consts';
-import { ButtonSize, ButtonType } from '../buttons/buttons.enum';
+import { ComponentGroupType } from '../../consts';
+import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { MenuModule } from './menu.module';
-import { ButtonsModule } from '../buttons/buttons.module';
-import { IconsModule } from '../icons/icons.module';
-import { IconColor, Icons, IconSize } from '../icons';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { IconsModule } from '../../icons/icons.module';
+import { IconColor, Icons, IconSize } from '../../icons';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const menuStories = storiesOf(ComponentGroupType.Menu, module)
+const menuStories = storiesOf(ComponentGroupType.Overlay, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
