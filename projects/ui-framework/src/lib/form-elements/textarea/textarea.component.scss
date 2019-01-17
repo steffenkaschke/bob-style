@@ -1,5 +1,28 @@
-@import '../../style/colors';
+@import '../form-elements.scss';
 
 :host ::ng-deep {
   display: block;
+  @include MatFormField();
+  .mat-form-field.text-area {
+    line-height: initial;
+    .mat-form-field-wrapper .mat-form-field-flex {
+      .mat-form-field-infix {
+        textarea {
+          height: $textarea-height;
+          padding: 16px;
+        }
+        .mat-form-field-label-wrapper {
+          align-items: start;
+          .mat-form-field-label {
+            padding: 16px;
+          }
+        }
+      }
+    }
+    .mat-form-field-subscript-wrapper {
+      .length-indicator {
+        color: $grey-600;
+      }
+    }
+  }
 }

@@ -1,5 +1,6 @@
-@import '../../style/colors';
+@import '../form-elements.scss';
 
 :host ::ng-deep {
   display: block;
+  @include MatFormField();
 }
