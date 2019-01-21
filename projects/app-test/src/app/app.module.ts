@@ -9,16 +9,21 @@ import { DatepickerModule } from 'bob-style';
 import { InputModule } from 'bob-style';
 import { SelectModule } from 'bob-style';
 import { TextareaModule } from 'bob-style';
+import { TableModule } from 'projects/ui-framework/src/lib/table/table.module';
+import { TestComponent } from './test/test.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     TypographyModule,
+    DatepickerModule,
+    TableModule,
     ButtonsModule,
     DatepickerModule,
     InputModule,
@@ -26,6 +31,7 @@ import { TextareaModule } from 'bob-style';
     TextareaModule,
   ],
   providers: [],
+  entryComponents: [TestComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
