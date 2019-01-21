@@ -3,6 +3,7 @@ import { MatTableDataSource } from '@angular/material';
 import { ColumnConfig } from './column-config';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DomSanitizer } from '@angular/platform-browser';
+import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'b-table',
@@ -14,13 +15,11 @@ export class TableComponent implements OnInit {
   @Input() dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   @Input() displayedColumns: ColumnConfig[] = [];
   @Input() multiSelect = false;
-  @Input() filterInit = {};
   @Input() sortInit = {};
   @Input() selectedRowInit = {};
 
   @Output() sort: EventEmitter<any> = new EventEmitter<any>();
   @Output() loadMore: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() filter: EventEmitter<string> = new EventEmitter<string>();
   @Output() selected: EventEmitter<any> = new EventEmitter<any>();
   @Output() rowClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() columnFiltered: EventEmitter<any> = new EventEmitter<any>();
@@ -54,13 +53,7 @@ export class TableComponent implements OnInit {
     this.sort.emit(event);
   }
 
-  onLoadMore() {
-    this.loadMore.emit(true);
-  }
 
-  onFilter(text) {
-    this.filter.emit(text);
-  }
 
   clearFilters() {
 
@@ -114,6 +107,15 @@ export class TableComponent implements OnInit {
 
   rightClick(row) {
     this.rowRightClicked.emit(row);
+  }
+
+  removeColumnClicked(column) {
+    this.col = this.col.filter((x) => x !== column.name);
+  }
+
+  drop(event: CdkDragDrop<ColumnConfig>) {
+    console.log(event);
+    moveItemInArray(this.col, event.previousIndex, event.currentIndex);
   }
 
 }

@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
       name: 'experiment',
       displayName: 'Experiment',
       type: filedType.component,
-      component: { component: TestComponent, data: { itay: 'Zain' } }
+      component: { component: TestComponent, data: { itay: 'bla bla' } }
     },
     {
       name: 'status',
@@ -89,16 +89,9 @@ export class AppComponent implements OnInit {
     console.log(this.columns);
   }
 
-  loadMore() {
-    console.log(1);
-  }
 
   selected(selected) {
     console.log(selected);
-  }
-
-  onFilter(event) {
-
   }
 
   onSort(event) {
@@ -116,5 +109,9 @@ export class AppComponent implements OnInit {
 
   rowRightClicked(event) {
     console.log(event);
+  }
+
+  revmoveColumn(event) {
+    this.columns = this.columns.filter(x => x.name !== event.name);
   }
 }

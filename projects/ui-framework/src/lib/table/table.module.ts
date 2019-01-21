@@ -5,7 +5,9 @@ import {
   MatTableModule, MatSortModule, MatPaginatorModule, MatIconModule, MatInputModule,
   MatCheckboxModule, MatMenuModule
 } from '@angular/material';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TableCellComponent } from './table-cell/table-cell.component';
+import { CdkTableModule } from '@angular/cdk/table';
 
 @NgModule({
   declarations: [TableComponent, TableCellComponent],
@@ -17,7 +19,9 @@ import { TableCellComponent } from './table-cell/table-cell.component';
     MatIconModule,
     MatInputModule,
     MatCheckboxModule,
-    MatMenuModule
+    MatMenuModule,
+    DragDropModule,
+    CdkTableModule
   ],
   exports: [TableComponent]
 })
