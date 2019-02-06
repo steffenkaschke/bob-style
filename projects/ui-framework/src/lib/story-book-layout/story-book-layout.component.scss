@@ -1,0 +1,19 @@
+@import '../style/colors';
+
+:host {
+  display: block;
+  .story-wrapper {
+    text-align: center;
+    b-display-3 {
+      padding: 20px 0;
+      color: $white;
+      background-color: var(--primary-500);
+    }
+    .story-content {
+      padding-top: 20px;
+      border-top: 1px solid $grey-500;
+      position: relative;
+      height: calc(100vh - 100px);
+    }
+  }
+}

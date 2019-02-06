@@ -1,7 +1,8 @@
 @import '../form-element.scss';
 
 :host ::ng-deep {
-  display: block;
+  display: inline-block;
+  width: 100%;
   @include MatFormField();
   .mat-form-field.text-area {
     line-height: initial;
