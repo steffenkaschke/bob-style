@@ -6,7 +6,8 @@ addDecorator(
   withOptions({
     name: 'bob ui framework',
     url: 'https://github.com/hibobio/bob-style',
-    hierarchyRootSeparator: /\|/
+    hierarchyRootSeparator: /\|/,
+    addonPanelInRight: true
   })
 )
 
