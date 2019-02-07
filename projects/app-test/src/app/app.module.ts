@@ -3,11 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TypographyModule } from '../../../ui-framework/src/lib/typography/typography.module';
-import { DatepickerModule } from '../../../ui-framework/src/lib/form-elements/datepicker/datepicker.module';
-import { InputModule } from '../../../ui-framework/src/lib/form-elements/input';
-import { SelectModule } from '../../../ui-framework/src/lib/form-elements/select';
-import { TextareaModule } from '../../../ui-framework/src/lib/form-elements/textarea';
+import { TypographyModule } from 'bob-style';
+import { ButtonsModule } from 'bob-style';
+import { DatepickerModule } from 'bob-style';
+import { InputModule } from 'bob-style';
+import { SelectModule } from 'bob-style';
+import { TextareaModule } from 'bob-style';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { TextareaModule } from '../../../ui-framework/src/lib/form-elements/text
     BrowserModule,
     BrowserAnimationsModule,
     TypographyModule,
+    ButtonsModule,
     DatepickerModule,
     InputModule,
     SelectModule,

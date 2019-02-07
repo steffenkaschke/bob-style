@@ -18,10 +18,10 @@
       "dom"
     ],
     "paths": {
-      "ui-framework": [
+      "bob-style": [
         "dist/ui-framework"
       ],
-      "ui-framework/*": [
+      "bob-style/*": [
         "dist/ui-framework/*"
       ]
     }

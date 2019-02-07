@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { DatepickerComponent } from './datepicker.component';
 import { MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule } from '@angular/material';
-import { IconsModule } from '../../icons';
+import { IconsModule } from '../../icons/icons.module';
 import { CommonModule } from '@angular/common';
 import { InputModule } from '../input/input.module';
 import { DatepickerInputComponent } from './datepicker-input.component';

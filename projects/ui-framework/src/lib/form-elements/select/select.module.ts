@@ -8,7 +8,7 @@ import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { SelectModelService } from './select-model-service/select-model.service';
 import { SingleSelectComponent } from './single-select/single-select.component';
 import { MultiSelectComponent } from './multi-select/multi-select.component';
-import { IconsModule } from '../../icons';
+import { IconsModule } from '../../icons/icons.module';
 
 @NgModule({
   declarations: [

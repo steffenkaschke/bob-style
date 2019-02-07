@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SearchComponent } from './search.component';
 import { CommonModule } from '@angular/common';
-import { IconsModule } from '../../icons';
+import { IconsModule } from '../../icons/icons.module';
 import { InputModule } from '../../form-elements/input/input.module';
 
 @NgModule({
