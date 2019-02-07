@@ -9,6 +9,6 @@
     "../projects/**/*.spec.ts"
   ],
   "include": [
-    "../projects/**/*"
+    "../projects/ui-framework/**/*"
   ]
 }
