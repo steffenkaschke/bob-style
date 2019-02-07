@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonType } from '../buttons.enum';
-import { IconColor, Icons, IconSize } from '../../../icons';
+import { IconColor, Icons, IconSize } from '../../../icons/';
 
 @Component({
   selector: 'b-square-button',

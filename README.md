@@ -30,7 +30,8 @@ npm run storybook
 ng generate component newComponent --project=ui-framework
 ```
 - Each component should have its own module and enum if there are any
-- create index.ts file and export the relevant files (module, enums)
+- Create index.ts file and export the relevant files (module, enums)
+- Export the module and reference to the index.ts file in the global public_api.ts file
 - Add to the peer dependencies collection of the library package.json any new dependencies
 - Add also to the main package.json the new dependency
 - Add the component stories file
@@ -38,6 +39,12 @@ ng generate component newComponent --project=ui-framework
 ## Run tests
 ```sh
 npm run test
+```
+
+## Helper test project
+There is an app-test project that you can use in order to test the components in real life scenario.
+```sh
+npm run start:app-test
 ```
 
 
