@@ -3,22 +3,19 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TypographyModule } from 'bob-style';
-import { ButtonsModule } from 'bob-style';
-import { DatepickerModule } from 'bob-style';
-import { InputModule } from 'bob-style';
-import { SelectModule } from 'bob-style';
-import { TextareaModule } from 'bob-style';
+import { ButtonsModule, DatepickerModule, InputModule, SelectModule, TextareaModule, TypographyModule } from 'bob-style';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     TypographyModule,
+    DatepickerModule,
     ButtonsModule,
     DatepickerModule,
     InputModule,
