@@ -16,14 +16,13 @@ export class TableCellComponent implements OnInit {
   @Input() column: ColumnConfig;
   @Input() data: any;
 
-  constructor(
-    private readonly componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private readonly componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
-    this.initCell();
+    this.initComponentCell();
   }
 
-  private initCell() {
+  private initComponentCell() {
     const cellComponent = this.column.component.component;
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(cellComponent);
     const viewContainerRef = this.cellHost;
@@ -36,7 +35,14 @@ export class TableCellComponent implements OnInit {
     const attr =  this.column.component.attributes;
 
     forEach(attr, (v, k) => {
-      cell[k] = get(this.row, v);
+      const attribute = get(this.row, v);
+      if (attribute instanceof Function) {
+        // subscribe to output
+        cell[k].subscribe ($event => attribute.apply(null, [cell, $event]));
+      } else {
+        // set component attribute
+        cell[k] = attribute;
+      }
     });
   }
 
