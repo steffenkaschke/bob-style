@@ -3,14 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TypographyModule } from 'bob-style';
-import { ButtonsModule } from 'bob-style';
-import { DatepickerModule } from 'bob-style';
-import { InputModule } from 'bob-style';
-import { SelectModule } from 'bob-style';
-import { TextareaModule } from 'bob-style';
-import { TableModule } from 'projects/ui-framework/src/lib/table/table.module';
-import { TestComponent } from './test/test.component';
+import { ButtonsModule, DatepickerModule, InputModule, SelectModule, TextareaModule, TypographyModule } from 'bob-style';
 
 
 @NgModule({
@@ -23,7 +16,6 @@ import { TestComponent } from './test/test.component';
     BrowserAnimationsModule,
     TypographyModule,
     DatepickerModule,
-    TableModule,
     ButtonsModule,
     DatepickerModule,
     InputModule,
@@ -31,7 +23,6 @@ import { TestComponent } from './test/test.component';
     TextareaModule,
   ],
   providers: [],
-  entryComponents: [TestComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

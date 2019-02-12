@@ -1,5 +1,7 @@
-import { Component, OnInit, ViewChild, Input, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ColumnConfig } from '../table/column-config';
+import forEach from 'lodash/forEach';
+import get from 'lodash/get';
 
 @Component({
   selector: 'b-table-cell',
@@ -21,7 +23,7 @@ export class TableCellComponent implements OnInit {
     this.initCell();
   }
 
-  initCell() {
+  private initCell() {
     const cellComponent = this.column.component.component;
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(cellComponent);
     const viewContainerRef = this.cellHost;
@@ -31,7 +33,11 @@ export class TableCellComponent implements OnInit {
     const cell = componentRef.instance as any;
     cell.row = this.row;
     cell.column = this.column;
-    cell.data = this.data;
+    const attr =  this.column.component.attributes;
+
+    forEach(attr, (v, k) => {
+      cell[k] = get(this.row, v);
+    });
   }
 
 }

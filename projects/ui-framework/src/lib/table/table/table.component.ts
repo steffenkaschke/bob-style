@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, EventEmitter, Output, ComponentFactoryResolver } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { ColumnConfig } from './column-config';
 import { SelectionModel } from '@angular/cdk/collections';
-import { DomSanitizer } from '@angular/platform-browser';
-import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import get from 'lodash/get';
 
 @Component({
   selector: 'b-table',
@@ -11,9 +11,8 @@ import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
   styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements OnInit {
-
-  @Input() dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
-  @Input() displayedColumns: ColumnConfig[] = [];
+  @Input() data: any;
+  @Input() columns: ColumnConfig[] = [];
   @Input() multiSelect = false;
   @Input() sortInit = {};
   @Input() selectedRowInit = {};
@@ -24,98 +23,75 @@ export class TableComponent implements OnInit {
   @Output() rowClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() columnFiltered: EventEmitter<any> = new EventEmitter<any>();
   @Output() rowRightClicked: EventEmitter<any> = new EventEmitter<any>();
+
   activeSort: ColumnConfig = null;
-
-
   selection: SelectionModel<any>;
-  col = [];
+  cols = [];
+  private dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
 
-
-  constructor(private sanitizer: DomSanitizer,
-    private cfr: ComponentFactoryResolver) { }
+  constructor() { }
 
   ngOnInit() {
-
-    this.col = this.displayedColumns.map((x: ColumnConfig) => x.name);
-    if (true) {
-      this.col.unshift('select');
-    }
+    this.dataSource = new MatTableDataSource(this.data);
+    this.cols = this.columns.map((column: ColumnConfig) => column.name);
+    this.cols.unshift('select');
 
     const initialSelection = [];
     const allowMultiSelect = true;
     this.selection = new SelectionModel<any>(allowMultiSelect, initialSelection);
 
-    this.activeSort = this.displayedColumns.find((x) => x.sortActive !== null);
-
+    this.activeSort = this.columns.find((x) => x.sortActive !== null);
   }
 
-  sortData(event) {
+  public getColumnName (row: object, name: string): any {
+    return get(row, name);
+  }
+
+  public sortData(event): void {
     this.sort.emit(event);
   }
 
-
-
-  clearFilters() {
-
-  }
-
-  onSelectRow(event, row) {
+  public onSelectRow(event, row): void {
     if (event) {
       this.selection.toggle(row);
     }
-
     this.selected.emit(this.selection.selected);
-
   }
 
-  onSelectMaster(event) {
+  public onSelectMaster(event): void {
     if (event) {
       this.masterToggle();
     }
     this.selected.emit(this.selection.selected);
   }
 
-  isAllSelected() {
+  public isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  masterToggle() {
+  public masterToggle(): void {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  rowClick(row) {
+  public rowClick(row): void {
     this.rowClicked.emit(row);
   }
 
-  onColumnFilter(column, option, event) {
-    const colIndex = this.displayedColumns.indexOf(column);
-    if (colIndex > -1) {
-      const optionIndex = this.displayedColumns[colIndex].options.indexOf(option);
-      this.displayedColumns[colIndex].options[optionIndex].selected = event.checked;
-    }
 
-    this.columnFiltered.emit({ column: column.name, option: option.name, checked: event.checked });
-  }
-
-  sanitize(element) {
-    return this.sanitizer.bypassSecurityTrustHtml(element);
-  }
-
-  rightClick(row) {
+  public rightClick(row) {
     this.rowRightClicked.emit(row);
   }
 
-  removeColumnClicked(column) {
-    this.col = this.col.filter((x) => x !== column.name);
+  public removeColumnClicked(column): void {
+    this.cols = this.cols.filter((x) => x !== column.name);
   }
 
-  drop(event: CdkDragDrop<ColumnConfig>) {
-    console.log(event);
-    moveItemInArray(this.col, event.previousIndex, event.currentIndex);
+  public drop(event: CdkDragDrop<ColumnConfig>): void {
+    moveItemInArray(this.cols, event.previousIndex, event.currentIndex);
   }
 
 }

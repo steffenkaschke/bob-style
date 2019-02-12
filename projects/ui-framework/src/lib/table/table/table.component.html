@@ -16,33 +16,20 @@
         </td>
       </ng-container>
 
-      <ng-container *ngFor="let column of displayedColumns; let i = index" [cdkColumnDef]="column.name">
+      <ng-container *ngFor="let column of columns; let i = index" [cdkColumnDef]="column.name">
         <th cdk-header-cell *cdkHeaderCellDef mat-sort-header [disabled]="!column.isSort" >
           <div draggable="true">{{ column.name }} <button (click)="$event.stopPropagation(); removeColumnClicked(column)">X</button></div>
-
-          <div *ngIf="column.type==='enum'">
-            <button mat-button [matMenuTriggerFor]="menu">filter me</button>
-            <mat-menu #menu="matMenu">
-              <div *ngFor="let option of column.options">
-                <mat-checkbox (change)="onColumnFilter(column, option, $event)" (click)="$event.stopPropagation()"
-                  [checked]="option.selected">
-                  {{option.displayName}}
-                </mat-checkbox>
-              </div>
-            </mat-menu>
-
-          </div>
         </th>
         <td cdk-cell *cdkCellDef="let row" (click)="rowClick(row)" (contextmenu)="rightClick(row)">
-          <div *ngIf="column.type!=='component'">{{row[column.name]}}</div>
+          <div *ngIf="column.type!=='component'">{{getColumnName(row, column.name)}}</div>
           <div *ngIf="column.type==='component'">
-            <b-table-cell [row]="row" [column]="column" [data]="row[column.name].data"></b-table-cell>
+            <b-table-cell [row]="row" [column]="column" [data]="row[column.name]"></b-table-cell>
           </div>
         </td>
       </ng-container>
 
-      <cdk-header-row *matHeaderRowDef="col" ></cdk-header-row>
-      <cdk-row *matRowDef="let row; columns: col;" ></cdk-row>
+      <cdk-header-row *matHeaderRowDef="cols" ></cdk-header-row>
+      <cdk-row *matRowDef="let row; columns: cols;" ></cdk-row>
     </table>
 
   </div>

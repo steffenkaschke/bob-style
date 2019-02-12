@@ -2,8 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableComponent } from './table/table.component';
 import {
-  MatTableModule, MatSortModule, MatPaginatorModule, MatIconModule, MatInputModule,
-  MatCheckboxModule, MatMenuModule
+  MatCheckboxModule,
+  MatIconModule,
+  MatInputModule,
+  MatMenuModule,
+  MatPaginatorModule,
+  MatSortModule,
+  MatTableModule
 } from '@angular/material';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TableCellComponent } from './table-cell/table-cell.component';
@@ -21,8 +26,8 @@ import { CdkTableModule } from '@angular/cdk/table';
     MatCheckboxModule,
     MatMenuModule,
     DragDropModule,
-    CdkTableModule
+    CdkTableModule,
   ],
-  exports: [TableComponent]
+  exports: [TableComponent, TableCellComponent],
 })
 export class TableModule { }
