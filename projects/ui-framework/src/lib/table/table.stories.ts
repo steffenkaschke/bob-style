@@ -20,6 +20,8 @@ const template = `
   <b-table
     [data]="data"
     [columns]="columns"
+    [stickyHeader]="stickyHeader"
+    [stickyColumns]="stickyColumns"
     (select)="select($event)"
     (sort)="sort($event)"
     (rowClick)="rowClick($event)"
@@ -36,6 +38,8 @@ const note = `
   --- | --- | ---
   data | json | Table data
   columns | json | Table columns
+  stickyHeader | boolean | Make headers sticky
+  stickyColumns | number | Number of the sticky column
   select | id |  select event
   sort | id | sort event
   rowClick | id | row click event
@@ -51,6 +55,8 @@ tableStories.add(
     return {
       template,
       props: {
+        stickyHeader: boolean('stickyHeader', false),
+        stickyColumns: number('stickyColumns', -1),
         data: object('data', mockData),
         columns: object('columns', mockColumns),
         select: action(),
