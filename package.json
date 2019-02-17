@@ -17,11 +17,6 @@
     "start-app-test": "ng serve --project=app-test"
   },
   "private": false,
-  "storybook-deployer": {
-    "gitUsername": "bob-admin",
-    "gitEmail": "admin@hibob.io",
-    "commitMessage": "Deploy Storybook to GitHub Pages"
-  },
   "dependencies": {
     "@angular/animations": "^7.2.0",
     "@angular/cdk": "^7.2.1",
