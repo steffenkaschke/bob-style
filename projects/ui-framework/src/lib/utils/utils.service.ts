@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { WindowRef } from './window-ref.service';
 
 @Injectable()
 export class UtilsService {
-  constructor() {}
+  constructor(public windowRef: WindowRef) {}
 
   public getResizeEvent(): Observable<any> {
-    return fromEvent(window, 'resize').pipe(debounceTime(500));
+    return fromEvent(this.windowRef.nativeWindow, 'resize').pipe(debounceTime(500));
   }
 }

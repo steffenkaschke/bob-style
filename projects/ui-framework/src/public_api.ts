@@ -1,3 +1,4 @@
+import { UtilsService } from './lib/utils/utils.service';
 /*
  * Public API Surface of ui-framework
  */
@@ -28,6 +29,7 @@ export { BreadcrumbsModule } from './lib/navigation/breadcrumbs/breadcrumbs.modu
 export * from './lib/navigation/breadcrumbs';
 export { MiniPreloaderModule } from './lib/misc/mini-preloader/mini-preloader.module';
 export { SearchModule } from './lib/navigation/search/search.module';
-export * from  './lib/form-elements/lists';
+export * from './lib/form-elements/lists';
 export { TableModule } from './lib/table/table.module';
 export { FiltersModule } from './lib/filters/filters.module';
+export * from './lib/utils';
