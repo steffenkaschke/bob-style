@@ -1,1 +1,1 @@
-import { UtilsService } from './utils.service';
+export { UtilsService } from './utils.service';

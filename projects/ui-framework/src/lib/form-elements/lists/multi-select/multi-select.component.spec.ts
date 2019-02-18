@@ -6,7 +6,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { InputModule } from '../../input';
+import { InputModule } from '../../input/input.module';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IconService } from '../../../icons/icon.service';

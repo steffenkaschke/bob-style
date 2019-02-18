@@ -17,7 +17,7 @@ import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IconColor, Icons, IconSize } from '../../../icons';
+import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-single-select',
@@ -34,16 +34,14 @@ import { IconColor, Icons, IconSize } from '../../../icons';
       useExisting: forwardRef(() => SingleSelectComponent),
       multi: true
     }
-  ],
+  ]
 })
-
 export class SingleSelectComponent extends BaseSelectPanelElement implements OnChanges, OnDestroy {
-
   @ViewChild('triggerInput') triggerInput;
 
   @Input() options: SelectGroupOption[];
   @Input() showSingleGroupHeader = false;
-  @Output() selectChange: EventEmitter<(string | number)> = new EventEmitter<(string | number)>();
+  @Output() selectChange: EventEmitter<string | number> = new EventEmitter<string | number>();
 
   triggerValue: string;
   showTriggerTooltip: boolean;
@@ -57,7 +55,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
-    panelPositionService: PanelPositionService,
+    panelPositionService: PanelPositionService
   ) {
     super(overlay, viewContainerRef, panelPositionService);
     this.value = null;
@@ -69,7 +67,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
     }
   }
 
-  onSelect(optionId: (string | number)) {
+  onSelect(optionId: string | number) {
     this.value = optionId;
     this.triggerValue = this.getTriggerValue(this.value);
     this.selectChange.emit(this.value);
@@ -94,7 +92,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
     this.updateTriggerTooltip();
     return chain(this.options)
       .flatMap('options')
-      .filter(option => option.id === value)
+      .filter((option) => option.id === value)
       .first()
       .get('value', null)
       .value();
