@@ -7,9 +7,9 @@ import { ComponentGroupType } from '../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 import { TableModule } from './table.module';
-import { AvatarComponent, AvatarModule } from '../buttons-indicators/avatar';
+import { AvatarComponent } from '../buttons-indicators/avatar/avatar.component';
+import { AvatarModule } from '../buttons-indicators/avatar/avatar.module';
 import { mockColumns, mockData } from './table.mock';
-
 
 const tableStories = storiesOf(ComponentGroupType.DataTable, module)
   .addDecorator(withNotes)
@@ -30,7 +30,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Data Table">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
@@ -50,7 +50,7 @@ const note = `
   rowRightClick | id | right click event
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 tableStories.add(
@@ -70,12 +70,7 @@ tableStories.add(
       },
       moduleMetadata: {
         entryComponents: [AvatarComponent],
-        imports: [
-          BrowserAnimationsModule,
-          StoryBookLayoutModule,
-          TableModule,
-          AvatarModule,
-        ]
+        imports: [BrowserAnimationsModule, StoryBookLayoutModule, TableModule, AvatarModule]
       }
     };
   },

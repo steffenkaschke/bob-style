@@ -7,7 +7,7 @@ import { SingleSelectComponent } from './single-select.component';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { InputModule } from '../../input';
+import { InputModule } from '../../input/input.module';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
 import { SingleListModule } from '../single-list/single-list.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

@@ -6,4 +6,3 @@ export * from './display-3/display-3.component';
 export * from './display-4/display-4.component';
 export * from './heading/heading.component';
 export * from './subheading/subheading.component';
-export * from './typography.module';

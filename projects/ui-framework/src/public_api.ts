@@ -3,25 +3,10 @@
  */
 export { TypographyModule } from './lib/typography/typography.module';
 export * from './lib/typography';
-
-// Buttons
+export { IconsModule } from './lib/icons/icons.module';
 export { ButtonsModule } from './lib/buttons-indicators/buttons/buttons.module';
-export {
-  ButtonType,
-  ButtonSize,
-  BackButtonType
-} from './lib/buttons-indicators/buttons/buttons.enum';
-export { ButtonComponent } from './lib/buttons-indicators/buttons/button/button.component';
-export {
-  BackButtonComponent
-} from './lib/buttons-indicators/buttons/back-button/back-button.component';
-export { SquareButtonComponent } from './lib/buttons-indicators/buttons/square/square.component';
-export { GroupComponent } from './lib/buttons-indicators/buttons/group/group.component';
-
 export { AvatarModule } from './lib/buttons-indicators/avatar/avatar.module';
 export * from './lib/buttons-indicators/avatar';
-export { IconsModule } from './lib/icons/icons.module';
-export * from './lib/icons';
 export { SliderModule } from './lib/buttons-indicators/slider/slider.module';
 export * from './lib/buttons-indicators/slider';
 export { SwitchToggleModule } from './lib/buttons-indicators/switch-toggle/switch-toggle.module';
@@ -43,12 +28,8 @@ export { BreadcrumbsModule } from './lib/navigation/breadcrumbs/breadcrumbs.modu
 export * from './lib/navigation/breadcrumbs';
 export { MiniPreloaderModule } from './lib/misc/mini-preloader/mini-preloader.module';
 export { SearchModule } from './lib/navigation/search/search.module';
-export * from './lib/navigation/search';
 export * from './lib/form-elements/lists';
 export { TableModule } from './lib/table/table.module';
 export { FiltersModule } from './lib/filters/filters.module';
 export { UtilsModule } from './lib/utils/utils.module';
-export * from './lib/utils';
 export { PanelModule } from './lib/overlay/panel/panel.module';
-export { OverlayModule } from '@angular/cdk/overlay';
-export { MatTooltipModule } from '@angular/material';

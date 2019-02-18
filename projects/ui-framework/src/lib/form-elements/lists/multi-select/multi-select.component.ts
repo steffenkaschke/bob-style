@@ -18,7 +18,7 @@ import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/butt
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IconColor, Icons, IconSize } from '../../../icons';
+import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-multi-select',
