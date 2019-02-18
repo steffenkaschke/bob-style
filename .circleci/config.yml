@@ -59,7 +59,10 @@ jobs:
       - run:
           name: 'Deploy to npm'
           command: |
-            echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+            echo "registry=https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/
+            _auth = ${JFROG_NPM_TOKEN}
+            always-auth = true
+            email = deploy-js@hibob.io" > .npmrc
             npm publish ./dist/ui-framework/*.tgz --scope=hibob
 
 workflows:
