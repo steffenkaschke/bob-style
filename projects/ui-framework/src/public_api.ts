@@ -1,4 +1,3 @@
-import { UtilsService } from './lib/utils/utils.service';
 /*
  * Public API Surface of ui-framework
  */
@@ -24,6 +23,7 @@ export { SingleListModule } from './lib/form-elements/lists/single-list/single-l
 export { SingleSelectModule } from './lib/form-elements/lists/single-select/single-select.module';
 export { MultiListModule } from './lib/form-elements/lists/multi-list/multi-list.module';
 export { MultiSelectModule } from './lib/form-elements/lists/multi-select/multi-select.module';
+export * from './lib/form-elements/lists';
 export * from './lib/form-elements';
 export { BreadcrumbsModule } from './lib/navigation/breadcrumbs/breadcrumbs.module';
 export * from './lib/navigation/breadcrumbs';
@@ -34,3 +34,4 @@ export { TableModule } from './lib/table/table.module';
 export { FiltersModule } from './lib/filters/filters.module';
 export { UtilsModule } from './lib/utils/utils.module';
 export * from './lib/utils';
+import { PanelModule } from './lib/overlay/panel/panel.module';
