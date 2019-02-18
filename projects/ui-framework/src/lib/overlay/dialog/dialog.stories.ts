@@ -3,7 +3,7 @@ import { withNotes } from '@storybook/addon-notes';
 import { select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
-import { ButtonsModule } from '../../buttons-indicators/buttons';
+import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogModule } from './dialog.module';
 import { DialogExampleModule } from './dialog-example.module';
@@ -19,7 +19,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Dialog">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
@@ -27,11 +27,12 @@ const note = `
   ## Dialog
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 buttonStories.add(
-  'Dialog', () => ({
+  'Dialog',
+  () => ({
     template: storyTemplate,
     props: {},
     moduleMetadata: {
@@ -40,10 +41,9 @@ buttonStories.add(
         ButtonsModule,
         BrowserAnimationsModule,
         DialogExampleModule,
-        StoryBookLayoutModule,
-      ],
+        StoryBookLayoutModule
+      ]
     }
   }),
   { notes: { markdown: note } }
 );
-

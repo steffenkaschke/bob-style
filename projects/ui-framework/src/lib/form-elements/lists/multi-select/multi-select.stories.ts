@@ -3,7 +3,7 @@ import { withNotes } from '@storybook/addon-notes';
 import { select, withKnobs, object, text, boolean, array } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
-import { ButtonsModule } from '../../../buttons-indicators/buttons';
+import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { TypographyModule } from '../../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
@@ -52,24 +52,25 @@ const note = `
   showSingleGroupHeader | boolean | displays single group with group header
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
 const optionsMock: SelectGroupOption[] = Array.from(Array(3), (_, i) => {
   return {
-    groupName: `Personal G${ i }`,
+    groupName: `Personal G${i}`,
     options: Array.from(Array(4), (_, k) => {
       return {
-        value: `Personal G${ i }_E${ k }`,
-        id: (i * 4) + k,
+        value: `Personal G${i}_E${k}`,
+        id: i * 4 + k
       };
-    }),
+    })
   };
 });
 
 buttonStories.add(
-  'Multi select', () => ({
+  'Multi select',
+  () => ({
     template: storyTemplate,
     props: {
       options: object<SelectGroupOption>('options', optionsMock),
@@ -80,7 +81,7 @@ buttonStories.add(
       required: boolean('required', false),
       hintMessage: text('hintMessage', 'This field should contain something'),
       errorMessage: text('errorMessage', ''),
-      showSingleGroupHeader: boolean('showSingleGroupHeader', false),
+      showSingleGroupHeader: boolean('showSingleGroupHeader', false)
     },
     moduleMetadata: {
       imports: [
@@ -88,10 +89,9 @@ buttonStories.add(
         ButtonsModule,
         TypographyModule,
         BrowserAnimationsModule,
-        StoryBookLayoutModule,
-      ],
+        StoryBookLayoutModule
+      ]
     }
   }),
   { notes: { markdown: note } }
 );
-
