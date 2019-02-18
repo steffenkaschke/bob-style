@@ -77,6 +77,6 @@
     "typescript": "~3.2.2"
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/"
   }
 }
