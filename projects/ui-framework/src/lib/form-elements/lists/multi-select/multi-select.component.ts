@@ -14,7 +14,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { chain, includes } from 'lodash';
 import { PanelPositionService } from '../../../overlay/panel/panel-position.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
-import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons';
+import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -35,17 +35,17 @@ import { IconColor, Icons, IconSize } from '../../../icons';
       useExisting: forwardRef(() => MultiSelectComponent),
       multi: true
     }
-  ],
+  ]
 })
-
 export class MultiSelectComponent extends BaseSelectPanelElement implements OnChanges, OnDestroy {
-
   @ViewChild('triggerInput') triggerInput;
 
   @Input() options: SelectGroupOption[];
   @Input() value: (string | number)[] = [];
   @Input() showSingleGroupHeader = false;
-  @Output() selectChange: EventEmitter<(string | number)[]> = new EventEmitter<(string | number)[]>();
+  @Output() selectChange: EventEmitter<(string | number)[]> = new EventEmitter<
+    (string | number)[]
+  >();
 
   triggerValue: string;
   blockSelectClick: boolean;
@@ -60,7 +60,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnCh
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
-    panelPositionService: PanelPositionService,
+    panelPositionService: PanelPositionService
   ) {
     super(overlay, viewContainerRef, panelPositionService);
   }
@@ -100,7 +100,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnCh
     this.updateTriggerTooltip();
     return chain(this.options)
       .flatMap('options')
-      .filter(option => includes(value, option.id))
+      .filter((option) => includes(value, option.id))
       .map('value')
       .join(', ')
       .value();

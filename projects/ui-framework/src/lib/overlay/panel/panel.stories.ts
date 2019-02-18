@@ -4,7 +4,7 @@ import { select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { PanelModule } from '../panel/panel.module';
-import { ButtonsModule } from '../../buttons-indicators/buttons';
+import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -56,7 +56,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Overlay panel">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
@@ -64,11 +64,12 @@ const note = `
   ## Panel
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 buttonStories.add(
-  'Panel', () => ({
+  'Panel',
+  () => ({
     template: storyTemplate,
     props: {},
     moduleMetadata: {
@@ -78,10 +79,9 @@ buttonStories.add(
         TypographyModule,
         BrowserAnimationsModule,
         StoryBookLayoutModule,
-        CheckboxModule,
-      ],
+        CheckboxModule
+      ]
     }
   }),
   { notes: { markdown: note } }
 );
-

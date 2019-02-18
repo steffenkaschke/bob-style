@@ -1,10 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatIconModule, MatInputModule, MatPseudoCheckboxModule, MatTooltipModule } from '@angular/material';
+import {
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatPseudoCheckboxModule,
+  MatTooltipModule
+} from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchModule } from '../../../navigation/search/search.module';
-import { ButtonsModule } from '../../../buttons-indicators/buttons';
+import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { IconsModule } from '../../../icons';
 import { InputModule } from '../../input';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -23,27 +29,17 @@ describe('MultiListComponent', () => {
     optionsMock = [
       {
         groupName: 'Basic Info',
-        options: [
-          { value: 'Basic Info 1', id: 1 },
-          { value: 'Basic Info 2', id: 2 },
-        ],
+        options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
       },
       {
         groupName: 'Personal',
-        options: [
-          { value: 'Personal 1', id: 11 },
-          { value: 'Personal 2', id: 12 },
-        ],
-      },
+        options: [{ value: 'Personal 1', id: 11 }, { value: 'Personal 2', id: 12 }]
+      }
     ];
 
     TestBed.configureTestingModule({
-      declarations: [
-        MultiListComponent,
-      ],
-      providers: [
-        ListModelService,
-      ],
+      declarations: [MultiListComponent],
+      providers: [ListModelService],
       imports: [
         NoopAnimationsModule,
         CommonModule,
@@ -58,8 +54,8 @@ describe('MultiListComponent', () => {
         MatTooltipModule,
         ScrollingModule,
         MatPseudoCheckboxModule,
-        FiltersModule,
-      ],
+        FiltersModule
+      ]
     })
       .compileComponents()
       .then(() => {
@@ -81,13 +77,13 @@ describe('MultiListComponent', () => {
           groupName: 'Basic Info',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: false,
+          selected: false
         },
         {
           groupName: 'Personal',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: false,
+          selected: false
         }
       ]);
     });
@@ -98,43 +94,43 @@ describe('MultiListComponent', () => {
           groupName: 'Basic Info',
           value: 'Basic Info',
           id: 'Basic Info',
-          selected: null,
+          selected: null
         },
         {
           value: 'Basic Info 1',
           id: 1,
           groupName: 'Basic Info',
           isPlaceHolder: false,
-          selected: true,
+          selected: true
         },
         {
           value: 'Basic Info 2',
           id: 2,
           groupName: 'Basic Info',
           isPlaceHolder: false,
-          selected: false,
+          selected: false
         },
         {
           isPlaceHolder: true,
           groupName: 'Personal',
           value: 'Personal',
           id: 'Personal',
-          selected: null,
+          selected: null
         },
         {
           value: 'Personal 1',
           id: 11,
           groupName: 'Personal',
           isPlaceHolder: false,
-          selected: true,
+          selected: true
         },
         {
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal',
           isPlaceHolder: false,
-          selected: false,
-        },
+          selected: false
+        }
       ]);
     });
     it('should render 2 headers', () => {
@@ -158,14 +154,18 @@ describe('MultiListComponent', () => {
   });
   describe('header collapse', () => {
     it('should render 2 options if 1 group is collapsed', () => {
-      const headerCollapseTrigger = fixture.debugElement.queryAll(By.css('.header-collapse-trigger'))[0];
+      const headerCollapseTrigger = fixture.debugElement.queryAll(
+        By.css('.header-collapse-trigger')
+      )[0];
       headerCollapseTrigger.triggerEventHandler('click', null);
       fixture.autoDetectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(2);
     });
     it('should not render options if 2 group are collapsed', () => {
-      const headerCollapseTrigger = fixture.debugElement.queryAll(By.css('.header-collapse-trigger'));
+      const headerCollapseTrigger = fixture.debugElement.queryAll(
+        By.css('.header-collapse-trigger')
+      );
       headerCollapseTrigger[0].triggerEventHandler('click', null);
       headerCollapseTrigger[1].triggerEventHandler('click', null);
       fixture.autoDetectChanges();
@@ -207,13 +207,13 @@ describe('MultiListComponent', () => {
           groupName: 'Basic Info',
           isCollapsed: true,
           placeHolderSize: 88,
-          selected: true,
+          selected: true
         },
         {
           groupName: 'Personal',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: false,
+          selected: false
         }
       ];
       const expectedOptionsModel = [
@@ -222,31 +222,33 @@ describe('MultiListComponent', () => {
           groupName: 'Basic Info',
           value: 'Basic Info',
           id: 'Basic Info',
-          selected: null,
+          selected: null
         },
         {
           isPlaceHolder: true,
           groupName: 'Personal',
           value: 'Personal',
           id: 'Personal',
-          selected: null,
+          selected: null
         },
         {
           value: 'Personal 1',
           id: 11,
           groupName: 'Personal',
           isPlaceHolder: false,
-          selected: true,
+          selected: true
         },
         {
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal',
           isPlaceHolder: false,
-          selected: false,
-        },
+          selected: false
+        }
       ];
-      const headerCollapseTrigger = fixture.debugElement.queryAll(By.css('.header-collapse-trigger'))[0];
+      const headerCollapseTrigger = fixture.debugElement.queryAll(
+        By.css('.header-collapse-trigger')
+      )[0];
       headerCollapseTrigger.triggerEventHandler('click', null);
       fixture.autoDetectChanges();
       const headerCheckbox = fixture.debugElement.queryAll(By.css('.header .checkbox'));

@@ -1,10 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatIconModule, MatInputModule, MatTooltipModule } from '@angular/material';
+import {
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatTooltipModule
+} from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchModule } from '../../../navigation/search/search.module';
-import { ButtonsModule } from '../../../buttons-indicators/buttons';
+import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { IconsModule } from '../../../icons';
 import { InputModule } from '../../input';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -23,27 +28,17 @@ describe('SingleSelectComponent', () => {
     optionsMock = [
       {
         groupName: 'Basic Info',
-        options: [
-          { value: 'Basic Info 1', id: 1 },
-          { value: 'Basic Info 2', id: 2 },
-        ],
+        options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
       },
       {
         groupName: 'Personal',
-        options: [
-          { value: 'Personal 1', id: 11 },
-          { value: 'Personal 2', id: 12 },
-        ],
-      },
+        options: [{ value: 'Personal 1', id: 11 }, { value: 'Personal 2', id: 12 }]
+      }
     ];
 
     TestBed.configureTestingModule({
-      declarations: [
-        SingleListComponent,
-      ],
-      providers: [
-        ListModelService,
-      ],
+      declarations: [SingleListComponent],
+      providers: [ListModelService],
       imports: [
         NoopAnimationsModule,
         CommonModule,
@@ -57,8 +52,8 @@ describe('SingleSelectComponent', () => {
         IconsModule,
         MatTooltipModule,
         ScrollingModule,
-        FiltersModule,
-      ],
+        FiltersModule
+      ]
     })
       .compileComponents()
       .then(() => {
@@ -85,7 +80,7 @@ describe('SingleSelectComponent', () => {
           groupName: 'Personal',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: null,
+          selected: null
         }
       ]);
     });
@@ -96,43 +91,43 @@ describe('SingleSelectComponent', () => {
           groupName: 'Basic Info',
           value: 'Basic Info',
           id: 'Basic Info',
-          selected: null,
+          selected: null
         },
         {
           value: 'Basic Info 1',
           id: 1,
           groupName: 'Basic Info',
           isPlaceHolder: false,
-          selected: null,
+          selected: null
         },
         {
           value: 'Basic Info 2',
           id: 2,
           groupName: 'Basic Info',
           isPlaceHolder: false,
-          selected: null,
+          selected: null
         },
         {
           isPlaceHolder: true,
           groupName: 'Personal',
           value: 'Personal',
           id: 'Personal',
-          selected: null,
+          selected: null
         },
         {
           value: 'Personal 1',
           id: 11,
           groupName: 'Personal',
           isPlaceHolder: false,
-          selected: null,
+          selected: null
         },
         {
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal',
           isPlaceHolder: false,
-          selected: null,
-        },
+          selected: null
+        }
       ]);
     });
     it('should render 2 headers', () => {

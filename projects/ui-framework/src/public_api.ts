@@ -3,8 +3,21 @@
  */
 export { TypographyModule } from './lib/typography/typography.module';
 export * from './lib/typography';
+
+// Buttons
 export { ButtonsModule } from './lib/buttons-indicators/buttons/buttons.module';
-export * from './lib/buttons-indicators/buttons';
+export {
+  ButtonType,
+  ButtonSize,
+  BackButtonType
+} from './lib/buttons-indicators/buttons/buttons.enum';
+export { ButtonComponent } from './lib/buttons-indicators/buttons/button/button.component';
+export {
+  BackButtonComponent
+} from './lib/buttons-indicators/buttons/back-button/back-button.component';
+export { SquareButtonComponent } from './lib/buttons-indicators/buttons/square/square.component';
+export { GroupComponent } from './lib/buttons-indicators/buttons/group/group.component';
+
 export { AvatarModule } from './lib/buttons-indicators/avatar/avatar.module';
 export * from './lib/buttons-indicators/avatar';
 export { IconsModule } from './lib/icons/icons.module';

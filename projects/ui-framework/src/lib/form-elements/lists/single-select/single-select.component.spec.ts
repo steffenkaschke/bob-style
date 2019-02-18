@@ -1,10 +1,18 @@
-import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  inject,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SingleSelectComponent } from './single-select.component';
-import { ButtonsModule } from '../../../buttons-indicators/buttons';
+import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { InputModule } from '../../input';
@@ -31,28 +39,17 @@ describe('SingleSelectComponent', () => {
     optionsMock = [
       {
         groupName: 'Basic Info',
-        options: [
-          { value: 'Basic Info 1', id: 1 },
-          { value: 'Basic Info 2', id: 2 },
-        ],
+        options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
       },
       {
         groupName: 'Personal',
-        options: [
-          { value: 'Personal 1', id: 11 },
-          { value: 'Personal 2', id: 12 },
-        ],
-      },
+        options: [{ value: 'Personal 1', id: 11 }, { value: 'Personal 2', id: 12 }]
+      }
     ];
 
     TestBed.configureTestingModule({
-      declarations: [
-        SingleSelectComponent,
-      ],
-      providers: [
-        PanelPositionService,
-        { provide: IconService, useValue: spyIconService },
-      ],
+      declarations: [SingleSelectComponent],
+      providers: [PanelPositionService, { provide: IconService, useValue: spyIconService }],
       imports: [
         SingleListModule,
         OverlayModule,
@@ -62,7 +59,7 @@ describe('SingleSelectComponent', () => {
         InputModule,
         MatFormFieldModule,
         MatInputModule,
-        ButtonsModule,
+        ButtonsModule
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -100,34 +97,32 @@ describe('SingleSelectComponent', () => {
   });
 
   describe('onSelect', () => {
-    it('should emit onSelect with selected value',
-      fakeAsync(() => {
-        component.openPanel();
-        fixture.autoDetectChanges();
-        tick(0);
-        (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
-        expect(component.value).toEqual(12);
-        expect(component.selectChange.emit).toHaveBeenCalledWith(12);
-        expect(component.propagateChange).toHaveBeenCalledWith(12);
-        flush();
-      }));
+    it('should emit onSelect with selected value', fakeAsync(() => {
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
+      expect(component.value).toEqual(12);
+      expect(component.selectChange.emit).toHaveBeenCalledWith(12);
+      expect(component.propagateChange).toHaveBeenCalledWith(12);
+      flush();
+    }));
   });
 
   describe('clearSelection', () => {
-    it('should clear the selection',
-      fakeAsync(() => {
-        component.openPanel();
-        fixture.autoDetectChanges();
-        tick(0);
-        (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
-        fixture.autoDetectChanges();
-        const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
-        clearSelection.triggerEventHandler('click', null);
-        fixture.autoDetectChanges();
-        expect(component.value).toBe(null);
-        expect(component.triggerValue).toBe(null);
-        flush();
-      }));
+    it('should clear the selection', fakeAsync(() => {
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
+      fixture.autoDetectChanges();
+      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+      clearSelection.triggerEventHandler('click', null);
+      fixture.autoDetectChanges();
+      expect(component.value).toBe(null);
+      expect(component.triggerValue).toBe(null);
+      flush();
+    }));
   });
 
   describe('OnDestroy', () => {
@@ -153,18 +148,16 @@ describe('SingleSelectComponent', () => {
       const inputEl = fixture.debugElement.query(By.css('b-input'));
       expect(inputEl.properties.matTooltip).toBe(null);
     });
-    it('should add tooltip',
-      fakeAsync(() => {
-        component.openPanel();
-        fixture.autoDetectChanges();
-        tick(0);
-        (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
-        fixture.autoDetectChanges();
-        tick(0);
-        const inputEl = fixture.debugElement.query(By.css('b-input'));
-        expect(inputEl.properties.matTooltip).toEqual('a very long text that has a tooltip');
-        flush();
-      }));
+    it('should add tooltip', fakeAsync(() => {
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
+      fixture.autoDetectChanges();
+      tick(0);
+      const inputEl = fixture.debugElement.query(By.css('b-input'));
+      expect(inputEl.properties.matTooltip).toEqual('a very long text that has a tooltip');
+      flush();
+    }));
   });
-
 });

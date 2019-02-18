@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MultiSelectComponent } from './multi-select.component';
 import { PanelModule } from '../../../overlay/panel/panel.module';
-import { ButtonsModule } from '../../../buttons-indicators/buttons';
+import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { InputModule } from '../../input';
 import { MultiListModule } from '../multi-list/multi-list.module';
@@ -10,9 +10,7 @@ import { MatTooltipModule } from '@angular/material';
 import { IconsModule } from '../../../icons';
 
 @NgModule({
-  declarations: [
-    MultiSelectComponent,
-  ],
+  declarations: [MultiSelectComponent],
   imports: [
     CommonModule,
     PanelModule,
@@ -21,13 +19,9 @@ import { IconsModule } from '../../../icons';
     MultiListModule,
     InputModule,
     MatTooltipModule,
-    IconsModule,
+    IconsModule
   ],
-  exports: [
-    MultiSelectComponent,
-  ],
-  providers: [
-  ],
+  exports: [MultiSelectComponent],
+  providers: []
 })
-export class MultiSelectModule {
-}
+export class MultiSelectModule {}
