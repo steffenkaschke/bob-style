@@ -5,6 +5,7 @@ export { TypographyModule } from './lib/typography/typography.module';
 export * from './lib/typography';
 export { IconsModule } from './lib/icons/icons.module';
 export { ButtonsModule } from './lib/buttons-indicators/buttons/buttons.module';
+export * from './lib/buttons-indicators/buttons';
 export { AvatarModule } from './lib/buttons-indicators/avatar/avatar.module';
 export * from './lib/buttons-indicators/avatar';
 export { SliderModule } from './lib/buttons-indicators/slider/slider.module';
