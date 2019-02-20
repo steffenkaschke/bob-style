@@ -4,8 +4,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SplitInputSingleSelectComponent } from './split-input-single-select.component';
 import { SingleSelectComponent } from '../lists/single-select/single-select.component';
 import { MockComponent } from 'ng-mocks';
-import { InputComponent, InputEventType } from '../input';
-import { SelectGroupOption } from '../lists';
+import { InputEventType } from '../input/input.enum';
+import { InputComponent } from '../input/input.component';
+import { SelectGroupOption } from '../lists/list.interface';
 import { InputSingleSelectValue } from './split-input-single-select.interface';
 import { By } from '@angular/platform-browser';
 
@@ -18,14 +19,14 @@ describe('SplitInputSingleSelectComponent', () => {
       options: [
         { value: 'USD', id: 'USD' },
         { value: 'GBP', id: 'GBP' },
-        { value: 'ILS', id: 'ILS' },
-      ],
-    },
+        { value: 'ILS', id: 'ILS' }
+      ]
+    }
   ];
 
   const valueMock: InputSingleSelectValue = {
     inputValue: 200,
-    selectValue: 'USD',
+    selectValue: 'USD'
   };
 
   beforeEach(async(() => {
@@ -33,12 +34,9 @@ describe('SplitInputSingleSelectComponent', () => {
       declarations: [
         SplitInputSingleSelectComponent,
         MockComponent(SingleSelectComponent),
-        MockComponent(InputComponent),
+        MockComponent(InputComponent)
       ],
-      imports: [
-        NoopAnimationsModule,
-        CommonModule,
-      ],
+      imports: [NoopAnimationsModule, CommonModule]
     })
       .compileComponents()
       .then(() => {
@@ -54,7 +52,7 @@ describe('SplitInputSingleSelectComponent', () => {
       component.ngOnChanges({});
       expect(component.value).toEqual({
         inputValue: null,
-        selectValue: null,
+        selectValue: null
       });
     });
     it('should use the provided value and not overwrite with nulls', () => {
@@ -96,7 +94,7 @@ describe('SplitInputSingleSelectComponent', () => {
       const inputEl = fixture.debugElement.query(By.css('b-input'));
       inputEl.context.inputEvents.emit({
         event: InputEventType.onBlur,
-        value: 10,
+        value: 10
       });
       fixture.detectChanges();
       expect(component.elementChange.emit).not.toHaveBeenCalled();
@@ -105,12 +103,12 @@ describe('SplitInputSingleSelectComponent', () => {
       const inputEl = fixture.debugElement.query(By.css('b-input'));
       inputEl.context.inputEvents.emit({
         event: InputEventType.onChange,
-        value: 500,
+        value: 500
       });
       fixture.detectChanges();
       expect(component.elementChange.emit).toHaveBeenCalledWith({
         inputValue: 500,
-        selectValue: 'USD',
+        selectValue: 'USD'
       });
     });
   });
@@ -128,7 +126,7 @@ describe('SplitInputSingleSelectComponent', () => {
       fixture.detectChanges();
       expect(component.elementChange.emit).toHaveBeenCalledWith({
         inputValue: 200,
-        selectValue: 'GBP',
+        selectValue: 'GBP'
       });
     });
   });

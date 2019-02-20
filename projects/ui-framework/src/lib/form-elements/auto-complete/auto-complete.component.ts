@@ -1,7 +1,7 @@
 import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { BaseInputElement } from '../base-input-element';
 import { FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { AvatarSize } from '../../buttons-indicators/avatar';
+import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { map, startWith, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -22,10 +22,9 @@ import { AutoCompleteOption } from './auto-complete.interface';
       useExisting: forwardRef(() => AutoCompleteComponent),
       multi: true
     }
-  ],
+  ]
 })
 export class AutoCompleteComponent extends BaseInputElement implements OnInit {
-
   @Input() options: AutoCompleteOption[];
 
   avatarSize = AvatarSize;
@@ -41,20 +40,19 @@ export class AutoCompleteComponent extends BaseInputElement implements OnInit {
   }
 
   ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith<string | any>(''),
-        tap(option => {
-          if (typeof option === 'string') {
-            this.selectedOption = null;
-            this.selectedAvatarUrl = null;
-          }
-        }),
-        map(option => typeof option === 'string' ? option : option.value),
-        map(option => option ? this.filter(option) : this.options.slice())
-      );
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith<string | any>(''),
+      tap((option) => {
+        if (typeof option === 'string') {
+          this.selectedOption = null;
+          this.selectedAvatarUrl = null;
+        }
+      }),
+      map((option) => (typeof option === 'string' ? option : option.value)),
+      map((option) => (option ? this.filter(option) : this.options.slice()))
+    );
 
-    this.filteredOptions.subscribe(a => {
+    this.filteredOptions.subscribe((a) => {
       this.optionsPanelHeight = a.length * this.optionHeight;
     });
   }
@@ -80,11 +78,8 @@ export class AutoCompleteComponent extends BaseInputElement implements OnInit {
     const filterValue = value.toLowerCase();
     return filterValue === ''
       ? []
-      : this.options.filter(option =>
-        option.value.toLowerCase().includes(filterValue)
-      );
+      : this.options.filter((option) => option.value.toLowerCase().includes(filterValue));
   }
 
-  private notify(option: AutoCompleteOption): void {
-  }
+  private notify(option: AutoCompleteOption): void {}
 }

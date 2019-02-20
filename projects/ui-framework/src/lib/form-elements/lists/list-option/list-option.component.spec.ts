@@ -2,21 +2,16 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ListOptionComponent } from './list-option.component';
 import { FiltersModule } from '../../../filters/filters.module';
-import { AvatarComponent } from '../../../buttons-indicators/avatar';
+import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.component';
 import { NgModule } from '@angular/core';
 import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
 import { By } from '@angular/platform-browser';
 
 @NgModule({
-  imports: [
-    AvatarModule,
-  ],
-  entryComponents: [
-    AvatarComponent,
-  ],
+  imports: [AvatarModule],
+  entryComponents: [AvatarComponent]
 })
-class ListOptionTestModule {
-}
+class ListOptionTestModule {}
 
 describe('TextareaComponent', () => {
   let component: ListOptionComponent;
@@ -24,15 +19,8 @@ describe('TextareaComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ListOptionComponent,
-      ],
-      imports: [
-        NoopAnimationsModule,
-        FiltersModule,
-        AvatarModule,
-        ListOptionTestModule,
-      ],
+      declarations: [ListOptionComponent],
+      imports: [NoopAnimationsModule, FiltersModule, AvatarModule, ListOptionTestModule]
     })
       .compileComponents()
       .then(() => {
@@ -55,19 +43,19 @@ describe('TextareaComponent', () => {
             prefixComponent: {
               component: AvatarComponent,
               attributes: {
-                imageSource: 'img_url.png',
-              },
-            },
+                imageSource: 'img_url.png'
+              }
+            }
           },
           firstChange: true,
           previousValue: undefined,
-          isFirstChange: () => true,
+          isFirstChange: () => true
         },
         searchValue: {
           currentValue: undefined,
           firstChange: true,
           previousValue: undefined,
-          isFirstChange: () => true,
+          isFirstChange: () => true
         }
       };
       component.ngOnChanges(simpleChanges);
@@ -88,19 +76,19 @@ describe('TextareaComponent', () => {
             prefixComponent: {
               component: AvatarComponent,
               attributes: {
-                imageSource: 'img_url.png',
-              },
-            },
+                imageSource: 'img_url.png'
+              }
+            }
           },
           firstChange: true,
           previousValue: undefined,
-          isFirstChange: () => true,
+          isFirstChange: () => true
         },
         searchValue: {
           currentValue: undefined,
           firstChange: true,
           previousValue: undefined,
-          isFirstChange: () => true,
+          isFirstChange: () => true
         }
       };
       component.ngOnChanges(simpleChanges);
@@ -116,17 +104,17 @@ describe('TextareaComponent', () => {
             groupName: 'option group',
             value: 'list option value',
             isPlaceHolder: false,
-            selected: false,
+            selected: false
           },
           firstChange: true,
           previousValue: undefined,
-          isFirstChange: () => true,
+          isFirstChange: () => true
         },
         searchValue: {
           currentValue: undefined,
           firstChange: true,
           previousValue: undefined,
-          isFirstChange: () => true,
+          isFirstChange: () => true
         }
       };
       component.ngOnChanges(simpleChanges);
@@ -140,20 +128,22 @@ describe('TextareaComponent', () => {
         groupName: 'option group',
         value: 'list option value',
         isPlaceHolder: false,
-        selected: false,
+        selected: false
       };
       const simpleChanges = {
         searchValue: {
           currentValue: 'lis',
           firstChange: true,
           previousValue: undefined,
-          isFirstChange: () => true,
+          isFirstChange: () => true
         }
       };
       component.ngOnChanges(simpleChanges);
       fixture.detectChanges();
       const valueEl = fixture.debugElement.query(By.css('.value'));
-      expect(valueEl.nativeElement.innerHTML).toEqual(`<span class="highlight" style="font-weight: bold;">lis</span>t option value`);
+      expect(valueEl.nativeElement.innerHTML).toEqual(
+        `<span class="highlight" style="font-weight: bold;">lis</span>t option value`
+      );
     });
   });
 });
