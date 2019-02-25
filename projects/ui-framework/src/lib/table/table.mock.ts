@@ -3,13 +3,14 @@ import { AvatarCellComponent } from './table/avatar.component';
 
 export const mockColumnsDefs: ColumnDef[] = [
   {
-    headerName: 'selection',
+    headerName: '',
     field: 'selection',
     checkboxSelection: true,
     resizable: true,
     pinned: PinDirection.Left,
     width: 40,
-    lockPosition: true
+    lockPosition: true,
+    headerCheckboxSelection: true,
   },
   {headerName: '', field: 'about.avatar', cellRendererFramework: AvatarCellComponent, width: 40, lockPosition: true},
   {headerName: 'Display Name', field: 'fullName', resizable: true, sort: SortDirections.Asc, sortable: true},
@@ -66,5 +67,13 @@ export const mockRowData = [
       }
     },
     hiredDate: '2017-01-30'
-  }
+  },
 ];
+
+// For test performance
+/*for (let i = 4; i < 10000; i++) {
+  mockRowData[i] = mockRowData[0];
+  if (i % 100 === 0) {
+    console.log('Generate rows ' + i);
+  }
+}*/

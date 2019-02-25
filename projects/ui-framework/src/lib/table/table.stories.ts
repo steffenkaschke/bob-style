@@ -23,7 +23,10 @@ const template = `
   [columnDefs]="columnDefs"
   [rowSelection]="rowSelection"
   [rowHeight]="rowHeight"
-  [sizeColumnsToFit]="sizeColumnsToFit">
+  [sizeColumnsToFit]="sizeColumnsToFit"
+  (rowClicked)="rowClicked($event)"
+  (rowSelected)="rowSelected($event)"
+  (sortChanged)="sortChanged($event)">
 </b-table>
 `;
 
@@ -43,7 +46,11 @@ const note = `
   columnDefs | json | Columns definition
   rowSelection | boolean | Make headers sticky
   rowHeight | number | The height of the row
+  sizeColumnsToFit | boolean | Auto column size
   rowSelection | RowSelection | Single or multiple
+  rowClicked | Event | Row clicked event
+  rowSelected | Function | Row selected event
+  sortChanged | Function | Sort changed event
 
   ~~~
   ${template}
@@ -57,9 +64,12 @@ tableStories.add(
       props: {
         rowData: object('rowData', mockRowData),
         columnDefs: object('columnDefs', mockColumnsDefs),
-        rowHeight: number('rowHeight', 50),
         rowSelection: object('rowSelection', RowSelection.Multiple),
-        sizeColumnsToFit: boolean('sizeColumnsToFit', true)
+        rowHeight: number('rowHeight', 50),
+        sizeColumnsToFit: boolean('sizeColumnsToFit', true),
+        rowClicked: action(),
+        rowSelected: action(),
+        sortChanged: action(),
       },
       moduleMetadata: {
         entryComponents: [AvatarCellComponent],
