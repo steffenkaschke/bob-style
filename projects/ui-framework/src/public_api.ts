@@ -50,6 +50,7 @@ export { MiniPreloaderModule } from './lib/misc/mini-preloader/mini-preloader.mo
 export { SearchModule } from './lib/navigation/search/search.module';
 // Table
 export { TableModule } from './lib/table/table.module';
+export * from './lib/table/table/table.interface';
 // Filter
 export { FiltersModule } from './lib/filters/filters.module';
 // Utils
