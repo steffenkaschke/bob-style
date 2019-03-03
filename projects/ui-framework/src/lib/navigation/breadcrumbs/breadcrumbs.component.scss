@@ -6,6 +6,11 @@
   position: relative;
   width: 100%;
   .breadcrumbs-wrapper {
+    padding: 20px 10px;
+    border-top: 1px solid $grey-500;
+    border-bottom: 1px solid $grey-500;
+  }
+  .breadcrumbs-container {
     display: flex;
     flex-direction: row;
     width: 100%;
