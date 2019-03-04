@@ -14,7 +14,6 @@ import { FiltersModule } from '../../../filters/filters.module';
   exports: [
     ListOptionComponent,
   ],
-  providers: [],
 })
 export class ListOptionModule {
 }

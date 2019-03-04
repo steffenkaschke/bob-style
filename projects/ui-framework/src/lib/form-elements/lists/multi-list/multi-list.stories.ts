@@ -86,7 +86,9 @@ buttonStories.add(
         StoryBookLayoutModule,
         AvatarModule
       ],
-      entryComponents: [AvatarComponent]
+      entryComponents: [
+        AvatarComponent,
+      ]
     }
   }),
   { notes: { markdown: note } }
