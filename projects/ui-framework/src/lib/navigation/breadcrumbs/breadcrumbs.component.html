@@ -1,4 +1,4 @@
-<div class="breadcrumbs-wrapper">
+<div #breadcrumbsWrapper class="breadcrumbs-wrapper">
   <div #breadcrumbsContainer class="breadcrumbs-container">
     <a
       (click)="onStepClick($event, i)"
@@ -17,10 +17,10 @@
   </div>
   <div class="buttons-warpper">
     <b-button (clicked)="onPrevClick()" [size]="buttonSize.medium" [type]="buttonType.secondary">
-      {{ buttons.backBtn?.label }}
+      {{ buttons?.backBtn?.label }}
     </b-button>
     <b-button (clicked)="onNextClick()" [size]="buttonSize.medium" [type]="buttonType.primary">
-      {{ buttons.nextBtn?.label }}
+      {{ buttons?.nextBtn?.label }}
     </b-button>
   </div>
 </div>

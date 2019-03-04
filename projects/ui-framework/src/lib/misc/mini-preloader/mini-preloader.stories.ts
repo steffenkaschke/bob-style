@@ -19,20 +19,21 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Mini preloader">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
 const note = `
   ## Mini Preloader Element
-
+  #### Module
+  *MiniPreloaderModule*
   #### Properties
 
   Name | Type | Description
   --- | --- | ---
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
@@ -41,14 +42,13 @@ inputStories.add(
   () => {
     return {
       template: storyTemplate,
-      props: {
-      },
+      props: {},
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           MiniPreloaderModule,
           TypographyModule,
-          StoryBookLayoutModule,
+          StoryBookLayoutModule
         ]
       }
     };

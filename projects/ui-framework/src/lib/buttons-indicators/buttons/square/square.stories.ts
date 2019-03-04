@@ -28,7 +28,8 @@ const template = `
 `;
 const note = `
   ## Square Button Element
-
+  #### Module
+  *ButtonsModule*
   #### Properties
 
   Name | Type | Description | Default value
@@ -40,34 +41,30 @@ const note = `
   disabled | boolean | disabled | false
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
 const storyTemplate = `
 <b-story-book-layout title="Square button">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
 buttonStories.add(
-  'Square Button', () => ({
+  'Square Button',
+  () => ({
     template: storyTemplate,
     props: {
       type: select('type', typeOptions, ButtonType.secondary),
       icon: select('icon', icons, Icons.phone_link),
       color: select('color', iconColor, IconColor.dark),
       disabled: boolean('disabled', false),
-      onClick: action(),
+      onClick: action()
     },
     moduleMetadata: {
-      imports: [
-        ButtonsModule,
-        IconsModule,
-        StoryBookLayoutModule,
-      ]
+      imports: [ButtonsModule, IconsModule, StoryBookLayoutModule]
     }
   }),
   { notes: { markdown: note } }
 );
-

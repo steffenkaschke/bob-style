@@ -13,7 +13,7 @@ import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BreadcrumbsModule } from './breadcrumbs.module';
-import { Breadcrumb } from './breadcrumbs.interface';
+import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
 const inputStories = storiesOf(ComponentGroupType.Navigation, module)
@@ -22,8 +22,11 @@ const inputStories = storiesOf(ComponentGroupType.Navigation, module)
 
 const componmentTemplate = `
 <b-breadcrumbs [breadcrumbs]="breadcrumbs"
+               [buttons]="buttons"
                [activeIndex]="activeIndex"
-               (stepClick)="stepClick($event)">
+               (stepClick)="stepClick($event)"
+               (nextClick)="nextClick($event)"
+               (prevClick)="prevClick($event)">
 </b-breadcrumbs>
 `;
 
@@ -36,12 +39,17 @@ const template = `
 const note = `
   ## Breadcrumbs Element
 
+  #### Module
+  *BreadcrumbsModule*
   #### Properties
-
   Name | Type | Description
   --- | --- | ---
   breadcrumbs | Breadcrumb[] | breadcrumbs steps model
-  stepClick | action | returns step index
+  buttons | BreadcrumbNavButtons | breadcrumbs navigation buttons model
+  activeIndex | number | the active breadcrumb index
+  stepClick | EventEmitter | returns step index
+  nextClick | EventEmitter | returns the next step index
+  prevClick | EventEmitter | returns the previous step index
 
   ~~~
   ${componmentTemplate}
@@ -55,6 +63,11 @@ const breadcrumbsMock = [
   { title: 'summary', disabled: true }
 ];
 
+const breadcrumbsButtons = {
+  nextBtn: { label: 'Next', isVisible: true },
+  backBtn: { label: 'Back', isVisible: true }
+};
+
 inputStories.add(
   'Breadcrumbs',
   () => {
@@ -62,8 +75,11 @@ inputStories.add(
       template,
       props: {
         breadcrumbs: object<Breadcrumb>('breadcrumbs', breadcrumbsMock),
+        buttons: object<BreadcrumbNavButtons>('buttons', breadcrumbsButtons),
         activeIndex: number('activeIndex', 2),
-        stepClick: action()
+        stepClick: action(),
+        nextClick: action(),
+        prevClick: action()
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, BreadcrumbsModule, StoryBookLayoutModule]

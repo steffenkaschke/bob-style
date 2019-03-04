@@ -25,13 +25,14 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Slider">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
 const note = `
   ## Slider Element
-
+  #### Module
+  *SliderModule*
   #### Properties
 
   Name | Type | Description | Default value
@@ -47,7 +48,7 @@ const note = `
   progressChange | EventEmitter | Progress change callback |
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
@@ -65,13 +66,10 @@ sliderStories.add(
         disabled: boolean('disabled', false),
         readOnly: boolean('readOnly', false),
         labelSymbol: text('labelSymbol', '%'),
-        progressChange: action(),
+        progressChange: action()
       },
       moduleMetadata: {
-        imports: [
-          SliderModule,
-          StoryBookLayoutModule,
-        ]
+        imports: [SliderModule, StoryBookLayoutModule]
       }
     };
   },

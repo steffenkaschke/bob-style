@@ -23,7 +23,8 @@ const template = `
 `;
 const note = `
   ## Avatar Element
-
+  #### Module
+  *AvatarModule*
   #### Properties
 
   Name | Type | Description | Default value
@@ -34,7 +35,7 @@ const note = `
   handleClick | Function | callback for clicking on the avatar | no click (optional)
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
@@ -50,19 +51,19 @@ avatarStories.add(
     return {
       template: storyTemplate,
       props: {
-        imageSource: text('imageSource', 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'),
+        imageSource: text(
+          'imageSource',
+          'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
+        ),
         size: select('size', sizeOptions, AvatarSize.medium),
         isClickable: boolean('isClickable', false),
         clickHandler: action()
       },
       moduleMetadata: {
         declarations: [AvatarComponent],
-        imports: [
-          StoryBookLayoutModule,
-        ],
+        imports: [StoryBookLayoutModule]
       }
     };
   },
   { notes: { markdown: note } }
 );
-

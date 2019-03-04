@@ -20,7 +20,8 @@ const template = `
 `;
 const note = `
   ## Switch toggle element
-
+  #### Module
+  *SwitchToggleModule*
   #### Properties
 
   Name | Type | Description | Default value
@@ -30,31 +31,28 @@ const note = `
   changed | Function | callback for changing the toggle |
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
 const storyTemplate = `
 <b-story-book-layout title="Switch toggle">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
 buttonStories.add(
-  'Switch toggle', () => ({
+  'Switch toggle',
+  () => ({
     template: storyTemplate,
     props: {
       isDisabled: boolean('isDisabled', false),
       isChecked: boolean('isChecked', true),
-      switchChange: action(),
+      switchChange: action()
     },
     moduleMetadata: {
-      imports: [
-        SwitchToggleModule,
-        StoryBookLayoutModule,
-      ]
+      imports: [SwitchToggleModule, StoryBookLayoutModule]
     }
   }),
   { notes: { markdown: note } }
 );
-

@@ -24,7 +24,8 @@ const template = `
 `;
 const note = `
   ## Button Element
-
+  #### Module
+  *ButtonsModule*
   #### Properties
 
   Name | Type | Description | Default value
@@ -44,33 +45,30 @@ const note = `
   primary-color-darker | the pressed color of the primary button
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
 const storyTemplate = `
 <b-story-book-layout title="Button">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
 buttonStories.add(
-  'Regular Button', () => ({
+  'Regular Button',
+  () => ({
     template: storyTemplate,
     props: {
       onClick: action(),
       label: text('label', 'Click me'),
       type: select('type', typeOptions, ButtonType.primary),
       size: select('size', sizeOptions, ButtonSize.medium),
-      disabled: boolean('disabled', false),
+      disabled: boolean('disabled', false)
     },
     moduleMetadata: {
-      imports: [
-        ButtonsModule,
-        StoryBookLayoutModule,
-      ],
+      imports: [ButtonsModule, StoryBookLayoutModule]
     }
   }),
   { notes: { markdown: note } }
 );
-
