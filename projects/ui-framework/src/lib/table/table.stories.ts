@@ -38,7 +38,8 @@ const storyTemplate = `
 
 const note = `
   ## Auto complete Element
-
+  #### Module
+  *TableModule*
   #### Properties
   Name | Type | Description
   --- | --- | ---
@@ -69,7 +70,7 @@ tableStories.add(
         sizeColumnsToFit: boolean('sizeColumnsToFit', true),
         rowClicked: action(),
         rowSelected: action(),
-        sortChanged: action(),
+        sortChanged: action()
       },
       moduleMetadata: {
         entryComponents: [AvatarCellComponent],
@@ -79,7 +80,8 @@ tableStories.add(
           TableModule,
           AgGridModule,
           AvatarModule,
-          AgGridModule.withComponents([AvatarCellComponent])],
+          AgGridModule.withComponents([AvatarCellComponent])
+        ]
       }
     };
   },

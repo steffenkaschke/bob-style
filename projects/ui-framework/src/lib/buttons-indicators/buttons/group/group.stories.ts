@@ -15,44 +15,41 @@ const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
 
 const template = `
 <b-group>
-  <b-square-button type="${ ButtonType.secondary }"
-                   icon="${ Icons.skype_link }">
+  <b-square-button type="${ButtonType.secondary}"
+                   icon="${Icons.skype_link}">
   </b-square-button>
-  <b-square-button type="${ ButtonType.secondary }"
-                   icon="${ Icons.phone_link }">
+  <b-square-button type="${ButtonType.secondary}"
+                   icon="${Icons.phone_link}">
   </b-square-button>
-  <b-square-button type="${ ButtonType.secondary }"
-                   icon="${ Icons.slack_link }">
+  <b-square-button type="${ButtonType.secondary}"
+                   icon="${Icons.slack_link}">
   </b-square-button>
 </b-group>
 `;
 
 const storyTemplate = `
 <b-story-book-layout title="Grouped buttons">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
 const note = `
   ## Group Element
-
+  #### Module
+  *ButtonsModule*
   component for grouping the child components, mainly use for buttons group
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 buttonStories.add(
-  'Group', () => ({
+  'Group',
+  () => ({
     template: storyTemplate,
     props: {},
     moduleMetadata: {
-      imports: [
-        ButtonsModule,
-        IconsModule,
-        StoryBookLayoutModule,
-      ]
+      imports: [ButtonsModule, IconsModule, StoryBookLayoutModule]
     }
   }),
   { notes: { markdown: note } }
 );
-

@@ -24,7 +24,8 @@ const template = `
 
 const note = `
   ## Back Button Element
-
+  #### Module
+  *ButtonsModule*
   #### Properties
 
   Name | Type | Description | Default value
@@ -33,30 +34,28 @@ const note = `
   clicked | Function | callback for clicking on the back button |
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
 const storyTemplate = `
 <b-story-book-layout title="Back button">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
 backButtonStories.add(
-  'Back Button', () => ({
+  'Back Button',
+  () => ({
     template: storyTemplate,
     props: {
       onClick: action(),
       label: text('label', 'Back'),
-      type: select('type', typeOptions, BackButtonType.secondary),
+      type: select('type', typeOptions, BackButtonType.secondary)
     },
     moduleMetadata: {
-      imports: [
-        ButtonsModule,
-        StoryBookLayoutModule,
-      ]
-    },
+      imports: [ButtonsModule, StoryBookLayoutModule]
+    }
   }),
   { notes: { markdown: note } }
 );

@@ -27,7 +27,8 @@ const template = `
 
 const note = `
   ## Icon Element
-
+  #### Module
+  *IconsModule*
   #### Properties
 
   Name | Type | Description | Default value
@@ -39,13 +40,13 @@ const note = `
   hasHoverState | boolean | if icon has hover state | false
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
 const storyTemplate = `
 <b-story-book-layout title="Icon">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
@@ -59,25 +60,28 @@ iconStories.add(
         icon: select('icon', icons, Icons.docs_link),
         size: select('size', size, IconSize.large),
         color: select('color', color, IconColor.normal),
-        hasHoverState: boolean('hasHoverState', false),
+        hasHoverState: boolean('hasHoverState', false)
       },
       moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          IconsModule,
-          StoryBookLayoutModule,
-        ]
+        imports: [BrowserAnimationsModule, IconsModule, StoryBookLayoutModule]
       }
     };
   },
   { notes: { markdown: note } }
 );
 
-const listHtml = reduce(icons, (iconsTemplate, icon) => {
-  return iconsTemplate + `<div class="icon-wrapper">
-      <b-icon icon=${ icon } size="large"></b-icon><div class="icon-title">${ icon }</div>
-    </div>`;
-}, '');
+const listHtml = reduce(
+  icons,
+  (iconsTemplate, icon) => {
+    return (
+      iconsTemplate +
+      `<div class="icon-wrapper">
+      <b-icon icon=${icon} size="large"></b-icon><div class="icon-title">${icon}</div>
+    </div>`
+    );
+  },
+  ''
+);
 const iconsListTemplate = `
 <b-story-book-layout title="Icon list">
     <style>
@@ -91,7 +95,7 @@ const iconsListTemplate = `
       .icon-wrapper { background-color: #F8F7F7; border: 1px solid #535353; padding: 20px; border-radius: 4px; }
     </style>
     <div class="icons-list">
-      ${ listHtml }
+      ${listHtml}
     </div>
 </b-story-book-layout>
   `;
@@ -102,14 +106,9 @@ iconStories.add(
       template: iconsListTemplate,
       props: {},
       moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          IconsModule,
-          StoryBookLayoutModule,
-        ]
+        imports: [BrowserAnimationsModule, IconsModule, StoryBookLayoutModule]
       }
     };
   },
   { notes: { markdown: note } }
 );
-
