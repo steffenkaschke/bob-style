@@ -4,9 +4,7 @@
 <ng-template #t let-date let-focused="focused">
     <span class="custom-day"
           [class.focused]="focused"
-          [class.range]="isDate(date)"
-          (mouseenter)="hoveredDate = date"
-          (mouseleave)="hoveredDate = null">
+          [class.range]="isDate(date)">
       {{ date.day }}
     </span>
   </ng-template>
