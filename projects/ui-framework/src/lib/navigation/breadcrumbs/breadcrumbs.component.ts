@@ -5,19 +5,22 @@ import {
   Output,
   ViewChild,
   AfterViewInit,
-  OnDestroy
+  OnDestroy,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import { Subscription } from 'rxjs';
 import { UtilsService } from '../../utils/utils.service';
 import { ButtonSize, ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { has } from 'lodash';
 
 @Component({
   selector: 'b-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.scss']
 })
-export class BreadcrumbsComponent implements AfterViewInit, OnDestroy {
+export class BreadcrumbsComponent implements AfterViewInit, OnDestroy, OnChanges {
   @ViewChild('breadcrumbsWrapper') breadcrumbsWrapper;
   public isSmallMode = false;
   public resizeSubscription: Subscription;
@@ -44,6 +47,12 @@ export class BreadcrumbsComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.resizeSubscription.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (has(changes, 'buttons')) {
+      this.buttons = changes.buttons.currentValue;
+    }
   }
 
   private setIsSmallMode() {

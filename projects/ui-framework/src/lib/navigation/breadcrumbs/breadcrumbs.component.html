@@ -16,10 +16,20 @@
     </a>
   </div>
   <div class="buttons-warpper">
-    <b-button (clicked)="onPrevClick()" [size]="buttonSize.medium" [type]="buttonType.secondary">
+    <b-button
+      *ngIf="buttons?.backBtn?.isVisible"
+      (clicked)="onPrevClick()"
+      [size]="buttonSize.medium"
+      [type]="buttonType.secondary"
+    >
       {{ buttons?.backBtn?.label }}
     </b-button>
-    <b-button (clicked)="onNextClick()" [size]="buttonSize.medium" [type]="buttonType.primary">
+    <b-button
+      *ngIf="buttons?.nextBtn?.isVisible"
+      (clicked)="onNextClick()"
+      [size]="buttonSize.medium"
+      [type]="buttonType.primary"
+    >
       {{ buttons?.nextBtn?.label }}
     </b-button>
   </div>
