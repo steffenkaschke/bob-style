@@ -27,10 +27,9 @@ const note = `
   ## Mini Preloader Element
   #### Module
   *MiniPreloaderModule*
-  #### Properties
 
-  Name | Type | Description
-  --- | --- | ---
+  #### Properties
+  *None*
 
   ~~~
   ${template}

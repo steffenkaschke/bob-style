@@ -18,7 +18,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Grid layout example">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
@@ -26,12 +26,11 @@ const note = `
   ## Grid layout example
 
   #### Properties
-
   Name | Type | Description
   --- | --- | ---
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
@@ -40,14 +39,13 @@ inputStories.add(
   () => {
     return {
       template: storyTemplate,
-      props: {
-      },
+      props: {},
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           TypographyModule,
           StoryBookLayoutModule,
-          GridLayoutExampleModule,
+          GridLayoutExampleModule
         ]
       }
     };

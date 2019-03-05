@@ -27,15 +27,16 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Textarea">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
 const note = `
   ## Textarea Element
+  #### Module
+  *TextareaModule* or *FormElementsModule*
 
   #### Properties
-
   Name | Type | Description
   --- | --- | ---
   maxChars | number | maximum characters
@@ -48,7 +49,7 @@ const note = `
   inputEvents | InputEvents | input events emitter
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 textareaStories.add(
@@ -64,14 +65,10 @@ textareaStories.add(
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
-        errorMessage: text('errorMessage', ''),
+        errorMessage: text('errorMessage', '')
       },
       moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          TextareaModule,
-          StoryBookLayoutModule,
-        ]
+        imports: [BrowserAnimationsModule, TextareaModule, StoryBookLayoutModule]
       }
     };
   },

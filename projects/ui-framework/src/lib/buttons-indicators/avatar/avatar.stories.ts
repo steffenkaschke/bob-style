@@ -25,8 +25,8 @@ const note = `
   ## Avatar Element
   #### Module
   *AvatarModule*
-  #### Properties
 
+  #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
   imageSource | String | url of the image |

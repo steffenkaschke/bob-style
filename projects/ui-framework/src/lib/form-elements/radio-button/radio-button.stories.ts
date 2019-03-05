@@ -1,6 +1,14 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  array,
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,11 +33,13 @@ const template = `
 
 const stroyTemplate = `
 <b-story-book-layout title="Radio Buttons">
-  ${ template }
+  ${template}
 </b-story-book-layout>`;
 
 const note = `
   ## Radio Button Element
+  #### Module
+  *RadioButtonModule*
 
   #### Properties
 
@@ -42,7 +52,7 @@ const note = `
   radioChange | action | callback with the selected id
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
@@ -56,18 +66,14 @@ radioStories.add(
         radioConfig: object('radioConfig', [
           { id: 11, label: 'option one' },
           { id: 12, label: 'option two' },
-          { id: 13, label: 'option three' },
+          { id: 13, label: 'option three' }
         ]),
         direction: select('direction', direction, direction.row),
         disabled: boolean('disabled', false),
-        radioChange: action(),
+        radioChange: action()
       },
       moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          RadioButtonModule,
-          StoryBookLayoutModule
-        ]
+        imports: [BrowserAnimationsModule, RadioButtonModule, StoryBookLayoutModule]
       }
     };
   },

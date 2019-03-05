@@ -69,7 +69,6 @@ The typography is arranged into multiple levels:
 *TypographyModule*
 
 #### Style customization
-
 property name | Description
 --- | ---
 display-font-family | The display elements font family

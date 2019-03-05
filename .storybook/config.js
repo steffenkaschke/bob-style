@@ -1,20 +1,24 @@
-import { configure, addDecorator } from '@storybook/angular';
-import { withOptions } from '@storybook/addon-options';
+import { addParameters, configure } from '@storybook/angular';
+import { create } from '@storybook/theming';
 import '!style-loader!css-loader!sass-loader!../projects/ui-framework/src/lib/style/style.scss';
 
-addDecorator(
-  withOptions({
-    name: 'bob ui framework',
-    url: 'https://github.com/hibobio/bob-style',
-    hierarchyRootSeparator: /\|/,
-    addonPanelInRight: true
-  })
-)
+addParameters({
+  options: {
+    theme: create({
+      base: 'light',
+      brandTitle: 'Bob UI Framework',
+      brandUrl: 'https://github.com/hibobio/bob-style',
+      brandImage: 'https://images.hibob.com/icons/bob_avatar.png'
+    }),
+    isFullscreen: false,
+    panelPosition: 'right'
+  }
+});
 
 // automatically import all files ending in *.stories.ts
 const req = require.context('../projects/ui-framework', true, /.stories.ts$/);
 function loadStories() {
-  req.keys().forEach(filename => req(filename));
+  req.keys().forEach((filename) => req(filename));
 }
 
 configure(loadStories, module);

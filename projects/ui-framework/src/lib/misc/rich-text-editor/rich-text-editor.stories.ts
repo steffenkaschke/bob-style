@@ -20,7 +20,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Rich text editor">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
@@ -36,7 +36,7 @@ const note = `
   rteHtml | string | html content to be placed inside editor
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
@@ -45,21 +45,20 @@ const rteHtml = `
   <div>Some initial <strong>bold</strong> text</div>
 `;
 
-
 inputStories.add(
   'Rich text editor',
   () => {
     return {
       template: storyTemplate,
       props: {
-        rteHtml: text('rteHtml', rteHtml),
+        rteHtml: text('rteHtml', rteHtml)
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           TypographyModule,
           StoryBookLayoutModule,
-          RichTextEditorModule,
+          RichTextEditorModule
         ]
       }
     };

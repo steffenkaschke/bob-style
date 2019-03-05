@@ -22,8 +22,8 @@ const note = `
   ## Switch toggle element
   #### Module
   *SwitchToggleModule*
-  #### Properties
 
+  #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
   isChecked | boolean | is switch toggle on | false

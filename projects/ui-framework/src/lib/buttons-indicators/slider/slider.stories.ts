@@ -33,8 +33,8 @@ const note = `
   ## Slider Element
   #### Module
   *SliderModule*
-  #### Properties
 
+  #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
   value | number | Current slider value | 0 (optional)

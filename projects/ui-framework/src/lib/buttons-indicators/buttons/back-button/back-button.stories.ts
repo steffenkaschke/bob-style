@@ -26,8 +26,8 @@ const note = `
   ## Back Button Element
   #### Module
   *ButtonsModule*
-  #### Properties
 
+  #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
   type | BackButtonType | enum for setting the button type | secondary (optional)

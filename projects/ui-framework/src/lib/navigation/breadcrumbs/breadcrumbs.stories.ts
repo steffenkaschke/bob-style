@@ -41,6 +41,7 @@ const note = `
 
   #### Module
   *BreadcrumbsModule*
+
   #### Properties
   Name | Type | Description
   --- | --- | ---
