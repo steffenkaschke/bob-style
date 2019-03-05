@@ -1,2 +1,12 @@
 <ngb-datepicker #d (select)="onDateSelect($event)" [(ngModel)]="date"
-[startDate]="date"></ngb-datepicker>   
+[startDate]="date" [dayTemplate]="t"></ngb-datepicker>   
+
+<ng-template #t let-date let-focused="focused">
+    <span class="custom-day"
+          [class.focused]="focused"
+          [class.range]="isDate(date)"
+          (mouseenter)="hoveredDate = date"
+          (mouseleave)="hoveredDate = null">
+      {{ date.day }}
+    </span>
+  </ng-template>

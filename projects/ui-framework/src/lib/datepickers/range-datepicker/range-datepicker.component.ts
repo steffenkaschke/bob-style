@@ -9,7 +9,7 @@ export interface DateRange {
 @Component({
   selector: 'b-range-datepicker',
   templateUrl: './range-datepicker.component.html',
-  styleUrls: ['./range-datepicker.component.scss']
+  styleUrls: ['./range-datepicker.component.scss', '../datepickers.scss']
 })
 export class RangeDatepickerComponent {
 
