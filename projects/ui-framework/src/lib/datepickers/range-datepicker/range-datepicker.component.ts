@@ -25,7 +25,7 @@ export class RangeDatepickerComponent {
     this.toDate = null;
     if (this.date) {
       this.fromDate = this.date.fromDate;
-      this.fromDate = this.date.toDate;
+      this.toDate = this.date.toDate;
     }
   }
 

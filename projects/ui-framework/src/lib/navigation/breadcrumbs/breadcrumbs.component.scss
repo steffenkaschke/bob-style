@@ -6,10 +6,20 @@
   position: relative;
   width: 100%;
   .breadcrumbs-wrapper {
+    padding: 20px 10px;
+    border-top: 1px solid $grey-500;
+    border-bottom: 1px solid $grey-500;
     display: flex;
     flex-direction: row;
     width: 100%;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+  .breadcrumbs-container {
+    display: flex;
+    flex-direction: row;
     white-space: nowrap;
+    margin-right: 10px;
     .step {
       cursor: pointer;
       color: $grey-600;
@@ -66,6 +76,12 @@
         align-items: center;
         justify-content: center;
         transition: all 0.2s ease-in;
+
+        &:hover {
+          color: $white;
+          background-color: var(--primary-500);
+          border: 1px solid var(--primary-500);
+        }
       }
       .step-title {
         color: var(--primary-500);
@@ -78,6 +94,12 @@
         margin-left: 6px;
         margin-right: 8px;
       }
+    }
+  }
+  .buttons-warpper {
+    display: flex;
+    & > b-button:first-child {
+      margin-right: 10px;
     }
   }
 }

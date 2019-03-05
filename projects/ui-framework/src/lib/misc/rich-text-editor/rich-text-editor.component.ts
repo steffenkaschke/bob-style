@@ -1,7 +1,20 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { SelectGroupOption } from '../../form-elements/lists/list.interface';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
+import { LinkBlot } from './formats/link-blot';
+import { PanelComponent } from '../../overlay/panel/panel.component';
+import { BlotType, FormatTypes } from './rich-text-editor.enum';
+import { RteUtilsService } from './rte-utils/rte-utils.service';
+import { RteCurrentContent, RteLink, UpdateRteConfig } from './rich-text-editor.interface';
+import isEmpty from 'lodash/isEmpty';
+import { IconColor, Icons } from '../../icons/icons.enum';
+import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { PanelSize } from '../../overlay/panel/panel.enum';
 
-let Quill: any = null;
+const Block = quillLib.import('blots/block');
+Block.tagName = 'DIV';
+
+quillLib.register(Block, true);
+quillLib.register(LinkBlot);
 
 @Component({
   selector: 'b-rich-text-editor',
@@ -10,33 +23,73 @@ let Quill: any = null;
 })
 export class RichTextEditorComponent implements OnInit {
 
+  @Input() rteHtml: string;
+
   @ViewChild('quillEditor') quillEditor: ElementRef;
   @ViewChild('toolbar') toolbar: ElementRef;
+  @ViewChild('linkPanel') linkPanel: PanelComponent;
 
-  sizeOptions: SelectGroupOption[] = [
-    {
-      groupName: 'size options',
-      options: [
-        { id: 1, value: 'normal' },
-        { id: 2, value: 'small' },
-        { id: 3, value: 'big' },
-        { id: 4, value: 'huge' },
-      ],
-    },
-  ];
+  editor: Quill;
+  selection: RangeStatic;
+  selectedText: string;
 
-  constructor() {
+  formatTypes = FormatTypes;
+  buttonType = ButtonType;
+  icons = Icons;
+  iconColor = IconColor;
+  panelSize = PanelSize;
+
+  constructor(
+    private rteUtilsService: RteUtilsService,
+  ) {
   }
 
   ngOnInit(): void {
-    if (!Quill) {
-      Quill = require('quill');
-    }
-    const editor = new Quill(this.quillEditor.nativeElement, {
+    const editorOptions: QuillOptionsStatic = {
       modules: {
         toolbar: this.toolbar.nativeElement,
       },
       theme: 'snow'
-    });
+    };
+
+    this.editor = new quillLib(this.quillEditor.nativeElement, editorOptions);
+
+    if (!isEmpty(this.rteHtml)) {
+      this.editor.clipboard.dangerouslyPasteHTML(this.rteHtml);
+    }
+  }
+
+  getCurrentText(): RteCurrentContent {
+    return this.rteUtilsService.getHtmlContent(this.editor);
+  }
+
+  toggleFormat(formatType: FormatTypes) {
+    this.editor.focus();
+    this.editor.format(formatType, !this.rteUtilsService.isSelectionHasFormat(this.editor, formatType));
+  }
+
+  onLinkPanelOpen(): void {
+    this.editor.focus();
+    this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
+    this.selectedText = this.rteUtilsService.getSelectionText(this.editor, this.selection);
+    this.editor.blur();
+  }
+
+  onLinkUpdate(rteLink: RteLink): void {
+    const updateConfig: UpdateRteConfig = {
+      replaceStr: this.selectedText,
+      startIndex: this.selection.index,
+      insertText: rteLink.text,
+      format: {
+        type: BlotType.Link,
+        value: rteLink.url,
+      },
+    };
+    this.rteUtilsService.updateEditor(this.editor, updateConfig, false);
+    this.linkPanel.closePanel();
+  }
+
+  onLinkCancel(): void {
+    this.linkPanel.closePanel();
   }
 }

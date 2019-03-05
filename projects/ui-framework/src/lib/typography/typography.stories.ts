@@ -65,6 +65,8 @@ The typography is arranged into multiple levels:
 - display: Which are large titles (usually top of page)
 - heading: Which are section headings
 
+#### Module
+*TypographyModule*
 
 #### Style customization
 
@@ -87,7 +89,8 @@ Body
 ~~~
 `;
 typographyStories.add(
-  'Text', () => ({
+  'Text',
+  () => ({
     template: displayTemplate,
     props: {},
     moduleMetadata: {
@@ -96,4 +99,3 @@ typographyStories.add(
   }),
   { notes: { markdown: note } }
 );
-

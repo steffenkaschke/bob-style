@@ -15,22 +15,25 @@ const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
 const typeOptions = values(ButtonType);
 const sizeOptions = values(ButtonSize);
 const template = `
-<b-button
-  (clicked)="onClick($event)"
-  [type]="type"
-  [size]="size">
-    {{label}}
+<b-button (clicked)="onClick($event)"
+          [type]="type"
+          [size]="size"
+          [disabled]="disabled">
+  {{label}}
 </b-button>
 `;
 const note = `
   ## Button Element
-
+  #### Module
+  *ButtonsModule*
   #### Properties
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
+  label | string | button text |
   type | ButtonType | enum for setting the button type | primary (optional)
   size | ButtonSize | enum for setting the button size | medium (optional)
+  disabled | boolean | disabled | false
   clicked | Function | callback for clicking on the button |
 
   #### Style customization
@@ -42,32 +45,30 @@ const note = `
   primary-color-darker | the pressed color of the primary button
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
 const storyTemplate = `
 <b-story-book-layout title="Button">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
 buttonStories.add(
-  'Regular Button', () => ({
+  'Regular Button',
+  () => ({
     template: storyTemplate,
     props: {
       onClick: action(),
       label: text('label', 'Click me'),
       type: select('type', typeOptions, ButtonType.primary),
       size: select('size', sizeOptions, ButtonSize.medium),
+      disabled: boolean('disabled', false)
     },
     moduleMetadata: {
-      imports: [
-        ButtonsModule,
-        StoryBookLayoutModule,
-      ],
+      imports: [ButtonsModule, StoryBookLayoutModule]
     }
   }),
   { notes: { markdown: note } }
 );
-

@@ -1,6 +1,12 @@
 @import '../../style/colors';
 @import '../../style/typography';
 
+@mixin MatButton() {
+  .mat-ripple, .mat-button-focus-overlay {
+    display: none !important;
+  }
+}
+
 @mixin Button($type) {
   box-sizing: border-box;
   border-radius: 4px;
@@ -46,5 +52,12 @@
     &:active {
       background-color: $grey-300;
     }
+  }
+
+  @if $type == 'disabled' {
+    pointer-events: none;
+    border: 1px solid $grey-300;
+    background-color: $grey-200;
+    color: $grey-500;
   }
 }

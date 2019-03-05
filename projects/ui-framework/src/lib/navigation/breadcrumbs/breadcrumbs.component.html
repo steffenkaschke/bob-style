@@ -1,16 +1,26 @@
 <div #breadcrumbsWrapper class="breadcrumbs-wrapper">
-  <a
-    (click)="onStepClick($event, i)"
-    *ngFor="let step of breadcrumbs; let i = index"
-    [ngClass]="{ disabled: step.disabled, active: i == activeIndex }"
-    class="step"
-  >
-    <div class="step-index">
-      <b-caption>{{ i + 1 }}</b-caption>
-    </div>
-    <b-caption class="step-title" *ngIf="i == activeIndex || !isSmallMode">{{
-      step.title
-    }}</b-caption>
-    <div class="chevron-right"></div>
-  </a>
+  <div #breadcrumbsContainer class="breadcrumbs-container">
+    <a
+      (click)="onStepClick($event, i)"
+      *ngFor="let step of breadcrumbs; let i = index"
+      [ngClass]="{ disabled: step.disabled, active: i == activeIndex }"
+      class="step"
+    >
+      <div class="step-index">
+        <b-caption>{{ i + 1 }}</b-caption>
+      </div>
+      <b-caption class="step-title" *ngIf="i == activeIndex || !isSmallMode">{{
+        step.title
+      }}</b-caption>
+      <div class="chevron-right"></div>
+    </a>
+  </div>
+  <div class="buttons-warpper">
+    <b-button (clicked)="onPrevClick()" [size]="buttonSize.medium" [type]="buttonType.secondary">
+      {{ buttons?.backBtn?.label }}
+    </b-button>
+    <b-button (clicked)="onNextClick()" [size]="buttonSize.medium" [type]="buttonType.primary">
+      {{ buttons?.nextBtn?.label }}
+    </b-button>
+  </div>
 </div>

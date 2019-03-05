@@ -7,7 +7,7 @@
 <ng-template #templateRef>
   <div class="panel-position"
        [ngClass]="positionClassList">
-    <div class="panel-wrapper">
+    <div class="panel-wrapper {{panelSize}}">
       <ng-content select="[panel-content]"></ng-content>
     </div>
   </div>

@@ -2,16 +2,13 @@ import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
 import { boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../consts';
+import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
-
-import { AvatarModule } from '../buttons-indicators/avatar/avatar.module';
-import { RangeDatepickerModule } from './range-datepicker.module';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { DatepickersModule } from '../datepickers.module';
 
 
-
-const tableStories = storiesOf(ComponentGroupType.DateRangePicker, module)
+const datePickersStories = storiesOf(ComponentGroupType.DatePickers, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
@@ -41,7 +38,7 @@ const note = `
   ${template}
   ~~~
 `;
-tableStories.add(
+datePickersStories.add(
   'Date Range Picker',
   () => {
     return {
@@ -53,7 +50,7 @@ tableStories.add(
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
-          RangeDatepickerModule
+          DatepickersModule
         ],
       }
     };

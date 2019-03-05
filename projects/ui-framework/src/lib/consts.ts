@@ -7,7 +7,7 @@ export enum ComponentGroupType {
   Navigation = 'Navigation',
   Misc = 'Misc',
   DataTable = 'Data Table',
-  DateRangePicker = 'Date Range Picker'
+  DatePickers = 'Date Pickers'
 }
 
 export const serverDateFormat = 'YYYY-MM-DDTHH:mm';

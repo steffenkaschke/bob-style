@@ -1,9 +1,13 @@
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, Input, OnDestroy, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { CdkOverlayOrigin, FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import invoke from 'lodash/invoke';
 import { PanelPositionService } from './panel-position.service';
 import { Subscription } from 'rxjs';
+import { PanelSize } from './panel.enum';
+import concat from 'lodash/concat';
+import compact from 'lodash/compact';
+import get from 'lodash/get';
 
 @Component({
   selector: 'b-panel',
@@ -11,9 +15,14 @@ import { Subscription } from 'rxjs';
   styleUrls: ['panel.component.scss'],
 })
 
-export class PanelComponent implements OnInit, OnDestroy {
+export class PanelComponent implements OnDestroy {
+
   @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef') templateRef: TemplateRef<any>;
+
+  @Input() panelClass: string;
+  @Input() panelSize = PanelSize.medium;
+  @Input() showBackdrop = true;
 
   private panelConfig: OverlayConfig;
   private overlayRef: OverlayRef;
@@ -27,9 +36,6 @@ export class PanelComponent implements OnInit, OnDestroy {
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService,
   ) {
-  }
-
-  ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
@@ -50,6 +56,10 @@ export class PanelComponent implements OnInit, OnDestroy {
       });
   }
 
+  closePanel(): void {
+    this.destroyPanel();
+  }
+
   private destroyPanel(): void {
     invoke(this.overlayRef, 'dispose');
     invoke(this.backdropClickSubscriber, 'unsubscribe');
@@ -62,12 +72,14 @@ export class PanelComponent implements OnInit, OnDestroy {
     const positionStrategy = this.panelPositionService.getDefaultPanelPositionStrategy(this.overlayOrigin);
 
     this.subscribeToPositions(positionStrategy as FlexibleConnectedPositionStrategy);
+    const panelClass = compact(concat(['b-panel'], [get(this, 'panelClass', null)]));
+    const backdropClass = this.showBackdrop ? 'b-panel-backdrop' : 'b-panel-backdrop-invisible';
 
     return {
       disposeOnNavigation: true,
-      backdropClass: 'b-panel-backdrop',
       hasBackdrop: true,
-      panelClass: ['b-panel'],
+      backdropClass,
+      panelClass,
       positionStrategy,
     };
   }
