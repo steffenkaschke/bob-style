@@ -29,14 +29,17 @@ const storyTemplate = `
 const note = `
   ## Search Element
 
+  #### Module
+  *SingleListModule*
+
   #### Properties
 
-  Name | Type | Description
-  --- | --- | ---
-  value | string/number/float | type of input field
-  label | string | label text
-  hideLabelOnFocus | boolean | should hide label on focus
-  searchChange | action | searchChange
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  value | string/number/float | type of input field | none
+  label | string | label text | none
+  hideLabelOnFocus | boolean | should hide label on focus | false
+  searchChange | action | searchChange | none
 
   ~~~
   ${ template }
@@ -48,7 +51,7 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        value: text('value', ''),
+        value: text('value', 'Alan Tulin'),
         label: text('label', 'Search'),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         searchChange: action(),

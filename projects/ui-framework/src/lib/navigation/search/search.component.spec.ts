@@ -27,9 +27,25 @@ describe('SearchComponent', () => {
         fixture = TestBed.createComponent(SearchComponent);
         component = fixture.componentInstance;
         spyOn(component.searchChange, 'emit');
+        component.ngOnChanges({});
         fixture.detectChanges();
       });
   }));
+
+  describe('OnChanges', () => {
+    it('should assign empty string value if no value exists', () => {
+      expect(component.value).toEqual('');
+    });
+    it('should assign value with value if exists', () => {
+      component.ngOnChanges({
+        value: {
+          previousValue: undefined, currentValue: 'Alan Tulin', firstChange: false, isFirstChange: () => true,
+        }
+      });
+      fixture.detectChanges();
+      expect(component.value).toEqual('Alan Tulin');
+    });
+  });
 
   describe('onInputEvents', () => {
     it('should show reset icon if search has value', () => {
@@ -44,7 +60,7 @@ describe('SearchComponent', () => {
       resetElement = fixture.debugElement.query(By.css('.reset-button'));
       expect(resetElement).not.toBe(null);
     });
-    it('should invoke searcChange.emit with search value', () => {
+    it('should invoke searchChange.emit with search value', () => {
       const inputElement = fixture.debugElement.query(By.css('input'));
       inputElement.nativeElement.value = 'change input value';
       inputElement.nativeElement.dispatchEvent(new Event('input'));

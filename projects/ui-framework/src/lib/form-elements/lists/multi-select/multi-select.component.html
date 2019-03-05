@@ -12,6 +12,7 @@
            [required]="required"
            [matTooltip]="showTriggerTooltip ? triggerValue : null"
            matTooltipPosition="above"
+           [hideLabelOnFocus]="hideLabelOnFocus"
            [value]="triggerValue">
 
     <div *ngIf="value.length > 0"

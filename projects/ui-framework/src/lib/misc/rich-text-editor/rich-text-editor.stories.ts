@@ -27,8 +27,10 @@ const storyTemplate = `
 const note = `
   ## Rich text editor
 
-  #### Properties
+  #### Module
+  *RichTextEditorModule*
 
+  #### Properties
   Name | Type | Description
   --- | --- | ---
   rteHtml | string | html content to be placed inside editor

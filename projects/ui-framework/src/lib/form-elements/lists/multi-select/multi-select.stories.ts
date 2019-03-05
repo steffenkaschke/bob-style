@@ -26,7 +26,8 @@ const template = `
                 [required]="required"
                 [errorMessage]="errorMessage"
                 [hintMessage]="hintMessage"
-                [showSingleGroupHeader]="showSingleGroupHeader">
+                [showSingleGroupHeader]="showSingleGroupHeader"
+                [hideLabelOnFocus]="hideLabelOnFocus">
 </b-multi-select>
 `;
 
@@ -39,19 +40,22 @@ const storyTemplate = `
 const note = `
   ## Multi Select
 
-  #### Properties
+  #### Module
+  *MultiSelectModule*
 
-  Name | Type | Description
-  --- | --- | ---
-  options | SelectGroupOption[] | model of selection group
-  value | (string or number) | selected id
-  selectChange | action | returns selected id
-  label | string | label text
-  disabled | boolean | is field disabled
-  required | boolean | is field required
-  hintMessage | text | hint text
-  errorMessage | text | error text
-  showSingleGroupHeader | boolean | displays single group with group header
+  #### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  options | SelectGroupOption[] | model of selection group | none
+  value | (string or number) | selected id | none
+  selectChange | action | returns selected id | none
+  label | string | label text | none
+  disabled | boolean | is field disabled | none
+  required | boolean | is field required | none
+  hintMessage | text | hint text | none
+  errorMessage | text | error text | none
+  showSingleGroupHeader | boolean | displays single group with group header | false
+  hideLabelOnFocus | boolean | hides label instead of top | false
 
   ~~~
   ${template}
@@ -90,7 +94,8 @@ buttonStories.add(
       required: boolean('required', false),
       hintMessage: text('hintMessage', 'This field should contain something'),
       errorMessage: text('errorMessage', ''),
-      showSingleGroupHeader: boolean('showSingleGroupHeader', false)
+      showSingleGroupHeader: boolean('showSingleGroupHeader', false),
+      hideLabelOnFocus: boolean('hideLabelOnFocus', false),
     },
     moduleMetadata: {
       imports: [

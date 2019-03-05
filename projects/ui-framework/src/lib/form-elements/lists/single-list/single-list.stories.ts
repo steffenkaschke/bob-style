@@ -34,14 +34,17 @@ const storyTemplate = `
 const note = `
   ## Single list
 
-  #### Properties
+  #### Module
+  *SingleListModule*
 
-  Name | Type | Description
-  --- | --- | ---
-  options | SelectGroupOption[] | model of selection group
-  value | (string or number) | selected id
-  selectChange | action | returns selected id
-  showSingleGroupHeader | boolean | displays single group with group header
+  #### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  options | SelectGroupOption[] | model of selection group | none
+  value | (string or number) | selected id | none
+  selectChange | action | returns selected id | none
+  showSingleGroupHeader | boolean | displays single group with group header | false
+  maxHeight | number | component max height | 352 (8 rows)
 
   ~~~
   ${template}

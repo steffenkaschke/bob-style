@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { select, withKnobs } from '@storybook/addon-knobs/angular';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { PanelModule } from '../panel/panel.module';
@@ -9,13 +9,20 @@ import { TypographyModule } from '../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
+import { PanelSize } from './panel.enum';
+import { values } from 'lodash';
 
 const buttonStories = storiesOf(ComponentGroupType.Overlay, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
+const panelSize = values(PanelSize);
+
 const template = `
-<b-panel style="position: absolute; top: 20px; left: 20px;">
+<b-panel style="position: absolute; top: 20px; left: 20px;"
+         [panelClass]="panelClass"
+         [panelSize]="panelSize"
+         [showBackdrop]="showBackdrop">
   <b-button panel-trigger>
     Time Off Policies info
   </b-button>
@@ -30,7 +37,10 @@ const template = `
   </div>
 </b-panel>
 
-<b-panel style="position: absolute; bottom: 20px; right: 20px;">
+<b-panel style="position: absolute; bottom: 20px; right: 20px;"
+         [panelClass]="panelClass"
+         [panelSize]="panelSize"
+         [showBackdrop]="showBackdrop">
   <b-button panel-trigger>
     Insights info
   </b-button>
@@ -63,6 +73,16 @@ const storyTemplate = `
 const note = `
   ## Panel
 
+  #### Module
+  *PanelModule*
+
+  #### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  panelSize | PanelSize | panel size | "medium"
+  panelClass | string | panel class | none
+  showBackdrop | boolean | show backdrop | true
+
   ~~~
   ${template}
   ~~~
@@ -71,7 +91,11 @@ buttonStories.add(
   'Panel',
   () => ({
     template: storyTemplate,
-    props: {},
+    props: {
+      panelSize: select('panelSize', panelSize, PanelSize.medium),
+      panelClass: text('panelClass', 'my-panel-class'),
+      showBackdrop: boolean('showBackdrop', true),
+    },
     moduleMetadata: {
       imports: [
         PanelModule,
