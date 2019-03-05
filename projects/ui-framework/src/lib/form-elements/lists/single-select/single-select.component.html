@@ -12,7 +12,8 @@
            [matTooltip]="showTriggerTooltip ? triggerValue : null"
            [ngClass]="{'has-clear-prefix': value !== null}"
            [value]="triggerValue"
-           matTooltipPosition="above">
+           matTooltipPosition="above"
+           [hideLabelOnFocus]="hideLabelOnFocus">
 
     <div *ngIf="value!==null"
          class="clear-selection"

@@ -8,6 +8,7 @@ import { RteCurrentContent, RteLink, UpdateRteConfig } from './rich-text-editor.
 import isEmpty from 'lodash/isEmpty';
 import { IconColor, Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { PanelSize } from '../../overlay/panel/panel.enum';
 
 const Block = quillLib.import('blots/block');
 Block.tagName = 'DIV';
@@ -36,6 +37,7 @@ export class RichTextEditorComponent implements OnInit {
   buttonType = ButtonType;
   icons = Icons;
   iconColor = IconColor;
+  panelSize = PanelSize;
 
   constructor(
     private rteUtilsService: RteUtilsService,

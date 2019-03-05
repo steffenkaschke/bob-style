@@ -27,33 +27,36 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Single select">
-  ${template}
+  ${ template }
 </b-story-book-layout>
 `;
 
 const note = `
   ## Multi list
 
-  #### Properties
+  #### Module
+  *MultiListModule*
 
-  Name | Type | Description
-  --- | --- | ---
-  options | SelectGroupOption[] | model of selection group
-  value | (string or number) | selected id
-  selectChange | action | returns selected id
-  showSingleGroupHeader | boolean | displays single group with group header
+  #### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  options | SelectGroupOption[] | model of selection group | none
+  value | (string or number) | selected id | none
+  selectChange | action | returns selected id | none
+  showSingleGroupHeader | boolean | displays single group with group header | false
+  maxHeight | number | component max height | 352 (8 rows)
 
   ~~~
-  ${template}
+  ${ template }
   ~~~
 `;
 
 const optionsMock: SelectGroupOption[] = Array.from(Array(1), (_, i) => {
   return {
-    groupName: `Basic Info G${i} - header`,
+    groupName: `Basic Info G${ i } - header`,
     options: Array.from(Array(4), (_, k) => {
       return {
-        value: `Basic Info G${i}_E${k} - option`,
+        value: `Basic Info G${ i }_E${ k } - option`,
         id: i * 4 + k,
         prefixComponent: {
           component: AvatarComponent,

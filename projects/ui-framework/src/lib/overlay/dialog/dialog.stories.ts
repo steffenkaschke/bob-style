@@ -19,7 +19,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Dialog">
-  ${template}
+  ${ template }
 </b-story-book-layout>
 `;
 
@@ -27,8 +27,84 @@ const note = `
   ## Dialog
 
   ~~~
-  ${template}
+  ${ template }
   ~~~
+
+  ## How to use
+  trigger:
+  ~~~
+  constructor(
+    private dialogService: DialogService,
+  ) {
+  }
+  openDialog() {
+    this.dialogService
+      .openDialog(
+        YourDialogComponent,
+        {
+          size: DialogSize.small (medium, large),
+          panelClass: 'your-dialog-class',
+          data: {...yourData},
+        }
+      );
+  }
+  ~~~
+
+  YourDialogComponent:
+  ~~~
+@Component({
+  selector: 'b-dialog-example-dialog',
+  template: \`
+    <b-dialog dialogTitle="{{ yourTitle }}" [dialogButtons]="dialogButtonConfig">
+      <div b-dialog-sub-title> // optional
+        subtitle content
+      </div>
+      <div b-dialog-content>
+        ...
+        your content
+        ...
+      </div>
+    </b-dialog>
+  \`
+})
+export class YourDialogComponent implements OnInit {
+  dialogButtonConfig: DialogButtons;
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.editedText = this.data.textContent;
+
+    this.dialogButtonConfig = {} // DialogButtons config
+  }
+}
+  ~~~
+
+
+  Module:
+  ~~~
+  @NgModule({
+    declarations: [
+      YourDialogComponent,
+    ],
+    imports: [
+      CommonModule,
+      DialogModule,
+    ],
+    entryComponents: [
+      YourDialogComponent,
+    ],
+    providers: [
+      DialogService,
+    ]
+  })
+  export class YourModule {
+  }
+  ~~~
+
 `;
 buttonStories.add(
   'Dialog',

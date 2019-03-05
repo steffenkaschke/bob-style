@@ -23,7 +23,9 @@
                    [color]="iconColor.normal">
   </b-square-button>
 
-  <b-panel #linkPanel>
+  <b-panel #linkPanel
+           panelClass="rte-link-editor"
+           [panelSize]="panelSize.medium">
     <b-square-button panel-trigger
                      (clicked)="onLinkPanelOpen()"
                      [type]="buttonType.tertiary"
