@@ -40,6 +40,7 @@ const note = `
   ## Auto complete Element
   #### Module
   *TableModule*
+
   #### Properties
   Name | Type | Description
   --- | --- | ---

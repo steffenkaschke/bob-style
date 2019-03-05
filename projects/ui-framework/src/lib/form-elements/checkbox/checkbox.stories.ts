@@ -22,15 +22,16 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Checkbox">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
 const note = `
   ## Checkbox Element
+  #### Module
+  *CheckboxModule* or *FormElementsModule*
 
   #### Properties
-
   Name | Type | Description
   --- | --- | ---
   value | boolean | start checkbox state
@@ -40,7 +41,7 @@ const note = `
   checkboxChange | checkboxChange | checkboxChange emitter
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 inputStories.add(
@@ -53,14 +54,10 @@ inputStories.add(
         value: boolean('value', true),
         label: text('label', 'Check this'),
         disabled: boolean('disabled', false),
-        required: boolean('required', false),
+        required: boolean('required', false)
       },
       moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          CheckboxModule,
-          StoryBookLayoutModule,
-        ]
+        imports: [BrowserAnimationsModule, CheckboxModule, StoryBookLayoutModule]
       }
     };
   },

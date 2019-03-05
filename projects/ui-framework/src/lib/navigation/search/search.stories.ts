@@ -22,7 +22,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Search">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
@@ -33,7 +33,6 @@ const note = `
   *SingleListModule*
 
   #### Properties
-
   Name | Type | Description | Default value
   --- | --- | --- | ---
   value | string/number/float | type of input field | none
@@ -42,7 +41,7 @@ const note = `
   searchChange | action | searchChange | none
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 inputStories.add(
@@ -54,14 +53,10 @@ inputStories.add(
         value: text('value', 'Alan Tulin'),
         label: text('label', 'Search'),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
-        searchChange: action(),
+        searchChange: action()
       },
       moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          SearchModule,
-          StoryBookLayoutModule,
-        ]
+        imports: [BrowserAnimationsModule, SearchModule, StoryBookLayoutModule]
       }
     };
   },

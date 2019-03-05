@@ -26,8 +26,8 @@ const note = `
   ## Button Element
   #### Module
   *ButtonsModule*
-  #### Properties
 
+  #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
   label | string | button text |

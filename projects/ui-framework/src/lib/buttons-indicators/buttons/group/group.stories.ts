@@ -37,7 +37,9 @@ const note = `
   ## Group Element
   #### Module
   *ButtonsModule*
+
   component for grouping the child components, mainly use for buttons group
+
   ~~~
   ${template}
   ~~~

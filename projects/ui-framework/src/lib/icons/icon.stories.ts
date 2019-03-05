@@ -29,8 +29,8 @@ const note = `
   ## Icon Element
   #### Module
   *IconsModule*
-  #### Properties
 
+  #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
   toolTipSummary | String | Tooltip text  |

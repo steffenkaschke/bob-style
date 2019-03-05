@@ -5,7 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { InputModule } from './input.module';
 import { InputAutoCompleteOptions, InputTypes } from './input.enum';
-import {ComponentGroupType} from '../../consts';
+import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
@@ -33,15 +33,16 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Input">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
 const note = `
   ## Input Element
+  #### Module
+  *InputModule* or *FormElementsModule*
 
   #### Properties
-
   Name | Type | Description
   --- | --- | ---
   type | InputType | type of input field
@@ -56,7 +57,7 @@ const note = `
   inputEvents | InputEvents | input events emitter
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 inputStories.add(
@@ -74,14 +75,14 @@ inputStories.add(
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
         errorMessage: text('errorMessage', ''),
-        enableBrowserAutoComplete: select('enableBrowserAutoComplete', inputAutoCompleteOptions, InputAutoCompleteOptions.off),
+        enableBrowserAutoComplete: select(
+          'enableBrowserAutoComplete',
+          inputAutoCompleteOptions,
+          InputAutoCompleteOptions.off
+        )
       },
       moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          InputModule,
-          StoryBookLayoutModule,
-        ]
+        imports: [BrowserAnimationsModule, InputModule, StoryBookLayoutModule]
       }
     };
   },

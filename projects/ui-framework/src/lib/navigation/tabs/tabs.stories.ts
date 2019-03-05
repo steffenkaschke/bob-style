@@ -1,6 +1,14 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  array,
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { TabsModule } from './tabs.module';
 import { ComponentGroupType } from '../../consts';
@@ -14,14 +22,15 @@ const inputStories = storiesOf(ComponentGroupType.Navigation, module)
 
 const tabs: Tab[] = [
   {
-    label: 'tab 1',
+    label: 'tab 1'
   },
   {
-    label: 'tab 2',
+    label: 'tab 2'
   },
   {
-    label: 'tab 3',
-  }];
+    label: 'tab 3'
+  }
+];
 const template = `
 <b-tabs [tabs]="tabs"
         [onSelectedTabChange]="onSelectedTabChange"
@@ -30,15 +39,16 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout title="Tabs">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
 const note = `
   ## Tabs Element
+  #### Module
+  *TabsModule*
 
   #### Properties
-
   Name | Type | Description
   --- | --- | ---
   tabs | Tabs[] | tabs metadata
@@ -46,7 +56,7 @@ const note = `
   selectedIndex | number | the selected tab index 0-n
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 inputStories.add(
@@ -57,14 +67,10 @@ inputStories.add(
       props: {
         tabs: object<Tab>('tabs', tabs),
         onSelectedTabChange: action(),
-        selectedIndex: number('selectedIndex', 0, 0),
+        selectedIndex: number('selectedIndex', 0, 0)
       },
       moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          TabsModule,
-          StoryBookLayoutModule,
-        ]
+        imports: [BrowserAnimationsModule, TabsModule, StoryBookLayoutModule]
       }
     };
   },
