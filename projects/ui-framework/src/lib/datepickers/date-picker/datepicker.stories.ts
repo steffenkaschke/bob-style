@@ -15,7 +15,7 @@ const datePickersStories = storiesOf(ComponentGroupType.DatePickers, module)
 const template = `
 <b-date-picker
 [date]="date"
-(selectDate)="onSelectDate($event)">
+(dateSelected)="onSelectDate($event)">
 </b-date-picker>
 `;
 

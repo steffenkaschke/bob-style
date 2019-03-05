@@ -81,3 +81,5 @@ export {
   QuickFilterChangeEvent,
   QuickFilterBarChangeEvent
 } from './lib/navigation/quick-filter/quick-filter.interface';
+// DatePickers
+export { DatepickersModule } from './lib/datepickers/datepickers.module';

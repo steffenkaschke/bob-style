@@ -1,1 +1,2 @@
-<ngb-datepicker #d (select)="onDateSelect($event)"></ngb-datepicker>
+<ngb-datepicker #d (select)="onDateSelect($event)" [(ngModel)]="date"
+[startDate]="date"></ngb-datepicker>   
