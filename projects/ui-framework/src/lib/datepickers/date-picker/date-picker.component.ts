@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { NgbDate, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'b-date-picker',
@@ -15,7 +15,7 @@ export class DatePickerComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.date = new NgbDate(2019, 3, 1);
+
   }
 
   onDateSelect(date) {
