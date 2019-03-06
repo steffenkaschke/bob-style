@@ -9,6 +9,8 @@ import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 export class DatePickerComponent implements OnInit {
 
   @Input() date: NgbDate = null;
+  @Input() navigation = 'select';
+  @Input() daysTemplate;
   @Output() dateSelected: EventEmitter<NgbDate> = new EventEmitter<NgbDate>();
 
   constructor() {

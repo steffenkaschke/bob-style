@@ -1,5 +1,5 @@
 <ngb-datepicker #d (select)="onDateSelect($event)" date="date"
-[startDate]="date" [dayTemplate]="t"></ngb-datepicker>   
+[startDate]="date" [dayTemplate]="daysTemplate || t" [navigation]="navigation"></ngb-datepicker>   
 
 <ng-template #t let-date let-focused="focused">
     <span class="custom-day"

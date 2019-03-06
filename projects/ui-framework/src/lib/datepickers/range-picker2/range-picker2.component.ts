@@ -1,24 +1,23 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbDate, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { DateRange } from '../date-range.interface';
 
-
 @Component({
-  selector: 'b-range-datepicker',
-  templateUrl: './range-datepicker.component.html',
-  styleUrls: ['./range-datepicker.component.scss', '../datepickers.scss']
+  selector: 'b-range-picker2',
+  templateUrl: './range-picker2.component.html',
+  styleUrls: ['./range-picker2.component.scss', '../datepickers.scss']
 })
-export class RangeDatepickerComponent {
+export class RangePicker2Component {
 
-  hoveredDate: NgbDate;
+  hoveredDate1: NgbDate;
 
-  fromDate: NgbDate;
+  fromDate: NgbDate = new NgbDate(2019, 3, 1);
   toDate: NgbDate;
   @Input() date: DateRange = null;
   @Output() dateSelected: EventEmitter<DateRange> = new EventEmitter<DateRange>();
 
   constructor(calendar: NgbCalendar) {
-    this.fromDate = calendar.getToday();
+    // this.fromDate = calendar.getToday();
     this.toDate = null;
     if (this.date) {
       this.fromDate = this.date.fromDate;
@@ -40,7 +39,7 @@ export class RangeDatepickerComponent {
   }
 
   isHovered(date: NgbDate) {
-    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
+    return this.fromDate && !this.toDate && this.hoveredDate1 && date.after(this.fromDate) && date.before(this.hoveredDate1);
   }
 
   isInside(date: NgbDate) {
@@ -48,7 +47,18 @@ export class RangeDatepickerComponent {
   }
 
   isRange(date: NgbDate) {
-    return date.equals(this.fromDate) || date.equals(this.toDate) || this.isInside(date) || this.isHovered(date);
+    return date.equals(this.toDate) ||
+      this.isInside(date) ||
+      this.isHoveredTo(date);
   }
+
+  isRangeTo(date: NgbDate) {
+    return false;
+  }
+
+  isHoveredTo(date: NgbDate) {
+    return false;
+  }
+
 
 }

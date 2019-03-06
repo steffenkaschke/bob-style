@@ -1,0 +1,28 @@
+<b-date-picker [navigation]="'arrow'" date="fromDate"
+[daysTemplate]="t1"></b-date-picker>
+
+<ng-template #t1 let-date let-focused="focused">
+  <span class="custom-day"
+        [class.focused]="focused"
+        [class.range]="isRange(date)"
+        [class.faded]="isHovered(date) || isInside(date)"
+        (mouseenter)="hoveredDate1 = date"
+        (mouseleave)="hoveredDate1 = null">
+    {{ date.day }}
+  </span>
+</ng-template>
+
+<b-date-picker [navigation]="'arrow'"
+date="toDate"
+[daysTemplate]="t2"></b-date-picker>
+
+<ng-template #t2 let-dateTo let-focused="focused">
+  <span class="custom-day"
+        [class.focused]="focused"
+        [class.range]="isRangeTo(dateTo)"
+        [class.faded]="isHoveredTo(dateTo) || isInside(dateTo)"
+        (mouseenter)="hoveredDate2 = dateTo"
+        (mouseleave)="hoveredDate2 = null">
+    {{ dateTo.day }}
+  </span>
+</ng-template>
