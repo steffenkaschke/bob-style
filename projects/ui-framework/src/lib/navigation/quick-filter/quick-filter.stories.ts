@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { text, select, boolean, withKnobs, number, object } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
@@ -12,9 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuickFilterSelectType } from './quick-filter.enum';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 
-const textareaStories = storiesOf(ComponentGroupType.Navigation, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const textareaStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
 
 const template = `
 <b-quick-filter-bar style="width: 95vw; margin: 20px auto;"

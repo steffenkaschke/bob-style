@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import {
   array,
   boolean,
@@ -18,9 +17,7 @@ import values from 'lodash/values';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
 const direction = values(RadioDirection);
-const radioStories = storiesOf(ComponentGroupType.FormElements, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const radioStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
 
 const template = `
 <b-radio-button [radioConfig]="radioConfig"

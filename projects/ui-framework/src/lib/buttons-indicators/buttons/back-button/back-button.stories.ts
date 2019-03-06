@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { BackButtonType } from '../buttons.enum';
 import { values, remove } from 'lodash';
@@ -8,9 +7,9 @@ import { ButtonsModule } from '../buttons.module';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
-const backButtonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const backButtonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
+  withKnobs
+);
 
 const typeOptions = values(BackButtonType);
 

@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { AvatarComponent } from './avatar.component';
@@ -8,9 +7,9 @@ import { AvatarSize } from './avatar.enum';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const avatarStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const avatarStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
+  withKnobs
+);
 
 const sizeOptions = values(AvatarSize);
 const template = `

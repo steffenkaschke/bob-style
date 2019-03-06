@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { text, select, boolean, withKnobs, number } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
@@ -8,9 +7,7 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const textareaStories = storiesOf(ComponentGroupType.FormElements, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const textareaStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
 
 const template = `
 <b-textarea style="width: 400px;"

@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { withKnobs } from '@storybook/addon-knobs/angular';
 import { ButtonsModule } from '../buttons.module';
 import { IconsModule } from '../../../icons/icons.module';
@@ -9,9 +8,9 @@ import { values } from 'lodash';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
-const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-group>

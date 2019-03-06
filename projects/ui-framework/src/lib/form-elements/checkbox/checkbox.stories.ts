@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -7,9 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxModule } from './checkbox.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const inputStories = storiesOf(ComponentGroupType.FormElements, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const inputStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
 
 const template = `
 <b-checkbox (checkboxChange)="checkboxChange($event)"

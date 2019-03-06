@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
@@ -13,9 +12,7 @@ import { AvatarCellComponent } from './table/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { RowSelection } from './table/table.interface';
 
-const tableStories = storiesOf(ComponentGroupType.DataTable, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const tableStories = storiesOf(ComponentGroupType.DataTable, module).addDecorator(withKnobs);
 
 const template = `
 <b-table

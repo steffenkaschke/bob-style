@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import {
   array,
   boolean,
@@ -16,9 +15,7 @@ import { BreadcrumbsModule } from './breadcrumbs.module';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const inputStories = storiesOf(ComponentGroupType.Navigation, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const inputStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
 
 const componmentTemplate = `
 <b-breadcrumbs [breadcrumbs]="breadcrumbs"

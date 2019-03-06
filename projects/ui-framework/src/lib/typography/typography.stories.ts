@@ -1,12 +1,9 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { withKnobs } from '@storybook/addon-knobs/angular';
 import { TypographyModule } from './typography.module';
 import { ComponentGroupType } from '../consts';
 
-const typographyStories = storiesOf(ComponentGroupType.Typography, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const typographyStories = storiesOf(ComponentGroupType.Typography, module).addDecorator(withKnobs);
 
 const displayTemplate = `
 <style>

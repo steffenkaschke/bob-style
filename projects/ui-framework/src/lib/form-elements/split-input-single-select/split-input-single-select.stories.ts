@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
@@ -12,9 +11,7 @@ import { InputTypes } from '../input/input.enum';
 import map from 'lodash/map';
 import { InputSingleSelectValue } from './split-input-single-select.interface';
 
-const textareaStories = storiesOf(ComponentGroupType.FormElements, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const textareaStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
 
 const template = `
 <b-split-input-single-select style="width: 400px;"
@@ -53,10 +50,9 @@ const note = `
   elementChange | Action | element change emitter
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
-
 
 const currencies = [
   { value: 'AED', serverId: null },
@@ -110,22 +106,22 @@ const currencies = [
   { value: 'UYU', serverId: null },
   { value: 'VND', serverId: null },
   { value: 'XOF', serverId: null },
-  { value: 'ZAR', serverId: null },
+  { value: 'ZAR', serverId: null }
 ];
 
 const optionsMock: SelectGroupOption[] = Array.from(Array(1), (_, i) => {
   return {
     groupName: 'all currencies',
-    options: map(currencies, currency => ({
+    options: map(currencies, (currency) => ({
       value: currency.value,
-      id: currency.value,
-    })),
+      id: currency.value
+    }))
   };
 });
 
 const value: InputSingleSelectValue = {
   inputValue: 100,
-  selectValue: 'GBP',
+  selectValue: 'GBP'
 };
 
 textareaStories.add(
@@ -142,14 +138,10 @@ textareaStories.add(
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
         errorMessage: text('errorMessage', ''),
-        elementChange: action(),
+        elementChange: action()
       },
       moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          StoryBookLayoutModule,
-          SplitInputSingleSelectModule,
-        ]
+        imports: [BrowserAnimationsModule, StoryBookLayoutModule, SplitInputSingleSelectModule]
       }
     };
   },

@@ -1,8 +1,7 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 
-const utilsStories = storiesOf('Utils', module).addDecorator(withNotes);
+const utilsStories = storiesOf('Utils', module);
 
 const storyTemplate = `
 <b-story-book-layout title="Utils">
