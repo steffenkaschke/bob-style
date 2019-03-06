@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { select, withKnobs, object, text, number, boolean } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
@@ -12,9 +11,7 @@ import { SelectGroupOption } from '../list.interface';
 import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.component';
 import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
 
-const buttonStories = storiesOf(ComponentGroupType.FormElements, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const buttonStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
 
 const template = `
 <b-single-list style="width: 400px;"

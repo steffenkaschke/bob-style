@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { select, withKnobs, object, text, boolean, number } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
@@ -10,9 +9,7 @@ import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-lay
 import { SingleSelectModule } from './single-select.module';
 import { SelectGroupOption } from '../list.interface';
 
-const buttonStories = storiesOf(ComponentGroupType.FormElements, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const buttonStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
 
 const template = `
 <b-single-select style="width: 400px;"
@@ -89,7 +86,7 @@ buttonStories.add(
       hintMessage: text('hintMessage', 'This field should contain something'),
       errorMessage: text('errorMessage', ''),
       showSingleGroupHeader: boolean('showSingleGroupHeader', false),
-      hideLabelOnFocus: boolean('hideLabelOnFocus', false),
+      hideLabelOnFocus: boolean('hideLabelOnFocus', false)
     },
     moduleMetadata: {
       imports: [

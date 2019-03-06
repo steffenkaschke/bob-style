@@ -1,14 +1,13 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { text, select, withKnobs, number, boolean } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { SliderModule } from './slider.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const sliderStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const sliderStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
+  withKnobs
+);
 const template = `
 <b-slider style="width: 400px;"
   [value]="value"

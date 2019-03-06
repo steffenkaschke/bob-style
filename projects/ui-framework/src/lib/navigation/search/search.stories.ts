@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { SearchModule } from './search.module';
@@ -7,9 +6,7 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const inputStories = storiesOf(ComponentGroupType.Navigation, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const inputStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
 
 const template = `
 <b-search style="width: 400px;"

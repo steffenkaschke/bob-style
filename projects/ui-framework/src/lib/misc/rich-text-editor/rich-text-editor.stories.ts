@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -8,9 +7,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { TypographyModule } from '../../typography/typography.module';
 import { RichTextEditorModule } from './rich-text-editor.module';
 
-const inputStories = storiesOf(ComponentGroupType.Misc, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const inputStories = storiesOf(ComponentGroupType.Misc, module).addDecorator(withKnobs);
 
 const template = `
 <b-rich-text-editor style="width: 90%; margin: 20px auto;"

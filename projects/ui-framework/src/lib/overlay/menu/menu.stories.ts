@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import {
   array,
   boolean,
@@ -19,9 +18,7 @@ import { Icons } from '../../icons/icons.enum';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const menuStories = storiesOf(ComponentGroupType.Overlay, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const menuStories = storiesOf(ComponentGroupType.Overlay, module).addDecorator(withKnobs);
 
 const template = `
 <b-menu style="position: absolute; top: 20px; left: 20px;"

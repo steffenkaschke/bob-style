@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -12,9 +11,7 @@ import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
 import { PanelSize } from './panel.enum';
 import { values } from 'lodash';
 
-const buttonStories = storiesOf(ComponentGroupType.Overlay, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const buttonStories = storiesOf(ComponentGroupType.Overlay, module).addDecorator(withKnobs);
 
 const panelSize = values(PanelSize);
 
@@ -94,7 +91,7 @@ buttonStories.add(
     props: {
       panelSize: select('panelSize', panelSize, PanelSize.medium),
       panelClass: text('panelClass', 'my-panel-class'),
-      showBackdrop: boolean('showBackdrop', true),
+      showBackdrop: boolean('showBackdrop', true)
     },
     moduleMetadata: {
       imports: [

@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import { select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
@@ -10,9 +9,9 @@ import { IconsModule } from '../../../icons/icons.module';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
-const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const buttonStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
+  withKnobs
+);
 
 const typeOptions = values(ButtonType);
 const iconColor = values(IconColor);

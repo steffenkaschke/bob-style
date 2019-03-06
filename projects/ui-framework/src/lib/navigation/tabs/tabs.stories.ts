@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
 import {
   array,
   boolean,
@@ -16,9 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { Tab } from './tabs.interface';
 
-const inputStories = storiesOf(ComponentGroupType.Navigation, module)
-  .addDecorator(withNotes)
-  .addDecorator(withKnobs);
+const inputStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
 
 const tabs: Tab[] = [
   {
