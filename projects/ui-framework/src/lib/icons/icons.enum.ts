@@ -39,4 +39,5 @@ export enum Icons {
   department_icon = 'department_icon',
   company_icon = 'company_icon',
   edit_field_pencil = 'edit_field_pencil',
+  folder = 'folder',
 }
