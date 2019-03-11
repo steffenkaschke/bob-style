@@ -1,0 +1,23 @@
+<div class="side-menu-option-container"
+     [ngClass]="{'selected-option': selected, 'no-prefix': !option.prefix}"
+     (click)="onSelectOption()"
+     (mouseenter)="showActions = true" (mouseleave)="showActions = false">
+    <div class="option-prefix">
+        <ng-template #prefix></ng-template>
+    </div>
+    <div class="option-display-name">{{option.displayName}}</div>
+    <div class="option-actions"
+         *ngIf="option.actions?.length"
+         [ngStyle]="{'opacity': (showActions || selected) ? 1 : 0}">
+        <b-menu [menu]="option.actions"
+                (click)="stopBubbling($event)"
+                (mouseleave)="stopBubbling($event); setShowActions(true)"
+                (closeMenu)="showActions = false">
+            <b-icon menu-trigger
+                    [icon]="icons.three_dots"
+                    [size]="sizes.small"
+                    [color]="colors.dark">
+            </b-icon>
+        </b-menu>
+    </div>
+</div>

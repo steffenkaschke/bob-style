@@ -1,0 +1,35 @@
+:host {
+  .side-menu-option-container {
+    display: grid;
+    grid-template-columns: max-content 1fr 50px;
+    cursor: pointer;
+    height: 50px;
+    align-items: center;
+
+    &:hover {
+      background-color: #F9F9F9;
+    }
+
+    &.selected-option {
+      background-color: #F9F9F9;
+      font-weight: bold;
+    }
+
+    &.no-prefix {
+      grid-template-columns: 0 1fr 50px;
+
+      .option-display-name {
+        margin-left: 16px;
+      }
+    }
+
+    .option-prefix {
+      padding: 0 16px;
+    }
+
+    .option-display-name {
+      justify-self: left;
+    }
+
+  }
+}
