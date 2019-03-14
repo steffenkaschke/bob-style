@@ -40,4 +40,5 @@ export enum Icons {
   company_icon = 'company_icon',
   edit_field_pencil = 'edit_field_pencil',
   folder = 'folder',
+  add_doc = 'add_doc',
 }

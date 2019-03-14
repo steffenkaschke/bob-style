@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SideMenuOption } from './side-menu-option/side-menu-option.interface';
 import head from 'lodash/head';
+import size from 'lodash/size';
 
 @Component({
   selector: 'b-side-menu',
@@ -17,7 +18,9 @@ export class SideMenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.onSelectOption(head(this.options).id);
+    if (size(this.options)) {
+      this.onSelectOption(head(this.options).id);
+    }
   }
 
   onSelectOption(id: string): void {
