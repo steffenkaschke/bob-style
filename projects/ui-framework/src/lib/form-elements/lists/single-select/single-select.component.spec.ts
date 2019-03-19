@@ -91,6 +91,23 @@ describe('SingleSelectComponent', () => {
       component.ngOnChanges({ value: { previousValue: undefined, currentValue: 1, firstChange: true, isFirstChange: () => true } });
       expect(component.triggerValue).toEqual('Basic Info 1');
     });
+    it('should not show clear button if value is null', () => {
+      component.ngOnChanges({ value: { previousValue: undefined, currentValue: null, firstChange: true, isFirstChange: () => true } });
+      expect(component.triggerValue).toBe(null);
+      fixture.detectChanges();
+      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+      expect(clearSelection).toBeFalsy();
+    });
+    it('should update trigger value also when options update', () => {
+      component.options = [];
+      component.ngOnChanges({ value: { previousValue: undefined, currentValue: 1, firstChange: true, isFirstChange: () => true } });
+      expect(component.triggerValue).toBe(null);
+      component.ngOnChanges({
+        options:
+          { previousValue: undefined, currentValue: optionsMock, firstChange: false, isFirstChange: () => false },
+      });
+      expect(component.triggerValue).toEqual('Basic Info 1');
+    });
   });
 
   describe('onSelect', () => {

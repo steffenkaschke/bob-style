@@ -11,11 +11,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { MenuItem } from './menu.interface';
 
-const menuStories = storiesOf(ComponentGroupType.Overlay, module).addDecorator(withKnobs);
+const menuStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
 
 const template = `
 <b-menu style="position: absolute; top: 20px; left: 20px;"
-        [menu]="menu">
+        [menu]="menu"
+        [openLeft]="openLeft">
   <b-square-button menu-trigger
                    type="${ ButtonType.secondary }"
                    icon="${ Icons.three_dots }">
@@ -39,6 +40,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   menu | MenuItem[] | array of menu items | none
+  openLeft | boolean | open left by default | false
 
   ~~~
   ${ template }
@@ -101,6 +103,7 @@ menuStories.add(
     return {
       template: storyTemplate,
       props: {
+        openLeft: boolean('openLeft', false),
         menu: object('menu', menuMock),
       },
       moduleMetadata: {

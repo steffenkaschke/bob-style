@@ -6,6 +6,7 @@ import { IconService } from './icon.service';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
+  entryComponents: [IconComponent],
   declarations: [IconComponent],
   imports: [
     HttpClientModule,

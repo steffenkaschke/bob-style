@@ -73,8 +73,12 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value) {
-      this.triggerValue = this.getTriggerValue(this.value);
+      this.value = changes.value.currentValue || [];
     }
+    if (changes.options) {
+      this.options = changes.options.currentValue;
+    }
+    this.triggerValue = this.getTriggerValue(this.value);
   }
 
   ngOnDestroy(): void {

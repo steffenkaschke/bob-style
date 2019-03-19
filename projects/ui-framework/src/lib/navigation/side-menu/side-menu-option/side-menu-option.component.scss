@@ -1,0 +1,25 @@
+@import "../../../../lib/form-elements/lists/list.scss";
+
+:host {
+  .side-menu-option-container {
+    display: grid;
+    grid-template-columns: max-content 1fr max-content;
+    cursor: pointer;
+    align-items: center;
+    @include listOption;
+
+    &.no-prefix {
+      grid-template-columns: 0px 1fr max-content;
+
+      .option-display-name {
+        margin: 0 16px 0 0;
+      }
+    }
+
+    .option-display-name {
+      justify-self: left;
+      margin: 0 16px;
+    }
+
+  }
+}
