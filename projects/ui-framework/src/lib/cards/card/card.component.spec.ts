@@ -69,28 +69,28 @@ describe('CardComponent', () => {
   });
 
   describe('onMenuOpen', () => {
-    it('should add focusInside class on the host element', () => {
+    it('should add focus-inside class on the host element', () => {
       component.menu = [{ label: '' }];
       fixture.detectChanges();
       const menuElement = fixture.debugElement.query(By.css('b-menu'));
       menuElement.componentInstance.openMenu.emit();
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList).toContain('focusInside');
+      expect(fixture.nativeElement.classList).toContain('focus-inside');
     });
   });
 
   describe('onMenuClose', () => {
-    it('should remove focusInside class from host element after timeout', fakeAsync(() => {
+    it('should remove focus-inside class from host element after timeout', fakeAsync(() => {
       component.menu = [{ label: '' }];
       fixture.detectChanges();
       const menuElement = fixture.debugElement.query(By.css('b-menu'));
       menuElement.componentInstance.openMenu.emit();
       menuElement.componentInstance.closeMenu.emit();
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList).toContain('focusInside');
+      expect(fixture.nativeElement.classList).toContain('focus-inside');
       tick(300);
       fixture.detectChanges();
-      expect(fixture.nativeElement.classList).not.toContain('focusInside');
+      expect(fixture.nativeElement.classList).not.toContain('focus-inside');
     }));
   });
 });

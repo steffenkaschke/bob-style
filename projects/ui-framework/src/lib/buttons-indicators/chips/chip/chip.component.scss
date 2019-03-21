@@ -1,0 +1,69 @@
+@import '../../../style/colors';
+@import '../../../style/typography';
+
+
+$chipsMap: (
+  empty: (
+    bgColor: white,
+    color: $grey-700,
+    brdrColor: $grey-500
+  ),
+  default: (
+    bgColor: $grey-300,
+    color: $grey-700,
+    brdrColor: $grey-300
+  ),
+  info: (
+    bgColor: var(--inform-500),
+    color: white,
+    brdrColor: var(--inform-500)
+  ),
+  success: (
+    bgColor: var(--positive-500),
+    color: white,
+    brdrColor: var(--positive-500)
+  ),
+  attention: (
+    bgColor: var(--secondary-500),
+    color: white,
+    brdrColor: var(--secondary-500)
+  ),
+  warning: (
+    bgColor: var(--negative-500),
+    color: white,
+    brdrColor: var(--negative-500)
+  ),
+);
+
+:host {
+  display: inline-flex;
+
+  @each $type, $typeProps in $chipsMap {
+    &.chip-#{$type} .mat-chip {
+      background-color: map-get($typeProps, bgColor);
+      color: map-get($typeProps, color);
+      border-color: map-get($typeProps, brdrColor);
+    }
+  }
+}
+
+.mat-chip {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 13px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+
+  font-size: $font-size-body;
+  font-weight: 400;
+
+  min-width: 90px;
+  height: 26px;
+  padding: 0 14px;
+
+  user-select: none;
+  cursor: default;
+  outline: 0;
+}
