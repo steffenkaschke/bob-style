@@ -1,0 +1,36 @@
+<mat-expansion-panel [expanded]="expanded"
+                     [disabled]="disabled"
+                     (closed)="onPanelClosed($event)"
+                     (opened)="onPanelOpened($event)">
+
+  <mat-expansion-panel-header [collapsedHeight]="'auto'"
+                              [expandedHeight]="'auto'">
+
+    <b-display-3 class="collapsible-title"
+                 *ngIf="type === 'big'">
+      {{ title }}
+    </b-display-3>
+
+    <b-subheading class="collapsible-title"
+                  *ngIf="type === 'small'">
+      {{ title }}
+    </b-subheading>
+
+    <p class="collapsible-description"
+       *ngIf="description">
+      {{ description }}
+    </p>
+
+    <div #suffix
+         *ngIf="hasSuffix"
+         class="collapsible-suffix">
+      <ng-content select="[suffix]"></ng-content>
+    </div>
+
+  </mat-expansion-panel-header>
+
+  <ng-template matExpansionPanelContent>
+    <ng-content></ng-content>
+  </ng-template>
+
+</mat-expansion-panel>

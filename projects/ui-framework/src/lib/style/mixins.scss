@@ -40,3 +40,72 @@
   line-clamp: $lines;
   -webkit-line-clamp: $lines;
 }
+
+@mixin text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin animate($name, $time: 0.3s, $delay: null, $iterate: 1, $dir: null) {
+  animation-name: $name;
+  animation-duration: $time;
+  animation-fill-mode: both;
+  animation-iteration-count: $iterate;
+  animation-delay: $delay;
+  animation-direction: $dir;
+  backface-visibility: hidden;
+}
+
+@mixin breakout-underlay(
+  $brdr-loc: top bottom,
+  $bg-color: null,
+  $brdr-width: 1px,
+  $brdr-color: $grey-500,
+  $shadow: false,
+  $use: before,
+  $mod: false,
+  $add: false
+) {
+
+  @if (not $mod) and (not $add) {
+    position: relative;
+  }
+
+  &:#{$use} {
+
+    @if (not $mod) and (not $add) {
+      @include pseudo;
+      @include size(200%, 100%);
+      @include position(0 -50% 0 -50%);
+      z-index: 0;
+      background-color: $bg-color;
+    }
+
+    @if ($brdr-width and $brdr-width > 0 and $brdr-color and (not $add)) {
+      @each $loc in $brdr-loc {
+        border-#{$loc}: $brdr-width solid $brdr-color;
+      }
+    }
+    @else if ($brdr-width == 0) {
+      border: 0;
+    }
+
+    @if $shadow {
+      @if $shadow == 0 or $shadow == none {
+        box-shadow: 0 0 0 0 transparent;
+      } @else {
+        box-shadow: $shadow;
+      }
+    }
+
+    @content;
+  }
+}
+
+@mixin disabled-state {
+  pointer-events: none;
+  color: $grey-500;
+  border-color: $grey-300;
+  @content;
+}
