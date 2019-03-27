@@ -1,0 +1,16 @@
+<div class="table-card-cell"
+     *ngFor="let cell of rowData">
+
+  <ng-template *ngIf="isString(cell.data)">
+    <span>{{ cell.data }}</span>
+  </ng-template>
+
+  <ng-template *ngIf="isArray(cell.data)">
+    <span *ngFor="let line of cell.data">{{ line }}</span>
+  </ng-template>
+
+  <!-- <ng-template *ngIf="isComponent(cell.data)">
+    {{ cell.data }}
+  </ng-template> -->
+
+</div>
