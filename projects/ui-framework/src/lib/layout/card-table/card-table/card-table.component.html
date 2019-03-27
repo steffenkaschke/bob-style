@@ -1,18 +1,20 @@
-<ul class="card-table-header">
+<header role="rowgroup">
+  <ul class="card-table-header"
+      role="row">
+    <li class="table-header-cell"
+        *ngFor="let cell of table.meta; index as index;"
+        [attr.id]="getHeaderId(index)"
+        role="columnheader">
+      <span class="text">{{ cell.name }}</span>
+    </li>
+  </ul>
+</header>
 
-  <li class="table-header-cell"
-      *ngFor="let cell of table.meta; index as index;"
-      id="">
-    <span class="text">{{ cell.name }}</span>
-  </li>
-
-</ul>
-
-<ul class="card-table-body">
-
+<ul class="card-table-body"
+    role="rowgroup">
   <li *ngFor="let row of table.rows; index as index;"
       b-table-card
       [row]="row"
-      [meta]="table.meta"></li>
-
+      [meta]="table.meta"
+      role="row"></li>
 </ul>

@@ -12,16 +12,16 @@ export class CardTableComponent {
 
   @Input() table: CardTableData;
 
-  // @HostBinding('class') string = 'table-card-row';
+  @HostBinding('attr.role') string = 'table';
 
-  // getHeaderId(index: number): string {
-  //   return (
-  //     'card-table-title__' +
-  //     index +
-  //     '_' +
-  //     (this.meta[index].id
-  //       ? this.meta[index].id
-  //       : this.meta[index].name.replace(/\s/g, ''))
-  //   );
-  // }
+  getHeaderId(index: number): string {
+    return (
+      'card-table-title__' +
+      index +
+      '_' +
+      (this.table.meta[index].id
+        ? this.table.meta[index].id
+        : this.table.meta[index].name.replace(/\s/g, ''))
+    );
+  }
 }

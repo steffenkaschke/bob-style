@@ -1,7 +1,8 @@
 <p class="table-card-cell"
    *ngFor="let cell of row; index as index;"
-   [attr.aria-describedby]="getHeaderId(index)"
-   [ngStyle]="getCellStyle(index)">
+   [attr.aria-labelledby]="getHeaderId(index)"
+   [ngStyle]="getCellStyle(index)"
+   role="cell">
 
   <ng-container *ngIf="isString(cell.data)">
     <span class="text">{{ cell.data }}</span>
