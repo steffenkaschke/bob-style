@@ -22,12 +22,12 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
 );
 
 const template = `
-<b-table-card [meta]="tableData.meta" [row]="tableData.rows[0]">
-</b-table-card>
+<b-card-table [table]="tableData">
+</b-card-table>
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Single Table Card">
+<b-story-book-layout title="Card Table">
   <div style="padding: 50px;">
     ${template}
   </div>
@@ -52,7 +52,7 @@ const note = `
 `;
 
 story.add(
-  'Table Card',
+  'Card Table',
   () => {
     return {
       template: storyTemplate,

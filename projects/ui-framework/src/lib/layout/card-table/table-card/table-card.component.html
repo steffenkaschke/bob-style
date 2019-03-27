@@ -1,16 +1,14 @@
-<div class="table-card-cell"
-     *ngFor="let cell of rowData">
+<p class="table-card-cell"
+   *ngFor="let cell of row; index as index;"
+   [attr.aria-describedby]="getHeaderId(index)"
+   [ngStyle]="getCellStyle(index)">
 
-  <ng-template *ngIf="isString(cell.data)">
-    <span>{{ cell.data }}</span>
-  </ng-template>
+  <ng-container *ngIf="isString(cell.data)">
+    <span class="text">{{ cell.data }}</span>
+  </ng-container>
 
-  <ng-template *ngIf="isArray(cell.data)">
-    <span *ngFor="let line of cell.data">{{ line }}</span>
-  </ng-template>
-
-  <!-- <ng-template *ngIf="isComponent(cell.data)">
-    {{ cell.data }}
-  </ng-template> -->
-
-</div>
+  <ng-container *ngIf="isArray(cell.data)">
+    <span class="text"
+          *ngFor="let line of cell.data">{{ line }}</span>
+  </ng-container>
+</p>

@@ -11,7 +11,11 @@ export const cardTableMockData: CardTableData = {
     {
       id: 2,
       name: 'Subject',
-      width: 'auto',
+      width: '20%',
+      style: {
+        fontWeight: '500'
+        // crazyStuff: 'not-allowed'
+      },
       sortablle: false
     },
     {
@@ -79,7 +83,8 @@ export const cardTableMockData: CardTableData = {
         data: ['Elsie Hunter', '11/03/2019']
       },
       {
-        data: '-'
+        data:
+          'Single line of some very long text that should truncate after two lines with an ellipsis.'
       },
       {
         data: 'Approved'

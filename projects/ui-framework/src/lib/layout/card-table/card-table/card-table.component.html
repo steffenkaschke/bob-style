@@ -1,0 +1,18 @@
+<ul class="card-table-header">
+
+  <li class="table-header-cell"
+      *ngFor="let cell of table.meta; index as index;"
+      id="">
+    <span class="text">{{ cell.name }}</span>
+  </li>
+
+</ul>
+
+<ul class="card-table-body">
+
+  <li *ngFor="let row of table.rows; index as index;"
+      b-table-card
+      [row]="row"
+      [meta]="table.meta"></li>
+
+</ul>
