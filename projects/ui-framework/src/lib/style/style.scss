@@ -7,7 +7,6 @@
 @import '~ag-grid-community/dist/styles/ag-theme-balham.css';
 @import 'quill.snow';
 
-
 body {
   margin: 0;
   padding: 0;
@@ -15,7 +14,9 @@ body {
   @include BodyFont(normal, normal, $font-size-body);
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: border-box;
   background-repeat: no-repeat;
 }
