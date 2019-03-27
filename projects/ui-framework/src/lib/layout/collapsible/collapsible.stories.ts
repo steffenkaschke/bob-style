@@ -22,22 +22,22 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
 );
 
 const template = `
-<b-collapsible
-  [type]="type"
-  [expanded]="expanded"
-  [disabled]="disabled"
-  [title]="title"
-  [description]="description"
-  (closed)="onPanelClosed($event)"
-  (opened)="onPanelOpened($event)">
+  <b-collapsible
+    [type]="type"
+    [expanded]="expanded"
+    [disabled]="disabled"
+    [title]="title"
+    [description]="description"
+    (closed)="onPanelClosed($event)"
+    (opened)="onPanelOpened($event)">
 
-  <b-button suffix size="medium" type="secondary">
-    Preview
-  </b-button>
+    <b-button suffix size="medium" type="secondary">
+      Preview
+    </b-button>
 
-  {{ content.repeat(10) }}
+    {{ content.repeat(10) }}
 
-</b-collapsible>
+  </b-collapsible>
 `;
 
 const storyTemplate = `
@@ -62,10 +62,15 @@ const note = `
   disabled | boolean | if the panel is disabled (can't be opened) | false
   title | panel header title | title | ''
   description | string | panel header description | none (optional)
-  opened | Function | Event emitted every time the panel is opened
-  closed | Function | Event emitted every time the panel is closed
 
   Content marked with [suffix] will be projected into the right part of the panel header.
+
+
+  #### Events
+  Name | Description
+  --- | ---
+  opened | Emitted every time the panel is opened
+  closed | Emitted every time the panel is closed
 
   ~~~
   ${template}
