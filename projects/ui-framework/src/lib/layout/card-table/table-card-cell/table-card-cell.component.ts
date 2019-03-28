@@ -1,4 +1,10 @@
-import { Component, Input, ViewChild, ViewContainerRef, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  ViewChild,
+  ViewContainerRef,
+  OnInit
+} from '@angular/core';
 
 import { CellData, CellMeta, CellComponent } from '../card-table.interface';
 
@@ -20,9 +26,8 @@ export class TableCardCellComponent implements OnInit {
   @Input() index: number;
 
   ngOnInit(): void {
-    this.ComponentFactory.setComponentContainerRef(this.componentHost);
-
     if (this.isComponent(this.cell.data)) {
+      this.ComponentFactory.setComponentContainerRef(this.componentHost);
       this.ComponentFactory.reset();
       this.ComponentFactory.insertComponent(this.cell.data as CellComponent);
     }
@@ -36,7 +41,7 @@ export class TableCardCellComponent implements OnInit {
     return Array.isArray(obj);
   }
 
-  isComponent(obj: any): boolean {
+  private isComponent(obj: any): boolean {
     return !!obj.component;
   }
 }

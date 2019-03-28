@@ -1,6 +1,6 @@
 import { MetaData, allowedStyleObj } from './card-table.interface';
 
-export const genId = (
+export const generateCellId = (
   meta: MetaData,
   index: number,
   prefix: string
@@ -13,26 +13,28 @@ export const genId = (
   );
 };
 
-export const checkCssUnit = (value: string): string => {
+const checkCssUnit = (value: string): string => {
   const n = parseFloat(value),
     p = value.match(/%|em|rem/);
   return isNaN(n) ? 'auto' : p ? n + '' + p : Math.round(n) + 'px';
 };
 
-export const getCellWidth = (meta: MetaData, index: number): string | null => {
+const getCellWidth = (meta: MetaData, index: number): string | null => {
   if (!meta[index].width || meta[index].width === 'auto') {
     return null;
   }
-  return this.checkCssUnit(String(meta[index].width));
+  return checkCssUnit(String(meta[index].width));
 };
 
-export const getCellStyle = (
+export const generateCellStyle = (
   meta: MetaData,
-  index: number
+  index: number,
+  addTextStyles: boolean = true
 ): allowedStyleObj => {
+  const textStyle = addTextStyles ? meta[index].textStyle : {};
   return {
     maxWidth: getCellWidth(meta, index),
     alignItems: meta[index].align === 'right' ? 'flex-end' : null,
-    ...meta[index].textStyle
+    ...textStyle
   };
 };

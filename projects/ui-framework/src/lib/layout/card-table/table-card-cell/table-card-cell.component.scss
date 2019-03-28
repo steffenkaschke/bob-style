@@ -22,3 +22,9 @@
     );
   }
 }
+
+:host ::ng-deep {
+  b-chip {
+    width: 100%;
+  }
+}
