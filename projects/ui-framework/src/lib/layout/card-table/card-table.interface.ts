@@ -11,6 +11,12 @@ type allowedCssProps =
 
 export type allowedStyleObj = { [key in allowedCssProps]?: string };
 
+export interface CellComponent {
+  component: Type<any>;
+  attributes?: object;
+  content?: string;
+}
+
 export interface CellMeta {
   id?: string | number;
   name: string;
@@ -20,7 +26,7 @@ export interface CellMeta {
 }
 
 export interface CellData {
-  data: string | string[] | Type<any>;
+  data: string | string[] | CellComponent;
 }
 
 export interface RowData extends Array<CellData> {}

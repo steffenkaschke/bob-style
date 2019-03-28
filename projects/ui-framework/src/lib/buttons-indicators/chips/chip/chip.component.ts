@@ -4,7 +4,7 @@ import { ChipType } from '../chips.enum';
 @Component({
   selector: 'b-chip, [b-chip]',
   template: `
-    <mat-basic-chip [selectable]="false" [disableRipple]="true">
+    <mat-basic-chip [selectable]="false" disableRipple="true">
       <ng-content></ng-content>
     </mat-basic-chip>
   `,

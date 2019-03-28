@@ -2,6 +2,8 @@ import { Component, Input, HostBinding } from '@angular/core';
 
 import { CardTableData } from '../card-table.interface';
 
+import { genId } from '../card-table-utils';
+
 @Component({
   selector: 'b-card-table',
   templateUrl: './card-table.component.html',
@@ -15,13 +17,6 @@ export class CardTableComponent {
   @HostBinding('attr.role') string = 'table';
 
   getHeaderId(index: number): string {
-    return (
-      'card-table-title__' +
-      index +
-      '_' +
-      (this.table.meta[index].id
-        ? this.table.meta[index].id
-        : this.table.meta[index].name.replace(/\s/g, ''))
-    );
+    return genId(this.table.meta, index, 'card-table-title__');
   }
 }

@@ -1,0 +1,10 @@
+<ng-container *ngIf="isString(cell.data)">
+  <span class="text">{{ cell.data }}</span>
+</ng-container>
+
+<ng-container *ngIf="isArray(cell.data)">
+  <span class="text"
+        *ngFor="let line of cell.data">{{ line }}</span>
+</ng-container>
+
+<ng-template #componentHost></ng-template>

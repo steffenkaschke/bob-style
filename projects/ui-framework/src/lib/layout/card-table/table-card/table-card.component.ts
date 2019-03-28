@@ -1,6 +1,7 @@
-import { Component, Input, HostBinding } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { MetaData, RowData, allowedStyleObj } from '../card-table.interface';
+import { genId } from '../card-table-utils';
 
 @Component({
   selector: 'b-table-card, [b-table-card]',
@@ -13,25 +14,12 @@ export class TableCardComponent {
   @Input() meta: MetaData;
   @Input() row: RowData;
 
-  @HostBinding('class') string = 'table-card-row';
-
-  isString(val: any): boolean {
-    return typeof val === 'string';
-  }
-
-  isArray(obj: any): boolean {
-    return Array.isArray(obj);
-  }
-
   getHeaderId(index: number): string {
-    return (
-      'card-table-title__' +
-      index +
-      '_' +
-      (this.meta[index].id
-        ? this.meta[index].id
-        : this.meta[index].name.replace(/\s/g, ''))
-    );
+    return genId(this.meta, index, 'card-table-title__');
+  }
+
+  getCellId(index: number): string {
+    return genId(this.meta, index, 'card-table-cell__');
   }
 
   private checkCssUnit(value: string): string {

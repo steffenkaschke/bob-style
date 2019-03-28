@@ -10,9 +10,10 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
-import { CardTableModule } from '../card-table.module';
 
+import { CardTableModule } from '../card-table.module';
 import { cardTableMockData } from '../cardTableMockData';
+import { ChipComponent } from '../../../buttons-indicators/chips/chip/chip.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
@@ -63,7 +64,8 @@ story.add(
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          CardTableModule
+          CardTableModule,
+          ChipComponent
         ]
       }
     };

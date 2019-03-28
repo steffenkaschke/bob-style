@@ -1,4 +1,5 @@
 import { CardTableData } from './card-table.interface';
+import { ChipComponent } from '../../buttons-indicators/chips/chip/chip.component';
 
 export const cardTableMockData: CardTableData = {
   meta: [
@@ -52,7 +53,13 @@ export const cardTableMockData: CardTableData = {
         data: ['Emelda Scandroot', 'CFO']
       },
       {
-        data: 'Pending'
+        data: {
+          component: ChipComponent,
+          attributes: {
+            type: 'attention'
+          },
+          content: 'Pending'
+        }
       }
     ],
     [
@@ -69,7 +76,13 @@ export const cardTableMockData: CardTableData = {
         data: ['Constanza Mariano', 'HR admin']
       },
       {
-        data: 'Pending'
+        data: {
+          component: ChipComponent,
+          attributes: {
+            type: 'attention'
+          },
+          content: 'Pending'
+        }
       }
     ],
     [
@@ -87,7 +100,13 @@ export const cardTableMockData: CardTableData = {
           'Single line of some very long text that should truncate after two lines with an ellipsis.'
       },
       {
-        data: 'Approved'
+        data: {
+          component: ChipComponent,
+          attributes: {
+            type: 'success'
+          },
+          content: 'Approved'
+        }
       }
     ],
     [
@@ -104,7 +123,13 @@ export const cardTableMockData: CardTableData = {
         data: '-'
       },
       {
-        data: 'Approved'
+        data: {
+          component: ChipComponent,
+          attributes: {
+            type: 'success'
+          },
+          content: 'Approved'
+        }
       }
     ],
     [
@@ -121,7 +146,13 @@ export const cardTableMockData: CardTableData = {
         data: ['Madge Scott', 'VP Product']
       },
       {
-        data: 'Rejected'
+        data: {
+          component: ChipComponent,
+          attributes: {
+            type: 'warning'
+          },
+          content: 'Rejected'
+        }
       }
     ]
   ]
