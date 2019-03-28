@@ -8,7 +8,6 @@ import {
   Injectable,
   Inject,
   ComponentFactoryResolver,
-  ComponentFactory,
   ViewContainerRef,
   Type
 } from '@angular/core';

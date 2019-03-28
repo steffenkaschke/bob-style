@@ -13,7 +13,7 @@ import { ComponentGroupType } from '../../../consts';
 
 import { CardTableModule } from '../card-table.module';
 import { cardTableMockData } from '../cardTableMockData';
-import { ChipComponent } from '../../../buttons-indicators/chips/chip/chip.component';
+import { ChipsModule } from '../../../buttons-indicators/chips/chips.module';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
@@ -65,7 +65,7 @@ story.add(
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           CardTableModule,
-          ChipComponent
+          ChipsModule
         ]
       }
     };
