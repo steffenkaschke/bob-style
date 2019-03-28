@@ -13,7 +13,7 @@ export const cardTableMockData: CardTableData = {
       id: 2,
       name: 'Subject',
       width: '20%',
-      style: {
+      textStyle: {
         fontWeight: '500'
         // crazyStuff: 'not-allowed'
       },
@@ -35,7 +35,8 @@ export const cardTableMockData: CardTableData = {
       id: 5,
       name: 'Status',
       width: 'auto',
-      sortablle: true
+      sortablle: true,
+      align: 'right'
     }
   ],
   rows: [

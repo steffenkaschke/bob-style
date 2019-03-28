@@ -38,7 +38,8 @@ export class TableCardComponent {
   getCellStyle(index: number): allowedStyleObj {
     return {
       maxWidth: this.getCellWidth(index),
-      ...this.meta[index].style
+      alignItems: this.meta[index].align === 'right' ? 'flex-end' : null,
+      ...this.meta[index].textStyle
     };
   }
 }

@@ -1,8 +1,8 @@
 import { Type } from '@angular/core';
 
 type allowedCssProps =
-  | 'max-width'
   | 'maxWidth'
+  | 'alignItems'
   | 'color'
   | 'font-size'
   | 'fontSize'
@@ -21,7 +21,8 @@ export interface CellMeta {
   id?: string | number;
   name: string;
   width?: string | number;
-  style?: allowedStyleObj;
+  align?: string;
+  textStyle?: allowedStyleObj;
   sortablle: boolean;
 }
 
