@@ -29,7 +29,7 @@ export interface CardTableCellComponent {
 export interface CardTableCellMeta {
   id?: string | number;
   name: string;
-  width?: string | number;
+  width?: number;
   align?: string;
   textStyle?: cardTableAllowedTextStyleObj;
   sortablle: boolean;

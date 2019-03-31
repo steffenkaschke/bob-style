@@ -5,13 +5,13 @@ export const CardTableMockMetaData: CardTableMetaData = [
   {
     id: 1,
     name: 'Requested For',
-    width: 'auto',
-    sortablle: false
+    sortablle: false,
+    // width: 400
   },
   {
     id: 2,
     name: 'Subject',
-    width: '20%',
+    width: 20,
     textStyle: {
       fontWeight: '500'
       // crazyStuff: 'not-allowed'
@@ -21,21 +21,21 @@ export const CardTableMockMetaData: CardTableMetaData = [
   {
     id: 3,
     name: 'Requested by',
-    width: 'auto',
-    sortablle: false
+    sortablle: false,
+    // width: 20,
   },
   {
     id: 4,
     name: 'Assignee',
-    width: 'auto',
-    sortablle: false
+    sortablle: false,
+    width: 30,
   },
   {
     id: 5,
     name: 'Status',
-    width: 'auto',
     sortablle: true,
-    align: 'right'
+    align: 'right',
+    // width: 70,
   }
 ];
 
@@ -121,7 +121,7 @@ export const CardTableMockData: CardTableData = [
       data: ['Elsie Hunter', '11/03/2019']
     },
     {
-      data: '-'
+      data: '\u2014'
     },
     {
       data: {

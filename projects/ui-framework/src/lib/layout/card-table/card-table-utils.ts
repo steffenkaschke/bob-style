@@ -11,10 +11,11 @@ const checkCssUnit = (value: string): string => {
 };
 
 const getCellWidth = (meta: CardTableMetaData, index: number): string | null => {
-  if (!meta[index].width || meta[index].width === 'auto') {
-    return null;
-  }
-  return checkCssUnit(String(meta[index].width));
+  // if (!meta[index].width || meta[index].width === 'auto') {
+  //   return null;
+  // }
+  // return checkCssUnit(String(meta[index].width));
+  return null;
 };
 
 export const generateCellStyle = (
@@ -24,7 +25,7 @@ export const generateCellStyle = (
 ): cardTableAllowedCellStyleObj => {
   const textStyle = addTextStyles ? meta[index].textStyle : {};
   return {
-    maxWidth: getCellWidth(meta, index),
+    // maxWidth: getCellWidth(meta, index),
     alignItems: meta[index].align === 'right' ? 'flex-end' : null,
     ...textStyle
   };
