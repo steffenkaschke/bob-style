@@ -6,7 +6,7 @@ import {
   OnInit
 } from '@angular/core';
 
-import { CellData, CellMeta, CellComponent } from '../card-table.interface';
+import { CardTableCellData, CardTableCellMeta, CardTableCellComponent } from '../card-table.interface';
 
 import { ComponentFactoryService } from '../component-factory.service';
 
@@ -15,21 +15,21 @@ import { ComponentFactoryService } from '../component-factory.service';
   templateUrl: './table-card-cell.component.html',
   styleUrls: ['./table-card-cell.component.scss']
 })
-export class TableCardCellComponent implements OnInit {
+export class TableCardCardTableCellComponent implements OnInit {
   constructor(private ComponentFactory: ComponentFactoryService) {}
 
   @ViewChild('componentHost', { read: ViewContainerRef })
   componentHost: ViewContainerRef;
 
-  @Input() meta: CellMeta;
-  @Input() cell: CellData;
+  @Input() meta: CardTableCellMeta;
+  @Input() cell: CardTableCellData;
   @Input() index: number;
 
   ngOnInit(): void {
     if (this.isComponent(this.cell.data)) {
       this.ComponentFactory.setComponentContainerRef(this.componentHost);
-      this.ComponentFactory.reset();
-      this.ComponentFactory.insertComponent(this.cell.data as CellComponent);
+      // this.ComponentFactory.reset();
+      this.ComponentFactory.insertComponent(this.cell.data as CardTableCellComponent);
     }
   }
 

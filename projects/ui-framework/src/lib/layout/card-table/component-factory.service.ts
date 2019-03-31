@@ -14,7 +14,7 @@ import {
 
 import { DOCUMENT } from '@angular/common';
 
-import { CellComponent } from './card-table.interface';
+import { CardTableCellComponent } from './card-table.interface';
 
 @Injectable()
 export class ComponentFactoryService {
@@ -42,7 +42,7 @@ export class ComponentFactoryService {
     this.container.clear();
   }
 
-  insertComponent(comp: CellComponent): void {
+  insertComponent(comp: CardTableCellComponent): void {
     const factory = this.resolveFactory(comp.component);
 
     const ngContent = comp.content

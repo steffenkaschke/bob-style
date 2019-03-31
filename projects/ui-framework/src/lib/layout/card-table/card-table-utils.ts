@@ -1,12 +1,16 @@
-import { MetaData, allowedStyleObj } from './card-table.interface';
+import {
+  CardTableMetaData,
+  cardTableAllowedCellStyleObj
+} from './card-table.interface';
 
+// todo: remove
 const checkCssUnit = (value: string): string => {
   const n = parseFloat(value),
     p = value.match(/%|em|rem/);
   return isNaN(n) ? 'auto' : p ? n + '' + p : Math.round(n) + 'px';
 };
 
-const getCellWidth = (meta: MetaData, index: number): string | null => {
+const getCellWidth = (meta: CardTableMetaData, index: number): string | null => {
   if (!meta[index].width || meta[index].width === 'auto') {
     return null;
   }
@@ -14,10 +18,10 @@ const getCellWidth = (meta: MetaData, index: number): string | null => {
 };
 
 export const generateCellStyle = (
-  meta: MetaData,
+  meta: CardTableMetaData,
   index: number,
   addTextStyles: boolean = true
-): allowedStyleObj => {
+): cardTableAllowedCellStyleObj => {
   const textStyle = addTextStyles ? meta[index].textStyle : {};
   return {
     maxWidth: getCellWidth(meta, index),

@@ -1,6 +1,10 @@
 import { Component, Input, HostBinding } from '@angular/core';
 
-import { CardTableData, allowedStyleObj } from '../card-table.interface';
+import {
+  CardTableMetaData,
+  CardTableData,
+  cardTableAllowedTextStyleObj
+} from '../card-table.interface';
 
 import { generateCellStyle } from '../card-table-utils';
 
@@ -12,11 +16,12 @@ import { generateCellStyle } from '../card-table-utils';
 export class CardTableComponent {
   constructor() {}
 
+  @Input() meta: CardTableMetaData;
   @Input() table: CardTableData;
 
   @HostBinding('attr.role') string = 'table';
 
-  getCellStyle(index: number): allowedStyleObj {
-    return generateCellStyle(this.table.meta, index, false);
+  getCellStyle(index: number): cardTableAllowedTextStyleObj {
+    return generateCellStyle(this.meta, index, false);
   }
 }

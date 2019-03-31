@@ -12,8 +12,9 @@ import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 
 import { CardTableModule } from '../card-table.module';
-import { cardTableMockData } from '../cardTableMockData';
+import { CardTableMockMetaData, CardTableMockData } from '../cardTableMockData';
 import { ChipsModule } from '../../../buttons-indicators/chips/chips.module';
+import { ChipComponent } from '../../../buttons-indicators/chips/chip/chip.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
@@ -23,7 +24,7 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
 );
 
 const template = `
-<b-card-table [table]="tableData">
+<b-card-table [meta]="CardTableMetaData" [table]="CardTableData">
 </b-card-table>
 `;
 
@@ -42,34 +43,36 @@ const note = `
   *CardTableModule*
 
   #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  table | CardTableData | object that contains metadata and rowdata of the table | none
+  Name | Type | Description
+  --- | --- | ---
+  meta | CardTableMetaData | array of objects, describing table meta-data per column
+  table | CardTableData | 2-dimentional array (array of arrays) of objects, providing table cell data per row
 
 
-  #### Table data object properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  meta | MetaData | array of objects, describing table metadata per column | none
-  rows | RowData[] | 2 dimentional array (array of arrays) of objects, providing table cell data per row | none
-
-
-  #### table.meta[0] - single column meta-data object properties
+  #### \`meta[0]\`: CardTableCellMeta - single column meta-data object properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
   id | string / number | unique column id | none (optional)
   name | string | column title | none
   width | number | number representing percentage - to set column width (if not provided, column width will be set automatically) | none (optional)
-  style | allowedStyleObj | object with text-related CSS properties, to be applied on the cell (color, font-weight etc) | none (optional)
   align | string ('left' or undefined / 'right') | text alignment in column | undefined (optional)
+  textStyle | cardTableAllowedTextStyleObj | object with text-related CSS properties (camelCase), to be applied on the cell (color, fontWeight, fontSize) | none (optional)
   sortable | boolean | to enable sorting by column | false
 
 
-  #### table.rows[0][0] - single cell data object properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  data | string / string[] / Component | 1) if string is provided, it is treated as text with automatic truncating after 2 lines; 2) if an array of strings is provided - each string in array is displayed as separate line, truncated if it doesnt fit the width; 3) a Component can be provided to be displayed in the cell | none
+  #### \`table[0][0]\`: CardTableCellData - single cell data object properties
+  Name | Type | Description
+  --- | --- | ---
+  data | string | if string is provided, it is treated as text with automatic truncating after 2 lines
+   - | string[] | if an array of strings is provided - each string is displayed as separate line, truncated if it doesnt fit the width
+   - | CardTableCellComponent | object, describing a Component that can be provided to be displayed in the cell
 
+  #### \`table[0][0].component\`: CardTableCellComponent - properties of object describing Component passed to cell
+  Name | Type | Description | Default value
+    --- | --- | --- | ---
+  component | Component | component reference | none
+  attributes | object | object with component inputs | none (optional)
+  content | string | text to be passed as ng-content of the component | none (optional)
 
   ~~~
   ${template}
@@ -82,7 +85,8 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        tableData: object('tableData', cardTableMockData)
+        CardTableMetaData: object('meta', CardTableMockMetaData),
+        CardTableData: object('table', CardTableMockData)
       },
       moduleMetadata: {
         imports: [
@@ -90,7 +94,8 @@ story.add(
           BrowserAnimationsModule,
           CardTableModule,
           ChipsModule
-        ]
+        ],
+        entryComponents: [ChipComponent]
       }
     };
   },

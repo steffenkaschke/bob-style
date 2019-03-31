@@ -2,7 +2,7 @@
   <ul class="card-table-header"
       role="row">
     <li class="table-header-cell"
-        *ngFor="let cell of table.meta; index as index;"
+        *ngFor="let cell of meta; index as index;"
         [ngStyle]="getCellStyle(index)"
         role="columnheader">
       <span class="text">{{ cell.name }}</span>
@@ -12,9 +12,9 @@
 
 <ul class="card-table-body"
     role="rowgroup">
-  <li *ngFor="let row of table.rows; index as index;"
+  <li *ngFor="let row of table; index as index;"
       b-table-card
       [row]="row"
-      [meta]="table.meta"
+      [meta]="meta"
       role="row"></li>
 </ul>

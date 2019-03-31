@@ -1,40 +1,46 @@
 import { Type } from '@angular/core';
 
-type allowedCssProps =
-  | 'maxWidth'
-  | 'alignItems'
-  | 'color'
-  | 'font-size'
+type cardTableAllowedTextCssProps =
+  'color'
   | 'fontSize'
-  | 'font-weight'
   | 'fontWeight';
 
-export type allowedStyleObj = { [key in allowedCssProps]?: string };
+type cardTableAllowedCellCssProps =
+  'maxWidth'
+  | 'alignItems'
+  | 'color'
+  | 'fontSize'
+  | 'fontWeight';
 
-export interface CellComponent {
+export type cardTableAllowedTextStyleObj = {
+  [key in cardTableAllowedCellCssProps]?: string
+};
+
+export type cardTableAllowedCellStyleObj = {
+  [key in cardTableAllowedTextCssProps]?: string
+};
+
+export interface CardTableCellComponent {
   component: Type<any>;
   attributes?: object;
   content?: string;
 }
 
-export interface CellMeta {
+export interface CardTableCellMeta {
   id?: string | number;
   name: string;
   width?: string | number;
   align?: string;
-  textStyle?: allowedStyleObj;
+  textStyle?: cardTableAllowedTextStyleObj;
   sortablle: boolean;
 }
 
-export interface CellData {
-  data: string | string[] | CellComponent;
+export interface CardTableCellData {
+  data: string | string[] | CardTableCellComponent;
 }
 
-export interface RowData extends Array<CellData> {}
+export interface CardTableMetaData extends Array<CardTableCellMeta> {}
 
-export interface MetaData extends Array<CellMeta> {}
+export interface CardTableRowData extends Array<CardTableCellData> {}
 
-export interface CardTableData {
-  meta: MetaData;
-  rows: RowData[];
-}
+export interface CardTableData extends Array<CardTableRowData> {}
