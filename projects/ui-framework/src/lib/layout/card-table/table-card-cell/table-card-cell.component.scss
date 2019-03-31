@@ -1,0 +1,32 @@
+@import '../../../style/typography';
+@import '../../../style/mixins';
+
+$line-height-body: 1.5;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 (25px/2);
+  margin: 0;
+}
+
+.text {
+  &:not(:only-of-type) {
+    @include text-truncate;
+  }
+
+  &:only-of-type {
+    @include line-clamp(
+      $lines: 2,
+      $font-size: $font-size-body,
+      $line-height: $line-height-body
+    );
+  }
+}
+
+:host ::ng-deep {
+  b-chip {
+    width: 100%;
+  }
+}

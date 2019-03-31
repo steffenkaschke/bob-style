@@ -1,0 +1,9 @@
+<p *ngFor="let cell of row; index as index;"
+   b-table-card-cell
+   [index]="index"
+   [cell]="cell"
+   [meta]="meta[index]"
+   [attr.aria-label]="meta[index].name"
+   [ngStyle]="getCellStyle(index)"
+   role="cell">
+</p>

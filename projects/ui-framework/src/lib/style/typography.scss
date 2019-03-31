@@ -27,4 +27,3 @@ $font-size-body: 12px;
   @include FontDefault($style, $weight, $size, $lineHeight);
   font-family: var(--body-font-family);
 }
-

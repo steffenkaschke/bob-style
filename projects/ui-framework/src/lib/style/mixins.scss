@@ -21,7 +21,13 @@
   @return $font-size * $line-height * $lines + $add;
 }
 
-@mixin line-clamp($lines, $font-size, $line-height, $minHeight: false, $mod: false) {
+@mixin line-clamp(
+  $lines,
+  $font-size,
+  $line-height,
+  $minHeight: false,
+  $mod: false
+) {
   @if not $mod {
     line-height: $line-height;
     display: -webkit-box;
