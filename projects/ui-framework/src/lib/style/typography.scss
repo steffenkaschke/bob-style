@@ -1,7 +1,6 @@
 @import '../style/colors.scss';
 
 $font-size-body: 12px;
-$line-height-body: 1.5;
 
 @mixin FontDefault($style, $weight, $size, $lineHeight) {
   font-style: $style;
@@ -24,8 +23,7 @@ $line-height-body: 1.5;
   text-transform: uppercase;
 }
 
-@mixin BodyFont($style, $weight, $size, $lineHeight: $line-height-body) {
+@mixin BodyFont($style, $weight, $size, $lineHeight: 1.5) {
   @include FontDefault($style, $weight, $size, $lineHeight);
   font-family: var(--body-font-family);
 }
-

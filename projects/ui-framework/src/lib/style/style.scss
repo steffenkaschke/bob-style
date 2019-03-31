@@ -10,12 +10,10 @@ body {
   margin: 0;
   padding: 0;
   color: $grey-700;
-  @include BodyFont(normal, normal, $font-size-body);
+  @include BodyFont(normal, normal, 12px);
 }
 
-*,
-*:before,
-*:after {
+*, *:before, *:after {
   box-sizing: border-box;
   background-repeat: no-repeat;
 }
