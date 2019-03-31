@@ -36,16 +36,39 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Single Card
+  ## Card Table
 
   #### Module
-  *CardsModule*
+  *CardTableModule*
 
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  menu | MenuItem[] | array of menu items | none (optional)
-  text | string | main text | ''
+  table | CardTableData | object that contains metadata and rowdata of the table | none
+
+
+  #### Table data object properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  meta | MetaData | array of objects, describing table metadata per column | none
+  rows | RowData[] | 2 dimentional array (array of arrays) of objects, providing table cell data per row | none
+
+
+  #### table.meta[0] - single column meta-data object properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  id | string / number | unique column id | none (optional)
+  name | string | column title | none
+  width | number | number representing percentage - to set column width (if not provided, column width will be set automatically) | none (optional)
+  style | allowedStyleObj | object with text-related CSS properties, to be applied on the cell (color, font-weight etc) | none (optional)
+  sortable | boolean | to enable sorting by column | false
+
+
+  #### table.rows[0][0] - single cell data object properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  data | string / string[] / Component | 1) if string is provided, it is treated as text with automatic truncating after 2 lines; 2) if an array of strings is provided - each string in array is displayed as separate line, truncated if it doesnt fit the width; 3) a Component can be provided to be displayed in the cell | none
+
 
   ~~~
   ${template}
