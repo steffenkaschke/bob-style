@@ -1,6 +1,8 @@
 @import '../style/colors.scss';
 
 $font-size-body: 12px;
+$line-height-body: 1.5;
+$line-height-heading: 1.3;
 
 @mixin FontDefault($style, $weight, $size, $lineHeight) {
   font-style: $style;
@@ -9,21 +11,21 @@ $font-size-body: 12px;
   line-height: $lineHeight;
 }
 
-@mixin DisplayFont($style, $weight, $size, $lineHeight: 1.3, $transform: capitalize) {
+@mixin DisplayFont($size, $weight, $lineHeight: $line-height-heading, $transform: capitalize, $style: normal) {
   @include FontDefault($style, $weight, $size, $lineHeight);
   font-family: var(--display-font-family);
   display: block;
   text-transform: $transform;
 }
 
-@mixin HeadingFont($style, $weight, $size, $lineHeight: 1.3) {
+@mixin HeadingFont($size, $weight: 700, $lineHeight: $line-height-heading, $style: normal) {
   @include FontDefault($style, $weight, $size, $lineHeight);
   font-family: var(--heading-font-family);
   display: block;
   text-transform: uppercase;
 }
 
-@mixin BodyFont($style, $weight, $size, $lineHeight: 1.5) {
+@mixin BodyFont($size: $font-size-body, $weight: normal, $lineHeight: $line-height-body, $style: normal) {
   @include FontDefault($style, $weight, $size, $lineHeight);
   font-family: var(--body-font-family);
 }

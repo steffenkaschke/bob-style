@@ -67,10 +67,10 @@ $textarea-height: 120px;
       .mat-form-field-subscript-wrapper {
         top: auto;
         margin-top: 2px;
-        font-size: 12px;
+        font-size: $font-size-body;
         padding: 0 16px;
         .mat-hint {
-          @include BodyFont(normal, normal, 11px);
+          @include BodyFont(11px);
         }
       }
       .mat-form-field-underline {
