@@ -2,6 +2,8 @@
 @import '../../../style/typography';
 @import '../../../style/mixins';
 
+$line-height-body: 1.5;
+
 :host {
   box-sizing: border-box;
   text-align: left;
