@@ -23,7 +23,8 @@
 
     <div #suffix
          *ngIf="hasSuffix"
-         class="collapsible-suffix">
+         class="collapsible-suffix"
+         (click)="stopPropagation($event)">
       <ng-content select="[suffix]"></ng-content>
     </div>
 
