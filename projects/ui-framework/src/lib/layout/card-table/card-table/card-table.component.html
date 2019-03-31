@@ -3,7 +3,6 @@
       role="row">
     <li class="table-header-cell"
         *ngFor="let cell of table.meta; index as index;"
-        [attr.id]="getHeaderId(index)"
         [ngStyle]="getCellStyle(index)"
         role="columnheader">
       <span class="text">{{ cell.name }}</span>

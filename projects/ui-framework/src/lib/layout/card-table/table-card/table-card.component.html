@@ -3,7 +3,7 @@
    [index]="index"
    [cell]="cell"
    [meta]="meta[index]"
-   [attr.aria-labelledby]="getHeaderId(index)"
+   [attr.aria-label]="meta[index].name"
    [ngStyle]="getCellStyle(index)"
    role="cell">
 </p>

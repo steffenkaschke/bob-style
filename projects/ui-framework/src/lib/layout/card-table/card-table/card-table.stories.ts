@@ -61,6 +61,7 @@ const note = `
   name | string | column title | none
   width | number | number representing percentage - to set column width (if not provided, column width will be set automatically) | none (optional)
   style | allowedStyleObj | object with text-related CSS properties, to be applied on the cell (color, font-weight etc) | none (optional)
+  align | string ('left' or undefined / 'right') | text alignment in column | undefined (optional)
   sortable | boolean | to enable sorting by column | false
 
 
