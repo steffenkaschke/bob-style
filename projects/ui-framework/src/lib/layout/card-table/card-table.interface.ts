@@ -1,12 +1,12 @@
 import { Type } from '@angular/core';
 
 type cardTableAllowedTextCssProps =
-  'color'
+    'color'
   | 'fontSize'
   | 'fontWeight';
 
 type cardTableAllowedCellCssProps =
-  'maxWidth'
+    'maxWidth'
   | 'alignItems'
   | 'color'
   | 'fontSize'
@@ -24,10 +24,15 @@ export type cardTableAllowedCellStyleObj = {
   [key in cardTableAllowedTextCssProps]?: string
 };
 
+export type CardTableCellComponentContent =
+    string
+  | CardTableCellComponent
+  | (string | CardTableCellComponent)[];
+
 export interface CardTableCellComponent {
   component: Type<any>;
   attributes?: object;
-  content?: string | string[];
+  content?: CardTableCellComponentContent;
   handlers?: CardTableCellComponentHandlersObj;
 }
 

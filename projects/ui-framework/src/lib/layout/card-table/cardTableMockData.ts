@@ -47,7 +47,17 @@ export const CardTableMockData: CardTableData = [
           imageSource:
             'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
         },
-        content: ['Dylan Herrera', 'Product designer'],
+        content: [
+          'Dylan Herrera',
+          {
+            component: ChipComponent,
+            attributes: {
+              type: 'success'
+            },
+            content: 'Whoa!'
+          },
+          'Product designer'
+        ],
         handlers: {
           clicked: event => {
             console.log('Avatar clicked');

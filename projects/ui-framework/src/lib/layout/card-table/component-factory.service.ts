@@ -1,9 +1,3 @@
-// sources:
-// https://stackblitz.com/edit/dynamic-component-example
-// https://stackblitz.com/edit/dynamic-ng-content-l9cfn6
-// https://stackoverflow.com/questions/41975810/content-projection-in-dynamic-angular-components
-// https://angular.io/api/core/ViewContainerRef#!#createComponent-anchor
-
 import {
   Injectable,
   Inject,
@@ -11,12 +5,18 @@ import {
   ViewContainerRef,
   Type,
   ComponentRef,
-  EventEmitter
+  EventEmitter,
+  Injector,
+  ComponentFactory
 } from '@angular/core';
 
 import { DOCUMENT } from '@angular/common';
 
-import { CardTableCellComponent } from './card-table.interface';
+import {
+  CardTableCellComponent,
+  CardTableCellComponentContent,
+  CardTableCellComponentHandlersObj
+} from './card-table.interface';
 
 @Injectable()
 export class ComponentFactoryService {
@@ -25,6 +25,7 @@ export class ComponentFactoryService {
 
   constructor(
     private factoryResolver: ComponentFactoryResolver,
+    private injector: Injector,
     @Inject(DOCUMENT) private document: Document
   ) {}
 
@@ -32,55 +33,97 @@ export class ComponentFactoryService {
     this.container = view;
   }
 
-  private resolveFactory(component: Type<any>) {
+  private resolveFactory(component: Type<any>): ComponentFactory<any> {
     return this.factoryResolver.resolveComponentFactory(component);
   }
 
-  private resolveNgContent(content: string | string[]) {
-    if (typeof content === 'string') {
+  private resolveNgContent(content: CardTableCellComponentContent): any[] {
+    if (!Array.isArray(content)) {
       content = [content];
     }
-    const elements = content.map(text =>
-      [this.document.createTextNode(text)]
-    );
+    const elements = content.map(cntnt => {
+      if (typeof cntnt === 'string') {
+        return [this.document.createTextNode(cntnt)];
+      }
+      if (!!cntnt.component) {
+        const transcomponent = this.createComponent(cntnt, false);
+        return [transcomponent.location.nativeElement];
+      }
+    });
     return [...elements];
   }
 
-  reset(): void {
-    this.container.clear();
+  private resolveComponentAttributes(
+    component: ComponentRef<any>,
+    attributes: object
+  ): ComponentRef<any> {
+    for (const attr of Object.keys(attributes)) {
+      component.instance[attr] = attributes[attr];
+    }
+    return component;
   }
 
-  insertComponent(comp: CardTableCellComponent): void {
-    this.reset();
+  private resolveComponentHandlers(
+    component: ComponentRef<any>,
+    handlers: CardTableCellComponentHandlersObj
+  ): ComponentRef<any> {
+    for (const handler of Object.keys(handlers)) {
+      component.instance[handler].subscribe((event: EventEmitter<any>) =>
+        handlers[handler](event)
+      );
+    }
+    return component;
+  }
+
+  createComponent(
+    comp: CardTableCellComponent,
+    attach = false
+  ): ComponentRef<any> {
+    let component: ComponentRef<any>;
+
     const factory = this.resolveFactory(comp.component);
 
     const ngContent = comp.content
       ? this.resolveNgContent(comp.content)
       : undefined;
 
-    this.component = this.container.createComponent(
-      factory,
-      undefined,
-      undefined,
-      ngContent
-    );
+    if (attach) {
+      component = this.container.createComponent(
+        factory,
+        undefined,
+        undefined,
+        ngContent
+      );
+    } else {
+      component = factory.create(this.injector, ngContent);
+    }
 
     if (comp.attributes) {
-      for (const attr of Object.keys(comp.attributes)) {
-        this.component.instance[attr] = comp.attributes[attr];
-      }
+      this.resolveComponentAttributes(component, comp.attributes);
     }
 
     if (comp.handlers) {
-      for (const handler of Object.keys(comp.handlers)) {
-        this.component.instance[handler].subscribe(
-          (event: EventEmitter<any>) => comp.handlers[handler](event)
-        );
-      }
+      this.resolveComponentHandlers(component, comp.handlers);
     }
+
+    if (!attach) {
+      component.hostView.detectChanges();
+    }
+
+    return component;
+  }
+
+  insertComponent(comp: CardTableCellComponent): void {
+    this.reset();
+    this.component = this.createComponent(comp, true);
+  }
+
+  reset(): void {
+    this.container.clear();
   }
 
   destroyComponent(): void {
     this.component.destroy();
+    this.component = null;
   }
 }
