@@ -56,7 +56,10 @@ export const CardTableMockData: CardTableData = [
         attributes: {
           type: 'secondary'
         },
-        content: 'Approve'
+        content: 'Approve',
+        handlers: {
+          clicked: (event) => { console.log('Button clicked', event); }
+        }
       }
     }
   ],

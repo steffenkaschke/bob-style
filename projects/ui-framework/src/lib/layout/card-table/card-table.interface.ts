@@ -12,6 +12,10 @@ type cardTableAllowedCellCssProps =
   | 'fontSize'
   | 'fontWeight';
 
+export interface CardTableCellComponentHandlersObj {
+  [key: string]: (...args: any[]) => void;
+}
+
 export type cardTableAllowedTextStyleObj = {
   [key in cardTableAllowedCellCssProps]?: string
 };
@@ -24,6 +28,7 @@ export interface CardTableCellComponent {
   component: Type<any>;
   attributes?: object;
   content?: string;
+  handlers?: CardTableCellComponentHandlersObj;
 }
 
 export interface CardTableCellMeta {

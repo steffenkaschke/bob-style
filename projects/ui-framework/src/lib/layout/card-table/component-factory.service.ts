@@ -10,7 +10,8 @@ import {
   ComponentFactoryResolver,
   ViewContainerRef,
   Type,
-  ComponentRef
+  ComponentRef,
+  EventEmitter
 } from '@angular/core';
 
 import { DOCUMENT } from '@angular/common';
@@ -62,6 +63,14 @@ export class ComponentFactoryService {
     if (comp.attributes) {
       for (const attr of Object.keys(comp.attributes)) {
         this.component.instance[attr] = comp.attributes[attr];
+      }
+    }
+
+    if (comp.handlers) {
+      for (const handler of Object.keys(comp.handlers)) {
+        this.component.instance[handler].subscribe(
+          (event: EventEmitter<any>) => comp.handlers[handler](event)
+        );
       }
     }
   }
