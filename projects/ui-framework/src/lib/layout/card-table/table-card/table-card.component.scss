@@ -1,7 +1,5 @@
 @import '../../../style/colors';
 
-$line-height-body: 1.5;
-
 :host {
   box-sizing: border-box;
   text-align: left;
@@ -17,8 +15,4 @@ $line-height-body: 1.5;
   &:hover {
     box-shadow: 0 3px 7px 1px $boxShadowColor;
   }
-}
-
-[b-table-card-cell] {
-  flex: 1;
 }
