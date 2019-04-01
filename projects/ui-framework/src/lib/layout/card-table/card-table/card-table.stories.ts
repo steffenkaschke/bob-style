@@ -47,6 +47,7 @@ const note = `
   --- | --- | ---
   meta | CardTableMetaData | array of objects, describing table meta-data per column
   table | CardTableData | 2-dimentional array (array of arrays) of objects, providing table cell data per row
+  minCellWidth | number | number representing minimal cell width in percents | 5
 
 
   #### \`meta[0]\`: CardTableCellMeta - single column meta-data object properties
