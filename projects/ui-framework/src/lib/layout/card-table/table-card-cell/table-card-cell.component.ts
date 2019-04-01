@@ -3,7 +3,8 @@ import {
   Input,
   ViewChild,
   ViewContainerRef,
-  OnInit
+  OnInit,
+  OnDestroy
 } from '@angular/core';
 
 import { CardTableCellData, CardTableCellMeta, CardTableCellComponent } from '../card-table.interface';
@@ -15,7 +16,7 @@ import { ComponentFactoryService } from '../component-factory.service';
   templateUrl: './table-card-cell.component.html',
   styleUrls: ['./table-card-cell.component.scss']
 })
-export class TableCardCardTableCellComponent implements OnInit {
+export class TableCardCardTableCellComponent implements OnInit, OnDestroy {
   constructor(private ComponentFactory: ComponentFactoryService) {}
 
   @ViewChild('componentHost', { read: ViewContainerRef })
@@ -28,8 +29,14 @@ export class TableCardCardTableCellComponent implements OnInit {
   ngOnInit(): void {
     if (this.isComponent(this.cell.data)) {
       this.ComponentFactory.setComponentContainerRef(this.componentHost);
-      // this.ComponentFactory.reset();
-      this.ComponentFactory.insertComponent(this.cell.data as CardTableCellComponent);
+      this.ComponentFactory.insertComponent(this.cell
+        .data as CardTableCellComponent);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.isComponent(this.cell.data)) {
+      this.ComponentFactory.destroyComponent();
     }
   }
 

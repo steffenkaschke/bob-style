@@ -9,7 +9,8 @@ import {
   Inject,
   ComponentFactoryResolver,
   ViewContainerRef,
-  Type
+  Type,
+  ComponentRef
 } from '@angular/core';
 
 import { DOCUMENT } from '@angular/common';
@@ -19,6 +20,7 @@ import { CardTableCellComponent } from './card-table.interface';
 @Injectable()
 export class ComponentFactoryService {
   container: ViewContainerRef;
+  component: ComponentRef<any>;
 
   constructor(
     private factoryResolver: ComponentFactoryResolver,
@@ -43,23 +45,28 @@ export class ComponentFactoryService {
   }
 
   insertComponent(comp: CardTableCellComponent): void {
+    this.reset();
     const factory = this.resolveFactory(comp.component);
 
     const ngContent = comp.content
       ? this.resolveNgContent(comp.content)
       : undefined;
 
-    const component = this.container.createComponent(
+    this.component = this.container.createComponent(
       factory,
       undefined,
       undefined,
       ngContent
-    ).instance as any;
+    );
 
     if (comp.attributes) {
       for (const attr of Object.keys(comp.attributes)) {
-        component[attr] = comp.attributes[attr];
+        this.component.instance[attr] = comp.attributes[attr];
       }
     }
+  }
+
+  destroyComponent(): void {
+    this.component.destroy();
   }
 }
