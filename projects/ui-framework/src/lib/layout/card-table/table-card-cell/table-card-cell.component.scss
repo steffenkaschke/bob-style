@@ -27,6 +27,6 @@ $line-height-body: 1.5;
 
 :host ::ng-deep {
   b-chip {
-    width: 100%;
+    min-width: 100%;
   }
 }

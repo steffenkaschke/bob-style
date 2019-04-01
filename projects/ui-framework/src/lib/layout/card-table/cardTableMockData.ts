@@ -1,18 +1,19 @@
 import { CardTableMetaData, CardTableData } from './card-table.interface';
 import { ChipComponent } from '../../buttons-indicators/chips/chip/chip.component';
+import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
+
 
 export const CardTableMockMetaData: CardTableMetaData = [
   {
     id: 1,
     name: 'Requested For',
-    sortablle: false,
+    sortablle: false
   },
   {
     id: 2,
     name: 'Subject',
     textStyle: {
       fontWeight: '500'
-      // crazyStuff: 'not-allowed'
     },
     sortablle: false
   },
@@ -24,18 +25,41 @@ export const CardTableMockMetaData: CardTableMetaData = [
   {
     id: 4,
     name: 'Assignee',
-    sortablle: false,
+    sortablle: false
   },
   {
     id: 5,
     name: 'Status',
     width: 15,
     align: 'right',
-    sortablle: true,
+    sortablle: true
   }
 ];
 
 export const CardTableMockData: CardTableData = [
+  [
+    {
+      data: ['Dylan Herrera', 'Product designer ']
+    },
+    {
+      data: 'UK Product Team Salary Change'
+    },
+    {
+      data: ['Elsie Hunter', '11/03/2019']
+    },
+    {
+      data: ['Madge Scott', '(You)']
+    },
+    {
+      data: {
+        component: ButtonComponent,
+        attributes: {
+          type: 'secondary'
+        },
+        content: 'Approve'
+      }
+    }
+  ],
   [
     {
       data: ['Joel Sanders', 'Business developer']

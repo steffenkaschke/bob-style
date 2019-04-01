@@ -3,10 +3,8 @@ import { Component, Input, HostBinding, OnInit } from '@angular/core';
 import {
   CardTableMetaData,
   CardTableData,
-  cardTableAllowedTextStyleObj
+  cardTableAllowedCellStyleObj
 } from '../card-table.interface';
-
-import { generateCellStyle } from '../card-table-utils';
 
 @Component({
   selector: 'b-card-table',
@@ -22,50 +20,70 @@ export class CardTableComponent implements OnInit {
 
   @HostBinding('attr.role') string = 'table';
 
-  cellWidths: number[] = [];
+  cellsStyle: cardTableAllowedCellStyleObj[];
 
-  private setCellsWidth(): void {
+  private getCellsWidth(): number[] {
+    let cellWidths: number[] = [];
 
     const maxCellWidth = 100 - this.minCellWidth * (this.meta.length - 1);
-    const autoWidthCellsNumber = this.meta.reduce((acc, cell) => cell.width ? acc : acc + 1, 0);
-    const totalProvidedWidth = this.meta.reduce((acc, cell) => cell.width ? acc + cell.width : acc, 0);
+    const autoWidthCellsNumber = this.meta.reduce(
+      (acc, cell) => (cell.width > 0 ? acc : acc + 1),
+      0
+    );
+    const totalProvidedWidth = this.meta.reduce(
+      (acc, cell) => (cell.width > 0 ? acc + cell.width : acc),
+      0
+    );
 
-    this.cellWidths = this.meta.map(cell => {
+    cellWidths = this.meta.map(cell => {
       const autoWidth = (100 - totalProvidedWidth) / autoWidthCellsNumber;
 
-      return cell.width
+      return cell.width > 0
         ? cell.width > this.minCellWidth
           ? cell.width > maxCellWidth
             ? maxCellWidth
             : cell.width
           : this.minCellWidth
         : autoWidth > this.minCellWidth
-          ? autoWidth
-          : this.minCellWidth;
+        ? autoWidth
+        : this.minCellWidth;
     });
 
     const totalWidth = () =>
-      Math.round(this.cellWidths.reduce((acc, width) => acc + width, 0));
+      Math.round(cellWidths.reduce((acc, width) => acc + width, 0));
 
     const cellsBiggerThanMinimum = () =>
-      this.cellWidths.reduce((acc, width) => width > this.minCellWidth ? acc + 1 : acc, 0);
+      cellWidths.reduce(
+        (acc, width) => (width > this.minCellWidth ? acc + 1 : acc), 0);
 
     while (totalWidth() > 100) {
-      this.cellWidths = this.cellWidths.map(width => {
-        const target =
-          width - (totalWidth() - 100) / cellsBiggerThanMinimum();
+      cellWidths = cellWidths.map(width => {
+        const target = width - (totalWidth() - 100) / cellsBiggerThanMinimum();
         return target > this.minCellWidth ? target : width;
       });
     }
 
+    if (totalWidth() < 100) {
+      cellWidths = cellWidths.map(
+        width => width + (100 - totalWidth()) / cellWidths.length
+      );
+    }
+
+    return cellWidths;
+  }
+
+  private setCellsStyle(): void {
+    const cellsWidths = this.getCellsWidth();
+
+    this.cellsStyle = this.meta.map((cell, index) => ({
+      maxWidth: cellsWidths[index] + '%',
+      alignItems: cell.align === 'right' ? 'flex-end' : null,
+      ...cell.textStyle
+    }));
   }
 
   ngOnInit(): void {
-    this.setCellsWidth();
-    console.log(this.cellWidths);
+    this.setCellsStyle();
   }
 
-  getCellStyle(index: number): cardTableAllowedTextStyleObj {
-    return generateCellStyle(this.meta, index, false);
-  }
 }

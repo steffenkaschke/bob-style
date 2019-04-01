@@ -3,7 +3,10 @@
       role="row">
     <li class="table-header-cell"
         *ngFor="let cell of meta; index as index;"
-        [ngStyle]="getCellStyle(index)"
+        [ngStyle]="{
+          'maxWidth': cellsStyle[index].maxWidth,
+          'alignItems': cellsStyle[index].alignItems
+        }"
         role="columnheader">
       <span class="text">{{ cell.name }}</span>
     </li>
@@ -16,6 +19,6 @@
       b-table-card
       [row]="row"
       [meta]="meta"
-      [style]=""
+      [style]="cellsStyle"
       role="row"></li>
 </ul>

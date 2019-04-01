@@ -16,6 +16,9 @@ import { CardTableMockMetaData, CardTableMockData } from '../cardTableMockData';
 import { ChipsModule } from '../../../buttons-indicators/chips/chips.module';
 import { ChipComponent } from '../../../buttons-indicators/chips/chip/chip.component';
 
+import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonComponent } from '../../../buttons-indicators/buttons/button/button.component';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
@@ -94,9 +97,10 @@ story.add(
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           CardTableModule,
-          ChipsModule
+          ChipsModule,
+          ButtonsModule
         ],
-        entryComponents: [ChipComponent]
+        entryComponents: [ChipComponent, ButtonComponent]
       }
     };
   },
