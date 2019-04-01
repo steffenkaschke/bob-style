@@ -1,12 +1,14 @@
 import { CardTableMetaData, CardTableData } from './card-table.interface';
 import { ChipComponent } from '../../buttons-indicators/chips/chip/chip.component';
 import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
+import { TestAvatarUsernameComponent } from './test-avatar-username.component';
 
 
 export const CardTableMockMetaData: CardTableMetaData = [
   {
     id: 1,
     name: 'Requested For',
+    width: 25,
     sortablle: false
   },
   {
@@ -39,7 +41,19 @@ export const CardTableMockMetaData: CardTableMetaData = [
 export const CardTableMockData: CardTableData = [
   [
     {
-      data: ['Dylan Herrera', 'Product designer ']
+      data: {
+        component: TestAvatarUsernameComponent,
+        attributes: {
+          imageSource:
+            'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
+        },
+        content: ['Dylan Herrera', 'Product designer'],
+        handlers: {
+          clicked: event => {
+            console.log('Avatar clicked');
+          }
+        }
+      }
     },
     {
       data: 'UK Product Team Salary Change'
@@ -58,7 +72,9 @@ export const CardTableMockData: CardTableData = [
         },
         content: 'Approve',
         handlers: {
-          clicked: (event) => { console.log('Button clicked', event); }
+          clicked: event => {
+            console.log('Button clicked');
+          }
         }
       }
     }

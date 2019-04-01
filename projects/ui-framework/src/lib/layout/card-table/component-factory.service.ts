@@ -36,9 +36,14 @@ export class ComponentFactoryService {
     return this.factoryResolver.resolveComponentFactory(component);
   }
 
-  private resolveNgContent(content: string) {
-    const element = this.document.createTextNode(content);
-    return [[element]];
+  private resolveNgContent(content: string | string[]) {
+    if (typeof content === 'string') {
+      content = [content];
+    }
+    const elements = content.map(text =>
+      [this.document.createTextNode(text)]
+    );
+    return [...elements];
   }
 
   reset(): void {

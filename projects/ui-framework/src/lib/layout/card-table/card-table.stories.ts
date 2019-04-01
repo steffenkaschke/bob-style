@@ -9,18 +9,19 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../../consts';
-
-import { CardTableModule } from '../card-table.module';
-import { CardTableMockMetaData, CardTableMockData } from '../cardTableMockData';
-import { ChipsModule } from '../../../buttons-indicators/chips/chips.module';
-import { ChipComponent } from '../../../buttons-indicators/chips/chip/chip.component';
-
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
-import { ButtonComponent } from '../../../buttons-indicators/buttons/button/button.component';
-
+import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+
+import { CardTableModule } from './card-table.module';
+import { CardTableMockMetaData, CardTableMockData } from './cardTableMockData';
+import { ChipsModule } from '../../buttons-indicators/chips/chips.module';
+import { ChipComponent } from '../../buttons-indicators/chips/chip/chip.component';
+
+import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
+
+import { TestAvatarUsernameComponent } from './test-avatar-username.component';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
@@ -100,7 +101,7 @@ story.add(
           ChipsModule,
           ButtonsModule
         ],
-        entryComponents: [ChipComponent, ButtonComponent]
+        entryComponents: [ChipComponent, ButtonComponent, TestAvatarUsernameComponent]
       }
     };
   },

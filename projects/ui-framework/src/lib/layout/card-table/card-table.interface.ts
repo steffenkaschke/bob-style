@@ -27,7 +27,7 @@ export type cardTableAllowedCellStyleObj = {
 export interface CardTableCellComponent {
   component: Type<any>;
   attributes?: object;
-  content?: string;
+  content?: string | string[];
   handlers?: CardTableCellComponentHandlersObj;
 }
 

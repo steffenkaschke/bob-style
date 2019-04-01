@@ -6,14 +6,22 @@ import { CardTableComponent } from './card-table/card-table.component';
 
 import { ComponentFactoryService } from './component-factory.service';
 
+import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { TestAvatarUsernameComponent } from './test-avatar-username.component';
+
 @NgModule({
   declarations: [
     TableCardCardTableCellComponent,
     TableCardComponent,
+    CardTableComponent,
+    TestAvatarUsernameComponent
+  ],
+  imports: [CommonModule, AvatarModule],
+  exports: [
+    TableCardCardTableCellComponent,
+    TableCardComponent,
     CardTableComponent
   ],
-  imports: [CommonModule],
-  exports: [TableCardCardTableCellComponent, TableCardComponent, CardTableComponent],
   providers: [ComponentFactoryService]
 })
 export class CardTableModule {}
