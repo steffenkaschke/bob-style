@@ -151,6 +151,24 @@ describe('DialogComponent', () => {
         tick();
         expect(spyMatDialogRef.close).toHaveBeenCalled();
       }));
+    it('should leave dialog open if action resolves false', () => {
+      fakeAsync(() => {
+        let closeButton;
+        const okButton = fixture.debugElement.query(By.css('.ok-button')).componentInstance;
+        let progressIndicator;
+        component.dialogButtons.ok.action = () => false;
+        okButton.clicked.emit();
+        fixture.detectChanges();
+        progressIndicator = fixture.debugElement.query(By.css('.progress-indicator'));
+        expect(progressIndicator.children.length).toBe(1);
+        closeButton = fixture.debugElement.query(By.css('.close-button')).componentInstance;
+        expect(closeButton.nativeElement).toBeTruthy();
+        tick();
+        expect(spyMatDialogRef.close).not.toHaveBeenCalled();
+        progressIndicator = fixture.debugElement.query(By.css('.progress-indicator'));
+        expect(progressIndicator).toBeFalsy();
+      });
+    });
     describe('confirmation', () => {
       beforeEach(() => {
         component.dialogButtons.confirmation = {

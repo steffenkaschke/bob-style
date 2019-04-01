@@ -178,7 +178,9 @@ export class ExampleDialog2Component implements OnInit {
     this.dialogButtonConfig = {
       ok: {
         label: 'Cool!',
-        action: () => {},
+        action: () => {
+          return false;
+        },
       },
     };
   }
