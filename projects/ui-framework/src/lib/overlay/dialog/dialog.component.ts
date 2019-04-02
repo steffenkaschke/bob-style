@@ -77,7 +77,13 @@ export class DialogComponent implements OnDestroy {
     if (this.hasAction(dialogButton)) {
       this.showProgress = true;
       Promise.resolve(dialogButton.action())
-        .then(res => this.dialogRef.close(res))
+        .then(res => {
+          if (res === false) {
+            this.showProgress = false;
+          } else {
+            this.dialogRef.close(res);
+          }
+        })
         .catch((err) => {
           this.showProgress = false;
         });
