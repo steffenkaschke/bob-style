@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TableCardCardTableCellComponent } from './table-card-cell/table-card-cell.component';
 import { TableCardComponent } from './table-card/table-card.component';
 import { CardTableComponent } from './card-table/card-table.component';
-
+import { CellWidthsService } from './cell-widths.service';
 import { ComponentRendererComponent } from '../../services/component-renderer/component-renderer.component';
 
 @NgModule({
@@ -20,6 +20,6 @@ import { ComponentRendererComponent } from '../../services/component-renderer/co
     TableCardComponent,
     CardTableComponent
   ],
-  providers: []
+  providers: [CellWidthsService]
 })
 export class CardTableModule {}

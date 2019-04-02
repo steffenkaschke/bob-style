@@ -1,7 +1,7 @@
 import { CardTableMetaData, CardTableData } from './card-table.interface';
 import { ChipComponent } from '../../buttons-indicators/chips/chip/chip.component';
 import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
-import { MockComponent } from './mock.component';
+import { MockComponent } from '../../services/mock-component/mock.component';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 
 const mockComponentAttributes = {

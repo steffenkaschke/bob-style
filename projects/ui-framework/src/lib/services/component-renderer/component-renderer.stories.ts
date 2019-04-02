@@ -18,33 +18,86 @@ import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { MockComponent } from '../mock-component/mock.component';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-component-renderer [component]="componentData">
+<b-component-renderer [render]="renderData">
 </b-component-renderer>
 `;
 
 const storyTemplate = `
 <b-story-book-layout title="Component Renderer">
-  <div style="padding: 50px;">
+  <div style="padding: 50px; display:flex; justify-content: center; background: rgba(0,0,0,0.1);">
     ${template}
   </div>
 </b-story-book-layout>
 `;
 
-const componentData = {
-  component: ButtonComponent,
+const renderData = {
+  component: MockComponent,
   attributes: {
-    type: 'secondary'
+    hostcss: {
+      display: 'flex',
+      alignItems: 'center'
+    },
+    slot1css: {
+      marginRight: '10px'
+    }
   },
   content: [
     {
       component: AvatarComponent,
-      content: 'Super button!',
+      attributes: {
+        imageSource: 'http://i.pravatar.cc/200',
+        size: 'mini',
+        isClickable: true
+      },
+      handlers: {
+        clicked: action('Avatar was clicked')
+      }
+    },
+
+    'Zoe Clark'
+  ]
+};
+
+const note = `
+  ## Component Renderer
+
+  #### Module
+  *ComponentRendererModule*
+
+
+  ~~~
+  ${template}
+  ~~~
+
+
+  #### [render: RenderedComponent] (properties of object describing Component to be rendered)
+  Name | Type | Description | Default value
+    --- | --- | --- | ---
+  component | any | component reference | none
+  attributes | { inputName: inputValue } | object with component attributes (inputs) | none (optional)
+  content | string  / RenderedComponent / (string / RenderedComponent)[] | a string, another component or an array of strings and components to be passed as ng-content of the component | none (optional)
+  handlers | { eventName: handlerFunction() } | object that maps events output by component to handler functions | none (optional)
+
+
+   #### Example
+
+  #### renderData: RenderedComponent
+
+  \`\`\`
+{
+  component: MockComponent,
+
+  content: [
+
+    {
+      component: AvatarComponent,
       attributes: {
         imageSource: 'http://i.pravatar.cc/200',
         size: 'mini',
@@ -56,32 +109,13 @@ const componentData = {
         }
       }
     },
-    'Super button'
-  ],
-  handlers: {
-    clicked: () => {
-      console.log('Button was clicked!');
-    }
-  }
-};
 
-const note = `
-  ## Component Renderer
+    'Zoe Clark'
 
-  #### Module
-  *ComponentRendererModule*
+  ]
+}
+\`\`\`
 
-  #### [component]
-  properties of object describing Component to be rendered
-  Name | Type | Description | Default value
-    --- | --- | --- | ---
-  component | Component | component reference | none
-  attributes | object | object with component inputs | none (optional)
-  content | string | text to be passed as ng-content of the component | none (optional)
-
-  ~~~
-  ${template}
-  ~~~
 `;
 
 story.add(
@@ -90,9 +124,10 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        componentData: object('component', componentData)
+        renderData: object('renderData', renderData)
       },
       moduleMetadata: {
+        declarations: [MockComponent],
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
@@ -100,7 +135,7 @@ story.add(
           ButtonsModule,
           AvatarModule
         ],
-        entryComponents: [ButtonComponent, AvatarComponent]
+        entryComponents: [ButtonComponent, AvatarComponent, MockComponent]
       }
     };
   },
