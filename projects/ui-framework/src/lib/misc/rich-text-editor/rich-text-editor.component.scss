@@ -5,14 +5,14 @@
   text-align: left;
   display: block;
   .ql-toolbar.ql-snow {
-    @include BodyFont(normal, normal, 12px);
+    @include BodyFont;
     b-panel {
       float: left;
       display: block;
     }
   }
   .ql-container {
-    @include BodyFont(normal, normal, 12px);
+    @include BodyFont;
   }
   .quill-editor {
     min-height: 140px;

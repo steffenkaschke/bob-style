@@ -3,7 +3,7 @@
 @import '../../style/shapes';
 
 @mixin listOption {
-  @include BodyFont(normal, normal, 12px);
+  @include BodyFont;
   color: $grey-700;
   padding: 0 16px;
   box-sizing: border-box;

@@ -31,7 +31,7 @@
     }
 
     .mat-slide-toggle-content {
-      @include BodyFont(normal, normal, 12px);
+      @include BodyFont;
       &:first-letter {
         text-transform: uppercase;
       }
