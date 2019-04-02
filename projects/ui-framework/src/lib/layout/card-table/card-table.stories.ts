@@ -50,13 +50,16 @@ const note = `
   #### Module
   *CardTableModule*
 
-  #### Properties
-  Name | Type | Description
-  --- | --- | ---
-  meta | CardTableMetaData | array of objects, describing table meta-data per column
-  table | CardTableData | 2-dimentional array (array of arrays) of objects, providing table cell data per row
-  minCellWidth | number | number representing minimal cell width in percents | 5
+  ~~~
+  ${template}
+  ~~~
 
+  #### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  meta | CardTableMetaData | array of objects, describing table meta-data per column | none
+  table | CardTableData | 2-dimentional array (array of arrays) of objects, providing table cell data per row | none
+  minCellWidth | number | number representing minimal cell width in percents | 5
 
   #### \`meta[0]\`: CardTableCellMeta - single column meta-data object properties
   Name | Type | Description | Default value
@@ -68,24 +71,97 @@ const note = `
   textStyle | cardTableAllowedTextStyleObj | object with text-related CSS properties (camelCase), to be applied on the cell (color, fontWeight, fontSize) | none (optional)
   sortable | boolean | to enable sorting by column | false
 
+  ##### [meta] example
+
+  \`\`\`
+[
+  {
+    id: 1,
+    name: 'Requested For'
+  },
+  {
+    id: 2,
+    name: 'Subject',
+    textStyle: {
+      fontWeight: '500'
+    }
+  },
+  {
+    id: 3,
+    name: 'Status',
+    width: 15,
+    align: 'right',
+    sortablle: true
+  }
+]
+  \`\`\`
 
   #### \`table[0][0]\`: CardTableCellData - single cell data object properties
   Name | Type | Description
   --- | --- | ---
   data | string | if string is provided, it is treated as text with automatic truncating after 2 lines
    - | string[] | if an array of strings is provided - each string is displayed as separate line, truncated if it doesnt fit the width
-   - | CardTableCellComponent | object, describing a Component that can be provided to be displayed in the cell
+   - | RenderedComponent | object describing a Component to be displayed in the cell
 
-  #### \`table[0][0].component\`: CardTableCellComponent - properties of object describing Component passed to cell
-  Name | Type | Description | Default value
-    --- | --- | --- | ---
-  component | Component | component reference | none
-  attributes | object | object with component inputs | none (optional)
-  content | string | text to be passed as ng-content of the component | none (optional)
+  ##### [data] example
 
-  ~~~
-  ${template}
-  ~~~
+  \`\`\`
+
+  [
+    [
+      {
+        data: {
+          component: MockComponent,
+          content: [
+            {
+              component: AvatarComponent,
+              attributes: {
+                imageSource: 'http://i.pravatar.cc/200?img=3',
+              },
+              handlers: {
+                clicked: event => {
+                  console.log('Avatar clicked');
+                }
+              }
+            },
+            'Dylan Herrera',
+            'Product designer'
+          ]
+        }
+      },
+      {
+        data: 'UK Product Team Salary Change'
+      },
+      {
+        data: ['Elsie Hunter', '11/03/2019']
+      },
+      {
+        data: ['Madge Scott', '(You)']
+      },
+      {
+        data: {
+          component: ButtonComponent,
+          attributes: {
+            type: 'secondary'
+          },
+          content: 'Approve',
+          handlers: {
+            clicked: event => {
+              console.log('Button clicked');
+            }
+          }
+        }
+      }
+    ],
+  ]
+
+  \`\`\`
+
+
+  #### \`table[0][0].component\`: RenderedComponent - properties of object describing Component passed to cell
+
+  please see <u>Services / Component Renderer</u> story
+
 `;
 
 story.add(
