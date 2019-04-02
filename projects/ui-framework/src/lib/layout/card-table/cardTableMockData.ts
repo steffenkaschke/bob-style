@@ -45,10 +45,9 @@ export const CardTableMockData: CardTableData = [
         component: MockComponent,
         attributes: {
           hostcss: { display: 'grid' },
-          slot1css: { backgroundColor: 'red' },
-          slot2css: { backgroundColor: 'yellow' },
-          slot3css: { backgroundColor: 'green' },
-          slot4css: { backgroundColor: 'blue' }
+          slot1css: {},
+          slot2css: { fontWeight: 500 },
+          slot3css: {}
         },
         content: [
           {
