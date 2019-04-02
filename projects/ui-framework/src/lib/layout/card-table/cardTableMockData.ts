@@ -1,8 +1,8 @@
 import { CardTableMetaData, CardTableData } from './card-table.interface';
 import { ChipComponent } from '../../buttons-indicators/chips/chip/chip.component';
 import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
-import { TestAvatarUsernameComponent } from './test-avatar-username.component';
-
+import { MockComponent } from './mock.component';
+import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 
 export const CardTableMockMetaData: CardTableMetaData = [
   {
@@ -22,7 +22,7 @@ export const CardTableMockMetaData: CardTableMetaData = [
   {
     id: 3,
     name: 'Requested by',
-    sortablle: false,
+    sortablle: false
   },
   {
     id: 4,
@@ -42,20 +42,25 @@ export const CardTableMockData: CardTableData = [
   [
     {
       data: {
-        component: TestAvatarUsernameComponent,
+        component: MockComponent,
         attributes: {
-          imageSource:
-            'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
+          hostcss: { display: 'grid' },
+          slot1css: { backgroundColor: 'red' },
+          slot2css: { backgroundColor: 'yellow' },
+          slot3css: { backgroundColor: 'green' },
+          slot4css: { backgroundColor: 'blue' }
         },
         content: [
-          'Dylan Herrera',
           {
-            component: ChipComponent,
+            component: AvatarComponent,
             attributes: {
-              type: 'success'
-            },
-            content: 'Whoa!'
+              imageSource:
+                'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg',
+              size: 'small',
+              isClickable: true
+            }
           },
+          'Dylan Herrera',
           'Product designer'
         ],
         handlers: {

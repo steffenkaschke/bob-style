@@ -21,7 +21,7 @@ import { ChipComponent } from '../../buttons-indicators/chips/chip/chip.componen
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
 
-import { TestAvatarUsernameComponent } from './test-avatar-username.component';
+import { MockComponent } from './mock.component';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
@@ -101,7 +101,7 @@ story.add(
           ChipsModule,
           ButtonsModule
         ],
-        entryComponents: [ChipComponent, ButtonComponent, TestAvatarUsernameComponent]
+        entryComponents: [ChipComponent, ButtonComponent, MockComponent]
       }
     };
   },

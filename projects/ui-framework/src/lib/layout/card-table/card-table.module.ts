@@ -7,14 +7,14 @@ import { CardTableComponent } from './card-table/card-table.component';
 import { ComponentFactoryService } from './component-factory.service';
 
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
-import { TestAvatarUsernameComponent } from './test-avatar-username.component';
+import { MockComponent } from './mock.component';
 
 @NgModule({
   declarations: [
     TableCardCardTableCellComponent,
     TableCardComponent,
     CardTableComponent,
-    TestAvatarUsernameComponent
+    MockComponent
   ],
   imports: [CommonModule, AvatarModule],
   exports: [
