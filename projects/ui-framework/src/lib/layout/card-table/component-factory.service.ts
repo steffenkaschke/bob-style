@@ -123,7 +123,7 @@ export class ComponentFactoryService {
   }
 
   destroyComponent(): void {
-    if (this.component) {
+    if (this.component !== null) {
       this.component.destroy();
       this.component = null;
     }

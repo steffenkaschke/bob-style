@@ -13,8 +13,7 @@ import { MockComponent } from './mock.component';
   declarations: [
     TableCardCardTableCellComponent,
     TableCardComponent,
-    CardTableComponent,
-    MockComponent
+    CardTableComponent
   ],
   imports: [CommonModule, AvatarModule],
   exports: [

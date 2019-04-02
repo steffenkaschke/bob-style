@@ -1,8 +1,6 @@
 import {
   Component,
   Input,
-  Output,
-  EventEmitter,
   ViewChild,
   ElementRef,
   AfterViewInit
@@ -35,8 +33,6 @@ export class MockComponent implements AfterViewInit {
   @Input() slot3css = {};
   @Input() slot4css = {};
 
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
-
   @ViewChild('slot1') slot1: ElementRef;
   @ViewChild('slot2') slot2: ElementRef;
   @ViewChild('slot3') slot3: ElementRef;
@@ -45,7 +41,6 @@ export class MockComponent implements AfterViewInit {
   hasSlots = [true, true, true, true];
 
   private isEmpty(element: ElementRef) {
-    console.log(element);
     return (
       element.nativeElement.children.length !== 0 ||
       element.nativeElement.childNodes.length !== 0
@@ -59,9 +54,5 @@ export class MockComponent implements AfterViewInit {
       this.hasSlots[2] = this.isEmpty(this.slot3) ? true : false;
       this.hasSlots[3] = this.isEmpty(this.slot4) ? true : false;
     }, 0);
-  }
-
-  onClick($event) {
-    this.clicked.emit($event);
   }
 }

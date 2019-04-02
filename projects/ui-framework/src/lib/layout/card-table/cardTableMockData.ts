@@ -4,6 +4,35 @@ import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.
 import { MockComponent } from './mock.component';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 
+const mockComponentAttributes = {
+  hostcss: {
+    display: 'grid',
+    gridTemplateColumns: '60px auto',
+    gridGap: '0 15px'
+  },
+  slot1css: {
+    gridRow: '1 / span 2'
+  },
+  slot2css: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    fontWeight: 500,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+  },
+  slot3css: {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+  }
+};
+
+const avatarComponentAttributes = {
+  size: 'small',
+  isClickable: true
+};
+
 export const CardTableMockMetaData: CardTableMetaData = [
   {
     id: 1,
@@ -43,30 +72,23 @@ export const CardTableMockData: CardTableData = [
     {
       data: {
         component: MockComponent,
-        attributes: {
-          hostcss: { display: 'grid' },
-          slot1css: {},
-          slot2css: { fontWeight: 500 },
-          slot3css: {}
-        },
+        attributes: mockComponentAttributes,
         content: [
           {
             component: AvatarComponent,
             attributes: {
-              imageSource:
-                'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg',
-              size: 'small',
-              isClickable: true
+              imageSource: 'http://i.pravatar.cc/200?img=3',
+              ...avatarComponentAttributes
+            },
+            handlers: {
+              clicked: event => {
+                console.log('Avatar clicked');
+              }
             }
           },
           'Dylan Herrera',
           'Product designer'
-        ],
-        handlers: {
-          clicked: event => {
-            console.log('Avatar clicked');
-          }
-        }
+        ]
       }
     },
     {
@@ -95,7 +117,26 @@ export const CardTableMockData: CardTableData = [
   ],
   [
     {
-      data: ['Joel Sanders', 'Business developer']
+      data: {
+        component: MockComponent,
+        attributes: mockComponentAttributes,
+        content: [
+          {
+            component: AvatarComponent,
+            attributes: {
+              imageSource: 'http://i.pravatar.cc/200?img=2',
+              ...avatarComponentAttributes
+            },
+            handlers: {
+              clicked: event => {
+                console.log('Avatar clicked');
+              }
+            }
+          },
+          'Joel Sanders',
+          'Business developer'
+        ]
+      }
     },
     {
       data: 'Personal Information Update'
@@ -118,7 +159,26 @@ export const CardTableMockData: CardTableData = [
   ],
   [
     {
-      data: ['Nora Herrera', 'Front-end engineer']
+      data: {
+        component: MockComponent,
+        attributes: mockComponentAttributes,
+        content: [
+          {
+            component: AvatarComponent,
+            attributes: {
+              imageSource: 'http://i.pravatar.cc/200?img=1',
+              ...avatarComponentAttributes
+            },
+            handlers: {
+              clicked: event => {
+                console.log('Avatar clicked');
+              }
+            }
+          },
+          'Nora Herrera',
+          'Front-end engineer'
+        ]
+      }
     },
     {
       data: 'NYC Employee Promotion'
@@ -141,7 +201,26 @@ export const CardTableMockData: CardTableData = [
   ],
   [
     {
-      data: ['Jaspreet Bhamrai', 'Product designer']
+      data: {
+        component: MockComponent,
+        attributes: mockComponentAttributes,
+        content: [
+          {
+            component: AvatarComponent,
+            attributes: {
+              imageSource: 'http://i.pravatar.cc/200?img=4',
+              ...avatarComponentAttributes
+            },
+            handlers: {
+              clicked: event => {
+                console.log('Avatar clicked');
+              }
+            }
+          },
+          'Jaspreet Bhamrai',
+          'Product designer'
+        ]
+      }
     },
     {
       data: 'UK Design Team Salary Change'
@@ -165,7 +244,26 @@ export const CardTableMockData: CardTableData = [
   ],
   [
     {
-      data: ['Chioke Okonkwo', 'Business developer']
+      data: {
+        component: MockComponent,
+        attributes: mockComponentAttributes,
+        content: [
+          {
+            component: AvatarComponent,
+            attributes: {
+              imageSource: 'http://i.pravatar.cc/200?img=5',
+              ...avatarComponentAttributes
+            },
+            handlers: {
+              clicked: event => {
+                console.log('Avatar clicked');
+              }
+            }
+          },
+          'Chioke Okonkwo',
+          'Business developer'
+        ]
+      }
     },
     {
       data: 'Personal Information Update'
@@ -188,7 +286,26 @@ export const CardTableMockData: CardTableData = [
   ],
   [
     {
-      data: ['Abhoy Latif', 'Business developer']
+      data: {
+        component: MockComponent,
+        attributes: mockComponentAttributes,
+        content: [
+          {
+            component: AvatarComponent,
+            attributes: {
+              imageSource: 'http://i.pravatar.cc/200?img=6',
+              ...avatarComponentAttributes
+            },
+            handlers: {
+              clicked: event => {
+                console.log('Avatar clicked');
+              }
+            }
+          },
+          'Abhoy Latif',
+          'Business developer'
+        ]
+      }
     },
     {
       data: 'Personal Information Update'

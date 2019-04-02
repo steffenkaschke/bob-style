@@ -94,6 +94,7 @@ story.add(
         CardTableData: object('table', CardTableMockData)
       },
       moduleMetadata: {
+        declarations: [MockComponent],
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
