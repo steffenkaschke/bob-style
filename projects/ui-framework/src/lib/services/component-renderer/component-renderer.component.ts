@@ -16,9 +16,9 @@ import {
 import { DOCUMENT } from '@angular/common';
 
 import {
-  DynamicComponent,
-  DynamicComponentContent,
-  DynamicComponentHandlers
+  RenderedComponent,
+  RenderedComponentContent,
+  RenderedComponentHandlers
 } from './component-renderer.interface';
 
 @Component({
@@ -38,7 +38,7 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
   @ViewChild('componentHost', { read: ViewContainerRef })
   container: ViewContainerRef;
 
-  @Input() component: DynamicComponent;
+  @Input() component: RenderedComponent;
 
   private componentRef: ComponentRef<any>;
 
@@ -54,7 +54,7 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
     return this.factoryResolver.resolveComponentFactory(component);
   }
 
-  private resolveNgContent(content: DynamicComponentContent): any[] {
+  private resolveNgContent(content: RenderedComponentContent): any[] {
     if (!Array.isArray(content)) {
       content = [content];
     }
@@ -82,7 +82,7 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
 
   private resolveComponentHandlers(
     component: ComponentRef<any>,
-    handlers: DynamicComponentHandlers
+    handlers: RenderedComponentHandlers
   ): ComponentRef<any> {
     for (const handler of Object.keys(handlers)) {
       component.instance[handler].subscribe((event: EventEmitter<any>) =>
@@ -93,7 +93,7 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
   }
 
   private createComponent(
-    comp: DynamicComponent,
+    comp: RenderedComponent,
     attach = false
   ): ComponentRef<any> {
     let component: ComponentRef<any>;
@@ -130,7 +130,7 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
     return component;
   }
 
-  private insertComponent(comp: DynamicComponent): void {
+  private insertComponent(comp: RenderedComponent): void {
     this.reset();
     this.componentRef = this.createComponent(comp, true);
   }
