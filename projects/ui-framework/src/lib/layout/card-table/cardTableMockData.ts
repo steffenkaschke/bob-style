@@ -4,6 +4,8 @@ import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.
 import { MockComponent } from '../../services/mock-component/mock.component';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 
+import { action } from '@storybook/addon-actions';
+
 const mockComponentAttributes = {
   hostcss: {
     display: 'grid',
@@ -81,9 +83,7 @@ export const CardTableMockData: CardTableData = [
               ...avatarComponentAttributes
             },
             handlers: {
-              clicked: event => {
-                console.log('Avatar clicked');
-              }
+              clicked: action('Avatar was clicked')
             }
           },
           'Dylan Herrera',
@@ -108,9 +108,7 @@ export const CardTableMockData: CardTableData = [
         },
         content: 'Approve',
         handlers: {
-          clicked: event => {
-            console.log('Button clicked');
-          }
+          clicked: action('Button was clicked')
         }
       }
     }
@@ -128,9 +126,7 @@ export const CardTableMockData: CardTableData = [
               ...avatarComponentAttributes
             },
             handlers: {
-              clicked: event => {
-                console.log('Avatar clicked');
-              }
+              clicked: action('Avatar was clicked')
             }
           },
           'Joel Sanders',
@@ -170,9 +166,7 @@ export const CardTableMockData: CardTableData = [
               ...avatarComponentAttributes
             },
             handlers: {
-              clicked: event => {
-                console.log('Avatar clicked');
-              }
+              clicked: action('Avatar was clicked')
             }
           },
           'Nora Herrera',
@@ -212,9 +206,7 @@ export const CardTableMockData: CardTableData = [
               ...avatarComponentAttributes
             },
             handlers: {
-              clicked: event => {
-                console.log('Avatar clicked');
-              }
+              clicked: action('Avatar was clicked')
             }
           },
           'Jaspreet Bhamrai',
@@ -255,9 +247,7 @@ export const CardTableMockData: CardTableData = [
               ...avatarComponentAttributes
             },
             handlers: {
-              clicked: event => {
-                console.log('Avatar clicked');
-              }
+              clicked: action('Avatar was clicked')
             }
           },
           'Chioke Okonkwo',
@@ -297,9 +287,7 @@ export const CardTableMockData: CardTableData = [
               ...avatarComponentAttributes
             },
             handlers: {
-              clicked: event => {
-                console.log('Avatar clicked');
-              }
+              clicked: action('Avatar was clicked')
             }
           },
           'Abhoy Latif',
