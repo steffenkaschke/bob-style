@@ -2,8 +2,6 @@
 @import '../../../style/mixins';
 @import './table-card-cell-mixin';
 
-$line-height-body: 1.5;
-
 :host {
   @include cell-style;
 }
