@@ -133,6 +133,7 @@ export {
   SelectOption,
   ListComponentPrefix
 } from './lib/form-elements/lists/list.interface';
+export { ListChange } from './lib/form-elements/lists/list-change/list-change';
 // Breadcrumbs Module
 export {
   BreadcrumbsModule
@@ -236,6 +237,14 @@ export { CardAddComponent } from './lib/layout/cards/card-add/card-add.component
 /*
  * Misc
  */
+
+// Rich Text Editor
+export {
+  RichTextEditorModule
+} from './lib/misc/rich-text-editor/rich-text-editor.module';
+export {
+  RichTextEditorComponent
+} from './lib/misc/rich-text-editor/rich-text-editor.component';
 
 // Preloader
 export {
