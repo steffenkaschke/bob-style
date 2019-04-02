@@ -15,11 +15,15 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 
 import { CardTableModule } from './card-table.module';
 import { CardTableMockMetaData, CardTableMockData } from './cardTableMockData';
+
 import { ChipsModule } from '../../buttons-indicators/chips/chips.module';
 import { ChipComponent } from '../../buttons-indicators/chips/chip/chip.component';
 
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
+
+import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 
 import { MockComponent } from './mock.component';
 
@@ -100,9 +104,15 @@ story.add(
           BrowserAnimationsModule,
           CardTableModule,
           ChipsModule,
-          ButtonsModule
+          ButtonsModule,
+          AvatarModule
         ],
-        entryComponents: [ChipComponent, ButtonComponent, MockComponent]
+        entryComponents: [
+          ChipComponent,
+          ButtonComponent,
+          AvatarComponent,
+          MockComponent
+        ]
       }
     };
   },

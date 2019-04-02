@@ -6,16 +6,13 @@ import { CardTableComponent } from './card-table/card-table.component';
 
 import { ComponentFactoryService } from './component-factory.service';
 
-import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
-import { MockComponent } from './mock.component';
-
 @NgModule({
   declarations: [
     TableCardCardTableCellComponent,
     TableCardComponent,
     CardTableComponent
   ],
-  imports: [CommonModule, AvatarModule],
+  imports: [CommonModule],
   exports: [
     TableCardCardTableCellComponent,
     TableCardComponent,

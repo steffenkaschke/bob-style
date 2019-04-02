@@ -7,7 +7,11 @@ import {
   OnDestroy
 } from '@angular/core';
 
-import { CardTableCellData, CardTableCellMeta, CardTableCellComponent } from '../card-table.interface';
+import {
+  CardTableCellData,
+  CardTableCellMeta,
+  CardTableCellComponent
+} from '../card-table.interface';
 
 import { ComponentFactoryService } from '../component-factory.service';
 
