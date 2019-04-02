@@ -1,18 +1,17 @@
-
 import { Type } from '@angular/core';
 
 export type DynamicComponentContent =
   | string
-  | DynamicComponentObj
-  | (string | DynamicComponentObj)[];
+  | DynamicComponent
+  | (string | DynamicComponent)[];
 
-export interface DynamicComponentHandlersObj {
+export interface DynamicComponentHandlers {
   [key: string]: (...args: any[]) => void;
 }
 
-export interface DynamicComponentObj {
+export interface DynamicComponent {
   component: Type<any>;
   attributes?: object;
   content?: DynamicComponentContent;
-  handlers?: DynamicComponentHandlersObj;
+  handlers?: DynamicComponentHandlers;
 }

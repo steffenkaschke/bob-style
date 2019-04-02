@@ -16,19 +16,19 @@ import {
 import { DOCUMENT } from '@angular/common';
 
 import {
-  DynamicComponentObj,
+  DynamicComponent,
   DynamicComponentContent,
-  DynamicComponentHandlersObj
-} from './dynamic-component.interface';
+  DynamicComponentHandlers
+} from './component-renderer.interface';
 
 @Component({
-  selector: 'b-dynamic',
+  selector: 'b-component-renderer',
   template: `
     <ng-template #componentHost></ng-template>
   `,
   styles: []
 })
-export class DynamicComponent implements OnInit, OnDestroy {
+export class ComponentRendererComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private factoryResolver: ComponentFactoryResolver,
@@ -38,7 +38,7 @@ export class DynamicComponent implements OnInit, OnDestroy {
   @ViewChild('componentHost', { read: ViewContainerRef })
   container: ViewContainerRef;
 
-  @Input() component: DynamicComponentObj;
+  @Input() component: DynamicComponent;
 
   private componentRef: ComponentRef<any>;
 
@@ -82,7 +82,7 @@ export class DynamicComponent implements OnInit, OnDestroy {
 
   private resolveComponentHandlers(
     component: ComponentRef<any>,
-    handlers: DynamicComponentHandlersObj
+    handlers: DynamicComponentHandlers
   ): ComponentRef<any> {
     for (const handler of Object.keys(handlers)) {
       component.instance[handler].subscribe((event: EventEmitter<any>) =>
@@ -93,7 +93,7 @@ export class DynamicComponent implements OnInit, OnDestroy {
   }
 
   private createComponent(
-    comp: DynamicComponentObj,
+    comp: DynamicComponent,
     attach = false
   ): ComponentRef<any> {
     let component: ComponentRef<any>;
@@ -130,7 +130,7 @@ export class DynamicComponent implements OnInit, OnDestroy {
     return component;
   }
 
-  private insertComponent(comp: DynamicComponentObj): void {
+  private insertComponent(comp: DynamicComponent): void {
     this.reset();
     this.componentRef = this.createComponent(comp, true);
   }
