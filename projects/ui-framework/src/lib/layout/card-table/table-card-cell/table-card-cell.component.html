@@ -7,4 +7,5 @@
         *ngFor="let line of cell.data">{{ line }}</span>
 </ng-container>
 
-<ng-template #componentHost></ng-template>
+<b-component-renderer [component]="cell.data"
+                      *ngIf="isComponent(cell.data)"></b-component-renderer>

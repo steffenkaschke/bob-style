@@ -1,20 +1,13 @@
-import { Type } from '@angular/core';
+import { RenderedComponent } from '../../services/component-renderer/component-renderer.interface';
 
-type cardTableAllowedTextCssProps =
-    'color'
-  | 'fontSize'
-  | 'fontWeight';
+type cardTableAllowedTextCssProps = 'color' | 'fontSize' | 'fontWeight';
 
 type cardTableAllowedCellCssProps =
-    'maxWidth'
+  | 'maxWidth'
   | 'alignItems'
   | 'color'
   | 'fontSize'
   | 'fontWeight';
-
-export interface CardTableCellComponentHandlersObj {
-  [key: string]: (...args: any[]) => void;
-}
 
 export type cardTableAllowedTextStyleObj = {
   [key in cardTableAllowedCellCssProps]?: string
@@ -23,18 +16,6 @@ export type cardTableAllowedTextStyleObj = {
 export type cardTableAllowedCellStyleObj = {
   [key in cardTableAllowedTextCssProps]?: string
 };
-
-export type CardTableCellComponentContent =
-    string
-  | CardTableCellComponent
-  | (string | CardTableCellComponent)[];
-
-export interface CardTableCellComponent {
-  component: Type<any>;
-  attributes?: object;
-  content?: CardTableCellComponentContent;
-  handlers?: CardTableCellComponentHandlersObj;
-}
 
 export interface CardTableCellMeta {
   id?: string | number;
@@ -46,7 +27,7 @@ export interface CardTableCellMeta {
 }
 
 export interface CardTableCellData {
-  data: string | string[] | CardTableCellComponent;
+  data: string | string[] | RenderedComponent;
 }
 
 export interface CardTableMetaData extends Array<CardTableCellMeta> {}
