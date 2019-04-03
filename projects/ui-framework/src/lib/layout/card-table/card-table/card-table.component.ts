@@ -3,7 +3,7 @@ import { Component, Input, HostBinding, OnInit } from '@angular/core';
 import {
   CardTableMetaData,
   CardTableData,
-  cardTableAllowedCellStyleObj
+  cardTableAllowedCellStyles
 } from '../card-table.interface';
 import { CellWidthsService } from '../cell-widths.service';
 
@@ -21,7 +21,7 @@ export class CardTableComponent implements OnInit {
 
   @HostBinding('attr.role') string = 'table';
 
-  cellsStyle: cardTableAllowedCellStyleObj[];
+  cellsStyle: cardTableAllowedCellStyles[];
 
   private setCellsStyle(): void {
     const cellsWidths = this.CellWidthsService.getCellsWidth(

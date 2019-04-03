@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 import {
   CardTableMetaData,
   CardTableRowData,
-  cardTableAllowedCellStyleObj
+  cardTableAllowedCellStyles
 } from '../card-table.interface';
 
 @Component({
@@ -16,5 +16,5 @@ export class TableCardComponent {
 
   @Input() meta: CardTableMetaData;
   @Input() row: CardTableRowData;
-  @Input() style: cardTableAllowedCellStyleObj[];
+  @Input() style: cardTableAllowedCellStyles[];
 }

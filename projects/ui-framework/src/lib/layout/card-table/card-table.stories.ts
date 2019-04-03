@@ -68,7 +68,7 @@ const note = `
   name | string | column title | none
   width | number | number representing percentage - to set column width (if not provided, column width will be set automatically) | none (optional)
   align | string ('left' or undefined / 'right') | text alignment in column | undefined (optional)
-  textStyle | cardTableAllowedTextStyleObj | object with text-related CSS properties (camelCase), to be applied on the cell (color, fontWeight, fontSize) | none (optional)
+  textStyle | cardTableAllowedTextStyles | object with text-related CSS properties (camelCase), to be applied on the cell (color, fontWeight, fontSize) | none (optional)
   sortable | boolean | to enable sorting by column | false
 
   ##### [meta] example

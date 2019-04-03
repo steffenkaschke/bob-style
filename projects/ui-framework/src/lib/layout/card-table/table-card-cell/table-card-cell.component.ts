@@ -7,7 +7,7 @@ import { CardTableCellData, CardTableCellMeta } from '../card-table.interface';
   templateUrl: './table-card-cell.component.html',
   styleUrls: ['./table-card-cell.component.scss']
 })
-export class TableCardCardTableCellComponent {
+export class TableCardCellComponent {
   constructor() {}
 
   @Input() meta: CardTableCellMeta;

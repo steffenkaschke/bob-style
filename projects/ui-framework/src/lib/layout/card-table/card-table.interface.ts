@@ -9,11 +9,11 @@ type cardTableAllowedCellCssProps =
   | 'fontSize'
   | 'fontWeight';
 
-export type cardTableAllowedTextStyleObj = {
+export type cardTableAllowedTextStyles = {
   [key in cardTableAllowedCellCssProps]?: string
 };
 
-export type cardTableAllowedCellStyleObj = {
+export type cardTableAllowedCellStyles = {
   [key in cardTableAllowedTextCssProps]?: string
 };
 
@@ -22,7 +22,7 @@ export interface CardTableCellMeta {
   name: string;
   width?: number;
   align?: string;
-  textStyle?: cardTableAllowedTextStyleObj;
+  textStyle?: cardTableAllowedTextStyles;
   sortablle: boolean;
 }
 
