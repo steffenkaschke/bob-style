@@ -1,12 +1,9 @@
 @import '../../../style/typography';
 @import '../../../style/mixins';
+@import './table-card-cell-mixin';
 
 :host {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 0 (25px/2);
-  margin: 0;
+  @include cell-style;
 }
 
 .text {
@@ -20,11 +17,5 @@
       $font-size: $font-size-body,
       $line-height: $line-height-body
     );
-  }
-}
-
-:host ::ng-deep {
-  b-chip {
-    width: 100%;
   }
 }

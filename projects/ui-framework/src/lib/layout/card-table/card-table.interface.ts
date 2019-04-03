@@ -1,42 +1,33 @@
-import { Type } from '@angular/core';
+import { RenderedComponent } from '../../services/component-renderer/component-renderer.interface';
 
-type cardTableAllowedTextCssProps =
-  'color'
-  | 'fontSize'
-  | 'fontWeight';
+type cardTableAllowedTextCssProps = 'color' | 'fontSize' | 'fontWeight';
 
 type cardTableAllowedCellCssProps =
-  'maxWidth'
+  | 'maxWidth'
   | 'alignItems'
   | 'color'
   | 'fontSize'
   | 'fontWeight';
 
-export type cardTableAllowedTextStyleObj = {
+export type cardTableAllowedTextStyles = {
   [key in cardTableAllowedCellCssProps]?: string
 };
 
-export type cardTableAllowedCellStyleObj = {
+export type cardTableAllowedCellStyles = {
   [key in cardTableAllowedTextCssProps]?: string
 };
-
-export interface CardTableCellComponent {
-  component: Type<any>;
-  attributes?: object;
-  content?: string;
-}
 
 export interface CardTableCellMeta {
   id?: string | number;
   name: string;
-  width?: string | number;
+  width?: number;
   align?: string;
-  textStyle?: cardTableAllowedTextStyleObj;
+  textStyle?: cardTableAllowedTextStyles;
   sortablle: boolean;
 }
 
 export interface CardTableCellData {
-  data: string | string[] | CardTableCellComponent;
+  data: string | string[] | RenderedComponent;
 }
 
 export interface CardTableMetaData extends Array<CardTableCellMeta> {}

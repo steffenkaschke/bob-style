@@ -18,7 +18,7 @@ import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
-import { MockComponent } from '../mock.component';
+import { MockComponent } from '../mock-component/mock.component';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs

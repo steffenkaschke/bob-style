@@ -1,27 +1,42 @@
-import { Component, Input, HostBinding } from '@angular/core';
+import { Component, Input, HostBinding, OnInit } from '@angular/core';
 
 import {
   CardTableMetaData,
   CardTableData,
-  cardTableAllowedTextStyleObj
+  cardTableAllowedCellStyles
 } from '../card-table.interface';
-
-import { generateCellStyle } from '../card-table-utils';
+import { CellWidthsService } from '../cell-widths.service';
 
 @Component({
   selector: 'b-card-table',
   templateUrl: './card-table.component.html',
   styleUrls: ['./card-table.component.scss']
 })
-export class CardTableComponent {
-  constructor() {}
+export class CardTableComponent implements OnInit {
+  constructor(private CellWidthsService: CellWidthsService) {}
 
   @Input() meta: CardTableMetaData;
   @Input() table: CardTableData;
+  @Input() minCellWidth = 5;
 
   @HostBinding('attr.role') string = 'table';
 
-  getCellStyle(index: number): cardTableAllowedTextStyleObj {
-    return generateCellStyle(this.meta, index, false);
+  cellsStyle: cardTableAllowedCellStyles[];
+
+  private setCellsStyle(): void {
+    const cellsWidths = this.CellWidthsService.getCellsWidth(
+      this.meta,
+      this.minCellWidth
+    );
+
+    this.cellsStyle = this.meta.map((cell, index) => ({
+      maxWidth: cellsWidths[index] + '%',
+      alignItems: cell.align === 'right' ? 'flex-end' : null,
+      ...cell.textStyle
+    }));
+  }
+
+  ngOnInit(): void {
+    this.setCellsStyle();
   }
 }
