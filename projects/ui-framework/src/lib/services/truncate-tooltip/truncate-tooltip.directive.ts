@@ -6,14 +6,33 @@ import {
   ViewContainerRef,
   ComponentFactoryResolver,
   ViewRef,
-  EmbeddedViewRef
+  EmbeddedViewRef,
+  OnDestroy
 } from '@angular/core';
+import { UtilsService } from '../utils/utils.service';
+import { Subscription } from 'rxjs';
+
+interface ElementData {
+  text?: string;
+  fontSize?: number;
+  lineHeight?: number;
+  contentWidth?: number;
+  contentHeight?: number;
+  scrollWidth?: number;
+  scrollHeight?: number;
+  tooltipIsNeeded?: boolean;
+}
+
+interface Styles {
+  [key: string]: string | number;
+}
 
 @Directive({
   selector: '[b-truncate-tooltip]'
 })
-export class TruncateTooltipDirective implements OnInit {
+export class TruncateTooltipDirective implements OnInit, OnDestroy {
   constructor(
+    public utilsService: UtilsService,
     private templateRef: TemplateRef<void>,
     private vcr: ViewContainerRef,
     private cfr: ComponentFactoryResolver
@@ -21,23 +40,29 @@ export class TruncateTooltipDirective implements OnInit {
 
   @Input('b-truncate-tooltip') maxLines: number;
 
+  public resizeSubscription: Subscription;
   private textContainer: EmbeddedViewRef<any>;
   private textElement: HTMLElement;
-  private textElementData: any;
+  private textElementData: ElementData;
 
-  private truncateCSS = {
-    whiteSpace: 'nowrap',
+  tooltipIsNeeded = false;
+  tooltipExists = false;
+
+  private commonCSS: Styles = {
+    border: '0',
+    padding: '0',
     overflow: 'hidden',
     textOverflow: 'ellipsis'
   };
 
-  private getLineClampCSS = () => ({
-    paddingTop: '0',
-    paddingBottom: '0',
+  private truncateCSS: Styles = {
+    display: 'block',
+    whiteSpace: 'nowrap'
+  };
+
+  private getLineClampCSS = (): Styles => ({
     display: '-webkit-box',
     webkitBoxOrient: 'vertical',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
     maxHeight:
       this.textElementData.fontSize *
         this.textElementData.lineHeight *
@@ -46,57 +71,96 @@ export class TruncateTooltipDirective implements OnInit {
     webkitLineClamp: this.maxLines
   })
 
-  private setElementStyle(style: object): void {
+  private setElementStyle(style: Styles): void {
     Object.keys(style).forEach(prop => {
       this.textElement.style[prop] = style[prop];
     });
   }
 
-  private getElementTextData(element: HTMLElement) {
+  private applyTextElementStyle() {
+    if (this.maxLines > 0) {
+      this.setElementStyle(this.commonCSS);
+
+      if (this.maxLines === 1) {
+        this.setElementStyle(this.truncateCSS);
+      } else {
+        this.setElementStyle(this.getLineClampCSS());
+      }
+    }
+  }
+
+  private getElementTextData(): ElementData {
     return {
-      fontSize: parseFloat(getComputedStyle(element).fontSize),
+      fontSize: parseFloat(getComputedStyle(this.textElement).fontSize),
       lineHeight:
-        parseFloat(getComputedStyle(element).lineHeight) /
-        parseFloat(getComputedStyle(element).fontSize),
-      text: element.innerText
+        parseFloat(getComputedStyle(this.textElement).lineHeight) /
+        parseFloat(getComputedStyle(this.textElement).fontSize),
+      text: this.textElement.innerText
     };
   }
 
-  private getElementDimentions(element: HTMLElement) {
-    const cs = getComputedStyle(element);
-    const paddingX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
-    const paddingY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
-    const borderX =
-      parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
-    const borderY =
-      parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
-    const boxModel = cs.boxSizing;
-
+  private getElementDimentions(): ElementData {
     return {
-      contentWidth: element.offsetWidth - paddingX - borderX,
-      contentHheight: element.offsetHeight - paddingY - borderY,
-      paddingX: paddingX,
-      paddingY: paddingY,
-      borderBox: boxModel === 'border-box' ? true : false
+      contentWidth: this.textElement.offsetWidth,
+      contentHeight: this.textElement.offsetHeight,
+      scrollWidth: this.textElement.scrollWidth,
+      scrollHeight: this.textElement.scrollHeight,
+      tooltipIsNeeded:
+        this.textElement.scrollHeight > this.textElement.offsetHeight
+          ? true
+          : false
     };
   }
 
-  ngOnInit() {
-    this.textContainer = this.vcr.createEmbeddedView(this.templateRef);
-    this.textElement = this.textContainer.rootNodes[0];
+  private initTextElementData(): void {
+    this.textElementData = this.getElementTextData();
+  }
+
+  private updateElementData(): void {
+    const newDimentions = this.getElementDimentions();
 
     this.textElementData = {
-      ...this.getElementTextData(this.textElement),
-      ...this.getElementDimentions(this.textElement)
+      ...this.textElementData,
+      ...this.getElementDimentions()
     };
+  }
+
+  private checkTooltipNecessity(): void {
+    this.updateElementData();
+
+    this.tooltipIsNeeded =
+      this.textElementData.scrollHeight > this.textElementData.contentHeight
+        ? true
+        : false;
+
+    if (this.tooltipIsNeeded) {
+      console.log('tooltip is needed');
+    }
 
     console.log(this.textElementData);
-
-    this.setElementStyle(this.getLineClampCSS());
 
     // if (this.isBusy) {
     //   const cmpFactory = this.cfr.resolveComponentFactory(SpinnerComponent);
     //   this.vcr.createComponent(cmpFactory);
     // }
+  }
+
+  ngOnInit(): void {
+    this.textContainer = this.vcr.createEmbeddedView(this.templateRef);
+    this.textElement = this.textContainer.rootNodes[0];
+
+    this.initTextElementData();
+    this.applyTextElementStyle();
+    this.checkTooltipNecessity();
+
+    this.resizeSubscription = this.utilsService
+      .getResizeEvent()
+      .subscribe(() => {
+        this.checkTooltipNecessity();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.resizeSubscription.unsubscribe();
   }
 }
