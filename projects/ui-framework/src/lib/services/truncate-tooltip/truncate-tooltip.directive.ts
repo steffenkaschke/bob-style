@@ -27,8 +27,21 @@ interface Styles {
   [key: string]: string | number;
 }
 
+const commonCSS: Styles = {
+  border: '0',
+  padding: '0',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis'
+};
+
+const truncateCSS: Styles = {
+  ...commonCSS,
+  display: 'block',
+  whiteSpace: 'nowrap'
+};
+
 @Directive({
-  selector: '[b-truncate-tooltip]'
+  selector: '[bTruncateTooltip]'
 })
 export class TruncateTooltipDirective implements OnInit, OnDestroy {
   constructor(
@@ -38,9 +51,9 @@ export class TruncateTooltipDirective implements OnInit, OnDestroy {
     private cfr: ComponentFactoryResolver
   ) {}
 
-  @Input('b-truncate-tooltip') maxLines: number;
+  @Input('bTruncateTooltip') maxLines: number;
 
-  public resizeSubscription: Subscription;
+  private resizeSubscription: Subscription;
   private textContainer: EmbeddedViewRef<any>;
   private textElement: HTMLElement;
   private textElementData: ElementData;
@@ -48,19 +61,8 @@ export class TruncateTooltipDirective implements OnInit, OnDestroy {
   tooltipIsNeeded = false;
   tooltipExists = false;
 
-  private commonCSS: Styles = {
-    border: '0',
-    padding: '0',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis'
-  };
-
-  private truncateCSS: Styles = {
-    display: 'block',
-    whiteSpace: 'nowrap'
-  };
-
   private getLineClampCSS = (): Styles => ({
+    ...commonCSS,
     display: '-webkit-box',
     webkitBoxOrient: 'vertical',
     maxHeight:
@@ -78,14 +80,10 @@ export class TruncateTooltipDirective implements OnInit, OnDestroy {
   }
 
   private applyTextElementStyle() {
-    if (this.maxLines > 0) {
-      this.setElementStyle(this.commonCSS);
-
-      if (this.maxLines === 1) {
-        this.setElementStyle(this.truncateCSS);
-      } else {
-        this.setElementStyle(this.getLineClampCSS());
-      }
+    if (this.maxLines === 1) {
+      this.setElementStyle(truncateCSS);
+    } else if (this.maxLines > 0) {
+      this.setElementStyle(this.getLineClampCSS());
     }
   }
 
@@ -121,7 +119,7 @@ export class TruncateTooltipDirective implements OnInit, OnDestroy {
 
     this.textElementData = {
       ...this.textElementData,
-      ...this.getElementDimentions()
+      ...newDimentions
     };
   }
 
