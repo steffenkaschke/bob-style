@@ -12,7 +12,7 @@ import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-
+import { TypographyModule } from '../../typography/typography.module';
 import { TruncateTooltipModule } from './truncate-tooltip.module';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
@@ -82,6 +82,7 @@ story.add(
       moduleMetadata: {
         declarations: [],
         imports: [
+          TypographyModule,
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           TruncateTooltipModule

@@ -64,14 +64,19 @@ export class TruncateTooltipComponent
   }
 
   private getElementTextData(): void {
-    const computedStyle = getComputedStyle(this.textElement);
+    const computedStyle = getComputedStyle(this.textElement),
+      fontSize = parseFloat(computedStyle.fontSize),
+      lineHeight =
+        computedStyle.lineHeight.indexOf('px') !== -1
+          ? parseFloat(computedStyle.lineHeight) / fontSize
+          : computedStyle.lineHeight.indexOf('%') !== -1
+          ? parseFloat(computedStyle.lineHeight) / 100
+          : 1.2;
 
     this.textElementData = {
       ...this.textElementData,
-      fontSize: parseFloat(computedStyle.fontSize),
-      lineHeight:
-        parseFloat(computedStyle.lineHeight) /
-        parseFloat(computedStyle.fontSize),
+      fontSize: fontSize,
+      lineHeight: lineHeight,
       text: this.textElement.innerText
     };
   }
