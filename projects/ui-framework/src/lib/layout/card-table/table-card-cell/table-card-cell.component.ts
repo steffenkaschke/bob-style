@@ -1,6 +1,10 @@
 import { Component, Input } from '@angular/core';
 
-import { CardTableCellData, CardTableCellMeta } from '../card-table.interface';
+import {
+  CardTableCellData,
+  CardTableCellMeta,
+  CardTableCellDataType
+} from '../card-table.interface';
 
 @Component({
   selector: 'b-table-card-cell, [b-table-card-cell]',
@@ -14,12 +18,12 @@ export class TableCardCellComponent {
   @Input() cell: CardTableCellData;
   @Input() index: number;
 
-  isString(val: any): boolean {
+  isString(val: CardTableCellDataType): boolean {
     return typeof val === 'string';
   }
 
-  isArray(obj: any): boolean {
-    return Array.isArray(obj);
+  isArray(val: CardTableCellDataType): boolean {
+    return Array.isArray(val);
   }
 
   isComponent(obj: any): boolean {
