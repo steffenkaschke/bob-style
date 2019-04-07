@@ -1,83 +1,48 @@
 import {
   Component,
-  Directive,
   OnInit,
   Input,
-  TemplateRef,
-  ViewContainerRef,
-  ComponentFactoryResolver,
-  ViewRef,
-  EmbeddedViewRef,
   OnDestroy,
   ViewChild,
-  ElementRef
+  ElementRef,
+  AfterViewInit
 } from '@angular/core';
 import { UtilsService } from '../utils/utils.service';
 import { Subscription } from 'rxjs';
-import { MatTooltip } from '@angular/material';
 
-interface ElementData {
-  text?: string;
-  fontSize?: number;
-  lineHeight?: number;
-  contentWidth?: number;
-  contentHeight?: number;
-  scrollWidth?: number;
-  scrollHeight?: number;
-  tooltipEnabled?: boolean;
-}
-
-interface Styles {
-  [key: string]: string | number;
-}
-
-const commonCSS: Styles = {
-  border: '0',
-  padding: '0',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis'
-};
-
-const truncateCSS: Styles = {
-  ...commonCSS,
-  display: 'block',
-  whiteSpace: 'nowrap'
-};
+import { ElementData, Styles } from './truncate-tooltip.interface';
+import { truncateCSS, lineClampCSS } from './truncate-tooltip.consts';
 
 @Component({
-  selector: '[bTruncateTooltip]',
+  selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
   template: `
     <span
-      #textElement
+      #textContainer
       [matTooltip]="textElementData.text"
-      [matTooltipDisabled]="tooltipEnabled"
+      [matTooltipDisabled]="!textElementData.tooltipEnabled"
+      matTooltipPosition="above"
+      [ngStyle]="textElementData.style"
     >
       <ng-content></ng-content>
     </span>
   `,
   styles: []
 })
-export class TruncateTooltipComponent implements OnInit, OnDestroy {
+export class TruncateTooltipComponent
+  implements OnInit, OnDestroy, AfterViewInit {
   constructor(public utilsService: UtilsService) {}
 
-  @ViewChild('textElement') textContainer: ElementRef;
+  @ViewChild('textContainer') textContainer: ElementRef;
+
+  // tslint:disable-next-line:no-input-rename
+  @Input('b-truncate-tooltip') maxLines: number;
 
   private textElement: HTMLElement;
-
-  @Input('bTruncateTooltip') maxLines: number;
-
   private resizeSubscription: Subscription;
-  // private textContainer: EmbeddedViewRef<any>;
-  // private textElement: HTMLElement;
   textElementData: ElementData;
 
-  tooltipEnabled = false;
-  tooltipExists = false;
-
   private getLineClampCSS = (): Styles => ({
-    ...commonCSS,
-    display: '-webkit-box',
-    webkitBoxOrient: 'vertical',
+    ...lineClampCSS,
     maxHeight:
       this.textElementData.fontSize *
         this.textElementData.lineHeight *
@@ -86,91 +51,58 @@ export class TruncateTooltipComponent implements OnInit, OnDestroy {
     webkitLineClamp: this.maxLines
   })
 
-  private setElementStyle(style: Styles): void {
-    Object.keys(style).forEach(prop => {
-      this.textElement.style[prop] = style[prop];
-    });
-  }
-
   private applyTextElementStyle() {
-    if (this.maxLines === 1) {
-      this.setElementStyle(truncateCSS);
-    } else if (this.maxLines > 0) {
-      this.setElementStyle(this.getLineClampCSS());
-    }
+    this.textElementData = {
+      ...this.textElementData,
+      style:
+        this.maxLines === 1
+          ? truncateCSS
+          : this.maxLines > 0
+          ? this.getLineClampCSS()
+          : null
+    };
   }
 
-  private getElementTextData(): ElementData {
-    return {
-      fontSize: parseFloat(getComputedStyle(this.textElement).fontSize),
+  private getElementTextData(): void {
+    const computedStyle = getComputedStyle(this.textElement);
+
+    this.textElementData = {
+      ...this.textElementData,
+      fontSize: parseFloat(computedStyle.fontSize),
       lineHeight:
-        parseFloat(getComputedStyle(this.textElement).lineHeight) /
-        parseFloat(getComputedStyle(this.textElement).fontSize),
+        parseFloat(computedStyle.lineHeight) /
+        parseFloat(computedStyle.fontSize),
       text: this.textElement.innerText
     };
   }
 
-  private getElementDimentions(): ElementData {
-    return {
-      contentWidth: this.textElement.offsetWidth,
-      contentHeight: this.textElement.offsetHeight,
-      scrollWidth: this.textElement.scrollWidth,
-      scrollHeight: this.textElement.scrollHeight,
+  private checkTooltipNecessity(): void {
+    this.textElementData = {
+      ...this.textElementData,
       tooltipEnabled:
-        this.textElement.scrollHeight > this.textElement.offsetHeight
+        (this.maxLines === 1 &&
+          this.textElement.scrollWidth > this.textElement.offsetWidth) ||
+        (this.maxLines > 0 &&
+          this.textElement.scrollHeight > this.textElement.offsetHeight)
           ? true
           : false
     };
   }
 
-  private initTextElementData(): void {
-    this.textElementData = this.getElementTextData();
-  }
-
-  private updateElementData(): void {
-    const newDimentions = this.getElementDimentions();
-
-    this.textElementData = {
-      ...this.textElementData,
-      ...newDimentions
-    };
-  }
-
-  private checkTooltipNecessity(): void {
-    this.updateElementData();
-
-    this.tooltipEnabled =
-      this.textElementData.scrollHeight > this.textElementData.contentHeight
-        ? true
-        : false;
-
-    if (this.tooltipEnabled) {
-      console.log('tooltip is needed');
-    }
-
-    console.log(this.textElementData);
-
-    // if (this.isBusy) {
-    //   const cmpFactory = this.cfr.resolveComponentFactory(SpinnerComponent);
-    //   this.vcr.createComponent(cmpFactory);
-    // }
-  }
-
   ngOnInit(): void {
-    // this.textContainer = this.vcr.createEmbeddedView(this.templateRef);
-    // this.textElement = this.textContainer.rootNodes[0];
-
     this.textElement = this.textContainer.nativeElement;
-
-    this.initTextElementData();
+    this.getElementTextData();
     this.applyTextElementStyle();
-    this.checkTooltipNecessity();
 
     this.resizeSubscription = this.utilsService
       .getResizeEvent()
       .subscribe(() => {
         this.checkTooltipNecessity();
       });
+  }
+
+  ngAfterViewInit(): void {
+    this.checkTooltipNecessity();
   }
 
   ngOnDestroy(): void {

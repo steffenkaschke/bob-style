@@ -20,7 +20,7 @@ const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
 );
 
 const template = `
-  <p [bTruncateTooltip]="maxLines" style="padding: 20px;">
+  <p [b-truncate-tooltip]="maxLines" style="padding: 20px;">
     If you’re trying to wear official headgear in a public setting, my advice is to take yourself
     as seriously as you expect others to take you. A photographer may not allow you to wear the colander
     if you’ve just pulled it out while giggling. But if you walk in wearing it – if it is clear that this
@@ -30,7 +30,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Truncate Tooltip Directive">
+<b-story-book-layout title="Truncate Tooltip Component">
 
   <div style="padding: 50px; max-width: 600px; margin: auto; text-align: left;">
     ${template}
@@ -40,7 +40,7 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Truncate Tooltip Directive
+  ## Truncate Tooltip Component
 
   #### Module
   *TruncateTooltipModule*
@@ -54,12 +54,12 @@ const note = `
 `;
 
 story.add(
-  'Truncate Tooltip Directive',
+  'Truncate Tooltip Component',
   () => {
     return {
       template: storyTemplate,
       props: {
-        maxLines: number('maxLines', 2)
+        maxLines: number('b-truncate-tooltip', 2)
       },
       moduleMetadata: {
         declarations: [],
