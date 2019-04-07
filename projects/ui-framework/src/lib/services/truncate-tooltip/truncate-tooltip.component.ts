@@ -11,7 +11,6 @@ import { UtilsService } from '../utils/utils.service';
 import { Subscription } from 'rxjs';
 
 import { ElementData, Styles } from './truncate-tooltip.interface';
-import { truncateCSS, lineClampCSS } from './truncate-tooltip.consts';
 
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
@@ -57,7 +56,7 @@ export class TruncateTooltipComponent
       class:
         this.maxLines === 1 || !this.maxLines
           ? 'truncate'
-          : this.maxLines > 0
+          : this.maxLines > 1
           ? 'line-clamp'
           : null,
       style: this.maxLines > 1 ? this.getLineClampCSS() : null
