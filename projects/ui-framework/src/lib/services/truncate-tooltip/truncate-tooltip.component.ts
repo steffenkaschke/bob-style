@@ -99,8 +99,6 @@ export class TruncateTooltipComponent
       .subscribe(() => {
         this.checkTooltipNecessity();
       });
-
-    console.log(this.maxLines);
   }
 
   ngAfterViewInit(): void {
