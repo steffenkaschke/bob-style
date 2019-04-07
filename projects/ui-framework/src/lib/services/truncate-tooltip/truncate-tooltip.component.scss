@@ -1,3 +1,11 @@
+@import '../../style/colors';
+@import '../../style/mixins';
+@import '../../style/shapes';
+@import '../../style/typography';
+
+$tooltip-color: rgba($grey-700, 0.9);
+$tooltip-arrow-size: 10px;
+
 span {
   display: block;
   border: 0;
@@ -40,4 +48,36 @@ span {
 .truncate {
   display: block;
   white-space: nowrap;
+}
+
+::ng-deep {
+  .mat-tooltip.b-truncate-tooltip {
+    background-color: $tooltip-color;
+    position: relative;
+    overflow: visible;
+    max-width: 350px;
+    @include BodyFont(11px);
+
+    &:before {
+      @include pseudo;
+      position: absolute;
+      left: calc(50% - #{$tooltip-arrow-size/2});
+    }
+
+    // position above
+    &[style*='center bottom'] {
+      &:before {
+        @include arrow-down(($tooltip-arrow-size/2), $tooltip-color);
+        top: 100%;
+      }
+    }
+
+    // position below
+    &[style*='center top'] {
+      &:before {
+        @include arrow-up(($tooltip-arrow-size/2), $tooltip-color);
+        bottom: 100%;
+      }
+    }
+  }
 }

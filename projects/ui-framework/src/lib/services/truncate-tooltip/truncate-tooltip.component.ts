@@ -20,6 +20,7 @@ import { ElementData, Styles } from './truncate-tooltip.interface';
       [matTooltip]="textElementData.text"
       [matTooltipDisabled]="!textElementData.tooltipEnabled"
       matTooltipPosition="above"
+      matTooltipClass="b-truncate-tooltip"
       [class]="textElementData.class"
       [ngStyle]="textElementData.style"
     >
