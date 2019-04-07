@@ -21,12 +21,13 @@ import { truncateCSS, lineClampCSS } from './truncate-tooltip.consts';
       [matTooltip]="textElementData.text"
       [matTooltipDisabled]="!textElementData.tooltipEnabled"
       matTooltipPosition="above"
+      [class]="textElementData.class"
       [ngStyle]="textElementData.style"
     >
       <ng-content></ng-content>
     </span>
   `,
-  styles: []
+  styleUrls: ['./truncate-tooltip.component.scss']
 })
 export class TruncateTooltipComponent
   implements OnInit, OnDestroy, AfterViewInit {
@@ -42,7 +43,6 @@ export class TruncateTooltipComponent
   textElementData: ElementData;
 
   private getLineClampCSS = (): Styles => ({
-    ...lineClampCSS,
     maxHeight:
       this.textElementData.fontSize *
         this.textElementData.lineHeight *
@@ -54,12 +54,13 @@ export class TruncateTooltipComponent
   private applyTextElementStyle() {
     this.textElementData = {
       ...this.textElementData,
-      style:
+      class:
         this.maxLines === 1 || !this.maxLines
-          ? truncateCSS
+          ? 'truncate'
           : this.maxLines > 0
-          ? this.getLineClampCSS()
-          : null
+          ? 'line-clamp'
+          : null,
+      style: this.maxLines > 1 ? this.getLineClampCSS() : null
     };
   }
 
