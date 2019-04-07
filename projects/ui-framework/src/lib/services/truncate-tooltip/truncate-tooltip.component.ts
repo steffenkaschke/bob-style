@@ -35,7 +35,7 @@ export class TruncateTooltipComponent
   @ViewChild('textContainer') textContainer: ElementRef;
 
   // tslint:disable-next-line:no-input-rename
-  @Input('b-truncate-tooltip') maxLines = 0;
+  @Input('b-truncate-tooltip') maxLines = 1;
 
   private textElement: HTMLElement;
   private resizeSubscription: Subscription;
@@ -55,7 +55,7 @@ export class TruncateTooltipComponent
     this.textElementData = {
       ...this.textElementData,
       style:
-        this.maxLines === 1
+        this.maxLines === 1 || !this.maxLines
           ? truncateCSS
           : this.maxLines > 0
           ? this.getLineClampCSS()
@@ -80,7 +80,7 @@ export class TruncateTooltipComponent
     this.textElementData = {
       ...this.textElementData,
       tooltipEnabled:
-        (this.maxLines === 1 &&
+        ((this.maxLines === 1 || !this.maxLines) &&
           this.textElement.scrollWidth > this.textElement.offsetWidth) ||
         (this.maxLines > 0 &&
           this.textElement.scrollHeight > this.textElement.offsetHeight)
@@ -99,6 +99,8 @@ export class TruncateTooltipComponent
       .subscribe(() => {
         this.checkTooltipNecessity();
       });
+
+    console.log(this.maxLines);
   }
 
   ngAfterViewInit(): void {
