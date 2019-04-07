@@ -1,6 +1,6 @@
 import { Styles } from './truncate-tooltip.interface';
 
-export const commonCSS: Styles = {
+const commonCSS: Styles = {
   border: '0',
   padding: '0',
   overflow: 'hidden',
