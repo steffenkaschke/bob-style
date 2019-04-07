@@ -35,7 +35,7 @@ export class TruncateTooltipComponent
   @ViewChild('textContainer') textContainer: ElementRef;
 
   // tslint:disable-next-line:no-input-rename
-  @Input('b-truncate-tooltip') maxLines: number;
+  @Input('b-truncate-tooltip') maxLines = 0;
 
   private textElement: HTMLElement;
   private resizeSubscription: Subscription;

@@ -50,6 +50,10 @@ const note = `
   ${template}
   ~~~
 
+  #### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  b-truncate-tooltip | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0. | 0
 
 `;
 
