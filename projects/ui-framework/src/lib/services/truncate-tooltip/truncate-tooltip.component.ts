@@ -19,10 +19,10 @@ import { ElementData, Styles } from './truncate-tooltip.interface';
       #textContainer
       [matTooltip]="textElementData.text"
       [matTooltipDisabled]="!textElementData.tooltipEnabled"
-      matTooltipPosition="above"
-      matTooltipClass="b-truncate-tooltip"
       [class]="textElementData.class"
       [ngStyle]="textElementData.style"
+      matTooltipPosition="above"
+      matTooltipClass="b-truncate-tooltip"
     >
       <ng-content></ng-content>
     </span>
