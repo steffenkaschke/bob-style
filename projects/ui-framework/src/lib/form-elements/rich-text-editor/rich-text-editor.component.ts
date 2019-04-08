@@ -7,11 +7,14 @@ import {
   forwardRef,
   HostBinding,
   Output,
-  EventEmitter
+  EventEmitter,
+  OnChanges,
+  SimpleChange,
+  SimpleChanges
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty, has } from 'lodash';
 
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
 import { LinkBlot } from './formats/link-blot';
@@ -53,10 +56,12 @@ quillLib.register(LinkBlot);
     }
   ]
 })
-export class RichTextEditorComponent extends BaseFormElement implements OnInit {
+export class RichTextEditorComponent extends BaseFormElement
+  implements OnInit, OnChanges {
   @Input() rteHtml: string;
 
   @HostBinding('class.required') @Input() required = false;
+  @HostBinding('class.disabled') @Input() disabled = false;
   @HostBinding('class.error') @Input() errorMessage = undefined;
 
   @ViewChild('quillEditor') quillEditor: ElementRef;
@@ -112,6 +117,15 @@ export class RichTextEditorComponent extends BaseFormElement implements OnInit {
     this.editor.root.addEventListener('blur', () => {
       this.blur.emit(this.getCurrentText());
     });
+
+    this.editor.enable(!this.disabled);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (has(changes, 'disabled') && this.editor) {
+      this.disabled = changes.disabled.currentValue;
+      this.editor.enable(!this.disabled);
+    }
   }
 
   getCurrentText(): RteCurrentContent {

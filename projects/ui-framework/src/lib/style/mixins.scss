@@ -1,5 +1,5 @@
 @mixin pseudo {
-  content: "";
+  content: '';
   display: block;
   pointer-events: none;
 }
@@ -11,10 +11,10 @@
 
 @mixin position($pos: 0 null null 0, $p: absolute) {
   position: $p;
-  top: nth($pos,1);
-  right: nth($pos,2);
-  bottom: nth($pos,3);
-  left: nth($pos,4);
+  top: nth($pos, 1);
+  right: nth($pos, 2);
+  bottom: nth($pos, 3);
+  left: nth($pos, 4);
 }
 
 @function height-from-text($lines, $font-size, $line-height, $add: 0) {
@@ -73,13 +73,11 @@
   $mod: false,
   $add: false
 ) {
-
   @if (not $mod) and (not $add) {
     position: relative;
   }
 
   &:#{$use} {
-
     @if (not $mod) and (not $add) {
       @include pseudo;
       @include size(200%, 100%);
@@ -92,8 +90,7 @@
       @each $loc in $brdr-loc {
         border-#{$loc}: $brdr-width solid $brdr-color;
       }
-    }
-    @else if ($brdr-width == 0) {
+    } @else if ($brdr-width == 0) {
       border: 0;
     }
 
@@ -114,4 +111,10 @@
   color: $grey-500;
   border-color: $grey-300;
   @content;
+}
+
+@mixin flex-align {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -4,11 +4,22 @@
 
 :host {
   text-align: left;
+  display: block;
+}
+
+.quill-editor {
   display: flex;
   flex-direction: column;
+  box-shadow: 2px 2px 3px 0 black(0.04);
+  background-color: white;
+  border: 1px solid $grey-500;
+  border-radius: 4px;
 }
 
 :host ::ng-deep {
+  .ql-editor {
+  }
+
   .ql-snow {
     &.ql-container,
     &.ql-toolbar,
@@ -18,23 +29,22 @@
 
     &.ql-container,
     &.ql-toolbar {
-      border: 1px solid $grey-500;
+      border: 0;
     }
 
     &.ql-container {
       order: 1;
+    }
+
+    .ql-editor {
       min-height: 140px;
       max-height: 250px;
       overflow: auto;
       border-bottom: none;
-      border-top-right-radius: 4px;
-      border-top-left-radius: 4px;
     }
 
     &.ql-toolbar {
       order: 2;
-      border-bottom-right-radius: 4px;
-      border-bottom-left-radius: 4px;
     }
 
     &.ql-toolbar,
@@ -47,14 +57,62 @@
       }
     }
 
-    &.ql-toolbar + .ql-container {
+    &.ql-toolbar {
       border-top: 1px solid $grey-500;
     }
 
+    // options dropdown
+
+    &.ql-toolbar .ql-picker {
+      line-height: 1;
+      font-weight: normal;
+
+      &.ql-size {
+        width: auto;
+        min-width: 75px;
+      }
+    }
+
+    .ql-icon-picker {
+      width: auto;
+
+      .ql-picker-options {
+        left: -1px;
+      }
+    }
+
+    .ql-picker-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ql-icon-picker .ql-picker-label,
+    .ql-icon-picker .ql-picker-item,
     &.ql-toolbar button {
       @include size(24px);
-      float: none;
+      @include flex-align;
+
+      &,
+      svg {
+        float: none;
+      }
+
+      svg {
+        float: none;
+        flex-grow: 1;
+        height: 100%;
+      }
     }
+
+    .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
+      // margin-top: -7px;
+      width: 14px;
+      margin: 0;
+      position: static;
+    }
+
+    // svg fill colors
 
     .ql-fill,
     .ql-stroke.ql-fill {
@@ -106,20 +164,18 @@
         }
       }
     }
-
-    &.ql-toolbar .ql-picker {
-      line-height: 1;
-      font-weight: normal;
-
-      &.ql-size {
-        width: 80px;
-      }
-    }
   }
 
   .mat-hint {
-    order: 3;
-    margin-top: 5px;
+    display: block;
+    margin-top: 2px;
+    padding: 0 16px;
+    @include BodyFont(11px);
+  }
+
+  .ql-editor.ql-blank:before {
+    color: $grey-600;
+    font-style: normal;
   }
 }
 
@@ -133,6 +189,46 @@
     }
     .mat-hint {
       color: var(--negative-500);
+    }
+  }
+
+  &.disabled ::ng-deep {
+    .quill-editor {
+      box-shadow: none;
+      background-color: $grey-100;
+      border-color: $grey-500;
+    }
+
+    .ql-snow {
+      &.ql-container,
+      &.ql-toolbar {
+        pointer-events: none;
+      }
+      .ql-fill,
+      .ql-stroke.ql-fill {
+        fill: $grey-500;
+      }
+      .ql-stroke {
+        stroke: $grey-500;
+      }
+
+      &.ql-toolbar .ql-picker-item,
+      &.ql-toolbar .ql-picker-label {
+        color: $grey-500;
+
+        .ql-fill,
+        .ql-stroke.ql-fill {
+          fill: $grey-500;
+        }
+        .ql-stroke {
+          stroke: $grey-500;
+        }
+      }
+    }
+
+    .ql-editor.ql-blank:before,
+    .mat-hint {
+      color: $grey-500;
     }
   }
 }

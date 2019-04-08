@@ -28,7 +28,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout style="width: 90%; margin: 20px auto;" title="Rich text editor">
+<b-story-book-layout style="padding: 30px; background-color: rgb(0,0,0,0.1)" title="Rich text editor">
   ${template}
 </b-story-book-layout>
 `;
