@@ -134,19 +134,14 @@ export {
   ListComponentPrefix
 } from './lib/form-elements/lists/list.interface';
 export { ListChange } from './lib/form-elements/lists/list-change/list-change';
-// Breadcrumbs Module
+// Rich Text Editor
 export {
-  BreadcrumbsModule
-} from './lib/navigation/breadcrumbs/breadcrumbs.module';
+  RichTextEditorModule
+} from './lib/form-elements/rich-text-editor/rich-text-editor.module';
 export {
-  BreadcrumbsComponent
-} from './lib/navigation/breadcrumbs/breadcrumbs.component';
-export {
-  Breadcrumb,
-  BreadcrumbNavButtons,
-  BreadcrumbNavButton
-} from './lib/navigation/breadcrumbs/breadcrumbs.interface';
-export { BaseFormElement } from './lib/form-elements/base-form-element';
+  RichTextEditorComponent
+} from './lib/form-elements/rich-text-editor/rich-text-editor.component';
+
 
 /*
  * Navigation
@@ -190,6 +185,20 @@ export {
 // Tabs Module
 export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { Tab } from './lib/navigation/tabs/tabs.interface';
+// Breadcrumbs Module
+export {
+  BreadcrumbsModule
+} from './lib/navigation/breadcrumbs/breadcrumbs.module';
+export {
+  BreadcrumbsComponent
+} from './lib/navigation/breadcrumbs/breadcrumbs.component';
+export {
+  Breadcrumb,
+  BreadcrumbNavButtons,
+  BreadcrumbNavButton
+} from './lib/navigation/breadcrumbs/breadcrumbs.interface';
+export { BaseFormElement } from './lib/form-elements/base-form-element';
+
 
 /*
  * Overlays
@@ -240,14 +249,6 @@ export { CardTableComponent } from './lib/layout/card-table/card-table/card-tabl
 /*
  * Misc
  */
-
-// Rich Text Editor
-export {
-  RichTextEditorModule
-} from './lib/misc/rich-text-editor/rich-text-editor.module';
-export {
-  RichTextEditorComponent
-} from './lib/misc/rich-text-editor/rich-text-editor.component';
 
 // Preloader
 export {

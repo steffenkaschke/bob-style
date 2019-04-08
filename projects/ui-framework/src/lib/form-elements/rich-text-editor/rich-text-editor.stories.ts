@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  text,
+  select,
+  boolean,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,16 +12,23 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { TypographyModule } from '../../typography/typography.module';
 import { RichTextEditorModule } from './rich-text-editor.module';
 
-const inputStories = storiesOf(ComponentGroupType.Misc, module).addDecorator(withKnobs);
+const inputStories = storiesOf(
+  ComponentGroupType.FormElements,
+  module
+).addDecorator(withKnobs);
 
 const template = `
-<b-rich-text-editor style="width: 90%; margin: 20px auto;"
-                    [rteHtml]="rteHtml">
+<b-rich-text-editor
+            [label]="label"
+            [disabled]="disabled"
+            [required]="required"
+            [errorMessage]="errorMessage"
+            [hintMessage]="hintMessage">
 </b-rich-text-editor>
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Rich text editor">
+<b-story-book-layout style="width: 90%; margin: 20px auto;" title="Rich text editor">
   ${template}
 </b-story-book-layout>
 `;
@@ -48,7 +60,12 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        rteHtml: text('rteHtml', rteHtml)
+        rteHtml: text('rteHtml', rteHtml),
+        label: text('label', 'Compose an epic..'),
+        disabled: boolean('disabled', false),
+        required: boolean('required', false),
+        hintMessage: text('hintMessage', 'This field should contain something'),
+        errorMessage: text('errorMessage', '')
       },
       moduleMetadata: {
         imports: [

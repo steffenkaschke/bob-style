@@ -1,0 +1,30 @@
+<div #quillEditor></div>
+
+<mat-hint *ngIf="errorMessage"
+          align="start"
+          class="error-message">
+  {{errorMessage}}
+</mat-hint>
+
+<mat-hint *ngIf="hintMessage && !errorMessage"
+          align="start"
+          class="hint-message">
+  {{hintMessage}}
+</mat-hint>
+
+<!-- <b-panel #linkPanel
+        panelClass="rte-link-editor"
+        [panelSize]="panelSize.medium">
+  <b-square-button panel-trigger
+                  (clicked)="onLinkPanelOpen()"
+                  [type]="buttonType.tertiary"
+                  [icon]="icons.link"
+                  [color]="iconColor.normal">
+  </b-square-button>
+  <div panel-content>
+    <b-rte-link-editor [displayText]="selectedText"
+                      (linkCancel)="onLinkCancel()"
+                      (linkUpdate)="onLinkUpdate($event)">
+    </b-rte-link-editor>
+  </div>
+</b-panel> -->
