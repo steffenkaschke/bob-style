@@ -118,3 +118,8 @@
   justify-content: center;
   align-items: center;
 }
+
+@mixin text-hide {
+  font-size: 0px;
+  font: 0/0 a;
+}
