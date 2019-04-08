@@ -14,6 +14,10 @@ $border-color-disabled: $icon-color-disabled;
 $color-error: var(--negative-500);
 $border-color-error: $color-error;
 
+$text-size-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='#{$icon-color}' d='M10.356 2.655h-.982l-1.216 2.88.771 1.91 2.349.034L11.889 9h1.12l-2.653-6.345zm.534 3.843H8.814l1.033-2.52 1.043 2.52zM5.354.276h-1.35L.355 9h1.493l.853-2.091h3.921L7.463 9h1.54L5.354.276zM6.09 5.56H3.234l1.422-3.465L6.089 5.56z'/%3E%3C/svg%3E");
+$text-size-icon-hover: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='#{$icon-color-hover}' d='M10.356 2.655h-.982l-1.216 2.88.771 1.91 2.349.034L11.889 9h1.12l-2.653-6.345zm.534 3.843H8.814l1.033-2.52 1.043 2.52zM5.354.276h-1.35L.355 9h1.493l.853-2.091h3.921L7.463 9h1.54L5.354.276zM6.09 5.56H3.234l1.422-3.465L6.089 5.56z'/%3E%3C/svg%3E");
+$text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='#{$icon-color-disabled}' d='M10.356 2.655h-.982l-1.216 2.88.771 1.91 2.349.034L11.889 9h1.12l-2.653-6.345zm.534 3.843H8.814l1.033-2.52 1.043 2.52zM5.354.276h-1.35L.355 9h1.493l.853-2.091h3.921L7.463 9h1.54L5.354.276zM6.09 5.56H3.234l1.422-3.465L6.089 5.56z'/%3E%3C/svg%3E");
+
 :host {
   text-align: left;
   display: block;
@@ -118,11 +122,26 @@ $border-color-error: $color-error;
       }
     }
 
-    .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
-      width: 14px;
-      margin: 0;
-      position: static;
+    // size picker mod
+
+    .ql-size.ql-picker {
+      .ql-picker-label {
+        &:before {
+          content: '';
+          @include size($button-icon-size);
+          background-image: $text-size-icon;
+        }
+        svg {
+          display: none;
+        }
+      }
     }
+
+    // .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
+    //   width: 14px;
+    //   margin: 0;
+    //   position: static;
+    // }
 
     // button mods
 
@@ -206,7 +225,7 @@ $border-color-error: $color-error;
 :host {
   &.error ::ng-deep {
     .quill-editor.ql-toolbar {
-        border-color: $border-color-error;
+      border-color: $border-color-error;
     }
     .mat-hint {
       color: $color-error;
