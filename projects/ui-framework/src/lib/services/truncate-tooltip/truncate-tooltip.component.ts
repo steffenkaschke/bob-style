@@ -80,6 +80,8 @@ export class TruncateTooltipComponent
       lineHeight: lineHeight,
       text: this.textElement.innerText
     };
+
+    console.log(this.textContainer);
   }
 
   private checkTooltipNecessity(): void {

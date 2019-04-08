@@ -28,6 +28,16 @@ const template = `
     then they are less likely to make trouble.
   </p>
 
+  <p [b-truncate-tooltip]="maxLines">
+    <b-big-body><span>
+        If you’re trying to wear official headgear in a public setting, my advice is to take yourself
+        as seriously as you expect others to take you. A photographer may not allow you to wear the colander
+        if you’ve just pulled it out while giggling. But if you walk in wearing it – if it is clear that this
+        headgear is truly a serious part of your traditional Pastafarian beliefs, as you are claiming –
+        then they are less likely to make trouble.
+    </span></b-big-body>
+  </p>
+
   <p b-truncate-tooltip>
     We, the Church of the Flying Spaghetti Monster, are not a litigious group
     but of course we, along with the ACLU and others,
