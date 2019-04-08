@@ -53,4 +53,22 @@ export class RteUtilsService {
     });
     editor.setSelection(updateConfig.startIndex + updateConfig.insertText.length, 0);
   }
+
+  updateEditorTest(editor: Quill, updateConfig: UpdateRteConfig, insertSpaceAfterBlot = true): void {
+    const charAfterBlot = insertSpaceAfterBlot ? ' ' : '';
+    set(updateConfig, 'insertText', `${ updateConfig.insertText }${ charAfterBlot }`);
+    editor.focus();
+    editor.deleteText(updateConfig.startIndex, updateConfig.replaceStr.length);
+    editor.insertEmbed(updateConfig.startIndex, 'html', updateConfig.insertText);
+    editor.removeFormat(updateConfig.startIndex, updateConfig.insertText.length - charAfterBlot.length);
+    editor.formatText(updateConfig.startIndex, updateConfig.insertText.length - charAfterBlot.length, {
+      [updateConfig.format.type]: updateConfig.format.value,
+    });
+    editor.setSelection(updateConfig.startIndex + updateConfig.insertText.length, 0);
+  }
+
+
+
+
+
 }

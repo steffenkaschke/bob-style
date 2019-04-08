@@ -8,11 +8,13 @@ import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.compon
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { IconsModule } from '../../icons/icons.module';
+import { RteCapsuleComponent } from './rte-capsule/rte-capsule.component';
 
 @NgModule({
   declarations: [
     RichTextEditorComponent,
     RteLinkEditorComponent,
+    RteCapsuleComponent,
   ],
   imports: [
     CommonModule,
