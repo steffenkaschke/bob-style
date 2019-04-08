@@ -5,7 +5,9 @@ import {
   OnInit,
   ViewChild,
   forwardRef,
-  HostBinding
+  HostBinding,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -61,6 +63,10 @@ export class RichTextEditorComponent extends BaseFormElement implements OnInit {
   @ViewChild('toolbar') toolbar: ElementRef;
   @ViewChild('linkPanel') linkPanel: PanelComponent;
 
+  @Output() blur: EventEmitter<RteCurrentContent> = new EventEmitter<
+    RteCurrentContent
+  >();
+
   editor: Quill;
   selection: RangeStatic;
   selectedText: string;
@@ -99,12 +105,12 @@ export class RichTextEditorComponent extends BaseFormElement implements OnInit {
       this.editor.clipboard.dangerouslyPasteHTML(this.rteHtml);
     }
 
-    this.editor.on('text-change', (delta, oldDelta, source) => {
+    this.editor.on('text-change', () => {
       this.propagateChange(this.getCurrentText());
     });
 
     this.editor.root.addEventListener('blur', () => {
-      // console.log('blur');
+      this.blur.emit(this.getCurrentText());
     });
   }
 
