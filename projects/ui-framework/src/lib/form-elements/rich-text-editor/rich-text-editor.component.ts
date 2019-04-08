@@ -9,7 +9,6 @@ import {
   Output,
   EventEmitter,
   OnChanges,
-  SimpleChange,
   SimpleChanges
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -89,16 +88,24 @@ export class RichTextEditorComponent extends BaseFormElement
   ngOnInit(): void {
     const editorOptions: QuillOptionsStatic = {
       modules: {
-        toolbar: [
-          { size: ['small', false, 'large', 'huge'] },
-          'bold',
-          'italic',
-          'underline',
-          { list: 'ordered' },
-          { list: 'bullet' },
-          { align: [] },
-          { direction: 'rtl' }
-        ]
+        toolbar: {
+          container: [
+            { size: ['small', false, 'large', 'huge'] },
+            'bold',
+            'italic',
+            'underline',
+            'link',
+            { list: 'ordered' },
+            { list: 'bullet' },
+            { align: [] },
+            { direction: 'rtl' }
+          ],
+          handlers: {
+            link: () => {
+              this.onLinkPanelOpen();
+            }
+          }
+        }
       },
       theme: 'snow',
       placeholder: this.label + (this.required ? ' *' : '')
@@ -141,6 +148,7 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   onLinkPanelOpen(): void {
+    this.linkPanel.openPanel();
     this.editor.focus();
     this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
     this.selectedText = this.rteUtilsService.getSelectionText(

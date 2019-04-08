@@ -23,6 +23,7 @@ $text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmln
 :host {
   text-align: left;
   display: block;
+  min-width: 250px;
 }
 
 .quill-editor {
@@ -144,6 +145,12 @@ $text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmln
           }
         }
       }
+    }
+
+    // link button
+
+    .ql-blink {
+      background-color: red;
     }
 
     // button mods

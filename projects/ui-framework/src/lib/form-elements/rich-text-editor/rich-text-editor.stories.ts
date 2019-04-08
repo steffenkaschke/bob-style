@@ -23,7 +23,9 @@ const template = `
             [disabled]="disabled"
             [required]="required"
             [errorMessage]="errorMessage"
-            [hintMessage]="hintMessage">
+            [hintMessage]="hintMessage"
+            (blur)="blur($event)"
+            >
 </b-rich-text-editor>
 `;
 
@@ -60,8 +62,9 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
+        blur: action('Blur'),
         rteHtml: text('rteHtml', rteHtml),
-        label: text('label', 'Compose an epic..'),
+        label: text('label', 'Compose an epic...'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),

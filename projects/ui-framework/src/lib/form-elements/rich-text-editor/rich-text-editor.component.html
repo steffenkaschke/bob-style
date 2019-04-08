@@ -14,19 +14,12 @@
   {{hintMessage}}
 </mat-hint>
 
-<!-- <b-panel #linkPanel
-        panelClass="rte-link-editor"
-        [panelSize]="panelSize.medium">
-  <b-square-button panel-trigger
-                  (clicked)="onLinkPanelOpen()"
-                  [type]="buttonType.tertiary"
-                  [icon]="icons.link"
-                  [color]="iconColor.normal">
-  </b-square-button>
-  <div panel-content>
-    <b-rte-link-editor [displayText]="selectedText"
-                      (linkCancel)="onLinkCancel()"
-                      (linkUpdate)="onLinkUpdate($event)">
-    </b-rte-link-editor>
-  </div>
-</b-panel> -->
+<b-panel #linkPanel
+         panelClass="rte-link-editor"
+         [panelSize]="panelSize.medium">
+  <b-rte-link-editor panel-content
+                     [displayText]="selectedText"
+                     (linkCancel)="onLinkCancel()"
+                     (linkUpdate)="onLinkUpdate($event)">
+  </b-rte-link-editor>
+</b-panel>
