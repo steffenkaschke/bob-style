@@ -4,7 +4,7 @@
   <div #toolbar>
 
     <select class="ql-size"
-            *ngIf="controls.has('size')">
+            *ngIf="controls?.has('size')">
       <option value="small"></option>
       <option selected></option>
       <option value="large"></option>
@@ -12,17 +12,17 @@
     </select>
 
     <button class="ql-bold"
-            *ngIf="controls.has('bold')"></button>
+            *ngIf="controls?.has('bold')"></button>
     <button class="ql-italic"
-            *ngIf="controls.has('italic')"></button>
+            *ngIf="controls?.has('italic')"></button>
     <button class="ql-underline"
-            *ngIf="controls.has('underline')"></button>
+            *ngIf="controls?.has('underline')"></button>
 
     <b-panel #linkPanel
              panelClass="rte-link-editor"
-             [showBackdrop]="true"
+             [showBackdrop]="false"
              [panelSize]="panelSize.medium"
-             *ngIf="controls.has('link')">
+             *ngIf="controls?.has('link')">
       <button class="ql-link"
               panel-trigger></button>
       <b-rte-link-editor panel-content
@@ -35,14 +35,14 @@
     <button type="button"
             class="ql-list"
             value="ordered"
-            *ngIf="controls.has('list')"></button>
+            *ngIf="controls?.has('list')"></button>
     <button type="button"
             class="ql-list"
             value="bullet"
-            *ngIf="controls.has('list')"></button>
+            *ngIf="controls?.has('list')"></button>
 
     <select class="ql-align"
-            *ngIf="controls.has('align')">
+            *ngIf="controls?.has('align')">
       <option selected></option>
       <option value="center"></option>
       <option value="right"></option>
@@ -52,7 +52,7 @@
     <button type="button"
             class="ql-direction"
             value="rtl"
-            *ngIf="controls.has('dir')"></button>
+            *ngIf="controls?.has('dir')"></button>
 
     <div #suffix
          *ngIf="hasSuffix"

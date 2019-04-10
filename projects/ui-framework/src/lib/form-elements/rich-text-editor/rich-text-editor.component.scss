@@ -303,12 +303,20 @@ $text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmln
 }
 
 ::ng-deep {
-  .b-panel.rte-link-editor .panel-position.panel-after {
-    &:before {
-      left: 8px;
+  .b-panel.rte-link-editor {
+    margin-top: -3px;
+
+    .panel-position.panel-after {
+      &:before {
+        left: 8px;
+      }
+      &:after {
+        left: 9px;
+      }
     }
-    &:after {
-      left: 9px;
+
+    .panel-wrapper {
+      box-shadow: 0 0px 9px 0 $boxShadowColor;
     }
   }
 }

@@ -19,7 +19,12 @@ import { isEmpty, has } from 'lodash';
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
 import { LinkBlot } from './formats/link-blot';
 import { PanelComponent } from '../../overlay/panel/panel.component';
-import { BlotType, FormatTypes, RTEType } from './rich-text-editor.enum';
+import {
+  BlotType,
+  FormatTypes,
+  RTEType,
+  RTEControls
+} from './rich-text-editor.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import {
   RteCurrentContent,
@@ -62,23 +67,16 @@ export class RichTextEditorComponent extends BaseFormElement
     super();
   }
 
-  @Input() type?: RTEType = RTEType.primary;
-  @Input() required = false;
-  @Input() disabled = false;
-  @Input() errorMessage = undefined;
-
-  @Input() value: string | RteCurrentContent;
-
-  @Input() controls: Set<string> = new Set([
-    'size',
-    'bold',
-    'italic',
-    'underline',
-    'link',
-    'list',
-    'align',
-    'dir'
-  ]);
+  // @Input() controls: Set<string> = new Set([
+  //   'size',
+  //   'bold',
+  //   'italic',
+  //   'underline',
+  //   'link',
+  //   'list',
+  //   'align',
+  //   'dir'
+  // ]);
 
   @HostBinding('class') get classes() {
     return (
@@ -88,6 +86,13 @@ export class RichTextEditorComponent extends BaseFormElement
       (this.errorMessage ? ' error' : '')
     );
   }
+
+  @Input() type?: RTEType = RTEType.primary;
+  @Input() required = false;
+  @Input() disabled = false;
+  @Input() errorMessage = undefined;
+
+  @Input() value: string | RteCurrentContent;
 
   @ViewChild('quillEditor') quillEditor: ElementRef;
   @ViewChild('toolbar') toolbar: ElementRef;
@@ -110,7 +115,14 @@ export class RichTextEditorComponent extends BaseFormElement
 
   hasSuffix = true;
 
-  counter = 0;
+  controls: Set<string>;
+
+  @Input('controls')
+  set setControls(cntrls: RTEControls) {
+    this.controls = cntrls
+      ? new Set(cntrls)
+      : new Set(Object.keys(RTEControls));
+  }
 
   ngOnInit(): void {}
 

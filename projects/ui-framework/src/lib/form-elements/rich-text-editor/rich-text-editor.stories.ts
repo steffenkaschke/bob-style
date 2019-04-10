@@ -3,7 +3,8 @@ import {
   text,
   select,
   boolean,
-  withKnobs
+  withKnobs,
+  array
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -13,7 +14,7 @@ import { values } from 'lodash';
 import { TypographyModule } from '../../typography/typography.module';
 import { RichTextEditorModule } from './rich-text-editor.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RTEType } from './rich-text-editor.enum';
+import { RTEType, RTEControls } from './rich-text-editor.enum';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -21,17 +22,16 @@ const inputStories = storiesOf(
 ).addDecorator(withKnobs);
 
 const value = `
-  Hello world!
+  <div>Hello World!</div>
+  <div>Some initial <strong>bold</strong> text</div>
 `;
-
-// <div>Hello World!</div>
-// <div>Some initial <strong>bold</strong> text</div>
 
 const typeOptions = values(RTEType);
 
 const template = `
   <b-rich-text-editor
       [type]="type"
+      [controls]="controls"
       [value]="value"
       [label]="label"
       [disabled]="disabled"
@@ -45,8 +45,10 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout style="padding: 30px; background-color: rgb(0,0,0,0.1)" title="Rich text editor">
-  ${template}
+<b-story-book-layout title="Rich text editor">
+  <div style="padding: 30px; background-color: rgb(0,0,0,0.1); height: 100%;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -72,15 +74,15 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        // controls: options('controls', {}, {}, {display:'inline-check'}),
         type: select('type', typeOptions, RTEType.primary),
-        blur: action('Blur'),
+        controls: array('controls', Object.keys(RTEControls), '\n'),
         value: text('value', value),
         label: text('label', 'Compose an epic...'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
-        errorMessage: text('errorMessage', '')
+        errorMessage: text('errorMessage', ''),
+        blur: action('Blur')
       },
       moduleMetadata: {
         imports: [
@@ -94,5 +96,10 @@ inputStories.add(
       }
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      escapeHTML: false
+    }
+  }
 );
