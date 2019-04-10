@@ -2,10 +2,37 @@
 @import '../../style/colors';
 @import '../../style/mixins';
 
+$button-icon-size: 14px;
+// next good value is 17px (without blurring)
+
+$icon-color: $grey-600;
+$icon-color-hover: $grey-700;
+$icon-color-disabled: $grey-500;
+$placeholder-color: $icon-color;
+$border-color: $grey-500;
+$border-color-disabled: $icon-color-disabled;
+$color-error: var(--negative-500);
+$border-color-error: $color-error;
+
+$text-size-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='#{rgba($icon-color,0.999)}' d='M10.356 2.655h-.982l-1.216 2.88.771 1.91 2.349.034L11.889 9h1.12l-2.653-6.345zm.534 3.843H8.814l1.033-2.52 1.043 2.52zM5.354.276h-1.35L.355 9h1.493l.853-2.091h3.921L7.463 9h1.54L5.354.276zM6.09 5.56H3.234l1.422-3.465L6.089 5.56z'/%3E%3C/svg%3E");
+
+$text-size-icon-hover: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='#{rgba($icon-color-hover,0.999)}' d='M10.356 2.655h-.982l-1.216 2.88.771 1.91 2.349.034L11.889 9h1.12l-2.653-6.345zm.534 3.843H8.814l1.033-2.52 1.043 2.52zM5.354.276h-1.35L.355 9h1.493l.853-2.091h3.921L7.463 9h1.54L5.354.276zM6.09 5.56H3.234l1.422-3.465L6.089 5.56z'/%3E%3C/svg%3E");
+
+$text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='#{rgba($icon-color-disabled,0.999)}' d='M10.356 2.655h-.982l-1.216 2.88.771 1.91 2.349.034L11.889 9h1.12l-2.653-6.345zm.534 3.843H8.814l1.033-2.52 1.043 2.52zM5.354.276h-1.35L.355 9h1.493l.853-2.091h3.921L7.463 9h1.54L5.354.276zM6.09 5.56H3.234l1.422-3.465L6.089 5.56z'/%3E%3C/svg%3E");
+
 :host {
   text-align: left;
+  display: block;
+  min-width: 250px;
+}
+
+.quill-editor {
   display: flex;
   flex-direction: column;
+  box-shadow: 2px 2px 3px 0 black(0.04);
+  background-color: white;
+  border: 1px solid $border-color;
+  border-radius: 4px;
 }
 
 :host ::ng-deep {
@@ -18,23 +45,23 @@
 
     &.ql-container,
     &.ql-toolbar {
-      border: 1px solid $grey-500;
+      border: 0;
     }
 
     &.ql-container {
       order: 1;
+    }
+
+    .ql-editor {
       min-height: 140px;
       max-height: 250px;
       overflow: auto;
       border-bottom: none;
-      border-top-right-radius: 4px;
-      border-top-left-radius: 4px;
     }
 
     &.ql-toolbar {
       order: 2;
-      border-bottom-right-radius: 4px;
-      border-bottom-left-radius: 4px;
+      padding-left: 11px;
     }
 
     &.ql-toolbar,
@@ -47,92 +74,225 @@
       }
     }
 
-    &.ql-toolbar + .ql-container {
-      border-top: 1px solid $grey-500;
+    &.ql-toolbar {
+      border-top: 1px solid $border-color;
     }
 
-    &.ql-toolbar button {
-      @include size(24px);
-      float: none;
-    }
-
-    .ql-fill,
-    .ql-stroke.ql-fill {
-      fill: $grey-600;
-    }
-    .ql-stroke {
-      stroke: $grey-600;
-    }
-
-    &.ql-toolbar button {
-      &:hover,
-      &:focus,
-      &.ql-active {
-        outline: 0;
-
-        .ql-fill,
-        .ql-stroke.ql-fill {
-          fill: $grey-700;
-        }
-        .ql-stroke {
-          stroke: $grey-700;
-        }
-      }
-    }
-
-    &.ql-toolbar .ql-picker-item,
-    &.ql-toolbar .ql-picker-label {
-      color: $grey-600;
-
-      .ql-fill,
-      .ql-stroke.ql-fill {
-        fill: $grey-600;
-      }
-      .ql-stroke {
-        stroke: $grey-600;
-      }
-      &:hover,
-      &:focus,
-      &.ql-active {
-        outline: 0;
-        color: $grey-700;
-
-        .ql-fill,
-        .ql-stroke.ql-fill {
-          fill: $grey-700;
-        }
-        .ql-stroke {
-          stroke: $grey-700;
-        }
-      }
-    }
+    // options dropdown
 
     &.ql-toolbar .ql-picker {
       line-height: 1;
       font-weight: normal;
 
       &.ql-size {
-        width: 80px;
+        width: auto;
+      }
+    }
+
+    .ql-icon-picker {
+      width: auto;
+
+      .ql-picker-options {
+        left: -1px;
+      }
+    }
+
+    .ql-picker-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    // picker & button
+
+    .ql-picker .ql-picker-label,
+    .ql-icon-picker .ql-picker-item,
+    &.ql-toolbar button {
+      @include size(25px, 24px);
+      @include flex-align;
+      padding: 0;
+
+      &,
+      svg {
+        float: none;
+      }
+
+      svg {
+        @include size($button-icon-size);
+      }
+    }
+
+    // size picker mod
+
+    .ql-size.ql-picker {
+      .ql-picker-label {
+        &:before {
+          @include text-hide;
+          @include size($button-icon-size + 1px);
+          background-image: $text-size-icon;
+          background-position: center;
+          background-size: 100% auto;
+        }
+        svg {
+          display: none;
+        }
+
+        &:hover,
+        &:focus,
+        &.ql-active {
+          &:before {
+            background-image: $text-size-icon-hover;
+          }
+        }
+      }
+    }
+
+    // link button
+
+    .ql-blink {
+      background-color: red;
+    }
+
+    // button mods
+
+    .ql-list {
+      margin: 0 1px;
+    }
+    .ql-italic {
+      margin: 0 -2px;
+    }
+    &.ql-toolbar .ql-direction svg {
+      @include size($button-icon-size + 1px);
+    }
+    .ql-size.ql-picker {
+      margin-right: -1px;
+    }
+
+    // svg fill colors
+
+    .ql-fill,
+    .ql-stroke.ql-fill {
+      fill: $icon-color;
+    }
+    .ql-stroke {
+      stroke: $icon-color;
+    }
+
+    &.ql-toolbar button {
+      &:hover,
+      &:focus,
+      &.ql-active {
+        outline: 0;
+
+        .ql-fill,
+        .ql-stroke.ql-fill {
+          fill: $icon-color-hover;
+        }
+        .ql-stroke {
+          stroke: $icon-color-hover;
+        }
+      }
+    }
+
+    &.ql-toolbar .ql-picker-item,
+    &.ql-toolbar .ql-picker-label {
+      color: $icon-color;
+
+      .ql-fill,
+      .ql-stroke.ql-fill {
+        fill: $icon-color;
+      }
+      .ql-stroke {
+        stroke: $icon-color;
+      }
+      &:hover,
+      &:focus,
+      &.ql-active {
+        outline: 0;
+        color: $icon-color-hover;
+
+        .ql-fill,
+        .ql-stroke.ql-fill {
+          fill: $icon-color-hover;
+        }
+        .ql-stroke {
+          stroke: $icon-color-hover;
+        }
       }
     }
   }
 
   .mat-hint {
-    order: 3;
-    margin-top: 5px;
+    display: block;
+    margin-top: 2px;
+    padding: 0 16px;
+    @include BodyFont(11px);
+  }
+
+  .ql-editor.ql-blank:before {
+    color: $icon-color;
+    font-style: normal;
   }
 }
 
 :host {
   &.error ::ng-deep {
+    .quill-editor.ql-toolbar {
+      border-color: $border-color-error;
+    }
+    .mat-hint {
+      color: $color-error;
+    }
+  }
+
+  &.disabled ::ng-deep {
+    user-select: none;
+
+    .quill-editor {
+      box-shadow: none;
+      background-color: $grey-100;
+      border-color: $border-color-disabled;
+    }
+
     .ql-snow {
       &.ql-container,
       &.ql-toolbar {
-        border-color: var(--negative-500);
+        pointer-events: none;
+      }
+      .ql-fill,
+      .ql-stroke.ql-fill {
+        fill: $icon-color-disabled;
+      }
+      .ql-stroke {
+        stroke: $icon-color-disabled;
+      }
+
+      &.ql-toolbar .ql-picker-item,
+      &.ql-toolbar .ql-picker-label {
+        color: $icon-color-disabled;
+
+        .ql-fill,
+        .ql-stroke.ql-fill {
+          fill: $icon-color-disabled;
+        }
+        .ql-stroke {
+          stroke: $icon-color-disabled;
+        }
+      }
+
+      // disabled size button
+      .ql-size.ql-picker {
+        .ql-picker-label {
+          &:before {
+            background-image: $text-size-icon-disabled;
+          }
+        }
       }
     }
+
+    .ql-editor.ql-blank:before,
     .mat-hint {
-      color: var(--negative-500);
+      color: $icon-color-disabled;
     }
   }
 }

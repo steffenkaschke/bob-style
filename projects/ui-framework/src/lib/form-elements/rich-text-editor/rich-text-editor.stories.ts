@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { RichTextEditorModule } from './rich-text-editor.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -18,17 +19,22 @@ const inputStories = storiesOf(
 ).addDecorator(withKnobs);
 
 const template = `
-<b-rich-text-editor
-            [label]="label"
-            [disabled]="disabled"
-            [required]="required"
-            [errorMessage]="errorMessage"
-            [hintMessage]="hintMessage">
-</b-rich-text-editor>
+  <b-rich-text-editor
+              [label]="label"
+              [value]="value"
+              [disabled]="disabled"
+              [required]="required"
+              [errorMessage]="errorMessage"
+              [hintMessage]="hintMessage"
+              (blur)="blur($event)"
+              >
+
+    Some custom toolbar thing
+  </b-rich-text-editor>
 `;
 
 const storyTemplate = `
-<b-story-book-layout style="width: 90%; margin: 20px auto;" title="Rich text editor">
+<b-story-book-layout style="padding: 30px; background-color: rgb(0,0,0,0.1)" title="Rich text editor">
   ${template}
 </b-story-book-layout>
 `;
@@ -42,17 +48,18 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  rteHtml | string | html content to be placed inside editor
+  value | string | html content to be placed inside editor
 
   ~~~
   ${template}
   ~~~
 `;
 
-const rteHtml = `
-  <div>Hello World!</div>
-  <div>Some initial <strong>bold</strong> text</div>
+const value = `
+  Hello world!
 `;
+// <div>Hello World!</div>
+// <div>Some initial <strong>bold</strong> text</div>
 
 inputStories.add(
   'Rich text editor',
@@ -60,8 +67,9 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        rteHtml: text('rteHtml', rteHtml),
-        label: text('label', 'Compose an epic..'),
+        blur: action('Blur'),
+        value: text('value', value),
+        label: text('label', 'Compose an epic...'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
@@ -69,6 +77,8 @@ inputStories.add(
       },
       moduleMetadata: {
         imports: [
+          FormsModule,
+          ReactiveFormsModule,
           BrowserAnimationsModule,
           TypographyModule,
           StoryBookLayoutModule,

@@ -1,4 +1,55 @@
-<div #quillEditor></div>
+<div class="quill-editor">
+  <div #quillEditor></div>
+
+  <div #toolbar>
+    <select class="ql-size">
+      <option value="small"></option>
+      <option selected="selected"></option>
+      <option value="large"></option>
+      <option value="huge"></option>
+    </select>
+
+    <button class="ql-bold"></button>
+    <button class="ql-italic"></button>
+    <button class="ql-underline"></button>
+
+    <button class="ql-link"></button>
+    <b-panel #linkPanel
+             panelClass="rte-link-editor"
+             [panelSize]="panelSize.medium">
+      <b-rte-link-editor panel-content
+                         [displayText]="selectedText"
+                         (linkCancel)="onLinkCancel()"
+                         (linkUpdate)="onLinkUpdate($event)">
+      </b-rte-link-editor>
+    </b-panel>
+
+    <button type="button"
+            class="ql-list"
+            value="ordered"></button>
+    <button type="button"
+            class="ql-list"
+            value="bullet"></button>
+
+    <select class="ql-align">
+      <option selected="selected"></option>
+      <option value="center"></option>
+      <option value="right"></option>
+      <option value="justify"></option>
+    </select>
+
+    <button type="button"
+            class="ql-direction"
+            value="rtl"></button>
+
+    <div #suffix
+         *ngIf="hasSuffix"
+         class="toolbar-">
+      <ng-content></ng-content>
+    </div>
+  </div>
+
+</div>
 
 <mat-hint *ngIf="errorMessage"
           align="start"
@@ -11,20 +62,3 @@
           class="hint-message">
   {{hintMessage}}
 </mat-hint>
-
-<!-- <b-panel #linkPanel
-        panelClass="rte-link-editor"
-        [panelSize]="panelSize.medium">
-  <b-square-button panel-trigger
-                  (clicked)="onLinkPanelOpen()"
-                  [type]="buttonType.tertiary"
-                  [icon]="icons.link"
-                  [color]="iconColor.normal">
-  </b-square-button>
-  <div panel-content>
-    <b-rte-link-editor [displayText]="selectedText"
-                      (linkCancel)="onLinkCancel()"
-                      (linkUpdate)="onLinkUpdate($event)">
-    </b-rte-link-editor>
-  </div>
-</b-panel> -->
