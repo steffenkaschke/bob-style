@@ -70,6 +70,19 @@ export class RichTextEditorComponent extends BaseFormElement
   @ViewChild('suffix') suffix: ElementRef;
   @ViewChild('linkPanel') linkPanel: PanelComponent;
 
+  @Input() value: string | RteCurrentContent;
+
+  @Input() controls: Set<string> = new Set([
+    'size',
+    'bold',
+    'italic',
+    'underline',
+    'link',
+    'list',
+    'align',
+    'dir'
+  ]);
+
   @Output() blur: EventEmitter<RteCurrentContent> = new EventEmitter<
     RteCurrentContent
   >();
@@ -86,71 +99,23 @@ export class RichTextEditorComponent extends BaseFormElement
 
   hasSuffix = true;
 
-  ngOnInit(): void {
-    const editorOptions: QuillOptionsStatic = {
-      modules: {
-        toolbar: {
-          container: this.toolbar.nativeElement,
-          // [
-          // { size: ['small', false, 'large', 'huge'] },
-          // 'bold',
-          // 'italic',
-          // 'underline',
-          // 'link',
-          // { list: 'ordered' },
-          // { list: 'bullet' },
-          // { align: [] },
-          // { direction: 'rtl' }
-          // ]
-          handlers: {
-            link: () => {
-              this.onLinkPanelOpen();
-            }
-          }
-        }
-      },
-      theme: 'snow',
-      placeholder: this.label ? this.label + (this.required ? ' *' : '') : ''
-    };
+  counter = 0;
 
-    this.editor = new quillLib(this.quillEditor.nativeElement, editorOptions);
-
-    this.editor.on('text-change', () => {
-      this.propagateChange(this.getCurrentText());
-    });
-
-    this.editor.root.addEventListener('blur', () => {
-      this.blur.emit(this.getCurrentText());
-    });
-
-    if (!isEmpty(this.value)) {
-      this.editor.clipboard.dangerouslyPasteHTML(this.value);
-    }
-
-    this.editor.enable(!this.disabled);
-  }
-
-  onChange(val: any) {
-    this.value = val;
-    this.editor.clipboard.dangerouslyPasteHTML(val);
-    this.propagateChange(this.getCurrentText());
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'disabled') && this.editor) {
       this.disabled = changes.disabled.currentValue;
       this.editor.enable(!this.disabled);
     }
-    if (
-      has(changes, 'value') &&
-      this.editor &&
-      !isEmpty(changes.value.currentValue)
-    ) {
+    if (has(changes, 'value') && this.editor) {
       this.onChange(changes.value.currentValue);
     }
   }
 
   ngAfterViewInit(): void {
+    this.initEditor();
+
     setTimeout(() => {
       this.hasSuffix =
         this.suffix.nativeElement.children.length !== 0 ||
@@ -160,12 +125,57 @@ export class RichTextEditorComponent extends BaseFormElement
     }, 0);
   }
 
-  writeValue(val: any): void {
-    this.onChange(val);
+  initEditor(): void {
+    const editorOptions: QuillOptionsStatic = {
+      theme: 'snow',
+      placeholder: this.label ? this.label + (this.required ? ' *' : '') : '',
+      modules: {
+        toolbar: {
+          container: this.toolbar.nativeElement,
+          handlers: {
+            link: () => {
+              this.onLinkPanelOpen();
+            }
+          }
+        }
+      }
+    };
+
+    this.editor = new quillLib(this.quillEditor.nativeElement, editorOptions);
+
+    if (!isEmpty(this.value)) {
+      this.onChange(this.value);
+    }
+
+    this.editor.enable(!this.disabled);
+
+    this.editor.on('text-change', () => {
+      this.propagateChange(this.getCurrentText());
+    });
+
+    this.editor.root.addEventListener('blur', () => {
+      this.blur.emit(this.getCurrentText());
+    });
   }
 
   getCurrentText(): RteCurrentContent {
     return this.rteUtilsService.getHtmlContent(this.editor);
+  }
+
+  onChange(val: string | RteCurrentContent): void {
+    this.value = (val as RteCurrentContent).body
+      ? val
+      : typeof val === 'string'
+      ? { body: val, plainText: val }
+      : undefined;
+    this.editor.clipboard.dangerouslyPasteHTML(
+      (this.value as RteCurrentContent).body
+    );
+    this.propagateChange(this.getCurrentText());
+  }
+
+  writeValue(val: string | RteCurrentContent): void {
+    this.onChange(val);
   }
 
   // toggleFormat(formatType: FormatTypes) {
