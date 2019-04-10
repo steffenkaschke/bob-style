@@ -125,10 +125,15 @@ export class RichTextEditorComponent extends BaseFormElement
 
     if (!isEmpty(this.value)) {
       this.editor.clipboard.dangerouslyPasteHTML(this.value);
-      this.propagateChange(this.value);
     }
 
     this.editor.enable(!this.disabled);
+  }
+
+  onChange(val: any) {
+    this.value = val;
+    this.editor.clipboard.dangerouslyPasteHTML(val);
+    this.propagateChange(this.getCurrentText());
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -141,33 +146,37 @@ export class RichTextEditorComponent extends BaseFormElement
       this.editor &&
       !isEmpty(changes.value.currentValue)
     ) {
-      this.value = changes.value.currentValue;
-      this.editor.clipboard.dangerouslyPasteHTML(changes.value.currentValue);
-      this.propagateChange(changes.value.currentValue);
+      this.onChange(changes.value.currentValue);
     }
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.hasSuffix =
-        this.suffix.nativeElement.children.length !== 0 ? true : false;
+        this.suffix.nativeElement.children.length !== 0 ||
+        this.suffix.nativeElement.childNodes.length !== 0
+          ? true
+          : false;
     }, 0);
+  }
+
+  writeValue(val: any): void {
+    this.onChange(val);
   }
 
   getCurrentText(): RteCurrentContent {
     return this.rteUtilsService.getHtmlContent(this.editor);
   }
 
-  toggleFormat(formatType: FormatTypes) {
-    this.editor.focus();
-    this.editor.format(
-      formatType,
-      !this.rteUtilsService.isSelectionHasFormat(this.editor, formatType)
-    );
-  }
+  // toggleFormat(formatType: FormatTypes) {
+  //   this.editor.focus();
+  //   this.editor.format(
+  //     formatType,
+  //     !this.rteUtilsService.isSelectionHasFormat(this.editor, formatType)
+  //   );
+  // }
 
   onLinkPanelOpen(): void {
-    this.linkPanel.openPanel();
     this.editor.focus();
     this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
     this.selectedText = this.rteUtilsService.getSelectionText(
