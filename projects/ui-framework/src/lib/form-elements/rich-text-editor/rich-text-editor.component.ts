@@ -110,7 +110,7 @@ export class RichTextEditorComponent extends BaseFormElement
         }
       },
       theme: 'snow',
-      placeholder: this.label + (this.required ? ' *' : '')
+      placeholder: this.label ? this.label + (this.required ? ' *' : '') : ''
     };
 
     this.editor = new quillLib(this.quillEditor.nativeElement, editorOptions);
@@ -125,6 +125,7 @@ export class RichTextEditorComponent extends BaseFormElement
 
     if (!isEmpty(this.value)) {
       this.editor.clipboard.dangerouslyPasteHTML(this.value);
+      this.propagateChange(this.value);
     }
 
     this.editor.enable(!this.disabled);
@@ -140,7 +141,9 @@ export class RichTextEditorComponent extends BaseFormElement
       this.editor &&
       !isEmpty(changes.value.currentValue)
     ) {
+      this.value = changes.value.currentValue;
       this.editor.clipboard.dangerouslyPasteHTML(changes.value.currentValue);
+      this.propagateChange(changes.value.currentValue);
     }
   }
 
