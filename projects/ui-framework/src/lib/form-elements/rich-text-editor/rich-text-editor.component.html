@@ -2,9 +2,10 @@
   <div #quillEditor></div>
 
   <div #toolbar>
+
     <select class="ql-size">
       <option value="small"></option>
-      <option selected="selected"></option>
+      <option selected></option>
       <option value="large"></option>
       <option value="huge"></option>
     </select>
@@ -12,7 +13,6 @@
     <button class="ql-bold"></button>
     <button class="ql-italic"></button>
     <button class="ql-underline"></button>
-
 
     <b-panel #linkPanel
              panelClass="rte-link-editor"
@@ -34,7 +34,7 @@
             value="bullet"></button>
 
     <select class="ql-align">
-      <option selected="selected"></option>
+      <option selected></option>
       <option value="center"></option>
       <option value="right"></option>
       <option value="justify"></option>
@@ -49,6 +49,7 @@
          class="toolbar-suffix">
       <ng-content></ng-content>
     </div>
+
   </div>
 
 </div>
