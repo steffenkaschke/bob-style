@@ -9,7 +9,8 @@ import {
   Output,
   EventEmitter,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  AfterViewInit
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -56,15 +57,17 @@ quillLib.register(LinkBlot);
   ]
 })
 export class RichTextEditorComponent extends BaseFormElement
-  implements OnInit, OnChanges {
-  @Input() rteHtml: string;
-
+  implements OnInit, OnChanges, AfterViewInit {
+  constructor(private rteUtilsService: RteUtilsService) {
+    super();
+  }
   @HostBinding('class.required') @Input() required = false;
   @HostBinding('class.disabled') @Input() disabled = false;
   @HostBinding('class.error') @Input() errorMessage = undefined;
 
   @ViewChild('quillEditor') quillEditor: ElementRef;
   @ViewChild('toolbar') toolbar: ElementRef;
+  @ViewChild('suffix') suffix: ElementRef;
   @ViewChild('linkPanel') linkPanel: PanelComponent;
 
   @Output() blur: EventEmitter<RteCurrentContent> = new EventEmitter<
@@ -81,25 +84,24 @@ export class RichTextEditorComponent extends BaseFormElement
   iconColor = IconColor;
   panelSize = PanelSize;
 
-  constructor(private rteUtilsService: RteUtilsService) {
-    super();
-  }
+  hasSuffix = true;
 
   ngOnInit(): void {
     const editorOptions: QuillOptionsStatic = {
       modules: {
         toolbar: {
-          container: [
-            { size: ['small', false, 'large', 'huge'] },
-            'bold',
-            'italic',
-            'underline',
-            'link',
-            { list: 'ordered' },
-            { list: 'bullet' },
-            { align: [] },
-            { direction: 'rtl' }
-          ],
+          container: this.toolbar.nativeElement,
+          // [
+          // { size: ['small', false, 'large', 'huge'] },
+          // 'bold',
+          // 'italic',
+          // 'underline',
+          // 'link',
+          // { list: 'ordered' },
+          // { list: 'bullet' },
+          // { align: [] },
+          // { direction: 'rtl' }
+          // ]
           handlers: {
             link: () => {
               this.onLinkPanelOpen();
@@ -113,10 +115,6 @@ export class RichTextEditorComponent extends BaseFormElement
 
     this.editor = new quillLib(this.quillEditor.nativeElement, editorOptions);
 
-    if (!isEmpty(this.rteHtml)) {
-      this.editor.clipboard.dangerouslyPasteHTML(this.rteHtml);
-    }
-
     this.editor.on('text-change', () => {
       this.propagateChange(this.getCurrentText());
     });
@@ -124,6 +122,10 @@ export class RichTextEditorComponent extends BaseFormElement
     this.editor.root.addEventListener('blur', () => {
       this.blur.emit(this.getCurrentText());
     });
+
+    if (!isEmpty(this.value)) {
+      this.editor.clipboard.dangerouslyPasteHTML(this.value);
+    }
 
     this.editor.enable(!this.disabled);
   }
@@ -133,6 +135,20 @@ export class RichTextEditorComponent extends BaseFormElement
       this.disabled = changes.disabled.currentValue;
       this.editor.enable(!this.disabled);
     }
+    if (
+      has(changes, 'value') &&
+      this.editor &&
+      !isEmpty(changes.value.currentValue)
+    ) {
+      this.editor.clipboard.dangerouslyPasteHTML(changes.value.currentValue);
+    }
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.hasSuffix =
+        this.suffix.nativeElement.children.length !== 0 ? true : false;
+    }, 0);
   }
 
   getCurrentText(): RteCurrentContent {
