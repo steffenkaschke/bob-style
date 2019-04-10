@@ -36,6 +36,7 @@ $chipsMap: (
 
 :host {
   display: inline-flex;
+  pointer-events: all;
 
   @each $type, $typeProps in $chipsMap {
     &.chip-#{$type} .mat-chip {
@@ -65,4 +66,5 @@ $chipsMap: (
   user-select: none;
   cursor: default;
   outline: 0;
+  pointer-events: none;
 }

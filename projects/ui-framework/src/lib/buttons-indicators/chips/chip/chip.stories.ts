@@ -19,7 +19,7 @@ const story = storiesOf(
 
 const typeOptions = values(ChipType);
 const template = `
-  <b-chip [type]="type">
+  <b-chip [type]="type" (click)="OnClick()">
     {{ text }}
   </b-chip>
 `;
@@ -60,6 +60,7 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
+      OnClick: action('Clicked!'),
       type: select('type', typeOptions, ChipType.default),
       text: text('text', 'Chip text')
     },
