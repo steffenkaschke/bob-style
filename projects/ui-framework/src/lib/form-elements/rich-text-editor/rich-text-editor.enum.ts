@@ -1,3 +1,8 @@
+export enum RTEType {
+  primary = 'primary',
+  secondary = 'secondary'
+}
+
 export enum FormatTypes {
   bold = 'bold',
   italic = 'italic',

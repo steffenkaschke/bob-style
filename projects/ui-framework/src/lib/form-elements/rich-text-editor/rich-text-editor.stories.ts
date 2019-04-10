@@ -9,26 +9,37 @@ import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { values } from 'lodash';
 import { TypographyModule } from '../../typography/typography.module';
 import { RichTextEditorModule } from './rich-text-editor.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RTEType } from './rich-text-editor.enum';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
   module
 ).addDecorator(withKnobs);
 
+const value = `
+  Hello world!
+`;
+
+// <div>Hello World!</div>
+// <div>Some initial <strong>bold</strong> text</div>
+
+const typeOptions = values(RTEType);
+
 const template = `
   <b-rich-text-editor
-              [label]="label"
-              [value]="value"
-              [disabled]="disabled"
-              [required]="required"
-              [errorMessage]="errorMessage"
-              [hintMessage]="hintMessage"
-              (blur)="blur($event)"
-              >
-
+      [type]="type"
+      [value]="value"
+      [label]="label"
+      [disabled]="disabled"
+      [required]="required"
+      [errorMessage]="errorMessage"
+      [hintMessage]="hintMessage"
+      (blur)="blur($event)"
+      >
     Some custom toolbar thing
   </b-rich-text-editor>
 `;
@@ -55,18 +66,14 @@ const note = `
   ~~~
 `;
 
-const value = `
-  Hello world!
-`;
-// <div>Hello World!</div>
-// <div>Some initial <strong>bold</strong> text</div>
-
 inputStories.add(
   'Rich text editor',
   () => {
     return {
       template: storyTemplate,
       props: {
+        // controls: options('controls', {}, {}, {display:'inline-check'}),
+        type: select('type', typeOptions, RTEType.primary),
         blur: action('Blur'),
         value: text('value', value),
         label: text('label', 'Compose an epic...'),

@@ -19,7 +19,7 @@ import { isEmpty, has } from 'lodash';
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
 import { LinkBlot } from './formats/link-blot';
 import { PanelComponent } from '../../overlay/panel/panel.component';
-import { BlotType, FormatTypes } from './rich-text-editor.enum';
+import { BlotType, FormatTypes, RTEType } from './rich-text-editor.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import {
   RteCurrentContent,
@@ -61,14 +61,11 @@ export class RichTextEditorComponent extends BaseFormElement
   constructor(private rteUtilsService: RteUtilsService) {
     super();
   }
-  @HostBinding('class.required') @Input() required = false;
-  @HostBinding('class.disabled') @Input() disabled = false;
-  @HostBinding('class.error') @Input() errorMessage = undefined;
 
-  @ViewChild('quillEditor') quillEditor: ElementRef;
-  @ViewChild('toolbar') toolbar: ElementRef;
-  @ViewChild('suffix') suffix: ElementRef;
-  @ViewChild('linkPanel') linkPanel: PanelComponent;
+  @Input() type?: RTEType = RTEType.primary;
+  @Input() required = false;
+  @Input() disabled = false;
+  @Input() errorMessage = undefined;
 
   @Input() value: string | RteCurrentContent;
 
@@ -82,6 +79,20 @@ export class RichTextEditorComponent extends BaseFormElement
     'align',
     'dir'
   ]);
+
+  @HostBinding('class') get classes() {
+    return (
+      (this.type === RTEType.secondary ? 'rte-secondary' : 'rte-primary') +
+      (this.required ? ' required' : '') +
+      (this.disabled ? ' disabled' : '') +
+      (this.errorMessage ? ' error' : '')
+    );
+  }
+
+  @ViewChild('quillEditor') quillEditor: ElementRef;
+  @ViewChild('toolbar') toolbar: ElementRef;
+  @ViewChild('suffix') suffix: ElementRef;
+  @ViewChild('linkPanel') linkPanel: PanelComponent;
 
   @Output() blur: EventEmitter<RteCurrentContent> = new EventEmitter<
     RteCurrentContent
