@@ -14,12 +14,11 @@ export enum RTEControls {
   dir = 'dir'
 }
 
-export enum FormatTypes {
-  bold = 'bold',
-  italic = 'italic',
-  underline = 'underline',
-  link = 'link',
-  size = 'size'
+export enum RTEFontSize {
+  normal = 'normal',
+  small = 'small',
+  large = 'large',
+  huge = 'huge'
 }
 
 export enum BlotType {

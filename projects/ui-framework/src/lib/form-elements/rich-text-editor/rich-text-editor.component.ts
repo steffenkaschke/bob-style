@@ -21,9 +21,9 @@ import { LinkBlot } from './formats/link-blot';
 import { PanelComponent } from '../../overlay/panel/panel.component';
 import {
   BlotType,
-  FormatTypes,
   RTEType,
-  RTEControls
+  RTEControls,
+  RTEFontSize
 } from './rich-text-editor.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import {
@@ -67,17 +67,6 @@ export class RichTextEditorComponent extends BaseFormElement
     super();
   }
 
-  // @Input() controls: Set<string> = new Set([
-  //   'size',
-  //   'bold',
-  //   'italic',
-  //   'underline',
-  //   'link',
-  //   'list',
-  //   'align',
-  //   'dir'
-  // ]);
-
   @HostBinding('class') get classes() {
     return (
       (this.type === RTEType.secondary ? 'rte-secondary' : 'rte-primary') +
@@ -85,6 +74,13 @@ export class RichTextEditorComponent extends BaseFormElement
       (this.disabled ? ' disabled' : '') +
       (this.errorMessage ? ' error' : '')
     );
+  }
+
+  @Input('controls')
+  set setControls(cntrls: RTEControls) {
+    this.controls = cntrls
+      ? new Set(cntrls)
+      : new Set(Object.keys(RTEControls));
   }
 
   @Input() type?: RTEType = RTEType.primary;
@@ -106,23 +102,13 @@ export class RichTextEditorComponent extends BaseFormElement
   editor: Quill;
   selection: RangeStatic;
   selectedText: string;
-
-  formatTypes = FormatTypes;
   buttonType = ButtonType;
   icons = Icons;
   iconColor = IconColor;
   panelSize = PanelSize;
-
   hasSuffix = true;
-
   controls: Set<string>;
-
-  @Input('controls')
-  set setControls(cntrls: RTEControls) {
-    this.controls = cntrls
-      ? new Set(cntrls)
-      : new Set(Object.keys(RTEControls));
-  }
+  hasSizeSet = false;
 
   ngOnInit(): void {}
 
@@ -176,6 +162,10 @@ export class RichTextEditorComponent extends BaseFormElement
       this.propagateChange(this.getCurrentText());
     });
 
+    this.editor.on('selection-change', () => {
+      this.hasSizeSet = !!this.editor.getFormat().size;
+    });
+
     this.editor.root.addEventListener('blur', () => {
       this.blur.emit(this.getCurrentText());
     });
@@ -201,13 +191,11 @@ export class RichTextEditorComponent extends BaseFormElement
     this.onChange(val);
   }
 
-  // toggleFormat(formatType: FormatTypes) {
-  //   this.editor.focus();
-  //   this.editor.format(
-  //     formatType,
-  //     !this.rteUtilsService.isSelectionHasFormat(this.editor, formatType)
-  //   );
-  // }
+  changeFontSize(size: RTEFontSize) {
+    this.editor.focus();
+    this.editor.format('size', size === RTEFontSize.normal ? false : size);
+    this.hasSizeSet = size === RTEFontSize.normal ? false : true;
+  }
 
   onLinkPanelOpen(): void {
     this.editor.focus();

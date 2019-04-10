@@ -296,6 +296,14 @@ $text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmln
   }
 }
 
+// panel mod
+
+:host::ng-deep {
+  .panel-trigger {
+    display: block;
+  }
+}
+
 ::ng-deep {
   .b-panel.rte-link-editor {
     margin-top: -3px;
