@@ -150,7 +150,10 @@ export class RichTextEditorComponent extends BaseFormElement
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.hasSuffix =
-        this.suffix.nativeElement.children.length !== 0 ? true : false;
+        this.suffix.nativeElement.children.length !== 0 ||
+        this.suffix.nativeElement.childNodes.length !== 0
+          ? true
+          : false;
     }, 0);
   }
 

@@ -13,10 +13,12 @@
     <button class="ql-italic"></button>
     <button class="ql-underline"></button>
 
-    <button class="ql-link"></button>
+
     <b-panel #linkPanel
              panelClass="rte-link-editor"
              [panelSize]="panelSize.medium">
+      <button class="ql-link"
+              panel-trigger></button>
       <b-rte-link-editor panel-content
                          [displayText]="selectedText"
                          (linkCancel)="onLinkCancel()"
@@ -44,7 +46,7 @@
 
     <div #suffix
          *ngIf="hasSuffix"
-         class="toolbar-">
+         class="toolbar-suffix">
       <ng-content></ng-content>
     </div>
   </div>
