@@ -237,7 +237,8 @@ $text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmln
 
 :host {
   &.error ::ng-deep {
-    .quill-editor.ql-toolbar {
+    .quill-editor,
+    .ql-toolbar {
       border-color: $border-color-error;
     }
     .mat-hint {
@@ -290,6 +291,7 @@ $text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmln
       }
     }
 
+    .ql-editor,
     .ql-editor.ql-blank:before,
     .mat-hint {
       color: $icon-color-disabled;
