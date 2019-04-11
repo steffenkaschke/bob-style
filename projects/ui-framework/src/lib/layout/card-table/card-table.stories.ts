@@ -35,7 +35,8 @@ const template = `
 <b-card-table
   [meta]="CardTableMetaData"
   [table]="CardTableData"
-  (rowClicked)="clickHandler($event)">
+  (rowClicked)="rowClickHandler($event)"
+  (cellClicked)="cellClickHandler($event)">
 </b-card-table>
 `;
 
@@ -175,7 +176,8 @@ story.add(
       props: {
         CardTableMetaData: object('meta', CardTableMockMetaData),
         CardTableData: object('table', CardTableMockData),
-        clickHandler: action('Row Clicked')
+        rowClickHandler: action('Row Clicked'),
+        cellClickHandler: action('Cell Clicked')
       },
       moduleMetadata: {
         declarations: [MockComponent],

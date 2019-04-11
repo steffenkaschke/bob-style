@@ -11,7 +11,8 @@ import {
   CardTableMetaData,
   CardTableData,
   cardTableAllowedCellStyles,
-  CardTableRowData
+  CardTableRowData,
+  CardTableCellData
 } from '../card-table.interface';
 import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
 
@@ -31,6 +32,9 @@ export class CardTableComponent implements OnInit {
 
   @Output() rowClicked?: EventEmitter<CardTableRowData> = new EventEmitter<
     CardTableRowData
+  >();
+  @Output() cellClicked?: EventEmitter<CardTableCellData> = new EventEmitter<
+    CardTableCellData
   >();
 
   cellsStyle: cardTableAllowedCellStyles[];
@@ -54,5 +58,9 @@ export class CardTableComponent implements OnInit {
 
   onRowClicked(row: CardTableRowData): void {
     this.rowClicked.emit(row);
+  }
+
+  onCellClicked($event: CardTableCellData): void {
+    this.cellClicked.emit($event);
   }
 }
