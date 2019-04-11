@@ -5,6 +5,7 @@ import { ChipComponent } from './chip.component';
 import { ChipType } from '../chips.enum';
 import { By } from '@angular/platform-browser';
 import { MatChipsModule } from '@angular/material';
+import { ColorService } from '../../../services/color-service/color.service';
 
 describe('ButtonComponent', () => {
   let component: ChipComponent;
@@ -13,7 +14,8 @@ describe('ButtonComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ChipComponent],
-      imports: [MatChipsModule]
+      imports: [MatChipsModule],
+      providers: [ColorService]
     })
       .compileComponents()
       .then(() => {
@@ -26,7 +28,7 @@ describe('ButtonComponent', () => {
     it('should have type class', () => {
       component.type = ChipType.info;
       fixture.detectChanges();
-      const chipElement = fixture.debugElement;
+      const chipElement = fixture.debugElement.query(By.css('.mat-chip'));
       expect(chipElement.nativeElement.classList).toContain('chip-info');
     });
   });
