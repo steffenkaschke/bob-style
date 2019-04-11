@@ -37,23 +37,24 @@ export class ChipComponent implements AfterViewInit {
 
   getColor(element: ElementRef): number[] {
     const color = getComputedStyle(element.nativeElement).backgroundColor.match(
-      /^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i
+      /\d+/g
     );
-    return [
-      parseInt(color[1], 10),
-      parseInt(color[2], 10),
-      parseInt(color[3], 10)
-    ];
+    return color.length > 2
+      ? [parseInt(color[0], 10), parseInt(color[1], 10), parseInt(color[2], 10)]
+      : null;
   }
 
   getBrightness(color: number[]): number {
-    return (color[0] * 299 + color[1] * 587 + color[2] * 114) / 1000;
+    return !color
+      ? null
+      : (color[0] * 299 + color[1] * 587 + color[2] * 114) / 1000;
   }
 
   ngAfterViewInit(): void {
     if (this.color) {
       const color = this.getColor(this.chip);
-      this.textColor = this.getBrightness(color) < 128 ? 'white' : 'inherit';
+      const brightness = this.getBrightness(color);
+      this.textColor = brightness && brightness < 128 ? 'white' : null;
     }
   }
 }
