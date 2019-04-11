@@ -17,9 +17,6 @@ $border-color-disabled: $icon-color-disabled;
 $color-error: var(--negative-500);
 $border-color-error: $color-error;
 
-@mixin rte-button {
-}
-
 :host {
   text-align: left;
   display: block;
