@@ -19,12 +19,15 @@ const story = storiesOf(
 
 const typeOptions = values(ChipType);
 const template = `
-  <b-chip [type]="type" [color]="color" (click)="OnClick()">
+  <b-chip
+    [type]="type"
+    [color]="color"
+    (click)="OnClick()">
     {{ text }}
   </b-chip>
 `;
 const template2 = `
-  <p b-chip [type]="type" [color]="color">
+  <p b-chip [type]="type">
     Used as directive
   </p>
 `;
@@ -40,8 +43,6 @@ const note = `
   text | string | chip text | ''
   type | ChipType | enum for setting the chip type (empty, default, info, success, attention, warning) | default (optional)
   color | string | custom chip color | '' (optional)
-
-
 
   ~~~
   ${template}

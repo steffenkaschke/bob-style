@@ -17,9 +17,9 @@ import { ColorService } from '../../../services/color-service/color.service';
       [selectable]="false"
       disableRipple="true"
       [ngStyle]="{
-        backgroundColor: color,
-        borderColor: color,
-        color: textColor
+        backgroundColor: type !== 'disabled' && color,
+        borderColor: type !== 'disabled' && color,
+        color: type !== 'disabled' && textColor
       }"
     >
       <ng-content></ng-content>
@@ -28,7 +28,7 @@ import { ColorService } from '../../../services/color-service/color.service';
   styleUrls: ['./chip.component.scss']
 })
 export class ChipComponent implements AfterViewInit {
-  constructor(private ColorService: ColorService) {}
+  constructor(private colorService: ColorService) {}
 
   @Input() type: ChipType = ChipType.default;
   @Input() color?: string;
@@ -38,8 +38,9 @@ export class ChipComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.textColor =
+      this.type !== ChipType.disabled &&
       this.color &&
-      this.ColorService.isDark(
+      this.colorService.isDark(
         getComputedStyle(this.chip.nativeElement).backgroundColor
       )
         ? 'white'
