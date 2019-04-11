@@ -44,6 +44,6 @@ export class ChipComponent implements AfterViewInit {
         getComputedStyle(this.chip.nativeElement).backgroundColor
       )
         ? 'white'
-        : null;
+        : undefined;
   }
 }

@@ -13,12 +13,12 @@ export class ColorService {
           parseInt(colorArr[1], 10),
           parseInt(colorArr[2], 10)
         ]
-      : null;
+      : undefined;
   }
 
   private getBrightness(color: number[]): number {
     return !color
-      ? null
+      ? undefined
       : (color[0] * 299 + color[1] * 587 + color[2] * 114) / 1000;
   }
 
