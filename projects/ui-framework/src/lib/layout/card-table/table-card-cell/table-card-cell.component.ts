@@ -5,6 +5,7 @@ import {
   CardTableCellMeta,
   CardTableCellDataType
 } from '../card-table.interface';
+import { RenderedComponent } from 'bob-style/lib/services/component-renderer/component-renderer.interface';
 
 @Component({
   selector: 'b-table-card-cell, [b-table-card-cell]',
@@ -28,5 +29,11 @@ export class TableCardCellComponent {
 
   isComponent(obj: any): boolean {
     return !!obj.component;
+  }
+
+  onComponentClick($event: any, cell: RenderedComponent): void {
+    if (cell.handlers) {
+      $event.stopPropagation();
+    }
   }
 }

@@ -7,4 +7,5 @@
 </ng-container>
 
 <b-component-renderer *ngIf="isComponent(cell.data)"
-                      [render]="cell.data"></b-component-renderer>
+                      [render]="cell.data"
+                      (click)="onComponentClick($event, cell.data)"></b-component-renderer>
