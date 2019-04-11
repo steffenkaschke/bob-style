@@ -5,5 +5,6 @@
    [meta]="meta[index]"
    [attr.aria-label]="meta[index].name"
    [ngStyle]="style[index]"
+   (click)="onCellClicked(cell)"
    role="cell">
 </p>
