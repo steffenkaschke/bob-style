@@ -116,6 +116,8 @@ export class RichTextEditorComponent extends BaseFormElement
   panelSize = PanelSize;
   hasSuffix = true;
   hasSizeSet = false;
+  RTEControls = RTEControls;
+  RTEFontSize = RTEFontSize;
 
   ngOnInit(): void {}
 

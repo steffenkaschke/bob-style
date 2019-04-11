@@ -7,7 +7,7 @@
     <b-panel panelClass="rte-size-controls"
              [showBackdrop]="false"
              [panelSize]="panelSize.medium"
-             *ngIf="controls.includes('size')">
+             *ngIf="controls.includes(RTEControls.size)">
 
       <button type="button"
               class="rte-size"
@@ -23,31 +23,31 @@
       <ng-container panel-content>
         <button type="button"
                 class="rte-button rte-size-small"
-                (click)="changeFontSize('small')">Small</button>
+                (click)="changeFontSize(RTEFontSize.small)">Small</button>
         <button type="button"
                 class="rte-button rte-size-normal"
-                (click)="changeFontSize('normal')">Normal</button>
+                (click)="changeFontSize(RTEFontSize.normal)">Normal</button>
         <button type="button"
                 class="rte-button rte-size-large"
-                (click)="changeFontSize('large')">Large</button>
+                (click)="changeFontSize(RTEFontSize.large)">Large</button>
         <button type="button"
                 class="rte-button rte-size-huge"
-                (click)="changeFontSize('huge')">Huge</button>
+                (click)="changeFontSize(RTEFontSize.huge)">Huge</button>
       </ng-container>
     </b-panel>
 
     <button class="ql-bold"
-            *ngIf="controls.includes('bold')"></button>
+            *ngIf="controls.includes(RTEControls.bold)"></button>
     <button class="ql-italic"
-            *ngIf="controls.includes('italic')"></button>
+            *ngIf="controls.includes(RTEControls.italic)"></button>
     <button class="ql-underline"
-            *ngIf="controls.includes('underline')"></button>
+            *ngIf="controls.includes(RTEControls.underline)"></button>
 
     <b-panel #linkPanel
              panelClass="rte-link-editor"
              [showBackdrop]="false"
              [panelSize]="panelSize.medium"
-             *ngIf="controls.includes('link')">
+             *ngIf="controls.includes(RTEControls.link)">
       <button class="ql-link"
               panel-trigger></button>
       <b-rte-link-editor panel-content
@@ -60,14 +60,14 @@
     <button type="button"
             class="ql-list"
             value="ordered"
-            *ngIf="controls.includes('list')"></button>
+            *ngIf="controls.includes(RTEControls.list)"></button>
     <button type="button"
             class="ql-list"
             value="bullet"
-            *ngIf="controls.includes('list')"></button>
+            *ngIf="controls.includes(RTEControls.list)"></button>
 
     <select class="ql-align"
-            *ngIf="controls.includes('align')">
+            *ngIf="controls.includes(RTEControls.align)">
       <option selected></option>
       <option value="center"></option>
       <option value="right"></option>
@@ -77,7 +77,7 @@
     <button type="button"
             class="ql-direction"
             value="rtl"
-            *ngIf="controls.includes('dir')"></button>
+            *ngIf="controls.includes(RTEControls.dir)"></button>
 
     <div #suffix
          *ngIf="hasSuffix"
