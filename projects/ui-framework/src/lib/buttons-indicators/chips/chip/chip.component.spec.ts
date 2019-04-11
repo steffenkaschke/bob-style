@@ -26,7 +26,7 @@ describe('ButtonComponent', () => {
     it('should have type class', () => {
       component.type = ChipType.info;
       fixture.detectChanges();
-      const chipElement = fixture.debugElement;
+      const chipElement = fixture.debugElement.query(By.css('.mat-chip'));
       expect(chipElement.nativeElement.classList).toContain('chip-info');
     });
   });
