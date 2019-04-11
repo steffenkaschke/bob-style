@@ -32,7 +32,11 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
 );
 
 const template = `
-<b-card-table [meta]="CardTableMetaData" [table]="CardTableData">
+<b-card-table
+  [meta]="CardTableMetaData"
+  [table]="CardTableData"
+  (rowClicked)="rowClickHandler($event)"
+  (cellClicked)="cellClickHandler($event)">
 </b-card-table>
 `;
 
@@ -171,7 +175,9 @@ story.add(
       template: storyTemplate,
       props: {
         CardTableMetaData: object('meta', CardTableMockMetaData),
-        CardTableData: object('table', CardTableMockData)
+        CardTableData: object('table', CardTableMockData),
+        rowClickHandler: action('Row Clicked'),
+        cellClickHandler: action('Cell Clicked')
       },
       moduleMetadata: {
         declarations: [MockComponent],
