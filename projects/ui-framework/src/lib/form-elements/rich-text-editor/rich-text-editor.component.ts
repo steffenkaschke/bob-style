@@ -76,12 +76,23 @@ export class RichTextEditorComponent extends BaseFormElement
     );
   }
 
-  @Input('controls')
-  set setControls(cntrls: RTEControls) {
-    this.controls = cntrls
-      ? new Set(cntrls)
-      : new Set(Object.keys(RTEControls));
-  }
+  // @Input('controls')
+  // set setControls(cntrls: RTEControls) {
+  //   this.controls = cntrls
+  //     ? new Set(cntrls)
+  //     : new Set(Object.keys(RTEControls));
+  // }
+
+  @Input() controls?: RTEControls[] = [
+    RTEControls.size,
+    RTEControls.bold,
+    // RTEControls.italic,
+    RTEControls.underline,
+    RTEControls.link,
+    RTEControls.list,
+    RTEControls.align,
+    RTEControls.dir
+  ];
 
   @Input() type?: RTEType = RTEType.primary;
   @Input() required = false;
@@ -107,8 +118,8 @@ export class RichTextEditorComponent extends BaseFormElement
   iconColor = IconColor;
   panelSize = PanelSize;
   hasSuffix = true;
-  controls: Set<string>;
   hasSizeSet = false;
+  dirRTL = false;
 
   ngOnInit(): void {}
 
@@ -163,7 +174,9 @@ export class RichTextEditorComponent extends BaseFormElement
     });
 
     this.editor.on('selection-change', () => {
+      console.log(this.editor.getFormat());
       this.hasSizeSet = !!this.editor.getFormat().size;
+      this.dirRTL = this.editor.getFormat().direction === 'rtl';
     });
 
     this.editor.root.addEventListener('blur', () => {

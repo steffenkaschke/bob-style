@@ -2,23 +2,23 @@
 @import '../../style/colors';
 @import '../../style/mixins';
 
+$button-width: 25px;
 $button-icon-size: 14px;
 // next good value is 17px (without blurring)
 
 $icon-color: $grey-600;
 $icon-color-hover: $grey-700;
 $icon-color-disabled: $grey-500;
+
 $placeholder-color: $icon-color;
+
 $border-color: $grey-500;
 $border-color-disabled: $icon-color-disabled;
 $color-error: var(--negative-500);
 $border-color-error: $color-error;
 
-$text-size-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='#{rgba($icon-color,0.999)}' d='M10.356 2.655h-.982l-1.216 2.88.771 1.91 2.349.034L11.889 9h1.12l-2.653-6.345zm.534 3.843H8.814l1.033-2.52 1.043 2.52zM5.354.276h-1.35L.355 9h1.493l.853-2.091h3.921L7.463 9h1.54L5.354.276zM6.09 5.56H3.234l1.422-3.465L6.089 5.56z'/%3E%3C/svg%3E");
-
-$text-size-icon-hover: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='#{rgba($icon-color-hover,0.999)}' d='M10.356 2.655h-.982l-1.216 2.88.771 1.91 2.349.034L11.889 9h1.12l-2.653-6.345zm.534 3.843H8.814l1.033-2.52 1.043 2.52zM5.354.276h-1.35L.355 9h1.493l.853-2.091h3.921L7.463 9h1.54L5.354.276zM6.09 5.56H3.234l1.422-3.465L6.089 5.56z'/%3E%3C/svg%3E");
-
-$text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='#{rgba($icon-color-disabled,0.999)}' d='M10.356 2.655h-.982l-1.216 2.88.771 1.91 2.349.034L11.889 9h1.12l-2.653-6.345zm.534 3.843H8.814l1.033-2.52 1.043 2.52zM5.354.276h-1.35L.355 9h1.493l.853-2.091h3.921L7.463 9h1.54L5.354.276zM6.09 5.56H3.234l1.422-3.465L6.089 5.56z'/%3E%3C/svg%3E");
+@mixin rte-button {
+}
 
 :host {
   text-align: left;
@@ -74,37 +74,50 @@ $text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmln
       }
     }
 
-    // options dropdown
-
-    &.ql-toolbar .ql-picker {
-      line-height: 1;
-      font-weight: normal;
-
-      &.ql-size {
-        width: auto;
-      }
-    }
+    // picker dropdown (horizontal)
 
     .ql-icon-picker {
       width: auto;
+      display: flex;
 
       .ql-picker-options {
-        left: -1px;
+        min-width: 0;
+        margin: 0;
+        position: static;
+        display: flex;
+        box-shadow: none;
+        overflow: hidden;
+        border-left: 0;
+        background-color: transparent;
+        max-width: ($button-width * 4);
+        padding: 0 5px;
+        transition: max-width 0.3s, padding 0.2s;
+
+        &[aria-hidden='true'] {
+          max-width: 0px;
+          padding: 0;
+          border-right: 0;
+        }
+      }
+
+      .ql-picker-item {
+        max-height: 100%;
+        max-width: ($button-width - 3px);
+      }
+
+      .ql-picker-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       }
     }
 
-    .ql-picker-label {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    // picker & button
+    // buttons
 
     .ql-picker .ql-picker-label,
     .ql-icon-picker .ql-picker-item,
     &.ql-toolbar button {
-      @include size(25px, 24px);
+      @include size($button-width, ($button-width - 1px));
       @include flex-align;
       padding: 0;
 
@@ -116,37 +129,11 @@ $text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmln
       svg {
         @include size($button-icon-size);
       }
-    }
 
-    // size picker mod
-
-    .ql-size.ql-picker {
-      .ql-picker-label {
-        &:before {
-          @include text-hide;
-          @include size($button-icon-size + 1px);
-          background-image: $text-size-icon;
-          background-position: center;
-          background-size: 100% auto;
-        }
-        svg {
-          display: none;
-        }
-
-        &:hover,
-        &:focus,
-        &.ql-active {
-          &:before {
-            background-image: $text-size-icon-hover;
-          }
-        }
+      .mat-icon {
+        @include size(auto);
+        display: block;
       }
-    }
-
-    // link button
-
-    .ql-blink {
-      background-color: red;
     }
 
     // button mods
@@ -160,8 +147,11 @@ $text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmln
     &.ql-toolbar .ql-direction svg {
       @include size($button-icon-size + 1px);
     }
-    .ql-size.ql-picker {
-      margin-right: -1px;
+    .rte-size {
+      margin-right: -2px;
+    }
+    &.ql-toolbar .rte-size svg {
+      @include size($button-icon-size + 1px, auto);
     }
 
     // svg fill colors
@@ -186,6 +176,13 @@ $text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmln
         }
         .ql-stroke {
           stroke: $icon-color-hover;
+        }
+
+        .mat-icon {
+          path,
+          circle {
+            fill: $grey-700 !important;
+          }
         }
       }
     }
@@ -263,7 +260,12 @@ $text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmln
       .ql-stroke {
         stroke: $icon-color-disabled;
       }
-
+      .mat-icon {
+        path,
+        circle {
+          fill: $icon-color-disabled !important;
+        }
+      }
       &.ql-toolbar .ql-picker-item,
       &.ql-toolbar .ql-picker-label {
         color: $icon-color-disabled;
@@ -276,15 +278,6 @@ $text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmln
           stroke: $icon-color-disabled;
         }
       }
-
-      // disabled size button
-      .ql-size.ql-picker {
-        .ql-picker-label {
-          &:before {
-            background-image: $text-size-icon-disabled;
-          }
-        }
-      }
     }
 
     .ql-editor,
@@ -292,33 +285,6 @@ $text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmln
     .ql-editor.ql-blank:before,
     .mat-hint {
       color: $icon-color-disabled;
-    }
-  }
-}
-
-// panel mod
-
-:host::ng-deep {
-  .panel-trigger {
-    display: block;
-  }
-}
-
-::ng-deep {
-  .b-panel.rte-link-editor {
-    margin-top: -3px;
-
-    .panel-position.panel-after {
-      &:before {
-        left: 8px;
-      }
-      &:after {
-        left: 9px;
-      }
-    }
-
-    .panel-wrapper {
-      box-shadow: 0 0px 9px 0 $boxShadowColor;
     }
   }
 }
@@ -358,9 +324,82 @@ $text-size-icon-disabled: url("data:image/svg+xml,%3Csvg viewBox='0 0 13 9' xmln
         padding-right: 0;
       }
     }
+    .ql-container:last-child {
+      border-bottom: 1px solid $border-color;
+    }
   }
   .mat-hint {
     padding-left: 0;
     padding-right: 0;
+  }
+}
+
+// Panels
+
+:host::ng-deep {
+  .panel-trigger {
+    display: block;
+  }
+}
+
+::ng-deep {
+  .b-panel.rte-size-controls,
+  .b-panel.rte-link-editor {
+    margin-top: -3px;
+
+    .panel-position.panel-after {
+      &:before {
+        left: 8px;
+      }
+      &:after {
+        left: 9px;
+      }
+    }
+
+    .panel-wrapper {
+      box-shadow: 0 0px 9px 0 $boxShadowColor;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+// Size panel
+
+::ng-deep {
+  .b-panel.rte-size-controls {
+    .rte-button {
+      text-align: left;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: $icon-color;
+      cursor: pointer;
+
+      &:hover,
+      &:focus,
+      &.ql-active {
+        outline: 0;
+        color: $icon-color-hover;
+      }
+
+      &.rte-size-small {
+        @include BodyFont(11px);
+        // font-size: 11px;
+        // line-height: 1.5;
+      }
+      &.rte-size-normal {
+        @include BodyFont(12px);
+        // font-size: 12px;
+      }
+      &.rte-size-large {
+        @include BodyFont(18px, $lineHeight: 1);
+        // font-size: 18px;
+      }
+      &.rte-size-huge {
+        @include BodyFont(32px, $lineHeight: 1);
+        // font-size: 32px;
+      }
+    }
   }
 }

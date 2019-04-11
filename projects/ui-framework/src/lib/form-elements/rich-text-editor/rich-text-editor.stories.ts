@@ -26,8 +26,6 @@ const value = `
   <div>Some initial <strong>bold</strong> text</div>
 `;
 
-const typeOptions = values(RTEType);
-
 const template = `
   <b-rich-text-editor
       [type]="type"
@@ -74,8 +72,8 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', typeOptions, RTEType.primary),
-        controls: array('controls', Object.keys(RTEControls), '\n'),
+        type: select('type', values(RTEType), RTEType.primary),
+        controls: array('controls', values(RTEControls), '\n'),
         value: text('value', value),
         label: text('label', 'Compose an epic...'),
         disabled: boolean('disabled', false),

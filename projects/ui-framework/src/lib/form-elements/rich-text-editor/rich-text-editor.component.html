@@ -1,57 +1,53 @@
 <div class="quill-editor">
   <div #quillEditor></div>
 
-  <div #toolbar>
+  <div #toolbar
+       *ngIf="controls.length > 0 || hasSuffix">
 
-
-    <b-panel panelClass="rte-link-editor"
+    <b-panel panelClass="rte-size-controls"
              [showBackdrop]="false"
-             [panelSize]="panelSize.medium">
+             [panelSize]="panelSize.medium"
+             *ngIf="controls.includes('size')">
 
       <button type="button"
+              class="rte-size"
               panel-trigger
               [ngClass]="{'ql-active': hasSizeSet}">
-        <svg viewBox="0 0 13 9"
-             xmlns="http://www.w3.org/2000/svg">
-          <path class="ql-fill"
-                d="M10.356 2.655h-.982l-1.216 2.88.771 1.91 2.349.034L11.889 9h1.12l-2.653-6.345zm.534 3.843H8.814l1.033-2.52 1.043 2.52zM5.354.276h-1.35L.355 9h1.493l.853-2.091h3.921L7.463 9h1.54L5.354.276zM6.09 5.56H3.234l1.422-3.465L6.089 5.56z" />
-        </svg>
+
+        <b-icon icon="text_size_option"
+                size="medium"
+                color="normal">
+        </b-icon>
       </button>
 
-      <div panel-content
-           class="size-controls">
+      <ng-container panel-content>
         <button type="button"
+                class="rte-button rte-size-small"
                 (click)="changeFontSize('small')">Small</button>
         <button type="button"
+                class="rte-button rte-size-normal"
                 (click)="changeFontSize('normal')">Normal</button>
         <button type="button"
+                class="rte-button rte-size-large"
                 (click)="changeFontSize('large')">Large</button>
         <button type="button"
+                class="rte-button rte-size-huge"
                 (click)="changeFontSize('huge')">Huge</button>
-      </div>
+      </ng-container>
     </b-panel>
 
-    <select class="ql-size"
-            size="3"
-            *ngIf="controls.has('size')">
-      <option value="small"></option>
-      <option selected></option>
-      <option value="large"></option>
-      <option value="huge"></option>
-    </select>
-
     <button class="ql-bold"
-            *ngIf="controls.has('bold')"></button>
+            *ngIf="controls.includes('bold')"></button>
     <button class="ql-italic"
-            *ngIf="controls.has('italic')"></button>
+            *ngIf="controls.includes('italic')"></button>
     <button class="ql-underline"
-            *ngIf="controls.has('underline')"></button>
+            *ngIf="controls.includes('underline')"></button>
 
     <b-panel #linkPanel
              panelClass="rte-link-editor"
              [showBackdrop]="false"
              [panelSize]="panelSize.medium"
-             *ngIf="controls.has('link')">
+             *ngIf="controls.includes('link')">
       <button class="ql-link"
               panel-trigger></button>
       <b-rte-link-editor panel-content
@@ -64,14 +60,14 @@
     <button type="button"
             class="ql-list"
             value="ordered"
-            *ngIf="controls.has('list')"></button>
+            *ngIf="controls.includes('list')"></button>
     <button type="button"
             class="ql-list"
             value="bullet"
-            *ngIf="controls.has('list')"></button>
+            *ngIf="controls.includes('list')"></button>
 
     <select class="ql-align"
-            *ngIf="controls.has('align')">
+            *ngIf="controls.includes('align')">
       <option selected></option>
       <option value="center"></option>
       <option value="right"></option>
@@ -81,7 +77,7 @@
     <button type="button"
             class="ql-direction"
             value="rtl"
-            *ngIf="controls.has('dir')"></button>
+            *ngIf="controls.includes('dir')"></button>
 
     <div #suffix
          *ngIf="hasSuffix"
