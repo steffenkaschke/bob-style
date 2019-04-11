@@ -6,6 +6,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { ChipType } from '../chips.enum';
+import { ColorService } from '../../../services/color-service/color.service';
 
 @Component({
   selector: 'b-chip, [b-chip]',
@@ -27,7 +28,7 @@ import { ChipType } from '../chips.enum';
   styleUrls: ['./chip.component.scss']
 })
 export class ChipComponent implements AfterViewInit {
-  constructor() {}
+  constructor(private ColorService: ColorService) {}
 
   @Input() type: ChipType = ChipType.default;
   @Input() color?: string;
@@ -35,26 +36,13 @@ export class ChipComponent implements AfterViewInit {
 
   @ViewChild('chip') chip: ElementRef;
 
-  getColor(element: ElementRef): number[] {
-    const color = getComputedStyle(element.nativeElement).backgroundColor.match(
-      /\d+/g
-    );
-    return color.length > 2
-      ? [parseInt(color[0], 10), parseInt(color[1], 10), parseInt(color[2], 10)]
-      : null;
-  }
-
-  getBrightness(color: number[]): number {
-    return !color
-      ? null
-      : (color[0] * 299 + color[1] * 587 + color[2] * 114) / 1000;
-  }
-
   ngAfterViewInit(): void {
-    if (this.color) {
-      const color = this.getColor(this.chip);
-      const brightness = this.getBrightness(color);
-      this.textColor = brightness && brightness < 128 ? 'white' : null;
-    }
+    this.textColor =
+      this.color &&
+      this.ColorService.isDark(
+        getComputedStyle(this.chip.nativeElement).backgroundColor
+      )
+        ? 'white'
+        : null;
   }
 }
