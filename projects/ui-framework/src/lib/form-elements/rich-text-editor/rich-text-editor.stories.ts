@@ -43,7 +43,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Rich text editor">
+<b-story-book-layout [title]="'Rich text editor'">
   <div style="padding: 30px; background-color: rgb(0,0,0,0.1); height: 100%;">
     ${template}
   </div>

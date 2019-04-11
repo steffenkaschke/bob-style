@@ -10,7 +10,8 @@ import {
   EventEmitter,
   OnChanges,
   SimpleChanges,
-  AfterViewInit
+  AfterViewInit,
+  ChangeDetectorRef
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -63,7 +64,10 @@ quillLib.register(LinkBlot);
 })
 export class RichTextEditorComponent extends BaseFormElement
   implements OnInit, OnChanges, AfterViewInit {
-  constructor(private rteUtilsService: RteUtilsService) {
+  constructor(
+    private rteUtilsService: RteUtilsService,
+    private changeDetector: ChangeDetectorRef
+  ) {
     super();
   }
 
@@ -76,17 +80,10 @@ export class RichTextEditorComponent extends BaseFormElement
     );
   }
 
-  // @Input('controls')
-  // set setControls(cntrls: RTEControls) {
-  //   this.controls = cntrls
-  //     ? new Set(cntrls)
-  //     : new Set(Object.keys(RTEControls));
-  // }
-
   @Input() controls?: RTEControls[] = [
     RTEControls.size,
     RTEControls.bold,
-    // RTEControls.italic,
+    RTEControls.italic,
     RTEControls.underline,
     RTEControls.link,
     RTEControls.list,
@@ -119,7 +116,6 @@ export class RichTextEditorComponent extends BaseFormElement
   panelSize = PanelSize;
   hasSuffix = true;
   hasSizeSet = false;
-  dirRTL = false;
 
   ngOnInit(): void {}
 
@@ -174,9 +170,8 @@ export class RichTextEditorComponent extends BaseFormElement
     });
 
     this.editor.on('selection-change', () => {
-      console.log(this.editor.getFormat());
       this.hasSizeSet = !!this.editor.getFormat().size;
-      this.dirRTL = this.editor.getFormat().direction === 'rtl';
+      this.changeDetector.detectChanges();
     });
 
     this.editor.root.addEventListener('blur', () => {

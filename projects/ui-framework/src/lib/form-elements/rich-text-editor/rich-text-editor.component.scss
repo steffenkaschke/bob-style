@@ -230,10 +230,6 @@ $border-color-error: $color-error;
 
 :host {
   &.error:not(.disabled) ::ng-deep {
-    .quill-editor,
-    .ql-toolbar {
-      border-color: $border-color-error;
-    }
     .mat-hint {
       color: $color-error;
     }
@@ -241,12 +237,6 @@ $border-color-error: $color-error;
 
   &.disabled ::ng-deep {
     user-select: none;
-
-    .quill-editor {
-      box-shadow: none;
-      background-color: $grey-100;
-      border-color: $border-color-disabled;
-    }
 
     .ql-snow {
       &.ql-container,
@@ -306,6 +296,19 @@ $border-color-error: $color-error;
       }
     }
   }
+  &.error:not(.disabled) ::ng-deep {
+    .quill-editor,
+    .ql-toolbar {
+      border-color: $border-color-error;
+    }
+  }
+  &.disabled ::ng-deep {
+    .quill-editor {
+      background-color: $grey-100;
+      box-shadow: none;
+      border-color: $border-color-disabled;
+    }
+  }
 }
 
 // Secondary
@@ -331,6 +334,11 @@ $border-color-error: $color-error;
   .mat-hint {
     padding-left: 0;
     padding-right: 0;
+  }
+  &.error:not(.disabled) ::ng-deep {
+    .ql-toolbar {
+      border-bottom-color: $border-color-error;
+    }
   }
 }
 
