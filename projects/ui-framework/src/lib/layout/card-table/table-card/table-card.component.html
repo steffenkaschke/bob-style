@@ -2,8 +2,8 @@
    b-table-card-cell
    [index]="index"
    [cell]="cell"
-   [attr.aria-label]="meta[index]?.name"
-   [class]="cell.class"
+   [attr.aria-label]="meta[index].name"
+   [attr.class]="cell.class"
    [ngStyle]="style[index]"
    (click)="onCellClicked(cell)"
    role="cell">
