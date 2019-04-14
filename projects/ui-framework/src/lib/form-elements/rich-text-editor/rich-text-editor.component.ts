@@ -10,7 +10,8 @@ import {
   EventEmitter,
   OnChanges,
   SimpleChanges,
-  AfterViewInit
+  AfterViewInit,
+  ChangeDetectorRef
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -19,7 +20,12 @@ import { isEmpty, has } from 'lodash';
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
 import { LinkBlot } from './formats/link-blot';
 import { PanelComponent } from '../../overlay/panel/panel.component';
-import { BlotType, FormatTypes } from './rich-text-editor.enum';
+import {
+  BlotType,
+  RTEType,
+  RTEControls,
+  RTEFontSize
+} from './rich-text-editor.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import {
   RteCurrentContent,
@@ -58,12 +64,39 @@ quillLib.register(LinkBlot);
 })
 export class RichTextEditorComponent extends BaseFormElement
   implements OnInit, OnChanges, AfterViewInit {
-  constructor(private rteUtilsService: RteUtilsService) {
+  constructor(
+    private rteUtilsService: RteUtilsService,
+    private changeDetector: ChangeDetectorRef
+  ) {
     super();
   }
-  @HostBinding('class.required') @Input() required = false;
-  @HostBinding('class.disabled') @Input() disabled = false;
-  @HostBinding('class.error') @Input() errorMessage = undefined;
+
+  @HostBinding('class') get classes() {
+    return (
+      (this.type === RTEType.secondary ? 'rte-secondary' : 'rte-primary') +
+      (this.required ? ' required' : '') +
+      (this.disabled ? ' disabled' : '') +
+      (this.errorMessage ? ' error' : '')
+    );
+  }
+
+  @Input() controls?: RTEControls[] = [
+    RTEControls.size,
+    RTEControls.bold,
+    RTEControls.italic,
+    RTEControls.underline,
+    RTEControls.link,
+    RTEControls.list,
+    RTEControls.align,
+    RTEControls.dir
+  ];
+
+  @Input() type?: RTEType = RTEType.primary;
+  @Input() required = false;
+  @Input() disabled = false;
+  @Input() errorMessage = undefined;
+
+  @Input() value: string | RteCurrentContent;
 
   @ViewChild('quillEditor') quillEditor: ElementRef;
   @ViewChild('toolbar') toolbar: ElementRef;
@@ -77,80 +110,30 @@ export class RichTextEditorComponent extends BaseFormElement
   editor: Quill;
   selection: RangeStatic;
   selectedText: string;
-
-  formatTypes = FormatTypes;
   buttonType = ButtonType;
   icons = Icons;
   iconColor = IconColor;
   panelSize = PanelSize;
-
   hasSuffix = true;
+  hasSizeSet = false;
+  RTEControls = RTEControls;
+  RTEFontSize = RTEFontSize;
 
-  ngOnInit(): void {
-    const editorOptions: QuillOptionsStatic = {
-      modules: {
-        toolbar: {
-          container: this.toolbar.nativeElement,
-          // [
-          // { size: ['small', false, 'large', 'huge'] },
-          // 'bold',
-          // 'italic',
-          // 'underline',
-          // 'link',
-          // { list: 'ordered' },
-          // { list: 'bullet' },
-          // { align: [] },
-          // { direction: 'rtl' }
-          // ]
-          handlers: {
-            link: () => {
-              this.onLinkPanelOpen();
-            }
-          }
-        }
-      },
-      theme: 'snow',
-      placeholder: this.label ? this.label + (this.required ? ' *' : '') : ''
-    };
-
-    this.editor = new quillLib(this.quillEditor.nativeElement, editorOptions);
-
-    this.editor.on('text-change', () => {
-      this.propagateChange(this.getCurrentText());
-    });
-
-    this.editor.root.addEventListener('blur', () => {
-      this.blur.emit(this.getCurrentText());
-    });
-
-    if (!isEmpty(this.value)) {
-      this.editor.clipboard.dangerouslyPasteHTML(this.value);
-    }
-
-    this.editor.enable(!this.disabled);
-  }
-
-  onChange(val: any) {
-    this.value = val;
-    this.editor.clipboard.dangerouslyPasteHTML(val);
-    this.propagateChange(this.getCurrentText());
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'disabled') && this.editor) {
       this.disabled = changes.disabled.currentValue;
       this.editor.enable(!this.disabled);
     }
-    if (
-      has(changes, 'value') &&
-      this.editor &&
-      !isEmpty(changes.value.currentValue)
-    ) {
+    if (has(changes, 'value') && this.editor) {
       this.onChange(changes.value.currentValue);
     }
   }
 
   ngAfterViewInit(): void {
+    this.initEditor();
+
     setTimeout(() => {
       this.hasSuffix =
         this.suffix.nativeElement.children.length !== 0 ||
@@ -160,21 +143,69 @@ export class RichTextEditorComponent extends BaseFormElement
     }, 0);
   }
 
-  writeValue(val: any): void {
-    this.onChange(val);
+  initEditor(): void {
+    const editorOptions: QuillOptionsStatic = {
+      theme: 'snow',
+      placeholder: this.label ? this.label + (this.required ? ' *' : '') : '',
+      modules: {
+        toolbar: {
+          container: this.toolbar.nativeElement,
+          handlers: {
+            link: () => {
+              this.onLinkPanelOpen();
+            }
+          }
+        }
+      }
+    };
+
+    this.editor = new quillLib(this.quillEditor.nativeElement, editorOptions);
+
+    if (!isEmpty(this.value)) {
+      this.onChange(this.value);
+    }
+
+    this.editor.enable(!this.disabled);
+
+    this.editor.on('text-change', () => {
+      this.propagateChange(this.getCurrentText());
+    });
+
+    this.editor.on('selection-change', () => {
+      this.hasSizeSet = !!this.editor.getFormat().size;
+      this.changeDetector.detectChanges();
+    });
+
+    this.editor.root.addEventListener('blur', () => {
+      this.blur.emit(this.getCurrentText());
+    });
   }
 
   getCurrentText(): RteCurrentContent {
     return this.rteUtilsService.getHtmlContent(this.editor);
   }
 
-  // toggleFormat(formatType: FormatTypes) {
-  //   this.editor.focus();
-  //   this.editor.format(
-  //     formatType,
-  //     !this.rteUtilsService.isSelectionHasFormat(this.editor, formatType)
-  //   );
-  // }
+  onChange(val: string | RteCurrentContent): void {
+    this.value = (val as RteCurrentContent).body
+      ? val
+      : typeof val === 'string'
+      ? { body: val, plainText: val }
+      : undefined;
+    this.editor.clipboard.dangerouslyPasteHTML(
+      (this.value as RteCurrentContent).body
+    );
+    this.propagateChange(this.getCurrentText());
+  }
+
+  writeValue(val: string | RteCurrentContent): void {
+    this.onChange(val);
+  }
+
+  changeFontSize(size: RTEFontSize) {
+    this.editor.focus();
+    this.editor.format('size', size === RTEFontSize.normal ? false : size);
+    this.hasSizeSet = size === RTEFontSize.normal ? false : true;
+  }
 
   onLinkPanelOpen(): void {
     this.editor.focus();
