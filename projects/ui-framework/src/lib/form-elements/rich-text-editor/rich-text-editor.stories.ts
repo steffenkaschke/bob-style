@@ -3,39 +3,50 @@ import {
   text,
   select,
   boolean,
-  withKnobs
+  withKnobs,
+  array
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { values } from 'lodash';
 import { TypographyModule } from '../../typography/typography.module';
 import { RichTextEditorModule } from './rich-text-editor.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RTEType, RTEControls } from './rich-text-editor.enum';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
   module
 ).addDecorator(withKnobs);
 
+const value = `
+  <div>Hello World!</div>
+  <div>Some initial <strong>bold</strong> text</div>
+`;
+
 const template = `
   <b-rich-text-editor
-              [label]="label"
-              [value]="value"
-              [disabled]="disabled"
-              [required]="required"
-              [errorMessage]="errorMessage"
-              [hintMessage]="hintMessage"
-              (blur)="blur($event)"
-              >
-
+      [type]="type"
+      [controls]="controls"
+      [value]="value"
+      [label]="label"
+      [disabled]="disabled"
+      [required]="required"
+      [errorMessage]="errorMessage"
+      [hintMessage]="hintMessage"
+      (blur)="blur($event)"
+      >
     Some custom toolbar thing
   </b-rich-text-editor>
 `;
 
 const storyTemplate = `
-<b-story-book-layout style="padding: 30px; background-color: rgb(0,0,0,0.1)" title="Rich text editor">
-  ${template}
+<b-story-book-layout [title]="'Rich text editor'">
+  <div style="padding: 30px; background-color: rgb(0,0,0,0.1); height: 100%;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -55,25 +66,21 @@ const note = `
   ~~~
 `;
 
-const value = `
-  Hello world!
-`;
-// <div>Hello World!</div>
-// <div>Some initial <strong>bold</strong> text</div>
-
 inputStories.add(
   'Rich text editor',
   () => {
     return {
       template: storyTemplate,
       props: {
-        blur: action('Blur'),
+        type: select('type', values(RTEType), RTEType.primary),
+        controls: array('controls', values(RTEControls), '\n'),
         value: text('value', value),
         label: text('label', 'Compose an epic...'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
-        errorMessage: text('errorMessage', '')
+        errorMessage: text('errorMessage', ''),
+        blur: action('Blur')
       },
       moduleMetadata: {
         imports: [
@@ -87,5 +94,10 @@ inputStories.add(
       }
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      escapeHTML: false
+    }
+  }
 );
