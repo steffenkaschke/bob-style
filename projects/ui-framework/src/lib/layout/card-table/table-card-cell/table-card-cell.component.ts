@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 
 import {
   CardTableCellData,
-  CardTableCellMeta,
   CardTableCellDataType
 } from '../card-table.interface';
 import { RenderedComponent } from '../../../services/component-renderer/component-renderer.interface';
@@ -15,7 +14,6 @@ import { RenderedComponent } from '../../../services/component-renderer/componen
 export class TableCardCellComponent {
   constructor() {}
 
-  @Input() meta: CardTableCellMeta;
   @Input() cell: CardTableCellData;
   @Input() index: number;
 

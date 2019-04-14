@@ -20,7 +20,9 @@
       [row]="row"
       [meta]="meta"
       [style]="cellsStyle"
+      [ngClass]="{'clickable': cellClicked.observers.length > 0 || rowClicked.observers.length > 0}"
       (click)="onRowClicked(row)"
       (cellClicked)="onCellClicked($event)"
-      role="row"></li>
+      role="row">
+  </li>
 </ul>
