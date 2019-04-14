@@ -20,11 +20,15 @@ export class TableCardComponent {
   @Input() row: CardTableRowData;
   @Input() rowIndex: number;
   @Input() style: cardTableAllowedCellStyles[];
-  @Output() cellClicked?: EventEmitter<CardTableCellClickEvent> = new EventEmitter<
+  @Output() cellClicked?: EventEmitter<
     CardTableCellClickEvent
-  >();
+  > = new EventEmitter<CardTableCellClickEvent>();
 
   onCellClicked(cell: CardTableCellData, index: number): void {
-    this.cellClicked.emit({ cell: cell, cellIndex: index, rowIndex: this.rowIndex });
+    this.cellClicked.emit({
+      cell: cell,
+      cellIndex: index,
+      rowIndex: this.rowIndex
+    });
   }
 }
