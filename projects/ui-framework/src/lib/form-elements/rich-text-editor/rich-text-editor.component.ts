@@ -96,7 +96,7 @@ export class RichTextEditorComponent extends BaseFormElement
   @Input() disabled = false;
   @Input() errorMessage = undefined;
 
-  @Input() value: string | RteCurrentContent;
+  @Input() value: string;
 
   @ViewChild('quillEditor') quillEditor: ElementRef;
   @ViewChild('toolbar') toolbar: ElementRef;
@@ -185,20 +185,13 @@ export class RichTextEditorComponent extends BaseFormElement
     return this.rteUtilsService.getHtmlContent(this.editor);
   }
 
-  onChange(val: string | RteCurrentContent): void {
-    this.value =
-      val && (val as RteCurrentContent).body
-        ? val
-        : val && typeof val === 'string'
-        ? { body: val, plainText: val }
-        : { body: '', plainText: '' };
-    this.editor.clipboard.dangerouslyPasteHTML(
-      (this.value as RteCurrentContent).body
-    );
+  onChange(val: string): void {
+    this.value = val || '';
+    this.editor.clipboard.dangerouslyPasteHTML(this.value);
     this.propagateChange(this.getCurrentText());
   }
 
-  writeValue(val: string | RteCurrentContent): void {
+  writeValue(val: string): void {
     this.onChange(val);
   }
 
