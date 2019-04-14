@@ -113,7 +113,7 @@ const note = `
   data | string | if string is provided, it is treated as text with automatic truncating after 2 lines
    - | string[] | if an array of strings is provided - each string is displayed as separate line, truncated if it doesnt fit the width
    - | RenderedComponent | object describing a Component to be displayed in the cell
-  class | string | class name to be added to the cell (optional)
+  class | string / string[] | class name(s) to be added to the cell (optional)
 
   ##### [data] example
 

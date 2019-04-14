@@ -30,7 +30,7 @@ export interface CardTableCellMeta {
 
 export interface CardTableCellData {
   data: CardTableCellDataType;
-  class?: string;
+  class?: string | string[];
 }
 
 export interface CardTableMetaData extends Array<CardTableCellMeta> {}
