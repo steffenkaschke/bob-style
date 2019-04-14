@@ -98,7 +98,8 @@ export const CardTableMockData: CardTableData = [
       data: ['Elsie Hunter', '11/03/2019']
     },
     {
-      data: ['Madge Scott', '(You)']
+      data: ['Madge Scott', '(You)'],
+      class: 'highlight-second-line'
     },
     {
       data: {
