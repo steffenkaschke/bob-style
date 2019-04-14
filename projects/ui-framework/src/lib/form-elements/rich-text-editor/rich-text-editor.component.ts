@@ -124,7 +124,7 @@ export class RichTextEditorComponent extends BaseFormElement
       this.editor.enable(!this.disabled);
     }
     if (has(changes, 'value')) {
-      this.onChange(changes.value.currentValue);
+      this.applyValue(changes.value.currentValue);
     }
   }
 
@@ -159,7 +159,7 @@ export class RichTextEditorComponent extends BaseFormElement
     this.editor = new quillLib(this.quillEditor.nativeElement, editorOptions);
 
     if (!isEmpty(this.value)) {
-      this.onChange(this.value);
+      this.applyValue(this.value);
     }
 
     this.editor.enable(!this.disabled);
@@ -169,8 +169,11 @@ export class RichTextEditorComponent extends BaseFormElement
     });
 
     this.editor.on('selection-change', () => {
-      this.hasSizeSet = !!this.editor.getFormat().size;
-      this.changeDetector.detectChanges();
+      const hasSize = !!this.editor.getFormat().size;
+      if (this.hasSizeSet !== hasSize) {
+        this.hasSizeSet = hasSize;
+        this.changeDetector.detectChanges();
+      }
     });
 
     this.editor.root.addEventListener('blur', () => {
@@ -182,7 +185,7 @@ export class RichTextEditorComponent extends BaseFormElement
     return this.rteUtilsService.getHtmlContent(this.editor);
   }
 
-  private onChange(val: string): void {
+  private applyValue(val: string): void {
     this.value = val || '';
     if (this.editor) {
       this.editor.clipboard.dangerouslyPasteHTML(this.value);
@@ -191,7 +194,7 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   writeValue(val: string): void {
-    this.onChange(val);
+    this.applyValue(val);
   }
 
   changeFontSize(size: RTEFontSize) {
