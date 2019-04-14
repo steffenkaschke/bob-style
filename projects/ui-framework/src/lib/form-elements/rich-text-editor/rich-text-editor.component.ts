@@ -186,11 +186,12 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   onChange(val: string | RteCurrentContent): void {
-    this.value = (val as RteCurrentContent).body
-      ? val
-      : typeof val === 'string'
-      ? { body: val, plainText: val }
-      : undefined;
+    this.value =
+      val && (val as RteCurrentContent).body
+        ? val
+        : val && typeof val === 'string'
+        ? { body: val, plainText: val }
+        : { body: '', plainText: '' };
     this.editor.clipboard.dangerouslyPasteHTML(
       (this.value as RteCurrentContent).body
     );
