@@ -3,6 +3,7 @@
    [index]="index"
    [cell]="cell"
    [attr.aria-label]="meta[index]?.name"
+   [class]="cell.class"
    [ngStyle]="style[index]"
    (click)="onCellClicked(cell)"
    role="cell">
