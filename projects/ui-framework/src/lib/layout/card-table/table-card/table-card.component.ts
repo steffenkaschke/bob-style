@@ -4,7 +4,8 @@ import {
   CardTableMetaData,
   CardTableRowData,
   cardTableAllowedCellStyles,
-  CardTableCellData
+  CardTableCellData,
+  CardTableCellClickEvent
 } from '../card-table.interface';
 
 @Component({
@@ -17,12 +18,13 @@ export class TableCardComponent {
 
   @Input() meta: CardTableMetaData;
   @Input() row: CardTableRowData;
+  @Input() rowIndex: number;
   @Input() style: cardTableAllowedCellStyles[];
-  @Output() cellClicked?: EventEmitter<CardTableCellData> = new EventEmitter<
-    CardTableCellData
+  @Output() cellClicked?: EventEmitter<CardTableCellClickEvent> = new EventEmitter<
+    CardTableCellClickEvent
   >();
 
-  onCellClicked(cell: CardTableCellData): void {
-    this.cellClicked.emit(cell);
+  onCellClicked(cell: CardTableCellData, index: number): void {
+    this.cellClicked.emit({ cell: cell, cellIndex: index, rowIndex: this.rowIndex });
   }
 }

@@ -123,7 +123,7 @@ export class RichTextEditorComponent extends BaseFormElement
       this.disabled = changes.disabled.currentValue;
       this.editor.enable(!this.disabled);
     }
-    if (has(changes, 'value') && this.editor) {
+    if (has(changes, 'value')) {
       this.onChange(changes.value.currentValue);
     }
   }
@@ -184,8 +184,10 @@ export class RichTextEditorComponent extends BaseFormElement
 
   private onChange(val: string): void {
     this.value = val || '';
-    this.editor.clipboard.dangerouslyPasteHTML(this.value);
-    this.propagateChange(this.getCurrentText());
+    if (this.editor) {
+      this.editor.clipboard.dangerouslyPasteHTML(this.value);
+      this.propagateChange(this.getCurrentText());
+    }
   }
 
   writeValue(val: string): void {

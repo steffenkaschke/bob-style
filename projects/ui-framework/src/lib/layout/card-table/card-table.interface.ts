@@ -30,11 +30,21 @@ export interface CardTableCellMeta {
 
 export interface CardTableCellData {
   data: CardTableCellDataType;
-  class?: string;
+  class?: string | string[];
 }
 
 export interface CardTableMetaData extends Array<CardTableCellMeta> {}
 
 export interface CardTableRowData extends Array<CardTableCellData> {}
 
-export interface CardTableData extends Array<CardTableRowData> {}
+export interface CardTableData extends Array<CardTableRowData> { }
+
+export interface CardTableCellClickEvent {
+  rowIndex: number;
+  cellIndex: number;
+  cell: CardTableCellData;
+}
+export interface CardTableRowClickEvent {
+  rowIndex: number;
+  row: CardTableRowData;
+}

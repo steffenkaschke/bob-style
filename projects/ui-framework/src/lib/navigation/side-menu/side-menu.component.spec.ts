@@ -30,8 +30,9 @@ describe('SideMenuComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('ngOnInit', () => {
+  describe('ngOnChanges', () => {
     it('should set selectedId to 1', () => {
+      component.ngOnChanges();
       expect(component.selectedId).toEqual('1');
     });
   });
