@@ -14,8 +14,6 @@ import {
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { isEmpty, has } from 'lodash';
-
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
 import { LinkBlot } from './formats/link-blot';
 import { PanelComponent } from '../../overlay/panel/panel.component';
@@ -119,11 +117,11 @@ export class RichTextEditorComponent extends BaseFormElement
   RTEFontSize = RTEFontSize;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (has(changes, 'disabled') && this.editor) {
+    if (changes.disabled && this.editor) {
       this.disabled = changes.disabled.currentValue;
       this.editor.enable(!this.disabled);
     }
-    if (has(changes, 'value')) {
+    if (changes.value) {
       this.applyValue(changes.value.currentValue);
     }
   }
@@ -158,7 +156,7 @@ export class RichTextEditorComponent extends BaseFormElement
 
     this.editor = new quillLib(this.quillEditor.nativeElement, editorOptions);
 
-    if (!isEmpty(this.value)) {
+    if (!!this.value) {
       this.applyValue(this.value);
     }
 
@@ -169,9 +167,9 @@ export class RichTextEditorComponent extends BaseFormElement
     });
 
     this.editor.on('selection-change', () => {
-      const hasSize = !!this.editor.getFormat().size;
-      if (this.hasSizeSet !== hasSize) {
-        this.hasSizeSet = hasSize;
+      const newSize = !!this.editor.getFormat().size;
+      if (this.hasSizeSet !== newSize) {
+        this.hasSizeSet = newSize;
         this.changeDetector.detectChanges();
       }
     });
