@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { chain, get, set, isEmpty, trim, isNull, has } from 'lodash';
+import { chain, get, set, isEmpty, trim } from 'lodash';
 import {
   RteCurrentContent,
   UpdateRteConfig
