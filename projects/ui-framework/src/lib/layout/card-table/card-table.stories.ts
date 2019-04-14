@@ -115,6 +115,9 @@ const note = `
    - | RenderedComponent | object describing a Component to be displayed in the cell
   class | string / string[] | class name(s) to be added to the cell (optional)
 
+  *Note:* If using RenderedComponent as cell data, consumer must
+   declare the component to be used in entryComponents section in the module
+
   ##### [data] example
 
   \`\`\`
