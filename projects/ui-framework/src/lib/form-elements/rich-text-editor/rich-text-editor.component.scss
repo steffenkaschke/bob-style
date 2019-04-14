@@ -390,20 +390,15 @@ $border-color-error: $color-error;
 
       &.rte-size-small {
         @include BodyFont(11px);
-        // font-size: 11px;
-        // line-height: 1.5;
       }
       &.rte-size-normal {
         @include BodyFont(12px);
-        // font-size: 12px;
       }
       &.rte-size-large {
         @include BodyFont(18px, $lineHeight: 1);
-        // font-size: 18px;
       }
       &.rte-size-huge {
         @include BodyFont(32px, $lineHeight: 1);
-        // font-size: 32px;
       }
     }
   }

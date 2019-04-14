@@ -2,7 +2,6 @@ import {
   Component,
   ElementRef,
   Input,
-  OnInit,
   ViewChild,
   forwardRef,
   HostBinding,
@@ -14,8 +13,6 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-import { isEmpty, has } from 'lodash';
 
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
 import { LinkBlot } from './formats/link-blot';
@@ -63,7 +60,7 @@ quillLib.register(LinkBlot);
   ]
 })
 export class RichTextEditorComponent extends BaseFormElement
-  implements OnInit, OnChanges, AfterViewInit {
+  implements OnChanges, AfterViewInit {
   constructor(
     private rteUtilsService: RteUtilsService,
     private changeDetector: ChangeDetectorRef
@@ -119,15 +116,13 @@ export class RichTextEditorComponent extends BaseFormElement
   RTEControls = RTEControls;
   RTEFontSize = RTEFontSize;
 
-  ngOnInit(): void {}
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (has(changes, 'disabled') && this.editor) {
+    if (changes.disabled && this.editor) {
       this.disabled = changes.disabled.currentValue;
       this.editor.enable(!this.disabled);
     }
-    if (has(changes, 'value')) {
-      this.onChange(changes.value.currentValue);
+    if (changes.value) {
+      this.applyValue(changes.value.currentValue);
     }
   }
 
@@ -143,7 +138,7 @@ export class RichTextEditorComponent extends BaseFormElement
     }, 0);
   }
 
-  initEditor(): void {
+  private initEditor(): void {
     const editorOptions: QuillOptionsStatic = {
       theme: 'snow',
       placeholder: this.label ? this.label + (this.required ? ' *' : '') : '',
@@ -161,8 +156,8 @@ export class RichTextEditorComponent extends BaseFormElement
 
     this.editor = new quillLib(this.quillEditor.nativeElement, editorOptions);
 
-    if (!isEmpty(this.value)) {
-      this.onChange(this.value);
+    if (!!this.value) {
+      this.applyValue(this.value);
     }
 
     this.editor.enable(!this.disabled);
@@ -172,8 +167,11 @@ export class RichTextEditorComponent extends BaseFormElement
     });
 
     this.editor.on('selection-change', () => {
-      this.hasSizeSet = !!this.editor.getFormat().size;
-      this.changeDetector.detectChanges();
+      const newSize = !!this.editor.getFormat().size;
+      if (this.hasSizeSet !== newSize) {
+        this.hasSizeSet = newSize;
+        this.changeDetector.detectChanges();
+      }
     });
 
     this.editor.root.addEventListener('blur', () => {
@@ -181,11 +179,11 @@ export class RichTextEditorComponent extends BaseFormElement
     });
   }
 
-  getCurrentText(): RteCurrentContent {
+  private getCurrentText(): RteCurrentContent {
     return this.rteUtilsService.getHtmlContent(this.editor);
   }
 
-  onChange(val: string): void {
+  private applyValue(val: string): void {
     this.value = val || '';
     if (this.editor) {
       this.editor.clipboard.dangerouslyPasteHTML(this.value);
@@ -194,7 +192,7 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   writeValue(val: string): void {
-    this.onChange(val);
+    this.applyValue(val);
   }
 
   changeFontSize(size: RTEFontSize) {
@@ -203,7 +201,7 @@ export class RichTextEditorComponent extends BaseFormElement
     this.hasSizeSet = size === RTEFontSize.normal ? false : true;
   }
 
-  onLinkPanelOpen(): void {
+  private onLinkPanelOpen(): void {
     this.editor.focus();
     this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
     this.selectedText = this.rteUtilsService.getSelectionText(
