@@ -2,7 +2,6 @@ import {
   Component,
   ElementRef,
   Input,
-  OnInit,
   ViewChild,
   forwardRef,
   HostBinding,
@@ -63,7 +62,7 @@ quillLib.register(LinkBlot);
   ]
 })
 export class RichTextEditorComponent extends BaseFormElement
-  implements OnInit, OnChanges, AfterViewInit {
+  implements OnChanges, AfterViewInit {
   constructor(
     private rteUtilsService: RteUtilsService,
     private changeDetector: ChangeDetectorRef
@@ -119,8 +118,6 @@ export class RichTextEditorComponent extends BaseFormElement
   RTEControls = RTEControls;
   RTEFontSize = RTEFontSize;
 
-  ngOnInit(): void {}
-
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'disabled') && this.editor) {
       this.disabled = changes.disabled.currentValue;
@@ -143,7 +140,7 @@ export class RichTextEditorComponent extends BaseFormElement
     }, 0);
   }
 
-  initEditor(): void {
+  private initEditor(): void {
     const editorOptions: QuillOptionsStatic = {
       theme: 'snow',
       placeholder: this.label ? this.label + (this.required ? ' *' : '') : '',
@@ -181,11 +178,11 @@ export class RichTextEditorComponent extends BaseFormElement
     });
   }
 
-  getCurrentText(): RteCurrentContent {
+  private getCurrentText(): RteCurrentContent {
     return this.rteUtilsService.getHtmlContent(this.editor);
   }
 
-  onChange(val: string): void {
+  private onChange(val: string): void {
     this.value = val || '';
     this.editor.clipboard.dangerouslyPasteHTML(this.value);
     this.propagateChange(this.getCurrentText());
@@ -201,7 +198,7 @@ export class RichTextEditorComponent extends BaseFormElement
     this.hasSizeSet = size === RTEFontSize.normal ? false : true;
   }
 
-  onLinkPanelOpen(): void {
+  private onLinkPanelOpen(): void {
     this.editor.focus();
     this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
     this.selectedText = this.rteUtilsService.getSelectionText(
