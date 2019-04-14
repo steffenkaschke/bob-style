@@ -5,6 +5,6 @@
    [attr.aria-label]="meta[index].name"
    [ngClass]="cell.class"
    [ngStyle]="style[index]"
-   (click)="onCellClicked(cell)"
+   (click)="onCellClicked(cell, index, rowIndex)"
    role="cell">
 </p>

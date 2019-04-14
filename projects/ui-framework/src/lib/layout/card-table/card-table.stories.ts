@@ -69,8 +69,8 @@ const note = `
   meta | CardTableMetaData | array of objects, describing table meta-data per column | none
   table | CardTableData | 2-dimentional array (array of arrays) of objects, providing table cell data per row | none
   minCellWidth | number | number representing minimal cell width in percents | 5
-  rowClicked | Function | row click handler (event transmits row data) | none
-  cellClicked | Function | cell click handler (event transmits cell data) | none
+  rowClicked | Function | row click handler (event transmits: {row: CardTableRowData, rowIndex: number}) | none
+  cellClicked | Function | cell click handler (event transmits: {cell: CardTableCellData, cellIndex: number, rowIndex: number}) | none
 
   #### \`meta[0]\`: CardTableCellMeta - single column meta-data object properties
   Name | Type | Description | Default value
