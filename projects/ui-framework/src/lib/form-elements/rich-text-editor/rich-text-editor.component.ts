@@ -30,7 +30,7 @@ import {
   UpdateRteConfig
 } from './rich-text-editor.interface';
 
-import { IconColor, Icons } from '../../icons/icons.enum';
+import { Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { PanelSize } from '../../overlay/panel/panel.enum';
 
@@ -112,7 +112,6 @@ export class RichTextEditorComponent extends BaseFormElement
 
   buttonType = ButtonType;
   icons = Icons;
-  // iconColor = IconColor;
   panelSize = PanelSize;
   RTEControls = RTEControls;
   RTEFontSize = RTEFontSize;
