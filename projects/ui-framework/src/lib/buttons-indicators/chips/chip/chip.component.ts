@@ -1,4 +1,11 @@
-import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  ViewChild,
+  ElementRef,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import { ChipType } from '../chips.enum';
 import { ColorService } from '../../../services/color-service/color.service';
 
@@ -7,46 +14,54 @@ import { ColorService } from '../../../services/color-service/color.service';
   template: `
     <mat-basic-chip
       #chip
-      [ngClass]="
-        type === ChipType.disabled
-          ? 'chip-disabled'
-          : !color
-          ? 'chip-' + type
-          : null
-      "
+      [ngClass]="class"
+      [ngStyle]="style"
       [selectable]="false"
       disableRipple="true"
-      [ngStyle]="{
-        backgroundColor: type !== ChipType.disabled && color,
-        borderColor: type !== ChipType.disabled && color,
-        color: type !== ChipType.disabled && textColor
-      }"
     >
       <ng-content></ng-content>
     </mat-basic-chip>
   `,
   styleUrls: ['./chip.component.scss']
 })
-export class ChipComponent implements OnInit {
+export class ChipComponent implements OnChanges {
   constructor(private colorService: ColorService) {}
 
   @Input() type: ChipType = ChipType.default;
   @Input() color?: string;
-  ChipType = ChipType;
-  textColor = undefined;
+
+  style = null;
+  class = null;
 
   @ViewChild('chip', { read: ElementRef }) private chip: ElementRef;
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges) {
+    this.type = changes.type ? changes.type.currentValue : this.type;
+    this.color = changes.color ? changes.color.currentValue : this.color;
+
+    this.class =
+      this.type === ChipType.disabled
+        ? 'chip-disabled'
+        : !this.color
+        ? 'chip-' + this.type
+        : null;
+
+    this.style = {
+      backgroundColor:
+        this.type !== ChipType.disabled && this.color ? this.color : null,
+      borderColor:
+        this.type !== ChipType.disabled && this.color ? this.color : null
+    };
+
     setTimeout(() => {
-      this.textColor =
+      this.style.color =
         this.type !== ChipType.disabled &&
         this.color &&
         this.colorService.isDark(
           getComputedStyle(this.chip.nativeElement).backgroundColor
         )
           ? 'white'
-          : undefined;
+          : null;
     }, 0);
   }
 }

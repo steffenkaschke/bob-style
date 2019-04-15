@@ -24,4 +24,6 @@ import { CheckboxModule } from '../../../ui-framework/src/lib/form-elements/chec
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+
+}
