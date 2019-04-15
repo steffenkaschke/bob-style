@@ -36,7 +36,8 @@ const template = `
       [required]="required"
       [errorMessage]="errorMessage"
       [hintMessage]="hintMessage"
-      (blur)="blur($event)"
+      (focused)="focus($event)"
+      (blurred)="blur($event)"
       >
     Some custom toolbar thing
   </b-rich-text-editor>
@@ -80,7 +81,8 @@ inputStories.add(
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
         errorMessage: text('errorMessage', ''),
-        blur: action('Blur')
+        blur: action('Editor blurred'),
+        focus: action('Editor focused')
       },
       moduleMetadata: {
         imports: [

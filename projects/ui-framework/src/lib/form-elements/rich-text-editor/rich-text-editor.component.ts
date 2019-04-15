@@ -30,7 +30,7 @@ import {
   UpdateRteConfig
 } from './rich-text-editor.interface';
 
-import { IconColor, Icons } from '../../icons/icons.enum';
+import { Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { PanelSize } from '../../overlay/panel/panel.enum';
 
@@ -95,24 +95,24 @@ export class RichTextEditorComponent extends BaseFormElement
 
   @Input() value: string;
 
-  @ViewChild('quillEditor') quillEditor: ElementRef;
-  @ViewChild('toolbar') toolbar: ElementRef;
-  @ViewChild('suffix') suffix: ElementRef;
-  @ViewChild('linkPanel') linkPanel: PanelComponent;
+  @ViewChild('quillEditor') private quillEditor: ElementRef;
+  @ViewChild('toolbar') private toolbar: ElementRef;
+  @ViewChild('suffix') private suffix: ElementRef;
+  @ViewChild('linkPanel') private linkPanel: PanelComponent;
 
-  @Output() blur: EventEmitter<RteCurrentContent> = new EventEmitter<
-    RteCurrentContent
-  >();
+  @Output() blurred: EventEmitter<any> = new EventEmitter<any>();
+  @Output() focused: EventEmitter<any> = new EventEmitter<any>();
 
-  editor: Quill;
-  selection: RangeStatic;
+  private editor: Quill;
+  private selection: RangeStatic;
   selectedText: string;
-  buttonType = ButtonType;
-  icons = Icons;
-  iconColor = IconColor;
-  panelSize = PanelSize;
   hasSuffix = true;
   hasSizeSet = false;
+  private latestOutputValue: RteCurrentContent;
+
+  buttonType = ButtonType;
+  icons = Icons;
+  panelSize = PanelSize;
   RTEControls = RTEControls;
   RTEFontSize = RTEFontSize;
 
@@ -163,19 +163,32 @@ export class RichTextEditorComponent extends BaseFormElement
     this.editor.enable(!this.disabled);
 
     this.editor.on('text-change', () => {
-      this.propagateChange(this.getCurrentText());
-    });
-
-    this.editor.on('selection-change', () => {
-      const newSize = !!this.editor.getFormat().size;
-      if (this.hasSizeSet !== newSize) {
-        this.hasSizeSet = newSize;
-        this.changeDetector.detectChanges();
+      const newOutputValue = this.getCurrentText();
+      if (
+        !this.latestOutputValue ||
+        this.latestOutputValue.body !== newOutputValue.body
+      ) {
+        this.latestOutputValue = newOutputValue;
+        this.propagateChange(newOutputValue);
       }
     });
 
+    this.editor.on('selection-change', range => {
+      if (range) {
+        const newSize = !!this.editor.getFormat().size;
+        if (this.hasSizeSet !== newSize) {
+          this.hasSizeSet = newSize;
+          this.changeDetector.detectChanges();
+        }
+      }
+    });
+
+    this.editor.root.addEventListener('focus', () => {
+      this.focused.emit(this.latestOutputValue);
+    });
+
     this.editor.root.addEventListener('blur', () => {
-      this.blur.emit(this.getCurrentText());
+      this.blurred.emit(this.latestOutputValue);
     });
   }
 
@@ -184,10 +197,11 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   private applyValue(val: string): void {
-    this.value = val || '';
-    if (this.editor) {
-      this.editor.clipboard.dangerouslyPasteHTML(this.value);
-      this.propagateChange(this.getCurrentText());
+    if (this.value !== val) {
+      this.value = val || '';
+      if (this.editor) {
+        this.editor.clipboard.dangerouslyPasteHTML(this.value);
+      }
     }
   }
 
@@ -196,13 +210,11 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   changeFontSize(size: RTEFontSize) {
-    this.editor.focus();
     this.editor.format('size', size === RTEFontSize.normal ? false : size);
     this.hasSizeSet = size === RTEFontSize.normal ? false : true;
   }
 
   private onLinkPanelOpen(): void {
-    this.editor.focus();
     this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
     this.selectedText = this.rteUtilsService.getSelectionText(
       this.editor,

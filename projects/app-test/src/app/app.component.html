@@ -2,16 +2,17 @@
 
   <b-display-1>Hello</b-display-1>
 
-  <p>
-    <b-chip [type]="chipType"
-            [color]="chipColor">Chip Test: {{chipType}} {{chipColor}}</b-chip>
-  </p>
 
-  <hr>
+<form>
 
-  <p>
-    <button (click)="toggleDisabled()">toggle disabled</button>
-    <button (click)="toggleRed()">toggle red</button>
-  </p>
+  <b-rich-text-editor
+                      [formControl]="rteControl">
+  </b-rich-text-editor>
 
-</div>
+  <b-checkbox [formControl]="checkControl">
+  </b-checkbox>
+
+  <input type="text"
+         [formControl]="inputControl">
+
+</form>

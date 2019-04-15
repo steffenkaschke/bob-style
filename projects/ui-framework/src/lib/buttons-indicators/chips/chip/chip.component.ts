@@ -63,7 +63,5 @@ export class ChipComponent implements OnChanges {
           ? 'white'
           : null;
     }, 0);
-
-    console.log(this.class);
   }
 }
