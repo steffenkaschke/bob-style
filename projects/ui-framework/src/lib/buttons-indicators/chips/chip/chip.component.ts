@@ -46,10 +46,6 @@ export class ChipComponent implements OnInit {
   @ViewChild('chip', { read: ElementRef }) private chip: ElementRef;
 
   ngOnInit() {
-    console.log(
-      this.chip,
-      getComputedStyle(this.chip.nativeElement).backgroundColor
-    );
     setTimeout(() => {
       this.textColor =
         this.type !== ChipType.disabled &&

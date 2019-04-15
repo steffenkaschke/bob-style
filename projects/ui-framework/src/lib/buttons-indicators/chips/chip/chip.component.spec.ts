@@ -7,7 +7,7 @@ import { By } from '@angular/platform-browser';
 import { MatChipsModule } from '@angular/material';
 import { ColorService } from '../../../services/color-service/color.service';
 
-fdescribe('ButtonComponent', () => {
+describe('ButtonComponent', () => {
   let component: ChipComponent;
   let fixture: ComponentFixture<ChipComponent>;
   let chipElement: HTMLElement;
