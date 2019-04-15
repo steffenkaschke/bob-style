@@ -1,8 +1,17 @@
-<div>
-  <b-display-1>Hello</b-display-1>
-</div>
+<div style="padding: 100px;">
 
-<b-multi-select label="test multi select"
-                [value]="null"
-                [options]="multiSelectOptions">
-</b-multi-select>
+  <b-display-1>Hello</b-display-1>
+
+  <p>
+    <b-chip [type]="chipType"
+            [color]="chipColor">Chip Test: {{chipType}} {{chipColor}}</b-chip>
+  </p>
+
+  <hr>
+
+  <p>
+    <button (click)="toggleDisabled()">toggle disabled</button>
+    <button (click)="toggleRed()">toggle red</button>
+  </p>
+
+</div>
