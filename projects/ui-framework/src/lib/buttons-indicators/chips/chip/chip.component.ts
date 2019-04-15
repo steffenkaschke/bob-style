@@ -1,12 +1,4 @@
-import {
-  Component,
-  Input,
-  ViewChild,
-  ElementRef,
-  AfterContentInit,
-  AfterViewChecked,
-  OnInit
-} from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { ChipType } from '../chips.enum';
 import { ColorService } from '../../../services/color-service/color.service';
 
