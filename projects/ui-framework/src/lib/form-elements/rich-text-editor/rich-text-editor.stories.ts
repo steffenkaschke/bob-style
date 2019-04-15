@@ -36,6 +36,7 @@ const template = `
       [required]="required"
       [errorMessage]="errorMessage"
       [hintMessage]="hintMessage"
+      (changed)="change($event)"
       (focused)="focus($event)"
       (blurred)="blur($event)"
       >
@@ -82,7 +83,8 @@ inputStories.add(
         hintMessage: text('hintMessage', 'This field should contain something'),
         errorMessage: text('errorMessage', ''),
         blur: action('Editor blurred'),
-        focus: action('Editor focused')
+        focus: action('Editor focused'),
+        change: action('Something has changed')
       },
       moduleMetadata: {
         imports: [
