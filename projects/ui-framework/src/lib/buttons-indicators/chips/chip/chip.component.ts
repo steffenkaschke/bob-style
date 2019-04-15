@@ -1,10 +1,4 @@
-import {
-  Component,
-  Input,
-  ViewChild,
-  ElementRef,
-  AfterViewInit
-} from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { ChipType } from '../chips.enum';
 import { ColorService } from '../../../services/color-service/color.service';
 
@@ -13,13 +7,19 @@ import { ColorService } from '../../../services/color-service/color.service';
   template: `
     <mat-basic-chip
       #chip
-      [ngClass]="'chip-' + type"
+      [ngClass]="
+        type === ChipType.disabled
+          ? 'chip-disabled'
+          : !color
+          ? 'chip-' + type
+          : null
+      "
       [selectable]="false"
       disableRipple="true"
       [ngStyle]="{
-        backgroundColor: type !== 'disabled' && color,
-        borderColor: type !== 'disabled' && color,
-        color: type !== 'disabled' && textColor
+        backgroundColor: type !== ChipType.disabled && color,
+        borderColor: type !== ChipType.disabled && color,
+        color: type !== ChipType.disabled && textColor
       }"
     >
       <ng-content></ng-content>
@@ -27,23 +27,26 @@ import { ColorService } from '../../../services/color-service/color.service';
   `,
   styleUrls: ['./chip.component.scss']
 })
-export class ChipComponent implements AfterViewInit {
+export class ChipComponent implements OnInit {
   constructor(private colorService: ColorService) {}
 
   @Input() type: ChipType = ChipType.default;
   @Input() color?: string;
-  textColor: string;
+  ChipType = ChipType;
+  textColor = undefined;
 
-  @ViewChild('chip') chip: ElementRef;
+  @ViewChild('chip', { read: ElementRef }) private chip: ElementRef;
 
-  ngAfterViewInit(): void {
-    this.textColor =
-      this.type !== ChipType.disabled &&
-      this.color &&
-      this.colorService.isDark(
-        getComputedStyle(this.chip.nativeElement).backgroundColor
-      )
-        ? 'white'
-        : undefined;
+  ngOnInit() {
+    setTimeout(() => {
+      this.textColor =
+        this.type !== ChipType.disabled &&
+        this.color &&
+        this.colorService.isDark(
+          getComputedStyle(this.chip.nativeElement).backgroundColor
+        )
+          ? 'white'
+          : undefined;
+    }, 0);
   }
 }
