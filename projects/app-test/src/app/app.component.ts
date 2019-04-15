@@ -15,6 +15,8 @@ export class AppComponent implements OnInit {
   inputControl = new FormControl('blah');
 
   ngOnInit() {
+    this.rteControl.setValue('why not?');
+
     this.rteControl.valueChanges.subscribe(value => {
       console.log('valueChanges', value);
     });
