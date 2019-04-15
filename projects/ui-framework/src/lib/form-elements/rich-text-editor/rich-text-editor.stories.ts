@@ -59,9 +59,20 @@ const note = `
   *RichTextEditorModule*
 
   #### Properties
-  Name | Type | Description
-  --- | --- | ---
-  value | string | html content to be placed inside editor
+  Name | Type | Description | default
+  --- | --- | --- | ---
+  type | RTEType | primary (white bg, border) or secondary (transparent bg, no borders) | primary
+  controls | RTEControls[] | array of toolbar controls. Possible controls: size, bold, italic, underline, link, list, align, dir. Defaults to all controls. Pass empty array to disable all controls. | all
+  value | string | html content to be placed inside editor | none (optional)
+  label | string | placeholder text | none (optional)
+  disabled | boolean | disables editor | false (optional)
+  required | boolean | adds * to placeholder | false (optional)
+  hintMessage | string | adds a hint message below editor | none (optional)
+  errorMessage | string | adds 'invalid' style, hides hint message and displays error message below editor | none (optional)
+  changed | function | change event handler (event transmits latest change: {body,plainText}) |
+  focused | function | focus event handler (event transmits latest change: {body,plainText}) |
+  blurred | function | blur event handler (event transmits latest change: {body,plainText}) |
+  /content/ | any | pass content to transclude any custom controls/etc to toolbar |
 
   ~~~
   ${template}
