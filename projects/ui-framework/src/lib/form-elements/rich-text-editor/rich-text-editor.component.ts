@@ -197,7 +197,7 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   private applyValue(val: string): void {
-    if (this.value !== val) {
+    if (this.value !== val || !this.latestOutputValue) {
       this.value = val || '';
       if (this.editor) {
         this.editor.clipboard.dangerouslyPasteHTML(this.value);
