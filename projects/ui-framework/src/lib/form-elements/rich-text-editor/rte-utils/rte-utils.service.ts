@@ -51,7 +51,7 @@ export class RteUtilsService {
       'insertText',
       `${updateConfig.insertText}${charAfterBlot}`
     );
-    editor.focus();
+    // editor.focus();
     editor.deleteText(updateConfig.startIndex, updateConfig.replaceStr.length);
     editor.insertText(updateConfig.startIndex, `${updateConfig.insertText}`);
     editor.removeFormat(

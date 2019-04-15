@@ -2,7 +2,17 @@
   <b-display-1>Hello</b-display-1>
 </div>
 
-<b-multi-select label="test multi select"
-                [value]="null"
-                [options]="multiSelectOptions">
-</b-multi-select>
+
+<form>
+
+  <b-rich-text-editor
+                      [formControl]="rteControl">
+  </b-rich-text-editor>
+
+  <b-checkbox [formControl]="checkControl">
+  </b-checkbox>
+
+  <input type="text"
+         [formControl]="inputControl">
+
+</form>

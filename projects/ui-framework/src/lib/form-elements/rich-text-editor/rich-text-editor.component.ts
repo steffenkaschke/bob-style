@@ -100,9 +100,8 @@ export class RichTextEditorComponent extends BaseFormElement
   @ViewChild('suffix') suffix: ElementRef;
   @ViewChild('linkPanel') linkPanel: PanelComponent;
 
-  @Output() blur: EventEmitter<RteCurrentContent> = new EventEmitter<
-    RteCurrentContent
-  >();
+  @Output() blurred: EventEmitter<any> = new EventEmitter<any>();
+  @Output() focused: EventEmitter<any> = new EventEmitter<any>();
 
   editor: Quill;
   selection: RangeStatic;
@@ -166,17 +165,49 @@ export class RichTextEditorComponent extends BaseFormElement
       this.propagateChange(this.getCurrentText());
     });
 
-    this.editor.on('selection-change', () => {
-      const newSize = !!this.editor.getFormat().size;
-      if (this.hasSizeSet !== newSize) {
-        this.hasSizeSet = newSize;
-        this.changeDetector.detectChanges();
+    this.editor.on('selection-change', range => {
+      if (range) {
+        // if cursor is in editor
+        const newSize = !!this.editor.getFormat().size;
+        if (this.hasSizeSet !== newSize) {
+          this.hasSizeSet = newSize;
+          this.changeDetector.detectChanges();
+        }
       }
     });
 
-    this.editor.root.addEventListener('blur', () => {
-      this.blur.emit(this.getCurrentText());
+    this.editor.root.addEventListener('focus', event => {
+      console.log('focus', event.target);
+      this.focused.emit({
+        stamp: Math.random(),
+        editor: this.editor,
+        value: this.getCurrentText()
+      });
     });
+
+    this.editor.root.addEventListener('blur', event => {
+      console.log('blur', event.target);
+      this.blurred.emit({
+        editor: this.editor,
+        value: this.getCurrentText()
+      });
+    });
+
+    // this.quillEditor.nativeElement.addEventListener(
+    //   'blur',
+    //   event => {
+    //     console.log('quillEditor blur', event.target);
+    //   },
+    //   true
+    // );
+
+    // this.quillEditor.nativeElement.addEventListener(
+    //   'focus',
+    //   event => {
+    //     console.log('quillEditor focus', event.target);
+    //   },
+    //   true
+    // );
   }
 
   private getCurrentText(): RteCurrentContent {
@@ -184,10 +215,11 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   private applyValue(val: string): void {
-    this.value = val || '';
-    if (this.editor) {
-      this.editor.clipboard.dangerouslyPasteHTML(this.value);
-      this.propagateChange(this.getCurrentText());
+    if (this.value !== val) {
+      this.value = val || '';
+      if (this.editor) {
+        this.editor.clipboard.dangerouslyPasteHTML(this.value);
+      }
     }
   }
 
@@ -196,13 +228,13 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   changeFontSize(size: RTEFontSize) {
-    this.editor.focus();
+    // this.editor.focus();
     this.editor.format('size', size === RTEFontSize.normal ? false : size);
     this.hasSizeSet = size === RTEFontSize.normal ? false : true;
   }
 
   private onLinkPanelOpen(): void {
-    this.editor.focus();
+    // this.editor.focus();
     this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
     this.selectedText = this.rteUtilsService.getSelectionText(
       this.editor,
