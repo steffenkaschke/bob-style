@@ -3,6 +3,7 @@ import { SideMenuOption } from './side-menu-option/side-menu-option.interface';
 import head from 'lodash/head';
 import size from 'lodash/size';
 import isNull from 'lodash/isNull';
+import find from 'lodash/find';
 
 @Component({
   selector: 'b-side-menu',
@@ -18,8 +19,10 @@ export class SideMenuComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    if (size(this.options) && isNull(this.selectedId)) {
-      this.onSelectOption(head(this.options).id);
+    if (size(this.options)) {
+      if (isNull(this.selectedId) || !find(this.options, { id: this.selectedId })) {
+        this.onSelectOption(head(this.options).id);
+      }
     }
   }
 
