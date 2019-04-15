@@ -100,8 +100,15 @@ export class RichTextEditorComponent extends BaseFormElement
   @ViewChild('suffix') private suffix: ElementRef;
   @ViewChild('linkPanel') private linkPanel: PanelComponent;
 
-  @Output() blurred: EventEmitter<any> = new EventEmitter<any>();
-  @Output() focused: EventEmitter<any> = new EventEmitter<any>();
+  @Output() blurred: EventEmitter<RteCurrentContent> = new EventEmitter<
+    RteCurrentContent
+  >();
+  @Output() focused: EventEmitter<RteCurrentContent> = new EventEmitter<
+    RteCurrentContent
+  >();
+  @Output() changed: EventEmitter<RteCurrentContent> = new EventEmitter<
+    RteCurrentContent
+  >();
 
   private editor: Quill;
   private selection: RangeStatic;
@@ -170,6 +177,7 @@ export class RichTextEditorComponent extends BaseFormElement
       ) {
         this.latestOutputValue = newOutputValue;
         this.propagateChange(newOutputValue);
+        this.changed.emit(newOutputValue);
       }
     });
 
