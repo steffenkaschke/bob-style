@@ -148,7 +148,9 @@ export class RichTextEditorComponent extends BaseFormElement
   private initEditor(): void {
     const editorOptions: QuillOptionsStatic = {
       theme: 'snow',
-      placeholder: this.label ? this.label + (this.required ? ' *' : '') : '',
+      placeholder: this.label
+        ? this.label + (this.required ? ' *' : '')
+        : '',
       modules: {
         toolbar: {
           container: this.toolbar.nativeElement,
@@ -157,6 +159,9 @@ export class RichTextEditorComponent extends BaseFormElement
               this.onLinkPanelOpen();
             }
           }
+        },
+        clipboard: {
+          matchVisual: false
         }
       }
     };
@@ -211,7 +216,7 @@ export class RichTextEditorComponent extends BaseFormElement
     if (this.value !== val || !this.latestOutputValue) {
       this.value = val || '';
       if (this.editor) {
-        this.editor.clipboard.dangerouslyPasteHTML(this.value);
+        this.editor.setContents(this.editor.clipboard.convert(this.value));
       }
     }
   }
