@@ -50,7 +50,7 @@ describe('CardTableComponent', () => {
       { data: 'text1', class: 'test-class' },
       { data: 'text2' },
       { data: ['text3', 'text4'] },
-      { data: 'text5' },
+      {},
       {
         data: {
           component: ButtonComponent,
@@ -132,6 +132,11 @@ describe('CardTableComponent', () => {
       expect(
         tableBodyElement.children[0].children[2].children[1].innerHTML
       ).toEqual('text4');
+    });
+    it('should put a "-" symbol if cell data is missing', () => {
+      expect(
+        tableBodyElement.children[0].children[3].children[0].innerHTML.trim()
+      ).toEqual('—');
     });
   });
 

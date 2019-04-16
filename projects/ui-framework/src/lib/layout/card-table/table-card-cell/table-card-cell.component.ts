@@ -18,15 +18,15 @@ export class TableCardCellComponent {
   @Input() index: number;
 
   isString(val: CardTableCellDataType): boolean {
-    return typeof val === 'string';
+    return val && typeof val === 'string';
   }
 
   isArray(val: CardTableCellDataType): boolean {
-    return Array.isArray(val);
+    return val && Array.isArray(val);
   }
 
   isComponent(obj: any): boolean {
-    return !!obj.component;
+    return obj && !!obj.component;
   }
 
   onComponentClick($event: any, cell: CardTableCellDataType): void {

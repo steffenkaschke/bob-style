@@ -1,5 +1,5 @@
-<span *ngIf="isString(cell.data)"
-      class="text">{{ cell.data }}</span>
+<span *ngIf="isString(cell.data) || !cell.data"
+      class="text">{{ cell.data || '\u2014' }}</span>
 
 <ng-container *ngIf="isArray(cell.data)">
   <span *ngFor="let line of cell.data"
