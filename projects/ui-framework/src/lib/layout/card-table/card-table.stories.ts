@@ -49,7 +49,7 @@ const storyTemplate = `
       color: var(--primary-500);
     }
   </style>
-  <div style="margin: 50px auto;" [ngStyle]="{maxWidth: !res ? '95%' : res}">
+  <div style="margin: 50px auto;" [ngStyle]="{maxWidth: !res ? '840px' : res}">
 
     <b-card-table
       [meta]="CardTableMetaData"
@@ -66,7 +66,7 @@ const storyTemplate = `
           {id: '840px', label: '840px'},
           {id: '630px', label: '630px'}
         ]"
-        [value]="'95%'"
+        [value]="'840px'"
         (radioChange)="res = $event">
       </b-radio-button>
     </p>
