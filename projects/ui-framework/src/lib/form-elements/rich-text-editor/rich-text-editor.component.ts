@@ -116,6 +116,7 @@ export class RichTextEditorComponent extends BaseFormElement
   hasSuffix = true;
   hasSizeSet = false;
   private latestOutputValue: RteCurrentContent;
+  private writingValue = false;
 
   buttonType = ButtonType;
   icons = Icons;
@@ -171,8 +172,11 @@ export class RichTextEditorComponent extends BaseFormElement
         this.latestOutputValue.body !== newOutputValue.body
       ) {
         this.latestOutputValue = newOutputValue;
-        this.propagateChange(newOutputValue);
         this.changed.emit(newOutputValue);
+        if (!this.writingValue) {
+          this.propagateChange(newOutputValue);
+        }
+        this.writingValue = false;
       }
     });
 
@@ -213,6 +217,7 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   writeValue(val: string): void {
+    this.writingValue = true;
     this.applyValue(val);
   }
 

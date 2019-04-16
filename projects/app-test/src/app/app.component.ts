@@ -20,10 +20,16 @@ export class AppComponent implements OnInit {
 
     this.inputControl.valueChanges.subscribe(value => {
       console.log('INP valueChanges', value);
-      this.rteControl.setValue(value, { emitEvent: false });
+      this.rteControl.setValue(value, {
+        // emitEvent: false
+      });
     });
 
-    this.inputControl.setValue('why not?', { emitEvent: false });
-    this.rteControl.setValue('why not?', { emitEvent: false });
+    this.inputControl.setValue('i am input', {
+      emitEvent: false
+    });
+    this.rteControl.setValue('i am rte', {
+      emitEvent: false
+    });
   }
 }
