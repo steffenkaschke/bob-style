@@ -149,7 +149,8 @@ export const CardTableMockData: CardTableData = [
       data: {
         component: ChipComponent,
         attributes: {
-          type: 'attention'
+          type: 'attention',
+          color: 'red'
         },
         content: 'Pending'
       }

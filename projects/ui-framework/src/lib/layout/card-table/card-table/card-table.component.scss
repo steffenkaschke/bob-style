@@ -66,4 +66,9 @@
   justify-content: center;
   align-items: center;
   user-select: none;
+  color: $grey-500;
+
+  b-display-3 {
+    text-transform: none;
+  }
 }

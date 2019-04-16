@@ -12,15 +12,9 @@ import { ColorService } from '../../../services/color-service/color.service';
 @Component({
   selector: 'b-chip, [b-chip]',
   template: `
-    <mat-basic-chip
-      #chip
-      [ngClass]="class"
-      [ngStyle]="style"
-      [selectable]="false"
-      disableRipple="true"
-    >
+    <span #chip [ngClass]="class ? class : 'chip-' + type" [ngStyle]="style">
       <ng-content></ng-content>
-    </mat-basic-chip>
+    </span>
   `,
   styleUrls: ['./chip.component.scss']
 })
@@ -44,7 +38,7 @@ export class ChipComponent implements OnChanges {
         ? 'chip-disabled'
         : !this.color
         ? 'chip-' + this.type
-        : null;
+        : 'chip-custom';
 
     this.style = {
       backgroundColor:

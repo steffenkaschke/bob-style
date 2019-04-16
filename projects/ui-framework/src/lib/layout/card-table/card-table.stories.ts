@@ -42,8 +42,6 @@ const template = `
 </b-card-table>
 `;
 
-const test = 'fuck';
-
 const storyTemplate = `
 <b-story-book-layout title="Card Table">
   <style>
@@ -103,6 +101,7 @@ const note = `
   meta | CardTableMetaData | array of objects, describing table meta-data per column | none
   table | CardTableData | 2-dimentional array (array of arrays) of objects, providing table cell data per row | none
   minCellWidth | number | number representing minimal cell width in percents | 5
+  default | string | text to display if table is empty | 'No data to display'
   rowClicked | Function | row click handler (event transmits: {row: CardTableRowData, rowIndex: number}) | none
   cellClicked | Function | cell click handler (event transmits: {cell: CardTableCellData, cellIndex: number, rowIndex: number}) | none
 
