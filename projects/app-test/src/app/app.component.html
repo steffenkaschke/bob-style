@@ -3,16 +3,12 @@
   <b-display-1>Hello</b-display-1>
 
 
-<form>
+  <form>
 
-  <b-rich-text-editor
-                      [formControl]="rteControl">
-  </b-rich-text-editor>
+    <b-rich-text-editor [formControl]="rteControl">
+    </b-rich-text-editor>
+    <br>
+    <input type="text"
+           [formControl]="inputControl">
 
-  <b-checkbox [formControl]="checkControl">
-  </b-checkbox>
-
-  <input type="text"
-         [formControl]="inputControl">
-
-</form>
+  </form>
