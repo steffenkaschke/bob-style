@@ -134,9 +134,8 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   ngAfterViewInit(): void {
-    this.initEditor();
-
     setTimeout(() => {
+      this.initEditor();
       this.hasSuffix =
         this.suffix.nativeElement.children.length !== 0 ||
         this.suffix.nativeElement.childNodes.length !== 0
@@ -163,10 +162,6 @@ export class RichTextEditorComponent extends BaseFormElement
 
     this.editor = new quillLib(this.quillEditor.nativeElement, editorOptions);
 
-    if (!!this.value) {
-      this.applyValue(this.value);
-    }
-
     this.editor.enable(!this.disabled);
 
     this.editor.on('text-change', () => {
@@ -180,6 +175,10 @@ export class RichTextEditorComponent extends BaseFormElement
         this.changed.emit(newOutputValue);
       }
     });
+
+    if (!!this.value) {
+      this.applyValue(this.value);
+    }
 
     this.editor.on('selection-change', range => {
       if (range) {
