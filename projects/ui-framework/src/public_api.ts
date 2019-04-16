@@ -63,7 +63,10 @@ export {
   ChipComponent
 } from './lib/buttons-indicators/chips/chip/chip.component';
 export { ChipType } from './lib/buttons-indicators/chips/chips.enum';
-
+// InfoStrip Module
+export { InfoStripModule } from './lib/buttons-indicators/info-strip/info-strip.module';
+export { InfoStripComponent } from './lib/buttons-indicators/info-strip/info-strip.component';
+export { Link } from './lib/buttons-indicators/info-strip/info-strip.types';
 /*
  * Form Elements
  */
