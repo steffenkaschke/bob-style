@@ -35,11 +35,35 @@
   flex-direction: column;
 }
 
+[b-table-card],
+.table-card-empty {
+  box-sizing: border-box;
+  text-align: left;
+  display: flex;
+
+  background-color: white;
+  border: 1px solid $grey-300;
+  border-radius: 3px;
+
+  min-height: 90px;
+  padding: 7.5px;
+}
+
 [b-table-card] {
+  &:hover {
+    box-shadow: 0 3px 7px 1px $boxShadowColor;
+  }
   & + & {
     margin-top: 10px;
   }
   &.clickable {
     cursor: pointer;
   }
+}
+
+.table-card-empty {
+  margin: 0;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
 }

@@ -36,6 +36,7 @@ const template = `
 <b-card-table
   [meta]="CardTableMetaData"
   [table]="CardTableData"
+  default="There are no pending requests for your approval"
   (rowClicked)="rowClickHandler($event)"
   (cellClicked)="cellClickHandler($event)">
 </b-card-table>
@@ -55,6 +56,7 @@ const storyTemplate = `
     <b-card-table
       [meta]="CardTableMetaData"
       [table]="tableData ? tableData : CardTableData"
+      default="There are no pending requests for your approval"
       (rowClicked)="rowClickHandler($event)"
       (cellClicked)="cellClickHandler($event)">
     </b-card-table>
@@ -75,9 +77,8 @@ const storyTemplate = `
       <span>Data: </span>
       <b-radio-button [radioConfig]="[
           {id: {id: 1, data: CardTableData}, label: 'original'},
-          {id: {id: 2, data: [], dataEmpty: []}, label: 'empty'}
+          {id: {id: 2, data: []}, label: 'empty'}
         ]"
-        [value]="0"
         (radioChange)="tableData = $event.data">
       </b-radio-button>
     </p>

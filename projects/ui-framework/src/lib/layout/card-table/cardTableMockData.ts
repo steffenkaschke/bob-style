@@ -48,6 +48,7 @@ export const CardTableMockMetaData: CardTableMetaData = [
     textStyle: {
       fontWeight: '500'
     },
+    width: 18,
     sortable: false
   },
   {

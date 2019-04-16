@@ -28,3 +28,10 @@
       role="row">
   </li>
 </ul>
+
+<div class="card-table-body"
+     *ngIf="default && !(table && table.length > 0)">
+  <p class="table-card-empty">
+    {{ default }}
+  </p>
+</div>
