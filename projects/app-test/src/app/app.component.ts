@@ -10,19 +10,26 @@ import { FormControl } from '@angular/forms';
 export class AppComponent implements OnInit {
   title = 'app-test';
 
-  rteControl = new FormControl('Test');
-  checkControl = new FormControl(true);
-  inputControl = new FormControl('blah');
+  rteControl = new FormControl();
+  inputControl = new FormControl();
 
   ngOnInit() {
-    this.rteControl.setValue('why not?');
-
     this.rteControl.valueChanges.subscribe(value => {
-      console.log('valueChanges', value);
+      console.log('RTE valueChanges', value);
     });
 
     this.inputControl.valueChanges.subscribe(value => {
-      this.rteControl.setValue(value);
+      console.log('INP valueChanges', value);
+      this.rteControl.setValue(value, {
+        // emitEvent: false
+      });
+    });
+
+    this.inputControl.setValue('i am input', {
+      emitEvent: false
+    });
+    this.rteControl.setValue('i am rte', {
+      emitEvent: false
     });
   }
 }
