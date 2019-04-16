@@ -14,6 +14,7 @@
 </header>
 
 <ul class="card-table-body"
+    *ngIf="table && table.length > 0"
     role="rowgroup">
   <li *ngFor="let row of table; index as index;"
       b-table-card

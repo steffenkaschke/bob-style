@@ -26,6 +26,7 @@ import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 
 import { MockComponent } from '../../services/mock-component/mock.component';
+import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
@@ -40,6 +41,8 @@ const template = `
 </b-card-table>
 `;
 
+const test = 'fuck';
+
 const storyTemplate = `
 <b-story-book-layout title="Card Table">
   <style>
@@ -47,8 +50,38 @@ const storyTemplate = `
       color: var(--primary-500);
     }
   </style>
-  <div style="padding: 50px;">
-    ${template}
+  <div style="margin: 50px auto;" [ngStyle]="{maxWidth: !res ? '95%' : res}">
+
+    <b-card-table
+      [meta]="CardTableMetaData"
+      [table]="tableData ? tableData : CardTableData"
+      (rowClicked)="rowClickHandler($event)"
+      (cellClicked)="cellClickHandler($event)">
+    </b-card-table>
+
+    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: 30px auto;">
+      <span>Width: </span>
+      <b-radio-button [radioConfig]="[
+          {id: '95%', label: 'auto'},
+          {id: '840px', label: '840px'},
+          {id: '630px', label: '630px'}
+        ]"
+        [value]="'95%'"
+        (radioChange)="res = $event">
+      </b-radio-button>
+    </p>
+
+    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: 30px auto;">
+      <span>Data: </span>
+      <b-radio-button [radioConfig]="[
+          {id: {id: 1, data: CardTableData}, label: 'original'},
+          {id: {id: 2, data: [], dataEmpty: []}, label: 'empty'}
+        ]"
+        [value]="0"
+        (radioChange)="tableData = $event.data">
+      </b-radio-button>
+    </p>
+
   </div>
 </b-story-book-layout>
 `;
@@ -188,12 +221,14 @@ story.add(
       props: {
         CardTableMetaData: object('meta', CardTableMockMetaData),
         CardTableData: object('table', CardTableMockData),
+
         rowClickHandler: action('Row Clicked'),
         cellClickHandler: action('Cell Clicked')
       },
       moduleMetadata: {
         declarations: [MockComponent],
         imports: [
+          RadioButtonModule,
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           CardTableModule,
