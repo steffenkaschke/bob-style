@@ -4,7 +4,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChipComponent } from './chip.component';
 import { ChipType } from '../chips.enum';
 import { By } from '@angular/platform-browser';
-import { MatChipsModule } from '@angular/material';
 import { ColorService } from '../../../services/color-service/color.service';
 
 describe('ChipComponent', () => {
@@ -15,15 +14,14 @@ describe('ChipComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ChipComponent],
-      imports: [MatChipsModule],
+      imports: [],
       providers: [ColorService]
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(ChipComponent);
         component = fixture.componentInstance;
-        chipElement = fixture.debugElement.query(By.css('.mat-chip'))
-          .nativeElement;
+        chipElement = fixture.debugElement.query(By.css('span')).nativeElement;
       });
   }));
 
@@ -51,11 +49,16 @@ describe('ChipComponent', () => {
 
   describe('class', () => {
     it('should have type class', () => {
-      component.ngOnChanges({
-        type: new SimpleChange(null, ChipType.info, false)
-      });
+      component.type = ChipType.info;
       fixture.detectChanges();
       expect(chipElement.classList).toContain('chip-info');
+
+      component.ngOnChanges({
+        type: new SimpleChange(null, ChipType.success, false)
+      });
+      fixture.detectChanges();
+      expect(chipElement.classList).not.toContain('chip-info');
+      expect(chipElement.classList).toContain('chip-success');
     });
   });
 

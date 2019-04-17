@@ -31,6 +31,11 @@ $chipsMap: (
     bgColor: var(--negative-500),
     color: white,
     brdrColor: var(--negative-500)
+  ),
+  disabled: (
+    bgColor: $grey-200,
+    color: $grey-500,
+    brdrColor: $grey-200
   )
 );
 
@@ -39,7 +44,7 @@ $chipsMap: (
   pointer-events: all;
 }
 
-.mat-chip {
+span {
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -59,18 +64,12 @@ $chipsMap: (
   cursor: default;
   outline: 0;
   pointer-events: none;
+}
 
-  @each $type, $typeProps in $chipsMap {
-    &.chip-#{$type} {
-      background-color: map-get($typeProps, bgColor);
-      color: map-get($typeProps, color);
-      border-color: map-get($typeProps, brdrColor);
-    }
-  }
-
-  &.chip-disabled {
-    background-color: $grey-200;
-    color: $grey-500;
-    border-color: $grey-200;
+@each $type, $typeProps in $chipsMap {
+  .chip-#{$type} {
+    background-color: map-get($typeProps, bgColor);
+    color: map-get($typeProps, color);
+    border-color: map-get($typeProps, brdrColor);
   }
 }
