@@ -5,10 +5,12 @@
 
   <form>
 
-    <b-rich-text-editor [formControl]="rteControl">
+    <b-rich-text-editor [formControl]="rteControl"
+                        [controls]="controls">
     </b-rich-text-editor>
     <br>
     <input type="text"
            [formControl]="inputControl">
+
 
   </form>
