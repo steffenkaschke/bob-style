@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SelectGroupOption } from '../../../ui-framework/src/lib/form-elements/lists/list.interface';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -12,6 +11,8 @@ export class AppComponent implements OnInit {
 
   rteControl = new FormControl();
   inputControl = new FormControl();
+  disabled = false;
+  error = false;
 
   ngOnInit() {
     this.rteControl.valueChanges.subscribe(value => {

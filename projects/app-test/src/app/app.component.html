@@ -1,14 +1,30 @@
-<div style="padding: 100px;">
-
-  <b-display-1>Hello</b-display-1>
+<div style="padding: 100px; height: 100%; display: flex;">
 
 
-  <form>
+  <form style="max-width: 700px; margin: auto; display: flex; justify-content: space-between; align-self: flex-start;">
 
-    <b-rich-text-editor [formControl]="rteControl">
+    <b-rich-text-editor [formControl]="rteControl"
+                        [controls]="['bold','size','link']"
+                        [minHeight]="null"
+                        [disabled]="disabled"
+                        [errorMessage]="error ? 'Error' : undefined"
+                        style="margin-right: 40px;">
     </b-rich-text-editor>
-    <br>
-    <input type="text"
-           [formControl]="inputControl">
+
+    <div>
+      <p>
+        <input type="text"
+               style="width: 300px; height: 40px; padding: 0 10px; line-height: 38px;outline:0;"
+               [formControl]="inputControl">
+      </p>
+      <p>
+        <button (click)="disabled = !disabled">tgl dsbld</button>
+        &nbsp;
+        <button (click)="error = !error">tgl err</button>
+      </p>
+    </div>
 
   </form>
+
+
+</div>

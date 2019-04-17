@@ -28,6 +28,14 @@ $border-color-error: $color-error;
   flex-direction: column;
 }
 
+.quill-toolbar {
+  height: 41px;
+
+  &:not(.ql-toolbar) {
+    opacity: 0;
+  }
+}
+
 :host ::ng-deep {
   .ql-snow {
     &.ql-container,
@@ -43,11 +51,15 @@ $border-color-error: $color-error;
 
     &.ql-container {
       order: 1;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
     }
 
     .ql-editor {
-      min-height: 140px;
-      max-height: 250px;
+      flex-grow: 1;
+      min-height: inherit;
+      max-height: inherit;
       overflow: auto;
       border-bottom: none;
     }
@@ -316,6 +328,10 @@ $border-color-error: $color-error;
       padding-left: 0;
       padding-right: 0;
       padding-top: 0;
+    }
+    .ql-editor.ql-blank:before {
+      left: 0;
+      right: 0;
     }
     .ql-snow {
       &.ql-toolbar {
