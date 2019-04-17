@@ -4,6 +4,7 @@ import { IconColor, Icons } from '../../icons/icons.enum';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { IconComponent } from '../../icons/icon.component';
+import { LinkModule } from '../link/link.module';
 
 describe('InfoStripComponent', () => {
   let component: InfoStripComponent;
@@ -15,6 +16,9 @@ describe('InfoStripComponent', () => {
         MockComponent(IconComponent),
         InfoStripComponent,
       ],
+      imports: [
+        LinkModule
+      ]
     })
     .compileComponents();
   }));
@@ -53,9 +57,9 @@ describe('InfoStripComponent', () => {
     component.text = 'info strip text';
     fixture.detectChanges();
     const text = fixture.debugElement.query(By.css('.content .text')).nativeElement;
-    const link = fixture.debugElement.query(By.css('a')).nativeElement;
+    const link = fixture.debugElement.query(By.css('b-link'));
     expect(text.innerText).toBe('info strip text');
-    expect(link.innerText).toBe('Click here');
-    expect(link.href).toBe('https://app.hibob.com/');
+    expect(link.componentInstance.config.text).toBe('Click here');
+    expect(link.componentInstance.config.url).toBe('https://app.hibob.com');
   });
 });
