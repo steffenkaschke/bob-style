@@ -48,6 +48,7 @@ export const CardTableMockMetaData: CardTableMetaData = [
     textStyle: {
       fontWeight: '500'
     },
+    width: 18,
     sortable: false
   },
   {
@@ -148,7 +149,8 @@ export const CardTableMockData: CardTableData = [
       data: {
         component: ChipComponent,
         attributes: {
-          type: 'attention'
+          type: 'attention',
+          color: 'red'
         },
         content: 'Pending'
       }
@@ -263,7 +265,7 @@ export const CardTableMockData: CardTableData = [
       data: ['Elsie Hunter', '11/03/2019']
     },
     {
-      data: '\u2014'
+      data: ''
     },
     {
       data: {

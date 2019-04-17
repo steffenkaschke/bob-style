@@ -47,10 +47,10 @@ describe('CardTableComponent', () => {
 
   const CardTableMockData = [
     [
-      { data: 'text1' },
+      { data: 'text1', class: 'test-class' },
       { data: 'text2' },
       { data: ['text3', 'text4'] },
-      { data: 'text5' },
+      {},
       {
         data: {
           component: ButtonComponent,
@@ -103,6 +103,9 @@ describe('CardTableComponent', () => {
         buttonElement = fixture.debugElement.query(
           By.css('b-button .mat-button')
         ).nativeElement;
+
+        spyOn(component.rowClicked, 'emit');
+        spyOn(component.cellClicked, 'emit');
       });
   }));
 
@@ -130,6 +133,11 @@ describe('CardTableComponent', () => {
         tableBodyElement.children[0].children[2].children[1].innerHTML
       ).toEqual('text4');
     });
+    it('should put a "-" symbol if cell data is missing', () => {
+      expect(
+        tableBodyElement.children[0].children[3].children[0].innerHTML.trim()
+      ).toEqual('—');
+    });
   });
 
   describe('Table Cell styles', () => {
@@ -145,6 +153,20 @@ describe('CardTableComponent', () => {
         .replace(/\s/g, '');
       expect(cellStyleAttributeValue).toEqual('max-width:20%;');
     });
+    it('should attach proper align style', () => {
+      const cellStyleAttributeValue = tableBodyElement.children[0].children[4]
+        .getAttribute('style')
+      expect(cellStyleAttributeValue).toContain('flex-end');
+    });
+  });
+
+  describe('Custom cell class', () => {
+    it('should attach a custom class passed with table data', () => {
+      const cellElement = fixture.debugElement.query(
+        By.css('[b-table-card-cell]:nth-child(1)')
+      ).nativeElement;
+      expect(cellElement.classList).toContain('test-class');
+    });
   });
 
   describe('Component injection', () => {
@@ -155,6 +177,45 @@ describe('CardTableComponent', () => {
     it('should attach handler to Button click', () => {
       buttonElement.click();
       expect(testVar).toEqual('bye');
+    });
+  });
+
+  describe('Default text when no table data', () => {
+    it('should display default text if table is empty', () => {
+      component.table = [];
+      fixture.detectChanges();
+      const emptyTableElement = fixture.debugElement.query(
+        By.css('.table-card-empty')
+      ).nativeElement;
+      expect(emptyTableElement).toBeTruthy();
+      expect(emptyTableElement.textContent.trim()).toEqual(
+        'No data to display'
+      );
+    });
+    it('should display text passed via [default] input if table is empty', () => {
+      component.table = undefined;
+      component.default = 'Boom';
+      fixture.detectChanges();
+      const emptyTableElement = fixture.debugElement.query(
+        By.css('.table-card-empty')
+      ).nativeElement;
+      expect(emptyTableElement.textContent.trim()).toEqual('Boom');
+    });
+  });
+
+  describe('Output events', () => {
+    it('clicking on a row should output both cellClicked and rowClicked event', () => {
+      const cellElement = fixture.debugElement.query(
+        By.css('[b-table-card-cell]:nth-child(2)')
+      ).nativeElement;
+      cellElement.click();
+      expect(component.rowClicked.emit).toHaveBeenCalled();
+      expect(component.cellClicked.emit).toHaveBeenCalled();
+    });
+    it('clicking on a button should not output cellClicked and rowClicked events', () => {
+      buttonElement.click();
+      expect(component.rowClicked.emit).not.toHaveBeenCalled();
+      expect(component.cellClicked.emit).not.toHaveBeenCalled();
     });
   });
 });

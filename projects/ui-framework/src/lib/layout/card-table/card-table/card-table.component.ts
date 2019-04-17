@@ -27,6 +27,7 @@ export class CardTableComponent implements OnInit {
 
   @Input() meta: CardTableMetaData;
   @Input() table: CardTableData;
+  @Input() default = 'No data to display';
   @Input() minCellWidth = 5;
 
   @HostBinding('attr.role') string = 'table';

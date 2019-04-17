@@ -26,6 +26,7 @@ import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 
 import { MockComponent } from '../../services/mock-component/mock.component';
+import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
@@ -35,6 +36,7 @@ const template = `
 <b-card-table
   [meta]="CardTableMetaData"
   [table]="CardTableData"
+  default="There are no pending requests for your approval"
   (rowClicked)="rowClickHandler($event)"
   (cellClicked)="cellClickHandler($event)">
 </b-card-table>
@@ -47,8 +49,38 @@ const storyTemplate = `
       color: var(--primary-500);
     }
   </style>
-  <div style="padding: 50px;">
-    ${template}
+  <div style="margin: 50px auto;" [ngStyle]="{maxWidth: !res ? '840px' : res}">
+
+    <b-card-table
+      [meta]="CardTableMetaData"
+      [table]="tableData ? tableData : CardTableData"
+      default="There are no pending requests for your approval"
+      (rowClicked)="rowClickHandler($event)"
+      (cellClicked)="cellClickHandler($event)">
+    </b-card-table>
+
+    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: 30px auto;">
+      <span>Width: </span>
+      <b-radio-button [radioConfig]="[
+          {id: '95%', label: 'auto'},
+          {id: '840px', label: '840px'},
+          {id: '630px', label: '630px'}
+        ]"
+        [value]="'840px'"
+        (radioChange)="res = $event">
+      </b-radio-button>
+    </p>
+
+    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: 30px auto;">
+      <span>Data: </span>
+      <b-radio-button [radioConfig]="[
+          {id: {id: 1, data: CardTableData}, label: 'original'},
+          {id: {id: 2, data: []}, label: 'empty'}
+        ]"
+        (radioChange)="tableData = $event.data">
+      </b-radio-button>
+    </p>
+
   </div>
 </b-story-book-layout>
 `;
@@ -69,6 +101,7 @@ const note = `
   meta | CardTableMetaData | array of objects, describing table meta-data per column | none
   table | CardTableData | 2-dimentional array (array of arrays) of objects, providing table cell data per row | none
   minCellWidth | number | number representing minimal cell width in percents | 5
+  default | string | text to display if table is empty | 'No data to display'
   rowClicked | Function | row click handler (event transmits: {row: CardTableRowData, rowIndex: number}) | none
   cellClicked | Function | cell click handler (event transmits: {cell: CardTableCellData, cellIndex: number, rowIndex: number}) | none
 
@@ -113,6 +146,7 @@ const note = `
   data | string | if string is provided, it is treated as text with automatic truncating after 2 lines
    - | string[] | if an array of strings is provided - each string is displayed as separate line, truncated if it doesnt fit the width
    - | RenderedComponent | object describing a Component to be displayed in the cell
+    - | empty or absent | if the cell object doesnt have a data property or its value is an empty string, then a '-' will be displayed
   class | string / string[] | class name(s) to be added to the cell (optional)
 
   *Note:* If using RenderedComponent as cell data, consumer must
@@ -188,12 +222,14 @@ story.add(
       props: {
         CardTableMetaData: object('meta', CardTableMockMetaData),
         CardTableData: object('table', CardTableMockData),
+
         rowClickHandler: action('Row Clicked'),
         cellClickHandler: action('Cell Clicked')
       },
       moduleMetadata: {
         declarations: [MockComponent],
         imports: [
+          RadioButtonModule,
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           CardTableModule,
