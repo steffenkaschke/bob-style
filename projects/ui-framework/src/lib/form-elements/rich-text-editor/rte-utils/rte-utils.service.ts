@@ -14,10 +14,18 @@ export class RteUtilsService {
     const editorHtml = isEmpty(trim(editor.getText()))
       ? ''
       : chain(editor.root.innerHTML)
+          // .replace(
+          //   /(<p><br><\/p>|<p class="ql-direction-rtl"><br><\/p>)*$/gi,
+          //   ''
+          // )
+
+          // empty lines
           .replace(
-            /(<p><br><\/p>|<p class="ql-direction-rtl"><br><\/p>)*$/gi,
-            ''
+            /<p([^\n\r\/<>]+)?><br><\/p>|<div([^\n\r\/<>]+)?><br><\/div>/gi,
+            '\n'
           )
+          // empty tags
+          .replace(/<([^>/][^>]*)([^\n\r\/<>]+)?>(\s+)?<\/\1>/gi, '')
           .replace(/(<em)/gi, '<i')
           .replace(/(<\/em>)/gi, '</i>')
           .value();
