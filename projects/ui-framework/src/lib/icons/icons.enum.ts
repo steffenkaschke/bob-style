@@ -53,5 +53,6 @@ export enum Icons {
   timeline = 'Icon_timeline',
   employee_ref = 'employee_ref',
   docs_empty = 'docs_empty',
-  baseline_info_icon = 'baseline_info_icon'
+  baseline_info_icon = 'baseline_info_icon',
+  doc_icon = 'doc_icon',
 }
