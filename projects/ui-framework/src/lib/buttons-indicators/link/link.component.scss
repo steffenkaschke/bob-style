@@ -1,0 +1,16 @@
+@import '../../style/colors';
+@import '../../style/typography';
+
+:host {
+  a {
+    text-decoration-line: none;
+    line-height: 14px;
+    color: $grey-700;
+    &.primary {
+      color: var(--primary-700);
+    }
+    &:hover {
+      text-decoration-line: underline;
+    }
+  }
+}
