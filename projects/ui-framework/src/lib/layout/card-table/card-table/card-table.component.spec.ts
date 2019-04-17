@@ -156,8 +156,7 @@ describe('CardTableComponent', () => {
     it('should attach proper align style', () => {
       const cellStyleAttributeValue = tableBodyElement.children[0].children[4]
         .getAttribute('style')
-        .replace(/\s/g, '');
-      expect(cellStyleAttributeValue).toContain('align-items:flex-end;');
+      expect(cellStyleAttributeValue).toContain('flex-end');
     });
   });
 

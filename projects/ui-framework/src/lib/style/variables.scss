@@ -1,28 +1,29 @@
 @import './colors.scss';
 
 :root {
-  --primary-500: #FEA54A;
-  --primary-600: #FF962B;
-  --primary-700: #FF8100;
+  --primary-500: #fea54a;
+  --primary-600: #ff962b;
+  --primary-700: #ff8100;
 
-  --secondary-500: #FECC4A;
-  --secondary-600: #F8BC20;
-  --secondary-700: #F0AD00;
+  --secondary-500: #fecc4a;
+  --secondary-600: #f8bc20;
+  --secondary-700: #f0ad00;
 
-  --positive-500: #1BD164;
-  --positive-600: #17B456;
-  --positive-700: #0D853D;
+  --positive-500: #1bd164;
+  --positive-600: #17b456;
+  --positive-700: #0d853d;
 
-  --negative-500: #FF476D;
-  --negative-600: #E52C51;
-  --negative-700: #CC2748;
+  --negative-500: #ff476d;
+  --negative-600: #e52c51;
+  --negative-700: #cc2748;
 
-  --inform-500: #9BC3F2;
-  --inform-600: #70ABF0;
-  --inform-700: #4B95EC;
+  --inform-500: #9bc3f2;
+  --inform-600: #70abf0;
+  --inform-700: #4b95ec;
 
   --display-font-family: 'Sentinel SSm A', 'Sentinel SSm B', 'Helvetica';
   --heading-font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica';
   --body-font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica';
 }
 
+$border-radius: 4px;

@@ -1,4 +1,4 @@
-@import '../../../style/colors';
+@import '../../../style/variables';
 @import '../../../style/typography';
 @import '../../../style/mixins';
 @import '../table-card-cell/table-card-cell-mixin';
@@ -43,7 +43,7 @@
 
   background-color: white;
   border: 1px solid $grey-300;
-  border-radius: 3px;
+  border-radius: $border-radius;
 
   min-height: 90px;
   padding: 7.5px;
