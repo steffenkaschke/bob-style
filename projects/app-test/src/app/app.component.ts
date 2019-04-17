@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SelectGroupOption } from '../../../ui-framework/src/lib/form-elements/lists/list.interface';
 import { FormControl } from '@angular/forms';
-import { RTEControls } from '../../../ui-framework/src/lib/form-elements/rich-text-editor/rich-text-editor.enum';
 
 @Component({
   selector: 'app-root',
@@ -13,18 +11,10 @@ export class AppComponent implements OnInit {
 
   rteControl = new FormControl();
   inputControl = new FormControl();
-  private allControls = Object.values(RTEControls);
-  controls = this.allControls;
-
-  randomizeRTEcontrols() {
-    this.controls = this.allControls
-      .sort(() => Math.random() - 0.5)
-      .slice(0, Math.floor(Math.random() * this.allControls.length) + 1);
-  }
+  disabled = false;
+  error = false;
 
   ngOnInit() {
-    this.randomizeRTEcontrols();
-
     this.rteControl.valueChanges.subscribe(value => {
       console.log('RTE valueChanges', value);
     });
