@@ -1,7 +1,14 @@
 <div class="quill-editor">
-  <div #quillEditor></div>
+
+  <div #quillEditor
+       [ngStyle]="{
+         minHeight: minHeight ? (minHeight - 43) + 'px' : null,
+         maxHeight: maxHeight ? (maxHeight - 43) + 'px' : null
+        }">
+  </div>
 
   <div #toolbar
+       class="quill-toolbar"
        *ngIf="controls.length > 0 || hasSuffix">
 
     <b-panel panelClass="rte-size-controls"
@@ -86,6 +93,7 @@
     </div>
 
   </div>
+
 </div>
 
 <mat-hint *ngIf="errorMessage"

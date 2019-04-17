@@ -21,18 +21,22 @@ export class RteUtilsService {
 
           // empty lines
           .replace(
-            /<p([^\n\r\/<>]+)?><br><\/p>|<div([^\n\r\/<>]+)?><br><\/div>/gi,
-            '\n'
+            /(<p([^\n\r\/<>]+)?><br><\/p>|<div([^\n\r\/<>]+)?><br><\/div>)+$/gi,
+            ''
           )
-          // empty tags
-          .replace(/<([^>/][^>]*)([^\n\r\/<>]+)?>(\s+)?<\/\1>/gi, '')
+          // empty tags in the end
+          // .replace(/<([^>/][^>]*)([^\n\r\/<>]+)?>(\s+)?<\/\1>/gi, '')
+          .replace(
+            /<([^>/][^>]+)([^\n\r\/<>]+)?>((\s+)?<\/\1>|<([^>/][^>]+)([^\n\r\/<>]+)?>(\s+)|(<([^>/][^>]+)([^\n\r\/<>]+)?>(\s+)?<\/\1>))?<\/\1>/gi,
+            ''
+          )
           .replace(/(<em)/gi, '<i')
           .replace(/(<\/em>)/gi, '</i>')
           .value();
 
     return {
       body: editorHtml,
-      plainText: editor.getText()
+      plainText: trim(editor.getText())
     };
   }
 

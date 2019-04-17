@@ -29,6 +29,8 @@ const value = `
 const template = `
   <b-rich-text-editor
       [type]="type"
+      [minHeight]="200"
+      [maxHeight]="400"
       [controls]="controls"
       [value]="value"
       [label]="label"

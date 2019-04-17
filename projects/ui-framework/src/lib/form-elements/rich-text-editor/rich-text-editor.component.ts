@@ -89,6 +89,8 @@ export class RichTextEditorComponent extends BaseFormElement
   ];
 
   @Input() type?: RTEType = RTEType.primary;
+  @Input() minHeight = 185;
+  @Input() maxHeight = 295;
   @Input() required = false;
   @Input() disabled = false;
   @Input() errorMessage = undefined;
