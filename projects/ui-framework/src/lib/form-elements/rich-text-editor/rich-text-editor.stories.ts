@@ -29,19 +29,18 @@ const value = `
 const template = `
   <b-rich-text-editor
       [type]="type"
+      [label]="label"
+      [value]="value"
+      [controls]="controls"
       [minHeight]="200"
       [maxHeight]="400"
-      [controls]="controls"
-      [value]="value"
-      [label]="label"
       [disabled]="disabled"
       [required]="required"
-      [errorMessage]="errorMessage"
       [hintMessage]="hintMessage"
+      [errorMessage]="errorMessage"
       (changed)="change($event)"
       (focused)="focus($event)"
-      (blurred)="blur($event)"
-      >
+      (blurred)="blur($event)">
     Some custom toolbar thing
   </b-rich-text-editor>
 `;
@@ -60,13 +59,19 @@ const note = `
   #### Module
   *RichTextEditorModule*
 
+  ~~~
+  ${template}
+  ~~~
+
   #### Properties
   Name | Type | Description | default
   --- | --- | --- | ---
   type | RTEType | primary (white bg, border) or secondary (transparent bg, no borders) | primary
-  controls | RTEControls[] | array of toolbar controls. Possible controls: size, bold, italic, underline, link, list, align, dir. Defaults to all controls. Pass empty array to disable all controls. | all
-  value | string | html content to be placed inside editor | none (optional)
   label | string | placeholder text | none (optional)
+  value | string | html content to be placed inside editor | none (optional)
+  controls | RTEControls[] | array of toolbar controls. Possible controls: size, bold, italic, underline, link, list, align, dir. Defaults to all controls. Pass empty array to disable all controls. | all
+  minHeight | number | minimum height of editor (including toolbar). Set to null or 0 to disable min-height | 185 (optional)
+  maxHeight | number | maximum height of editor (including toolbar). Set to null to disable max-height | 295 (optional)
   disabled | boolean | disables editor | false (optional)
   required | boolean | adds * to placeholder | false (optional)
   hintMessage | string | adds a hint message below editor | none (optional)
@@ -76,9 +81,7 @@ const note = `
   blurred | function | blur event handler (event transmits latest change: {body,plainText}) |
   /content/ | any | pass content to transclude any custom controls/etc to toolbar |
 
-  ~~~
-  ${template}
-  ~~~
+
 `;
 
 inputStories.add(
