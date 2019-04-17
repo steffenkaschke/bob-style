@@ -28,9 +28,9 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  config | object | link configuration - text, url |
-  openInNewWindow | boolean | open link in new window or not  | false (optional)
-  color | string | define link color | none (optional)
+  config | object | link configuration - text, url
+  openInNewWindow | boolean | open link in new window or not  | false
+  color | string | define link color | none
   ~~~
   ${template}
   ~~~

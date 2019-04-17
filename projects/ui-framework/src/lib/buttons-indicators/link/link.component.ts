@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Link } from '../info-strip/info-strip.types';
+import { Link } from '../link/link.types';
 import { LinkColor } from './link.enum';
 
 @Component({

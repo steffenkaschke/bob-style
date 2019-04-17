@@ -1,4 +1,4 @@
 export enum LinkColor {
-  none = 'dark',
+  none = 'none',
   primary = 'primary',
 }
