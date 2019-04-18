@@ -8,8 +8,8 @@ $chipsMap: (
     brdrColor: $grey-500
   ),
   default: (
-    bgColor: $grey-300,
-    color: $grey-700,
+    bgColor: $grey-600,
+    color: white,
     brdrColor: $grey-300
   ),
   info: (
@@ -23,9 +23,9 @@ $chipsMap: (
     brdrColor: var(--positive-500)
   ),
   attention: (
-    bgColor: var(--secondary-500),
+    bgColor: var(--primary-600),
     color: white,
-    brdrColor: var(--secondary-500)
+    brdrColor: var(--primary-600)
   ),
   warning: (
     bgColor: var(--negative-500),
@@ -54,11 +54,10 @@ span {
   border: 1px solid transparent;
 
   font-size: $font-size-body;
-  font-weight: 400;
+  font-weight: 500;
 
-  min-width: 90px;
-  height: 26px;
-  padding: 0 14px;
+  height: 20px;
+  padding: 0 10px;
 
   user-select: none;
   cursor: default;

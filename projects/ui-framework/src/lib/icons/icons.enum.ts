@@ -55,4 +55,7 @@ export enum Icons {
   docs_empty = 'docs_empty',
   baseline_info_icon = 'baseline_info_icon',
   doc_icon = 'doc_icon',
+  approve_badge = 'approve_badge',
+  arrow_forward = 'arrow_forward',
+  pending_badge = 'pending_badge'
 }

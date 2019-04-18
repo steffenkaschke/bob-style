@@ -70,6 +70,7 @@ export { InfoStripComponent } from './lib/buttons-indicators/info-strip/info-str
 export { LinkModule } from './lib/buttons-indicators/link/link.module';
 export { LinkComponent } from './lib/buttons-indicators/link/link.component';
 export { Link } from './lib/buttons-indicators/link/link.types';
+export { LinkColor, LinkTarget } from './lib/buttons-indicators/link/link.enum';
 /*
  * Form Elements
  */
