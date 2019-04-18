@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { IconComponent } from '../../icons/icon.component';
 import { LinkModule } from '../link/link.module';
+import { LinkColor, LinkTarget } from '../link/link.enum';
 
 describe('InfoStripComponent', () => {
   let component: InfoStripComponent;
@@ -26,7 +27,8 @@ describe('InfoStripComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoStripComponent);
     component = fixture.componentInstance;
-    component.link = { url: 'https://app.hibob.com', text: 'Click here' };
+    component.link = {
+      url: 'https://app.hibob.com', text: 'Click here', target: LinkTarget.blank, color: LinkColor.primary };
     fixture.detectChanges();
   });
 
@@ -53,7 +55,7 @@ describe('InfoStripComponent', () => {
     expect(iconElement.componentInstance.icon).toEqual('baseline_info_icon');
   });
 
-  it('should check info strip text & link', () => {
+  it('should check info strip link', () => {
     component.text = 'info strip text';
     fixture.detectChanges();
     const text = fixture.debugElement.query(By.css('.content .text')).nativeElement;
@@ -61,5 +63,7 @@ describe('InfoStripComponent', () => {
     expect(text.innerText).toBe('info strip text');
     expect(link.componentInstance.config.text).toBe('Click here');
     expect(link.componentInstance.config.url).toBe('https://app.hibob.com');
+    expect(link.componentInstance.config.target).toBe('_blank');
+    expect(link.componentInstance.config.color).toBe('primary');
   });
 });

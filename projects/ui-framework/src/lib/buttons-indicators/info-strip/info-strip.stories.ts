@@ -5,6 +5,7 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { IconColor, Icons } from '../../icons/icons.enum';
 import { values } from 'lodash';
+import { LinkColor, LinkTarget } from '../link/link.enum';
 
 const infoStripStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
   withKnobs
@@ -35,7 +36,7 @@ const note = `
   icon | string | icon | baseline_info_icon (optional)
   iconColor | string | icon color | inform (optional)
   text | string | The text inside the strip
-  link | json | link definition - text, url |
+  link | json | link definition - text, url, color, target |
   ~~~
   ${template}
   ~~~
@@ -50,7 +51,8 @@ infoStripStories.add(
         icon: select('icon', icons, Icons.baseline_info_icon),
         iconColor: select('color', color, IconColor.inform),
         text: text('text', 'Place your info text here'),
-        link: object('link', { text: 'Click here', url: 'https://app.hibob.com' })
+        link: object('link', {
+          text: 'Click here', url: 'https://app.hibob.com', target: LinkTarget.blank, color: LinkColor.none })
       },
       moduleMetadata: {
         imports: [InfoStripModule, StoryBookLayoutModule]
