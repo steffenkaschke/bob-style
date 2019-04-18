@@ -4,8 +4,7 @@
 :host {
   a {
     text-decoration-line: none;
-    line-height: 14px;
-    color: $grey-700;
+    color: inherit;
     font-weight: 500;
     &.primary {
       color: var(--primary-700);
