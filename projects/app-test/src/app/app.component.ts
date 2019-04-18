@@ -9,7 +9,10 @@ import { FormControl } from '@angular/forms';
 export class AppComponent implements OnInit {
   title = 'app-test';
 
-  rteControl = new FormControl();
+  rteControl = new FormControl(
+    { value: null },
+    { updateOn: 'blur' }
+  );
   inputControl = new FormControl();
   disabled = false;
   error = false;

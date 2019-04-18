@@ -3,13 +3,21 @@
 
   <form style="max-width: 700px; margin: auto; display: flex; justify-content: space-between; align-self: flex-start;">
 
-    <b-rich-text-editor [formControl]="rteControl"
-                        [controls]="['bold','size','link']"
-                        [minHeight]="null"
-                        [disabled]="disabled"
-                        [errorMessage]="error ? 'Error' : undefined"
-                        style="margin-right: 40px;">
-    </b-rich-text-editor>
+    <div>
+      <b-rich-text-editor [formControl]="rteControl"
+                          [controls]="['bold','size','link']"
+                          [minHeight]="null"
+                          [disabled]="disabled"
+                          [errorMessage]="error ? 'Error' : undefined"
+                          style="margin-right: 40px;">
+      </b-rich-text-editor>
+
+      <div style="margin: 20px 40px 30px; padding: 10px; border: 1px solid silver;"
+           class="rte-output"
+           [innerHTML]="rteControl.value">
+
+      </div>
+    </div>
 
     <div>
       <p>

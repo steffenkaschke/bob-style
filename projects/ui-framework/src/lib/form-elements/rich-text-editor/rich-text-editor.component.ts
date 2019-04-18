@@ -10,7 +10,8 @@ import {
   OnChanges,
   SimpleChanges,
   AfterViewInit,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnInit
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -21,7 +22,8 @@ import {
   BlotType,
   RTEType,
   RTEControls,
-  RTEFontSize
+  RTEFontSize,
+  RTEchangeEvent
 } from './rich-text-editor.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import {
@@ -89,6 +91,7 @@ export class RichTextEditorComponent extends BaseFormElement
   ];
 
   @Input() type?: RTEType = RTEType.primary;
+  @Input() sendChangeOn = RTEchangeEvent.blur;
   @Input() minHeight = 185;
   @Input() maxHeight = 295;
   @Input() required = false;
@@ -150,9 +153,7 @@ export class RichTextEditorComponent extends BaseFormElement
   private initEditor(): void {
     const editorOptions: QuillOptionsStatic = {
       theme: 'snow',
-      placeholder: this.label
-        ? this.label + (this.required ? ' *' : '')
-        : '',
+      placeholder: this.label ? this.label + (this.required ? ' *' : '') : '',
       modules: {
         toolbar: {
           container: this.toolbar.nativeElement,
@@ -180,8 +181,9 @@ export class RichTextEditorComponent extends BaseFormElement
       ) {
         this.latestOutputValue = newOutputValue;
         this.changed.emit(newOutputValue);
-        if (!this.writingValue) {
-          this.propagateChange(newOutputValue);
+        if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.change) {
+          console.log('propagateChange');
+          // this.propagateChange(newOutputValue);
         }
         this.writingValue = false;
       }
@@ -207,7 +209,20 @@ export class RichTextEditorComponent extends BaseFormElement
 
     this.editor.root.addEventListener('blur', () => {
       this.blurred.emit(this.latestOutputValue);
+
+      if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.blur) {
+        console.log('blur');
+        this.propagateChange(this.latestOutputValue);
+      }
     });
+  }
+
+  registerOnChange() {
+    console.log('registerOnChange');
+  }
+
+  onChange() {
+    console.log('onChange');
   }
 
   private getCurrentText(): RteCurrentContent {
