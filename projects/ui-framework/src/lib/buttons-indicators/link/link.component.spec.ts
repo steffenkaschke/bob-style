@@ -1,7 +1,7 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {LinkComponent} from './link.component';
-import {By} from '@angular/platform-browser';
-import {LinkColor} from './link.enum';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { LinkComponent } from './link.component';
+import { By } from '@angular/platform-browser';
+import { LinkColor, LinkTarget } from './link.enum';
 
 describe('LinkComponent', () => {
   let component: LinkComponent;
@@ -17,9 +17,8 @@ describe('LinkComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LinkComponent);
     component = fixture.componentInstance;
-    component.config = { url: 'https://app.hibob.com', text: 'Learn more' };
-    component.color = LinkColor.primary;
-    component.openInNewWindow = true;
+    component.config = {
+      url: 'https://app.hibob.com', text: 'Learn more', color: LinkColor.primary, target: LinkTarget.blank };
     fixture.detectChanges();
   });
 
