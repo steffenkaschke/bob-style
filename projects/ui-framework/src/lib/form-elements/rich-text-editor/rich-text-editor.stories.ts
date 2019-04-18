@@ -4,7 +4,8 @@ import {
   select,
   boolean,
   withKnobs,
-  array
+  array,
+  number
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -32,8 +33,8 @@ const template = `
       [label]="label"
       [value]="value"
       [controls]="controls"
-      [minHeight]="200"
-      [maxHeight]="400"
+      [minHeight]="minHeight"
+      [maxHeight]="maxHeight"
       [disabled]="disabled"
       [required]="required"
       [hintMessage]="hintMessage"
@@ -91,16 +92,18 @@ inputStories.add(
       template: storyTemplate,
       props: {
         type: select('type', values(RTEType), RTEType.primary),
-        controls: array('controls', values(RTEControls), '\n'),
-        value: text('value', value),
         label: text('label', 'Compose an epic...'),
+        value: text('value', value),
+        controls: array('controls', values(RTEControls), '\n'),
+        minHeight: number('minHeight', 200),
+        maxHeight: number('maxHeight', 400),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
         errorMessage: text('errorMessage', ''),
-        blur: action('Editor blurred'),
+        change: action('Something has changed'),
         focus: action('Editor focused'),
-        change: action('Something has changed')
+        blur: action('Editor blurred')
       },
       moduleMetadata: {
         imports: [
