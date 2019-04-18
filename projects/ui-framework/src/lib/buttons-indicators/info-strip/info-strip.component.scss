@@ -9,15 +9,13 @@
     border-radius: 4px;
     display: flex;
     flex-direction: row;
-    align-items: center;
     .icon {
       margin-right: 10px;
     }
-
     .content {
       text-align: left;
-      .text {
-        font-weight: 300;
+      p {
+        margin: 4px 0 0;
       }
     }
   }

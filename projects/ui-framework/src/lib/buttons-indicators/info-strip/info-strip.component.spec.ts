@@ -58,7 +58,7 @@ describe('InfoStripComponent', () => {
   it('should check info strip link', () => {
     component.text = 'info strip text';
     fixture.detectChanges();
-    const text = fixture.debugElement.query(By.css('.content .text')).nativeElement;
+    const text = fixture.debugElement.query(By.css('.content p')).nativeElement;
     const link = fixture.debugElement.query(By.css('b-link'));
     expect(text.innerText).toBe('info strip text');
     expect(link.componentInstance.config.text).toBe('Click here');
