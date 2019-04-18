@@ -43,9 +43,13 @@ const displayTemplate = `
   <span class="code-sample">&#60;b-subheading&#62;</span>
   <b-subheading>Sub heading</b-subheading>
 </div>
-  <div>
+ <div>
   <span class="code-sample">&#60;b-big-body&#62;</span><br/>
   <b-big-body>Big body</b-big-body>
+</div>
+ <div>
+  <span class="code-sample">&#60;b-medium-body&#62;</span><br/>
+  <b-medium-body>Medium body</b-medium-body>
 </div>
 <div>
   <span>Default body font</span>

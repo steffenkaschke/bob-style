@@ -7,6 +7,7 @@ import { HeadingComponent } from './heading/heading.component';
 import { SubHeadingComponent } from './subheading/subheading.component';
 import { CaptionComponent } from './caption/caption.component';
 import { BigBodyComponent } from './big-body/big-body.component';
+import { MediumBodyComponent } from './medium-body/medium-body.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { BigBodyComponent } from './big-body/big-body.component';
     SubHeadingComponent,
     CaptionComponent,
     BigBodyComponent,
+    MediumBodyComponent,
   ],
   imports: [],
   exports: [
@@ -29,6 +31,7 @@ import { BigBodyComponent } from './big-body/big-body.component';
     SubHeadingComponent,
     CaptionComponent,
     BigBodyComponent,
+    MediumBodyComponent,
   ]
 })
 export class TypographyModule { }
