@@ -1,0 +1,11 @@
+<div class="info-tooltip">
+  <b-panel [showBackdrop]="false"
+           [panelSize]="panelSize.medium">
+    <b-icon panel-trigger [icon]="icon" [color]="iconColor" [size]="iconSize"></b-icon>
+    <div panel-content>
+      <b-display-3>{{tooltipPanel.title}}</b-display-3>
+      <p>{{tooltipPanel.text}}</p>
+      <b-link [openInNewWindow]="true" color="primary" [config]="tooltipPanel.link"></b-link>
+    </div>
+  </b-panel>
+</div>
