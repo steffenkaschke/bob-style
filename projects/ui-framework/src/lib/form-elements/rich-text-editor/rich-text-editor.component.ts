@@ -11,9 +11,14 @@ import {
   SimpleChanges,
   AfterViewInit,
   ChangeDetectorRef,
-  OnInit
+  Injector
 } from '@angular/core';
-import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  FormControl,
+  NgControl
+} from '@angular/forms';
 
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
 import { LinkBlot } from './formats/link-blot';
@@ -65,7 +70,8 @@ export class RichTextEditorComponent extends BaseFormElement
   implements OnChanges, AfterViewInit {
   constructor(
     private rteUtilsService: RteUtilsService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private injector: Injector
   ) {
     super();
   }
@@ -122,6 +128,7 @@ export class RichTextEditorComponent extends BaseFormElement
   hasSizeSet = false;
   private latestOutputValue: RteCurrentContent;
   private writingValue = false;
+  private control: FormControl;
 
   buttonType = ButtonType;
   icons = Icons;
@@ -130,6 +137,8 @@ export class RichTextEditorComponent extends BaseFormElement
   RTEFontSize = RTEFontSize;
 
   panelDefaultPosVer = PanelDefaultPosVer;
+
+  private onTouched: Function = (_: any) => {};
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabled && this.editor) {
@@ -142,6 +151,15 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   ngAfterViewInit(): void {
+    const ngControl: NgControl = this.injector.get(NgControl, null);
+    if (ngControl) {
+      this.control = ngControl.control as FormControl;
+      this.sendChangeOn =
+        this.control.updateOn === 'change'
+          ? RTEchangeEvent.change
+          : RTEchangeEvent.blur;
+    }
+
     setTimeout(() => {
       this.initEditor();
       this.hasSuffix =
@@ -184,9 +202,8 @@ export class RichTextEditorComponent extends BaseFormElement
         this.latestOutputValue = newOutputValue;
         this.changed.emit(newOutputValue);
         if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.change) {
+          this.propagateChange(newOutputValue);
         }
-        console.log('propagateChange');
-        this.propagateChange(newOutputValue);
         this.writingValue = false;
       }
     });
@@ -211,20 +228,12 @@ export class RichTextEditorComponent extends BaseFormElement
 
     this.editor.root.addEventListener('blur', () => {
       this.blurred.emit(this.latestOutputValue);
-
       if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.blur) {
-        console.log('blur');
-        this.propagateChange('sdfsdfsdf'); // this.latestOutputValue);
+        this.propagateChange(this.latestOutputValue);
+        this.onTouched();
       }
+      this.writingValue = false;
     });
-  }
-
-  registerOnChange(args) {
-    console.log('registerOnChange', args);
-  }
-
-  onChange() {
-    console.log('onChange');
   }
 
   private getCurrentText(): RteCurrentContent {
@@ -238,6 +247,10 @@ export class RichTextEditorComponent extends BaseFormElement
         this.editor.setContents(this.editor.clipboard.convert(this.value));
       }
     }
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
   }
 
   writeValue(val: string): void {

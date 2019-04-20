@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -8,30 +8,35 @@ import { FormControl } from '@angular/forms';
 })
 export class AppComponent implements OnInit {
   title = 'app-test';
-
-  rteControl = new FormControl();
-  // { value: null },
-  // { updateOn: 'blur' }
-  inputControl = new FormControl();
   disabled = false;
   error = false;
+  updateOnBlur = false;
+
+  myForm = new FormGroup({
+    rteControl: new FormControl('', {
+      updateOn: 'blur'
+    }),
+    inputControl: new FormControl('', {
+      updateOn: 'blur'
+    })
+  });
 
   ngOnInit() {
-    this.rteControl.valueChanges.subscribe(value => {
+    this.myForm.get('rteControl').valueChanges.subscribe(value => {
       console.log('RTE valueChanges', value);
     });
 
-    this.inputControl.valueChanges.subscribe(value => {
+    this.myForm.get('inputControl').valueChanges.subscribe(value => {
       console.log('INP valueChanges', value);
-      this.rteControl.setValue(value, {
+      this.myForm.get('rteControl').setValue(value, {
         // emitEvent: false
       });
     });
 
-    this.inputControl.setValue('i am input', {
+    this.myForm.get('inputControl').setValue('i am input', {
       emitEvent: false
     });
-    this.rteControl.setValue('i am rte', {
+    this.myForm.get('rteControl').setValue('i am rte', {
       emitEvent: false
     });
   }

@@ -15,7 +15,7 @@ import { values } from 'lodash';
 import { TypographyModule } from '../../typography/typography.module';
 import { RichTextEditorModule } from './rich-text-editor.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RTEType, RTEControls } from './rich-text-editor.enum';
+import { RTEType, RTEControls, RTEchangeEvent } from './rich-text-editor.enum';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -39,6 +39,7 @@ const template = `
       [required]="required"
       [hintMessage]="hintMessage"
       [errorMessage]="errorMessage"
+      [sendChangeOn]="sendChangeOn"
       (changed)="change($event)"
       (focused)="focus($event)"
       (blurred)="blur($event)">
@@ -77,6 +78,7 @@ const note = `
   required | boolean | adds * to placeholder | false (optional)
   hintMessage | string | adds a hint message below editor | none (optional)
   errorMessage | string | adds 'invalid' style, hides hint message and displays error message below editor | none (optional)
+  sendChangeOn | RTEchangeEvent | When to transmit value changes - on change (every keystroke) or on blur | blur (optional)
   changed | function | change event handler (event transmits latest change: {body,plainText}) |
   focused | function | focus event handler (event transmits latest change: {body,plainText}) |
   blurred | function | blur event handler (event transmits latest change: {body,plainText}) |
@@ -91,6 +93,11 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
+        sendChangeOn: select(
+          'type',
+          values(RTEchangeEvent),
+          RTEchangeEvent.blur
+        ),
         type: select('type', values(RTEType), RTEType.primary),
         label: text('label', 'Compose an epic...'),
         value: text('value', value),
