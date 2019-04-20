@@ -138,8 +138,6 @@ export class RichTextEditorComponent extends BaseFormElement
 
   panelDefaultPosVer = PanelDefaultPosVer;
 
-  private onTouched: Function = (_: any) => {};
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabled && this.editor) {
       this.disabled = changes.disabled.currentValue;
@@ -247,10 +245,6 @@ export class RichTextEditorComponent extends BaseFormElement
         this.editor.setContents(this.editor.clipboard.convert(this.value));
       }
     }
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
   }
 
   writeValue(val: string): void {
