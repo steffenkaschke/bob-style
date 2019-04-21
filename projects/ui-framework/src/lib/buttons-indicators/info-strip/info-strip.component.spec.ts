@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { InfoStripComponent } from './info-strip.component';
-import { IconColor, Icons } from '../../icons/icons.enum';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { IconComponent } from '../../icons/icon.component';
 import { LinkModule } from '../link/link.module';
 import { LinkColor, LinkTarget } from '../link/link.enum';
+import { StripIconType } from './info-strip.enum';
 
 describe('InfoStripComponent', () => {
   let component: InfoStripComponent;
@@ -32,27 +32,18 @@ describe('InfoStripComponent', () => {
     fixture.detectChanges();
   });
 
-  it('icon color should be dark', () => {
-    component.icon = Icons.baseline_info_icon;
-    component.iconColor = IconColor.dark;
+  it('icon color should be green(positive)', () => {
+    component.iconType = StripIconType.success;
     fixture.detectChanges();
     const iconElement = fixture.debugElement.query(By.css('b-icon'));
-    expect(iconElement.componentInstance.color).toEqual(IconColor.dark);
-  });
-
-  it('icon size should be xLarge', () => {
-    component.icon = Icons.baseline_info_icon;
-    component.iconColor = IconColor.dark;
-    fixture.detectChanges();
-    const iconElement = fixture.debugElement.query(By.css('b-icon'));
-    expect(iconElement.componentInstance.size).toEqual('x-large');
+    expect(iconElement.componentInstance.color).toEqual(component.iconsDic[component.iconType].color);
   });
 
   it('icon should be baseline_info_icon', () => {
-    component.icon = Icons.baseline_info_icon;
+    component.iconType = StripIconType.information;
     fixture.detectChanges();
     const iconElement = fixture.debugElement.query(By.css('b-icon'));
-    expect(iconElement.componentInstance.icon).toEqual('baseline_info_icon');
+    expect(iconElement.componentInstance.icon).toEqual(component.iconsDic[component.iconType].icon);
   });
 
   it('should check info strip link', () => {
