@@ -12,12 +12,9 @@ export class InfoTooltipComponent {
   @Input() title: string;
   @Input() text: string;
   @Input() link: Link;
-  iconColor: IconColor = IconColor.dark;
-  iconSize: IconSize = IconSize.large;
-  icon: Icons = Icons.baseline_info_icon;
-  panelSize = PanelSize;
+  readonly iconColor: IconColor = IconColor.dark;
+  readonly iconSize: IconSize = IconSize.large;
+  readonly icon: Icons = Icons.baseline_info_icon;
 
   constructor() { }
 }
-
-

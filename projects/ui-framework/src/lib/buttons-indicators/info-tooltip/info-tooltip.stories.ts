@@ -21,13 +21,13 @@ const note = `
   --- | --- | --- | ---
   title | string | tooltip title | ''
   text | string | tooltip text | ''
-  link | json | tooltip link
+  link | Link | tooltip link
   ~~~
   ${template}
   ~~~
 `;
 
-const storyTemplate = `<b-story-book-layout title="Info Tooltip">
+const storyTemplate = `<b-story-book-layout [title]="'Info Tooltip'">
   ${template}
 </b-story-book-layout>`;
 
