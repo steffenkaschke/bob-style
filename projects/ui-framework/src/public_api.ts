@@ -71,6 +71,9 @@ export { LinkModule } from './lib/buttons-indicators/link/link.module';
 export { LinkComponent } from './lib/buttons-indicators/link/link.component';
 export { Link } from './lib/buttons-indicators/link/link.types';
 export { LinkColor, LinkTarget } from './lib/buttons-indicators/link/link.enum';
+// InfoTooltip Module
+export { InfoTooltipModule } from './lib/buttons-indicators/info-tooltip/info-tooltip.module';
+export { InfoTooltipComponent } from './lib/buttons-indicators/info-tooltip/info-tooltip.component';
 /*
  * Form Elements
  */
