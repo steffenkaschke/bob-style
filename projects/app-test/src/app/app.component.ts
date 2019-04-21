@@ -7,10 +7,8 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'app-test';
   disabled = false;
   error = false;
-  updateOnBlur = false;
 
   myForm = new FormGroup({
     rteControl: new FormControl('', {
@@ -28,9 +26,7 @@ export class AppComponent implements OnInit {
 
     this.myForm.get('inputControl').valueChanges.subscribe(value => {
       console.log('INP valueChanges', value);
-      this.myForm.get('rteControl').setValue(value, {
-        // emitEvent: false
-      });
+      this.myForm.get('rteControl').setValue(value);
     });
 
     this.myForm.get('inputControl').setValue('i am input', {
