@@ -419,3 +419,11 @@ $border-color-error: $color-error;
     }
   }
 }
+
+// Align panel
+
+.quill-toolbar[hide-align='true'] ::ng-deep {
+  .ql-align {
+    display: none;
+  }
+}

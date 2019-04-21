@@ -9,6 +9,7 @@
 
   <div #toolbar
        class="quill-toolbar"
+       [attr.hide-align]="!controls.includes(RTEControls.align)"
        *ngIf="controls.length > 0 || hasSuffix">
 
     <b-panel panelClass="rte-size-controls"
