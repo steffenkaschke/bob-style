@@ -11,7 +11,8 @@ import {
   SimpleChanges,
   AfterViewInit,
   ChangeDetectorRef,
-  Injector
+  Injector,
+  Type
 } from '@angular/core';
 import {
   NG_VALIDATORS,
@@ -149,7 +150,9 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   ngAfterViewInit(): void {
-    const ngControl: NgControl = this.injector.get(NgControl, null);
+    const ngControl: NgControl = this.injector.get<NgControl>(NgControl as Type<
+      NgControl
+    >);
     if (ngControl) {
       this.control = ngControl.control as FormControl;
       this.sendChangeOn =
@@ -157,7 +160,6 @@ export class RichTextEditorComponent extends BaseFormElement
           ? RTEchangeEvent.change
           : RTEchangeEvent.blur;
     }
-
     setTimeout(() => {
       this.initEditor();
       this.hasSuffix =
