@@ -1,8 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA, Component, SimpleChange } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -12,7 +8,7 @@ import { ReactiveFormsModule, FormControl, FormsModule } from '@angular/forms';
 import { RichTextEditorComponent } from './rich-text-editor.component';
 import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { RTEType } from './rich-text-editor.enum';
+import { RTEType, RTEControls } from './rich-text-editor.enum';
 import Quill from 'quill';
 
 @Component({
@@ -153,6 +149,52 @@ fdescribe('RichTextEditorComponent', () => {
       expect(getComputedStyle(RTEeditorNativeElement).borderColor).toEqual(
         'rgb(255, 0, 0)'
       );
+    });
+  });
+
+  describe('Min & Max height', () => {
+    it('should set minimum and maximum editor height', () => {
+      RTEComponent.minHeight = 300;
+      RTEComponent.maxHeight = 600;
+      fixture.detectChanges();
+
+      const qlContainer = fixture.debugElement.query(By.css('.ql-container'))
+        .nativeElement;
+      const qlContainerStyle = qlContainer
+        .getAttribute('style')
+        .replace(/\s/g, '');
+
+      expect(qlContainerStyle).toEqual(
+        `min-height:${300 - 43}px;max-height:${600 - 43}px;`
+      );
+    });
+
+    it('should disable min/max height when set to null', () => {
+      RTEComponent.minHeight = null;
+      RTEComponent.maxHeight = null;
+      fixture.detectChanges();
+
+      const qlContainer = fixture.debugElement.query(By.css('.ql-container'))
+        .nativeElement;
+      const qlContainerStyle = qlContainer.getAttribute('style');
+
+      expect(qlContainerStyle).toBeFalsy();
+    });
+  });
+
+  describe('Editor toolbar controls', () => {
+    it('should display toolbar with controls present in controls array', () => {
+      RTEComponent.controls = [RTEControls.bold, RTEControls.italic];
+      fixture.detectChanges();
+
+      const toolbarElement = fixture.debugElement.query(
+        By.css('.quill-toolbar ')
+      ).nativeElement;
+
+      expect(toolbarElement.children.length).toEqual(3);
+      expect(toolbarElement.children[0].className).toEqual('ql-bold');
+      expect(toolbarElement.children[1].className).toEqual('ql-italic');
+      expect(toolbarElement.children[2].nodeName).toEqual('SPAN');
     });
   });
 });
