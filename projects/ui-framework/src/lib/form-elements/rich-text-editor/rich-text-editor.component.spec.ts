@@ -62,10 +62,6 @@ describe('RichTextEditorComponent', () => {
         setTimeout(() => {
           QuillEditor = RTEComponent.editor;
         }, 0);
-
-        spyOn(RTEComponent.changed, 'emit');
-        spyOn(RTEComponent.focused, 'emit');
-        spyOn(RTEComponent.blurred, 'emit');
       });
   }));
 
@@ -215,13 +211,27 @@ describe('RichTextEditorComponent', () => {
   });
 
   describe('Events', () => {
-    it('should output changed event when text changes', () => {
+    it('should output RteCurrentContent object when text changes', done => {
+      RTEComponent.changed.subscribe(val => {
+        expect(val.body).toEqual('<div>test text</div>');
+        expect(val.plainText).toEqual('test text');
+        done();
+      });
       RTEComponent.ngOnChanges({
         value: new SimpleChange(null, 'test text', false)
       });
-      fixture.detectChanges();
-
-      expect(RTEComponent.changed.emit).toHaveBeenCalled();
+    });
+    it('should output focused event when editor is focused', () => {
+      spyOn(RTEComponent.focused, 'emit');
+      const RTEqlEditorNativeElement = QuillEditor.root;
+      RTEqlEditorNativeElement.dispatchEvent(new Event('focus'));
+      expect(RTEComponent.focused.emit).toHaveBeenCalled();
+    });
+    it('should output blurred event when editor is blurred', () => {
+      spyOn(RTEComponent.blurred, 'emit');
+      const RTEqlEditorNativeElement = QuillEditor.root;
+      RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
+      expect(RTEComponent.blurred.emit).toHaveBeenCalled();
     });
   });
 });
