@@ -1,15 +1,15 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs, object } from '@storybook/addon-knobs/angular';
+import { withKnobs, object, text } from '@storybook/addon-knobs/angular';
 import { InfoTooltipModule } from './info-tooltip.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import {LinkColor, LinkTarget} from '../link/link.enum';
 
 const stories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
   withKnobs
 );
 
-const template = `<b-info-tooltip
-[tooltipPanel]="tooltipPanel"></b-info-tooltip>`;
+const template = `<b-info-tooltip [text]="text" [link]="link" [title]="title"></b-info-tooltip>`;
 
 const note = `
   ## Switch toggle element
@@ -19,7 +19,9 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  tooltipPanel | json | tooltip configuration - title, text, link
+  title | string | tooltip title | ''
+  text | string | tooltip text | ''
+  link | json | tooltip link
   ~~~
   ${template}
   ~~~
@@ -34,10 +36,11 @@ stories.add(
   () => ({
     template: storyTemplate,
     props: {
-      tooltipPanel: object('tooltipPanel', {
-        title: 'Panel title',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore',
-        link: { text: 'Click here', url: 'https://app.hibob.com' }}),
+      title: text('title', 'Panel title'),
+      text:
+        text('text', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut'),
+      link: object('link', {
+        text: 'Click here', url: 'https://app.hibob.com', color: LinkColor.primary, target: LinkTarget.blank }),
     },
     moduleMetadata: {
       imports: [InfoTooltipModule, StoryBookLayoutModule]
