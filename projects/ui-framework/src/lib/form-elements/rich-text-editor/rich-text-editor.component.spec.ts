@@ -24,7 +24,7 @@ class TestComponent {
   rteControl = new FormControl();
 }
 
-fdescribe('RichTextEditorComponent', () => {
+describe('RichTextEditorComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 

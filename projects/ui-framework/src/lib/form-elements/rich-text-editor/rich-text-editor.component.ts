@@ -126,13 +126,12 @@ export class RichTextEditorComponent extends BaseFormElement
   private writingValue = false;
   private control: FormControl;
 
-  buttonType = ButtonType;
-  icons = Icons;
-  panelSize = PanelSize;
-  RTEControls = RTEControls;
-  RTEFontSize = RTEFontSize;
-
-  panelDefaultPosVer = PanelDefaultPosVer;
+  readonly buttonType = ButtonType;
+  readonly icons = Icons;
+  readonly panelSize = PanelSize;
+  readonly RTEControls = RTEControls;
+  readonly RTEFontSize = RTEFontSize;
+  readonly panelDefaultPosVer = PanelDefaultPosVer;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabled) {
