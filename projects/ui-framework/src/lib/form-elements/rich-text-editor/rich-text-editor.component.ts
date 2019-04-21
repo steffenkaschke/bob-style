@@ -86,6 +86,8 @@ export class RichTextEditorComponent extends BaseFormElement
     );
   }
 
+  @Input() type?: RTEType = RTEType.primary;
+  @Input() value: string;
   @Input() controls?: RTEControls[] = [
     RTEControls.size,
     RTEControls.bold,
@@ -96,16 +98,9 @@ export class RichTextEditorComponent extends BaseFormElement
     RTEControls.align,
     RTEControls.dir
   ];
-
-  @Input() type?: RTEType = RTEType.primary;
-  @Input() sendChangeOn = RTEchangeEvent.blur;
   @Input() minHeight = 185;
   @Input() maxHeight = 295;
-  @Input() required = false;
-  @Input() disabled = false;
-  @Input() errorMessage = undefined;
-
-  @Input() value: string;
+  @Input() sendChangeOn = RTEchangeEvent.blur;
 
   @ViewChild('quillEditor') private quillEditor: ElementRef;
   @ViewChild('toolbar') private toolbar: ElementRef;
@@ -122,7 +117,7 @@ export class RichTextEditorComponent extends BaseFormElement
     RteCurrentContent
   >();
 
-  private editor: Quill;
+  editor: Quill;
   private selection: RangeStatic;
   selectedText: string;
   hasSuffix = true;
@@ -140,9 +135,19 @@ export class RichTextEditorComponent extends BaseFormElement
   panelDefaultPosVer = PanelDefaultPosVer;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.disabled && this.editor) {
+    if (changes.disabled) {
       this.disabled = changes.disabled.currentValue;
-      this.editor.enable(!this.disabled);
+      if (this.editor) {
+        this.editor.enable(!this.disabled);
+      }
+    }
+    if (changes.label) {
+      this.label = changes.label.currentValue;
+      this.setEditorPlaceholder();
+    }
+    if (changes.required) {
+      this.required = changes.required.currentValue;
+      this.setEditorPlaceholder();
     }
     if (changes.value) {
       this.applyValue(changes.value.currentValue);
@@ -173,7 +178,7 @@ export class RichTextEditorComponent extends BaseFormElement
   private initEditor(): void {
     const editorOptions: QuillOptionsStatic = {
       theme: 'snow',
-      placeholder: this.label ? this.label + (this.required ? ' *' : '') : '',
+      placeholder: this.getEditorPlaceholder(),
       modules: {
         toolbar: {
           container: this.toolbar.nativeElement,
@@ -234,6 +239,16 @@ export class RichTextEditorComponent extends BaseFormElement
       }
       this.writingValue = false;
     });
+  }
+
+  private getEditorPlaceholder(): string {
+    return this.label ? this.label + (this.required ? ' *' : '') : '';
+  }
+
+  private setEditorPlaceholder(): void {
+    if (this.editor) {
+      this.editor.root.dataset.placeholder = this.getEditorPlaceholder();
+    }
   }
 
   private getCurrentText(): RteCurrentContent {
