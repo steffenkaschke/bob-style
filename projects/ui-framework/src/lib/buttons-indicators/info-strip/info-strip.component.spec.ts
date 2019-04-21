@@ -1,11 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { InfoStripComponent } from './info-strip.component';
-import { By } from '@angular/platform-browser';
-import { MockComponent } from 'ng-mocks';
-import { IconComponent } from '../../icons/icon.component';
-import { LinkModule } from '../link/link.module';
-import { LinkColor, LinkTarget } from '../link/link.enum';
-import { StripIconType } from './info-strip.enum';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {InfoStripComponent} from './info-strip.component';
+import {By} from '@angular/platform-browser';
+import {MockComponent} from 'ng-mocks';
+import {IconComponent} from '../../icons/icon.component';
+import {LinkModule} from '../link/link.module';
+import {LinkColor, LinkTarget} from '../link/link.enum';
+import {StripIconType} from './info-strip.enum';
+import {IconColor, Icons} from '../../icons/icons.enum';
 
 describe('InfoStripComponent', () => {
   let component: InfoStripComponent;
@@ -21,29 +22,40 @@ describe('InfoStripComponent', () => {
         LinkModule
       ]
     })
-    .compileComponents();
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(InfoStripComponent);
+        component = fixture.componentInstance;
+        component.link = {
+          url: 'https://app.hibob.com', text: 'Click here', target: LinkTarget.blank, color: LinkColor.primary
+        };
+      });
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(InfoStripComponent);
-    component = fixture.componentInstance;
-    component.link = {
-      url: 'https://app.hibob.com', text: 'Click here', target: LinkTarget.blank, color: LinkColor.primary };
-    fixture.detectChanges();
-  });
+  describe('icon dictionary', () => {
+    const testIcon = (type: StripIconType, icon: Icons, color: IconColor) => {
+      component.iconType = type;
+      fixture.detectChanges();
+      const iconElement = fixture.debugElement.query(By.css('b-icon'));
+      expect(iconElement.componentInstance.color).toEqual(color);
+      expect(iconElement.componentInstance.icon).toEqual(icon);
+    };
 
-  it('icon color should be green(positive)', () => {
-    component.iconType = StripIconType.success;
-    fixture.detectChanges();
-    const iconElement = fixture.debugElement.query(By.css('b-icon'));
-    expect(iconElement.componentInstance.color).toEqual(component.iconsDic[component.iconType].color);
-  });
+    it('should have warning icon with primary color', () => {
+      testIcon(StripIconType.warning, Icons.warning, IconColor.primary);
+    });
 
-  it('icon should be baseline_info_icon', () => {
-    component.iconType = StripIconType.information;
-    fixture.detectChanges();
-    const iconElement = fixture.debugElement.query(By.css('b-icon'));
-    expect(iconElement.componentInstance.icon).toEqual(component.iconsDic[component.iconType].icon);
+    it('should have success icon with positive color', () => {
+      testIcon(StripIconType.success, Icons.success, IconColor.positive);
+    });
+
+    it('should have error icon with negative color', () => {
+      testIcon(StripIconType.error, Icons.error, IconColor.negative);
+    });
+
+    it('should have information icon with inform color', () => {
+      testIcon(StripIconType.information, Icons.baseline_info_icon, IconColor.inform);
+    });
   });
 
   it('should check info strip link', () => {

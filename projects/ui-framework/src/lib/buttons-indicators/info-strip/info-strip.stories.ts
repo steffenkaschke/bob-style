@@ -3,14 +3,14 @@ import { text, withKnobs, select, object } from '@storybook/addon-knobs/angular'
 import { InfoStripModule } from './info-strip.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { keys } from 'lodash';
+import { values } from 'lodash';
 import { LinkColor, LinkTarget } from '../link/link.enum';
 import { StripIconType } from './info-strip.enum';
 
 const infoStripStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
   withKnobs
 );
-const iconTypes = keys(StripIconType);
+const iconTypes = values(StripIconType);
 
 const template = `<b-info-strip
   [iconType]="iconType"
@@ -33,7 +33,7 @@ const note = `
   --- | --- | --- | ---
   iconType | StripIconType | icon type - information, error, warning, success | information
   text | string | The text inside the strip
-  link | json | link definition - text, url, color, target
+  link | Link | link definition - text, url, color, target
   ~~~
   ${template}
   ~~~
