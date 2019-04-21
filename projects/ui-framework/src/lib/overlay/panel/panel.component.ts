@@ -29,8 +29,8 @@ export class PanelComponent implements OnDestroy {
   private templatePortal: TemplatePortal;
   private backdropClickSubscriber: Subscription;
   private positionChangeSubscriber: Subscription;
-  readonly mouseEnterDebounce: debounce;
-  readonly mouseLeaveDebounce: debounce;
+  readonly mouseEnterDebounce: any;
+  readonly mouseLeaveDebounce: any;
   positionClassList: { [key: string]: boolean } = {};
 
   constructor(
