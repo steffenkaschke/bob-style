@@ -101,6 +101,8 @@ export class RichTextEditorComponent extends BaseFormElement
   @Input() minHeight = 185;
   @Input() maxHeight = 295;
   @Input() sendChangeOn = RTEchangeEvent.blur;
+  @Input() formControlName: any;
+  @Input() formControl: any;
 
   @ViewChild('quillEditor') private quillEditor: ElementRef;
   @ViewChild('toolbar') private toolbar: ElementRef;
@@ -154,15 +156,18 @@ export class RichTextEditorComponent extends BaseFormElement
   }
 
   ngAfterViewInit(): void {
-    const ngControl: NgControl = this.injector.get<NgControl>(NgControl as Type<
-      NgControl
-    >);
-    if (ngControl) {
-      this.control = ngControl.control as FormControl;
-      this.sendChangeOn =
-        this.control.updateOn === 'change'
-          ? RTEchangeEvent.change
-          : RTEchangeEvent.blur;
+    if (this.formControl || this.formControlName) {
+      const ngControl: NgControl = this.injector.get<NgControl>(
+        NgControl as Type<NgControl>
+      );
+
+      if (ngControl) {
+        this.control = ngControl.control as FormControl;
+        this.sendChangeOn =
+          this.control.updateOn === 'change'
+            ? RTEchangeEvent.change
+            : RTEchangeEvent.blur;
+      }
     }
     setTimeout(() => {
       this.initEditor();
