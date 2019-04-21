@@ -62,6 +62,10 @@ fdescribe('RichTextEditorComponent', () => {
         setTimeout(() => {
           QuillEditor = RTEComponent.editor;
         }, 0);
+
+        spyOn(RTEComponent.changed, 'emit');
+        spyOn(RTEComponent.focused, 'emit');
+        spyOn(RTEComponent.blurred, 'emit');
       });
   }));
 
@@ -195,6 +199,29 @@ fdescribe('RichTextEditorComponent', () => {
       expect(toolbarElement.children[0].className).toEqual('ql-bold');
       expect(toolbarElement.children[1].className).toEqual('ql-italic');
       expect(toolbarElement.children[2].nodeName).toEqual('SPAN');
+    });
+  });
+
+  describe('Value input', () => {
+    it('should set the editor text to value input', () => {
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test text', false)
+      });
+      fixture.detectChanges();
+
+      const RTEqlEditorNativeElement = QuillEditor.root;
+      expect(RTEqlEditorNativeElement.textContent).toEqual('test text');
+    });
+  });
+
+  describe('Events', () => {
+    it('should output changed event when text changes', () => {
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test text', false)
+      });
+      fixture.detectChanges();
+
+      expect(RTEComponent.changed.emit).toHaveBeenCalled();
     });
   });
 });
