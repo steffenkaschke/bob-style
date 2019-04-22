@@ -49,7 +49,7 @@ export class TruncateTooltipComponent
     this.textElement = this.getDeepestNode(this.textContainer.nativeElement);
     this.tooltipText = this.textElement.innerText;
 
-    this.applyTextElementStyle();
+    this.applyTextContainerStyle();
 
     this.resizeSubscription = this.utilsService
       .getResizeEvent()
@@ -66,7 +66,7 @@ export class TruncateTooltipComponent
     this.resizeSubscription.unsubscribe();
   }
 
-  private applyTextElementStyle(): void {
+  private applyTextContainerStyle(): void {
     const computedStyle = getComputedStyle(this.textElement),
       fontSize = parseFloat(computedStyle.fontSize),
       lineHeight =
