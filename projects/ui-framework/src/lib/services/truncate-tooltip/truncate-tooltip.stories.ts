@@ -21,14 +21,16 @@ const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
 
 const template1 = `
   <b-big-body *bTruncateTooltip="maxLines">
-    <span>
-        If you’re trying to wear official headgear in a public setting, my advice is to take yourself
-        as seriously as you expect others to take you. A photographer may not allow you to wear the colander
-        if you’ve just pulled it out while giggling. But if you walk in wearing it – if it is clear that this
-        headgear is truly a serious part of your traditional Pastafarian beliefs, as you are claiming –
-        then they are less likely to make trouble.
-    </span>
-    <span>THIS TEXT TOO!</span>
+    <p>
+      <span>
+          If you’re trying to wear official headgear in a public setting, my advice is to take yourself
+          as seriously as you expect others to take you. A photographer may not allow you to wear the colander
+          if you’ve just pulled it out while giggling. But if you walk in wearing it – if it is clear that this
+          headgear is truly a serious part of your traditional Pastafarian beliefs, as you are claiming –
+          then they are less likely to make trouble.
+      </span>
+      <span>THIS TEXT TOO!</span>
+    </p>
   </b-big-body>
 `;
 const template2 = `
@@ -62,6 +64,7 @@ const note = `
   #### Module
   *TruncateTooltipModule*
 
+ --------
 
   #### Use as a (structural) directive (*bTruncateTooltip):
   ~~~
@@ -73,6 +76,7 @@ const note = `
   --- | --- | --- | ---
   bTruncateTooltip | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0 or null. | 1 (optional)
 
+ --------
 
   #### Use as a component (b-truncate-tooltip):
   ~~~
@@ -84,10 +88,11 @@ const note = `
   --- | --- | --- | ---
   maxLines | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0 or null. | 1 (optional)
 
-
+  --------
 
   ### NOTE:
   - Text inside the directive/component should be of uniform (same) font-size!
+  - Elements inside the directive/component should not have maring or padding.
   - There should not be any adjacent block-level elements inside (Bad: \`\`\`<p>A</p> <p>B</p>\`\`\`).
   - Single-child wrapping block-level elements are allowed (OK: \`\`\`<p>AB</p>\`\`\`).
   - Any number of adjacent inline elements are allowed  (OK: \`\`\`<p><span>A</span> <span>B</span></p>\`\`\`).

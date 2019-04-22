@@ -81,3 +81,13 @@ span {
     }
   }
 }
+
+:host ::ng-deep {
+  p,
+  div {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    position: static;
+  }
+}
