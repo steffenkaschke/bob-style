@@ -33,7 +33,7 @@ const template1 = `
 `;
 const template2 = `
   <b-truncate-tooltip [maxLines]="maxLines">
-    <b-big-body>
+    <b-display-3>
       <span>
           If you’re trying to wear official headgear in a public setting, my advice is to take yourself
           as seriously as you expect others to take you. A photographer may not allow you to wear the colander
@@ -42,14 +42,16 @@ const template2 = `
           then they are less likely to make trouble.
       </span>
       <span>THIS TEXT TOO!</span>
-    </b-big-body>
+    </b-display-3>
   </b-truncate-tooltip>
 `;
 
 const storyTemplate = `
 <b-story-book-layout title="'Truncate Tooltip'">
-  <div style="padding: 50px; max-width: 600px; margin: auto; text-align: left;">
-    ${template1}
+  <div style="padding: 100px 50px 50px; max-width: 600px; margin: auto; text-align: left;">
+    <p>${template1}</p>
+    <br>
+    <p>${template2}</p>
   </div>
 </b-story-book-layout>
 `;
@@ -69,7 +71,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  bTruncateTooltip | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0. | 1 (optional)
+  bTruncateTooltip | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0 or null. | 1 (optional)
 
 
   #### Use as a component (b-truncate-tooltip):
@@ -80,7 +82,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  maxLines | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0. | 1 (optional)
+  maxLines | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0 or null. | 1 (optional)
 
 
 `;

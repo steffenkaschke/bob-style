@@ -77,7 +77,7 @@ export class TruncateTooltipComponent
           : 1.2;
 
     this.textContainerClass =
-      this.maxLines === 1 || !this.maxLines
+      this.maxLines === 1
         ? 'truncate'
         : this.maxLines > 1
         ? 'line-clamp'
@@ -94,7 +94,7 @@ export class TruncateTooltipComponent
 
   private checkTooltipNecessity(): void {
     this.tooltipEnabled =
-      ((this.maxLines === 1 || !this.maxLines) &&
+      (this.maxLines === 1 &&
         this.textContainer.nativeElement.scrollWidth >
           this.textContainer.nativeElement.offsetWidth) ||
       (this.maxLines > 0 &&
