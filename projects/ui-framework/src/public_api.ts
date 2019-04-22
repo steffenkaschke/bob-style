@@ -9,6 +9,7 @@
 // Typography Module
 import { TableComponent } from './lib/table/table/table.component';
 import { AvatarCellComponent } from './lib/table/table-cell-components/avatar.component';
+import { TruncateTooltipDirective } from './lib/services/truncate-tooltip/truncate-tooltip.directive';
 
 export { TypographyModule } from './lib/typography/typography.module';
 
@@ -281,3 +282,7 @@ export { UtilsService } from './lib/services/utils/utils.service';
 // Component Renderer
 export { ComponentRendererModule } from './lib/services/component-renderer/component-renderer.module';
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';
+// Truncate Tooltip
+export { TruncateTooltipModule} from './lib/services/truncate-tooltip/truncate-tooltip.module';
+export { TruncateTooltipComponent} from './lib/services/truncate-tooltip/truncate-tooltip.component';
+export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/truncate-tooltip.directive';
