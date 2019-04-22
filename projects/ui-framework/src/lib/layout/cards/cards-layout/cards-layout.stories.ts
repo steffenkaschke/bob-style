@@ -11,26 +11,23 @@ import {
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 import { CardsModule } from '../cards.module';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
-import { IconsModule } from '../../../icons/icons.module';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-
-import { MenuItem } from '../../../navigation/menu/menu.interface';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-card [menu]="menu" [text]="text">
+<b-cards>
   <p card-top>Kyle Wilson</p>
   <p card-bottom>No approvers are required</p>
-</b-card>
+</b-cards>
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Single Card">
+<b-story-book-layout title="'Cards Layout'">
   <div style="display: flex; width:280px; height: 280px; margin: 100px auto;">
     ${template}
   </div>
@@ -38,7 +35,7 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Single Card
+  ## Cards Layout
 
   #### Module
   *CardsModule*
@@ -54,41 +51,14 @@ const note = `
   ~~~
 `;
 
-const cardTextMock =
-  'Compensation update with a very long text that cuts off after 4 lines of text. And here is another very long text that should not be displayed at all.';
-
-const menuMock: MenuItem[] = [
-  {
-    label: 'Do this',
-    action: $event => console.log('Do this', $event)
-  },
-  {
-    label: 'Do that',
-    action: $event => console.log('Do that', $event)
-  },
-  {
-    label: 'Do something else',
-    action: $event => console.log('Do something else', $event)
-  }
-];
-
 story.add(
-  'Card',
+  'Cards Layout',
   () => {
     return {
       template: storyTemplate,
-      props: {
-        menu: object('menu', menuMock),
-        text: text('text', cardTextMock)
-      },
+      props: {},
       moduleMetadata: {
-        imports: [
-          StoryBookLayoutModule,
-          BrowserAnimationsModule,
-          CardsModule,
-          ButtonsModule,
-          IconsModule
-        ]
+        imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule]
       }
     };
   },
