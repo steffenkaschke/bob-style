@@ -21,6 +21,17 @@ const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
 
 const template = `
 
+    <b-big-body>
+      <span>
+          If you’re trying to wear official headgear in a public setting, my advice is to take yourself
+          as seriously as you expect others to take you. A photographer may not allow you to wear the colander
+          if you’ve just pulled it out while giggling. But if you walk in wearing it – if it is clear that this
+          headgear is truly a serious part of your traditional Pastafarian beliefs, as you are claiming –
+          then they are less likely to make trouble.
+      </span>
+      <span>THIS TEXT TOO!</span>
+    </b-big-body>
+
   <b-truncate-tooltip [maxLines]="maxLines">
     <b-big-body>
       <span>

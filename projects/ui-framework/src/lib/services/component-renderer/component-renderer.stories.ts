@@ -17,6 +17,7 @@ import { ComponentRendererModule } from './component-renderer.module';
 
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 import { MockComponent } from '../mock-component/mock.component';
+import { TypographyModule } from '../../typography/typography.module';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
@@ -129,7 +130,8 @@ story.add(
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          ComponentRendererModule
+          ComponentRendererModule,
+          TypographyModule
         ],
         entryComponents: [AvatarComponent, MockComponent]
       }
