@@ -7,10 +7,6 @@
  */
 
 // Typography Module
-import { TableComponent } from './lib/table/table/table.component';
-import { AvatarCellComponent } from './lib/table/table-cell-components/avatar.component';
-import { TruncateTooltipDirective } from './lib/services/truncate-tooltip/truncate-tooltip.directive';
-
 export { TypographyModule } from './lib/typography/typography.module';
 
 /*
