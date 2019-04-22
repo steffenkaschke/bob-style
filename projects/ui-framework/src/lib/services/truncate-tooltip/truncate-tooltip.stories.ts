@@ -19,19 +19,19 @@ const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
 );
 
-const template = `
-
-    <b-big-body>
-      <span>
-          If you’re trying to wear official headgear in a public setting, my advice is to take yourself
-          as seriously as you expect others to take you. A photographer may not allow you to wear the colander
-          if you’ve just pulled it out while giggling. But if you walk in wearing it – if it is clear that this
-          headgear is truly a serious part of your traditional Pastafarian beliefs, as you are claiming –
-          then they are less likely to make trouble.
-      </span>
-      <span>THIS TEXT TOO!</span>
-    </b-big-body>
-
+const template1 = `
+  <b-big-body *bTruncateTooltip="maxLines">
+    <span>
+        If you’re trying to wear official headgear in a public setting, my advice is to take yourself
+        as seriously as you expect others to take you. A photographer may not allow you to wear the colander
+        if you’ve just pulled it out while giggling. But if you walk in wearing it – if it is clear that this
+        headgear is truly a serious part of your traditional Pastafarian beliefs, as you are claiming –
+        then they are less likely to make trouble.
+    </span>
+    <span>THIS TEXT TOO!</span>
+  </b-big-body>
+`;
+const template2 = `
   <b-truncate-tooltip [maxLines]="maxLines">
     <b-big-body>
       <span>
@@ -44,44 +44,54 @@ const template = `
       <span>THIS TEXT TOO!</span>
     </b-big-body>
   </b-truncate-tooltip>
-
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="'Truncate Tooltip Component'">
-
+<b-story-book-layout title="'Truncate Tooltip'">
   <div style="padding: 50px; max-width: 600px; margin: auto; text-align: left;">
-    ${template}
+    ${template1}
   </div>
-
 </b-story-book-layout>
 `;
 
 const note = `
-  ## Truncate Tooltip Component
+  ## Truncate Tooltip
 
   #### Module
   *TruncateTooltipModule*
 
 
+  #### Use as a (structural) directive (*bTruncateTooltip):
   ~~~
-  ${template}
+  ${template1}
   ~~~
 
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  b-truncate-tooltip | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0. | 1 (optional)
+  bTruncateTooltip | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0. | 1 (optional)
+
+
+  #### Use as a component (b-truncate-tooltip):
+  ~~~
+  ${template2}
+  ~~~
+
+  #### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  maxLines | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0. | 1 (optional)
+
 
 `;
 
 story.add(
-  'Truncate Tooltip Component',
+  'Truncate Tooltip',
   () => {
     return {
       template: storyTemplate,
       props: {
-        maxLines: number('b-truncate-tooltip', 2)
+        maxLines: number('bTruncateTooltip/maxLines', 2)
       },
       moduleMetadata: {
         declarations: [],
