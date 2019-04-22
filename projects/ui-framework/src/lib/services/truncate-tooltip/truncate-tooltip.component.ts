@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { ElementData, Styles } from './truncate-tooltip.interface';
 
 @Component({
-  selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
+  selector: 'b-truncate-tooltip',
   template: `
     <span
       #textContainer
@@ -35,21 +35,22 @@ export class TruncateTooltipComponent
 
   @ViewChild('textContainer') textContainer: ElementRef;
 
-  // tslint:disable-next-line:no-input-rename
-  @Input('b-truncate-tooltip') maxLines = 1;
+  @Input() maxLines = 1;
 
   private textElement: HTMLElement;
   private resizeSubscription: Subscription;
   textElementData: ElementData;
 
-  private getLineClampCSS = (): Styles => ({
-    maxHeight:
-      this.textElementData.fontSize *
-        this.textElementData.lineHeight *
-        this.maxLines +
-      'px',
-    webkitLineClamp: this.maxLines
-  })
+  private getLineClampCSS(): Styles {
+    return {
+      maxHeight:
+        this.textElementData.fontSize *
+          this.textElementData.lineHeight *
+          this.maxLines +
+        'px',
+      webkitLineClamp: this.maxLines
+    };
+  }
 
   private applyTextElementStyle() {
     this.textElementData = {
@@ -81,24 +82,38 @@ export class TruncateTooltipComponent
       text: this.textElement.innerText
     };
 
-    console.log(this.textContainer);
+    // console.log(this.textContainer);
+    console.log('textElementData', this.textElementData);
   }
 
   private checkTooltipNecessity(): void {
     this.textElementData = {
       ...this.textElementData,
+
       tooltipEnabled:
         ((this.maxLines === 1 || !this.maxLines) &&
-          this.textElement.scrollWidth > this.textElement.offsetWidth) ||
+          this.textContainer.nativeElement.scrollWidth >
+            this.textContainer.nativeElement.offsetWidth) ||
         (this.maxLines > 0 &&
-          this.textElement.scrollHeight > this.textElement.offsetHeight)
+          this.textContainer.nativeElement.scrollHeight >
+            this.textContainer.nativeElement.offsetHeight)
           ? true
           : false
     };
   }
 
+  private getDeepestNode(element: HTMLElement): HTMLElement {
+    while (element.children.length === 1) {
+      element = element.children[0] as HTMLElement;
+    }
+    return element;
+  }
+
   ngOnInit(): void {
-    this.textElement = this.textContainer.nativeElement;
+    this.textElement = this.getDeepestNode(this.textContainer.nativeElement);
+
+    console.log('textElement', this.textElement);
+
     this.getElementTextData();
     this.applyTextElementStyle();
 
