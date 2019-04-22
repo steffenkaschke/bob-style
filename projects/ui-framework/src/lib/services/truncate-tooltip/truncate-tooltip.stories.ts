@@ -85,6 +85,13 @@ const note = `
   maxLines | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0 or null. | 1 (optional)
 
 
+
+  ### NOTE:
+  - Text inside the directive/component should be of uniform (same) font-size!
+  - There should not be any adjacent block-level elements inside (Bad: \`\`\`<p>A</p> <p>B</p>\`\`\`).
+  - Single-child wrapping block-level elements are allowed (OK: \`\`\`<p>AB</p>\`\`\`).
+  - Any number of adjacent inline elements are allowed  (OK: \`\`\`<p><span>A</span> <span>B</span></p>\`\`\`).
+
 `;
 
 story.add(
