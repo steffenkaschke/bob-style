@@ -2,8 +2,9 @@
    b-table-card-cell
    [index]="index"
    [cell]="cell"
-   [meta]="meta[index]"
    [attr.aria-label]="meta[index].name"
+   [ngClass]="cell.class"
    [ngStyle]="style[index]"
+   (click)="onCellClicked(cell, index)"
    role="cell">
 </p>

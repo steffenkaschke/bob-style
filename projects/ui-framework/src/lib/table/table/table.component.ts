@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
-import { has, get } from 'lodash';
+import { get, has } from 'lodash';
 import { ColumnDef, RowClickedEvent, RowSelection, SortChangedEvent } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
@@ -38,10 +38,6 @@ export class TableComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.setGridHeight(this.maxHeight);
-
-    this.gridColumnDefs = this.tableUtilsService
-      .getGridColumnDef(this.columnDefs, this.rowSelection);
-
     this.gridOptions = <GridOptions>{
       suppressAutoSize: true,
       suppressRowClickSelection: true,
@@ -49,8 +45,6 @@ export class TableComponent implements OnInit, OnChanges {
       rowHeight: this.rowHeight,
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
-      onGridSizeChanged: () => {
-      },
       onGridReady: () => {
         this.gridOptions.columnApi.autoSizeAllColumns();
         this.gridReady = true;
@@ -59,6 +53,10 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (has(changes, 'columnDefs')) {
+      this.gridColumnDefs = this.tableUtilsService
+        .getGridColumnDef(this.columnDefs, this.rowSelection);
+    }
     if (has(changes, 'maxHeight')) {
       this.maxHeight = changes.maxHeight.currentValue;
       this.setGridHeight(this.maxHeight);

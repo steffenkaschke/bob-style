@@ -1,0 +1,16 @@
+@import '../../style/colors';
+@import '../../style/typography';
+
+:host {
+  a {
+    text-decoration-line: none;
+    color: inherit;
+    font-weight: 600;
+    &.primary {
+      color: var(--primary-700);
+    }
+    &:hover {
+      text-decoration-line: underline;
+    }
+  }
+}

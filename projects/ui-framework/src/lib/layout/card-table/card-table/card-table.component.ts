@@ -1,9 +1,19 @@
-import { Component, Input, HostBinding, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  HostBinding,
+  OnInit,
+  Output,
+  EventEmitter
+} from '@angular/core';
 
 import {
   CardTableMetaData,
   CardTableData,
-  cardTableAllowedCellStyles
+  cardTableAllowedCellStyles,
+  CardTableRowData,
+  CardTableRowClickEvent,
+  CardTableCellClickEvent
 } from '../card-table.interface';
 import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
 
@@ -17,9 +27,17 @@ export class CardTableComponent implements OnInit {
 
   @Input() meta: CardTableMetaData;
   @Input() table: CardTableData;
+  @Input() default = 'No data to display';
   @Input() minCellWidth = 5;
 
   @HostBinding('attr.role') string = 'table';
+
+  @Output() rowClicked?: EventEmitter<
+    CardTableRowClickEvent
+  > = new EventEmitter<CardTableRowClickEvent>();
+  @Output() cellClicked?: EventEmitter<
+    CardTableCellClickEvent
+  > = new EventEmitter<CardTableCellClickEvent>();
 
   cellsStyle: cardTableAllowedCellStyles[];
 
@@ -38,5 +56,13 @@ export class CardTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.setCellsStyle();
+  }
+
+  onRowClicked(row: CardTableRowData, index: number): void {
+    this.rowClicked.emit({ row: row, rowIndex: index });
+  }
+
+  onCellClicked($event: CardTableCellClickEvent): void {
+    this.cellClicked.emit($event);
   }
 }

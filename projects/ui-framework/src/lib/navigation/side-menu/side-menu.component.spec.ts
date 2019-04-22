@@ -30,8 +30,19 @@ describe('SideMenuComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('ngOnInit', () => {
-    it('should set selectedId to 1', () => {
+  describe('ngOnChanges', () => {
+    it('should select the first option', () => {
+      component.ngOnChanges();
+      expect(component.selectedId).toEqual('1');
+    });
+    it('should not select an option when no options', () => {
+      component.options = [];
+      component.ngOnChanges();
+      expect(component.selectedId).toBeNull();
+    });
+    it('should select the fist option when selectedId is not in options', () => {
+      component.selectedId = '99999';
+      component.ngOnChanges();
       expect(component.selectedId).toEqual('1');
     });
   });

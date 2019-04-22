@@ -7,6 +7,9 @@
  */
 
 // Typography Module
+import { TableComponent } from './lib/table/table/table.component';
+import { AvatarCellComponent } from './lib/table/table-cell-components/avatar.component';
+
 export { TypographyModule } from './lib/typography/typography.module';
 
 /*
@@ -60,7 +63,17 @@ export {
   ChipComponent
 } from './lib/buttons-indicators/chips/chip/chip.component';
 export { ChipType } from './lib/buttons-indicators/chips/chips.enum';
-
+// InfoStrip Module
+export { InfoStripModule } from './lib/buttons-indicators/info-strip/info-strip.module';
+export { InfoStripComponent } from './lib/buttons-indicators/info-strip/info-strip.component';
+// Link Module
+export { LinkModule } from './lib/buttons-indicators/link/link.module';
+export { LinkComponent } from './lib/buttons-indicators/link/link.component';
+export { Link } from './lib/buttons-indicators/link/link.types';
+export { LinkColor, LinkTarget } from './lib/buttons-indicators/link/link.enum';
+// InfoTooltip Module
+export { InfoTooltipModule } from './lib/buttons-indicators/info-tooltip/info-tooltip.module';
+export { InfoTooltipComponent } from './lib/buttons-indicators/info-tooltip/info-tooltip.component';
 /*
  * Form Elements
  */
@@ -134,19 +147,14 @@ export {
   ListComponentPrefix
 } from './lib/form-elements/lists/list.interface';
 export { ListChange } from './lib/form-elements/lists/list-change/list-change';
-// Breadcrumbs Module
+// Rich Text Editor
 export {
-  BreadcrumbsModule
-} from './lib/navigation/breadcrumbs/breadcrumbs.module';
+  RichTextEditorModule
+} from './lib/form-elements/rich-text-editor/rich-text-editor.module';
 export {
-  BreadcrumbsComponent
-} from './lib/navigation/breadcrumbs/breadcrumbs.component';
-export {
-  Breadcrumb,
-  BreadcrumbNavButtons,
-  BreadcrumbNavButton
-} from './lib/navigation/breadcrumbs/breadcrumbs.interface';
-export { BaseFormElement } from './lib/form-elements/base-form-element';
+  RichTextEditorComponent
+} from './lib/form-elements/rich-text-editor/rich-text-editor.component';
+
 
 /*
  * Navigation
@@ -190,6 +198,20 @@ export {
 // Tabs Module
 export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { Tab } from './lib/navigation/tabs/tabs.interface';
+// Breadcrumbs Module
+export {
+  BreadcrumbsModule
+} from './lib/navigation/breadcrumbs/breadcrumbs.module';
+export {
+  BreadcrumbsComponent
+} from './lib/navigation/breadcrumbs/breadcrumbs.component';
+export {
+  Breadcrumb,
+  BreadcrumbNavButtons,
+  BreadcrumbNavButton
+} from './lib/navigation/breadcrumbs/breadcrumbs.interface';
+export { BaseFormElement } from './lib/form-elements/base-form-element';
+
 
 /*
  * Overlays
@@ -218,6 +240,8 @@ export {
 // Table Module
 export { TableModule } from './lib/table/table.module';
 export * from './lib/table/table/table.interface';
+export { TableComponent } from './lib/table/table/table.component';
+export { AvatarCellComponent } from './lib/table/table-cell-components/avatar.component';
 
 
 /*
@@ -235,19 +259,12 @@ export { CardAddComponent } from './lib/layout/cards/card-add/card-add.component
 // Card Table
 export { CardTableModule } from './lib/layout/card-table/card-table.module';
 export { CardTableComponent } from './lib/layout/card-table/card-table/card-table.component';
+export * from './lib/layout/card-table/card-table.interface';
 
 
 /*
  * Misc
  */
-
-// Rich Text Editor
-export {
-  RichTextEditorModule
-} from './lib/misc/rich-text-editor/rich-text-editor.module';
-export {
-  RichTextEditorComponent
-} from './lib/misc/rich-text-editor/rich-text-editor.component';
 
 // Preloader
 export {

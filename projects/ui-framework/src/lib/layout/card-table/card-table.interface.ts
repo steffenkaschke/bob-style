@@ -25,11 +25,12 @@ export interface CardTableCellMeta {
   width?: number;
   align?: string;
   textStyle?: cardTableAllowedTextStyles;
-  sortablle?: boolean;
+  sortable?: boolean;
 }
 
 export interface CardTableCellData {
-  data: CardTableCellDataType;
+  data?: CardTableCellDataType;
+  class?: string | string[];
 }
 
 export interface CardTableMetaData extends Array<CardTableCellMeta> {}
@@ -37,3 +38,13 @@ export interface CardTableMetaData extends Array<CardTableCellMeta> {}
 export interface CardTableRowData extends Array<CardTableCellData> {}
 
 export interface CardTableData extends Array<CardTableRowData> {}
+
+export interface CardTableCellClickEvent {
+  rowIndex: number;
+  cellIndex: number;
+  cell: CardTableCellData;
+}
+export interface CardTableRowClickEvent {
+  rowIndex: number;
+  row: CardTableRowData;
+}

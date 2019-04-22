@@ -40,7 +40,7 @@ export const CardTableMockMetaData: CardTableMetaData = [
     id: 1,
     name: 'Requested For',
     width: 25,
-    sortablle: false
+    sortable: false
   },
   {
     id: 2,
@@ -48,24 +48,25 @@ export const CardTableMockMetaData: CardTableMetaData = [
     textStyle: {
       fontWeight: '500'
     },
-    sortablle: false
+    width: 18,
+    sortable: false
   },
   {
     id: 3,
     name: 'Requested by',
-    sortablle: false
+    sortable: false
   },
   {
     id: 4,
     name: 'Assignee',
-    sortablle: false
+    sortable: false
   },
   {
     id: 5,
     name: 'Status',
     width: 15,
     align: 'right',
-    sortablle: true
+    sortable: true
   }
 ];
 
@@ -98,7 +99,8 @@ export const CardTableMockData: CardTableData = [
       data: ['Elsie Hunter', '11/03/2019']
     },
     {
-      data: ['Madge Scott', '(You)']
+      data: ['Madge Scott', '(You)'],
+      class: 'highlight-second-line'
     },
     {
       data: {
@@ -147,7 +149,8 @@ export const CardTableMockData: CardTableData = [
       data: {
         component: ChipComponent,
         attributes: {
-          type: 'attention'
+          type: 'attention',
+          color: 'red'
         },
         content: 'Pending'
       }
@@ -262,7 +265,7 @@ export const CardTableMockData: CardTableData = [
       data: ['Elsie Hunter', '11/03/2019']
     },
     {
-      data: '\u2014'
+      data: ''
     },
     {
       data: {

@@ -1,11 +1,12 @@
 import { storiesOf } from '@storybook/angular';
-import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { AvatarComponent } from './avatar.component';
 import { values } from 'lodash';
 import { AvatarSize } from './avatar.enum';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { AvatarModule } from './avatar.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const avatarStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
   withKnobs
@@ -13,12 +14,17 @@ const avatarStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
 
 const sizeOptions = values(AvatarSize);
 const template = `
+<div style="display: flex; justify-content: center;">
 <b-avatar
   [imageSource]="imageSource"
   [size]="size"
   [isClickable]="isClickable"
+  [title]="title"
+  [subtitle]="subtitle"
+  [disabled]="disabled"
   (clicked)="clickHandler($event)">
 </b-avatar>
+</div>
 `;
 const note = `
   ## Avatar Element
@@ -30,8 +36,12 @@ const note = `
   --- | --- | --- | ---
   imageSource | String | url of the image |
   size | AvatarSize | enum for setting the avatar size | mini (optional)
-  clicked | Boolean | boolean flag for indicating if the avatar is clickable or not | false (optional)
+  title | string | main title of the avatar | '' (optional)
+  subtitle | string | subtitle of the avatar | '' (optional)
+  disabled | boolean | disabled avatar | false (optional)
+  clicked | boolean | boolean flag for indicating if the avatar is clickable or not | false (optional)
   handleClick | Function | callback for clicking on the avatar | no click (optional)
+
 
   ~~~
   ${template}
@@ -56,11 +66,17 @@ avatarStories.add(
         ),
         size: select('size', sizeOptions, AvatarSize.medium),
         isClickable: boolean('isClickable', false),
-        clickHandler: action()
+        clickHandler: action(),
+        title: text('title', 'John Doe'),
+        subtitle: text('subtitle', 'Web Developer'),
+        disabled: boolean('disabled', false),
       },
       moduleMetadata: {
-        declarations: [AvatarComponent],
-        imports: [StoryBookLayoutModule]
+        imports: [
+          BrowserAnimationsModule,
+          StoryBookLayoutModule,
+          AvatarModule,
+        ]
       }
     };
   },

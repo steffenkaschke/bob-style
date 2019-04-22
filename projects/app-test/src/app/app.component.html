@@ -1,8 +1,38 @@
-<div>
-  <b-display-1>Hello</b-display-1>
-</div>
+<div style="padding: 100px; height: 100%; display: flex;">
 
-<b-multi-select label="test multi select"
-                [value]="null"
-                [options]="multiSelectOptions">
-</b-multi-select>
+
+  <form [formGroup]="myForm"
+        style="max-width: 700px; margin: auto; display: flex; justify-content: space-between; align-self: flex-start;">
+
+    <div>
+      <b-rich-text-editor formControlName="rteControl"
+                          [minHeight]="null"
+                          [disabled]="disabled"
+                          [errorMessage]="error ? 'Error' : undefined"
+                          style="margin-right: 40px;">
+      </b-rich-text-editor>
+
+      <div style="margin: 20px 40px 30px; padding: 10px; border: 1px solid silver;"
+           class="rte-output"
+           [innerHTML]="myForm.get('rteControl').value.body ? myForm.get('rteControl').value.body :
+           myForm.get('rteControl').value">
+      </div>
+    </div>
+
+    <div>
+      <p>
+        <input type="text"
+               formControlName="inputControl"
+               style="width: 300px; height: 40px; padding: 0 10px; line-height: 38px;outline:0;">
+      </p>
+      <p>
+        <button (click)="disabled = !disabled">tgl dsbld</button>
+        &nbsp;
+        <button (click)="error = !error">tgl err</button>
+      </p>
+    </div>
+
+  </form>
+
+
+</div>

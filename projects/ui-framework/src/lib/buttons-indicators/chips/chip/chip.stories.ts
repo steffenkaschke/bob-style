@@ -19,7 +19,10 @@ const story = storiesOf(
 
 const typeOptions = values(ChipType);
 const template = `
-  <b-chip [type]="type">
+  <b-chip
+    [type]="type"
+    [color]="color"
+    (click)="OnClick()">
     {{ text }}
   </b-chip>
 `;
@@ -39,7 +42,7 @@ const note = `
   --- | --- | --- | ---
   text | string | chip text | ''
   type | ChipType | enum for setting the chip type (empty, default, info, success, attention, warning) | default (optional)
-
+  color | string | custom chip color | '' (optional)
 
   ~~~
   ${template}
@@ -60,8 +63,10 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
+      OnClick: action('Clicked!'),
       type: select('type', typeOptions, ChipType.default),
-      text: text('text', 'Chip text')
+      text: text('text', 'Chip text'),
+      color: text('color', '')
     },
     moduleMetadata: {
       imports: [ChipsModule, StoryBookLayoutModule]

@@ -5,6 +5,12 @@
 
 :host {
   display: inline-block;
+  .menu-trigger-wrapper {
+    display: inline-block;
+    &.disabled {
+      pointer-events: none;
+    }
+  }
 }
 
 ::ng-deep {
@@ -31,6 +37,10 @@
           display: flex;
           align-content: space-between;
           align-items: center;
+          &.disabled {
+            color: $grey-600;
+            pointer-events: none;
+          }
           &.mat-menu-item-submenu-trigger::after {
             position: absolute;
             right: 12px;

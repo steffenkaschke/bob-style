@@ -14,9 +14,12 @@ import { MenuItem } from './menu.interface';
 const menuStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
 
 const template = `
-<b-menu style="position: absolute; top: 20px; left: 20px;"
-        [menu]="menu"
-        [openLeft]="openLeft">
+<b-menu [menu]="menu"
+        [openLeft]="openLeft"
+        [disabled]="disabled"
+        (actionClick)="actionClick()"
+        (openMenu)="openMenu()"
+        (closeMenu)="closeMenu()">
   <b-square-button menu-trigger
                    type="${ ButtonType.secondary }"
                    icon="${ Icons.three_dots }">
@@ -25,7 +28,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Actions menu">
+<b-story-book-layout [title]="'Actions menu'">
   ${ template }
 </b-story-book-layout>
 `;
@@ -41,6 +44,10 @@ const note = `
   --- | --- | --- | ---
   menu | MenuItem[] | array of menu items | none
   openLeft | boolean | open left by default | false
+  disabled | boolean | disables menu
+  actionClick | action | notifies on action click
+  openMenu | action | notifies on menu open
+  closeMenu | action | notifies on menu close
 
   ~~~
   ${ template }
@@ -64,6 +71,7 @@ const menuMock: MenuItem[] = [
           },
           {
             label: 'Update reports to',
+            disabled: true,
             action: ($event) => console.log('update reports to', $event)
           }
         ]
@@ -93,6 +101,7 @@ const menuMock: MenuItem[] = [
   },
   {
     label: 'Request time-off',
+    disabled: true,
     action: ($event) => console.log('request time off', $event)
   }
 ];
@@ -104,7 +113,11 @@ menuStories.add(
       template: storyTemplate,
       props: {
         openLeft: boolean('openLeft', false),
+        disabled: boolean('disabled', false),
         menu: object('menu', menuMock),
+        actionClick: action('action click'),
+        openMenu: action('menu open'),
+        closeMenu: action('menu close'),
       },
       moduleMetadata: {
         imports: [
