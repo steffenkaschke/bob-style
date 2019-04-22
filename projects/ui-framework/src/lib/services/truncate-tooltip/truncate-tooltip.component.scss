@@ -3,8 +3,7 @@
 @import '../../style/shapes';
 @import '../../style/typography';
 
-$tooltip-color: rgba($grey-700, 0.9);
-$tooltip-arrow-size: 10px;
+@import '../../overlay/overlay';
 
 span {
   display: block;
@@ -52,31 +51,34 @@ span {
 
 ::ng-deep {
   .mat-tooltip.b-truncate-tooltip {
-    background-color: $tooltip-color;
-    position: relative;
-    overflow: visible;
+    @include OverlayPanel;
+    @include OverlayPointerHolders;
+    @include OverlayPositionBounding(center);
     max-width: 350px;
-    @include BodyFont(11px);
-
-    &:before {
-      @include pseudo;
-      position: absolute;
-      left: calc(50% - #{$tooltip-arrow-size/2});
-    }
+    padding: 12px 15px;
+    margin: 0;
+    font-size: $font-size-body;
+    color: $body-text-color;
 
     // position above
     &[style*='center bottom'] {
+      @include OverlayPositionBounding(above);
       &:before {
-        @include arrow-down(($tooltip-arrow-size/2), $tooltip-color);
-        top: 100%;
+        bottom: -6px;
+      }
+      &:after {
+        bottom: -5px;
       }
     }
 
     // position below
     &[style*='center top'] {
+      @include OverlayPositionBounding(below);
       &:before {
-        @include arrow-up(($tooltip-arrow-size/2), $tooltip-color);
-        bottom: 100%;
+        top: -6px;
+      }
+      &:after {
+        top: -5px;
       }
     }
   }
