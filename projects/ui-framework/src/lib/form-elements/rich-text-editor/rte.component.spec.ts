@@ -28,7 +28,7 @@ import { Platform } from '@angular/cdk/platform';
 @Component({
   template: `
     <div class="form">
-      <b-rich-text-editor [formControl]="rteControl"> </b-rich-text-editor>
+      <b-rich-text-editor [formControl]="rteControl"></b-rich-text-editor>
     </div>
   `,
   providers: []
@@ -38,7 +38,7 @@ class TestComponent {
   rteControl = new FormControl();
 }
 
-describe('RichTextEditorComponent', () => {
+fdescribe('RichTextEditorComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 
@@ -50,6 +50,7 @@ describe('RichTextEditorComponent', () => {
   let overlayContainerElement: HTMLElement;
   let QuillEditor: Quill;
   let RTEqlEditorNativeElement: HTMLElement;
+  let rteControl: FormControl;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -94,6 +95,7 @@ describe('RichTextEditorComponent', () => {
         setTimeout(() => {
           QuillEditor = RTEComponent.editor;
           RTEqlEditorNativeElement = QuillEditor.root;
+          rteControl = testComponent.rteControl;
         }, 0);
       });
 
@@ -360,6 +362,12 @@ describe('RichTextEditorComponent', () => {
 
       addButtonElement.click();
       RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
+    });
+  });
+
+  describe('FormControl', () => {
+    it('should insert link into Editor', () => {
+      console.log(rteControl);
     });
   });
 });
