@@ -4,18 +4,23 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Injector,
-  ViewChild
+  ViewChild,
+  HostBinding,
+  Input,
+  ElementRef
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-
 import quillLib, { QuillOptionsStatic } from 'quill';
 import { LinkBlot } from './formats/link-blot';
-import { BlotType, RTEFontSize } from './rte.enum';
+import { BlotType, RTEFontSize, RTEType, RTEControls } from './rte.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { RteLink, UpdateRteConfig } from './rte.interface';
-
 import { RTEformElement } from './rte-form-element.abstract';
 import { PanelComponent } from '../../overlay/panel/panel.component';
+import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { Icons } from '../../icons/icons.enum';
+import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
+
 
 quillLib.register(LinkBlot);
 
@@ -47,7 +52,41 @@ export class RichTextEditorComponent extends RTEformElement
     super(rteUtils, changeDetector, injector);
   }
 
+  @HostBinding('class') get classes() {
+    return (
+      (this.type === RTEType.secondary ? 'rte-secondary' : 'rte-primary') +
+      (this.required ? ' required' : '') +
+      (this.disabled ? ' disabled' : '') +
+      (this.errorMessage ? ' error' : '')
+    );
+  }
+
+  @Input() type?: RTEType = RTEType.primary;
+  @Input() controls?: RTEControls[] = [
+    RTEControls.size,
+    RTEControls.bold,
+    RTEControls.italic,
+    RTEControls.underline,
+    RTEControls.link,
+    RTEControls.list,
+    RTEControls.align,
+    RTEControls.dir
+  ];
+  @Input() minHeight = 185;
+  @Input() maxHeight = 295;
+
+  @ViewChild('toolbar') toolbar: ElementRef;
+  @ViewChild('suffix') suffix: ElementRef;
   @ViewChild('linkPanel') private linkPanel: PanelComponent;
+
+  hasSuffix = true;
+
+  readonly buttonType = ButtonType;
+  readonly icons = Icons;
+  readonly panelSize = PanelSize;
+  readonly RTEControls = RTEControls;
+  readonly RTEFontSize = RTEFontSize;
+  readonly panelDefaultPosVer = PanelDefaultPosVer;
 
   ngAfterViewInit(): void {
     this.onRTEviewInit();
@@ -75,6 +114,12 @@ export class RichTextEditorComponent extends RTEformElement
 
     setTimeout(() => {
       this.initEditor(editorOptions);
+
+      this.hasSuffix =
+        this.suffix.nativeElement.children.length !== 0 ||
+        this.suffix.nativeElement.childNodes.length !== 0
+          ? true
+          : false;
     }, 0);
   }
 
