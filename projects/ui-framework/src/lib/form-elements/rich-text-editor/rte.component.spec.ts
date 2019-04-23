@@ -1,4 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  inject
+} from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA, Component, SimpleChange } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -10,6 +15,15 @@ import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.compon
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { RTEType, RTEControls } from './rte.enum';
 import Quill from 'quill';
+import { PanelModule } from '../../overlay/panel/panel.module';
+import { SingleSelectModule } from '../lists/single-select/single-select.module';
+import { InputModule } from '../input/input.module';
+import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { IconsModule } from '../../icons/icons.module';
+import { MatFormFieldModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
 
 @Component({
   template: `
@@ -31,13 +45,30 @@ describe('RichTextEditorComponent', () => {
   let RTEComponent: RichTextEditorComponent;
   let RTEnativeElement: HTMLElement;
   let RTEeditorNativeElement: HTMLElement;
-
+  let platform: Platform;
+  let overlayContainer: OverlayContainer;
+  let overlayContainerElement: HTMLElement;
   let QuillEditor: Quill;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, RichTextEditorComponent],
-      imports: [CommonModule, ReactiveFormsModule, FormsModule],
+      declarations: [
+        TestComponent,
+        RichTextEditorComponent,
+        RteLinkEditorComponent
+      ],
+      imports: [
+        CommonModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        FormsModule,
+        PanelModule,
+        SingleSelectModule,
+        InputModule,
+        ButtonsModule,
+        IconsModule,
+        MatFormFieldModule
+      ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [RteUtilsService]
     })
@@ -63,6 +94,15 @@ describe('RichTextEditorComponent', () => {
           QuillEditor = RTEComponent.editor;
         }, 0);
       });
+
+    inject(
+      [OverlayContainer, Platform],
+      (oc: OverlayContainer, p: Platform) => {
+        overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
+        platform = p;
+      }
+    )();
   }));
 
   describe('OnInit', () => {
@@ -188,7 +228,7 @@ describe('RichTextEditorComponent', () => {
       fixture.detectChanges();
 
       const toolbarElement = fixture.debugElement.query(
-        By.css('.quill-toolbar ')
+        By.css('.quill-toolbar')
       ).nativeElement;
 
       expect(toolbarElement.children.length).toEqual(3);
@@ -232,6 +272,46 @@ describe('RichTextEditorComponent', () => {
       const RTEqlEditorNativeElement = QuillEditor.root;
       RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
       expect(RTEComponent.blurred.emit).toHaveBeenCalled();
+    });
+  });
+
+  describe('Size control', () => {
+    it('should open size select panel on toolbar button click', () => {
+      const sizeButtonElement = fixture.debugElement.query(
+        By.css('b-panel button.rte-size')
+      ).nativeElement;
+      sizeButtonElement.click();
+
+      fixture.detectChanges();
+
+      const sizePanelElement = overlayContainerElement.querySelector(
+        '.b-panel.rte-size-controls'
+      ) as HTMLElement;
+
+      expect(sizePanelElement).toBeTruthy();
+    });
+
+    it('should change font-size with Size panel controls', done => {
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test', false)
+      });
+      const sizeButtonElement = fixture.debugElement.query(
+        By.css('b-panel button.rte-size')
+      ).nativeElement;
+      sizeButtonElement.click();
+
+      RTEComponent.changed.subscribe(val => {
+        expect(val.body).toContain('ql-size-huge');
+        done();
+      });
+
+      fixture.detectChanges();
+
+      const hugeButtonElement = overlayContainerElement.querySelector(
+        '.rte-button.rte-size-huge'
+      ) as HTMLElement;
+      QuillEditor.setSelection(0, 4);
+      hugeButtonElement.click();
     });
   });
 });
