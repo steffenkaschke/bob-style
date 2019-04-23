@@ -50,6 +50,8 @@ export class RichTextEditorComponent extends RTEformElement
   @ViewChild('linkPanel') private linkPanel: PanelComponent;
 
   ngAfterViewInit(): void {
+    this.onRTEviewInit();
+
     const editorOptions: QuillOptionsStatic = {
       theme: 'snow',
       placeholder: this.rteUtilsService.getEditorPlaceholder(

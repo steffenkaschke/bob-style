@@ -7,7 +7,6 @@ import {
   EventEmitter,
   OnChanges,
   SimpleChanges,
-  AfterViewInit,
   ChangeDetectorRef,
   Injector,
   Type
@@ -15,7 +14,6 @@ import {
 import { FormControl, NgControl } from '@angular/forms';
 
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
-import { LinkBlot } from './formats/link-blot';
 
 import { RTEType, RTEControls, RTEFontSize, RTEchangeEvent } from './rte.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
@@ -31,9 +29,8 @@ const Block = quillLib.import('blots/block');
 Block.tagName = 'DIV';
 quillLib.register(Block, true);
 
-
 export abstract class RTEformElement extends BaseFormElement
-  implements OnChanges, AfterViewInit {
+  implements OnChanges {
   protected constructor(
     private rteUtils: RteUtilsService,
     private changeDetector: ChangeDetectorRef,
@@ -51,7 +48,7 @@ export abstract class RTEformElement extends BaseFormElement
     );
   }
 
-  @Input() private type?: RTEType = RTEType.primary;
+  @Input() type?: RTEType = RTEType.primary;
   @Input() value: string;
   @Input() controls?: RTEControls[] = [
     RTEControls.size,
@@ -71,7 +68,7 @@ export abstract class RTEformElement extends BaseFormElement
 
   @ViewChild('quillEditor') quillEditor: ElementRef;
   @ViewChild('toolbar') toolbar: ElementRef;
-  @ViewChild('suffix') private suffix: ElementRef;
+  @ViewChild('suffix') suffix: ElementRef;
 
   @Output() blurred: EventEmitter<RteCurrentContent> = new EventEmitter<
     RteCurrentContent
@@ -129,7 +126,7 @@ export abstract class RTEformElement extends BaseFormElement
     }
   }
 
-  ngAfterViewInit(): void {
+  onRTEviewInit(): void {
     if (this.formControl || this.formControlName) {
       const ngControl: NgControl = this.injector.get<NgControl>(
         NgControl as Type<NgControl>
@@ -152,7 +149,7 @@ export abstract class RTEformElement extends BaseFormElement
     }, 0);
   }
 
-  private onEditorTextChnage(): void {
+  private onEditorTextChange(): void {
     const newOutputValue = this.rteUtils.getHtmlContent(this.editor);
     if (
       !this.latestOutputValue ||
@@ -210,7 +207,7 @@ export abstract class RTEformElement extends BaseFormElement
     this.editor.enable(!this.disabled);
 
     this.editor.on('text-change', () => {
-      this.onEditorTextChnage();
+      this.onEditorTextChange();
     });
 
     if (!!this.value) {
@@ -229,5 +226,4 @@ export abstract class RTEformElement extends BaseFormElement
       this.onEditorBlur();
     });
   }
-
 }
