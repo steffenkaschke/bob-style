@@ -49,6 +49,7 @@ describe('RichTextEditorComponent', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   let QuillEditor: Quill;
+  let RTEqlEditorNativeElement: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -92,6 +93,7 @@ describe('RichTextEditorComponent', () => {
 
         setTimeout(() => {
           QuillEditor = RTEComponent.editor;
+          RTEqlEditorNativeElement = QuillEditor.root;
         }, 0);
       });
 
@@ -130,8 +132,6 @@ describe('RichTextEditorComponent', () => {
       });
       fixture.detectChanges();
 
-      const RTEqlEditorNativeElement = QuillEditor.root;
-
       expect(RTEqlEditorNativeElement.getAttribute('data-placeholder')).toEqual(
         'test label'
       );
@@ -144,7 +144,6 @@ describe('RichTextEditorComponent', () => {
       });
       fixture.detectChanges();
 
-      const RTEqlEditorNativeElement = QuillEditor.root;
       expect(RTEqlEditorNativeElement.getAttribute('data-placeholder')).toEqual(
         'test label *'
       );
@@ -245,16 +244,16 @@ describe('RichTextEditorComponent', () => {
       });
       fixture.detectChanges();
 
-      const RTEqlEditorNativeElement = QuillEditor.root;
       expect(RTEqlEditorNativeElement.textContent).toEqual('test text');
     });
   });
 
   describe('Events', () => {
     it('should output RteCurrentContent object when text changes', done => {
-      RTEComponent.changed.subscribe(val => {
+      const subscr = RTEComponent.changed.subscribe(val => {
         expect(val.body).toEqual('<div>test text</div>');
         expect(val.plainText).toEqual('test text');
+        subscr.unsubscribe();
         done();
       });
       RTEComponent.ngOnChanges({
@@ -263,26 +262,24 @@ describe('RichTextEditorComponent', () => {
     });
     it('should output focused event when editor is focused', () => {
       spyOn(RTEComponent.focused, 'emit');
-      const RTEqlEditorNativeElement = QuillEditor.root;
+
       RTEqlEditorNativeElement.dispatchEvent(new Event('focus'));
       expect(RTEComponent.focused.emit).toHaveBeenCalled();
     });
     it('should output blurred event when editor is blurred', () => {
       spyOn(RTEComponent.blurred, 'emit');
-      const RTEqlEditorNativeElement = QuillEditor.root;
+
       RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
       expect(RTEComponent.blurred.emit).toHaveBeenCalled();
     });
   });
 
   describe('Size control', () => {
-    it('should open size select panel on toolbar button click', () => {
+    it('should open Size Panel on toolbar Size button click', () => {
       const sizeButtonElement = fixture.debugElement.query(
         By.css('b-panel button.rte-size')
       ).nativeElement;
       sizeButtonElement.click();
-
-      fixture.detectChanges();
 
       const sizePanelElement = overlayContainerElement.querySelector(
         '.b-panel.rte-size-controls'
@@ -291,7 +288,7 @@ describe('RichTextEditorComponent', () => {
       expect(sizePanelElement).toBeTruthy();
     });
 
-    it('should change font-size with Size panel controls', done => {
+    it('should change font-size with Size Panel controls', done => {
       RTEComponent.ngOnChanges({
         value: new SimpleChange(null, 'test', false)
       });
@@ -300,8 +297,9 @@ describe('RichTextEditorComponent', () => {
       ).nativeElement;
       sizeButtonElement.click();
 
-      RTEComponent.changed.subscribe(val => {
+      const subscr = RTEComponent.changed.subscribe(val => {
         expect(val.body).toContain('ql-size-huge');
+        subscr.unsubscribe();
         done();
       });
 
@@ -312,6 +310,56 @@ describe('RichTextEditorComponent', () => {
       ) as HTMLElement;
       QuillEditor.setSelection(0, 4);
       hugeButtonElement.click();
+    });
+  });
+
+  describe('Link control', () => {
+    it('should open Link Editor panel on toolbar Link button click', () => {
+      const linkButtonElement = fixture.debugElement.query(
+        By.css('b-panel button.ql-link')
+      ).nativeElement;
+      linkButtonElement.click();
+
+      const linkPanelElement = overlayContainerElement.querySelector(
+        '.b-panel.rte-link-editor'
+      ) as HTMLElement;
+
+      expect(linkPanelElement).toBeTruthy();
+    });
+
+    it('should insert link into Editor', done => {
+      const linkButtonElement = fixture.debugElement.query(
+        By.css('b-panel button.ql-link')
+      ).nativeElement;
+      linkButtonElement.click();
+
+      const textInputElement = <HTMLInputElement>(
+        overlayContainerElement.querySelector(
+          'input.mat-input-element[type="text"]'
+        )
+      );
+      const urlInputElement = <HTMLInputElement>(
+        overlayContainerElement.querySelector(
+          'input.mat-input-element[type="url"]'
+        )
+      );
+      const addButtonElement = overlayContainerElement.querySelector(
+        'b-rte-link-editor .mat-button.primary'
+      ) as HTMLElement;
+
+      textInputElement.value = 'test1';
+      textInputElement.dispatchEvent(new Event('input'));
+      urlInputElement.value = 'test2';
+      urlInputElement.dispatchEvent(new Event('input'));
+
+      const subscr = RTEComponent.blurred.subscribe(val => {
+        expect(val.body).toContain('a href="http://test2"');
+        subscr.unsubscribe();
+        done();
+      });
+
+      addButtonElement.click();
+      RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
     });
   });
 });
