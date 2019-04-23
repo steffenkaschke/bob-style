@@ -61,6 +61,22 @@
         stroke: var(--inform-500) !important;
       }
     }
+    &.negative {
+      path, circle {
+        fill: var(--negative-500) !important;
+      }
+      line {
+        stroke: var(--negative-500) !important;
+      }
+    }
+    &.positive {
+      path, circle {
+        fill: var(--positive-500) !important;
+      }
+      line {
+        stroke: var(--positive-500) !important;
+      }
+    }
     &.has-hover-state:hover {
       svg path[fill='none'] {
         fill: transparent !important;
@@ -113,6 +129,22 @@
         }
         line {
           stroke: var(--inform-700) !important;
+        }
+      }
+      &.positive {
+        path, circle {
+          fill: var(--positive-700) !important;
+        }
+        line {
+          stroke: var(--positive-700) !important;
+        }
+      }
+      &.negative {
+        path, circle {
+          fill: var(--negative-700) !important;
+        }
+        line {
+          stroke: var(--negative-700) !important;
         }
       }
     }

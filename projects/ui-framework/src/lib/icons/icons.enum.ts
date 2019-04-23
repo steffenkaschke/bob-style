@@ -12,6 +12,8 @@ export enum IconColor {
   white = 'white',
   primary = 'primary',
   inform = 'inform',
+  negative = 'negative',
+  positive = 'positive',
 }
 
 export enum Icons {
@@ -57,5 +59,8 @@ export enum Icons {
   doc_icon = 'doc_icon',
   approve_badge = 'approve_badge',
   arrow_forward = 'arrow_forward',
-  pending_badge = 'pending_badge'
+  pending_badge = 'pending_badge',
+  error = 'error_icon',
+  success = 'success_icon',
+  warning = 'warning_icon'
 }

@@ -63,6 +63,7 @@ export { ChipType } from './lib/buttons-indicators/chips/chips.enum';
 // InfoStrip Module
 export { InfoStripModule } from './lib/buttons-indicators/info-strip/info-strip.module';
 export { InfoStripComponent } from './lib/buttons-indicators/info-strip/info-strip.component';
+export { InfoStripIconType } from './lib/buttons-indicators/info-strip/info-strip.enum';
 // Link Module
 export { LinkModule } from './lib/buttons-indicators/link/link.module';
 export { LinkComponent } from './lib/buttons-indicators/link/link.component';
@@ -151,7 +152,19 @@ export {
 export {
   RichTextEditorComponent
 } from './lib/form-elements/rich-text-editor/rte.component';
-
+// Radio Buttons
+export {
+  RadioButtonModule
+} from './lib/form-elements/radio-button/radio-button.module';
+export {
+  RadioButtonComponent
+} from './lib/form-elements/radio-button/radio-button.component';
+export {
+  RadioDirection
+} from './lib/form-elements/radio-button/radio-button.enum';
+export {
+  RadioConfig
+} from './lib/form-elements/radio-button/radio-button.interface';
 
 /*
  * Navigation

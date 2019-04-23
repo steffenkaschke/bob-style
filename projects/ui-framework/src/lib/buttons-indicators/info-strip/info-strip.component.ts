@@ -1,6 +1,9 @@
-import { Component, Input } from '@angular/core';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { Link } from './../link/link.types';
+import {Component, Input} from '@angular/core';
+import {IconColor, Icons, IconSize} from '../../icons/icons.enum';
+import {Link} from './../link/link.types';
+import {InfoStripIconType} from './info-strip.enum';
+import {Dictionary} from 'lodash';
+import {InfoStripIcon} from './info-strip.types';
 
 @Component({
   selector: 'b-info-strip',
@@ -8,11 +11,16 @@ import { Link } from './../link/link.types';
   styleUrls: ['./info-strip.component.scss']
 })
 export class InfoStripComponent {
-  @Input() icon: Icons;
-  @Input() iconColor: IconColor;
+  @Input() iconType: InfoStripIconType;
   @Input() link: Link;
   @Input() text = '';
-  iconSize: IconSize = IconSize.xLarge;
+  readonly iconSize: IconSize = IconSize.xLarge;
+  readonly iconsDic: Dictionary<InfoStripIcon> = {
+    warning: { color: IconColor.primary, icon: Icons.warning },
+    error: { color: IconColor.negative, icon: Icons.error },
+    success: { color: IconColor.positive, icon: Icons.success },
+    information: { color: IconColor.inform, icon: Icons.baseline_info_icon },
+  };
 
   constructor() { }
 }
