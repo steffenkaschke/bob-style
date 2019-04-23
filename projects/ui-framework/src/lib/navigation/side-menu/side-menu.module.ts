@@ -4,6 +4,7 @@ import { SideMenuComponent } from './side-menu.component';
 import { SideMenuOptionComponent } from './side-menu-option/side-menu-option.component';
 import { MenuModule } from '../menu/menu.module';
 import { IconsModule } from '../../icons/icons.module';
+import { MatTooltipModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { IconsModule } from '../../icons/icons.module';
     CommonModule,
     IconsModule,
     MenuModule,
+    MatTooltipModule,
   ],
   exports: [
     SideMenuComponent,
