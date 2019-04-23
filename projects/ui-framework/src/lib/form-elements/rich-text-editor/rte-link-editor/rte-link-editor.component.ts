@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { InputEventType, InputTypes } from '../../../form-elements/input/input.enum';
 import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
-import { RteLink } from '../rich-text-editor.interface';
+import { RteLink } from '../rte.interface';
 import { InputEvent } from '../../../form-elements/input/input.interface';
 import has from 'lodash/has';
 

@@ -5,10 +5,10 @@ import { By } from '@angular/platform-browser';
 
 import { ReactiveFormsModule, FormControl, FormsModule } from '@angular/forms';
 
-import { RichTextEditorComponent } from './rich-text-editor.component';
+import { RichTextEditorComponent } from './rte.component';
 import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { RTEType, RTEControls } from './rich-text-editor.enum';
+import { RTEType, RTEControls } from './rte.enum';
 import Quill from 'quill';
 
 @Component({

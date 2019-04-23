@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RichTextEditorComponent } from './rich-text-editor.component';
+import { RichTextEditorComponent } from './rte.component';
 import { SingleSelectModule } from '../../form-elements/lists/single-select/single-select.module';
 import { PanelModule } from '../../overlay/panel/panel.module';
 import { InputModule } from '../../form-elements/input/input.module';

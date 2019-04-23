@@ -7,9 +7,6 @@
  */
 
 // Typography Module
-import { TableComponent } from './lib/table/table/table.component';
-import { AvatarCellComponent } from './lib/table/table-cell-components/avatar.component';
-
 export { TypographyModule } from './lib/typography/typography.module';
 
 /*
@@ -150,10 +147,10 @@ export { ListChange } from './lib/form-elements/lists/list-change/list-change';
 // Rich Text Editor
 export {
   RichTextEditorModule
-} from './lib/form-elements/rich-text-editor/rich-text-editor.module';
+} from './lib/form-elements/rich-text-editor/rte.module';
 export {
   RichTextEditorComponent
-} from './lib/form-elements/rich-text-editor/rich-text-editor.component';
+} from './lib/form-elements/rich-text-editor/rte.component';
 
 
 /*

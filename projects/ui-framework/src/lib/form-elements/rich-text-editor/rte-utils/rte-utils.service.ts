@@ -3,7 +3,7 @@ import { chain, get, set, isEmpty, trim } from 'lodash';
 import {
   RteCurrentContent,
   UpdateRteConfig
-} from '../rich-text-editor.interface';
+} from '../rte.interface';
 import { Quill, RangeStatic } from 'quill';
 
 @Injectable()
@@ -72,4 +72,15 @@ export class RteUtilsService {
       0
     );
   }
+
+  getEditorPlaceholder(label: string, required: boolean): string {
+    return label ? label + (required ? ' *' : '') : '';
+  }
+
+  setEditorPlaceholder(editor: Quill, label: string, required: boolean): void {
+    if (editor) {
+      editor.root.dataset.placeholder = this.getEditorPlaceholder(label, required);
+    }
+  }
+
 }
