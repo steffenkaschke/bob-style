@@ -31,7 +31,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  iconType | StripIconType | icon type - information, error, warning, success
+  iconType | InfoStripIconType | icon type - information, error, warning, success
   text | string | The text inside the strip
   link | Link | link definition - text, url, color, target
   ~~~
