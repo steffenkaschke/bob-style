@@ -1,4 +1,4 @@
-export enum StripIconType {
+export enum InfoStripIconType {
   information = 'information',
   warning = 'warning',
   error = 'error',

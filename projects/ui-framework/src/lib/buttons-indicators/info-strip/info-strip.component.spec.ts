@@ -5,7 +5,7 @@ import {MockComponent} from 'ng-mocks';
 import {IconComponent} from '../../icons/icon.component';
 import {LinkModule} from '../link/link.module';
 import {LinkColor, LinkTarget} from '../link/link.enum';
-import {StripIconType} from './info-strip.enum';
+import {InfoStripIconType} from './info-strip.enum';
 import {IconColor, Icons} from '../../icons/icons.enum';
 
 describe('InfoStripComponent', () => {
@@ -29,11 +29,12 @@ describe('InfoStripComponent', () => {
         component.link = {
           url: 'https://app.hibob.com', text: 'Click here', target: LinkTarget.blank, color: LinkColor.primary
         };
+        component.iconType = InfoStripIconType.information;
       });
   }));
 
   describe('icon dictionary', () => {
-    const testIcon = (type: StripIconType, icon: Icons, color: IconColor) => {
+    const testIcon = (type: InfoStripIconType, icon: Icons, color: IconColor) => {
       component.iconType = type;
       fixture.detectChanges();
       const iconElement = fixture.debugElement.query(By.css('b-icon'));
@@ -42,19 +43,19 @@ describe('InfoStripComponent', () => {
     };
 
     it('should have warning icon with primary color', () => {
-      testIcon(StripIconType.warning, Icons.warning, IconColor.primary);
+      testIcon(InfoStripIconType.warning, Icons.warning, IconColor.primary);
     });
 
     it('should have success icon with positive color', () => {
-      testIcon(StripIconType.success, Icons.success, IconColor.positive);
+      testIcon(InfoStripIconType.success, Icons.success, IconColor.positive);
     });
 
     it('should have error icon with negative color', () => {
-      testIcon(StripIconType.error, Icons.error, IconColor.negative);
+      testIcon(InfoStripIconType.error, Icons.error, IconColor.negative);
     });
 
     it('should have information icon with inform color', () => {
-      testIcon(StripIconType.information, Icons.baseline_info_icon, IconColor.inform);
+      testIcon(InfoStripIconType.information, Icons.baseline_info_icon, IconColor.inform);
     });
   });
 

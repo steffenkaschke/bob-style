@@ -5,12 +5,12 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { values } from 'lodash';
 import { LinkColor, LinkTarget } from '../link/link.enum';
-import { StripIconType } from './info-strip.enum';
+import { InfoStripIconType } from './info-strip.enum';
 
 const infoStripStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
   withKnobs
 );
-const iconTypes = values(StripIconType);
+const iconTypes = values(InfoStripIconType);
 
 const template = `<b-info-strip
   [iconType]="iconType"
@@ -31,7 +31,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  iconType | StripIconType | icon type - information, error, warning, success | information
+  iconType | StripIconType | icon type - information, error, warning, success
   text | string | The text inside the strip
   link | Link | link definition - text, url, color, target
   ~~~
@@ -45,7 +45,7 @@ infoStripStories.add(
     return {
       template: storyTemplate,
       props: {
-        iconType: select('iconType', iconTypes, StripIconType.information),
+        iconType: select('iconType', iconTypes, InfoStripIconType.information),
         text: text('text', 'Place your info text here'),
         link: object('link', {
           text: 'Click here', url: 'https://app.hibob.com', target: LinkTarget.blank, color: LinkColor.none })
