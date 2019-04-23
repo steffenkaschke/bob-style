@@ -1,4 +1,4 @@
-import { BlotType } from './rich-text-editor.enum';
+import { BlotType } from './rte.enum';
 
 export interface UpdateRteConfig {
   replaceStr: string;
