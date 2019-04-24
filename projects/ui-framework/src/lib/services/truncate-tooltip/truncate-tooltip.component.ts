@@ -5,7 +5,8 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
-  ViewContainerRef
+  ViewContainerRef,
+  AfterContentChecked
 } from '@angular/core';
 import { UtilsService } from '../utils/utils.service';
 import { Subscription } from 'rxjs';
@@ -16,6 +17,7 @@ import { Styles } from './truncate-tooltip.interface';
   template: `
     <span
       #textContainer
+      class="btt"
       [matTooltip]="tooltipText"
       [matTooltipDisabled]="!tooltipEnabled"
       [ngClass]="textContainerClass"
@@ -29,7 +31,8 @@ import { Styles } from './truncate-tooltip.interface';
   `,
   styleUrls: ['./truncate-tooltip.component.scss']
 })
-export class TruncateTooltipComponent implements AfterViewInit, OnDestroy {
+export class TruncateTooltipComponent
+  implements AfterViewInit, AfterContentChecked, OnDestroy {
   constructor(public utilsService: UtilsService) {}
 
   @ViewChild('textContainer') textContainer: ElementRef;
@@ -40,9 +43,12 @@ export class TruncateTooltipComponent implements AfterViewInit, OnDestroy {
 
   @Input('maxLines')
   set lines(value: number | string) {
-    if (value) {
-      this.maxLines = parseInt(value as string, 10);
-    }
+    this.setMaxLines(value);
+  }
+
+  @Input('b-truncate-tooltip')
+  set linesAlt(value: number | string) {
+    this.setMaxLines(value);
   }
 
   private textElement: HTMLElement;
@@ -54,9 +60,6 @@ export class TruncateTooltipComponent implements AfterViewInit, OnDestroy {
   tooltipEnabled = false;
 
   ngAfterViewInit(): void {
-    if (typeof this.maxLines === 'string') {
-      this.maxLines = parseInt(this.maxLines, 10);
-    }
     this.textElement = this.getDeepestNode(this.textContainer.nativeElement);
     this.tooltipText = this.textElement.innerText;
 
@@ -71,6 +74,13 @@ export class TruncateTooltipComponent implements AfterViewInit, OnDestroy {
     setTimeout(() => {
       this.checkTooltipNecessity();
     }, 0);
+  }
+
+  ngAfterContentChecked(): void {
+    if (this.textElement && this.tooltipText !== this.textElement.innerText) {
+      this.tooltipText = this.textElement.innerText;
+      this.checkTooltipNecessity();
+    }
   }
 
   ngOnDestroy(): void {
@@ -89,9 +99,9 @@ export class TruncateTooltipComponent implements AfterViewInit, OnDestroy {
 
     this.textContainerClass =
       this.maxLines === 1
-        ? 'truncate'
+        ? 'btt-truncate'
         : this.maxLines > 1
-        ? 'line-clamp'
+        ? 'btt-line-clamp'
         : null;
 
     this.textContainerStyle =
@@ -111,8 +121,7 @@ export class TruncateTooltipComponent implements AfterViewInit, OnDestroy {
   private checkTooltipNecessity(): void {
     this.tooltipEnabled =
       (this.maxLines === 1 &&
-        this.textContainer.nativeElement.scrollWidth >
-          this.textContainer.nativeElement.offsetWidth) ||
+        this.textElement.scrollWidth > this.textElement.offsetWidth) ||
       (this.maxLines > 0 &&
         this.textContainer.nativeElement.scrollHeight >
           this.textContainer.nativeElement.offsetHeight)
@@ -130,6 +139,12 @@ export class TruncateTooltipComponent implements AfterViewInit, OnDestroy {
   private setCssProps(element: HTMLElement, props: object): void {
     for (const prop of Object.keys(props)) {
       element.style.setProperty(prop, props[prop]);
+    }
+  }
+
+  private setMaxLines(value: number | string) {
+    if (value) {
+      this.maxLines = parseInt(value as string, 10);
     }
   }
 }

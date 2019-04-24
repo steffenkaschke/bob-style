@@ -12,10 +12,12 @@
                           style="margin-right: 40px;">
       </b-rich-text-editor>
 
-      <div style="margin: 20px 40px 30px; padding: 10px; border: 1px solid silver;"
-           class="rte-output"
-           [innerHTML]="myForm.get('rteControl').value.body ? myForm.get('rteControl').value.body :
-           myForm.get('rteControl').value">
+      <div class="rte-output"
+           style="width: 250px; height: 100px; border: 1px solid silver; padding: 10px;margin: 20px 0; font-size: 20px;">
+        <b-truncate-tooltip maxLines="2">
+          {{ myForm.get('rteControl').value.plainText && myForm.get('rteControl').value.plainText.length ? myForm.get('rteControl').value.plainText :
+           myForm.get('rteControl').value }}
+        </b-truncate-tooltip>
       </div>
     </div>
 

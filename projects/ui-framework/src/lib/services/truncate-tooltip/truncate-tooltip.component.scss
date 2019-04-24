@@ -5,53 +5,69 @@
 
 :host {
   display: block;
+
+  ::ng-deep {
+    :only-child,
+    p,
+    div {
+      display: block;
+    }
+    :only-child,
+    p,
+    div {
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+  }
 }
 
-span {
-  display: block;
-  border: 0;
-  padding: 0;
-  margin: 0;
+.btt {
   overflow: hidden;
-  text-overflow: -o-ellipsis-lastline;
   text-overflow: ellipsis;
-}
 
-.line-clamp {
-  @supports not (-webkit-line-clamp: 2) {
-    position: relative;
+  &-truncate {
+    white-space: nowrap;
 
-    &:after {
-      content: '';
-      text-align: right;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 50%;
-      height: 1.3em;
-      height: calc(var(--btt-font-size) * var(--btt-line-height));
-
-      background: linear-gradient(
-        to right,
-        rgba(255, 255, 255, 0),
-        rgba(255, 255, 255, 1) 80%
-      );
+    ::ng-deep {
+      :only-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 
-  @supports (-webkit-line-clamp: 2) {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
+  &-line-clamp {
+    @supports not (-webkit-line-clamp: 2) {
+      position: relative;
 
-    &:after {
-      display: none;
+      &:after {
+        content: '';
+        text-align: right;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 50%;
+        height: 1.3em;
+        height: calc(var(--btt-font-size) * var(--btt-line-height));
+
+        background: linear-gradient(
+          to right,
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 1) 80%
+        );
+      }
+    }
+
+    @supports (-webkit-line-clamp: 2) {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+
+      &:after {
+        display: none;
+      }
     }
   }
-}
-
-.truncate {
-  display: block;
-  white-space: nowrap;
 }
 
 ::ng-deep {
@@ -86,13 +102,5 @@ span {
         top: -5px;
       }
     }
-  }
-}
-
-:host ::ng-deep {
-  p,
-  div {
-    margin: 0;
-    padding: 0;
   }
 }
