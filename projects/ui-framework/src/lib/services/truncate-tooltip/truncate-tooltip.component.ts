@@ -6,7 +6,6 @@ import {
   ElementRef,
   AfterViewInit,
   ViewContainerRef,
-  AfterContentChecked,
   DoCheck,
   HostBinding
 } from '@angular/core';
@@ -46,8 +45,6 @@ export class TruncateTooltipComponent
   tooltipText: string;
   tooltipEnabled = false;
 
-  @HostBinding('class.btt-initialized') initialized: boolean;
-
   @ViewChild('textContainer')
   set container(element: ElementRef) {
     this.textContainer = element.nativeElement;
@@ -59,11 +56,12 @@ export class TruncateTooltipComponent
   set lines(value: number | string) {
     this.setMaxLines(value);
   }
-
   @Input('b-truncate-tooltip')
   set linesAlt(value: number | string) {
     this.setMaxLines(value);
   }
+
+  @HostBinding('class.btt-initialized') initialized: boolean;
 
   ngAfterViewInit(): void {
     this.resizeSubscription = this.utilsService
