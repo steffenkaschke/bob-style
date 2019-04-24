@@ -5,7 +5,9 @@
     <div class="option-prefix">
         <ng-template #prefix></ng-template>
     </div>
-    <div class="option-display-name">{{option.displayName}}</div>
+    <div class="option-display-name" matTooltip="{{option.displayName}}"
+         [matTooltipPosition]="'above'"
+         [matTooltipShowDelay]="300">{{option.displayName}}</div>
     <div class="option-actions"
          *ngIf="option.actions?.length"
          [ngStyle]="{'opacity': (showActions || selected) ? 1 : 0}">

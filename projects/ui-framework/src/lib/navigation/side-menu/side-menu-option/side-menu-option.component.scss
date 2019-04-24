@@ -17,8 +17,12 @@
     }
 
     .option-display-name {
-      justify-self: left;
       margin: 0 16px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      justify-self: auto;
+      white-space: nowrap;
+      text-align: left;
     }
 
   }
