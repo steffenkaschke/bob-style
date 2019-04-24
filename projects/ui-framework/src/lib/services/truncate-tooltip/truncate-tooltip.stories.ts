@@ -21,10 +21,8 @@ const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
 
 const template1 = `
   <b-big-body *bTruncateTooltip="maxLines" class="employee-title">
-    <p>
-      <span>{{ text1 }}</span>
-      <span>{{ text2 }}</span>
-    </p>
+    <span>{{ text1 }}</span>
+    <span>{{ text2 }}</span>
   </b-big-body>
 `;
 const template2 = `
@@ -37,8 +35,8 @@ const template2 = `
 `;
 const template3 = `
   <p b-truncate-tooltip="3" class="employee-title">
-      <span>{{ text1 }}</span>
-      <span>{{ text2 }}</span>
+    <span>{{ text1 }}</span>
+    <span>{{ text2 }}</span>
   </p>
 `;
 
@@ -101,15 +99,15 @@ const note = `
   ### NOTE:
   - In most cases it's better to use b-truncate-tooltip component in place of text-containing elements like P or DIV etc. You can add classes to it (example 1).
   - If you want to preserve the HTML element, you can use the component with an attribute selector (example 2).
-  - Use *bTruncateTooltip on another component (like b-display-3, etc) (example 3).
+  - Use *bTruncateTooltip on another component (like b-display-3, etc) (example 3). This use is basically the same as wrapping your component in b-truncate-tooltip (as in example 1).
   - Text inside the directive/component should be of uniform (same) font-size!
-  - Elements inside the directive/component should not have maring or padding.
-  - There should not be any adjacent block-level elements inside (Bad: \`\`\`<p>A</p> <p>B</p>\`\`\`).
-  - Single-child wrapping block-level elements are allowed (OK: \`\`\`<p>AB</p>\`\`\`).
-  - Any number of adjacent inline elements are allowed  (OK: \`\`\`<p><span>A</span> <span>B</span></p>\`\`\`).
+  - Elements inside the directive/component should not have margin or padding.
+  - There should not be any adjacent block-level elements inside (\`\`\`<p>A</p> <p>B</p>\`\`\` Bad).
+  - Single-child wrapping block-level elements are allowed (\`\`\`<p>AB</p>\`\`\` OK).
+  - Any number of adjacent inline elements are allowed  (\`\`\`<p><span>A</span> <span>B</span></p>\`\`\` OK).
 
   ### LIMITATIONS:
-  - Structural directive *bTruncateTooltip wraps the element it exists on with b-truncate-tooltip component. So if the element had any layout-related classes or styles, directive may break layout.
+  - Structural directive *bTruncateTooltip wraps the element it exists on with b-truncate-tooltip component. So if the element had any layout-related classes or styles, directive may break layout. This use is effectively same as wrapping your element in b-truncate-tooltip component yourself.
 
 
 `;
@@ -120,7 +118,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        maxLines: number('bTruncateTooltip/maxLines', 1),
+        maxLines: number('bTruncateTooltip/maxLines', 2),
         text1: text(
           'text1',
           `If you’re trying to wear official headgear in a public setting, my advice is
