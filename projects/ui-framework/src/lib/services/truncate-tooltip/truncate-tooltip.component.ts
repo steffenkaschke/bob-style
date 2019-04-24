@@ -69,7 +69,7 @@ export class TruncateTooltipComponent
       });
 
     setTimeout(() => {
-      this.textElement = this.getDeepestNode(this.textContainer);
+      this.textElement = this.getDeepTextElement(this.textContainer);
       this.tooltipText = this.textElement.innerText;
       this.applyTextContainerStyle();
       this.checkTooltipNecessity();
@@ -128,14 +128,23 @@ export class TruncateTooltipComponent
         : false;
   }
 
+  private hasNotEmptyChildren(element: HTMLElement) {
+    return Array.from(element.children).filter(
+      node => !!(node as HTMLElement).innerText
+    ).length;
+  }
+
   private hasTextNodes(element: HTMLElement) {
     return !!Array.from(element.childNodes).find(
       node => node.nodeType === Node.TEXT_NODE
     );
   }
 
-  private getDeepestNode(element: HTMLElement): HTMLElement {
-    while (element.children.length === 1 && !this.hasTextNodes(element)) {
+  private getDeepTextElement(element: HTMLElement): HTMLElement {
+    while (
+      this.hasNotEmptyChildren(element) === 1 &&
+      !this.hasTextNodes(element)
+    ) {
       element = element.children[0] as HTMLElement;
     }
     return element;
