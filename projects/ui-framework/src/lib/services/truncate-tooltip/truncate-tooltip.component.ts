@@ -62,10 +62,6 @@ export class TruncateTooltipComponent
   }
 
   ngAfterViewInit(): void {
-    this.textElement = this.getDeepestNode(this.textContainer);
-    this.tooltipText = this.textElement.innerText;
-    this.applyTextContainerStyle();
-
     this.resizeSubscription = this.utilsService
       .getResizeEvent()
       .subscribe(() => {
@@ -73,6 +69,9 @@ export class TruncateTooltipComponent
       });
 
     setTimeout(() => {
+      this.textElement = this.getDeepestNode(this.textContainer);
+      this.tooltipText = this.textElement.innerText;
+      this.applyTextContainerStyle();
       this.checkTooltipNecessity();
     }, 0);
   }
