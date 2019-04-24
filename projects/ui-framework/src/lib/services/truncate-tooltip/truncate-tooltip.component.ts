@@ -9,11 +9,10 @@ import {
 } from '@angular/core';
 import { UtilsService } from '../utils/utils.service';
 import { Subscription } from 'rxjs';
-
 import { Styles } from './truncate-tooltip.interface';
 
 @Component({
-  selector: 'b-truncate-tooltip',
+  selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
   template: `
     <span
       #textContainer
@@ -41,7 +40,9 @@ export class TruncateTooltipComponent implements AfterViewInit, OnDestroy {
 
   @Input('maxLines')
   set lines(value: number | string) {
-    this.maxLines = parseInt(value as string, 10);
+    if (value) {
+      this.maxLines = parseInt(value as string, 10);
+    }
   }
 
   private textElement: HTMLElement;
@@ -101,14 +102,10 @@ export class TruncateTooltipComponent implements AfterViewInit, OnDestroy {
           }
         : null;
 
-    this.textContainer.nativeElement.style.setProperty(
-      '--btt-line-height',
-      lineHeight
-    );
-    this.textContainer.nativeElement.style.setProperty(
-      '--btt-font-size',
-      fontSize + 'px'
-    );
+    this.setCssProps(this.textContainer.nativeElement, {
+      '--btt-line-height': lineHeight,
+      '--btt-font-size': fontSize + 'px'
+    });
   }
 
   private checkTooltipNecessity(): void {
@@ -128,5 +125,11 @@ export class TruncateTooltipComponent implements AfterViewInit, OnDestroy {
       element = element.children[0] as HTMLElement;
     }
     return element;
+  }
+
+  private setCssProps(element: HTMLElement, props: object): void {
+    for (const prop of Object.keys(props)) {
+      element.style.setProperty(prop, props[prop]);
+    }
   }
 }

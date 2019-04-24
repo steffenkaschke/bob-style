@@ -8,7 +8,6 @@ import {
   OnDestroy,
   ComponentRef
 } from '@angular/core';
-
 import { TruncateTooltipComponent } from './truncate-tooltip.component';
 
 @Directive({
@@ -34,7 +33,7 @@ export class TruncateTooltipDirective implements OnInit, OnDestroy {
     this.tooltipComponent.instance.child.createEmbeddedView(this.templateRef);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.tooltipComponent.destroy();
     this.tooltipComponent = null;
   }
