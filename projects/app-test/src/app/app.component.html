@@ -1,45 +1,40 @@
-<div style="padding: 100px; height: 100%; ">
-
-
-  <form [formGroup]="myForm"
-        style="max-width: 700px; margin: auto; display: flex; justify-content: space-between; align-self: flex-start;">
-
-    <div>
+<div
+     style="padding: 50px 100px; height: 100%; max-width: 700px; margin: auto; font-size: 18px; display: flex; flex-direction: column; justify-content: center;">
+  <form [formGroup]="myForm">
+    <p>
+      Input: <br>
+      <input type="text"
+             formControlName="inputControl"
+             style="height: 40px; padding: 0 10px; line-height: 38px;outline:0; font-size: 16px;" />
+      <br>
+      <button (click)="disabled = !disabled">tgl dsbld</button>
+      &nbsp;
+      <button (click)="error = !error">tgl err</button>
+    </p>
+    <br>
+    <p>
+      Editor:
       <b-rich-text-editor formControlName="rteControl"
                           [minHeight]="null"
                           [disabled]="disabled"
-                          [errorMessage]="error ? 'Error' : undefined"
-                          style="margin-right: 40px;">
+                          [errorMessage]="error ? 'Error' : undefined">
       </b-rich-text-editor>
-    </div>
-
-    <div>
-      <p>
-        <input type="text"
-               formControlName="inputControl"
-               style="width: 300px; height: 40px; padding: 0 10px; line-height: 38px;outline:0;">
-      </p>
-      <p>
-        <button (click)="disabled = !disabled">tgl dsbld</button>
-        &nbsp;
-        <button (click)="error = !error">tgl err</button>
-      </p>
-    </div>
-
+    </p>
   </form>
-
-  <div style="max-width: 700px; margin: auto;  align-self: flex-start;">
-
+  <br>
+  <div>
+    Output with Truncate Tooltip:
     <div class="rte-output"
-         style="width: 250px; border: 1px solid silver; padding: 10px;margin: 20px 0; font-size: 20px;">
-      <p *bTruncateTooltip="lines">
-        {{ myForm.get('rteControl').value.plainText && myForm.get('rteControl').value.plainText.length ? myForm.get('rteControl').value.plainText :
-           myForm.get('rteControl').value }}
-      </p>
+         style="width: 250px; border: 1px solid silver; padding: 10px;margin: 0 0 20px 0; font-size: 20px;">
+      <div *bTruncateTooltip="lines">
+        {{ myForm.get('rteControl').value.plainText || myForm.get('rteControl').value}}
+      </div>
     </div>
-    <input type="number"
-           [(ngModel)]="lines"> {{ lines }}
   </div>
-
-
+  <p>
+    MaxLines:
+    <input type="number"
+           style="width: 50px; height: 45px; padding: 0 5px 0 10px; line-height: 38px;outline:0; font-size: 16px;"
+           [(ngModel)]="lines" />
+  </p>
 </div>
