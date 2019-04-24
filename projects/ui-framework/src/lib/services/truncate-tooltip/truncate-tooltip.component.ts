@@ -6,7 +6,9 @@ import {
   ElementRef,
   AfterViewInit,
   ViewContainerRef,
-  AfterContentChecked
+  AfterContentChecked,
+  DoCheck,
+  HostBinding
 } from '@angular/core';
 import { UtilsService } from '../utils/utils.service';
 import { Subscription } from 'rxjs';
@@ -32,7 +34,7 @@ import { Styles } from './truncate-tooltip.interface';
   styleUrls: ['./truncate-tooltip.component.scss']
 })
 export class TruncateTooltipComponent
-  implements AfterViewInit, AfterContentChecked, OnDestroy {
+  implements AfterViewInit, DoCheck, OnDestroy {
   constructor(public utilsService: UtilsService) {}
 
   private textContainer: HTMLElement;
@@ -43,6 +45,8 @@ export class TruncateTooltipComponent
   textContainerStyle: Styles;
   tooltipText: string;
   tooltipEnabled = false;
+
+  @HostBinding('class.btt-initialized') initialized: boolean;
 
   @ViewChild('textContainer')
   set container(element: ElementRef) {
@@ -76,7 +80,7 @@ export class TruncateTooltipComponent
     }, 0);
   }
 
-  ngAfterContentChecked(): void {
+  ngDoCheck(): void {
     if (this.textElement && this.tooltipText !== this.textElement.innerText) {
       this.tooltipText = this.textElement.innerText;
       this.checkTooltipNecessity();
@@ -116,6 +120,8 @@ export class TruncateTooltipComponent
       '--btt-line-height': lineHeight,
       '--btt-font-size': fontSize + 'px'
     });
+
+    this.initialized = true;
   }
 
   private checkTooltipNecessity(): void {

@@ -15,17 +15,17 @@
       margin: 0;
     }
   }
+
+  &:not(.btt-initialized) {
+    max-height: 1em;
+    opacity: 0;
+  }
 }
 
 .btt {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
-
-  &:not(&-truncate):not(&-line-clamp) {
-    max-height: 1em;
-    opacity: 0;
-  }
 
   &-truncate {
     white-space: nowrap;
