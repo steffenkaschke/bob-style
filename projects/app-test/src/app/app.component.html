@@ -1,4 +1,4 @@
-<div style="padding: 100px; height: 100%; display: flex;">
+<div style="padding: 100px; height: 100%; ">
 
 
   <form [formGroup]="myForm"
@@ -11,14 +11,6 @@
                           [errorMessage]="error ? 'Error' : undefined"
                           style="margin-right: 40px;">
       </b-rich-text-editor>
-
-      <div class="rte-output"
-           style="width: 250px; height: 100px; border: 1px solid silver; padding: 10px;margin: 20px 0; font-size: 20px;">
-        <b-truncate-tooltip maxLines="2">
-          {{ myForm.get('rteControl').value.plainText && myForm.get('rteControl').value.plainText.length ? myForm.get('rteControl').value.plainText :
-           myForm.get('rteControl').value }}
-        </b-truncate-tooltip>
-      </div>
     </div>
 
     <div>
@@ -35,6 +27,19 @@
     </div>
 
   </form>
+
+  <div style="max-width: 700px; margin: auto;  align-self: flex-start;">
+
+    <div class="rte-output"
+         style="width: 250px; border: 1px solid silver; padding: 10px;margin: 20px 0; font-size: 20px;">
+      <p *bTruncateTooltip="lines">
+        {{ myForm.get('rteControl').value.plainText && myForm.get('rteControl').value.plainText.length ? myForm.get('rteControl').value.plainText :
+           myForm.get('rteControl').value }}
+      </p>
+    </div>
+    <input type="number"
+           [(ngModel)]="lines"> {{ lines }}
+  </div>
 
 
 </div>

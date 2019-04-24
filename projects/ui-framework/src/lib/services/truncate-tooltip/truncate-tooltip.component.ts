@@ -11,7 +11,11 @@ import {
 } from '@angular/core';
 import { UtilsService } from '../utils/utils.service';
 import { Subscription } from 'rxjs';
-import { Styles } from './truncate-tooltip.interface';
+import {
+  Styles,
+  TextProps,
+  NotEmptyChildren
+} from './truncate-tooltip.interface';
 
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
@@ -37,8 +41,11 @@ export class TruncateTooltipComponent
   constructor(public utilsService: UtilsService) {}
 
   private textContainer: HTMLElement;
-  private maxLines = 1;
+  private maxLinesDefault = 1;
+  private maxLinesCache = this.maxLinesDefault;
+  private maxLines = this.maxLinesDefault;
   private textElement: HTMLElement;
+  private textElementTextProps: TextProps;
   private resizeSubscription: Subscription;
   textContainerClass: string;
   textContainerStyle: Styles;
@@ -64,24 +71,34 @@ export class TruncateTooltipComponent
   @HostBinding('class.btt-initialized') initialized: boolean;
 
   ngAfterViewInit(): void {
+    this.maxLinesCache = this.maxLines;
+    this.textElement = this.getDeepTextElement(this.textContainer);
+
+    setTimeout(() => {
+      this.tooltipText = this.textElement.innerText;
+      this.applyTextContainerStyle();
+    }, 0);
+
+    setTimeout(() => {
+      this.checkTooltipNecessity();
+      this.initialized = true;
+    }, 0);
+
     this.resizeSubscription = this.utilsService
       .getResizeEvent()
       .subscribe(() => {
         this.checkTooltipNecessity();
       });
-
-    setTimeout(() => {
-      this.textElement = this.getDeepTextElement(this.textContainer);
-      this.tooltipText = this.textElement.innerText;
-      this.applyTextContainerStyle();
-      this.checkTooltipNecessity();
-    }, 0);
   }
 
   ngDoCheck(): void {
-    if (this.textElement && this.tooltipText !== this.textElement.innerText) {
+    if (this.initialized && this.tooltipText !== this.textElement.innerText) {
       this.tooltipText = this.textElement.innerText;
       this.checkTooltipNecessity();
+    }
+
+    if (this.initialized && this.maxLines !== this.maxLinesCache) {
+      this.setMaxLines(this.maxLines);
     }
   }
 
@@ -89,8 +106,8 @@ export class TruncateTooltipComponent
     this.resizeSubscription.unsubscribe();
   }
 
-  private applyTextContainerStyle(): void {
-    const computedStyle = getComputedStyle(this.textElement),
+  private getElementTextProps(element: HTMLElement): TextProps {
+    const computedStyle = getComputedStyle(element),
       fontSize = parseFloat(computedStyle.fontSize),
       lineHeight =
         computedStyle.lineHeight.indexOf('px') !== -1
@@ -98,6 +115,21 @@ export class TruncateTooltipComponent
           : computedStyle.lineHeight.indexOf('%') !== -1
           ? parseFloat(computedStyle.lineHeight) / 100
           : 1.2;
+    return {
+      fontSize: fontSize,
+      lineHeight: lineHeight
+    };
+  }
+
+  private applyTextContainerStyle(): void {
+    if (!this.textElementTextProps) {
+      this.textElementTextProps = this.getElementTextProps(this.textElement);
+
+      this.setCssProps(this.textContainer, {
+        '--btt-line-height': this.textElementTextProps.lineHeight,
+        '--btt-font-size': this.textElementTextProps.fontSize + 'px'
+      });
+    }
 
     this.textContainerClass =
       this.maxLines === 1
@@ -109,17 +141,14 @@ export class TruncateTooltipComponent
     this.textContainerStyle =
       this.maxLines > 1
         ? {
-            maxHeight: fontSize * lineHeight * this.maxLines + 'px',
+            maxHeight:
+              this.textElementTextProps.fontSize *
+                this.textElementTextProps.lineHeight *
+                this.maxLines +
+              'px',
             webkitLineClamp: this.maxLines
           }
         : null;
-
-    this.setCssProps(this.textContainer, {
-      '--btt-line-height': lineHeight,
-      '--btt-font-size': fontSize + 'px'
-    });
-
-    this.initialized = true;
   }
 
   private checkTooltipNecessity(): void {
@@ -132,13 +161,21 @@ export class TruncateTooltipComponent
         : false;
   }
 
-  private hasNotEmptyChildren(element: HTMLElement) {
-    return Array.from(element.children).filter(
-      node => !!(node as HTMLElement).innerText
-    ).length;
+  private hasNotEmptyChildren(element: HTMLElement): NotEmptyChildren {
+    return Array.from(element.children).reduce(
+      (acc, node, index) => {
+        const hasText = !!(node as HTMLElement).innerText;
+        return {
+          total: hasText ? acc.total + 1 : acc.total,
+          firstIndex:
+            hasText && acc.firstIndex === null ? index : acc.firstIndex
+        };
+      },
+      { total: 0, firstIndex: null }
+    );
   }
 
-  private hasTextNodes(element: HTMLElement) {
+  private hasTextNodes(element: HTMLElement): boolean {
     return !!Array.from(element.childNodes).find(
       node => node.nodeType === Node.TEXT_NODE
     );
@@ -146,10 +183,12 @@ export class TruncateTooltipComponent
 
   private getDeepTextElement(element: HTMLElement): HTMLElement {
     while (
-      this.hasNotEmptyChildren(element) === 1 &&
+      this.hasNotEmptyChildren(element).total === 1 &&
       !this.hasTextNodes(element)
     ) {
-      element = element.children[0] as HTMLElement;
+      element = element.children[
+        this.hasNotEmptyChildren(element).firstIndex
+      ] as HTMLElement;
     }
     return element;
   }
@@ -160,9 +199,22 @@ export class TruncateTooltipComponent
     }
   }
 
-  private setMaxLines(value: number | string) {
-    if (value) {
-      this.maxLines = parseInt(value as string, 10);
+  private parseMaxLines(value: string | number): number {
+    value = parseInt(value as string, 10);
+    return value === value ? value : this.maxLinesDefault;
+  }
+
+  private setMaxLines(value: number | string): void {
+    value = this.parseMaxLines(value);
+    this.maxLines = value;
+
+    if (value !== this.maxLinesCache && this.initialized) {
+      this.applyTextContainerStyle();
+      setTimeout(() => {
+        this.checkTooltipNecessity();
+      }, 0);
     }
+
+    this.maxLinesCache = this.maxLines;
   }
 }
