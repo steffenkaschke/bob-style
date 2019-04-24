@@ -10,11 +10,6 @@
     :only-child,
     p,
     div {
-      display: block;
-    }
-    :only-child,
-    p,
-    div {
       border: 0;
       padding: 0;
       margin: 0;
@@ -23,16 +18,21 @@
 }
 
 .btt {
+  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  &:not(&-truncate):not(&-line-clamp) {
+    max-height: 1em;
+    opacity: 0;
+  }
 
   &-truncate {
     white-space: nowrap;
 
     ::ng-deep {
-      :only-child {
-        overflow: hidden;
-        text-overflow: ellipsis;
+      * {
+        display: inline;
       }
     }
   }

@@ -35,11 +35,21 @@ export class TruncateTooltipComponent
   implements AfterViewInit, AfterContentChecked, OnDestroy {
   constructor(public utilsService: UtilsService) {}
 
-  @ViewChild('textContainer') textContainer: ElementRef;
+  private textContainer: HTMLElement;
+  private maxLines = 1;
+  private textElement: HTMLElement;
+  private resizeSubscription: Subscription;
+  textContainerClass: string;
+  textContainerStyle: Styles;
+  tooltipText: string;
+  tooltipEnabled = false;
+
+  @ViewChild('textContainer')
+  set container(element: ElementRef) {
+    this.textContainer = element.nativeElement;
+  }
   @ViewChild('directiveTemplate', { read: ViewContainerRef })
   child: ViewContainerRef;
-
-  maxLines = 1;
 
   @Input('maxLines')
   set lines(value: number | string) {
@@ -51,15 +61,11 @@ export class TruncateTooltipComponent
     this.setMaxLines(value);
   }
 
-  private textElement: HTMLElement;
-  private resizeSubscription: Subscription;
-
-  textContainerClass: string;
-  textContainerStyle: Styles;
-  tooltipText: string;
-  tooltipEnabled = false;
-
   ngAfterViewInit(): void {
+    this.textElement = this.getDeepestNode(this.textContainer);
+    this.tooltipText = this.textElement.innerText;
+    this.applyTextContainerStyle();
+
     this.resizeSubscription = this.utilsService
       .getResizeEvent()
       .subscribe(() => {
@@ -67,9 +73,6 @@ export class TruncateTooltipComponent
       });
 
     setTimeout(() => {
-      this.textElement = this.getDeepestNode(this.textContainer.nativeElement);
-      this.tooltipText = this.textElement.innerText;
-      this.applyTextContainerStyle();
       this.checkTooltipNecessity();
     }, 0);
   }
@@ -110,7 +113,7 @@ export class TruncateTooltipComponent
           }
         : null;
 
-    this.setCssProps(this.textContainer.nativeElement, {
+    this.setCssProps(this.textContainer, {
       '--btt-line-height': lineHeight,
       '--btt-font-size': fontSize + 'px'
     });
@@ -119,16 +122,21 @@ export class TruncateTooltipComponent
   private checkTooltipNecessity(): void {
     this.tooltipEnabled =
       (this.maxLines === 1 &&
-        this.textElement.scrollWidth > this.textElement.offsetWidth) ||
+        this.textContainer.scrollWidth > this.textContainer.offsetWidth) ||
       (this.maxLines > 0 &&
-        this.textContainer.nativeElement.scrollHeight >
-          this.textContainer.nativeElement.offsetHeight)
+        this.textContainer.scrollHeight > this.textContainer.offsetHeight)
         ? true
         : false;
   }
 
+  private hasTextNodes(element: HTMLElement) {
+    return !!Array.from(element.childNodes).find(
+      node => node.nodeType === Node.TEXT_NODE
+    );
+  }
+
   private getDeepestNode(element: HTMLElement): HTMLElement {
-    while (element.children.length === 1) {
+    while (element.children.length === 1 && !this.hasTextNodes(element)) {
       element = element.children[0] as HTMLElement;
     }
     return element;

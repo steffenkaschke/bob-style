@@ -1,13 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  array,
-  boolean,
-  number,
-  object,
-  select,
-  text,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { number, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -21,8 +13,8 @@ const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
 
 const template1 = `
   <b-big-body *bTruncateTooltip="maxLines" class="employee-title">
-    <span>{{ text1 }}</span>
-    <span>{{ text2 }}</span>
+    <span class="span1">{{ text1 }}</span>
+    <span class="span2">{{ text2 }}</span>
   </b-big-body>
 `;
 const template2 = `
