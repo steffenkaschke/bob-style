@@ -26,20 +26,15 @@ export class TruncateTooltipDirective implements OnInit, OnDestroy {
   @Input() bTruncateTooltip = 1;
 
   ngOnInit(): void {
-    const templateView = this.templateRef.createEmbeddedView({});
-    const compFactory = this.resolver.resolveComponentFactory(
+    const factory = this.resolver.resolveComponentFactory(
       TruncateTooltipComponent
     );
-    this.tooltipComponent = this.viewContainer.createComponent(
-      compFactory,
-      null,
-      this.viewContainer.injector,
-      [templateView.rootNodes]
-    );
+    this.tooltipComponent = this.viewContainer.createComponent(factory);
     this.tooltipComponent.instance.maxLines = this.bTruncateTooltip;
+    this.tooltipComponent.instance.child.createEmbeddedView(this.templateRef);
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.tooltipComponent.destroy();
     this.tooltipComponent = null;
   }

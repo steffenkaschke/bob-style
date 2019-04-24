@@ -22,34 +22,22 @@ const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
 const template1 = `
   <b-big-body *bTruncateTooltip="maxLines">
     <p>
-      <span>
-          If you’re trying to wear official headgear in a public setting, my advice is to take yourself
-          as seriously as you expect others to take you. A photographer may not allow you to wear the colander
-          if you’ve just pulled it out while giggling. But if you walk in wearing it – if it is clear that this
-          headgear is truly a serious part of your traditional Pastafarian beliefs, as you are claiming –
-          then they are less likely to make trouble.
-      </span>
-      <span>THIS TEXT TOO!</span>
+      <span>{{ text1 }}</span>
+      <span>{{ text2 }}</span>
     </p>
   </b-big-body>
 `;
 const template2 = `
   <b-truncate-tooltip [maxLines]="maxLines">
     <b-display-3>
-      <span>
-          If you’re trying to wear official headgear in a public setting, my advice is to take yourself
-          as seriously as you expect others to take you. A photographer may not allow you to wear the colander
-          if you’ve just pulled it out while giggling. But if you walk in wearing it – if it is clear that this
-          headgear is truly a serious part of your traditional Pastafarian beliefs, as you are claiming –
-          then they are less likely to make trouble.
-      </span>
-      <span>THIS TEXT TOO!</span>
+      <span>{{ text1 }}</span>
+      <span>{{ text2 }}</span>
     </b-display-3>
   </b-truncate-tooltip>
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="'Truncate Tooltip'">
+<b-story-book-layout [title]="'Truncate Tooltip'">
   <div style="padding: 100px 50px 50px; max-width: 600px; margin: auto; text-align: left;">
     <p>${template1}</p>
     <br>
@@ -90,8 +78,12 @@ const note = `
 
   --------
 
+  ### LIMITATIONS:
+  - Structural directive *bTruncateTooltip wraps the element it exists on with b-truncate-tooltip component. So if the element had any layout-related classes, directive may break layout.
+  - In most cases it's better to use b-truncate-tooltip component in place of text-containing elements like P or DIV etc. You can add classes to it.
+
   ### NOTE:
-  - Text inside the directive/component should be of uniform (same) font-size!
+  - Text insides the directive/component should be of uniform (same) font-size!
   - Elements inside the directive/component should not have maring or padding.
   - There should not be any adjacent block-level elements inside (Bad: \`\`\`<p>A</p> <p>B</p>\`\`\`).
   - Single-child wrapping block-level elements are allowed (OK: \`\`\`<p>AB</p>\`\`\`).
@@ -105,7 +97,17 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        maxLines: number('bTruncateTooltip/maxLines', 2)
+        maxLines: number('bTruncateTooltip/maxLines', 2),
+        text1: text(
+          'text1',
+          `If you’re trying to wear official headgear in a public setting, my advice is
+        to take yourself as seriously as you expect others to take you.
+          A photographer may not allow you to wear the colander
+          if you’ve just pulled it out while giggling. But if you walk in wearing it – if it is clear that this
+          headgear is truly a serious part of your traditional Pastafarian beliefs, as you are claiming –
+          then they are less likely to make trouble.`
+        ),
+        text2: text('text2', '😊 And this text too!')
       },
       moduleMetadata: {
         declarations: [],

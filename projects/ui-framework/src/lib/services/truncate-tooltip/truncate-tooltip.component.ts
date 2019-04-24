@@ -1,11 +1,11 @@
 import {
   Component,
-  OnInit,
   Input,
   OnDestroy,
   ViewChild,
   ElementRef,
-  AfterViewInit
+  AfterViewInit,
+  ViewContainerRef
 } from '@angular/core';
 import { UtilsService } from '../utils/utils.service';
 import { Subscription } from 'rxjs';
@@ -25,17 +25,24 @@ import { Styles } from './truncate-tooltip.interface';
       matTooltipClass="b-truncate-tooltip"
     >
       <ng-content></ng-content>
+      <ng-template #directiveTemplate></ng-template>
     </span>
   `,
   styleUrls: ['./truncate-tooltip.component.scss']
 })
-export class TruncateTooltipComponent
-  implements OnInit, OnDestroy, AfterViewInit {
+export class TruncateTooltipComponent implements AfterViewInit, OnDestroy {
   constructor(public utilsService: UtilsService) {}
 
   @ViewChild('textContainer') textContainer: ElementRef;
+  @ViewChild('directiveTemplate', { read: ViewContainerRef })
+  child: ViewContainerRef;
 
-  @Input() maxLines = 1;
+  maxLines = 1;
+
+  @Input('maxLines')
+  set lines(value: number | string) {
+    this.maxLines = parseInt(value as string, 10);
+  }
 
   private textElement: HTMLElement;
   private resizeSubscription: Subscription;
@@ -45,7 +52,10 @@ export class TruncateTooltipComponent
   tooltipText: string;
   tooltipEnabled = false;
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
+    if (typeof this.maxLines === 'string') {
+      this.maxLines = parseInt(this.maxLines, 10);
+    }
     this.textElement = this.getDeepestNode(this.textContainer.nativeElement);
     this.tooltipText = this.textElement.innerText;
 
@@ -56,10 +66,10 @@ export class TruncateTooltipComponent
       .subscribe(() => {
         this.checkTooltipNecessity();
       });
-  }
 
-  ngAfterViewInit(): void {
-    this.checkTooltipNecessity();
+    setTimeout(() => {
+      this.checkTooltipNecessity();
+    }, 0);
   }
 
   ngOnDestroy(): void {
@@ -90,6 +100,15 @@ export class TruncateTooltipComponent
             webkitLineClamp: this.maxLines
           }
         : null;
+
+    this.textContainer.nativeElement.style.setProperty(
+      '--btt-line-height',
+      lineHeight
+    );
+    this.textContainer.nativeElement.style.setProperty(
+      '--btt-font-size',
+      fontSize + 'px'
+    );
   }
 
   private checkTooltipNecessity(): void {
