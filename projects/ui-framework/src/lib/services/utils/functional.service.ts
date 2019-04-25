@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
 export class FunctionalUtils {
   constructor() {}
 
+  // caches fn calls in (Weak) Map, using first argument as key.
+  // good to cache functions that have DOM elements as argument.
   public memoize = (fn: Function) => {
     const memo = new WeakMap();
     return (...args: any[]) => {
@@ -13,6 +15,8 @@ export class FunctionalUtils {
     };
   }
 
+  // cache a single fn call, using first argument as key.
+  // calls with new argument(s) will overwrite cache.
   public memoizeOne = (fn: Function) => {
     let lastArg: any, lastResult: any;
     return (...args: any[]) => {

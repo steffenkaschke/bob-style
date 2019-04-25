@@ -71,11 +71,12 @@ export class DOMhelpers {
   }
 
   public isEmpty(element: HTMLElement) {
-    return element.children.length === 0 && !this.hasTextNodes(element);
+    return !this.hasChildren(element) && !this.hasTextNodes(element);
   }
 
   // returns deepest element that has text
-  // and/or multiple children with text
+  // or multiple children with text
+  // or combination of above
   public getDeepTextElement(element: HTMLElement): HTMLElement {
     const memoHasChildrenWithText = this.fnc.memoizeOne(
       this.hasChildrenWithText
