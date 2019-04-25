@@ -11,11 +11,8 @@ import {
 } from '@angular/core';
 import { UtilsService } from '../utils/utils.service';
 import { Subscription } from 'rxjs';
-import {
-  Styles,
-  TextProps,
-  NotEmptyChildren
-} from './truncate-tooltip.interface';
+import { Styles } from './truncate-tooltip.interface';
+import { DOMhelpers, TextProps } from '../utils/dom-helpers.service';
 
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
@@ -38,7 +35,7 @@ import {
 })
 export class TruncateTooltipComponent
   implements AfterViewInit, DoCheck, OnDestroy {
-  constructor(public utilsService: UtilsService) {}
+  constructor(private utilsService: UtilsService, private DOM: DOMhelpers) {}
 
   private textContainer: HTMLElement;
   private maxLinesDefault = 1;
@@ -72,7 +69,7 @@ export class TruncateTooltipComponent
 
   ngAfterViewInit(): void {
     this.maxLinesCache = this.maxLines;
-    this.textElement = this.getDeepTextElement(this.textContainer);
+    this.textElement = this.DOM.getDeepTextElement(this.textContainer);
 
     setTimeout(() => {
       this.tooltipText = this.textElement.innerText;
@@ -106,26 +103,13 @@ export class TruncateTooltipComponent
     this.resizeSubscription.unsubscribe();
   }
 
-  private getElementTextProps(element: HTMLElement): TextProps {
-    const computedStyle = getComputedStyle(element),
-      fontSize = parseFloat(computedStyle.fontSize),
-      lineHeight =
-        computedStyle.lineHeight.indexOf('px') !== -1
-          ? parseFloat(computedStyle.lineHeight) / fontSize
-          : computedStyle.lineHeight.indexOf('%') !== -1
-          ? parseFloat(computedStyle.lineHeight) / 100
-          : 1.2;
-    return {
-      fontSize: fontSize,
-      lineHeight: lineHeight
-    };
-  }
-
   private applyTextContainerStyle(): void {
     if (!this.textElementTextProps) {
-      this.textElementTextProps = this.getElementTextProps(this.textElement);
+      this.textElementTextProps = this.DOM.getElementTextProps(
+        this.textElement
+      );
 
-      this.setCssProps(this.textContainer, {
+      this.DOM.setCssProps(this.textContainer, {
         '--btt-line-height': this.textElementTextProps.lineHeight,
         '--btt-font-size': this.textElementTextProps.fontSize + 'px'
       });
@@ -159,55 +143,6 @@ export class TruncateTooltipComponent
         this.textContainer.scrollHeight > this.textContainer.offsetHeight)
         ? true
         : false;
-  }
-
-  private hasNotEmptyChildren(element: HTMLElement): NotEmptyChildren {
-    return Array.from(element.children).reduce(
-      (acc, node, index) => {
-        const hasText = !!(node as HTMLElement).innerText;
-        return {
-          total: hasText ? acc.total + 1 : acc.total,
-          firstIndex:
-            hasText && acc.firstIndex === null ? index : acc.firstIndex
-        };
-      },
-      { total: 0, firstIndex: null }
-    );
-  }
-
-  private hasTextNodes(element: HTMLElement): boolean {
-    return !!Array.from(element.childNodes).find(
-      node => node.nodeType === Node.TEXT_NODE
-    );
-  }
-
-  memoize = (fn: Function) => {
-    const memo = new WeakMap();
-    return (...args: any[]) => {
-      return memo.has(args[0])
-        ? memo.get(args[0])
-        : memo.set(args[0], fn(...args)).get(args[0]);
-    };
-  }
-
-  private getDeepTextElement(element: HTMLElement): HTMLElement {
-    const memoHasNotEmptyChildren = this.memoize(this.hasNotEmptyChildren);
-
-    while (
-      memoHasNotEmptyChildren(element).total === 1 &&
-      !this.hasTextNodes(element)
-    ) {
-      element = element.children[
-        memoHasNotEmptyChildren(element).firstIndex
-      ] as HTMLElement;
-    }
-    return element;
-  }
-
-  private setCssProps(element: HTMLElement, props: object): void {
-    for (const prop of Object.keys(props)) {
-      element.style.setProperty(prop, props[prop]);
-    }
   }
 
   private parseMaxLines(value: string | number): number {
