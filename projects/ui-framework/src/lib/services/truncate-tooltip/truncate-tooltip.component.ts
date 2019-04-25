@@ -181,13 +181,24 @@ export class TruncateTooltipComponent
     );
   }
 
+  memoize = (fn: Function) => {
+    const memo = new WeakMap();
+    return (...args: any[]) => {
+      return memo.has(args[0])
+        ? memo.get(args[0])
+        : memo.set(args[0], fn(...args)).get(args[0]);
+    };
+  }
+
   private getDeepTextElement(element: HTMLElement): HTMLElement {
+    const memoHasNotEmptyChildren = this.memoize(this.hasNotEmptyChildren);
+
     while (
-      this.hasNotEmptyChildren(element).total === 1 &&
+      memoHasNotEmptyChildren(element).total === 1 &&
       !this.hasTextNodes(element)
     ) {
       element = element.children[
-        this.hasNotEmptyChildren(element).firstIndex
+        memoHasNotEmptyChildren(element).firstIndex
       ] as HTMLElement;
     }
     return element;
