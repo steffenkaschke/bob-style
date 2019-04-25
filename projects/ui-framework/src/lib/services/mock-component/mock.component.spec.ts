@@ -2,8 +2,9 @@ import { ComponentFixture, async, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { MockComponent } from './mock.component';
+import { DOMhelpers } from '../utils/dom-helpers.service';
+import { FunctionalUtils } from '../utils/functional.service';
 
 @Component({
   template: `
@@ -32,7 +33,8 @@ describe('MockComponent', () => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, MockComponent],
       imports: [BrowserAnimationsModule],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [DOMhelpers, FunctionalUtils]
     })
       .compileComponents()
       .then(() => {
