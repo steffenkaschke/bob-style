@@ -22,7 +22,7 @@ export class FunctionalUtils {
     return (...args: any[]) => {
       if (lastArg !== args[0]) {
         lastArg = args[0];
-        lastResult = fn(args[0]);
+        lastResult = fn(...args);
       }
       return lastResult;
     };
