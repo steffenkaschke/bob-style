@@ -5,6 +5,7 @@ import {
   ElementRef,
   AfterViewInit
 } from '@angular/core';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 @Component({
   selector: 'b-mock',
@@ -28,6 +29,8 @@ import {
   styles: [':host {display: block;']
 })
 export class MockComponent implements AfterViewInit {
+  constructor(private DOM: DOMhelpers) {}
+
   @Input() hostcss = {};
   @Input() slot1css = {};
   @Input() slot2css = {};
@@ -41,19 +44,12 @@ export class MockComponent implements AfterViewInit {
 
   hasSlots = [true, true, true, true];
 
-  private isEmpty(element: ElementRef) {
-    return (
-      element.nativeElement.children.length !== 0 ||
-      element.nativeElement.childNodes.length !== 0
-    );
-  }
-
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.hasSlots[0] = this.isEmpty(this.slot1) ? true : false;
-      this.hasSlots[1] = this.isEmpty(this.slot2) ? true : false;
-      this.hasSlots[2] = this.isEmpty(this.slot3) ? true : false;
-      this.hasSlots[3] = this.isEmpty(this.slot4) ? true : false;
+      this.hasSlots[0] = !this.DOM.isEmpty(this.slot1.nativeElement);
+      this.hasSlots[1] = !this.DOM.isEmpty(this.slot2.nativeElement);
+      this.hasSlots[2] = !this.DOM.isEmpty(this.slot3.nativeElement);
+      this.hasSlots[3] = !this.DOM.isEmpty(this.slot4.nativeElement);
     }, 0);
   }
 }

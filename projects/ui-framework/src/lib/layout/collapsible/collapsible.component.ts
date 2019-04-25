@@ -9,6 +9,7 @@ import {
   ElementRef
 } from '@angular/core';
 import { CollapsibleType } from './collapsible.enum';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 @Component({
   selector: 'b-collapsible',
@@ -16,7 +17,7 @@ import { CollapsibleType } from './collapsible.enum';
   styleUrls: ['./collapsible.component.scss']
 })
 export class CollapsibleComponent implements AfterViewInit {
-  constructor() {}
+  constructor(private DOM: DOMhelpers) {}
 
   @HostBinding('class')
   get typeClass() {
@@ -40,8 +41,7 @@ export class CollapsibleComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.hasSuffix =
-        this.suffix.nativeElement.children.length !== 0 ? true : false;
+      this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
     }, 0);
   }
 

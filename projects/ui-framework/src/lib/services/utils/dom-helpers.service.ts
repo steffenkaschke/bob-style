@@ -43,7 +43,7 @@ export class DOMhelpers {
     };
   }
 
-  public hasChildren(element: HTMLElement) {
+  public hasChildren(element: HTMLElement): boolean {
     return element.children.length !== 0;
   }
 
@@ -70,7 +70,7 @@ export class DOMhelpers {
     );
   }
 
-  public isEmpty(element: HTMLElement) {
+  public isEmpty(element: HTMLElement): boolean {
     return !this.hasChildren(element) && !this.hasTextNodes(element);
   }
 

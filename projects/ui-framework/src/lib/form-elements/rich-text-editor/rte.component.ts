@@ -116,10 +116,7 @@ export class RichTextEditorComponent extends RTEformElement
 
     setTimeout(() => {
       this.initEditor(editorOptions);
-
-      this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement)
-        ? true
-        : false;
+      this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
     }, 0);
   }
 
