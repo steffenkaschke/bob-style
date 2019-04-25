@@ -11,8 +11,7 @@ import {
 } from '@angular/core';
 import { UtilsService } from '../utils/utils.service';
 import { Subscription } from 'rxjs';
-import { Styles } from './truncate-tooltip.interface';
-import { DOMhelpers, TextProps } from '../utils/dom-helpers.service';
+import { DOMhelpers, TextProps, Styles } from '../utils/dom-helpers.service';
 
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',

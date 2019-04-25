@@ -13,6 +13,8 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import quillLib, { QuillOptionsStatic } from 'quill';
 import { LinkBlot } from './formats/link-blot';
 import { BlotType, RTEFontSize, RTEType, RTEControls } from './rte.enum';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { RteLink, UpdateRteConfig } from './rte.interface';
 import { RTEformElement } from './rte-form-element.abstract';
@@ -20,7 +22,6 @@ import { PanelComponent } from '../../overlay/panel/panel.component';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { Icons } from '../../icons/icons.enum';
 import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
-
 
 quillLib.register(LinkBlot);
 
@@ -45,6 +46,7 @@ export class RichTextEditorComponent extends RTEformElement
   implements AfterViewInit {
   constructor(
     private rteUtilsService: RteUtilsService,
+    private DOM: DOMhelpers,
     rteUtils: RteUtilsService,
     changeDetector: ChangeDetectorRef,
     injector: Injector
@@ -115,11 +117,9 @@ export class RichTextEditorComponent extends RTEformElement
     setTimeout(() => {
       this.initEditor(editorOptions);
 
-      this.hasSuffix =
-        this.suffix.nativeElement.children.length !== 0 ||
-        this.suffix.nativeElement.childNodes.length !== 0
-          ? true
-          : false;
+      this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement)
+        ? true
+        : false;
     }, 0);
   }
 

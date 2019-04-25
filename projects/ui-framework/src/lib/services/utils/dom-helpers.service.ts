@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { FunctionalUtils } from './functional.service';
 
+export interface Styles {
+  [key: string]: string | number;
+}
+
 export interface TextProps {
   [key: string]: number;
 }
@@ -14,12 +18,16 @@ export interface NotEmptyChildren {
 export class DOMhelpers {
   constructor(private fnc: FunctionalUtils) {}
 
-  public setCssProps(element: HTMLElement, props: object): void {
+  // set any css properties
+  // (provided as JSON with props in kebab-case),
+  // including css variables ('--color-red')
+  public setCssProps(element: HTMLElement, props: Styles): void {
     for (const prop of Object.keys(props)) {
-      element.style.setProperty(prop, props[prop]);
+      element.style.setProperty(prop, props[prop] as string);
     }
   }
 
+  // returns line-height and font-size as unitless numbers
   public getElementTextProps(element: HTMLElement): TextProps {
     const computedStyle = getComputedStyle(element),
       fontSize = parseFloat(computedStyle.fontSize),
@@ -35,37 +43,49 @@ export class DOMhelpers {
     };
   }
 
-  public hasNotEmptyChildren(element: HTMLElement): NotEmptyChildren {
-    return Array.from(element.children).reduce(
-      (acc, node, index) => {
-        const hasText = !!(node as HTMLElement).innerText;
-        return {
-          total: hasText ? acc.total + 1 : acc.total,
-          firstIndex:
-            hasText && acc.firstIndex === null ? index : acc.firstIndex
-        };
-      },
-      { total: 0, firstIndex: null }
-    );
+  public hasChildren(element: HTMLElement) {
+    return element.children.length !== 0;
+  }
+
+  public hasChildrenWithText(element: HTMLElement): NotEmptyChildren {
+    const defAcc = { total: 0, firstIndex: null };
+    return element.children.length > 0
+      ? Array.from(element.children).reduce((acc, node, index) => {
+          const hasText = !!(node as HTMLElement).innerText;
+          return {
+            total: hasText ? acc.total + 1 : acc.total,
+            firstIndex:
+              hasText && acc.firstIndex === null ? index : acc.firstIndex
+          };
+        }, defAcc)
+      : defAcc;
   }
 
   public hasTextNodes(element: HTMLElement): boolean {
-    return !!Array.from(element.childNodes).find(
-      node => node.nodeType === Node.TEXT_NODE
+    return (
+      element.childNodes.length > 0 &&
+      !!Array.from(element.childNodes).find(
+        node => node.nodeType === Node.TEXT_NODE
+      )
     );
   }
 
-  public getDeepTextElement(element: HTMLElement): HTMLElement {
-    const memoHasNotEmptyChildren = this.fnc.memoizeOne(
-      this.hasNotEmptyChildren
-    );
+  public isEmpty(element: HTMLElement) {
+    return element.children.length === 0 && !this.hasTextNodes(element);
+  }
 
+  // returns deepest element that has text
+  // and/or multiple children with text
+  public getDeepTextElement(element: HTMLElement): HTMLElement {
+    const memoHasChildrenWithText = this.fnc.memoizeOne(
+      this.hasChildrenWithText
+    );
     while (
-      memoHasNotEmptyChildren(element).total === 1 &&
+      memoHasChildrenWithText(element).total === 1 &&
       !this.hasTextNodes(element)
     ) {
       element = element.children[
-        memoHasNotEmptyChildren(element).firstIndex
+        memoHasChildrenWithText(element).firstIndex
       ] as HTMLElement;
     }
     return element;
