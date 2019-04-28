@@ -36,7 +36,7 @@ export class DOMhelpers {
           ? parseFloat(computedStyle.lineHeight) / fontSize
           : computedStyle.lineHeight.indexOf('%') !== -1
           ? parseFloat(computedStyle.lineHeight) / 100
-          : 1.2;
+          : undefined;
     return {
       fontSize: fontSize,
       lineHeight: lineHeight
