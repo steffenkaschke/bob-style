@@ -19,10 +19,11 @@ import { DOMhelpers, TextProps, Styles } from '../utils/dom-helpers.service';
     <span
       #textContainer
       class="btt"
-      [matTooltip]="tooltipText"
-      [matTooltipDisabled]="!tooltipEnabled"
       [ngClass]="textContainerClass"
       [ngStyle]="textContainerStyle"
+      [matTooltip]="tooltipText"
+      [matTooltipDisabled]="!tooltipEnabled"
+      [matTooltipShowDelay]="300"
       matTooltipPosition="above"
       matTooltipClass="b-truncate-tooltip"
     >
