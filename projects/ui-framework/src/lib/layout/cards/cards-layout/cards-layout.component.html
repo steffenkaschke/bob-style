@@ -1,4 +1,5 @@
-<ul class="cards-list">
+<ul class="cards-list"
+    [ngClass]="type">
 
   <li *ngIf="false"
       b-card-add
@@ -8,6 +9,7 @@
 
   <li *ngFor="let card of cards; index as index;"
       b-card
+      [type]="type"
       [card]="card">
   </li>
 

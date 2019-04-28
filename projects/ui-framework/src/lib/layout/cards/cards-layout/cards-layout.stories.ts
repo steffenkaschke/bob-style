@@ -9,6 +9,7 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
+import { values } from 'lodash';
 import { ComponentGroupType } from '../../../consts';
 import { CardsModule } from '../cards.module';
 
@@ -20,13 +21,16 @@ import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.compo
 import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
 import { SliderModule } from '../../../buttons-indicators/slider/slider.module';
 import { SliderComponent } from '../../../buttons-indicators/slider/slider.component';
+import { CardType } from '../cards.enum';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-cards [cards]="cardsData">
+<b-cards
+    [type]="type"
+    [cards]="cardsData">
 </b-cards>
 `;
 
@@ -61,6 +65,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        type: select('type', values(CardType), CardType.primary),
         cardsData: object('cardsData', CardsMockData)
       },
       moduleMetadata: {

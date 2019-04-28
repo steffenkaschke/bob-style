@@ -12,15 +12,21 @@
 </b-menu>
 
 <p class="card-top"
-   *ngIf="isString(card.data.header)">
+   *ngIf="type !== cardType.tertiary && isString(card.data.header)">
   {{ card.data.header }}
 </p>
 
 <b-component-renderer class="card-top"
-                      *ngIf="isComponent(card.data.header)"
+                      *ngIf="type !== cardType.tertiary && isComponent(card.data.header)"
                       [render]="card.data.header"></b-component-renderer>
 
-<b-display-3 class="card-content">
+<b-display-4 class="card-content"
+             *ngIf="type === cardType.primary">
+  {{ card.data.text }}
+</b-display-4>
+
+<b-display-3 class="card-content"
+             *ngIf="type === cardType.secondary || type === cardType.tertiary">
   {{ card.data.text }}
 </b-display-3>
 
