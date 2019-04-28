@@ -9,6 +9,7 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
+import { values } from 'lodash';
 import { ComponentGroupType } from '../../../consts';
 import { CardsModule } from '../cards.module';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
@@ -16,22 +17,27 @@ import { IconsModule } from '../../../icons/icons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
-import { MenuItem } from '../../../navigation/menu/menu.interface';
+import { CardsMockData } from '../cardsMockData';
+import { CardType } from '../cards.enum';
+
+import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.component';
+import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
+import { SliderModule } from '../../../buttons-indicators/slider/slider.module';
+import { SliderComponent } from '../../../buttons-indicators/slider/slider.component';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-card [menu]="menu" [text]="text">
-  <p card-top>Kyle Wilson</p>
-  <p card-bottom>No approvers are required</p>
+<b-card [card]="cardData"
+        [type]="type">
 </b-card>
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Single Card'">
-  <div style="display: flex; width:280px; height: 280px; margin: 100px auto;">
+  <div style="width:280px; margin: 100px auto;">
     ${template}
   </div>
 </b-story-book-layout>
@@ -54,41 +60,24 @@ const note = `
   ~~~
 `;
 
-const cardTextMock =
-  'Compensation update with a very long text that cuts off after 4 lines of text. And here is another very long text that should not be displayed at all.';
-
-const menuMock: MenuItem[] = [
-  {
-    label: 'Do this',
-    action: $event => console.log('Do this', $event)
-  },
-  {
-    label: 'Do that',
-    action: $event => console.log('Do that', $event)
-  },
-  {
-    label: 'Do something else',
-    action: $event => console.log('Do something else', $event)
-  }
-];
-
 story.add(
   'Card',
   () => {
     return {
       template: storyTemplate,
       props: {
-        menu: object('menu', menuMock),
-        text: text('text', cardTextMock)
+        type: select('type', values(CardType), CardType.primary),
+        cardData: object('cardsData', CardsMockData[1])
       },
       moduleMetadata: {
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           CardsModule,
-          ButtonsModule,
-          IconsModule
-        ]
+          AvatarModule,
+          SliderModule
+        ],
+        entryComponents: [AvatarComponent, SliderComponent]
       }
     };
   },

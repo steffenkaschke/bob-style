@@ -7,6 +7,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  min-width: 150px;
+  max-width: 300px;
   padding: 20px;
   border: 1px solid $grey-500;
   border-radius: 4px;
@@ -80,7 +82,7 @@
   min-height: 240px;
 
   .card-content {
-    @include DisplayFont(18px, 600);
+    @include DisplayFont(18px, 600, $transform: null);
     @include line-clamp(4, 18px, $line-height-heading, true);
   }
 }
@@ -88,7 +90,7 @@
 :host.card-secondary,
 :host.card-tertiary {
   .card-content {
-    @include DisplayFont(22px, 600);
+    @include DisplayFont(22px, 600, $transform: null);
     @include line-clamp(3, 22px, $line-height-heading, true);
   }
 }

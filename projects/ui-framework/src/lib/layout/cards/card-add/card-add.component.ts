@@ -34,6 +34,5 @@ export class CardAddComponent {
   @HostListener('click', ['$event'])
   onClick($event) {
     this.clicked.emit($event);
-    this.card.action();
   }
 }

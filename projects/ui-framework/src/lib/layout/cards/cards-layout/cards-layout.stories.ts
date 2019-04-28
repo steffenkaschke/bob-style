@@ -14,6 +14,7 @@ import { ComponentGroupType } from '../../../consts';
 import { CardsModule } from '../cards.module';
 
 import { CardsMockData } from '../cardsMockData';
+import { CardType } from '../cards.enum';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
@@ -21,7 +22,6 @@ import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.compo
 import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
 import { SliderModule } from '../../../buttons-indicators/slider/slider.module';
 import { SliderComponent } from '../../../buttons-indicators/slider/slider.component';
-import { CardType } from '../cards.enum';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
@@ -32,8 +32,7 @@ const template = `
     [type]="type"
     [cards]="cardsData"
     [addCard]="addCard"
-    (cardClicked)="cardClickHandler($event)"
-    >
+    (cardClicked)="cardClickHandler($event)">
 </b-cards>
 `;
 

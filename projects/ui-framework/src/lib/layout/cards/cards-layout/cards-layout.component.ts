@@ -13,7 +13,7 @@ import { CardType } from '../cards.enum';
   templateUrl: './cards-layout.component.html',
   styleUrls: ['./cards-layout.component.scss']
 })
-export class CardsLayoutComponent implements OnInit {
+export class CardsLayoutComponent {
   constructor() {}
 
   @Input() cards: CardsData;
@@ -23,8 +23,6 @@ export class CardsLayoutComponent implements OnInit {
   @Output() cardClicked: EventEmitter<CardClickEvent> = new EventEmitter<
     CardClickEvent
   >();
-
-  ngOnInit() {}
 
   onCardClicked(card: CardData, index: number): void {
     this.cardClicked.emit({

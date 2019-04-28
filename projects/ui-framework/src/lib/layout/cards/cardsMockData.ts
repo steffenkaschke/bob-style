@@ -7,21 +7,6 @@ import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 const random = (min = 0, max = 100): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
-const menuMock: MenuItem[] = [
-  {
-    label: 'Do this',
-    action: $event => console.log('Do this', $event)
-  },
-  {
-    label: 'Do that',
-    action: $event => console.log('Do that', $event)
-  },
-  {
-    label: 'Do something else',
-    action: $event => console.log('Do something else', $event)
-  }
-];
-
 const names = [
   'Dylan Herrera',
   'Elsie Hunter',
@@ -37,6 +22,21 @@ const names = [
   'Gopichand Sana'
 ];
 
+const menuMock: MenuItem[] = [
+  {
+    label: 'Do this',
+    action: $event => console.log('Do this', $event)
+  },
+  {
+    label: 'Do that',
+    action: $event => console.log('Do that', $event)
+  },
+  {
+    label: 'Do something else',
+    action: $event => console.log('Do something else', $event)
+  }
+];
+
 const headerComponent = (index: number): RenderedComponent => ({
   component: AvatarComponent,
   attributes: {
@@ -49,7 +49,7 @@ const headerComponent = (index: number): RenderedComponent => ({
 const footerComponent = (): RenderedComponent => ({
   component: SliderComponent,
   attributes: {
-    value: random(),
+    value: random(10, 90),
     showLabel: false,
     readOnly: true
   }

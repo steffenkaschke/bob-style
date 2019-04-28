@@ -4,7 +4,8 @@
   <li *ngIf="addCard"
       b-card-add
       [type]="type"
-      [card]="addCard">
+      [card]="addCard"
+      (clicked)="addCard.action()">
   </li>
 
   <li *ngFor="let card of cards; index as index;"
