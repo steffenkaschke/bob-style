@@ -3,23 +3,21 @@ import { text, withKnobs, select, object } from '@storybook/addon-knobs/angular'
 import { InfoStripModule } from './info-strip.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { IconColor, Icons } from '../../icons/icons.enum';
 import { values } from 'lodash';
 import { LinkColor, LinkTarget } from '../link/link.enum';
+import { InfoStripIconType } from './info-strip.enum';
 
 const infoStripStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
   withKnobs
 );
-const icons = values(Icons);
-const color = values(IconColor);
+const iconTypes = values(InfoStripIconType);
 
 const template = `<b-info-strip
-  [icon]="icon"
-  [iconColor]="iconColor"
+  [iconType]="iconType"
   [link]="link"
   [text]="text"></b-info-strip>`;
 
-const storyTemplate = `<b-story-book-layout title="Info Strip">
+const storyTemplate = `<b-story-book-layout [title]="'Info Strip'">
   <div style="margin: 0px 25px;">
     ${template}
   </div>
@@ -33,10 +31,9 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  icon | string | icon | baseline_info_icon (optional)
-  iconColor | string | icon color | inform (optional)
+  iconType | InfoStripIconType | icon type - information, error, warning, success
   text | string | The text inside the strip
-  link | json | link definition - text, url, color, target |
+  link | Link | link definition - text, url, color, target
   ~~~
   ${template}
   ~~~
@@ -48,8 +45,7 @@ infoStripStories.add(
     return {
       template: storyTemplate,
       props: {
-        icon: select('icon', icons, Icons.baseline_info_icon),
-        iconColor: select('color', color, IconColor.inform),
+        iconType: select('iconType', iconTypes, InfoStripIconType.information),
         text: text('text', 'Place your info text here'),
         link: object('link', {
           text: 'Click here', url: 'https://app.hibob.com', target: LinkTarget.blank, color: LinkColor.none })

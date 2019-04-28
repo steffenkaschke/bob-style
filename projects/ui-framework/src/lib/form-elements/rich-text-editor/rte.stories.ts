@@ -13,9 +13,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { values } from 'lodash';
 import { TypographyModule } from '../../typography/typography.module';
-import { RichTextEditorModule } from './rich-text-editor.module';
+import { RichTextEditorModule } from './rte.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RTEType, RTEControls, RTEchangeEvent } from './rich-text-editor.enum';
+import { RTEType, RTEControls, RTEchangeEvent } from './rte.enum';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -39,7 +39,6 @@ const template = `
       [required]="required"
       [hintMessage]="hintMessage"
       [errorMessage]="errorMessage"
-      [sendChangeOn]="sendChangeOn"
       (changed)="change($event)"
       (focused)="focus($event)"
       (blurred)="blur($event)">
@@ -93,11 +92,6 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        sendChangeOn: select(
-          'type',
-          values(RTEchangeEvent),
-          RTEchangeEvent.blur
-        ),
         type: select('type', values(RTEType), RTEType.primary),
         label: text('label', 'Compose an epic...'),
         value: text('value', value),
