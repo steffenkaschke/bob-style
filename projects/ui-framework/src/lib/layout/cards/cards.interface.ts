@@ -21,3 +21,8 @@ export interface AddCardData {
 }
 
 export interface CardsData extends Array<CardData> {}
+
+export interface CardClickEvent {
+  cardIndex: number;
+  card: CardData;
+}

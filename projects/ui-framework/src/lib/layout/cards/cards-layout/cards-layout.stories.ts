@@ -31,7 +31,9 @@ const template = `
 <b-cards
     [type]="type"
     [cards]="cardsData"
-    [addCard]="addCard">
+    [addCard]="addCard"
+    (cardClicked)="cardClickHandler($event)"
+    >
 </b-cards>
 `;
 
@@ -74,7 +76,8 @@ story.add(
       props: {
         type: select('type', values(CardType), CardType.primary),
         addCard: object('addCard', AddCardMockData),
-        cardsData: object('cardsData', CardsMockData)
+        cardsData: object('cardsData', CardsMockData),
+        cardClickHandler: action('Card clicked')
       },
       moduleMetadata: {
         imports: [

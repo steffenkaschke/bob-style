@@ -2,7 +2,8 @@
         *ngIf="card.menu && card.menu.length > 0"
         [menu]="card.menu"
         (openMenu)="onMenuOpen()"
-        (closeMenu)="onMenuClose()">
+        (closeMenu)="onMenuClose()"
+        (click)="stopPropagation($event)">
   <b-square-button menu-trigger
                    type="tertiary"
                    icon="three_dots"
@@ -18,7 +19,8 @@
 
 <b-component-renderer class="card-top"
                       *ngIf="type !== cardType.tertiary && isComponent(card.data.header)"
-                      [render]="card.data.header"></b-component-renderer>
+                      [render]="card.data.header"
+                      (click)="onComponentClick($event, card.data.header)"></b-component-renderer>
 
 <p class="card-content">
   {{ card.data.text }}
@@ -31,4 +33,5 @@
 
 <b-component-renderer class="card-bottom"
                       *ngIf="isComponent(card.data.footer)"
-                      [render]="card.data.footer"></b-component-renderer>
+                      [render]="card.data.footer"
+                      (click)="onComponentClick($event, card.data.footer)"></b-component-renderer>

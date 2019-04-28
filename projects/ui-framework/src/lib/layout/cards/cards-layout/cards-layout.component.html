@@ -1,5 +1,5 @@
 <ul class="cards-list"
-    [ngClass]="type">
+    [ngClass]="'cards-' + type">
 
   <li *ngIf="addCard"
       b-card-add
@@ -10,7 +10,9 @@
   <li *ngFor="let card of cards; index as index;"
       b-card
       [type]="type"
-      [card]="card">
+      [card]="card"
+      [index]="index"
+      (click)="onCardClicked(card, index)">
   </li>
 
 </ul>

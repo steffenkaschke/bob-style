@@ -1,6 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { CardsData, AddCardData } from '../cards.interface';
+import {
+  CardsData,
+  AddCardData,
+  CardData,
+  CardClickEvent
+} from '../cards.interface';
 import { CardType } from '../cards.enum';
 
 @Component({
@@ -15,5 +20,16 @@ export class CardsLayoutComponent implements OnInit {
   @Input() addCard: AddCardData;
   @Input() type: CardType = CardType.primary;
 
+  @Output() cardClicked: EventEmitter<CardClickEvent> = new EventEmitter<
+    CardClickEvent
+  >();
+
   ngOnInit() {}
+
+  onCardClicked(card: CardData, index: number): void {
+    this.cardClicked.emit({
+      card: card,
+      cardIndex: index
+    });
+  }
 }
