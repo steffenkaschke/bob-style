@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { UtilsModule } from './utils.module';
 import { UtilsService } from './utils.service';
 import { By } from '@angular/platform-browser';
-import { FunctionalUtils } from './functional.service';
 
 @Component({
   template: `
@@ -56,7 +55,7 @@ describe('DOMhelpers', () => {
       declarations: [TestComponent],
       imports: [CommonModule, UtilsModule],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [UtilsService, DOMhelpers, FunctionalUtils]
+      providers: [UtilsService, DOMhelpers]
     })
       .compileComponents()
       .then(() => {

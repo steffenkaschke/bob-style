@@ -9,7 +9,6 @@ import { TypographyModule } from '../../typography/typography.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
-import { FunctionalUtils } from '../../services/utils/functional.service';
 
 @Component({
   template: `
@@ -35,7 +34,7 @@ describe('CollapsibleComponent', () => {
       declarations: [TestComponent, CollapsibleComponent],
       imports: [MatExpansionModule, BrowserAnimationsModule, TypographyModule],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [DOMhelpers, FunctionalUtils]
+      providers: [DOMhelpers]
     })
       .compileComponents()
       .then(() => {

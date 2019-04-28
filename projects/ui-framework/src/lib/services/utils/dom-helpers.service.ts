@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { FunctionalUtils } from './functional.service';
 
 export interface Styles {
   [key: string]: string | number;
@@ -16,7 +15,7 @@ export interface NotEmptyChildren {
 
 @Injectable()
 export class DOMhelpers {
-  constructor(private fnc: FunctionalUtils) {}
+  constructor() {}
 
   // set any css properties
   // (provided as JSON with props in kebab-case),
@@ -78,16 +77,10 @@ export class DOMhelpers {
   // or multiple children with text
   // or combination of above
   public getDeepTextElement(element: HTMLElement): HTMLElement {
-    const memoHasChildrenWithText = this.fnc.memoizeOne(
-      this.hasChildrenWithText
-    );
-    while (
-      memoHasChildrenWithText(element).total === 1 &&
-      !this.hasTextNodes(element)
-    ) {
-      element = element.children[
-        memoHasChildrenWithText(element).firstIndex
-      ] as HTMLElement;
+    let hasChildrenWithText = this.hasChildrenWithText(element);
+    while (hasChildrenWithText.total === 1 && !this.hasTextNodes(element)) {
+      element = element.children[hasChildrenWithText.firstIndex] as HTMLElement;
+      hasChildrenWithText = this.hasChildrenWithText(element);
     }
     return element;
   }
