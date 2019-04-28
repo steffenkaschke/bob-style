@@ -62,7 +62,8 @@ const note = `
 
 const AddCardMockData = {
   title: 'Add a new flow',
-  subtitle: 'Right now'
+  subtitle: 'Right now',
+  action: action('Add Card was clicked')
 };
 
 story.add(

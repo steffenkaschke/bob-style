@@ -20,15 +20,9 @@
                       *ngIf="type !== cardType.tertiary && isComponent(card.data.header)"
                       [render]="card.data.header"></b-component-renderer>
 
-<b-display-4 class="card-content"
-             *ngIf="type === cardType.primary">
+<p class="card-content">
   {{ card.data.text }}
-</b-display-4>
-
-<b-display-3 class="card-content"
-             *ngIf="type === cardType.secondary || type === cardType.tertiary">
-  {{ card.data.text }}
-</b-display-3>
+</p>
 
 <p class="card-bottom"
    *ngIf="isString(card.data.footer)">

@@ -17,6 +17,7 @@ export interface CardData {
 export interface AddCardData {
   title: string;
   subtitle?: string;
+  action: (...args: any[]) => void;
 }
 
 export interface CardsData extends Array<CardData> {}
