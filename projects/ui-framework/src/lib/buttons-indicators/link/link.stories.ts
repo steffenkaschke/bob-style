@@ -22,7 +22,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  config | object | link configuration - text, url, target, color
+  config | Link | link configuration - text, url, target: LinkTarget, color: LinkColor
   ~~~
   ${template}
   ~~~
