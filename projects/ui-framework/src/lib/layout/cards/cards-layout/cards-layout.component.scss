@@ -6,11 +6,11 @@
   grid-gap: 15px;
 
   &.cards-primary {
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   }
 
   &.cards-secondary,
   &.cards-tertiary {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   }
 }
