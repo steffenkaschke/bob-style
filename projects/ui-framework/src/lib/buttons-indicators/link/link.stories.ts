@@ -15,9 +15,9 @@ const storyTemplate = `<b-story-book-layout [title]="'Link'">
 </b-story-book-layout>`;
 
 const note = `
-  ## Slider Element
+  ## Link Element
   #### Module
-  *SliderModule*
+  *LinkModule*
 
   #### Properties
   Name | Type | Description | Default value
