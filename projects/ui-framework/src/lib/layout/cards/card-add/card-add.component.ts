@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'b-card-add',
+  selector: 'b-card-add, [b-card-add]',
   template: `
     <b-display-3 card-content>
       {{ title }}

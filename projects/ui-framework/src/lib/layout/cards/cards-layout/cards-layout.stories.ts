@@ -12,23 +12,27 @@ import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 import { CardsModule } from '../cards.module';
 
+import { CardsMockData } from '../cardsMockData';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.component';
+import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
+import { SliderModule } from '../../../buttons-indicators/slider/slider.module';
+import { SliderComponent } from '../../../buttons-indicators/slider/slider.component';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-cards>
-  <p card-top>Kyle Wilson</p>
-  <p card-bottom>No approvers are required</p>
+<b-cards [cards]="cardsData">
 </b-cards>
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="'Cards Layout'">
-  <div style="display: flex; width:280px; height: 280px; margin: 100px auto;">
+<b-story-book-layout [title]="'Cards Layout'">
+  <div style="padding: 30px;">
     ${template}
   </div>
 </b-story-book-layout>
@@ -56,9 +60,18 @@ story.add(
   () => {
     return {
       template: storyTemplate,
-      props: {},
+      props: {
+        cardsData: object('cardsData', CardsMockData)
+      },
       moduleMetadata: {
-        imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule]
+        imports: [
+          StoryBookLayoutModule,
+          BrowserAnimationsModule,
+          CardsModule,
+          AvatarModule,
+          SliderModule
+        ],
+        entryComponents: [AvatarComponent, SliderComponent]
       }
     };
   },

@@ -1,12 +1,34 @@
-<b-menu *ngIf="menu && menu.length > 0" [menu]="menu" (openMenu)="onMenuOpen()" (closeMenu)="onMenuClose()">
-  <b-square-button menu-trigger type="tertiary" icon="three_dots" rotate="90" border="0">
+<b-menu class="card-menu"
+        *ngIf="card.menu && card.menu.length > 0"
+        [menu]="card.menu"
+        (openMenu)="onMenuOpen()"
+        (closeMenu)="onMenuClose()">
+  <b-square-button menu-trigger
+                   type="tertiary"
+                   icon="three_dots"
+                   rotate="90"
+                   border="0">
   </b-square-button>
 </b-menu>
 
-<ng-content select="[card-top]"></ng-content>
+<p class="card-top"
+   *ngIf="isString(card.data.header)">
+  {{ card.data.header }}
+</p>
 
-<b-display-3 card-content>
-  {{ text }}
+<b-component-renderer class="card-top"
+                      *ngIf="isComponent(card.data.header)"
+                      [render]="card.data.header"></b-component-renderer>
+
+<b-display-3 class="card-content">
+  {{ card.data.text }}
 </b-display-3>
 
-<ng-content select="[card-bottom]"></ng-content>
+<p class="card-bottom"
+   *ngIf="isString(card.data.footer)">
+  {{ card.data.footer }}
+</p>
+
+<b-component-renderer class="card-bottom"
+                      *ngIf="isComponent(card.data.footer)"
+                      [render]="card.data.footer"></b-component-renderer>

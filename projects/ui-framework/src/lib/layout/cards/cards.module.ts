@@ -6,10 +6,17 @@ import { MenuModule } from '../../navigation/menu/menu.module';
 import { CardComponent } from './card/card.component';
 import { CardAddComponent } from './card-add/card-add.component';
 import { CardsLayoutComponent } from './cards-layout/cards-layout.component';
+import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
 
 @NgModule({
   declarations: [CardComponent, CardAddComponent, CardsLayoutComponent],
-  imports: [CommonModule, ButtonsModule, TypographyModule, MenuModule],
+  imports: [
+    CommonModule,
+    ButtonsModule,
+    TypographyModule,
+    MenuModule,
+    ComponentRendererModule
+  ],
   exports: [CardComponent, CardAddComponent, CardsLayoutComponent],
   providers: []
 })

@@ -1,5 +1,5 @@
-@import "../../../style/colors.scss";
-@import "../../../style/mixins.scss";
+@import '../../../style/colors.scss';
+@import '../../../style/mixins.scss';
 
 :host {
   box-sizing: border-box;
@@ -13,19 +13,19 @@
 
   text-align: left;
 
-  &:hover, &.focus-inside {
+  &:hover,
+  &.focus-inside {
     box-shadow: 0 2px 15px 0 $grey-500;
     transform: translateY(-10px);
 
-    b-menu {
+    .card-menu {
       pointer-events: all;
       opacity: 1;
     }
   }
-
 }
 
-b-menu {
+.card-menu {
   position: absolute;
   top: 0;
   right: 0;
@@ -35,31 +35,35 @@ b-menu {
 }
 
 :host ::ng-deep {
-
-  b-display-3, [card-content] {
+  .card-content {
     text-transform: none;
   }
 
-  [card-top], [card-content], [card-bottom], p {
+  .card-top,
+  .card-content,
+  .card-bottom,
+  p {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
 
-  [card-top], [card-bottom], [card-content] p {
+  .card-top,
+  .card-bottom {
     font-weight: 300;
   }
 
-  [card-top], [card-content] {
+  .card-top,
+  .card-content {
     margin-bottom: 15px;
     color: $grey-700;
   }
 
-  [card-top] {
+  .card-top {
     max-width: calc(100% - 15px);
   }
 
-  [card-content] {
+  .card-content {
     @include line-clamp(4, 22px, 1.2, true);
     flex-grow: 5;
 
@@ -72,9 +76,8 @@ b-menu {
     }
   }
 
-  [card-bottom] {
+  .card-bottom {
     color: $grey-600;
     margin-top: auto;
   }
-
 }
