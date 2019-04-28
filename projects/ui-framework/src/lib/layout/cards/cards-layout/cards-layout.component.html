@@ -1,10 +1,10 @@
 <ul class="cards-list"
     [ngClass]="type">
 
-  <li *ngIf="false"
+  <li *ngIf="addCard"
       b-card-add
-      card="addCard">
-
+      [type]="type"
+      [card]="addCard">
   </li>
 
   <li *ngFor="let card of cards; index as index;"

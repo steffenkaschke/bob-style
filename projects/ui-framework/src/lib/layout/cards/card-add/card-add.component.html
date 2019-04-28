@@ -1,0 +1,12 @@
+<b-display-4 class="card-content"
+             *ngIf="type === cardType.primary">
+  {{ card.title }}
+</b-display-4>
+
+<b-display-3 class="card-content"
+             *ngIf="type === cardType.secondary || type === cardType.tertiary">
+  {{ card.title }}
+</b-display-3>
+
+<p class=".card-bottom"
+   *ngIf="card.subtitle">{{ card.subtitle }}</p>

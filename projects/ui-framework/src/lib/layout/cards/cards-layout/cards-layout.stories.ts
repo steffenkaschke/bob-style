@@ -30,7 +30,8 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
 const template = `
 <b-cards
     [type]="type"
-    [cards]="cardsData">
+    [cards]="cardsData"
+    [addCard]="addCard">
 </b-cards>
 `;
 
@@ -59,6 +60,11 @@ const note = `
   ~~~
 `;
 
+const AddCardMockData = {
+  title: 'Add a new flow',
+  subtitle: 'Right now'
+};
+
 story.add(
   'Cards Layout',
   () => {
@@ -66,6 +72,7 @@ story.add(
       template: storyTemplate,
       props: {
         type: select('type', values(CardType), CardType.primary),
+        addCard: object('addCard', AddCardMockData),
         cardsData: object('cardsData', CardsMockData)
       },
       moduleMetadata: {

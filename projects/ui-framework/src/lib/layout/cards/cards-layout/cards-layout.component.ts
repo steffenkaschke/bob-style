@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { CardsData } from '../cards.interface';
+import { CardsData, AddCardData } from '../cards.interface';
 import { CardType } from '../cards.enum';
 
 @Component({
@@ -12,6 +12,7 @@ export class CardsLayoutComponent implements OnInit {
   constructor() {}
 
   @Input() cards: CardsData;
+  @Input() addCard: AddCardData;
   @Input() type: CardType = CardType.primary;
 
   ngOnInit() {}
