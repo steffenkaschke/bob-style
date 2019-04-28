@@ -3,7 +3,6 @@ import { DOMhelpers } from './dom-helpers.service';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UtilsModule } from './utils.module';
-import { UtilsService } from './utils.service';
 import { By } from '@angular/platform-browser';
 
 @Component({
@@ -55,7 +54,7 @@ describe('DOMhelpers', () => {
       declarations: [TestComponent],
       imports: [CommonModule, UtilsModule],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [UtilsService, DOMhelpers]
+      providers: [DOMhelpers]
     })
       .compileComponents()
       .then(() => {
