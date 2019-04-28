@@ -49,6 +49,7 @@ const storyTemplate = `
       color: var(--primary-500);
     }
   </style>
+  <div style="min-width:100%; min-height: 100%; padding: 20px; background: rgb(247,247,247);">
   <div style="margin: 50px auto;" [ngStyle]="{maxWidth: !res ? '840px' : res}">
 
     <b-card-table
@@ -81,6 +82,7 @@ const storyTemplate = `
       </b-radio-button>
     </p>
 
+  </div>
   </div>
 </b-story-book-layout>
 `;

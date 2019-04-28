@@ -38,7 +38,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Cards Layout'">
-  <div style="padding: 30px;">
+  <div style="min-width:100%; min-height: 100%; padding: 30px; background: rgb(247,247,247);">
     ${template}
   </div>
 </b-story-book-layout>
