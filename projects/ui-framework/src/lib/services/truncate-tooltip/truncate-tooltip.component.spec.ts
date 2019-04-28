@@ -10,21 +10,30 @@ import { DOMhelpers } from '../utils/dom-helpers.service';
 import { UtilsService } from '../utils/utils.service';
 import { UtilsModule } from '../utils/utils.module';
 import { MatTooltipModule } from '@angular/material';
+import { TruncateTooltipModule } from './truncate-tooltip.module';
 
 @Component({
   template: `
     <div style="width: 400px; height: 500px; font-size: 10px; line-height: 1;">
       <b-truncate-tooltip class="test1" [maxLines]="maxLines">
-        <div style="">
+        <div>
           <p><!-- HTML Comment --></p>
           <div style="font-size: 20px; line-height: 1.5;">
-            <p class="right-one">
+            <p>
               TEST{{ testNum }} {{ text1 }}
               <span>{{ text2 }}</span>
             </p>
           </div>
         </div>
       </b-truncate-tooltip>
+      <div
+        class="test2"
+        *bTruncateTooltip="maxLines"
+        style="font-size: 20px; line-height: 1.5;"
+      >
+        TEST{{ testNum2 }} {{ text1 }}
+        <span>{{ text3 }}</span>
+      </div>
     </div>
   `,
   providers: []
@@ -34,6 +43,7 @@ class TestComponent {
   @Input() maxLines: number;
 
   testNum = 1;
+  testNum2 = 1;
 
   text1 = `
     TEXTSTART If you’re trying to wear official headgear in a public setting, my
@@ -44,7 +54,8 @@ class TestComponent {
     part of your traditional Pastafarian beliefs, as you are claiming
     – then they are less likely to make trouble.
     `;
-  text2 = 'And this text too! TEXTEND';
+  text2 = 'And this text too! TEXTEND1';
+  text3 = 'And this text too! TEXTEND2';
 }
 
 describe('RichTextEditorComponent', () => {
@@ -52,16 +63,19 @@ describe('RichTextEditorComponent', () => {
   let testComponent: TestComponent;
 
   let bttComp1: TruncateTooltipComponent;
+  let bttComp2: TruncateTooltipComponent;
   let bttComp1textContainer: HTMLElement;
+  let bttComp2textContainer: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, TruncateTooltipComponent],
+      declarations: [TestComponent],
       imports: [
         CommonModule,
         BrowserAnimationsModule,
         UtilsModule,
-        MatTooltipModule
+        MatTooltipModule,
+        TruncateTooltipModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [DOMhelpers, UtilsService]
@@ -76,16 +90,23 @@ describe('RichTextEditorComponent', () => {
         bttComp1 = fixture.debugElement.query(By.css('.test1'))
           .componentInstance;
 
+        bttComp2 = fixture.debugElement.query(
+          By.css('b-truncate-tooltip:not(.test1)')
+        ).componentInstance;
+
         setTimeout(() => {
           bttComp1textContainer = fixture.debugElement.query(
             By.css('.test1 .btt')
+          ).nativeElement;
+          bttComp2textContainer = fixture.debugElement.query(
+            By.css('b-truncate-tooltip:not(.test1) .btt')
           ).nativeElement;
           fixture.detectChanges();
         }, 0);
       });
   }));
 
-  describe('Component: Text truncation (1 line)', () => {
+  describe('Text truncation (1 line)', () => {
     it('should display a single truncated line of text', () => {
       const textContainerStyle = getComputedStyle(bttComp1textContainer);
       expect(
@@ -98,11 +119,11 @@ describe('RichTextEditorComponent', () => {
       ) as HTMLElement;
       expect(tooltipElem.innerText).toContain('TEST1');
       expect(tooltipElem.innerText).toContain('TEXTSTART');
-      expect(tooltipElem.innerText).toContain('TEXTEND');
+      expect(tooltipElem.innerText).toContain('TEXTEND1');
     });
   });
 
-  describe('Component: Dynamic MaxLines & Text change; Text line-clamp (3 lines)', () => {
+  describe('Dynamic MaxLines & Text change; Text line-clamp (3 lines)', () => {
     it('should chnage from 1 line to 3 lines of text', () => {
       testComponent.maxLines = 3;
       fixture.detectChanges();
@@ -120,8 +141,34 @@ describe('RichTextEditorComponent', () => {
         '#cdk-describedby-message-container'
       ) as HTMLElement;
       expect(tooltipElem.innerText).toContain('TEST2');
-      expect(tooltipElem.innerText).toContain('TEXTSTART');
-      expect(tooltipElem.innerText).toContain('TEXTEND');
+      expect(tooltipElem.innerText).toContain('TEXTEND1');
+    });
+  });
+
+  describe('Structural directive', () => {
+    it('should wrap element in b-truncate-tooltip component and display a single truncated line of text', () => {
+      const textContainerStyle = getComputedStyle(bttComp2textContainer);
+      const testElement = bttComp2textContainer.querySelector('.test2');
+      expect(testElement).toBeTruthy();
+      expect(
+        parseInt(textContainerStyle.height, 10) <= 20 * 1.5 * 1
+      ).toBeTruthy();
+    });
+
+    it('should also update on maxLines or text changes', () => {
+      testComponent.maxLines = 3;
+      testComponent.testNum2 = 4;
+      fixture.autoDetectChanges();
+
+      const textContainerStyle = getComputedStyle(bttComp2textContainer);
+      const tooltipElem = document.querySelector(
+        '#cdk-describedby-message-container'
+      ) as HTMLElement;
+      expect(
+        parseInt(textContainerStyle.height, 10) <= 20 * 1.5 * 3
+      ).toBeTruthy();
+      expect(tooltipElem.innerText).toContain('TEST4');
+      expect(tooltipElem.innerText).toContain('TEXTEND2');
     });
   });
 });

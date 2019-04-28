@@ -43,7 +43,7 @@ export class TruncateTooltipDirective implements OnChanges, OnInit, OnDestroy {
       TruncateTooltipComponent
     );
     this.tooltipComponent = this.viewContainer.createComponent(factory);
-    this.tooltipComponent.instance.maxLines = this.bTruncateTooltip;
+    this.tooltipComponent.instance.maxLines = this.bTruncateTooltip || 1;
     this.tooltipComponent.instance.child.createEmbeddedView(this.templateRef);
     this.initialized = true;
   }
