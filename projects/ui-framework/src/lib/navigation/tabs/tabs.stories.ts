@@ -1,13 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  array,
-  boolean,
-  number,
-  object,
-  select,
-  text,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { TabsModule } from './tabs.module';
 import { ComponentGroupType } from '../../consts';
@@ -30,7 +22,7 @@ const tabs: Tab[] = [
 ];
 const template = `
 <b-tabs [tabs]="tabs"
-        [onSelectedTabChange]="onSelectedTabChange"
+        (selectChange)="onSelectedTabChange($event)"
         [selectedIndex]="selectedIndex">
 </b-tabs>`;
 
@@ -49,7 +41,7 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   tabs | Tabs[] | tabs metadata
-  onSelectedTabChange | function | function for the change tab event
+  selectChange | event | tab event which contains the change index
   selectedIndex | number | the selected tab index 0-n
 
   ~~~
