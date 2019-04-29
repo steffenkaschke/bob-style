@@ -81,8 +81,9 @@
     font-size: $font-size-body;
     color: $body-text-color;
 
-    // position above
-    &[style*='center bottom'] {
+    // position above  //
+    &[style*='center bottom'],
+    &[style*='50% 100% 0px'] {
       @include OverlayPositionBounding(above);
       &:before {
         bottom: -6px;
@@ -93,7 +94,8 @@
     }
 
     // position below
-    &[style*='center top'] {
+    &[style*='center top'],
+    &[style*='50% 0% 0px'] {
       @include OverlayPositionBounding(below);
       &:before {
         top: -6px;
