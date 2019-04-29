@@ -49,8 +49,9 @@ export abstract class RTEformElement extends BaseFormElement
 
   editor: Quill;
   selectedText: string;
-  hasSizeSet = false;
   selection: RangeStatic;
+  selectionFormat: any;
+  hasSizeSet = false;
   latestOutputValue: RteCurrentContent;
   writingValue = false;
   sendChangeOn = RTEchangeEvent.blur;
@@ -154,7 +155,7 @@ export abstract class RTEformElement extends BaseFormElement
 
   initEditor(options: QuillOptionsStatic): void {
     this.editor = new quillLib(this.quillEditor.nativeElement, options);
-    
+
     this.editor.enable(!this.disabled);
 
     this.editor.on('text-change', () => {

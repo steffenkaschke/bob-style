@@ -25,11 +25,12 @@ import has from 'lodash/has';
   templateUrl: './rte-link-editor.component.html',
   styleUrls: ['./rte-link-editor.component.scss']
 })
-export class RteLinkEditorComponent implements OnInit {
+export class RteLinkEditorComponent implements OnChanges {
   constructor() {}
 
   @Input() displayText: string;
-  @Input() rteSelection: number;
+  @Input() rteSelection: RteLink;
+  @Input() rteSelectionIndex: number;
   @Output() linkUpdate: EventEmitter<RteLink> = new EventEmitter<RteLink>();
   @Output() linkCancel: EventEmitter<any> = new EventEmitter<any>();
 
@@ -40,15 +41,25 @@ export class RteLinkEditorComponent implements OnInit {
   urlText: string;
   linksCache = {};
 
-  ngOnInit(): void {
-    console.log('ngOnInit');
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('changes', changes);
+    if (has(changes, 'displayText')) {
+      this.displayText = changes.displayText.currentValue;
+    }
   }
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   if (has(changes, 'displayText')) {
-  //     this.displayText = changes.displayText.currentValue;
-  //   }
-  // }
+  checkLink() {
+    return (
+      this.rteSelection &&
+      !!this.linksCache[this.rteSelection.text] &&
+      Object.keys(this.rteSelection).reduce(
+        (acc, key) =>
+          this.linksCache[this.rteSelection.text][key] ===
+          this.rteSelection[key],
+        true
+      )
+    );
+  }
 
   onDisplayTextChange(e: InputEvent) {
     if (e.event === InputEventType.onChange) {
@@ -72,8 +83,9 @@ export class RteLinkEditorComponent implements OnInit {
 
     if (url) {
       this.linksCache[this.displayText] = {
-        selection: this.rteSelection,
-        url: this.urlText
+        text: this.displayText,
+        url: this.urlText,
+        index: this.rteSelectionIndex
       };
     } else {
       delete this.linksCache[this.displayText];
@@ -81,20 +93,22 @@ export class RteLinkEditorComponent implements OnInit {
 
     this.resetValues();
 
-    console.log('onAdd', this.rteSelection);
-    console.log('onAdd', this.linksCache);
+    console.log('onAdd rteSelection', this.rteSelection);
+    console.log('onAdd linksCache', this.linksCache);
   }
 
   onCancel(): void {
     this.linkCancel.emit();
     this.resetValues();
 
-    console.log('onCancel', this.rteSelection);
-    console.log('onCancel', this.linksCache);
+    console.log('onCancel rteSelection', this.rteSelection);
+    console.log('onCancel linksCache', this.linksCache);
   }
 
   private resetValues(): void {
     this.urlText = null;
     this.displayText = null;
+    this.rteSelection = null;
+    this.rteSelectionIndex = null;
   }
 }

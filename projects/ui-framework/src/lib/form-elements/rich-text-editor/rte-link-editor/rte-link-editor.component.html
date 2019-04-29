@@ -9,11 +9,13 @@
 <b-input class="link-url"
          [inputType]="inputTypes.url"
          [hideLabelOnFocus]="true"
-         [value]="urlText || linksCache[displayText]"
+         [value]="urlText || checkLink() && linksCache[rteSelection.text].url"
          (inputEvents)="onUrlTextChange($event)"
          label="url">
 </b-input>
-
+checkLink: {{ checkLink() | json }} <br>
+rteSelection {{ rteSelection | json  }} <br>
+linksCache {{ linksCache | json }}
 <div class="footer">
   <b-button class="cancel"
             (clicked)="onCancel()"

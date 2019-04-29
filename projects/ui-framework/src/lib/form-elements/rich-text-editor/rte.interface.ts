@@ -7,20 +7,15 @@ export interface UpdateRteConfig {
   format: UpdateRteConfigFormat;
 }
 
-interface RteLinkValue {
-  text: string;
-  url: string;
-  index: number;
-}
-
 interface UpdateRteConfigFormat {
   type: BlotType;
-  value: RteLinkValue;
+  value: any;
 }
 
 export interface RteLink {
   text: string;
   url: string;
+  index?: number;
 }
 
 export interface RteCurrentContent {

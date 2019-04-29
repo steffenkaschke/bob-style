@@ -133,8 +133,13 @@ export class RichTextEditorComponent extends RTEformElement
       this.editor,
       this.selection
     );
+    this.selectionFormat = this.editor.getFormat(this.selection);
+
     this.linkEditor.displayText = this.selectedText;
-    console.log('getFormat', this.editor.getFormat(this.selection));
+    this.linkEditor.rteSelection =
+      this.selectionFormat && this.selectionFormat['Link'];
+    this.linkEditor.rteSelectionIndex = this.selection && this.selection.index;
+
     this.editor.blur();
   }
 
