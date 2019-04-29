@@ -8,6 +8,7 @@ import { CollapsibleType } from './collapsible.enum';
 import { TypographyModule } from '../../typography/typography.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 @Component({
   template: `
@@ -32,7 +33,8 @@ describe('CollapsibleComponent', () => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, CollapsibleComponent],
       imports: [MatExpansionModule, BrowserAnimationsModule, TypographyModule],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [DOMhelpers]
     })
       .compileComponents()
       .then(() => {

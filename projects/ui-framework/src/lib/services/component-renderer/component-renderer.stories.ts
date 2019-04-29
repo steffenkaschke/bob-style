@@ -17,6 +17,7 @@ import { ComponentRendererModule } from './component-renderer.module';
 
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 import { MockComponent } from '../mock-component/mock.component';
+import { TypographyModule } from '../../typography/typography.module';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
@@ -28,7 +29,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Component Renderer">
+<b-story-book-layout [title]="'Component Renderer'">
   <div style="padding: 50px; display:flex; justify-content: center; background: rgba(0,0,0,0.1);">
     ${template}
   </div>
@@ -129,7 +130,8 @@ story.add(
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          ComponentRendererModule
+          ComponentRendererModule,
+          TypographyModule
         ],
         entryComponents: [AvatarComponent, MockComponent]
       }

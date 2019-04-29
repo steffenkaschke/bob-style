@@ -26,6 +26,8 @@ import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 
 import { MockComponent } from '../../services/mock-component/mock.component';
+import { MockModule } from '../../services/mock-component/mock.module';
+
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
@@ -43,7 +45,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout title="Card Table">
+<b-story-book-layout [title]="'Card Table'">
   <style>
     :host ::ng-deep .highlight-second-line span:nth-child(2) {
       color: var(--primary-500);
@@ -223,11 +225,11 @@ story.add(
         CardTableMetaData: object('meta', CardTableMockMetaData),
         CardTableData: object('table', CardTableMockData),
 
-        rowClickHandler: action('Row Clicked'),
-        cellClickHandler: action('Cell Clicked')
+        rowClickHandler: action('Row clicked'),
+        cellClickHandler: action('Cell clicked')
       },
       moduleMetadata: {
-        declarations: [MockComponent],
+        declarations: [],
         imports: [
           RadioButtonModule,
           StoryBookLayoutModule,
@@ -235,7 +237,8 @@ story.add(
           CardTableModule,
           ChipsModule,
           ButtonsModule,
-          AvatarModule
+          AvatarModule,
+          MockModule
         ],
         entryComponents: [
           ChipComponent,

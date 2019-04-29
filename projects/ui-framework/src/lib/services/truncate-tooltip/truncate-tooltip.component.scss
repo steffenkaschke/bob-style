@@ -1,0 +1,106 @@
+@import '../../style/colors';
+@import '../../style/typography';
+
+@import '../../overlay/overlay';
+
+:host {
+  display: block;
+
+  ::ng-deep {
+    :only-child,
+    p,
+    div {
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  &:not(.btt-initialized) {
+    max-height: 1em;
+    opacity: 0;
+  }
+}
+
+.btt {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &-truncate {
+    white-space: nowrap;
+
+    ::ng-deep {
+      * {
+        display: inline;
+      }
+    }
+  }
+
+  &-line-clamp {
+    @supports not (-webkit-line-clamp: 2) {
+      position: relative;
+
+      &:after {
+        content: '';
+        text-align: right;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 50%;
+        height: 1.3em;
+        height: calc(var(--btt-font-size) * var(--btt-line-height));
+
+        background: linear-gradient(
+          to right,
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 1) 80%
+        );
+      }
+    }
+
+    @supports (-webkit-line-clamp: 2) {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+
+      &:after {
+        display: none;
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .mat-tooltip.b-truncate-tooltip {
+    @include OverlayPanel;
+    @include OverlayPointerHolders;
+    @include OverlayPositionBounding(center);
+    max-width: 300px;
+    padding: 12px 15px;
+    margin: 0;
+    font-size: $font-size-body;
+    color: $body-text-color;
+
+    // position above
+    &[style*='center bottom'] {
+      @include OverlayPositionBounding(above);
+      &:before {
+        bottom: -6px;
+      }
+      &:after {
+        bottom: -5px;
+      }
+    }
+
+    // position below
+    &[style*='center top'] {
+      @include OverlayPositionBounding(below);
+      &:before {
+        top: -6px;
+      }
+      &:after {
+        top: -5px;
+      }
+    }
+  }
+}
