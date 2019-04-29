@@ -1,9 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AvatarComponent } from './avatar.component';
-import { AvatarSize } from './avatar.enum';
+import { AvatarSize, BadgeColor, BadgeSize } from './avatar.enum';
 import { TypographyModule } from '../../typography/typography.module';
 import { By } from '@angular/platform-browser';
 import { forEach, values } from 'lodash';
+import { IconsModule } from '../../icons/icons.module';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
@@ -12,7 +13,7 @@ describe('AvatarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AvatarComponent ],
-      imports: [ TypographyModule ]
+      imports: [ TypographyModule, IconsModule ]
     })
     .compileComponents();
   }));
@@ -77,7 +78,7 @@ describe('AvatarComponent', () => {
         expect(title.nativeElement.innerText.toLowerCase()).toContain(`john doe ${size}`);
         expect(title.nativeElement.innerText.toLowerCase()).toContain(`web developer ${size}`);
       });
-    })
+    });
   });
 
   describe('Disabled', () => {
@@ -89,6 +90,15 @@ describe('AvatarComponent', () => {
       const image = fixture.debugElement.queryAll(By.css('.avatar-image'))[0];
       expect(title.classes['title-disabled']).toBeTruthy();
       expect(image.classes['avatar-disabled']).toBeTruthy();
+    });
+  });
+
+  describe('badge', () => {
+    it('Should create badge config', () => {
+      component.badge = 'pending_badge';
+      component.ngOnInit();
+      expect(component.badgeConfig.size).toEqual(BadgeSize[component.size]);
+      expect(component.badgeConfig.color).toEqual(BadgeColor[component.badge]);
     });
   });
 });
