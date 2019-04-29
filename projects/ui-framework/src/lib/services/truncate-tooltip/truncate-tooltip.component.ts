@@ -109,17 +109,10 @@ export class TruncateTooltipComponent
         this.textElement
       );
 
-      if (
-        !this.DOM.isWebkit() ||
-        !this.DOM.supportsCSS('-webkit-line-clamp', '2')
-      ) {
-        const bgColor = this.DOM.getBackgroundColor(this.textElement);
-        this.DOM.setCssProps(this.textContainer, {
-          '--btt-line-height': this.textElementTextProps.lineHeight,
-          '--btt-font-size': this.textElementTextProps.fontSize + 'px',
-          '--btt-bg-color': bgColor
-        });
-      }
+      this.DOM.setCssProps(this.textContainer, {
+        '--btt-line-height': this.textElementTextProps.lineHeight,
+        '--btt-font-size': this.textElementTextProps.fontSize + 'px'
+      });
     }
 
     this.textContainerClass =
