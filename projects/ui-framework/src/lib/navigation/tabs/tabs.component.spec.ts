@@ -38,7 +38,7 @@ describe('TabsComponent', () => {
         {
           label: 'tab 3',
         }];
-      component.onSelectedTabChange = () => {};
+      component.onSelectChange({index: 3, tab: null});
       fixture.detectChanges();
       const progressEl = fixture.debugElement.query(By.css('.mat-tab-header'));
       expect(progressEl.childNodes.length).toEqual(3);
