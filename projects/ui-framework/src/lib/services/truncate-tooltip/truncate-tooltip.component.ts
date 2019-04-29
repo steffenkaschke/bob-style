@@ -35,8 +35,6 @@ import { DOMhelpers, TextProps, Styles } from '../utils/dom-helpers.service';
 })
 export class TruncateTooltipComponent
   implements AfterViewInit, DoCheck, OnDestroy {
-  constructor(private utilsService: UtilsService, private DOM: DOMhelpers) {}
-
   private textContainer: HTMLElement;
   private maxLinesDefault = 1;
   private maxLinesCache = this.maxLinesDefault;
@@ -66,6 +64,8 @@ export class TruncateTooltipComponent
   }
 
   @HostBinding('class.btt-initialized') initialized: boolean;
+
+  constructor(private utilsService: UtilsService, private DOM: DOMhelpers) {}
 
   ngAfterViewInit(): void {
     this.maxLinesCache = this.maxLines;
@@ -151,10 +151,9 @@ export class TruncateTooltipComponent
   }
 
   private setMaxLines(value: number | string): void {
-    value = this.parseMaxLines(value);
-    this.maxLines = value;
+    this.maxLines = this.parseMaxLines(value);
 
-    if (value !== this.maxLinesCache && this.initialized) {
+    if (this.maxLines !== this.maxLinesCache && this.initialized) {
       this.applyTextContainerStyle();
       setTimeout(() => {
         this.checkTooltipNecessity();
