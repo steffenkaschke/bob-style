@@ -8,6 +8,8 @@ import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { IconsModule } from '../../icons/icons.module';
 import { MatFormFieldModule } from '@angular/material';
+import { UtilsModule } from '../../services/utils/utils.module';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 @NgModule({
   declarations: [RichTextEditorComponent, RteLinkEditorComponent],
@@ -17,9 +19,10 @@ import { MatFormFieldModule } from '@angular/material';
     InputModule,
     ButtonsModule,
     IconsModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    UtilsModule
   ],
   exports: [RichTextEditorComponent],
-  providers: [RteUtilsService]
+  providers: [RteUtilsService, DOMhelpers]
 })
 export class RichTextEditorModule {}

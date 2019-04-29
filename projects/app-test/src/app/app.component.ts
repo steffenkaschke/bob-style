@@ -9,6 +9,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class AppComponent implements OnInit {
   disabled = false;
   error = false;
+  lines = 2;
 
   myForm = new FormGroup({
     rteControl: new FormControl('', {
