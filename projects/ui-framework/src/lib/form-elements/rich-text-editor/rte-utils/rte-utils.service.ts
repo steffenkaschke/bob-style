@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { chain, get, set, isEmpty, trim } from 'lodash';
-import {
-  RteCurrentContent,
-  UpdateRteConfig
-} from '../rte.interface';
+import { RteCurrentContent, UpdateRteConfig, BlotData } from '../rte.interface';
 import { Quill, RangeStatic } from 'quill';
+import Parchment from 'parchment';
+import { Blot } from 'parchment/src/blot/abstract/blot';
+import { TextBlot } from 'quill/blots/text';
 
 @Injectable()
 export class RteUtilsService {
@@ -43,6 +43,48 @@ export class RteUtilsService {
       : '';
   }
 
+  getNativeRange(): Range {
+    const selection = document.getSelection();
+    return selection == null || selection.rangeCount <= 0
+      ? null
+      : selection.getRangeAt(0);
+  }
+
+  getCurrentBlot(): Blot {
+    const nativeRange = this.getNativeRange();
+    const node = nativeRange && nativeRange.endContainer;
+    return node && Parchment.find(node);
+  }
+
+  getBlotIndex(blot: Blot, editor: Quill): number {
+    return blot && blot.offset(editor.scroll);
+  }
+
+  getCurrentBlotData(editor: Quill): BlotData {
+    const blot = this.getCurrentBlot();
+    if (!blot) {
+      return null;
+    }
+    const index = this.getBlotIndex(blot, editor);
+    const format = editor.getFormat(index + 1);
+    const text = (blot as TextBlot).text;
+    return {
+      index: index,
+      length: text.length,
+      text: text,
+      format: Object.entries(format).length !== 0 && format,
+      link: format['Link']
+    };
+  }
+
+  selectBlot(blot: BlotData, editor: Quill): RangeStatic {
+    if (!blot.format) {
+      return null;
+    }
+    editor.setSelection(blot.index, blot.length);
+    return { index: blot.index, length: blot.length };
+  }
+
   updateEditor(
     editor: Quill,
     updateConfig: UpdateRteConfig,
@@ -79,8 +121,10 @@ export class RteUtilsService {
 
   setEditorPlaceholder(editor: Quill, label: string, required: boolean): void {
     if (editor) {
-      editor.root.dataset.placeholder = this.getEditorPlaceholder(label, required);
+      editor.root.dataset.placeholder = this.getEditorPlaceholder(
+        label,
+        required
+      );
     }
   }
-
 }

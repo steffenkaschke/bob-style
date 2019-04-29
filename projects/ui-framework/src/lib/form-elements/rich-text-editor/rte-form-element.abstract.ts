@@ -14,7 +14,7 @@ import { FormControl, NgControl } from '@angular/forms';
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
 import { RTEchangeEvent } from './rte.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { RteCurrentContent } from './rte.interface';
+import { RteCurrentContent, BlotData } from './rte.interface';
 import { BaseFormElement } from '../base-form-element';
 
 const Block = quillLib.import('blots/block');
@@ -48,9 +48,9 @@ export abstract class RTEformElement extends BaseFormElement
   >();
 
   editor: Quill;
-  selectedText: string;
   selection: RangeStatic;
-  selectionFormat: any;
+  selectedText: string;
+  currentBlot: BlotData;
   hasSizeSet = false;
   latestOutputValue: RteCurrentContent;
   writingValue = false;
@@ -176,6 +176,16 @@ export abstract class RTEformElement extends BaseFormElement
 
     this.editor.root.addEventListener('blur', () => {
       this.onEditorBlur();
+    });
+
+    this.editor.keyboard.addBinding({ key: 'BACKSPACE' }, () => {
+      this.currentBlot = this.rteUtils.getCurrentBlotData(this.editor);
+
+      if (this.currentBlot.format) {
+        this.rteUtils.selectBlot(this.currentBlot, this.editor);
+        return false;
+      }
+      return true;
     });
   }
 }

@@ -1,21 +1,19 @@
 <b-input class="link-display-text"
+         #textInput
          [inputType]="inputTypes.text"
          [hideLabelOnFocus]="true"
-         [value]="displayText"
-         (inputEvents)="onDisplayTextChange($event)"
+         [value]="text"
+         (inputEvents)="onTextChange($event)"
          label="text">
 </b-input>
 
 <b-input class="link-url"
          [inputType]="inputTypes.url"
          [hideLabelOnFocus]="true"
-         [value]="urlText || checkLink() && linksCache[rteSelection.text].url"
-         (inputEvents)="onUrlTextChange($event)"
+         [value]="url"
+         (inputEvents)="onUrlChange($event)"
          label="url">
 </b-input>
-checkLink: {{ checkLink() | json }} <br>
-rteSelection {{ rteSelection | json  }} <br>
-linksCache {{ linksCache | json }}
 <div class="footer">
   <b-button class="cancel"
             (clicked)="onCancel()"
@@ -26,6 +24,6 @@ linksCache {{ linksCache | json }}
   <b-button class="add"
             (clicked)="onAdd()"
             [size]="buttonSize.small">
-    {{ linksCache[displayText] ? 'Update' : 'Add' }}
+    {{ isEditing ? 'Update' : 'Add' }}
   </b-button>
 </div>

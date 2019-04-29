@@ -15,10 +15,17 @@ interface UpdateRteConfigFormat {
 export interface RteLink {
   text: string;
   url: string;
-  index?: number;
 }
 
 export interface RteCurrentContent {
   body: string;
   plainText: string;
+}
+
+export interface BlotData {
+  index: number;
+  length: number;
+  text: string;
+  format: any;
+  link?: string;
 }

@@ -128,19 +128,31 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   private onLinkPanelOpen(): void {
-    this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
-    this.selectedText = this.rteUtilsService.getSelectionText(
-      this.editor,
-      this.selection
-    );
-    this.selectionFormat = this.editor.getFormat(this.selection);
+    this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
 
-    this.linkEditor.displayText = this.selectedText;
-    this.linkEditor.rteSelection =
-      this.selectionFormat && this.selectionFormat['Link'];
-    this.linkEditor.rteSelectionIndex = this.selection && this.selection.index;
+    if (this.currentBlot.link) {
+      this.selection = this.rteUtilsService.selectBlot(
+        this.currentBlot,
+        this.editor
+      );
+      this.selectedText = this.currentBlot.text;
+    } else {
+      this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
+
+      this.selectedText = this.rteUtilsService.getSelectionText(
+        this.editor,
+        this.selection
+      );
+    }
+
+    this.linkEditor.text = this.selectedText;
+    this.linkEditor.url = this.currentBlot.link ? this.currentBlot.link : '';
+    this.linkEditor.isEditing = !!this.currentBlot.link;
 
     this.editor.blur();
+    setTimeout(() => {
+      this.linkEditor.focusTextInput();
+    }, 0);
   }
 
   onLinkUpdate(rteLink: RteLink): void {
@@ -150,11 +162,7 @@ export class RichTextEditorComponent extends RTEformElement
       insertText: rteLink.text,
       format: {
         type: BlotType.Link,
-        value: {
-          text: this.selectedText,
-          url: rteLink.url,
-          index: this.selection.index
-        }
+        value: rteLink.url
       }
     };
     this.rteUtilsService.updateEditor(this.editor, updateConfig, false);
