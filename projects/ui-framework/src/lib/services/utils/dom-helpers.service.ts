@@ -84,4 +84,28 @@ export class DOMhelpers {
     }
     return element;
   }
+
+  // naive test for WebKit
+  public isWebkit(): boolean {
+    return /WebKit/.test(navigator.userAgent);
+  }
+
+  public supportsCSS(prop: string, value: string | number): boolean {
+    return CSS && CSS.supports(prop, value as string);
+  }
+
+  // returns percepted BG color of an element
+  // (finds parent that has BG color set)
+  public getBackgroundColor(element: HTMLElement): string {
+    let elementBg = getComputedStyle(element).backgroundColor;
+    while (elementBg === 'rgba(0, 0, 0, 0)' || elementBg === 'transparent') {
+      if (element.nodeName === 'BODY') {
+        elementBg = 'white';
+        break;
+      }
+      element = element.parentElement;
+      elementBg = getComputedStyle(element).backgroundColor;
+    }
+    return elementBg;
+  }
 }

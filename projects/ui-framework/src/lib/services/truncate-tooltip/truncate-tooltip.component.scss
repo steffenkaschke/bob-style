@@ -26,6 +26,9 @@
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
+  --btt-font-size: 1em;
+  --btt-line-height: 1.3;
+  --btt-bg-color: white;
 
   &-truncate {
     white-space: nowrap;
@@ -38,25 +41,17 @@
   }
 
   &-line-clamp {
-    @supports not (-webkit-line-clamp: 2) {
-      position: relative;
+    position: relative;
 
-      &:after {
-        content: '';
-        text-align: right;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 50%;
-        height: 1.3em;
-        height: calc(var(--btt-font-size) * var(--btt-line-height));
-
-        background: linear-gradient(
-          to right,
-          rgba(255, 255, 255, 0),
-          rgba(255, 255, 255, 1) 80%
-        );
-      }
+    &:after {
+      content: '';
+      text-align: right;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 50%;
+      height: calc(var(--btt-font-size) * var(--btt-line-height));
+      background: linear-gradient(to right, white(0), var(--btt-bg-color) 80%);
     }
 
     @supports (-webkit-line-clamp: 2) {
@@ -81,7 +76,7 @@
     font-size: $font-size-body;
     color: $body-text-color;
 
-    // position above  //
+    // position above
     &[style*='center bottom'],
     &[style*='50% 100% 0px'] {
       @include OverlayPositionBounding(above);
