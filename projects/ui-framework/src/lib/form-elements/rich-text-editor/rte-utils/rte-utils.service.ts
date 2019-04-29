@@ -89,7 +89,8 @@ export class RteUtilsService {
   updateEditor(
     editor: Quill,
     updateConfig: UpdateRteConfig,
-    insertSpaceAfterBlot = true
+    insertSpaceAfterBlot = true,
+    removeFormat = false
   ): void {
     const charAfterBlot = insertSpaceAfterBlot ? ' ' : '';
     set(
@@ -99,10 +100,12 @@ export class RteUtilsService {
     );
     editor.deleteText(updateConfig.startIndex, updateConfig.replaceStr.length);
     editor.insertText(updateConfig.startIndex, `${updateConfig.insertText}`);
-    editor.removeFormat(
-      updateConfig.startIndex,
-      updateConfig.insertText.length - charAfterBlot.length
-    );
+    if (removeFormat) {
+      editor.removeFormat(
+        updateConfig.startIndex,
+        updateConfig.insertText.length - charAfterBlot.length
+      );
+    }
     editor.formatText(
       updateConfig.startIndex,
       updateConfig.insertText.length - charAfterBlot.length,

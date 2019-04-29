@@ -129,7 +129,7 @@ export class RichTextEditorComponent extends RTEformElement
 
   private onLinkPanelOpen(): void {
     this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
-    console.log(this.currentBlot);
+
     if (this.currentBlot.link) {
       this.selection = this.rteUtilsService.selectBlot(
         this.currentBlot,
