@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
-import { RTEchangeEvent } from './rte.enum';
+import { RTEchangeEvent, KeyboardKeys, BlotType } from './rte.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { RteCurrentContent, BlotData } from './rte.interface';
 import { BaseFormElement } from '../base-form-element';
@@ -56,6 +56,8 @@ export abstract class RTEformElement extends BaseFormElement
   writingValue = false;
   sendChangeOn = RTEchangeEvent.blur;
   private control: FormControl;
+
+  blotsToDeleteWhole = [BlotType.Link];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabled) {
@@ -178,13 +180,16 @@ export abstract class RTEformElement extends BaseFormElement
       this.onEditorBlur();
     });
 
-    this.editor.keyboard.addBinding({ key: 'BACKSPACE' }, () => {
-      this.currentBlot = this.rteUtils.getCurrentBlotData(this.editor);
+    this.editor.keyboard.addBinding({ key: KeyboardKeys.backspace }, () => {
+      if (this.blotsToDeleteWhole.length > 0) {
+        this.currentBlot = this.rteUtils.getCurrentBlotData(this.editor);
 
-      if (this.currentBlot.format) {
-        this.rteUtils.selectBlot(this.currentBlot, this.editor);
-        return false;
+        if (this.currentBlot.format) {
+          this.rteUtils.selectBlot(this.currentBlot, this.editor);
+          return false;
+        }
       }
+
       return true;
     });
   }

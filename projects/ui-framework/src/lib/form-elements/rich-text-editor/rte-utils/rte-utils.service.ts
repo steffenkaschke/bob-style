@@ -67,12 +67,13 @@ export class RteUtilsService {
     }
     const index = this.getBlotIndex(blot, editor);
     const format = editor.getFormat(index + 1);
-    const text = (blot as TextBlot).text;
+    const text = (blot as TextBlot).text || '';
+
     return {
       index: index,
       length: text.length,
       text: text,
-      format: Object.entries(format).length !== 0 && format,
+      format: format && Object.entries(format).length !== 0,
       link: format['Link']
     };
   }
