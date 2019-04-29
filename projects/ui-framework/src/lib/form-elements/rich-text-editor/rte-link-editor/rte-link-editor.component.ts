@@ -1,6 +1,21 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { InputEventType, InputTypes } from '../../../form-elements/input/input.enum';
-import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  HostListener,
+  OnInit
+} from '@angular/core';
+import {
+  InputEventType,
+  InputTypes
+} from '../../../form-elements/input/input.enum';
+import {
+  ButtonSize,
+  ButtonType
+} from '../../../buttons-indicators/buttons/buttons.enum';
 import { RteLink } from '../rte.interface';
 import { InputEvent } from '../../../form-elements/input/input.interface';
 import has from 'lodash/has';
@@ -8,54 +23,74 @@ import has from 'lodash/has';
 @Component({
   selector: 'b-rte-link-editor',
   templateUrl: './rte-link-editor.component.html',
-  styleUrls: ['./rte-link-editor.component.scss'],
+  styleUrls: ['./rte-link-editor.component.scss']
 })
-export class RteLinkEditorComponent implements OnChanges {
+export class RteLinkEditorComponent implements OnInit {
+  constructor() {}
 
-  @Input() displayText;
-  @Output() linkUpdate: EventEmitter<any> = new EventEmitter<any>();
+  @Input() displayText: string;
+  @Input() rteSelection: number;
+  @Output() linkUpdate: EventEmitter<RteLink> = new EventEmitter<RteLink>();
   @Output() linkCancel: EventEmitter<any> = new EventEmitter<any>();
 
   inputTypes = InputTypes;
   buttonSize = ButtonSize;
   buttonType = ButtonType;
 
-  urlText;
+  urlText: string;
+  linksCache = {};
 
-  rteLink: RteLink = {
-    text: null,
-    url: null,
-  };
-
-  constructor() {
+  ngOnInit(): void {
+    console.log('ngOnInit');
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (has(changes, 'displayText')) {
-      this.rteLink.text = changes.displayText.currentValue;
-    }
-  }
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (has(changes, 'displayText')) {
+  //     this.displayText = changes.displayText.currentValue;
+  //   }
+  // }
 
   onDisplayTextChange(e: InputEvent) {
     if (e.event === InputEventType.onChange) {
-      this.rteLink.text = e.value as string;
+      this.displayText = e.value as string;
     }
   }
 
   onUrlTextChange(e: InputEvent) {
-    if (e.event === InputEventType.onChange) {
-      this.rteLink.url = e.value as string;
+    if (e.event === InputEventType.onBlur) {
+      this.urlText = e.value as string;
     }
   }
 
   onAdd(): void {
-    this.linkUpdate.emit(this.rteLink);
+    const url = this.urlText ? this.urlText.trim() : null;
+
+    this.linkUpdate.emit({
+      text: this.displayText,
+      url: url
+    });
+
+    if (url) {
+      this.linksCache[this.displayText] = {
+        selection: this.rteSelection,
+        url: this.urlText
+      };
+    } else {
+      delete this.linksCache[this.displayText];
+    }
+
     this.resetValues();
+
+    console.log('onAdd', this.rteSelection);
+    console.log('onAdd', this.linksCache);
   }
 
   onCancel(): void {
     this.linkCancel.emit();
     this.resetValues();
+
+    console.log('onCancel', this.rteSelection);
+    console.log('onCancel', this.linksCache);
   }
 
   private resetValues(): void {

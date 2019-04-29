@@ -60,8 +60,9 @@
              [defaultPosVer]="panelDefaultPosVer.below">
       <button class="ql-link"
               panel-trigger></button>
-      <b-rte-link-editor panel-content
-                         [displayText]="selectedText"
+      <b-rte-link-editor #linkEditor
+                         panel-content
+                         [rteSelection]="selection?.index"
                          (linkCancel)="onLinkCancel()"
                          (linkUpdate)="onLinkUpdate($event)">
       </b-rte-link-editor>

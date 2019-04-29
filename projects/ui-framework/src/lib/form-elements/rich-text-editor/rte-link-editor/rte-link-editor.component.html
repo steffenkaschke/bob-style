@@ -9,8 +9,8 @@
 <b-input class="link-url"
          [inputType]="inputTypes.url"
          [hideLabelOnFocus]="true"
+         [value]="urlText || linksCache[displayText]"
          (inputEvents)="onUrlTextChange($event)"
-         [value]="urlText"
          label="url">
 </b-input>
 
@@ -24,6 +24,6 @@
   <b-button class="add"
             (clicked)="onAdd()"
             [size]="buttonSize.small">
-    Add
+    {{ linksCache[displayText] ? 'Update' : 'Add' }}
   </b-button>
 </div>

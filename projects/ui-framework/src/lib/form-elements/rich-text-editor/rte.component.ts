@@ -22,6 +22,7 @@ import { PanelComponent } from '../../overlay/panel/panel.component';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { Icons } from '../../icons/icons.enum';
 import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
+import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
 
 quillLib.register(LinkBlot);
 
@@ -80,6 +81,7 @@ export class RichTextEditorComponent extends RTEformElement
   @ViewChild('toolbar') toolbar: ElementRef;
   @ViewChild('suffix') suffix: ElementRef;
   @ViewChild('linkPanel') private linkPanel: PanelComponent;
+  @ViewChild('linkEditor') private linkEditor: RteLinkEditorComponent;
 
   hasSuffix = true;
 
@@ -131,6 +133,8 @@ export class RichTextEditorComponent extends RTEformElement
       this.editor,
       this.selection
     );
+    this.linkEditor.displayText = this.selectedText;
+    console.log('getFormat', this.editor.getFormat(this.selection));
     this.editor.blur();
   }
 
@@ -141,7 +145,11 @@ export class RichTextEditorComponent extends RTEformElement
       insertText: rteLink.text,
       format: {
         type: BlotType.Link,
-        value: rteLink.url
+        value: {
+          text: this.selectedText,
+          url: rteLink.url,
+          index: this.selection.index
+        }
       }
     };
     this.rteUtilsService.updateEditor(this.editor, updateConfig, false);
