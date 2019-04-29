@@ -98,7 +98,8 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
 
   private createComponent(
     comp: RenderedComponent,
-    attach = false
+    attach = false,
+    container?: ViewContainerRef
   ): ComponentRef<any> {
     let component: ComponentRef<any>;
 
@@ -108,8 +109,8 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
       ? this.resolveNgContent(comp.content)
       : undefined;
 
-    if (attach) {
-      component = this.container.createComponent(
+    if (attach && container) {
+      component = container.createComponent(
         factory,
         undefined,
         undefined,
@@ -136,7 +137,7 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
 
   private insertComponent(comp: RenderedComponent): void {
     this.reset();
-    this.componentRef = this.createComponent(comp, true);
+    this.componentRef = this.createComponent(comp, true, this.container);
   }
 
   private reset(): void {

@@ -26,6 +26,8 @@ import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 
 import { MockComponent } from '../../services/mock-component/mock.component';
+import { MockModule } from '../../services/mock-component/mock.module';
+
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
@@ -229,7 +231,7 @@ story.add(
         cellClickHandler: action('Cell clicked')
       },
       moduleMetadata: {
-        declarations: [MockComponent],
+        declarations: [],
         imports: [
           RadioButtonModule,
           StoryBookLayoutModule,
@@ -237,7 +239,8 @@ story.add(
           CardTableModule,
           ChipsModule,
           ButtonsModule,
-          AvatarModule
+          AvatarModule,
+          MockModule
         ],
         entryComponents: [
           ChipComponent,

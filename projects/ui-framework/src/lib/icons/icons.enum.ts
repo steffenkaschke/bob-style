@@ -62,5 +62,6 @@ export enum Icons {
   pending_badge = 'pending_badge',
   error = 'error_icon',
   success = 'success_icon',
-  warning = 'warning_icon'
+  warning = 'warning_icon',
+  no_folder = 'no_folder'
 }

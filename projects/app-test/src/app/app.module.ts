@@ -7,10 +7,12 @@ import { RichTextEditorModule } from '../../../ui-framework/src/lib/form-element
 import { MatFormFieldModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CheckboxModule } from '../../../ui-framework/src/lib/form-elements/checkbox/checkbox.module';
+import { TruncateTooltipModule } from '../../..//ui-framework/src/public_api';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    TruncateTooltipModule,
     CheckboxModule,
     FormsModule,
     ReactiveFormsModule,
@@ -24,6 +26,4 @@ import { CheckboxModule } from '../../../ui-framework/src/lib/form-elements/chec
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-
-}
+export class AppModule {}
