@@ -1,28 +1,40 @@
-import { TemplateTextEditorService } from './template-text-editor.service';
+import { PlachholderRteConverterService } from './plachholder-rte-converter.service';
 
-describe('templateTextEditorService', () => {
-  let templateTextEditorService: TemplateTextEditorService;
+describe('PlachholderRteConverterService', () => {
+  let templateTextEditorService: PlachholderRteConverterService;
+  const listOptions = [
+    {
+      sample: 'Jon',
+      displayName: 'First name',
+      id: '/root/firstName'
+    },
+    {
+      sample: 'CTO',
+      displayName: 'CTO',
+      id: '/work/title'
+    },
+  ];
   beforeEach(() => {
-    templateTextEditorService = new TemplateTextEditorService();
+    templateTextEditorService = new PlachholderRteConverterService();
   });
 
-  fdescribe('convertContentToRtePlaceholderCompatible', () => {
+  describe('convertContentToRtePlaceholderCompatible', () => {
     it('Should convert HTML content with one placeholder to RTE format', () => {
       const htmlInput =
         '<h1>Hi</h1>, <b>My</b> name is {{/root/firstName}} my job title is cto';
-      const expectResult = '<h1>Hi</h1>, <b>My</b> name is <span placeholder="/root/firstName">/root/firstName</span>' +
-        ' my job title is cto';
+      const expectResult =
+        '<h1>Hi</h1>, <b>My</b> name is <span placeholder="/root/firstName">First name</span> my job title is cto';
       expect(templateTextEditorService
-        .convertContentToRtePlaceholderCompatible(htmlInput))
+        .convertContentToRteCompatible(htmlInput, listOptions))
         .toEqual(expectResult);
     });
     it('Should convert HTML plain text content with placeholder at the end to RTE format', () => {
       const htmlInput =
         'Hi, My name is {{/root/firstName}} my job title is cto';
-      const expectResult = 'Hi, My name is <span placeholder="/root/firstName">/root/firstName</span>' +
+      const expectResult = 'Hi, My name is <span placeholder="/root/firstName">First name</span>' +
         ' my job title is cto';
       expect(templateTextEditorService
-        .convertContentToRtePlaceholderCompatible(htmlInput))
+        .convertContentToRteCompatible(htmlInput, listOptions))
         .toEqual(expectResult);
     });
     it('Should return HTML content untouched when content has no placeHolder to convert', () => {
@@ -31,7 +43,7 @@ describe('templateTextEditorService', () => {
       const expectResult = '<h1>Hi</h1>, <b>My</b> name is yossi' +
         ' my job title is cto';
       expect(templateTextEditorService
-        .convertContentToRtePlaceholderCompatible(htmlInput))
+        .convertContentToRteCompatible(htmlInput, listOptions))
         .toEqual(expectResult);
     });
     it('Should return plain text content untouched when content has no placeHolder to convert', () => {
@@ -39,26 +51,26 @@ describe('templateTextEditorService', () => {
         'Hi, My name is yossi my job title is cto';
       const expectResult = 'Hi, My name is yossi my job title is cto';
       expect(templateTextEditorService
-        .convertContentToRtePlaceholderCompatible(htmlInput))
+        .convertContentToRteCompatible(htmlInput, listOptions))
         .toEqual(expectResult);
     });
     it('Should convert HTML content with multiple placeholders to RTE format', () => {
       const htmlInput =
-        '<h1>Hi</h1>, <b>My</b> name is {{/root/firstName}} my job title is {{/work/jobTitle}}';
-      const expectResult = '<h1>Hi</h1>, <b>My</b> name is <span placeholder="/root/firstName">/root/firstName</span>' +
+        '<h1>Hi</h1>, <b>My</b> name is {{/root/firstName}} my job title is {{/work/title}}';
+      const expectResult = '<h1>Hi</h1>, <b>My</b> name is <span placeholder="/root/firstName">First name</span>' +
         ' my job title is ' +
-        '<span placeholder="/work/jobTitle">/work/jobTitle</span>';
+        '<span placeholder="/work/title">CTO</span>';
       expect(templateTextEditorService
-        .convertContentToRtePlaceholderCompatible(htmlInput))
+        .convertContentToRteCompatible(htmlInput, listOptions))
         .toEqual(expectResult);
     });
     it('Should convert HTML content placeholders at the beginning of the content to RTE format', () => {
       const htmlInput =
         '<h1>{{/root/title}}</h1> my job title is cto';
-      const expectResult = '<h1><span placeholder="/root/title">/root/title</span></h1> ' +
+      const expectResult = '<h1><span placeholder="/work/title">CTO</span></h1> ' +
         'my job title is cto';
       expect(templateTextEditorService
-        .convertContentToRtePlaceholderCompatible(htmlInput))
+        .convertContentToRteCompatible(htmlInput, listOptions))
         .toEqual(expectResult);
     });
   });
