@@ -26,7 +26,7 @@ export class CardsLayoutComponent {
 
   onCardClicked(card: CardData, index: number): void {
     this.cardClicked.emit({
-      card: card,
+      card,
       cardIndex: index
     });
   }
