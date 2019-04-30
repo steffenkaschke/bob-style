@@ -99,7 +99,13 @@ export class RteUtilsService {
     insertSpaceAfterBlot = true,
     removeFormat = false
   ): void {
+    const originalFormat = editor.getFormat(updateConfig.startIndex + 1);
+    let newFormat = {
+      [updateConfig.format.type]: updateConfig.format.value
+    };
+
     editor.deleteText(updateConfig.startIndex, updateConfig.replaceStr.length);
+
     editor.insertText(updateConfig.startIndex, updateConfig.insertText);
 
     if (removeFormat) {
@@ -107,11 +113,18 @@ export class RteUtilsService {
         updateConfig.startIndex,
         updateConfig.insertText.length
       );
+    } else {
+      newFormat = {
+        ...originalFormat,
+        ...newFormat
+      };
     }
-    editor.formatText(updateConfig.startIndex, updateConfig.insertText.length, {
-      [updateConfig.format.type]: updateConfig.format.value
-      // need to add original format here
-    });
+
+    editor.formatText(
+      updateConfig.startIndex,
+      updateConfig.insertText.length,
+      newFormat
+    );
 
     const editorSelectionEnd = editor.getLength() - 1;
     const insertedTextEnd =
