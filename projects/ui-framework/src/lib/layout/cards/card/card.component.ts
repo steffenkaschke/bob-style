@@ -6,7 +6,7 @@ import {
   EventEmitter,
   HostListener
 } from '@angular/core';
-import { CardData, TextOrComponent } from '../cards.interface';
+import { CardData } from '../cards.interface';
 import { CardType } from '../cards.enum';
 import { RenderedComponent } from '../../../services/component-renderer/component-renderer.interface';
 import { Icons } from '../../../icons/icons.enum';
@@ -60,7 +60,7 @@ export class CardComponent {
     return obj && !!obj.component;
   }
 
-  onComponentClick($event: any, data: TextOrComponent): void {
+  onComponentClick($event: any, data: string | RenderedComponent): void {
     if ((data as RenderedComponent).handlers) {
       $event.stopPropagation();
     }

@@ -1,12 +1,10 @@
 import { RenderedComponent } from '../../services/component-renderer/component-renderer.interface';
 import { MenuItem } from '../../navigation/menu/menu.interface';
 
-export type TextOrComponent = string | RenderedComponent;
-
 export interface CardDataType {
   text: string;
-  header?: TextOrComponent;
-  footer?: TextOrComponent;
+  header?: string | RenderedComponent;
+  footer?: string | RenderedComponent;
 }
 
 export interface CardData {
@@ -19,8 +17,6 @@ export interface AddCardData {
   subtitle?: string;
   action: (...args: any[]) => void;
 }
-
-export interface CardsData extends Array<CardData> {}
 
 export interface CardClickEvent {
   cardIndex: number;

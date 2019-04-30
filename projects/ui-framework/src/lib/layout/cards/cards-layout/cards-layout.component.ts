@@ -1,11 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import {
-  CardsData,
-  AddCardData,
-  CardData,
-  CardClickEvent
-} from '../cards.interface';
+import { CardData, AddCardData, CardClickEvent } from '../cards.interface';
 import { CardType } from '../cards.enum';
 
 @Component({
@@ -16,7 +11,7 @@ import { CardType } from '../cards.enum';
 export class CardsLayoutComponent {
   constructor() {}
 
-  @Input() cards: CardsData;
+  @Input() cards: CardData[];
   @Input() addCard: AddCardData;
   @Input() type: CardType = CardType.primary;
 
