@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import quillLib, { QuillOptionsStatic } from 'quill';
-import { LinkBlot } from './formats/link-blot';
+import { LinkBlot, RteLinkFormats } from './formats/link-blot';
 import {
   BlotType,
   RTEFontSize,
@@ -190,7 +190,8 @@ export class RichTextEditorComponent extends RTEformElement
       format: {
         type: BlotType.Link,
         value: rteLink.url
-      }
+      },
+      removeFormat: !rteLink.text && RteLinkFormats
     };
     this.rteUtilsService.updateEditor(this.editor, updateConfig, false);
     this.linkPanel.closePanel();

@@ -3,9 +3,14 @@ import startsWith from 'lodash/startsWith';
 
 const Inline = Quill.import('blots/inline');
 
+export const RteLinkFormats = ['Link', 'color'];
+
 export const checkUrl = (url: string) => {
-  url = url ? url.trim() : url;
-  return startsWith(url, 'http') ? url : `http://${url}`;
+  if (!url) {
+    return null;
+  }
+  url = url.trim();
+  return url ? (startsWith(url, 'http') ? url : `http://${url}`) : null;
 };
 
 export class LinkBlot extends Inline {

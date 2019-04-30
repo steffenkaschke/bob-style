@@ -5,6 +5,7 @@ export interface UpdateRteConfig {
   startIndex: number;
   insertText: string;
   format: UpdateRteConfigFormat;
+  removeFormat?: string | string[];
 }
 
 interface UpdateRteConfigFormat {

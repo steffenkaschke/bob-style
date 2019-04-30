@@ -70,9 +70,9 @@ export class RteUtilsService {
     const format = editor.getFormat(index + 1);
 
     return {
-      index: index,
+      index,
       length: text.length,
-      text: text,
+      text,
       format: Object.keys(format).length > 0 && format,
       link: format && format['Link']
     };

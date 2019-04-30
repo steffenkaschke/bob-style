@@ -62,7 +62,7 @@ export class RteLinkEditorComponent {
 
     this.linkUpdate.emit({
       text: this.text,
-      url: url
+      url
     });
 
     this.resetValues();
