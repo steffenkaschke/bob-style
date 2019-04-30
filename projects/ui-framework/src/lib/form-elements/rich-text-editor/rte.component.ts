@@ -152,7 +152,8 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   changeFontSize(size: RTEFontSize) {
-    this.editor.format('size', size === RTEFontSize.normal && size);
+    console.log('changeFontSize', size === RTEFontSize.normal && size);
+    this.editor.format('size', size === RTEFontSize.normal ? false : size);
     this.hasSizeSet = size === RTEFontSize.normal;
   }
 

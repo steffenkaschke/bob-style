@@ -110,6 +110,7 @@ export class RteUtilsService {
     }
     editor.formatText(updateConfig.startIndex, updateConfig.insertText.length, {
       [updateConfig.format.type]: updateConfig.format.value
+      // need to add original format here
     });
 
     const editorSelectionEnd = editor.getLength() - 1;
