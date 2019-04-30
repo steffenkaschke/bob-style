@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Tab } from './tabs.interface';
+import { MatTabChangeEvent } from '@angular/material';
 
 @Component({
   selector: 'b-tabs',
@@ -7,13 +8,17 @@ import { Tab } from './tabs.interface';
   styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent implements OnInit {
-  @Input() public onSelectedTabChange: Function;
   @Input() public tabs: Tab[] = [];
   @Input() public selectedIndex = 0;
+  @Output() selectChange: EventEmitter<MatTabChangeEvent> = new EventEmitter<MatTabChangeEvent>();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  public onSelectChange ($event: MatTabChangeEvent) {
+    this.selectChange.emit($event);
   }
 
 }
