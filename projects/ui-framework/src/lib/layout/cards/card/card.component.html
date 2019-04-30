@@ -5,8 +5,8 @@
         (closeMenu)="onMenuClose()"
         (click)="stopPropagation($event)">
   <b-square-button menu-trigger
-                   type="tertiary"
-                   icon="three_dots"
+                   [type]="button.tertiary"
+                   [icon]="icons.three_dots"
                    rotate="90"
                    border="0">
   </b-square-button>

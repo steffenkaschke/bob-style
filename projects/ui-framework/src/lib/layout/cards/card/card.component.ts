@@ -9,6 +9,8 @@ import {
 import { CardData, TextOrComponent } from '../cards.interface';
 import { CardType } from '../cards.enum';
 import { RenderedComponent } from '../../../services/component-renderer/component-renderer.interface';
+import { Icons } from '../../../icons/icons.enum';
+import { ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
 
 @Component({
   selector: 'b-card, [b-card]',
@@ -23,6 +25,8 @@ export class CardComponent {
   @Input() index: number;
 
   cardType = CardType;
+  icons = Icons;
+  button = ButtonType;
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
