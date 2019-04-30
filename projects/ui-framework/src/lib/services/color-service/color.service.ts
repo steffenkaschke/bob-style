@@ -7,7 +7,7 @@ export class ColorService {
   private parseRGBcolor(color: string) {
     const colorArr = color.match(/\d+/g);
 
-    return colorArr.length > 2
+    return colorArr && colorArr.length > 2
       ? [
           parseInt(colorArr[0], 10),
           parseInt(colorArr[1], 10),

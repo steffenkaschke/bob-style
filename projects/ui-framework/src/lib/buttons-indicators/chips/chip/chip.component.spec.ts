@@ -15,7 +15,8 @@ describe('ChipComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ChipComponent],
       imports: [],
-      providers: [ColorService]
+      providers: [ColorService],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents()
       .then(() => {
