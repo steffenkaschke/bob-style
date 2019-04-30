@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
-import { RTEchangeEvent, KeyboardKeys, BlotType } from './rte.enum';
+import { RTEchangeEvent } from './rte.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { RteCurrentContent, BlotData } from './rte.interface';
 import { BaseFormElement } from '../base-form-element';
@@ -32,6 +32,7 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   @Input() value: string;
+  @Input() private maxLength: number;
   @Input() private formControlName: any;
   @Input() private formControl: any;
 
@@ -56,8 +57,6 @@ export abstract class RTEformElement extends BaseFormElement
   writingValue = false;
   sendChangeOn = RTEchangeEvent.blur;
   private control: FormControl;
-
-  blotsToDeleteWhole = [BlotType.Link];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabled) {
@@ -118,9 +117,10 @@ export abstract class RTEformElement extends BaseFormElement
     }
   }
 
-  private onEditorSelectionChange(range): void {
+  private onEditorSelectionChange(range: RangeStatic): void {
     if (range) {
-      const newSize = !!this.editor.getFormat().size;
+      this.selection = range;
+      const newSize = !!this.editor.getFormat(range).size;
       if (this.hasSizeSet !== newSize) {
         this.hasSizeSet = newSize;
         this.changeDetector.detectChanges();
@@ -178,19 +178,6 @@ export abstract class RTEformElement extends BaseFormElement
 
     this.editor.root.addEventListener('blur', () => {
       this.onEditorBlur();
-    });
-
-    this.editor.keyboard.addBinding({ key: KeyboardKeys.backspace }, () => {
-      if (this.blotsToDeleteWhole.length > 0) {
-        this.currentBlot = this.rteUtils.getCurrentBlotData(this.editor);
-
-        if (this.currentBlot.format) {
-          this.rteUtils.selectBlot(this.currentBlot, this.editor);
-          return false;
-        }
-      }
-
-      return true;
     });
   }
 }

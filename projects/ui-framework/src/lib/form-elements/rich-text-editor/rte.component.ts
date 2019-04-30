@@ -12,7 +12,13 @@ import {
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import quillLib, { QuillOptionsStatic } from 'quill';
 import { LinkBlot } from './formats/link-blot';
-import { BlotType, RTEFontSize, RTEType, RTEControls } from './rte.enum';
+import {
+  BlotType,
+  RTEFontSize,
+  RTEType,
+  RTEControls,
+  KeyboardKeys
+} from './rte.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 import { RteUtilsService } from './rte-utils/rte-utils.service';
@@ -92,6 +98,8 @@ export class RichTextEditorComponent extends RTEformElement
   readonly RTEFontSize = RTEFontSize;
   readonly panelDefaultPosVer = PanelDefaultPosVer;
 
+  private blotsToDeleteWhole = [BlotType.Link];
+
   ngAfterViewInit(): void {
     this.onRTEviewInit();
 
@@ -118,13 +126,34 @@ export class RichTextEditorComponent extends RTEformElement
 
     setTimeout(() => {
       this.initEditor(editorOptions);
+      this.addKeyBindings();
       this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
     }, 0);
   }
 
+  private addKeyBindings(): void {
+    this.editor.keyboard.addBinding({ key: KeyboardKeys.backspace }, () => {
+      if (this.blotsToDeleteWhole.length > 0) {
+        this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
+
+        if (
+          this.rteUtilsService.commonFormats(
+            this.currentBlot.format,
+            this.blotsToDeleteWhole
+          )
+        ) {
+          this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }
+
   changeFontSize(size: RTEFontSize) {
-    this.editor.format('size', size === RTEFontSize.normal ? false : size);
-    this.hasSizeSet = size === RTEFontSize.normal ? false : true;
+    this.editor.format('size', size === RTEFontSize.normal && size);
+    this.hasSizeSet = size === RTEFontSize.normal;
   }
 
   private onLinkPanelOpen(): void {
@@ -137,8 +166,6 @@ export class RichTextEditorComponent extends RTEformElement
       );
       this.selectedText = this.currentBlot.text;
     } else {
-      this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
-
       this.selectedText = this.rteUtilsService.getSelectionText(
         this.editor,
         this.selection

@@ -39,18 +39,20 @@ export class RteLinkEditorComponent {
   buttonSize = ButtonSize;
   buttonType = ButtonType;
 
+  private updateOnEvent = InputEventType.onChange; // onBlur
+
   focusTextInput(): void {
     (this.textInput.bInput as any).nativeElement.focus();
   }
 
   onTextChange(e: InputEvent) {
-    if (e.event === InputEventType.onChange) {
+    if (e.event === this.updateOnEvent) {
       this.text = e.value as string;
     }
   }
 
   onUrlChange(e: InputEvent) {
-    if (e.event === InputEventType.onChange) {
+    if (e.event === this.updateOnEvent) {
       this.url = e.value as string;
     }
   }

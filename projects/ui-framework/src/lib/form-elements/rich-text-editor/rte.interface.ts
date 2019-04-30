@@ -27,5 +27,5 @@ export interface BlotData {
   length: number;
   text: string;
   format: any;
-  link?: string;
+  link?: any;
 }

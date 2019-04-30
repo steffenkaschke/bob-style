@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { chain, get, set, isEmpty, trim } from 'lodash';
+import { chain, get, isEmpty, trim } from 'lodash';
 import { RteCurrentContent, UpdateRteConfig, BlotData } from '../rte.interface';
 import { Quill, RangeStatic } from 'quill';
 import Parchment from 'parchment';
 import { Blot } from 'parchment/src/blot/abstract/blot';
 import { TextBlot } from 'quill/blots/text';
+
+import { keysFromArrayOrObject } from '../../../services/utils/functional-utils';
 
 @Injectable()
 export class RteUtilsService {
@@ -32,9 +34,7 @@ export class RteUtilsService {
   }
 
   getCurrentSelection(editor: Quill): RangeStatic {
-    return editor.getSelection()
-      ? editor.getSelection()
-      : { index: 0, length: 0 };
+    return editor.getSelection() || { index: 0, length: 0 };
   }
 
   getSelectionText(editor: Quill, selection: RangeStatic): string {
@@ -66,16 +66,23 @@ export class RteUtilsService {
       return null;
     }
     const index = this.getBlotIndex(blot, editor);
-    const format = editor.getFormat(index + 1);
     const text = (blot as TextBlot).text || '';
+    const format = editor.getFormat(index + 1);
 
     return {
       index: index,
       length: text.length,
       text: text,
-      format: format && Object.entries(format).length !== 0,
-      link: format['Link']
+      format: Object.keys(format).length > 0 && format,
+      link: format && format['Link']
     };
+  }
+
+  commonFormats(f1: string[] | {}, f2: string[] | {}): string[] {
+    const f1keys = keysFromArrayOrObject(f1);
+    const f2keys = keysFromArrayOrObject(f2);
+    const common = f1keys.filter(x => f2keys.includes(x));
+    return common.length > 0 && common;
   }
 
   selectBlot(blot: BlotData, editor: Quill): RangeStatic {
@@ -92,31 +99,28 @@ export class RteUtilsService {
     insertSpaceAfterBlot = true,
     removeFormat = false
   ): void {
-    const charAfterBlot = insertSpaceAfterBlot ? ' ' : '';
-    set(
-      updateConfig,
-      'insertText',
-      `${updateConfig.insertText}${charAfterBlot}`
-    );
     editor.deleteText(updateConfig.startIndex, updateConfig.replaceStr.length);
-    editor.insertText(updateConfig.startIndex, `${updateConfig.insertText}`);
+    editor.insertText(updateConfig.startIndex, updateConfig.insertText);
+
     if (removeFormat) {
       editor.removeFormat(
         updateConfig.startIndex,
-        updateConfig.insertText.length - charAfterBlot.length
+        updateConfig.insertText.length
       );
     }
-    editor.formatText(
-      updateConfig.startIndex,
-      updateConfig.insertText.length - charAfterBlot.length,
-      {
-        [updateConfig.format.type]: updateConfig.format.value
-      }
-    );
-    editor.setSelection(
-      updateConfig.startIndex + updateConfig.insertText.length,
-      0
-    );
+    editor.formatText(updateConfig.startIndex, updateConfig.insertText.length, {
+      [updateConfig.format.type]: updateConfig.format.value
+    });
+
+    const editorSelectionEnd = editor.getLength() - 1;
+    const insertedTextEnd =
+      updateConfig.startIndex + updateConfig.insertText.length;
+
+    if (insertSpaceAfterBlot || editorSelectionEnd === insertedTextEnd) {
+      editor.insertText(editorSelectionEnd + 1, ' ');
+    }
+
+    editor.setSelection(insertedTextEnd, 0);
   }
 
   getEditorPlaceholder(label: string, required: boolean): string {
