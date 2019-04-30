@@ -192,12 +192,8 @@ export class RichTextEditorComponent extends RTEformElement
         value: rteLink.url
       },
       unformat: rteLink.url ? null : RteLinkFormats
-      //   {
-      //   [BlotType.Link]: false,
-      //   [BlotType.color]: false
-      // }
     };
-    this.rteUtilsService.updateEditor(this.editor, updateConfig, false);
+    this.rteUtilsService.updateEditor(this.editor, updateConfig);
     this.linkPanel.closePanel();
   }
 
