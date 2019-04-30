@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
-import { find } from 'lodash';
-import { ListOptions } from './plachholder-rte-converter';
+import { find, get } from 'lodash';
+import { Placeholder } from './plachholder-rte-converter';
 @Injectable()
 export class PlachholderRteConverterService {
   constructor() {
   }
 
-  public convertContentToRteCompatible(contentToConvert: string, listOptions: ListOptions[]): string {
+  public toRte(contentToConvert: string, placeholders: Placeholder[]): string {
     const regex: RegExp = /{{(.*?)}}/gm;
     return contentToConvert
       .replace(regex, (field: string, innerContent: string) => {
         // tslint:disable-next-line:max-line-length
-        return`<span placeholder="${innerContent}">${this.matchListOptionsToConvertedValue(listOptions, innerContent)}</span>`;
+        return`<span placeholder="${innerContent}">${this.matchListOptionsToConvertedValue(placeholders, innerContent)}</span>`;
       });
   }
 
-  private matchListOptionsToConvertedValue(listOptions: ListOptions[], nameById: string): string {
-    const listOptionValue =  find(listOptions, option => option.id === nameById);
-    return listOptionValue.displayName;
+  private matchListOptionsToConvertedValue(placeholders: Placeholder[], id: string): string {
+    const placeholder = find(placeholders, p => p.id === id);
+    return placeholder ? placeholder.displayName : id;
   }
 }
