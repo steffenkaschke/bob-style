@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { find, get } from 'lodash';
 import { Placeholder } from './plachholder-rte-converter';
 @Injectable()
-export class PlachholderRteConverterService {
+export class PlaceholderRteConverterService {
   constructor() {
   }
 

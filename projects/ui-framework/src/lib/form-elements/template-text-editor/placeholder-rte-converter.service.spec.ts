@@ -1,7 +1,7 @@
-import { PlachholderRteConverterService } from './plachholder-rte-converter.service';
+import { PlaceholderRteConverterService } from './placeholder-rte-converter.service';
 
 describe('PlachholderRteConverterService', () => {
-  let templateTextEditorService: PlachholderRteConverterService;
+  let templateTextEditorService: PlaceholderRteConverterService;
   const listOptions = [
     {
       sample: 'Jon',
@@ -15,7 +15,7 @@ describe('PlachholderRteConverterService', () => {
     },
   ];
   beforeEach(() => {
-    templateTextEditorService = new PlachholderRteConverterService();
+    templateTextEditorService = new PlaceholderRteConverterService();
   });
 
   describe('toRte', () => {
