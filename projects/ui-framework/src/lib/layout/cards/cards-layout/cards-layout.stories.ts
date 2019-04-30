@@ -12,14 +12,12 @@ import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../../consts';
 import { CardsModule } from '../cards.module';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
-import { IconsModule } from '../../../icons/icons.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
 import { CardsMockData } from '../cardsMockData';
 import { CardType } from '../cards.enum';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.component';
 import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
 import { SliderModule } from '../../../buttons-indicators/slider/slider.module';
@@ -30,21 +28,24 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
 );
 
 const template = `
-<b-card [card]="cardData"
-        [type]="type">
-</b-card>
+<b-cards
+    [type]="type"
+    [cards]="cardsData"
+    [addCard]="addCard"
+    (cardClicked)="cardClickHandler($event)">
+</b-cards>
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Single Card'">
-  <div style="width:280px; margin: 100px auto;">
+<b-story-book-layout [title]="'Cards Layout'">
+  <div style="min-width:100%; min-height: 100%; padding: 30px; background: rgb(247,247,247);">
     ${template}
   </div>
 </b-story-book-layout>
 `;
 
 const note = `
-  ## Single Card
+  ## Cards Layout
 
   #### Module
   *CardsModule*
@@ -60,14 +61,22 @@ const note = `
   ~~~
 `;
 
+const AddCardMockData = {
+  title: 'Add a new flow',
+  subtitle: 'Right now',
+  action: action('Add Card was clicked')
+};
+
 story.add(
-  'Card',
+  'Cards Layout',
   () => {
     return {
       template: storyTemplate,
       props: {
         type: select('type', values(CardType), CardType.primary),
-        cardData: object('cardsData', CardsMockData[1])
+        addCard: object('addCard', AddCardMockData),
+        cardsData: object('cardsData', CardsMockData),
+        cardClickHandler: action('Card clicked')
       },
       moduleMetadata: {
         imports: [

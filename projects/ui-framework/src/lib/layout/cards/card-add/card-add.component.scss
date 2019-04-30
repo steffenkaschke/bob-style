@@ -1,30 +1,29 @@
-@import "../../../style/colors.scss";
-@import "../../../style/typography.scss";
-@import "../../../style/shapes.scss";
-@import "../../../style/mixins.scss";
+@import '../../../style/colors.scss';
+@import '../../../style/typography.scss';
+@import '../../../style/shapes.scss';
+@import '../../../style/mixins.scss';
 
 :host {
-
   background-color: $grey-200;
   border-style: dashed;
   user-select: none;
   cursor: pointer;
 
-  min-height: height-from-text(3, 22px, 1.2, 70px);
-
-  [card-content] {
+  .card-content {
     color: $grey-600;
     margin: 0;
-    flex-grow: 0;
+
+    &:first-child {
+      flex-grow: 0;
+      min-height: 0;
+    }
 
     &:last-child {
       margin-bottom: 10px;
     }
-
-    @include line-clamp(3, 22px, 1.2, 0, true);
   }
 
-  [card-bottom] {
+  .card-bottom {
     margin: 4px 0 10px 0;
   }
 
@@ -35,15 +34,17 @@
     margin-top: auto;
   }
 
-  &, &:hover {
-    box-shadow: 0 10px 20px 0 black(0.06);
+  &,
+  &:hover {
+    box-shadow: none;
   }
 
   &:hover {
     transform: none;
     background-color: $grey-300;
 
-    [card-content], [card-bottom] {
+    .card-content,
+    .card-bottom {
       color: $grey-700;
     }
   }
@@ -52,4 +53,3 @@
     outline: 0;
   }
 }
-

@@ -1,4 +1,4 @@
-import { CardTableMetaData, CardTableData } from './card-table.interface';
+import { CardTableCellMeta, CardTableCellData } from './card-table.interface';
 import { ChipComponent } from '../../buttons-indicators/chips/chip/chip.component';
 import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
 import { MockComponent } from '../../services/mock-component/mock.component';
@@ -35,7 +35,7 @@ const avatarComponentAttributes = {
   isClickable: true
 };
 
-export const CardTableMockMetaData: CardTableMetaData = [
+export const CardTableMockMetaData: CardTableCellMeta[] = [
   {
     id: 1,
     name: 'Requested For',
@@ -70,7 +70,7 @@ export const CardTableMockMetaData: CardTableMetaData = [
   }
 ];
 
-export const CardTableMockData: CardTableData = [
+export const CardTableMockData: CardTableCellData[][] = [
   [
     {
       data: {

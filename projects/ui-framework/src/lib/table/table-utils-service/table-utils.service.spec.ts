@@ -1,6 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { TableUtilsService } from './table-utils.service';
-import { ColumnDef, PinDirection, RowSelection, SortDirections } from '../table/table.interface';
+import {
+  ColumnDef,
+  PinDirection,
+  RowSelection,
+  SortDirections
+} from '../table/table.interface';
 import { concat } from 'lodash';
 
 describe('TableUtilsService', () => {
@@ -19,48 +24,46 @@ describe('TableUtilsService', () => {
         lockPosition: true,
         resizable: false,
         sortable: false,
-        menuTabs: [],
+        menuTabs: []
       },
       {
         headerName: 'Display Name',
         field: 'fullName',
         sort: SortDirections.Asc,
         resizable: true,
-        'sortable': true,
-        menuTabs: [],
+        sortable: true,
+        menuTabs: []
       },
       {
         headerName: 'Email',
         field: 'email',
         resizable: true,
         sortable: true,
-        menuTabs: [],
-      },
+        menuTabs: []
+      }
     ];
     tableColumnsMock = [
       {
         colId: 'about.avatar',
-        colDef: columnDefsMock[0],
+        colDef: columnDefsMock[0]
       },
       {
         colId: 'fullName',
-        colDef: columnDefsMock[1],
+        colDef: columnDefsMock[1]
       },
       {
         colId: 'email',
-        colDef: columnDefsMock[2],
-      },
+        colDef: columnDefsMock[2]
+      }
     ];
     gridOptionsMock = {
       columnApi: {
-        getAllColumns: () => tableColumnsMock,
-      },
+        getAllColumns: () => tableColumnsMock
+      }
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        TableUtilsService,
-      ],
+      providers: [TableUtilsService]
     });
 
     tableUtilsService = TestBed.get(TableUtilsService);
@@ -69,18 +72,17 @@ describe('TableUtilsService', () => {
   describe('getAllColFields', () => {
     it('should return array of all column ids from gridOptions.columnApi', () => {
       const selectedFields = tableUtilsService.getAllColFields(gridOptionsMock);
-      expect(selectedFields).toEqual([
-        'about.avatar',
-        'fullName',
-        'email',
-      ]);
+      expect(selectedFields).toEqual(['about.avatar', 'fullName', 'email']);
     });
   });
 
-  fdescribe('getGridColumnDef', () => {
+  describe('getGridColumnDef', () => {
     it('should not enrich data with select column', () => {
       rowSelectionMock = null;
-      const columnDefs = tableUtilsService.getGridColumnDef(columnDefsMock, rowSelectionMock);
+      const columnDefs = tableUtilsService.getGridColumnDef(
+        columnDefsMock,
+        rowSelectionMock
+      );
       expect(columnDefs).toEqual(columnDefsMock);
     });
     it('should enrich data with multi select column', () => {
@@ -92,9 +94,12 @@ describe('TableUtilsService', () => {
         headerName: '',
         lockPosition: true,
         pinned: 'left',
-        menuTabs: [],
+        menuTabs: []
       };
-      const columnDefs = tableUtilsService.getGridColumnDef(columnDefsMock, rowSelectionMock);
+      const columnDefs = tableUtilsService.getGridColumnDef(
+        columnDefsMock,
+        rowSelectionMock
+      );
       expect(columnDefs).toEqual(concat(multiColumnDef, columnDefsMock));
     });
     it('should enrich data with single select column', () => {
@@ -106,9 +111,12 @@ describe('TableUtilsService', () => {
         headerName: '',
         lockPosition: true,
         pinned: 'left',
-        menuTabs: [],
+        menuTabs: []
       };
-      const columnDefs = tableUtilsService.getGridColumnDef(columnDefsMock, rowSelectionMock);
+      const columnDefs = tableUtilsService.getGridColumnDef(
+        columnDefsMock,
+        rowSelectionMock
+      );
       expect(columnDefs).toEqual(concat(multiColumnDef, columnDefsMock));
     });
   });

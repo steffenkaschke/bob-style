@@ -1,31 +1,33 @@
-@import "../../../style/colors.scss";
-@import "../../../style/mixins.scss";
+@import '../../../style/colors';
+@import '../../../style/mixins';
+@import '../../../style/typography';
 
 :host {
   box-sizing: border-box;
   position: relative;
   display: flex;
   flex-direction: column;
+  min-width: 150px;
   padding: 20px;
   border: 1px solid $grey-500;
   border-radius: 4px;
   transition: transform 0.2s, box-shadow 0.2s;
-
   text-align: left;
+  background-color: white;
 
-  &:hover, &.focus-inside {
+  &:hover,
+  &.focus-inside {
     box-shadow: 0 2px 15px 0 $grey-500;
     transform: translateY(-10px);
 
-    b-menu {
+    .card-menu {
       pointer-events: all;
       opacity: 1;
     }
   }
-
 }
 
-b-menu {
+.card-menu {
   position: absolute;
   top: 0;
   right: 0;
@@ -34,47 +36,69 @@ b-menu {
   pointer-events: none;
 }
 
-:host ::ng-deep {
+.card-content {
+  text-transform: none;
+}
 
-  b-display-3, [card-content] {
-    text-transform: none;
-  }
+.card-top,
+.card-content,
+.card-bottom {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  [card-top], [card-content], [card-bottom], p {
-    box-sizing: border-box;
+.card-top,
+.card-bottom {
+  font-weight: 300;
+}
+
+.card-top,
+.card-content {
+  margin-bottom: 15px;
+  color: $grey-700;
+}
+
+.card-top {
+  max-width: calc(100% - 15px);
+}
+
+.card-bottom {
+  color: $grey-600;
+  margin-top: auto;
+}
+
+.card-content {
+  flex-grow: 5;
+
+  &:last-child {
     margin: 0;
-    padding: 0;
   }
+}
 
-  [card-top], [card-bottom], [card-content] p {
-    font-weight: 300;
+// Types
+
+:host.card-primary {
+  min-height: 240px;
+
+  .card-content {
+    @include DisplayFont(18px, 600, $transform: null);
+    @include line-clamp(4, 18px, $line-height-heading, true);
   }
+}
 
-  [card-top], [card-content] {
-    margin-bottom: 15px;
-    color: $grey-700;
+:host.card-secondary,
+:host.card-tertiary {
+  .card-content {
+    @include DisplayFont(22px, 600, $transform: null);
+    @include line-clamp(3, 22px, $line-height-heading, true);
   }
+}
 
-  [card-top] {
-    max-width: calc(100% - 15px);
-  }
+:host.card-secondary {
+  min-height: 260px;
+}
 
-  [card-content] {
-    @include line-clamp(4, 22px, 1.2, true);
-    flex-grow: 5;
-
-    &:last-child {
-      margin: 0;
-    }
-
-    p {
-      color: inherit;
-    }
-  }
-
-  [card-bottom] {
-    color: $grey-600;
-    margin-top: auto;
-  }
-
+:host.card-tertiary {
+  min-height: 175px;
 }
