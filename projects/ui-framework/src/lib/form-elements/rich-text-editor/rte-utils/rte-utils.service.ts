@@ -93,45 +93,22 @@ export class RteUtilsService {
     return { index: blot.index, length: blot.length };
   }
 
-  updateEditor(
-    editor: Quill,
-    updateConfig: UpdateRteConfig,
-    insertSpaceAfterBlot = true,
-    preUnformat = false
-  ): void {
-    const originalText = this.getSelectionText(editor, {
-      index: updateConfig.startIndex,
-      length: updateConfig.insertText.length
-    });
-    if (originalText !== updateConfig.replaceStr) {
-      editor.deleteText(
-        updateConfig.startIndex,
-        updateConfig.replaceStr.length
-      );
-      editor.insertText(updateConfig.startIndex, updateConfig.insertText);
-    }
-
+  updateEditor(editor: Quill, updateConfig: UpdateRteConfig): void {
     const originalFormat = editor.getFormat(updateConfig.startIndex + 1);
-    let newFormat = {
+
+    editor.deleteText(updateConfig.startIndex, updateConfig.replaceStr.length);
+    editor.insertText(updateConfig.startIndex, updateConfig.insertText);
+
+    const newFormat = {
+      ...originalFormat,
       [updateConfig.format.type]: updateConfig.format.value
     };
-    if (preUnformat) {
-      editor.removeFormat(
-        updateConfig.startIndex,
-        updateConfig.insertText.length
-      );
-    } else {
-      newFormat = {
-        ...originalFormat,
-        ...newFormat
-      };
-    }
     if (updateConfig.unformat) {
       updateConfig.unformat.forEach(format => {
         delete newFormat[format];
       });
     }
-    console.log('newFormat', newFormat);
+
     editor.formatText(
       updateConfig.startIndex,
       updateConfig.insertText.length,
@@ -141,8 +118,8 @@ export class RteUtilsService {
     const editorSelectionEnd = editor.getLength() - 1;
     const insertedTextEnd =
       updateConfig.startIndex + updateConfig.insertText.length;
-    if (insertSpaceAfterBlot || editorSelectionEnd === insertedTextEnd) {
-      editor.insertText(editorSelectionEnd + 1, ' ');
+    if (editorSelectionEnd === insertedTextEnd) {
+      editor.insertText(editorSelectionEnd + 1, '');
     }
 
     editor.setSelection(insertedTextEnd, 0);
