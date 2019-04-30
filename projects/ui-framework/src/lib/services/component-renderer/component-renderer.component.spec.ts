@@ -45,11 +45,7 @@ describe('ComponentRendererComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ComponentRendererComponent],
-      imports: [
-        BrowserAnimationsModule,
-        MockModule,
-        AvatarModule
-      ],
+      imports: [BrowserAnimationsModule, MockModule, AvatarModule],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .overrideModule(BrowserDynamicTestingModule, {

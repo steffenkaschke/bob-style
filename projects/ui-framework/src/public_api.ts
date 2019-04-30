@@ -266,6 +266,8 @@ export { CardsModule } from './lib/layout/cards/cards.module';
 export { CardComponent } from './lib/layout/cards/card/card.component';
 // Add new Card
 export { CardAddComponent } from './lib/layout/cards/card-add/card-add.component';
+// Cards Layout
+export { CardsLayoutComponent } from './lib/layout/cards/cards-layout/cards-layout.component';
 // Card Table
 export { CardTableModule } from './lib/layout/card-table/card-table.module';
 export { CardTableComponent } from './lib/layout/card-table/card-table/card-table.component';

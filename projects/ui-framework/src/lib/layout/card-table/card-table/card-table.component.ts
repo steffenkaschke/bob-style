@@ -8,10 +8,9 @@ import {
 } from '@angular/core';
 
 import {
-  CardTableMetaData,
-  CardTableData,
+  CardTableCellMeta,
   cardTableAllowedCellStyles,
-  CardTableRowData,
+  CardTableCellData,
   CardTableRowClickEvent,
   CardTableCellClickEvent
 } from '../card-table.interface';
@@ -25,8 +24,8 @@ import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
 export class CardTableComponent implements OnInit {
   constructor(private widthsService: CellWidthsService) {}
 
-  @Input() meta: CardTableMetaData;
-  @Input() table: CardTableData;
+  @Input() meta: CardTableCellMeta[];
+  @Input() table: CardTableCellData[][];
   @Input() default = 'No data to display';
   @Input() minCellWidth = 5;
 
@@ -58,7 +57,7 @@ export class CardTableComponent implements OnInit {
     this.setCellsStyle();
   }
 
-  onRowClicked(row: CardTableRowData, index: number): void {
+  onRowClicked(row: CardTableCellData[], index: number): void {
     this.rowClicked.emit({ row: row, rowIndex: index });
   }
 

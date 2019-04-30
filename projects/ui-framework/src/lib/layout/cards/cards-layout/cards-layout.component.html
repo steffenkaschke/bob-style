@@ -1,0 +1,19 @@
+<ul class="cards-list"
+    [ngClass]="'cards-' + type">
+
+  <li *ngIf="addCard"
+      b-card-add
+      [type]="type"
+      [card]="addCard"
+      (clicked)="addCard.action()">
+  </li>
+
+  <li *ngFor="let card of cards; index as index;"
+      b-card
+      [type]="type"
+      [card]="card"
+      [index]="index"
+      (click)="onCardClicked(card, index)">
+  </li>
+
+</ul>

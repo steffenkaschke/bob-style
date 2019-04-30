@@ -1,10 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import {
-  CardTableMetaData,
-  CardTableRowData,
-  cardTableAllowedCellStyles,
+  CardTableCellMeta,
   CardTableCellData,
+  cardTableAllowedCellStyles,
   CardTableCellClickEvent
 } from '../card-table.interface';
 
@@ -16,8 +15,8 @@ import {
 export class TableCardComponent {
   constructor() {}
 
-  @Input() meta: CardTableMetaData;
-  @Input() row: CardTableRowData;
+  @Input() meta: CardTableCellMeta[];
+  @Input() row: CardTableCellData[];
   @Input() rowIndex: number;
   @Input() style: cardTableAllowedCellStyles[];
   @Output() cellClicked?: EventEmitter<
