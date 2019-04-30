@@ -66,7 +66,7 @@ describe('PlachholderRteConverterService', () => {
     });
     it('Should convert HTML content placeholders at the beginning of the content to RTE format', () => {
       const htmlInput =
-        '<h1>{{/root/title}}</h1> my job title is cto';
+        '<h1>{{/work/title}}</h1> my job title is cto';
       const expectResult = '<h1><span placeholder="/work/title">CTO</span></h1> ' +
         'my job title is cto';
       expect(templateTextEditorService
