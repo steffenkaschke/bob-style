@@ -5,8 +5,10 @@ export interface UpdateRteConfig {
   startIndex: number;
   insertText: string;
   format: UpdateRteConfigFormat;
-  removeFormat?: string | string[];
+  unformat?: string[];
 }
+
+type RteBlotFormat = { [key in BlotType]?: any };
 
 interface UpdateRteConfigFormat {
   type: BlotType;

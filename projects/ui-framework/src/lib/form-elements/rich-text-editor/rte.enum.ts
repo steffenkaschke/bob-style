@@ -34,6 +34,7 @@ export enum BlotType {
   size = 'size',
   list = 'list',
   direction = 'direction',
+  color = 'color',
   any = 'format'
 }
 

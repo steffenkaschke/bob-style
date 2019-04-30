@@ -38,7 +38,7 @@ export class RteUtilsService {
   }
 
   getSelectionText(editor: Quill, selection: RangeStatic): string {
-    return get(selection, 'length') > 0
+    return selection.length > 0
       ? editor.getText(selection.index, selection.length)
       : '';
   }
@@ -97,18 +97,25 @@ export class RteUtilsService {
     editor: Quill,
     updateConfig: UpdateRteConfig,
     insertSpaceAfterBlot = true,
-    removeFormat = false
+    preUnformat = false
   ): void {
+    const originalText = this.getSelectionText(editor, {
+      index: updateConfig.startIndex,
+      length: updateConfig.insertText.length
+    });
+    if (originalText !== updateConfig.replaceStr) {
+      editor.deleteText(
+        updateConfig.startIndex,
+        updateConfig.replaceStr.length
+      );
+      editor.insertText(updateConfig.startIndex, updateConfig.insertText);
+    }
+
     const originalFormat = editor.getFormat(updateConfig.startIndex + 1);
     let newFormat = {
       [updateConfig.format.type]: updateConfig.format.value
     };
-
-    editor.deleteText(updateConfig.startIndex, updateConfig.replaceStr.length);
-
-    editor.insertText(updateConfig.startIndex, updateConfig.insertText);
-
-    if (removeFormat) {
+    if (preUnformat) {
       editor.removeFormat(
         updateConfig.startIndex,
         updateConfig.insertText.length
@@ -119,7 +126,12 @@ export class RteUtilsService {
         ...newFormat
       };
     }
-
+    if (updateConfig.unformat) {
+      updateConfig.unformat.forEach(format => {
+        delete newFormat[format];
+      });
+    }
+    console.log('newFormat', newFormat);
     editor.formatText(
       updateConfig.startIndex,
       updateConfig.insertText.length,
@@ -129,7 +141,6 @@ export class RteUtilsService {
     const editorSelectionEnd = editor.getLength() - 1;
     const insertedTextEnd =
       updateConfig.startIndex + updateConfig.insertText.length;
-
     if (insertSpaceAfterBlot || editorSelectionEnd === insertedTextEnd) {
       editor.insertText(editorSelectionEnd + 1, ' ');
     }
