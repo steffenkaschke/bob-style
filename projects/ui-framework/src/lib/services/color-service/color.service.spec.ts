@@ -1,12 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { ColorService } from './color.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('ColorService', () => {
   let colorService: ColorService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ColorService]
+      providers: [ColorService],
+      schemas: [NO_ERRORS_SCHEMA]
     });
 
     colorService = TestBed.get(ColorService);
