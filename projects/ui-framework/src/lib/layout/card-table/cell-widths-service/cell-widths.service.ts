@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { CardTableMetaData } from '../card-table.interface';
+import { CardTableCellMeta } from '../card-table.interface';
 
 @Injectable()
 export class CellWidthsService {
   constructor() {}
 
   public getCellsWidth(
-    meta: CardTableMetaData,
+    meta: CardTableCellMeta[],
     minCellWidth: number
   ): number[] {
     let cellWidths: number[] = [];
