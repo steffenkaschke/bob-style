@@ -108,10 +108,10 @@ export abstract class RTEformElement extends BaseFormElement
       !this.latestOutputValue ||
       this.latestOutputValue.body !== newOutputValue.body
     ) {
-      // console.log('onEditorTextChange', newOutputValue);
       this.latestOutputValue = newOutputValue;
       this.changed.emit(newOutputValue);
       if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.change) {
+        this.value = newOutputValue.body;
         this.propagateChange(newOutputValue);
       }
       this.writingValue = false;
@@ -136,7 +136,7 @@ export abstract class RTEformElement extends BaseFormElement
   private onEditorBlur(): void {
     this.blurred.emit(this.latestOutputValue);
     if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.blur) {
-      // console.log('onEditorBlur', this.latestOutputValue);
+      this.value = this.latestOutputValue.body;
       this.propagateChange(this.latestOutputValue);
       this.onTouched();
     }
@@ -144,7 +144,6 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   applyValue(val: string): void {
-    // console.log('applyValue', val);
     if (this.value !== val || !this.latestOutputValue) {
       this.value = val || '';
       if (this.editor) {
