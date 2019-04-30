@@ -22,6 +22,7 @@ const template = `
   [title]="title"
   [subtitle]="subtitle"
   [disabled]="disabled"
+  [badge]="badge"
   (clicked)="clickHandler($event)">
 </b-avatar>
 </div>
@@ -34,12 +35,13 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  imageSource | String | url of the image |
+  imageSource | string | URL of the avatar image |
   size | AvatarSize | enum for setting the avatar size | mini (optional)
   isClickable | boolean | can click avatar | false
   title | string | main title of the avatar | '' (optional)
   subtitle | string | subtitle of the avatar | '' (optional)
   disabled | boolean | disabled avatar | false (optional)
+  badge | string | icon of the badge to add to the avatar image | undefined (optional)
   clicked | boolean | boolean flag for indicating if the avatar is clickable or not | false (optional)
   handleClick | Function | callback for clicking on the avatar | no click (optional)
 
@@ -70,6 +72,10 @@ avatarStories.add(
         title: text('title', 'John Doe'),
         subtitle: text('subtitle', 'Web Developer'),
         disabled: boolean('disabled', false),
+        badge: text(
+          'badge',
+          'pending_badge'
+        ),
       },
       moduleMetadata: {
         imports: [
