@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class TemplateTextEditorService {
   constructor() {}
 
-  public convertContentToRtePlaceholderCompatible(contentToConvert): string {
+  public convertContentToRtePlaceholderCompatible(contentToConvert: string): string {
     const regex: RegExp = /{{(.*?)}}/gm;
     return contentToConvert
       .replace(regex, (field: string, innerContent: string) => {
