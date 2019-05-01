@@ -3,6 +3,7 @@ import { SliderComponent } from '../../buttons-indicators/slider/slider.componen
 import { RenderedComponent } from '../../services/component-renderer/component-renderer.interface';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
+import { CardData, AddCardData } from './cards.interface';
 
 const random = (min = 0, max = 100): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
@@ -55,7 +56,13 @@ const footerComponent = (): RenderedComponent => ({
   }
 });
 
-export const CardsMockData = [
+export const AddCardMockData: AddCardData = {
+  title: 'Add a new flow',
+  subtitle: 'Right now',
+  action: () => console.log('Add Card was clicked')
+};
+
+export const CardsMockData: CardData[] = [
   {
     data: {
       text: 'Compensation update',

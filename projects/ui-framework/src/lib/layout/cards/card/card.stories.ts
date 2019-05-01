@@ -1,19 +1,8 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  array,
-  boolean,
-  number,
-  object,
-  select,
-  text,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
+import { object, select, withKnobs } from '@storybook/addon-knobs/angular';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../../consts';
 import { CardsModule } from '../cards.module';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
-import { IconsModule } from '../../../icons/icons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
@@ -49,15 +38,24 @@ const note = `
   #### Module
   *CardsModule*
 
-  #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  menu | MenuItem[] | array of menu items | none (optional)
-  text | string | main text | ''
-
   ~~~
   ${template}
   ~~~
+
+  #### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  type | CardType | Card theme | primary (optional)
+  card | CardData | card contents data | none
+
+  #### card: CardData - single card data properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  data | CardDataType | card data | none
+  menu | MenuItem[] | array of menu items | none (optional)
+
+  *Note:* For desctiption of [data: CardDataType] properties, see <u>Cards Layout</u> story.
+
 `;
 
 story.add(
@@ -67,7 +65,7 @@ story.add(
       template: storyTemplate,
       props: {
         type: select('type', values(CardType), CardType.primary),
-        cardData: object('cardsData', CardsMockData[1])
+        cardData: object('card', CardsMockData[1])
       },
       moduleMetadata: {
         imports: [

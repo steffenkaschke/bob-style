@@ -14,7 +14,7 @@ import { FormControl, NgControl } from '@angular/forms';
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
 import { RTEchangeEvent } from './rte.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { RteCurrentContent } from './rte.interface';
+import { RteCurrentContent, BlotData } from './rte.interface';
 import { BaseFormElement } from '../base-form-element';
 
 const Block = quillLib.import('blots/block');
@@ -32,6 +32,7 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   @Input() value: string;
+  @Input() private maxChars: number;
   @Input() private formControlName: any;
   @Input() private formControl: any;
 
@@ -48,9 +49,10 @@ export abstract class RTEformElement extends BaseFormElement
   >();
 
   editor: Quill;
-  selectedText: string;
-  hasSizeSet = false;
   selection: RangeStatic;
+  selectedText: string;
+  currentBlot: BlotData;
+  hasSizeSet = false;
   latestOutputValue: RteCurrentContent;
   writingValue = false;
   sendChangeOn = RTEchangeEvent.blur;
@@ -109,15 +111,17 @@ export abstract class RTEformElement extends BaseFormElement
       this.latestOutputValue = newOutputValue;
       this.changed.emit(newOutputValue);
       if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.change) {
+        this.value = newOutputValue.body;
         this.propagateChange(newOutputValue);
       }
       this.writingValue = false;
     }
   }
 
-  private onEditorSelectionChange(range): void {
+  private onEditorSelectionChange(range: RangeStatic): void {
     if (range) {
-      const newSize = !!this.editor.getFormat().size;
+      this.selection = range;
+      const newSize = !!this.editor.getFormat(range).size;
       if (this.hasSizeSet !== newSize) {
         this.hasSizeSet = newSize;
         this.changeDetector.detectChanges();
@@ -132,6 +136,7 @@ export abstract class RTEformElement extends BaseFormElement
   private onEditorBlur(): void {
     this.blurred.emit(this.latestOutputValue);
     if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.blur) {
+      this.value = this.latestOutputValue.body;
       this.propagateChange(this.latestOutputValue);
       this.onTouched();
     }
@@ -154,7 +159,7 @@ export abstract class RTEformElement extends BaseFormElement
 
   initEditor(options: QuillOptionsStatic): void {
     this.editor = new quillLib(this.quillEditor.nativeElement, options);
-    
+
     this.editor.enable(!this.disabled);
 
     this.editor.on('text-change', () => {
