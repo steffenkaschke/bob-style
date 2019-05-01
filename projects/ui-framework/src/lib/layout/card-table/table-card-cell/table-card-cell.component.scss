@@ -5,17 +5,3 @@
 :host {
   @include cell-style;
 }
-
-.text {
-  &:not(:only-of-type) {
-    @include text-truncate;
-  }
-
-  &:only-of-type {
-    @include line-clamp(
-      $lines: 2,
-      $font-size: $font-size-body,
-      $line-height: $line-height-body
-    );
-  }
-}

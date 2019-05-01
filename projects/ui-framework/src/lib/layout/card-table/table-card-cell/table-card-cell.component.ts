@@ -6,6 +6,12 @@ import {
 } from '../card-table.interface';
 import { RenderedComponent } from '../../../services/component-renderer/component-renderer.interface';
 
+import {
+  isString,
+  isArray,
+  isRenderedComponent
+} from '../../../services/utils/functional-utils';
+
 @Component({
   selector: 'b-table-card-cell, [b-table-card-cell]',
   templateUrl: './table-card-cell.component.html',
@@ -17,17 +23,9 @@ export class TableCardCellComponent {
   @Input() cell: CardTableCellData;
   @Input() index: number;
 
-  isString(val: CardTableCellDataType): boolean {
-    return val && typeof val === 'string';
-  }
-
-  isArray(val: CardTableCellDataType): boolean {
-    return val && Array.isArray(val);
-  }
-
-  isComponent(obj: any): boolean {
-    return obj && !!obj.component;
-  }
+  ifString = isString;
+  ifArray = isArray;
+  ifComponent = isRenderedComponent;
 
   onComponentClick($event: any, cell: CardTableCellDataType): void {
     if ((cell as RenderedComponent).handlers) {
