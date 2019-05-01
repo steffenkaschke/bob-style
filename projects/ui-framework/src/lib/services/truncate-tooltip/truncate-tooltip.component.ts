@@ -23,7 +23,7 @@ import { DOMhelpers, TextProps, Styles } from '../utils/dom-helpers.service';
       [ngStyle]="textContainerStyle"
       [matTooltip]="tooltipText"
       [matTooltipDisabled]="!tooltipEnabled"
-      [matTooltipShowDelay]="300"
+      [matTooltipShowDelay]="delay"
       matTooltipPosition="above"
       matTooltipClass="b-truncate-tooltip"
     >
@@ -62,6 +62,7 @@ export class TruncateTooltipComponent
   set linesAlt(value: number | string) {
     this.setMaxLines(value);
   }
+  @Input() delay = 300;
 
   @HostBinding('class.btt-initialized') initialized: boolean;
 

@@ -13,7 +13,7 @@ import { values } from 'lodash';
 import { ComponentGroupType } from '../../../consts';
 import { CardsModule } from '../cards.module';
 
-import { CardsMockData } from '../cardsMockData';
+import { CardsMockData, AddCardMockData } from '../cardsMockData';
 import { CardType } from '../cards.enum';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -50,22 +50,76 @@ const note = `
   #### Module
   *CardsModule*
 
-  #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  menu | MenuItem[] | array of menu items | none (optional)
-  text | string | main text | ''
-
   ~~~
   ${template}
   ~~~
+
+  #### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  type | CardType | Card theme | primary (optional)
+  addCard | AddCardData | data for the Add New card | none (optional)
+  cards | CardData[] | Array with card data | none
+  cardClicked | Function | card click handler (event transmits {card: CardData, cardIndex: number}) | none
+
+  #### cards[0]: CardData - single card data properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  data | CardDataType | card data | none
+  menu | MenuItem[] | array of menu items | none (optional)
+
+  #### data: CardDataType - card contents properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  text | string | main card text | none
+  header | string  | text to put in card header | none
+  - | RenderedComponent  | object describing a Component to be displayed in the card header | none
+  footer | string  | text to put in card footer | none
+  - | RenderedComponent  | object describing a Component to be displayed in the card footer | none
+
+  *Note:* If using RenderedComponent for footer/header, consumer must
+   declare the component to be used in entryComponents section of the module
+
+  *Note 2:*  for RenderedComponent properties please see <u>Services / Component Renderer</u> story
+
+  ##### CardData example
+
+  \`\`\`
+
+{
+  data: {
+    text: 'Compensation update',
+    header: {
+      component: AvatarComponent,
+      attributes: {
+        imageSource: 'http://....',
+        size: AvatarSize.mini,
+        title: 'Dylan Herrera'
+      }
+    },
+    footer: {
+      component: SliderComponent,
+      attributes: {
+        value: 78,
+        showLabel: false,
+        readOnly: true
+      }
+    }
+  },
+  menu: [
+    {
+      label: 'Do this',
+      action: handler()
+    }, ...
+  ]
+}
+
+  \`\`\`
+
 `;
 
-const AddCardMockData = {
-  title: 'Add a new flow',
-  subtitle: 'Right now',
-  action: action('Add Card was clicked')
-};
+const addCardMockData = AddCardMockData;
+addCardMockData.action = action('Add Card was clicked');
 
 story.add(
   'Cards Layout',
@@ -74,8 +128,8 @@ story.add(
       template: storyTemplate,
       props: {
         type: select('type', values(CardType), CardType.primary),
-        addCard: object('addCard', AddCardMockData),
-        cardsData: object('cardsData', CardsMockData),
+        addCard: object('addCard', addCardMockData),
+        cardsData: object('cards', CardsMockData),
         cardClickHandler: action('Card clicked')
       },
       moduleMetadata: {

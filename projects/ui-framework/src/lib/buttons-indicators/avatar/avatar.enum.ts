@@ -11,9 +11,3 @@ export enum BadgeSize {
   medium = 'x-large',
   large = 'x-large',
 }
-
-export enum BadgeColor {
-  approve_badge = 'positive',
-  reject_badge = 'negative',
-  pending_badge = 'primary',
-}

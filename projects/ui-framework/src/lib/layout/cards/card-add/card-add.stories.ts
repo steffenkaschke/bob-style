@@ -41,16 +41,24 @@ const note = `
   #### Module
   *CardsModule*
 
-  #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  title | string | main text | ''
-  subtitle | string | sub title | none (optional)
-  clicked | Function | callback for clicking on the  card |
-
   ~~~
   ${template}
   ~~~
+
+  #### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  type | CardType | Card theme | primary (optional)
+  card | AddCardData | data for the Add New card | none
+  clicked | Function | handler of card click
+
+  #### [card: AddCardData]
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  title | string | main text | none
+  subtitle | string | sub title | none (optional)
+  action | Function | handler of card click
+
 `;
 
 const AddCardMockData = {

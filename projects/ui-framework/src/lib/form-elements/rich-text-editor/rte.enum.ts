@@ -27,5 +27,25 @@ export enum RTEchangeEvent {
 }
 
 export enum BlotType {
-  Link = 'Link'
+  Link = 'Link',
+  bold = 'bold',
+  italic = 'italic',
+  underline = 'underline',
+  size = 'size',
+  list = 'list',
+  direction = 'direction',
+  color = 'color',
+  any = 'format'
+}
+
+export enum KeyboardKeys {
+  backspace = 'BACKSPACE',
+  tab = 'TAB',
+  enter = 'ENTER',
+  escape = 'ESCAPE',
+  left = 'LEFT',
+  up = 'UP',
+  right = 'RIGHT',
+  down = 'DOWN',
+  delete = 'DELETE'
 }
