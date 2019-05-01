@@ -82,20 +82,20 @@ describe('PlachholderRteConverterService', () => {
     it('Should convert RTE placeholder', () => {
       const rteInnerHtmlInput = '<div>Hello <span placeholder="/root/firstName">First name</span></div>';
       const fromRteResult = '<div>Hello {{/root/firstName}}</div>';
-      expect(templateTextEditorService.fromRte(rteInnerHtmlInput, placeholders)).toEqual(fromRteResult);
+      expect(templateTextEditorService.fromRte(rteInnerHtmlInput)).toEqual(fromRteResult);
     });
 
     it('Should convert multiple RTE placeholders', () => {
       const rteInnerHtmlInput = '<div>Hello <span placeholder="/root/firstName">First name</span></div>' +
         'Welcome to the <span placeholder="/work/department">Work | department</span> department';
       const fromRteResult = '<div>Hello {{/root/firstName}}</div>Welcome to the {{/work/department}} department';
-      expect(templateTextEditorService.fromRte(rteInnerHtmlInput, placeholders)).toEqual(fromRteResult);
+      expect(templateTextEditorService.fromRte(rteInnerHtmlInput)).toEqual(fromRteResult);
     });
 
     it('Should not convert RTE placeholder in cases there is none', () => {
       const rteInnerHtmlInput = '<div>Hello Jon</div>';
       const fromRteResult = '<div>Hello Jon</div>';
-      expect(templateTextEditorService.fromRte(rteInnerHtmlInput, placeholders)).toEqual(fromRteResult);
+      expect(templateTextEditorService.fromRte(rteInnerHtmlInput)).toEqual(fromRteResult);
     });
   });
 });

@@ -7,15 +7,13 @@ export class PlaceholderRteConverterService {
   constructor() {
   }
 
-  public fromRte(rteInnerHtml: string, placeholders: Placeholder[]): string {
+  public fromRte(rteInnerHtml: string): string {
     const elm: HTMLElement = document.createElement('div');
     elm.innerHTML = rteInnerHtml + '';
-    Array.from(elm.querySelectorAll('[placeholder]')).forEach(e => {
-      const b: Text =
-        document.createTextNode('{{' +
-          this.matchPlaceholderToConvertedValueBtDisplyName(placeholders, e.innerHTML)
-          + '}}');
-      e.parentNode.replaceChild(b, e);
+    Array.from(elm.querySelectorAll('[placeholder]')).forEach(existingElement => {
+      const placeholderTextElement: Text =
+        document.createTextNode('{{' + existingElement.getAttribute('placeholder') + '}}');
+      existingElement.parentNode.replaceChild(placeholderTextElement, existingElement);
     });
     return elm.innerHTML.toString();
   }
@@ -32,10 +30,5 @@ export class PlaceholderRteConverterService {
   private matchPlaceholderToConvertedValueBtId(placeholders: Placeholder[], id: string): string {
     const placeholder = find(placeholders, p => p.id === id);
     return placeholder ? placeholder.displayName : id;
-  }
-
-  private matchPlaceholderToConvertedValueBtDisplyName(placeholders: Placeholder[], displayName: string): string {
-    const placeholder = find(placeholders, p => p.displayName === displayName);
-    return placeholder ? placeholder.id : displayName;
   }
 }
