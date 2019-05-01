@@ -11,8 +11,9 @@ export class PlaceholderRteConverterService {
     const elm: HTMLElement = document.createElement('div');
     elm.innerHTML = rteInnerHtml + '';
     Array.from(elm.querySelectorAll('[placeholder]')).forEach(existingElement => {
+      const placeholderId = existingElement.getAttribute('placeholder');
       const placeholderTextElement: Text =
-        document.createTextNode('{{' + existingElement.getAttribute('placeholder') + '}}');
+        document.createTextNode('{{' + placeholderId + '}}');
       existingElement.parentNode.replaceChild(placeholderTextElement, existingElement);
     });
     return elm.innerHTML.toString();
@@ -23,11 +24,11 @@ export class PlaceholderRteConverterService {
     return contentToConvert
       .replace(regex, (field: string, innerContent: string) => {
         // tslint:disable-next-line:max-line-length
-        return`<span placeholder="${innerContent}">${this.matchPlaceholderToConvertedValueBtId(placeholders, innerContent)}</span>`;
+        return`<span placeholder="${innerContent}">${this.getDisplayNameById(placeholders, innerContent)}</span>`;
       });
   }
 
-  private matchPlaceholderToConvertedValueBtId(placeholders: Placeholder[], id: string): string {
+  private getDisplayNameById(placeholders: Placeholder[], id: string): string {
     const placeholder = find(placeholders, p => p.id === id);
     return placeholder ? placeholder.displayName : id;
   }
