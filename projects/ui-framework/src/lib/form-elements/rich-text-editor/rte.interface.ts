@@ -30,5 +30,5 @@ export interface BlotData {
   length: number;
   text: string;
   format: RteBlotFormat;
-  link?: any;
+  link?: string;
 }
