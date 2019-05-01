@@ -1,8 +1,10 @@
 <span *ngIf="ifString(cell.data) || !cell.data"
+      [b-truncate-tooltip]="2"
       class="text">{{ cell.data || '—' }}</span>
 
 <ng-container *ngIf="ifArray(cell.data)">
   <span *ngFor="let line of cell.data"
+        b-truncate-tooltip
         class="text">{{ line }}</span>
 </ng-container>
 
