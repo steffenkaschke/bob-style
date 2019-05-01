@@ -29,6 +29,6 @@ export interface BlotData {
   index: number;
   length: number;
   text: string;
-  format: any;
+  format: RteBlotFormat;
   link?: any;
 }

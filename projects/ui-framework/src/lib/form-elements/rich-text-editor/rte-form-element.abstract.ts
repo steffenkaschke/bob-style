@@ -32,7 +32,7 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   @Input() value: string;
-  @Input() private maxLength: number;
+  @Input() private maxChars: number;
   @Input() private formControlName: any;
   @Input() private formControl: any;
 
