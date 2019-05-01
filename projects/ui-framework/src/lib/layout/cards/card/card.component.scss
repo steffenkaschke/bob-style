@@ -2,6 +2,15 @@
 @import '../../../style/mixins';
 @import '../../../style/typography';
 
+@keyframes enablePointer {
+  from {
+    pointer-events: none;
+  }
+  to {
+    pointer-events: all;
+  }
+}
+
 :host {
   box-sizing: border-box;
   position: relative;
@@ -25,6 +34,12 @@
       opacity: 1;
     }
   }
+
+  &:hover {
+    .card-content {
+      @include animate(enablePointer, 0s, 0.2s);
+    }
+  }
 }
 
 .card-menu {
@@ -38,6 +53,7 @@
 
 .card-content {
   text-transform: none;
+  pointer-events: none;
 }
 
 .card-top,
@@ -83,7 +99,6 @@
 
   .card-content {
     @include DisplayFont($font-size-display-4, 600, $transform: null);
-    @include line-clamp(4, 18px, $line-height-heading, true);
   }
 }
 
@@ -95,7 +110,6 @@
       $font-weight-display-3,
       $transform: null
     );
-    @include line-clamp(3, 22px, $line-height-heading, true);
   }
 }
 
