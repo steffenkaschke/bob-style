@@ -60,14 +60,6 @@ export class CardComponent {
     }, 150);
   }
 
-  // isString(val: any): boolean {
-  //   return val && typeof val === 'string';
-  // }
-
-  // isRenderedComponent(obj: any): boolean {
-  //   return obj && !!obj.component;
-  // }
-
   onComponentClick($event: any, data: string | RenderedComponent): void {
     if ((data as RenderedComponent).handlers) {
       $event.stopPropagation();
