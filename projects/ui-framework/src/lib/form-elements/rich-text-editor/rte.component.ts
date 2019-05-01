@@ -63,7 +63,7 @@ export class RichTextEditorComponent extends RTEformElement
 
   @HostBinding('class') get classes() {
     return (
-      (this.type === RTEType.secondary ? 'rte-secondary' : 'rte-primary') +
+      (!this.type ? 'rte-primary' : 'rte-' + this.type) +
       (this.required ? ' required' : '') +
       (this.disabled ? ' disabled' : '') +
       (this.errorMessage ? ' error' : '')
