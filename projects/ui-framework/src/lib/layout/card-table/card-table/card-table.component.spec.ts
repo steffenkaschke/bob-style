@@ -13,6 +13,7 @@ import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.modul
 import { ButtonComponent } from '../../../buttons-indicators/buttons/button/button.component';
 
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { TruncateTooltipModule } from '../../../services/truncate-tooltip/truncate-tooltip.module';
 
 describe('CardTableComponent', () => {
   let fixture: ComponentFixture<CardTableComponent>;
@@ -22,6 +23,7 @@ describe('CardTableComponent', () => {
   let tableHeaderElement: HTMLElement;
   let tableBodyElement: HTMLElement;
   let buttonElement: HTMLElement;
+  let cardElement: HTMLElement;
 
   let testVar = 'hello';
 
@@ -71,7 +73,12 @@ describe('CardTableComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
-      imports: [BrowserAnimationsModule, CardTableModule, ButtonsModule],
+      imports: [
+        BrowserAnimationsModule,
+        CardTableModule,
+        ButtonsModule,
+        TruncateTooltipModule
+      ],
       providers: [CellWidthsService],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -96,6 +103,8 @@ describe('CardTableComponent', () => {
           By.css('.card-table-header')
         ).nativeElement;
 
+        cardElement = tableBodyElement.children[0] as HTMLElement;
+
         componentRenderer = fixture.debugElement.query(
           By.css('b-component-renderer')
         ).componentInstance;
@@ -115,7 +124,7 @@ describe('CardTableComponent', () => {
     });
     it('should create table body with  1 row of 5 cells', () => {
       expect(tableBodyElement.children.length).toEqual(1);
-      expect(tableBodyElement.children[0].children.length).toEqual(5);
+      expect(cardElement.children.length).toEqual(5);
     });
   });
 
@@ -126,23 +135,23 @@ describe('CardTableComponent', () => {
       );
     });
     it('should put two lines of text in 3rd column', () => {
-      expect(tableBodyElement.children[0].children[2].children.length).toEqual(
-        2
+      fixture.detectChanges();
+      expect(cardElement.children[2].children.length).toEqual(2);
+      expect((cardElement.children[2] as HTMLElement).innerText).toContain(
+        'text4'
       );
-      expect(
-        tableBodyElement.children[0].children[2].children[1].innerHTML
-      ).toEqual('text4');
     });
     it('should put a "-" symbol if cell data is missing', () => {
-      expect(
-        tableBodyElement.children[0].children[3].children[0].innerHTML.trim()
-      ).toEqual('—');
+      fixture.detectChanges();
+      expect((cardElement.children[3] as HTMLElement).innerText.trim()).toEqual(
+        '—'
+      );
     });
   });
 
   describe('Table Cell styles', () => {
     it('should attach widths and text styles to cells', () => {
-      const cellStyleAttributeValue = tableBodyElement.children[0].children[1]
+      const cellStyleAttributeValue = cardElement.children[1]
         .getAttribute('style')
         .replace(/\s/g, '');
       expect(cellStyleAttributeValue).toEqual('max-width:20%;font-weight:500;');
@@ -154,8 +163,9 @@ describe('CardTableComponent', () => {
       expect(cellStyleAttributeValue).toEqual('max-width:20%;');
     });
     it('should attach proper align style', () => {
-      const cellStyleAttributeValue = tableBodyElement.children[0].children[4]
-        .getAttribute('style')
+      const cellStyleAttributeValue = cardElement.children[4].getAttribute(
+        'style'
+      );
       expect(cellStyleAttributeValue).toContain('flex-end');
     });
   });

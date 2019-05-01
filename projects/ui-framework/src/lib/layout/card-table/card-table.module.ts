@@ -7,6 +7,7 @@ import { CardTableComponent } from './card-table/card-table.component';
 import { CellWidthsService } from './cell-widths-service/cell-widths.service';
 import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
 import { TypographyModule } from '../../typography/typography.module';
+import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,12 @@ import { TypographyModule } from '../../typography/typography.module';
     TableCardComponent,
     CardTableComponent
   ],
-  imports: [CommonModule, TypographyModule, ComponentRendererModule],
+  imports: [
+    CommonModule,
+    TypographyModule,
+    ComponentRendererModule,
+    TruncateTooltipModule
+  ],
   exports: [CardTableComponent],
   providers: [CellWidthsService]
 })

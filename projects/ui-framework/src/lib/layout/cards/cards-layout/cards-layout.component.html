@@ -13,7 +13,8 @@
       [type]="type"
       [card]="card"
       [index]="index"
-      (click)="onCardClicked(card, index)">
+      [clickable]="{'clickable': cardClicked.observers.length > 0}"
+      (clicked)="onCardClicked(card, index)">
   </li>
 
 </ul>
