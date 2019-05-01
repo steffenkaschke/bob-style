@@ -17,6 +17,7 @@ import { RteLink } from '../rte.interface';
 import { InputEvent } from '../../../form-elements/input/input.interface';
 import { InputComponent } from '../../input/input.component';
 import { checkUrl } from '../formats/link-blot';
+import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-rte-link-editor',
@@ -35,9 +36,12 @@ export class RteLinkEditorComponent {
   @Output() linkUpdate: EventEmitter<any> = new EventEmitter<RteLink>();
   @Output() linkCancel: EventEmitter<any> = new EventEmitter<any>();
 
-  inputTypes = InputTypes;
-  buttonSize = ButtonSize;
-  buttonType = ButtonType;
+  readonly inputTypes = InputTypes;
+  readonly buttonSize = ButtonSize;
+  readonly buttonType = ButtonType;
+  readonly resetIcon: String = Icons.reset_x;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
 
   private updateOnEvent = InputEventType.onChange; // onBlur
 
