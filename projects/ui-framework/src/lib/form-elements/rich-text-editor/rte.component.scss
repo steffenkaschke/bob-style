@@ -320,6 +320,29 @@ $border-color-error: $color-error;
   }
 }
 
+// Secondary & Tertiary common
+
+:host.rte-secondary,
+:host.rte-tertiary {
+  & ::ng-deep {
+    .ql-snow {
+      &.ql-toolbar {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
+  .mat-hint {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  &.error:not(.disabled) ::ng-deep {
+    .ql-toolbar {
+      border-bottom: 1px solid $border-color-error;
+    }
+  }
+}
+
 // Secondary
 
 :host.rte-secondary {
@@ -336,21 +359,26 @@ $border-color-error: $color-error;
     .ql-snow {
       &.ql-toolbar {
         border-bottom: 1px solid $border-color;
-        padding-left: 0;
-        padding-right: 0;
       }
     }
     .ql-container:last-child {
       border-bottom: 1px solid $border-color;
     }
   }
-  .mat-hint {
-    padding-left: 0;
-    padding-right: 0;
-  }
-  &.error:not(.disabled) ::ng-deep {
-    .ql-toolbar {
-      border-bottom-color: $border-color-error;
+}
+
+// Tertiary
+
+:host.rte-tertiary {
+  & ::ng-deep {
+    .ql-editor {
+      background-color: $grey-100;
+      padding: 20px;
+    }
+    .ql-snow {
+      &.ql-toolbar {
+        border: 0;
+      }
     }
   }
 }

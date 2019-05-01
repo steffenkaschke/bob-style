@@ -1,6 +1,7 @@
 export enum RTEType {
   primary = 'primary',
-  secondary = 'secondary'
+  secondary = 'secondary',
+  tertiary = 'tertiary'
 }
 
 export enum RTEControls {
