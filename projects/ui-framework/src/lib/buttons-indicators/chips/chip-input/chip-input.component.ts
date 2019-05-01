@@ -50,5 +50,6 @@ export class ChipInputComponent {
   private filter(value: string): string[] {
     // const filterValue = value.toLowerCase();
     // return this.allFruits.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
+    return [];
   }
 }
