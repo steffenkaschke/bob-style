@@ -10,8 +10,8 @@ export class PlaceholderRteConverterService {
   public fromRte(rteInnerHtml: string): string {
     const elm: HTMLElement = document.createElement('div');
     elm.innerHTML = rteInnerHtml + '';
-    Array.from(elm.querySelectorAll('[placeholder]')).forEach(existingElement => {
-      const placeholderId = existingElement.getAttribute('placeholder');
+    Array.from(elm.querySelectorAll('[data-placeholder-id]')).forEach(existingElement => {
+      const placeholderId = existingElement.getAttribute('data-placeholder-id');
       const placeholderTextElement: Text =
         document.createTextNode('{{' + placeholderId + '}}');
       existingElement.parentNode.replaceChild(placeholderTextElement, existingElement);
@@ -24,7 +24,7 @@ export class PlaceholderRteConverterService {
     return contentToConvert
       .replace(regex, (field: string, innerContent: string) => {
         // tslint:disable-next-line:max-line-length
-        return`<span placeholder="${innerContent}">${this.getDisplayNameById(placeholders, innerContent)}</span>`;
+        return`<span data-placeholder-id="${innerContent}">${this.getDisplayNameById(placeholders, innerContent)}</span>`;
       });
   }
 
