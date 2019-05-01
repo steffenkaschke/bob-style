@@ -1,19 +1,8 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  array,
-  boolean,
-  number,
-  object,
-  select,
-  text,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
+import { object, select, withKnobs } from '@storybook/addon-knobs/angular';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../../consts';
 import { CardsModule } from '../cards.module';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
-import { IconsModule } from '../../../icons/icons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
@@ -67,7 +56,7 @@ story.add(
       template: storyTemplate,
       props: {
         type: select('type', values(CardType), CardType.primary),
-        cardData: object('cardsData', CardsMockData[1])
+        cardData: object('card', CardsMockData[1])
       },
       moduleMetadata: {
         imports: [
