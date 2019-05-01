@@ -83,11 +83,11 @@ describe('CardComponent', () => {
   });
 
   describe('Main text', () => {
-    it('should set card-content input text', () => {
+    it('should set .card-content input text', () => {
       expect(cardContentElement.innerText).toContain('Compensation update');
     });
 
-    it('should add truncate-tooltip to long card-content text', () => {
+    it('should add truncate-tooltip to long .card-content text', () => {
       fixture.detectChanges();
       expect(cardContentElement.classList).toContain('btt-initialized');
     });
