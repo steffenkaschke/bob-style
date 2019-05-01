@@ -13,9 +13,9 @@
     </p>
     <br>
     <p>
-      Editor:
-      <b-rich-text-editor formControlName="rteControl"
-                          [minHeight]="null"
+      Editor: "{{ rteEditor.value }}"
+      <b-rich-text-editor #rteEditor
+                          formControlName="rteControl"
                           [disabled]="disabled"
                           [errorMessage]="error ? 'Error' : undefined">
       </b-rich-text-editor>

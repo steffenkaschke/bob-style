@@ -5,11 +5,14 @@ export interface UpdateRteConfig {
   startIndex: number;
   insertText: string;
   format: UpdateRteConfigFormat;
+  unformat?: string[];
 }
+
+type RteBlotFormat = { [key in BlotType]?: any };
 
 interface UpdateRteConfigFormat {
   type: BlotType;
-  value: string;
+  value: any;
 }
 
 export interface RteLink {
@@ -20,4 +23,12 @@ export interface RteLink {
 export interface RteCurrentContent {
   body: string;
   plainText: string;
+}
+
+export interface BlotData {
+  index: number;
+  length: number;
+  text: string;
+  format: RteBlotFormat;
+  link?: string;
 }

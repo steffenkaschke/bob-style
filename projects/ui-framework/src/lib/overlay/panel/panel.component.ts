@@ -1,5 +1,20 @@
-import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { CdkOverlayOrigin, FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
+  HostListener
+} from '@angular/core';
+import {
+  CdkOverlayOrigin,
+  FlexibleConnectedPositionStrategy,
+  Overlay,
+  OverlayConfig,
+  OverlayRef
+} from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { PanelPositionService } from './panel-position-service/panel-position.service';
 import { Subscription } from 'rxjs';
@@ -11,10 +26,9 @@ const HOVER_DELAY_DURATION = 300;
 @Component({
   selector: 'b-panel',
   templateUrl: 'panel.component.html',
-  styleUrls: ['panel.component.scss'],
+  styleUrls: ['panel.component.scss']
 })
 export class PanelComponent implements OnDestroy {
-
   @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef') templateRef: TemplateRef<any>;
 
@@ -33,10 +47,16 @@ export class PanelComponent implements OnDestroy {
   readonly mouseLeaveDebounce: any;
   positionClassList: { [key: string]: boolean } = {};
 
+  @HostListener('document:keydown.escape', ['$event']) handleEscape(
+    event: KeyboardEvent
+  ) {
+    this.closePanel();
+  }
+
   constructor(
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService,
+    private panelPositionService: PanelPositionService
   ) {
     this.mouseEnterDebounce = debounce(this.openPanel, HOVER_DELAY_DURATION);
     this.mouseLeaveDebounce = debounce(this.closePanel, HOVER_DELAY_DURATION);
@@ -67,12 +87,16 @@ export class PanelComponent implements OnDestroy {
   openPanel(): void {
     this.panelConfig = this.getConfig();
     this.overlayRef = this.overlay.create(this.panelConfig);
-    this.templatePortal = new TemplatePortal(this.templateRef, this.viewContainerRef);
+    this.templatePortal = new TemplatePortal(
+      this.templateRef,
+      this.viewContainerRef
+    );
     this.overlayRef.attach(this.templatePortal);
 
     this.overlayRef.updatePosition();
 
-    this.backdropClickSubscriber = this.overlayRef.backdropClick()
+    this.backdropClickSubscriber = this.overlayRef
+      .backdropClick()
       .subscribe(() => {
         this.destroyPanel();
       });
@@ -92,17 +116,21 @@ export class PanelComponent implements OnDestroy {
   }
 
   private getConfig(): OverlayConfig {
-    const positionStrategy = this.panelPositionService
-      .getPanelPositionStrategy(this.overlayOrigin, this.defaultPosVer);
+    const positionStrategy = this.panelPositionService.getPanelPositionStrategy(
+      this.overlayOrigin,
+      this.defaultPosVer
+    );
 
     this.subscribeToPositions(positionStrategy);
 
-    const panelClass = compact(concat(['b-panel'], [get(this, 'panelClass', null)]));
+    const panelClass = compact(
+      concat(['b-panel'], [get(this, 'panelClass', null)])
+    );
     const backdropClass = this.openOnHover
       ? 'b-panel-backdrop-disabled'
       : this.showBackdrop
-        ? 'b-panel-backdrop'
-        : 'b-panel-backdrop-invisible';
+      ? 'b-panel-backdrop'
+      : 'b-panel-backdrop-invisible';
 
     return {
       disposeOnNavigation: true,
@@ -110,14 +138,19 @@ export class PanelComponent implements OnDestroy {
       backdropClass,
       panelClass,
       positionStrategy,
-      scrollStrategy: this.panelPositionService.getScrollStrategy(),
+      scrollStrategy: this.panelPositionService.getScrollStrategy()
     };
   }
 
-  private subscribeToPositions(positionStrategy: FlexibleConnectedPositionStrategy): void {
-    this.positionChangeSubscriber = positionStrategy.positionChanges
-      .subscribe(change => {
-        this.positionClassList = this.panelPositionService.getPositionClassList(change);
-      });
+  private subscribeToPositions(
+    positionStrategy: FlexibleConnectedPositionStrategy
+  ): void {
+    this.positionChangeSubscriber = positionStrategy.positionChanges.subscribe(
+      change => {
+        this.positionClassList = this.panelPositionService.getPositionClassList(
+          change
+        );
+      }
+    );
   }
 }

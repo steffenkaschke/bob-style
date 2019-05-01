@@ -11,8 +11,14 @@ import {
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import quillLib, { QuillOptionsStatic } from 'quill';
-import { LinkBlot } from './formats/link-blot';
-import { BlotType, RTEFontSize, RTEType, RTEControls } from './rte.enum';
+import { LinkBlot, RteLinkFormats } from './formats/link-blot';
+import {
+  BlotType,
+  RTEFontSize,
+  RTEType,
+  RTEControls,
+  KeyboardKeys
+} from './rte.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 import { RteUtilsService } from './rte-utils/rte-utils.service';
@@ -22,6 +28,7 @@ import { PanelComponent } from '../../overlay/panel/panel.component';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { Icons } from '../../icons/icons.enum';
 import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
+import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
 
 quillLib.register(LinkBlot);
 
@@ -80,6 +87,7 @@ export class RichTextEditorComponent extends RTEformElement
   @ViewChild('toolbar') toolbar: ElementRef;
   @ViewChild('suffix') suffix: ElementRef;
   @ViewChild('linkPanel') private linkPanel: PanelComponent;
+  @ViewChild('linkEditor') private linkEditor: RteLinkEditorComponent;
 
   hasSuffix = true;
 
@@ -89,6 +97,8 @@ export class RichTextEditorComponent extends RTEformElement
   readonly RTEControls = RTEControls;
   readonly RTEFontSize = RTEFontSize;
   readonly panelDefaultPosVer = PanelDefaultPosVer;
+
+  private blotsToDeleteWhole = [BlotType.Link];
 
   ngAfterViewInit(): void {
     this.onRTEviewInit();
@@ -116,22 +126,60 @@ export class RichTextEditorComponent extends RTEformElement
 
     setTimeout(() => {
       this.initEditor(editorOptions);
+      this.addKeyBindings();
       this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
     }, 0);
   }
 
+  private addKeyBindings(): void {
+    this.editor.keyboard.addBinding({ key: KeyboardKeys.backspace }, () => {
+      if (this.blotsToDeleteWhole.length > 0) {
+        this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
+
+        if (
+          this.rteUtilsService.commonFormats(
+            this.currentBlot.format,
+            this.blotsToDeleteWhole
+          )
+        ) {
+          this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }
+
   changeFontSize(size: RTEFontSize) {
     this.editor.format('size', size === RTEFontSize.normal ? false : size);
-    this.hasSizeSet = size === RTEFontSize.normal ? false : true;
+    this.hasSizeSet = size !== RTEFontSize.normal;
   }
 
   private onLinkPanelOpen(): void {
-    this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
-    this.selectedText = this.rteUtilsService.getSelectionText(
-      this.editor,
-      this.selection
-    );
+    this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
+
+    if (this.currentBlot.link) {
+      this.selection = this.rteUtilsService.selectBlot(
+        this.currentBlot,
+        this.editor
+      );
+      this.selectedText = this.currentBlot.text;
+    } else {
+      this.selectedText = this.rteUtilsService.getSelectionText(
+        this.editor,
+        this.selection
+      );
+    }
+
+    this.linkEditor.text = this.selectedText;
+    this.linkEditor.url = this.currentBlot.link ? this.currentBlot.link : '';
+    this.linkEditor.isEditing = !!this.currentBlot.link;
+
     this.editor.blur();
+    setTimeout(() => {
+      this.linkEditor.focusTextInput();
+    }, 0);
   }
 
   onLinkUpdate(rteLink: RteLink): void {
@@ -142,9 +190,10 @@ export class RichTextEditorComponent extends RTEformElement
       format: {
         type: BlotType.Link,
         value: rteLink.url
-      }
+      },
+      unformat: rteLink.url ? null : RteLinkFormats
     };
-    this.rteUtilsService.updateEditor(this.editor, updateConfig, false);
+    this.rteUtilsService.updateEditor(this.editor, updateConfig);
     this.linkPanel.closePanel();
   }
 
