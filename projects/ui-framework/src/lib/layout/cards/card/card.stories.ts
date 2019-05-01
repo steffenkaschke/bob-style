@@ -38,15 +38,24 @@ const note = `
   #### Module
   *CardsModule*
 
-  #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  menu | MenuItem[] | array of menu items | none (optional)
-  text | string | main text | ''
-
   ~~~
   ${template}
   ~~~
+
+  #### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  type | CardType | Card theme | primary (optional)
+  cards | CardData | card contents data | none
+
+  #### card: CardData - single card data properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  data | CardDataType | card data | none
+  menu | MenuItem[] | array of menu items | none (optional)
+
+  *Note:* For desctiption of [data: CardDataType] properties, see <u>Cards Layout</u> story.
+
 `;
 
 story.add(
