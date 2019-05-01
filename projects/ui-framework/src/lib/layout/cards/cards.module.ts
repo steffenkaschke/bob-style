@@ -7,6 +7,7 @@ import { CardComponent } from './card/card.component';
 import { CardAddComponent } from './card-add/card-add.component';
 import { CardsLayoutComponent } from './cards-layout/cards-layout.component';
 import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
+import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
 
 @NgModule({
   declarations: [CardComponent, CardAddComponent, CardsLayoutComponent],
@@ -15,7 +16,8 @@ import { ComponentRendererModule } from '../../services/component-renderer/compo
     ButtonsModule,
     TypographyModule,
     MenuModule,
-    ComponentRendererModule
+    ComponentRendererModule,
+    TruncateTooltipModule
   ],
   exports: [CardComponent, CardAddComponent, CardsLayoutComponent],
   providers: []

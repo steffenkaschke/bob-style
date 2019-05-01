@@ -22,7 +22,8 @@
                       [render]="card.data.header"
                       (click)="onComponentClick($event, card.data.header)"></b-component-renderer>
 
-<p class="card-content">
+<p class="card-content"
+   [b-truncate-tooltip]="type === cardType.primary ? 4 : 3">
   {{ card.data.text }}
 </p>
 
