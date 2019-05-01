@@ -12,6 +12,11 @@ import { RenderedComponent } from '../../../services/component-renderer/componen
 import { Icons } from '../../../icons/icons.enum';
 import { ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
 
+import {
+  isString,
+  isRenderedComponent
+} from '../../../services/utils/functional-utils';
+
 @Component({
   selector: 'b-card, [b-card]',
   templateUrl: './card.component.html',
@@ -23,10 +28,13 @@ export class CardComponent {
   @Input() card: CardData;
   @Input() type: CardType = CardType.primary;
   @Input() index: number;
+  @Input() clickable = false;
 
   cardType = CardType;
   icons = Icons;
   button = ButtonType;
+  ifString = isString;
+  ifComponent = isRenderedComponent;
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
@@ -34,7 +42,7 @@ export class CardComponent {
 
   @HostBinding('class')
   get typeClass() {
-    return 'card-' + this.type;
+    return 'card-' + this.type + (this.clickable ? ' clickable' : '');
   }
 
   @HostListener('click', ['$event'])
@@ -52,13 +60,13 @@ export class CardComponent {
     }, 150);
   }
 
-  isString(val: any): boolean {
-    return val && typeof val === 'string';
-  }
+  // isString(val: any): boolean {
+  //   return val && typeof val === 'string';
+  // }
 
-  isComponent(obj: any): boolean {
-    return obj && !!obj.component;
-  }
+  // isRenderedComponent(obj: any): boolean {
+  //   return obj && !!obj.component;
+  // }
 
   onComponentClick($event: any, data: string | RenderedComponent): void {
     if ((data as RenderedComponent).handlers) {

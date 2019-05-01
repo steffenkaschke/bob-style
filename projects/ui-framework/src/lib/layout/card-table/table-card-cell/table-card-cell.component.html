@@ -1,11 +1,11 @@
-<span *ngIf="isString(cell.data) || !cell.data"
+<span *ngIf="ifString(cell.data) || !cell.data"
       class="text">{{ cell.data || '—' }}</span>
 
-<ng-container *ngIf="isArray(cell.data)">
+<ng-container *ngIf="ifArray(cell.data)">
   <span *ngFor="let line of cell.data"
         class="text">{{ line }}</span>
 </ng-container>
 
-<b-component-renderer *ngIf="isComponent(cell.data)"
+<b-component-renderer *ngIf="ifComponent(cell.data)"
                       [render]="cell.data"
                       (click)="onComponentClick($event, cell.data)"></b-component-renderer>

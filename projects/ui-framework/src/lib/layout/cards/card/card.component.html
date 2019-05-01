@@ -13,12 +13,12 @@
 </b-menu>
 
 <p class="card-top"
-   *ngIf="type !== cardType.tertiary && isString(card.data.header)">
+   *ngIf="type !== cardType.tertiary && ifString(card.data.header)">
   {{ card.data.header }}
 </p>
 
 <b-component-renderer class="card-top"
-                      *ngIf="type !== cardType.tertiary && isComponent(card.data.header)"
+                      *ngIf="type !== cardType.tertiary && ifComponent(card.data.header)"
                       [render]="card.data.header"
                       (click)="onComponentClick($event, card.data.header)"></b-component-renderer>
 
@@ -29,11 +29,11 @@
 </p>
 
 <p class="card-bottom"
-   *ngIf="isString(card.data.footer)">
+   *ngIf="ifString(card.data.footer)">
   {{ card.data.footer }}
 </p>
 
 <b-component-renderer class="card-bottom"
-                      *ngIf="isComponent(card.data.footer)"
+                      *ngIf="ifComponent(card.data.footer)"
                       [render]="card.data.footer"
                       (click)="onComponentClick($event, card.data.footer)"></b-component-renderer>
