@@ -51,7 +51,6 @@ export class TableComponent implements OnInit, OnChanges {
       rowHeight: this.rowHeight,
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
-      filter: false,
       deltaRowDataMode: true,
       onGridReady: () => {
         this.gridOptions.columnApi.autoSizeAllColumns();
@@ -89,10 +88,6 @@ export class TableComponent implements OnInit, OnChanges {
       rowIndex: $event.rowIndex,
       data: $event.data,
     });
-  }
-
-  updateTableData(data: any): void {
-    this.gridOptions.api.setRowData(data);
   }
 
   private setGridHeight(height: number): void {
