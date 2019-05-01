@@ -17,7 +17,7 @@ import { IconsModule } from '../../icons/icons.module';
     AvatarComponent,
   ],
   entryComponents: [
-     AvatarComponent,
+    AvatarComponent,
   ],
 })
 export class AvatarModule {

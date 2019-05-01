@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AvatarComponent } from './avatar.component';
-import { AvatarSize, BadgeColor, BadgeSize } from './avatar.enum';
+import { AvatarSize, BadgeSize } from './avatar.enum';
 import { TypographyModule } from '../../typography/typography.module';
 import { By } from '@angular/platform-browser';
 import { forEach, values } from 'lodash';
@@ -95,10 +95,12 @@ describe('AvatarComponent', () => {
 
   describe('badge', () => {
     it('Should create badge config', () => {
-      component.badge = 'pending_badge';
+      component.badge = {
+        icon: 'pending_badge',
+        color: 'primary',
+      };
       component.ngOnInit();
-      expect(component.badgeConfig.size).toEqual(BadgeSize[component.size]);
-      expect(component.badgeConfig.color).toEqual(BadgeColor[component.badge]);
+      expect(component.badgeSize).toEqual(BadgeSize[component.size]);
     });
   });
 });
