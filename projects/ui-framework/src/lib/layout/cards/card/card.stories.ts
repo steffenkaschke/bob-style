@@ -46,7 +46,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   type | CardType | Card theme | primary (optional)
-  cards | CardData | card contents data | none
+  card | CardData | card contents data | none
 
   #### card: CardData - single card data properties
   Name | Type | Description | Default value
