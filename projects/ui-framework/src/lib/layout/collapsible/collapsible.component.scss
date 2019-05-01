@@ -1,13 +1,28 @@
-
-@import "../../style/colors.scss";
-@import "../../style/typography.scss";
-@import "../../style/mixins.scss";
-@import "../../style/keyframes.scss";
+@import '../../style/colors.scss';
+@import '../../style/typography.scss';
+@import '../../style/mixins.scss';
+@import '../../style/keyframes.scss';
 
 $mat-header-hover-selector: '.mat-expansion-panel-header:not([aria-disabled=true]).cdk-keyboard-focused, .mat-expansion-panel-header:not([aria-disabled=true]).cdk-program-focused, .mat-expansion-panel-header:not([aria-disabled=true]):hover';
 
 $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):not(.cdk-keyboard-focused):not(.cdk-program-focused):not(:hover), .mat-expansion-panel-header[aria-disabled=true]';
 
+@keyframes visibility {
+  0% {
+    visibility: hidden;
+  }
+  100% {
+    visibility: visible;
+  }
+}
+@keyframes invisibility {
+  0% {
+    visibility: visible;
+  }
+  100% {
+    visibility: hidden;
+  }
+}
 
 :host {
   text-align: left;
@@ -15,7 +30,6 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
 }
 
 :host ::ng-deep {
-
   .mat-expansion-panel {
     box-shadow: none;
     overflow: visible;
@@ -35,9 +49,9 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
 
     @include breakout-underlay($brdr-loc: top, $bg-color: white) {
       pointer-events: all;
-    };
+    }
 
-    &[aria-disabled="true"] {
+    &[aria-disabled='true'] {
       @include disabled-state {
         &:before {
           border-color: inherit;
@@ -54,8 +68,8 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
       margin-right: 15px;
 
       &:after {
-       border-color: $grey-700;
-       vertical-align: baseline;
+        border-color: $grey-700;
+        vertical-align: baseline;
       }
     }
 
@@ -64,11 +78,11 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
       align-items: center;
       position: relative;
     }
-
   }
 
   #{$mat-header-not-hover-selector} {
-    .collapsible-description, .collapsible-suffix {
+    .collapsible-description,
+    .collapsible-suffix {
       display: none;
     }
   }
@@ -78,7 +92,8 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
     overflow: hidden;
   }
 
-  .mat-expansion-panel-header:not(.mat-expanded) + .mat-expansion-panel-content {
+  .mat-expansion-panel-header:not(.mat-expanded)
+    + .mat-expansion-panel-content {
     @include animate(invisibility, 0s, 0.5s);
   }
 
@@ -97,11 +112,10 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
     transform: translateY(0);
     opacity: 1;
   }
-
 }
 
-
-.collapsible-title, .collapsible-description {
+.collapsible-title,
+.collapsible-description {
   @include text-truncate;
   line-height: inherit;
 
@@ -121,9 +135,7 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
   margin-left: auto;
 }
 
-
 :host.collapsible-small {
-
   &:first-of-type ::ng-deep {
     .mat-expansion-panel-header {
       @include breakout-underlay($brdr-width: 0, $mod: true);
@@ -136,7 +148,6 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
 }
 
 :host.collapsible-big {
-
   &:last-of-type ::ng-deep {
     .mat-expansion-panel-header {
       @include breakout-underlay($brdr-loc: top bottom, $mod: true);
@@ -145,18 +156,23 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
 
   & ::ng-deep {
     .mat-expansion-panel-header {
-
       @include breakout-underlay($add: true) {
         transition: box-shadow 0.2s;
       }
 
-      &.mat-expanded, &.ng-animating {
-        @include breakout-underlay($brdr-loc: top bottom, $mod: true, $shadow: 0 5px 10px -1px $boxShadowColor);
+      &.mat-expanded,
+      &.ng-animating {
+        @include breakout-underlay(
+          $brdr-loc: top bottom,
+          $mod: true,
+          $shadow: 0 5px 10px -1px $boxShadowColor
+        );
       }
     }
 
     #{$mat-header-hover-selector} {
-      &,&:before {
+      &,
+      &:before {
         background-color: $grey-200;
       }
     }

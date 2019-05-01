@@ -2,6 +2,15 @@
 @import '../../../style/mixins';
 @import '../../../style/typography';
 
+@keyframes enablePointer {
+  from {
+    pointer-events: none;
+  }
+  to {
+    pointer-events: all;
+  }
+}
+
 :host {
   box-sizing: border-box;
   position: relative;
@@ -25,6 +34,12 @@
       opacity: 1;
     }
   }
+
+  &:hover {
+    .card-content {
+      @include animate(enablePointer, 0s, 0.2s);
+    }
+  }
 }
 
 .card-menu {
@@ -38,6 +53,7 @@
 
 .card-content {
   text-transform: none;
+  pointer-events: none;
 }
 
 .card-top,
