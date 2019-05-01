@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AvatarSize, BadgeSize, BadgeColor } from './avatar.enum';
+import { AvatarSize, BadgeSize } from './avatar.enum';
+import { BadgeConfig } from './avatar.interface';
 
 @Component({
   selector: 'b-avatar',
@@ -13,20 +14,16 @@ export class AvatarComponent implements OnInit {
   @Input() title = '';
   @Input() subtitle = '';
   @Input() disabled = false;
-  @Input() badge: string;
+  @Input() badge: BadgeConfig;
   @Output() clicked?: EventEmitter<void> = new EventEmitter<void>();
 
-  public  badgeConfig = {
-    size: '',
-    color: '',
-  };
+  public  badgeSize: string;
   readonly avatarSizeEnum = AvatarSize;
   constructor() { }
 
   ngOnInit() {
     if (this.badge) {
-      this.badgeConfig.size = BadgeSize[this.size];
-      this.badgeConfig.color = BadgeColor[this.badge];
+      this.badgeSize = BadgeSize[this.size];
     }
   }
 
