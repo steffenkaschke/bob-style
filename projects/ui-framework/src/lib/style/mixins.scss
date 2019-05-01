@@ -56,10 +56,10 @@
 @mixin animate($name, $time: 0.3s, $delay: null, $iterate: 1, $dir: null) {
   animation-name: $name;
   animation-duration: $time;
-  animation-fill-mode: both;
   animation-iteration-count: $iterate;
   animation-delay: $delay;
   animation-direction: $dir;
+  animation-fill-mode: both;
   backface-visibility: hidden;
 }
 
