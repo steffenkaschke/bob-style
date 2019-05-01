@@ -13,7 +13,18 @@
          [value]="url"
          (inputEvents)="onUrlChange($event)"
          label="url">
+
+  <b-icon *ngIf="url !== ''"
+          input-suffix
+          class="clear-button"
+          [color]="iconColor.normal"
+          [icon]="resetIcon"
+          [hasHoverState]="true"
+          [size]="iconSize.medium"
+          (click)="url = ''">
+  </b-icon>
 </b-input>
+
 <div class="footer">
   <b-button class="cancel"
             (clicked)="onCancel()"
@@ -22,6 +33,7 @@
     Cancel
   </b-button>
   <b-button class="add"
+            [disabled]="!isEditing && url === ''"
             (clicked)="onAdd()"
             [size]="buttonSize.small">
     {{ isEditing ? 'Update' : 'Add' }}
