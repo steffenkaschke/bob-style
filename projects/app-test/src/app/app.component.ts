@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { chipOptionsMock } from '../../../ui-framework/src/lib/buttons-indicators/chips/chip-input/chipsOptionsMock';
+import { ColorService } from '../../../ui-framework/src/lib/services/color-service/color.service';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,8 @@ import { chipOptionsMock } from '../../../ui-framework/src/lib/buttons-indicator
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  constructor(public colorService: ColorService) {}
+
   // Chips Input
 
   allChips = chipOptionsMock;

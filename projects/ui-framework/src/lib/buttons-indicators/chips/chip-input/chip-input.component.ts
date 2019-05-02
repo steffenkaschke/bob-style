@@ -46,6 +46,8 @@ export class ChipInputComponent extends BaseFormElement {
   @Input() acceptNew = true;
   @Input() addOnBlur = false;
 
+  @Input() colorService: Function;
+
   private allChips: ChipOptions[];
   filteredChips: Observable<ChipOptions[]>;
   selectedChips: ChipOptions[] = [];
@@ -106,6 +108,9 @@ export class ChipInputComponent extends BaseFormElement {
 
         if (!chipToAdd && this.acceptNew) {
           chipToAdd = { text };
+          if (this.colorService) {
+            chipToAdd.color = this.colorService();
+          }
         }
       }
 
