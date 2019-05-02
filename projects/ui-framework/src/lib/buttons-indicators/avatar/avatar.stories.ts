@@ -7,7 +7,7 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { AvatarModule } from './avatar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Icons } from '../../icons/icons.enum';
+import { Icons, IconColor } from '../../icons/icons.enum';
 
 const avatarStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
   withKnobs
@@ -15,6 +15,7 @@ const avatarStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module)
 
 const sizeOptions = values(AvatarSize);
 const badges = [Icons.pending_badge, Icons.approve_badge];
+const badgeColors = Object.keys(IconColor);
 const template = `
 <div style="display: flex; justify-content: center;">
 <b-avatar
@@ -43,7 +44,7 @@ const note = `
   title | string | main title of the avatar | '' (optional)
   subtitle | string | subtitle of the avatar | '' (optional)
   disabled | boolean | disabled avatar | false (optional)
-  badge | string | icon of the badge to add to the avatar image | undefined (optional)
+  badge | BadgeConfig | badge config: includes icon and color | undefined (optional)
   clicked | boolean | boolean flag for indicating if the avatar is clickable or not | false (optional)
   handleClick | Function | callback for clicking on the avatar | no click (optional)
 
@@ -74,7 +75,10 @@ avatarStories.add(
         title: text('title', 'John Doe'),
         subtitle: text('subtitle', 'Web Developer'),
         disabled: boolean('disabled', false),
-        badge: select('badge', badges, Icons.pending_badge),
+        badge: {
+          icon: select('badge icon', badges, Icons.pending_badge),
+          color: select('badge color', badgeColors, IconColor.primary),
+        },
       },
       moduleMetadata: {
         imports: [

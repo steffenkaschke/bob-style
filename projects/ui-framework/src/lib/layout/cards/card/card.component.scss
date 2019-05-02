@@ -40,6 +40,10 @@
       @include animate(enablePointer, 0s, 0.2s);
     }
   }
+
+  &.clickable {
+    cursor: pointer;
+  }
 }
 
 .card-menu {

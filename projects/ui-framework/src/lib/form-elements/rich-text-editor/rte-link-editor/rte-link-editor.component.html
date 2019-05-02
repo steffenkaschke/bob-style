@@ -1,17 +1,28 @@
 <b-input class="link-display-text"
+         #textInput
          [inputType]="inputTypes.text"
          [hideLabelOnFocus]="true"
-         [value]="displayText"
-         (inputEvents)="onDisplayTextChange($event)"
+         [value]="text"
+         (inputEvents)="onTextChange($event)"
          label="text">
 </b-input>
 
 <b-input class="link-url"
          [inputType]="inputTypes.url"
          [hideLabelOnFocus]="true"
-         (inputEvents)="onUrlTextChange($event)"
-         [value]="urlText"
+         [value]="url"
+         (inputEvents)="onUrlChange($event)"
          label="url">
+
+  <b-icon *ngIf="url !== ''"
+          input-suffix
+          class="clear-button"
+          [color]="iconColor.normal"
+          [icon]="resetIcon"
+          [hasHoverState]="true"
+          [size]="iconSize.medium"
+          (click)="url = ''">
+  </b-icon>
 </b-input>
 
 <div class="footer">
@@ -22,8 +33,9 @@
     Cancel
   </b-button>
   <b-button class="add"
+            [disabled]="!isEditing && url === ''"
             (clicked)="onAdd()"
             [size]="buttonSize.small">
-    Add
+    {{ isEditing ? 'Update' : 'Add' }}
   </b-button>
 </div>

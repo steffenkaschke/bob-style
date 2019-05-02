@@ -9,10 +9,9 @@ import { TableUtilsService } from '../table-utils-service/table-utils.service';
 @Component({
   selector: 'b-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss'],
+  styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss']
 })
 export class TableComponent implements OnInit, OnChanges {
-
   @ViewChild('agGrid') agGrid: AgGridNg2;
 
   @Input() rowData: any[];
@@ -30,15 +29,18 @@ export class TableComponent implements OnInit, OnChanges {
   gridReady = false;
   gridOptions: GridOptions;
   gridColumnDefs: ColumnDef[];
-  readonly tableLicense = once(() => LicenseManager.setLicenseKey("hibob_Bob_1Devs_1Deployment_23_April_2020__MTU4NzU5NjQwMDAwMA==5b77134bf43e27e7f8ccb20bdfa3c155"));
+  readonly tableLicense = once(() =>
+    LicenseManager.setLicenseKey(
+      'hibob_Bob_1Devs_1Deployment_23_April_2020__MTU4NzU5NjQwMDAwMA==5b77134bf43e27e7f8ccb20bdfa3c155'
+    )
+  );
 
   constructor(
     private tableUtilsService: TableUtilsService,
-    private elRef: ElementRef,
+    private elRef: ElementRef
   ) {
     this.tableLicense();
   }
-
 
   ngOnInit() {
     this.setGridHeight(this.maxHeight);
@@ -52,14 +54,16 @@ export class TableComponent implements OnInit, OnChanges {
       onGridReady: () => {
         this.gridOptions.columnApi.autoSizeAllColumns();
         this.gridReady = true;
-      },
+      }
     };
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'columnDefs')) {
-      this.gridColumnDefs = this.tableUtilsService
-        .getGridColumnDef(this.columnDefs, this.rowSelection);
+      this.gridColumnDefs = this.tableUtilsService.getGridColumnDef(
+        this.columnDefs,
+        this.rowSelection
+      );
     }
     if (has(changes, 'maxHeight')) {
       this.maxHeight = changes.maxHeight.currentValue;
@@ -86,6 +90,6 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   private setGridHeight(height: number): void {
-    this.elRef.nativeElement.style.setProperty('--max-height', `${ height }px`);
+    this.elRef.nativeElement.style.setProperty('--max-height', `${height}px`);
   }
 }

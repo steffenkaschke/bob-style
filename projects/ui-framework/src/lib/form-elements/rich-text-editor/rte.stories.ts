@@ -23,7 +23,7 @@ const inputStories = storiesOf(
 ).addDecorator(withKnobs);
 
 const value = `
-  <div>Hello World!</div>
+  <div>Hello <a href="http://www.google.com">World</a>!</div>
   <div>Some initial <strong>bold</strong> text</div>
 `;
 

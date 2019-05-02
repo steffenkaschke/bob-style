@@ -2,13 +2,20 @@ import {
   async,
   ComponentFixture,
   TestBed,
-  inject
+  inject,
+  fakeAsync,
+  tick
 } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA, Component, SimpleChange } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { ReactiveFormsModule, FormControl, FormsModule } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormControl,
+  FormsModule,
+  FormGroup
+} from '@angular/forms';
 
 import { RichTextEditorComponent } from './rte.component';
 import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
@@ -28,15 +35,23 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 @Component({
   template: `
-    <div class="form">
-      <b-rich-text-editor [formControl]="rteControl"> </b-rich-text-editor>
-    </div>
+    <form class="form" [formGroup]="rteForm">
+      <b-rich-text-editor formControlName="rteControl"></b-rich-text-editor>
+    </form>
   `,
   providers: []
 })
 class TestComponent {
   constructor() {}
-  rteControl = new FormControl();
+
+  rteForm = new FormGroup({
+    rteControl: new FormControl('')
+  });
+
+  changeMode() {
+    const newControl = new FormControl('', { updateOn: 'blur' });
+    this.rteForm.setControl('rteControl', newControl);
+  }
 }
 
 describe('RichTextEditorComponent', () => {
@@ -362,5 +377,39 @@ describe('RichTextEditorComponent', () => {
       addButtonElement.click();
       RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
     });
+  });
+
+  describe('FormControl setValue', () => {
+    it('should let FormControl set value and then emit valueChanges', fakeAsync(() => {
+      const rteControl = testComponent.rteForm.get('rteControl');
+      let testVar = 'some value';
+
+      const subscr = rteControl.valueChanges.subscribe(value => {
+        testVar = value;
+      });
+
+      rteControl.setValue('test');
+
+      tick();
+      subscr.unsubscribe();
+      expect(testVar).toEqual('test');
+    }));
+
+    it('should not emit valueChanges when setting value with emitEvent false', fakeAsync(() => {
+      const rteControl = testComponent.rteForm.get('rteControl');
+      let testVar = 'some value';
+
+      const subscr = rteControl.valueChanges.subscribe(value => {
+        testVar = value;
+      });
+
+      rteControl.setValue('test2', {
+        emitEvent: false
+      });
+
+      tick();
+      subscr.unsubscribe();
+      expect(testVar).not.toEqual('test2');
+    }));
   });
 });

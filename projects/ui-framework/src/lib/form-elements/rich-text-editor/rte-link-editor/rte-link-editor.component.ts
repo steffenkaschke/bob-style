@@ -1,55 +1,74 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { InputEventType, InputTypes } from '../../../form-elements/input/input.enum';
-import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild
+} from '@angular/core';
+import {
+  InputEventType,
+  InputTypes
+} from '../../../form-elements/input/input.enum';
+import {
+  ButtonSize,
+  ButtonType
+} from '../../../buttons-indicators/buttons/buttons.enum';
 import { RteLink } from '../rte.interface';
 import { InputEvent } from '../../../form-elements/input/input.interface';
-import has from 'lodash/has';
+import { InputComponent } from '../../input/input.component';
+import { checkUrl } from '../formats/link-blot';
+import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-rte-link-editor',
   templateUrl: './rte-link-editor.component.html',
-  styleUrls: ['./rte-link-editor.component.scss'],
+  styleUrls: ['./rte-link-editor.component.scss']
 })
-export class RteLinkEditorComponent implements OnChanges {
+export class RteLinkEditorComponent {
+  constructor() {}
 
-  @Input() displayText;
-  @Output() linkUpdate: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('textInput') private textInput: InputComponent;
+
+  @Input() text: string;
+  @Input() url: string;
+  @Input() isEditing = false;
+
+  @Output() linkUpdate: EventEmitter<any> = new EventEmitter<RteLink>();
   @Output() linkCancel: EventEmitter<any> = new EventEmitter<any>();
 
-  inputTypes = InputTypes;
-  buttonSize = ButtonSize;
-  buttonType = ButtonType;
+  readonly inputTypes = InputTypes;
+  readonly buttonSize = ButtonSize;
+  readonly buttonType = ButtonType;
+  readonly resetIcon: String = Icons.reset_x;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
 
-  urlText;
+  private updateOnEvent = InputEventType.onChange; // onBlur
 
-  rteLink: RteLink = {
-    text: null,
-    url: null,
-  };
-
-  constructor() {
+  focusTextInput(): void {
+    (this.textInput.bInput as any).nativeElement.focus();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (has(changes, 'displayText')) {
-      this.rteLink.text = changes.displayText.currentValue;
+  onTextChange(e: InputEvent) {
+    if (e.event === this.updateOnEvent) {
+      this.text = e.value as string;
     }
   }
 
-  onDisplayTextChange(e: InputEvent) {
-    if (e.event === InputEventType.onChange) {
-      this.rteLink.text = e.value as string;
-    }
-  }
-
-  onUrlTextChange(e: InputEvent) {
-    if (e.event === InputEventType.onChange) {
-      this.rteLink.url = e.value as string;
+  onUrlChange(e: InputEvent) {
+    if (e.event === this.updateOnEvent) {
+      this.url = e.value as string;
     }
   }
 
   onAdd(): void {
-    this.linkUpdate.emit(this.rteLink);
+    const url = this.url ? checkUrl(this.url) : null;
+
+    this.linkUpdate.emit({
+      text: this.text,
+      url
+    });
+
     this.resetValues();
   }
 
@@ -59,7 +78,7 @@ export class RteLinkEditorComponent implements OnChanges {
   }
 
   private resetValues(): void {
-    this.urlText = null;
-    this.displayText = null;
+    this.url = null;
+    this.text = null;
   }
 }

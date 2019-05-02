@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { chain, get, set, isEmpty, trim } from 'lodash';
-import {
-  RteCurrentContent,
-  UpdateRteConfig
-} from '../rte.interface';
+import { chain, get, isEmpty, trim } from 'lodash';
+import { RteCurrentContent, UpdateRteConfig, BlotData } from '../rte.interface';
 import { Quill, RangeStatic } from 'quill';
+import Parchment from 'parchment';
+import { Blot } from 'parchment/src/blot/abstract/blot';
+import { TextBlot } from 'quill/blots/text';
+
+import { keysFromArrayOrObject } from '../../../services/utils/functional-utils';
 
 @Injectable()
 export class RteUtilsService {
@@ -32,45 +34,95 @@ export class RteUtilsService {
   }
 
   getCurrentSelection(editor: Quill): RangeStatic {
-    return editor.getSelection()
-      ? editor.getSelection()
-      : { index: 0, length: 0 };
+    return editor.getSelection() || { index: 0, length: 0 };
   }
 
   getSelectionText(editor: Quill, selection: RangeStatic): string {
-    return get(selection, 'length') > 0
+    return selection.length > 0
       ? editor.getText(selection.index, selection.length)
       : '';
   }
 
-  updateEditor(
-    editor: Quill,
-    updateConfig: UpdateRteConfig,
-    insertSpaceAfterBlot = true
-  ): void {
-    const charAfterBlot = insertSpaceAfterBlot ? ' ' : '';
-    set(
-      updateConfig,
-      'insertText',
-      `${updateConfig.insertText}${charAfterBlot}`
-    );
+  getNativeRange(): Range {
+    const selection = document.getSelection();
+    return selection == null || selection.rangeCount <= 0
+      ? null
+      : selection.getRangeAt(0);
+  }
+
+  getCurrentBlot(): Blot {
+    const nativeRange = this.getNativeRange();
+    const node = nativeRange && nativeRange.endContainer;
+    return node && Parchment.find(node);
+  }
+
+  getBlotIndex(blot: Blot, editor: Quill): number {
+    return blot && blot.offset(editor.scroll);
+  }
+
+  getCurrentBlotData(editor: Quill): BlotData {
+    const blot = this.getCurrentBlot();
+    if (!blot) {
+      return null;
+    }
+    const index = this.getBlotIndex(blot, editor);
+    const text = (blot as TextBlot).text || '';
+    const format = editor.getFormat(index + 1);
+
+    return {
+      index,
+      length: text.length,
+      text,
+      format: Object.keys(format).length > 0 && format,
+      link: format && format['Link']
+    };
+  }
+
+  commonFormats(f1: string[] | {}, f2: string[] | {}): string[] {
+    const f1keys = keysFromArrayOrObject(f1);
+    const f2keys = keysFromArrayOrObject(f2);
+    const common = f1keys.filter(x => f2keys.includes(x));
+    return common.length > 0 && common;
+  }
+
+  selectBlot(blot: BlotData, editor: Quill): RangeStatic {
+    if (!blot.format) {
+      return null;
+    }
+    editor.setSelection(blot.index, blot.length);
+    return { index: blot.index, length: blot.length };
+  }
+
+  updateEditor(editor: Quill, updateConfig: UpdateRteConfig): void {
+    const originalFormat = editor.getFormat(updateConfig.startIndex + 1);
+
     editor.deleteText(updateConfig.startIndex, updateConfig.replaceStr.length);
-    editor.insertText(updateConfig.startIndex, `${updateConfig.insertText}`);
-    editor.removeFormat(
-      updateConfig.startIndex,
-      updateConfig.insertText.length - charAfterBlot.length
-    );
+    editor.insertText(updateConfig.startIndex, updateConfig.insertText);
+
+    const newFormat = {
+      ...originalFormat,
+      [updateConfig.format.type]: updateConfig.format.value
+    };
+    if (updateConfig.unformat) {
+      updateConfig.unformat.forEach(format => {
+        delete newFormat[format];
+      });
+    }
+
     editor.formatText(
       updateConfig.startIndex,
-      updateConfig.insertText.length - charAfterBlot.length,
-      {
-        [updateConfig.format.type]: updateConfig.format.value
-      }
+      updateConfig.insertText.length,
+      newFormat
     );
-    editor.setSelection(
-      updateConfig.startIndex + updateConfig.insertText.length,
-      0
-    );
+
+    const editorSelectionEnd = editor.getLength() - 1;
+    const insertedTextEnd =
+      updateConfig.startIndex + updateConfig.insertText.length;
+    if (editorSelectionEnd === insertedTextEnd) {
+      editor.insertText(editorSelectionEnd + 1, '');
+    }
+
+    editor.setSelection(insertedTextEnd, 0);
   }
 
   getEditorPlaceholder(label: string, required: boolean): string {
@@ -79,8 +131,10 @@ export class RteUtilsService {
 
   setEditorPlaceholder(editor: Quill, label: string, required: boolean): void {
     if (editor) {
-      editor.root.dataset.placeholder = this.getEditorPlaceholder(label, required);
+      editor.root.dataset.placeholder = this.getEditorPlaceholder(
+        label,
+        required
+      );
     }
   }
-
 }
