@@ -16,6 +16,12 @@
       }
     }
 
+    &.selected {
+      .option-display-name {
+        font-weight: bold;
+      }
+    }
+
     .option-display-name {
       margin: 0 16px;
       overflow: hidden;
