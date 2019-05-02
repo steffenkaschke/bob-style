@@ -12,7 +12,8 @@ export enum RTEControls {
   link = 'link',
   list = 'list',
   align = 'align',
-  dir = 'dir'
+  dir = 'dir',
+  placeholders = 'placeholders'
 }
 
 export enum RTEFontSize {
