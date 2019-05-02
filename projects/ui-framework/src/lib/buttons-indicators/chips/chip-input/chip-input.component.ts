@@ -44,12 +44,11 @@ export class ChipInputComponent extends BaseFormElement {
     this.allChips = value;
   }
 
-  @Input() removable = true;
   @Input() acceptNew = true;
-  @Input() addOnBlur = false;
-
   @Input() colorService: Function;
 
+  removable = true;
+  addOnBlur = false;
   private allChips: ChipOptions[];
   filteredChips: Observable<ChipOptions[]>;
   selectedChips: ChipOptions[] = [];
@@ -133,7 +132,10 @@ export class ChipInputComponent extends BaseFormElement {
   }
 
   onKeyBackspace(): void {
-    if (this.chipList.chips.last as any) {
+    if (
+      this.input.nativeElement.value === '' &&
+      (this.chipList.chips.last as any)
+    ) {
       if ((this.chipList.chips.last as any).aboutToDelete) {
         this.selectedChips.pop();
       } else {

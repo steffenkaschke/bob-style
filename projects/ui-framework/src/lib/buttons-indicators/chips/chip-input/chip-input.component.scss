@@ -81,5 +81,16 @@
         }
       }
     }
+
+    .error-message {
+      color: var(--negative-500);
+    }
+    .mat-form-field.disabled {
+      user-select: none;
+      pointer-events: none;
+      .mat-hint {
+        color: $grey-500;
+      }
+    }
   }
 }
