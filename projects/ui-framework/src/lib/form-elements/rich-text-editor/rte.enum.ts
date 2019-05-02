@@ -5,14 +5,14 @@ export enum RTEType {
 }
 
 export enum RTEControls {
+  link = 'Link',
   size = 'size',
   bold = 'bold',
   italic = 'italic',
   underline = 'underline',
-  link = 'link',
   list = 'list',
+  dir = 'direction',
   align = 'align',
-  dir = 'dir',
   placeholders = 'placeholders'
 }
 
@@ -30,10 +30,10 @@ export enum RTEchangeEvent {
 
 export enum BlotType {
   Link = 'Link',
+  size = 'size',
   bold = 'bold',
   italic = 'italic',
   underline = 'underline',
-  size = 'size',
   list = 'list',
   direction = 'direction',
   color = 'color',

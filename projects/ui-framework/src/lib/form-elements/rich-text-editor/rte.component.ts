@@ -116,7 +116,8 @@ export class RichTextEditorComponent extends RTEformElement
         clipboard: {
           matchVisual: false
         }
-      }
+      },
+      formats: Object.values(this.controls)
     };
 
     setTimeout(() => {
