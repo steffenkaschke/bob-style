@@ -1,21 +1,22 @@
 import {
-  ElementRef,
-  Input,
-  ViewChild,
-  Output,
-  EventEmitter,
-  OnChanges,
-  SimpleChanges,
   ChangeDetectorRef,
+  ElementRef,
+  EventEmitter,
   Injector,
-  Type
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  Type,
+  ViewChild
 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
-import {RTEchangeEvent, RTEControls} from './rte.enum';
+import { RTEchangeEvent, RTEControls } from './rte.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { RteCurrentContent, BlotData } from './rte.interface';
+import { BlotData, RteCurrentContent } from './rte.interface';
 import { BaseFormElement } from '../base-form-element';
+import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
 
 const Block = quillLib.import('blots/block');
 Block.tagName = 'DIV';
@@ -26,10 +27,12 @@ export abstract class RTEformElement extends BaseFormElement
   protected constructor(
     private rteUtils: RteUtilsService,
     private changeDetector: ChangeDetectorRef,
-    private injector: Injector
+    private injector: Injector,
+    private placeholderRteConverterService: PlaceholderRteConverterService,
   ) {
     super();
   }
+
   @Input() value: string;
   @Input() private maxChars: number;
   @Input() private formControlName: any;
@@ -44,6 +47,8 @@ export abstract class RTEformElement extends BaseFormElement
     RTEControls.align,
     RTEControls.dir
   ];
+  @Input() placeholderList: any;
+
   @ViewChild('quillEditor') quillEditor: ElementRef;
 
   @Output() blurred: EventEmitter<RteCurrentContent> = new EventEmitter<
@@ -154,6 +159,10 @@ export abstract class RTEformElement extends BaseFormElement
     if (this.value !== val || !this.latestOutputValue) {
       this.value = val || '';
       if (this.editor) {
+        if (this.controls.includes(RTEControls.placeholders)) {
+          const placeholders = this.placeholderList[0].options;
+          this.value = this.placeholderRteConverterService.toRte(this.value, placeholders);
+        }
         this.editor.setContents(this.editor.clipboard.convert(this.value));
       }
     }
