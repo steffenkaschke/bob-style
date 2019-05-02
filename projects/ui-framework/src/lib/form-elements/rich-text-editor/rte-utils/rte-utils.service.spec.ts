@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { RTEControls } from '../rte.enum';
 import Quill from 'quill';
 import { concat } from 'lodash';
+import { RichTextEditorModule } from '../rte.module';
 
 describe('RteUtilsService', () => {
   let rteUtilsService: RteUtilsService;
@@ -30,6 +31,7 @@ describe('RteUtilsService', () => {
   beforeEach(() => {
 
     TestBed.configureTestingModule({
+      imports: [RichTextEditorModule],
       providers: [PlaceholderRteConverterService]
     });
     placeholderRteConverterService = TestBed.get(PlaceholderRteConverterService);
