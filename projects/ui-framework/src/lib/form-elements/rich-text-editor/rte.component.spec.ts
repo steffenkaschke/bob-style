@@ -32,6 +32,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
 
 @Component({
   template: `
@@ -87,7 +88,11 @@ describe('RichTextEditorComponent', () => {
         MatFormFieldModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [RteUtilsService, DOMhelpers]
+      providers: [
+        RteUtilsService,
+        DOMhelpers,
+        PlaceholderRteConverterService,
+      ],
     })
       .compileComponents()
       .then(() => {
