@@ -21,6 +21,7 @@ import { Icons, IconSize, IconColor } from '../../../icons/icons.enum';
       <b-icon
         *ngIf="removable && type !== chipType.disabled"
         class="remove-button"
+        [ngClass]="{ light: style.color, dark: !style.color }"
         [color]="iconColor"
         [icon]="resetIcon"
         [hasHoverState]="true"
