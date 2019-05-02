@@ -20,7 +20,6 @@ import { Icons, IconSize, IconColor } from '../../../icons/icons.enum';
 
       <b-icon
         *ngIf="removable"
-        style="pointer-events: all;"
         class="remove-button"
         [color]="iconColor"
         [icon]="resetIcon"

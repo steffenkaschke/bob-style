@@ -1,12 +1,13 @@
 <mat-form-field>
 
-  <mat-chip-list #chipList>
+  <mat-chip-list #chipList
+                 [selectable]="disabled">
 
     <mat-basic-chip *ngFor="let chip of selectedChips"
                     selectable="false"
                     removable="false"
                     disableRipple="true">
-      <b-chip [type]="chip.type"
+      <b-chip [type]="disabled ? chipType.disabled : chip.type"
               [color]="chip.color"
               [removable]="removable"
               (removed)="remove(chip)">
@@ -14,7 +15,7 @@
       </b-chip>
     </mat-basic-chip>
 
-    <input [placeholder]="placeholder"
+    <input [placeholder]="label ? label + (required ? ' *' : '') : ''"
            #input
            [formControl]="chipInputControl"
            [matAutocomplete]="auto"
@@ -32,5 +33,17 @@
       {{chip.text}}
     </mat-option>
   </mat-autocomplete>
+
+  <mat-hint *ngIf="errorMessage"
+            align="start"
+            class="error-message">
+    {{errorMessage}}
+  </mat-hint>
+
+  <mat-hint *ngIf="hintMessage && !errorMessage"
+            align="start"
+            class="hint-message">
+    {{hintMessage}}
+  </mat-hint>
 
 </mat-form-field>

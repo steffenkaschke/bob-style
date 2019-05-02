@@ -65,6 +65,14 @@ span {
   pointer-events: none;
 }
 
+.remove-button {
+  margin-left: 5px;
+  margin-right: -5px;
+  display: block;
+  pointer-events: all;
+  cursor: pointer;
+}
+
 @each $type, $typeProps in $chipsMap {
   .chip-#{$type} {
     background-color: map-get($typeProps, bgColor);

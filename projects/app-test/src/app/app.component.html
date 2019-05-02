@@ -1,56 +1,58 @@
 <div
-     style="padding: 50px 100px; height: 100%; max-width: 700px; margin: auto; font-size: 18px; display: flex; flex-direction: column; justify-content: center;">
+     style="padding: 50px 100px; height: 100%; max-width: 700px; margin: auto; display: flex; flex-direction: column; justify-content: center;">
 
   <form>
 
 
     <b-chip-input [chips]="allChips"
-                  placeholder="What are your hobbies?">
-
+                  label="What are your hobbies?"
+                  hintMessage="Stick something in me"
+                  required="true">
     </b-chip-input>
 
 
   </form>
+</div>
 
+<div style="padding: 50px 100px; height: 100%; max-width: 700px; margin: auto; display: flex; flex-direction: column;
+     justify-content: center; display: none; ">
 
-  <div style="display: none;">
-    <form [formGroup]="myForm">
-      <p>
-        Input: <br>
-        <input type="text"
-               formControlName="inputControl"
-               style="height: 40px; padding: 0 10px; line-height: 38px;outline:0; font-size: 16px;" />
-        <br>
-        <button (click)="disabled = !disabled">tgl dsbld</button>
-        &nbsp;
-        <button (click)="error = !error">tgl err</button>
-      </p>
+  <form [formGroup]="myForm">
+    <p>
+      Input: <br>
+      <input type="text"
+             formControlName="inputControl"
+             style="height: 40px; padding: 0 10px; line-height: 38px;outline:0; font-size: 16px;" />
       <br>
-      <p>
-        Editor: "{{ rteEditor.value }}"
-        <b-rich-text-editor #rteEditor
-                            formControlName="rteControl"
-                            [disabled]="disabled"
-                            [errorMessage]="error ? 'Error' : undefined">
-        </b-rich-text-editor>
-      </p>
-    </form>
+      <button (click)="disabled = !disabled">tgl dsbld</button>
+      &nbsp;
+      <button (click)="error = !error">tgl err</button>
+    </p>
     <br>
-    <div>
-      Output with Truncate Tooltip:
-      <div class="rte-output"
-           style="width: 250px; border: 1px solid silver; padding: 10px;margin: 0 0 20px 0; font-size: 20px;">
-        <div *bTruncateTooltip="lines">
-          {{ myForm.get('rteControl').value.plainText || myForm.get('rteControl').value}}
-        </div>
+    <p>
+      Editor: "{{ rteEditor.value }}"
+      <b-rich-text-editor #rteEditor
+                          formControlName="rteControl"
+                          [disabled]="disabled"
+                          [errorMessage]="error ? 'Error' : undefined">
+      </b-rich-text-editor>
+    </p>
+  </form>
+  <br>
+  <div>
+    Output with Truncate Tooltip:
+    <div class="rte-output"
+         style="width: 250px; border: 1px solid silver; padding: 10px;margin: 0 0 20px 0; font-size: 20px;">
+      <div *bTruncateTooltip="lines">
+        {{ myForm.get('rteControl').value.plainText || myForm.get('rteControl').value}}
       </div>
     </div>
-    <p>
-      MaxLines:
-      <input type="number"
-             style="width: 50px; height: 45px; padding: 0 5px 0 10px; line-height: 38px;outline:0; font-size: 16px;"
-             [(ngModel)]="lines" />
-    </p>
-
   </div>
+  <p>
+    MaxLines:
+    <input type="number"
+           style="width: 50px; height: 45px; padding: 0 5px 0 10px; line-height: 38px;outline:0; font-size: 16px;"
+           [(ngModel)]="lines" />
+  </p>
+
 </div>

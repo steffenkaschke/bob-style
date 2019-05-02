@@ -1,15 +1,56 @@
 @import '../../../style/colors';
 @import '../../../style/typography';
+@import '../../../form-elements/form-element';
 
 :host {
   display: block;
-}
 
-.mat-form-field {
-  display: block;
-}
+  &::ng-deep {
+    @include MatFormField();
 
-.mat-chip {
-  outline: 0;
-  margin: 4px;
+    .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+      height: auto;
+      min-height: $form-field-height;
+      padding: 12px 16px;
+    }
+
+    .mat-form-field
+      .mat-form-field-wrapper
+      .mat-form-field-flex
+      .mat-form-field-infix
+      input {
+      margin: 4px;
+      padding: 0;
+      height: auto;
+    }
+
+    .mat-form-field
+      .mat-form-field-wrapper
+      .mat-form-field-flex
+      .mat-form-field-infix {
+      position: static;
+    }
+
+    .mat-form-field
+      .mat-form-field-wrapper
+      .mat-form-field-flex
+      .mat-form-field-infix
+      .mat-form-field-label-wrapper {
+      height: $input-height;
+    }
+
+    .mat-form-field
+      .mat-form-field-wrapper
+      .mat-form-field-flex
+      .mat-form-field-infix
+      .mat-form-field-label-wrapper
+      .mat-form-field-label {
+      width: auto;
+    }
+
+    .mat-chip {
+      outline: 0;
+      margin: 4px;
+    }
+  }
 }

@@ -1,27 +1,47 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  ViewChild,
+  ElementRef,
+  forwardRef
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   MatAutocompleteSelectedEvent,
   MatChipInputEvent,
   MatAutocomplete
 } from '@angular/material';
-import { FormControl } from '@angular/forms';
+import { FormControl, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ChipOptions } from '../chips.interface';
 import { startWith, map } from 'rxjs/operators';
 import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
+import { BaseFormElement } from '../../../form-elements/base-form-element';
+import { ChipType } from '../chips.enum';
 
 @Component({
   selector: 'b-chip-input',
   templateUrl: './chip-input.component.html',
-  styleUrls: ['./chip-input.component.scss']
+  styleUrls: ['./chip-input.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ChipInputComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => ChipInputComponent),
+      multi: true
+    }
+  ]
 })
-export class ChipInputComponent {
+export class ChipInputComponent extends BaseFormElement {
   @Input('chips')
   set chips(value: ChipOptions[]) {
     this.allChips = value;
   }
-  @Input() placeholder: string;
+
   @Input() removable = true;
   @Input() acceptNew = true;
   @Input() addOnBlur = false;
@@ -30,6 +50,7 @@ export class ChipInputComponent {
   filteredChips: Observable<ChipOptions[]>;
   selectedChips: ChipOptions[] = [];
 
+  readonly chipType = ChipType;
   readonly resetIcon: String = Icons.reset_x;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
@@ -40,6 +61,8 @@ export class ChipInputComponent {
   @ViewChild('auto') private autocomplete: MatAutocomplete;
 
   constructor() {
+    super();
+
     this.filteredChips = this.chipInputControl.valueChanges.pipe(
       startWith(null),
       map((chip: string | null) =>
