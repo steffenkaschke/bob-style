@@ -29,8 +29,10 @@ import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { Icons } from '../../icons/icons.enum';
 import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
 import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
+import { PlaceholderBlot } from './formats/placeholder-blot';
 
 quillLib.register(LinkBlot);
+quillLib.register(PlaceholderBlot);
 
 @Component({
   selector: 'b-rich-text-editor',
@@ -71,23 +73,15 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   @Input() type?: RTEType = RTEType.primary;
-  @Input() controls?: RTEControls[] = [
-    RTEControls.size,
-    RTEControls.bold,
-    RTEControls.italic,
-    RTEControls.underline,
-    RTEControls.link,
-    RTEControls.list,
-    RTEControls.align,
-    RTEControls.dir
-  ];
   @Input() minHeight = 185;
   @Input() maxHeight = 295;
+
 
   @ViewChild('toolbar') toolbar: ElementRef;
   @ViewChild('suffix') suffix: ElementRef;
   @ViewChild('linkPanel') private linkPanel: PanelComponent;
   @ViewChild('linkEditor') private linkEditor: RteLinkEditorComponent;
+
 
   hasSuffix = true;
 
@@ -101,6 +95,7 @@ export class RichTextEditorComponent extends RTEformElement
   private blotsToDeleteWhole = [BlotType.Link];
 
   ngAfterViewInit(): void {
+
     this.onRTEviewInit();
 
     const editorOptions: QuillOptionsStatic = {

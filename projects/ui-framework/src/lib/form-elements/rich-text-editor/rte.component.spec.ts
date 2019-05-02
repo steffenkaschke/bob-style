@@ -251,7 +251,7 @@ describe('RichTextEditorComponent', () => {
         By.css('.quill-toolbar')
       ).nativeElement;
 
-      expect(toolbarElement.children.length).toEqual(4);
+      expect(toolbarElement.children.length).toEqual(3);
       expect(toolbarElement.children[0].className).toContain('ql-bold');
       expect(toolbarElement.children[1].className).toContain('ql-italic');
       expect(toolbarElement.children[2].nodeName).toEqual('SPAN');
