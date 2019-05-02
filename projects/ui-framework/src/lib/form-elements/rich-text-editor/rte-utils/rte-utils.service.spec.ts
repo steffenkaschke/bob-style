@@ -20,7 +20,7 @@ describe('RteUtilsService', () => {
   ];
   const controlsWithPlaceholders = concat(controls, [RTEControls.placeholders]);
 
-  const getHtmlContentConverter = (editorHtml: string, testControls: RTEControls[], result) => {
+  const htmlContentConverter = (editorHtml: string, testControls: RTEControls[], result) => {
     const container = document.createElement('div');
     container.innerHTML = editorHtml;
     const quill = new Quill(container);
@@ -44,7 +44,7 @@ describe('RteUtilsService', () => {
         body: '<div>Hi, <strong>My</strong> name is {{/root/firstName}} my job title</div>',
         plainText: 'Hi, My name is First name my job title'
       };
-      getHtmlContentConverter(editorHtml, controlsWithPlaceholders, result);
+      htmlContentConverter(editorHtml, controlsWithPlaceholders, result);
     });
     it('Should preserve HTML content', () => {
       const editorHtml = '<h1>Hi</h1>, ' +
@@ -53,7 +53,7 @@ describe('RteUtilsService', () => {
         body: '<div>Hi, <strong>My</strong> name is jon</div>',
         plainText: 'Hi, My name is jon'
       };
-      getHtmlContentConverter(editorHtml, controlsWithPlaceholders, result);
+      htmlContentConverter(editorHtml, controlsWithPlaceholders, result);
     });
     it('Should convert quill HTML tags', () => {
       const editorHtml = '<h1>Hi</h1>, ' +
@@ -62,7 +62,7 @@ describe('RteUtilsService', () => {
         body: '<div>Hi, <strong>My</strong> name is <i>jon</i></div>',
         plainText: 'Hi, My name is jon'
       };
-      getHtmlContentConverter(editorHtml, controlsWithPlaceholders, result);
+      htmlContentConverter(editorHtml, controlsWithPlaceholders, result);
     });
   });
 });
