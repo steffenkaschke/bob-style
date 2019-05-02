@@ -1,5 +1,6 @@
 @import '../../../style/colors';
 @import '../../../style/typography';
+@import '../../../style/mixins';
 @import '../../../form-elements/form-element';
 
 :host {
@@ -48,9 +49,37 @@
       width: auto;
     }
 
+    // chips
+
+    .mat-chip-list {
+      outline: 0;
+    }
+
+    .mat-chip-list {
+      display: block;
+    }
+
     .mat-chip {
       outline: 0;
       margin: 4px;
+    }
+
+    .mat-chip,
+    b-chip {
+      pointer-events: none;
+    }
+
+    .mat-chip-selected {
+      b-chip > span {
+        position: relative;
+        &:before {
+          @include pseudo;
+          @include size(100%);
+          @include position;
+          border-radius: inherit;
+          background-color: black(0.15);
+        }
+      }
     }
   }
 }

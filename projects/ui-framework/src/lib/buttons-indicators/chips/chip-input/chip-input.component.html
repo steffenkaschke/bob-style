@@ -1,7 +1,8 @@
-<mat-form-field>
+<mat-form-field (click)="input.focus()"
+                [ngClass]="{'disabled': disabled, 'required': required}">
 
   <mat-chip-list #chipList
-                 [selectable]="disabled">
+                 selectable="false">
 
     <mat-basic-chip *ngFor="let chip of selectedChips"
                     selectable="false"
@@ -15,14 +16,16 @@
       </b-chip>
     </mat-basic-chip>
 
-    <input [placeholder]="label ? label + (required ? ' *' : '') : ''"
+    <input [placeholder]="label"
            #input
+           [disabled]="disabled"
            [formControl]="chipInputControl"
            [matAutocomplete]="auto"
            [matChipInputFor]="chipList"
            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
            [matChipInputAddOnBlur]="addOnBlur"
-           (matChipInputTokenEnd)="add($event)">
+           (matChipInputTokenEnd)="add($event)"
+           (keydown.backspace)="onKeyBackspace()">
 
   </mat-chip-list>
 

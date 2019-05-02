@@ -19,13 +19,13 @@ import { Icons, IconSize, IconColor } from '../../../icons/icons.enum';
       <ng-content></ng-content>
 
       <b-icon
-        *ngIf="removable"
+        *ngIf="removable && type !== chipType.disabled"
         class="remove-button"
         [color]="iconColor"
         [icon]="resetIcon"
         [hasHoverState]="true"
         [size]="iconSize.small"
-        (click)="onClick()"
+        (click)="onClick($event)"
       >
       </b-icon>
     </span>
@@ -44,6 +44,7 @@ export class ChipComponent implements OnChanges {
   class = null;
   iconColor = 'transparent';
 
+  readonly chipType = ChipType;
   readonly resetIcon: String = Icons.reset_x;
   readonly iconSize = IconSize;
 
@@ -83,7 +84,8 @@ export class ChipComponent implements OnChanges {
     }
   }
 
-  onClick() {
+  onClick(event) {
+    event.stopPropagation();
     this.removed.emit();
   }
 }

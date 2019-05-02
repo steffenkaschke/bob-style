@@ -9,7 +9,9 @@ import { Observable } from 'rxjs';
 import {
   MatAutocompleteSelectedEvent,
   MatChipInputEvent,
-  MatAutocomplete
+  MatAutocomplete,
+  MatChipList,
+  MatAutocompleteTrigger
 } from '@angular/material';
 import { FormControl, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
@@ -59,8 +61,11 @@ export class ChipInputComponent extends BaseFormElement {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly chipInputControl = new FormControl();
 
+  @ViewChild('chipList') private chipList: MatChipList;
   @ViewChild('input') private input: ElementRef<HTMLInputElement>;
   @ViewChild('auto') private autocomplete: MatAutocomplete;
+  @ViewChild('input', { read: MatAutocompleteTrigger })
+  private autocompleteTrigger: MatAutocompleteTrigger;
 
   constructor() {
     super();
@@ -125,5 +130,21 @@ export class ChipInputComponent extends BaseFormElement {
 
   remove(chip: ChipOptions): void {
     this.selectedChips = this.removeChip(chip.text, this.selectedChips);
+  }
+
+  onKeyBackspace(): void {
+    if (this.chipList.chips.last as any) {
+      if ((this.chipList.chips.last as any).aboutToDelete) {
+        this.selectedChips.pop();
+      } else {
+        this.chipList.chips.last.selected = true;
+        (this.chipList.chips.last as any).aboutToDelete = true;
+      }
+
+      setTimeout(() => {
+        this.input.nativeElement.focus();
+        this.autocompleteTrigger.closePanel();
+      }, 0);
+    }
   }
 }
