@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
-import { RTEchangeEvent } from './rte.enum';
+import {RTEchangeEvent, RTEControls} from './rte.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { RteCurrentContent, BlotData } from './rte.interface';
 import { BaseFormElement } from '../base-form-element';
@@ -30,12 +30,20 @@ export abstract class RTEformElement extends BaseFormElement
   ) {
     super();
   }
-
   @Input() value: string;
   @Input() private maxChars: number;
   @Input() private formControlName: any;
   @Input() private formControl: any;
-
+  @Input() controls?: RTEControls[] = [
+    RTEControls.size,
+    RTEControls.bold,
+    RTEControls.italic,
+    RTEControls.underline,
+    RTEControls.link,
+    RTEControls.list,
+    RTEControls.align,
+    RTEControls.dir
+  ];
   @ViewChild('quillEditor') quillEditor: ElementRef;
 
   @Output() blurred: EventEmitter<RteCurrentContent> = new EventEmitter<
@@ -103,7 +111,7 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   private onEditorTextChange(): void {
-    const newOutputValue = this.rteUtils.getHtmlContent(this.editor);
+    const newOutputValue = this.rteUtils.getHtmlContent(this.editor, this.controls);
     if (
       !this.latestOutputValue ||
       this.latestOutputValue.body !== newOutputValue.body
