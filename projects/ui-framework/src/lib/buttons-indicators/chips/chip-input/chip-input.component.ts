@@ -1,13 +1,4 @@
-import {
-  Component,
-  Input,
-  ViewChild,
-  ElementRef,
-  OnChanges,
-  SimpleChanges
-} from '@angular/core';
-import { ChipType } from '../chips.enum';
-import { ColorService } from '../../../services/color-service/color.service';
+import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   MatAutocompleteSelectedEvent,
@@ -16,6 +7,9 @@ import {
 } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { ChipOptions } from '../chips.interface';
+import { startWith, map } from 'rxjs/operators';
+import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-chip-input',
@@ -23,33 +17,85 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
   styleUrls: ['./chip-input.component.scss']
 })
 export class ChipInputComponent {
-  constructor() {}
+  @Input('chips')
+  set chips(value: ChipOptions[]) {
+    this.allChips = value;
+  }
+  @Input() placeholder: string;
+  @Input() removable = true;
+  @Input() acceptNew = true;
+  @Input() addOnBlur = false;
 
-  removable = true;
-  addOnBlur = true;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  chipInputControl = new FormControl();
+  private allChips: ChipOptions[];
+  filteredChips: Observable<ChipOptions[]>;
+  selectedChips: ChipOptions[] = [];
 
-  allChips: any[];
-  filteredChips: Observable<any[]>;
-  selectedChips: any[];
+  readonly resetIcon: String = Icons.reset_x;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  readonly chipInputControl = new FormControl();
 
-  @ViewChild('input') input: ElementRef<HTMLInputElement>;
-  @ViewChild('auto') autocomplete: MatAutocomplete;
+  @ViewChild('input') private input: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') private autocomplete: MatAutocomplete;
 
-  add(event: MatChipInputEvent): void {}
-
-  remove(fruit: string): void {}
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    // this.fruits.push(event.option.viewValue);
-    // this.fruitInput.nativeElement.value = '';
-    // this.fruitCtrl.setValue(null);
+  constructor() {
+    this.filteredChips = this.chipInputControl.valueChanges.pipe(
+      startWith(null),
+      map((chip: string | null) =>
+        chip ? this.filterChips(chip) : this.allChips.slice()
+      )
+    );
   }
 
-  private filter(value: string): string[] {
-    // const filterValue = value.toLowerCase();
-    // return this.allFruits.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
-    return [];
+  private findChip(text: string, chipsSource = this.allChips): ChipOptions {
+    return chipsSource.find(chip => chip.text === text);
+  }
+
+  private removeChip(text: string, chipsSource = this.allChips): ChipOptions[] {
+    return chipsSource.filter(chip => chip.text !== text);
+  }
+
+  private filterChips(
+    text: string,
+    chipsSource = this.allChips
+  ): ChipOptions[] {
+    return chipsSource.filter(
+      chip => chip.text.toLowerCase().indexOf(text.toLowerCase()) === 0
+    );
+  }
+
+  commitChip(chipToAdd: ChipOptions): void {
+    if (chipToAdd && !this.findChip(chipToAdd.text, this.selectedChips)) {
+      this.selectedChips.push(chipToAdd);
+      this.input.nativeElement.value = '';
+      this.chipInputControl.setValue(null);
+    }
+  }
+
+  add(event: MatChipInputEvent): void {
+    if (!this.autocomplete.isOpen) {
+      const text = (event.value || '').trim();
+      let chipToAdd;
+
+      if (text) {
+        chipToAdd = this.findChip(text);
+
+        if (!chipToAdd && this.acceptNew) {
+          chipToAdd = { text };
+        }
+      }
+
+      this.commitChip(chipToAdd);
+    }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    const chipToAdd = this.findChip(event.option.viewValue);
+    this.commitChip(chipToAdd);
+  }
+
+  remove(chip: ChipOptions): void {
+    this.selectedChips = this.removeChip(chip.text, this.selectedChips);
   }
 }

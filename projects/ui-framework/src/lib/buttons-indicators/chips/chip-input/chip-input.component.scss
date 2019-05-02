@@ -1,2 +1,15 @@
 @import '../../../style/colors';
 @import '../../../style/typography';
+
+:host {
+  display: block;
+}
+
+.mat-form-field {
+  display: block;
+}
+
+.mat-chip {
+  outline: 0;
+  margin: 4px;
+}

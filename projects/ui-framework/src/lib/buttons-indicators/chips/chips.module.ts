@@ -9,6 +9,7 @@ import {
   MatAutocompleteModule
 } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { IconsModule } from '../../icons/icons.module';
 
 @NgModule({
   declarations: [ChipComponent, ChipInputComponent],
@@ -18,7 +19,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     MatChipsModule,
     MatAutocompleteModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    IconsModule
   ],
   exports: [ChipComponent, ChipInputComponent],
   providers: [ColorService]
