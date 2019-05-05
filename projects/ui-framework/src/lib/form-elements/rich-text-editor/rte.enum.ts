@@ -5,7 +5,7 @@ export enum RTEType {
 }
 
 export enum RTEControls {
-  link = 'link',
+  link = 'Link',
   size = 'size',
   bold = 'bold',
   italic = 'italic',
