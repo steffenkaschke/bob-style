@@ -116,7 +116,8 @@ export class RichTextEditorComponent extends RTEformElement
         clipboard: {
           matchVisual: false
         }
-      }
+      },
+      formats: Object.values(this.controls)
     };
 
     setTimeout(() => {
@@ -161,6 +162,7 @@ export class RichTextEditorComponent extends RTEformElement
       );
       this.selectedText = this.currentBlot.text;
     } else {
+      this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
       this.selectedText = this.rteUtilsService.getSelectionText(
         this.editor,
         this.selection
