@@ -7,31 +7,31 @@ import { Blot } from 'parchment/src/blot/abstract/blot';
 import { TextBlot } from 'quill/blots/text';
 import { keysFromArrayOrObject } from '../../../services/utils/functional-utils';
 import { PlaceholderRteConverterService } from '../placeholder-rte-converter/placeholder-rte-converter.service';
-import {RTEControls} from '../rte.enum';
+import { RTEControls } from '../rte.enum';
 
 @Injectable()
 export class RteUtilsService {
-  constructor(private placeholderRteConverterService: PlaceholderRteConverterService) {}
+  constructor(
+    private placeholderRteConverterService: PlaceholderRteConverterService
+  ) {}
 
   getHtmlContent(editor: Quill, controls: RTEControls[]): RteCurrentContent {
     const plainText = editor.getText().trim();
     const editorHtml = !plainText
       ? ''
       : editor.root.innerHTML
-      // empty lines in the end
-        .replace(
-          /(<p([^\n\r\/<>]+)?><br><\/p>|<div([^\n\r\/<>]+)?><br><\/div>)+$/gi,
-          ''
-        )
-        // empty tags
-        .replace(/<([^>/][^>]+)([^\n\r\/<>]+)?>(\s+)?<\/\1>/gi, '')
-        .replace(/(<em)/gi, '<i')
-        .replace(/(<\/em>)/gi, '</i>');
-    console.time('fromRte');
+          // empty lines in the end
+          .replace(
+            /(<p([^\n\r\/<>]+)?><br><\/p>|<div([^\n\r\/<>]+)?><br><\/div>)+$/gi,
+            ''
+          )
+          // empty tags
+          .replace(/<([^>/][^>]+)([^\n\r\/<>]+)?>(\s+)?<\/\1>/gi, '')
+          .replace(/(<em)/gi, '<i')
+          .replace(/(<\/em>)/gi, '</i>');
     const body = controls.includes(RTEControls.placeholders)
       ? this.placeholderRteConverterService.fromRte(editorHtml)
       : editorHtml;
-    console.timeEnd('fromRte');
     return {
       body,
       plainText

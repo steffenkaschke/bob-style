@@ -455,3 +455,18 @@ $border-color-error: $color-error;
     display: none;
   }
 }
+
+
+// Editor text area CSS mods
+
+::ng-deep {
+
+  span[style], strong[style] {
+    color: inherit !important;
+  }
+
+  [style] a {
+    color: #e52c51;
+  }
+
+}

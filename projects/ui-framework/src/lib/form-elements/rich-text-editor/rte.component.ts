@@ -92,7 +92,7 @@ export class RichTextEditorComponent extends RTEformElement
   readonly RTEFontSize = RTEFontSize;
   readonly panelDefaultPosVer = PanelDefaultPosVer;
 
-  private blotsToDeleteWhole = [BlotType.Link];
+  private blotsToDeleteWhole = [BlotType.link];
 
   ngAfterViewInit(): void {
 
@@ -185,7 +185,7 @@ export class RichTextEditorComponent extends RTEformElement
       startIndex: this.selection.index,
       insertText: rteLink.text,
       format: {
-        type: BlotType.Link,
+        type: BlotType.link,
         value: rteLink.url
       },
       unformat: rteLink.url ? null : RteLinkFormats
