@@ -13,7 +13,7 @@ export enum RTEControls {
   list = 'list',
   dir = 'direction',
   align = 'align',
-  placeholders = 'placeholders'
+  placeholders = 'Placeholder'
 }
 
 export enum RTEFontSize {
@@ -36,6 +36,7 @@ export enum BlotType {
   underline = 'underline',
   list = 'list',
   direction = 'direction',
+  Placeholder = 'Placeholder',
   color = 'color',
   any = 'format'
 }

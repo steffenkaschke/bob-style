@@ -14,9 +14,10 @@ export class RteUtilsService {
   constructor(private placeholderRteConverterService: PlaceholderRteConverterService) {}
 
   getHtmlContent(editor: Quill, controls: RTEControls[]): RteCurrentContent {
-    const editorHtml = isEmpty(trim(editor.getText()))
+    const plainText = editor.getText().trim();
+    const editorHtml = !plainText
       ? ''
-      : chain(editor.root.innerHTML)
+      : editor.root.innerHTML
       // empty lines in the end
         .replace(
           /(<p([^\n\r\/<>]+)?><br><\/p>|<div([^\n\r\/<>]+)?><br><\/div>)+$/gi,
@@ -25,14 +26,15 @@ export class RteUtilsService {
         // empty tags
         .replace(/<([^>/][^>]+)([^\n\r\/<>]+)?>(\s+)?<\/\1>/gi, '')
         .replace(/(<em)/gi, '<i')
-        .replace(/(<\/em>)/gi, '</i>')
-        .value();
-    const htmlBody = controls.includes(RTEControls.placeholders)
+        .replace(/(<\/em>)/gi, '</i>');
+    console.time('fromRte');
+    const body = controls.includes(RTEControls.placeholders)
       ? this.placeholderRteConverterService.fromRte(editorHtml)
       : editorHtml;
+    console.timeEnd('fromRte');
     return {
-      body: htmlBody,
-      plainText: trim(editor.getText())
+      body,
+      plainText
     };
   }
 

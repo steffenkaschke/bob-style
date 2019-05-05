@@ -25,6 +25,8 @@ const inputStories = storiesOf(
 const value = `
   <div>Hello <a href="http://www.google.com">World</a>!</div>
   <div>Some initial <strong>bold</strong> text</div>
+
+  <span data-placeholder-id="blah">blam</span>
 `;
 
 const template = `
