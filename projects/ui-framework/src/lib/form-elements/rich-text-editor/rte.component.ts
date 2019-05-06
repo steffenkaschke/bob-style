@@ -148,7 +148,6 @@ export class RichTextEditorComponent extends RTEformElement
           return false;
         }
       }
-
       return true;
     });
   }

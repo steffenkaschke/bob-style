@@ -458,7 +458,7 @@ $border-color-error: $color-error;
 
 // Editor text area CSS mods
 
-::ng-deep {
+:host ::ng-deep {
   span[style],
   strong[style],
   u[style],
@@ -468,5 +468,24 @@ $border-color-error: $color-error;
 
   [style] a {
     color: #e52c51;
+  }
+}
+
+// Custom Blots styling
+
+:host ::ng-deep {
+  [data-placeholder-id] {
+    box-sizing: border-box;
+    border-radius: 13px;
+    white-space: nowrap;
+    font-size: $font-size-body;
+    font-weight: 500;
+    padding: 0 10px;
+    background-color: #fffaa5;
+    border-color: #fffaa5;
+  }
+
+  [contenteditable='false'] {
+    user-select: none;
   }
 }
