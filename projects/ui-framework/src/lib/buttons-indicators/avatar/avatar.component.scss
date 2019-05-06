@@ -123,7 +123,7 @@ $avatar-size-large: 120px;
 
     .title,
     .subtitle {
-      @include BodyFont;
+      @include BodyFont($lineHeight: null);
     }
 
     .title {
@@ -132,10 +132,12 @@ $avatar-size-large: 120px;
   }
 
   &-mini {
+    line-height: 1.2;
     max-width: calc(100% - #{$avatar-size-mini + 8px});
   }
 
   &-small {
+    line-height: $line-height-body;
     max-width: calc(100% - #{$avatar-size-small + 8px});
   }
 

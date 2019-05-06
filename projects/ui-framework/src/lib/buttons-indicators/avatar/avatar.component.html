@@ -17,11 +17,12 @@
   </div>
 </div>
 
-<div *ngIf="title"
+<div *ngIf="title || subtitle"
      class="avatar-title"
      [ngClass]="titleClass">
 
   <h4 b-truncate-tooltip
+      *ngIf="title"
       class="title">
     {{title}}
   </h4>
