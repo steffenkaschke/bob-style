@@ -117,12 +117,6 @@
 
 <mat-hint *ngIf="errorMessage || hintMessage"
           align="start"
-          class="error-message">
-  {{errorMessage}}
-</mat-hint>
-
-<mat-hint *ngIf="hintMessage && !errorMessage"
-          align="start"
-          class="hint-message">
-  {{hintMessage}}
+          [ngClass]="{'error-message': errorMessage && !disabled, 'hint-message': !errorMessage && hintMessage}">
+  {{ errorMessage && !disabled ? errorMessage : hintMessage }}
 </mat-hint>

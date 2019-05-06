@@ -34,6 +34,7 @@ const template = `
       [label]="label"
       [value]="value"
       [controls]="controls"
+      [removeControls]="removeControls"
       [minHeight]="minHeight"
       [maxHeight]="maxHeight"
       [disabled]="disabled"
@@ -108,7 +109,12 @@ inputStories.add(
         type: select('type', values(RTEType), RTEType.primary),
         label: text('label', 'Compose an epic...'),
         value: text('value', value),
-        controls: array('controls', values(controlsWithoutPlaceholder), '\n'),
+        controls: array('controls', values(RTEControls), '\n'),
+        removeControls: array(
+          'removeControls',
+          [RTEControls.placeholders],
+          '\n'
+        ),
         minHeight: number('minHeight', 200),
         maxHeight: number('maxHeight', 400),
         disabled: boolean('disabled', false),
