@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
-import {RTEchangeEvent, RTEControls} from './rte.enum';
+import { RTEchangeEvent, RTEControls } from './rte.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { RteCurrentContent, BlotData } from './rte.interface';
 import { BaseFormElement } from '../base-form-element';
@@ -111,7 +111,10 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   private onEditorTextChange(): void {
-    const newOutputValue = this.rteUtils.getHtmlContent(this.editor, this.controls);
+    const newOutputValue = this.rteUtils.getHtmlContent(
+      this.editor,
+      this.controls
+    );
     if (
       !this.latestOutputValue ||
       this.latestOutputValue.body !== newOutputValue.body
@@ -154,7 +157,9 @@ export abstract class RTEformElement extends BaseFormElement
     if (this.value !== val || !this.latestOutputValue) {
       this.value = val || '';
       if (this.editor) {
-        this.editor.setContents(this.editor.clipboard.convert(this.value));
+        this.editor.setContents(
+          this.editor.clipboard.convert(this.value).insert(' ')
+        );
       }
     }
   }

@@ -76,12 +76,10 @@ export class RichTextEditorComponent extends RTEformElement
   @Input() minHeight = 185;
   @Input() maxHeight = 295;
 
-
   @ViewChild('toolbar') toolbar: ElementRef;
   @ViewChild('suffix') suffix: ElementRef;
   @ViewChild('linkPanel') private linkPanel: PanelComponent;
   @ViewChild('linkEditor') private linkEditor: RteLinkEditorComponent;
-
 
   hasSuffix = true;
 
@@ -95,7 +93,6 @@ export class RichTextEditorComponent extends RTEformElement
   private blotsToDeleteWhole = [BlotType.link];
 
   ngAfterViewInit(): void {
-
     this.onRTEviewInit();
 
     const editorOptions: QuillOptionsStatic = {
