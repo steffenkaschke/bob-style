@@ -25,8 +25,7 @@ const inputStories = storiesOf(
 const value = `
   <div>Hello <a href="http://www.google.com">World</a>!</div>
   <div>Some initial <strong>bold</strong> text</div>
-
-  <span data-placeholder-id="blah">blam</span>
+  {{/root/firstName}} my job title</div>
 `;
 
 const template = `
@@ -55,6 +54,18 @@ const storyTemplate = `
   </div>
 </b-story-book-layout>
 `;
+
+const controlsWithoutPlaceholder = [
+  RTEControls.size,
+  RTEControls.bold,
+  RTEControls.italic,
+  RTEControls.underline,
+  RTEControls.link,
+  RTEControls.list,
+  RTEControls.align,
+  RTEControls.dir,
+  RTEControls.placeholders
+];
 
 const note = `
   ## Rich text editor
@@ -97,7 +108,7 @@ inputStories.add(
         type: select('type', values(RTEType), RTEType.primary),
         label: text('label', 'Compose an epic...'),
         value: text('value', value),
-        controls: array('controls', values(RTEControls), '\n'),
+        controls: array('controls', values(controlsWithoutPlaceholder), '\n'),
         minHeight: number('minHeight', 200),
         maxHeight: number('maxHeight', 400),
         disabled: boolean('disabled', false),

@@ -13,7 +13,7 @@ export enum BlotType {
   list = 'list',
   direction = 'direction',
   placeholder = 'Placeholder',
-  color = 'color',
+  color = 'color'
 }
 
 export enum RTEControls {
