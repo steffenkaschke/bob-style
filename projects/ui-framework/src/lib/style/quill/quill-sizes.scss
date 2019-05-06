@@ -13,13 +13,7 @@
 .ql-picker.ql-size {
   width: 98px;
 
-  .ql-picker-label[data-label] {
-    &:not([data-label='']) {
-      &::before {
-        content: attr(data-label);
-      }
-    }
-  }
+  .ql-picker-label[data-label],
   .ql-picker-item[data-label] {
     &:not([data-label='']) {
       &::before {
