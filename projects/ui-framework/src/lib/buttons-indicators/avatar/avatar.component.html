@@ -1,6 +1,6 @@
 <div class="avatar"
-     [ngClass]="'avatar-'+size"
-     [ngStyle]="{ 'background-image': 'url(' + imageSource + ')'}"
+     [ngClass]="avatarClass"
+     [ngStyle]="avatarStyle"
      (click)="onClick($event)">
 
   <b-icon *ngIf="badge"
@@ -11,6 +11,7 @@
   </b-icon>
 
   <div class="avatar-content"
+       #content
        *ngIf="hasContent">
     <ng-content></ng-content>
   </div>
@@ -18,7 +19,7 @@
 
 <div *ngIf="title"
      class="avatar-title"
-     [ngClass]="'avatar-title-'+size">
+     [ngClass]="titleClass">
 
   <h4 b-truncate-tooltip
       class="title">

@@ -6,8 +6,7 @@ import {
   Output,
   ViewChild,
   ElementRef,
-  AfterViewInit,
-  HostBinding
+  AfterViewInit
 } from '@angular/core';
 import { AvatarSize, BadgeSize } from './avatar.enum';
 import { BadgeConfig } from './avatar.interface';
@@ -30,23 +29,31 @@ export class AvatarComponent implements OnInit, AfterViewInit {
   @Output() clicked?: EventEmitter<void> = new EventEmitter<void>();
 
   public badgeSize: string;
+  public avatarClass: string;
+  public avatarStyle: object;
+  public titleClass: string;
   public hasContent = true;
   readonly avatarSizeEnum = AvatarSize;
   constructor(private DOM: DOMhelpers) {}
-
-  @HostBinding('class') get classes() {
-    return (
-      (this.size ? this.size : '') +
-      (this.isClickable ? ' clickable' : '') +
-      (this.disabled ? ' disabled' : '') +
-      (this.imageSource.indexOf('emptyAvatar') !== -1 ? ' emptyAvatar' : '')
-    );
-  }
 
   ngOnInit() {
     if (this.badge) {
       this.badgeSize = BadgeSize[this.size];
     }
+
+    this.avatarClass =
+      'avatar-' +
+      this.size +
+      (this.isClickable && !this.disabled ? ' clickable' : '') +
+      (this.disabled ? ' disabled' : '') +
+      (this.imageSource.includes('emptyAvatar') ? ' emptyAvatar' : '');
+
+    this.avatarStyle = {
+      backgroundImage: 'url(' + this.imageSource + ')'
+    };
+
+    this.titleClass =
+      'avatar-title-' + this.size + (this.disabled ? ' disabled' : '');
   }
 
   ngAfterViewInit(): void {
@@ -59,9 +66,5 @@ export class AvatarComponent implements OnInit, AfterViewInit {
     if (this.isClickable) {
       this.clicked.emit(event);
     }
-  }
-
-  getClassNames() {
-    return `${this.size}${this.isClickable ? ' clickable' : ''}`;
   }
 }
