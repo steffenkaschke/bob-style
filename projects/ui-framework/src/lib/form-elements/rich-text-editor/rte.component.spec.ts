@@ -417,4 +417,35 @@ describe('RichTextEditorComponent', () => {
       expect(testVar).not.toEqual('test2');
     }));
   });
+  describe('PlaceholderRteConverter', () => {
+    it('Should convert HTML to RTE', () => {
+      const placeholderList = [
+        {
+          groupName: 'Basic Info - header',
+          options: [
+            {
+              id: '/work/title',
+              selected: false,
+              value: 'work | title'
+            },
+            {
+              id: '/root/firstName',
+              selected: false,
+              value: 'First name'
+            },
+          ]
+        },
+      ];
+      RTEComponent.controls = [RTEControls.placeholders];
+      RTEComponent.placeholderList = placeholderList;
+      RTEComponent.ngOnChanges({
+        value:
+          new SimpleChange(
+            null, '<div>Hi, <strong>My</strong> name is {{/root/firstName}} my job title</div>', false)
+      });
+      expect(RTEComponent.value)
+        .toEqual('<div>Hi, <strong>My</strong> name is <span ' +
+          'data-placeholder-id="/root/firstName">First name</span> my job title</div>');
+    });
+  });
 });

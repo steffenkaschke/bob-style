@@ -89,6 +89,21 @@
             value="rtl"
             *ngIf="controls.includes(RTEControls.dir)"></button>
 
+    <b-panel class="placeholder-panel"
+             panelClass="placeholder-rte-panel"
+             [showBackdrop]="false"
+             [size]="panelSize.medium"
+             *ngIf="controls.includes(RTEControls.placeholders)"
+             [defaultPosVer]="panelDefaultPosVer.below">
+      <button (click)="onPlaceholderPanelOpen()" panel-trigger>rte</button>
+      <div panel-content>
+        <b-single-select (selectChange)="onPlaceholderSelectChange(test)"
+                         #test
+                         [options]="placeholderList">
+        </b-single-select>
+      </div>
+    </b-panel>
+
     <div #suffix
          *ngIf="hasSuffix"
          class="toolbar-suffix">

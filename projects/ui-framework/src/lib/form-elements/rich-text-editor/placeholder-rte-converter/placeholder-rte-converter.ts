@@ -1,5 +1,5 @@
 export interface Placeholder {
   id: string;
-  displayName: string;
+  value: string;
   sample: string;
 }

@@ -30,6 +30,7 @@ import { Icons } from '../../icons/icons.enum';
 import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
 import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
 import { PlaceholderBlot } from './formats/placeholder-blot';
+import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
 
 quillLib.register(LinkBlot);
 quillLib.register(PlaceholderBlot);
@@ -58,9 +59,10 @@ export class RichTextEditorComponent extends RTEformElement
     private DOM: DOMhelpers,
     rteUtils: RteUtilsService,
     changeDetector: ChangeDetectorRef,
-    injector: Injector
+    injector: Injector,
+    placeholderRteConverterService: PlaceholderRteConverterService,
   ) {
-    super(rteUtils, changeDetector, injector);
+    super(rteUtils, changeDetector, injector, placeholderRteConverterService);
   }
 
   @HostBinding('class') get classes() {
@@ -75,7 +77,6 @@ export class RichTextEditorComponent extends RTEformElement
   @Input() type?: RTEType = RTEType.primary;
   @Input() minHeight = 185;
   @Input() maxHeight = 295;
-
 
   @ViewChild('toolbar') toolbar: ElementRef;
   @ViewChild('suffix') suffix: ElementRef;
@@ -92,12 +93,13 @@ export class RichTextEditorComponent extends RTEformElement
   readonly RTEFontSize = RTEFontSize;
   readonly panelDefaultPosVer = PanelDefaultPosVer;
 
-  private blotsToDeleteWhole = [BlotType.Link];
+  private blotsToDeleteWhole = [BlotType.Link, BlotType.Placeholder];
 
   ngAfterViewInit(): void {
-
     this.onRTEviewInit();
-
+    if (this.placeholderList) {
+      this.controls.push(RTEControls.placeholders);
+    }
     const editorOptions: QuillOptionsStatic = {
       theme: 'snow',
       placeholder: this.rteUtilsService.getEditorPlaceholder(
@@ -153,6 +155,7 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   private onLinkPanelOpen(): void {
+    this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
     this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
 
     if (this.currentBlot.link) {
@@ -192,6 +195,26 @@ export class RichTextEditorComponent extends RTEformElement
     };
     this.rteUtilsService.updateEditor(this.editor, updateConfig);
     this.linkPanel.closePanel();
+  }
+
+  public onPlaceholderPanelOpen() {
+    this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
+    this.selectedText = this.rteUtilsService.getSelectionText(
+      this.editor,
+      this.selection);
+  }
+
+  public onPlaceholderSelectChange(selectGroupOptions): void {
+    const updateConfig: UpdateRteConfig = {
+      replaceStr: this.selectedText,
+      startIndex: this.selection.index,
+      insertText: selectGroupOptions.triggerValue,
+      format: {
+        type: BlotType.Placeholder,
+        value: selectGroupOptions.selectedOptionId
+      },
+    };
+    this.rteUtilsService.updateEditor(this.editor, updateConfig);
   }
 
   onLinkCancel(): void {
