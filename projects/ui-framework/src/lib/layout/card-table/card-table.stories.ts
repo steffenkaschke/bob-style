@@ -1,13 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  array,
-  boolean,
-  number,
-  object,
-  select,
-  text,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { object, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,9 +16,6 @@ import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.
 
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
-
-import { MockComponent } from '../../services/mock-component/mock.component';
-import { MockModule } from '../../services/mock-component/mock.module';
 
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 
@@ -164,22 +153,17 @@ const note = `
     [
       {
         data: {
-          component: MockComponent,
-          content: [
-            {
-              component: AvatarComponent,
-              attributes: {
-                imageSource: 'http://i.pravatar.cc/200?img=3',
-              },
-              handlers: {
-                clicked: event => {
-                  console.log('Avatar clicked');
-                }
-              }
-            },
-            'Dylan Herrera',
-            'Product designer'
-          ]
+          component: AvatarComponent,
+          attributes: {
+            imageSource: 'http://i.pravatar.cc/200?img=3',
+            title: 'Dylan Herrera',
+            subtitle: 'Product designer'
+          },
+          handlers: {
+            clicked: event => {
+              console.log('Avatar clicked');
+            }
+          }
         }
       },
       {
@@ -239,15 +223,9 @@ story.add(
           CardTableModule,
           ChipsModule,
           ButtonsModule,
-          AvatarModule,
-          MockModule
+          AvatarModule
         ],
-        entryComponents: [
-          ChipComponent,
-          ButtonComponent,
-          AvatarComponent,
-          MockComponent
-        ]
+        entryComponents: [ChipComponent, ButtonComponent, AvatarComponent]
       }
     };
   },
