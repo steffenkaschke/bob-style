@@ -424,7 +424,7 @@ describe('RichTextEditorComponent', () => {
           groupName: 'Basic Info - header',
           options: [
             {
-              value: '01',
+              value: 'work | title',
               id: '/work/title',
               selected: false,
               displayName: 'work | title'
