@@ -1,17 +1,6 @@
-// tslint:disable-next-line:max-line-length
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
-import { GridOptions } from 'ag-grid-community';
+// tslint:disable-next-line:max-line-lengt
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { get, has, once } from 'lodash';
 import { ColumnDef, RowClickedEvent, RowSelection, SortChangedEvent } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
@@ -23,7 +12,7 @@ import { TableUtilsService } from '../table-utils-service/table-utils.service';
   templateUrl: './table.component.html',
   styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss']
 })
-export class TableComponent implements OnInit, OnChanges, AfterViewInit {
+export class TableComponent implements OnInit, OnChanges {
   @ViewChild('agGrid') agGrid: AgGridNg2;
 
   @Input() rowData: any[];
@@ -54,7 +43,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.tableLicense();
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.setGridHeight(this.maxHeight);
     this.gridOptions = <GridOptions>{
       suppressAutoSize: true,
@@ -63,13 +52,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       rowHeight: this.rowHeight,
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
-    };
-  }
-
-  ngAfterViewInit(): void {
-    this.gridOptions.onGridReady = () => {
-      this.gridOptions.columnApi.autoSizeAllColumns();
-      this.gridReady = true;
+      onGridReady: (event: GridReadyEvent) => {
+        event.columnApi.autoSizeAllColumns();
+        this.gridReady = true;
+      }
     };
   }
 
