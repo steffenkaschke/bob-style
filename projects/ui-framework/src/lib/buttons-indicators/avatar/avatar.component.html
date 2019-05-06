@@ -1,12 +1,16 @@
 <div class="avatar"
-     [ngClass]="avatarClass"
-     [ngStyle]="avatarStyle"
+     [ngClass]="'avatar-' + size +
+                (isClickable && !disabled ? ' clickable' : '') +
+                (disabled ? ' disabled' : '') +
+                (imageSource && imageSource.includes('emptyAvatar')
+                ? ' emptyAvatar' : '')"
+     [ngStyle]="{ backgroundImage: imageSource ? 'url(' +  imageSource + ')' : null }"
      (click)="onClick($event)">
 
   <b-icon *ngIf="badge"
           class="avatar-badge"
           [icon]="badge.icon"
-          [size]="badgeSize"
+          [size]="badgeSize[size]"
           [color]="badge.color">
   </b-icon>
 
@@ -19,7 +23,7 @@
 
 <div *ngIf="title || subtitle"
      class="avatar-title"
-     [ngClass]="titleClass">
+     [ngClass]="'avatar-title-' + size + (disabled ? ' disabled' : '')">
 
   <h4 b-truncate-tooltip
       *ngIf="title"

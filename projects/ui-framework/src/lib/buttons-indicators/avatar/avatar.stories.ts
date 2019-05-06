@@ -64,29 +64,6 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Avatar'">
-
-<style>
-
-  .upload-overlay {
-    background-color: rgba(0, 0, 0, .4);
-    color: white;
-    pointer-events: none;
-    justify-content: center;
-    opacity: 1;
-    transition: opacity 0.9s;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    text-align: center;
-    background-size: initial;
-    display: flex;
-    align-items: center;
-  }
-
-</style>
-
   ${template}
 </b-story-book-layout>
 `;
