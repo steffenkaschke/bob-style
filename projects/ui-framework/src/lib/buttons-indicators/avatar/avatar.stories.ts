@@ -47,15 +47,14 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  imageSource | string | URL of the avatar image |
+  imageSource | string | URL of the avatar image | none
   size | AvatarSize | enum for setting the avatar size | mini (optional)
-  isClickable | boolean | can click avatar | false
-  title | string | main title of the avatar | '' (optional)
-  subtitle | string | subtitle of the avatar | '' (optional)
+  isClickable | boolean | flag for indicating if the avatar is clickable or not | false
+  title | string | main title of the avatar | none (optional)
+  subtitle | string | subtitle of the avatar | none (optional)
   disabled | boolean | disabled avatar | false (optional)
   badge | BadgeConfig | badge config: includes icon and color | undefined (optional)
-  clicked | boolean | boolean flag for indicating if the avatar is clickable or not | false (optional)
-  handleClick | Function | callback for clicking on the avatar | no click (optional)
+  clicked | Function | callback for clicking on the avatar | none
 
   ~~~
   ${template}
@@ -80,7 +79,7 @@ avatarStories.add(
         ),
         size: select('size', sizeOptions, AvatarSize.medium),
         isClickable: boolean('isClickable', false),
-        clickHandler: action(),
+        clickHandler: action('Avatar Clicked'),
         title: text('title', 'John Doe'),
         subtitle: text('subtitle', 'Web Developer'),
         disabled: boolean('disabled', false),
