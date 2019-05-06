@@ -153,22 +153,17 @@ const note = `
     [
       {
         data: {
-          component: MockComponent,
-          content: [
-            {
-              component: AvatarComponent,
-              attributes: {
-                imageSource: 'http://i.pravatar.cc/200?img=3',
-              },
-              handlers: {
-                clicked: event => {
-                  console.log('Avatar clicked');
-                }
-              }
-            },
-            'Dylan Herrera',
-            'Product designer'
-          ]
+          component: AvatarComponent,
+          attributes: {
+            imageSource: 'http://i.pravatar.cc/200?img=3',
+            title: 'Dylan Herrera',
+            subtitle: 'Product designer'
+          },
+          handlers: {
+            clicked: event => {
+              console.log('Avatar clicked');
+            }
+          }
         }
       },
       {
