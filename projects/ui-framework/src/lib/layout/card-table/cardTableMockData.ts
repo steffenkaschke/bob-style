@@ -1,34 +1,8 @@
 import { CardTableCellMeta, CardTableCellData } from './card-table.interface';
 import { ChipComponent } from '../../buttons-indicators/chips/chip/chip.component';
 import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
-import { MockComponent } from '../../services/mock-component/mock.component';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
-
 import { action } from '@storybook/addon-actions';
-
-const mockComponentAttributes = {
-  hostcss: {
-    display: 'grid',
-    gridTemplateColumns: '60px auto',
-    gridGap: '0 15px'
-  },
-  slot1css: {
-    gridRow: '1 / span 2'
-  },
-  slot2css: {
-    display: 'flex',
-    alignItems: 'flex-end',
-    fontWeight: 500,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis'
-  },
-  slot3css: {
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis'
-  }
-};
 
 const avatarComponentAttributes = {
   size: 'small',
@@ -74,22 +48,16 @@ export const CardTableMockData: CardTableCellData[][] = [
   [
     {
       data: {
-        component: MockComponent,
-        attributes: mockComponentAttributes,
-        content: [
-          {
-            component: AvatarComponent,
-            attributes: {
-              imageSource: 'http://i.pravatar.cc/200?img=3',
-              ...avatarComponentAttributes
-            },
-            handlers: {
-              clicked: action('Avatar was clicked')
-            }
-          },
-          'Dylan Herrera',
-          'Product designer'
-        ]
+        component: AvatarComponent,
+        attributes: {
+          imageSource: 'http://i.pravatar.cc/200?img=3',
+          title: 'Dylan Herrera',
+          subtitle: 'Product designer',
+          ...avatarComponentAttributes
+        },
+        handlers: {
+          clicked: action('Avatar was clicked')
+        }
       }
     },
     {
@@ -118,22 +86,16 @@ export const CardTableMockData: CardTableCellData[][] = [
   [
     {
       data: {
-        component: MockComponent,
-        attributes: mockComponentAttributes,
-        content: [
-          {
-            component: AvatarComponent,
-            attributes: {
-              imageSource: 'http://i.pravatar.cc/200?img=2',
-              ...avatarComponentAttributes
-            },
-            handlers: {
-              clicked: action('Avatar was clicked')
-            }
-          },
-          'Joel Sanders',
-          'Business developer'
-        ]
+        component: AvatarComponent,
+        attributes: {
+          imageSource: 'http://i.pravatar.cc/200?img=2',
+          title: 'Joel Sanders',
+          subtitle: 'Business developer',
+          ...avatarComponentAttributes
+        },
+        handlers: {
+          clicked: action('Avatar was clicked')
+        }
       }
     },
     {
@@ -159,22 +121,16 @@ export const CardTableMockData: CardTableCellData[][] = [
   [
     {
       data: {
-        component: MockComponent,
-        attributes: mockComponentAttributes,
-        content: [
-          {
-            component: AvatarComponent,
-            attributes: {
-              imageSource: 'http://i.pravatar.cc/200?img=1',
-              ...avatarComponentAttributes
-            },
-            handlers: {
-              clicked: action('Avatar was clicked')
-            }
-          },
-          'Nora Herrera',
-          'Front-end engineer'
-        ]
+        component: AvatarComponent,
+        attributes: {
+          imageSource: 'http://i.pravatar.cc/200?img=1',
+          title: 'Nora Herrera',
+          subtitle: 'Front-end engineer',
+          ...avatarComponentAttributes
+        },
+        handlers: {
+          clicked: action('Avatar was clicked')
+        }
       }
     },
     {
@@ -199,22 +155,16 @@ export const CardTableMockData: CardTableCellData[][] = [
   [
     {
       data: {
-        component: MockComponent,
-        attributes: mockComponentAttributes,
-        content: [
-          {
-            component: AvatarComponent,
-            attributes: {
-              imageSource: 'http://i.pravatar.cc/200?img=4',
-              ...avatarComponentAttributes
-            },
-            handlers: {
-              clicked: action('Avatar was clicked')
-            }
-          },
-          'Jaspreet Bhamrai',
-          'Product designer'
-        ]
+        component: AvatarComponent,
+        attributes: {
+          imageSource: 'http://i.pravatar.cc/200?img=4',
+          title: 'Jaspreet Bhamrai',
+          subtitle: 'Product designer',
+          ...avatarComponentAttributes
+        },
+        handlers: {
+          clicked: action('Avatar was clicked')
+        }
       }
     },
     {
@@ -240,22 +190,16 @@ export const CardTableMockData: CardTableCellData[][] = [
   [
     {
       data: {
-        component: MockComponent,
-        attributes: mockComponentAttributes,
-        content: [
-          {
-            component: AvatarComponent,
-            attributes: {
-              imageSource: 'http://i.pravatar.cc/200?img=5',
-              ...avatarComponentAttributes
-            },
-            handlers: {
-              clicked: action('Avatar was clicked')
-            }
-          },
-          'Chioke Okonkwo',
-          'Business developer'
-        ]
+        component: AvatarComponent,
+        attributes: {
+          imageSource: 'http://i.pravatar.cc/200?img=5',
+          title: 'Chioke Okonkwo',
+          subtitle: 'Business developer',
+          ...avatarComponentAttributes
+        },
+        handlers: {
+          clicked: action('Avatar was clicked')
+        }
       }
     },
     {
@@ -280,22 +224,16 @@ export const CardTableMockData: CardTableCellData[][] = [
   [
     {
       data: {
-        component: MockComponent,
-        attributes: mockComponentAttributes,
-        content: [
-          {
-            component: AvatarComponent,
-            attributes: {
-              imageSource: 'http://i.pravatar.cc/200?img=6',
-              ...avatarComponentAttributes
-            },
-            handlers: {
-              clicked: action('Avatar was clicked')
-            }
-          },
-          'Abhoy Latif',
-          'Business developer'
-        ]
+        component: AvatarComponent,
+        attributes: {
+          imageSource: 'http://i.pravatar.cc/200?img=6',
+          title: 'Abhoy Latif',
+          subtitle: 'Business developer',
+          ...avatarComponentAttributes
+        },
+        handlers: {
+          clicked: action('Avatar was clicked')
+        }
       }
     },
     {

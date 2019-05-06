@@ -1,13 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  array,
-  boolean,
-  number,
-  object,
-  select,
-  text,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { object, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,9 +16,6 @@ import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.
 
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
-
-import { MockComponent } from '../../services/mock-component/mock.component';
-import { MockModule } from '../../services/mock-component/mock.module';
 
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 
@@ -239,15 +228,9 @@ story.add(
           CardTableModule,
           ChipsModule,
           ButtonsModule,
-          AvatarModule,
-          MockModule
+          AvatarModule
         ],
-        entryComponents: [
-          ChipComponent,
-          ButtonComponent,
-          AvatarComponent,
-          MockComponent
-        ]
+        entryComponents: [ChipComponent, ButtonComponent, AvatarComponent]
       }
     };
   },
