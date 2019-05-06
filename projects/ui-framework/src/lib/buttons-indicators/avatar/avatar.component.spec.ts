@@ -1,9 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AvatarComponent } from './avatar.component';
-import { AvatarSize, BadgeSize } from './avatar.enum';
-import { TypographyModule } from '../../typography/typography.module';
+import { AvatarSize } from './avatar.enum';
 import { By } from '@angular/platform-browser';
-import { forEach, values } from 'lodash';
 import { IconsModule } from '../../icons/icons.module';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
@@ -39,6 +37,14 @@ describe('AvatarComponent', () => {
   it('should create with default values', () => {
     expect(component).toBeTruthy();
     expect(component.size).toEqual(AvatarSize.mini);
+  });
+
+  describe('Avatar image', () => {
+    it('Should put the image as background on .avatar element', () => {
+      expect(avatarElement.style.backgroundImage).toContain(
+        'iVBORw0KGgoAAAANSUhEUgAAA'
+      );
+    });
   });
 
   describe('onClick', () => {
