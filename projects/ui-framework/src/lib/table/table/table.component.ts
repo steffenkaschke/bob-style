@@ -1,3 +1,4 @@
+// tslint:disable-next-line:max-line-length
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
 import { get, has, once } from 'lodash';
@@ -52,7 +53,9 @@ export class TableComponent implements OnInit, OnChanges {
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
       onGridReady: () => {
-        this.gridOptions.columnApi.autoSizeAllColumns();
+        if (this.gridOptions.columnApi) {
+          this.gridOptions.columnApi.autoSizeAllColumns();
+        }
         this.gridReady = true;
       }
     };
