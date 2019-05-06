@@ -72,6 +72,7 @@ export abstract class RTEformElement extends BaseFormElement
   writingValue = false;
   sendChangeOn = RTEchangeEvent.blur;
   private control: FormControl;
+  public doOnSelectionChange: Function = (range: RangeStatic) => {};
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabled) {
@@ -190,6 +191,7 @@ export abstract class RTEformElement extends BaseFormElement
 
     this.editor.on('selection-change', range => {
       this.onEditorSelectionChange(range);
+      this.doOnSelectionChange(range);
     });
 
     this.editor.root.addEventListener('focus', () => {

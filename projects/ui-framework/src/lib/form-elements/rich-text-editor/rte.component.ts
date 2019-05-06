@@ -52,6 +52,7 @@ quillLib.register(PlaceholderBlot);
     }
   ]
 })
+
 export class RichTextEditorComponent extends RTEformElement
   implements AfterViewInit {
   constructor(
@@ -83,7 +84,6 @@ export class RichTextEditorComponent extends RTEformElement
   @ViewChild('linkPanel') private linkPanel: PanelComponent;
   @ViewChild('linkEditor') private linkEditor: RteLinkEditorComponent;
 
-
   hasSuffix = true;
 
   readonly buttonType = ButtonType;
@@ -97,9 +97,6 @@ export class RichTextEditorComponent extends RTEformElement
 
   ngAfterViewInit(): void {
     this.onRTEviewInit();
-    if (this.placeholderList) {
-      this.controls.push(RTEControls.placeholders);
-    }
     const editorOptions: QuillOptionsStatic = {
       theme: 'snow',
       placeholder: this.rteUtilsService.getEditorPlaceholder(
@@ -132,6 +129,7 @@ export class RichTextEditorComponent extends RTEformElement
   private addKeyBindings(): void {
     this.editor.keyboard.addBinding({ key: KeyboardKeys.backspace }, () => {
       if (this.blotsToDeleteWhole.length > 0) {
+
         this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
 
         if (
@@ -144,7 +142,6 @@ export class RichTextEditorComponent extends RTEformElement
           return false;
         }
       }
-
       return true;
     });
   }
