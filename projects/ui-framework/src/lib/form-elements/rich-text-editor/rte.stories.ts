@@ -1,12 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  text,
-  select,
-  boolean,
-  withKnobs,
-  array,
-  number
-} from '@storybook/addon-knobs/angular';
+import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,17 +8,17 @@ import { values } from 'lodash';
 import { TypographyModule } from '../../typography/typography.module';
 import { RichTextEditorModule } from './rte.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RTEType, RTEControls, RTEchangeEvent } from './rte.enum';
+import { RTEControls, RTEType } from './rte.enum';
+import { SelectGroupOption } from '../lists/list.interface';
+
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
   module
 ).addDecorator(withKnobs);
 
-const value = `
-  <div>Hello <a href="http://www.google.com">World</a>!</div>
-  <div>Some initial <strong>bold</strong> text</div> {{/root/firstName}} my job title</div>
-`;
+const value = `<div>Hello <a href="http://www.google.com">World</a>!</div>
+<div>Some initial <strong>bold</strong> text</div> {{/root/firstName}}`;
 
 const template = `
   <b-rich-text-editor
@@ -41,6 +34,7 @@ const template = `
       [errorMessage]="errorMessage"
       (changed)="change($event)"
       (focused)="focus($event)"
+      [placeholderList]="placeholderList"
       (blurred)="blur($event)">
     Some custom toolbar thing
   </b-rich-text-editor>
@@ -98,6 +92,25 @@ const note = `
 
 `;
 
+const placeholderMock: SelectGroupOption[] =
+  [
+    {
+      groupName: 'Basic Info - header',
+      options: [
+        {
+          value: 'First name',
+          id: '/root/firstName',
+          selected: false,
+        },
+        {
+          value: 'work | title',
+          id: '/work/title',
+          selected: false,
+        },
+      ]
+    }];
+
+
 inputStories.add(
   'Rich text editor',
   () => {
@@ -108,6 +121,7 @@ inputStories.add(
         label: text('label', 'Compose an epic...'),
         value: text('value', value),
         controls: array('controls', values(controlsWithoutPlaceholder), '\n'),
+        placeholderList: object<SelectGroupOption>('options', placeholderMock),
         minHeight: number('minHeight', 200),
         maxHeight: number('maxHeight', 400),
         disabled: boolean('disabled', false),
@@ -131,7 +145,7 @@ inputStories.add(
     };
   },
   {
-    notes: { markdown: note },
+    notes: {markdown: note},
     knobs: {
       escapeHTML: false
     }

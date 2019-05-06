@@ -455,3 +455,19 @@ $border-color-error: $color-error;
     display: none;
   }
 }
+
+:host::ng-deep {
+  [data-placeholder-id] {
+    box-sizing: border-box;
+    border-radius: 13px;
+    white-space: nowrap;
+    font-size: $font-size-body;
+    font-weight: 500;
+    padding: 0 10px;
+    background-color: #fffaa5;
+    border-color: #fffaa5;
+  }
+  [contenteditable="false"] {
+    user-select: none;
+  }
+}
