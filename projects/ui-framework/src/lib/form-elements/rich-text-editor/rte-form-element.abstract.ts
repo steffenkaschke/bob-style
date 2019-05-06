@@ -17,6 +17,8 @@ import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { BlotData, RteCurrentContent } from './rte.interface';
 import { BaseFormElement } from '../base-form-element';
 import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
+import { get } from 'lodash';
+import { SelectGroupOption } from '../lists/list.interface';
 
 const Block = quillLib.import('blots/block');
 Block.tagName = 'DIV';
@@ -47,7 +49,7 @@ export abstract class RTEformElement extends BaseFormElement
     RTEControls.align,
     RTEControls.dir
   ];
-  @Input() placeholderList: any;
+  @Input() placeholderList: SelectGroupOption[];
 
   @ViewChild('quillEditor') quillEditor: ElementRef;
 
@@ -160,7 +162,7 @@ export abstract class RTEformElement extends BaseFormElement
       this.value = val || '';
       if (this.editor) {
         if (this.controls.includes(RTEControls.placeholders)) {
-          const placeholders = this.placeholderList[0].options;
+          const placeholders = get(this.placeholderList, '[0].options');
           this.value = this.placeholderRteConverterService.toRte(this.value, placeholders);
         }
         this.editor.setContents(this.editor.clipboard.convert(this.value));

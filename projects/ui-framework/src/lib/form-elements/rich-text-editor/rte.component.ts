@@ -97,7 +97,9 @@ export class RichTextEditorComponent extends RTEformElement
 
   ngAfterViewInit(): void {
     this.onRTEviewInit();
-
+    if (this.placeholderList) {
+      this.controls.push(RTEControls.placeholders);
+    }
     const editorOptions: QuillOptionsStatic = {
       theme: 'snow',
       placeholder: this.rteUtilsService.getEditorPlaceholder(

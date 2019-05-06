@@ -418,50 +418,20 @@ describe('RichTextEditorComponent', () => {
     }));
   });
   describe('PlaceholderRteConverter', () => {
-    it('Should pass placeholders list', fakeAsync(() => {
-      RTEComponent.placeholderList = [
-        {
-          groupName: 'Basic Info - header',
-          options: [
-            {
-              value: 'work | title',
-              id: '/work/title',
-              selected: false,
-              displayName: 'work | title'
-            },
-            {
-              value: '02',
-              id: 1,
-              selected: false
-            },
-          ]
-        },
-      ];
-      const placeholderListElement = fixture.debugElement.query(
-        By.css('b-single-select b-input')
-      ).nativeElement;
-      placeholderListElement.click();
-      console.log(placeholderListElement);
-      const placeholderPanelElement = overlayContainerElement.querySelector('b-single-list') as HTMLElement;
-      console.log(placeholderPanelElement);
-      expect(placeholderPanelElement).toBeTruthy();
-    }));
     it('Should convert HTML to RTE', () => {
       const placeholderList = [
         {
           groupName: 'Basic Info - header',
           options: [
             {
-              value: '01',
               id: '/work/title',
               selected: false,
-              displayName: 'work | title'
+              value: 'work | title'
             },
             {
-              value: '02',
               id: '/root/firstName',
               selected: false,
-              displayName: 'First name'
+              value: 'First name'
             },
           ]
         },

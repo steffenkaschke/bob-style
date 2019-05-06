@@ -5,17 +5,17 @@ describe('PlachholderRteConverterService', () => {
   const placeholders = [
     {
       sample: 'Jon',
-      displayName: 'First name',
+      value: 'First name',
       id: '/root/firstName'
     },
     {
       sample: 'CTO',
-      displayName: 'Work | title',
+      value: 'Work | title',
       id: '/work/title'
     },
     {
       sample: 'Dev',
-      displayName: 'Work | department',
+      value: 'Work | department',
       id: '/work/department'
     }
   ];

@@ -30,6 +30,6 @@ export class PlaceholderRteConverterService {
 
   private getDisplayNameById(placeholders: Placeholder[], id: string): string {
     const placeholder = find(placeholders, p => p.id === id);
-    return placeholder ? placeholder.displayName : id;
+    return placeholder ? placeholder.value : id;
   }
 }
