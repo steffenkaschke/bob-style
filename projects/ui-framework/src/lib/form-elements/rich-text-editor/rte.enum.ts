@@ -13,7 +13,7 @@ export enum RTEControls {
   list = 'list',
   dir = 'direction',
   align = 'align',
-  placeholders = 'placeholders'
+  placeholders = 'Placeholder'
 }
 
 export enum RTEFontSize {

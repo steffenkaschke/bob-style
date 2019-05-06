@@ -10,6 +10,7 @@ export class PlaceholderBlot extends Inline {
   static create(id) {
     const node = super.create();
     node.setAttribute('data-placeholder-id', id);
+    node.setAttribute('contenteditable', false);
     return node;
   }
 
