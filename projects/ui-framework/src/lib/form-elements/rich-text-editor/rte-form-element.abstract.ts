@@ -35,17 +35,19 @@ export abstract class RTEformElement extends BaseFormElement
     super();
   }
 
-  @Input() value: string;
+  @Input() public value: string;
   @Input() private maxChars: number;
   @Input() private formControlName: any;
   @Input() private formControl: any;
 
-  @Input() controls?: RTEControls[] = Object.values(RTEControls);
-  @Input() removeControls?: RTEControls[] = [RTEControls.placeholders];
+  @Input() protected controls?: RTEControls[] = Object.values(RTEControls);
+  @Input() protected removeControls?: RTEControls[] = [
+    RTEControls.placeholders
+  ];
 
-  @Input() placeholderList: SelectGroupOption[];
+  @Input() protected placeholderList: SelectGroupOption[];
 
-  @ViewChild('quillEditor') quillEditor: ElementRef;
+  @ViewChild('quillEditor') private quillEditor: ElementRef;
 
   @Output() blurred: EventEmitter<RteCurrentContent> = new EventEmitter<
     RteCurrentContent
@@ -57,18 +59,18 @@ export abstract class RTEformElement extends BaseFormElement
     RteCurrentContent
   >();
 
-  editor: Quill;
-  selection: RangeStatic;
-  selectedText: string;
-  currentBlot: BlotData;
-  hasSizeSet = false;
-  latestOutputValue: RteCurrentContent;
-  writingValue = false;
-  sendChangeOn = RTEchangeEvent.blur;
+  public editor: Quill;
+  protected selection: RangeStatic;
+  protected selectedText: string;
+  protected currentBlot: BlotData;
+  protected hasSizeSet = false;
+  private latestOutputValue: RteCurrentContent;
+  private writingValue = false;
+  private sendChangeOn = RTEchangeEvent.blur;
   private control: FormControl;
-  public doOnSelectionChange: Function = (range: RangeStatic) => {};
+  protected onSelectionChange: Function = (range: RangeStatic) => {};
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabled) {
       this.disabled = changes.disabled.currentValue;
       if (this.editor) {
@@ -96,7 +98,12 @@ export abstract class RTEformElement extends BaseFormElement
     }
   }
 
-  onRTEviewInit(): void {
+  public writeValue(val: string): void {
+    this.writingValue = true;
+    this.applyValue(val);
+  }
+
+  protected onRTEviewInit(): void {
     if (this.formControl || this.formControlName) {
       const ngControl: NgControl = this.injector.get<NgControl>(
         NgControl as Type<NgControl>
@@ -155,7 +162,7 @@ export abstract class RTEformElement extends BaseFormElement
     this.writingValue = false;
   }
 
-  applyValue(val: string): void {
+  protected applyValue(val: string): void {
     if (this.value !== val || !this.latestOutputValue) {
       this.value = val || '';
       if (this.editor) {
@@ -173,12 +180,7 @@ export abstract class RTEformElement extends BaseFormElement
     }
   }
 
-  writeValue(val: string): void {
-    this.writingValue = true;
-    this.applyValue(val);
-  }
-
-  initEditor(options: QuillOptionsStatic): void {
+  protected initEditor(options: QuillOptionsStatic): void {
     this.editor = new quillLib(this.quillEditor.nativeElement, options);
 
     this.editor.enable(!this.disabled);
@@ -193,7 +195,7 @@ export abstract class RTEformElement extends BaseFormElement
 
     this.editor.on('selection-change', range => {
       this.onEditorSelectionChange(range);
-      this.doOnSelectionChange(range);
+      this.onSelectionChange(range);
     });
 
     this.editor.root.addEventListener('focus', () => {
