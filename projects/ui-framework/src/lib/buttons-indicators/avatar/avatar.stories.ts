@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { AvatarSize } from './avatar.enum';
@@ -7,15 +12,18 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { AvatarModule } from './avatar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Icons, IconColor } from '../../icons/icons.enum';
+import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
+import { IconsModule } from '../../icons/icons.module';
 
-const avatarStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
-  withKnobs
-);
+const avatarStories = storiesOf(
+  ComponentGroupType.ButtonsAndIndicators,
+  module
+).addDecorator(withKnobs);
 
 const sizeOptions = values(AvatarSize);
 const badges = [Icons.pending_badge, Icons.approve_badge];
 const badgeColors = Object.keys(IconColor);
+
 const template = `
 <div style="display: flex; justify-content: center;">
 <b-avatar
@@ -30,6 +38,7 @@ const template = `
 </b-avatar>
 </div>
 `;
+
 const note = `
   ## Avatar Element
   #### Module
@@ -55,6 +64,29 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Avatar'">
+
+<style>
+
+  .upload-overlay {
+    background-color: rgba(0, 0, 0, .4);
+    color: white;
+    pointer-events: none;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.9s;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    background-size: initial;
+    display: flex;
+    align-items: center;
+  }
+
+</style>
+
   ${template}
 </b-story-book-layout>
 `;
@@ -77,14 +109,15 @@ avatarStories.add(
         disabled: boolean('disabled', false),
         badge: {
           icon: select('badge icon', badges, Icons.pending_badge),
-          color: select('badge color', badgeColors, IconColor.primary),
-        },
+          color: select('badge color', badgeColors, IconColor.primary)
+        }
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           AvatarModule,
+          IconsModule
         ]
       }
     };
