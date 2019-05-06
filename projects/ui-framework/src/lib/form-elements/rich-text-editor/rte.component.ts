@@ -7,7 +7,8 @@ import {
   ViewChild,
   HostBinding,
   Input,
-  ElementRef
+  ElementRef,
+  OnInit
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import quillLib, { QuillOptionsStatic } from 'quill';
@@ -53,7 +54,7 @@ quillLib.register(PlaceholderBlot);
   ]
 })
 export class RichTextEditorComponent extends RTEformElement
-  implements AfterViewInit {
+  implements OnInit, AfterViewInit {
   constructor(
     private rteUtilsService: RteUtilsService,
     private DOM: DOMhelpers,
@@ -94,11 +95,15 @@ export class RichTextEditorComponent extends RTEformElement
 
   private blotsToDeleteWhole = [BlotType.link, BlotType.placeholder];
 
+  ngOnInit() {
+    this.controls = this.controls.filter(
+      cntrl => !this.removeControls.includes(cntrl)
+    );
+  }
+
   ngAfterViewInit(): void {
     this.onRTEviewInit();
-    if (this.placeholderList) {
-      this.controls.push(RTEControls.placeholders);
-    }
+
     const editorOptions: QuillOptionsStatic = {
       theme: 'snow',
       placeholder: this.rteUtilsService.getEditorPlaceholder(
