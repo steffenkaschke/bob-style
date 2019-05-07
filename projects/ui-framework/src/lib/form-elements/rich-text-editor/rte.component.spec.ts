@@ -88,11 +88,7 @@ describe('RichTextEditorComponent', () => {
         MatFormFieldModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        RteUtilsService,
-        DOMhelpers,
-        PlaceholderRteConverterService,
-      ],
+      providers: [RteUtilsService, DOMhelpers, PlaceholderRteConverterService]
     })
       .compileComponents()
       .then(() => {
@@ -265,14 +261,14 @@ describe('RichTextEditorComponent', () => {
       });
       fixture.detectChanges();
 
-      expect(RTEqlEditorNativeElement.textContent).toEqual('test text');
+      expect(RTEqlEditorNativeElement.textContent.trim()).toEqual('test text');
     });
   });
 
   describe('Events', () => {
     it('should output RteCurrentContent object when text changes', done => {
       const subscr = RTEComponent.changed.subscribe(val => {
-        expect(val.body).toEqual('<div>test text</div>');
+        expect(val.body).toEqual('<div>test text </div>');
         expect(val.plainText).toEqual('test text');
         subscr.unsubscribe();
         done();
@@ -432,20 +428,23 @@ describe('RichTextEditorComponent', () => {
               id: '/root/firstName',
               selected: false,
               value: 'First name'
-            },
+            }
           ]
-        },
+        }
       ];
       RTEComponent.controls = [RTEControls.placeholders];
       RTEComponent.placeholderList = placeholderList;
       RTEComponent.ngOnChanges({
-        value:
-          new SimpleChange(
-            null, '<div>Hi, <strong>My</strong> name is {{/root/firstName}} my job title</div>', false)
+        value: new SimpleChange(
+          null,
+          '<div>Hi, <strong>My</strong> name is {{/root/firstName}} my job title</div>',
+          false
+        )
       });
-      expect(RTEComponent.value)
-        .toEqual('<div>Hi, <strong>My</strong> name is <span ' +
-          'data-placeholder-id="/root/firstName">First name</span> my job title</div>');
+      expect(RTEComponent.value).toEqual(
+        '<div>Hi, <strong>My</strong> name is <span ' +
+          'data-placeholder-id="/root/firstName">First name</span> my job title</div>'
+      );
     });
   });
 });

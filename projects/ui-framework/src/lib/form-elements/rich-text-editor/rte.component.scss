@@ -456,7 +456,24 @@ $border-color-error: $color-error;
   }
 }
 
-:host::ng-deep {
+// Editor text area CSS mods
+
+:host ::ng-deep {
+  span[style],
+  strong[style],
+  u[style],
+  em[style] {
+    color: inherit;
+  }
+
+  [style] a {
+    color: #e52c51;
+  }
+}
+
+// Custom Blots styling
+
+:host ::ng-deep {
   [data-placeholder-id] {
     box-sizing: border-box;
     border-radius: 13px;
@@ -467,7 +484,8 @@ $border-color-error: $color-error;
     background-color: #fffaa5;
     border-color: #fffaa5;
   }
-  [contenteditable="false"] {
+
+  [contenteditable='false'] {
     user-select: none;
   }
 }
