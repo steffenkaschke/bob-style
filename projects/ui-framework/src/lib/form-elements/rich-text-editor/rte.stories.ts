@@ -1,5 +1,13 @@
 import { storiesOf } from '@storybook/angular';
-import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  array,
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,7 +18,6 @@ import { RichTextEditorModule } from './rte.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RTEControls, RTEType } from './rte.enum';
 import { SelectGroupOption } from '../lists/list.interface';
-
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -26,6 +33,7 @@ const template = `
       [label]="label"
       [value]="value"
       [controls]="controls"
+      [removeControls]="removeControls"
       [minHeight]="minHeight"
       [maxHeight]="maxHeight"
       [disabled]="disabled"
@@ -47,18 +55,6 @@ const storyTemplate = `
   </div>
 </b-story-book-layout>
 `;
-
-const controlsWithoutPlaceholder = [
-  RTEControls.size,
-  RTEControls.bold,
-  RTEControls.italic,
-  RTEControls.underline,
-  RTEControls.link,
-  RTEControls.list,
-  RTEControls.align,
-  RTEControls.dir,
-  RTEControls.placeholders
-];
 
 const note = `
   ## Rich text editor
@@ -92,24 +88,23 @@ const note = `
 
 `;
 
-const placeholderMock: SelectGroupOption[] =
-  [
-    {
-      groupName: 'Basic Info - header',
-      options: [
-        {
-          value: 'First name',
-          id: '/root/firstName',
-          selected: false,
-        },
-        {
-          value: 'work | title',
-          id: '/work/title',
-          selected: false,
-        },
-      ]
-    }];
-
+const placeholderMock: SelectGroupOption[] = [
+  {
+    groupName: 'Basic Info - header',
+    options: [
+      {
+        value: 'First name',
+        id: '/root/firstName',
+        selected: false
+      },
+      {
+        value: 'work | title',
+        id: '/work/title',
+        selected: false
+      }
+    ]
+  }
+];
 
 inputStories.add(
   'Rich text editor',
@@ -120,7 +115,12 @@ inputStories.add(
         type: select('type', values(RTEType), RTEType.primary),
         label: text('label', 'Compose an epic...'),
         value: text('value', value),
-        controls: array('controls', values(controlsWithoutPlaceholder), '\n'),
+        controls: array('controls', values(RTEControls), '\n'),
+        removeControls: array(
+          'removeControls',
+          [RTEControls.placeholders],
+          '\n'
+        ),
         placeholderList: object<SelectGroupOption>('options', placeholderMock),
         minHeight: number('minHeight', 200),
         maxHeight: number('maxHeight', 400),
@@ -145,7 +145,7 @@ inputStories.add(
     };
   },
   {
-    notes: {markdown: note},
+    notes: { markdown: note },
     knobs: {
       escapeHTML: false
     }

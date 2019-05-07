@@ -7,7 +7,8 @@ import {
   ViewChild,
   HostBinding,
   Input,
-  ElementRef
+  ElementRef,
+  OnInit
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import quillLib, { QuillOptionsStatic } from 'quill';
@@ -52,16 +53,15 @@ quillLib.register(PlaceholderBlot);
     }
   ]
 })
-
 export class RichTextEditorComponent extends RTEformElement
-  implements AfterViewInit {
+  implements OnInit, AfterViewInit {
   constructor(
     private rteUtilsService: RteUtilsService,
     private DOM: DOMhelpers,
     rteUtils: RteUtilsService,
     changeDetector: ChangeDetectorRef,
     injector: Injector,
-    placeholderRteConverterService: PlaceholderRteConverterService,
+    placeholderRteConverterService: PlaceholderRteConverterService
   ) {
     super(rteUtils, changeDetector, injector, placeholderRteConverterService);
   }
@@ -93,10 +93,17 @@ export class RichTextEditorComponent extends RTEformElement
   readonly RTEFontSize = RTEFontSize;
   readonly panelDefaultPosVer = PanelDefaultPosVer;
 
-  private blotsToDeleteWhole = [BlotType.Link, BlotType.Placeholder];
+  private blotsToDeleteWhole = [BlotType.link, BlotType.placeholder];
+
+  ngOnInit() {
+    this.controls = this.controls.filter(
+      cntrl => !this.removeControls.includes(cntrl)
+    );
+  }
 
   ngAfterViewInit(): void {
     this.onRTEviewInit();
+
     const editorOptions: QuillOptionsStatic = {
       theme: 'snow',
       placeholder: this.rteUtilsService.getEditorPlaceholder(
@@ -129,7 +136,6 @@ export class RichTextEditorComponent extends RTEformElement
   private addKeyBindings(): void {
     this.editor.keyboard.addBinding({ key: KeyboardKeys.backspace }, () => {
       if (this.blotsToDeleteWhole.length > 0) {
-
         this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
 
         if (
@@ -185,7 +191,7 @@ export class RichTextEditorComponent extends RTEformElement
       startIndex: this.selection.index,
       insertText: rteLink.text,
       format: {
-        type: BlotType.Link,
+        type: BlotType.link,
         value: rteLink.url
       },
       unformat: rteLink.url ? null : RteLinkFormats
@@ -198,7 +204,8 @@ export class RichTextEditorComponent extends RTEformElement
     this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
     this.selectedText = this.rteUtilsService.getSelectionText(
       this.editor,
-      this.selection);
+      this.selection
+    );
   }
 
   public onPlaceholderSelectChange(selectGroupOptions): void {
@@ -207,9 +214,9 @@ export class RichTextEditorComponent extends RTEformElement
       startIndex: this.selection.index,
       insertText: selectGroupOptions.triggerValue,
       format: {
-        type: BlotType.Placeholder,
+        type: BlotType.placeholder,
         value: selectGroupOptions.selectedOptionId
-      },
+      }
     };
     this.rteUtilsService.updateEditor(this.editor, updateConfig);
   }
