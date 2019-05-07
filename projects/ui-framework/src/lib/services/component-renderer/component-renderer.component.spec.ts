@@ -63,11 +63,10 @@ describe('ComponentRendererComponent', () => {
 
         mockNativeElement = fixture.debugElement.query(By.css('b-mock'))
           .nativeElement;
-        avatarComponent = fixture.debugElement.query(
-          By.css('.slot-1 .b-avatar')
-        ).componentInstance;
+        avatarComponent = fixture.debugElement.query(By.css('.slot-1 b-avatar'))
+          .componentInstance;
         avatarNativeElement = fixture.debugElement.query(
-          By.css('.b-avatar.clickable')
+          By.css('.avatar.clickable')
         ).nativeElement;
         textElement = fixture.debugElement.query(By.css('.slot-2'))
           .nativeElement;
