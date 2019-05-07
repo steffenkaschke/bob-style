@@ -2,11 +2,6 @@
 @import '../../style/mixins';
 @import '../../style/typography';
 
-$avatar-size-mini: 30px;
-$avatar-size-small: 60px;
-$avatar-size-medium: 90px;
-$avatar-size-large: 120px;
-
 :host {
   display: inline-flex;
   align-items: center;
@@ -26,6 +21,7 @@ $avatar-size-large: 120px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  @include size(var(--avatar-size));
 
   &.emptyAvatar {
     background-size: auto;
@@ -58,14 +54,6 @@ $avatar-size-large: 120px;
     }
   }
 
-  &-mini {
-    @include size($avatar-size-mini);
-  }
-
-  &-small {
-    @include size($avatar-size-small);
-  }
-
   &-medium,
   &-large {
     box-shadow: 0 2px 4px 0 $boxShadowColor;
@@ -73,14 +61,6 @@ $avatar-size-large: 120px;
     &.clickable:hover {
       box-shadow: 0 6px 12px 0 $boxShadowColor;
     }
-  }
-
-  &-medium {
-    @include size($avatar-size-medium);
-  }
-
-  &-large {
-    @include size($avatar-size-large);
   }
 }
 
@@ -120,6 +100,7 @@ $avatar-size-large: 120px;
   &-mini,
   &-small {
     margin-left: 8px;
+    max-width: calc(100% - var(--avatar-size) + 8px);
 
     .title,
     .subtitle {
@@ -133,17 +114,15 @@ $avatar-size-large: 120px;
 
   &-mini {
     line-height: 1.2;
-    max-width: calc(100% - #{$avatar-size-mini + 8px});
   }
 
   &-small {
     line-height: $line-height-body;
-    max-width: calc(100% - #{$avatar-size-small + 8px});
   }
 
   &-medium {
     margin-left: 10px;
-    max-width: calc(100% - #{$avatar-size-medium + 10px});
+    max-width: calc(100% - var(--avatar-size) + 10px);
 
     .title {
       @include DisplayFont($font-size-display-3, $font-weight-display-3);
@@ -155,7 +134,7 @@ $avatar-size-large: 120px;
 
   &-large {
     margin-left: 20px;
-    max-width: calc(100% - #{$avatar-size-large + 20px});
+    max-width: calc(100% - var(--avatar-size) + 20px);
 
     .title {
       @include DisplayFont($font-size-display-1, $font-weight-display-1);

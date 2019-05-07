@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AvatarComponent } from './avatar.component';
-import { AvatarSize } from './avatar.enum';
+import { AvatarSize, BadgeSize } from './avatar.enum';
 import { By } from '@angular/platform-browser';
 import { IconsModule } from '../../icons/icons.module';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
@@ -85,6 +85,17 @@ describe('AvatarComponent', () => {
     });
   });
 
+  describe('Avatar size', () => {
+    it('Should set the right size of the avatar with css variable', () => {
+      component.size = AvatarSize.large;
+      component.ngAfterViewInit();
+      fixture.detectChanges();
+      expect(getComputedStyle(avatarElement).width).toEqual(
+        AvatarSize.large + 'px'
+      );
+    });
+  });
+
   describe('Title and subtitle', () => {
     it('Should put title & subtitle text', () => {
       component.subtitle = 'Subtitle';
@@ -110,15 +121,16 @@ describe('AvatarComponent', () => {
 
   describe('badge', () => {
     it('Should add badge if badge config is present', () => {
-      component.size = AvatarSize.mini;
+      component.size = AvatarSize.small;
       component.badge = {
         icon: 'pending_badge',
         color: 'primary'
       };
+      component.ngAfterViewInit();
       fixture.detectChanges();
       const badgeElement = fixture.debugElement.query(
-        By.css('.avatar-badge .mat-icon.small')
-      ).nativeElement;
+        By.css('.avatar-badge .mat-icon.' + BadgeSize.small)
+      );
       expect(badgeElement).toBeTruthy();
     });
   });
