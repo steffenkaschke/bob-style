@@ -35,8 +35,8 @@ export abstract class RTEformElement extends BaseFormElement
   @Input() public maxChars: number;
   @Input() private formControlName: any;
   @Input() private formControl: any;
-
-  @Input() public controls?: RTEControls[] = Object.values(RTEControls);
+  @Input() public controls: RTEControls[] = Object.values(RTEControls);
+  @Input() public removeControls: RTEControls[] = [];
 
   @ViewChild('quillEditor') private quillEditor: ElementRef;
 
@@ -133,8 +133,13 @@ export abstract class RTEformElement extends BaseFormElement
     if (changes.value) {
       this.applyValue(changes.value.currentValue);
     }
-    if (changes.controls) {
-      this.controls = changes.controls.currentValue;
+    if (changes.controls || this.removeControls) {
+      if (changes.controls) {
+        this.controls = changes.controls.currentValue;
+      }
+      if (changes.controls) {
+        this.controls = changes.controls.currentValue;
+      }
       this.initTransformers();
     }
   }

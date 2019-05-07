@@ -77,10 +77,9 @@ export class RichTextEditorComponent extends RTEformElement
     );
   }
 
-  @Input() public type?: RTEType = RTEType.primary;
+  @Input() public type: RTEType = RTEType.primary;
   @Input() public minHeight = 185;
   @Input() public maxHeight = 295;
-  @Input() public removeControls?: RTEControls[] = [RTEControls.placeholders];
   @Input() public placeholderList: SelectGroupOption[];
 
   @ViewChild('toolbar') private toolbar: ElementRef;
@@ -122,6 +121,7 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   ngOnInit() {
+    this.removeControls = [RTEControls.placeholders];
     this.initTransformers();
   }
 
