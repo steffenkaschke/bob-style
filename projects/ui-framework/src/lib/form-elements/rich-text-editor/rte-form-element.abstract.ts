@@ -36,16 +36,14 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   @Input() public value: string;
-  @Input() private maxChars: number;
+  @Input() public maxChars: number;
   @Input() private formControlName: any;
   @Input() private formControl: any;
 
-  @Input() protected controls?: RTEControls[] = Object.values(RTEControls);
-  @Input() protected removeControls?: RTEControls[] = [
-    RTEControls.placeholders
-  ];
+  @Input() public controls?: RTEControls[] = Object.values(RTEControls);
+  @Input() public removeControls?: RTEControls[] = [RTEControls.placeholders];
 
-  @Input() protected placeholderList: SelectGroupOption[];
+  @Input() public placeholderList: SelectGroupOption[];
 
   @ViewChild('quillEditor') private quillEditor: ElementRef;
 
