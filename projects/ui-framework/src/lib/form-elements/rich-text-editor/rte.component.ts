@@ -32,6 +32,9 @@ import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
 import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
 import { PlaceholderBlot } from './formats/placeholder-blot';
 import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
+import { SelectGroupOption } from '../lists/list.interface';
+import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
+import { RtePlaceholder } from './placeholder-rte-converter/placeholder-rte-converter.interface';
 
 quillLib.register(LinkBlot);
 quillLib.register(PlaceholderBlot);
@@ -56,14 +59,14 @@ quillLib.register(PlaceholderBlot);
 export class RichTextEditorComponent extends RTEformElement
   implements OnInit, AfterViewInit {
   constructor(
+    private placeholderRteConverterService: PlaceholderRteConverterService,
     private rteUtilsService: RteUtilsService,
     private DOM: DOMhelpers,
     rteUtils: RteUtilsService,
     changeDetector: ChangeDetectorRef,
-    injector: Injector,
-    placeholderRteConverterService: PlaceholderRteConverterService
+    injector: Injector
   ) {
-    super(rteUtils, changeDetector, injector, placeholderRteConverterService);
+    super(rteUtils, changeDetector, injector);
   }
 
   @HostBinding('class') get classes() {
@@ -78,6 +81,9 @@ export class RichTextEditorComponent extends RTEformElement
   @Input() type?: RTEType = RTEType.primary;
   @Input() minHeight = 185;
   @Input() maxHeight = 295;
+
+  @Input() public removeControls?: RTEControls[] = [RTEControls.placeholders];
+  @Input() public placeholderList: SelectGroupOption[];
 
   @ViewChild('toolbar') toolbar: ElementRef;
   @ViewChild('suffix') suffix: ElementRef;
@@ -99,6 +105,19 @@ export class RichTextEditorComponent extends RTEformElement
     this.controls = this.controls.filter(
       cntrl => !this.removeControls.includes(cntrl)
     );
+
+    // registering input/output transformers
+
+    this.outputTransformers.push(this.rteUtilsService.cleanupHtml);
+
+    if (this.controls.includes(RTEControls.placeholders)) {
+      this.inputTransformers.push(
+        this.placeholderRteConverterService.toRte(this.placeholderList[0]
+          .options as RtePlaceholder[])
+      );
+
+      this.outputTransformers.push(this.placeholderRteConverterService.fromRte);
+    }
   }
 
   ngAfterViewInit(): void {

@@ -16,9 +16,6 @@ import { RTEchangeEvent, RTEControls } from './rte.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { BlotData, RteCurrentContent } from './rte.interface';
 import { BaseFormElement } from '../base-form-element';
-import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
-import { get } from 'lodash';
-import { SelectGroupOption } from '../lists/list.interface';
 
 const Block = quillLib.import('blots/block');
 Block.tagName = 'DIV';
@@ -29,8 +26,7 @@ export abstract class RTEformElement extends BaseFormElement
   protected constructor(
     private rteUtils: RteUtilsService,
     private changeDetector: ChangeDetectorRef,
-    private injector: Injector,
-    private placeholderRteConverterService: PlaceholderRteConverterService
+    private injector: Injector
   ) {
     super();
   }
@@ -41,9 +37,6 @@ export abstract class RTEformElement extends BaseFormElement
   @Input() private formControl: any;
 
   @Input() public controls?: RTEControls[] = Object.values(RTEControls);
-  @Input() public removeControls?: RTEControls[] = [RTEControls.placeholders];
-
-  @Input() public placeholderList: SelectGroupOption[];
 
   @ViewChild('quillEditor') private quillEditor: ElementRef;
 
@@ -62,11 +55,57 @@ export abstract class RTEformElement extends BaseFormElement
   protected selectedText: string;
   protected currentBlot: BlotData;
   protected hasSizeSet = false;
-  private latestOutputValue: RteCurrentContent;
+  private latestOutputValue: string;
   private writingValue = false;
   private sendChangeOn = RTEchangeEvent.blur;
   private control: FormControl;
+
+  protected inputTransformers: Function[] = [];
+  protected outputTransformers: Function[] = [];
   protected onSelectionChange: Function = (range: RangeStatic) => {};
+
+  protected applyValue(val: string): void {
+    if (this.value !== val || !this.latestOutputValue) {
+      val = this.inputTransformers.reduce(
+        (previousResult, fn) => fn(previousResult),
+        val
+      );
+
+      this.value = val || '';
+      if (this.editor) {
+        this.editor.setContents(
+          this.editor.clipboard.convert(this.value).insert(' ')
+        );
+      }
+    }
+  }
+
+  protected transmitValue(condition: boolean): void {
+    if (!this.writingValue && condition) {
+      let newOutputValue = this.rteUtils.getHtmlContent(this.editor);
+      newOutputValue = this.outputTransformers.reduce(
+        (previousResult, fn) => fn(previousResult),
+        newOutputValue
+      );
+
+      if (
+        !this.latestOutputValue ||
+        this.latestOutputValue !== newOutputValue
+      ) {
+        this.latestOutputValue = newOutputValue;
+
+        this.changed.emit({
+          body: newOutputValue
+        });
+
+        this.value = newOutputValue;
+        this.propagateChange({
+          body: newOutputValue
+        });
+      }
+    }
+    this.writingValue = false;
+  }
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabled) {
@@ -96,11 +135,6 @@ export abstract class RTEformElement extends BaseFormElement
     }
   }
 
-  public writeValue(val: string): void {
-    this.writingValue = true;
-    this.applyValue(val);
-  }
-
   protected onRTEviewInit(): void {
     if (this.formControl || this.formControlName) {
       const ngControl: NgControl = this.injector.get<NgControl>(
@@ -118,22 +152,7 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   private onEditorTextChange(): void {
-    const newOutputValue = this.rteUtils.getHtmlContent(
-      this.editor,
-      this.controls
-    );
-    if (
-      !this.latestOutputValue ||
-      this.latestOutputValue.body !== newOutputValue.body
-    ) {
-      this.latestOutputValue = newOutputValue;
-      this.changed.emit(newOutputValue);
-      if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.change) {
-        this.value = newOutputValue.body;
-        this.propagateChange(newOutputValue);
-      }
-      this.writingValue = false;
-    }
+    this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
   }
 
   private onEditorSelectionChange(range: RangeStatic): void {
@@ -147,35 +166,23 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   private onEditorFocus(): void {
-    this.focused.emit(this.latestOutputValue);
+    this.focused.emit({ body: this.latestOutputValue });
   }
 
   private onEditorBlur(): void {
-    this.blurred.emit(this.latestOutputValue);
+    this.transmitValue(this.sendChangeOn === RTEchangeEvent.blur);
+
     if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.blur) {
-      this.value = this.latestOutputValue.body;
-      this.propagateChange(this.latestOutputValue);
       this.onTouched();
     }
-    this.writingValue = false;
+
+    this.blurred.emit({ body: this.latestOutputValue });
   }
 
-  protected applyValue(val: string): void {
-    if (this.value !== val || !this.latestOutputValue) {
-      this.value = val || '';
-      if (this.editor) {
-        if (this.controls.includes(RTEControls.placeholders)) {
-          const placeholders = get(this.placeholderList, '[0].options');
-          this.value = this.placeholderRteConverterService.toRte(
-            this.value,
-            placeholders
-          );
-        }
-        this.editor.setContents(
-          this.editor.clipboard.convert(this.value).insert(' ')
-        );
-      }
-    }
+  // this is part of ControlValueAccessor interface
+  public writeValue(val: string): void {
+    this.writingValue = true;
+    this.applyValue(val);
   }
 
   protected initEditor(options: QuillOptionsStatic): void {

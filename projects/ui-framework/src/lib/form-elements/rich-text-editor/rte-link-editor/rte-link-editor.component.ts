@@ -43,7 +43,7 @@ export class RteLinkEditorComponent {
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
 
-  private updateOnEvent = InputEventType.onChange; // onBlur
+  private updateOnEvent = InputEventType.onChange;
 
   focusTextInput(): void {
     (this.textInput.bInput as any).nativeElement.focus();

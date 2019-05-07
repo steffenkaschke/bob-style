@@ -1,5 +1,4 @@
 import Quill from 'quill';
-import startsWith from 'lodash/startsWith';
 
 const Inline = Quill.import('blots/inline');
 
@@ -10,7 +9,7 @@ export const checkUrl = (url: string) => {
     return null;
   }
   url = url.trim();
-  return url ? (startsWith(url, 'http') ? url : `http://${url}`) : null;
+  return url ? (url.startsWith('http') ? url : `http://${url}`) : null;
 };
 
 export class LinkBlot extends Inline {

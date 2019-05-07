@@ -1,41 +1,33 @@
 import { Injectable } from '@angular/core';
-import { chain, get, isEmpty, trim } from 'lodash';
 import { RteCurrentContent, UpdateRteConfig, BlotData } from '../rte.interface';
 import { Quill, RangeStatic } from 'quill';
 import Parchment from 'parchment';
 import { Blot } from 'parchment/src/blot/abstract/blot';
 import { TextBlot } from 'quill/blots/text';
 import { keysFromArrayOrObject } from '../../../services/utils/functional-utils';
-import { PlaceholderRteConverterService } from '../placeholder-rte-converter/placeholder-rte-converter.service';
-import { RTEControls } from '../rte.enum';
 
 @Injectable()
 export class RteUtilsService {
-  constructor(
-    private placeholderRteConverterService: PlaceholderRteConverterService
-  ) {}
+  constructor() {}
 
-  getHtmlContent(editor: Quill, controls: RTEControls[]): RteCurrentContent {
+  getHtmlContent(editor: Quill): string {
     const plainText = editor.getText().trim();
-    const editorHtml = !plainText
-      ? ''
-      : editor.root.innerHTML
-          // empty lines in the end
-          .replace(
-            /(<p([^\n\r\/<>]+)?><br><\/p>|<div([^\n\r\/<>]+)?><br><\/div>)+$/gi,
-            ''
-          )
-          // empty tags
-          .replace(/<([^>/][^>]+)([^\n\r\/<>]+)?>(\s+)?<\/\1>/gi, '')
-          .replace(/(<em)/gi, '<i')
-          .replace(/(<\/em>)/gi, '</i>');
-    const body = controls.includes(RTEControls.placeholders)
-      ? this.placeholderRteConverterService.fromRte(editorHtml)
-      : editorHtml;
-    return {
-      body,
-      plainText
-    };
+    return !plainText ? '' : editor.root.innerHTML;
+  }
+
+  cleanupHtml(value: string): string {
+    return (
+      value
+        // empty lines in the end
+        .replace(
+          /(<p([^\n\r\/<>]+)?><br><\/p>|<div([^\n\r\/<>]+)?><br><\/div>)+$/gi,
+          ''
+        )
+        // empty tags
+        .replace(/<([^>/][^>]+)([^\n\r\/<>]+)?>(\s+)?<\/\1>/gi, '')
+        .replace(/(<em)/gi, '<i')
+        .replace(/(<\/em>)/gi, '</i>')
+    );
   }
 
   getCurrentSelection(editor: Quill): RangeStatic {

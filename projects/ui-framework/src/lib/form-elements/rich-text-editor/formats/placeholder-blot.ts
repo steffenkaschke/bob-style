@@ -3,11 +3,10 @@ import Quill from 'quill';
 const Inline = Quill.import('blots/inline');
 
 export class PlaceholderBlot extends Inline {
-
   static blotName = 'Placeholder';
   static tagName = 'span';
 
-  static create(id) {
+  static create(id: string) {
     const node = super.create();
     node.setAttribute('data-placeholder-id', id);
     node.setAttribute('contenteditable', false);

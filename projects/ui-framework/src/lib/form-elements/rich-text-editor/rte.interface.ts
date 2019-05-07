@@ -22,7 +22,7 @@ export interface RteLink {
 
 export interface RteCurrentContent {
   body: string;
-  plainText: string;
+  plainText?: string;
 }
 
 export interface BlotData {
