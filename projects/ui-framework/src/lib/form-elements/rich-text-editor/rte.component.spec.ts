@@ -413,7 +413,7 @@ fdescribe('RichTextEditorComponent', () => {
       expect(testVar).not.toEqual('test2');
     }));
   });
-  describe('PlaceholderRteConverter', () => {
+  fdescribe('PlaceholderRteConverter', () => {
     it('Should convert HTML to RTE', () => {
       const placeholderList = [
         {
@@ -433,7 +433,11 @@ fdescribe('RichTextEditorComponent', () => {
         }
       ];
       RTEComponent.controls = [RTEControls.placeholders];
+      RTEComponent.removeControls = [];
       RTEComponent.placeholderList = placeholderList;
+
+      fixture.detectChanges();
+
       RTEComponent.ngOnChanges({
         value: new SimpleChange(
           null,
@@ -441,6 +445,11 @@ fdescribe('RichTextEditorComponent', () => {
           false
         )
       });
+
+      fixture.detectChanges();
+
+      console.log(RTEComponent);
+
       expect(RTEComponent.value).toEqual(
         '<div>Hi, <strong>My</strong> name is <span ' +
           'data-placeholder-id="/root/firstName">First name</span> my job title</div>'

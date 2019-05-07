@@ -77,30 +77,27 @@ export class RichTextEditorComponent extends RTEformElement
     );
   }
 
-  @Input() type?: RTEType = RTEType.primary;
-  @Input() minHeight = 185;
-  @Input() maxHeight = 295;
-
+  @Input() public type?: RTEType = RTEType.primary;
+  @Input() public minHeight = 185;
+  @Input() public maxHeight = 295;
   @Input() public removeControls?: RTEControls[] = [RTEControls.placeholders];
   @Input() public placeholderList: SelectGroupOption[];
 
-  @ViewChild('toolbar') toolbar: ElementRef;
-  @ViewChild('suffix') suffix: ElementRef;
+  @ViewChild('toolbar') private toolbar: ElementRef;
+  @ViewChild('suffix') private suffix: ElementRef;
   @ViewChild('linkPanel') private linkPanel: PanelComponent;
   @ViewChild('linkEditor') private linkEditor: RteLinkEditorComponent;
 
-  hasSuffix = true;
-
+  public hasSuffix = true;
   readonly buttonType = ButtonType;
   readonly icons = Icons;
   readonly panelSize = PanelSize;
   readonly RTEControls = RTEControls;
   readonly RTEFontSize = RTEFontSize;
   readonly panelDefaultPosVer = PanelDefaultPosVer;
-
   private blotsToDeleteWhole = [BlotType.link, BlotType.placeholder];
 
-  ngOnInit() {
+  initTransformers(): void {
     this.controls = this.controls.filter(
       cntrl => !this.removeControls.includes(cntrl)
     );
@@ -111,8 +108,8 @@ export class RichTextEditorComponent extends RTEformElement
       };
 
     // registering input/output transformers
-
-    this.outputTransformers.push(this.rteUtilsService.cleanupHtml);
+    this.inputTransformers = [];
+    this.outputTransformers = [this.rteUtilsService.cleanupHtml];
 
     if (this.controls.includes(RTEControls.placeholders)) {
       this.inputTransformers.push(
@@ -122,6 +119,10 @@ export class RichTextEditorComponent extends RTEformElement
 
       this.outputTransformers.push(this.placeholderRteConverterService.fromRte);
     }
+  }
+
+  ngOnInit() {
+    this.initTransformers();
   }
 
   ngAfterViewInit(): void {
@@ -208,7 +209,7 @@ export class RichTextEditorComponent extends RTEformElement
     }, 0);
   }
 
-  onLinkUpdate(rteLink: RteLink): void {
+  public onLinkUpdate(rteLink: RteLink): void {
     const updateConfig: UpdateRteConfig = {
       replaceStr: this.selectedText,
       startIndex: this.selection.index,
@@ -244,7 +245,7 @@ export class RichTextEditorComponent extends RTEformElement
     this.rteUtilsService.updateEditor(this.editor, updateConfig);
   }
 
-  onLinkCancel(): void {
+  public onLinkCancel(): void {
     this.linkPanel.closePanel();
   }
 }

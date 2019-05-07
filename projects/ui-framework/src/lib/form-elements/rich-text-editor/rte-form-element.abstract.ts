@@ -62,6 +62,7 @@ export abstract class RTEformElement extends BaseFormElement
 
   protected inputTransformers: Function[] = [];
   protected outputTransformers: Function[] = [];
+
   protected outputFormatTransformer: Function = (val: string): any => val;
   protected onSelectionChange: Function = (range: RangeStatic) => {};
 
@@ -104,6 +105,8 @@ export abstract class RTEformElement extends BaseFormElement
     this.writingValue = false;
   }
 
+  protected initTransformers(): void {}
+
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabled) {
       this.disabled = changes.disabled.currentValue;
@@ -129,6 +132,10 @@ export abstract class RTEformElement extends BaseFormElement
     }
     if (changes.value) {
       this.applyValue(changes.value.currentValue);
+    }
+    if (changes.controls) {
+      this.controls = changes.controls.currentValue;
+      this.initTransformers();
     }
   }
 
