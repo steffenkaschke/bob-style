@@ -62,6 +62,7 @@ export abstract class RTEformElement extends BaseFormElement
 
   protected inputTransformers: Function[] = [];
   protected outputTransformers: Function[] = [];
+  protected outputFormatTransformer: Function = (val: string): any => val;
   protected onSelectionChange: Function = (range: RangeStatic) => {};
 
   protected applyValue(val: string): void {
@@ -94,14 +95,10 @@ export abstract class RTEformElement extends BaseFormElement
       ) {
         this.latestOutputValue = newOutputValue;
 
-        this.changed.emit({
-          body: newOutputValue
-        });
+        this.changed.emit(this.outputFormatTransformer(newOutputValue));
 
         this.value = newOutputValue;
-        this.propagateChange({
-          body: newOutputValue
-        });
+        this.propagateChange(this.outputFormatTransformer(newOutputValue));
       }
     }
     this.writingValue = false;
@@ -166,7 +163,7 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   private onEditorFocus(): void {
-    this.focused.emit({ body: this.latestOutputValue });
+    this.focused.emit(this.outputFormatTransformer(this.latestOutputValue));
   }
 
   private onEditorBlur(): void {
@@ -176,7 +173,7 @@ export abstract class RTEformElement extends BaseFormElement
       this.onTouched();
     }
 
-    this.blurred.emit({ body: this.latestOutputValue });
+    this.blurred.emit(this.outputFormatTransformer(this.latestOutputValue));
   }
 
   // this is part of ControlValueAccessor interface

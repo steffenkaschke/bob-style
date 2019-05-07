@@ -23,7 +23,7 @@ import {
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { RteLink, UpdateRteConfig } from './rte.interface';
+import { RteLink, UpdateRteConfig, RteCurrentContent } from './rte.interface';
 import { RTEformElement } from './rte-form-element.abstract';
 import { PanelComponent } from '../../overlay/panel/panel.component';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
@@ -33,7 +33,6 @@ import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.compon
 import { PlaceholderBlot } from './formats/placeholder-blot';
 import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
 import { SelectGroupOption } from '../lists/list.interface';
-import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 import { RtePlaceholder } from './placeholder-rte-converter/placeholder-rte-converter.interface';
 
 quillLib.register(LinkBlot);
@@ -105,6 +104,11 @@ export class RichTextEditorComponent extends RTEformElement
     this.controls = this.controls.filter(
       cntrl => !this.removeControls.includes(cntrl)
     );
+
+    this.outputFormatTransformer = (val: string): RteCurrentContent =>
+      val && {
+        body: val
+      };
 
     // registering input/output transformers
 

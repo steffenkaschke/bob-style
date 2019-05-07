@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RteCurrentContent, UpdateRteConfig, BlotData } from '../rte.interface';
+import { UpdateRteConfig, BlotData } from '../rte.interface';
 import { Quill, RangeStatic } from 'quill';
 import Parchment from 'parchment';
 import { Blot } from 'parchment/src/blot/abstract/blot';

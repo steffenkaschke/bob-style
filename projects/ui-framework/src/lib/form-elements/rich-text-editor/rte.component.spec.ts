@@ -55,7 +55,7 @@ class TestComponent {
   }
 }
 
-describe('RichTextEditorComponent', () => {
+fdescribe('RichTextEditorComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 
