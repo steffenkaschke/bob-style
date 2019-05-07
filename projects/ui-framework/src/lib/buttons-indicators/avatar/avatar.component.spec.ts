@@ -88,7 +88,7 @@ describe('AvatarComponent', () => {
   describe('Avatar size', () => {
     it('Should set the right size of the avatar with css variable', () => {
       component.size = AvatarSize.large;
-      component.ngAfterViewInit();
+      component.ngOnInit();
       fixture.detectChanges();
       expect(getComputedStyle(avatarElement).width).toEqual(
         AvatarSize.large + 'px'
@@ -126,7 +126,7 @@ describe('AvatarComponent', () => {
         icon: 'pending_badge',
         color: 'primary'
       };
-      component.ngAfterViewInit();
+      component.ngOnInit();
       fixture.detectChanges();
       const badgeElement = fixture.debugElement.query(
         By.css('.avatar-badge .mat-icon.' + BadgeSize.small)
