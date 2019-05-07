@@ -34,12 +34,13 @@ export class AvatarComponent implements OnInit, AfterViewInit {
   public badgeSize = BadgeSize;
   constructor(private host: ElementRef, private DOM: DOMhelpers) {}
 
-  ngOnInit(): void {}
-
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.DOM.setCssProps(this.host.nativeElement, {
       '--avatar-size': this.size + 'px'
     });
+  }
+
+  ngAfterViewInit(): void {
     setTimeout(() => {
       this.hasContent =
         this.content && !this.DOM.isEmpty(this.content.nativeElement);
