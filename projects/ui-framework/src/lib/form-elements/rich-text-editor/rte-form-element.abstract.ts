@@ -33,10 +33,11 @@ export abstract class RTEformElement extends BaseFormElement
 
   @Input() public value: string;
   @Input() public maxChars: number;
-  @Input() private formControlName: any;
-  @Input() private formControl: any;
   @Input() public controls: RTEControls[] = Object.values(RTEControls);
   @Input() public removeControls: RTEControls[] = [];
+  @Input() public sendChangeOn: RTEchangeEvent = RTEchangeEvent.blur;
+  @Input() private formControlName: any;
+  @Input() private formControl: any;
 
   @ViewChild('quillEditor') private quillEditor: ElementRef;
 
@@ -57,32 +58,41 @@ export abstract class RTEformElement extends BaseFormElement
   protected hasSizeSet = false;
   private latestOutputValue: string;
   private writingValue = false;
-  private sendChangeOn = RTEchangeEvent.blur;
   private control: FormControl;
 
   protected inputTransformers: Function[] = [];
   protected outputTransformers: Function[] = [];
-
   protected outputFormatTransformer: Function = (val: string): any => val;
-  protected onSelectionChange: Function = (range: RangeStatic) => {};
+
+  protected onNgChanges(changes: SimpleChanges): void {}
+  protected initTransformers(): void {}
 
   protected applyValue(val: string): void {
+    console.log('applyValue', this.sendChangeOn, 'value: "', val, '"');
     if (this.value !== val || !this.latestOutputValue) {
-      val = this.inputTransformers.reduce(
-        (previousResult, fn) => fn(previousResult),
-        val
-      );
-
+      val =
+        !!val.trim() &&
+        this.inputTransformers.reduce(
+          (previousResult, fn) => fn(previousResult),
+          val
+        );
       this.value = val || '';
       if (this.editor) {
+        console.log('editor exists');
         this.editor.setContents(
           this.editor.clipboard.convert(this.value).insert(' ')
         );
+      } else {
+        this.writingValue = false;
+        console.log('no editor');
       }
     }
   }
 
   protected transmitValue(condition: boolean): void {
+    console.log(' >>> transmitValue', !this.writingValue && condition);
+    console.log('this.writingValue', this.writingValue);
+    console.log('transmitValue condition', condition);
     if (!this.writingValue && condition) {
       let newOutputValue = this.rteUtils.getHtmlContent(this.editor);
       newOutputValue = this.outputTransformers.reduce(
@@ -95,7 +105,7 @@ export abstract class RTEformElement extends BaseFormElement
         this.latestOutputValue !== newOutputValue
       ) {
         this.latestOutputValue = newOutputValue;
-
+        console.log('transmitValue emitting change');
         this.changed.emit(this.outputFormatTransformer(newOutputValue));
 
         this.value = newOutputValue;
@@ -104,8 +114,6 @@ export abstract class RTEformElement extends BaseFormElement
     }
     this.writingValue = false;
   }
-
-  protected initTransformers(): void {}
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabled) {
@@ -130,25 +138,31 @@ export abstract class RTEformElement extends BaseFormElement
         this.required
       );
     }
-    if (changes.value) {
-      this.applyValue(changes.value.currentValue);
+    // if (changes.controls) {
+    //   this.controls = changes.controls.currentValue;
+    // }
+    // if (changes.removeControls) {
+    //   this.removeControls = changes.removeControls.currentValue;
+    // }
+    if (changes.controls || changes.removeControls) {
+      this.controls = this.controls.filter(
+        (cntrl: RTEControls) => !this.removeControls.includes(cntrl)
+      );
     }
-    if (changes.controls || this.removeControls) {
-      if (changes.controls) {
-        this.controls = changes.controls.currentValue;
-      }
-      if (changes.controls) {
-        this.controls = changes.controls.currentValue;
-      }
-      this.initTransformers();
+    this.onNgChanges(changes);
+    if (changes.value) {
+      console.log('---ngOnChanges value');
+      this.applyValue(changes.value.currentValue);
     }
   }
 
   protected onRTEviewInit(): void {
+    console.log('===onRTEviewInit', this.formControl, this.formControlName);
     if (this.formControl || this.formControlName) {
       const ngControl: NgControl = this.injector.get<NgControl>(
         NgControl as Type<NgControl>
       );
+      console.log('ngControl', ngControl);
 
       if (ngControl) {
         this.control = ngControl.control as FormControl;
@@ -156,11 +170,13 @@ export abstract class RTEformElement extends BaseFormElement
           this.control.updateOn === 'change'
             ? RTEchangeEvent.change
             : RTEchangeEvent.blur;
+        console.log('ngControl control updateOn', this.control.updateOn);
       }
     }
   }
 
   private onEditorTextChange(): void {
+    console.log('onEditorTextChange', this.sendChangeOn);
     this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
   }
 
@@ -191,6 +207,7 @@ export abstract class RTEformElement extends BaseFormElement
   // this is part of ControlValueAccessor interface
   public writeValue(val: string): void {
     this.writingValue = true;
+    console.log('---writeValue: "', val, '"');
     this.applyValue(val);
   }
 
@@ -204,12 +221,12 @@ export abstract class RTEformElement extends BaseFormElement
     });
 
     if (!!this.value) {
+      console.log('---initEditor applyValue', this.sendChangeOn);
       this.applyValue(this.value);
     }
 
     this.editor.on('selection-change', range => {
       this.onEditorSelectionChange(range);
-      this.onSelectionChange(range);
     });
 
     this.editor.root.addEventListener('focus', () => {

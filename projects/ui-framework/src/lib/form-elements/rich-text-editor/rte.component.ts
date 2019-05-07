@@ -8,7 +8,7 @@ import {
   HostBinding,
   Input,
   ElementRef,
-  OnInit
+  SimpleChanges
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import quillLib, { QuillOptionsStatic } from 'quill';
@@ -56,7 +56,7 @@ quillLib.register(PlaceholderBlot);
   ]
 })
 export class RichTextEditorComponent extends RTEformElement
-  implements OnInit, AfterViewInit {
+  implements AfterViewInit {
   constructor(
     private placeholderRteConverterService: PlaceholderRteConverterService,
     private rteUtilsService: RteUtilsService,
@@ -80,6 +80,7 @@ export class RichTextEditorComponent extends RTEformElement
   @Input() public type: RTEType = RTEType.primary;
   @Input() public minHeight = 185;
   @Input() public maxHeight = 295;
+  @Input() public removeControls: RTEControls[] = [RTEControls.placeholders];
   @Input() public placeholderList: SelectGroupOption[];
 
   @ViewChild('toolbar') private toolbar: ElementRef;
@@ -97,10 +98,6 @@ export class RichTextEditorComponent extends RTEformElement
   private blotsToDeleteWhole = [BlotType.link, BlotType.placeholder];
 
   initTransformers(): void {
-    this.controls = this.controls.filter(
-      cntrl => !this.removeControls.includes(cntrl)
-    );
-
     this.outputFormatTransformer = (val: string): RteCurrentContent =>
       val && {
         body: val
@@ -110,7 +107,10 @@ export class RichTextEditorComponent extends RTEformElement
     this.inputTransformers = [];
     this.outputTransformers = [this.rteUtilsService.cleanupHtml];
 
-    if (this.controls.includes(RTEControls.placeholders)) {
+    if (
+      this.placeholderList &&
+      this.controls.includes(RTEControls.placeholders)
+    ) {
       this.inputTransformers.push(
         this.placeholderRteConverterService.toRte(this.placeholderList[0]
           .options as RtePlaceholder[])
@@ -120,9 +120,14 @@ export class RichTextEditorComponent extends RTEformElement
     }
   }
 
-  ngOnInit() {
-    this.removeControls = [RTEControls.placeholders];
-    this.initTransformers();
+  // this extends RTE Abstract's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
+    if (changes.placeholderList) {
+      this.placeholderList = changes.placeholderList.currentValue;
+    }
+    if (changes.placeholderList || changes.controls || changes.removeControls) {
+      this.initTransformers();
+    }
   }
 
   ngAfterViewInit(): void {
