@@ -26,17 +26,25 @@ export class PlaceholderRteConverterService {
     return elm.innerHTML;
   }
 
-  public toRte(placeholders: RtePlaceholder[]): Function {
-    const regex: RegExp = /{{(.+?)}}/gm;
-
-    return (contentToConvert: string): string =>
-      contentToConvert.replace(regex, (field: string, innerContent: string) => {
+  public toRte(
+    contentToConvert: string,
+    placeholders: RtePlaceholder[]
+  ): string {
+    const regex: RegExp = /{{(.*?)}}/gm;
+    return contentToConvert.replace(
+      regex,
+      (field: string, innerContent: string) => {
         return `<span data-placeholder-id="${innerContent}">${this.getDisplayNameById(
           placeholders,
           innerContent
         )}</span>`;
-      });
+      }
+    );
   }
+
+  public toRtePartial = (placeholders: RtePlaceholder[]) => (
+    contentToConvert: string
+  ) => this.toRte(contentToConvert, placeholders)
 
   private getDisplayNameById(
     placeholders: RtePlaceholder[],

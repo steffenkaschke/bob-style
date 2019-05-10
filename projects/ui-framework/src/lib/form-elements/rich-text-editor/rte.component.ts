@@ -109,7 +109,7 @@ export class RichTextEditorComponent extends RTEformElement
       this.controls.includes(RTEControls.placeholders)
     ) {
       this.inputTransformers.push(
-        this.placeholderRteConverterService.toRte(this.placeholderList[0]
+        this.placeholderRteConverterService.toRtePartial(this.placeholderList[0]
           .options as RtePlaceholder[])
       );
 
