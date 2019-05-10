@@ -256,6 +256,10 @@ export class RichTextEditorComponent extends RTEformElement
     this.linkPanel.closePanel();
   }
 
+  public onLinkCancel(): void {
+    this.linkPanel.closePanel();
+  }
+
   public onPlaceholderPanelOpen() {
     this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
     this.selectedText = this.rteUtilsService.getSelectionText(
@@ -275,9 +279,5 @@ export class RichTextEditorComponent extends RTEformElement
       }
     };
     this.rteUtilsService.updateEditor(this.editor, updateConfig);
-  }
-
-  public onLinkCancel(): void {
-    this.linkPanel.closePanel();
   }
 }
