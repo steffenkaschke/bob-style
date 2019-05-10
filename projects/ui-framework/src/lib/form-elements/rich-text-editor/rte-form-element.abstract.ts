@@ -41,15 +41,9 @@ export abstract class RTEformElement extends BaseFormElement
 
   @ViewChild('quillEditor') private quillEditor: ElementRef;
 
-  @Output() blurred: EventEmitter<RteCurrentContent> = new EventEmitter<
-    RteCurrentContent
-  >();
-  @Output() focused: EventEmitter<RteCurrentContent> = new EventEmitter<
-    RteCurrentContent
-  >();
-  @Output() changed: EventEmitter<RteCurrentContent> = new EventEmitter<
-    RteCurrentContent
-  >();
+  @Output() blurred: EventEmitter<any> = new EventEmitter<any>();
+  @Output() focused: EventEmitter<any> = new EventEmitter<any>();
+  @Output() changed: EventEmitter<any> = new EventEmitter<any>();
 
   public editor: Quill;
   public hasSizeSet = false;
@@ -65,10 +59,8 @@ export abstract class RTEformElement extends BaseFormElement
   protected outputFormatTransformer: Function = (val: string): any => val;
 
   protected onNgChanges(changes: SimpleChanges): void {}
-  // protected initTransformers(): void {}
 
   protected applyValue(val: string): void {
-    console.log('<<<<<<<< applyValue', this.sendChangeOn, 'value: "', val, '"');
     if (this.value !== val || !this.latestOutputValue) {
       val =
         !!val.trim() &&
@@ -77,6 +69,13 @@ export abstract class RTEformElement extends BaseFormElement
           val
         );
       this.value = val || '';
+
+      console.log(
+        '<<<<<<<< applyValue',
+        this.sendChangeOn,
+        'value: "' + this.value + '"'
+      );
+
       if (this.editor) {
         console.log('editor exists');
         this.editor.setContents(
@@ -105,11 +104,11 @@ export abstract class RTEformElement extends BaseFormElement
         this.latestOutputValue !== newOutputValue
       ) {
         this.latestOutputValue = newOutputValue;
-        console.log('transmitValue emitting change');
-        this.changed.emit(this.outputFormatTransformer(newOutputValue));
 
-        this.value = newOutputValue;
-        this.propagateChange(this.outputFormatTransformer(newOutputValue));
+        this.value = this.outputFormatTransformer(newOutputValue);
+        console.log('transmitValue emitting change: ', this.value);
+        this.changed.emit(this.value);
+        this.propagateChange(this.value);
       }
     }
     this.writingValue = false;
@@ -146,6 +145,7 @@ export abstract class RTEformElement extends BaseFormElement
       this.disableControls = changes.disableControls.currentValue;
     }
     if (changes.controls || changes.disableControls) {
+      console.log('-- updating controls');
       this.controls = this.controls.filter(
         (cntrl: RTEControls) => !this.disableControls.includes(cntrl)
       );
@@ -163,7 +163,6 @@ export abstract class RTEformElement extends BaseFormElement
       const ngControl: NgControl = this.injector.get<NgControl>(
         NgControl as Type<NgControl>
       );
-      console.log('ngControl', ngControl);
 
       if (ngControl) {
         this.control = ngControl.control as FormControl;
@@ -171,7 +170,7 @@ export abstract class RTEformElement extends BaseFormElement
           this.control.updateOn === 'change'
             ? RTEchangeEvent.change
             : RTEchangeEvent.blur;
-        console.log('ngControl control updateOn', this.control.updateOn);
+        console.log('*** ngControl control updateOn', this.control.updateOn);
       }
     }
   }

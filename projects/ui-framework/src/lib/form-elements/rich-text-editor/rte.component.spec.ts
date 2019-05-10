@@ -52,20 +52,13 @@ class TestComponent implements OnInit {
   rteForm: any;
 
   ngOnInit(): void {
-    console.log('new FormGroup');
-
     this.rteForm = new FormGroup({
       rteControl: new FormControl('', { updateOn: 'change' })
     });
   }
-
-  changeMode() {
-    const newControl = new FormControl('', { updateOn: 'blur' });
-    this.rteForm.setControl('rteControl', newControl);
-  }
 }
 
-fdescribe('RichTextEditorComponent', () => {
+describe('RichTextEditorComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 
@@ -77,6 +70,8 @@ fdescribe('RichTextEditorComponent', () => {
   let overlayContainerElement: HTMLElement;
   let QuillEditor: Quill;
   let RTEqlEditorNativeElement: HTMLElement;
+
+  let rteUtils: RteUtilsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -104,6 +99,8 @@ fdescribe('RichTextEditorComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(TestComponent);
         testComponent = fixture.componentInstance;
+
+        rteUtils = TestBed.get(RteUtilsService);
 
         fixture.detectChanges();
 
@@ -134,7 +131,7 @@ fdescribe('RichTextEditorComponent', () => {
     )();
   }));
 
-  describe('OnInit', () => {
+  describe('Init', () => {
     it('should create component', () => {
       expect(RTEComponent).toBeTruthy();
       expect(QuillEditor).toBeTruthy();
@@ -275,34 +272,47 @@ fdescribe('RichTextEditorComponent', () => {
     });
   });
 
-  fdescribe('Events', () => {
-    fit('should output RteCurrentContent object when text changes and sendChangeOn = change', done => {
+  describe('Events', () => {
+    it('should output RteCurrentContent object when text changes and sendChangeOn = change', done => {
       const subscr = RTEComponent.changed.subscribe(val => {
-        console.log('changed.subscribe', val);
-        expect(val.body).toEqual('<div>test text </div>');
-        // expect(val.plainText).toEqual('test text');
+        expect(val).toEqual('<div>test text </div>');
         subscr.unsubscribe();
         done();
       });
-
-      console.log('spec sendChangeOn');
       RTEComponent.sendChangeOn = RTEchangeEvent.change;
       fixture.detectChanges();
-      console.log('spec ngOnChanges');
 
       RTEComponent.ngOnChanges({
         value: new SimpleChange(null, 'test text', false)
       });
     });
+
+    it('should output RteCurrentContent object only on blur, if sendChangeOn = blur', done => {
+      let testVar = 1;
+      const subscr = RTEComponent.changed.subscribe(val => {
+        expect(val).toEqual('<div>test text 2 </div>');
+        expect(testVar).toEqual(2);
+        subscr.unsubscribe();
+        done();
+      });
+      RTEComponent.sendChangeOn = RTEchangeEvent.blur;
+      fixture.detectChanges();
+
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test text 2', false)
+      });
+
+      testVar = 2;
+      RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
+    });
+
     it('should output focused event when editor is focused', () => {
       spyOn(RTEComponent.focused, 'emit');
-
       RTEqlEditorNativeElement.dispatchEvent(new Event('focus'));
       expect(RTEComponent.focused.emit).toHaveBeenCalled();
     });
     it('should output blurred event when editor is blurred', () => {
       spyOn(RTEComponent.blurred, 'emit');
-
       RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
       expect(RTEComponent.blurred.emit).toHaveBeenCalled();
     });
@@ -332,7 +342,7 @@ fdescribe('RichTextEditorComponent', () => {
       sizeButtonElement.click();
 
       const subscr = RTEComponent.changed.subscribe(val => {
-        expect(val.body).toContain('ql-size-huge');
+        expect(val).toContain('ql-size-huge');
         subscr.unsubscribe();
         done();
       });
@@ -387,7 +397,7 @@ fdescribe('RichTextEditorComponent', () => {
       urlInputElement.dispatchEvent(new Event('input'));
 
       const subscr = RTEComponent.blurred.subscribe(val => {
-        expect(val.body).toContain('a href="http://test2"');
+        expect(val).toContain('a href="http://test2"');
         subscr.unsubscribe();
         done();
       });
@@ -450,6 +460,7 @@ fdescribe('RichTextEditorComponent', () => {
           ]
         }
       ];
+      RTEComponent.placeholderList = placeholderList;
       RTEComponent.ngOnChanges({
         value: new SimpleChange(
           null,
@@ -457,17 +468,13 @@ fdescribe('RichTextEditorComponent', () => {
           false
         ),
         controls: new SimpleChange(null, [RTEControls.placeholders], null),
-        disableControls: new SimpleChange(null, [], null),
-        placeholderList: new SimpleChange(null, placeholderList, null)
+        disableControls: new SimpleChange(null, [], null)
       });
 
       fixture.detectChanges();
 
-      console.log(RTEComponent);
-
-      expect(RTEComponent.value).toEqual(
-        '<div>Hi, <strong>My</strong> name is <span ' +
-          'data-placeholder-id="/root/firstName">First name</span> my job title</div>'
+      expect(rteUtils.getHtmlContent(QuillEditor)).toContain(
+        'name is <span data-placeholder-id="/root/firstName'
       );
     });
   });

@@ -12,6 +12,24 @@ export class AppComponent implements OnInit {
   plchldrs = true;
   lines = 2;
 
+  placeholderList = [
+    {
+      groupName: 'Basic Info - header',
+      options: [
+        {
+          id: '/work/title',
+          selected: false,
+          value: 'work | title'
+        },
+        {
+          id: '/root/firstName',
+          selected: false,
+          value: 'First name'
+        }
+      ]
+    }
+  ];
+
   myForm = new FormGroup({
     rteControl: new FormControl('', {
       updateOn: 'blur'

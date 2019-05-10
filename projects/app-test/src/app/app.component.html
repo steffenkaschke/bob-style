@@ -21,6 +21,7 @@
                           required="true"
                           formControlName="rteControl"
                           [disableControls]="plchldrs ? [] : ['placeholders']"
+                          [placeholderList]="placeholderList"
                           [disabled]="disabled"
                           [errorMessage]="error ? 'Error' : undefined">
       </b-rich-text-editor>
