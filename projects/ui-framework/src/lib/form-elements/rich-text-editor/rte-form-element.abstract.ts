@@ -34,7 +34,7 @@ export abstract class RTEformElement extends BaseFormElement
   @Input() public value: string;
   @Input() public maxChars: number;
   @Input() public controls: RTEControls[] = Object.values(RTEControls);
-  @Input() public removeControls: RTEControls[] = [];
+  @Input() public disableControls: RTEControls[] = [];
   @Input() public sendChangeOn: RTEchangeEvent = RTEchangeEvent.blur;
   @Input() private formControlName: any;
   @Input() private formControl: any;
@@ -65,10 +65,10 @@ export abstract class RTEformElement extends BaseFormElement
   protected outputFormatTransformer: Function = (val: string): any => val;
 
   protected onNgChanges(changes: SimpleChanges): void {}
-  protected initTransformers(): void {}
+  // protected initTransformers(): void {}
 
   protected applyValue(val: string): void {
-    console.log('applyValue', this.sendChangeOn, 'value: "', val, '"');
+    console.log('<<<<<<<< applyValue', this.sendChangeOn, 'value: "', val, '"');
     if (this.value !== val || !this.latestOutputValue) {
       val =
         !!val.trim() &&
@@ -90,7 +90,7 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   protected transmitValue(condition: boolean): void {
-    console.log(' >>> transmitValue', !this.writingValue && condition);
+    console.log(' >>>>>>> transmitValue', !this.writingValue && condition);
     console.log('this.writingValue', this.writingValue);
     console.log('transmitValue condition', condition);
     if (!this.writingValue && condition) {
@@ -116,6 +116,7 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
+    console.log('++++++++++ abstract ngOnChanges ', changes);
     if (changes.disabled) {
       this.disabled = changes.disabled.currentValue;
       if (this.editor) {
@@ -138,15 +139,15 @@ export abstract class RTEformElement extends BaseFormElement
         this.required
       );
     }
-    // if (changes.controls) {
-    //   this.controls = changes.controls.currentValue;
-    // }
-    // if (changes.removeControls) {
-    //   this.removeControls = changes.removeControls.currentValue;
-    // }
-    if (changes.controls || changes.removeControls) {
+    if (changes.controls) {
+      this.controls = changes.controls.currentValue;
+    }
+    if (changes.disableControls) {
+      this.disableControls = changes.disableControls.currentValue;
+    }
+    if (changes.controls || changes.disableControls) {
       this.controls = this.controls.filter(
-        (cntrl: RTEControls) => !this.removeControls.includes(cntrl)
+        (cntrl: RTEControls) => !this.disableControls.includes(cntrl)
       );
     }
     this.onNgChanges(changes);

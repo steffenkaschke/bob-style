@@ -10,12 +10,17 @@
       <button (click)="disabled = !disabled">tgl dsbld</button>
       &nbsp;
       <button (click)="error = !error">tgl err</button>
+      &nbsp;
+      <button (click)="plchldrs = !plchldrs">tgl plchldrs</button>
     </p>
     <br>
     <p>
       Editor: "{{ rteEditor.value }}"
       <b-rich-text-editor #rteEditor
+                          label="Label text"
+                          required="true"
                           formControlName="rteControl"
+                          [disableControls]="plchldrs ? [] : ['placeholders']"
                           [disabled]="disabled"
                           [errorMessage]="error ? 'Error' : undefined">
       </b-rich-text-editor>

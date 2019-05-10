@@ -9,6 +9,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class AppComponent implements OnInit {
   disabled = false;
   error = false;
+  plchldrs = true;
   lines = 2;
 
   myForm = new FormGroup({
@@ -19,6 +20,8 @@ export class AppComponent implements OnInit {
       updateOn: 'blur'
     })
   });
+
+  rteInitValue = `<div>Hello <a href="http://www.google.com">World</a>!</div><div>Some initial <strong>bold</strong> text</div> {{/root/firstName}}`;
 
   ngOnInit() {
     this.myForm.get('rteControl').valueChanges.subscribe(value => {
@@ -33,7 +36,7 @@ export class AppComponent implements OnInit {
     this.myForm.get('inputControl').setValue('i am input', {
       emitEvent: false
     });
-    this.myForm.get('rteControl').setValue('i am rte', {
+    this.myForm.get('rteControl').setValue(this.rteInitValue, {
       emitEvent: false
     });
   }

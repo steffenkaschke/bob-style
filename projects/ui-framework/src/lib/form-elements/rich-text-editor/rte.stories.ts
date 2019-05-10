@@ -33,7 +33,7 @@ const template = `
       [label]="label"
       [value]="value"
       [controls]="controls"
-      [removeControls]="removeControls"
+      [disableControls]="disableControls"
       [minHeight]="minHeight"
       [maxHeight]="maxHeight"
       [disabled]="disabled"
@@ -116,8 +116,8 @@ inputStories.add(
         label: text('label', 'Compose an epic...'),
         value: text('value', value),
         controls: array('controls', values(RTEControls), '\n'),
-        removeControls: array(
-          'removeControls',
+        disableControls: array(
+          'disableControls',
           [RTEControls.placeholders],
           '\n'
         ),

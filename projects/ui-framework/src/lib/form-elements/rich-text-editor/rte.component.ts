@@ -8,7 +8,8 @@ import {
   HostBinding,
   Input,
   ElementRef,
-  SimpleChanges
+  SimpleChanges,
+  SimpleChange
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import quillLib, { QuillOptionsStatic } from 'quill';
@@ -80,7 +81,7 @@ export class RichTextEditorComponent extends RTEformElement
   @Input() public type: RTEType = RTEType.primary;
   @Input() public minHeight = 185;
   @Input() public maxHeight = 295;
-  @Input() public removeControls: RTEControls[] = [RTEControls.placeholders];
+  @Input() public disableControls: RTEControls[] = [RTEControls.placeholders];
   @Input() public placeholderList: SelectGroupOption[];
 
   @ViewChild('toolbar') private toolbar: ElementRef;
@@ -97,7 +98,7 @@ export class RichTextEditorComponent extends RTEformElement
   readonly panelDefaultPosVer = PanelDefaultPosVer;
   private blotsToDeleteWhole = [BlotType.link, BlotType.placeholder];
 
-  initTransformers(): void {
+  private initTransformers(): void {
     this.outputFormatTransformer = (val: string): RteCurrentContent =>
       val && {
         body: val
@@ -120,12 +121,38 @@ export class RichTextEditorComponent extends RTEformElement
     }
   }
 
+  hasNewChange(changes: SimpleChange[], considerFirstChange = true): boolean {
+    if (!Array.isArray(changes)) {
+      changes = [changes];
+    }
+
+    for (const chng of changes) {
+      if (
+        chng &&
+        (considerFirstChange === true ||
+          chng.firstChange === considerFirstChange)
+      ) {
+        console.log('hasNewChange', chng);
+        return true;
+      }
+    }
+    return false;
+  }
+
   // this extends RTE Abstract's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    if (changes.placeholderList) {
-      this.placeholderList = changes.placeholderList.currentValue;
-    }
-    if (changes.placeholderList || changes.controls || changes.removeControls) {
+    console.log('//////onNgChanges ', changes);
+    // if (changes.placeholderList) {
+    //   this.placeholderList = changes.placeholderList.currentValue;
+    // }
+    if (
+      this.hasNewChange(
+        [changes.placeholderList, changes.controls, changes.disableControls],
+        true
+      )
+    ) {
+      // if (changes.placeholderList || changes.controls || changes.disableControls) {
+      console.log('onNgChanges initTransformers');
       this.initTransformers();
     }
   }
