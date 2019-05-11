@@ -11,8 +11,7 @@ export class RteUtilsService {
   constructor() {}
 
   getHtmlContent(editor: Quill): string {
-    const plainText = editor.getText().trim();
-    return !plainText ? '' : editor.root.innerHTML;
+    return !editor.root.innerText.trim() ? '' : editor.root.innerHTML;
   }
 
   cleanupHtml(value: string): string {
@@ -25,8 +24,6 @@ export class RteUtilsService {
         )
         // empty tags
         .replace(/<([^>/][^>]+)([^\n\r\/<>]+)?>(\s+)?<\/\1>/gi, '')
-        .replace(/(<em)/gi, '<i')
-        .replace(/(<\/em>)/gi, '</i>')
     );
   }
 
@@ -50,6 +47,8 @@ export class RteUtilsService {
   getCurrentBlot(): Blot {
     const nativeRange = this.getNativeRange();
     const node = nativeRange && nativeRange.endContainer;
+    console.log('NODE');
+    console.dir(node);
     return node && Parchment.find(node);
   }
 
@@ -59,6 +58,7 @@ export class RteUtilsService {
 
   getCurrentBlotData(editor: Quill): BlotData {
     const blot = this.getCurrentBlot();
+    console.log('BLOT', blot);
     if (!blot) {
       return null;
     }
@@ -90,7 +90,11 @@ export class RteUtilsService {
     return { index: blot.index, length: blot.length };
   }
 
-  updateEditor(editor: Quill, updateConfig: UpdateRteConfig): void {
+  updateEditor(editor: Quill, updateConfig: UpdateRteConfig) {
+    if (!updateConfig.insertText) {
+      return null;
+    }
+
     const originalFormat = editor.getFormat(updateConfig.startIndex + 1);
 
     editor.deleteText(updateConfig.startIndex, updateConfig.replaceStr.length);

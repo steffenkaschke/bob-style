@@ -39,15 +39,25 @@ export class AppComponent implements OnInit {
     })
   });
 
-  rteInitValue = `<div>Hello <a href="http://www.google.com">World</a>!</div><div>Some initial <strong>bold</strong> text</div> {{/root/firstName}}`;
+  rteInitValue = `<div>Hello <a href="http://www.google.com">World</a>!</div>
+  <div>Some <em>initial</em> <strong>bold</strong> text</div>
+  {{/root/firstName}}`;
+
+  togglePlaceholders() {
+    this.plchldrs = !this.plchldrs;
+  }
+
+  onRTEevent(event, type) {
+    console.log('*** RTE ' + type + ': "' + event + '"');
+  }
 
   ngOnInit() {
     this.myForm.get('rteControl').valueChanges.subscribe(value => {
-      console.log('RTE valueChanges', value);
+      console.log('!!!!!!! RTE valueChanges: "' + value + '"');
     });
 
     this.myForm.get('inputControl').valueChanges.subscribe(value => {
-      console.log('INP valueChanges', value);
+      console.log('!!!!!!! INP valueChanges', value);
       this.myForm.get('rteControl').setValue(value);
     });
 

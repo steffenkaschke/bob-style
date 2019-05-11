@@ -280,10 +280,12 @@ $border-color-error: $color-error;
     }
 
     .ql-editor,
+    .ql-toolbar button,
     .toolbar-suffix,
     .ql-editor.ql-blank:before,
-    .mat-hint {
-      color: $icon-color-disabled;
+    .mat-hint,
+    [style] {
+      color: $icon-color-disabled !important;
     }
   }
 }
@@ -458,12 +460,12 @@ $border-color-error: $color-error;
 
 // Editor text area CSS mods
 
-:host ::ng-deep {
+:host:not(.disabled) ::ng-deep {
   span[style],
   strong[style],
   u[style],
   em[style] {
-    color: inherit;
+    color: inherit !important;
   }
 
   [style] a {
@@ -487,5 +489,12 @@ $border-color-error: $color-error;
 
   [contenteditable='false'] {
     user-select: none;
+  }
+}
+
+:host.disabled ::ng-deep {
+  [data-placeholder-id] {
+    background-color: $grey-300;
+    color: white;
   }
 }

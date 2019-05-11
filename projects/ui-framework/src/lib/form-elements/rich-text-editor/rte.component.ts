@@ -8,9 +8,7 @@ import {
   HostBinding,
   Input,
   ElementRef,
-  SimpleChanges,
-  SimpleChange,
-  OnInit
+  SimpleChanges
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import quillLib, { QuillOptionsStatic } from 'quill';
@@ -25,7 +23,7 @@ import {
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { RteLink, UpdateRteConfig, RteCurrentContent } from './rte.interface';
+import { RteLink, UpdateRteConfig } from './rte.interface';
 import { RTEformElement } from './rte-form-element.abstract';
 import { PanelComponent } from '../../overlay/panel/panel.component';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
@@ -36,9 +34,11 @@ import { PlaceholderBlot } from './formats/placeholder-blot';
 import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
 import { SelectGroupOption } from '../lists/list.interface';
 import { RtePlaceholder } from './placeholder-rte-converter/placeholder-rte-converter.interface';
+import { Italic } from './formats/italic-blot';
 
 quillLib.register(LinkBlot);
 quillLib.register(PlaceholderBlot);
+quillLib.register(Italic);
 
 @Component({
   selector: 'b-rich-text-editor',
@@ -58,7 +58,7 @@ quillLib.register(PlaceholderBlot);
   ]
 })
 export class RichTextEditorComponent extends RTEformElement
-  implements OnInit, AfterViewInit {
+  implements AfterViewInit {
   constructor(
     private placeholderRteConverterService: PlaceholderRteConverterService,
     private rteUtilsService: RteUtilsService,
@@ -99,8 +99,8 @@ export class RichTextEditorComponent extends RTEformElement
   readonly panelDefaultPosVer = PanelDefaultPosVer;
   private blotsToDeleteWhole = [BlotType.link, BlotType.placeholder];
 
+  // registering input/output transformers
   private initTransformers(): void {
-    // registering input/output transformers
     this.inputTransformers = [];
     this.outputTransformers = [this.rteUtilsService.cleanupHtml];
 
@@ -117,30 +117,20 @@ export class RichTextEditorComponent extends RTEformElement
     }
   }
 
-  ngOnInit(): void {
-    // this.outputFormatTransformer = (val: string): RteCurrentContent =>
-    //   val && {
-    //     body: val
-    //   };
-  }
-
   // this extends RTE Abstract's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    console.log('//////onNgChanges ', changes);
-
     if (
       changes.placeholderList ||
       changes.controls ||
       changes.disableControls
     ) {
-      console.log('onNgChanges initTransformers');
       this.initTransformers();
+      this.writeValue(this.value);
     }
   }
 
-  ngAfterViewInit(): void {
-    this.onRTEviewInit();
-
+  // this extends RTE Abstract's ngAfterViewInit
+  onNgAfterViewInit(): void {
     const editorOptions: QuillOptionsStatic = {
       theme: 'snow',
       placeholder: this.rteUtilsService.getEditorPlaceholder(

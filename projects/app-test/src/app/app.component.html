@@ -4,14 +4,22 @@
     <p>
       Input: <br>
       <input type="text"
+             #input
              formControlName="inputControl"
              style="height: 40px; padding: 0 10px; line-height: 38px;outline:0; font-size: 16px;" />
       <br>
-      <button (click)="disabled = !disabled">tgl dsbld</button>
+      <button (click)="disabled = !disabled">
+        {{ disabled ? 'disable' : 'enable' }}
+        disabled
+      </button>
       &nbsp;
-      <button (click)="error = !error">tgl err</button>
+      <button (click)="error = !error">
+        {{ error ? 'disable' : 'enable' }}
+        error</button>
       &nbsp;
-      <button (click)="plchldrs = !plchldrs">tgl plchldrs</button>
+      <button (click)="togglePlaceholders()">
+        {{ plchldrs ? 'disable' : 'enable' }}
+        plchldrs</button>
     </p>
     <br>
     <p>
@@ -20,10 +28,13 @@
                           label="Label text"
                           required="true"
                           formControlName="rteControl"
-                          [disableControls]="plchldrs ? [] : ['placeholders']"
+                          [disableControls]="plchldrs ? [] : ['Placeholder']"
                           [placeholderList]="placeholderList"
                           [disabled]="disabled"
-                          [errorMessage]="error ? 'Error' : undefined">
+                          [errorMessage]="error ? 'Error' : undefined"
+                          (changed)="onRTEevent($event, 'change')"
+                          (blurred)="onRTEevent($event, 'blur')"
+                          (focused)="onRTEevent($event, 'focus')">
       </b-rich-text-editor>
     </p>
   </form>
@@ -33,7 +44,7 @@
     <div class="rte-output"
          style="width: 250px; border: 1px solid silver; padding: 10px;margin: 0 0 20px 0; font-size: 20px;">
       <div *bTruncateTooltip="lines">
-        {{ myForm.get('rteControl').value.plainText || myForm.get('rteControl').value}}
+        {{ myForm.get('rteControl').value}}
       </div>
     </div>
   </div>

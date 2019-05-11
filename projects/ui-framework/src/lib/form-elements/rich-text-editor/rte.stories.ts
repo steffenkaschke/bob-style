@@ -25,7 +25,7 @@ const inputStories = storiesOf(
 ).addDecorator(withKnobs);
 
 const value = `<div>Hello <a href="http://www.google.com">World</a>!</div>
-<div>Some initial <strong>bold</strong> text</div> {{/root/firstName}}`;
+<div>Some <em>initial</em> <strong>bold</strong> text</div> {{/root/firstName}}`;
 
 const template = `
   <b-rich-text-editor
