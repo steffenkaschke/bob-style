@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
     })
   });
 
-  rteInitValue = `<div>Hello <a href="http://www.google.com">World</a>!</div>
+  rteInitValue = `<div>Hello <a href="http://www.google.com">World</a> and suck dicks!</div>
   <div>Some <em>initial</em> <strong>bold</strong> text</div>
   {{/root/firstName}}`;
 

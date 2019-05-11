@@ -202,6 +202,13 @@ export abstract class RTEformElement extends BaseFormElement
     this.blurred.emit(this.value);
   }
 
+  protected storeCurrentSelection(selection = null, text = null) {
+    this.selection =
+      selection || this.rteUtils.getCurrentSelection(this.editor);
+    this.selectedText =
+      text || this.rteUtils.getSelectionText(this.editor, this.selection);
+  }
+
   // this is part of ControlValueAccessor interface
   public writeValue(value: string): void {
     if (value !== undefined) {

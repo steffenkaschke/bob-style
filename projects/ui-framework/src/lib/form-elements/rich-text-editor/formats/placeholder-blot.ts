@@ -7,13 +7,13 @@ export class PlaceholderBlot extends Inline {
   static tagName = 'span';
 
   static create(id: string) {
-    const node = super.create();
+    const node: HTMLElement = super.create();
     node.setAttribute('data-placeholder-id', id);
-    node.setAttribute('contenteditable', false);
+    node.setAttribute('contenteditable', 'false');
     return node;
   }
 
-  static formats(node) {
+  static formats(node: HTMLElement) {
     return node.getAttribute('data-placeholder-id');
   }
 }

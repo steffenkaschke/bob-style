@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UpdateRteConfig, BlotData } from '../rte.interface';
 import { Quill, RangeStatic } from 'quill';
+import { default as Delta } from 'quill-delta';
 import Parchment from 'parchment';
 import { Blot } from 'parchment/src/blot/abstract/blot';
 import { TextBlot } from 'quill/blots/text';
@@ -47,8 +48,6 @@ export class RteUtilsService {
   getCurrentBlot(): Blot {
     const nativeRange = this.getNativeRange();
     const node = nativeRange && nativeRange.endContainer;
-    console.log('NODE');
-    console.dir(node);
     return node && Parchment.find(node);
   }
 
@@ -58,7 +57,6 @@ export class RteUtilsService {
 
   getCurrentBlotData(editor: Quill): BlotData {
     const blot = this.getCurrentBlot();
-    console.log('BLOT', blot);
     if (!blot) {
       return null;
     }
@@ -96,10 +94,6 @@ export class RteUtilsService {
     }
 
     const originalFormat = editor.getFormat(updateConfig.startIndex + 1);
-
-    editor.deleteText(updateConfig.startIndex, updateConfig.replaceStr.length);
-    editor.insertText(updateConfig.startIndex, updateConfig.insertText);
-
     const newFormat = {
       ...originalFormat,
       [updateConfig.format.type]: updateConfig.format.value
@@ -110,19 +104,27 @@ export class RteUtilsService {
       });
     }
 
-    editor.formatText(
-      updateConfig.startIndex,
-      updateConfig.insertText.length,
-      newFormat
-    );
-
-    const editorSelectionEnd = editor.getLength() - 1;
+    const originalEditorLength = editor.getLength();
+    const retainLength =
+      originalEditorLength -
+      updateConfig.startIndex -
+      updateConfig.replaceStr.length -
+      updateConfig.insertText.length;
     const insertedTextEnd =
       updateConfig.startIndex + updateConfig.insertText.length;
-    if (editorSelectionEnd === insertedTextEnd) {
-      editor.insertText(editorSelectionEnd + 1, '');
-    }
+    const futureEditorLength =
+      originalEditorLength -
+      updateConfig.replaceStr.length +
+      updateConfig.insertText.length;
 
+    editor.updateContents(
+      new Delta()
+        .retain(updateConfig.startIndex)
+        .delete(updateConfig.replaceStr.length)
+        .insert(updateConfig.insertText, newFormat)
+        .retain(retainLength)
+        .insert(insertedTextEnd + 1 === futureEditorLength ? '\n' : '')
+    );
     editor.setSelection(insertedTextEnd, 0);
   }
 

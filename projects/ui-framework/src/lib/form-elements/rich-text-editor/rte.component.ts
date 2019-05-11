@@ -179,27 +179,21 @@ export class RichTextEditorComponent extends RTEformElement
     });
   }
 
-  changeFontSize(size: RTEFontSize) {
+  public changeFontSize(size: RTEFontSize) {
     this.editor.format('size', size === RTEFontSize.normal ? false : size);
     this.hasSizeSet = size !== RTEFontSize.normal;
   }
 
   private onLinkPanelOpen(): void {
-    this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
     this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
 
     if (this.currentBlot.link) {
-      this.selection = this.rteUtilsService.selectBlot(
-        this.currentBlot,
-        this.editor
+      this.storeCurrentSelection(
+        this.rteUtilsService.selectBlot(this.currentBlot, this.editor),
+        this.currentBlot.text
       );
-      this.selectedText = this.currentBlot.text;
     } else {
-      this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
-      this.selectedText = this.rteUtilsService.getSelectionText(
-        this.editor,
-        this.selection
-      );
+      this.storeCurrentSelection();
     }
 
     this.linkEditor.text = this.selectedText;
@@ -221,7 +215,9 @@ export class RichTextEditorComponent extends RTEformElement
         type: BlotType.link,
         value: rteLink.url
       },
-      unformat: rteLink.url ? null : RteLinkFormats
+      unformat: rteLink.url
+        ? [BlotType.placeholder]
+        : [...RteLinkFormats, BlotType.placeholder]
     };
     this.rteUtilsService.updateEditor(this.editor, updateConfig);
     this.linkPanel.closePanel();
@@ -232,14 +228,13 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   public onPlaceholderPanelOpen() {
-    this.selection = this.rteUtilsService.getCurrentSelection(this.editor);
-    this.selectedText = this.rteUtilsService.getSelectionText(
-      this.editor,
-      this.selection
-    );
+    this.storeCurrentSelection();
   }
 
   public onPlaceholderSelectChange(selectGroupOptions): void {
+    const undoFormats = Object.values(BlotType).filter(
+      f => f !== BlotType.placeholder
+    );
     const updateConfig: UpdateRteConfig = {
       replaceStr: this.selectedText,
       startIndex: this.selection.index,
@@ -247,7 +242,8 @@ export class RichTextEditorComponent extends RTEformElement
       format: {
         type: BlotType.placeholder,
         value: selectGroupOptions.selectedOptionId
-      }
+      },
+      unformat: undoFormats
     };
     this.rteUtilsService.updateEditor(this.editor, updateConfig);
   }

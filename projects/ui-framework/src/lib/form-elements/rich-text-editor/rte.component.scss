@@ -468,8 +468,10 @@ $border-color-error: $color-error;
     color: inherit !important;
   }
 
-  [style] a {
+  [style] a,
+  a {
     color: #e52c51;
+    text-decoration: underline;
   }
 }
 

@@ -17,10 +17,9 @@ export class LinkBlot extends Inline {
   static tagName = 'a';
 
   static create(value: string) {
-    const node = super.create();
+    const node: HTMLElement = super.create();
     node.setAttribute('href', checkUrl(value));
     node.setAttribute('target', '_blank');
-    node.setAttribute('style', 'color:#e52c51; text-decoration:underline;');
     return node;
   }
 
