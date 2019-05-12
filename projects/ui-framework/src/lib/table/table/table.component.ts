@@ -87,10 +87,23 @@ export class TableComponent implements OnInit, OnChanges {
     this.rowClicked.emit({
       rowIndex: $event.rowIndex,
       data: $event.data,
+      agGridId: get($event, 'node.id', null)
     });
   }
 
   private setGridHeight(height: number): void {
     this.elRef.nativeElement.style.setProperty('--max-height', `${height}px`);
+  }
+
+  public addRows(rows: any[]): void {
+    this.gridOptions.api.updateRowData({add: rows});
+  }
+
+  public removeRows(rows: any[]): void {
+    this.gridOptions.api.updateRowData({remove: rows});
+  }
+
+  public updateRows(rows: any[]): void {
+    this.gridOptions.api.updateRowData({update: rows});
   }
 }

@@ -95,10 +95,11 @@
              [size]="panelSize.medium"
              *ngIf="controls.includes(RTEControls.placeholders)"
              [defaultPosVer]="panelDefaultPosVer.below">
-      <button (click)="onPlaceholderPanelOpen()" panel-trigger>rte</button>
+      <button (click)="onPlaceholderPanelOpen()"
+              panel-trigger>rte</button>
       <div panel-content>
-        <b-single-select (selectChange)="onPlaceholderSelectChange(test)"
-                         #test
+        <b-single-select #placeholderSelect
+                         (selectChange)="onPlaceholderSelectChange(placeholderSelect)"
                          [options]="placeholderList">
         </b-single-select>
       </div>
@@ -114,14 +115,8 @@
 
 </div>
 
-<mat-hint *ngIf="errorMessage"
+<mat-hint *ngIf="errorMessage || hintMessage"
           align="start"
-          class="error-message">
-  {{errorMessage}}
-</mat-hint>
-
-<mat-hint *ngIf="hintMessage && !errorMessage"
-          align="start"
-          class="hint-message">
-  {{hintMessage}}
+          [ngClass]="{'error-message': errorMessage && !disabled, 'hint-message': !errorMessage && hintMessage}">
+  {{ errorMessage && !disabled ? errorMessage : hintMessage }}
 </mat-hint>

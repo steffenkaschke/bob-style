@@ -4,6 +4,18 @@ export enum RTEType {
   tertiary = 'tertiary'
 }
 
+export enum BlotType {
+  link = 'Link',
+  size = 'size',
+  bold = 'bold',
+  italic = 'italic',
+  underline = 'underline',
+  list = 'list',
+  direction = 'direction',
+  placeholder = 'Placeholder',
+  color = 'color'
+}
+
 export enum RTEControls {
   link = 'Link',
   size = 'size',
@@ -26,19 +38,6 @@ export enum RTEFontSize {
 export enum RTEchangeEvent {
   change = 'change',
   blur = 'blur'
-}
-
-export enum BlotType {
-  Link = 'Link',
-  size = 'size',
-  bold = 'bold',
-  italic = 'italic',
-  underline = 'underline',
-  list = 'list',
-  direction = 'direction',
-  color = 'color',
-  Placeholder = 'Placeholder',
-  any = 'format'
 }
 
 export enum KeyboardKeys {

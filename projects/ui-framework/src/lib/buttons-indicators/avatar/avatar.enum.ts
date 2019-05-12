@@ -1,13 +1,13 @@
 export enum AvatarSize {
-  mini = 'mini',
-  small = 'small',
-  medium  = 'medium',
-  large  = 'large',
+  mini = 30,
+  small = 60,
+  medium = 90,
+  large = 120
 }
 
 export enum BadgeSize {
   mini = 'small',
   small = 'large',
   medium = 'x-large',
-  large = 'x-large',
+  large = 'x-large'
 }
