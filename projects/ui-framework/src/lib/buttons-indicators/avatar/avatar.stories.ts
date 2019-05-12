@@ -6,13 +6,13 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { values } from 'lodash';
+import { zipObject } from 'lodash';
 import { AvatarSize } from './avatar.enum';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { AvatarModule } from './avatar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
+import { Icons, IconColor } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
 
 const avatarStories = storiesOf(
@@ -20,7 +20,14 @@ const avatarStories = storiesOf(
   module
 ).addDecorator(withKnobs);
 
-const sizeOptions = values(AvatarSize);
+const sizeOptionsKeys = Object.values(AvatarSize).filter(
+  key => typeof key === 'string'
+) as string[];
+const sizeOptionsValues = Object.values(AvatarSize).filter(
+  key => typeof key === 'number'
+) as number[];
+const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
+
 const badges = [Icons.pending_badge, Icons.approve_badge];
 const badgeColors = Object.keys(IconColor);
 
