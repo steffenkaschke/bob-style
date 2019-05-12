@@ -64,4 +64,5 @@ export enum Icons {
   success = 'success_icon',
   warning = 'warning_icon',
   no_folder = 'no_folder',
+  add_photo = 'add_photo',
 }
