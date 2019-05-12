@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { find } from 'lodash';
 import { RtePlaceholder } from './placeholder-rte-converter.interface';
+import {
+  getCategoryText,
+  getPlaceholderText
+} from '../formats/placeholder-blot';
 
 @Injectable()
 export class PlaceholderRteConverterService {
   constructor() {}
-
-  private padChar = '\xa0';
 
   public fromRte(rteInnerHtml: string): string {
     const elm: HTMLElement = document.createElement('div');
@@ -38,13 +40,9 @@ export class PlaceholderRteConverterService {
       (field: string, innerContent: string) => {
         const category = this.getGroupDisplayName(placeholders, innerContent);
         const name = this.getDisplayNameById(placeholders, innerContent);
-        const text = this.getPlaceholderText(name, category);
+        const text = getPlaceholderText(name, category);
         return `<span data-placeholder-id="${innerContent}"
-        data-placeholder-category="${this.getCategoryText(
-          category,
-          2,
-          1
-        )}">${text}</span>`;
+        data-placeholder-category="${category}">${text}</span>`;
       }
     );
   }
@@ -52,27 +50,6 @@ export class PlaceholderRteConverterService {
   public toRtePartial = (placeholders: RtePlaceholder[]) => (
     contentToConvert: string
   ) => this.toRte(contentToConvert, placeholders)
-
-  private getCategoryText(
-    category: string,
-    startSpaces = 0,
-    endSpaces = 2
-  ): string {
-    return category
-      ? this.padChar.repeat(startSpaces) +
-          category +
-          this.padChar.repeat(endSpaces)
-      : '';
-  }
-
-  public getPlaceholderText(name: string, category: string): string {
-    return (
-      this.padChar.repeat(2) +
-      this.getCategoryText(category, 0, 2) +
-      name +
-      this.padChar.repeat(2)
-    );
-  }
 
   private getDisplayNameById(
     placeholders: RtePlaceholder[],

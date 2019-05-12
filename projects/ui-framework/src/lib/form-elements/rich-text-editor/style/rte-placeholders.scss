@@ -1,5 +1,6 @@
 $bg-color: var(--negative-500);
 $border-color: var(--negative-700);
+// $padChar: \00a0;
 
 :host ::ng-deep {
   [data-placeholder-id] {
@@ -15,7 +16,7 @@ $border-color: var(--negative-700);
   [data-placeholder-category] {
     position: relative;
     &:before {
-      content: attr(data-placeholder-category);
+      content: '\00a0\00a0'attr(data-placeholder-category) '\00a0';
       display: inline-block;
       pointer-events: none;
       user-select: none;

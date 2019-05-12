@@ -11,8 +11,18 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+import { PanelComponent } from '../../overlay/panel/panel.component';
+import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { Icons } from '../../icons/icons.enum';
+import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
+import { SelectGroupOption } from '../lists/list.interface';
+import { SingleListComponent } from '../lists/single-list/single-list.component';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import quillLib, { QuillOptionsStatic } from 'quill';
+import { Italic } from './formats/italic-blot';
 import { LinkBlot, RteLinkFormats } from './formats/link-blot';
+import { PlaceholderBlot } from './formats/placeholder-blot';
 import {
   BlotType,
   RTEFontSize,
@@ -20,22 +30,13 @@ import {
   RTEControls,
   KeyboardKeys
 } from './rte.enum';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
-
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { RteLink, UpdateRteConfig } from './rte.interface';
 import { RTEformElement } from './rte-form-element.abstract';
-import { PanelComponent } from '../../overlay/panel/panel.component';
-import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
-import { Icons } from '../../icons/icons.enum';
-import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
 import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
-import { PlaceholderBlot } from './formats/placeholder-blot';
-import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
-import { SelectGroupOption } from '../lists/list.interface';
 import { RtePlaceholder } from './placeholder-rte-converter/placeholder-rte-converter.interface';
-import { Italic } from './formats/italic-blot';
-import { SingleListComponent } from '../lists/single-list/single-list.component';
+import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
+import { getPlaceholderText } from './formats/placeholder-blot';
 
 quillLib.register(LinkBlot);
 quillLib.register(PlaceholderBlot);
@@ -250,10 +251,7 @@ export class RichTextEditorComponent extends RTEformElement
         this.placeholderList[0].options as RtePlaceholder[],
         id as string
       );
-      const text = this.placeholderRteConverterService.getPlaceholderText(
-        name,
-        category
-      );
+      const text = getPlaceholderText(name, category);
 
       const updateConfig: UpdateRteConfig = {
         replaceStr: this.selectedText,
