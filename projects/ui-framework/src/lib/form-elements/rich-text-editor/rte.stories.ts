@@ -116,11 +116,7 @@ inputStories.add(
         label: text('label', 'Compose an epic...'),
         value: text('value', value),
         controls: array('controls', values(RTEControls), '\n'),
-        disableControls: array(
-          'disableControls',
-          [RTEControls.placeholders],
-          '\n'
-        ),
+        disableControls: array('disableControls', [], '\n'),
         placeholderList: object<SelectGroupOption>('options', placeholderMock),
         minHeight: number('minHeight', 200),
         maxHeight: number('maxHeight', 400),
