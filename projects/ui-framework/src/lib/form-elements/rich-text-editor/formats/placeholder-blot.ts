@@ -1,6 +1,4 @@
 import Quill from 'quill';
-import { format } from 'url';
-// import { get, isEqual, isUndefined } from 'lodash';
 
 const Inline = Quill.import('blots/inline');
 

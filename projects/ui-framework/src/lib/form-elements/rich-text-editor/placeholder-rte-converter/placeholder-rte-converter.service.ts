@@ -64,6 +64,7 @@ export class PlaceholderRteConverterService {
           this.padChar.repeat(endSpaces)
       : '';
   }
+
   public getPlaceholderText(name: string, category: string): string {
     return (
       this.padChar.repeat(2) +
