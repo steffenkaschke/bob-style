@@ -11,7 +11,6 @@ import {
 import { AvatarSize, BadgeSize } from './avatar.enum';
 import { BadgeConfig } from './avatar.interface';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
-import { getKeyByValue } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-avatar',
@@ -48,7 +47,7 @@ export class AvatarComponent implements OnInit, AfterViewInit {
   }
 
   getSizeClass(value: any): string {
-    return getKeyByValue(AvatarSize, value);
+    return Object.keys(AvatarSize).find(key => AvatarSize[key] === value);
   }
 
   onClick(event: any): void {

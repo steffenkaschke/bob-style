@@ -6,7 +6,7 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { values } from 'lodash';
+import { zipObject } from 'lodash';
 import { AvatarSize } from './avatar.enum';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -20,7 +20,14 @@ const avatarStories = storiesOf(
   module
 ).addDecorator(withKnobs);
 
-const sizeOptions = values(AvatarSize);
+const sizeOptionsKeys = Object.values(AvatarSize).filter(
+  key => typeof key === 'string'
+) as string[];
+const sizeOptionsValues = Object.values(AvatarSize).filter(
+  key => typeof key === 'number'
+) as number[];
+const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
+
 const badges = [Icons.pending_badge, Icons.approve_badge];
 const badgeColors = Object.keys(IconColor);
 
@@ -77,7 +84,7 @@ avatarStories.add(
           'imageSource',
           'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
         ),
-        size: select('size', sizeOptions, AvatarSize.medium),
+        size: select('size', sizeOptions, AvatarSize.mini),
         isClickable: boolean('isClickable', false),
         clickHandler: action('Avatar Clicked'),
         title: text('title', 'John Doe'),
