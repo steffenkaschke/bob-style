@@ -89,7 +89,8 @@
             value="rtl"
             *ngIf="controls.includes(RTEControls.dir)"></button>
 
-    <b-panel class="placeholder-panel"
+    <b-panel #placeholderPanel
+             class="placeholder-panel"
              panelClass="placeholder-rte-panel"
              [showBackdrop]="false"
              [size]="panelSize.medium"
@@ -97,12 +98,13 @@
              [defaultPosVer]="panelDefaultPosVer.below">
       <button (click)="onPlaceholderPanelOpen()"
               panel-trigger>rte</button>
-      <div panel-content>
-        <b-single-select #placeholderSelect
-                         (selectChange)="onPlaceholderSelectChange(placeholderSelect)"
-                         [options]="placeholderList">
-        </b-single-select>
-      </div>
+      <b-single-list #placeholderSelect
+                     panel-content
+                     class="single-list-select"
+                     (selectChange)="onPlaceholderSelectChange(placeholderSelect)"
+                     [showSingleGroupHeader]="true"
+                     [options]="placeholderList">
+      </b-single-list>
     </b-panel>
 
     <div #suffix

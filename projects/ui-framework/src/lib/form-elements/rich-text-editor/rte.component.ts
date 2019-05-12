@@ -35,6 +35,7 @@ import { PlaceholderRteConverterService } from './placeholder-rte-converter/plac
 import { SelectGroupOption } from '../lists/list.interface';
 import { RtePlaceholder } from './placeholder-rte-converter/placeholder-rte-converter.interface';
 import { Italic } from './formats/italic-blot';
+import { SingleListComponent } from '../lists/single-list/single-list.component';
 
 quillLib.register(LinkBlot);
 quillLib.register(PlaceholderBlot);
@@ -43,7 +44,7 @@ quillLib.register(Italic);
 @Component({
   selector: 'b-rich-text-editor',
   templateUrl: './rte.component.html',
-  styleUrls: ['./rte.component.scss'],
+  styleUrls: ['./style/rte.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -89,6 +90,7 @@ export class RichTextEditorComponent extends RTEformElement
   @ViewChild('suffix') private suffix: ElementRef;
   @ViewChild('linkPanel') private linkPanel: PanelComponent;
   @ViewChild('linkEditor') private linkEditor: RteLinkEditorComponent;
+  @ViewChild('placeholderPanel') private placeholderPanel: PanelComponent;
 
   public hasSuffix = true;
   readonly buttonType = ButtonType;
@@ -98,6 +100,7 @@ export class RichTextEditorComponent extends RTEformElement
   readonly RTEFontSize = RTEFontSize;
   readonly panelDefaultPosVer = PanelDefaultPosVer;
   private blotsToDeleteWhole = [BlotType.link, BlotType.placeholder];
+  private placeholderPanelOpen = false;
 
   // registering input/output transformers
   private initTransformers(): void {
@@ -177,65 +180,6 @@ export class RichTextEditorComponent extends RTEformElement
       }
       return true;
     });
-
-    this.editor.keyboard.addBinding(
-      { key: KeyboardKeys.left },
-
-      (range, context) => {
-        console.log('< range:', range);
-        console.log('< context:', context);
-        if (context.format[BlotType.placeholder]) {
-          const blotIndex = range.index - context.offset;
-
-          this.editor.setSelection(
-            blotIndex > 0 ? blotIndex - 1 : 0,
-            0,
-            'silent'
-          );
-          return false;
-        }
-        return true;
-      }
-    );
-    this.editor.keyboard.addBinding(
-      { key: KeyboardKeys.right },
-      (range, context) => {
-        console.log('> range:', range);
-        console.log('> context:', context);
-        this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
-        // console.log(this.currentBlot);
-        // if (this.currentBlot.format[BlotType.placeholder]) {
-        //   console.log('> plchldr');
-        //   this.editor.setSelection(
-        //     this.currentBlot.index + this.currentBlot.length,
-        //     0,
-        //     'silent'
-        //   );
-
-        //   return false;
-        // }
-        return true;
-      }
-    );
-
-    // this.editor.on('selection-change', (range, oldRange, source) => {
-    //   this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
-
-    //   console.log(this.currentBlot);
-
-    //   if (this.currentBlot.format[BlotType.placeholder]) {
-    //     this.editor.setSelection(
-    //       range.index - this.currentBlot.index > 1 ||
-    //         this.currentBlot.index + this.currentBlot.length - range.index > 1
-    //         ? range.index < this.currentBlot.index + this.currentBlot.length / 2
-    //           ? this.currentBlot.index - 1
-    //           : this.currentBlot.index + this.currentBlot.length
-    //         : range.index,
-    //       0,
-    //       'silent'
-    //     );
-    //   }
-    // });
   }
 
   public changeFontSize(size: RTEFontSize) {
@@ -269,6 +213,7 @@ export class RichTextEditorComponent extends RTEformElement
     const updateConfig: UpdateRteConfig = {
       replaceStr: this.selectedText,
       startIndex: this.selection.index,
+
       insertText: rteLink.text,
       format: {
         type: BlotType.link,
@@ -287,23 +232,43 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   public onPlaceholderPanelOpen() {
+    this.placeholderPanelOpen = true;
     this.storeCurrentSelection();
   }
 
-  public onPlaceholderSelectChange(selectGroupOptions): void {
-    const undoFormats = Object.values(BlotType).filter(
-      f => f !== BlotType.placeholder
-    );
-    const updateConfig: UpdateRteConfig = {
-      replaceStr: this.selectedText,
-      startIndex: this.selection.index,
-      insertText: selectGroupOptions.triggerValue,
-      format: {
-        type: BlotType.placeholder,
-        value: selectGroupOptions.selectedOptionId
-      },
-      unformat: undoFormats
-    };
-    this.rteUtilsService.updateEditor(this.editor, updateConfig);
+  public onPlaceholderSelectChange(
+    selectGroupOptions: SingleListComponent
+  ): void {
+    if (this.placeholderPanelOpen) {
+      const undoFormats = Object.values(BlotType).filter(
+        f => f !== BlotType.placeholder
+      );
+
+      const id = selectGroupOptions.focusOption.id;
+      const name = selectGroupOptions.focusOption.value;
+      const category = this.placeholderRteConverterService.getGroupDisplayName(
+        this.placeholderList[0].options as RtePlaceholder[],
+        id as string
+      );
+      const text = this.placeholderRteConverterService.getPlaceholderText(
+        name,
+        category
+      );
+
+      const updateConfig: UpdateRteConfig = {
+        replaceStr: this.selectedText,
+        startIndex: this.selection.index,
+        insertText: text,
+        format: {
+          type: BlotType.placeholder,
+          value: selectGroupOptions.focusOption
+        },
+        unformat: undoFormats
+      };
+
+      this.rteUtilsService.updateEditor(this.editor, updateConfig);
+      this.placeholderPanel.closePanel();
+      this.placeholderPanelOpen = false;
+    }
   }
 }

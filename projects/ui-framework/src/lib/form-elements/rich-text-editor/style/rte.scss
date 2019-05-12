@@ -1,6 +1,6 @@
-@import '../../style/typography';
-@import '../../style/colors';
-@import '../../style/mixins';
+@import '../../../style/typography';
+@import '../../../style/colors';
+@import '../../../style/mixins';
 
 $button-width: 25px;
 $button-icon-size: 14px;
@@ -457,6 +457,11 @@ $border-color-error: $color-error;
     display: none;
   }
 }
+::ng-deep {
+  .single-list-select {
+    min-width: 400px;
+  }
+}
 
 // Editor text area CSS mods
 
@@ -478,25 +483,9 @@ $border-color-error: $color-error;
 // Custom Blots styling
 
 :host ::ng-deep {
-  [data-placeholder-id] {
-    box-sizing: border-box;
-    border-radius: 13px;
-    white-space: nowrap;
-    font-size: $font-size-body;
-    font-weight: 500;
-    padding: 0 10px;
-    background-color: #fffaa5;
-    border-color: #fffaa5;
-  }
-
   [contenteditable='false'] {
     user-select: none;
   }
 }
 
-:host.disabled ::ng-deep {
-  [data-placeholder-id] {
-    background-color: $grey-300;
-    color: white;
-  }
-}
+@import 'rte-placeholders.scss';
