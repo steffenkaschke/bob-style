@@ -177,6 +177,65 @@ export class RichTextEditorComponent extends RTEformElement
       }
       return true;
     });
+
+    this.editor.keyboard.addBinding(
+      { key: KeyboardKeys.left },
+
+      (range, context) => {
+        console.log('< range:', range);
+        console.log('< context:', context);
+        if (context.format[BlotType.placeholder]) {
+          const blotIndex = range.index - context.offset;
+
+          this.editor.setSelection(
+            blotIndex > 0 ? blotIndex - 1 : 0,
+            0,
+            'silent'
+          );
+          return false;
+        }
+        return true;
+      }
+    );
+    this.editor.keyboard.addBinding(
+      { key: KeyboardKeys.right },
+      (range, context) => {
+        console.log('> range:', range);
+        console.log('> context:', context);
+        this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
+        // console.log(this.currentBlot);
+        // if (this.currentBlot.format[BlotType.placeholder]) {
+        //   console.log('> plchldr');
+        //   this.editor.setSelection(
+        //     this.currentBlot.index + this.currentBlot.length,
+        //     0,
+        //     'silent'
+        //   );
+
+        //   return false;
+        // }
+        return true;
+      }
+    );
+
+    // this.editor.on('selection-change', (range, oldRange, source) => {
+    //   this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
+
+    //   console.log(this.currentBlot);
+
+    //   if (this.currentBlot.format[BlotType.placeholder]) {
+    //     this.editor.setSelection(
+    //       range.index - this.currentBlot.index > 1 ||
+    //         this.currentBlot.index + this.currentBlot.length - range.index > 1
+    //         ? range.index < this.currentBlot.index + this.currentBlot.length / 2
+    //           ? this.currentBlot.index - 1
+    //           : this.currentBlot.index + this.currentBlot.length
+    //         : range.index,
+    //       0,
+    //       'silent'
+    //     );
+    //   }
+    // });
   }
 
   public changeFontSize(size: RTEFontSize) {
