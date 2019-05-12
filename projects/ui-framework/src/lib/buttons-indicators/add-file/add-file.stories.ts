@@ -18,8 +18,6 @@ const template = `<b-add-file (clicked)="onClick($event)" [icon]="icon" [imageUr
 const storyTemplate = `
 <b-story-book-layout [title]="'Add File'">
     ${template}
-<!--  <div style="display: flex; width:280px; margin: 100px auto;">-->
-<!--  </div>-->
 </b-story-book-layout>`;
 
 const note = `
