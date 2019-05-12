@@ -4,18 +4,14 @@ const Inline = Quill.import('blots/inline');
 
 const padChar = '\xa0';
 
-export const getCategoryText = (
-  category: string,
-  startSpaces = 0,
-  endSpaces = 2
-): string =>
-  category
-    ? padChar.repeat(startSpaces) + category + padChar.repeat(endSpaces)
-    : '';
+interface LocalFormat {
+  id: string;
+  category?: string;
+}
 
 export const getPlaceholderText = (name: string, category: string): string =>
   padChar.repeat(2) +
-  getCategoryText(category, 0, 2) +
+  (category ? category + padChar.repeat(2) : '') +
   name +
   padChar.repeat(2);
 
@@ -23,7 +19,7 @@ export class PlaceholderBlot extends Inline {
   static blotName = 'Placeholder';
   static tagName = 'span';
 
-  static create(focusOption) {
+  static create(focusOption: LocalFormat): HTMLElement {
     const node: HTMLElement = super.create();
 
     node.setAttribute('data-placeholder-id', focusOption.id);
@@ -35,7 +31,7 @@ export class PlaceholderBlot extends Inline {
     return node;
   }
 
-  static formats(node: HTMLElement) {
+  static formats(node: HTMLElement): LocalFormat {
     const id = node.getAttribute('data-placeholder-id');
     let category = node.getAttribute('data-placeholder-category');
     category = category ? category.replace(new RegExp(padChar, 'g'), '') : '';

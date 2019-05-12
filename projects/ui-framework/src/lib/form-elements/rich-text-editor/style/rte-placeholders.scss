@@ -1,6 +1,5 @@
 $bg-color: var(--negative-500);
 $border-color: var(--negative-700);
-// $padChar: \00a0;
 
 :host ::ng-deep {
   [data-placeholder-id] {
@@ -15,18 +14,21 @@ $border-color: var(--negative-700);
 
   [data-placeholder-category] {
     position: relative;
+    z-index: 0;
+
     &:before {
-      content: '\00a0\00a0'attr(data-placeholder-category) '\00a0';
-      display: inline-block;
+      content: '\00a0\00a0'attr(data-placeholder-category) '\00a0\00a0';
+      display: inline-flex;
+      align-items: center;
       pointer-events: none;
       user-select: none;
       border-top-left-radius: 13px;
       border-bottom-left-radius: 13px;
       box-shadow: inset 0 0 0 2px $border-color;
       background-color: $bg-color;
+      font-size: 90%;
       color: $white;
-      position: absolute;
-      left: 0;
+      @include position(0 null 0 0);
     }
   }
 }
@@ -35,5 +37,28 @@ $border-color: var(--negative-700);
   [data-placeholder-id] {
     background-color: $grey-300;
     color: white;
+  }
+}
+
+::ng-deep {
+  .placeholder-rte-panel {
+    .panel-position .panel-wrapper {
+      padding: 0;
+    }
+    b-single-list {
+      border: 0;
+      display: block;
+
+      &:hover {
+        box-shadow: none;
+      }
+    }
+    .option-select {
+      cursor: pointer;
+
+      &.collapsed {
+        border: 0 !important;
+      }
+    }
   }
 }

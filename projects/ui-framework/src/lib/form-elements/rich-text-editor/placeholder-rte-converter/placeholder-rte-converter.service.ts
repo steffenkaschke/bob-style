@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { find } from 'lodash';
 import { RtePlaceholder } from './placeholder-rte-converter.interface';
-import {
-  getCategoryText,
-  getPlaceholderText
-} from '../formats/placeholder-blot';
+import { getPlaceholderText } from '../formats/placeholder-blot';
 
 @Injectable()
 export class PlaceholderRteConverterService {
