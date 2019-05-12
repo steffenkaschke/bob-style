@@ -1,5 +1,7 @@
 import { ColumnDef, PinDirection, SortDirections } from '../table/table.interface';
 import { AvatarCellComponent } from '../table-cell-components/avatar.component';
+import {ActionsCellComponent} from '../table-cell-components/actions-cell/actions-cell.component';
+import {MenuItem} from '../../navigation/menu/menu.interface';
 
 export const mockColumnsDefs: ColumnDef[] = [
   {
@@ -28,6 +30,26 @@ export const mockColumnsDefs: ColumnDef[] = [
     headerName: 'Hired Date',
     field: 'hiredDate',
   },
+  {
+    headerName: '',
+    field: 'actions',
+    cellRendererFramework: ActionsCellComponent,
+    pinned: PinDirection.Right,
+    lockPosition: true,
+    resizable: false,
+    sortable: false,
+  },
+];
+
+const gridActions: MenuItem[] = [
+  {
+    label: 'menu item 1',
+    action: ($event) => console.log('menu item 1 clicked', $event)
+  },
+  {
+    label: 'menu item 2',
+    action: ($event) => console.log('menu item 2 clicked', $event)
+  },
 ];
 
 export const mockRowData = [
@@ -43,7 +65,8 @@ export const mockRowData = [
         imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg',
       },
     },
-    hiredDate: '2017-11-29'
+    hiredDate: '2017-11-29',
+    actions: gridActions,
   },
   {
     fullName: 'Doron Cynsiger',
@@ -58,7 +81,8 @@ export const mockRowData = [
           imageSource: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvWogj6uHgdZ8ovMF6cYShBGxsOvfk0xv1GB6rxwAP7ABAivC6',
         },
     },
-    hiredDate: '2017-02-29'
+    hiredDate: '2017-02-29',
+    actions: gridActions,
   },
   {
     fullName: 'Israel David',
@@ -72,7 +96,8 @@ export const mockRowData = [
         imageSource: 'https://townsquare.media/site/442/files/2014/06/solo-foot-1.jpg?w=980&q=75',
       },
     },
-    hiredDate: '2016-01-29'
+    hiredDate: '2016-01-29',
+    actions: gridActions,
   },
   {
     fullName: 'Ishai Borovoy',
@@ -87,7 +112,8 @@ export const mockRowData = [
           'https://lumiere-a.akamaihd.net/v1/images/solo-han-solo-main_890f79bd.jpeg?region=8%2C0%2C1543%2C868&width=960',
       }
     },
-    hiredDate: '2017-01-30'
+    hiredDate: '2017-01-30',
+    actions: gridActions,
   },
 ];
 
