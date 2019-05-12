@@ -17,9 +17,9 @@ const template = `<b-add-file (clicked)="onClick($event)" [icon]="icon" [imageUr
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Add File'">
-  <div style="display: flex; width:280px; margin: 100px auto;">
     ${template}
-  </div>
+<!--  <div style="display: flex; width:280px; margin: 100px auto;">-->
+<!--  </div>-->
 </b-story-book-layout>`;
 
 const note = `
@@ -41,7 +41,7 @@ stories.add(
       props: {
         icon: select('icon', icons, Icons.add_photo),
         imageUrl: select('imageUrl', [
-            'https://upload.wikimedia.org/wikipedia/commons/7/76/Slack_Icon.png',
+            'https://i.imgur.com/LMg0fWt.png',
             'https://www.freeiconspng.com/uploads/skype-icon-5.png',
         ]),
         onClick: action()

@@ -1,8 +1,8 @@
-<div class="container" [ngClass]="{'edit-mode': imageUrl}" (mouseover)="updateIconClass($event)">
-  <b-icon [icon]="selectedIcon"
-          size="large"
-          color="normal"
-          [color]="iconColor">
+<div class="container"
+     [ngClass]="{'edit-mode': imageUrl}"
+     [ngStyle]="{ 'background-image': 'url(' + imageUrl + ')'}">
+  <b-icon [icon]="imageUrl ? iconShape.edit_field_pencil : icon"
+          [size]="iconSize.large"
+          [color]="imageUrl ? iconColor.white : iconColor.normal">
   </b-icon>
-  <div *ngIf="imageUrl" [ngStyle]="{ 'background-image': 'url(' + imageUrl + ')'}" class="file-image"></div>
 </div>

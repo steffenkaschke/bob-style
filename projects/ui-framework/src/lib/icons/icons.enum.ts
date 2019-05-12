@@ -65,5 +65,4 @@ export enum Icons {
   warning = 'warning_icon',
   no_folder = 'no_folder',
   add_photo = 'add_photo',
-  pencil_icon = 'pencil_icon',
 }

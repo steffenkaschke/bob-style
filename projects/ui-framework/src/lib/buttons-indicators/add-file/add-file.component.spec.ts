@@ -3,6 +3,7 @@ import {AddFileComponent} from './add-file.component';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {IconsModule} from '../../icons/icons.module';
 import {Icons} from '../../icons/icons.enum';
+import {By} from '@angular/platform-browser';
 
 describe('AddFileComponent', () => {
   let fixture: ComponentFixture<AddFileComponent>;
@@ -25,31 +26,51 @@ describe('AddFileComponent', () => {
 
   describe('onClick', () => {
     it('should emit Clicked event', () => {
-      component.onClick('hello');
-      expect(component.clicked.emit).toHaveBeenCalledWith('hello');
+      component.onClick();
+      expect(component.clicked.emit).toHaveBeenCalled();
     });
   });
-  describe('ngOnChanges', () => {
+  describe('icon', () => {
     it('Should set selectedIcon to pencil icon if image url ', () => {
       component.imageUrl = 'file url';
-      component.ngOnChanges();
-      expect(component.selectedIcon).toEqual('pencil_icon');
+      fixture.detectChanges();
+      const iconElement = fixture.debugElement.query(By.css('b-icon')).nativeElement.getAttribute('ng-reflect-icon');
+      expect(iconElement).toEqual('edit_field_pencil');
     });
-    it('Should set selectedIcon to icon if no image url ', () => {
+    it('Should set original icon to pencil icon if no image url ', () => {
       component.icon = Icons.add_photo;
-      component.ngOnChanges();
-      expect(component.selectedIcon).toEqual('add_photo');
+      fixture.detectChanges();
+      const iconElement = fixture.debugElement.query(By.css('b-icon')).nativeElement.getAttribute('ng-reflect-icon');
+      expect(iconElement).toEqual('add_photo');
+    });
+    it('Should set icon color to normal if no image url ', () => {
+      // fixture.detectChanges();
+      const iconElementColor =
+        fixture.debugElement.query(By.css('b-icon')).nativeElement.getAttribute('ng-reflect-color');
+      expect(iconElementColor).toEqual('normal');
+    });
+    it('Should set icon color to white if image url ', () => {
+      component.imageUrl = 'some url';
+      fixture.detectChanges();
+      const iconElementColor =
+        fixture.debugElement.query(By.css('b-icon')).nativeElement.getAttribute('ng-reflect-color');
+      expect(iconElementColor).toEqual('white');
     });
   });
-  describe('updateIconClass', () => {
-    it('Should leave iconColor as undefined if no imageUrl', () => {
-      component.updateIconClass();
-      expect(component.iconColor).toEqual(undefined);
-    });
-    it('Should set iconColo white if imageUrl', () => {
+  describe('container', () => {
+    it('Should add edit-mode class if image url', () => {
       component.imageUrl = 'some url';
-      component.updateIconClass();
-      expect(component.iconColor).toEqual('white');
+      fixture.detectChanges();
+      const elementContainerClasses =
+        fixture.debugElement.query(By.css('.container')).nativeElement.classList;
+      expect(elementContainerClasses).toContain('edit-mode')
+    });
+    it('Should add background image url to style if backgroundImage', () => {
+      component.imageUrl = 'url';
+      fixture.detectChanges();
+      const elementContainerStyle =
+        fixture.debugElement.query(By.css('.container')).nativeElement.getAttribute('style');
+      expect(elementContainerStyle).toEqual('background-image: url("url");');
     });
   });
 });
