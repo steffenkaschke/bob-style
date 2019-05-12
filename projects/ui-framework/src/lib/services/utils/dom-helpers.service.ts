@@ -70,7 +70,7 @@ export class DOMhelpers {
   }
 
   public isEmpty(element: HTMLElement): boolean {
-    return !this.hasChildren(element) && !this.hasTextNodes(element);
+    return element && !this.hasChildren(element) && !this.hasTextNodes(element);
   }
 
   // returns deepest element that has text

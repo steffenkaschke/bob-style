@@ -17,8 +17,8 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
   templateUrl: './avatar.component.html',
   styleUrls: ['./avatar.component.scss']
 })
-export class AvatarComponent implements AfterViewInit {
-  @ViewChild('content') content: ElementRef;
+export class AvatarComponent implements OnInit, AfterViewInit {
+  @ViewChild('content') private content: ElementRef;
   @Input() imageSource: string;
   @Input() size: AvatarSize = AvatarSize.mini;
   @Input() isClickable = false;
@@ -29,16 +29,28 @@ export class AvatarComponent implements AfterViewInit {
   @Output() clicked?: EventEmitter<void> = new EventEmitter<void>();
 
   public hasContent = true;
+  public avatarSize = AvatarSize;
   public badgeSize = BadgeSize;
-  constructor(private DOM: DOMhelpers) {}
+  constructor(private host: ElementRef, private DOM: DOMhelpers) {}
+
+  ngOnInit(): void {
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--avatar-size': this.size + 'px'
+    });
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.hasContent = !this.DOM.isEmpty(this.content.nativeElement);
+      this.hasContent =
+        this.content && !this.DOM.isEmpty(this.content.nativeElement);
     }, 0);
   }
 
-  onClick(event) {
+  getSizeClass(value: any): string {
+    return Object.keys(AvatarSize).find(key => AvatarSize[key] === value);
+  }
+
+  onClick(event: any): void {
     if (this.isClickable) {
       this.clicked.emit(event);
     }
