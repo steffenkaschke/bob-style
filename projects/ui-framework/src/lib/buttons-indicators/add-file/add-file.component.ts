@@ -13,7 +13,6 @@ export class AddFileComponent {
   readonly iconColor = IconColor;
   readonly iconSize = IconSize;
   readonly iconShape = Icons;
-  iconHover: boolean;
   constructor() {
   }
   @HostListener('click', ['$event'])
