@@ -12,7 +12,7 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { AvatarModule } from './avatar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
+import { Icons, IconColor } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
 
 const avatarStories = storiesOf(
@@ -84,7 +84,7 @@ avatarStories.add(
           'imageSource',
           'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
         ),
-        size: select('size', sizeOptions, AvatarSize.mini),
+        size: select('size', sizeOptions, AvatarSize.medium),
         isClickable: boolean('isClickable', false),
         clickHandler: action('Avatar Clicked'),
         title: text('title', 'John Doe'),
