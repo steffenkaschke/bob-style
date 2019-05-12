@@ -25,7 +25,7 @@ const inputStories = storiesOf(
 ).addDecorator(withKnobs);
 
 const value = `<div>Hello <a href="http://www.google.com">World</a>!</div>
-<div>Some initial <strong>bold</strong> text</div> {{/root/firstName}}`;
+<div>Some <em>initial</em> <strong>bold</strong> text</div> {{/root/firstName}}`;
 
 const template = `
   <b-rich-text-editor
@@ -33,7 +33,7 @@ const template = `
       [label]="label"
       [value]="value"
       [controls]="controls"
-      [removeControls]="removeControls"
+      [disableControls]="disableControls"
       [minHeight]="minHeight"
       [maxHeight]="maxHeight"
       [disabled]="disabled"
@@ -116,8 +116,8 @@ inputStories.add(
         label: text('label', 'Compose an epic...'),
         value: text('value', value),
         controls: array('controls', values(RTEControls), '\n'),
-        removeControls: array(
-          'removeControls',
+        disableControls: array(
+          'disableControls',
           [RTEControls.placeholders],
           '\n'
         ),

@@ -1,5 +1,4 @@
 import Quill from 'quill';
-import startsWith from 'lodash/startsWith';
 
 const Inline = Quill.import('blots/inline');
 
@@ -10,7 +9,7 @@ export const checkUrl = (url: string) => {
     return null;
   }
   url = url.trim();
-  return url ? (startsWith(url, 'http') ? url : `http://${url}`) : null;
+  return url ? (url.startsWith('http') ? url : `http://${url}`) : null;
 };
 
 export class LinkBlot extends Inline {
@@ -18,10 +17,9 @@ export class LinkBlot extends Inline {
   static tagName = 'a';
 
   static create(value: string) {
-    const node = super.create();
+    const node: HTMLElement = super.create();
     node.setAttribute('href', checkUrl(value));
     node.setAttribute('target', '_blank');
-    node.setAttribute('style', 'color:#e52c51; text-decoration:underline;');
     return node;
   }
 
