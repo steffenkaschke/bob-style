@@ -38,6 +38,9 @@ export {
   ButtonSize,
   BackButtonType
 } from './lib/buttons-indicators/buttons/buttons.enum';
+// Add File Module
+export { AddFileModule } from './lib/buttons-indicators/add-file/add-file.module';
+export { AddFileComponent } from './lib/buttons-indicators/add-file/add-file.component';
 // Avatar Module
 export { AvatarModule } from './lib/buttons-indicators/avatar/avatar.module';
 export {
