@@ -88,19 +88,20 @@ const note = `
 
 `;
 
-const placeholderMock: SelectGroupOption[] = [
+const placeholderMock = [
   {
     groupName: 'Basic Info - header',
     options: [
       {
-        value: 'First name',
+        displayName: 'First name',
         id: '/root/firstName',
-        selected: false
+        value: 'First name'
       },
       {
-        value: 'work | title',
+        displayName: 'title',
         id: '/work/title',
-        selected: false
+        category: 'Work',
+        value: 'title'
       }
     ]
   }

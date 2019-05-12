@@ -457,6 +457,12 @@ $border-color-error: $color-error;
     display: none;
   }
 }
+::ng-deep {
+  .single-list-select {
+    min-width: 400px;
+  }
+}
+
 
 // Editor text area CSS mods
 
@@ -484,9 +490,27 @@ $border-color-error: $color-error;
     white-space: nowrap;
     font-size: $font-size-body;
     font-weight: 500;
-    padding: 0 10px;
-    background-color: #fffaa5;
-    border-color: #fffaa5;
+    padding: 0 10px 0 0;
+    background-color: $white;
+    border: 2px solid var(--negative-700);
+    &:before {
+      content: attr(data-placeholder-category);
+      border-top-left-radius: 13px;
+      border-bottom-left-radius: 13px;
+      display: inline;
+      border-right: 2px solid var(--negative-700);
+      margin-right: 3px;
+      background-color: var(--negative-500);
+      padding-left: 6px;
+      padding-right: 4px;
+      color: $white;
+    }
+  }
+  [empty-placeholder-category] {
+    &:before {
+      display: inline-block;
+      margin-left: -4px;
+    }
   }
 
   [contenteditable='false'] {

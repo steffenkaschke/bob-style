@@ -89,6 +89,7 @@ export class RichTextEditorComponent extends RTEformElement
   @ViewChild('suffix') private suffix: ElementRef;
   @ViewChild('linkPanel') private linkPanel: PanelComponent;
   @ViewChild('linkEditor') private linkEditor: RteLinkEditorComponent;
+  @ViewChild('placeholderPanel') private placeholderPanel: PanelComponent;
 
   public hasSuffix = true;
   readonly buttonType = ButtonType;
@@ -210,6 +211,7 @@ export class RichTextEditorComponent extends RTEformElement
     const updateConfig: UpdateRteConfig = {
       replaceStr: this.selectedText,
       startIndex: this.selection.index,
+
       insertText: rteLink.text,
       format: {
         type: BlotType.link,
@@ -238,13 +240,14 @@ export class RichTextEditorComponent extends RTEformElement
     const updateConfig: UpdateRteConfig = {
       replaceStr: this.selectedText,
       startIndex: this.selection.index,
-      insertText: selectGroupOptions.triggerValue,
+      insertText: selectGroupOptions.focusOption.value,
       format: {
         type: BlotType.placeholder,
-        value: selectGroupOptions.selectedOptionId
+        value: selectGroupOptions.focusOption
       },
       unformat: undoFormats
     };
     this.rteUtilsService.updateEditor(this.editor, updateConfig);
+    this.placeholderPanel.closePanel();
   }
 }
