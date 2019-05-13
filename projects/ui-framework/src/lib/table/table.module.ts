@@ -4,16 +4,18 @@ import { TableComponent } from './table/table.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkTableModule } from '@angular/cdk/table';
 import { AgGridModule } from 'ag-grid-angular';
-import { AvatarModule } from '../../public_api';
+import {AvatarModule, ButtonsModule, MenuModule} from '../../public_api';
 import { AvatarCellComponent } from './table-cell-components/avatar.component';
 import { TableUtilsService } from './table-utils-service/table-utils.service';
 import { LicenseManager } from 'ag-grid-enterprise';
+import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
 
 
 @NgModule({
   declarations: [
     TableComponent,
     AvatarCellComponent,
+    ActionsCellComponent
   ],
   providers: [
     TableUtilsService,
@@ -24,11 +26,14 @@ import { LicenseManager } from 'ag-grid-enterprise';
     CdkTableModule,
     AvatarModule,
     AgGridModule,
-    AgGridModule.withComponents([AvatarCellComponent])
+    ButtonsModule,
+    MenuModule,
+    AgGridModule.withComponents([AvatarCellComponent, ActionsCellComponent]),
   ],
   exports: [
     TableComponent,
     AvatarCellComponent,
+    ActionsCellComponent
   ],
 })
 export class TableModule {
