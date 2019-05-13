@@ -113,24 +113,12 @@ export class RteUtilsService {
       updateConfig.replaceStr
     );
 
-    console.log(
-      'char at insertion point: "' +
-        originalPlainText[updateConfig.startIndex] +
-        '"'
-    );
-    console.log('replaceStr', updateConfig.replaceStr);
-    console.log('modifiedText: "' + modifiedText + '"');
-
     const spaceBefore =
       updateConfig.addSpaces &&
       !/\s/.test(originalPlainText[updateConfig.startIndex])
         ? ' '
         : '';
-    const spaceAfter =
-      updateConfig.addSpaces &&
-      !/\s/.test(originalPlainText[updateConfig.startIndex])
-        ? ' '
-        : '';
+    const spaceAfter = spaceBefore;
 
     const insertedTextLength =
       updateConfig.insertText.length + spaceBefore.length + spaceAfter.length;
@@ -153,11 +141,9 @@ export class RteUtilsService {
       new Delta()
         .retain(updateConfig.startIndex)
         .delete(updateConfig.replaceStr.length)
-
         .insert(spaceBefore, {})
         .insert(updateConfig.insertText, newFormat)
         .insert(spaceAfter, {})
-
         .retain(retainLength)
         .insert(insertedTextEnd + 1 === futureEditorLength ? '\n' : '')
     );
