@@ -1,6 +1,7 @@
 <div class="quill-editor">
 
   <div #quillEditor
+       (keydown)="$event.stopPropagation()"
        [ngStyle]="{
          minHeight: minHeight ? (minHeight - 43) + 'px' : null,
          maxHeight: maxHeight ? (maxHeight - 43) + 'px' : null

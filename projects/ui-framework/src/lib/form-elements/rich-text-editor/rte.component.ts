@@ -101,7 +101,6 @@ export class RichTextEditorComponent extends RTEformElement
   readonly RTEFontSize = RTEFontSize;
   readonly panelDefaultPosVer = PanelDefaultPosVer;
   private blotsToDeleteWhole = [BlotType.link, BlotType.placeholder];
-  private placeholderPanelOpen = false;
 
   // registering input/output transformers
   private initTransformers(): void {
@@ -168,19 +167,27 @@ export class RichTextEditorComponent extends RTEformElement
     this.editor.keyboard.addBinding({ key: KeyboardKeys.backspace }, () => {
       if (this.blotsToDeleteWhole.length > 0) {
         this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
-
+        console.log(this.currentBlot);
         if (
           this.rteUtilsService.commonFormats(
             this.currentBlot.format,
             this.blotsToDeleteWhole
           )
         ) {
+          console.log('if true');
           this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
           return false;
         }
       }
       return true;
     });
+
+    this.editor.keyboard.addBinding(
+      { key: KeyboardKeys.enter },
+      (range, context) => {
+        console.log(range, context);
+      }
+    );
   }
 
   public changeFontSize(size: RTEFontSize) {
@@ -233,40 +240,36 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   public onPlaceholderPanelOpen() {
-    this.placeholderPanelOpen = true;
     this.storeCurrentSelection();
   }
 
   public onPlaceholderSelectChange(
     selectGroupOptions: SingleListComponent
   ): void {
-    if (this.placeholderPanelOpen) {
-      const undoFormats = Object.values(BlotType).filter(
-        f => f !== BlotType.placeholder
-      );
+    const undoFormats = Object.values(BlotType).filter(
+      f => f !== BlotType.placeholder
+    );
 
-      const id = selectGroupOptions.focusOption.id;
-      const name = selectGroupOptions.focusOption.value;
-      const category = this.placeholderRteConverterService.getGroupDisplayName(
-        this.placeholderList[0].options as RtePlaceholder[],
-        id as string
-      );
-      const text = getPlaceholderText(name, category);
+    const id = selectGroupOptions.focusOption.id;
+    const name = selectGroupOptions.focusOption.value;
+    const category = this.placeholderRteConverterService.getGroupDisplayName(
+      this.placeholderList[0].options as RtePlaceholder[],
+      id as string
+    );
+    const text = getPlaceholderText(name, category);
 
-      const updateConfig: UpdateRteConfig = {
-        replaceStr: this.selectedText,
-        startIndex: this.selection.index,
-        insertText: text,
-        format: {
-          type: BlotType.placeholder,
-          value: selectGroupOptions.focusOption
-        },
-        unformat: undoFormats
-      };
+    const updateConfig: UpdateRteConfig = {
+      replaceStr: this.selectedText,
+      startIndex: this.selection.index,
+      insertText: text,
+      format: {
+        type: BlotType.placeholder,
+        value: selectGroupOptions.focusOption
+      },
+      unformat: undoFormats
+    };
 
-      this.rteUtilsService.updateEditor(this.editor, updateConfig);
-      this.placeholderPanel.closePanel();
-      this.placeholderPanelOpen = false;
-    }
+    this.rteUtilsService.updateEditor(this.editor, updateConfig);
+    this.placeholderPanel.closePanel();
   }
 }

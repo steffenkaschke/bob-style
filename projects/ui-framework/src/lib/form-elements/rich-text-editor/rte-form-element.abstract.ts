@@ -71,7 +71,7 @@ export abstract class RTEformElement extends BaseFormElement
         newInputValue
       );
       this.editor.setContents(
-        this.editor.clipboard.convert(newInputValue).insert('\n')
+        this.editor.clipboard.convert(newInputValue).insert(' \n')
       );
     } else if (this.editor) {
       this.editor.setText('\n');

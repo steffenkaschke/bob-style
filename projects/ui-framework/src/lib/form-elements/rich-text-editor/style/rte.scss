@@ -465,6 +465,12 @@ $border-color-error: $color-error;
 
 // Editor text area CSS mods
 
+:host ::ng-deep {
+  .ql-cursor {
+    display: none;
+  }
+}
+
 :host:not(.disabled) ::ng-deep {
   span[style],
   strong[style],
