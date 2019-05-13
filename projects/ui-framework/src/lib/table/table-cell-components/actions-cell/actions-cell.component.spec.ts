@@ -1,11 +1,14 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {ActionsCellComponent} from './actions-cell.component';
-import {MenuItem} from '../../../navigation/menu/menu.interface';
-import {MenuModule} from '../../../navigation/menu/menu.module';
-import {ButtonsModule} from '../../../buttons-indicators/buttons/buttons.module';
 import {By} from '@angular/platform-browser';
 import {IconColor, Icons} from '../../../icons/icons.enum';
 import {ButtonType} from '../../../buttons-indicators/buttons/buttons.enum';
+import {MockComponent} from 'ng-mocks';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {MenuComponent} from '../../../navigation/menu/menu.component';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {SquareButtonComponent} from '../../../buttons-indicators/buttons/square/square.component';
+import {GridActions} from './actions-cell.interface';
 
 describe('ActionsCellComponent', () => {
   let component: ActionsCellComponent;
@@ -13,40 +16,44 @@ describe('ActionsCellComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ActionsCellComponent],
+      declarations: [
+        ActionsCellComponent,
+        MockComponent(SquareButtonComponent),
+        MockComponent(MenuComponent),
+      ],
       imports: [
-        MenuModule,
-        ButtonsModule,
-      ]
+        NoopAnimationsModule,
+      ],
+      schemas: [
+        NO_ERRORS_SCHEMA,
+      ],
     })
-    .compileComponents();
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(ActionsCellComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+      });
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ActionsCellComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
   it('should get menu items data', () => {
-    const mockMenuItems: MenuItem[] = [{ label: 'first action' }, { label: 'second action' }];
-    component.agInit({ value: mockMenuItems });
-    expect(component.menuItems).toEqual(mockMenuItems);
+    const mockGridActions: GridActions = {
+      menuItems: [{label: 'first action'}, {label: 'second action'}], openLeft: true };
+    component.agInit({value: mockGridActions});
+    expect(component.menuItems).toEqual(mockGridActions.menuItems);
   });
 
   it('should check menu element in template', () => {
-    const mockMenuItems: MenuItem[] = [{ label: 'first action' }, { label: 'second action' }];
-    component.menuItems = mockMenuItems;
+    const mockGridActions: GridActions = {
+      menuItems: [{label: 'first action'}, {label: 'second action'}], openLeft: true };
+    component.menuItems = mockGridActions.menuItems;
     fixture.detectChanges();
     const menuElement = fixture.debugElement.query(By.css('b-menu'));
-    expect(menuElement.componentInstance.menu).toEqual(mockMenuItems);
-    expect(menuElement.componentInstance.openLeft).toBeTruthy();
+    expect(menuElement.componentInstance.menu).toEqual(mockGridActions.menuItems);
+    expect(menuElement.componentInstance.openLeft).toEqual(false);
   });
 
   it('should check b-square-button element', () => {
-    const mockMenuItems: MenuItem[] = [{ label: 'first action' }, { label: 'second action' }];
-    component.menuItems = mockMenuItems;
-    fixture.detectChanges();
     const triggerButtonElement = fixture.debugElement.query(By.css('b-square-button'));
     expect(triggerButtonElement.componentInstance.color).toEqual(IconColor.dark);
     expect(triggerButtonElement.componentInstance.type).toEqual(ButtonType.tertiary);

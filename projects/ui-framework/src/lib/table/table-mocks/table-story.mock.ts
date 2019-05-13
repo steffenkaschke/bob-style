@@ -2,6 +2,7 @@ import { ColumnDef, PinDirection, SortDirections } from '../table/table.interfac
 import { AvatarCellComponent } from '../table-cell-components/avatar.component';
 import {ActionsCellComponent} from '../table-cell-components/actions-cell/actions-cell.component';
 import {MenuItem} from '../../navigation/menu/menu.interface';
+import {GridActions} from '../table-cell-components/actions-cell/actions-cell.interface';
 
 export const mockColumnsDefs: ColumnDef[] = [
   {
@@ -41,16 +42,19 @@ export const mockColumnsDefs: ColumnDef[] = [
   },
 ];
 
-const gridActions: MenuItem[] = [
-  {
-    label: 'menu item 1',
-    action: ($event) => console.log('menu item 1 clicked', $event)
-  },
-  {
-    label: 'menu item 2',
-    action: ($event) => console.log('menu item 2 clicked', $event)
-  },
-];
+const gridActions: GridActions = {
+  menuItems: [
+    {
+      label: 'menu item 1',
+      action: ($event) => console.log('menu item 1 clicked', $event)
+    },
+    {
+      label: 'menu item 2',
+      action: ($event) => console.log('menu item 2 clicked', $event)
+    },
+  ],
+  openLeft: true,
+};
 
 export const mockRowData = [
   {
