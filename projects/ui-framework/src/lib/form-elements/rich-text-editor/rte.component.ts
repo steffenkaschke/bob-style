@@ -257,8 +257,7 @@ export class RichTextEditorComponent extends RTEformElement
         type: BlotType.placeholder,
         value: selectGroupOptions.focusOption
       },
-      unformat: undoFormats,
-      addSpaces: true
+      unformat: undoFormats
     };
 
     this.rteUtilsService.updateEditor(this.editor, updateConfig);

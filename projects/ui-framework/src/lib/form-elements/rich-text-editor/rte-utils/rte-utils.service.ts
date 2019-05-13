@@ -104,20 +104,7 @@ export class RteUtilsService {
       });
     }
 
-    const originalPlainText = editor.getText();
-    const modifiedText = originalPlainText.replace(
-      originalPlainText.substring(
-        updateConfig.startIndex,
-        updateConfig.startIndex + updateConfig.replaceStr.length
-      ),
-      updateConfig.replaceStr
-    );
-
-    const spaceBefore =
-      updateConfig.addSpaces &&
-      !/\s/.test(originalPlainText[updateConfig.startIndex])
-        ? ' '
-        : '';
+    const spaceBefore = updateConfig.addSpaces ? ' ' : '';
     const spaceAfter = spaceBefore;
 
     const insertedTextLength =
