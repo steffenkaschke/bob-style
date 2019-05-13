@@ -6,6 +6,7 @@ export interface UpdateRteConfig {
   insertText: string;
   format: UpdateRteConfigFormat;
   unformat?: string[];
+  addSpaces?: boolean;
 }
 
 type RteBlotFormat = { [key in BlotType]?: any };

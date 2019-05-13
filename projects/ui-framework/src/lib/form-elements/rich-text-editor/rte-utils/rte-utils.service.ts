@@ -104,24 +104,60 @@ export class RteUtilsService {
       });
     }
 
+    const originalPlainText = editor.getText();
+    const modifiedText = originalPlainText.replace(
+      originalPlainText.substring(
+        updateConfig.startIndex,
+        updateConfig.startIndex + updateConfig.replaceStr.length
+      ),
+      updateConfig.replaceStr
+    );
+
+    console.log(
+      'char at insertion point: "' +
+        originalPlainText[updateConfig.startIndex] +
+        '"'
+    );
+    console.log('replaceStr', updateConfig.replaceStr);
+    console.log('modifiedText: "' + modifiedText + '"');
+
+    const spaceBefore =
+      updateConfig.addSpaces &&
+      !/\s/.test(originalPlainText[updateConfig.startIndex])
+        ? ' '
+        : '';
+    const spaceAfter =
+      updateConfig.addSpaces &&
+      !/\s/.test(originalPlainText[updateConfig.startIndex])
+        ? ' '
+        : '';
+
+    const insertedTextLength =
+      updateConfig.insertText.length + spaceBefore.length + spaceAfter.length;
+
     const originalEditorLength = editor.getLength();
     const retainLength =
       originalEditorLength -
       updateConfig.startIndex -
       updateConfig.replaceStr.length -
-      updateConfig.insertText.length;
-    const insertedTextEnd =
-      updateConfig.startIndex + updateConfig.insertText.length;
+      insertedTextLength;
+
+    const insertedTextEnd = updateConfig.startIndex + insertedTextLength;
+
     const futureEditorLength =
       originalEditorLength -
       updateConfig.replaceStr.length +
-      updateConfig.insertText.length;
+      insertedTextLength;
 
     editor.updateContents(
       new Delta()
         .retain(updateConfig.startIndex)
         .delete(updateConfig.replaceStr.length)
+
+        .insert(spaceBefore, {})
         .insert(updateConfig.insertText, newFormat)
+        .insert(spaceAfter, {})
+
         .retain(retainLength)
         .insert(insertedTextEnd + 1 === futureEditorLength ? '\n' : '')
     );
