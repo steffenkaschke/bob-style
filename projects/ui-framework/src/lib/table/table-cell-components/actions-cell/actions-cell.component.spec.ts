@@ -45,12 +45,21 @@ describe('ActionsCellComponent', () => {
 
   it('should check menu element in template', () => {
     const mockGridActions: GridActions = {
-      menuItems: [{label: 'first action'}, {label: 'second action'}], openLeft: true };
-    component.menuItems = mockGridActions.menuItems;
+      menuItems: [{label: 'first action'}, {label: 'second action'}] };
+    component.agInit({value: mockGridActions});
     fixture.detectChanges();
     const menuElement = fixture.debugElement.query(By.css('b-menu'));
     expect(menuElement.componentInstance.menu).toEqual(mockGridActions.menuItems);
     expect(menuElement.componentInstance.openLeft).toEqual(false);
+  });
+
+  it('should check if menu opened to left', () => {
+    const mockGridActions: GridActions = {
+      menuItems: [{label: 'first action'}, {label: 'second action'}], openLeft: true };
+    component.agInit({value: mockGridActions});
+    fixture.detectChanges();
+    const menuElement = fixture.debugElement.query(By.css('b-menu'));
+    expect(menuElement.componentInstance.openLeft).toEqual(true);
   });
 
   it('should check b-square-button element', () => {

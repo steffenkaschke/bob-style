@@ -53,7 +53,6 @@ const gridActions: GridActions = {
       action: ($event) => console.log('menu item 2 clicked', $event)
     },
   ],
-  openLeft: true,
 };
 
 export const mockRowData = [

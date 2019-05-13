@@ -10,7 +10,7 @@ import {ICellRendererAngularComp} from 'ag-grid-angular';
 })
 export class ActionsCellComponent implements ICellRendererAngularComp {
   public menuItems: MenuItem[];
-  public openLeft = false;
+  public openLeft: boolean;
   readonly buttonType: ButtonType = ButtonType.tertiary;
   readonly buttonColor: IconColor = IconColor.dark;
   readonly buttonIcon: Icons = Icons.three_dots;
@@ -19,7 +19,7 @@ export class ActionsCellComponent implements ICellRendererAngularComp {
 
   agInit(params: any): void {
     this.menuItems = params.value.menuItems;
-    this.openLeft = params.value.openLeft;
+    this.openLeft = params.value.openLeft || false;
   }
 
   refresh(params: any): boolean {
