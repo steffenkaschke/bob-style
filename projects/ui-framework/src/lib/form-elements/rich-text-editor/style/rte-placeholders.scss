@@ -33,9 +33,12 @@ $border-color: var(--negative-700);
 }
 
 :host.disabled ::ng-deep {
-  [data-placeholder-id] {
+  [data-placeholder-id],
+  [data-placeholder-category]:before {
+    box-shadow: inset 0 0 0 2px $grey-300;
+  }
+  [data-placeholder-category]:before {
     background-color: $grey-300;
-    color: white;
   }
 }
 

@@ -24,7 +24,7 @@ export class PlaceholderRteConverterService {
         );
       }
     );
-    return elm.innerHTML.toString();
+    return elm.innerHTML;
   }
 
   public toRte(
@@ -38,7 +38,7 @@ export class PlaceholderRteConverterService {
         const category = this.getGroupDisplayName(placeholders, innerContent);
         const name = this.getDisplayNameById(placeholders, innerContent);
         const text = getPlaceholderText(name, category);
-        return `<span contenteditable="false" data-placeholder-id="${innerContent}"
+        return `<span data-placeholder-id="${innerContent}"
         data-placeholder-category="${category}">${text}</span>`;
       }
     );

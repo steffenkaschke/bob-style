@@ -21,7 +21,6 @@ import { SingleListComponent } from '../lists/single-list/single-list.component'
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import quillLib, { QuillOptionsStatic } from 'quill';
 import { Italic } from './formats/italic-blot';
-import { TextBlot } from 'quill/blots/text';
 import { LinkBlot, RteLinkFormats } from './formats/link-blot';
 import { PlaceholderBlot } from './formats/placeholder-blot';
 import {
@@ -165,28 +164,77 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   private addKeyBindings(): void {
-    // this.editor.root
-    document
-      .querySelector('.ql-container > .ql-editor')
+    // move cursor to the beginning of plceholder on click
+    // this.editor.root.addEventListener('click', event => {
+    //   const element = event.target as HTMLElement;
+    //   if (element.dataset.placeholderId) {
+    //     this.currentBlot = this.rteUtilsService.getCurrentBlotData(
+    //       this.editor,
+    //       true
+    //     );
+    //     this.editor.setSelection(this.currentBlot.index, 0);
+    //   }
+    // });
+
+    // backspace handler
+    this.quillEditor.nativeElement
+      .querySelector('.ql-editor')
       .addEventListener('keydown', (event: KeyboardEvent) => {
         if (event.key.toUpperCase() === KeyboardKeys.backspace) {
+          event.preventDefault();
+          event.stopPropagation();
+
           this.currentBlot = this.rteUtilsService.getCurrentBlotData(
-            this.editor,
-            true
+            this.editor
+            // true
           );
 
+          // solve pseudo-cursor editing blot problem
           if (this.currentBlot.element.className === 'ql-cursor') {
             this.editor.setSelection(this.currentBlot.index + 1, 0);
             this.editor.setSelection(this.currentBlot.index, 0);
           }
+
+          // console.log(this.rteUtilsService.getCurrentSelection());
+
+          const currentSelection = this.rteUtilsService.getCurrentSelection(
+            this.editor
+          );
+          console.log('getCurrentSelection', currentSelection);
+
+          if (
+            // currentSelection.length > 0 &&
+            currentSelection.index !== this.currentBlot.index &&
+            this.blotsToDeleteWhole.length > 0 &&
+            this.rteUtilsService.commonFormats(
+              this.currentBlot.format,
+              this.blotsToDeleteWhole
+            )
+          ) {
+            console.log('addEventListener');
+            console.log('currentBlot');
+            console.log(this.currentBlot);
+
+            // event.preventDefault();
+            // event.stopPropagation();
+
+            this.rteUtilsService.deleteRange(
+              {
+                index: this.currentBlot.index,
+                length: this.currentBlot.length
+              },
+              this.editor
+            );
+
+            // this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
+          }
         }
-        console.log('addEventListener');
       });
 
     this.editor.keyboard.addBinding(
       { key: KeyboardKeys.backspace },
       (range, context) => {
-        console.log('addBinding');
+        console.log('addBinding', context);
         if (
           this.blotsToDeleteWhole.length > 0 &&
           this.rteUtilsService.commonFormats(
@@ -198,21 +246,26 @@ export class RichTextEditorComponent extends RTEformElement
             this.editor,
             true
           );
+
+          console.log('addBinding!!');
+          console.log('currentBlot');
           console.log(this.currentBlot);
 
-          if (this.currentBlot.element.dataset.willDelete) {
-            this.rteUtilsService.deleteRange(
-              {
-                index: this.currentBlot.index,
-                length: this.currentBlot.length
-              },
-              this.editor
-            );
-          } else {
-            // this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
-            this.currentBlot.element.dataset.willDelete = 'true';
-          }
+          this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
 
+          // if (this.currentBlot.element.dataset.willDelete) {
+          //   this.rteUtilsService.deleteRange(
+          //     {
+          //       index: this.currentBlot.index,
+          //       length: this.currentBlot.length
+          //     },
+          //     this.editor
+          //   );
+          // } else {
+          //   this.currentBlot.element.dataset.willDelete = 'true';
+          // }
+
+          // let the addEventListener binding handle the event
           return false;
         }
 
@@ -220,11 +273,11 @@ export class RichTextEditorComponent extends RTEformElement
       }
     );
 
-    this.editor.on('selection-change', () => {
-      if (this.currentBlot) {
-        delete this.currentBlot.element.dataset.willDelete;
-      }
-    });
+    // this.editor.on('selection-change', () => {
+    //   if (this.currentBlot) {
+    //     delete this.currentBlot.element.dataset.willDelete;
+    //   }
+    // });
   }
 
   public changeFontSize(size: RTEFontSize) {

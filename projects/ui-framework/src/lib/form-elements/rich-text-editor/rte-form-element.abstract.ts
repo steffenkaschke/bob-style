@@ -40,7 +40,7 @@ export abstract class RTEformElement extends BaseFormElement
   @Input() private formControlName: any;
   @Input() private formControl: any;
 
-  @ViewChild('quillEditor') private quillEditor: ElementRef;
+  @ViewChild('quillEditor') protected quillEditor: ElementRef;
 
   @Output() blurred: EventEmitter<any> = new EventEmitter<any>();
   @Output() focused: EventEmitter<any> = new EventEmitter<any>();

@@ -48,19 +48,21 @@ export class RteUtilsService {
 
   getCurrentBlot(): Blot {
     const nativeRange = this.getNativeRange();
+    console.log('nativeRange', nativeRange);
 
-    let node = nativeRange && nativeRange.endContainer;
+    const node = nativeRange && nativeRange.endContainer;
 
     // if we have Element and not Node
-    if (
-      (node as HTMLElement).tagName &&
-      ((node as HTMLElement).tagName === 'DIV' &&
-        !(node as HTMLElement).className)
-    ) {
-      node = this.DOM.getDeepTextNode(node as HTMLElement) || node;
-    }
+    // if (
+    //   (node as HTMLElement).tagName &&
+    //   ((node as HTMLElement).tagName === 'DIV' &&
+    //     !(node as HTMLElement).className)
+    // ) {
+    //   node = this.DOM.getDeepTextNode(node as HTMLElement) || node;
+    // }
 
-    console.log(nativeRange);
+    // console.log(nativeRange);
+    console.log('getCurrentBlot');
     console.dir(node);
 
     if (!node) {
@@ -68,11 +70,11 @@ export class RteUtilsService {
     }
 
     let blot = Parchment.find(node);
-
+    console.log('blot', blot);
     if (!blot) {
+      console.log('no blot');
       blot = Parchment.find(node.parentElement);
     }
-
     return blot;
   }
 
