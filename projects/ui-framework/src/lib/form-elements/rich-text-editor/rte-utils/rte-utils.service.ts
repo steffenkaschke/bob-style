@@ -48,7 +48,9 @@ export class RteUtilsService {
   getCurrentBlot(): Blot {
     const nativeRange = this.getNativeRange();
     const node = nativeRange && nativeRange.endContainer;
-    return node && Parchment.find(node);
+    console.log('node');
+    console.dir(node);
+    return node && (Parchment.find(node) || Parchment.find(node.parentElement));
   }
 
   getBlotIndex(blot: Blot, editor: Quill): number {

@@ -165,6 +165,28 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   private addKeyBindings(): void {
+    // document
+    //   .querySelector('.ql-container > .ql-editor')
+    this.editor.root.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (event.key === 'Backspace') {
+        const blot = this.rteUtilsService.getCurrentBlot();
+
+        console.log('ql-editor', event.key, blot);
+
+        if ((blot.domNode as HTMLElement).className === 'ql-cursor') {
+          // this.editor.setSelection(
+          //   this.rteUtilsService.getBlotIndex(blot, this.editor) - 1,
+          //   0
+          // );
+
+          // this.editor.root.dispatchEvent()
+
+          this.editor.blur();
+          this.editor.focus();
+        }
+      }
+    });
+
     this.editor.keyboard.addBinding(
       { key: KeyboardKeys.backspace },
       (range, context) => {
