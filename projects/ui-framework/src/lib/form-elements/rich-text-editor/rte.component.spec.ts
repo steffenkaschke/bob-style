@@ -275,7 +275,7 @@ describe('RichTextEditorComponent', () => {
   describe('Events', () => {
     it('should output RteCurrentContent object when text changes and sendChangeOn = change', done => {
       const subscr = RTEComponent.changed.subscribe(val => {
-        expect(val).toEqual('<div>test text</div>');
+        expect(val).toEqual('<div>test text </div>');
         subscr.unsubscribe();
         done();
       });
@@ -290,7 +290,7 @@ describe('RichTextEditorComponent', () => {
     it('should output RteCurrentContent object only on blur, if sendChangeOn = blur', done => {
       let testVar = 1;
       const subscr = RTEComponent.changed.subscribe(val => {
-        expect(val).toEqual('<div>test text 2</div>');
+        expect(val).toEqual('<div>test text 2 </div>');
         expect(testVar).toEqual(2);
         subscr.unsubscribe();
         done();
@@ -450,12 +450,12 @@ describe('RichTextEditorComponent', () => {
             {
               id: '/work/title',
               selected: false,
-              value: 'work | title'
+              displayName: 'work | title'
             },
             {
               id: '/root/firstName',
               selected: false,
-              value: 'First name'
+              displayName: 'First name'
             }
           ]
         }

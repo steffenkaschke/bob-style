@@ -16,7 +16,7 @@ export interface ListOption {
 
 export interface SelectGroupOption {
   groupName: string;
-  key?: string,
+  key?: string;
   options: SelectOption[];
 }
 

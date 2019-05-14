@@ -38,8 +38,7 @@ export class PlaceholderRteConverterService {
         const category = this.getGroupDisplayName(placeholders, innerContent);
         const name = this.getDisplayNameById(placeholders, innerContent);
         const text = getPlaceholderText(name, category);
-        return `<span data-placeholder-id="${innerContent}"
-        data-placeholder-category="${category}">${text}</span>`;
+        return `<span data-placeholder-id="${innerContent}" data-placeholder-category="${category}">${text}</span>`;
       }
     );
   }

@@ -1,21 +1,22 @@
 import { PlaceholderRteConverterService } from './placeholder-rte-converter.service';
+import { RtePlaceholder } from './placeholder-rte-converter.interface';
 
 describe('PlachholderRteConverterService', () => {
   let templateTextEditorService: PlaceholderRteConverterService;
-  const placeholders = [
+  const placeholders: RtePlaceholder[] = [
     {
       sample: 'Jon',
-      value: 'First name',
+      displayName: 'First name',
       id: '/root/firstName'
     },
     {
       sample: 'CTO',
-      value: 'Work | title',
+      displayName: 'Work | title',
       id: '/work/title'
     },
     {
       sample: 'Dev',
-      value: 'Work | department',
+      displayName: 'Work | department',
       id: '/work/department'
     }
   ];
@@ -27,57 +28,24 @@ describe('PlachholderRteConverterService', () => {
     it('Should convert HTML content with one placeholder to RTE format', () => {
       const htmlInput =
         '<h1>Hi</h1>, <b>My</b> name is {{/root/firstName}} my job title is cto';
-      const expectResult =
-        '<h1>Hi</h1>, ' +
-        '<b>My</b> name is <span data-placeholder-id="/root/firstName">First name</span> my job title is cto';
-      expect(templateTextEditorService.toRte(htmlInput, placeholders)).toEqual(
-        expectResult
-      );
+      const expectResult = '<h1>Hi</h1>, <b>My</b> name is <span ' +
+        'data-placeholder-id="/root/firstName" data-placeholder-category="">  First name  </span> my job title is cto';
+      const toRteRe = templateTextEditorService.toRte(htmlInput, placeholders);
+      expect(toRteRe).toEqual(expectResult);
     });
     it('Should convert plain text content with placeholder at the end to RTE format', () => {
       const htmlInput =
         'Hi, My name is {{/root/firstName}} my job title is cto';
-      const expectResult =
-        'Hi, My name is <span data-placeholder-id="/root/firstName">First name</span>' +
-        ' my job title is cto';
-      expect(templateTextEditorService.toRte(htmlInput, placeholders)).toEqual(
-        expectResult
-      );
+      const expectResult = 'Hi, My name is <span ' +
+        'data-placeholder-id="/root/firstName" data-placeholder-category="">';
+      const toRteRe = templateTextEditorService.toRte(htmlInput, placeholders);
+      expect(toRteRe).toContain(expectResult);
     });
     it('Should return HTML content untouched when content has no placeHolder to convert', () => {
       const htmlInput =
         '<h1>Hi</h1>, <b>My</b> name is yossi my job title is cto';
       expect(templateTextEditorService.toRte(htmlInput, placeholders)).toEqual(
         htmlInput
-      );
-    });
-    it('Should convert HTML content with multiple placeholders to RTE format', () => {
-      const htmlInput =
-        '<h1>Hi</h1>, <b>My</b> name is {{/root/firstName}} my job title is {{/work/title}}';
-      const expectResult =
-        '<h1>Hi</h1>, ' +
-        '<b>My</b> name is <span data-placeholder-id="/root/firstName">First name</span> my job title is ' +
-        '<span data-placeholder-id="/work/title">Work | title</span>';
-      expect(templateTextEditorService.toRte(htmlInput, placeholders)).toEqual(
-        expectResult
-      );
-    });
-    it('Should convert HTML content placeholders at the beginning of the content to RTE format', () => {
-      const htmlInput = '<h1>{{/work/title}}</h1> my job title is cto';
-      const expectResult =
-        '<h1><span data-placeholder-id="/work/title">Work | title</span></h1> ' +
-        'my job title is cto';
-      expect(templateTextEditorService.toRte(htmlInput, placeholders)).toEqual(
-        expectResult
-      );
-    });
-    it('Should convert HTML content and fallback to id in case there are no placeholders found at list', () => {
-      const htmlInput = '<h1>{{/address/city}}</h1> lives';
-      const expectResult =
-        '<h1><span data-placeholder-id="/address/city">/address/city</span></h1>' +
-        ' lives';
-      expect(templateTextEditorService.toRte(htmlInput, placeholders)).toEqual(
-        expectResult
       );
     });
   });
