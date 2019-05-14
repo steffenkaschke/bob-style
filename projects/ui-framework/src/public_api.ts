@@ -259,7 +259,8 @@ export { TableModule } from './lib/table/table.module';
 export * from './lib/table/table/table.interface';
 export { TableComponent } from './lib/table/table/table.component';
 export { AvatarCellComponent } from './lib/table/table-cell-components/avatar.component';
-
+export { ActionsCellComponent } from './lib/table/table-cell-components/actions-cell/actions-cell.component';
+export { GridActions } from './lib/table/table-cell-components/actions-cell/actions-cell.interface';
 
 /*
  * Layout
