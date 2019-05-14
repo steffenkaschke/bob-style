@@ -31,7 +31,7 @@ import {
   KeyboardKeys
 } from './rte.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { RteLink, UpdateRteConfig } from './rte.interface';
+import { RteLink, UpdateRteConfig, BlotData } from './rte.interface';
 import { RTEformElement } from './rte-form-element.abstract';
 import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
 import { RtePlaceholder } from './placeholder-rte-converter/placeholder-rte-converter.interface';
@@ -100,7 +100,11 @@ export class RichTextEditorComponent extends RTEformElement
   readonly RTEControls = RTEControls;
   readonly RTEFontSize = RTEFontSize;
   readonly panelDefaultPosVer = PanelDefaultPosVer;
-  private blotsToDeleteWhole = [BlotType.link, BlotType.placeholder];
+  private blotsToDeleteWhole: BlotType[] = [
+    BlotType.link,
+    BlotType.placeholder
+  ];
+  private blotsToTreatAsWhole: BlotType[] = [BlotType.placeholder];
 
   // registering input/output transformers
   private initTransformers(): void {
@@ -164,77 +168,80 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   private addKeyBindings(): void {
-    // move cursor to the beginning of plceholder on click
-    // this.editor.root.addEventListener('click', event => {
-    //   const element = event.target as HTMLElement;
-    //   if (element.dataset.placeholderId) {
-    //     this.currentBlot = this.rteUtilsService.getCurrentBlotData(
-    //       this.editor,
-    //       true
-    //     );
-    //     this.editor.setSelection(this.currentBlot.index, 0);
-    //   }
-    // });
+    // move cursor to the beginning or end of plceholder on click
+    if (this.blotsToTreatAsWhole.length > 0) {
+      this.editor.root.addEventListener('click', event => {
+        const element = event.target as any;
 
-    // backspace handler
-    this.quillEditor.nativeElement
-      .querySelector('.ql-editor')
-      .addEventListener('keydown', (event: KeyboardEvent) => {
-        if (event.key.toUpperCase() === KeyboardKeys.backspace) {
-          event.preventDefault();
-          event.stopPropagation();
-
-          this.currentBlot = this.rteUtilsService.getCurrentBlotData(
-            this.editor
-            // true
-          );
-
-          // solve pseudo-cursor editing blot problem
-          if (this.currentBlot.element.className === 'ql-cursor') {
-            this.editor.setSelection(this.currentBlot.index + 1, 0);
-            this.editor.setSelection(this.currentBlot.index, 0);
-          }
-
-          // console.log(this.rteUtilsService.getCurrentSelection());
-
-          const currentSelection = this.rteUtilsService.getCurrentSelection(
+        if (
+          (element as any).__blot &&
+          this.blotsToTreatAsWhole.includes(
+            element.__blot.blot.statics.blotName
+          )
+        ) {
+          this.currentBlot = this.rteUtilsService.getBlotDataFromElement(
+            element,
             this.editor
           );
-          console.log('getCurrentSelection', currentSelection);
+          const currentIndex = this.editor.getSelection().index;
 
           if (
-            // currentSelection.length > 0 &&
-            currentSelection.index !== this.currentBlot.index &&
-            this.blotsToDeleteWhole.length > 0 &&
-            this.rteUtilsService.commonFormats(
-              this.currentBlot.format,
-              this.blotsToDeleteWhole
-            )
+            currentIndex <
+            this.currentBlot.index + this.currentBlot.length / 2
           ) {
-            console.log('addEventListener');
-            console.log('currentBlot');
-            console.log(this.currentBlot);
-
-            // event.preventDefault();
-            // event.stopPropagation();
-
-            this.rteUtilsService.deleteRange(
-              {
-                index: this.currentBlot.index,
-                length: this.currentBlot.length
-              },
-              this.editor
+            this.editor.setSelection(this.currentBlot.index, 0);
+          } else {
+            this.editor.setSelection(
+              this.currentBlot.index + this.currentBlot.length + 1,
+              0
             );
-
-            // this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
           }
         }
       });
+    }
+
+    this.editor.root.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (
+        (this.blotsToDeleteWhole.length > 0 ||
+          this.blotsToTreatAsWhole.length > 0) &&
+        event.key.toUpperCase() === KeyboardKeys.backspace
+      ) {
+        const currentSelection = this.rteUtilsService.getCurrentSelection(
+          this.editor
+        );
+        this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
+
+        // if some text selected inside blot, delete it
+        if (
+          currentSelection.index !==
+            this.currentBlot.index + this.currentBlot.length &&
+          currentSelection.length !== this.currentBlot.length &&
+          this.rteUtilsService.commonFormats(
+            this.currentBlot.format,
+            this.blotsToTreatAsWhole
+          )
+        ) {
+          this.rteUtilsService.deleteRange(
+            {
+              index: this.currentBlot.index,
+              length: this.currentBlot.length
+            },
+            this.editor
+          );
+          return;
+        }
+
+        // solve pseudo-cursor editing blot problem
+        if (this.currentBlot.element.className === 'ql-cursor') {
+          this.editor.setSelection(this.currentBlot.index + 1, 0);
+          this.editor.setSelection(this.currentBlot.index, 0);
+        }
+      }
+    });
 
     this.editor.keyboard.addBinding(
       { key: KeyboardKeys.backspace },
       (range, context) => {
-        console.log('addBinding', context);
         if (
           this.blotsToDeleteWhole.length > 0 &&
           this.rteUtilsService.commonFormats(
@@ -244,40 +251,32 @@ export class RichTextEditorComponent extends RTEformElement
         ) {
           this.currentBlot = this.rteUtilsService.getCurrentBlotData(
             this.editor,
+            true,
+            range.index,
             true
           );
-
-          console.log('addBinding!!');
-          console.log('currentBlot');
-          console.log(this.currentBlot);
-
-          this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
-
-          // if (this.currentBlot.element.dataset.willDelete) {
-          //   this.rteUtilsService.deleteRange(
-          //     {
-          //       index: this.currentBlot.index,
-          //       length: this.currentBlot.length
-          //     },
-          //     this.editor
-          //   );
-          // } else {
-          //   this.currentBlot.element.dataset.willDelete = 'true';
-          // }
-
-          // let the addEventListener binding handle the event
-          return false;
+          if (
+            // if in the end of blot, select blots in blotsToDeleteWhole array
+            (context.prefix === this.currentBlot.text &&
+              this.rteUtilsService.commonFormats(
+                context.format,
+                this.blotsToDeleteWhole
+              )) ||
+            // if in the middle of blot, select blots in blotsToTreatAsWhole array
+            (context.prefix !== this.currentBlot.text &&
+              this.rteUtilsService.commonFormats(
+                context.format,
+                this.blotsToTreatAsWhole
+              ))
+          ) {
+            this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
+            return false;
+          }
         }
 
         return true;
       }
     );
-
-    // this.editor.on('selection-change', () => {
-    //   if (this.currentBlot) {
-    //     delete this.currentBlot.element.dataset.willDelete;
-    //   }
-    // });
   }
 
   public changeFontSize(size: RTEFontSize) {
@@ -286,7 +285,8 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   private onLinkPanelOpen(): void {
-    this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
+    this.currentBlot =
+      this.rteUtilsService.getCurrentBlotData(this.editor) || ({} as BlotData);
 
     if (this.currentBlot.link) {
       this.storeCurrentSelection(
@@ -356,7 +356,8 @@ export class RichTextEditorComponent extends RTEformElement
         type: BlotType.placeholder,
         value: selectGroupOptions.focusOption
       },
-      unformat: undoFormats
+      unformat: undoFormats,
+      addSpaces: true
     };
 
     this.rteUtilsService.insertBlot(this.editor, updateConfig);

@@ -7,7 +7,7 @@ const padChar = '\xa0';
 interface LocalFormat {
   id: string;
   category?: string;
-  tag?: string;
+  tag: string;
 }
 
 export const getPlaceholderText = (name: string, category: string): string =>
@@ -38,12 +38,13 @@ export class PlaceholderBlot extends Inline {
   }
 
   static formats(node: HTMLElement): LocalFormat {
-    if (node.innerText.trim() === '') {
+    if (!node || node.innerText.trim() === '') {
       return;
     }
     const id = node.getAttribute('data-placeholder-id');
     let category = node.getAttribute('data-placeholder-category');
     category = category ? category.replace(new RegExp(padChar, 'g'), '') : '';
+    const tag = node.getAttribute('data-tag');
 
     if (!id) {
       return;
@@ -51,7 +52,8 @@ export class PlaceholderBlot extends Inline {
 
     return {
       id,
-      category
+      category,
+      tag
     };
   }
 }

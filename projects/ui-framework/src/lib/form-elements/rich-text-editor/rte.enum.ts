@@ -12,6 +12,7 @@ export enum BlotType {
   underline = 'underline',
   list = 'list',
   direction = 'direction',
+  align = 'align',
   placeholder = 'Placeholder',
   color = 'color'
 }

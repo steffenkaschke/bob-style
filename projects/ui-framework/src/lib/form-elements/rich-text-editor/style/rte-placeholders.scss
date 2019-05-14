@@ -12,6 +12,7 @@ $border-color: var(--negative-700);
     box-shadow: inset 0 0 0 2px $border-color;
     position: relative;
     z-index: 0;
+    cursor: default;
   }
 
   [data-placeholder-category] {

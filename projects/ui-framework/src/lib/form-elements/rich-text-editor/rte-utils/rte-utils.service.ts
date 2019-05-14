@@ -7,6 +7,7 @@ import { Blot } from 'parchment/src/blot/abstract/blot';
 import { TextBlot } from 'quill/blots/text';
 import { keysFromArrayOrObject } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
+import { BlotType } from '../rte.enum';
 
 @Injectable()
 export class RteUtilsService {
@@ -46,33 +47,30 @@ export class RteUtilsService {
       : selection.getRangeAt(0);
   }
 
-  getCurrentBlot(): Blot {
-    const nativeRange = this.getNativeRange();
-    console.log('nativeRange', nativeRange);
-
-    const node = nativeRange && nativeRange.endContainer;
+  getCurrentBlot(index: number = null, editor: Quill = null): Blot {
+    let node: Node;
+    if (index && editor) {
+      node = editor.getLeaf(index)[0].domNode;
+    } else {
+      const nativeRange = this.getNativeRange();
+      node = nativeRange && nativeRange.endContainer;
+    }
 
     // if we have Element and not Node
-    // if (
-    //   (node as HTMLElement).tagName &&
-    //   ((node as HTMLElement).tagName === 'DIV' &&
-    //     !(node as HTMLElement).className)
-    // ) {
-    //   node = this.DOM.getDeepTextNode(node as HTMLElement) || node;
-    // }
-
-    // console.log(nativeRange);
-    console.log('getCurrentBlot');
-    console.dir(node);
+    if (
+      (node as HTMLElement).tagName &&
+      ((node as HTMLElement).tagName === 'DIV' &&
+        !(node as HTMLElement).className)
+    ) {
+      node = this.DOM.getDeepTextNode(node as HTMLElement) || node;
+    }
 
     if (!node) {
       return;
     }
 
     let blot = Parchment.find(node);
-    console.log('blot', blot);
     if (!blot) {
-      console.log('no blot');
       blot = Parchment.find(node.parentElement);
     }
     return blot;
@@ -82,12 +80,17 @@ export class RteUtilsService {
     return blot && blot.offset(editor.scroll);
   }
 
-  getCurrentBlotData(editor: Quill, skipformat = false): BlotData {
-    const blot = this.getCurrentBlot();
+  getCurrentBlotData(
+    editor: Quill,
+    skipformat = false,
+    index: number = null,
+    isEndIndex = false
+  ): BlotData {
+    const blot = this.getCurrentBlot(index, editor);
     if (!blot) {
       return null;
     }
-    const index = this.getBlotIndex(blot, editor);
+    index = (!isEndIndex && index) || this.getBlotIndex(blot, editor);
     const text = (blot as TextBlot).text || '';
     const format = (!skipformat && editor.getFormat(index + 1)) || {};
     const node = blot.domNode;
@@ -106,6 +109,22 @@ export class RteUtilsService {
     };
   }
 
+  getBlotDataFromElement(element: any, editor: Quill): BlotData {
+    const blot = element.__blot.blot;
+    const index = blot.offset(editor.scroll);
+    const domelement = blot.domNode;
+    const text = domelement.innerText;
+    const format = { [blot.statics.blotName]: blot.statics.formats() };
+
+    return {
+      index,
+      length: text.length,
+      text,
+      format,
+      element: domelement
+    };
+  }
+
   commonFormats(f1: string[] | {}, f2: string[] | {}): string[] {
     const f1keys = keysFromArrayOrObject(f1);
     const f2keys = keysFromArrayOrObject(f2);
@@ -117,6 +136,15 @@ export class RteUtilsService {
     return editor.updateContents(
       new Delta().retain(range.index).delete(range.length)
     );
+  }
+
+  getCharBeforeIndex(index: number, editor: Quill): string {
+    const blot = editor.getLeaf(index)[0];
+    return blot && blot.text && blot.text.slice(-1);
+  }
+
+  charIsWhiteSpace(char: string): boolean {
+    return !char || (char !== '\xa0' && /\s/.test(char));
   }
 
   selectBlot(blot: BlotData, editor: Quill): RangeStatic {
@@ -132,7 +160,9 @@ export class RteUtilsService {
       return null;
     }
 
-    const originalFormat = editor.getFormat(updateConfig.startIndex + 1);
+    const noLinebreakAfter = [BlotType.link, BlotType.align];
+
+    const originalFormat = editor.getFormat(updateConfig.startIndex); // +1
     const newFormat = {
       ...originalFormat,
       [updateConfig.format.type]: updateConfig.format.value
@@ -143,7 +173,14 @@ export class RteUtilsService {
       });
     }
 
-    const spaceBefore = updateConfig.addSpaces ? ' ' : '';
+    const charBeforeIndex = this.getCharBeforeIndex(
+      updateConfig.startIndex,
+      editor
+    );
+    const spaceBefore =
+      updateConfig.addSpaces && !this.charIsWhiteSpace(charBeforeIndex)
+        ? ' '
+        : '';
     const spaceAfter = spaceBefore;
 
     const insertedTextLength =
@@ -171,7 +208,12 @@ export class RteUtilsService {
         .insert(updateConfig.insertText, newFormat)
         .insert(spaceAfter)
         .retain(retainLength)
-        .insert(insertedTextEnd + 1 === futureEditorLength ? '\n' : '')
+        .insert(
+          insertedTextEnd + 1 === futureEditorLength &&
+            !this.commonFormats(newFormat, noLinebreakAfter)
+            ? '\n'
+            : ''
+        )
     );
     editor.setSelection(insertedTextEnd, 0);
   }
