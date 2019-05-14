@@ -33,7 +33,7 @@ export class PlaceholderBlot extends Inline {
   }
 
   static formats(node: HTMLElement): LocalFormat {
-    if (node.innerText === '') {
+    if (node.innerText.trim() === '') {
       return;
     }
     const id = node.getAttribute('data-placeholder-id');
