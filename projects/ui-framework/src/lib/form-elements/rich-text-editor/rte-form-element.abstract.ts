@@ -63,7 +63,7 @@ export abstract class RTEformElement extends BaseFormElement
   protected onNgAfterViewInit(): void {}
 
   protected applyValue(newInputValue: string): void {
-    this.value = newInputValue = newInputValue.trim();
+    this.value = newInputValue = newInputValue ? newInputValue.trim() : '';
 
     if (!!newInputValue && this.editor) {
       newInputValue = this.inputTransformers.reduce(
