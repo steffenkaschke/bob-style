@@ -11,8 +11,17 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+import { PanelComponent } from '../../overlay/panel/panel.component';
+import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { Icons } from '../../icons/icons.enum';
+import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
+import { SingleListComponent } from '../lists/single-list/single-list.component';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import quillLib, { QuillOptionsStatic } from 'quill';
+import { Italic } from './formats/italic-blot';
 import { LinkBlot, RteLinkFormats } from './formats/link-blot';
+import { PlaceholderBlot } from './formats/placeholder-blot';
 import {
   BlotType,
   RTEFontSize,
@@ -20,21 +29,13 @@ import {
   RTEControls,
   KeyboardKeys
 } from './rte.enum';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
-
 import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { RteLink, UpdateRteConfig } from './rte.interface';
 import { RTEformElement } from './rte-form-element.abstract';
-import { PanelComponent } from '../../overlay/panel/panel.component';
-import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
-import { Icons } from '../../icons/icons.enum';
-import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
 import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
-import { PlaceholderBlot } from './formats/placeholder-blot';
+import { RtePlaceholder, RtePlaceholderList } from './placeholder-rte-converter/placeholder-rte-converter.interface';
 import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
-import { SelectGroupOption } from '../lists/list.interface';
-import { RtePlaceholder } from './placeholder-rte-converter/placeholder-rte-converter.interface';
-import { Italic } from './formats/italic-blot';
+import { getPlaceholderText } from './formats/placeholder-blot';
 
 quillLib.register(LinkBlot);
 quillLib.register(PlaceholderBlot);
@@ -43,7 +44,7 @@ quillLib.register(Italic);
 @Component({
   selector: 'b-rich-text-editor',
   templateUrl: './rte.component.html',
-  styleUrls: ['./rte.component.scss'],
+  styleUrls: ['./style/rte.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -83,12 +84,13 @@ export class RichTextEditorComponent extends RTEformElement
   @Input() public minHeight = 185;
   @Input() public maxHeight = 295;
   @Input() public disableControls: RTEControls[] = [RTEControls.placeholders];
-  @Input() public placeholderList: SelectGroupOption[];
+  @Input() public placeholderList: RtePlaceholderList[];
 
   @ViewChild('toolbar') private toolbar: ElementRef;
   @ViewChild('suffix') private suffix: ElementRef;
   @ViewChild('linkPanel') private linkPanel: PanelComponent;
   @ViewChild('linkEditor') private linkEditor: RteLinkEditorComponent;
+  @ViewChild('placeholderPanel') private placeholderPanel: PanelComponent;
 
   public hasSuffix = true;
   readonly buttonType = ButtonType;
@@ -161,22 +163,34 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   private addKeyBindings(): void {
-    this.editor.keyboard.addBinding({ key: KeyboardKeys.backspace }, () => {
-      if (this.blotsToDeleteWhole.length > 0) {
-        this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
-
+    this.editor.keyboard.addBinding(
+      { key: KeyboardKeys.backspace },
+      (range, context) => {
         if (
+          this.blotsToDeleteWhole.length > 0 &&
           this.rteUtilsService.commonFormats(
-            this.currentBlot.format,
+            context.format,
             this.blotsToDeleteWhole
           )
         ) {
-          this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
+          this.currentBlot = this.rteUtilsService.getCurrentBlotData(
+            this.editor
+          );
+
+          this.rteUtilsService.deleteRange(
+            {
+              index: this.currentBlot.index,
+              length: this.currentBlot.length
+            },
+            this.editor
+          );
+
           return false;
         }
+
+        return true;
       }
-      return true;
-    });
+    );
   }
 
   public changeFontSize(size: RTEFontSize) {
@@ -210,6 +224,7 @@ export class RichTextEditorComponent extends RTEformElement
     const updateConfig: UpdateRteConfig = {
       replaceStr: this.selectedText,
       startIndex: this.selection.index,
+
       insertText: rteLink.text,
       format: {
         type: BlotType.link,
@@ -219,7 +234,7 @@ export class RichTextEditorComponent extends RTEformElement
         ? [BlotType.placeholder]
         : [...RteLinkFormats, BlotType.placeholder]
     };
-    this.rteUtilsService.updateEditor(this.editor, updateConfig);
+    this.rteUtilsService.insertBlot(this.editor, updateConfig);
     this.linkPanel.closePanel();
   }
 
@@ -231,20 +246,34 @@ export class RichTextEditorComponent extends RTEformElement
     this.storeCurrentSelection();
   }
 
-  public onPlaceholderSelectChange(selectGroupOptions): void {
+  public onPlaceholderSelectChange(
+    selectGroupOptions: SingleListComponent
+  ): void {
     const undoFormats = Object.values(BlotType).filter(
       f => f !== BlotType.placeholder
     );
+
+    const id = selectGroupOptions.focusOption.id;
+    const name = selectGroupOptions.focusOption.value;
+    const category = this.placeholderRteConverterService.getGroupDisplayName(
+      this.placeholderList[0].options as RtePlaceholder[],
+      id as string
+    );
+    const text = getPlaceholderText(name, category);
+
     const updateConfig: UpdateRteConfig = {
       replaceStr: this.selectedText,
       startIndex: this.selection.index,
-      insertText: selectGroupOptions.triggerValue,
+      insertText: text,
       format: {
         type: BlotType.placeholder,
-        value: selectGroupOptions.selectedOptionId
+        value: selectGroupOptions.focusOption
       },
-      unformat: undoFormats
+      unformat: undoFormats,
+      addSpaces: true
     };
-    this.rteUtilsService.updateEditor(this.editor, updateConfig);
+
+    this.rteUtilsService.insertBlot(this.editor, updateConfig);
+    this.placeholderPanel.closePanel();
   }
 }

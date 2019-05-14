@@ -1,6 +1,7 @@
 <div class="quill-editor">
 
   <div #quillEditor
+       (keydown)="$event.stopPropagation()"
        [ngStyle]="{
          minHeight: minHeight ? (minHeight - 43) + 'px' : null,
          maxHeight: maxHeight ? (maxHeight - 43) + 'px' : null
@@ -63,7 +64,8 @@
       <b-rte-link-editor #linkEditor
                          panel-content
                          (linkCancel)="onLinkCancel()"
-                         (linkUpdate)="onLinkUpdate($event)">
+                         (linkUpdate)="onLinkUpdate($event)"
+                         (keydown)="$event.stopPropagation()">
       </b-rte-link-editor>
     </b-panel>
 
@@ -89,7 +91,8 @@
             value="rtl"
             *ngIf="controls.includes(RTEControls.dir)"></button>
 
-    <b-panel class="placeholder-panel"
+    <b-panel #placeholderPanel
+             class="placeholder-panel"
              panelClass="placeholder-rte-panel"
              [showBackdrop]="false"
              [size]="panelSize.medium"
@@ -97,12 +100,13 @@
              [defaultPosVer]="panelDefaultPosVer.below">
       <button (click)="onPlaceholderPanelOpen()"
               panel-trigger>rte</button>
-      <div panel-content>
-        <b-single-select #placeholderSelect
-                         (selectChange)="onPlaceholderSelectChange(placeholderSelect)"
-                         [options]="placeholderList">
-        </b-single-select>
-      </div>
+      <b-single-list #placeholderSelect
+                     panel-content
+                     class="single-list-select"
+                     (selectChange)="onPlaceholderSelectChange(placeholderSelect)"
+                     [showSingleGroupHeader]="true"
+                     [options]="placeholderList">
+      </b-single-list>
     </b-panel>
 
     <div #suffix
@@ -117,6 +121,7 @@
 
 <mat-hint *ngIf="errorMessage || hintMessage"
           align="start"
-          [ngClass]="{'error-message': errorMessage && !disabled, 'hint-message': !errorMessage && hintMessage}">
+          [ngClass]="{'error-message': errorMessage && !disabled, 'hint-message': !errorMessage && hintMessage}"
+          class="error-message">
   {{ errorMessage && !disabled ? errorMessage : hintMessage }}
 </mat-hint>

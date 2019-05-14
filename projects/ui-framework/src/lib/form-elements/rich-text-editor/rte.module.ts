@@ -10,8 +10,8 @@ import { IconsModule } from '../../icons/icons.module';
 import { MatFormFieldModule } from '@angular/material';
 import { UtilsModule } from '../../services/utils/utils.module';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
-import { SingleSelectModule } from '../lists/single-select/single-select.module';
 import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
+import { SingleListModule } from '../lists/single-list/single-list.module';
 
 @NgModule({
   declarations: [RichTextEditorComponent, RteLinkEditorComponent],
@@ -23,7 +23,7 @@ import { PlaceholderRteConverterService } from './placeholder-rte-converter/plac
     IconsModule,
     MatFormFieldModule,
     UtilsModule,
-    SingleSelectModule,
+    SingleListModule,
   ],
   exports: [RichTextEditorComponent],
   providers: [RteUtilsService, DOMhelpers, PlaceholderRteConverterService]

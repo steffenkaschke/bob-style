@@ -69,6 +69,7 @@ export class RteUtilsService {
       length: text.length,
       text,
       format: Object.keys(format).length > 0 && format,
+      node: blot.domNode,
       link: format && format['Link']
     };
   }
@@ -80,6 +81,12 @@ export class RteUtilsService {
     return common.length > 0 && common;
   }
 
+  deleteRange(range: RangeStatic, editor: Quill): Delta {
+    return editor.updateContents(
+      new Delta().retain(range.index).delete(range.length)
+    );
+  }
+
   selectBlot(blot: BlotData, editor: Quill): RangeStatic {
     if (!blot.format) {
       return null;
@@ -88,7 +95,7 @@ export class RteUtilsService {
     return { index: blot.index, length: blot.length };
   }
 
-  updateEditor(editor: Quill, updateConfig: UpdateRteConfig) {
+  insertBlot(editor: Quill, updateConfig: UpdateRteConfig) {
     if (!updateConfig.insertText) {
       return null;
     }
@@ -100,28 +107,37 @@ export class RteUtilsService {
     };
     if (updateConfig.unformat) {
       updateConfig.unformat.forEach(format => {
-        delete newFormat[format];
+        newFormat[format] = null;
       });
     }
+
+    const spaceBefore = updateConfig.addSpaces ? ' ' : '';
+    const spaceAfter = spaceBefore;
+
+    const insertedTextLength =
+      updateConfig.insertText.length + spaceBefore.length + spaceAfter.length;
 
     const originalEditorLength = editor.getLength();
     const retainLength =
       originalEditorLength -
       updateConfig.startIndex -
       updateConfig.replaceStr.length -
-      updateConfig.insertText.length;
-    const insertedTextEnd =
-      updateConfig.startIndex + updateConfig.insertText.length;
+      insertedTextLength;
+
+    const insertedTextEnd = updateConfig.startIndex + insertedTextLength;
+
     const futureEditorLength =
       originalEditorLength -
       updateConfig.replaceStr.length +
-      updateConfig.insertText.length;
+      insertedTextLength;
 
     editor.updateContents(
       new Delta()
         .retain(updateConfig.startIndex)
         .delete(updateConfig.replaceStr.length)
+        .insert(spaceBefore)
         .insert(updateConfig.insertText, newFormat)
+        .insert(spaceAfter)
         .retain(retainLength)
         .insert(insertedTextEnd + 1 === futureEditorLength ? '\n' : '')
     );

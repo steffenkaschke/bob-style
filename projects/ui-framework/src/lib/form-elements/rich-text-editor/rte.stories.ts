@@ -25,7 +25,7 @@ const inputStories = storiesOf(
 ).addDecorator(withKnobs);
 
 const value = `<div>Hello <a href="http://www.google.com">World</a>!</div>
-<div>Some <em>initial</em> <strong>bold</strong> text</div> {{/root/firstName}}`;
+<div>Some <em>initial</em> <strong>bold</strong> text</div> {{/work/title}}`;
 
 const template = `
   <b-rich-text-editor
@@ -88,19 +88,20 @@ const note = `
 
 `;
 
-const placeholderMock: SelectGroupOption[] = [
+const placeholderMock = [
   {
     groupName: 'Basic Info - header',
     options: [
       {
-        value: 'First name',
+        displayName: 'First name',
         id: '/root/firstName',
-        selected: false
+        value: 'First name'
       },
       {
-        value: 'work | title',
+        displayName: 'title',
         id: '/work/title',
-        selected: false
+        category: 'Work',
+        value: 'title'
       }
     ]
   }
@@ -116,11 +117,7 @@ inputStories.add(
         label: text('label', 'Compose an epic...'),
         value: text('value', value),
         controls: array('controls', values(RTEControls), '\n'),
-        disableControls: array(
-          'disableControls',
-          [RTEControls.placeholders],
-          '\n'
-        ),
+        disableControls: array('disableControls', [], '\n'),
         placeholderList: object<SelectGroupOption>('options', placeholderMock),
         minHeight: number('minHeight', 200),
         maxHeight: number('maxHeight', 400),

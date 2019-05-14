@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { find } from 'lodash';
 import { RtePlaceholder } from './placeholder-rte-converter.interface';
+import { getPlaceholderText } from '../formats/placeholder-blot';
 
 @Injectable()
 export class PlaceholderRteConverterService {
@@ -23,7 +24,7 @@ export class PlaceholderRteConverterService {
         );
       }
     );
-    return elm.innerHTML;
+    return elm.innerHTML.toString();
   }
 
   public toRte(
@@ -34,10 +35,10 @@ export class PlaceholderRteConverterService {
     return contentToConvert.replace(
       regex,
       (field: string, innerContent: string) => {
-        return `<span data-placeholder-id="${innerContent}">${this.getDisplayNameById(
-          placeholders,
-          innerContent
-        )}</span>`;
+        const category = this.getGroupDisplayName(placeholders, innerContent);
+        const name = this.getDisplayNameById(placeholders, innerContent);
+        const text = getPlaceholderText(name, category);
+        return `<span data-placeholder-id="${innerContent}" data-placeholder-category="${category}">${text}</span>`;
       }
     );
   }
@@ -51,6 +52,16 @@ export class PlaceholderRteConverterService {
     id: string
   ): string {
     const placeholder = find(placeholders, p => p.id === id);
-    return placeholder ? placeholder.value : id;
+    return placeholder ? placeholder.displayName : id;
+  }
+
+  public getGroupDisplayName(
+    placeholders: RtePlaceholder[],
+    id: string
+  ): string {
+    const placeholder = find(placeholders, p => p.id === id);
+    return placeholder.category && placeholder.category !== 'undefined'
+      ? placeholder.category
+      : '';
   }
 }
