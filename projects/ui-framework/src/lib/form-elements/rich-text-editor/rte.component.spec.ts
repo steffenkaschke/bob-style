@@ -450,12 +450,12 @@ describe('RichTextEditorComponent', () => {
             {
               id: '/work/title',
               selected: false,
-              value: 'work | title'
+              displayName: 'work | title'
             },
             {
               id: '/root/firstName',
               selected: false,
-              value: 'First name'
+              displayName: 'First name'
             }
           ]
         }

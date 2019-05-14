@@ -16,11 +16,9 @@ import { PanelComponent } from '../../overlay/panel/panel.component';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { Icons } from '../../icons/icons.enum';
 import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
-import { SelectGroupOption } from '../lists/list.interface';
 import { SingleListComponent } from '../lists/single-list/single-list.component';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import quillLib, { QuillOptionsStatic } from 'quill';
-import { default as Delta } from 'quill-delta';
 import { Italic } from './formats/italic-blot';
 import { LinkBlot, RteLinkFormats } from './formats/link-blot';
 import { PlaceholderBlot } from './formats/placeholder-blot';
@@ -35,7 +33,7 @@ import { RteUtilsService } from './rte-utils/rte-utils.service';
 import { RteLink, UpdateRteConfig } from './rte.interface';
 import { RTEformElement } from './rte-form-element.abstract';
 import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
-import { RtePlaceholder } from './placeholder-rte-converter/placeholder-rte-converter.interface';
+import { RtePlaceholder, RtePlaceholderList } from './placeholder-rte-converter/placeholder-rte-converter.interface';
 import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
 import { getPlaceholderText } from './formats/placeholder-blot';
 
@@ -86,7 +84,7 @@ export class RichTextEditorComponent extends RTEformElement
   @Input() public minHeight = 185;
   @Input() public maxHeight = 295;
   @Input() public disableControls: RTEControls[] = [RTEControls.placeholders];
-  @Input() public placeholderList: SelectGroupOption[];
+  @Input() public placeholderList: RtePlaceholderList[];
 
   @ViewChild('toolbar') private toolbar: ElementRef;
   @ViewChild('suffix') private suffix: ElementRef;
