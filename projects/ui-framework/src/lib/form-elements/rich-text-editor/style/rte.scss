@@ -463,27 +463,6 @@ $border-color-error: $color-error;
   }
 }
 
-// Cursor as a blot mod
-
-:host ::ng-deep {
-  @keyframes blink {
-    from,
-    to {
-      background-color: transparent;
-    }
-    50% {
-      background-color: black;
-    }
-  }
-  .ql-cursor {
-    width: 1px;
-    height: 15px;
-    position: absolute;
-    background-color: black;
-    animation: 1s blink step-end infinite;
-  }
-}
-
 // Editor text area CSS mods
 
 :host:not(.disabled) ::ng-deep {
@@ -498,6 +477,12 @@ $border-color-error: $color-error;
   a {
     color: #e52c51;
     text-decoration: underline;
+  }
+}
+
+:host ::ng-deep {
+  .ql-cursor {
+    display: none;
   }
 }
 

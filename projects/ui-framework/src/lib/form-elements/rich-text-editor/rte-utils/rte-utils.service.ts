@@ -69,6 +69,7 @@ export class RteUtilsService {
       length: text.length,
       text,
       format: Object.keys(format).length > 0 && format,
+      node: blot.domNode,
       link: format && format['Link']
     };
   }
@@ -80,6 +81,12 @@ export class RteUtilsService {
     return common.length > 0 && common;
   }
 
+  deleteRange(range: RangeStatic, editor: Quill): Delta {
+    return editor.updateContents(
+      new Delta().retain(range.index).delete(range.length)
+    );
+  }
+
   selectBlot(blot: BlotData, editor: Quill): RangeStatic {
     if (!blot.format) {
       return null;
@@ -88,7 +95,7 @@ export class RteUtilsService {
     return { index: blot.index, length: blot.length };
   }
 
-  updateEditor(editor: Quill, updateConfig: UpdateRteConfig) {
+  insertBlot(editor: Quill, updateConfig: UpdateRteConfig) {
     if (!updateConfig.insertText) {
       return null;
     }
@@ -100,7 +107,7 @@ export class RteUtilsService {
     };
     if (updateConfig.unformat) {
       updateConfig.unformat.forEach(format => {
-        delete newFormat[format];
+        newFormat[format] = null;
       });
     }
 
@@ -128,9 +135,9 @@ export class RteUtilsService {
       new Delta()
         .retain(updateConfig.startIndex)
         .delete(updateConfig.replaceStr.length)
-        .insert(spaceBefore, {})
+        .insert(spaceBefore)
         .insert(updateConfig.insertText, newFormat)
-        .insert(spaceAfter, {})
+        .insert(spaceAfter)
         .retain(retainLength)
         .insert(insertedTextEnd + 1 === futureEditorLength ? '\n' : '')
     );

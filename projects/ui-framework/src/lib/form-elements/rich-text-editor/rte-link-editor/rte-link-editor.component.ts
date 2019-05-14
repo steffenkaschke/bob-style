@@ -3,7 +3,8 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewChild
+  ViewChild,
+  HostListener
 } from '@angular/core';
 import {
   InputEventType,
@@ -44,6 +45,12 @@ export class RteLinkEditorComponent {
   readonly iconColor = IconColor;
 
   private updateOnEvent = InputEventType.onChange;
+
+  @HostListener('keydown.enter', ['$event']) handleEnter(event: KeyboardEvent) {
+    if (!this.isEditing && this.url !== '') {
+      this.onAdd();
+    }
+  }
 
   focusTextInput(): void {
     (this.textInput.bInput as any).nativeElement.focus();

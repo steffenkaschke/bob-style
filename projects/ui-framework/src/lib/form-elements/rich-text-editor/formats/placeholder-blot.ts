@@ -1,6 +1,7 @@
 import Quill from 'quill';
 
 const Inline = Quill.import('blots/inline');
+const TextBlot = Quill.import('blots/text');
 
 const padChar = '\xa0';
 
@@ -32,9 +33,16 @@ export class PlaceholderBlot extends Inline {
   }
 
   static formats(node: HTMLElement): LocalFormat {
+    if (node.innerText === '') {
+      return;
+    }
     const id = node.getAttribute('data-placeholder-id');
     let category = node.getAttribute('data-placeholder-category');
     category = category ? category.replace(new RegExp(padChar, 'g'), '') : '';
+
+    if (!id) {
+      return;
+    }
 
     return {
       id,

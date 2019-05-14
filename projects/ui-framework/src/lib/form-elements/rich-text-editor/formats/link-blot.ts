@@ -23,7 +23,7 @@ export class LinkBlot extends Inline {
     return node;
   }
 
-  static formats(node: HTMLElement) {
+  static formats(node: HTMLElement): string {
     return node.getAttribute('href');
   }
 }

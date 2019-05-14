@@ -20,6 +20,7 @@ import { SelectGroupOption } from '../lists/list.interface';
 import { SingleListComponent } from '../lists/single-list/single-list.component';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import quillLib, { QuillOptionsStatic } from 'quill';
+import { default as Delta } from 'quill-delta';
 import { Italic } from './formats/italic-blot';
 import { LinkBlot, RteLinkFormats } from './formats/link-blot';
 import { PlaceholderBlot } from './formats/placeholder-blot';
@@ -164,21 +165,34 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   private addKeyBindings(): void {
-    this.editor.keyboard.addBinding({ key: KeyboardKeys.backspace }, () => {
-      if (this.blotsToDeleteWhole.length > 0) {
-        this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
+    this.editor.keyboard.addBinding(
+      { key: KeyboardKeys.backspace },
+      (range, context) => {
         if (
+          this.blotsToDeleteWhole.length > 0 &&
           this.rteUtilsService.commonFormats(
-            this.currentBlot.format,
+            context.format,
             this.blotsToDeleteWhole
           )
         ) {
-          this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
+          this.currentBlot = this.rteUtilsService.getCurrentBlotData(
+            this.editor
+          );
+
+          this.rteUtilsService.deleteRange(
+            {
+              index: this.currentBlot.index,
+              length: this.currentBlot.length
+            },
+            this.editor
+          );
+
           return false;
         }
+
+        return true;
       }
-      return true;
-    });
+    );
   }
 
   public changeFontSize(size: RTEFontSize) {
@@ -222,7 +236,7 @@ export class RichTextEditorComponent extends RTEformElement
         ? [BlotType.placeholder]
         : [...RteLinkFormats, BlotType.placeholder]
     };
-    this.rteUtilsService.updateEditor(this.editor, updateConfig);
+    this.rteUtilsService.insertBlot(this.editor, updateConfig);
     this.linkPanel.closePanel();
   }
 
@@ -257,10 +271,11 @@ export class RichTextEditorComponent extends RTEformElement
         type: BlotType.placeholder,
         value: selectGroupOptions.focusOption
       },
-      unformat: undoFormats
+      unformat: undoFormats,
+      addSpaces: true
     };
 
-    this.rteUtilsService.updateEditor(this.editor, updateConfig);
+    this.rteUtilsService.insertBlot(this.editor, updateConfig);
     this.placeholderPanel.closePanel();
   }
 }
