@@ -31,6 +31,7 @@ export interface BlotData {
   length: number;
   text: string;
   format: RteBlotFormat;
-  node: Node;
+  node: Node | HTMLElement;
+  element: HTMLElement;
   link?: string;
 }

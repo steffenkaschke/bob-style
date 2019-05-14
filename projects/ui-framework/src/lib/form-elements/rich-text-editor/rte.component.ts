@@ -20,8 +20,8 @@ import { SelectGroupOption } from '../lists/list.interface';
 import { SingleListComponent } from '../lists/single-list/single-list.component';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import quillLib, { QuillOptionsStatic } from 'quill';
-import { default as Delta } from 'quill-delta';
 import { Italic } from './formats/italic-blot';
+import { TextBlot } from 'quill/blots/text';
 import { LinkBlot, RteLinkFormats } from './formats/link-blot';
 import { PlaceholderBlot } from './formats/placeholder-blot';
 import {
@@ -165,31 +165,28 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   private addKeyBindings(): void {
-    // document
-    //   .querySelector('.ql-container > .ql-editor')
-    this.editor.root.addEventListener('keydown', (event: KeyboardEvent) => {
-      if (event.key === 'Backspace') {
-        const blot = this.rteUtilsService.getCurrentBlot();
+    // this.editor.root
+    document
+      .querySelector('.ql-container > .ql-editor')
+      .addEventListener('keydown', (event: KeyboardEvent) => {
+        if (event.key.toUpperCase() === KeyboardKeys.backspace) {
+          this.currentBlot = this.rteUtilsService.getCurrentBlotData(
+            this.editor,
+            true
+          );
 
-        console.log('ql-editor', event.key, blot);
-
-        if ((blot.domNode as HTMLElement).className === 'ql-cursor') {
-          // this.editor.setSelection(
-          //   this.rteUtilsService.getBlotIndex(blot, this.editor) - 1,
-          //   0
-          // );
-
-          // this.editor.root.dispatchEvent()
-
-          this.editor.blur();
-          this.editor.focus();
+          if (this.currentBlot.element.className === 'ql-cursor') {
+            this.editor.setSelection(this.currentBlot.index + 1, 0);
+            this.editor.setSelection(this.currentBlot.index, 0);
+          }
         }
-      }
-    });
+        console.log('addEventListener');
+      });
 
     this.editor.keyboard.addBinding(
       { key: KeyboardKeys.backspace },
       (range, context) => {
+        console.log('addBinding');
         if (
           this.blotsToDeleteWhole.length > 0 &&
           this.rteUtilsService.commonFormats(
@@ -198,16 +195,23 @@ export class RichTextEditorComponent extends RTEformElement
           )
         ) {
           this.currentBlot = this.rteUtilsService.getCurrentBlotData(
-            this.editor
+            this.editor,
+            true
           );
+          console.log(this.currentBlot);
 
-          this.rteUtilsService.deleteRange(
-            {
-              index: this.currentBlot.index,
-              length: this.currentBlot.length
-            },
-            this.editor
-          );
+          if (this.currentBlot.element.dataset.willDelete) {
+            this.rteUtilsService.deleteRange(
+              {
+                index: this.currentBlot.index,
+                length: this.currentBlot.length
+              },
+              this.editor
+            );
+          } else {
+            // this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
+            this.currentBlot.element.dataset.willDelete = 'true';
+          }
 
           return false;
         }
@@ -215,6 +219,12 @@ export class RichTextEditorComponent extends RTEformElement
         return true;
       }
     );
+
+    this.editor.on('selection-change', () => {
+      if (this.currentBlot) {
+        delete this.currentBlot.element.dataset.willDelete;
+      }
+    });
   }
 
   public changeFontSize(size: RTEFontSize) {
@@ -293,8 +303,7 @@ export class RichTextEditorComponent extends RTEformElement
         type: BlotType.placeholder,
         value: selectGroupOptions.focusOption
       },
-      unformat: undoFormats,
-      addSpaces: true
+      unformat: undoFormats
     };
 
     this.rteUtilsService.insertBlot(this.editor, updateConfig);

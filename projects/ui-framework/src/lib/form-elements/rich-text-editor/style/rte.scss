@@ -463,27 +463,6 @@ $border-color-error: $color-error;
   }
 }
 
-// Cursor as a blot mod
-
-:host ::ng-deep {
-  @keyframes blink {
-    from,
-    to {
-      background-color: transparent;
-    }
-    50% {
-      background-color: black;
-    }
-  }
-  .ql-cursor {
-    width: 1px;
-    height: 15px;
-    position: absolute;
-    background-color: black;
-    animation: 1s blink step-end infinite;
-  }
-}
-
 // Editor text area CSS mods
 
 :host:not(.disabled) ::ng-deep {
@@ -501,17 +480,24 @@ $border-color-error: $color-error;
   }
 }
 
-// :host ::ng-deep {
-//   .ql-cursor {
-//     display: none;
-//   }
-// }
-
-// Custom Blots styling
-
 :host ::ng-deep {
+  .ql-cursor {
+    display: none;
+  }
+
   [contenteditable='false'] {
     user-select: none;
+  }
+
+  [data-will-delete] {
+    position: relative;
+    &:after {
+      @include pseudo;
+      @include size(100%);
+      @include position;
+      border-radius: inherit;
+      background-color: black(0.15);
+    }
   }
 }
 

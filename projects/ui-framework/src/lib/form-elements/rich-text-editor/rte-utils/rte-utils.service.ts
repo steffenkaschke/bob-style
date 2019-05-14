@@ -6,10 +6,11 @@ import Parchment from 'parchment';
 import { Blot } from 'parchment/src/blot/abstract/blot';
 import { TextBlot } from 'quill/blots/text';
 import { keysFromArrayOrObject } from '../../../services/utils/functional-utils';
+import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
 
 @Injectable()
 export class RteUtilsService {
-  constructor() {}
+  constructor(private DOM: DOMhelpers) {}
 
   getHtmlContent(editor: Quill): string {
     return !editor.root.innerText.trim() ? '' : editor.root.innerHTML;
@@ -47,31 +48,58 @@ export class RteUtilsService {
 
   getCurrentBlot(): Blot {
     const nativeRange = this.getNativeRange();
-    const node = nativeRange && nativeRange.endContainer;
-    console.log('node');
+
+    let node = nativeRange && nativeRange.endContainer;
+
+    // if we have Element and not Node
+    if (
+      (node as HTMLElement).tagName &&
+      ((node as HTMLElement).tagName === 'DIV' &&
+        !(node as HTMLElement).className)
+    ) {
+      node = this.DOM.getDeepTextNode(node as HTMLElement) || node;
+    }
+
+    console.log(nativeRange);
     console.dir(node);
-    return node && (Parchment.find(node) || Parchment.find(node.parentElement));
+
+    if (!node) {
+      return;
+    }
+
+    let blot = Parchment.find(node);
+
+    if (!blot) {
+      blot = Parchment.find(node.parentElement);
+    }
+
+    return blot;
   }
 
   getBlotIndex(blot: Blot, editor: Quill): number {
     return blot && blot.offset(editor.scroll);
   }
 
-  getCurrentBlotData(editor: Quill): BlotData {
+  getCurrentBlotData(editor: Quill, skipformat = false): BlotData {
     const blot = this.getCurrentBlot();
     if (!blot) {
       return null;
     }
     const index = this.getBlotIndex(blot, editor);
     const text = (blot as TextBlot).text || '';
-    const format = editor.getFormat(index + 1);
+    const format = (!skipformat && editor.getFormat(index + 1)) || {};
+    const node = blot.domNode;
+    const element = (node as HTMLElement).classList
+      ? (node as HTMLElement)
+      : node.parentElement;
 
     return {
       index,
       length: text.length,
       text,
-      format: Object.keys(format).length > 0 && format,
-      node: blot.domNode,
+      format: (skipformat || Object.keys(format).length > 0) && format,
+      node,
+      element,
       link: format && format['Link']
     };
   }
