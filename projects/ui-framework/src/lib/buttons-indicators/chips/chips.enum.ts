@@ -6,5 +6,6 @@ export enum ChipType {
   info = 'info',
   success = 'success',
   attention = 'attention',
-  warning = 'warning'
+  warning = 'warning',
+  tag = 'tag'
 }
