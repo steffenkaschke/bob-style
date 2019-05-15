@@ -7,7 +7,6 @@ import { Blot } from 'parchment/src/blot/abstract/blot';
 import { TextBlot } from 'quill/blots/text';
 import { keysFromArrayOrObject } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
-import { BlotType } from '../rte.enum';
 
 @Injectable()
 export class RteUtilsService {
@@ -57,11 +56,7 @@ export class RteUtilsService {
     }
 
     // if we have Element and not Node
-    if (
-      (node as HTMLElement).tagName &&
-      ((node as HTMLElement).tagName === 'DIV' &&
-        !(node as HTMLElement).className)
-    ) {
+    if (this.DOM.isElement(node)) {
       node = this.DOM.getDeepTextNode(node as HTMLElement) || node;
     }
 
@@ -83,18 +78,17 @@ export class RteUtilsService {
   getCurrentBlotData(
     editor: Quill,
     skipformat = false,
-    index: number = null,
-    isEndIndex = false
+    index: number = null
   ): BlotData {
     const blot = this.getCurrentBlot(index, editor);
     if (!blot) {
       return null;
     }
-    index = (!isEndIndex && index) || this.getBlotIndex(blot, editor);
+    index = this.getBlotIndex(blot, editor);
     const text = (blot as TextBlot).text || '';
     const format = (!skipformat && editor.getFormat(index + 1)) || {};
     const node = blot.domNode;
-    const element = (node as HTMLElement).classList
+    const element = this.DOM.isTextNode(node)
       ? (node as HTMLElement)
       : node.parentElement;
 
@@ -169,11 +163,11 @@ export class RteUtilsService {
       : '';
   }
 
-  selectBlot(blot: BlotData, editor: Quill): RangeStatic {
+  selectBlot(blot: BlotData, editor: Quill, offset = 0): RangeStatic {
     if (!blot.format) {
       return null;
     }
-    editor.setSelection(blot.index, blot.length);
+    editor.setSelection(blot.index + offset, blot.length);
     return { index: blot.index, length: blot.length };
   }
 

@@ -99,4 +99,12 @@ export class DOMhelpers {
       this.getTextNode(this.getDeepTextElement(element))
     );
   }
+
+  isTextNode(element: any) {
+    return element.nodeType === Node.TEXT_NODE;
+  }
+
+  isElement(element: any) {
+    return element.nodeType === Node.ELEMENT_NODE;
+  }
 }
