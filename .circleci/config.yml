@@ -54,7 +54,7 @@ jobs:
             cd ./projects/ui-framework
             npm version patch --no-git-tag-version -m "Bump version"
             cd ../..
-            git push origin master --ci --host-token-env-variable=GITHUB_TOKEN
+            git push -q https://${GITHUB_TOKEN}@github.com/hibobio/bob-style.git master
       - run: npm run package
       - run:
           name: 'Deploy to npm'
