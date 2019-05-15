@@ -239,6 +239,17 @@ export abstract class RTEformElement extends BaseFormElement
       text || this.rteUtils.getSelectionText(this.editor, this.selection);
   }
 
+  public storeCursor(): void {
+    this.selection = this.rteUtils.getCurrentSelection(this.editor);
+  }
+
+  public restoreCursor(): void {
+    this.editor.focus();
+    if (this.selection) {
+      this.editor.setSelection(this.selection);
+    }
+  }
+
   public changeFontSize(size: RTEFontSize) {
     this.editor.format('size', size === RTEFontSize.normal ? false : size);
     this.hasSizeSet = size !== RTEFontSize.normal;

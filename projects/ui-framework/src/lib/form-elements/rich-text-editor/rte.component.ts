@@ -373,12 +373,14 @@ export class RichTextEditorComponent extends RTEformElement
       },
 
       unformat: rteLink.url
-        ? [BlotType.placeholder]
-        : [...RteLinkFormats, BlotType.placeholder],
+        ? this.specialBlots.treatAsWhole
+        : [...RteLinkFormats, ...this.specialBlots.treatAsWhole],
       addSpaces: this.selectedText.length === 0,
       noLinebreakAfter: this.specialBlots.noLinebreakAfter
     };
+
     this.rteUtilsService.insertBlot(this.editor, updateConfig);
+    this.selection = null;
     this.linkPanel.closePanel();
   }
 
@@ -415,6 +417,7 @@ export class RichTextEditorComponent extends RTEformElement
     };
 
     this.rteUtilsService.insertBlot(this.editor, updateConfig);
+    this.selection = null;
     this.placeholderPanel.closePanel();
   }
 }
