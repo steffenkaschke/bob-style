@@ -17,18 +17,6 @@ export enum BlotType {
   color = 'color'
 }
 
-export enum RTEControls {
-  link = 'Link',
-  size = 'size',
-  bold = 'bold',
-  italic = 'italic',
-  underline = 'underline',
-  list = 'list',
-  dir = 'direction',
-  align = 'align',
-  placeholders = 'Placeholder'
-}
-
 export enum RTEFontSize {
   normal = 'normal',
   small = 'small',

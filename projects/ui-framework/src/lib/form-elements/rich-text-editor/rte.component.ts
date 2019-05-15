@@ -22,15 +22,14 @@ import quillLib, { QuillOptionsStatic } from 'quill';
 import { Italic } from './formats/italic-blot';
 import { LinkBlot, RteLinkFormats } from './formats/link-blot';
 import { PlaceholderBlot } from './formats/placeholder-blot';
-import {
-  BlotType,
-  RTEFontSize,
-  RTEType,
-  RTEControls,
-  KeyboardKeys
-} from './rte.enum';
+import { BlotType, RTEFontSize, RTEType, KeyboardKeys } from './rte.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { RteLink, UpdateRteConfig, BlotData } from './rte.interface';
+import {
+  RteLink,
+  UpdateRteConfig,
+  BlotData,
+  SpecialBlots
+} from './rte.interface';
 import { RTEformElement } from './rte-form-element.abstract';
 import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
 import {
@@ -86,7 +85,11 @@ export class RichTextEditorComponent extends RTEformElement
   @Input() public type: RTEType = RTEType.primary;
   @Input() public minHeight = 185;
   @Input() public maxHeight = 295;
-  @Input() public disableControls: RTEControls[] = [RTEControls.placeholders];
+  @Input() public disableControls: BlotType[] = [
+    BlotType.placeholder,
+    BlotType.color,
+    BlotType.align
+  ];
   @Input() public placeholderList: RtePlaceholderList[];
 
   @ViewChild('toolbar') private toolbar: ElementRef;
@@ -99,24 +102,22 @@ export class RichTextEditorComponent extends RTEformElement
   readonly buttonType = ButtonType;
   readonly icons = Icons;
   readonly panelSize = PanelSize;
-  readonly RTEControls = RTEControls;
+  readonly BlotType = BlotType;
   readonly RTEFontSize = RTEFontSize;
   readonly panelDefaultPosVer = PanelDefaultPosVer;
-  private blotsToDeleteWhole: BlotType[] = [
-    BlotType.link,
-    BlotType.placeholder
-  ];
-  private blotsToTreatAsWhole: BlotType[] = [BlotType.placeholder];
+
+  specialBlots: SpecialBlots = {
+    treatAsWholeDefs: [BlotType.placeholder],
+    deleteAsWholeDefs: [BlotType.link, BlotType.placeholder],
+    noLinebreakAfterDefs: [BlotType.link, BlotType.align]
+  };
 
   // registering input/output transformers
   private initTransformers(): void {
     this.inputTransformers = [];
     this.outputTransformers = [this.rteUtilsService.cleanupHtml];
 
-    if (
-      this.placeholderList &&
-      this.controls.includes(RTEControls.placeholders)
-    ) {
+    if (this.placeholderList && this.controls.includes(BlotType.placeholder)) {
       this.inputTransformers.push(
         this.placeholderRteConverterService.toRtePartial(this.placeholderList[0]
           .options as RtePlaceholder[])
@@ -171,13 +172,13 @@ export class RichTextEditorComponent extends RTEformElement
 
   private addKeyBindings(): void {
     // move cursor to the beginning or end of plceholder on click
-    if (this.blotsToTreatAsWhole.length > 0) {
+    if (this.specialBlots.deleteAsWhole) {
       this.editor.root.addEventListener('click', event => {
         const element = event.target as any;
 
         if (
           (element as any).__blot &&
-          this.blotsToTreatAsWhole.includes(
+          this.specialBlots.treatAsWhole.includes(
             element.__blot.blot.statics.blotName
           )
         ) {
@@ -191,7 +192,7 @@ export class RichTextEditorComponent extends RTEformElement
             currentIndex <
             this.currentBlot.index + this.currentBlot.length / 2
           ) {
-            this.editor.setSelection(this.currentBlot.index, 0);
+            this.editor.setSelection(this.currentBlot.index - 1, 0);
           } else {
             this.editor.setSelection(
               this.currentBlot.index + this.currentBlot.length + 1,
@@ -205,8 +206,7 @@ export class RichTextEditorComponent extends RTEformElement
     // after backspace default action
     this.editor.root.addEventListener('keydown', (event: KeyboardEvent) => {
       if (
-        (this.blotsToDeleteWhole.length > 0 ||
-          this.blotsToTreatAsWhole.length > 0) &&
+        (this.specialBlots.deleteAsWhole || this.specialBlots.treatAsWhole) &&
         event.key.toUpperCase() === KeyboardKeys.backspace
       ) {
         const currentSelection = this.rteUtilsService.getCurrentSelection(
@@ -221,7 +221,7 @@ export class RichTextEditorComponent extends RTEformElement
           currentSelection.length !== this.currentBlot.length &&
           this.rteUtilsService.commonFormats(
             this.currentBlot.format,
-            this.blotsToTreatAsWhole
+            this.specialBlots.treatAsWhole
           )
         ) {
           this.rteUtilsService.deleteRange(
@@ -247,10 +247,10 @@ export class RichTextEditorComponent extends RTEformElement
       { key: KeyboardKeys.backspace },
       (range, context) => {
         if (
-          this.blotsToDeleteWhole.length > 0 &&
+          this.specialBlots.deleteAsWhole &&
           this.rteUtilsService.commonFormats(
             context.format,
-            this.blotsToDeleteWhole
+            this.specialBlots.deleteAsWhole
           )
         ) {
           this.currentBlot = this.rteUtilsService.getCurrentBlotData(
@@ -260,17 +260,17 @@ export class RichTextEditorComponent extends RTEformElement
             true
           );
           if (
-            // if in the end of blot, select blots in blotsToDeleteWhole array
+            // if in the end of blot, select blots in deleteAsWhole array
             (context.prefix === this.currentBlot.text &&
               this.rteUtilsService.commonFormats(
                 context.format,
-                this.blotsToDeleteWhole
+                this.specialBlots.deleteAsWhole
               )) ||
-            // if in the middle of blot, select blots in blotsToTreatAsWhole array
+            // if in the middle of blot, select blots in treatAsWhole array
             (context.prefix !== this.currentBlot.text &&
               this.rteUtilsService.commonFormats(
                 context.format,
-                this.blotsToTreatAsWhole
+                this.specialBlots.treatAsWhole
               ))
           ) {
             this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
@@ -281,11 +281,6 @@ export class RichTextEditorComponent extends RTEformElement
         return true;
       }
     );
-  }
-
-  public changeFontSize(size: RTEFontSize) {
-    this.editor.format('size', size === RTEFontSize.normal ? false : size);
-    this.hasSizeSet = size !== RTEFontSize.normal;
   }
 
   private onLinkPanelOpen(): void {
@@ -321,15 +316,13 @@ export class RichTextEditorComponent extends RTEformElement
         type: BlotType.link,
         value: rteLink.url
       },
+
       unformat: rteLink.url
         ? [BlotType.placeholder]
-        : [...RteLinkFormats, BlotType.placeholder]
+        : [...RteLinkFormats, BlotType.placeholder],
+      noLinebreakAfter: this.specialBlots.noLinebreakAfter
     };
     this.rteUtilsService.insertBlot(this.editor, updateConfig);
-    this.linkPanel.closePanel();
-  }
-
-  public onLinkCancel(): void {
     this.linkPanel.closePanel();
   }
 
@@ -361,7 +354,8 @@ export class RichTextEditorComponent extends RTEformElement
         value: selectGroupOptions.focusOption
       },
       unformat: undoFormats,
-      addSpaces: true
+      addSpaces: true,
+      noLinebreakAfter: this.specialBlots.noLinebreakAfter
     };
 
     this.rteUtilsService.insertBlot(this.editor, updateConfig);

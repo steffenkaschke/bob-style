@@ -155,62 +155,53 @@ export class RteUtilsService {
     return { index: blot.index, length: blot.length };
   }
 
-  insertBlot(editor: Quill, updateConfig: UpdateRteConfig) {
-    if (!updateConfig.insertText) {
+  insertBlot(editor: Quill, config: UpdateRteConfig) {
+    if (!config.insertText) {
       return null;
     }
 
-    const noLinebreakAfter = [BlotType.link, BlotType.align];
-
-    const originalFormat = editor.getFormat(updateConfig.startIndex); // +1
+    const originalFormat = editor.getFormat(config.startIndex); // +1
     const newFormat = {
       ...originalFormat,
-      [updateConfig.format.type]: updateConfig.format.value
+      [config.format.type]: config.format.value
     };
-    if (updateConfig.unformat) {
-      updateConfig.unformat.forEach(format => {
+    if (config.unformat) {
+      config.unformat.forEach(format => {
         newFormat[format] = null;
       });
     }
 
-    const charBeforeIndex = this.getCharBeforeIndex(
-      updateConfig.startIndex,
-      editor
-    );
+    const charBeforeIndex = this.getCharBeforeIndex(config.startIndex, editor);
     const spaceBefore =
-      updateConfig.addSpaces && !this.charIsWhiteSpace(charBeforeIndex)
-        ? ' '
-        : '';
+      config.addSpaces && !this.charIsWhiteSpace(charBeforeIndex) ? ' ' : '';
     const spaceAfter = spaceBefore;
 
     const insertedTextLength =
-      updateConfig.insertText.length + spaceBefore.length + spaceAfter.length;
+      config.insertText.length + spaceBefore.length + spaceAfter.length;
 
     const originalEditorLength = editor.getLength();
     const retainLength =
       originalEditorLength -
-      updateConfig.startIndex -
-      updateConfig.replaceStr.length -
+      config.startIndex -
+      config.replaceStr.length -
       insertedTextLength;
 
-    const insertedTextEnd = updateConfig.startIndex + insertedTextLength;
+    const insertedTextEnd = config.startIndex + insertedTextLength;
 
     const futureEditorLength =
-      originalEditorLength -
-      updateConfig.replaceStr.length +
-      insertedTextLength;
+      originalEditorLength - config.replaceStr.length + insertedTextLength;
 
     editor.updateContents(
       new Delta()
-        .retain(updateConfig.startIndex)
-        .delete(updateConfig.replaceStr.length)
+        .retain(config.startIndex)
+        .delete(config.replaceStr.length)
         .insert(spaceBefore)
-        .insert(updateConfig.insertText, newFormat)
+        .insert(config.insertText, newFormat)
         .insert(spaceAfter)
         .retain(retainLength)
         .insert(
           insertedTextEnd + 1 === futureEditorLength &&
-            !this.commonFormats(newFormat, noLinebreakAfter)
+            !this.commonFormats(newFormat, config.noLinebreakAfter)
             ? '\n'
             : ''
         )

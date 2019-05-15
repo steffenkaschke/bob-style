@@ -25,7 +25,7 @@ import {
 import { RichTextEditorComponent } from './rte.component';
 import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { RTEType, RTEControls, RTEchangeEvent } from './rte.enum';
+import { RTEType, BlotType, RTEchangeEvent } from './rte.enum';
 import Quill from 'quill';
 import { PanelModule } from '../../overlay/panel/panel.module';
 import { SingleSelectModule } from '../lists/single-select/single-select.module';
@@ -247,7 +247,7 @@ describe('RichTextEditorComponent', () => {
 
   describe('Editor toolbar controls', () => {
     it('should display toolbar with controls present in controls array', () => {
-      RTEComponent.controls = [RTEControls.bold, RTEControls.italic];
+      RTEComponent.controls = [BlotType.bold, BlotType.italic];
       fixture.detectChanges();
 
       const toolbarElement = fixture.debugElement.query(
@@ -273,7 +273,7 @@ describe('RichTextEditorComponent', () => {
   });
 
   describe('Events', () => {
-    it('should output RteCurrentContent object when text changes and sendChangeOn = change', done => {
+    it('should propagate value when text changes and sendChangeOn = change', done => {
       const subscr = RTEComponent.changed.subscribe(val => {
         expect(val).toEqual('<div>test text </div>');
         subscr.unsubscribe();
@@ -287,7 +287,7 @@ describe('RichTextEditorComponent', () => {
       });
     });
 
-    it('should output RteCurrentContent object only on blur, if sendChangeOn = blur', done => {
+    it('should propagate value only on blur, if sendChangeOn = blur', done => {
       let testVar = 1;
       const subscr = RTEComponent.changed.subscribe(val => {
         expect(val).toEqual('<div>test text 2 </div>');
@@ -467,7 +467,7 @@ describe('RichTextEditorComponent', () => {
           '<div>Hi, <strong>My</strong> name is {{/root/firstName}} my job title</div>',
           false
         ),
-        controls: new SimpleChange(null, [RTEControls.placeholders], null),
+        controls: new SimpleChange(null, [BlotType.placeholder], null),
         disableControls: new SimpleChange(null, [], null)
       });
 

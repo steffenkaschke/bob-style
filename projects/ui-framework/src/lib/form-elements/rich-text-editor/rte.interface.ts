@@ -7,6 +7,7 @@ export interface UpdateRteConfig {
   format: UpdateRteConfigFormat;
   unformat?: string[];
   addSpaces?: boolean;
+  noLinebreakAfter?: BlotType[];
 }
 
 type RteBlotFormat = { [key in BlotType]?: any };
@@ -34,4 +35,13 @@ export interface BlotData {
   node?: Node | HTMLElement;
   element?: HTMLElement;
   link?: string;
+}
+
+export interface SpecialBlots {
+  treatAsWhole?: BlotType[];
+  treatAsWholeDefs: BlotType[];
+  deleteAsWhole?: BlotType[];
+  deleteAsWholeDefs: BlotType[];
+  noLinebreakAfter?: BlotType[];
+  noLinebreakAfterDefs: BlotType[];
 }

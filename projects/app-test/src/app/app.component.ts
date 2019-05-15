@@ -17,14 +17,15 @@ export class AppComponent implements OnInit {
       groupName: 'Basic Info - header',
       options: [
         {
-          id: '/work/title',
-          selected: false,
-          value: 'work | title'
+          displayName: 'First name',
+          id: '/root/firstName',
+          value: 'First name'
         },
         {
-          id: '/root/firstName',
-          selected: false,
-          value: 'First name'
+          displayName: 'title',
+          id: '/work/title',
+          category: 'Work',
+          value: 'title'
         }
       ]
     }

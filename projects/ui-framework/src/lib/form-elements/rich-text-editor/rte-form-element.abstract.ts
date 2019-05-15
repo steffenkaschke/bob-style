@@ -13,9 +13,9 @@ import {
 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
-import { RTEchangeEvent, RTEControls } from './rte.enum';
+import { RTEchangeEvent, BlotType, RTEFontSize } from './rte.enum';
 import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { BlotData } from './rte.interface';
+import { BlotData, SpecialBlots } from './rte.interface';
 import { BaseFormElement } from '../base-form-element';
 
 const Block = quillLib.import('blots/block');
@@ -34,8 +34,8 @@ export abstract class RTEformElement extends BaseFormElement
 
   @Input() public value: string;
   @Input() public maxChars: number;
-  @Input() public controls: RTEControls[] = Object.values(RTEControls);
-  @Input() public disableControls: RTEControls[] = [];
+  @Input() public controls: BlotType[] = Object.values(BlotType);
+  @Input() public disableControls: BlotType[] = [];
   @Input() public sendChangeOn: RTEchangeEvent = RTEchangeEvent.blur;
   @Input() private formControlName: any;
   @Input() private formControl: any;
@@ -54,6 +54,11 @@ export abstract class RTEformElement extends BaseFormElement
   private latestOutputValue: string;
   private writingValue = false;
   private control: FormControl;
+  protected specialBlots: SpecialBlots = {
+    treatAsWholeDefs: [],
+    deleteAsWholeDefs: [],
+    noLinebreakAfterDefs: []
+  };
 
   protected inputTransformers: Function[] = [];
   protected outputTransformers: Function[] = [];
@@ -80,7 +85,7 @@ export abstract class RTEformElement extends BaseFormElement
     }
   }
 
-  protected transmitValue(condition: boolean): void {
+  protected transmitValue(doPropagate: boolean): void {
     if (!this.writingValue) {
       let newOutputValue = this.rteUtils.getHtmlContent(this.editor).trim();
 
@@ -94,15 +99,39 @@ export abstract class RTEformElement extends BaseFormElement
 
       this.value = this.outputFormatTransformer(newOutputValue);
 
-      if (condition) {
-        if (this.latestOutputValue !== newOutputValue) {
-          this.latestOutputValue = newOutputValue;
-          this.changed.emit(this.value);
-          this.propagateChange(this.value);
-        }
+      if (doPropagate && this.latestOutputValue !== newOutputValue) {
+        this.latestOutputValue = newOutputValue;
+        this.changed.emit(this.value);
+        this.propagateChange(this.value);
       }
     }
     this.writingValue = false;
+  }
+
+  protected updateSpecialBlots(): void {
+    this.specialBlots.treatAsWhole = this.specialBlots.treatAsWholeDefs.filter(
+      (blot: BlotType) => this.controls.includes(blot)
+    );
+    this.specialBlots.treatAsWhole =
+      this.specialBlots.treatAsWhole.length > 0
+        ? this.specialBlots.treatAsWhole
+        : null;
+
+    this.specialBlots.deleteAsWhole = this.specialBlots.deleteAsWholeDefs.filter(
+      (blot: BlotType) => this.controls.includes(blot)
+    );
+    this.specialBlots.deleteAsWhole =
+      this.specialBlots.deleteAsWhole.length > 0
+        ? this.specialBlots.deleteAsWhole
+        : null;
+
+    this.specialBlots.noLinebreakAfter = this.specialBlots.noLinebreakAfterDefs.filter(
+      (blot: BlotType) => this.controls.includes(blot)
+    );
+    this.specialBlots.noLinebreakAfter =
+      this.specialBlots.noLinebreakAfter.length > 0
+        ? this.specialBlots.noLinebreakAfter
+        : null;
   }
 
   private onControlChanges(changes: SimpleChanges) {
@@ -119,11 +148,12 @@ export abstract class RTEformElement extends BaseFormElement
     }
     if (changes.controls || changes.disableControls) {
       this.controls = this.controls.filter(
-        (cntrl: RTEControls) => !this.disableControls.includes(cntrl)
+        (cntrl: BlotType) => !this.disableControls.includes(cntrl)
       );
       if (this.editor) {
         (this.editor as any).options.formats = Object.values(this.controls);
       }
+      this.updateSpecialBlots();
     }
   }
 
@@ -207,6 +237,11 @@ export abstract class RTEformElement extends BaseFormElement
       selection || this.rteUtils.getCurrentSelection(this.editor);
     this.selectedText =
       text || this.rteUtils.getSelectionText(this.editor, this.selection);
+  }
+
+  public changeFontSize(size: RTEFontSize) {
+    this.editor.format('size', size === RTEFontSize.normal ? false : size);
+    this.hasSizeSet = size !== RTEFontSize.normal;
   }
 
   // this is part of ControlValueAccessor interface
