@@ -175,7 +175,6 @@ export class RichTextEditorComponent extends RTEformElement
     if (this.specialBlots.deleteAsWhole) {
       this.editor.root.addEventListener('click', event => {
         const element = event.target as any;
-
         if (
           (element as any).__blot &&
           this.specialBlots.treatAsWhole.includes(
@@ -255,10 +254,9 @@ export class RichTextEditorComponent extends RTEformElement
         ) {
           this.currentBlot = this.rteUtilsService.getCurrentBlotData(
             this.editor,
-            true,
-            range.index,
             true
           );
+
           if (
             // if in the end of blot, select blots in deleteAsWhole array
             (context.prefix === this.currentBlot.text &&
