@@ -16,12 +16,14 @@
              [showBackdrop]="false"
              [size]="panelSize.medium"
              *ngIf="controls.includes(BlotType.size)"
-             [defaultPosVer]="panelDefaultPosVer.below">
+             [defaultPosVer]="panelDefaultPosVer.below"
+             (closed)="restoreCursor()">
 
       <button type="button"
               class="rte-size"
               panel-trigger
-              [ngClass]="{'ql-active': hasSizeSet}">
+              [ngClass]="{'ql-active': hasSizeSet}"
+              (click)="storeCursor()">
 
         <b-icon icon="text_size_option"
                 size="medium"

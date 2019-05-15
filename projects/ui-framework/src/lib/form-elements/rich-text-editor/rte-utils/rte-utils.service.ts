@@ -171,12 +171,16 @@ export class RteUtilsService {
     return { index: blot.index, length: blot.length };
   }
 
-  insertBlot(editor: Quill, config: UpdateRteConfig) {
+  insertBlot(editor: Quill, config: UpdateRteConfig): RangeStatic {
     if (!config.insertText) {
       return null;
     }
 
-    const originalFormat = editor.getFormat(config.startIndex); // +1
+    let originalFormat = editor.getFormat(config.startIndex + 1);
+    if (Object.entries(originalFormat).length === 0) {
+      originalFormat = editor.getFormat(config.startIndex);
+    }
+
     const newFormat = {
       ...originalFormat,
       [config.format.type]: config.format.value
@@ -226,6 +230,7 @@ export class RteUtilsService {
         )
     );
     editor.setSelection(insertedTextEnd, 0);
+    return { index: insertedTextEnd, length: 0 };
   }
 
   getEditorPlaceholder(label: string, required: boolean): string {
