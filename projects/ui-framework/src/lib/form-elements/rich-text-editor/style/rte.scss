@@ -284,7 +284,8 @@ $border-color-error: $color-error;
     .toolbar-suffix,
     .ql-editor.ql-blank:before,
     .mat-hint,
-    [style] {
+    [style],
+    a {
       color: $icon-color-disabled !important;
     }
   }
@@ -477,20 +478,6 @@ $border-color-error: $color-error;
   a {
     color: #e52c51;
     text-decoration: underline;
-  }
-}
-
-:host ::ng-deep {
-  .ql-cursor {
-    display: none;
-  }
-}
-
-// Custom Blots styling
-
-:host ::ng-deep {
-  [contenteditable='false'] {
-    user-select: none;
   }
 }
 

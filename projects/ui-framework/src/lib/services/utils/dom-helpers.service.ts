@@ -46,11 +46,15 @@ export class DOMhelpers {
     return element.children.length !== 0;
   }
 
+  public hasInnerText(element: HTMLElement): boolean {
+    return !!(element && element.innerText && element.innerText.trim());
+  }
+
   public hasChildrenWithText(element: HTMLElement): NotEmptyChildren {
     const defAcc = { total: 0, firstIndex: null };
     return element.children.length > 0
       ? Array.from(element.children).reduce((acc, node, index) => {
-          const hasText = !!(node as HTMLElement).innerText;
+          const hasText = this.hasInnerText(node as HTMLElement);
           return {
             total: hasText ? acc.total + 1 : acc.total,
             firstIndex:
@@ -60,13 +64,17 @@ export class DOMhelpers {
       : defAcc;
   }
 
-  public hasTextNodes(element: HTMLElement): boolean {
+  public getTextNode(element: HTMLElement): Node {
     return (
-      element.childNodes.length > 0 &&
-      !!Array.from(element.childNodes).find(
+      element &&
+      Array.from(element.childNodes).find(
         node => node.nodeType === Node.TEXT_NODE
       )
     );
+  }
+
+  public hasTextNodes(element: HTMLElement): boolean {
+    return element.childNodes.length > 0 && !!this.getTextNode(element);
   }
 
   public isEmpty(element: HTMLElement): boolean {
@@ -83,5 +91,12 @@ export class DOMhelpers {
       hasChildrenWithText = this.hasChildrenWithText(element);
     }
     return element;
+  }
+
+  public getDeepTextNode(element: HTMLElement): Node {
+    return (
+      this.hasInnerText(element) &&
+      this.getTextNode(this.getDeepTextElement(element))
+    );
   }
 }

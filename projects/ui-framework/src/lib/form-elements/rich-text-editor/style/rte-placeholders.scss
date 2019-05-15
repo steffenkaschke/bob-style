@@ -10,12 +10,12 @@ $border-color: var(--negative-700);
     font-size: $font-size-body;
     font-weight: 500;
     box-shadow: inset 0 0 0 2px $border-color;
+    position: relative;
+    z-index: 0;
+    cursor: default;
   }
 
   [data-placeholder-category] {
-    position: relative;
-    z-index: 0;
-
     &:before {
       content: '\00a0\00a0'attr(data-placeholder-category) '\00a0\00a0';
       display: inline-flex;
@@ -34,9 +34,12 @@ $border-color: var(--negative-700);
 }
 
 :host.disabled ::ng-deep {
-  [data-placeholder-id] {
+  [data-placeholder-id],
+  [data-placeholder-category]:before {
+    box-shadow: inset 0 0 0 2px $grey-300;
+  }
+  [data-placeholder-category]:before {
     background-color: $grey-300;
-    color: white;
   }
 }
 
