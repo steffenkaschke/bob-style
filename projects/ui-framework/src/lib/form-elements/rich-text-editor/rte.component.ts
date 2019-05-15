@@ -307,6 +307,10 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   public onLinkUpdate(rteLink: RteLink): void {
+    if (!this.selection) {
+      return;
+    }
+
     const updateConfig: UpdateRteConfig = {
       replaceStr: this.selectedText,
       startIndex: this.selection.index,

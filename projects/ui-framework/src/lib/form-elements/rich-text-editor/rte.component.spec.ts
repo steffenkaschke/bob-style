@@ -115,6 +115,15 @@ describe('RichTextEditorComponent', () => {
           By.css('.quill-editor')
         ).nativeElement;
 
+        RTEComponent.ngOnChanges({
+          controls: new SimpleChange(null, RTEComponent.controls, true),
+          disableControls: new SimpleChange(
+            null,
+            RTEComponent.disableControls,
+            true
+          )
+        });
+
         setTimeout(() => {
           QuillEditor = RTEComponent.editor;
           RTEqlEditorNativeElement = QuillEditor.root;
