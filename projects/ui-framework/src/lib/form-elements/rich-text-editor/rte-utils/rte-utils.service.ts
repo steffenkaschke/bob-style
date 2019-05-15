@@ -138,13 +138,32 @@ export class RteUtilsService {
     );
   }
 
-  getCharBeforeIndex(index: number, editor: Quill): string {
-    const blot = editor.getLeaf(index)[0];
-    return blot && blot.text && blot.text.slice(-1);
+  getCharAtIndex(index: number, editor: Quill, offsetMod = 0): string {
+    const leaf = editor.getLeaf(index);
+    const blot = leaf[0];
+    if (!blot) {
+      return null;
+    }
+    const offset = leaf[1] + offsetMod;
+    const text = blot && blot.text;
+    const char = blot && text && text.substr(offset, 1);
+
+    // moving to next blot
+    if (text && offset >= text.length) {
+      return this.getCharAtIndex(index + 1, editor, -1);
+    }
+
+    return char;
   }
 
   charIsWhiteSpace(char: string): boolean {
     return !char || (char !== '\xa0' && /\s/.test(char));
+  }
+
+  spaceIfNeededAtIndex(index: number, editor: Quill): string {
+    return !this.charIsWhiteSpace(this.getCharAtIndex(index, editor))
+      ? ' '
+      : '';
   }
 
   selectBlot(blot: BlotData, editor: Quill): RangeStatic {
@@ -171,10 +190,13 @@ export class RteUtilsService {
       });
     }
 
-    const charBeforeIndex = this.getCharBeforeIndex(config.startIndex, editor);
-    const spaceBefore =
-      config.addSpaces && !this.charIsWhiteSpace(charBeforeIndex) ? ' ' : '';
-    const spaceAfter = spaceBefore;
+    const spaceBefore = config.addSpaces
+      ? this.spaceIfNeededAtIndex(config.startIndex - 1, editor)
+      : '';
+
+    const spaceAfter = config.addSpaces
+      ? this.spaceIfNeededAtIndex(config.startIndex, editor)
+      : '';
 
     const insertedTextLength =
       config.insertText.length + spaceBefore.length + spaceAfter.length;

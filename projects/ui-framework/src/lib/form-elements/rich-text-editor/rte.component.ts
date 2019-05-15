@@ -320,6 +320,7 @@ export class RichTextEditorComponent extends RTEformElement
       unformat: rteLink.url
         ? [BlotType.placeholder]
         : [...RteLinkFormats, BlotType.placeholder],
+      addSpaces: this.selectedText.length === 0,
       noLinebreakAfter: this.specialBlots.noLinebreakAfter
     };
     this.rteUtilsService.insertBlot(this.editor, updateConfig);
