@@ -16,7 +16,7 @@ import { values } from 'lodash';
 import { TypographyModule } from '../../typography/typography.module';
 import { RichTextEditorModule } from './rte.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RTEControls, RTEType } from './rte.enum';
+import { BlotType, RTEType } from './rte.enum';
 import { SelectGroupOption } from '../lists/list.interface';
 
 const inputStories = storiesOf(
@@ -24,7 +24,7 @@ const inputStories = storiesOf(
   module
 ).addDecorator(withKnobs);
 
-const value = `<div>Hello <a href="http://www.google.com">World</a>!</div>
+const value = `<div> <span style="color: red;">Hello</span> <a href="http://www.google.com">World</a>!</div>
 <div>Some <em>initial</em> <strong>bold</strong> text</div> {{/work/title}}`;
 
 const template = `
@@ -72,7 +72,7 @@ const note = `
   type | RTEType | primary (white bg, border) or secondary (transparent bg, no borders) | primary
   label | string | placeholder text | none (optional)
   value | string | html content to be placed inside editor | none (optional)
-  controls | RTEControls[] | array of toolbar controls. Possible controls: size, bold, italic, underline, link, list, align, dir. Defaults to all controls. Pass empty array to disable all controls. | all
+  controls | BlotType[] | array of toolbar controls. Possible controls: size, bold, italic, underline, link, list, align, dir. Defaults to all controls. Pass empty array to disable all controls. | all
   minHeight | number | minimum height of editor (including toolbar). Set to null or 0 to disable min-height | 185 (optional)
   maxHeight | number | maximum height of editor (including toolbar). Set to null to disable max-height | 295 (optional)
   disabled | boolean | disables editor | false (optional)
@@ -116,8 +116,12 @@ inputStories.add(
         type: select('type', values(RTEType), RTEType.primary),
         label: text('label', 'Compose an epic...'),
         value: text('value', value),
-        controls: array('controls', values(RTEControls), '\n'),
-        disableControls: array('disableControls', [], '\n'),
+        controls: array('controls', values(BlotType), '\n'),
+        disableControls: array(
+          'disableControls',
+          [BlotType.color, BlotType.align],
+          '\n'
+        ),
         placeholderList: object<SelectGroupOption>('options', placeholderMock),
         minHeight: number('minHeight', 200),
         maxHeight: number('maxHeight', 400),

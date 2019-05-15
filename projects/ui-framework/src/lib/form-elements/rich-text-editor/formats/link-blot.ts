@@ -24,6 +24,6 @@ export class LinkBlot extends Inline {
   }
 
   static formats(node: HTMLElement): string {
-    return node.getAttribute('href');
+    return node && node.getAttribute('href');
   }
 }

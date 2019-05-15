@@ -24,7 +24,7 @@ export class PlaceholderRteConverterService {
         );
       }
     );
-    return elm.innerHTML.toString();
+    return elm.innerHTML;
   }
 
   public toRte(

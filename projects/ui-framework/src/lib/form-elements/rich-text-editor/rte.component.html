@@ -1,5 +1,4 @@
 <div class="quill-editor">
-
   <div #quillEditor
        (keydown)="$event.stopPropagation()"
        [ngStyle]="{
@@ -10,13 +9,13 @@
 
   <div #toolbar
        class="quill-toolbar"
-       [attr.hide-align]="!controls.includes(RTEControls.align)"
+       [attr.hide-align]="!controls.includes(BlotType.align)"
        *ngIf="controls.length > 0 || hasSuffix">
 
     <b-panel panelClass="rte-size-controls"
              [showBackdrop]="false"
              [size]="panelSize.medium"
-             *ngIf="controls.includes(RTEControls.size)"
+             *ngIf="controls.includes(BlotType.size)"
              [defaultPosVer]="panelDefaultPosVer.below">
 
       <button type="button"
@@ -47,39 +46,38 @@
     </b-panel>
 
     <button class="ql-bold"
-            *ngIf="controls.includes(RTEControls.bold)"></button>
+            *ngIf="controls.includes(BlotType.bold)"></button>
     <button class="ql-italic"
-            *ngIf="controls.includes(RTEControls.italic)"></button>
+            *ngIf="controls.includes(BlotType.italic)"></button>
     <button class="ql-underline"
-            *ngIf="controls.includes(RTEControls.underline)"></button>
+            *ngIf="controls.includes(BlotType.underline)"></button>
 
     <b-panel #linkPanel
              panelClass="rte-link-editor"
              [showBackdrop]="false"
              [size]="panelSize.medium"
-             *ngIf="controls.includes(RTEControls.link)"
+             *ngIf="controls.includes(BlotType.link)"
              [defaultPosVer]="panelDefaultPosVer.below">
       <button class="ql-link"
               panel-trigger></button>
       <b-rte-link-editor #linkEditor
                          panel-content
-                         (linkCancel)="onLinkCancel()"
-                         (linkUpdate)="onLinkUpdate($event)"
-                         (keydown)="$event.stopPropagation()">
+                         (linkCancel)="linkPanel.closePanel();"
+                         (linkUpdate)="onLinkUpdate($event)">
       </b-rte-link-editor>
     </b-panel>
 
     <button type="button"
             class="ql-list"
             value="ordered"
-            *ngIf="controls.includes(RTEControls.list)"></button>
+            *ngIf="controls.includes(BlotType.list)"></button>
     <button type="button"
             class="ql-list"
             value="bullet"
-            *ngIf="controls.includes(RTEControls.list)"></button>
+            *ngIf="controls.includes(BlotType.list)"></button>
 
     <select class="ql-align"
-            *ngIf="controls.includes(RTEControls.align)">
+            *ngIf="controls.includes(BlotType.align)">
       <option selected></option>
       <option value="center"></option>
       <option value="right"></option>
@@ -89,14 +87,14 @@
     <button type="button"
             class="ql-direction"
             value="rtl"
-            *ngIf="controls.includes(RTEControls.dir)"></button>
+            *ngIf="controls.includes(BlotType.dir)"></button>
 
     <b-panel #placeholderPanel
              class="placeholder-panel"
              panelClass="placeholder-rte-panel"
              [showBackdrop]="false"
              [size]="panelSize.medium"
-             *ngIf="controls.includes(RTEControls.placeholders)"
+             *ngIf="controls.includes(BlotType.placeholder)"
              [defaultPosVer]="panelDefaultPosVer.below">
       <button (click)="onPlaceholderPanelOpen()"
               panel-trigger>rte</button>

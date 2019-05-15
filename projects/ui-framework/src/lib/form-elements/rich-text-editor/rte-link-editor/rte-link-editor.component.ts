@@ -47,6 +47,8 @@ export class RteLinkEditorComponent {
   private updateOnEvent = InputEventType.onChange;
 
   @HostListener('keydown.enter', ['$event']) handleEnter(event: KeyboardEvent) {
+    event.preventDefault();
+    event.stopPropagation();
     if (!this.isEditing && this.url !== '') {
       this.onAdd();
     }

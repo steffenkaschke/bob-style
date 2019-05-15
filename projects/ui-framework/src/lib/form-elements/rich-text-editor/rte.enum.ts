@@ -12,20 +12,9 @@ export enum BlotType {
   underline = 'underline',
   list = 'list',
   direction = 'direction',
+  align = 'align',
   placeholder = 'Placeholder',
   color = 'color'
-}
-
-export enum RTEControls {
-  link = 'Link',
-  size = 'size',
-  bold = 'bold',
-  italic = 'italic',
-  underline = 'underline',
-  list = 'list',
-  dir = 'direction',
-  align = 'align',
-  placeholders = 'Placeholder'
 }
 
 export enum RTEFontSize {
