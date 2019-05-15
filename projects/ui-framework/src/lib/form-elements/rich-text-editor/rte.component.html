@@ -57,7 +57,8 @@
              [showBackdrop]="false"
              [size]="panelSize.medium"
              *ngIf="controls.includes(BlotType.link)"
-             [defaultPosVer]="panelDefaultPosVer.below">
+             [defaultPosVer]="panelDefaultPosVer.below"
+             (closed)="restoreCursor()">
       <button class="ql-link"
               panel-trigger></button>
       <b-rte-link-editor #linkEditor
@@ -95,7 +96,8 @@
              [showBackdrop]="false"
              [size]="panelSize.medium"
              *ngIf="controls.includes(BlotType.placeholder)"
-             [defaultPosVer]="panelDefaultPosVer.below">
+             [defaultPosVer]="panelDefaultPosVer.below"
+             (closed)="restoreCursor()">
       <button (click)="onPlaceholderPanelOpen()"
               panel-trigger>rte</button>
       <b-single-list #placeholderSelect

@@ -244,6 +244,13 @@ export abstract class RTEformElement extends BaseFormElement
     this.hasSizeSet = size !== RTEFontSize.normal;
   }
 
+  public restoreCursor(): void {
+    this.editor.focus();
+    if (this.selection) {
+      this.editor.setSelection(this.selection);
+    }
+  }
+
   // this is part of ControlValueAccessor interface
   public writeValue(value: string): void {
     if (value !== undefined) {
