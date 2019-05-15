@@ -119,7 +119,7 @@ inputStories.add(
         controls: array('controls', values(BlotType), '\n'),
         disableControls: array(
           'disableControls',
-          [BlotType.color, BlotType.align],
+          [BlotType.color, BlotType.align, BlotType.direction],
           '\n'
         ),
         placeholderList: object<SelectGroupOption>('options', placeholderMock),

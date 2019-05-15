@@ -88,7 +88,8 @@ export class RichTextEditorComponent extends RTEformElement
   @Input() public disableControls: BlotType[] = [
     BlotType.placeholder,
     BlotType.color,
-    BlotType.align
+    BlotType.align,
+    BlotType.direction
   ];
   @Input() public placeholderList: RtePlaceholderList[];
 
@@ -171,36 +172,44 @@ export class RichTextEditorComponent extends RTEformElement
   }
 
   private addKeyBindings(): void {
-    // move cursor to the beginning or end of plceholder on click
-    if (this.specialBlots.deleteAsWhole) {
-      this.editor.root.addEventListener('click', event => {
-        const element = event.target as any;
+    // before backspace default action
+    this.editor.keyboard.addBinding(
+      { key: KeyboardKeys.backspace },
+      (range, context) => {
         if (
-          (element as any).__blot &&
-          this.specialBlots.treatAsWhole.includes(
-            element.__blot.blot.statics.blotName
+          this.specialBlots.deleteAsWhole &&
+          this.rteUtilsService.commonFormats(
+            context.format,
+            this.specialBlots.deleteAsWhole
           )
         ) {
-          this.currentBlot = this.rteUtilsService.getBlotDataFromElement(
-            element,
-            this.editor
+          this.currentBlot = this.rteUtilsService.getCurrentBlotData(
+            this.editor,
+            true
           );
-          const currentIndex = this.editor.getSelection().index;
 
           if (
-            currentIndex <
-            this.currentBlot.index + this.currentBlot.length / 2
+            // if in the end of blot, select blots in deleteAsWhole array
+            (context.prefix === this.currentBlot.text &&
+              this.rteUtilsService.commonFormats(
+                context.format,
+                this.specialBlots.deleteAsWhole
+              )) ||
+            // if in the middle of blot, select blots in treatAsWhole array
+            (context.prefix !== this.currentBlot.text &&
+              this.rteUtilsService.commonFormats(
+                context.format,
+                this.specialBlots.treatAsWhole
+              ))
           ) {
-            this.editor.setSelection(this.currentBlot.index - 1, 0);
-          } else {
-            this.editor.setSelection(
-              this.currentBlot.index + this.currentBlot.length + 1,
-              0
-            );
+            this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
+            return false;
           }
         }
-      });
-    }
+
+        return true;
+      }
+    );
 
     // after backspace default action
     this.editor.root.addEventListener('keydown', (event: KeyboardEvent) => {
@@ -241,44 +250,88 @@ export class RichTextEditorComponent extends RTEformElement
       }
     });
 
-    // before backspace default action
-    this.editor.keyboard.addBinding(
-      { key: KeyboardKeys.backspace },
-      (range, context) => {
+    // after delete default action
+    this.editor.root.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (
+        (this.specialBlots.treatAsWhole || this.specialBlots.deleteAsWhole) &&
+        event.key.toUpperCase() === KeyboardKeys.delete
+      ) {
+        const currentSelection = this.rteUtilsService.getCurrentSelection(
+          this.editor
+        );
+        const nextCharFormat = this.editor.getFormat(
+          currentSelection.index + 1
+        );
+
         if (
-          this.specialBlots.deleteAsWhole &&
           this.rteUtilsService.commonFormats(
-            context.format,
+            nextCharFormat,
             this.specialBlots.deleteAsWhole
+          ) ||
+          this.rteUtilsService.commonFormats(
+            nextCharFormat,
+            this.specialBlots.treatAsWhole
           )
         ) {
           this.currentBlot = this.rteUtilsService.getCurrentBlotData(
             this.editor,
-            true
+            true,
+            currentSelection.index + 1
           );
 
-          if (
-            // if in the end of blot, select blots in deleteAsWhole array
-            (context.prefix === this.currentBlot.text &&
-              this.rteUtilsService.commonFormats(
-                context.format,
-                this.specialBlots.deleteAsWhole
-              )) ||
-            // if in the middle of blot, select blots in treatAsWhole array
-            (context.prefix !== this.currentBlot.text &&
-              this.rteUtilsService.commonFormats(
-                context.format,
-                this.specialBlots.treatAsWhole
-              ))
-          ) {
+          if (currentSelection.index === this.currentBlot.index) {
+            // at the start of blot in deleteAsWhole array
             this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
-            return false;
+          } else if (
+            currentSelection.index > this.currentBlot.index &&
+            this.rteUtilsService.commonFormats(
+              nextCharFormat,
+              this.specialBlots.treatAsWhole
+            )
+          ) {
+            // in the middle of blot in treatAsWhole array
+            this.rteUtilsService.deleteRange(
+              {
+                index: this.currentBlot.index,
+                length: this.currentBlot.length
+              },
+              this.editor
+            );
           }
         }
-
-        return true;
       }
-    );
+    });
+
+    // move cursor to the beginning or end of plceholder on click
+    if (this.specialBlots.deleteAsWhole) {
+      this.editor.root.addEventListener('click', event => {
+        const element = event.target as any;
+        if (
+          (element as any).__blot &&
+          this.specialBlots.treatAsWhole.includes(
+            element.__blot.blot.statics.blotName
+          )
+        ) {
+          this.currentBlot = this.rteUtilsService.getBlotDataFromElement(
+            element,
+            this.editor
+          );
+          const currentIndex = this.editor.getSelection().index;
+
+          if (
+            currentIndex <
+            this.currentBlot.index + this.currentBlot.length / 2
+          ) {
+            this.editor.setSelection(this.currentBlot.index - 1, 0);
+          } else {
+            this.editor.setSelection(
+              this.currentBlot.index + this.currentBlot.length + 1,
+              0
+            );
+          }
+        }
+      });
+    }
   }
 
   private onLinkPanelOpen(): void {
