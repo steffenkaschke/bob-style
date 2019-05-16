@@ -68,7 +68,7 @@ export class RteUtilsService {
     }
 
     const index = blot.offset(editor.scroll);
-    const text = element.innerText;
+    const text = blot.text || node.textContent || element.innerText;
     const format =
       (!skipformat && {
         [blot.statics.blotName as string]: blot.statics.formats
@@ -93,7 +93,8 @@ export class RteUtilsService {
   getCurrentBlotData(
     editor: Quill,
     skipformat = false,
-    index: number = null
+    index: number = null,
+    expectBlot: BlotType = null
   ): BlotData {
     let node: Node;
     if (index && editor) {
@@ -102,12 +103,17 @@ export class RteUtilsService {
       const nativeRange = this.getNativeRange();
       node = nativeRange && nativeRange.endContainer; // startContainer
     }
+    const blot = this.getBlotDataFromElement(node, editor, skipformat);
+
+    if (expectBlot && blot.format !== expectBlot) {
+    }
+
     return this.getBlotDataFromElement(node, editor, skipformat);
   }
 
   commonFormats(f1: string[] | {}, f2: string[] | {}): string[] {
     if (!f1 || !f2) {
-      return [];
+      return null;
     }
     const f1keys = keysFromArrayOrObject(f1);
     const f2keys = keysFromArrayOrObject(f2);

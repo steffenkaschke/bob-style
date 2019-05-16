@@ -49,8 +49,10 @@ export abstract class RTEformElement extends BaseFormElement
   public editor: Quill;
   public hasSizeSet = false;
   protected selection: RangeStatic;
+  protected lastSelection: RangeStatic;
   protected selectedText: string;
   protected currentBlot: BlotData;
+  protected lastCurrentBlot: BlotData;
   private latestOutputValue: string;
   private writingValue = false;
   private control: FormControl;
@@ -210,7 +212,11 @@ export abstract class RTEformElement extends BaseFormElement
 
   private onEditorSelectionChange(range: RangeStatic): void {
     if (range) {
-      this.selection = range;
+      if (range.index > 0 || range.length > 0) {
+        this.lastSelection = range;
+        this.lastCurrentBlot = this.rteUtils.getCurrentBlotData(this.editor);
+      }
+
       const newSize = !!this.editor.getFormat(range).size;
       if (this.hasSizeSet !== newSize) {
         this.hasSizeSet = newSize;
