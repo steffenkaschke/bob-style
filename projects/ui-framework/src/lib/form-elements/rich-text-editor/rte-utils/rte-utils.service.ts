@@ -107,7 +107,7 @@ export class RteUtilsService {
 
   commonFormats(f1: string[] | {}, f2: string[] | {}): string[] {
     if (!f1 || !f2) {
-      return [];
+      return null;
     }
     const f1keys = keysFromArrayOrObject(f1);
     const f2keys = keysFromArrayOrObject(f2);

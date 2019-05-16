@@ -211,6 +211,7 @@ export abstract class RTEformElement extends BaseFormElement
   private onEditorSelectionChange(range: RangeStatic): void {
     if (range) {
       this.selection = range;
+      this.currentBlot = this.rteUtils.getCurrentBlotData(this.editor);
       const newSize = !!this.editor.getFormat(range).size;
       if (this.hasSizeSet !== newSize) {
         this.hasSizeSet = newSize;

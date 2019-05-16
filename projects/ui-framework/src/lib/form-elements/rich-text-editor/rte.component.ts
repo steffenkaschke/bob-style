@@ -217,7 +217,6 @@ export class RichTextEditorComponent extends RTEformElement
         (this.specialBlots.deleteAsWhole || this.specialBlots.treatAsWhole) &&
         event.key.toUpperCase() === KeyboardKeys.backspace
       ) {
-        this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
 
         // if some text selected inside blot, delete the blot
         if (
