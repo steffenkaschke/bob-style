@@ -214,6 +214,13 @@ export class RteUtilsService {
     const futureEditorLength =
       originalEditorLength - config.replaceStr.length + insertedTextLength;
 
+    const finalCharacter =
+      insertedTextEnd + 1 === futureEditorLength
+        ? !this.commonFormats(newFormat, config.noLinebreakAfter)
+          ? '\n'
+          : ' '
+        : '';
+
     editor.updateContents(
       new Delta()
         .retain(config.startIndex)
@@ -222,12 +229,7 @@ export class RteUtilsService {
         .insert(config.insertText, newFormat)
         .insert(spaceAfter)
         .retain(retainLength)
-        .insert(
-          insertedTextEnd + 1 === futureEditorLength &&
-            !this.commonFormats(newFormat, config.noLinebreakAfter)
-            ? '\n'
-            : ''
-        )
+        .insert(finalCharacter)
     );
     editor.setSelection(insertedTextEnd, 0);
     return { index: insertedTextEnd, length: 0 };

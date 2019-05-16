@@ -322,7 +322,7 @@ export class RichTextEditorComponent extends RTEformElement
             currentIndex <
             this.currentBlot.index + this.currentBlot.length / 2
           ) {
-            this.editor.setSelection(this.currentBlot.index - 1, 0);
+            this.editor.setSelection(this.currentBlot.index, 0);
           } else {
             this.editor.setSelection(
               this.currentBlot.index + this.currentBlot.length + 1,
