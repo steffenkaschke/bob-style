@@ -54,6 +54,7 @@ jobs:
             cd ./projects/ui-framework
             npm version patch --no-git-tag-version
             cd ../..
+      - run: npm run package
       - run:
           name: 'Deploy to npm'
           command: |
