@@ -9,14 +9,15 @@ import {
   SimpleChanges,
   Type,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
+  SimpleChange
 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
 import { RTEchangeEvent, BlotType, RTEFontSize } from './rte.enum';
-import { RteUtilsService } from './rte-utils/rte-utils.service';
+import { RteUtilsService } from './rte-utils.service';
 import { BlotData, SpecialBlots } from './rte.interface';
-import { BaseFormElement } from '../base-form-element';
+import { BaseFormElement } from '../../base-form-element';
 
 const Block = quillLib.import('blots/block');
 Block.tagName = 'DIV';
@@ -48,9 +49,9 @@ export abstract class RTEformElement extends BaseFormElement
 
   public editor: Quill;
   public hasSizeSet = false;
-  protected selection: RangeStatic;
-  protected selectedText: string;
-  protected currentBlot: BlotData;
+  public selection: RangeStatic;
+  public selectedText: string;
+  public currentBlot: BlotData;
   private latestOutputValue: string;
   private writingValue = false;
   private control: FormControl;
@@ -60,8 +61,10 @@ export abstract class RTEformElement extends BaseFormElement
     noLinebreakAfterDefs: []
   };
 
-  protected inputTransformers: Function[] = [];
-  protected outputTransformers: Function[] = [];
+  public inputTransformers: Function[] = [];
+  public outputTransformers: Function[] = [];
+
+  public doOnNgChanges: Function[] = [];
   protected outputFormatTransformer: Function = (val: string): any => val;
 
   protected onNgChanges(changes: SimpleChanges): void {}
@@ -181,7 +184,14 @@ export abstract class RTEformElement extends BaseFormElement
       );
     }
     this.onControlChanges(changes);
-    this.onNgChanges(changes);
+
+    // do all the onChanges function assigned in other classes/mixins
+    console.log(this.doOnNgChanges);
+    this.doOnNgChanges.forEach(func => {
+      console.log('hello', func);
+      return func(changes);
+    });
+
     if (changes.value) {
       this.applyValue(changes.value.currentValue);
     }
@@ -210,6 +220,7 @@ export abstract class RTEformElement extends BaseFormElement
 
   private onEditorSelectionChange(range: RangeStatic): void {
     if (range) {
+      this.selection = this.rteUtils.getCurrentSelection(this.editor);
       const newSize = !!this.editor.getFormat(range).size;
       if (this.hasSizeSet !== newSize) {
         this.hasSizeSet = newSize;
@@ -232,7 +243,7 @@ export abstract class RTEformElement extends BaseFormElement
     this.blurred.emit(this.value);
   }
 
-  protected storeCurrentSelection(selection = null, text = null) {
+  public storeCurrentSelection(selection = null, text = null): void {
     this.selection =
       selection || this.rteUtils.getCurrentSelection(this.editor);
     this.selectedText =

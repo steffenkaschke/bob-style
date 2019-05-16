@@ -23,9 +23,9 @@ import {
 } from '@angular/forms';
 
 import { RichTextEditorComponent } from './rte.component';
-import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
-import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { RTEType, BlotType, RTEchangeEvent } from './rte.enum';
+import { RteLinkEditorComponent } from './rte-link/rte-link-editor.component';
+import { RteUtilsService } from './rte-core/rte-utils.service';
+import { RTEType, BlotType, RTEchangeEvent } from './rte-core/rte.enum';
 import Quill from 'quill';
 import { PanelModule } from '../../overlay/panel/panel.module';
 import { SingleSelectModule } from '../lists/single-select/single-select.module';
@@ -37,7 +37,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
-import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
+import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
 
 @Component({
   template: `

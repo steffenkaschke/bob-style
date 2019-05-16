@@ -16,7 +16,7 @@ import { values } from 'lodash';
 import { TypographyModule } from '../../typography/typography.module';
 import { RichTextEditorModule } from './rte.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BlotType, RTEType } from './rte.enum';
+import { BlotType, RTEType } from './rte-core/rte.enum';
 import { SelectGroupOption } from '../lists/list.interface';
 
 const inputStories = storiesOf(

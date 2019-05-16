@@ -6,18 +6,15 @@ import {
   ViewChild,
   HostListener
 } from '@angular/core';
-import {
-  InputEventType,
-  InputTypes
-} from '../../../form-elements/input/input.enum';
+import { InputEventType, InputTypes } from '../../input/input.enum';
 import {
   ButtonSize,
   ButtonType
 } from '../../../buttons-indicators/buttons/buttons.enum';
-import { RteLink } from '../rte.interface';
-import { InputEvent } from '../../../form-elements/input/input.interface';
+import { RteLink } from '../rte-core/rte.interface';
+import { InputEvent } from '../../input/input.interface';
 import { InputComponent } from '../../input/input.component';
-import { checkUrl } from '../formats/link-blot';
+import { checkUrl } from './link-blot';
 import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
 
 @Component({

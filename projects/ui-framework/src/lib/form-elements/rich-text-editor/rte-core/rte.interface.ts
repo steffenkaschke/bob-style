@@ -1,4 +1,5 @@
 import { BlotType } from './rte.enum';
+import { TextBlot } from 'quill/blots/text';
 
 export interface UpdateRteConfig {
   replaceStr: string;
@@ -33,6 +34,7 @@ export interface BlotData {
   text: string;
   format?: RteBlotFormat;
   node?: Node | HTMLElement;
+  blot?: TextBlot;
   element?: HTMLElement;
   link?: string;
 }
