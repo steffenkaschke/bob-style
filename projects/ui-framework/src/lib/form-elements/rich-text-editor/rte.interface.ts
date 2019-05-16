@@ -1,4 +1,5 @@
 import { BlotType } from './rte.enum';
+import { Blot } from 'parchment/dist/src/blot/abstract/blot';
 
 export interface UpdateRteConfig {
   replaceStr: string;
@@ -33,6 +34,7 @@ export interface BlotData {
   text: string;
   format?: RteBlotFormat;
   node?: Node | HTMLElement;
+  blot?: Blot;
   element?: HTMLElement;
   link?: string;
 }

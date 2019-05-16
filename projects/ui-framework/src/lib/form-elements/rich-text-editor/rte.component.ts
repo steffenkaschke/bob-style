@@ -171,7 +171,7 @@ export class RichTextEditorComponent extends RTEformElement
     }, 0);
   }
 
-  private addKeyBindings(): void {
+  public addKeyBindings(): void {
     // before backspace default action
     this.editor.keyboard.addBinding(
       { key: KeyboardKeys.backspace },
@@ -217,16 +217,14 @@ export class RichTextEditorComponent extends RTEformElement
         (this.specialBlots.deleteAsWhole || this.specialBlots.treatAsWhole) &&
         event.key.toUpperCase() === KeyboardKeys.backspace
       ) {
-        const currentSelection = this.rteUtilsService.getCurrentSelection(
-          this.editor
-        );
         this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
 
-        // if some text selected inside blot, delete it
+        // if some text selected inside blot, delete the blot
         if (
-          currentSelection.index !==
+          this.selection.length > 0 &&
+          this.selection.index > this.currentBlot.index &&
+          this.selection.index <=
             this.currentBlot.index + this.currentBlot.length &&
-          currentSelection.length !== this.currentBlot.length &&
           this.rteUtilsService.commonFormats(
             this.currentBlot.format,
             this.specialBlots.treatAsWhole
@@ -319,15 +317,20 @@ export class RichTextEditorComponent extends RTEformElement
           const currentIndex = this.editor.getSelection().index;
 
           if (
-            currentIndex <
-            this.currentBlot.index + this.currentBlot.length / 2
+            currentIndex > this.currentBlot.index &&
+            currentIndex < this.currentBlot.index + this.currentBlot.length
           ) {
-            this.editor.setSelection(this.currentBlot.index, 0);
-          } else {
-            this.editor.setSelection(
-              this.currentBlot.index + this.currentBlot.length + 1,
-              0
-            );
+            if (
+              currentIndex <
+              this.currentBlot.index + this.currentBlot.length / 2
+            ) {
+              this.editor.setSelection(this.currentBlot.index, 0);
+            } else {
+              this.editor.setSelection(
+                this.currentBlot.index + this.currentBlot.length + 1,
+                0
+              );
+            }
           }
         }
       });
