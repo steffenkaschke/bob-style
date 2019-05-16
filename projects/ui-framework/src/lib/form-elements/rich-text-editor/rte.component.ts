@@ -173,6 +173,7 @@ export class RichTextEditorComponent extends RTEformElement
 
   public addKeyBindings(): void {
     // before backspace default action
+
     this.editor.keyboard.addBinding(
       { key: KeyboardKeys.backspace },
       (range, context) => {
@@ -183,22 +184,26 @@ export class RichTextEditorComponent extends RTEformElement
             this.specialBlots.deleteAsWhole
           )
         ) {
+          const currentSelection = this.rteUtilsService.getCurrentSelection(
+            this.editor
+          );
           this.currentBlot = this.rteUtilsService.getCurrentBlotData(
             this.editor,
-            true
+            false,
+            currentSelection.index - 1
           );
 
           if (
             // if in the end of blot, select blots in deleteAsWhole array
             (context.prefix === this.currentBlot.text &&
               this.rteUtilsService.commonFormats(
-                context.format,
+                this.currentBlot.format,
                 this.specialBlots.deleteAsWhole
               )) ||
             // if in the middle of blot, select blots in treatAsWhole array
             (context.prefix !== this.currentBlot.text &&
               this.rteUtilsService.commonFormats(
-                context.format,
+                this.currentBlot.format,
                 this.specialBlots.treatAsWhole
               ))
           ) {
@@ -217,22 +222,23 @@ export class RichTextEditorComponent extends RTEformElement
         (this.specialBlots.deleteAsWhole || this.specialBlots.treatAsWhole) &&
         event.key.toUpperCase() === KeyboardKeys.backspace
       ) {
-
         // if some text selected inside blot, delete the blot
+        const currentSelection = this.lastSelection;
+        let currentBlot = this.lastCurrentBlot;
+
         if (
-          this.selection.length > 0 &&
-          this.selection.index > this.currentBlot.index &&
-          this.selection.index <=
-            this.currentBlot.index + this.currentBlot.length &&
+          currentSelection.length > 0 &&
+          currentSelection.index > currentBlot.index &&
+          currentSelection.index <= currentBlot.index + currentBlot.length &&
           this.rteUtilsService.commonFormats(
-            this.currentBlot.format,
+            currentBlot.format,
             this.specialBlots.treatAsWhole
           )
         ) {
           this.rteUtilsService.deleteRange(
             {
-              index: this.currentBlot.index,
-              length: this.currentBlot.length
+              index: currentBlot.index,
+              length: currentBlot.length
             },
             this.editor
           );
@@ -240,9 +246,14 @@ export class RichTextEditorComponent extends RTEformElement
         }
 
         // solve pseudo-cursor editing blot problem
-        if (this.currentBlot.element.className === 'ql-cursor') {
-          this.editor.setSelection(this.currentBlot.index + 1, 0);
-          this.editor.setSelection(this.currentBlot.index, 0);
+
+        currentBlot = this.rteUtilsService.getCurrentBlotData(
+          this.editor,
+          false
+        );
+        if (currentBlot.element.className === 'ql-cursor') {
+          this.editor.setSelection(currentBlot.index + 1, 0);
+          this.editor.setSelection(currentBlot.index, 0);
         }
       }
     });
@@ -253,9 +264,11 @@ export class RichTextEditorComponent extends RTEformElement
         (this.specialBlots.treatAsWhole || this.specialBlots.deleteAsWhole) &&
         event.key.toUpperCase() === KeyboardKeys.delete
       ) {
-        const currentSelection = this.rteUtilsService.getCurrentSelection(
-          this.editor
-        );
+        // const currentSelection = this.rteUtilsService.getCurrentSelection(
+        //   this.editor
+        // );
+        const currentSelection = this.selection;
+
         const nextCharFormat = this.editor.getFormat(
           currentSelection.index + 1
         );
@@ -313,14 +326,17 @@ export class RichTextEditorComponent extends RTEformElement
             element,
             this.editor
           );
-          const currentIndex = this.editor.getSelection().index;
+          const currentSelection = this.rteUtilsService.getCurrentSelection(
+            this.editor
+          );
 
           if (
-            currentIndex > this.currentBlot.index &&
-            currentIndex < this.currentBlot.index + this.currentBlot.length
+            currentSelection.index > this.currentBlot.index &&
+            currentSelection.index <
+              this.currentBlot.index + this.currentBlot.length
           ) {
             if (
-              currentIndex <
+              currentSelection.index <
               this.currentBlot.index + this.currentBlot.length / 2
             ) {
               this.editor.setSelection(this.currentBlot.index, 0);
