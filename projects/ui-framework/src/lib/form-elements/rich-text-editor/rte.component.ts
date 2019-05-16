@@ -223,7 +223,6 @@ export class RichTextEditorComponent extends RTEformElement
         event.key.toUpperCase() === KeyboardKeys.backspace
       ) {
         // if some text selected inside blot, delete the blot
-
         const currentSelection = this.lastSelection;
         let currentBlot = this.lastCurrentBlot;
 
