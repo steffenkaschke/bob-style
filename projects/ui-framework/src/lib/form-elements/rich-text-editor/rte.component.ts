@@ -316,6 +316,13 @@ export class RichTextEditorComponent extends RTEformElement
     if (this.specialBlots.deleteAsWhole) {
       this.editor.root.addEventListener('click', event => {
         const element = event.target as any;
+
+        // this.currentBlot = this.rteUtilsService.getBlotDataFromElement(
+        //   element,
+        //   this.editor,
+        //   true
+        // );
+
         if (
           (element as any).__blot &&
           this.specialBlots.treatAsWhole.includes(
@@ -324,7 +331,8 @@ export class RichTextEditorComponent extends RTEformElement
         ) {
           this.currentBlot = this.rteUtilsService.getBlotDataFromElement(
             element,
-            this.editor
+            this.editor,
+            true
           );
           const currentSelection = this.rteUtilsService.getCurrentSelection(
             this.editor
