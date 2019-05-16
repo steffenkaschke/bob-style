@@ -49,18 +49,11 @@ jobs:
 
       #deploy to npm
       - run:
-          name: 'bump'
+          name: 'Bump version locally'
           command: |
             cd ./projects/ui-framework
             npm version patch --no-git-tag-version
             cd ../..
-            # git config credential.helper 'cache --timeout=120'
-            # git config user.email "doron.cy@gmail.com"
-            # git config user.name "Deployment Bot"
-            # git add .
-            # git commit --allow-empty -m "bump version"
-            # git push -q https://${GITHUB_TOKEN}@github.com/hibobio/bob-style.git master
-      - run: npm run package
       - run:
           name: 'Deploy to npm'
           command: |
@@ -69,6 +62,15 @@ jobs:
             always-auth = true
             email = deploy-js@hibob.io" > .npmrc
             npm publish ./dist/ui-framework/*.tgz --scope=hibob
+      - run:
+          name: 'Commit new version'
+          command: |
+            git config credential.helper 'cache --timeout=120'
+            git config user.email "bot@hibob.io"
+            git config user.name "Deployment Bot"
+            git add .
+            git commit --allow-empty -m "bump version [skip ci]"
+            git push -q https://${GITHUB_TOKEN}@github.com/hibobio/bob-style.git master
 
 workflows:
   version: 2
