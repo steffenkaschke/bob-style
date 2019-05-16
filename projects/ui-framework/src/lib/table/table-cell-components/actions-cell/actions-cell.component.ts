@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Output} from '@angular/core';
+import { Component } from '@angular/core';
 import { IconColor, Icons } from '../../../icons/icons.enum';
 import { ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
 import { MenuItem } from '../../../navigation/menu/menu.interface';
-import {ICellRendererAngularComp} from 'ag-grid-angular';
+import { ICellRendererAngularComp } from 'ag-grid-angular';
+import { ICellRendererParams } from 'ag-grid-community';
+import { assign, map } from 'lodash';
 
 @Component({
   selector: 'b-actions-cell',
@@ -18,11 +20,17 @@ export class ActionsCellComponent implements ICellRendererAngularComp {
   constructor() { }
 
   agInit(params: any): void {
-    this.menuItems = params.value.menuItems;
     this.openLeft = params.value.openLeft || false;
+    this.menuItems = map(params.value.menuItems, (item: MenuItem) => {
+      return assign({}, item, {
+        action: () => {
+          item.action(params.rowIndex);
+        }
+      });
+    });
   }
 
-  refresh(params: any): boolean {
+  refresh(params: ICellRendererParams): boolean {
     return false;
   }
 }

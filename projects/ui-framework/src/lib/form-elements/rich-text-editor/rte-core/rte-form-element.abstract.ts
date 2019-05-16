@@ -51,6 +51,8 @@ export abstract class RTEformElement extends BaseFormElement
   public selection: RangeStatic;
   public selectedText: string;
   public currentBlot: BlotData;
+  public lastSelection: RangeStatic;
+  public lastCurrentBlot: BlotData;
   private latestOutputValue: string;
   private writingValue = false;
   private control: FormControl;
@@ -212,10 +214,12 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   private onEditorSelectionChange(range: RangeStatic): void {
-    console.log('onEditorSelectionChange', range);
-    if (range && (range.index > 0 || range.length > 0)) {
-      this.selection = this.rteUtils.getCurrentSelection(this.editor);
-      this.currentBlot = this.rteUtils.getCurrentBlotData(this.editor);
+    if (range) {
+      if (range.index > 0 || range.length > 0) {
+        this.lastSelection = range;
+        this.lastCurrentBlot = this.rteUtils.getCurrentBlotData(this.editor);
+      }
+
       const newSize = !!this.editor.getFormat(range).size;
       if (this.hasSizeSet !== newSize) {
         this.hasSizeSet = newSize;

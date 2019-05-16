@@ -42,11 +42,6 @@ export enum QuillKeyboardKeys {
 }
 
 export enum DOMkeyboardKeys {
-  backspace = 'BACKSPACE',
-  delete = 'DELETE',
-  tab = 'TAB',
-  enter = 'ENTER',
-  escape = 'ESCAPE',
   left = 'ARROWLEFT',
   up = 'ARROWUP',
   right = 'ARROWRIGHT',
