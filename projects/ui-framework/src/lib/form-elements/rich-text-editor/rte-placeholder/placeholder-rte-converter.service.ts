@@ -7,7 +7,7 @@ import { getPlaceholderText } from './placeholder-blot';
 export class PlaceholderRteConverterService {
   constructor() {}
 
-  static fromRte(rteInnerHtml: string): string {
+  public fromRte(rteInnerHtml: string): string {
     const elm: HTMLElement = document.createElement('div');
     elm.innerHTML = rteInnerHtml + '';
     Array.from(elm.querySelectorAll('[data-placeholder-id]')).forEach(
@@ -27,7 +27,7 @@ export class PlaceholderRteConverterService {
     return elm.innerHTML;
   }
 
-  static toRte(
+  public toRte(
     contentToConvert: string,
     placeholders: RtePlaceholder[]
   ): string {
@@ -43,11 +43,11 @@ export class PlaceholderRteConverterService {
     );
   }
 
-  static toRtePartial = (placeholders: RtePlaceholder[]) => (
+  public toRtePartial = (placeholders: RtePlaceholder[]) => (
     contentToConvert: string
-  ) => PlaceholderRteConverterService.toRte(contentToConvert, placeholders)
+  ) => this.toRte(contentToConvert, placeholders)
 
-  static getDisplayNameById(
+  public getDisplayNameById(
     placeholders: RtePlaceholder[],
     id: string
   ): string {
@@ -55,7 +55,7 @@ export class PlaceholderRteConverterService {
     return placeholder ? placeholder.displayName : id;
   }
 
-  static getGroupDisplayName(
+  public getGroupDisplayName(
     placeholders: RtePlaceholder[],
     id: string
   ): string {

@@ -18,7 +18,7 @@ export class RteLinkBlot {
 
   public linkPanel: PanelComponent;
   public linkEditor: RteLinkEditorComponent;
-  public rteUtilsService: RteUtilsService;
+  public rteUtils: RteUtilsService;
   public selection: RangeStatic;
   public editor: Quill;
   public currentBlot: BlotData;
@@ -30,11 +30,11 @@ export class RteLinkBlot {
 
   public onLinkPanelOpen(): void {
     this.currentBlot =
-      this.rteUtilsService.getCurrentBlotData(this.editor) || ({} as BlotData);
+      this.rteUtils.getCurrentBlotData(this.editor) || ({} as BlotData);
 
     if (this.currentBlot.link) {
       this.storeCurrentSelection(
-        this.rteUtilsService.selectBlot(this.currentBlot, this.editor),
+        this.rteUtils.selectBlot(this.currentBlot, this.editor),
         this.currentBlot.text
       );
     } else {
@@ -73,7 +73,7 @@ export class RteLinkBlot {
       noLinebreakAfter: this.specialBlots.noLinebreakAfter
     };
 
-    this.rteUtilsService.insertBlot(this.editor, updateConfig);
+    this.rteUtils.insertBlot(this.editor, updateConfig);
     this.selection = null;
     this.linkPanel.closePanel();
   }

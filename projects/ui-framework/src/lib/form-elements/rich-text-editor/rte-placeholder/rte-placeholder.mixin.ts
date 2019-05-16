@@ -11,55 +11,21 @@ import {
 } from './placeholder-rte-converter.interface';
 
 import { getPlaceholderText } from './placeholder-blot';
-import { SimpleChanges } from '@angular/core';
 
 export class RtePlaceholderBlot {
   constructor() {}
 
   // implementing Base class properties & methods
 
-  public placeholderRteConverterService = PlaceholderRteConverterService as any;
+  public placeholderRteConverterService: PlaceholderRteConverterService = new PlaceholderRteConverterService();
   public placeholderList: RtePlaceholderList[];
   public placeholderPanel: PanelComponent;
-  public rteUtilsService: RteUtilsService;
+  public rteUtils: RteUtilsService;
   public selection: RangeStatic;
   public editor: Quill;
   public storeCurrentSelection: (...args: any[]) => void;
   public selectedText: string;
   public specialBlots: SpecialBlots;
-
-  public outputTransformers: Function[];
-  public inputTransformers: Function[];
-  public controls: BlotType[];
-  public doOnNgChanges: Function[];
-
-  // this will extend RTE Abstract's ngOnChanges
-
-  RtePlaceholderOnNgChanges = (changes: SimpleChanges): void => {
-    console.log('wortks!');
-    if (
-      changes.placeholderList ||
-      changes.controls ||
-      changes.disableControls
-    ) {
-      // this.initTransformers();
-      // this.writeValue(this.value);
-
-      if (
-        this.placeholderList &&
-        this.controls.includes(BlotType.placeholder)
-      ) {
-        this.inputTransformers.push(
-          this.placeholderRteConverterService.toRtePartial(this
-            .placeholderList[0].options as RtePlaceholder[])
-        );
-
-        this.outputTransformers.push(
-          this.placeholderRteConverterService.fromRte
-        );
-      }
-    }
-  }
 
   // instance methods
 
@@ -95,7 +61,7 @@ export class RtePlaceholderBlot {
       noLinebreakAfter: this.specialBlots.noLinebreakAfter
     };
 
-    this.rteUtilsService.insertBlot(this.editor, updateConfig);
+    this.rteUtils.insertBlot(this.editor, updateConfig);
     this.selection = null;
     this.placeholderPanel.closePanel();
   }

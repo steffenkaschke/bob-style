@@ -8,8 +8,7 @@ import {
   HostBinding,
   Input,
   ElementRef,
-  SimpleChanges,
-  OnInit
+  SimpleChanges
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -66,16 +65,10 @@ quillLib.register(Italic);
 })
 @MixIn([RteLinkBlot, RtePlaceholderBlot, RteKeybindings])
 export class RichTextEditorComponent extends RTEformElement
-  implements
-    OnInit,
-    AfterViewInit,
-    RteLinkBlot,
-    RtePlaceholderBlot,
-    RteKeybindings {
+  implements AfterViewInit, RteLinkBlot, RtePlaceholderBlot, RteKeybindings {
   constructor(
-    public rteUtilsService: RteUtilsService,
     private DOM: DOMhelpers,
-    rteUtils: RteUtilsService,
+    public rteUtils: RteUtilsService,
     changeDetector: ChangeDetectorRef,
     injector: Injector
   ) {
@@ -136,43 +129,38 @@ export class RichTextEditorComponent extends RTEformElement
   // implementing RteKeybindings mixin
   public addKeyBindings: () => void;
 
-  ngOnInit() {
-    this.doOnNgChanges.push(this.RtePlaceholderOnNgChanges);
-
-    console.log('init', this.doOnNgChanges);
-  }
-
   // registering input/output transformers
   private initTransformers(): void {
     this.inputTransformers = [];
-    this.outputTransformers = [this.rteUtilsService.cleanupHtml];
+    this.outputTransformers = [this.rteUtils.cleanupHtml];
 
-    // if (this.placeholderList && this.controls.includes(BlotType.placeholder)) {
-    //   this.inputTransformers.push(
-    //     this.placeholderRteConverterService.toRtePartial(this.placeholderList[0]
-    //       .options as RtePlaceholder[])
-    //   );
+    if (this.placeholderList && this.controls.includes(BlotType.placeholder)) {
+      this.inputTransformers.push(
+        this.placeholderRteConverterService.toRtePartial(this.placeholderList[0]
+          .options as RtePlaceholder[])
+      );
 
-    //   this.outputTransformers.push(this.placeholderRteConverterService.fromRte);
-    // }
+      this.outputTransformers.push(this.placeholderRteConverterService.fromRte);
+    }
   }
 
-  // onNgChanges(changes: SimpleChanges): void {
-  //   if (
-  //     changes.placeholderList ||
-  //     changes.controls ||
-  //     changes.disableControls
-  //   ) {
-  //     this.initTransformers();
-  //     this.writeValue(this.value);
-  //   }
-  // }
+  // this extends RTE Abstract's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
+    if (
+      changes.placeholderList ||
+      changes.controls ||
+      changes.disableControls
+    ) {
+      this.initTransformers();
+      this.writeValue(this.value);
+    }
+  }
 
   // this extends RTE Abstract's ngAfterViewInit
   onNgAfterViewInit(): void {
     const editorOptions: QuillOptionsStatic = {
       theme: 'snow',
-      placeholder: this.rteUtilsService.getEditorPlaceholder(
+      placeholder: this.rteUtils.getEditorPlaceholder(
         this.label,
         this.required
       ),

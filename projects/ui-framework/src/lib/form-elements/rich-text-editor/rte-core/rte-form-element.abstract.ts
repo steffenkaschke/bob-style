@@ -9,8 +9,7 @@ import {
   SimpleChanges,
   Type,
   ViewChild,
-  AfterViewInit,
-  SimpleChange
+  AfterViewInit
 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
@@ -26,7 +25,7 @@ quillLib.register(Block, true);
 export abstract class RTEformElement extends BaseFormElement
   implements OnChanges, AfterViewInit {
   protected constructor(
-    private rteUtils: RteUtilsService,
+    public rteUtils: RteUtilsService,
     private changeDetector: ChangeDetectorRef,
     private injector: Injector
   ) {
@@ -63,8 +62,6 @@ export abstract class RTEformElement extends BaseFormElement
 
   public inputTransformers: Function[] = [];
   public outputTransformers: Function[] = [];
-
-  public doOnNgChanges: Function[] = [];
   protected outputFormatTransformer: Function = (val: string): any => val;
 
   protected onNgChanges(changes: SimpleChanges): void {}
@@ -186,11 +183,7 @@ export abstract class RTEformElement extends BaseFormElement
     this.onControlChanges(changes);
 
     // do all the onChanges function assigned in other classes/mixins
-    console.log(this.doOnNgChanges);
-    this.doOnNgChanges.forEach(func => {
-      console.log('hello', func);
-      return func(changes);
-    });
+    this.onNgChanges(changes);
 
     if (changes.value) {
       this.applyValue(changes.value.currentValue);
@@ -219,8 +212,10 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   private onEditorSelectionChange(range: RangeStatic): void {
-    if (range) {
+    console.log('onEditorSelectionChange', range);
+    if (range && (range.index > 0 || range.length > 0)) {
       this.selection = this.rteUtils.getCurrentSelection(this.editor);
+      this.currentBlot = this.rteUtils.getCurrentBlotData(this.editor);
       const newSize = !!this.editor.getFormat(range).size;
       if (this.hasSizeSet !== newSize) {
         this.hasSizeSet = newSize;

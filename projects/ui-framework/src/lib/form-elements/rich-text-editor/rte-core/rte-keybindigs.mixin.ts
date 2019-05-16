@@ -1,5 +1,5 @@
 import { SpecialBlots, BlotData } from './rte.interface';
-import { KeyboardKeys } from './rte.enum';
+import { QuillKeyboardKeys, DOMkeyboardKeys } from './rte.enum';
 import { RteUtilsService } from './rte-utils.service';
 import Quill, { RangeStatic } from 'quill';
 
@@ -8,7 +8,7 @@ export class RteKeybindings {
 
   // implementing Base class properties & methods
 
-  public rteUtilsService: RteUtilsService;
+  public rteUtils: RteUtilsService;
   public selection: RangeStatic;
   public editor: Quill;
   public specialBlots: SpecialBlots;
@@ -19,16 +19,17 @@ export class RteKeybindings {
   public addKeyBindings(): void {
     // before backspace default action
     this.editor.keyboard.addBinding(
-      { key: KeyboardKeys.backspace },
+      { key: QuillKeyboardKeys.backspace },
       (range, context) => {
+        console.log('addBinding', range, context);
         if (
           this.specialBlots.deleteAsWhole &&
-          this.rteUtilsService.commonFormats(
+          this.rteUtils.commonFormats(
             context.format,
             this.specialBlots.deleteAsWhole
           )
         ) {
-          this.currentBlot = this.rteUtilsService.getCurrentBlotData(
+          this.currentBlot = this.rteUtils.getCurrentBlotData(
             this.editor,
             true
           );
@@ -36,18 +37,18 @@ export class RteKeybindings {
           if (
             // if in the end of blot, select blots in deleteAsWhole array
             (context.prefix === this.currentBlot.text &&
-              this.rteUtilsService.commonFormats(
-                context.format,
+              this.rteUtils.commonFormats(
+                this.currentBlot.format,
                 this.specialBlots.deleteAsWhole
               )) ||
             // if in the middle of blot, select blots in treatAsWhole array
             (context.prefix !== this.currentBlot.text &&
-              this.rteUtilsService.commonFormats(
-                context.format,
+              this.rteUtils.commonFormats(
+                this.currentBlot.format,
                 this.specialBlots.treatAsWhole
               ))
           ) {
-            this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
+            this.rteUtils.selectBlot(this.currentBlot, this.editor);
             return false;
           }
         }
@@ -56,26 +57,40 @@ export class RteKeybindings {
       }
     );
 
+    this.editor.root.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (
+        event.key.toUpperCase() !== QuillKeyboardKeys.backspace &&
+        event.key.toUpperCase() !== QuillKeyboardKeys.delete &&
+        event.key.toUpperCase() !== DOMkeyboardKeys.left &&
+        event.key.toUpperCase() !== DOMkeyboardKeys.right &&
+        event.key.toUpperCase() !== DOMkeyboardKeys.down &&
+        event.key.toUpperCase() !== DOMkeyboardKeys.up
+      ) {
+        console.log('save selection', event.key, DOMkeyboardKeys.down);
+        this.selection = this.rteUtils.getCurrentSelection(this.editor);
+        this.currentBlot = this.rteUtils.getCurrentBlotData(this.editor);
+      }
+    });
+
     // after backspace default action
     this.editor.root.addEventListener('keydown', (event: KeyboardEvent) => {
       if (
         (this.specialBlots.deleteAsWhole || this.specialBlots.treatAsWhole) &&
-        event.key.toUpperCase() === KeyboardKeys.backspace
+        event.key.toUpperCase() === QuillKeyboardKeys.backspace
       ) {
-        this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
-
+        console.log('backspace ddEventListener');
         // if some text selected inside blot, delete the blot
         if (
           this.selection.length > 0 &&
           this.selection.index > this.currentBlot.index &&
           this.selection.index <=
             this.currentBlot.index + this.currentBlot.length &&
-          this.rteUtilsService.commonFormats(
+          this.rteUtils.commonFormats(
             this.currentBlot.format,
             this.specialBlots.treatAsWhole
           )
         ) {
-          this.rteUtilsService.deleteRange(
+          this.rteUtils.deleteRange(
             {
               index: this.currentBlot.index,
               length: this.currentBlot.length
@@ -86,6 +101,7 @@ export class RteKeybindings {
         }
 
         // solve pseudo-cursor editing blot problem
+        this.currentBlot = this.rteUtils.getCurrentBlotData(this.editor);
         if (this.currentBlot.element.className === 'ql-cursor') {
           this.editor.setSelection(this.currentBlot.index + 1, 0);
           this.editor.setSelection(this.currentBlot.index, 0);
@@ -97,43 +113,39 @@ export class RteKeybindings {
     this.editor.root.addEventListener('keydown', (event: KeyboardEvent) => {
       if (
         (this.specialBlots.treatAsWhole || this.specialBlots.deleteAsWhole) &&
-        event.key.toUpperCase() === KeyboardKeys.delete
+        event.key.toUpperCase() === QuillKeyboardKeys.delete
       ) {
-        const currentSelection = this.rteUtilsService.getCurrentSelection(
-          this.editor
-        );
-        const nextCharFormat = this.editor.getFormat(
-          currentSelection.index + 1
-        );
+        console.log('delete addEventListener');
+        const nextCharFormat = this.editor.getFormat(this.selection.index + 1);
 
         if (
-          this.rteUtilsService.commonFormats(
+          this.rteUtils.commonFormats(
             nextCharFormat,
             this.specialBlots.deleteAsWhole
           ) ||
-          this.rteUtilsService.commonFormats(
+          this.rteUtils.commonFormats(
             nextCharFormat,
             this.specialBlots.treatAsWhole
           )
         ) {
-          this.currentBlot = this.rteUtilsService.getCurrentBlotData(
+          this.currentBlot = this.rteUtils.getCurrentBlotData(
             this.editor,
             true,
-            currentSelection.index + 1
+            this.selection.index + 1
           );
 
-          if (currentSelection.index === this.currentBlot.index) {
+          if (this.selection.index === this.currentBlot.index) {
             // at the start of blot in deleteAsWhole array
-            this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
+            this.rteUtils.selectBlot(this.currentBlot, this.editor);
           } else if (
-            currentSelection.index > this.currentBlot.index &&
-            this.rteUtilsService.commonFormats(
+            this.selection.index > this.currentBlot.index &&
+            this.rteUtils.commonFormats(
               nextCharFormat,
               this.specialBlots.treatAsWhole
             )
           ) {
             // in the middle of blot in treatAsWhole array
-            this.rteUtilsService.deleteRange(
+            this.rteUtils.deleteRange(
               {
                 index: this.currentBlot.index,
                 length: this.currentBlot.length
@@ -155,7 +167,7 @@ export class RteKeybindings {
             element.__blot.blot.statics.blotName
           )
         ) {
-          this.currentBlot = this.rteUtilsService.getBlotDataFromElement(
+          this.currentBlot = this.rteUtils.getBlotDataFromElement(
             element,
             this.editor
           );
