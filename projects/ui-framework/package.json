@@ -1,6 +1,6 @@
 {
   "name": "bob-style",
-  "version": "1.0.100",
+  "version": "1.0.101",
   "peerDependencies": {
     "@angular/animations": "^7.2.0",
     "@angular/cdk": "^7.2.1",
