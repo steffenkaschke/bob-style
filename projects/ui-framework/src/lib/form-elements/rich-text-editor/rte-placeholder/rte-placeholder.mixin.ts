@@ -1,5 +1,5 @@
 import { UpdateRteConfig, SpecialBlots } from '../rte-core/rte.interface';
-import { BlotType } from '../rte-core/rte.enum';
+import { BlotType, UtilBlotType } from '../rte-core/rte.enum';
 import { PanelComponent } from '../../../overlay/panel/panel.component';
 import { RteUtilsService } from '../rte-core/rte-utils.service';
 import Quill, { RangeStatic } from 'quill';
@@ -22,14 +22,14 @@ export class RtePlaceholderBlot {
   public rteUtils: RteUtilsService;
   public selection: RangeStatic;
   public editor: Quill;
-  public storeCurrentSelection: Function;
   public selectedText: string;
   public specialBlots: SpecialBlots;
+  public storeCurrent: Function;
 
   // instance methods
 
   public onPlaceholderPanelOpen(): void {
-    this.storeCurrentSelection();
+    this.storeCurrent(true, false, true);
   }
 
   public onPlaceholderSelectChange(

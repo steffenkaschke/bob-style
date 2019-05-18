@@ -24,21 +24,21 @@ export class RteLinkBlot {
   public currentBlot: BlotData;
   public selectedText: string;
   public specialBlots: SpecialBlots;
-  public storeCurrentSelection: Function;
   public storeCurrent: Function;
 
   // instance methods
 
-  public onLinkPanelOpen(): void {
-    this.storeCurrent(false, true);
+  public onLinkPanelOpen() {
+    this.storeCurrent();
 
     if (this.currentBlot.link) {
-      this.storeCurrentSelection(
-        this.rteUtils.selectBlot(this.currentBlot, this.editor),
+      this.storeCurrent(
+        this.currentBlot.select(),
+        false,
         this.currentBlot.text
       );
     } else {
-      this.storeCurrentSelection();
+      this.storeCurrent(false, false, true);
     }
 
     this.linkEditor.text = this.selectedText;

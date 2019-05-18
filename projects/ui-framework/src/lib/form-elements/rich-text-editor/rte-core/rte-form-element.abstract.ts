@@ -21,7 +21,7 @@ import quillLib, {
 import { default as Delta } from 'quill-delta';
 import { RTEchangeEvent, BlotType, RTEFontSize } from './rte.enum';
 import { RteUtilsService } from './rte-utils.service';
-import { BlotData, SpecialBlots } from './rte.interface';
+import { BlotData, SpecialBlots, StoreCurrentResult } from './rte.interface';
 import { BaseFormElement } from '../../base-form-element';
 
 const Block = quillLib.import('blots/block');
@@ -203,7 +203,6 @@ export abstract class RTEformElement extends BaseFormElement
     }
     this.onControlChanges(changes);
 
-    // do all the onChanges function assigned in other classes/mixins
     this.onNgChanges(changes);
 
     if (changes.value) {
@@ -267,18 +266,11 @@ export abstract class RTEformElement extends BaseFormElement
     this.blurred.emit(this.value);
   }
 
-  public storeCurrentSelection(selection = null, text = null): void {
-    this.selection =
-      selection || this.rteUtils.getCurrentSelection(this.editor);
-    this.selectedText =
-      text || this.rteUtils.getSelectionText(this.editor, this.selection);
-  }
-
-  public storeCursor(): void {
+  public storeSelection(): void {
     this.selection = this.rteUtils.getCurrentSelection(this.editor);
   }
 
-  public restoreCursor(): void {
+  public restoreSelection(): void {
     this.editor.focus();
     if (this.selection) {
       this.editor.setSelection(this.selection);
@@ -287,30 +279,48 @@ export abstract class RTEformElement extends BaseFormElement
 
   public storeCurrent(
     selection: RangeStatic | boolean = true,
-    blot: Partial<BlotData> | boolean = true
-  ): { selection: RangeStatic; currentBlot: BlotData } {
-    this.selection =
-      selection && (selection as RangeStatic).index
+    blot: Partial<BlotData> | boolean = true,
+    text: string | boolean = false
+  ): StoreCurrentResult {
+    const currentSelection = selection
+      ? (selection as RangeStatic).index
         ? (selection as RangeStatic)
-        : selection && this.rteUtils.getCurrentSelection(this.editor);
+        : this.rteUtils.getCurrentSelection(this.editor)
+      : this.selection;
+    let currentBlot: BlotData;
 
     if (blot && (blot as BlotData).element) {
-      this.currentBlot = this.rteUtils.getBlotDataFromElement(
+      currentBlot = this.rteUtils.getBlotDataFromElement(
         (blot as BlotData).element,
         this.editor
       );
-    } else {
-      this.currentBlot = this.rteUtils.getCurrentBlotData(
+    } else if (blot) {
+      currentBlot = this.rteUtils.getCurrentBlotData(
         this.editor,
         false,
-        blot && (blot as BlotData).index
+        (blot as BlotData).index ||
+          ((blot as BlotData).offset &&
+            currentSelection.index + (blot as BlotData).offset)
       );
     }
+    const selectedText =
+      text && typeof text === 'string'
+        ? text
+        : this.rteUtils.getSelectionText(this.editor, currentSelection);
 
-    return {
-      selection: this.selection,
-      currentBlot: this.currentBlot
-    };
+    const result: StoreCurrentResult = {};
+
+    if (selection) {
+      result.selection = this.selection = currentSelection;
+    }
+    if (blot) {
+      result.currentBlot = this.currentBlot = currentBlot;
+    }
+    if (text) {
+      result.text = this.selectedText = selectedText;
+    }
+
+    return result;
   }
 
   public changeFontSize(size: RTEFontSize) {

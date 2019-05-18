@@ -32,6 +32,7 @@ export interface RteCurrentContent {
 export interface BlotData {
   index: number;
   endIndex: number;
+  offset?: number;
   length: number;
   text: string;
   format?: RteBlotFormat;
@@ -51,4 +52,10 @@ export interface SpecialBlots {
   deleteAsWholeDefs: BlotType[];
   noLinebreakAfter?: BlotType[];
   noLinebreakAfterDefs: BlotType[];
+}
+
+export interface StoreCurrentResult {
+  selection?: RangeStatic | boolean;
+  currentBlot?: Partial<BlotData> | boolean;
+  text?: string | boolean;
 }

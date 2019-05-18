@@ -20,48 +20,66 @@ export class RteKeybindings {
 
   // instance methods
 
-  checkBlot(
-    selection: RangeStatic,
-    blot: BlotData,
+  checkCurrentBlot(
+    selection: RangeStatic | boolean,
+    checkAt: number | number[],
     lookAhead = false
   ): boolean {
-    const formatDeleteAsWhole = this.rteUtils.commonFormats(
-      this.currentBlot.format,
-      this.specialBlots.deleteAsWhole
-    );
-    const formatTreatAsWhole = this.rteUtils.commonFormats(
-      this.currentBlot.format,
-      this.specialBlots.treatAsWhole
-    );
+    if (!Array.isArray(checkAt)) {
+      checkAt = [checkAt];
+    }
 
-    if (
-      (formatDeleteAsWhole &&
-        selection.index === (lookAhead ? blot.index : blot.endIndex) &&
-        selection.length === 0) ||
-      (formatTreatAsWhole &&
-        selection.index >= blot.index &&
-        selection.index <= blot.endIndex &&
-        selection.length === 0)
-    ) {
-      // check if we need to restore deleted text
+    for (const offset of checkAt) {
+      const { selection: currentSelection, currentBlot } = this.storeCurrent(
+        selection,
+        offset !== 0 ? { offset } : true,
+        false
+      );
+
+      const formatDeleteAsWhole = this.rteUtils.commonFormats(
+        currentBlot && currentBlot.format,
+        this.specialBlots.deleteAsWhole
+      );
+      const formatTreatAsWhole = this.rteUtils.commonFormats(
+        currentBlot && currentBlot.format,
+        this.specialBlots.treatAsWhole
+      );
+
       if (
-        formatTreatAsWhole &&
-        blot.format[formatTreatAsWhole[0]].text &&
-        blot.format[formatTreatAsWhole[0]].text.length !== blot.text.length
+        (formatDeleteAsWhole &&
+          currentSelection.index ===
+            (lookAhead ? currentBlot.index : currentBlot.endIndex) &&
+          currentSelection.length === 0) ||
+        (formatTreatAsWhole &&
+          currentSelection.index >= currentBlot.index &&
+          currentSelection.index <= currentBlot.endIndex &&
+          currentSelection.length === 0)
       ) {
-        this.editor.updateContents(
-          new Delta()
-            .retain(blot.index)
-            .delete(blot.length)
-            .insert(blot.format[formatTreatAsWhole[0]].text, blot.format)
-        );
+        // check if we need to restore deleted text
+        if (
+          formatTreatAsWhole &&
+          currentBlot.format[formatTreatAsWhole[0]].text &&
+          currentBlot.format[formatTreatAsWhole[0]].text.length !==
+            currentBlot.text.length
+        ) {
+          this.editor.updateContents(
+            new Delta()
+              .retain(currentBlot.index)
+              .delete(currentBlot.length)
+              .insert(
+                currentBlot.format[formatTreatAsWhole[0]].text,
+                currentBlot.format
+              )
+          );
 
-        blot.length = blot.format[formatTreatAsWhole[0]].text.length;
-        blot.endIndex = blot.index + blot.length;
+          currentBlot.length =
+            currentBlot.format[formatTreatAsWhole[0]].text.length;
+          currentBlot.endIndex = currentBlot.index + currentBlot.length;
+        }
+
+        this.rteUtils.selectBlot(currentBlot, this.editor);
+        return true;
       }
-
-      this.rteUtils.selectBlot(blot, this.editor);
-      return true;
     }
 
     return false;
@@ -76,15 +94,8 @@ export class RteKeybindings {
       },
       (range, context) => {
         if (this.specialBlots.deleteAsWhole || this.specialBlots.treatAsWhole) {
-          this.storeCurrent(range, {
-            index: this.selection ? this.selection.index - 1 : 0
-          });
-
-          if (this.checkBlot(this.selection, this.currentBlot)) {
-            return false;
-          }
+          return !this.checkCurrentBlot(range, -1);
         }
-
         return true;
       }
     );
@@ -95,17 +106,7 @@ export class RteKeybindings {
         (this.specialBlots.deleteAsWhole || this.specialBlots.treatAsWhole) &&
         event.key.toUpperCase() === QuillKeyboardKeys.backspace
       ) {
-        this.storeCurrent();
-        this.checkBlot(this.selection, this.currentBlot);
-
-        if (this.currentBlot.formatIs(UtilBlotType.cursor)) {
-          this.storeCurrent(true, {
-            index: this.selection.index - 1
-          });
-          if (this.checkBlot(this.selection, this.currentBlot)) {
-            return false;
-          }
-        }
+        this.checkCurrentBlot(true, [0, -1]);
       }
     });
 
@@ -115,41 +116,52 @@ export class RteKeybindings {
         (this.specialBlots.treatAsWhole || this.specialBlots.deleteAsWhole) &&
         event.key.toUpperCase() === QuillKeyboardKeys.delete
       ) {
-        this.storeCurrent(true, {
-          index: this.selection ? this.selection.index + 1 : 1
-        });
-        if (!this.currentBlot) {
-          return;
-        }
-        this.checkBlot(this.selection, this.currentBlot, true);
+        this.checkCurrentBlot(true, [+1, 0], true);
       }
     });
 
-    // move cursor to the beginning or end of plceholder on click
-
+    //  click to move cursor to start or end of blot in treatAsWhole array
     this.editor.root.addEventListener('click', event => {
       const element = event.target as any;
       if (this.specialBlots.treatAsWhole) {
-        this.storeCurrent(true, {
-          element
-        });
+        const { selection: currentSelection, currentBlot } = this.storeCurrent(
+          true,
+          { element }
+        );
 
         if (
           this.rteUtils.commonFormats(
-            this.currentBlot.format,
+            currentBlot.format,
             this.specialBlots.treatAsWhole
           ) &&
-          this.selection.index > this.currentBlot.index &&
-          this.selection.index < this.currentBlot.endIndex
+          currentSelection.index > currentBlot.index &&
+          currentSelection.index < currentBlot.endIndex
         ) {
           if (
-            this.selection.index <
-            this.currentBlot.index + this.currentBlot.length / 2
+            currentSelection.index <
+            currentBlot.index + currentBlot.length / 2
           ) {
-            this.editor.setSelection(this.currentBlot.index, 0);
+            this.editor.setSelection(currentBlot.index, 0);
           } else {
-            this.editor.setSelection(this.currentBlot.endIndex + 1, 0);
+            this.editor.setSelection(currentBlot.endIndex + 1, 0);
           }
+        }
+      }
+    });
+
+    // double click to select blot in treatAsWhole array
+    this.editor.root.addEventListener('dblclick', event => {
+      const element = event.target as any;
+      if (this.specialBlots.treatAsWhole) {
+        const { currentBlot } = this.storeCurrent(false, { element });
+
+        if (
+          this.rteUtils.commonFormats(
+            currentBlot.format,
+            this.specialBlots.treatAsWhole
+          )
+        ) {
+          currentBlot.select();
         }
       }
     });

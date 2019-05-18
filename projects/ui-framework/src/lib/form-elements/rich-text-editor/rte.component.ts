@@ -116,11 +116,6 @@ export class RichTextEditorComponent extends RTEformElement
   @ViewChild('linkPanel') public linkPanel: PanelComponent;
   @ViewChild('linkEditor') public linkEditor: RteLinkEditorComponent;
   public onLinkPanelOpen: () => void;
-  public checkBlot: (
-    selection: RangeStatic,
-    blot: BlotData,
-    lookAhead: boolean
-  ) => boolean;
   public onLinkUpdate: (rteLink: RteLink) => void;
 
   // implementing RtePlaceholderBlot mixin
@@ -134,6 +129,11 @@ export class RichTextEditorComponent extends RTEformElement
   ) => void;
 
   // implementing RteKeybindings mixin
+  public checkCurrentBlot: (
+    selection: RangeStatic,
+    checkAt: number | number[],
+    lookAhead: boolean
+  ) => boolean;
   public addKeyBindings: () => void;
 
   // registering input/output transformers

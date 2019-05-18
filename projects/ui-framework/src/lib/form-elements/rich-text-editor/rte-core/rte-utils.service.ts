@@ -77,7 +77,7 @@ export class RteUtilsService {
           : true
       }) ||
       {};
-    delete format.block;
+    // delete format.block;
 
     return {
       index,
@@ -218,7 +218,10 @@ export class RteUtilsService {
       : '';
 
     const spaceAfter = config.addSpaces
-      ? this.spaceIfNeededAtIndex(config.startIndex, editor)
+      ? this.spaceIfNeededAtIndex(
+          config.startIndex + config.replaceStr.length,
+          editor
+        )
       : '';
 
     const insertedTextLength =
