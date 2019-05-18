@@ -2,6 +2,7 @@ export interface RtePlaceholder {
   id: string;
   displayName: string;
   sample?: string;
+  value?: string;
 }
 
 export interface RtePlaceholderList {
@@ -9,4 +10,9 @@ export interface RtePlaceholderList {
   key?: string;
   options: RtePlaceholder[];
 }
-
+export interface RtePlaceholderUpdate {
+  id: string;
+  category?: string;
+  text: string;
+  tag: string;
+}

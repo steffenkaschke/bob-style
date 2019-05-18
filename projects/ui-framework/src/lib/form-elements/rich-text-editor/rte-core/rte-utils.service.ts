@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { UpdateRteConfig, BlotData } from '../rte.interface';
+import { UpdateRteConfig, BlotData } from './rte.interface';
 import { Quill, RangeStatic } from 'quill';
 import { default as Delta } from 'quill-delta';
 import { keysFromArrayOrObject } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
-import { BlotType } from '../rte.enum';
+import { BlotType } from './rte.enum';
 
 @Injectable()
 export class RteUtilsService {
@@ -68,7 +68,8 @@ export class RteUtilsService {
     }
 
     const index = blot.offset(editor.scroll);
-    const text = blot.text || node.textContent || element.innerText;
+    const text = blot.text || (node && node.textContent) || element.innerText;
+    const length = text ? text.length : 0;
     const format =
       (!skipformat && {
         [blot.statics.blotName as string]: blot.statics.formats
@@ -76,38 +77,38 @@ export class RteUtilsService {
           : true
       }) ||
       {};
-    delete format.block;
 
     return {
       index,
-      length: text.length,
+      endIndex: index + length,
+      length: length,
       text,
       format: (skipformat || Object.keys(format).length > 0) && format,
       node,
       blot,
       element,
-      link: format[BlotType.link]
+      link: format[BlotType.link],
+      formatIs: f => format && format.hasOwnProperty(f),
+      select: () => this.selectBlot({ index, length, format }, editor),
+      delete: () => this.deleteRange({ index, length }, editor)
     };
   }
 
   getCurrentBlotData(
     editor: Quill,
     skipformat = false,
-    index: number = null,
-    expectBlot: BlotType = null
+    index: number = null
   ): BlotData {
     let node: Node;
     if (index && editor) {
-      node = editor.getLeaf(index)[0].domNode;
+      node = editor.getLeaf(index)[0] && editor.getLeaf(index)[0].domNode;
     } else {
       const nativeRange = this.getNativeRange();
       node = nativeRange && nativeRange.endContainer; // startContainer
     }
-    const blot = this.getBlotDataFromElement(node, editor, skipformat);
-
-    if (expectBlot && blot.format !== expectBlot) {
+    if (!node) {
+      return;
     }
-
     return this.getBlotDataFromElement(node, editor, skipformat);
   }
 
@@ -124,6 +125,27 @@ export class RteUtilsService {
   deleteRange(range: RangeStatic, editor: Quill): Delta {
     return editor.updateContents(
       new Delta().retain(range.index).delete(range.length)
+    );
+  }
+
+  deleteBlot(blot: Partial<BlotData>, editor: Quill): Delta {
+    return this.deleteRange(
+      {
+        index: blot.index,
+        length: blot.length
+      },
+      editor
+    );
+  }
+
+  insertAtIndex(
+    editor: Quill,
+    text: string,
+    index: number,
+    format = {}
+  ): Delta {
+    return editor.updateContents(
+      new Delta().retain(index).insert(text, format)
     );
   }
 
@@ -155,7 +177,7 @@ export class RteUtilsService {
       : '';
   }
 
-  selectBlot(blot: BlotData, editor: Quill, offset = 0): RangeStatic {
+  selectBlot(blot: Partial<BlotData>, editor: Quill, offset = 0): RangeStatic {
     if (!blot.format) {
       return null;
     }
@@ -188,7 +210,10 @@ export class RteUtilsService {
       : '';
 
     const spaceAfter = config.addSpaces
-      ? this.spaceIfNeededAtIndex(config.startIndex, editor)
+      ? this.spaceIfNeededAtIndex(
+          config.startIndex + config.replaceStr.length,
+          editor
+        )
       : '';
 
     const insertedTextLength =

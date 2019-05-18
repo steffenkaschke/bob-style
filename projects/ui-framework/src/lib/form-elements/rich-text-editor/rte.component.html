@@ -17,13 +17,13 @@
              [size]="panelSize.medium"
              *ngIf="controls.includes(BlotType.size)"
              [defaultPosVer]="panelDefaultPosVer.below"
-             (closed)="restoreCursor()">
+             (closed)="restoreSelection()">
 
       <button type="button"
               class="rte-size"
               panel-trigger
               [ngClass]="{'ql-active': hasSizeSet}"
-              (click)="storeCursor()">
+              (click)="storeSelection()">
 
         <b-icon icon="text_size_option"
                 size="medium"
@@ -60,7 +60,7 @@
              [size]="panelSize.medium"
              *ngIf="controls.includes(BlotType.link)"
              [defaultPosVer]="panelDefaultPosVer.below"
-             (closed)="restoreCursor()">
+             (closed)="restoreSelection()">
       <button class="ql-link"
               panel-trigger></button>
       <b-rte-link-editor #linkEditor
@@ -99,7 +99,7 @@
              [size]="panelSize.medium"
              *ngIf="controls.includes(BlotType.placeholder)"
              [defaultPosVer]="panelDefaultPosVer.below"
-             (closed)="restoreCursor()">
+             (closed)="restoreSelection()">
       <button (click)="onPlaceholderPanelOpen()"
               panel-trigger>rte</button>
       <b-single-list #placeholderSelect
