@@ -22,15 +22,15 @@ export class RteLinkBlot {
   public selection: RangeStatic;
   public editor: Quill;
   public currentBlot: BlotData;
-  public storeCurrentSelection: (...args: any[]) => void;
   public selectedText: string;
   public specialBlots: SpecialBlots;
+  public storeCurrentSelection: Function;
+  public storeCurrent: Function;
 
   // instance methods
 
   public onLinkPanelOpen(): void {
-    this.currentBlot =
-      this.rteUtils.getCurrentBlotData(this.editor) || ({} as BlotData);
+    this.storeCurrent(false, true);
 
     if (this.currentBlot.link) {
       this.storeCurrentSelection(

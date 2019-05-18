@@ -12,6 +12,8 @@ import {
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { merge } from 'lodash';
+
 import { PanelComponent } from '../../overlay/panel/panel.component';
 import { SingleListComponent } from '../lists/single-list/single-list.component';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
@@ -19,11 +21,12 @@ import { Icons } from '../../icons/icons.enum';
 import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
-import quillLib, { QuillOptionsStatic } from 'quill';
+import quillLib, { RangeStatic } from 'quill';
+
 import { Italic } from './rte-core/italic-blot';
 import { BlotType, RTEFontSize, RTEType } from './rte-core/rte.enum';
 import { RteUtilsService } from './rte-core/rte-utils.service';
-import { RteLink, SpecialBlots } from './rte-core/rte.interface';
+import { RteLink, SpecialBlots, BlotData } from './rte-core/rte.interface';
 import { RTEformElement } from './rte-core/rte-form-element.abstract';
 
 import { LinkBlot } from './rte-link/link-blot';
@@ -89,7 +92,6 @@ export class RichTextEditorComponent extends RTEformElement
   @Input() public maxHeight = 295;
   @Input() public disableControls: BlotType[] = [
     BlotType.placeholder,
-    BlotType.color,
     BlotType.align,
     BlotType.direction
   ];
@@ -114,6 +116,11 @@ export class RichTextEditorComponent extends RTEformElement
   @ViewChild('linkPanel') public linkPanel: PanelComponent;
   @ViewChild('linkEditor') public linkEditor: RteLinkEditorComponent;
   public onLinkPanelOpen: () => void;
+  public checkBlot: (
+    selection: RangeStatic,
+    blot: BlotData,
+    lookAhead: boolean
+  ) => boolean;
   public onLinkUpdate: (rteLink: RteLink) => void;
 
   // implementing RtePlaceholderBlot mixin
@@ -158,12 +165,7 @@ export class RichTextEditorComponent extends RTEformElement
 
   // this extends RTE Abstract's ngAfterViewInit
   onNgAfterViewInit(): void {
-    const editorOptions: QuillOptionsStatic = {
-      theme: 'snow',
-      placeholder: this.rteUtils.getEditorPlaceholder(
-        this.label,
-        this.required
-      ),
+    merge(this.editorOptions, {
       modules: {
         toolbar: {
           container: this.toolbar.nativeElement,
@@ -172,16 +174,13 @@ export class RichTextEditorComponent extends RTEformElement
               this.onLinkPanelOpen();
             }
           }
-        },
-        clipboard: {
-          matchVisual: false
         }
       },
       formats: Object.values(this.controls)
-    };
+    });
 
     setTimeout(() => {
-      this.initEditor(editorOptions);
+      this.initEditor(this.editorOptions);
       this.addKeyBindings();
       this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
     }, 0);

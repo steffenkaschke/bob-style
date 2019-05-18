@@ -10,8 +10,6 @@ import {
   RtePlaceholder
 } from './placeholder-rte-converter.interface';
 
-import { getPlaceholderText } from './placeholder-blot';
-
 export class RtePlaceholderBlot {
   constructor() {}
 
@@ -46,7 +44,10 @@ export class RtePlaceholderBlot {
       this.placeholderList[0].options as RtePlaceholder[],
       id as string
     );
-    const text = getPlaceholderText(name, category);
+    const text = this.placeholderRteConverterService.getPlaceholderText(
+      name,
+      category
+    );
 
     const updateConfig: UpdateRteConfig = {
       replaceStr: this.selectedText,

@@ -1,5 +1,6 @@
-import { BlotType } from './rte.enum';
+import { BlotType, UtilBlotType } from './rte.enum';
 import { TextBlot } from 'quill/blots/text';
+import { Delta, RangeStatic } from 'quill';
 
 export interface UpdateRteConfig {
   replaceStr: string;
@@ -11,7 +12,7 @@ export interface UpdateRteConfig {
   noLinebreakAfter?: BlotType[];
 }
 
-type RteBlotFormat = { [key in BlotType]?: any };
+type RteBlotFormat = { [key in BlotType | UtilBlotType]?: any };
 
 interface UpdateRteConfigFormat {
   type: BlotType;
@@ -30,6 +31,7 @@ export interface RteCurrentContent {
 
 export interface BlotData {
   index: number;
+  endIndex: number;
   length: number;
   text: string;
   format?: RteBlotFormat;
@@ -37,6 +39,9 @@ export interface BlotData {
   blot?: TextBlot;
   element?: HTMLElement;
   link?: string;
+  formatIs?: (f: string) => boolean;
+  select?: () => RangeStatic;
+  delete?: () => Delta;
 }
 
 export interface SpecialBlots {
