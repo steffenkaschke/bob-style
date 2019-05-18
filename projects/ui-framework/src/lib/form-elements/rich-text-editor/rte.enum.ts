@@ -13,7 +13,13 @@ export enum BlotType {
   list = 'list',
   direction = 'direction',
   align = 'align',
-  placeholder = 'Placeholder',
+  placeholder = 'Placeholder'
+  // color = 'color'
+}
+
+export enum UtilBlotType {
+  cursor = 'cursor',
+  block = 'block',
   color = 'color'
 }
 

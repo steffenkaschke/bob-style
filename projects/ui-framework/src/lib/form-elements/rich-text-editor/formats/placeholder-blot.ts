@@ -1,30 +1,20 @@
 import Quill from 'quill';
+import { RtePlaceholderUpdate } from '../placeholder-rte-converter/placeholder-rte-converter.interface';
 
 const Inline = Quill.import('blots/inline');
-
-const padChar = '\xa0';
-
-interface LocalFormat {
-  id: string;
-  category?: string;
-  tag: string;
-}
-
-export const getPlaceholderText = (name: string, category: string): string =>
-  padChar.repeat(2) +
-  (category ? category + padChar.repeat(2) : '') +
-  name +
-  padChar.repeat(2);
 
 export class PlaceholderBlot extends Inline {
   static blotName = 'Placeholder';
   static tagName = 'span';
 
-  static create(focusOption: LocalFormat): HTMLElement {
-    const node: HTMLElement = super.create();
+  static create(focusOption: RtePlaceholderUpdate): HTMLElement {
+    const node: HTMLElement = super.create('woooooow');
     node.setAttribute('data-placeholder-id', focusOption.id);
     if (focusOption.category && focusOption.category !== 'undefined') {
       node.setAttribute('data-placeholder-category', focusOption.category);
+    }
+    if (focusOption.text) {
+      node.setAttribute('data-text', focusOption.text);
     }
     node.setAttribute('contenteditable', 'false');
     node.setAttribute(
@@ -37,14 +27,14 @@ export class PlaceholderBlot extends Inline {
     return node;
   }
 
-  static formats(node: HTMLElement): LocalFormat {
+  static formats(node: HTMLElement): RtePlaceholderUpdate {
     if (!node || node.innerText.trim() === '') {
       return;
     }
     const id = node.getAttribute('data-placeholder-id');
-    let category = node.getAttribute('data-placeholder-category');
-    category = category ? category.replace(new RegExp(padChar, 'g'), '') : '';
+    const category = node.getAttribute('data-placeholder-category');
     const tag = node.getAttribute('data-tag');
+    const text = node.getAttribute('data-text');
 
     if (!id) {
       return;
@@ -53,7 +43,8 @@ export class PlaceholderBlot extends Inline {
     return {
       id,
       category,
-      tag
+      tag,
+      text
     };
   }
 }

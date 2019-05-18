@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { find } from 'lodash';
 import { RtePlaceholder } from './placeholder-rte-converter.interface';
-import { getPlaceholderText } from '../formats/placeholder-blot';
 
 @Injectable()
 export class PlaceholderRteConverterService {
   constructor() {}
+
+  padChar = '\xa0';
 
   public fromRte(rteInnerHtml: string): string {
     const elm: HTMLElement = document.createElement('div');
@@ -37,8 +38,8 @@ export class PlaceholderRteConverterService {
       (field: string, innerContent: string) => {
         const category = this.getGroupDisplayName(placeholders, innerContent);
         const name = this.getDisplayNameById(placeholders, innerContent);
-        const text = getPlaceholderText(name, category);
-        return `<span data-placeholder-id="${innerContent}" data-placeholder-category="${category}">${text}</span>`;
+        const text = this.getPlaceholderText(name, category);
+        return `<span data-placeholder-id="${innerContent}" data-placeholder-category="${category}" data-text="${text}">${text}</span>`;
       }
     );
   }
@@ -64,4 +65,10 @@ export class PlaceholderRteConverterService {
       ? placeholder.category
       : '';
   }
+
+  public getPlaceholderText = (name: string, category: string): string =>
+    this.padChar.repeat(2) +
+    (category ? category + this.padChar.repeat(2) : '') +
+    name +
+    this.padChar.repeat(2)
 }

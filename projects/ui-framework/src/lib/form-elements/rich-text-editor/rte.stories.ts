@@ -107,6 +107,15 @@ const placeholderMock = [
   }
 ];
 
+const disableControlsDef = [
+  // BlotType.color,
+  BlotType.align,
+  BlotType.direction
+];
+const controlsDef = values(BlotType).filter(
+  cntrl => !disableControlsDef.includes(cntrl)
+);
+
 inputStories.add(
   'Rich text editor',
   () => {
@@ -116,12 +125,8 @@ inputStories.add(
         type: select('type', values(RTEType), RTEType.primary),
         label: text('label', 'Compose an epic...'),
         value: text('value', value),
-        controls: array('controls', values(BlotType), '\n'),
-        disableControls: array(
-          'disableControls',
-          [BlotType.color, BlotType.align, BlotType.direction],
-          '\n'
-        ),
+        controls: array('controls', controlsDef, '\n'),
+        disableControls: array('disableControls', disableControlsDef, '\n'),
         placeholderList: object<SelectGroupOption>('options', placeholderMock),
         minHeight: number('minHeight', 200),
         maxHeight: number('maxHeight', 400),
