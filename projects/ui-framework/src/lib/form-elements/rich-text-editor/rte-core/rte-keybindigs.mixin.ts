@@ -1,5 +1,5 @@
 import { SpecialBlots, BlotData } from './rte.interface';
-import { QuillKeyboardKeys, UtilBlotType } from './rte.enum';
+import { QuillKeyboardKeys } from './rte.enum';
 import { RteUtilsService } from './rte-utils.service';
 import Quill, { RangeStatic } from 'quill';
 import { default as Delta } from 'quill-delta';
@@ -92,7 +92,7 @@ export class RteKeybindings {
       {
         key: QuillKeyboardKeys.backspace
       },
-      (range, context) => {
+      range => {
         if (this.specialBlots.deleteAsWhole || this.specialBlots.treatAsWhole) {
           return !this.checkCurrentBlot(range, -1);
         }

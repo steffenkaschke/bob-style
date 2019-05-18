@@ -1,5 +1,5 @@
 import { UpdateRteConfig, SpecialBlots } from '../rte-core/rte.interface';
-import { BlotType, UtilBlotType } from '../rte-core/rte.enum';
+import { BlotType } from '../rte-core/rte.enum';
 import { PanelComponent } from '../../../overlay/panel/panel.component';
 import { RteUtilsService } from '../rte-core/rte-utils.service';
 import Quill, { RangeStatic } from 'quill';
@@ -14,7 +14,7 @@ import {
 export class RtePlaceholderBlot {
   constructor() {}
 
-  // implementing Base class properties & methods
+  // stand-ins for Base class properties & methods
 
   public placeholderRteConverterService: PlaceholderRteConverterService = new PlaceholderRteConverterService();
   public placeholderList: RtePlaceholderList[];

@@ -14,7 +14,7 @@ import Quill, { RangeStatic } from 'quill';
 export class RteLinkBlot {
   constructor() {}
 
-  // implementing Base class properties & methods
+  // stand-ins for Base class properties & methods
 
   public linkPanel: PanelComponent;
   public linkEditor: RteLinkEditorComponent;

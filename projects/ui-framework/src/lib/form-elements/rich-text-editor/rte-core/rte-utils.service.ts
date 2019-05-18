@@ -77,7 +77,6 @@ export class RteUtilsService {
           : true
       }) ||
       {};
-    // delete format.block;
 
     return {
       index,
@@ -91,14 +90,7 @@ export class RteUtilsService {
       link: format[BlotType.link],
       formatIs: f => format && format.hasOwnProperty(f),
       select: () => this.selectBlot({ index, length, format }, editor),
-      delete: () =>
-        this.deleteRange(
-          {
-            index,
-            length
-          },
-          editor
-        )
+      delete: () => this.deleteRange({ index, length }, editor)
     };
   }
 

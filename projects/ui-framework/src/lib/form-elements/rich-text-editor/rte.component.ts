@@ -26,7 +26,7 @@ import quillLib, { RangeStatic } from 'quill';
 import { Italic } from './rte-core/italic-blot';
 import { BlotType, RTEFontSize, RTEType } from './rte-core/rte.enum';
 import { RteUtilsService } from './rte-core/rte-utils.service';
-import { RteLink, SpecialBlots, BlotData } from './rte-core/rte.interface';
+import { RteLink, SpecialBlots } from './rte-core/rte.interface';
 import { RTEformElement } from './rte-core/rte-form-element.abstract';
 
 import { LinkBlot } from './rte-link/link-blot';
@@ -122,7 +122,6 @@ export class RichTextEditorComponent extends RTEformElement
   @Input() public placeholderList: RtePlaceholderList[];
   @ViewChild('placeholderPanel') public placeholderPanel: PanelComponent;
   public placeholderRteConverterService: PlaceholderRteConverterService;
-  public RtePlaceholderOnNgChanges: (changes: SimpleChanges) => void;
   public onPlaceholderPanelOpen: () => void;
   public onPlaceholderSelectChange: (
     selectGroupOptions: SingleListComponent
