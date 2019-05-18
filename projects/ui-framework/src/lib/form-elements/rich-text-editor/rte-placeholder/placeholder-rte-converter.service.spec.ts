@@ -28,16 +28,16 @@ describe('PlachholderRteConverterService', () => {
     it('Should convert HTML content with one placeholder to RTE format', () => {
       const htmlInput =
         '<h1>Hi</h1>, <b>My</b> name is {{/root/firstName}} my job title is cto';
-      const expectResult = '<h1>Hi</h1>, <b>My</b> name is <span ' +
-        'data-placeholder-id="/root/firstName" data-placeholder-category="">  First name  </span> my job title is cto';
+      const expectResult =
+        '<h1>Hi</h1>, <b>My</b> name is <span data-placeholder-id="/root/firstName"';
       const toRteRe = templateTextEditorService.toRte(htmlInput, placeholders);
-      expect(toRteRe).toEqual(expectResult);
+      expect(toRteRe).toContain(expectResult);
     });
     it('Should convert plain text content with placeholder at the end to RTE format', () => {
       const htmlInput =
         'Hi, My name is {{/root/firstName}} my job title is cto';
-      const expectResult = 'Hi, My name is <span ' +
-        'data-placeholder-id="/root/firstName" data-placeholder-category="">';
+      const expectResult =
+        'Hi, My name is <span data-placeholder-id="/root/firstName"';
       const toRteRe = templateTextEditorService.toRte(htmlInput, placeholders);
       expect(toRteRe).toContain(expectResult);
     });
