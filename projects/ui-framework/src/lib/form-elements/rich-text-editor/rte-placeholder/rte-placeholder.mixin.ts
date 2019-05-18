@@ -22,7 +22,7 @@ export class RtePlaceholderBlot {
   public rteUtils: RteUtilsService;
   public selection: RangeStatic;
   public editor: Quill;
-  public storeCurrentSelection: (...args: any[]) => void;
+  public storeCurrentSelection: Function;
   public selectedText: string;
   public specialBlots: SpecialBlots;
 
