@@ -16,7 +16,7 @@ export interface ListOption {
 
 export interface SelectGroupOption {
   groupName: string;
-  key?: string,
+  key?: string;
   options: SelectOption[];
 }
 
@@ -30,4 +30,10 @@ export interface SelectOption {
 export interface ListComponentPrefix {
   component: any;
   attributes: any;
+}
+
+export interface ListFooterActions {
+  clear?: boolean;
+  cancel?: boolean;
+  apply?: boolean;
 }

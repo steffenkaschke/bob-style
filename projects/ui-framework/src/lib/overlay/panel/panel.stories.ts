@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { PanelModule } from '../panel/panel.module';
@@ -11,7 +16,10 @@ import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
 import { PanelDefaultPosVer, PanelSize } from './panel.enum';
 import { values } from 'lodash';
 
-const buttonStories = storiesOf(ComponentGroupType.Overlay, module).addDecorator(withKnobs);
+const buttonStories = storiesOf(
+  ComponentGroupType.Overlay,
+  module
+).addDecorator(withKnobs);
 
 const panelSize = values(PanelSize);
 const panelDefaultPosVer = values(PanelDefaultPosVer);
@@ -22,7 +30,8 @@ const template = `
          [size]="panelSize"
          [showBackdrop]="showBackdrop"
          [defaultPosVer]="panelDefaultPosVer"
-         [openOnHover]="openOnHover">
+         [openOnHover]="openOnHover"
+         (closed)="onPanelDestroyed()">
   <b-button panel-trigger>
     Time Off Policies info
   </b-button>
@@ -40,7 +49,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Overlay panel'">
-  ${ template }
+  ${template}
 </b-story-book-layout>
 `;
 
@@ -58,9 +67,10 @@ const note = `
   defaultPosVer | PanelDefaultPosVer | default vertical position | PanelDefaultPosVer.above
   showBackdrop | boolean | show backdrop | true
   openOnHover | boolean | trigger panel open on hover (delay 300ms) | false
+  closed | Function | Handler for panel Closed event | none
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 buttonStories.add(
@@ -70,9 +80,14 @@ buttonStories.add(
     props: {
       panelClass: text('panelClass', 'my-panel-class'),
       panelSize: select('size', panelSize, PanelSize.medium),
-      defaultPosVer: select('defaultPosVer', panelDefaultPosVer, PanelDefaultPosVer.above),
+      defaultPosVer: select(
+        'defaultPosVer',
+        panelDefaultPosVer,
+        PanelDefaultPosVer.above
+      ),
       showBackdrop: boolean('showBackdrop', true),
       openOnHover: boolean('openOnHover', false),
+      onPanelDestroyed: action('Panel destroyed')
     },
     moduleMetadata: {
       imports: [

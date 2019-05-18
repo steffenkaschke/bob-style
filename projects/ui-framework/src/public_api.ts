@@ -38,6 +38,9 @@ export {
   ButtonSize,
   BackButtonType
 } from './lib/buttons-indicators/buttons/buttons.enum';
+// Add File Module
+export { AddFileModule } from './lib/buttons-indicators/add-file/add-file.module';
+export { AddFileComponent } from './lib/buttons-indicators/add-file/add-file.component';
 // Avatar Module
 export { AvatarModule } from './lib/buttons-indicators/avatar/avatar.module';
 export {
@@ -210,6 +213,7 @@ export {
 } from './lib/navigation/side-menu/side-menu-option/side-menu-option.interface';
 // Tabs Module
 export { TabsModule } from './lib/navigation/tabs/tabs.module';
+export { TabsComponent } from './lib/navigation/tabs/tabs.component';
 export { Tab } from './lib/navigation/tabs/tabs.interface';
 // Breadcrumbs Module
 export {
@@ -255,7 +259,8 @@ export { TableModule } from './lib/table/table.module';
 export * from './lib/table/table/table.interface';
 export { TableComponent } from './lib/table/table/table.component';
 export { AvatarCellComponent } from './lib/table/table-cell-components/avatar.component';
-
+export { ActionsCellComponent } from './lib/table/table-cell-components/actions-cell/actions-cell.component';
+export { GridActions } from './lib/table/table-cell-components/actions-cell/actions-cell.interface';
 
 /*
  * Layout
@@ -301,3 +306,9 @@ export { ComponentRendererComponent } from './lib/services/component-renderer/co
 export { TruncateTooltipModule} from './lib/services/truncate-tooltip/truncate-tooltip.module';
 export { TruncateTooltipComponent} from './lib/services/truncate-tooltip/truncate-tooltip.component';
 export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/truncate-tooltip.directive';
+
+/*
+* Animation
+ */
+
+export { SLIDE_UP_DOWN } from './lib/style/animations';

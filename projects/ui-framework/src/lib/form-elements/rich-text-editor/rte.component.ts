@@ -7,37 +7,52 @@ import {
   ViewChild,
   HostBinding,
   Input,
-  ElementRef
+  ElementRef,
+  SimpleChanges
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import quillLib, { QuillOptionsStatic } from 'quill';
-import { LinkBlot, RteLinkFormats } from './formats/link-blot';
-import {
-  BlotType,
-  RTEFontSize,
-  RTEType,
-  RTEControls,
-  KeyboardKeys
-} from './rte.enum';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
-import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { RteLink, UpdateRteConfig } from './rte.interface';
-import { RTEformElement } from './rte-form-element.abstract';
+import { merge } from 'lodash';
+
 import { PanelComponent } from '../../overlay/panel/panel.component';
+import { SingleListComponent } from '../lists/single-list/single-list.component';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { Icons } from '../../icons/icons.enum';
 import { PanelSize, PanelDefaultPosVer } from '../../overlay/panel/panel.enum';
-import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
-import { PlaceholderBlot } from './formats/placeholder-blot';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+
+import quillLib, { RangeStatic } from 'quill';
+
+import { Italic } from './rte-core/italic-blot';
+import { BlotType, RTEFontSize, RTEType } from './rte-core/rte.enum';
+import { RteUtilsService } from './rte-core/rte-utils.service';
+import { RteLink, SpecialBlots } from './rte-core/rte.interface';
+import { RTEformElement } from './rte-core/rte-form-element.abstract';
+
+import { LinkBlot } from './rte-link/link-blot';
+import { RteLinkEditorComponent } from './rte-link/rte-link-editor.component';
+import { RteLinkBlot } from './rte-link/rte-link.mixin';
+
+import {
+  RtePlaceholder,
+  RtePlaceholderList
+} from './rte-placeholder/placeholder-rte-converter.interface';
+import { PlaceholderBlot } from './rte-placeholder/placeholder-blot';
+
+import { RtePlaceholderBlot } from './rte-placeholder/rte-placeholder.mixin';
+
+import { RteKeybindings } from './rte-core/rte-keybindigs.mixin';
+import { MixIn } from '../../services/utils/functional-utils';
+import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
 
 quillLib.register(LinkBlot);
 quillLib.register(PlaceholderBlot);
+quillLib.register(Italic);
 
 @Component({
   selector: 'b-rich-text-editor',
   templateUrl: './rte.component.html',
-  styleUrls: ['./rte.component.scss'],
+  styleUrls: ['./rte.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -51,12 +66,12 @@ quillLib.register(PlaceholderBlot);
     }
   ]
 })
+@MixIn([RteLinkBlot, RtePlaceholderBlot, RteKeybindings])
 export class RichTextEditorComponent extends RTEformElement
-  implements AfterViewInit {
+  implements AfterViewInit, RteLinkBlot, RtePlaceholderBlot, RteKeybindings {
   constructor(
-    private rteUtilsService: RteUtilsService,
     private DOM: DOMhelpers,
-    rteUtils: RteUtilsService,
+    public rteUtils: RteUtilsService,
     changeDetector: ChangeDetectorRef,
     injector: Injector
   ) {
@@ -72,38 +87,84 @@ export class RichTextEditorComponent extends RTEformElement
     );
   }
 
-  @Input() type?: RTEType = RTEType.primary;
-  @Input() minHeight = 185;
-  @Input() maxHeight = 295;
+  @Input() public type: RTEType = RTEType.primary;
+  @Input() public minHeight = 185;
+  @Input() public maxHeight = 295;
+  @Input() public disableControls: BlotType[] = [
+    BlotType.placeholder,
+    BlotType.align,
+    BlotType.direction
+  ];
 
+  @ViewChild('toolbar') private toolbar: ElementRef;
+  @ViewChild('suffix') private suffix: ElementRef;
 
-  @ViewChild('toolbar') toolbar: ElementRef;
-  @ViewChild('suffix') suffix: ElementRef;
-  @ViewChild('linkPanel') private linkPanel: PanelComponent;
-  @ViewChild('linkEditor') private linkEditor: RteLinkEditorComponent;
-
-
-  hasSuffix = true;
-
+  public hasSuffix = true;
   readonly buttonType = ButtonType;
   readonly icons = Icons;
   readonly panelSize = PanelSize;
-  readonly RTEControls = RTEControls;
+  readonly BlotType = BlotType;
   readonly RTEFontSize = RTEFontSize;
   readonly panelDefaultPosVer = PanelDefaultPosVer;
+  public specialBlots: SpecialBlots = {
+    treatAsWholeDefs: [BlotType.placeholder],
+    deleteAsWholeDefs: [BlotType.link, BlotType.placeholder],
+    noLinebreakAfterDefs: [BlotType.link, BlotType.align]
+  };
 
-  private blotsToDeleteWhole = [BlotType.Link];
+  // implementing RteLinkBlot mixin
+  @ViewChild('linkPanel') public linkPanel: PanelComponent;
+  @ViewChild('linkEditor') public linkEditor: RteLinkEditorComponent;
+  public onLinkPanelOpen: () => void;
+  public onLinkUpdate: (rteLink: RteLink) => void;
 
-  ngAfterViewInit(): void {
+  // implementing RtePlaceholderBlot mixin
+  @Input() public placeholderList: RtePlaceholderList[];
+  @ViewChild('placeholderPanel') public placeholderPanel: PanelComponent;
+  public placeholderRteConverterService: PlaceholderRteConverterService;
+  public onPlaceholderPanelOpen: () => void;
+  public onPlaceholderSelectChange: (
+    selectGroupOptions: SingleListComponent
+  ) => void;
 
-    this.onRTEviewInit();
+  // implementing RteKeybindings mixin
+  public checkCurrentBlot: (
+    selection: RangeStatic,
+    checkAt: number | number[],
+    lookAhead: boolean
+  ) => boolean;
+  public addKeyBindings: () => void;
 
-    const editorOptions: QuillOptionsStatic = {
-      theme: 'snow',
-      placeholder: this.rteUtilsService.getEditorPlaceholder(
-        this.label,
-        this.required
-      ),
+  // registering input/output transformers
+  private initTransformers(): void {
+    this.inputTransformers = [];
+    this.outputTransformers = [this.rteUtils.cleanupHtml];
+
+    if (this.placeholderList && this.controls.includes(BlotType.placeholder)) {
+      this.inputTransformers.push(
+        this.placeholderRteConverterService.toRtePartial(this.placeholderList[0]
+          .options as RtePlaceholder[])
+      );
+
+      this.outputTransformers.push(this.placeholderRteConverterService.fromRte);
+    }
+  }
+
+  // this extends RTE Abstract's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
+    if (
+      changes.placeholderList ||
+      changes.controls ||
+      changes.disableControls
+    ) {
+      this.initTransformers();
+      this.writeValue(this.value);
+    }
+  }
+
+  // this extends RTE Abstract's ngAfterViewInit
+  onNgAfterViewInit(): void {
+    merge(this.editorOptions, {
       modules: {
         toolbar: {
           container: this.toolbar.nativeElement,
@@ -112,87 +173,15 @@ export class RichTextEditorComponent extends RTEformElement
               this.onLinkPanelOpen();
             }
           }
-        },
-        clipboard: {
-          matchVisual: false
         }
-      }
-    };
+      },
+      formats: Object.values(this.controls)
+    });
 
     setTimeout(() => {
-      this.initEditor(editorOptions);
+      this.initEditor(this.editorOptions);
       this.addKeyBindings();
       this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
     }, 0);
-  }
-
-  private addKeyBindings(): void {
-    this.editor.keyboard.addBinding({ key: KeyboardKeys.backspace }, () => {
-      if (this.blotsToDeleteWhole.length > 0) {
-        this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
-
-        if (
-          this.rteUtilsService.commonFormats(
-            this.currentBlot.format,
-            this.blotsToDeleteWhole
-          )
-        ) {
-          this.rteUtilsService.selectBlot(this.currentBlot, this.editor);
-          return false;
-        }
-      }
-
-      return true;
-    });
-  }
-
-  changeFontSize(size: RTEFontSize) {
-    this.editor.format('size', size === RTEFontSize.normal ? false : size);
-    this.hasSizeSet = size !== RTEFontSize.normal;
-  }
-
-  private onLinkPanelOpen(): void {
-    this.currentBlot = this.rteUtilsService.getCurrentBlotData(this.editor);
-
-    if (this.currentBlot.link) {
-      this.selection = this.rteUtilsService.selectBlot(
-        this.currentBlot,
-        this.editor
-      );
-      this.selectedText = this.currentBlot.text;
-    } else {
-      this.selectedText = this.rteUtilsService.getSelectionText(
-        this.editor,
-        this.selection
-      );
-    }
-
-    this.linkEditor.text = this.selectedText;
-    this.linkEditor.url = this.currentBlot.link ? this.currentBlot.link : '';
-    this.linkEditor.isEditing = !!this.currentBlot.link;
-
-    this.editor.blur();
-    setTimeout(() => {
-      this.linkEditor.focusTextInput();
-    }, 0);
-  }
-
-  onLinkUpdate(rteLink: RteLink): void {
-    const updateConfig: UpdateRteConfig = {
-      replaceStr: this.selectedText,
-      startIndex: this.selection.index,
-      insertText: rteLink.text,
-      format: {
-        type: BlotType.Link,
-        value: rteLink.url
-      },
-      unformat: rteLink.url ? null : RteLinkFormats
-    };
-    this.rteUtilsService.updateEditor(this.editor, updateConfig);
-    this.linkPanel.closePanel();
-  }
-
-  onLinkCancel(): void {
-    this.linkPanel.closePanel();
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "bob-storybook",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "npm run storybook",
@@ -13,7 +13,7 @@
     "deploy-storybook": "storybook-to-ghpages",
     "npm_pack": "cd dist/ui-framework && npm pack",
     "package": "npm run build && npm run copy-style && npm run npm_pack",
-    "copy-style": "cpx \"projects/ui-framework/src/lib/style/*.*\" \"dist/ui-framework/style/\"",
+    "copy-style": "cpx \"projects/ui-framework/src/lib/style/**/*\" \"dist/ui-framework/style/\"",
     "start-app-test": "ng serve --project=app-test"
   },
   "private": false,
@@ -83,5 +83,8 @@
   },
   "publishConfig": {
     "registry": "https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/"
+  },
+  "storybook-deployer": {
+    "commitMessage": "Deploy Storybook [skip ci]"
   }
 }

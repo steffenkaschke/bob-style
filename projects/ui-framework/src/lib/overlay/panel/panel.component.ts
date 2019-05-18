@@ -6,7 +6,9 @@ import {
   TemplateRef,
   ViewChild,
   ViewContainerRef,
-  HostListener
+  HostListener,
+  EventEmitter,
+  Output
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -37,6 +39,8 @@ export class PanelComponent implements OnDestroy {
   @Input() showBackdrop = true;
   @Input() defaultPosVer = PanelDefaultPosVer.above;
   @Input() openOnHover = false;
+
+  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
   private panelConfig: OverlayConfig;
   private overlayRef: OverlayRef;
@@ -107,12 +111,15 @@ export class PanelComponent implements OnDestroy {
   }
 
   private destroyPanel(): void {
-    invoke(this.overlayRef, 'dispose');
-    invoke(this.backdropClickSubscriber, 'unsubscribe');
-    invoke(this.positionChangeSubscriber, 'unsubscribe');
-    this.panelConfig = {};
-    this.templatePortal = null;
-    this.overlayRef = null;
+    if (this.overlayRef && this.overlayRef !== null) {
+      invoke(this.overlayRef, 'dispose');
+      invoke(this.backdropClickSubscriber, 'unsubscribe');
+      invoke(this.positionChangeSubscriber, 'unsubscribe');
+      this.panelConfig = {};
+      this.templatePortal = null;
+      this.overlayRef = null;
+      this.closed.emit();
+    }
   }
 
   private getConfig(): OverlayConfig {

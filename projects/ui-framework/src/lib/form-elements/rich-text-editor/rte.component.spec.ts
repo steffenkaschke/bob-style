@@ -7,7 +7,12 @@ import {
   tick
 } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
-import { NO_ERRORS_SCHEMA, Component, SimpleChange } from '@angular/core';
+import {
+  NO_ERRORS_SCHEMA,
+  Component,
+  SimpleChange,
+  OnInit
+} from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import {
@@ -18,9 +23,9 @@ import {
 } from '@angular/forms';
 
 import { RichTextEditorComponent } from './rte.component';
-import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
-import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { RTEType, RTEControls } from './rte.enum';
+import { RteLinkEditorComponent } from './rte-link/rte-link-editor.component';
+import { RteUtilsService } from './rte-core/rte-utils.service';
+import { RTEType, BlotType, RTEchangeEvent } from './rte-core/rte.enum';
 import Quill from 'quill';
 import { PanelModule } from '../../overlay/panel/panel.module';
 import { SingleSelectModule } from '../lists/single-select/single-select.module';
@@ -32,7 +37,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
-import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
+import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
 
 @Component({
   template: `
@@ -42,16 +47,14 @@ import { PlaceholderRteConverterService } from './placeholder-rte-converter/plac
   `,
   providers: []
 })
-class TestComponent {
+class TestComponent implements OnInit {
   constructor() {}
+  rteForm: any;
 
-  rteForm = new FormGroup({
-    rteControl: new FormControl('')
-  });
-
-  changeMode() {
-    const newControl = new FormControl('', { updateOn: 'blur' });
-    this.rteForm.setControl('rteControl', newControl);
+  ngOnInit(): void {
+    this.rteForm = new FormGroup({
+      rteControl: new FormControl('', { updateOn: 'change' })
+    });
   }
 }
 
@@ -67,6 +70,8 @@ describe('RichTextEditorComponent', () => {
   let overlayContainerElement: HTMLElement;
   let QuillEditor: Quill;
   let RTEqlEditorNativeElement: HTMLElement;
+
+  let rteUtils: RteUtilsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -88,16 +93,14 @@ describe('RichTextEditorComponent', () => {
         MatFormFieldModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        RteUtilsService,
-        DOMhelpers,
-        PlaceholderRteConverterService,
-      ],
+      providers: [RteUtilsService, DOMhelpers, PlaceholderRteConverterService]
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(TestComponent);
         testComponent = fixture.componentInstance;
+
+        rteUtils = TestBed.get(RteUtilsService);
 
         fixture.detectChanges();
 
@@ -111,6 +114,15 @@ describe('RichTextEditorComponent', () => {
         RTEeditorNativeElement = fixture.debugElement.query(
           By.css('.quill-editor')
         ).nativeElement;
+
+        RTEComponent.ngOnChanges({
+          controls: new SimpleChange(null, RTEComponent.controls, true),
+          disableControls: new SimpleChange(
+            null,
+            RTEComponent.disableControls,
+            true
+          )
+        });
 
         setTimeout(() => {
           QuillEditor = RTEComponent.editor;
@@ -128,7 +140,7 @@ describe('RichTextEditorComponent', () => {
     )();
   }));
 
-  describe('OnInit', () => {
+  describe('Init', () => {
     it('should create component', () => {
       expect(RTEComponent).toBeTruthy();
       expect(QuillEditor).toBeTruthy();
@@ -244,7 +256,7 @@ describe('RichTextEditorComponent', () => {
 
   describe('Editor toolbar controls', () => {
     it('should display toolbar with controls present in controls array', () => {
-      RTEComponent.controls = [RTEControls.bold, RTEControls.italic];
+      RTEComponent.controls = [BlotType.bold, BlotType.italic];
       fixture.detectChanges();
 
       const toolbarElement = fixture.debugElement.query(
@@ -265,31 +277,51 @@ describe('RichTextEditorComponent', () => {
       });
       fixture.detectChanges();
 
-      expect(RTEqlEditorNativeElement.textContent).toEqual('test text');
+      expect(RTEqlEditorNativeElement.textContent.trim()).toEqual('test text');
     });
   });
 
   describe('Events', () => {
-    it('should output RteCurrentContent object when text changes', done => {
+    it('should propagate value when text changes and sendChangeOn = change', done => {
       const subscr = RTEComponent.changed.subscribe(val => {
-        expect(val.body).toEqual('<div>test text</div>');
-        expect(val.plainText).toEqual('test text');
+        expect(val).toEqual('<div>test text </div>');
         subscr.unsubscribe();
         done();
       });
+      RTEComponent.sendChangeOn = RTEchangeEvent.change;
+      fixture.detectChanges();
+
       RTEComponent.ngOnChanges({
         value: new SimpleChange(null, 'test text', false)
       });
     });
+
+    it('should propagate value only on blur, if sendChangeOn = blur', done => {
+      let testVar = 1;
+      const subscr = RTEComponent.changed.subscribe(val => {
+        expect(val).toEqual('<div>test text 2 </div>');
+        expect(testVar).toEqual(2);
+        subscr.unsubscribe();
+        done();
+      });
+      RTEComponent.sendChangeOn = RTEchangeEvent.blur;
+      fixture.detectChanges();
+
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(null, 'test text 2', false)
+      });
+
+      testVar = 2;
+      RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
+    });
+
     it('should output focused event when editor is focused', () => {
       spyOn(RTEComponent.focused, 'emit');
-
       RTEqlEditorNativeElement.dispatchEvent(new Event('focus'));
       expect(RTEComponent.focused.emit).toHaveBeenCalled();
     });
     it('should output blurred event when editor is blurred', () => {
       spyOn(RTEComponent.blurred, 'emit');
-
       RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
       expect(RTEComponent.blurred.emit).toHaveBeenCalled();
     });
@@ -319,7 +351,7 @@ describe('RichTextEditorComponent', () => {
       sizeButtonElement.click();
 
       const subscr = RTEComponent.changed.subscribe(val => {
-        expect(val.body).toContain('ql-size-huge');
+        expect(val).toContain('ql-size-huge');
         subscr.unsubscribe();
         done();
       });
@@ -374,7 +406,7 @@ describe('RichTextEditorComponent', () => {
       urlInputElement.dispatchEvent(new Event('input'));
 
       const subscr = RTEComponent.blurred.subscribe(val => {
-        expect(val.body).toContain('a href="http://test2"');
+        expect(val).toContain('a href="http://test2"');
         subscr.unsubscribe();
         done();
       });
@@ -416,5 +448,43 @@ describe('RichTextEditorComponent', () => {
       subscr.unsubscribe();
       expect(testVar).not.toEqual('test2');
     }));
+  });
+
+  describe('PlaceholderRteConverter', () => {
+    it('Should convert HTML to RTE', () => {
+      const placeholderList = [
+        {
+          groupName: 'Basic Info - header',
+          options: [
+            {
+              id: '/work/title',
+              selected: false,
+              displayName: 'work | title'
+            },
+            {
+              id: '/root/firstName',
+              selected: false,
+              displayName: 'First name'
+            }
+          ]
+        }
+      ];
+      RTEComponent.placeholderList = placeholderList;
+      RTEComponent.ngOnChanges({
+        value: new SimpleChange(
+          null,
+          '<div>Hi, <strong>My</strong> name is {{/root/firstName}} my job title</div>',
+          false
+        ),
+        controls: new SimpleChange(null, [BlotType.placeholder], null),
+        disableControls: new SimpleChange(null, [], null)
+      });
+
+      fixture.detectChanges();
+
+      expect(rteUtils.getHtmlContent(QuillEditor)).toContain(
+        'name is <span data-placeholder-id="/root/firstName'
+      );
+    });
   });
 });

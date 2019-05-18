@@ -20,7 +20,27 @@ export class AppComponent implements OnInit {
 
   disabled = false;
   error = false;
+  plchldrs = true;
   lines = 2;
+
+  placeholderList = [
+    {
+      groupName: 'Basic Info - header',
+      options: [
+        {
+          displayName: 'First name',
+          id: '/root/firstName',
+          value: 'First name'
+        },
+        {
+          displayName: 'title',
+          id: '/work/title',
+          category: 'Work',
+          value: 'title'
+        }
+      ]
+    }
+  ];
 
   myForm = new FormGroup({
     rteControl: new FormControl('', {
@@ -31,20 +51,32 @@ export class AppComponent implements OnInit {
     })
   });
 
+  rteInitValue = `<div>Hello <a href="http://www.google.com">World</a> and suck dicks!</div>
+  <div>Some <em>initial</em> <strong>bold</strong> text</div>
+  {{/root/firstName}}`;
+
+  togglePlaceholders() {
+    this.plchldrs = !this.plchldrs;
+  }
+
+  onRTEevent(event, type) {
+    console.log('*** RTE ' + type + ': "' + event + '"');
+  }
+
   ngOnInit() {
     this.myForm.get('rteControl').valueChanges.subscribe(value => {
-      console.log('RTE valueChanges', value);
+      console.log('!!!!!!! RTE valueChanges: "' + value + '"');
     });
 
     this.myForm.get('inputControl').valueChanges.subscribe(value => {
-      console.log('INP valueChanges', value);
+      console.log('!!!!!!! INP valueChanges', value);
       this.myForm.get('rteControl').setValue(value);
     });
 
     this.myForm.get('inputControl').setValue('i am input', {
       emitEvent: false
     });
-    this.myForm.get('rteControl').setValue('i am rte', {
+    this.myForm.get('rteControl').setValue(this.rteInitValue, {
       emitEvent: false
     });
   }

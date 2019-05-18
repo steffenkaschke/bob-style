@@ -1,11 +1,12 @@
 import { storiesOf } from '@storybook/angular';
 import {
-  text,
-  select,
-  boolean,
-  withKnobs,
   array,
-  number
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -15,17 +16,16 @@ import { values } from 'lodash';
 import { TypographyModule } from '../../typography/typography.module';
 import { RichTextEditorModule } from './rte.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RTEType, RTEControls, RTEchangeEvent } from './rte.enum';
+import { BlotType, RTEType } from './rte-core/rte.enum';
+import { SelectGroupOption } from '../lists/list.interface';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
   module
 ).addDecorator(withKnobs);
 
-const value = `
-  <div>Hello <a href="http://www.google.com">World</a>!</div>
-  <div>Some initial <strong>bold</strong> text</div>
-`;
+const value = `<div> <span style="color: red;">Hello</span> <a href="http://www.google.com">World</a>!</div>
+<div>Some <em>initial</em> <strong>bold</strong> text</div> {{/work/title}}`;
 
 const template = `
   <b-rich-text-editor
@@ -33,6 +33,7 @@ const template = `
       [label]="label"
       [value]="value"
       [controls]="controls"
+      [disableControls]="disableControls"
       [minHeight]="minHeight"
       [maxHeight]="maxHeight"
       [disabled]="disabled"
@@ -41,6 +42,7 @@ const template = `
       [errorMessage]="errorMessage"
       (changed)="change($event)"
       (focused)="focus($event)"
+      [placeholderList]="placeholderList"
       (blurred)="blur($event)">
     Some custom toolbar thing
   </b-rich-text-editor>
@@ -70,7 +72,7 @@ const note = `
   type | RTEType | primary (white bg, border) or secondary (transparent bg, no borders) | primary
   label | string | placeholder text | none (optional)
   value | string | html content to be placed inside editor | none (optional)
-  controls | RTEControls[] | array of toolbar controls. Possible controls: size, bold, italic, underline, link, list, align, dir. Defaults to all controls. Pass empty array to disable all controls. | all
+  controls | BlotType[] | array of toolbar controls. Possible controls: size, bold, italic, underline, link, list, align, dir. Defaults to all controls. Pass empty array to disable all controls. | all
   minHeight | number | minimum height of editor (including toolbar). Set to null or 0 to disable min-height | 185 (optional)
   maxHeight | number | maximum height of editor (including toolbar). Set to null to disable max-height | 295 (optional)
   disabled | boolean | disables editor | false (optional)
@@ -86,6 +88,34 @@ const note = `
 
 `;
 
+const placeholderMock = [
+  {
+    groupName: 'Basic Info - header',
+    options: [
+      {
+        displayName: 'First name',
+        id: '/root/firstName',
+        value: 'First name'
+      },
+      {
+        displayName: 'title',
+        id: '/work/title',
+        category: 'Work',
+        value: 'title'
+      }
+    ]
+  }
+];
+
+const disableControlsDef = [
+  // BlotType.color,
+  BlotType.align,
+  BlotType.direction
+];
+const controlsDef = values(BlotType).filter(
+  cntrl => !disableControlsDef.includes(cntrl)
+);
+
 inputStories.add(
   'Rich text editor',
   () => {
@@ -95,7 +125,9 @@ inputStories.add(
         type: select('type', values(RTEType), RTEType.primary),
         label: text('label', 'Compose an epic...'),
         value: text('value', value),
-        controls: array('controls', values(RTEControls), '\n'),
+        controls: array('controls', controlsDef, '\n'),
+        disableControls: array('disableControls', disableControlsDef, '\n'),
+        placeholderList: object<SelectGroupOption>('options', placeholderMock),
         minHeight: number('minHeight', 200),
         maxHeight: number('maxHeight', 400),
         disabled: boolean('disabled', false),

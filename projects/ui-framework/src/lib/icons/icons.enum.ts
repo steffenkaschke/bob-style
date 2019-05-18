@@ -40,7 +40,7 @@ export enum Icons {
   reset_x = 'reset_x',
   three_dots = 'three_dots',
   search = 'search_card_17px',
-  reset = 'reset',
+  reset = 'baseline-settings_backup_restore-24px',
   bold = 'bold',
   italic = 'italic',
   underline = 'underline',
@@ -64,4 +64,5 @@ export enum Icons {
   success = 'success_icon',
   warning = 'warning_icon',
   no_folder = 'no_folder',
+  add_photo = 'add_photo',
 }
