@@ -118,7 +118,6 @@ export class RteKeybindings {
         this.storeCurrent(true, {
           index: this.selection ? this.selection.index + 1 : 1
         });
-        console.log(this.selection, this.currentBlot);
         if (!this.currentBlot) {
           return;
         }

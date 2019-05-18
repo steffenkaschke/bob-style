@@ -7,7 +7,8 @@ import { SingleListComponent } from '../../lists/single-list/single-list.compone
 import { PlaceholderRteConverterService } from './placeholder-rte-converter.service';
 import {
   RtePlaceholderList,
-  RtePlaceholder
+  RtePlaceholder,
+  RtePlaceholderUpdate
 } from './placeholder-rte-converter.interface';
 
 export class RtePlaceholderBlot {
@@ -37,7 +38,6 @@ export class RtePlaceholderBlot {
     const undoFormats = Object.values(BlotType).filter(
       f => f !== BlotType.placeholder
     );
-
     const id = selectGroupOptions.focusOption.id;
     const name = selectGroupOptions.focusOption.value;
     const category = this.placeholderRteConverterService.getGroupDisplayName(
@@ -55,7 +55,11 @@ export class RtePlaceholderBlot {
       insertText: text,
       format: {
         type: BlotType.placeholder,
-        value: selectGroupOptions.focusOption
+        value: {
+          id,
+          category,
+          text
+        } as RtePlaceholderUpdate
       },
       unformat: undoFormats,
       addSpaces: true,
