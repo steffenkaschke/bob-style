@@ -17,7 +17,7 @@ import quillLib, {
   QuillOptionsStatic,
   RangeStatic,
   DeltaOperation,
-  Delta
+  DeltaStatic
 } from 'quill';
 import { RTEchangeEvent, BlotType, RTEFontSize } from './rte.enum';
 import { RteUtilsService } from './rte-utils.service';
@@ -228,8 +228,8 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   private onEditorTextChange(
-    delta: Delta,
-    oldDelta: Delta,
+    delta: DeltaStatic,
+    oldDelta: DeltaStatic,
     source: string
   ): void {
     if (this.storeLastChange) {
@@ -350,8 +350,8 @@ export abstract class RTEformElement extends BaseFormElement
     this.editor.on('editor-change', (eventName: string, ...args: any[]) => {
       if (eventName === 'text-change') {
         this.onEditorTextChange(
-          args[0] as Delta, // current Delta
-          args[1] as Delta, // previous Delta
+          args[0] as DeltaStatic, // current Delta
+          args[1] as DeltaStatic, // previous Delta
           args[3] as string // user, api or silent
         );
       } else if (eventName === 'selection-change') {

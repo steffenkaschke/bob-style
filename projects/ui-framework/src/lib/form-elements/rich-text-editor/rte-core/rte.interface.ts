@@ -1,6 +1,6 @@
 import { BlotType, UtilBlotType } from './rte.enum';
 import { TextBlot } from 'quill/blots/text';
-import { Delta, RangeStatic } from 'quill';
+import { DeltaStatic, RangeStatic } from 'quill';
 
 export interface UpdateRteConfig {
   replaceStr: string;
@@ -42,7 +42,7 @@ export interface BlotData {
   link?: string;
   formatIs?: (f: string) => boolean;
   select?: () => RangeStatic;
-  delete?: () => Delta;
+  delete?: () => DeltaStatic;
 }
 
 export interface SpecialBlots {
