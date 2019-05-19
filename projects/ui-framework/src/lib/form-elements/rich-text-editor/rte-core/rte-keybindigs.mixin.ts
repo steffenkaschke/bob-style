@@ -1,8 +1,7 @@
 import { SpecialBlots, BlotData } from './rte.interface';
 import { QuillKeyboardKeys } from './rte.enum';
 import { RteUtilsService } from './rte-utils.service';
-import Quill, { RangeStatic } from 'quill';
-import { default as Delta } from 'quill-delta';
+import Quill, { RangeStatic, Delta } from 'quill';
 
 export class RteKeybindings {
   constructor() {}

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UpdateRteConfig, BlotData } from './rte.interface';
-import { Quill, RangeStatic } from 'quill';
-import { default as Delta } from 'quill-delta';
+import { Quill, RangeStatic, Delta } from 'quill';
 import { keysFromArrayOrObject } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
 import { BlotType } from './rte.enum';

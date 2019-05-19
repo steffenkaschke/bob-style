@@ -16,9 +16,9 @@ import quillLib, {
   Quill,
   QuillOptionsStatic,
   RangeStatic,
-  DeltaOperation
+  DeltaOperation,
+  Delta
 } from 'quill';
-import { default as Delta } from 'quill-delta';
 import { RTEchangeEvent, BlotType, RTEFontSize } from './rte.enum';
 import { RteUtilsService } from './rte-utils.service';
 import { BlotData, SpecialBlots, StoreCurrentResult } from './rte.interface';
