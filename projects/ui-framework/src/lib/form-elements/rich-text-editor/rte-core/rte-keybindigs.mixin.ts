@@ -2,6 +2,7 @@ import { SpecialBlots, BlotData } from './rte.interface';
 import { QuillKeyboardKeys } from './rte.enum';
 import { RteUtilsService } from './rte-utils.service';
 import Quill, { RangeStatic, Delta } from 'quill';
+const _Delta: typeof Delta = Quill.import('delta');
 
 export class RteKeybindings {
   constructor() {}
@@ -62,7 +63,7 @@ export class RteKeybindings {
             currentBlot.text.length
         ) {
           this.editor.updateContents(
-            new Delta()
+            new _Delta()
               .retain(currentBlot.index)
               .delete(currentBlot.length)
               .insert(

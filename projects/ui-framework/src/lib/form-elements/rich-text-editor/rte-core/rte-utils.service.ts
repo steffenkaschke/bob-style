@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UpdateRteConfig, BlotData } from './rte.interface';
-import { Quill, RangeStatic, Delta } from 'quill';
+import Quill, { RangeStatic, Delta } from 'quill';
+const _Delta: typeof Delta = Quill.import('delta');
 import { keysFromArrayOrObject } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
 import { BlotType } from './rte.enum';
@@ -123,7 +124,7 @@ export class RteUtilsService {
 
   deleteRange(range: RangeStatic, editor: Quill): Delta {
     return editor.updateContents(
-      new Delta().retain(range.index).delete(range.length)
+      new _Delta().retain(range.index).delete(range.length)
     );
   }
 
@@ -144,7 +145,7 @@ export class RteUtilsService {
     format = {}
   ): Delta {
     return editor.updateContents(
-      new Delta().retain(index).insert(text, format)
+      new _Delta().retain(index).insert(text, format)
     );
   }
 
@@ -238,7 +239,7 @@ export class RteUtilsService {
         : '';
 
     editor.updateContents(
-      new Delta()
+      new _Delta()
         .retain(config.startIndex)
         .delete(config.replaceStr.length)
         .insert(spaceBefore)
