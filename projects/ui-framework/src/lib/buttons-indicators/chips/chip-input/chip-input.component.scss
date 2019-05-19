@@ -23,6 +23,12 @@
     border-radius: 0;
   }
 
+  .mat-form-field.autocomplete-open
+    .mat-form-field-wrapper
+    .mat-form-field-flex {
+    border-color: transparent;
+  }
+
   .mat-form-field.mat-focused .mat-form-field-wrapper .mat-form-field-flex {
     border-top: 0;
     border-left: 0;
@@ -41,6 +47,10 @@
     margin: 4px;
     padding: 0;
     height: auto;
+
+    &::placeholder {
+      @include text-truncate;
+    }
 
     &:focus::placeholder {
       color: transparent;
@@ -112,10 +122,11 @@
 ::ng-deep .chip-input-autocomplete {
   &.mat-autocomplete-panel {
     @include OverlayPanel(null);
+    margin-top: -1px;
   }
   .mat-option {
     color: $body-text-color;
-    @include BodyFont($font-size-body, null, $line-height-body, null);
+    @include BodyFont();
     height: 44px;
 
     &:hover:not(.mat-option-disabled) {

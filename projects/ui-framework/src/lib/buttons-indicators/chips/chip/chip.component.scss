@@ -4,44 +4,45 @@
 
 $chipsMap: (
   empty: (
-    bgColor: white,
+    background-color: white,
     color: $grey-700,
-    brdrColor: $grey-500
+    border-color: $grey-500
   ),
   default: (
-    bgColor: $grey-600,
+    background-color: $grey-600,
     color: white,
-    brdrColor: $grey-600
+    border-color: $grey-600
   ),
   info: (
-    bgColor: var(--inform-500),
+    background-color: var(--inform-500),
     color: white,
-    brdrColor: var(--inform-500)
+    border-color: var(--inform-500)
   ),
   success: (
-    bgColor: var(--positive-500),
+    background-color: var(--positive-500),
     color: white,
-    brdrColor: var(--positive-500)
+    border-color: var(--positive-500)
   ),
   attention: (
-    bgColor: var(--primary-600),
+    background-color: var(--primary-600),
     color: white,
-    brdrColor: var(--primary-600)
+    border-color: var(--primary-600)
   ),
   warning: (
-    bgColor: var(--negative-500),
+    background-color: var(--negative-500),
     color: white,
-    brdrColor: var(--negative-500)
+    border-color: var(--negative-500)
   ),
   disabled: (
-    bgColor: $grey-200,
+    background-color: $grey-200,
     color: $grey-500,
-    brdrColor: $grey-200
+    border-color: $grey-200
   ),
   tag: (
-    bgColor: $grey-300,
+    background-color: $grey-300,
     color: $grey-700,
-    brdrColor: $grey-300
+    border-color: $grey-300,
+    font-weight: $font-weight-body
   )
 );
 
@@ -79,16 +80,16 @@ span {
   cursor: pointer;
 
   .mat-icon.small {
-    display: block;
-    width: 9px;
-    height: 10px;
+    display: flex;
+    align-items: center;
+    width: 8px;
   }
 }
 
 @each $type, $typeProps in $chipsMap {
   .chip-#{$type} {
-    background-color: map-get($typeProps, bgColor);
-    color: map-get($typeProps, color);
-    border-color: map-get($typeProps, brdrColor);
+    @each $prop, $value in $typeProps {
+      #{$prop}: $value;
+    }
   }
 }

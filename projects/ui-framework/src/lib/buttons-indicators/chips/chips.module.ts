@@ -10,6 +10,7 @@ import {
 } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { IconsModule } from '../../icons/icons.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [ChipComponent, ChipInputComponent],
@@ -18,6 +19,7 @@ import { IconsModule } from '../../icons/icons.module';
     MatFormFieldModule,
     MatChipsModule,
     MatAutocompleteModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     IconsModule

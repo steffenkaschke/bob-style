@@ -53,6 +53,7 @@ export class ChipInputComponent extends BaseFormElement
 
   removable = true;
   addOnBlur = false;
+  autocompleteOpen = false;
   readonly chipType = ChipType;
   readonly resetIcon: String = Icons.reset_x;
   readonly iconSize = IconSize;
