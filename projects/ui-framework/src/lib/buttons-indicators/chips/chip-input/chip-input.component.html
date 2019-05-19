@@ -1,8 +1,11 @@
 <mat-form-field (click)="input.focus();"
-                [ngClass]="{'disabled': disabled, 'required': required, 'error': errorMessage, 'autocomplete-open': autocompleteOpen}"
-                [floatLabel]="'always'">
+                [ngClass]="{'disabled': disabled,
+                            'required': required,
+                            'error': errorMessage,
+                            'autocomplete-open': auto.isOpen}"
+                [floatLabel]="placeholder ? 'always' : 'auto'">
 
-  <mat-label>{{label}}</mat-label>
+  <mat-label *ngIf="label">{{label}}</mat-label>
 
   <mat-chip-list #chipList
                  selectable="false">
@@ -34,8 +37,6 @@
   <mat-autocomplete #auto="matAutocomplete"
                     (optionSelected)="selected($event)"
                     [class]="'chip-input-autocomplete'"
-                    (opened)="autocompleteOpen=true"
-                    (closed)="autocompleteOpen=false"
                     disableRipple="true">
     <mat-option *ngFor="let chip of filteredChips | async"
                 [value]="chip">

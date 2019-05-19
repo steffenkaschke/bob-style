@@ -84,6 +84,16 @@
 
 // chips
 
+@keyframes blink {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: 0 0 0 2px $grey-300;
+  }
+}
+
 :host ::ng-deep {
   .mat-chip-list {
     outline: 0;
@@ -96,6 +106,12 @@
   .mat-chip {
     outline: 0;
     margin: 4px;
+    border-radius: 13px;
+    overflow: visible;
+
+    &.blink {
+      @include animate(blink, 0.3s);
+    }
   }
 
   .mat-chip,

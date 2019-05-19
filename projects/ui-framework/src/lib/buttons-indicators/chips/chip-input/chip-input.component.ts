@@ -53,7 +53,6 @@ export class ChipInputComponent extends BaseFormElement
 
   removable = true;
   addOnBlur = false;
-  autocompleteOpen = false;
   readonly chipType = ChipType;
   readonly resetIcon: String = Icons.reset_x;
   readonly iconSize = IconSize;
@@ -132,6 +131,17 @@ export class ChipInputComponent extends BaseFormElement
       this.propagateValue();
       this.input.nativeElement.value = '';
       this.chipInputControl.setValue(null);
+    } else if (chipToAdd) {
+      const existingChipElemnent = this.chipList.chips.find(
+        ch => ch._elementRef.nativeElement.innerText === chipToAdd
+      )._elementRef.nativeElement;
+
+      if (existingChipElemnent) {
+        existingChipElemnent.classList.add('blink');
+        setTimeout(() => {
+          existingChipElemnent.classList.remove('blink');
+        }, 200);
+      }
     }
   }
 
@@ -145,6 +155,7 @@ export class ChipInputComponent extends BaseFormElement
       }
 
       this.commitChip(chipToAdd);
+      this.autocompleteTrigger.closePanel();
     }
   }
 
@@ -157,9 +168,10 @@ export class ChipInputComponent extends BaseFormElement
     this.value = this.removeChip(name, this.value);
     this.updatePossibleChips();
     this.propagateValue();
+    this.autocompleteTrigger.closePanel();
   }
 
-  unSelectLastChip(): void {
+  private unSelectLastChip(): void {
     if (
       this.chipList.chips.last &&
       (this.chipList.chips.last as any).aboutToDelete
