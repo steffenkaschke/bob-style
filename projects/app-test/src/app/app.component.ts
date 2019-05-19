@@ -1,12 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
+import { chipOptionsMock } from '../../../ui-framework/src/lib/buttons-indicators/chips/chip-input/chipsOptionsMock';
+import { ColorService } from '../../../ui-framework/src/lib/services/color-service/color.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  constructor(public colorService: ColorService) {}
+
+  // Chips Input
+
+  allChips = chipOptionsMock;
+
+  myForm2 = new FormGroup({
+    chipsControl: new FormControl([], {
+      updateOn: 'blur'
+    })
+  });
+
+  // RTE
+
   disabled = false;
   error = false;
   plchldrs = true;
@@ -66,6 +83,15 @@ export class AppComponent implements OnInit {
       emitEvent: false
     });
     this.myForm.get('rteControl').setValue(this.rteInitValue, {
+      emitEvent: false
+    });
+
+    // chips
+
+    this.myForm2.get('chipsControl').valueChanges.subscribe(value => {
+      console.log('>>> CHIPS valueChanges: "' + value + '"');
+    });
+    this.myForm2.get('chipsControl').setValue(['petting', 'rimming'], {
       emitEvent: false
     });
   }
