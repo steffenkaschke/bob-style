@@ -1,5 +1,5 @@
 <mat-form-field (click)="input.focus();"
-                [ngClass]="{'disabled': disabled, 'required': required, 'autocomplete-open': autocompleteOpen}"
+                [ngClass]="{'disabled': disabled, 'required': required, 'error': errorMessage, 'autocomplete-open': autocompleteOpen}"
                 [floatLabel]="'always'">
 
   <mat-label>{{label}}</mat-label>

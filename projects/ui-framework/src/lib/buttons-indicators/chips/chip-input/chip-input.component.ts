@@ -160,7 +160,10 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   unSelectLastChip(): void {
-    if ((this.chipList.chips.last as any).aboutToDelete) {
+    if (
+      this.chipList.chips.last &&
+      (this.chipList.chips.last as any).aboutToDelete
+    ) {
       delete (this.chipList.chips.last as any).aboutToDelete;
       this.chipList.chips.last.selected = false;
     }
@@ -168,10 +171,7 @@ export class ChipInputComponent extends BaseFormElement
 
   onInputKeydown(event: KeyboardEvent): void {
     if (event.key.toUpperCase() === 'BACKSPACE') {
-      if (
-        this.input.nativeElement.value === '' &&
-        (this.chipList.chips.last as any)
-      ) {
+      if (this.input.nativeElement.value === '' && this.chipList.chips.last) {
         if ((this.chipList.chips.last as any).aboutToDelete) {
           this.value.pop();
           this.updatePossibleChips();
