@@ -1,15 +1,11 @@
 import { storiesOf, moduleMetadata } from '@storybook/angular';
 import {
   text,
-  select,
   array,
   boolean,
   withKnobs
 } from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
 import { ChipsModule } from '../chips.module';
-import { ChipType } from '../chips.enum';
-import { values } from 'lodash';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { chipOptionsMock } from './chipsOptionsMock';
