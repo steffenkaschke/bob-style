@@ -99,8 +99,8 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   private propagateValue() {
-    console.log('shuld propagate change');
     this.propagateChange(this.value);
+    this.onTouched();
   }
 
   private updatePossibleChips(init = false) {

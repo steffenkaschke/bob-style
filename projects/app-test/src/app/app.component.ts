@@ -92,7 +92,7 @@ export class AppComponent implements OnInit {
       console.log('>>> CHIPS valueChanges: "' + value + '"');
     });
     this.myForm2.get('chipsControl').setValue(['petting', 'rimming'], {
-      // emitEvent: false
+      emitEvent: false
     });
   }
 }
