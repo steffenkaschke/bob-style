@@ -16,6 +16,12 @@ export class AppComponent implements OnInit {
 
   allChips = chipOptionsMock;
 
+  myForm2 = new FormGroup({
+    chipsControl: new FormControl([], {
+      updateOn: 'blur'
+    })
+  });
+
   // RTE
 
   disabled = false;
@@ -78,6 +84,15 @@ export class AppComponent implements OnInit {
     });
     this.myForm.get('rteControl').setValue(this.rteInitValue, {
       emitEvent: false
+    });
+
+    // chips
+
+    this.myForm2.get('chipsControl').valueChanges.subscribe(value => {
+      console.log('>>> CHIPS valueChanges: "' + value + '"');
+    });
+    this.myForm2.get('chipsControl').setValue(['petting', 'rimming'], {
+      // emitEvent: false
     });
   }
 }

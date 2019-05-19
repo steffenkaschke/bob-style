@@ -43,7 +43,7 @@ import { ChipType } from '../chips.enum';
 })
 export class ChipInputComponent extends BaseFormElement
   implements OnChanges, OnInit {
-  @Input() value: string[];
+  @Input() value: string[] = [];
   @Input() options: string[];
   @Input() acceptNew = true;
   @Input() placeholder: string;
@@ -98,6 +98,11 @@ export class ChipInputComponent extends BaseFormElement
     this.updatePossibleChips();
   }
 
+  private propagateValue() {
+    console.log('shuld propagate change');
+    this.propagateChange(this.value);
+  }
+
   private updatePossibleChips(init = false) {
     this.possibleChips = this.options.filter(ch => !this.value.includes(ch));
   }
@@ -123,6 +128,7 @@ export class ChipInputComponent extends BaseFormElement
     if (chipToAdd && !this.findChip(chipToAdd, this.value)) {
       this.value.push(chipToAdd);
       this.updatePossibleChips();
+      this.propagateValue();
       this.input.nativeElement.value = '';
       this.chipInputControl.setValue(null);
     }
@@ -149,6 +155,7 @@ export class ChipInputComponent extends BaseFormElement
   remove(name: string): void {
     this.value = this.removeChip(name, this.value);
     this.updatePossibleChips();
+    this.propagateValue();
   }
 
   unSelectLastChip(): void {

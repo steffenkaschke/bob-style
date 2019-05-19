@@ -1,12 +1,14 @@
 <div
      style="padding: 50px 100px; height: 100%; max-width: 700px; margin: auto; display: flex; flex-direction: column; justify-content: center;">
 
-  <form>
+  <form [formGroup]="myForm2">
 
 
-    <b-chip-input [chips]="allChips"
-                  [colorService]="colorService.randomColor"
+    <b-chip-input formControlName="chipsControl"
+                  [options]="allChips"
+                  [value]=""
                   label="What are your hobbies?"
+                  placeholder="Enter tags"
                   hintMessage="Stick something in me"
                   required="true">
     </b-chip-input>
