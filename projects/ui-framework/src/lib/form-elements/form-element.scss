@@ -101,6 +101,7 @@ $textarea-height: 120px;
         transform: translateY(-30px) scale(0.9);
       }
     }
+    &.disabled,
     &.mat-form-field-disabled {
       .mat-form-field-wrapper .mat-form-field-flex {
         background-color: $grey-100;

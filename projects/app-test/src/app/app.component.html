@@ -1,5 +1,25 @@
 <div
-     style="padding: 50px 100px; height: 100%; max-width: 700px; margin: auto; font-size: 18px; display: flex; flex-direction: column; justify-content: center;">
+     style="padding: 50px 100px; height: 100%; max-width: 700px; margin: auto; display: flex; flex-direction: column; justify-content: center;">
+
+  <form [formGroup]="myForm2">
+
+
+    <b-chip-input formControlName="chipsControl"
+                  [options]="allChips"
+                  [value]=""
+                  label="What are your hobbies?"
+                  placeholder="Enter tags"
+                  hintMessage="Stick something in me"
+                  required="true">
+    </b-chip-input>
+
+
+  </form>
+</div>
+
+<div style="padding: 50px 100px; height: 100%; max-width: 700px; margin: auto; display: flex; flex-direction: column;
+     justify-content: center; display: none; ">
+
   <form [formGroup]="myForm">
     <p>
       Input: <br>
@@ -54,4 +74,5 @@
            style="width: 50px; height: 45px; padding: 0 5px 0 10px; line-height: 38px;outline:0; font-size: 16px;"
            [(ngModel)]="lines" />
   </p>
+
 </div>

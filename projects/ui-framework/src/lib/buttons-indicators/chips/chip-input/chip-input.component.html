@@ -1,0 +1,52 @@
+<mat-form-field (click)="input.focus();"
+                [ngClass]="{'disabled': disabled, 'required': required, 'error': errorMessage, 'autocomplete-open': autocompleteOpen}"
+                [floatLabel]="'always'">
+
+  <mat-label>{{label}}</mat-label>
+
+  <mat-chip-list #chipList
+                 selectable="false">
+
+    <mat-basic-chip *ngFor="let chip of value"
+                    selectable="false"
+                    removable="false"
+                    disableRipple="true">
+      <b-chip [type]="disabled ? chipType.disabled : chipType.tag"
+              [removable]="removable"
+              (removed)="remove(chip)">
+        {{chip}}
+      </b-chip>
+    </mat-basic-chip>
+
+    <input [placeholder]="placeholder"
+           #input
+           [disabled]="disabled"
+           [formControl]="chipInputControl"
+           [matAutocomplete]="auto"
+           [matChipInputFor]="chipList"
+           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+           [matChipInputAddOnBlur]="addOnBlur"
+           (matChipInputTokenEnd)="add($event)"
+           (keydown)="onInputKeydown($event)">
+
+  </mat-chip-list>
+
+  <mat-autocomplete #auto="matAutocomplete"
+                    (optionSelected)="selected($event)"
+                    [class]="'chip-input-autocomplete'"
+                    (opened)="autocompleteOpen=true"
+                    (closed)="autocompleteOpen=false"
+                    disableRipple="true">
+    <mat-option *ngFor="let chip of filteredChips | async"
+                [value]="chip">
+      {{chip}}
+    </mat-option>
+  </mat-autocomplete>
+
+  <mat-hint *ngIf="errorMessage || hintMessage"
+            align="start"
+            [ngClass]="{'error-message': errorMessage && !disabled, 'hint-message': !errorMessage && hintMessage}">
+    {{ errorMessage && !disabled ? errorMessage : hintMessage }}
+  </mat-hint>
+
+</mat-form-field>

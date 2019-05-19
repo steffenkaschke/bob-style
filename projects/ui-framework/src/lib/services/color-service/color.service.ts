@@ -27,6 +27,12 @@ export class ColorService {
       color = this.parseRGBcolor(color);
     }
     const brightness = this.getBrightness(color);
-    return brightness && brightness < 128;
+    return brightness && brightness < 160; // 128
+  }
+
+  public randomColor(): string {
+    return (
+      '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)
+    );
   }
 }

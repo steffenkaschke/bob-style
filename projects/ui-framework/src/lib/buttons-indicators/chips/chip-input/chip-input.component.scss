@@ -1,0 +1,167 @@
+@import '../../../style/colors';
+@import '../../../style/typography';
+@import '../../../style/mixins';
+@import '../../../form-elements/form-element';
+@import '../../../overlay/overlay';
+
+:host {
+  display: block;
+}
+
+// Form field
+
+:host ::ng-deep {
+  @include MatFormField();
+
+  .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+    height: auto;
+    min-height: $form-field-height;
+    padding: 12px 16px;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
+
+  .mat-form-field.autocomplete-open
+    .mat-form-field-wrapper
+    .mat-form-field-flex {
+    border-color: transparent;
+  }
+
+  .mat-form-field.mat-focused .mat-form-field-wrapper .mat-form-field-flex {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
+  .mat-form-field:hover .mat-form-field-wrapper .mat-form-field-flex {
+    box-shadow: none;
+  }
+
+  .mat-form-field
+    .mat-form-field-wrapper
+    .mat-form-field-flex
+    .mat-form-field-infix
+    input {
+    margin: 4px;
+    padding: 0;
+    height: auto;
+
+    &::placeholder {
+      @include text-truncate;
+    }
+
+    &:focus::placeholder {
+      color: transparent;
+    }
+  }
+
+  .mat-form-field
+    .mat-form-field-wrapper
+    .mat-form-field-flex
+    .mat-form-field-infix {
+    position: static;
+  }
+
+  .mat-form-field
+    .mat-form-field-wrapper
+    .mat-form-field-flex
+    .mat-form-field-infix
+    .mat-form-field-label-wrapper {
+    height: $input-height;
+  }
+
+  .mat-form-field
+    .mat-form-field-wrapper
+    .mat-form-field-flex
+    .mat-form-field-infix
+    .mat-form-field-label-wrapper
+    .mat-form-field-label {
+    width: auto;
+  }
+}
+
+// chips
+
+:host ::ng-deep {
+  .mat-chip-list {
+    outline: 0;
+  }
+
+  .mat-chip-list {
+    display: block;
+  }
+
+  .mat-chip {
+    outline: 0;
+    margin: 4px;
+  }
+
+  .mat-chip,
+  b-chip {
+    pointer-events: none;
+  }
+
+  .mat-chip-selected {
+    b-chip > span {
+      position: relative;
+      &:before {
+        @include pseudo;
+        @include size(100%);
+        @include position;
+        border-radius: inherit;
+        background-color: black(0.15);
+      }
+    }
+  }
+}
+
+// autocomplete
+
+::ng-deep .chip-input-autocomplete {
+  &.mat-autocomplete-panel {
+    @include OverlayPanel(null);
+    margin-top: -1px;
+  }
+  .mat-option {
+    color: $body-text-color;
+    @include BodyFont();
+    height: 44px;
+
+    &:hover:not(.mat-option-disabled) {
+      background-color: $grey-100;
+    }
+  }
+}
+
+// states
+
+:host ::ng-deep {
+  .mat-form-field.disabled {
+    user-select: none;
+    pointer-events: none;
+
+    .mat-form-field-wrapper .mat-form-field-flex {
+      background-color: transparent;
+    }
+
+    .mat-form-field-wrapper .mat-form-field-infix input::placeholder,
+    .mat-hint {
+      color: $grey-500;
+    }
+  }
+
+  .mat-form-field.error {
+    .mat-form-field-wrapper .mat-form-field-flex {
+      border-top: 0;
+      border-left: 0;
+      border-right: 0;
+      border-radius: 0;
+      border-color: var(--negative-500);
+    }
+  }
+  .error-message {
+    color: var(--negative-500);
+  }
+}
