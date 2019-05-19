@@ -168,6 +168,7 @@ export class ChipInputComponent extends BaseFormElement
     this.value = this.removeChip(name, this.value);
     this.updatePossibleChips();
     this.propagateValue();
+    this.autocompleteTrigger.closePanel();
   }
 
   private unSelectLastChip(): void {
