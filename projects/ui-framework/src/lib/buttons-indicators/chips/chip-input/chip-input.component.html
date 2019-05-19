@@ -3,7 +3,7 @@
                 required': required,
                 'error': errorMessage,
                 'autocomplete-open': auto.isOpen}"
-                [floatLabel]="'always'">
+                [floatLabel]="placeholder ? 'always' : 'auto'">
 
   <mat-label>{{label}}</mat-label>
 
