@@ -2,95 +2,136 @@
 @import '../../../style/typography';
 @import '../../../style/mixins';
 @import '../../../form-elements/form-element';
+@import '../../../overlay/overlay';
 
 :host {
   display: block;
+}
 
-  &::ng-deep {
-    @include MatFormField();
+// Form field
 
-    .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
-      height: auto;
-      min-height: $form-field-height;
-      padding: 12px 16px;
+:host ::ng-deep {
+  @include MatFormField();
+
+  .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+    height: auto;
+    min-height: $form-field-height;
+    padding: 12px 16px;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
+
+  .mat-form-field.mat-focused .mat-form-field-wrapper .mat-form-field-flex {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
+  .mat-form-field:hover .mat-form-field-wrapper .mat-form-field-flex {
+    box-shadow: none;
+  }
+
+  .mat-form-field
+    .mat-form-field-wrapper
+    .mat-form-field-flex
+    .mat-form-field-infix
+    input {
+    margin: 4px;
+    padding: 0;
+    height: auto;
+
+    &:focus::placeholder {
+      color: transparent;
     }
+  }
 
-    .mat-form-field
-      .mat-form-field-wrapper
-      .mat-form-field-flex
-      .mat-form-field-infix
-      input {
-      margin: 4px;
-      padding: 0;
-      height: auto;
-    }
+  .mat-form-field
+    .mat-form-field-wrapper
+    .mat-form-field-flex
+    .mat-form-field-infix {
+    position: static;
+  }
 
-    .mat-form-field
-      .mat-form-field-wrapper
-      .mat-form-field-flex
-      .mat-form-field-infix {
-      position: static;
-    }
+  .mat-form-field
+    .mat-form-field-wrapper
+    .mat-form-field-flex
+    .mat-form-field-infix
+    .mat-form-field-label-wrapper {
+    height: $input-height;
+  }
 
-    .mat-form-field
-      .mat-form-field-wrapper
-      .mat-form-field-flex
-      .mat-form-field-infix
-      .mat-form-field-label-wrapper {
-      height: $input-height;
-    }
+  .mat-form-field
+    .mat-form-field-wrapper
+    .mat-form-field-flex
+    .mat-form-field-infix
+    .mat-form-field-label-wrapper
+    .mat-form-field-label {
+    width: auto;
+  }
+}
 
-    .mat-form-field
-      .mat-form-field-wrapper
-      .mat-form-field-flex
-      .mat-form-field-infix
-      .mat-form-field-label-wrapper
-      .mat-form-field-label {
-      width: auto;
-    }
+// chips
 
-    // chips
+:host ::ng-deep {
+  .mat-chip-list {
+    outline: 0;
+  }
 
-    .mat-chip-list {
-      outline: 0;
-    }
+  .mat-chip-list {
+    display: block;
+  }
 
-    .mat-chip-list {
-      display: block;
-    }
+  .mat-chip {
+    outline: 0;
+    margin: 4px;
+  }
 
-    .mat-chip {
-      outline: 0;
-      margin: 4px;
-    }
+  .mat-chip,
+  b-chip {
+    pointer-events: none;
+  }
 
-    .mat-chip,
-    b-chip {
-      pointer-events: none;
-    }
-
-    .mat-chip-selected {
-      b-chip > span {
-        position: relative;
-        &:before {
-          @include pseudo;
-          @include size(100%);
-          @include position;
-          border-radius: inherit;
-          background-color: black(0.15);
-        }
+  .mat-chip-selected {
+    b-chip > span {
+      position: relative;
+      &:before {
+        @include pseudo;
+        @include size(100%);
+        @include position;
+        border-radius: inherit;
+        background-color: black(0.15);
       }
     }
+  }
+}
 
-    .error-message {
-      color: var(--negative-500);
+// autocomplete
+
+::ng-deep .chip-input-autocomplete {
+  .mat-option {
+    color: $body-text-color;
+    @include BodyFont($font-size-body, null, $line-height-body, null);
+    height: 40px;
+
+    &.mat-autocomplete-panel {
+      @include OverlayPanel();
     }
-    .mat-form-field.disabled {
-      user-select: none;
-      pointer-events: none;
-      .mat-hint {
-        color: $grey-500;
-      }
+  }
+}
+
+// states
+
+:host ::ng-deep {
+  .error-message {
+    color: var(--negative-500);
+  }
+  .mat-form-field.disabled {
+    user-select: none;
+    pointer-events: none;
+    .mat-hint {
+      color: $grey-500;
     }
   }
 }

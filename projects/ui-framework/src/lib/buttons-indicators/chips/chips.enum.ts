@@ -1,4 +1,3 @@
-
 export enum ChipType {
   disabled = 'disabled',
   empty = 'empty',

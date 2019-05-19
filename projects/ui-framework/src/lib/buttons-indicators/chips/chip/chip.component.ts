@@ -46,7 +46,7 @@ export class ChipComponent implements OnChanges {
   iconColor = 'transparent';
 
   readonly chipType = ChipType;
-  readonly resetIcon: String = Icons.reset_x;
+  readonly resetIcon: String = Icons.close;
   readonly iconSize = IconSize;
 
   @ViewChild('chip', { read: ElementRef }) private chip: ElementRef;

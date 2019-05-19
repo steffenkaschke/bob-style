@@ -16,6 +16,9 @@ export function MixIn(baseCtors: Function[]) {
   };
 }
 
+export const randomFromArray = (array: any[], num: number = 1) =>
+  array.sort(() => 0.5 - Math.random()).slice(0, num);
+
 export const keysFromArrayOrObject = (smth: string[] | {}): string[] => {
   return Array.isArray(smth) ? smth : Object.keys(smth);
 };

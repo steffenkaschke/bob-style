@@ -1,22 +1,23 @@
 <mat-form-field (click)="input.focus()"
                 [ngClass]="{'disabled': disabled, 'required': required}">
 
+  <mat-label>{{label}}</mat-label>
+
   <mat-chip-list #chipList
                  selectable="false">
 
-    <mat-basic-chip *ngFor="let chip of selectedChips"
+    <mat-basic-chip *ngFor="let chip of value"
                     selectable="false"
                     removable="false"
                     disableRipple="true">
-      <b-chip [type]="disabled ? chipType.disabled : chip.type"
-              [color]="chip.color"
+      <b-chip [type]="disabled ? chipType.disabled : chipType.tag"
               [removable]="removable"
               (removed)="remove(chip)">
-        {{chip.text}}
+        {{chip}}
       </b-chip>
     </mat-basic-chip>
 
-    <input [placeholder]="label"
+    <input [placeholder]="placeholder"
            #input
            [disabled]="disabled"
            [formControl]="chipInputControl"
@@ -25,15 +26,17 @@
            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
            [matChipInputAddOnBlur]="addOnBlur"
            (matChipInputTokenEnd)="add($event)"
-           (keydown.backspace)="onKeyBackspace()">
+           (keydown)="onInputKeydown($event)">
 
   </mat-chip-list>
 
   <mat-autocomplete #auto="matAutocomplete"
-                    (optionSelected)="selected($event)">
+                    (optionSelected)="selected($event)"
+                    [class]="'chip-input-autocomplete'"
+                    disableRipple="true">
     <mat-option *ngFor="let chip of filteredChips | async"
-                [value]="chip.text">
-      {{chip.text}}
+                [value]="chip">
+      {{chip}}
     </mat-option>
   </mat-autocomplete>
 

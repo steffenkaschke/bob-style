@@ -40,7 +40,7 @@ $chipsMap: (
   ),
   tag: (
     bgColor: $grey-300,
-    color: $grey-800,
+    color: $grey-700,
     brdrColor: $grey-300
   )
 );
@@ -78,26 +78,10 @@ span {
   pointer-events: all;
   cursor: pointer;
 
-  &.light,
-  &.dark {
-    position: relative;
-
-    .mat-icon {
-      position: relative;
-    }
-
-    &:before {
-      @include pseudo;
-      @include size(86%);
-      @include position(7% 7% 7% 7%);
-      border-radius: 50%;
-    }
-  }
-  &.light:before {
-    background-color: black(0.5);
-  }
-  &.dark:before {
-    background-color: white(0.5);
+  .mat-icon.small {
+    display: block;
+    width: 9px;
+    height: 10px;
   }
 }
 

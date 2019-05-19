@@ -13,6 +13,7 @@ import { values } from 'lodash';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { chipOptionsMock } from './chipsOptionsMock';
+import { randomFromArray } from '../../../services/utils/functional-utils';
 
 const story = storiesOf(
   ComponentGroupType.ButtonsAndIndicators,
@@ -20,20 +21,18 @@ const story = storiesOf(
 ).addDecorator(withKnobs);
 
 const options = chipOptionsMock;
-
-const colorService = () => {
-  return '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6);
-};
+const value = randomFromArray(chipOptionsMock, 4);
 
 const template = `
-  <b-chip-input [chips]="options"
-              [acceptNew]="acceptNew"
-              [colorService]="colorService"
-              [label]="label"
-              [required]="required"
-              [disabled]="disabled"
-              [hintMessage]="hintMessage"
-              [errorMessage]="errorMessage">
+  <b-chip-input [options]="options"
+                [value]="value"
+                [acceptNew]="acceptNew"
+                [label]="label"
+                [placeholder]="placeholder"
+                [required]="required"
+                [disabled]="disabled"
+                [hintMessage]="hintMessage"
+                [errorMessage]="errorMessage">
   </b-chip-input>
 `;
 const template2 = `
@@ -72,14 +71,15 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      options: options,
+      value: array('value', value, ','),
       acceptNew: boolean('acceptNew', true),
-      colorService: colorService,
       label: text('label', 'What are your hobbies?'),
+      placeholder: text('placehodler', 'Add tags and press ‘Enter’'),
       disabled: boolean('disabled', false),
       required: boolean('required', false),
       hintMessage: text('hintMessage', 'Stick something in me'),
-      errorMessage: text('errorMessage', '')
+      errorMessage: text('errorMessage', ''),
+      options: array('options', options, ',')
     },
     moduleMetadata: {
       imports: [ChipsModule, StoryBookLayoutModule]

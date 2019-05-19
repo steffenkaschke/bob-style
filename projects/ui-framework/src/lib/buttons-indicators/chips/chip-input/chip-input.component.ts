@@ -3,7 +3,10 @@ import {
   Input,
   ViewChild,
   ElementRef,
-  forwardRef
+  forwardRef,
+  OnInit,
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
@@ -15,7 +18,6 @@ import {
 } from '@angular/material';
 import { FormControl, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { ChipOptions } from '../chips.interface';
 import { startWith, map } from 'rxjs/operators';
 import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
 import { BaseFormElement } from '../../../form-elements/base-form-element';
@@ -38,21 +40,18 @@ import { ChipType } from '../chips.enum';
     }
   ]
 })
-export class ChipInputComponent extends BaseFormElement {
-  @Input('chips')
-  set chips(value: ChipOptions[]) {
-    this.allChips = value;
-  }
-
+export class ChipInputComponent extends BaseFormElement
+  implements OnChanges, OnInit {
+  @Input() value: string[];
+  @Input() options: string[];
   @Input() acceptNew = true;
-  @Input() colorService: Function;
+  @Input() placeholder: string;
+
+  filteredChips: Observable<string[]>;
+  possibleChips: string[] = [];
 
   removable = true;
   addOnBlur = false;
-  private allChips: ChipOptions[];
-  filteredChips: Observable<ChipOptions[]>;
-  selectedChips: ChipOptions[] = [];
-
   readonly chipType = ChipType;
   readonly resetIcon: String = Icons.reset_x;
   readonly iconSize = IconSize;
@@ -72,31 +71,51 @@ export class ChipInputComponent extends BaseFormElement {
     this.filteredChips = this.chipInputControl.valueChanges.pipe(
       startWith(null),
       map((chip: string | null) =>
-        chip ? this.filterChips(chip) : this.allChips.slice()
+        chip ? this.filterChips(chip) : this.possibleChips.slice()
       )
     );
   }
 
-  private findChip(text: string, chipsSource = this.allChips): ChipOptions {
-    return chipsSource.find(chip => chip.text === text);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.value && !changes.value.firstChange) {
+      this.value = changes.value.currentValue;
+      this.updatePossibleChips();
+    }
+    if (changes.options && !changes.options.firstChange) {
+      this.options = changes.options.currentValue;
+      this.updatePossibleChips();
+    }
   }
 
-  private removeChip(text: string, chipsSource = this.allChips): ChipOptions[] {
-    return chipsSource.filter(chip => chip.text !== text);
+  ngOnInit(): void {
+    this.updatePossibleChips();
+  }
+
+  updatePossibleChips(init = false) {
+    this.possibleChips = this.options.filter(ch => !this.value.includes(ch));
+  }
+
+  private findChip(name: string, chipsSource = this.possibleChips): string {
+    return chipsSource.find(chip => chip === name);
+  }
+
+  private removeChip(name: string, chipsSource = this.possibleChips): string[] {
+    return chipsSource.filter(chip => chip !== name);
   }
 
   private filterChips(
-    text: string,
-    chipsSource = this.allChips
-  ): ChipOptions[] {
+    name: string,
+    chipsSource = this.possibleChips
+  ): string[] {
     return chipsSource.filter(
-      chip => chip.text.toLowerCase().indexOf(text.toLowerCase()) === 0
+      chip => chip.toLowerCase().indexOf(name.toLowerCase()) === 0
     );
   }
 
-  commitChip(chipToAdd: ChipOptions): void {
-    if (chipToAdd && !this.findChip(chipToAdd.text, this.selectedChips)) {
-      this.selectedChips.push(chipToAdd);
+  commitChip(chipToAdd: string): void {
+    if (chipToAdd && !this.findChip(chipToAdd, this.value)) {
+      this.value.push(chipToAdd);
+      this.updatePossibleChips();
       this.input.nativeElement.value = '';
       this.chipInputControl.setValue(null);
     }
@@ -104,18 +123,11 @@ export class ChipInputComponent extends BaseFormElement {
 
   add(event: MatChipInputEvent): void {
     if (!this.autocomplete.isOpen) {
-      const text = (event.value || '').trim();
-      let chipToAdd;
+      const name = (event.value || '').trim();
+      let chipToAdd = this.findChip(name);
 
-      if (text) {
-        chipToAdd = this.findChip(text);
-
-        if (!chipToAdd && this.acceptNew) {
-          chipToAdd = { text };
-          if (this.colorService) {
-            chipToAdd.color = this.colorService();
-          }
-        }
+      if (!chipToAdd && this.acceptNew) {
+        chipToAdd = name;
       }
 
       this.commitChip(chipToAdd);
@@ -127,26 +139,35 @@ export class ChipInputComponent extends BaseFormElement {
     this.commitChip(chipToAdd);
   }
 
-  remove(chip: ChipOptions): void {
-    this.selectedChips = this.removeChip(chip.text, this.selectedChips);
+  remove(name: string): void {
+    this.value = this.removeChip(name, this.value);
+    this.updatePossibleChips();
   }
 
-  onKeyBackspace(): void {
-    if (
-      this.input.nativeElement.value === '' &&
-      (this.chipList.chips.last as any)
-    ) {
-      if ((this.chipList.chips.last as any).aboutToDelete) {
-        this.selectedChips.pop();
-      } else {
-        this.chipList.chips.last.selected = true;
-        (this.chipList.chips.last as any).aboutToDelete = true;
-      }
+  onInputKeydown(event: KeyboardEvent): void {
+    if (event.key.toUpperCase() === 'BACKSPACE') {
+      if (
+        this.input.nativeElement.value === '' &&
+        (this.chipList.chips.last as any)
+      ) {
+        if ((this.chipList.chips.last as any).aboutToDelete) {
+          this.value.pop();
+          this.updatePossibleChips();
+        } else {
+          this.chipList.chips.last.selected = true;
+          (this.chipList.chips.last as any).aboutToDelete = true;
+        }
 
-      setTimeout(() => {
-        this.input.nativeElement.focus();
-        this.autocompleteTrigger.closePanel();
-      }, 0);
+        setTimeout(() => {
+          this.input.nativeElement.focus();
+          this.autocompleteTrigger.closePanel();
+        }, 0);
+      }
+    } else {
+      if ((this.chipList.chips.last as any).aboutToDelete) {
+        delete (this.chipList.chips.last as any).aboutToDelete;
+        this.chipList.chips.last.selected = false;
+      }
     }
   }
 }
