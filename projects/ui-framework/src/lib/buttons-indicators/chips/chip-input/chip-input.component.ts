@@ -53,7 +53,6 @@ export class ChipInputComponent extends BaseFormElement
 
   removable = true;
   addOnBlur = false;
-  autocompleteOpen = false;
   readonly chipType = ChipType;
   readonly resetIcon: String = Icons.reset_x;
   readonly iconSize = IconSize;
@@ -145,6 +144,7 @@ export class ChipInputComponent extends BaseFormElement
       }
 
       this.commitChip(chipToAdd);
+      this.autocompleteTrigger.closePanel();
     }
   }
 
@@ -159,7 +159,7 @@ export class ChipInputComponent extends BaseFormElement
     this.propagateValue();
   }
 
-  unSelectLastChip(): void {
+  private unSelectLastChip(): void {
     if (
       this.chipList.chips.last &&
       (this.chipList.chips.last as any).aboutToDelete
