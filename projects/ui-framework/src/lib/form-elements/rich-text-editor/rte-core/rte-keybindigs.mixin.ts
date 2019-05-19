@@ -1,8 +1,8 @@
 import { SpecialBlots, BlotData } from './rte.interface';
 import { QuillKeyboardKeys } from './rte.enum';
 import { RteUtilsService } from './rte-utils.service';
-import { Quill, RangeStatic } from 'quill';
-import { default as Delta } from 'quill/node_modules/quill-delta/lib/delta';
+import quillLib, { Quill, RangeStatic, Delta as DeltaType } from 'quill';
+const Delta: typeof DeltaType = quillLib.import('delta');
 
 export class RteKeybindings {
   constructor() {}
