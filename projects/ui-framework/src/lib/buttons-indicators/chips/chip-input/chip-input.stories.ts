@@ -49,9 +49,16 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  text | string | chip text | ''
-  type | ChipType | enum for setting the chip type (empty, default, info, success, attention, warning) | default (optional)
-  color | string | custom chip color | '' (optional)
+  value | string[] | array of selected chips | none
+  options | string[] | array of all possible chips | none
+  acceptNew | boolean | if the input accepts new entries | true
+  label | string | label (on top of input) | none
+  placeholder | string | placeholder (inide input) | none
+  hintMessage | string | text below input | none
+  errorMessage | string | error text | none
+  required | boolean | if input is required | false
+  disabled | boolean | if input is disabled | false
+
 
   ~~~
   ${template}

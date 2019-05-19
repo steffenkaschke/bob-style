@@ -6,7 +6,8 @@ import {
   forwardRef,
   OnInit,
   SimpleChanges,
-  OnChanges
+  OnChanges,
+  HostListener
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
@@ -76,6 +77,12 @@ export class ChipInputComponent extends BaseFormElement
     );
   }
 
+  @HostListener('document:click', ['$event']) handleDocClick(
+    event: MouseEvent
+  ) {
+    this.unSelectLastChip();
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.value && !changes.value.firstChange) {
       this.value = changes.value.currentValue;
@@ -91,7 +98,7 @@ export class ChipInputComponent extends BaseFormElement
     this.updatePossibleChips();
   }
 
-  updatePossibleChips(init = false) {
+  private updatePossibleChips(init = false) {
     this.possibleChips = this.options.filter(ch => !this.value.includes(ch));
   }
 
@@ -112,7 +119,7 @@ export class ChipInputComponent extends BaseFormElement
     );
   }
 
-  commitChip(chipToAdd: string): void {
+  private commitChip(chipToAdd: string): void {
     if (chipToAdd && !this.findChip(chipToAdd, this.value)) {
       this.value.push(chipToAdd);
       this.updatePossibleChips();
@@ -144,6 +151,13 @@ export class ChipInputComponent extends BaseFormElement
     this.updatePossibleChips();
   }
 
+  unSelectLastChip(): void {
+    if ((this.chipList.chips.last as any).aboutToDelete) {
+      delete (this.chipList.chips.last as any).aboutToDelete;
+      this.chipList.chips.last.selected = false;
+    }
+  }
+
   onInputKeydown(event: KeyboardEvent): void {
     if (event.key.toUpperCase() === 'BACKSPACE') {
       if (
@@ -164,10 +178,7 @@ export class ChipInputComponent extends BaseFormElement
         }, 0);
       }
     } else {
-      if ((this.chipList.chips.last as any).aboutToDelete) {
-        delete (this.chipList.chips.last as any).aboutToDelete;
-        this.chipList.chips.last.selected = false;
-      }
+      this.unSelectLastChip();
     }
   }
 }
