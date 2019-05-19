@@ -17,7 +17,7 @@ const story = storiesOf(
 ).addDecorator(withKnobs);
 
 const options = chipOptionsMock;
-const value = randomFromArray(chipOptionsMock, 4);
+const value = [...randomFromArray(chipOptionsMock, 3), 'Rimming'];
 
 const template = `
   <b-chip-input [options]="options"
