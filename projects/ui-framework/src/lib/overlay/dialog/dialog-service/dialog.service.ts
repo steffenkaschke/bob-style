@@ -12,6 +12,7 @@ export class DialogService {
     [DialogSize.small]: 450,
     [DialogSize.medium]: 700,
     [DialogSize.large]: 960,
+    [DialogSize.xLarge]: '90vw',
   };
 
   constructor(
@@ -33,6 +34,7 @@ export class DialogService {
       panelClass: ['b-dialog-panel', `size-${ config.size }`, config.panelClass],
       hasBackdrop: true,
       disableClose: false,
+      maxWidth: '90vw',
     });
 
     const dialogRef = this.dialog.open(dialogComponent, dialogConfig);
