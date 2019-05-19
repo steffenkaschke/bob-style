@@ -1,11 +1,11 @@
 <mat-form-field (click)="input.focus();"
-                [ngClass]="{'disabled': disabled, '
-                required': required,
-                'error': errorMessage,
-                'autocomplete-open': auto.isOpen}"
+                [ngClass]="{'disabled': disabled,
+                            'required': required,
+                            'error': errorMessage,
+                            'autocomplete-open': auto.isOpen}"
                 [floatLabel]="placeholder ? 'always' : 'auto'">
 
-  <mat-label>{{label}}</mat-label>
+  <mat-label *ngIf="label">{{label}}</mat-label>
 
   <mat-chip-list #chipList
                  selectable="false">

@@ -131,6 +131,17 @@ export class ChipInputComponent extends BaseFormElement
       this.propagateValue();
       this.input.nativeElement.value = '';
       this.chipInputControl.setValue(null);
+    } else if (chipToAdd) {
+      const existingChipElemnent = this.chipList.chips.find(
+        ch => ch._elementRef.nativeElement.innerText === chipToAdd
+      )._elementRef.nativeElement;
+
+      if (existingChipElemnent) {
+        existingChipElemnent.classList.add('blink');
+        setTimeout(() => {
+          existingChipElemnent.classList.remove('blink');
+        }, 200);
+      }
     }
   }
 
