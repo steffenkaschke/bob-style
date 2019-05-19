@@ -110,13 +110,16 @@
 // autocomplete
 
 ::ng-deep .chip-input-autocomplete {
+  &.mat-autocomplete-panel {
+    @include OverlayPanel(null);
+  }
   .mat-option {
     color: $body-text-color;
     @include BodyFont($font-size-body, null, $line-height-body, null);
-    height: 40px;
+    height: 44px;
 
-    &.mat-autocomplete-panel {
-      @include OverlayPanel();
+    &:hover:not(.mat-option-disabled) {
+      background-color: $grey-100;
     }
   }
 }
