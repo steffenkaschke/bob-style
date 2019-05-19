@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { UpdateRteConfig, BlotData } from '../rte.interface';
+import { UpdateRteConfig, BlotData } from './rte.interface';
 import { Quill, RangeStatic } from 'quill';
 import { default as Delta } from 'quill-delta';
-import Parchment from 'parchment';
-import { Blot } from 'parchment/src/blot/abstract/blot';
-import { TextBlot } from 'quill/blots/text';
 import { keysFromArrayOrObject } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
+import { BlotType } from './rte.enum';
 
 @Injectable()
 export class RteUtilsService {
@@ -46,33 +44,54 @@ export class RteUtilsService {
       : selection.getRangeAt(0);
   }
 
-  getCurrentBlot(index: number = null, editor: Quill = null): Blot {
-    let node: Node;
-    if (index && editor) {
-      node = editor.getLeaf(index)[0].domNode;
+  getBlotDataFromElement(
+    element: any,
+    editor: Quill,
+    skipformat = false
+  ): BlotData {
+    let node: any;
+    if (this.DOM.isTextNode(element)) {
+      node = element;
+      element = node.parentElement;
     } else {
-      const nativeRange = this.getNativeRange();
-      node = nativeRange && nativeRange.endContainer;
+      node = element.childNodes[0];
     }
+    const blot =
+      element && element.__blot
+        ? element.__blot.blot
+        : node && node.__blot
+        ? node.__blot.blot
+        : null;
 
-    // if we have Element and not Node
-    if (this.DOM.isElement(node)) {
-      node = this.DOM.getDeepTextNode(node as HTMLElement) || node;
-    }
-
-    if (!node) {
+    if (!blot) {
       return;
     }
 
-    let blot = Parchment.find(node);
-    if (!blot) {
-      blot = Parchment.find(node.parentElement);
-    }
-    return blot;
-  }
+    const index = blot.offset(editor.scroll);
+    const text = blot.text || (node && node.textContent) || element.innerText;
+    const length = text ? text.length : 0;
+    const format =
+      (!skipformat && {
+        [blot.statics.blotName as string]: blot.statics.formats
+          ? blot.statics.formats(element)
+          : true
+      }) ||
+      {};
 
-  getBlotIndex(blot: Blot, editor: Quill): number {
-    return blot && blot.offset(editor.scroll);
+    return {
+      index,
+      endIndex: index + length,
+      length: length,
+      text,
+      format: (skipformat || Object.keys(format).length > 0) && format,
+      node,
+      blot,
+      element,
+      link: format[BlotType.link],
+      formatIs: f => format && format.hasOwnProperty(f),
+      select: () => this.selectBlot({ index, length, format }, editor),
+      delete: () => this.deleteRange({ index, length }, editor)
+    };
   }
 
   getCurrentBlotData(
@@ -80,48 +99,22 @@ export class RteUtilsService {
     skipformat = false,
     index: number = null
   ): BlotData {
-    const blot = this.getCurrentBlot(index, editor);
-    if (!blot) {
-      return null;
+    let node: Node;
+    if (index && editor) {
+      node = editor.getLeaf(index)[0] && editor.getLeaf(index)[0].domNode;
+    } else {
+      const nativeRange = this.getNativeRange();
+      node = nativeRange && nativeRange.endContainer; // startContainer
     }
-    index = this.getBlotIndex(blot, editor);
-    const text = (blot as TextBlot).text || '';
-    const format = (!skipformat && editor.getFormat(index + 1)) || {};
-    const node = blot.domNode;
-    const element = this.DOM.isTextNode(node)
-      ? (node as HTMLElement)
-      : node.parentElement;
-
-    return {
-      index,
-      length: text.length,
-      text,
-      format: (skipformat || Object.keys(format).length > 0) && format,
-      node,
-      element,
-      link: format && format['Link']
-    };
-  }
-
-  getBlotDataFromElement(element: any, editor: Quill): BlotData {
-    const blot = element.__blot.blot;
-    const index = blot.offset(editor.scroll);
-    const domelement = blot.domNode;
-    const text = domelement.innerText;
-    const format = { [blot.statics.blotName]: blot.statics.formats() };
-
-    return {
-      index,
-      length: text.length,
-      text,
-      format,
-      element: domelement
-    };
+    if (!node) {
+      return;
+    }
+    return this.getBlotDataFromElement(node, editor, skipformat);
   }
 
   commonFormats(f1: string[] | {}, f2: string[] | {}): string[] {
     if (!f1 || !f2) {
-      return [];
+      return null;
     }
     const f1keys = keysFromArrayOrObject(f1);
     const f2keys = keysFromArrayOrObject(f2);
@@ -132,6 +125,27 @@ export class RteUtilsService {
   deleteRange(range: RangeStatic, editor: Quill): Delta {
     return editor.updateContents(
       new Delta().retain(range.index).delete(range.length)
+    );
+  }
+
+  deleteBlot(blot: Partial<BlotData>, editor: Quill): Delta {
+    return this.deleteRange(
+      {
+        index: blot.index,
+        length: blot.length
+      },
+      editor
+    );
+  }
+
+  insertAtIndex(
+    editor: Quill,
+    text: string,
+    index: number,
+    format = {}
+  ): Delta {
+    return editor.updateContents(
+      new Delta().retain(index).insert(text, format)
     );
   }
 
@@ -163,7 +177,7 @@ export class RteUtilsService {
       : '';
   }
 
-  selectBlot(blot: BlotData, editor: Quill, offset = 0): RangeStatic {
+  selectBlot(blot: Partial<BlotData>, editor: Quill, offset = 0): RangeStatic {
     if (!blot.format) {
       return null;
     }
@@ -196,7 +210,10 @@ export class RteUtilsService {
       : '';
 
     const spaceAfter = config.addSpaces
-      ? this.spaceIfNeededAtIndex(config.startIndex, editor)
+      ? this.spaceIfNeededAtIndex(
+          config.startIndex + config.replaceStr.length,
+          editor
+        )
       : '';
 
     const insertedTextLength =

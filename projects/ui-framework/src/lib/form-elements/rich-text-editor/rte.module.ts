@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RichTextEditorComponent } from './rte.component';
 import { PanelModule } from '../../overlay/panel/panel.module';
 import { InputModule } from '../../form-elements/input/input.module';
-import { RteLinkEditorComponent } from './rte-link-editor/rte-link-editor.component';
+import { RteLinkEditorComponent } from './rte-link/rte-link-editor.component';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
-import { RteUtilsService } from './rte-utils/rte-utils.service';
+import { RteUtilsService } from './rte-core/rte-utils.service';
 import { IconsModule } from '../../icons/icons.module';
 import { MatFormFieldModule } from '@angular/material';
 import { UtilsModule } from '../../services/utils/utils.module';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
-import { PlaceholderRteConverterService } from './placeholder-rte-converter/placeholder-rte-converter.service';
+import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
 import { SingleListModule } from '../lists/single-list/single-list.module';
 
 @NgModule({
@@ -23,7 +23,7 @@ import { SingleListModule } from '../lists/single-list/single-list.module';
     IconsModule,
     MatFormFieldModule,
     UtilsModule,
-    SingleListModule,
+    SingleListModule
   ],
   exports: [RichTextEditorComponent],
   providers: [RteUtilsService, DOMhelpers, PlaceholderRteConverterService]

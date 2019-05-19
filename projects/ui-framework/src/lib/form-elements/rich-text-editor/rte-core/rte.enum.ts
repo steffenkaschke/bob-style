@@ -13,7 +13,12 @@ export enum BlotType {
   list = 'list',
   direction = 'direction',
   align = 'align',
-  placeholder = 'Placeholder',
+  placeholder = 'Placeholder'
+}
+
+export enum UtilBlotType {
+  cursor = 'cursor',
+  block = 'block',
   color = 'color'
 }
 
@@ -29,7 +34,7 @@ export enum RTEchangeEvent {
   blur = 'blur'
 }
 
-export enum KeyboardKeys {
+export enum QuillKeyboardKeys {
   backspace = 'BACKSPACE',
   tab = 'TAB',
   enter = 'ENTER',
@@ -39,4 +44,11 @@ export enum KeyboardKeys {
   right = 'RIGHT',
   down = 'DOWN',
   delete = 'DELETE'
+}
+
+export enum DOMkeyboardKeys {
+  left = 'ARROWLEFT',
+  up = 'ARROWUP',
+  right = 'ARROWRIGHT',
+  down = 'ARROWDOWN'
 }

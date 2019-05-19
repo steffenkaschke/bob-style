@@ -12,11 +12,17 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
-import quillLib, { Quill, QuillOptionsStatic, RangeStatic } from 'quill';
+import quillLib, {
+  Quill,
+  QuillOptionsStatic,
+  RangeStatic,
+  DeltaOperation
+} from 'quill';
+import { default as Delta } from 'quill-delta';
 import { RTEchangeEvent, BlotType, RTEFontSize } from './rte.enum';
-import { RteUtilsService } from './rte-utils/rte-utils.service';
-import { BlotData, SpecialBlots } from './rte.interface';
-import { BaseFormElement } from '../base-form-element';
+import { RteUtilsService } from './rte-utils.service';
+import { BlotData, SpecialBlots, StoreCurrentResult } from './rte.interface';
+import { BaseFormElement } from '../../base-form-element';
 
 const Block = quillLib.import('blots/block');
 Block.tagName = 'DIV';
@@ -25,7 +31,7 @@ quillLib.register(Block, true);
 export abstract class RTEformElement extends BaseFormElement
   implements OnChanges, AfterViewInit {
   protected constructor(
-    private rteUtils: RteUtilsService,
+    public rteUtils: RteUtilsService,
     private changeDetector: ChangeDetectorRef,
     private injector: Injector
   ) {
@@ -48,9 +54,11 @@ export abstract class RTEformElement extends BaseFormElement
 
   public editor: Quill;
   public hasSizeSet = false;
-  protected selection: RangeStatic;
-  protected selectedText: string;
-  protected currentBlot: BlotData;
+  public selection: RangeStatic;
+  public selectedText: string;
+  public currentBlot: BlotData;
+  public lastSelection: RangeStatic;
+  public lastCurrentBlot: BlotData;
   private latestOutputValue: string;
   private writingValue = false;
   private control: FormControl;
@@ -60,8 +68,21 @@ export abstract class RTEformElement extends BaseFormElement
     noLinebreakAfterDefs: []
   };
 
-  protected inputTransformers: Function[] = [];
-  protected outputTransformers: Function[] = [];
+  public storeLastChange = false;
+  public lastChange: DeltaOperation;
+
+  public editorOptions: QuillOptionsStatic = {
+    theme: 'snow',
+    placeholder: this.rteUtils.getEditorPlaceholder(this.label, this.required),
+    modules: {
+      clipboard: {
+        matchVisual: false
+      }
+    }
+  };
+
+  public inputTransformers: Function[] = [];
+  public outputTransformers: Function[] = [];
   protected outputFormatTransformer: Function = (val: string): any => val;
 
   protected onNgChanges(changes: SimpleChanges): void {}
@@ -181,7 +202,9 @@ export abstract class RTEformElement extends BaseFormElement
       );
     }
     this.onControlChanges(changes);
+
     this.onNgChanges(changes);
+
     if (changes.value) {
       this.applyValue(changes.value.currentValue);
     }
@@ -204,11 +227,26 @@ export abstract class RTEformElement extends BaseFormElement
     this.onNgAfterViewInit();
   }
 
-  private onEditorTextChange(): void {
+  private onEditorTextChange(
+    delta: Delta,
+    oldDelta: Delta,
+    source: string
+  ): void {
+    if (this.storeLastChange) {
+      this.lastChange = oldDelta.diff(this.editor.getContents()).ops[1];
+      if (this.lastChange && this.lastChange.delete) {
+        this.lastChange = {
+          delete: this.editor.getContents().diff(oldDelta).ops[1].insert
+        };
+      }
+    }
     this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
   }
 
-  private onEditorSelectionChange(range: RangeStatic): void {
+  private onEditorSelectionChange(
+    range: RangeStatic,
+    oldRange: RangeStatic
+  ): void {
     if (range) {
       const newSize = !!this.editor.getFormat(range).size;
       if (this.hasSizeSet !== newSize) {
@@ -225,29 +263,64 @@ export abstract class RTEformElement extends BaseFormElement
   private onEditorBlur(): void {
     this.transmitValue(this.sendChangeOn === RTEchangeEvent.blur);
 
-    if (!this.writingValue && this.sendChangeOn === RTEchangeEvent.blur) {
-      this.onTouched();
-    }
-
     this.blurred.emit(this.value);
   }
 
-  protected storeCurrentSelection(selection = null, text = null) {
-    this.selection =
-      selection || this.rteUtils.getCurrentSelection(this.editor);
-    this.selectedText =
-      text || this.rteUtils.getSelectionText(this.editor, this.selection);
-  }
-
-  public storeCursor(): void {
+  public storeSelection(): void {
     this.selection = this.rteUtils.getCurrentSelection(this.editor);
   }
 
-  public restoreCursor(): void {
+  public restoreSelection(): void {
     this.editor.focus();
     if (this.selection) {
       this.editor.setSelection(this.selection);
     }
+  }
+
+  public storeCurrent(
+    selection: RangeStatic | boolean = true,
+    blot: Partial<BlotData> | boolean = true,
+    text: string | boolean = false
+  ): StoreCurrentResult {
+    const currentSelection = selection
+      ? (selection as RangeStatic).index
+        ? (selection as RangeStatic)
+        : this.rteUtils.getCurrentSelection(this.editor)
+      : this.selection;
+    let currentBlot: BlotData;
+
+    if (blot && (blot as BlotData).element) {
+      currentBlot = this.rteUtils.getBlotDataFromElement(
+        (blot as BlotData).element,
+        this.editor
+      );
+    } else if (blot) {
+      currentBlot = this.rteUtils.getCurrentBlotData(
+        this.editor,
+        false,
+        (blot as BlotData).index ||
+          ((blot as BlotData).offset &&
+            currentSelection.index + (blot as BlotData).offset)
+      );
+    }
+    const selectedText =
+      text && typeof text === 'string'
+        ? text
+        : this.rteUtils.getSelectionText(this.editor, currentSelection);
+
+    const result: StoreCurrentResult = {};
+
+    if (selection) {
+      result.selection = this.selection = currentSelection;
+    }
+    if (blot) {
+      result.currentBlot = this.currentBlot = currentBlot;
+    }
+    if (text) {
+      result.text = this.selectedText = selectedText;
+    }
+
+    return result;
   }
 
   public changeFontSize(size: RTEFontSize) {
@@ -268,16 +341,25 @@ export abstract class RTEformElement extends BaseFormElement
 
     this.editor.enable(!this.disabled);
 
-    this.editor.on('text-change', () => {
-      this.onEditorTextChange();
-    });
-
     if (!!this.value) {
       this.applyValue(this.value);
     }
 
-    this.editor.on('selection-change', range => {
-      this.onEditorSelectionChange(range);
+    // attaching events
+
+    this.editor.on('editor-change', (eventName: string, ...args: any[]) => {
+      if (eventName === 'text-change') {
+        this.onEditorTextChange(
+          args[0] as Delta, // current Delta
+          args[1] as Delta, // previous Delta
+          args[3] as string // user, api or silent
+        );
+      } else if (eventName === 'selection-change') {
+        this.onEditorSelectionChange(
+          args[0] as RangeStatic, // current range
+          args[1] as RangeStatic // previous range
+        );
+      }
     });
 
     this.editor.root.addEventListener('focus', () => {

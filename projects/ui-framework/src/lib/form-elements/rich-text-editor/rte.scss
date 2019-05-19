@@ -1,6 +1,6 @@
-@import '../../../style/typography';
-@import '../../../style/colors';
-@import '../../../style/mixins';
+@import '../../style/typography';
+@import '../../style/colors';
+@import '../../style/mixins';
 
 $button-width: 25px;
 $button-icon-size: 14px;
@@ -481,4 +481,4 @@ $border-color-error: $color-error;
   }
 }
 
-@import 'rte-placeholders.scss';
+@import './rte-placeholder/rte-placeholders.scss';
