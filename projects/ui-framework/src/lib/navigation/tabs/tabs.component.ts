@@ -2,7 +2,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   ViewChild,
   AfterViewInit
@@ -16,7 +15,7 @@ import { TabsType } from './tabs.enum';
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss']
 })
-export class TabsComponent implements OnInit, AfterViewInit {
+export class TabsComponent implements AfterViewInit {
   @Input() public type: TabsType = TabsType.primary;
   @Input() public tabs: Tab[] = [];
   @Input() public selectedIndex = 0;
@@ -27,8 +26,6 @@ export class TabsComponent implements OnInit, AfterViewInit {
   @ViewChild('tabgroup') tabGroup: MatTabGroup;
 
   constructor() {}
-
-  ngOnInit() {}
 
   ngAfterViewInit() {
     this.tabGroup._tabHeader._labelWrappers.forEach(label => {
