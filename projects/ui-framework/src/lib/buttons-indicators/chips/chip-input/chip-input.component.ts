@@ -104,7 +104,9 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   private updatePossibleChips(init = false) {
-    this.possibleChips = this.options.filter(ch => !this.value.includes(ch));
+    this.possibleChips = this.options.filter(
+      ch => !this.value.find(c => c.toLowerCase() === ch.toLowerCase())
+    );
   }
 
   private findChip(name: string, chipsSource = this.possibleChips): string {
@@ -134,7 +136,6 @@ export class ChipInputComponent extends BaseFormElement
       this.input.nativeElement.value = '';
       this.chipInputControl.setValue(null);
     } else if (chipToAdd) {
-      console.log(this.value);
       const existingChipElemnent = this.chipList.chips.find(
         ch =>
           ch._elementRef.nativeElement.innerText.toLowerCase() ===
