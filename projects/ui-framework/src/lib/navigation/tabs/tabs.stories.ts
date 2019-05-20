@@ -14,7 +14,7 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { Tab } from './tabs.interface';
-import { TabType } from './tabs.enum';
+import { TabsType } from './tabs.enum';
 
 const inputStories = storiesOf(
   ComponentGroupType.Navigation,
@@ -57,6 +57,7 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   tabs | Tabs[] | tabs metadata
+  type | TabsType | tabs style (defaults to 'primary')
   selectChange | event | tab event which contains the change index
   selectedIndex | number | the selected tab index 0-n
 
@@ -71,7 +72,7 @@ inputStories.add(
       template: storyTemplate,
       props: {
         tabs: object<Tab>('tabs', tabs),
-        type: select('type', Object.values(TabType), TabType.primary),
+        type: select('type', Object.values(TabsType), TabsType.primary),
         onSelectedTabChange: action(),
         selectedIndex: number('selectedIndex', 0, 0)
       },

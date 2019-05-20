@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { Tab } from './tabs.interface';
 import { MatTabChangeEvent, MatTabGroup } from '@angular/material';
-import { TabType } from './tabs.enum';
+import { TabsType } from './tabs.enum';
 
 @Component({
   selector: 'b-tabs',
@@ -17,7 +17,7 @@ import { TabType } from './tabs.enum';
   styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent implements OnInit, AfterViewInit {
-  @Input() public type: TabType = TabType.primary;
+  @Input() public type: TabsType = TabsType.primary;
   @Input() public tabs: Tab[] = [];
   @Input() public selectedIndex = 0;
   @Output() selectChange: EventEmitter<MatTabChangeEvent> = new EventEmitter<
