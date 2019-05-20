@@ -1,29 +1,45 @@
 import { storiesOf } from '@storybook/angular';
-import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  array,
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { TabsModule } from './tabs.module';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { Tab } from './tabs.interface';
+import { TabType } from './tabs.enum';
 
-const inputStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
+const inputStories = storiesOf(
+  ComponentGroupType.Navigation,
+  module
+).addDecorator(withKnobs);
 
 const tabs: Tab[] = [
   {
-    label: 'tab 1'
+    label: 'Add new hire'
   },
   {
-    label: 'tab 2'
+    label: 'Employee changes'
   },
   {
-    label: 'tab 3'
+    label: 'Leave'
+  },
+  {
+    label: 'Termination'
   }
 ];
 const template = `
 <b-tabs [tabs]="tabs"
-        (selectChange)="onSelectedTabChange($event)"
-        [selectedIndex]="selectedIndex">
+        [type]="type"
+        [selectedIndex]="selectedIndex"
+        (selectChange)="onSelectedTabChange($event)">
 </b-tabs>`;
 
 const storyTemplate = `
@@ -55,6 +71,7 @@ inputStories.add(
       template: storyTemplate,
       props: {
         tabs: object<Tab>('tabs', tabs),
+        type: select('type', Object.values(TabType), TabType.primary),
         onSelectedTabChange: action(),
         selectedIndex: number('selectedIndex', 0, 0)
       },

@@ -1,25 +1,43 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
 import { Tab } from './tabs.interface';
-import { MatTabChangeEvent } from '@angular/material';
+import { MatTabChangeEvent, MatTabGroup } from '@angular/material';
+import { TabType } from './tabs.enum';
 
 @Component({
   selector: 'b-tabs',
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss']
 })
-export class TabsComponent implements OnInit {
+export class TabsComponent implements OnInit, AfterViewInit {
+  @Input() public type: TabType = TabType.primary;
   @Input() public tabs: Tab[] = [];
   @Input() public selectedIndex = 0;
-  @Output() selectChange: EventEmitter<MatTabChangeEvent> = new EventEmitter<MatTabChangeEvent>();
+  @Output() selectChange: EventEmitter<MatTabChangeEvent> = new EventEmitter<
+    MatTabChangeEvent
+  >();
 
-  constructor() {
-  }
+  @ViewChild('tabgroup') tabGroup: MatTabGroup;
 
-  ngOnInit() {
+  constructor() {}
+
+  ngOnInit() {}
+
+  ngAfterViewInit() {
+    this.tabGroup._tabHeader._labelWrappers.forEach(label => {
+      const element = label.elementRef.nativeElement;
+      element.style.width = element.clientWidth + 10 + 'px';
+    });
   }
 
   public onSelectChange($event: MatTabChangeEvent) {
     this.selectChange.emit($event);
   }
-
 }
