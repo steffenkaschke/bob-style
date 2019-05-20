@@ -1,4 +1,11 @@
-<mat-tab-group (selectedTabChange)="onSelectChange($event)" [selectedIndex]="selectedIndex" [disableRipple]="true">
-  <mat-tab *ngFor="let tab of tabs" label="{{tab.label}}">
+<mat-tab-group #tabgroup
+               [ngClass]="'tabs-'+type"
+               (selectedTabChange)="onSelectChange($event)"
+               [selectedIndex]="selectedIndex"
+               [disableRipple]="true">
+
+  <mat-tab *ngFor="let tab of tabs"
+           label="{{tab.label}}">
   </mat-tab>
+
 </mat-tab-group>

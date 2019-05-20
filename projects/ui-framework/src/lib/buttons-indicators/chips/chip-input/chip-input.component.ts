@@ -104,15 +104,19 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   private updatePossibleChips(init = false) {
-    this.possibleChips = this.options.filter(ch => !this.value.includes(ch));
+    this.possibleChips = this.options.filter(
+      ch => !this.value.find(c => c.toLowerCase() === ch.toLowerCase())
+    );
   }
 
   private findChip(name: string, chipsSource = this.possibleChips): string {
-    return chipsSource.find(chip => chip === name);
+    return chipsSource.find(chip => chip.toLowerCase() === name.toLowerCase());
   }
 
   private removeChip(name: string, chipsSource = this.possibleChips): string[] {
-    return chipsSource.filter(chip => chip !== name);
+    return chipsSource.filter(
+      chip => chip.toLowerCase() !== name.toLowerCase()
+    );
   }
 
   private filterChips(
@@ -133,7 +137,9 @@ export class ChipInputComponent extends BaseFormElement
       this.chipInputControl.setValue(null);
     } else if (chipToAdd) {
       const existingChipElemnent = this.chipList.chips.find(
-        ch => ch._elementRef.nativeElement.innerText === chipToAdd
+        ch =>
+          ch._elementRef.nativeElement.innerText.toLowerCase() ===
+          chipToAdd.toLowerCase()
       )._elementRef.nativeElement;
 
       if (existingChipElemnent) {
