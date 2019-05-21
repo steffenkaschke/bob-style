@@ -107,4 +107,15 @@ export class DOMhelpers {
   isElement(element: any) {
     return element.nodeType === Node.ELEMENT_NODE;
   }
+
+  getInnerWidth(element: HTMLElement) {
+    const computedStyle = getComputedStyle(element);
+    return (
+      element.offsetWidth -
+      parseFloat(computedStyle.paddingLeft) -
+      parseFloat(computedStyle.paddingRight) -
+      parseFloat(computedStyle.borderLeftWidth) -
+      parseFloat(computedStyle.borderRightWidth)
+    );
+  }
 }
