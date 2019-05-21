@@ -52,6 +52,10 @@
     &.clickable:hover {
       box-shadow: 0 3px 6px 0 $boxShadowColor;
     }
+
+    .avatar-badge {
+      @include size(16px);
+    }
   }
 
   &-medium,
@@ -61,16 +65,36 @@
     &.clickable:hover {
       box-shadow: 0 6px 12px 0 $boxShadowColor;
     }
+
+    .avatar-badge {
+      @include size(24px);
+    }
   }
 }
 
 .avatar-badge {
-  position: absolute;
-  top: -5%;
-  right: -5%;
+  display: block;
   border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0;
   z-index: 2;
   pointer-events: none;
+
+  &:before {
+    @include pseudo;
+    @include size(90%);
+    @include position(5% 5% 5% 5%);
+    border-radius: 50%;
+    background-color: white;
+    z-index: 0;
+  }
+}
+
+:host ::ng-deep {
+  .mat-icon {
+    position: relative;
+  }
 }
 
 .avatar-content {
@@ -84,8 +108,9 @@
   z-index: 1;
 }
 
-.title,
-.subtitle {
+.department,
+.name,
+.job {
   margin: 0;
 }
 
@@ -102,12 +127,12 @@
     margin-left: 8px;
     max-width: calc(100% - var(--avatar-size) + 8px);
 
-    .title,
-    .subtitle {
+    .name,
+    .job {
       @include BodyFont($lineHeight: null);
     }
 
-    .title {
+    .name {
       font-weight: $font-weight-bold-body;
     }
   }
@@ -124,10 +149,10 @@
     margin-left: 10px;
     max-width: calc(100% - var(--avatar-size) + 10px);
 
-    .title {
+    .name {
       @include DisplayFont($font-size-display-3, $font-weight-display-3);
     }
-    .subtitle {
+    .job {
       @include BodyFont($font-size-big-body);
     }
   }
@@ -136,11 +161,20 @@
     margin-left: 20px;
     max-width: calc(100% - var(--avatar-size) + 20px);
 
-    .title {
+    .name {
       @include DisplayFont($font-size-display-1, $font-weight-display-1);
     }
-    .subtitle {
+    .job {
       @include DisplayFont($font-size-display-3, $font-weight-display-3);
     }
   }
+}
+
+.department {
+  // @include BodyFont($lineHeight: null);
+  letter-spacing: 0.2px;
+}
+
+.status {
+  margin-top: 7px;
 }

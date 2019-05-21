@@ -9,9 +9,9 @@
 
   <b-icon *ngIf="badge && size !== avatarSize.mini"
           class="avatar-badge"
-          [icon]="badge.icon"
+          [icon]="badges[badge].icon"
           [size]="badgeSize[getSizeClass(size)]"
-          [color]="badge.color">
+          [color]="badges[badge].color">
   </b-icon>
 
   <div class="avatar-content"
@@ -27,14 +27,25 @@
 
   <h4 b-truncate-tooltip
       *ngIf="title"
-      class="title">
+      class="name">
     {{title}}
   </h4>
 
   <p b-truncate-tooltip
      *ngIf="subtitle"
-     class="subtitle">
+     class="job">
     {{subtitle}}
   </p>
+
+  <p class="department"
+     *ngIf="status && size === avatarSize.large">
+    {{ department }}
+  </p>
+
+  <b-chip *ngIf="status && size !== avatarSize.mini && size !== avatarSize.small"
+          [type]="disabled ? chipType.disabled : status.type"
+          [text]="status.text"
+          class="status">
+  </b-chip>
 
 </div>
