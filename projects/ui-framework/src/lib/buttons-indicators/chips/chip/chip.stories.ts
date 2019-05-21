@@ -22,7 +22,8 @@ const template = `
   <b-chip
     [type]="type"
     [color]="color"
-    (click)="OnClick()">
+    [removable]="removable"
+    (removed)="OnRemove()">
     {{ text }}
   </b-chip>
 `;
@@ -33,7 +34,7 @@ const template2 = `
 `;
 
 const note = `
-  ## Text-only Chip
+  ## Chip
   #### Module
   *ChipsModule*
 
@@ -43,6 +44,8 @@ const note = `
   text | string | chip text | ''
   type | ChipType | enum for setting the chip type (empty, default, info, success, attention, warning) | default (optional)
   color | string | custom chip color | '' (optional)
+  removable | boolean | if chip has a 'x' button | false
+  removed | Function | handler for chip-removed event | none
 
   ~~~
   ${template}
@@ -63,10 +66,12 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      OnClick: action('Chip clicked'),
       type: select('type', typeOptions, ChipType.default),
       text: text('text', 'Chip text'),
-      color: text('color', '')
+      color: text('color', ''),
+      removable: boolean('removable', false),
+      OnClick: action('Chip clicked'),
+      OnRemove: action('Chip removed')
     },
     moduleMetadata: {
       imports: [ChipsModule, StoryBookLayoutModule]
