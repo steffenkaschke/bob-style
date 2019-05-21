@@ -1,5 +1,5 @@
 import { BlotType, UtilBlotType } from './rte.enum';
-+import { Blot } from 'parchment/dist/src/blot/abstract/blot';
+import { Blot } from 'parchment/dist/src/blot/abstract/blot';
 import { DeltaStatic, RangeStatic } from 'quill';
 
 export interface UpdateRteConfig {
