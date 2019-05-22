@@ -55,7 +55,8 @@
                           [errorMessage]="error ? 'Error' : undefined"
                           (changed)="onRTEevent($event, 'change')"
                           (blurred)="onRTEevent($event, 'blur')"
-                          (focused)="onRTEevent($event, 'focus')">
+                          (focused)="onRTEevent($event, 'focus')"
+                          hintMessage="Hint message">
       </b-rich-text-editor>
     </p>
 

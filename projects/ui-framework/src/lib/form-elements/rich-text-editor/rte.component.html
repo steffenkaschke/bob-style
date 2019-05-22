@@ -13,7 +13,8 @@
        *ngIf="controls.length > 0 || hasSuffix"
        (mousedown)="$event.preventDefault()">
 
-    <b-panel panelClass="rte-size-controls"
+    <b-panel #sizePanel
+             panelClass="rte-size-controls"
              [showBackdrop]="false"
              [size]="panelSize.medium"
              *ngIf="controls.includes(BlotType.size)"
