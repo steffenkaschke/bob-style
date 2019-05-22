@@ -43,7 +43,10 @@ import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rt
 @Component({
   template: `
     <form class="form" [formGroup]="rteForm">
-      <b-rich-text-editor formControlName="rteControl"></b-rich-text-editor>
+      <b-rich-text-editor
+        [label]="'label text'"
+        formControlName="rteControl"
+      ></b-rich-text-editor>
     </form>
   `,
   providers: []
@@ -69,7 +72,7 @@ class TestComponent implements OnInit, OnDestroy {
   }
 }
 
-describe('RichTextEditorComponent', () => {
+fdescribe('RichTextEditorComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 
@@ -174,6 +177,12 @@ describe('RichTextEditorComponent', () => {
     });
 
     it('should insert label placeholder text', () => {
+      expect(RTEqlEditorNativeElement.getAttribute('data-placeholder')).toEqual(
+        'label text'
+      );
+    });
+
+    it('should update label placeholder text', () => {
       RTEComponent.ngOnChanges({
         label: new SimpleChange(null, 'test label', false)
       });

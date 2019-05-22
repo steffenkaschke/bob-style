@@ -266,7 +266,8 @@ $border-color-error: $color-error;
         }
       }
       &.ql-toolbar .ql-picker-item,
-      &.ql-toolbar .ql-picker-label {
+      &.ql-toolbar .ql-picker-label,
+      &.ql-toolbar .ql-active {
         color: $icon-color-disabled;
 
         .ql-fill,

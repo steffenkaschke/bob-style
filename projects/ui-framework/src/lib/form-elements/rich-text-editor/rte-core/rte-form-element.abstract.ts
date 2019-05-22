@@ -73,7 +73,6 @@ export abstract class RTEformElement extends BaseFormElement
 
   public editorOptions: QuillOptionsStatic = {
     theme: 'snow',
-    placeholder: this.rteUtils.getEditorPlaceholder(this.label, this.required),
     modules: {
       clipboard: {
         matchVisual: false
