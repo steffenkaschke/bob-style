@@ -12,18 +12,18 @@ export enum AvatarOrientation {
   vertical = 'vertical'
 }
 
-export enum BadgeSize {
-  mini = 'medium',
-  small = 'medium',
-  medium = 'large',
-  large = 'large'
-}
-
 export enum AvatarBadge {
   approved = 'approved',
   pending = 'pending',
   rejected = 'rejected'
 }
+
+export const BadgeSize = {
+  [AvatarSize.mini]: 'medium',
+  [AvatarSize.small]: 'medium',
+  [AvatarSize.medium]: 'large',
+  [AvatarSize.large]: 'large'
+};
 
 export const AvatarBadgeMap = {
   [AvatarBadge.approved]: {

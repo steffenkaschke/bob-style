@@ -21,6 +21,7 @@ import {
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { ChipType } from '../chips/chips.enum';
 import { Chip } from '../chips/chips.interface';
+import { BadgeConfig } from './avatar.interface';
 
 @Component({
   selector: 'b-avatar',
@@ -32,6 +33,12 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
 
   @ViewChild('content') private content: ElementRef;
 
+  public hasContent = true;
+  readonly avatarSize = AvatarSize;
+  readonly badgeSize = BadgeSize;
+  readonly chipType = ChipType;
+  public badgeConfig: BadgeConfig;
+
   @Input() imageSource: string;
   @Input() backgroundColor?: string;
   @Input() size: AvatarSize = AvatarSize.mini;
@@ -41,9 +48,7 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
   @Input() subtitle?: string;
   @Input() status?: Chip;
   @Input() department?: string;
-
-  @Input() badge: AvatarBadge;
-
+  @Input() badge: AvatarBadge | BadgeConfig;
   @Input() isClickable = false;
   @Input() disabled = false;
 
@@ -60,18 +65,18 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
     );
   }
 
-  public hasContent = true;
-  readonly avatarSize = AvatarSize;
-  readonly badgeSize = BadgeSize;
-  readonly chipType = ChipType;
-  readonly badges = AvatarBadgeMap;
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.size) {
       this.size = changes.size.currentValue;
       this.DOM.setCssProps(this.host.nativeElement, {
         '--avatar-size': this.size + 'px'
       });
+    }
+    if (changes.badge) {
+      this.badge = changes.badge.currentValue;
+      this.badgeConfig = (changes.badge.currentValue as BadgeConfig).icon
+        ? (changes.badge.currentValue as BadgeConfig)
+        : AvatarBadgeMap[changes.badge.currentValue as AvatarBadge];
     }
   }
 

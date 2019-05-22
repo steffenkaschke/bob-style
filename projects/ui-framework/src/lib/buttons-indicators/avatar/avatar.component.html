@@ -7,9 +7,9 @@
 
   <b-icon *ngIf="badge && size !== avatarSize.mini"
           class="avatar-badge"
-          [icon]="badges[badge].icon"
-          [size]="badgeSize[getSizeClass(size)]"
-          [color]="badges[badge].color">
+          [size]="badgeSize[size]"
+          [icon]="badgeConfig?.icon"
+          [color]="badgeConfig?.color">
   </b-icon>
 
   <div class="avatar-content"

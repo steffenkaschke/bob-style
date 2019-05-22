@@ -4,7 +4,8 @@ import {
   AvatarSize,
   BadgeSize,
   AvatarBadge,
-  AvatarOrientation
+  AvatarOrientation,
+  AvatarBadgeMap
 } from './avatar.enum';
 import { By } from '@angular/platform-browser';
 import { IconsModule } from '../../icons/icons.module';
@@ -142,19 +143,34 @@ describe('AvatarComponent', () => {
 
   describe('Badge', () => {
     it('Should add badge icon', () => {
-      component.badge = AvatarBadge.pending;
       component.ngOnChanges({
+        badge: new SimpleChange(null, AvatarBadge.pending, false),
         size: new SimpleChange(null, AvatarSize.small, false)
       });
       fixture.detectChanges();
       const badgeElement = fixture.debugElement.query(
-        By.css('.avatar-badge .mat-icon.' + BadgeSize.small)
+        By.css('.avatar-badge .mat-icon.' + BadgeSize[AvatarSize.small])
+      );
+      expect(badgeElement).toBeTruthy();
+    });
+    it('Should also accept BadgeConfig-format input', () => {
+      component.ngOnChanges({
+        badge: new SimpleChange(
+          null,
+          AvatarBadgeMap[AvatarBadge.pending],
+          false
+        ),
+        size: new SimpleChange(null, AvatarSize.medium, false)
+      });
+      fixture.detectChanges();
+      const badgeElement = fixture.debugElement.query(
+        By.css('.avatar-badge .mat-icon.' + BadgeSize[AvatarSize.medium])
       );
       expect(badgeElement).toBeTruthy();
     });
     it('Should not add badge icon to mini avatar', () => {
-      component.badge = AvatarBadge.pending;
       component.ngOnChanges({
+        badge: new SimpleChange(null, AvatarBadge.pending, false),
         size: new SimpleChange(null, AvatarSize.mini, false)
       });
       fixture.detectChanges();
