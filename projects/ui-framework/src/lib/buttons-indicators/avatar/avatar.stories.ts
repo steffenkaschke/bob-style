@@ -7,7 +7,7 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { zipObject } from 'lodash';
-import { AvatarSize, AvatarBadge } from './avatar.enum';
+import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { AvatarModule } from './avatar.module';
@@ -29,6 +29,7 @@ const sizeOptionsValues = Object.values(AvatarSize).filter(
 ) as number[];
 const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 
+const orientationOptions = Object.keys(AvatarOrientation);
 const badges = Object.keys(AvatarBadge);
 const chips = Object.keys(ChipType);
 
@@ -38,6 +39,7 @@ const template = `
   [imageSource]="imageSource"
   [backgroundColor]="backgroundColor"
   [size]="size"
+  [orientation]="orientation"
   [title]="title"
   [subtitle]="subtitle"
   [department]="department"
@@ -60,14 +62,18 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   imageSource | string | URL of the avatar image | none
-  size | AvatarSize | enum for setting the avatar size | mini (optional)
-  isClickable | boolean | flag for indicating if the avatar is clickable or not | false
-  title | string | main title of the avatar | none (optional)
-  subtitle | string | subtitle of the avatar | none (optional)
-  disabled | boolean | disabled avatar | false (optional)
-  badge | BadgeConfig | badge config: includes icon and color | undefined (optional)
-  clicked | Function | callback for clicking on the avatar | none
   backgroundColor | string | background color | none
+  size | AvatarSize | enum for setting the avatar size | mini
+  orientation | AvatarOrientation | vertical or horizontal | horizontal
+  title | string | main title of the avatar | none
+  subtitle | string | subtitle of the avatar | none
+  department | string | department & site | none
+  badge | AvatarBadge | approved, pending or rejected | none
+  status | Chip | object describing the status chip (should have type & text properties) | none
+  disabled | boolean | disabled avatar | false
+  isClickable | boolean | flag for indicating if the avatar is clickable or not | false
+  clicked | Function | callback for clicking on the avatar | none
+
   ~~~
   ${template}
   ~~~
@@ -90,6 +96,11 @@ avatarStories.add(
           'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
         ),
         size: select('size', sizeOptions, AvatarSize.large),
+        orientation: select(
+          'orientation',
+          orientationOptions,
+          AvatarOrientation.horizontal
+        ),
         isClickable: boolean('isClickable', false),
         clickHandler: action('Avatar Clicked'),
         title: text('title', 'John Doe'),

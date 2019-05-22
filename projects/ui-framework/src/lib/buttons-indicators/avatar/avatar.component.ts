@@ -6,7 +6,10 @@ import {
   Output,
   ViewChild,
   ElementRef,
-  AfterViewInit
+  AfterViewInit,
+  HostBinding,
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
 import {
   AvatarSize,
@@ -24,7 +27,7 @@ import { Chip } from '../chips/chips.interface';
   templateUrl: './avatar.component.html',
   styleUrls: ['./avatar.component.scss']
 })
-export class AvatarComponent implements OnInit, AfterViewInit {
+export class AvatarComponent implements OnChanges, AfterViewInit {
   constructor(private host: ElementRef, private DOM: DOMhelpers) {}
 
   @ViewChild('content') private content: ElementRef;
@@ -37,7 +40,7 @@ export class AvatarComponent implements OnInit, AfterViewInit {
   @Input() title?: string;
   @Input() subtitle?: string;
   @Input() status?: Chip;
-  @Input() department?: any;
+  @Input() department?: string;
 
   @Input() badge: AvatarBadge;
 
@@ -46,16 +49,30 @@ export class AvatarComponent implements OnInit, AfterViewInit {
 
   @Output() clicked?: EventEmitter<void> = new EventEmitter<void>();
 
+  @HostBinding('class')
+  get typeClass() {
+    return (
+      this.getSizeClass(this.size) +
+      ' ' +
+      this.orientation +
+      (this.isClickable ? ' clickable' : '') +
+      (this.disabled ? ' disabled' : '')
+    );
+  }
+
   public hasContent = true;
   readonly avatarSize = AvatarSize;
   readonly badgeSize = BadgeSize;
   readonly chipType = ChipType;
   readonly badges = AvatarBadgeMap;
 
-  ngOnInit(): void {
-    this.DOM.setCssProps(this.host.nativeElement, {
-      '--avatar-size': this.size + 'px'
-    });
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.size) {
+      this.size = changes.size.currentValue;
+      this.DOM.setCssProps(this.host.nativeElement, {
+        '--avatar-size': this.size + 'px'
+      });
+    }
   }
 
   ngAfterViewInit(): void {

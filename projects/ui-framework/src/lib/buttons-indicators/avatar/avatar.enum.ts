@@ -3,8 +3,8 @@ import { Icons, IconColor } from '../../icons/icons.enum';
 export enum AvatarSize {
   mini = 36,
   small = 60,
-  medium = 96,
-  large = 128
+  medium = 90,
+  large = 120
 }
 
 export enum AvatarOrientation {

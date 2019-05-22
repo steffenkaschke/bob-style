@@ -1,7 +1,5 @@
 <div class="avatar"
-     [ngClass]="'avatar-' + getSizeClass(size) +
-                (isClickable && !disabled ? ' clickable' : '') +
-                (disabled ? ' disabled' : '') +
+     [ngClass]="'avatar' +
                 (imageSource && imageSource.includes('emptyAvatar')
                 ? ' emptyAvatar' : '')"
      [ngStyle]="{ backgroundImage: imageSource ? 'url(' +  imageSource + ')' : null, backgroundColor: backgroundColor }"
@@ -22,8 +20,7 @@
 </div>
 
 <div *ngIf="title || subtitle"
-     class="avatar-title"
-     [ngClass]="'avatar-title-' + getSizeClass(size) + (disabled ? ' disabled' : '')">
+     class="avatar-title">
 
   <h4 b-truncate-tooltip
       *ngIf="title"
@@ -38,7 +35,7 @@
   </p>
 
   <p class="department"
-     *ngIf="status && size === avatarSize.large">
+     *ngIf="department && size === avatarSize.large">
     {{ department }}
   </p>
 

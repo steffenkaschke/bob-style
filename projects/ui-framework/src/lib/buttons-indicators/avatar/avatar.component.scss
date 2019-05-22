@@ -7,6 +7,12 @@
   align-items: center;
   text-align: left;
   max-width: 100%;
+
+  &::ng-deep {
+    .mat-icon {
+      position: relative;
+    }
+  }
 }
 
 .avatar {
@@ -26,59 +32,6 @@
   &.emptyAvatar {
     background-size: auto;
   }
-
-  &.disabled {
-    pointer-events: none;
-    opacity: 0.3;
-    box-shadow: none;
-  }
-
-  &.clickable {
-    cursor: pointer;
-
-    &:hover {
-      transform: scale(1.05);
-
-      .avatar-content {
-        opacity: 1;
-      }
-    }
-  }
-
-  &-mini,
-  &-small {
-    box-shadow: 0 1px 2px 0 $boxShadowColor;
-
-    &.clickable:hover {
-      box-shadow: 0 3px 6px 0 $boxShadowColor;
-    }
-
-    .avatar-badge {
-      @include size(16px);
-    }
-  }
-
-  &-medium,
-  &-large {
-    box-shadow: 0 2px 4px 0 $boxShadowColor;
-
-    &.clickable:hover {
-      box-shadow: 0 6px 12px 0 $boxShadowColor;
-    }
-
-    .avatar-badge {
-      @include size(24px);
-    }
-  }
-
-  &-large {
-    border-width: 3px;
-
-    .avatar-badge {
-      right: 3px;
-      top: 3px;
-    }
-  }
 }
 
 .avatar-badge {
@@ -97,12 +50,6 @@
     border-radius: 50%;
     background-color: white;
     z-index: 0;
-  }
-}
-
-:host ::ng-deep {
-  .mat-icon {
-    position: relative;
   }
 }
 
@@ -128,57 +75,6 @@
   display: flex;
   flex-direction: column;
   user-select: none;
-
-  &.disabled {
-    color: $grey-500;
-  }
-
-  &-mini,
-  &-small {
-    margin-left: 8px;
-    max-width: calc(100% - var(--avatar-size) + 8px);
-
-    .name,
-    .job {
-      @include BodyFont($lineHeight: null);
-    }
-
-    .name {
-      font-weight: $font-weight-bold-body;
-    }
-  }
-
-  &-mini {
-    line-height: 1.2;
-  }
-
-  &-small {
-    line-height: $line-height-body;
-  }
-
-  &-medium {
-    margin-left: 10px;
-    max-width: calc(100% - var(--avatar-size) + 10px);
-
-    .name {
-      @include DisplayFont($font-size-display-3, $font-weight-display-3);
-    }
-    .job {
-      @include BodyFont($font-size-big-body);
-    }
-  }
-
-  &-large {
-    margin-left: 18px;
-    max-width: calc(100% - var(--avatar-size) + 20px);
-
-    .name {
-      @include DisplayFont($font-size-display-1, $font-weight-display-1, 1);
-    }
-    .job {
-      @include DisplayFont($font-size-display-3, $font-weight-display-3);
-    }
-  }
 }
 
 .department {
@@ -188,4 +84,141 @@
 
 .status {
   margin-top: 10px;
+}
+
+:host {
+  &.mini,
+  &.small {
+    .avatar {
+      box-shadow: 0 1px 2px 0 $boxShadowColor;
+    }
+    &.clickable .avatar:hover {
+      box-shadow: 0 3px 6px 0 $boxShadowColor;
+    }
+    .avatar-badge {
+      @include size(16px);
+    }
+    &.horizontal {
+      .avatar-title {
+        margin-left: 8px;
+        max-width: calc(100% - var(--avatar-size) + 8px);
+      }
+    }
+    .name,
+    .job {
+      @include BodyFont($lineHeight: null);
+    }
+    .name {
+      font-weight: $font-weight-bold-body;
+    }
+  }
+
+  &.mini {
+    .avatar-title {
+      line-height: 1.2;
+    }
+  }
+
+  &.small {
+    .avatar-title {
+      line-height: $line-height-body;
+    }
+  }
+
+  &.medium,
+  &.large {
+    .avatar {
+      box-shadow: 0 2px 4px 0 $boxShadowColor;
+    }
+    &.clickable .avatar:hover {
+      box-shadow: 0 6px 12px 0 $boxShadowColor;
+    }
+    .avatar-badge {
+      @include size(24px);
+    }
+  }
+
+  &.medium {
+    &.horizontal {
+      .avatar-title {
+        margin-left: 10px;
+        max-width: calc(100% - var(--avatar-size) + 10px);
+      }
+    }
+    .name {
+      @include DisplayFont($font-size-display-3, $font-weight-display-3);
+    }
+    .job {
+      @include BodyFont($font-size-big-body);
+    }
+  }
+
+  &.large {
+    .avatar {
+      border-width: 3px;
+    }
+    .avatar-badge {
+      right: 3px;
+      top: 3px;
+    }
+    &.horizontal {
+      .avatar-title {
+        margin-left: 18px;
+        max-width: calc(100% - var(--avatar-size) + 20px);
+      }
+    }
+    .name {
+      @include DisplayFont($font-size-display-1, $font-weight-display-1, 1);
+    }
+    .job {
+      @include DisplayFont($font-size-display-3, $font-weight-display-3);
+    }
+  }
+
+  &.clickable {
+    .avatar {
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.05);
+
+        .avatar-content {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  &.disabled {
+    .avatar {
+      pointer-events: none;
+      opacity: 0.3;
+      box-shadow: none;
+    }
+    .avatar-title {
+      color: $grey-500;
+    }
+  }
+
+  &.vertical {
+    text-align: center;
+    flex-direction: column;
+
+    .avatar-title {
+      align-items: center;
+    }
+
+    &.large,
+    &.small,
+    &.mini {
+      .avatar-title {
+        margin-top: 3px;
+      }
+    }
+    &.medium {
+      .avatar-title {
+        margin-top: 5px;
+      }
+    }
+  }
 }
