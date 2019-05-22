@@ -1,5 +1,11 @@
 import { CardComponent } from './card.component';
-import { ComponentFixture, async, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  async,
+  TestBed,
+  fakeAsync,
+  tick
+} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
@@ -28,7 +34,13 @@ describe('CardComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent(MenuComponent)],
-      imports: [CardsModule, AvatarModule, SliderModule, TruncateTooltipModule, ComponentRendererModule],
+      imports: [
+        CardsModule,
+        AvatarModule,
+        SliderModule,
+        TruncateTooltipModule,
+        ComponentRendererModule
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .overrideModule(BrowserDynamicTestingModule, {
@@ -44,15 +56,18 @@ describe('CardComponent', () => {
         component.card = mockCardData;
         fixture.detectChanges();
 
-        cardContentElement = fixture.debugElement.query(By.css('.card-content')).nativeElement;
+        setTimeout(() => {}, 0);
+        avatarTitle = fixture.debugElement.query(By.css('.avatar-title .name'))
+          .nativeElement;
+        cardContentElement = fixture.debugElement.query(By.css('.card-content'))
+          .nativeElement;
 
         menuElement =
-          fixture.debugElement.query(By.css('b-menu')) && fixture.debugElement.query(By.css('b-menu')).nativeElement;
+          fixture.debugElement.query(By.css('b-menu')) &&
+          fixture.debugElement.query(By.css('b-menu')).nativeElement;
         menuComponent =
           fixture.debugElement.query(By.css('b-menu')) &&
           fixture.debugElement.query(By.css('b-menu')).componentInstance;
-
-        avatarTitle = fixture.debugElement.query(By.css('.avatar-title .title')).nativeElement;
       });
   }));
 
