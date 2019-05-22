@@ -20,7 +20,8 @@
 <div style="padding: 50px 100px; height: 100%; max-width: 700px; margin: auto; display: flex; flex-direction: column;
      justify-content: center;  ">
 
-  <form [formGroup]="myForm">
+  <form [formGroup]="myForm"
+        (ngSubmit)="onRteFormSubmit()">
     <p>
       Input: <br>
       <input type="text"
@@ -57,6 +58,9 @@
                           (focused)="onRTEevent($event, 'focus')">
       </b-rich-text-editor>
     </p>
+
+    <button type="submit"
+            [disabled]="!myForm.valid">Submit</button>
   </form>
   <br>
   <div>
