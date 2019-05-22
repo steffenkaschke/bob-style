@@ -68,7 +68,7 @@ const note = `
   title | string | main title of the avatar | none
   subtitle | string | subtitle of the avatar | none
   department | string | department & site | none
-  badge | AvatarBadge | approved, pending or rejected | none
+  badge | AvatarBadge / BadgeConfig | AvatarBadge enum of approved, pending or rejected / or BadgeConfig {icon, color} object  | none
   status | Chip | object describing the status chip (should have type & text properties) | none
   disabled | boolean | disabled avatar | false
   isClickable | boolean | flag for indicating if the avatar is clickable or not | false
