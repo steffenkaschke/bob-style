@@ -129,6 +129,7 @@
     $keys: nth($keys, 1);
   }
   $length: length($keys);
+  $get: map-get($map, nth($keys, 1));
   @if $length > 1 {
     @for $i from 2 through $length {
       @if $get != null and type-of($get) == 'map' {

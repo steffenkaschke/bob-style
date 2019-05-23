@@ -19,6 +19,9 @@ $avatarMap: (
     box-shadow-hover: 0 10px 15px 0 $boxShadowColor,
     border-width: 2px,
 
+    title: body $font-size-body $font-weight-bold-body 1.2,
+    subtitle: body $font-size-body $font-weight-body null,
+
     badge: (
       size: 16px,
       top: 0,
@@ -30,8 +33,10 @@ $avatarMap: (
       avatar-title-max-width: calc(100% - var(--avatar-size) + 8px)
     ),
 
-    title: body $font-size-body $font-weight-bold-body 1.2,
-    subtitle: body $font-size-body $font-weight-body null
+    vertical: (
+      avatar-title-marg-top: 3px
+    ),
+
   ),
 
   small: (
@@ -48,6 +53,10 @@ $avatarMap: (
     horizontal: (
       avatar-title-marg-left: 8px,
       avatar-title-max-width: calc(100% - var(--avatar-size) + 8px)
+    ),
+
+    vertical: (
+      avatar-title-marg-top: 3px
     ),
 
     title: body $font-size-body $font-weight-bold-body $line-height-body,
@@ -70,6 +79,10 @@ $avatarMap: (
       avatar-title-max-width: calc(100% - var(--avatar-size) + 10px)
     ),
 
+    vertical: (
+      avatar-title-marg-top: 5px
+    ),
+
     title: display $font-size-display-3 $font-weight-display-3,
     subtitle: body $font-size-big-body
   ),
@@ -88,6 +101,10 @@ $avatarMap: (
     horizontal: (
       avatar-title-marg-left: 18px,
       avatar-title-max-width: calc(100% - var(--avatar-size) + 18px)
+    ),
+
+    vertical: (
+      avatar-title-marg-top: 3px
     ),
 
     title: display $font-size-display-1 $font-weight-display-1 1,
@@ -316,4 +333,40 @@ $avatarMap: (
       }
     }
   }
+}
+
+
+@each $type, $typeProps in $avatarMap {
+
+  :host.#{$type} {
+    .avatar {
+      box-shadow: map-get-deep($typeProps, 'box-shadow');
+    }
+    &.clickable .avatar:hover {
+      box-shadow: map-get-deep($typeProps, 'box-shadow-hover');
+    }
+    .avatar-badge {
+      @include size(map-get-deep($typeProps, 'badge' 'size'));
+      top: map-get-deep($typeProps, 'badge' 'top');
+      right: map-get-deep($typeProps, 'badge' 'right');
+    }
+
+    .title {
+@if map-get-deep($typeProps, 'title')
+    }
+
+    .subtitle {
+
+    }
+
+    &.horizontal {
+      .avatar-title {
+        margin-left: map-get-deep($typeProps, 'horizontal' 'avatar-title-marg-left');
+        max-width: map-get-deep($typeProps, 'horizontal' 'avatar-title-max-width');
+      }
+    }
+  }
+
+
+
 }
