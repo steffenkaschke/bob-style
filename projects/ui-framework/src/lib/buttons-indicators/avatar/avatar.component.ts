@@ -37,6 +37,7 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
   readonly avatarSize = AvatarSize;
   readonly badgeSize = BadgeSize;
   readonly chipType = ChipType;
+  readonly orient = AvatarOrientation;
   public badgeConfig: BadgeConfig;
 
   @Input() imageSource: string;

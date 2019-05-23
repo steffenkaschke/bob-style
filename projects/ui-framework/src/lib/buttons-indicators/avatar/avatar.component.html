@@ -22,7 +22,7 @@
 <div *ngIf="title || subtitle"
      class="avatar-title">
 
-  <h4 b-truncate-tooltip
+  <h4 [b-truncate-tooltip]="orientation === orient.horizontal ? 1 : 2"
       *ngIf="title"
       class="title">
     {{title}}

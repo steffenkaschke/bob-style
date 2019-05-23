@@ -42,9 +42,9 @@ const template = `
   [orientation]="orientation"
   [title]="title"
   [subtitle]="subtitle"
-  [department]="department"
+  [caption]="caption"
   [badge]="badge"
-  [status]="status"
+  [chip]="chip"
   [isClickable]="isClickable"
   [disabled]="disabled"
   (clicked)="clickHandler($event)"
@@ -67,9 +67,9 @@ const note = `
   orientation | AvatarOrientation | vertical or horizontal | horizontal
   title | string | main title of the avatar | none
   subtitle | string | subtitle of the avatar | none
-  department | string | department & site | none
+  caption | string | caption & site | none
   badge | AvatarBadge / BadgeConfig | AvatarBadge enum of approved, pending or rejected / or BadgeConfig {icon, color} object  | none
-  status | Chip | object describing the status chip (should have type & text properties) | none
+  chip | Chip | object describing the chip chip (should have type & text properties) | none
   disabled | boolean | disabled avatar | false
   isClickable | boolean | flag for indicating if the avatar is clickable or not | false
   clicked | Function | callback for clicking on the avatar | none
@@ -105,13 +105,13 @@ avatarStories.add(
         clickHandler: action('Avatar Clicked'),
         title: text('title', 'John Doe'),
         subtitle: text('subtitle', 'Web Developer'),
-        department: text('department', 'Product, Israel'),
+        caption: text('caption', 'Product, Israel'),
         disabled: boolean('disabled', false),
         badge: select('badge', badges, AvatarBadge.approved),
         backgroundColor: select('background color', ['#fff', 'red', 'black']),
-        status: {
-          type: select('status type', chips, ChipType.success),
-          text: text('status text', 'Employed')
+        chip: {
+          type: select('chip type', chips, ChipType.success),
+          text: text('chip text', 'Employed')
         }
       },
       moduleMetadata: {

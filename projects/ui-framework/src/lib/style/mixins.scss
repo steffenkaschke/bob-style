@@ -144,3 +144,12 @@
   }
   @return $get;
 }
+
+@function contains($this, $that) {
+  @if type-of($this) == 'string' {
+    @return str-index($this, $that);
+  }
+  @if type-of($this) == 'list' {
+    @return index($this, $that);
+  }
+}

@@ -1,0 +1,147 @@
+@import '../../style/colors';
+@import '../../style/mixins';
+@import '../../style/typography';
+
+$box-shad-mini-small: 0 1px 2px 0 $boxShadowColor; // 0 2px 5px 0 $boxShadowColor
+$box-shad-hover-mini-small: 0 3px 6px 0 $boxShadowColor; // 0 10px 15px 0 $boxShadowColor
+$border-mini-small: 2px;
+$subtitle-mini-small: body $font-size-body $font-weight-body null;
+$badge-mini-small: (
+  size: 16px,
+  top: 0,
+  right: 0
+);
+$horizontal-mini-small: (
+  avatar-title-marg-left: 8px,
+  avatar-title-max-width: calc(100% - var(--avatar-size) + 8px)
+);
+$vertical-mini-small: (
+  avatar-title-marg-top: 3px
+);
+
+$box-shad-med-lrg: 0 2px 4px 0 $boxShadowColor; // 0 1px 2px 0 $boxShadowColor
+$box-shad-hover-med-lrg: 0 6px 12px 0 $boxShadowColor; // 0 3px 6px 0 $boxShadowColor
+$border-med-lrg: 3px;
+
+$avatarMap: (
+  mini: (
+    box-shadow: $box-shad-mini-small,
+    box-shadow-hover: $box-shad-hover-mini-small,
+    border-width: $border-mini-small,
+    title: body $font-size-body $font-weight-bold-body 1.2,
+    subtitle: $subtitle-mini-small,
+    badge: $badge-mini-small,
+    horizontal: $horizontal-mini-small,
+    vertical: $vertical-mini-small
+  ),
+  small: (
+    box-shadow: $box-shad-mini-small,
+    box-shadow-hover: $box-shad-hover-mini-small,
+    border-width: $border-mini-small,
+    title: body $font-size-body $font-weight-bold-body $line-height-body,
+    subtitle: $subtitle-mini-small,
+    badge: $badge-mini-small,
+    horizontal: $horizontal-mini-small,
+    vertical: $vertical-mini-small
+  ),
+  medium: (
+    box-shadow: $box-shad-med-lrg,
+    box-shadow-hover: $box-shad-hover-med-lrg,
+    border-width: $border-med-lrg,
+    title: display $font-size-display-3 $font-weight-display-3,
+    subtitle: body $font-size-big-body,
+    badge: (
+      size: 24px,
+      top: 0,
+      right: 0
+    ),
+    horizontal: (
+      avatar-title-marg-left: 10px,
+      avatar-title-max-width: calc(100% - var(--avatar-size) + 10px)
+    ),
+    vertical: (
+      avatar-title-marg-top: 5px
+    )
+  ),
+  large: (
+    box-shadow: $box-shad-med-lrg,
+    box-shadow-hover: $box-shad-hover-med-lrg,
+    border-width: $border-med-lrg,
+    title: display $font-size-display-1 $font-weight-display-1 1,
+    subtitle: display $font-size-display-3 $font-weight-display-3,
+    badge: (
+      size: 24px,
+      top: 3px,
+      right: 3px
+    ),
+    horizontal: (
+      avatar-title-marg-left: 18px,
+      avatar-title-max-width: calc(100% - var(--avatar-size) + 18px)
+    ),
+    vertical: (
+      avatar-title-marg-top: 3px
+    )
+  )
+);
+
+@mixin setFont($prop) {
+  @if length($prop) < 4 {
+    @for $i from length($prop) through 4 {
+      $prop: append($prop, null);
+    }
+  }
+  @if contains($prop, 'body') {
+    @include BodyFont(nth($prop, 2), nth($prop, 3), nth($prop, 4));
+  }
+  @if contains($prop, 'display') {
+    @include DisplayFont(nth($prop, 2), nth($prop, 3), nth($prop, 4));
+  }
+}
+
+@each $type, $typeProps in $avatarMap {
+  :host.#{$type} {
+    .avatar {
+      box-shadow: map-get-deep($typeProps, 'box-shadow');
+    }
+
+    &.clickable .avatar:hover {
+      box-shadow: map-get-deep($typeProps, 'box-shadow-hover');
+    }
+
+    .avatar-badge {
+      @include size(map-get-deep($typeProps, 'badge' 'size'));
+      top: map-get-deep($typeProps, 'badge' 'top');
+      right: map-get-deep($typeProps, 'badge' 'right');
+    }
+
+    .title {
+      @include setFont(map-get-deep($typeProps, 'title'));
+    }
+
+    .subtitle {
+      @include setFont(map-get-deep($typeProps, 'subtitle'));
+    }
+
+    &.horizontal {
+      .avatar-title {
+        margin-left: map-get-deep(
+          $typeProps,
+          'horizontal' 'avatar-title-marg-left'
+        );
+        max-width: map-get-deep(
+          $typeProps,
+          'horizontal' 'avatar-title-max-width'
+        );
+      }
+    }
+
+    &.vertical {
+      .avatar-title {
+        margin-top: map-get-deep(
+          $typeProps,
+          'vertical' 'avatar-title-marg-top'
+        );
+      }
+    }
+  }
+}
