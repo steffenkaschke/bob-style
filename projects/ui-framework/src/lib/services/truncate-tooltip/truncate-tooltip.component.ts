@@ -109,6 +109,10 @@ export class TruncateTooltipComponent
       this.textElementTextProps = this.DOM.getElementTextProps(
         this.textElement
       );
+      this.textElementTextProps.maxHeight =
+        this.textElementTextProps.fontSize *
+        this.textElementTextProps.lineHeight *
+        this.maxLines;
 
       this.DOM.setCssProps(this.textContainer, {
         '--btt-line-height': this.textElementTextProps.lineHeight,
@@ -126,11 +130,7 @@ export class TruncateTooltipComponent
     this.textContainerStyle =
       this.maxLines > 1
         ? {
-            maxHeight:
-              this.textElementTextProps.fontSize *
-                this.textElementTextProps.lineHeight *
-                this.maxLines +
-              'px',
+            maxHeight: this.textElementTextProps.maxHeight + 'px',
             webkitLineClamp: this.maxLines
           }
         : null;
@@ -140,8 +140,8 @@ export class TruncateTooltipComponent
     this.tooltipEnabled =
       (this.maxLines === 1 &&
         this.textContainer.scrollWidth > this.textContainer.offsetWidth) ||
-      (this.maxLines > 0 &&
-        this.textContainer.scrollHeight > this.textContainer.offsetHeight)
+      (this.maxLines > 1 &&
+        this.textContainer.scrollHeight > this.textElementTextProps.maxHeight)
         ? true
         : false;
   }
