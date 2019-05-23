@@ -72,7 +72,7 @@ class TestComponent implements OnInit, OnDestroy {
   }
 }
 
-fdescribe('RichTextEditorComponent', () => {
+describe('RichTextEditorComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 
