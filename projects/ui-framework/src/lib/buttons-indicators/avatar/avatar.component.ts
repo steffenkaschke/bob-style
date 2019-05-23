@@ -46,8 +46,8 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
 
   @Input() title?: string;
   @Input() subtitle?: string;
-  @Input() status?: Chip;
-  @Input() department?: string;
+  @Input() chip?: Chip;
+  @Input() caption?: string;
   @Input() badge: AvatarBadge | BadgeConfig;
   @Input() isClickable = false;
   @Input() disabled = false;

@@ -2,6 +2,101 @@
 @import '../../style/mixins';
 @import '../../style/typography';
 
+
+// prev box-shadows
+// for small-mini (reg, hover)
+// box-shadow: 0 1px 2px 0 $boxShadowColor;
+// box-shadow: 0 3px 6px 0 $boxShadowColor;
+// for med-large
+// box-shadow: 0 2px 4px 0 $boxShadowColor;
+// box-shadow: 0 6px 12px 0 $boxShadowColor;
+
+$avatarMap: (
+
+
+  mini: (
+    box-shadow: 0 2px 5px 0 $boxShadowColor,
+    box-shadow-hover: 0 10px 15px 0 $boxShadowColor,
+    border-width: 2px,
+
+    badge: (
+      size: 16px,
+      top: 0,
+      right: 0
+    ),
+
+    horizontal: (
+      avatar-title-marg-left: 8px,
+      avatar-title-max-width: calc(100% - var(--avatar-size) + 8px)
+    ),
+
+    title: body $font-size-body $font-weight-bold-body 1.2,
+    subtitle: body $font-size-body $font-weight-body null
+  ),
+
+  small: (
+    box-shadow: 0 2px 5px 0 $boxShadowColor,
+    box-shadow-hover: 0 10px 15px 0 $boxShadowColor,
+    border-width: 2px,
+
+    badge: (
+      size: 16px,
+      top: 0,
+      right: 0
+    ),
+
+    horizontal: (
+      avatar-title-marg-left: 8px,
+      avatar-title-max-width: calc(100% - var(--avatar-size) + 8px)
+    ),
+
+    title: body $font-size-body $font-weight-bold-body $line-height-body,
+    subtitle: body $font-size-body $font-weight-body null
+  ),
+
+  medium: (
+    box-shadow: 0 2px 5px 0 $boxShadowColor,
+    box-shadow-hover: 0 10px 15px 0 $boxShadowColor,
+    border-width: 3px,
+
+    badge: (
+      size: 24px,
+      top: 0,
+      right: 0
+    ),
+
+    horizontal: (
+      avatar-title-marg-left: 10px,
+      avatar-title-max-width: calc(100% - var(--avatar-size) + 10px)
+    ),
+
+    title: display $font-size-display-3 $font-weight-display-3,
+    subtitle: body $font-size-big-body
+  ),
+
+  large: (
+    box-shadow: 0 2px 5px 0 $boxShadowColor,
+    box-shadow-hover: 0 10px 15px 0 $boxShadowColor,
+    border-width: 3px,
+
+    badge: (
+      size: 24px,
+      top: 3px,
+      right: 3px
+    ),
+
+    horizontal: (
+      avatar-title-marg-left: 18px,
+      avatar-title-max-width: calc(100% - var(--avatar-size) + 18px)
+    ),
+
+    title: display $font-size-display-1 $font-weight-display-1 1,
+    subtitle: display $font-size-display-3 $font-weight-display-3
+  )
+
+
+)
+
 :host {
   display: inline-flex;
   align-items: center;
@@ -65,9 +160,9 @@
   z-index: 1;
 }
 
-.department,
-.name,
-.job {
+.caption,
+.title,
+.subtitle {
   margin: 0;
 }
 
@@ -77,12 +172,12 @@
   user-select: none;
 }
 
-.department {
+.caption {
   letter-spacing: 0.2px;
   margin-top: 5px;
 }
 
-.status {
+.chip {
   margin-top: 10px;
 }
 
@@ -104,11 +199,11 @@
         max-width: calc(100% - var(--avatar-size) + 8px);
       }
     }
-    .name,
-    .job {
+    .title,
+    .subtitle {
       @include BodyFont($lineHeight: null);
     }
-    .name {
+    .title {
       font-weight: $font-weight-bold-body;
     }
   }
@@ -145,10 +240,10 @@
         max-width: calc(100% - var(--avatar-size) + 10px);
       }
     }
-    .name {
+    .title {
       @include DisplayFont($font-size-display-3, $font-weight-display-3);
     }
-    .job {
+    .subtitle {
       @include BodyFont($font-size-big-body);
     }
   }
@@ -167,10 +262,10 @@
         max-width: calc(100% - var(--avatar-size) + 20px);
       }
     }
-    .name {
+    .title {
       @include DisplayFont($font-size-display-1, $font-weight-display-1, 1);
     }
-    .job {
+    .subtitle {
       @include DisplayFont($font-size-display-3, $font-weight-display-3);
     }
   }

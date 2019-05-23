@@ -24,25 +24,25 @@
 
   <h4 b-truncate-tooltip
       *ngIf="title"
-      class="title name">
+      class="title">
     {{title}}
   </h4>
 
   <p b-truncate-tooltip
      *ngIf="subtitle"
-     class="subtitle job">
+     class="subtitle">
     {{subtitle}}
   </p>
 
-  <p class="department"
-     *ngIf="department && size === avatarSize.large">
-    {{ department }}
+  <p class="caption"
+     *ngIf="caption && size === avatarSize.large">
+    {{ caption }}
   </p>
 
-  <b-chip *ngIf="status && size !== avatarSize.mini && size !== avatarSize.small"
-          [type]="disabled ? chipType.disabled : status.type"
-          [text]="status.text"
-          class="status">
+  <b-chip *ngIf="chip && size !== avatarSize.mini && size !== avatarSize.small"
+          [type]="disabled ? chipType.disabled : chip.type"
+          [text]="chip.text"
+          class="chip">
   </b-chip>
 
 </div>
