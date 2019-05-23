@@ -23,6 +23,7 @@ import { RTEchangeEvent, BlotType, RTEFontSize } from './rte.enum';
 import { RteUtilsService } from './rte-utils.service';
 import { BlotData, SpecialBlots, StoreCurrentResult } from './rte.interface';
 import { BaseFormElement } from '../../base-form-element';
+import { PanelComponent } from '../../../popups/panel/panel.component';
 
 const Block = quillLib.import('blots/block');
 Block.tagName = 'DIV';
@@ -47,6 +48,7 @@ export abstract class RTEformElement extends BaseFormElement
   @Input() private formControl: any;
 
   @ViewChild('quillEditor') protected quillEditor: ElementRef;
+  @ViewChild('sizePanel') protected sizePanel: PanelComponent;
 
   @Output() blurred: EventEmitter<any> = new EventEmitter<any>();
   @Output() focused: EventEmitter<any> = new EventEmitter<any>();
@@ -73,7 +75,6 @@ export abstract class RTEformElement extends BaseFormElement
 
   public editorOptions: QuillOptionsStatic = {
     theme: 'snow',
-    placeholder: this.rteUtils.getEditorPlaceholder(this.label, this.required),
     modules: {
       clipboard: {
         matchVisual: false
@@ -330,6 +331,7 @@ export abstract class RTEformElement extends BaseFormElement
   public changeFontSize(size: RTEFontSize) {
     this.editor.format('size', size === RTEFontSize.normal ? false : size);
     this.hasSizeSet = size !== RTEFontSize.normal;
+    this.sizePanel.closePanel();
   }
 
   // this is part of ControlValueAccessor interface
