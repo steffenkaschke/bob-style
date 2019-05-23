@@ -25,18 +25,18 @@
   <h4 [b-truncate-tooltip]="orientation === orient.horizontal ? 1 : 2"
       *ngIf="title"
       class="title">
-    {{title}}
+    {{data[0]}}
   </h4>
 
   <p b-truncate-tooltip
      *ngIf="subtitle"
      class="subtitle">
-    {{subtitle}}
+    {{data[1]}}
   </p>
 
   <p class="caption"
      *ngIf="caption && size === avatarSize.large">
-    {{ caption }}
+    {{data[2]}}
   </p>
 
   <b-chip *ngIf="chip && size !== avatarSize.mini && size !== avatarSize.small"
