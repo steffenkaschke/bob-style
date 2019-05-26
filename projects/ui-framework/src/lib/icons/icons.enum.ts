@@ -63,5 +63,10 @@ export enum Icons {
   success = 'success_icon',
   warning = 'warning_icon',
   no_folder = 'no_folder',
-  add_photo = 'add_photo'
+  add_photo = 'add_photo',
+
+  // duplicate icons for backwards compatibility
+  // TODO: remove if not used
+  approve_badge = 'success_icon',
+  pending_badge = 'Icon_timeline'
 }

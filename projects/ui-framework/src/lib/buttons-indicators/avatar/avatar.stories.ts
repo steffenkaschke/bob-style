@@ -7,7 +7,12 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { zipObject } from 'lodash';
-import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
+import {
+  AvatarSize,
+  AvatarBadge,
+  AvatarOrientation,
+  AvatarPresets
+} from './avatar.enum';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { AvatarModule } from './avatar.module';
@@ -32,6 +37,7 @@ const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 const orientationOptions = Object.keys(AvatarOrientation);
 const badges = Object.keys(AvatarBadge);
 const chips = Object.keys(ChipType);
+const presetOptions = Object.keys(AvatarPresets);
 
 const template = `
 <div style="display: flex; justify-content: center;">
@@ -39,6 +45,7 @@ const template = `
   [imageSource]="imageSource"
   [backgroundColor]="backgroundColor"
   [size]="size"
+  [preset]="preset"
   [orientation]="orientation"
   [title]="title"
   [subtitle]="subtitle"
@@ -96,6 +103,7 @@ avatarStories.add(
           'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
         ),
         size: select('size', sizeOptions, AvatarSize.large),
+        preset: select('preset', presetOptions, AvatarPresets.default),
         orientation: select(
           'orientation',
           orientationOptions,

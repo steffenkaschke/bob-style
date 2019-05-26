@@ -19,23 +19,23 @@
   </div>
 </div>
 
-<div *ngIf="title || subtitle"
+<div *ngIf="data[0] || data[1] || data[2]"
      class="avatar-title">
 
   <h4 [b-truncate-tooltip]="orientation === orient.horizontal ? 1 : 2"
-      *ngIf="title"
+      *ngIf="data[0]"
       class="title">
     {{data[0]}}
   </h4>
 
   <p b-truncate-tooltip
-     *ngIf="subtitle"
+     *ngIf="data[1]"
      class="subtitle">
     {{data[1]}}
   </p>
 
   <p class="caption"
-     *ngIf="caption && size === avatarSize.large">
+     *ngIf="data[2]">
     {{data[2]}}
   </p>
 

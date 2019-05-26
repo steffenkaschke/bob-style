@@ -5,7 +5,7 @@ import {
   BadgeSize,
   AvatarBadge,
   AvatarOrientation,
-  AvatarBadgeMap
+  AvatarBadges
 } from './avatar.enum';
 import { By } from '@angular/platform-browser';
 import { IconsModule } from '../../icons/icons.module';
@@ -155,11 +155,7 @@ describe('AvatarComponent', () => {
     });
     it('Should also accept BadgeConfig-format input', () => {
       component.ngOnChanges({
-        badge: new SimpleChange(
-          null,
-          AvatarBadgeMap[AvatarBadge.pending],
-          false
-        ),
+        badge: new SimpleChange(null, AvatarBadges[AvatarBadge.pending], false),
         size: new SimpleChange(null, AvatarSize.medium, false)
       });
       fixture.detectChanges();

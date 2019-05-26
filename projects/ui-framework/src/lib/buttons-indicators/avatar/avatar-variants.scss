@@ -30,7 +30,8 @@ $avatarMap: (
     border-width: $border-mini-small,
     title: body $font-size-body $font-weight-bold-body 1.2,
     subtitle: $subtitle-mini-small,
-    badge: $badge-mini-small,
+    caption-margin-top: null,
+    badge: null,
     horizontal: $horizontal-mini-small,
     vertical: $vertical-mini-small
   ),
@@ -40,7 +41,12 @@ $avatarMap: (
     border-width: $border-mini-small,
     title: body $font-size-body $font-weight-bold-body $line-height-body,
     subtitle: $subtitle-mini-small,
-    badge: $badge-mini-small,
+    caption-margin-top: null,
+    badge: (
+      size: 16px,
+      top: 2px,
+      right: 1px
+    ),
     horizontal: $horizontal-mini-small,
     vertical: $vertical-mini-small
   ),
@@ -50,10 +56,11 @@ $avatarMap: (
     border-width: $border-med-lrg,
     title: display $font-size-display-3 $font-weight-display-3,
     subtitle: body $font-size-big-body,
+    caption-margin-top: 5px,
     badge: (
       size: 24px,
-      top: 0,
-      right: 0
+      top: 3px,
+      right: -1px
     ),
     horizontal: (
       avatar-title-marg-left: 10px,
@@ -69,6 +76,7 @@ $avatarMap: (
     border-width: $border-med-lrg,
     title: display $font-size-display-1 $font-weight-display-1 1,
     subtitle: display $font-size-display-3 $font-weight-display-3,
+    caption-margin-top: 5px,
     badge: (
       size: 24px,
       top: 3px,
@@ -108,10 +116,12 @@ $avatarMap: (
       box-shadow: map-get-deep($typeProps, 'box-shadow-hover');
     }
 
-    .avatar-badge {
-      @include size(map-get-deep($typeProps, 'badge' 'size'));
-      top: map-get-deep($typeProps, 'badge' 'top');
-      right: map-get-deep($typeProps, 'badge' 'right');
+    @if (map-get-deep($typeProps, 'badge')) {
+      .avatar-badge {
+        @include size(map-get-deep($typeProps, 'badge' 'size'));
+        top: map-get-deep($typeProps, 'badge' 'top');
+        right: map-get-deep($typeProps, 'badge' 'right');
+      }
     }
 
     .title {
@@ -120,6 +130,10 @@ $avatarMap: (
 
     .subtitle {
       @include setFont(map-get-deep($typeProps, 'subtitle'));
+    }
+
+    .caption {
+      margin-top: map-get-deep($typeProps, 'caption-margin-top');
     }
 
     &.horizontal {

@@ -14,9 +14,12 @@ import {
 import {
   AvatarSize,
   BadgeSize,
-  AvatarBadgeMap,
+  AvatarBadges,
   AvatarBadge,
-  AvatarOrientation
+  AvatarOrientation,
+  AvatarPresets,
+  AvatarDefaultPresetValues,
+  AvatarPresetValues
 } from './avatar.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { ChipType } from '../chips/chips.enum';
@@ -48,9 +51,8 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
   @Input() imageSource: string;
   @Input() backgroundColor?: string;
   @Input() size: AvatarSize = AvatarSize.mini;
+  @Input() preset: AvatarPresets = AvatarPresets.default;
   @Input() orientation: AvatarOrientation = AvatarOrientation.horizontal;
-
-  @Input() preset;
 
   @Input() title?: string;
   @Input() subtitle?: string;
@@ -75,7 +77,15 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     setPropsOnChanges(
-      ['size', 'badge', 'title', 'subtitle', 'caption'],
+      [
+        'size',
+        'badge',
+        'title',
+        'subtitle',
+        'caption',
+        'preset',
+        'orientation'
+      ],
       changes,
       this
     );
@@ -87,13 +97,30 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
     }
 
     if (changes.badge) {
-      this.badgeConfig = (changes.badge.currentValue as BadgeConfig).icon
-        ? (changes.badge.currentValue as BadgeConfig)
-        : AvatarBadgeMap[changes.badge.currentValue as AvatarBadge];
+      this.badgeConfig = (this.badge as BadgeConfig).icon
+        ? (this.badge as BadgeConfig)
+        : AvatarBadges[this.badge as AvatarBadge];
     }
 
-    if (changes.title || changes.subtitle || changes.caption) {
-      this.data = [this.title, this.subtitle, this.caption];
+    if (
+      changes.title ||
+      changes.subtitle ||
+      changes.caption ||
+      changes.preset ||
+      changes.orientation
+    ) {
+      const order =
+        !this.preset || this.preset === AvatarPresets.default
+          ? AvatarDefaultPresetValues[this.size][this.orientation] || [0, 1, 2]
+          : AvatarPresetValues[this.preset] || [0, 1, 2];
+
+      this.data = [this.title, this.subtitle, this.caption].reduce(
+        (acc, itm, index, arr) => {
+          acc[index] = arr[order[index]];
+          return acc;
+        },
+        []
+      );
     }
   }
 
