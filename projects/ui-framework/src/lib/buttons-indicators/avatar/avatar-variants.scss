@@ -27,7 +27,7 @@ $avatarMap: (
       line-height: 1.35
     ),
     text-slot-1: (
-      font: body $font-size-body $font-weight-bold-body
+      font: body $font-size-big-body $font-weight-bold-body
     ),
     text-slot-2: (
       font: body $font-size-body $font-weight-bold-body
@@ -48,7 +48,7 @@ $avatarMap: (
       line-height: 1.35
     ),
     text-slot-1: (
-      font: body $font-size-body $font-weight-bold-body
+      font: body $font-size-big-body $font-weight-bold-body
     ),
     text-slot-2: (
       font: body $font-size-body $font-weight-bold-body
@@ -167,7 +167,7 @@ $avatarMap: (
       }
     }
 
-    .slot1-large {
+    .slot1-big {
       @include setFont(map-get-deep($typeProps, 'text-slot-1' 'font'));
     }
 

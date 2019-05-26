@@ -42,8 +42,9 @@ export const AvatarBadges = {
 
 export enum AvatarPresets {
   default = 'default',
-  BigNameMiddleJobSmallDepartment = 'BigNameMiddleJobSmallDepartment',
-  BigNameMiddleJob = 'BigNameMiddleJob',
+  BigNameMediumJobSmallDepartment = 'BigNameMediumJobSmallDepartment',
+  BigNameMediumJob = 'BigNameMediumJob',
+  BigNameSmallJob = 'BigNameSmallJob',
   MediumNameSmallJob = 'MediumNameSmallJob',
   SmallJob = 'SmallJob',
   SmallName = 'SmallName'
@@ -52,8 +53,9 @@ export enum AvatarPresets {
 // represents order of how data is placed in slots
 // 0 - name (title input), 1 - job (subtitle input), 2 - department (caption input)
 export const AvatarPresetValues = {
-  [AvatarPresets.BigNameMiddleJobSmallDepartment]: [0, 1, 2],
-  [AvatarPresets.BigNameMiddleJob]: [0, 1],
+  [AvatarPresets.BigNameMediumJobSmallDepartment]: [0, 1, 2],
+  [AvatarPresets.BigNameMediumJob]: [0, 1],
+  [AvatarPresets.BigNameSmallJob]: [0, null, 1],
   [AvatarPresets.MediumNameSmallJob]: [null, 0, 1],
   [AvatarPresets.SmallJob]: [null, null, 1],
   [AvatarPresets.SmallName]: [null, null, 0]
@@ -73,14 +75,14 @@ export const AvatarDefaultPresetValues = {
   },
   [AvatarSize.medium]: {
     [AvatarOrientation.horizontal]:
-      AvatarPresetValues[AvatarPresets.BigNameMiddleJob],
+      AvatarPresetValues[AvatarPresets.BigNameMediumJob],
     [AvatarOrientation.vertical]:
-      AvatarPresetValues[AvatarPresets.BigNameMiddleJob]
+      AvatarPresetValues[AvatarPresets.BigNameMediumJob]
   },
   [AvatarSize.large]: {
     [AvatarOrientation.horizontal]:
-      AvatarPresetValues[AvatarPresets.BigNameMiddleJobSmallDepartment],
+      AvatarPresetValues[AvatarPresets.BigNameMediumJobSmallDepartment],
     [AvatarOrientation.vertical]:
-      AvatarPresetValues[AvatarPresets.BigNameMiddleJobSmallDepartment]
+      AvatarPresetValues[AvatarPresets.BigNameMediumJobSmallDepartment]
   }
 };
