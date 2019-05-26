@@ -2,7 +2,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   ViewChild,
   ElementRef,
@@ -17,9 +16,7 @@ import {
   AvatarBadges,
   AvatarBadge,
   AvatarOrientation,
-  AvatarPresets,
-  AvatarDefaultPresetValues,
-  AvatarPresetValues
+  AvatarPresets
 } from './avatar.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { ChipType } from '../chips/chips.enum';
@@ -46,12 +43,10 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
   readonly chipType = ChipType;
   readonly orient = AvatarOrientation;
   public badgeConfig: BadgeConfig;
-  public data: string[] = [];
 
   @Input() imageSource: string;
   @Input() backgroundColor?: string;
   @Input() size: AvatarSize = AvatarSize.mini;
-  @Input() preset: AvatarPresets = AvatarPresets.default;
   @Input() orientation: AvatarOrientation = AvatarOrientation.horizontal;
 
   @Input() title?: string;

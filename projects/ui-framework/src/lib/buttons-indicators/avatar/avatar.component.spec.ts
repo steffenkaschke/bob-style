@@ -15,7 +15,7 @@ import { ChipType } from '../chips/chips.enum';
 import { ChipsModule } from '../chips/chips.module';
 import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
 
-fdescribe('AvatarComponent', () => {
+describe('AvatarComponent', () => {
   let component: AvatarComponent;
   let fixture: ComponentFixture<AvatarComponent>;
   let avatarElement: HTMLElement;
@@ -37,10 +37,11 @@ fdescribe('AvatarComponent', () => {
         component.imageSource =
           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
         component.backgroundColor = 'rgb(255, 255, 255)';
+
         fixture.detectChanges();
         avatarElement = fixture.debugElement.query(By.css('.avatar'))
           .nativeElement;
-        titleElement = fixture.debugElement.query(By.css('.avatar-title'))
+        titleElement = fixture.debugElement.query(By.css('.title'))
           .nativeElement;
         spyOn(component.clicked, 'emit');
       });
@@ -82,7 +83,9 @@ fdescribe('AvatarComponent', () => {
   describe('Classes', () => {
     it('Should put the right classes on component host element', () => {
       component.isClickable = true;
-      component.size = AvatarSize.large;
+      component.ngOnChanges({
+        size: new SimpleChange(null, AvatarSize.large, false)
+      });
       fixture.detectChanges();
       expect(componentElem.classList.value).toEqual(
         'large horizontal clickable'
@@ -106,11 +109,10 @@ fdescribe('AvatarComponent', () => {
     it('Should put title & subtitle text', () => {
       component.subtitle = 'Subtitle';
       fixture.detectChanges();
-      const title = fixture.debugElement.query(By.css('.slot1-big'))
-        .nativeElement;
+
       const subtitle = fixture.debugElement.query(By.css('.slot2-medium'))
         .nativeElement;
-      expect(title.innerText).toContain('Title');
+      expect(titleElement.innerText).toContain('Title');
       expect(subtitle.innerText).toContain('Subtitle');
     });
     it('Should put department text on large avatar', () => {

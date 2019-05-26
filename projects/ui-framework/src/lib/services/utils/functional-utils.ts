@@ -23,7 +23,7 @@ export const setPropsOnChanges = (
   changes: SimpleChanges,
   target: any
 ) => {
-  for (const key in propKeys) {
+  for (const key of propKeys) {
     if (changes[key] && changes[key].currentValue !== target[key]) {
       target[key] = changes[key].currentValue;
     }

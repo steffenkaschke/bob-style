@@ -56,8 +56,7 @@ describe('CardComponent', () => {
         component.card = mockCardData;
         fixture.detectChanges();
 
-        setTimeout(() => {}, 0);
-        avatarTitle = fixture.debugElement.query(By.css('.avatar-title .name'))
+        avatarTitle = fixture.debugElement.query(By.css('.avatar-text .title'))
           .nativeElement;
         cardContentElement = fixture.debugElement.query(By.css('.card-content'))
           .nativeElement;

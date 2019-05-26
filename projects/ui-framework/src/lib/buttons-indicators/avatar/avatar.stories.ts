@@ -7,17 +7,11 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { zipObject } from 'lodash';
-import {
-  AvatarSize,
-  AvatarBadge,
-  AvatarOrientation,
-  AvatarPresets
-} from './avatar.enum';
+import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { AvatarModule } from './avatar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Icons, IconColor } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
 import { ChipType } from '../chips/chips.enum';
 
