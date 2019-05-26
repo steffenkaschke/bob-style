@@ -22,7 +22,8 @@ import invoke from 'lodash/invoke';
   templateUrl: './employees-showcase.component.html',
   styleUrls: ['./employees-showcase.component.scss']
 })
-export class EmployeesShowcaseComponent implements OnInit, OnChanges, OnDestroy {
+export class EmployeesShowcaseComponent
+  implements OnInit, OnChanges, OnDestroy {
   @Input() employees: EmployeeShowcase[] = [];
   @Input() avatarSize: AvatarSize = AvatarSize.mini;
 
@@ -33,11 +34,15 @@ export class EmployeesShowcaseComponent implements OnInit, OnChanges, OnDestroy 
   public icon: Icons = Icons.three_dots;
   private resizeEventSubscriber: Subscription;
 
-  constructor(private utilsService: UtilsService, private host: ElementRef, private DOM: DOMhelpers) {
-  }
+  constructor(
+    private utilsService: UtilsService,
+    private host: ElementRef,
+    private DOM: DOMhelpers
+  ) {}
 
   ngOnInit(): void {
-    this.resizeEventSubscriber = this.utilsService.getResizeEvent()
+    this.resizeEventSubscriber = this.utilsService
+      .getResizeEvent()
       .subscribe(() => {
         this.clientWidth = this.getClientWidth();
         this.calcAvatarsToFit();
@@ -58,7 +63,11 @@ export class EmployeesShowcaseComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   private getClientWidth() {
-    return this.host.nativeElement.offsetWidth;
+    return this.DOM.getClosest(
+      this.host.nativeElement,
+      this.DOM.getInnerWidth,
+      'result'
+    );
   }
 
   /*
@@ -66,7 +75,11 @@ export class EmployeesShowcaseComponent implements OnInit, OnChanges, OnDestroy 
     floor((width - size) / (size - gap) + 1)
    */
   private calcAvatarsToFit() {
-    this.avatarsToFit = floor((this.clientWidth - this.avatarSize) / (this.avatarSize - this.avatarGap) + 1);
+    this.avatarsToFit = floor(
+      (this.clientWidth - this.avatarSize) /
+        (this.avatarSize - this.avatarGap) +
+        1
+    );
   }
 
   private setAvatarGap() {
