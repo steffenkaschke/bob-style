@@ -33,7 +33,6 @@ const badges = Object.keys(AvatarBadge);
 const chips = Object.keys(ChipType);
 
 const template = `
-<div style="display: flex; justify-content: center;">
 <b-avatar
   [imageSource]="imageSource"
   [backgroundColor]="backgroundColor"
@@ -49,7 +48,6 @@ const template = `
   (clicked)="clickHandler($event)"
   >
 </b-avatar>
-</div>
 `;
 
 const note = `
@@ -80,7 +78,9 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Avatar'">
-  ${template}
+  <div style="display: flex; justify-content: center; padding: 20px;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
