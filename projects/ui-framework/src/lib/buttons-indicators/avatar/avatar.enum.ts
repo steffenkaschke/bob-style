@@ -54,7 +54,7 @@ export enum AvatarPresets {
 export const AvatarPresetValues = {
   [AvatarPresets.BigNameMiddleJobSmallDepartment]: [0, 1, 2],
   [AvatarPresets.BigNameMiddleJob]: [0, 1],
-  [AvatarPresets.MediumNameSmallJob]: [null, 1, 2],
+  [AvatarPresets.MediumNameSmallJob]: [null, 0, 1],
   [AvatarPresets.SmallJob]: [null, null, 1],
   [AvatarPresets.SmallName]: [null, null, 0]
 };

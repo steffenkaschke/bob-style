@@ -5,18 +5,13 @@
 $box-shad-mini-small: 0 1px 2px 0 $boxShadowColor; // 0 2px 5px 0 $boxShadowColor
 $box-shad-hover-mini-small: 0 3px 6px 0 $boxShadowColor; // 0 10px 15px 0 $boxShadowColor
 $border-mini-small: 2px;
-$subtitle-mini-small: body $font-size-body $font-weight-body null;
-$badge-mini-small: (
-  size: 16px,
-  top: 0,
-  right: 0
-);
+
 $horizontal-mini-small: (
-  avatar-title-marg-left: 8px,
-  avatar-title-max-width: calc(100% - var(--avatar-size) + 8px)
+  avatar-text-marg-left: 8px,
+  avatar-text-max-width: calc(100% - var(--avatar-size) + 8px)
 );
 $vertical-mini-small: (
-  avatar-title-marg-top: 3px
+  avatar-text-marg-top: 3px
 );
 
 $box-shad-med-lrg: 0 2px 4px 0 $boxShadowColor; // 0 1px 2px 0 $boxShadowColor
@@ -28,9 +23,19 @@ $avatarMap: (
     box-shadow: $box-shad-mini-small,
     box-shadow-hover: $box-shad-hover-mini-small,
     border-width: $border-mini-small,
-    title: body $font-size-body $font-weight-bold-body 1.2,
-    subtitle: $subtitle-mini-small,
-    caption-margin-top: null,
+    text: (
+      line-height: 1.35
+    ),
+    text-slot-1: (
+      font: body $font-size-body $font-weight-bold-body
+    ),
+    text-slot-2: (
+      font: body $font-size-body $font-weight-bold-body
+    ),
+    text-slot-3: (
+      margin-top: null
+    ),
+    chip: null,
     badge: null,
     horizontal: $horizontal-mini-small,
     vertical: $vertical-mini-small
@@ -39,9 +44,19 @@ $avatarMap: (
     box-shadow: $box-shad-mini-small,
     box-shadow-hover: $box-shad-hover-mini-small,
     border-width: $border-mini-small,
-    title: body $font-size-body $font-weight-bold-body $line-height-body,
-    subtitle: $subtitle-mini-small,
-    caption-margin-top: null,
+    text: (
+      line-height: 1.35
+    ),
+    text-slot-1: (
+      font: body $font-size-body $font-weight-bold-body
+    ),
+    text-slot-2: (
+      font: body $font-size-body $font-weight-bold-body
+    ),
+    text-slot-3: (
+      margin-top: null
+    ),
+    chip: null,
     badge: (
       size: 16px,
       top: 2px,
@@ -54,40 +69,62 @@ $avatarMap: (
     box-shadow: $box-shad-med-lrg,
     box-shadow-hover: $box-shad-hover-med-lrg,
     border-width: $border-med-lrg,
-    title: display $font-size-display-3 $font-weight-display-3,
-    subtitle: body $font-size-big-body,
-    caption-margin-top: 5px,
+    text: null,
+    text-slot-1: (
+      font: display $font-size-display-3 $font-weight-display-3
+        $line-height-heading
+    ),
+    text-slot-2: (
+      font: body $font-size-big-body
+    ),
+    text-slot-3: (
+      margin-top: 5px
+    ),
+    chip: (
+      margin-top: 6px
+    ),
     badge: (
       size: 24px,
       top: 3px,
       right: -1px
     ),
     horizontal: (
-      avatar-title-marg-left: 10px,
-      avatar-title-max-width: calc(100% - var(--avatar-size) + 10px)
+      avatar-text-marg-left: 10px,
+      avatar-text-max-width: calc(100% - var(--avatar-size) + 10px)
     ),
     vertical: (
-      avatar-title-marg-top: 5px
+      avatar-text-marg-top: 5px
     )
   ),
   large: (
     box-shadow: $box-shad-med-lrg,
     box-shadow-hover: $box-shad-hover-med-lrg,
     border-width: $border-med-lrg,
-    title: display $font-size-display-1 $font-weight-display-1 1,
-    subtitle: display $font-size-display-3 $font-weight-display-3,
-    caption-margin-top: 5px,
+    text: null,
+    text-slot-1: (
+      font: display $font-size-display-1 $font-weight-display-1 1
+    ),
+    text-slot-2: (
+      font: display $font-size-display-3 $font-weight-display-3
+        $line-height-heading
+    ),
+    text-slot-3: (
+      margin-top: 5px
+    ),
+    chip: (
+      margin-top: 8px
+    ),
     badge: (
       size: 24px,
       top: 3px,
       right: 3px
     ),
     horizontal: (
-      avatar-title-marg-left: 18px,
-      avatar-title-max-width: calc(100% - var(--avatar-size) + 18px)
+      avatar-text-marg-left: 18px,
+      avatar-text-max-width: calc(100% - var(--avatar-size) + 18px)
     ),
     vertical: (
-      avatar-title-marg-top: 3px
+      avatar-text-marg-top: 3px
     )
   )
 );
@@ -124,37 +161,46 @@ $avatarMap: (
       }
     }
 
-    .title {
-      @include setFont(map-get-deep($typeProps, 'title'));
+    @if (map-get-deep($typeProps, 'text')) {
+      .avatar-text {
+        line-height: map-get-deep($typeProps, 'text' 'line-height');
+      }
     }
 
-    .subtitle {
-      @include setFont(map-get-deep($typeProps, 'subtitle'));
+    .slot1-large {
+      @include setFont(map-get-deep($typeProps, 'text-slot-1' 'font'));
     }
 
-    .caption {
-      margin-top: map-get-deep($typeProps, 'caption-margin-top');
+    .slot2-medium {
+      @include setFont(map-get-deep($typeProps, 'text-slot-2' 'font'));
+    }
+
+    .slot3-small {
+      margin-top: map-get-deep($typeProps, 'text-slot-3' 'margin-top');
+    }
+
+    @if (map-get-deep($typeProps, 'chip')) {
+      .chip {
+        margin-top: map-get-deep($typeProps, 'chip' 'margin-top');
+      }
     }
 
     &.horizontal {
-      .avatar-title {
+      .avatar-text {
         margin-left: map-get-deep(
           $typeProps,
-          'horizontal' 'avatar-title-marg-left'
+          'horizontal' 'avatar-text-marg-left'
         );
         max-width: map-get-deep(
           $typeProps,
-          'horizontal' 'avatar-title-max-width'
+          'horizontal' 'avatar-text-max-width'
         );
       }
     }
 
     &.vertical {
-      .avatar-title {
-        margin-top: map-get-deep(
-          $typeProps,
-          'vertical' 'avatar-title-marg-top'
-        );
+      .avatar-text {
+        margin-top: map-get-deep($typeProps, 'vertical' 'avatar-text-marg-top');
       }
     }
   }
