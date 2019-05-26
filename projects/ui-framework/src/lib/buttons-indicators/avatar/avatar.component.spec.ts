@@ -115,7 +115,7 @@ describe('AvatarComponent', () => {
       expect(titleElement.innerText).toContain('Title');
       expect(subtitle.innerText).toContain('Subtitle');
     });
-    it('Should put department text on large avatar', () => {
+    it('Should put caption text on large avatar', () => {
       component.caption = 'department';
       component.ngOnChanges({
         size: new SimpleChange(null, AvatarSize.large, false)
@@ -125,7 +125,7 @@ describe('AvatarComponent', () => {
       expect(department).toBeTruthy();
       expect(department.nativeElement.innerText).toEqual('department');
     });
-    it('Should not put department text on avatar, which size is not large', () => {
+    it('Should not put caption text on avatar, if size is not large', () => {
       component.caption = 'department';
       component.ngOnChanges({
         size: new SimpleChange(null, AvatarSize.medium, false)
