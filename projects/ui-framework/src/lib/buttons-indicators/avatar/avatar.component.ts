@@ -76,19 +76,7 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    setPropsOnChanges(
-      [
-        'size',
-        'badge',
-        'title',
-        'subtitle',
-        'caption',
-        'preset',
-        'orientation'
-      ],
-      changes,
-      this
-    );
+    setPropsOnChanges(['size', 'badge'], changes, this);
 
     if (changes.size) {
       this.DOM.setCssProps(this.host.nativeElement, {
@@ -100,27 +88,6 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
       this.badgeConfig = (this.badge as BadgeConfig).icon
         ? (this.badge as BadgeConfig)
         : AvatarBadges[this.badge as AvatarBadge];
-    }
-
-    if (
-      changes.title ||
-      changes.subtitle ||
-      changes.caption ||
-      changes.preset ||
-      changes.orientation
-    ) {
-      const order =
-        !this.preset || this.preset === AvatarPresets.default
-          ? AvatarDefaultPresetValues[this.size][this.orientation] || [0, 1, 2]
-          : AvatarPresetValues[this.preset] || [0, 1, 2];
-
-      this.data = [this.title, this.subtitle, this.caption].reduce(
-        (acc, itm, index, arr) => {
-          acc[index] = arr[order[index]];
-          return acc;
-        },
-        []
-      );
     }
   }
 

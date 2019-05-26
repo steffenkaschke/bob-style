@@ -11,7 +11,9 @@ import {
   ComponentFactoryResolver,
   Type,
   EventEmitter,
-  OnDestroy
+  OnDestroy,
+  SimpleChange,
+  SimpleChanges
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Subject } from 'rxjs';
@@ -77,11 +79,13 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
   private resolveComponentAttributes(
     component: ComponentRef<any>,
     attributes: object
-  ): ComponentRef<any> {
+  ): SimpleChanges {
+    const changes = {};
     for (const attr of Object.keys(attributes)) {
       component.instance[attr] = attributes[attr];
+      changes[attr] = new SimpleChange(null, attributes[attr], true);
     }
-    return component;
+    return changes;
   }
 
   private resolveComponentHandlers(
@@ -121,7 +125,13 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
     }
 
     if (comp.attributes) {
-      this.resolveComponentAttributes(component, comp.attributes);
+      const changes = this.resolveComponentAttributes(
+        component,
+        comp.attributes
+      );
+      if (component.instance.ngOnChanges) {
+        component.instance.ngOnChanges(changes);
+      }
     }
 
     if (comp.handlers) {

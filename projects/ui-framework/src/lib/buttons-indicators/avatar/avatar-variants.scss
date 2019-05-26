@@ -5,6 +5,18 @@
 $box-shad-mini-small: 0 1px 2px 0 $boxShadowColor; // 0 2px 5px 0 $boxShadowColor
 $box-shad-hover-mini-small: 0 3px 6px 0 $boxShadowColor; // 0 10px 15px 0 $boxShadowColor
 $border-mini-small: 2px;
+$text-mini-small: (
+  line-height: 1.35,
+  text-slot-1: (
+    font: body $font-size-body $font-weight-bold-body
+  ),
+  text-slot-2: (
+    font: body $font-size-body
+  ),
+  text-slot-3: (
+    margin-top: null
+  )
+);
 
 $horizontal-mini-small: (
   avatar-text-marg-left: 8px,
@@ -23,18 +35,7 @@ $avatarMap: (
     box-shadow: $box-shad-mini-small,
     box-shadow-hover: $box-shad-hover-mini-small,
     border-width: $border-mini-small,
-    text: (
-      line-height: 1.35
-    ),
-    text-slot-1: (
-      font: body $font-size-big-body $font-weight-bold-body
-    ),
-    text-slot-2: (
-      font: body $font-size-body $font-weight-bold-body
-    ),
-    text-slot-3: (
-      margin-top: null
-    ),
+    text: $text-mini-small,
     chip: null,
     badge: null,
     horizontal: $horizontal-mini-small,
@@ -44,18 +45,7 @@ $avatarMap: (
     box-shadow: $box-shad-mini-small,
     box-shadow-hover: $box-shad-hover-mini-small,
     border-width: $border-mini-small,
-    text: (
-      line-height: 1.35
-    ),
-    text-slot-1: (
-      font: body $font-size-big-body $font-weight-bold-body
-    ),
-    text-slot-2: (
-      font: body $font-size-body $font-weight-bold-body
-    ),
-    text-slot-3: (
-      margin-top: null
-    ),
+    text: $text-mini-small,
     chip: null,
     badge: (
       size: 16px,
@@ -69,16 +59,18 @@ $avatarMap: (
     box-shadow: $box-shad-med-lrg,
     box-shadow-hover: $box-shad-hover-med-lrg,
     border-width: $border-med-lrg,
-    text: null,
-    text-slot-1: (
-      font: display $font-size-display-3 $font-weight-display-3
-        $line-height-heading
-    ),
-    text-slot-2: (
-      font: body $font-size-big-body
-    ),
-    text-slot-3: (
-      margin-top: 5px
+    text: (
+      line-height: null,
+      text-slot-1: (
+        font: display $font-size-display-3 $font-weight-display-3
+          $line-height-heading
+      ),
+      text-slot-2: (
+        font: body $font-size-big-body
+      ),
+      text-slot-3: (
+        margin-top: 5px
+      )
     ),
     chip: (
       margin-top: 6px
@@ -100,16 +92,18 @@ $avatarMap: (
     box-shadow: $box-shad-med-lrg,
     box-shadow-hover: $box-shad-hover-med-lrg,
     border-width: $border-med-lrg,
-    text: null,
-    text-slot-1: (
-      font: display $font-size-display-1 $font-weight-display-1 1
-    ),
-    text-slot-2: (
-      font: display $font-size-display-3 $font-weight-display-3
-        $line-height-heading
-    ),
-    text-slot-3: (
-      margin-top: 5px
+    text: (
+      line-height: null,
+      text-slot-1: (
+        font: display $font-size-display-1 $font-weight-display-1 1
+      ),
+      text-slot-2: (
+        font: display $font-size-display-3 $font-weight-display-3
+          $line-height-heading
+      ),
+      text-slot-3: (
+        margin-top: 5px
+      )
     ),
     chip: (
       margin-top: 8px
@@ -168,15 +162,15 @@ $avatarMap: (
     }
 
     .slot1-big {
-      @include setFont(map-get-deep($typeProps, 'text-slot-1' 'font'));
+      @include setFont(map-get-deep($typeProps, 'text' 'text-slot-1' 'font'));
     }
 
     .slot2-medium {
-      @include setFont(map-get-deep($typeProps, 'text-slot-2' 'font'));
+      @include setFont(map-get-deep($typeProps, 'text' 'text-slot-2' 'font'));
     }
 
     .slot3-small {
-      margin-top: map-get-deep($typeProps, 'text-slot-3' 'margin-top');
+      margin-top: map-get-deep($typeProps, 'text' 'text-slot-3' 'margin-top');
     }
 
     @if (map-get-deep($typeProps, 'chip')) {

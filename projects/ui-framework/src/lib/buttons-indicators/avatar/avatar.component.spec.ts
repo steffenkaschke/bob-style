@@ -13,8 +13,9 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { SimpleChange } from '@angular/core';
 import { ChipType } from '../chips/chips.enum';
 import { ChipsModule } from '../chips/chips.module';
+import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
 
-describe('AvatarComponent', () => {
+fdescribe('AvatarComponent', () => {
   let component: AvatarComponent;
   let fixture: ComponentFixture<AvatarComponent>;
   let avatarElement: HTMLElement;
@@ -24,7 +25,7 @@ describe('AvatarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AvatarComponent],
-      imports: [IconsModule, ChipsModule],
+      imports: [IconsModule, ChipsModule, TruncateTooltipModule],
       providers: [DOMhelpers]
     })
       .compileComponents()
@@ -45,7 +46,7 @@ describe('AvatarComponent', () => {
       });
   }));
 
-  it('should create with default values', () => {
+  it('should create avatar with default values', () => {
     expect(component).toBeTruthy();
     expect(component.size).toEqual(AvatarSize.mini);
   });
@@ -105,28 +106,30 @@ describe('AvatarComponent', () => {
     it('Should put title & subtitle text', () => {
       component.subtitle = 'Subtitle';
       fixture.detectChanges();
-      const title = fixture.debugElement.query(By.css('.name')).nativeElement;
-      const subtitle = fixture.debugElement.query(By.css('.job')).nativeElement;
+      const title = fixture.debugElement.query(By.css('.slot1-big'))
+        .nativeElement;
+      const subtitle = fixture.debugElement.query(By.css('.slot2-medium'))
+        .nativeElement;
       expect(title.innerText).toContain('Title');
       expect(subtitle.innerText).toContain('Subtitle');
     });
     it('Should put department text on large avatar', () => {
-      component.department = 'department';
+      component.caption = 'department';
       component.ngOnChanges({
         size: new SimpleChange(null, AvatarSize.large, false)
       });
       fixture.detectChanges();
-      const department = fixture.debugElement.query(By.css('.department'));
+      const department = fixture.debugElement.query(By.css('.slot3-small'));
       expect(department).toBeTruthy();
       expect(department.nativeElement.innerText).toEqual('department');
     });
     it('Should not put department text on avatar, which size is not large', () => {
-      component.department = 'department';
+      component.caption = 'department';
       component.ngOnChanges({
         size: new SimpleChange(null, AvatarSize.medium, false)
       });
       fixture.detectChanges();
-      const department = fixture.debugElement.query(By.css('.department'));
+      const department = fixture.debugElement.query(By.css('.slot3-small'));
       expect(department).toBeFalsy();
     });
   });
@@ -180,13 +183,13 @@ describe('AvatarComponent', () => {
       component.ngOnChanges({
         size: new SimpleChange(null, AvatarSize.large, false)
       });
-      component.status = {
+      component.chip = {
         type: ChipType.success,
         text: 'status'
       };
       fixture.detectChanges();
       const statusElement = fixture.debugElement.query(
-        By.css('b-chip.status .chip-success')
+        By.css('.chip .chip-success')
       );
       expect(statusElement).toBeTruthy();
       expect(statusElement.nativeElement.innerText).toEqual('status');
@@ -195,13 +198,13 @@ describe('AvatarComponent', () => {
       component.ngOnChanges({
         size: new SimpleChange(null, AvatarSize.small, false)
       });
-      component.status = {
+      component.chip = {
         type: ChipType.success,
         text: 'status'
       };
       fixture.detectChanges();
       const statusElement = fixture.debugElement.query(
-        By.css('b-chip.status .chip-success')
+        By.css('.chip .chip-success')
       );
       expect(statusElement).toBeFalsy();
     });

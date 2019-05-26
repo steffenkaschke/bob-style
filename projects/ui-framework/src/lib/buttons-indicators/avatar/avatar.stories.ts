@@ -22,7 +22,7 @@ import { IconsModule } from '../../icons/icons.module';
 import { ChipType } from '../chips/chips.enum';
 
 const avatarStories = storiesOf(
-  ComponentGroupType.ButtonsAndIndicators,
+  `${ComponentGroupType.ButtonsAndIndicators}.Avatar`,
   module
 ).addDecorator(withKnobs);
 
@@ -37,7 +37,6 @@ const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 const orientationOptions = Object.keys(AvatarOrientation);
 const badges = Object.keys(AvatarBadge);
 const chips = Object.keys(ChipType);
-const presetOptions = Object.keys(AvatarPresets);
 
 const template = `
 <div style="display: flex; justify-content: center;">
@@ -45,7 +44,6 @@ const template = `
   [imageSource]="imageSource"
   [backgroundColor]="backgroundColor"
   [size]="size"
-  [preset]="preset"
   [orientation]="orientation"
   [title]="title"
   [subtitle]="subtitle"
@@ -103,7 +101,6 @@ avatarStories.add(
           'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
         ),
         size: select('size', sizeOptions, AvatarSize.large),
-        preset: select('preset', presetOptions, AvatarPresets.default),
         orientation: select(
           'orientation',
           orientationOptions,

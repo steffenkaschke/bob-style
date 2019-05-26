@@ -19,27 +19,27 @@
   </div>
 </div>
 
-<div *ngIf="data[0] || data[1] || data[2]"
+<div *ngIf="title || subtitle"
      class="avatar-text">
 
   <h4 [b-truncate-tooltip]="orientation === orient.horizontal ? 1 : 2"
-      *ngIf="data[0]"
-      class="slot1-big">
-    {{data[0]}}
+      *ngIf="title"
+      class="slot1-big title">
+    {{title}}
   </h4>
 
   <p b-truncate-tooltip
-     *ngIf="data[1]"
-     class="slot2-medium">
-    {{data[1]}}
+     *ngIf="subtitle"
+     class="slot2-medium subtitle">
+    {{subtitle}}
   </p>
 
-  <p class="slot3-small"
-     *ngIf="data[2]">
-    {{data[2]}}
+  <p class="slot3-small caption"
+     *ngIf="caption && size > avatarSize.medium">
+    {{caption}}
   </p>
 
-  <b-chip *ngIf="chip && size !== avatarSize.mini && size !== avatarSize.small"
+  <b-chip *ngIf="chip && size > avatarSize.small"
           [type]="disabled ? chipType.disabled : chip.type"
           [text]="chip.text"
           class="chip">

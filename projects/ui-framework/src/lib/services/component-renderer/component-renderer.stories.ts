@@ -20,6 +20,7 @@ import { MockComponent } from '../mock-component/mock.component';
 import { TypographyModule } from '../../typography/typography.module';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { MockModule } from '../mock-component/mock.module';
+import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
@@ -54,7 +55,7 @@ const renderData = {
       component: AvatarComponent,
       attributes: {
         imageSource: 'http://i.pravatar.cc/200',
-        size: 'mini',
+        size: AvatarSize.mini,
         isClickable: true
       },
       handlers: {
@@ -101,7 +102,7 @@ const note = `
       component: AvatarComponent,
       attributes: {
         imageSource: 'http://i.pravatar.cc/200',
-        size: 'mini',
+        size: AvatarSize.mini,
         isClickable: true
       },
       handlers: {
