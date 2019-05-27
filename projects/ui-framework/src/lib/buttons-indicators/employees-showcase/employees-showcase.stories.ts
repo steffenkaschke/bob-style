@@ -25,7 +25,10 @@ const sizeOptionsValues = Object.values(AvatarSize).filter(
 const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 
 const template = `
-<b-employees-showcase [employees]="employees" [avatarSize]="avatarSize"></b-employees-showcase>
+  <b-employees-showcase
+            [employees]="employees"
+            [avatarSize]="avatarSize">
+  </b-employees-showcase>
 `;
 
 const note = `
@@ -46,7 +49,9 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Employees Showcase'">
-  ${template}
+  <div style="display: flex; justify-content: center; padding: 20px;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -63,7 +68,7 @@ avatarStories.add(
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
-          EmployeesShowcaseModule,
+          EmployeesShowcaseModule
         ]
       }
     };
