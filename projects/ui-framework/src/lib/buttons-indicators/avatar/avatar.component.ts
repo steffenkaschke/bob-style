@@ -15,8 +15,7 @@ import {
   BadgeSize,
   AvatarBadges,
   AvatarBadge,
-  AvatarOrientation,
-  AvatarPresets
+  AvatarOrientation
 } from './avatar.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { ChipType } from '../chips/chips.enum';
