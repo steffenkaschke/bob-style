@@ -4,7 +4,8 @@ import {
   TestBed,
   inject,
   fakeAsync,
-  tick
+  tick,
+  flush
 } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import {
@@ -72,7 +73,7 @@ class TestComponent implements OnInit, OnDestroy {
   }
 }
 
-fdescribe('RichTextEditorComponent', () => {
+describe('RichTextEditorComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 
@@ -322,8 +323,9 @@ fdescribe('RichTextEditorComponent', () => {
       QuillEditor.setSelection(0, 4);
       hugeButtonElement.click();
 
-      tick(100);
+      tick(50);
       expect(testComponent.rtrValue).toContain('ql-size-huge');
+      flush();
     }));
   });
 
@@ -367,8 +369,9 @@ fdescribe('RichTextEditorComponent', () => {
       urlInputElement.dispatchEvent(new Event('input'));
       addButtonElement.click();
 
-      tick(1000);
+      tick(50);
       expect(testComponent.rtrValue).toContain('a href="http://test2"');
+      flush();
     }));
   });
 
@@ -386,16 +389,18 @@ fdescribe('RichTextEditorComponent', () => {
   describe('FormControl setValue', () => {
     it('should let FormControl set value and then emit valueChanges', fakeAsync(() => {
       rteControl.setValue('test');
-      tick(100);
+      tick(50);
       expect(testComponent.rtrValue).toEqual('test');
+      flush();
     }));
 
     it('should not emit valueChanges when setting value with emitEvent false', fakeAsync(() => {
       rteControl.setValue('test2', {
         emitEvent: false
       });
-      tick(100);
+      tick(50);
       expect(testComponent.rtrValue).not.toEqual('test2');
+      flush();
     }));
   });
 
@@ -405,8 +410,9 @@ fdescribe('RichTextEditorComponent', () => {
       RTEComponent.ngOnChanges({
         value: new SimpleChange(null, 'test text 1', false)
       });
-      tick(100);
+      tick(50);
       expect(testComponent.rtrValue).toEqual('<div>test text 1 </div>');
+      flush();
     }));
 
     it('should propagate value only on blur, if sendChangeOn = blur', fakeAsync(() => {
@@ -415,15 +421,17 @@ fdescribe('RichTextEditorComponent', () => {
       RTEComponent.ngOnChanges({
         value: new SimpleChange(null, 'test text 2', false)
       });
-      tick(100);
+      tick(50);
       expect(testComponent.rtrValue).not.toEqual('<div>test text 2 </div>');
+      flush();
 
       RTEComponent.ngOnChanges({
         value: new SimpleChange(null, 'test text 3', false)
       });
       RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
-      tick(100);
+      tick(50);
       expect(testComponent.rtrValue).toEqual('<div>test text 3 </div>');
+      flush();
     }));
   });
 
