@@ -40,6 +40,7 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   @Input() public value: string;
+  @Input() public minChars = 0;
   @Input() public maxChars: number;
   @Input() public controls: BlotType[] = Object.values(BlotType);
   @Input() public disableControls: BlotType[] = [];
@@ -62,6 +63,7 @@ export abstract class RTEformElement extends BaseFormElement
   public lastSelection: RangeStatic;
   public lastCurrentBlot: BlotData;
   private latestOutputValue: string;
+  public length: number;
   private writingValue = false;
   private control: FormControl;
   protected specialBlots: SpecialBlots = {
@@ -241,6 +243,7 @@ export abstract class RTEformElement extends BaseFormElement
         };
       }
     }
+    this.length = this.rteUtils.getTextLength(this.editor);
     this.transmitValue(this.sendChangeOn === RTEchangeEvent.change);
   }
 

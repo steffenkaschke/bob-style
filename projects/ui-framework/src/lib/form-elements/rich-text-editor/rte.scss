@@ -235,6 +235,30 @@ $border-color-error: $color-error;
   }
 }
 
+// Length counter
+
+.ql-container {
+  position: relative;
+
+  &:after {
+    content: attr(data-length);
+    display: block;
+    @include position(null null 3px null);
+    font-size: $font-size-caption;
+    line-height: 1;
+    border-radius: 10px;
+    padding: 0px 7px;
+    color: $grey-600;
+    background-color: white(0.5);
+  }
+
+  &.length-invalid:after {
+    color: $color-error;
+  }
+}
+
+// Disabled
+
 :host {
   &.error:not(.disabled) ::ng-deep {
     .mat-hint {
@@ -302,6 +326,9 @@ $border-color-error: $color-error;
       padding-left: 11px;
       padding-right: 16px;
     }
+    .ql-container:after {
+      right: 7px;
+    }
   }
   &.error:not(.disabled) ::ng-deep {
     .quill-editor,
@@ -358,6 +385,9 @@ $border-color-error: $color-error;
     .ql-container:last-child {
       border-bottom: 1px solid $border-color;
     }
+    .ql-container:after {
+      right: 0;
+    }
   }
 }
 
@@ -371,6 +401,10 @@ $border-color-error: $color-error;
     }
     .ql-toolbar {
       border: 0;
+    }
+    .ql-container:after {
+      right: 12px;
+      bottom: 5px;
     }
   }
 }
