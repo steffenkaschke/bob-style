@@ -7,8 +7,6 @@
  */
 
 // Typography Module
-import { ScrollEvent } from './lib/services/utils/utils.interface';
-
 export { TypographyModule } from './lib/typography/typography.module';
 
 /*
