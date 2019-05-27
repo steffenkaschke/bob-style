@@ -25,8 +25,9 @@ describe('EmployeesShowcaseComponent', () => {
         DOMhelpers,
         { provide: UtilsService, useValue: utilsServiceStub }
       ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents()
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(EmployeesShowcaseComponent);
         component = fixture.componentInstance;
@@ -65,12 +66,17 @@ describe('EmployeesShowcaseComponent', () => {
       showMore = fixture.debugElement.query(By.css('.show-more'));
       expect(bAvatars.length).toBe(2);
       expect(showMore).toBeFalsy();
-      expect(getComputedStyle(bAvatars[1].nativeElement).marginLeft)
-        .toEqual('-' + AvatarGap[AvatarSize.mini] + 'px');
+      expect(getComputedStyle(bAvatars[1].nativeElement).marginLeft).toEqual(
+        '-' + AvatarGap[AvatarSize.mini] + 'px'
+      );
     });
     it('should display 2 mini avatars one is the show more button', () => {
       spyOn<any>(component, 'getClientWidth').and.callFake(() => 50);
-      component.employees = [getEmployeesMock()[0], getEmployeesMock()[0], getEmployeesMock()[0]];
+      component.employees = [
+        getEmployeesMock()[0],
+        getEmployeesMock()[0],
+        getEmployeesMock()[0]
+      ];
       component.ngOnChanges({
         avatarSize: new SimpleChange(null, AvatarSize.mini, false)
       });
@@ -97,8 +103,7 @@ describe('EmployeesShowcaseComponent', () => {
       component.avatarSize = AvatarSize.medium;
       component.ngOnChanges({
         avatarSize: new SimpleChange(null, AvatarSize.medium, false)
-      })
-      ;
+      });
       fixture.detectChanges();
       bAvatars = fixture.debugElement.queryAll(By.css('b-avatar'));
       showMore = fixture.debugElement.query(By.css('.show-more'));
@@ -116,8 +121,9 @@ describe('EmployeesShowcaseComponent', () => {
       showMore = fixture.debugElement.query(By.css('.show-more'));
       expect(bAvatars.length).toBe(9);
       expect(showMore).toBeFalsy();
-      expect(getComputedStyle(bAvatars[1].nativeElement).marginLeft)
-        .toEqual('-' + AvatarGap[AvatarSize.medium] + 'px');
+      expect(getComputedStyle(bAvatars[1].nativeElement).marginLeft).toEqual(
+        '-' + AvatarGap[AvatarSize.medium] + 'px'
+      );
     });
   });
 });
