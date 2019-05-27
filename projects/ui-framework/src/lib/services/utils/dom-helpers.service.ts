@@ -118,4 +118,29 @@ export class DOMhelpers {
       parseFloat(computedStyle.borderRightWidth)
     );
   }
+
+  // find closest parent either by CSS selector or by test function
+  // can return element or test result
+  getClosest(
+    element: HTMLElement,
+    test: string | Function,
+    rtrn: 'element' | 'result' = 'element'
+  ): any {
+    if (typeof test === 'string') {
+      const sel = test as string;
+      if (!element.matches(sel + ' ' + element.tagName)) {
+        return null;
+      }
+      test = (el: HTMLElement): boolean => el.matches(sel);
+    }
+    while (
+      !test(element) &&
+      element !== document.documentElement &&
+      element.parentElement
+    ) {
+      element = element.parentElement;
+    }
+    test = test(element);
+    return { element: test ? element : null, result: test }[rtrn];
+  }
 }
