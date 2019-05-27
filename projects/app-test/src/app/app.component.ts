@@ -72,6 +72,10 @@ export class AppComponent implements OnInit {
     console.log('*** RTE ' + type + ': "' + event + '"');
   }
 
+  onRteFormSubmit() {
+    console.log(this.myForm.value);
+  }
+
   ngOnInit() {
     this.myForm.get('rteControl').valueChanges.subscribe(value => {
       console.log('!!!!!!! RTE valueChanges: "' + value + '"');
