@@ -110,10 +110,15 @@ export class TruncateTooltipComponent
       this.textElementTextProps = this.DOM.getElementTextProps(
         this.DOM.getDeepTextElement(this.textContainer)
       );
+      this.textElementTextProps.maxHeight =
+        this.textElementTextProps.fontSize *
+        this.textElementTextProps.lineHeight *
+        this.maxLines;
 
       this.DOM.setCssProps(this.textContainer, {
         '--line-height': this.textElementTextProps.lineHeight,
-        '--font-size': this.textElementTextProps.fontSize + 'px'
+        '--font-size': this.textElementTextProps.fontSize + 'px',
+        'max-height': this.textElementTextProps.maxHeight + 'px'
       });
     }
   }
@@ -122,8 +127,11 @@ export class TruncateTooltipComponent
     this.tooltipEnabled =
       (this.maxLines === 1 &&
         this.textContainer.scrollWidth > this.textContainer.offsetWidth) ||
-      (this.maxLines > 0 &&
-        this.textContainer.scrollHeight > this.textContainer.offsetHeight)
+      (this.maxLines > 1 &&
+        this.textContainer.scrollHeight >
+          (this.useCssVars
+            ? this.textContainer.offsetHeight
+            : this.textElementTextProps.maxHeight))
         ? true
         : false;
   }
@@ -135,13 +143,15 @@ export class TruncateTooltipComponent
 
   private setMaxLines(value: number | string): void {
     this.maxLines = this.parseMaxLines(value);
-
-    if (this.maxLines !== this.maxLinesCache && this.initialized) {
+    if (
+      this.maxLines !== this.maxLinesCache &&
+      this.initialized &&
+      this.expectChanges
+    ) {
       setTimeout(() => {
         this.checkTooltipNecessity();
       }, 0);
     }
-
     this.maxLinesCache = this.maxLines;
   }
 }
