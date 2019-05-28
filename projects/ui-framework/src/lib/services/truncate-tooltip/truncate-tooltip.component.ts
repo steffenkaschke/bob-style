@@ -6,12 +6,11 @@ import {
   ElementRef,
   AfterViewInit,
   ViewContainerRef,
-  DoCheck,
-  HostBinding
+  DoCheck
 } from '@angular/core';
 import { UtilsService } from '../utils/utils.service';
 import { Subscription } from 'rxjs';
-import { DOMhelpers, TextProps, Styles } from '../utils/dom-helpers.service';
+import { DOMhelpers, TextProps } from '../utils/dom-helpers.service';
 
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
@@ -19,10 +18,10 @@ import { DOMhelpers, TextProps, Styles } from '../utils/dom-helpers.service';
     <span
       #textContainer
       class="btt"
-      [ngClass]="textContainerClass"
-      [ngStyle]="textContainerStyle"
+      [ngClass]="{ initialized: initialized }"
+      [attr.data-max-lines]="maxLines"
       [matTooltip]="tooltipText"
-      [matTooltipDisabled]="!tooltipEnabled"
+      [matTooltipDisabled]="!initialized || !tooltipEnabled"
       [matTooltipShowDelay]="delay"
       matTooltipPosition="above"
       matTooltipClass="b-truncate-tooltip"
@@ -35,17 +34,7 @@ import { DOMhelpers, TextProps, Styles } from '../utils/dom-helpers.service';
 })
 export class TruncateTooltipComponent
   implements AfterViewInit, DoCheck, OnDestroy {
-  private textContainer: HTMLElement;
-  private maxLinesDefault = 1;
-  private maxLinesCache = this.maxLinesDefault;
-  private maxLines = this.maxLinesDefault;
-  private textElement: HTMLElement;
-  private textElementTextProps: TextProps;
-  private resizeSubscription: Subscription;
-  textContainerClass: string;
-  textContainerStyle: Styles;
-  tooltipText: string;
-  tooltipEnabled = false;
+  constructor(private utilsService: UtilsService, private DOM: DOMhelpers) {}
 
   @ViewChild('textContainer')
   set container(element: ElementRef) {
@@ -63,18 +52,25 @@ export class TruncateTooltipComponent
     this.setMaxLines(value);
   }
   @Input() delay = 300;
+  @Input() expectChanges = true;
+  @Input() useCssVars = false;
 
-  @HostBinding('class.btt-initialized') initialized: boolean;
-
-  constructor(private utilsService: UtilsService, private DOM: DOMhelpers) {}
+  private resizeSubscription: Subscription;
+  private textContainer: HTMLElement;
+  private textElementTextProps: TextProps;
+  private maxLinesDefault = 1;
+  private maxLinesCache = this.maxLinesDefault;
+  public maxLines = this.maxLinesDefault;
+  public tooltipText: string;
+  public tooltipEnabled = false;
+  public initialized = this.useCssVars;
 
   ngAfterViewInit(): void {
     this.maxLinesCache = this.maxLines;
-    this.textElement = this.DOM.getDeepTextElement(this.textContainer);
 
     setTimeout(() => {
-      this.tooltipText = this.textElement.innerText;
-      this.applyTextContainerStyle();
+      this.tooltipText = this.textContainer.innerText;
+      this.setCssVars();
     }, 0);
 
     setTimeout(() => {
@@ -90,13 +86,18 @@ export class TruncateTooltipComponent
   }
 
   ngDoCheck(): void {
-    if (this.initialized && this.tooltipText !== this.textElement.innerText) {
-      this.tooltipText = this.textElement.innerText;
-      this.checkTooltipNecessity();
-    }
+    if (this.expectChanges) {
+      if (
+        this.initialized &&
+        this.tooltipText !== this.textContainer.innerText
+      ) {
+        this.tooltipText = this.textContainer.innerText;
+        this.checkTooltipNecessity();
+      }
 
-    if (this.initialized && this.maxLines !== this.maxLinesCache) {
-      this.setMaxLines(this.maxLines);
+      if (this.initialized && this.maxLines !== this.maxLinesCache) {
+        this.setMaxLines(this.maxLines);
+      }
     }
   }
 
@@ -104,10 +105,10 @@ export class TruncateTooltipComponent
     this.resizeSubscription.unsubscribe();
   }
 
-  private applyTextContainerStyle(): void {
-    if (!this.textElementTextProps) {
+  private setCssVars(): void {
+    if (!this.textElementTextProps && !this.useCssVars) {
       this.textElementTextProps = this.DOM.getElementTextProps(
-        this.textElement
+        this.DOM.getDeepTextElement(this.textContainer)
       );
       this.textElementTextProps.maxHeight =
         this.textElementTextProps.fontSize *
@@ -115,25 +116,10 @@ export class TruncateTooltipComponent
         this.maxLines;
 
       this.DOM.setCssProps(this.textContainer, {
-        '--btt-line-height': this.textElementTextProps.lineHeight,
-        '--btt-font-size': this.textElementTextProps.fontSize + 'px'
+        '--line-height': this.textElementTextProps.lineHeight,
+        '--font-size': this.textElementTextProps.fontSize + 'px'
       });
     }
-
-    this.textContainerClass =
-      this.maxLines === 1
-        ? 'btt-truncate'
-        : this.maxLines > 1
-        ? 'btt-line-clamp'
-        : null;
-
-    this.textContainerStyle =
-      this.maxLines > 1
-        ? {
-            maxHeight: this.textElementTextProps.maxHeight + 'px',
-            webkitLineClamp: this.maxLines
-          }
-        : null;
   }
 
   private checkTooltipNecessity(): void {
@@ -155,7 +141,6 @@ export class TruncateTooltipComponent
     this.maxLines = this.parseMaxLines(value);
 
     if (this.maxLines !== this.maxLinesCache && this.initialized) {
-      this.applyTextContainerStyle();
       setTimeout(() => {
         this.checkTooltipNecessity();
       }, 0);
