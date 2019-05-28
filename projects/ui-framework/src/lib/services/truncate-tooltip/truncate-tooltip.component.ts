@@ -130,7 +130,7 @@ export class TruncateTooltipComponent
       (this.maxLines > 1 &&
         this.textContainer.scrollHeight >
           (this.trustCssVars
-            ? this.textContainer.offsetHeight
+            ? this.textContainer.offsetHeight + 5
             : this.textElementTextProps.maxHeight))
         ? true
         : false;
