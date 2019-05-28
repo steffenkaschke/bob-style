@@ -1,15 +1,20 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IconService } from './icon.service';
-import { Icons, IconSize, IconColor } from './icons.enum';
+import { IconColor, Icons, IconSize } from './icons.enum';
 
 @Component({
   selector: 'b-icon',
   template: `
-  <div [matTooltip]="toolTipSummary"
+  <div *ngIf="toolTipSummary; else iconOnly"
+       [matTooltip]="toolTipSummary"
        [matTooltipPosition]="'above'"
        [matTooltipShowDelay]="300">
-    <mat-icon [svgIcon]="icon" [ngClass]="getClassNames()"></mat-icon>
+    <ng-container *ngTemplateOutlet="iconOnly">
+    </ng-container>
   </div>
+  <ng-template #iconOnly>
+    <mat-icon [svgIcon]="icon" [ngClass]="getClassNames()"></mat-icon>
+  </ng-template>
   `,
   styleUrls: ['./icon.component.scss'],
 })
@@ -24,7 +29,7 @@ export class IconComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.iconService.initIcon(this.icon);
+   this.iconService.initIcon(this.icon);
   }
 
   getClassNames() {

@@ -64,6 +64,7 @@ export enum Icons {
   warning = 'warning_icon',
   no_folder = 'no_folder',
   add_photo = 'add_photo',
+  view_icon = 'view_icon',
 
   // duplicate icons for backwards compatibility
   // TODO: remove if not used
