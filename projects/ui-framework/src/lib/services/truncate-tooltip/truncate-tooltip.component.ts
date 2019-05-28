@@ -52,8 +52,8 @@ export class TruncateTooltipComponent
     this.setMaxLines(value);
   }
   @Input() delay = 300;
-  @Input() expectChanges = true;
-  @Input() useCssVars = false;
+  @Input() expectChanges = false;
+  @Input() trustCssVars = false;
 
   private resizeSubscription: Subscription;
   private textContainer: HTMLElement;
@@ -63,7 +63,7 @@ export class TruncateTooltipComponent
   public maxLines = this.maxLinesDefault;
   public tooltipText: string;
   public tooltipEnabled = false;
-  public initialized = this.useCssVars;
+  public initialized = this.trustCssVars;
 
   ngAfterViewInit(): void {
     this.maxLinesCache = this.maxLines;
@@ -106,7 +106,7 @@ export class TruncateTooltipComponent
   }
 
   private setCssVars(): void {
-    if (!this.textElementTextProps && !this.useCssVars) {
+    if (!this.textElementTextProps && !this.trustCssVars) {
       this.textElementTextProps = this.DOM.getElementTextProps(
         this.DOM.getDeepTextElement(this.textContainer)
       );
@@ -129,7 +129,7 @@ export class TruncateTooltipComponent
         this.textContainer.scrollWidth > this.textContainer.offsetWidth) ||
       (this.maxLines > 1 &&
         this.textContainer.scrollHeight >
-          (this.useCssVars
+          (this.trustCssVars
             ? this.textContainer.offsetHeight + 5
             : this.textElementTextProps.maxHeight))
         ? true

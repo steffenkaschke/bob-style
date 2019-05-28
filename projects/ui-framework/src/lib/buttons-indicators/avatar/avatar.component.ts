@@ -18,7 +18,7 @@ import {
   AvatarBadge,
   AvatarOrientation
 } from './avatar.enum';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers, Styles } from '../../services/utils/dom-helpers.service';
 import { ChipType } from '../chips/chips.enum';
 import { Chip } from '../chips/chips.interface';
 import { BadgeConfig } from './avatar.interface';
@@ -40,6 +40,8 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   readonly chipType = ChipType;
   readonly orient = AvatarOrientation;
   public badgeConfig: BadgeConfig;
+  public avatarClass: string;
+  public avatarStyle: Styles;
 
   @Input() imageSource: string;
   @Input() backgroundColor?: string;
@@ -68,17 +70,28 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.setAvatarClass();
+    this.setAvatarStyle();
     this.setCssVars();
     this.setBadgeConfig();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.imageSource && !changes.imageSource.firstChange) {
+      this.imageSource = changes.imageSource.currentValue;
+      this.setAvatarClass();
+      this.setAvatarStyle();
+    }
+    if (changes.backgroundColor && !changes.backgroundColor.firstChange) {
+      this.backgroundColor = changes.backgroundColor.currentValue;
+      this.setAvatarStyle();
+    }
     if (changes.size && !changes.size.firstChange) {
       this.size = changes.size.currentValue;
       this.setCssVars();
     }
     if (changes.badge && !changes.badge.firstChange) {
-      this.badge = changes.size.currentValue;
+      this.badge = changes.badge.currentValue;
       this.setBadgeConfig();
     }
   }
@@ -100,6 +113,23 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
     this.badgeConfig = (this.badge as BadgeConfig).icon
       ? (this.badge as BadgeConfig)
       : AvatarBadges[this.badge as AvatarBadge];
+  }
+
+  setAvatarClass(): void {
+    this.avatarClass =
+      'avatar' +
+      (this.imageSource && this.imageSource.includes('emptyAvatar')
+        ? ' emptyAvatar'
+        : '');
+  }
+
+  setAvatarStyle(): void {
+    this.avatarStyle = {
+      backgroundImage: this.imageSource
+        ? 'url(' + this.imageSource + ')'
+        : null,
+      backgroundColor: this.backgroundColor
+    };
   }
 
   onClick(event: any): void {

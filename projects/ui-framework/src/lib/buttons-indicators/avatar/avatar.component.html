@@ -1,8 +1,6 @@
 <div class="avatar"
-     [ngClass]="'avatar' +
-                (imageSource && imageSource.includes('emptyAvatar')
-                ? ' emptyAvatar' : '')"
-     [ngStyle]="{ backgroundImage: imageSource ? 'url(' +  imageSource + ')' : null, backgroundColor: backgroundColor }"
+     [ngClass]="avatarClass"
+     [ngStyle]="avatarStyle"
      (click)="onClick($event)">
 
   <b-icon *ngIf="badge && size !== avatarSize.mini"
@@ -22,17 +20,13 @@
 <div *ngIf="title || subtitle"
      class="avatar-text">
 
-  <h4 [b-truncate-tooltip]="orientation === orient.horizontal ? 1 : 2"
-      expectChanges="false"
-      useCssVars="true"
+  <h4 [attr.data-max-lines]="orientation === orient.horizontal ? 1 : 2"
       *ngIf="title"
       class="slot1-big title">
     {{title}}
   </h4>
 
-  <p b-truncate-tooltip
-     expectChanges="false"
-     useCssVars="true"
+  <p data-max-lines="1"
      *ngIf="subtitle"
      class="slot2-medium subtitle">
     {{subtitle}}
