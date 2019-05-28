@@ -46,13 +46,12 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() imageSource: string;
   @Input() backgroundColor?: string;
   @Input() size: AvatarSize = AvatarSize.mini;
-  @Input() orientation: AvatarOrientation = AvatarOrientation.horizontal;
-
   @Input() title?: string;
   @Input() subtitle?: string;
   @Input() chip?: Chip;
   @Input() caption?: string;
   @Input() badge: AvatarBadge | BadgeConfig;
+  @Input() orientation: AvatarOrientation = AvatarOrientation.horizontal;
   @Input() isClickable = false;
   @Input() disabled = false;
 
@@ -77,20 +76,20 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.imageSource && !changes.imageSource.firstChange) {
+    if (changes.imageSource) {
       this.imageSource = changes.imageSource.currentValue;
       this.setAvatarClass();
       this.setAvatarStyle();
     }
-    if (changes.backgroundColor && !changes.backgroundColor.firstChange) {
+    if (changes.backgroundColor) {
       this.backgroundColor = changes.backgroundColor.currentValue;
       this.setAvatarStyle();
     }
-    if (changes.size && !changes.size.firstChange) {
+    if (changes.size) {
       this.size = changes.size.currentValue;
       this.setCssVars();
     }
-    if (changes.badge && !changes.badge.firstChange) {
+    if (changes.badge) {
       this.badge = changes.badge.currentValue;
       this.setBadgeConfig();
     }
@@ -110,9 +109,11 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   setBadgeConfig(): void {
-    this.badgeConfig = (this.badge as BadgeConfig).icon
-      ? (this.badge as BadgeConfig)
-      : AvatarBadges[this.badge as AvatarBadge];
+    this.badgeConfig =
+      this.badge &&
+      ((this.badge as BadgeConfig).icon
+        ? (this.badge as BadgeConfig)
+        : AvatarBadges[this.badge as AvatarBadge]);
   }
 
   setAvatarClass(): void {
