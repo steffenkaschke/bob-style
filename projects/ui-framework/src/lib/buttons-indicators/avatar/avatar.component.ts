@@ -8,7 +8,8 @@ import {
   AfterViewInit,
   HostBinding,
   SimpleChanges,
-  OnChanges
+  OnChanges,
+  OnInit
 } from '@angular/core';
 import {
   AvatarSize,
@@ -21,17 +22,14 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { ChipType } from '../chips/chips.enum';
 import { Chip } from '../chips/chips.interface';
 import { BadgeConfig } from './avatar.interface';
-import {
-  setPropsOnChanges,
-  getKeyByValue
-} from '../../services/utils/functional-utils';
+import { getKeyByValue } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-avatar',
   templateUrl: './avatar.component.html',
   styleUrls: ['./avatar.component.scss']
 })
-export class AvatarComponent implements OnChanges, AfterViewInit {
+export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   constructor(private host: ElementRef, private DOM: DOMhelpers) {}
 
   @ViewChild('content') private content: ElementRef;
@@ -69,19 +67,19 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
     );
   }
 
+  ngOnInit(): void {
+    this.setCssVars();
+    this.setBadgeConfig();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
-    setPropsOnChanges(['size', 'badge'], changes, this);
-
-    if (changes.size) {
-      this.DOM.setCssProps(this.host.nativeElement, {
-        '--avatar-size': this.size + 'px'
-      });
+    if (changes.size && !changes.size.firstChange) {
+      this.size = changes.size.currentValue;
+      this.setCssVars();
     }
-
-    if (changes.badge) {
-      this.badgeConfig = (this.badge as BadgeConfig).icon
-        ? (this.badge as BadgeConfig)
-        : AvatarBadges[this.badge as AvatarBadge];
+    if (changes.badge && !changes.badge.firstChange) {
+      this.badge = changes.size.currentValue;
+      this.setBadgeConfig();
     }
   }
 
@@ -90,6 +88,18 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
       this.hasContent =
         this.content && !this.DOM.isEmpty(this.content.nativeElement);
     }, 0);
+  }
+
+  setCssVars(): void {
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--avatar-size': this.size + 'px'
+    });
+  }
+
+  setBadgeConfig(): void {
+    this.badgeConfig = (this.badge as BadgeConfig).icon
+      ? (this.badge as BadgeConfig)
+      : AvatarBadges[this.badge as AvatarBadge];
   }
 
   onClick(event: any): void {

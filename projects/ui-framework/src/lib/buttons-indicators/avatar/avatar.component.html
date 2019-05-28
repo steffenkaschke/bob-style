@@ -23,12 +23,16 @@
      class="avatar-text">
 
   <h4 [b-truncate-tooltip]="orientation === orient.horizontal ? 1 : 2"
+      expectChanges="false"
+      useCssVars="true"
       *ngIf="title"
       class="slot1-big title">
     {{title}}
   </h4>
 
   <p b-truncate-tooltip
+     expectChanges="false"
+     useCssVars="true"
      *ngIf="subtitle"
      class="slot2-medium subtitle">
     {{subtitle}}

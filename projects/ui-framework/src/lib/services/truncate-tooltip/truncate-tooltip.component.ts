@@ -117,7 +117,8 @@ export class TruncateTooltipComponent
 
       this.DOM.setCssProps(this.textContainer, {
         '--line-height': this.textElementTextProps.lineHeight,
-        '--font-size': this.textElementTextProps.fontSize + 'px'
+        '--font-size': this.textElementTextProps.fontSize + 'px',
+        'max-height': this.textElementTextProps.maxHeight + 'px'
       });
     }
   }
@@ -127,7 +128,10 @@ export class TruncateTooltipComponent
       (this.maxLines === 1 &&
         this.textContainer.scrollWidth > this.textContainer.offsetWidth) ||
       (this.maxLines > 1 &&
-        this.textContainer.scrollHeight > this.textElementTextProps.maxHeight)
+        this.textContainer.scrollHeight >
+          (this.useCssVars
+            ? this.textContainer.offsetHeight + 5
+            : this.textElementTextProps.maxHeight))
         ? true
         : false;
   }
@@ -139,7 +143,6 @@ export class TruncateTooltipComponent
 
   private setMaxLines(value: number | string): void {
     this.maxLines = this.parseMaxLines(value);
-
     if (
       this.maxLines !== this.maxLinesCache &&
       this.initialized &&
@@ -149,7 +152,6 @@ export class TruncateTooltipComponent
         this.checkTooltipNecessity();
       }, 0);
     }
-
     this.maxLinesCache = this.maxLines;
   }
 }

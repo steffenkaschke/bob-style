@@ -130,10 +130,20 @@ $avatarMap: (
     }
   }
   @if contains($prop, 'body') {
-    @include BodyFont(nth($prop, 2), nth($prop, 3), nth($prop, 4));
+    @include BodyFont(
+      nth($prop, 2),
+      nth($prop, 3),
+      nth($prop, 4),
+      $addCssVars: true
+    );
   }
   @if contains($prop, 'display') {
-    @include DisplayFont(nth($prop, 2), nth($prop, 3), nth($prop, 4));
+    @include DisplayFont(
+      nth($prop, 2),
+      nth($prop, 3),
+      nth($prop, 4),
+      $addCssVars: true
+    );
   }
 }
 
