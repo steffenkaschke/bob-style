@@ -44,7 +44,7 @@ $selector: '';
     [data-max-lines='#{$lines}'] {
       max-height: unquote(
         'calc(var(--font-size) * var(--line-height) * #{$lines})'
-      ) !important;
+      );
       line-clamp: $lines;
       -webkit-line-clamp: $lines;
     }

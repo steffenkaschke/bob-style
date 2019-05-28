@@ -52,7 +52,7 @@ export class TruncateTooltipComponent
     this.setMaxLines(value);
   }
   @Input() delay = 300;
-  @Input() expectChanges = false;
+  @Input() expectChanges = true;
   @Input() trustCssVars = false;
 
   private resizeSubscription: Subscription;
