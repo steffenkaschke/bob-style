@@ -117,4 +117,8 @@ export class TableComponent implements OnInit, OnChanges {
   public getRow(rowIndex: string): RowNode {
     return this.gridOptions.api.getRowNode(rowIndex);
   }
+
+  public deselectAll(): void {
+    this.gridOptions.api.deselectAll();
+  }
 }
