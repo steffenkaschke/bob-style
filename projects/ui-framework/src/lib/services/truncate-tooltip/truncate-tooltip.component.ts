@@ -81,8 +81,11 @@ export class TruncateTooltipComponent
 
   @HostListener('mouseenter')
   onMouseEnter() {
-    if (this.type === TruncateTooltiptype.lazy && !this.tooltipAllowed) {
-      clearTimeout(this.hoverTimer);
+    if (
+      this.type === TruncateTooltiptype.lazy &&
+      !this.tooltipAllowed &&
+      !this.hoverTimer
+    ) {
       this.hoverTimer = setTimeout(() => {
         this.tooltipAllowed = true;
       }, 200);
@@ -92,6 +95,7 @@ export class TruncateTooltipComponent
   onMouseLeave() {
     if (this.hoverTimer) {
       clearTimeout(this.hoverTimer);
+      this.hoverTimer = null;
     }
   }
 
@@ -138,6 +142,7 @@ export class TruncateTooltipComponent
     this.resizeSubscription.unsubscribe();
     if (this.hoverTimer) {
       clearTimeout(this.hoverTimer);
+      this.hoverTimer = null;
     }
   }
 
