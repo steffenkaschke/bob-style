@@ -95,11 +95,11 @@ describe('TruncateTooltipComponent', () => {
           By.css('b-truncate-tooltip:not(.test1)')
         ).componentInstance;
 
-        bttComp1.type = TruncateTooltiptype.default;
+        bttComp1.type = TruncateTooltiptype.eager;
         bttComp1.expectChanges = true;
         bttComp1.trustCssVars = false;
         bttComp1.delay = 0;
-        bttComp2.type = TruncateTooltiptype.default;
+        bttComp2.type = TruncateTooltiptype.eager;
         bttComp2.expectChanges = true;
         bttComp2.trustCssVars = false;
         bttComp2.delay = 0;

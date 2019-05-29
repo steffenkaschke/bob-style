@@ -62,6 +62,7 @@ export class TruncateTooltipComponent
     this.setMaxLines(value);
   }
   @Input() delay = 300;
+  @Input() lazyness = 200;
   @Input() expectChanges = false;
   @Input() trustCssVars = false;
   @Input() type: TruncateTooltiptype = TruncateTooltiptype.lazy;
@@ -88,7 +89,7 @@ export class TruncateTooltipComponent
     ) {
       this.hoverTimer = setTimeout(() => {
         this.tooltipAllowed = true;
-      }, 200);
+      }, this.lazyness);
     }
   }
   @HostListener('mouseleave')
