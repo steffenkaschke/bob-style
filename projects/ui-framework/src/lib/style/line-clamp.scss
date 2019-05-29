@@ -1,0 +1,52 @@
+$maxMaxLines: 5;
+
+[data-max-lines] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  --font-size: 1em;
+  --line-height: #{$line-height-body};
+}
+
+[data-max-lines='1'] {
+  white-space: nowrap;
+}
+
+$selector: '';
+@for $lines from 2 through $maxMaxLines {
+  @if $selector != '' {
+    $selector: $selector + ',';
+  }
+  $selector: $selector + '[data-max-lines="' + $lines + '"]';
+}
+
+#{$selector} {
+  mask-image: linear-gradient(
+      to right,
+      white 0%,
+      white 50%,
+      rgba(255, 255, 255, 0) 80%
+    ),
+    linear-gradient(white, white);
+  mask-size: 100% calc(var(--font-size) * var(--line-height)),
+    100% calc(100% - var(--font-size) * var(--line-height));
+  mask-position: center bottom, center top;
+  mask-repeat: no-repeat;
+
+  @supports (-webkit-line-clamp: 2) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    mask-image: none;
+  }
+}
+
+@supports (-webkit-line-clamp: 2) {
+  @for $lines from 2 through $maxMaxLines {
+    [data-max-lines='#{$lines}'] {
+      max-height: unquote(
+        'calc(var(--font-size) * var(--line-height) * #{$lines})'
+      );
+      line-clamp: $lines;
+      -webkit-line-clamp: $lines;
+    }
+  }
+}

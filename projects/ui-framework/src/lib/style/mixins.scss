@@ -1,3 +1,5 @@
+@import './functions';
+
 @mixin pseudo {
   content: '';
   display: block;
@@ -17,32 +19,63 @@
   left: nth($pos, 4);
 }
 
-@function height-from-text($lines, $font-size, $line-height, $add: 0) {
-  @return $font-size * $line-height * $lines + $add;
+@function height-from-text(
+  $lines,
+  $font-size,
+  $line-height,
+  $add: 0,
+  $useCssVars: false
+) {
+  $return: null;
+  @if not $useCssVars {
+    $return: $font-size * $line-height * $lines + $add;
+  }
+  @if $useCssVars {
+    $return: unquote(
+      'calc(var(--font-size) * var(--line-height) * #{$lines} + #{add-unit($add)})'
+    );
+  }
+  @return $return;
 }
 
 @mixin line-clamp(
   $lines,
-  $font-size,
-  $line-height,
+  $font-size: null,
+  $line-height: null,
   $minHeight: false,
-  $mod: false
+  $mod: false,
+  $useCssVars: false
 ) {
   @if not $mod {
-    line-height: $line-height;
+    @if not $useCssVars {
+      line-height: $line-height;
+    }
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  max-height: height-from-text($lines, $font-size, $line-height);
+
+  max-height: height-from-text(
+    $lines,
+    $font-size,
+    $line-height,
+    $useCssVars: $useCssVars
+  );
+
   @if $minHeight {
     @if $minHeight != 0 {
-      min-height: height-from-text($lines, $font-size, $line-height);
+      min-height: height-from-text(
+        $lines,
+        $font-size,
+        $line-height,
+        $useCssVars
+      );
     } @else {
       min-height: 0;
     }
   }
+
   line-clamp: $lines;
   -webkit-line-clamp: $lines;
 }

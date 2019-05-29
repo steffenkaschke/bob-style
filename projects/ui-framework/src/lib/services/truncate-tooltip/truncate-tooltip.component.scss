@@ -10,45 +10,21 @@
       margin: 0;
     }
   }
+}
 
-  &:not(.btt-initialized) {
+.btt {
+  display: block;
+
+  &:not(.initialized) {
     max-height: 1em;
     opacity: 0;
   }
 }
 
-.btt {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  &-truncate {
-    white-space: nowrap;
-
-    ::ng-deep {
-      * {
-        display: inline;
-      }
-    }
-  }
-
-  &-line-clamp {
-    mask-image: linear-gradient(
-        to right,
-        white 0%,
-        white 50%,
-        rgba(255, 255, 255, 0) 80%
-      ),
-      linear-gradient(white, white);
-    mask-size: 100% calc(var(--btt-font-size) * var(--btt-line-height)),
-      100% calc(100% - var(--btt-font-size) * var(--btt-line-height));
-    mask-position: center bottom, center top;
-    mask-repeat: no-repeat;
-
-    @supports (-webkit-line-clamp: 2) {
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      mask-image: none;
+[data-max-lines='1'] {
+  ::ng-deep {
+    * {
+      display: inline;
     }
   }
 }

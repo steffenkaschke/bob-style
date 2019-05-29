@@ -58,7 +58,7 @@ class TestComponent {
   text3 = 'And this text too! TEXTEND2';
 }
 
-describe('RichTextEditorComponent', () => {
+describe('TruncateTooltipComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 
@@ -133,7 +133,7 @@ describe('RichTextEditorComponent', () => {
       ).toBeTruthy();
     });
 
-    it('should display tooltip with updated (chanhed) full text', () => {
+    it('should display tooltip with updated (changed) full text', () => {
       testComponent.maxLines = 3;
       testComponent.testNum = 2;
       fixture.autoDetectChanges();

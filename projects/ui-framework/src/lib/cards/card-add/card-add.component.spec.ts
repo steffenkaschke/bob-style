@@ -52,7 +52,7 @@ describe('CardAddComponent', () => {
 
     it('should add truncate-tooltip to long .card-content text', () => {
       fixture.detectChanges();
-      expect(cardContentElement.classList).toContain('btt-initialized');
+      expect(cardContentElement.children[0].classList).toContain('initialized');
     });
   });
 
