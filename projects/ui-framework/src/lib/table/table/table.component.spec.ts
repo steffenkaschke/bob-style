@@ -278,4 +278,13 @@ describe('TableComponent', () => {
       });
     });
   });
+
+  describe('deselectAll', () => {
+    it('Should call grid api deselectAll', () => {
+      fixture.autoDetectChanges();
+      spyOn(component.agGrid.api, 'deselectAll');
+      component.deselectAll();
+      expect(component.agGrid.api.deselectAll).toHaveBeenCalled();
+    });
+  });
 });
