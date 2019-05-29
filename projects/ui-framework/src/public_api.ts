@@ -7,8 +7,6 @@
  */
 
 // Typography Module
-import { ScrollEvent } from './lib/services/utils/utils.interface';
-
 export { TypographyModule } from './lib/typography/typography.module';
 
 /*
@@ -46,7 +44,7 @@ export { AvatarModule } from './lib/buttons-indicators/avatar/avatar.module';
 export {
   AvatarComponent
 } from './lib/buttons-indicators/avatar/avatar.component';
-export { AvatarSize } from './lib/buttons-indicators/avatar/avatar.enum';
+export { AvatarSize, AvatarOrientation, AvatarBadge } from './lib/buttons-indicators/avatar/avatar.enum';
 export { BadgeConfig } from './lib/buttons-indicators/avatar/avatar.interface';
 // Slider Module
 export { SliderModule } from './lib/buttons-indicators/slider/slider.module';

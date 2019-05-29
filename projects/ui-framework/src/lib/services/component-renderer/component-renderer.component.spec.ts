@@ -11,6 +11,7 @@ import { MockComponent } from '../mock-component/mock.component';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 
 describe('ComponentRendererComponent', () => {
   let fixture: ComponentFixture<ComponentRendererComponent>;
@@ -29,7 +30,7 @@ describe('ComponentRendererComponent', () => {
         component: AvatarComponent,
         attributes: {
           imageSource: 'hello.jpg',
-          size: 'mini',
+          size: AvatarSize.mini,
           isClickable: true
         },
         handlers: {
@@ -66,7 +67,7 @@ describe('ComponentRendererComponent', () => {
         avatarComponent = fixture.debugElement.query(By.css('.slot-1 b-avatar'))
           .componentInstance;
         avatarNativeElement = fixture.debugElement.query(
-          By.css('.avatar.clickable')
+          By.css('b-avatar.clickable .avatar')
         ).nativeElement;
         textElement = fixture.debugElement.query(By.css('.slot-2'))
           .nativeElement;

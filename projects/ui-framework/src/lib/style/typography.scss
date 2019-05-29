@@ -33,8 +33,10 @@ $font-size-subheading: $font-size-body;
   font-size: $size;
   line-height: $lineHeight;
 
-  @if $addCssVars {
+  @if $addCssVars and $size {
     --font-size: #{$size};
+  }
+  @if $addCssVars and $lineHeight {
     --line-height: #{$lineHeight};
   }
 }
@@ -44,11 +46,12 @@ $font-size-subheading: $font-size-body;
   $weight,
   $lineHeight: $line-height-heading,
   $transform: capitalize,
-  $style: normal,
+  $style: null,
+  $font-family: var(--display-font-family),
   $addCssVars: false
 ) {
   @include FontDefault($style, $weight, $size, $lineHeight, $addCssVars);
-  font-family: var(--display-font-family);
+  font-family: $font-family;
   display: block;
   text-transform: $transform;
 }
@@ -57,7 +60,7 @@ $font-size-subheading: $font-size-body;
   $size,
   $weight: 700,
   $lineHeight: $line-height-heading,
-  $style: normal,
+  $style: null,
   $addCssVars: false
 ) {
   @include FontDefault($style, $weight, $size, $lineHeight, $addCssVars);
@@ -70,9 +73,10 @@ $font-size-subheading: $font-size-body;
   $size: $font-size-body,
   $weight: $font-weight-body,
   $lineHeight: $line-height-body,
-  $style: normal,
+  $style: null,
+  $font-family: var(--body-font-family),
   $addCssVars: false
 ) {
   @include FontDefault($style, $weight, $size, $lineHeight, $addCssVars);
-  font-family: var(--body-font-family);
+  font-family: $font-family;
 }

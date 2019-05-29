@@ -38,6 +38,7 @@ export class CollapsibleComponent implements AfterViewInit {
   @ViewChild('suffix') suffix: ElementRef;
 
   hasSuffix = true;
+  collapsibleType = CollapsibleType;
 
   ngAfterViewInit(): void {
     setTimeout(() => {

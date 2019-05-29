@@ -3,13 +3,15 @@
 @import '../../style/mixins';
 
 @mixin MatButton() {
-  .mat-ripple, .mat-button-focus-overlay {
+  .mat-ripple,
+  .mat-button-focus-overlay {
     display: none !important;
   }
 }
 
 @mixin Button($type) {
   box-sizing: border-box;
+
   border-radius: 4px;
   @include BodyFont;
   line-height: 1;
@@ -21,7 +23,7 @@
     text-transform: capitalize;
   }
 
-  @if $type == "primary" {
+  @if $type == 'primary' {
     background-color: var(--primary-500);
     border: 1px solid var(--primary-500);
     color: $white;
@@ -36,7 +38,7 @@
     }
   }
 
-  @if $type == "secondary" {
+  @if $type == 'secondary' {
     background-color: white;
     border: 1px solid $grey-600;
     &:hover {
@@ -49,7 +51,7 @@
     }
   }
 
-  @if $type == "tertiary" {
+  @if $type == 'tertiary' {
     border: 1px solid transparent;
     &:hover {
       background-color: $grey-200;

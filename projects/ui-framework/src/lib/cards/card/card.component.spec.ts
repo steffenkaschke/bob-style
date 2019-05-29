@@ -56,6 +56,8 @@ describe('CardComponent', () => {
         component.card = mockCardData;
         fixture.detectChanges();
 
+        avatarTitle = fixture.debugElement.query(By.css('.avatar-text .title'))
+          .nativeElement;
         cardContentElement = fixture.debugElement.query(By.css('.card-content'))
           .nativeElement;
 
@@ -65,9 +67,6 @@ describe('CardComponent', () => {
         menuComponent =
           fixture.debugElement.query(By.css('b-menu')) &&
           fixture.debugElement.query(By.css('b-menu')).componentInstance;
-
-        avatarTitle = fixture.debugElement.query(By.css('.avatar-title .title'))
-          .nativeElement;
       });
   }));
 

@@ -7,12 +7,12 @@
                               expandedHeight="auto">
 
     <b-display-3 class="collapsible-title"
-                 *ngIf="type === 'big'">
+                 *ngIf="type === collapsibleType.big">
       {{ title }}
     </b-display-3>
 
     <b-subheading class="collapsible-title"
-                  *ngIf="type === 'small'">
+                  *ngIf="type === collapsibleType.small">
       {{ title }}
     </b-subheading>
 

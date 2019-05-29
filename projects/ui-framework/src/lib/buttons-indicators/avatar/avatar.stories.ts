@@ -7,16 +7,16 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { zipObject } from 'lodash';
-import { AvatarSize } from './avatar.enum';
+import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { AvatarModule } from './avatar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Icons, IconColor } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
+import { ChipType } from '../chips/chips.enum';
 
 const avatarStories = storiesOf(
-  ComponentGroupType.ButtonsAndIndicators,
+  `${ComponentGroupType.ButtonsAndIndicators}.Avatar`,
   module
 ).addDecorator(withKnobs);
 
@@ -28,23 +28,26 @@ const sizeOptionsValues = Object.values(AvatarSize).filter(
 ) as number[];
 const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 
-const badges = [Icons.pending_badge, Icons.approve_badge];
-const badgeColors = Object.keys(IconColor);
+const orientationOptions = Object.keys(AvatarOrientation);
+const badges = Object.keys(AvatarBadge);
+const chips = Object.keys(ChipType);
 
 const template = `
-<div style="display: flex; justify-content: center;">
 <b-avatar
   [imageSource]="imageSource"
+  [backgroundColor]="backgroundColor"
   [size]="size"
-  [isClickable]="isClickable"
+  [orientation]="orientation"
   [title]="title"
   [subtitle]="subtitle"
-  [disabled]="disabled"
+  [caption]="caption"
   [badge]="badge"
+  [chip]="chip"
+  [isClickable]="isClickable"
+  [disabled]="disabled"
   (clicked)="clickHandler($event)"
-  [backgroundColor]="backgroundColor">
+  >
 </b-avatar>
-</div>
 `;
 
 const note = `
@@ -56,14 +59,18 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   imageSource | string | URL of the avatar image | none
-  size | AvatarSize | enum for setting the avatar size | mini (optional)
-  isClickable | boolean | flag for indicating if the avatar is clickable or not | false
-  title | string | main title of the avatar | none (optional)
-  subtitle | string | subtitle of the avatar | none (optional)
-  disabled | boolean | disabled avatar | false (optional)
-  badge | BadgeConfig | badge config: includes icon and color | undefined (optional)
-  clicked | Function | callback for clicking on the avatar | none
   backgroundColor | string | background color | none
+  size | AvatarSize | enum for setting the avatar size | mini
+  orientation | AvatarOrientation | vertical or horizontal | horizontal
+  title | string | main title of the avatar | none
+  subtitle | string | subtitle of the avatar | none
+  caption | string | caption & site | none
+  badge | AvatarBadge / BadgeConfig | AvatarBadge enum of approved, pending or rejected / or BadgeConfig {icon, color} object  | none
+  chip | Chip | object describing the chip chip (should have type & text properties) | none
+  disabled | boolean | disabled avatar | false
+  isClickable | boolean | flag for indicating if the avatar is clickable or not | false
+  clicked | Function | callback for clicking on the avatar | none
+
   ~~~
   ${template}
   ~~~
@@ -71,7 +78,9 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Avatar'">
-  ${template}
+  <div style="display: flex; justify-content: center; padding: 20px;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -85,17 +94,24 @@ avatarStories.add(
           'imageSource',
           'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
         ),
-        size: select('size', sizeOptions, AvatarSize.medium),
+        size: select('size', sizeOptions, AvatarSize.large),
+        orientation: select(
+          'orientation',
+          orientationOptions,
+          AvatarOrientation.horizontal
+        ),
         isClickable: boolean('isClickable', false),
         clickHandler: action('Avatar Clicked'),
         title: text('title', 'John Doe'),
         subtitle: text('subtitle', 'Web Developer'),
+        caption: text('caption', 'Product, Israel'),
         disabled: boolean('disabled', false),
-        badge: {
-          icon: select('badge icon', badges, Icons.pending_badge),
-          color: select('badge color', badgeColors, IconColor.primary)
-        },
-        backgroundColor: select('background color', ['#fff', 'red', 'black'])
+        badge: select('badge', badges, AvatarBadge.approved),
+        backgroundColor: select('background color', ['#fff', 'red', 'black']),
+        chip: {
+          type: select('chip type', chips, ChipType.success),
+          text: text('chip text', 'Employed')
+        }
       },
       moduleMetadata: {
         imports: [

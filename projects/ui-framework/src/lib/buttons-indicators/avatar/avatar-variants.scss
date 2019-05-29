@@ -1,0 +1,219 @@
+@import '../../style/colors';
+@import '../../style/mixins';
+@import '../../style/typography';
+
+:host.mini {
+  .avatar {
+    box-shadow: 0 1px 2px 0 $boxShadowColor;
+    border-width: 2px;
+  }
+  &.clickable .avatar:hover {
+    box-shadow: 0 3px 6px 0 $boxShadowColor;
+  }
+  .avatar-text {
+    line-height: 1.35;
+  }
+  .slot1-big {
+    @include BodyFont(
+      $font-size-body,
+      $font-weight-bold-body,
+      null,
+      $addCssVars: true
+    );
+  }
+  .slot1-big:only-child {
+    font-weight: 400;
+  }
+  .slot2-medium {
+    @include BodyFont($font-size-body, null, null, $addCssVars: true);
+  }
+  &.horizontal {
+    .avatar-text {
+      margin-left: 5px;
+      max-width: calc(100% - (var(--avatar-size) + 5px));
+    }
+  }
+  &.vertical {
+    .avatar-text {
+      margin-top: 3px;
+      max-width: 80px;
+    }
+  }
+}
+
+:host.small {
+  .avatar {
+    box-shadow: 0 1px 2px 0 $boxShadowColor;
+    border-width: 2px;
+  }
+  &.clickable .avatar:hover {
+    box-shadow: 0 3px 6px 0 $boxShadowColor;
+  }
+  .avatar-badge {
+    width: 16px;
+    height: 16px;
+    top: 2px;
+    right: 1px;
+  }
+  .avatar-text {
+    line-height: 1.35;
+  }
+  .slot1-big {
+    @include BodyFont(
+      $font-size-body,
+      $font-weight-bold-body,
+      null,
+      $addCssVars: true
+    );
+  }
+  .slot1-big:only-child {
+    font-weight: 400;
+  }
+  .slot2-medium {
+    @include BodyFont($font-size-body, null, null, $addCssVars: true);
+  }
+  &.horizontal {
+    .avatar-text {
+      margin-left: 8px;
+      max-width: calc(100% - (var(--avatar-size) + 8px));
+    }
+  }
+  &.vertical {
+    .avatar-text {
+      max-width: 100px;
+      margin-top: 6px;
+    }
+  }
+}
+
+:host.medium {
+  .avatar {
+    box-shadow: 0 2px 4px 0 $boxShadowColor;
+    border-width: 3px;
+  }
+  &.clickable .avatar:hover {
+    box-shadow: 0 6px 12px 0 $boxShadowColor;
+  }
+  .chip {
+    margin-top: 6px;
+  }
+  .avatar-badge {
+    width: 24px;
+    height: 24px;
+    top: 3px;
+    right: -1px;
+  }
+  .slot1-big {
+    @include DisplayFont(
+      $font-size-display-3,
+      $font-weight-display-3,
+      $line-height-heading,
+      null,
+      $addCssVars: true
+    );
+  }
+  .slot2-medium {
+    @include BodyFont($font-size-big-body, null, null, $addCssVars: true);
+  }
+  .slot3-small {
+    margin-top: 5px;
+  }
+  &.horizontal {
+    .avatar-text {
+      margin-left: 10px;
+      max-width: calc(100% - (var(--avatar-size) + 10px));
+    }
+  }
+  &.vertical {
+    .avatar-text {
+      max-width: 160px;
+      margin-top: 14px;
+    }
+    .slot2-medium {
+      @include BodyFont(
+        $font-size-body,
+        null,
+        null,
+        null,
+        null,
+        $addCssVars: true
+      );
+      margin-top: 3px;
+    }
+  }
+}
+
+:host.large {
+  .avatar {
+    box-shadow: 0 2px 4px 0 $boxShadowColor;
+    border-width: 3px;
+  }
+  &.clickable .avatar:hover {
+    box-shadow: 0 6px 12px 0 $boxShadowColor;
+  }
+  .chip {
+    margin-top: 8px;
+  }
+  .avatar-badge {
+    width: 24px;
+    height: 24px;
+    top: 3px;
+    right: 3px;
+  }
+  .slot1-big {
+    @include DisplayFont(
+      $font-size-display-1,
+      $font-weight-display-1,
+      1,
+      null,
+      $addCssVars: true
+    );
+  }
+  .slot2-medium {
+    @include DisplayFont(
+      $font-size-display-3,
+      $font-weight-display-3,
+      $line-height-heading,
+      null,
+      $addCssVars: true
+    );
+  }
+  .slot3-small {
+    margin-top: 5px;
+  }
+  &.horizontal {
+    .avatar-text {
+      margin-left: 16px;
+      max-width: calc(100% - (var(--avatar-size) + 16px));
+    }
+  }
+  &.vertical {
+    .avatar-text {
+      max-width: 215px;
+      margin-top: 3px;
+    }
+    .slot1-big {
+      @include DisplayFont(
+        $font-size-display-2,
+        null,
+        null,
+        null,
+        null,
+        null,
+        $addCssVars: true
+      );
+    }
+    .slot3-small {
+      @include BodyFont(
+        $font-size-big-body,
+        null,
+        null,
+        null,
+        null,
+        $addCssVars: true
+      );
+      color: $grey-600;
+      margin-top: 2px;
+    }
+  }
+}

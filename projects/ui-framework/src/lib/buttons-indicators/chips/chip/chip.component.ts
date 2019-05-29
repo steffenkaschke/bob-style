@@ -16,13 +16,14 @@ import { Icons, IconSize, IconColor } from '../../../icons/icons.enum';
   selector: 'b-chip, [b-chip]',
   template: `
     <span #chip [ngClass]="class ? class : 'chip-' + type" [ngStyle]="style">
+      {{ text }}
       <ng-content></ng-content>
 
       <b-icon
         *ngIf="removable && type !== chipType.disabled"
         class="remove-button"
         [ngClass]="{ light: style.color, dark: !style.color }"
-        [color]="iconColor"
+        [color]="bgColorIsDark ? iconColor.white : iconColor.dark"
         [icon]="resetIcon"
         [hasHoverState]="true"
         [size]="iconSize.small"
@@ -38,13 +39,15 @@ export class ChipComponent implements OnChanges {
 
   @Input() type: ChipType = ChipType.default;
   @Input() color?: string;
+  @Input() text?: string;
   @Input() removable = false;
   @Output() removed: EventEmitter<void> = new EventEmitter<void>();
 
   style = null;
   class = null;
-  iconColor = 'transparent';
+  bgColorIsDark = false;
 
+  readonly iconColor = IconColor;
   readonly chipType = ChipType;
   readonly resetIcon: String = Icons.close;
   readonly iconSize = IconSize;
@@ -72,20 +75,18 @@ export class ChipComponent implements OnChanges {
       };
 
       setTimeout(() => {
+        this.bgColorIsDark = this.colorService.isDark(
+          getComputedStyle(this.chip.nativeElement).backgroundColor
+        );
         this.style.color =
-          this.type !== ChipType.disabled &&
-          this.color &&
-          this.colorService.isDark(
-            getComputedStyle(this.chip.nativeElement).backgroundColor
-          )
+          this.type !== ChipType.disabled && this.color && this.bgColorIsDark
             ? 'white'
             : null;
-        this.iconColor = this.style.color ? IconColor.white : IconColor.dark;
       }, 0);
     }
   }
 
-  onClick(event) {
+  onClick(event: MouseEvent) {
     event.stopPropagation();
     this.removed.emit();
   }

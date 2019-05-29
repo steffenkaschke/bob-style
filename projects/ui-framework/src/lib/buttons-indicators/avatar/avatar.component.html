@@ -1,17 +1,13 @@
 <div class="avatar"
-     [ngClass]="'avatar-' + getSizeClass(size) +
-                (isClickable && !disabled ? ' clickable' : '') +
-                (disabled ? ' disabled' : '') +
-                (imageSource && imageSource.includes('emptyAvatar')
-                ? ' emptyAvatar' : '')"
-     [ngStyle]="{ backgroundImage: imageSource ? 'url(' +  imageSource + ')' : null, backgroundColor: backgroundColor }"
+     [ngClass]="avatarClass"
+     [ngStyle]="avatarStyle"
      (click)="onClick($event)">
 
   <b-icon *ngIf="badge && size !== avatarSize.mini"
           class="avatar-badge"
-          [icon]="badge.icon"
-          [size]="badgeSize[getSizeClass(size)]"
-          [color]="badge.color">
+          [size]="badgeSize[size]"
+          [icon]="badgeConfig?.icon"
+          [color]="badgeConfig?.color">
   </b-icon>
 
   <div class="avatar-content"
@@ -22,17 +18,29 @@
 </div>
 
 <div *ngIf="title || subtitle"
-     class="avatar-title"
-     [ngClass]="'avatar-title-' + getSizeClass(size) + (disabled ? ' disabled' : '')">
+     class="avatar-text">
 
-  <h4 *ngIf="title"
-      class="title">
+  <h4 [attr.data-max-lines]="orientation === orient.horizontal ? 1 : 2"
+      *ngIf="title"
+      class="slot1-big title">
     {{title}}
   </h4>
 
-  <p *ngIf="subtitle"
-     class="subtitle">
+  <p data-max-lines="1"
+     *ngIf="subtitle && (orientation === orient.horizontal || size > avatarSize.small)"
+     class="slot2-medium subtitle">
     {{subtitle}}
   </p>
+
+  <p class="slot3-small caption"
+     *ngIf="caption && size > avatarSize.medium">
+    {{caption}}
+  </p>
+
+  <b-chip *ngIf="chip && size > avatarSize.small"
+          [type]="disabled ? chipType.disabled : chip.type"
+          [text]="chip.text"
+          class="chip">
+  </b-chip>
 
 </div>

@@ -3,9 +3,10 @@ import { ChipComponent } from '../../buttons-indicators/chips/chip/chip.componen
 import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 import { action } from '@storybook/addon-actions';
+import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 
 const avatarComponentAttributes = {
-  size: 'small',
+  size: AvatarSize.small,
   isClickable: true
 };
 
