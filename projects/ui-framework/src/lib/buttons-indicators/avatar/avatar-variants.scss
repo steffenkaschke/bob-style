@@ -2,210 +2,191 @@
 @import '../../style/mixins';
 @import '../../style/typography';
 
-$box-shad-mini-small: 0 1px 2px 0 $boxShadowColor; // 0 2px 5px 0 $boxShadowColor
-$box-shad-hover-mini-small: 0 3px 6px 0 $boxShadowColor; // 0 10px 15px 0 $boxShadowColor
-$border-mini-small: 2px;
-$text-mini-small: (
-  line-height: 1.35,
-  text-slot-1: (
-    font: body $font-size-body $font-weight-bold-body
-  ),
-  text-slot-2: (
-    font: body $font-size-body
-  ),
-  text-slot-3: (
-    margin-top: null
-  )
-);
-
-$horizontal-mini-small: (
-  avatar-text-marg-left: 8px,
-  avatar-text-max-width: calc(100% - var(--avatar-size) + 8px)
-);
-$vertical-mini-small: (
-  avatar-text-marg-top: 3px
-);
-
-$box-shad-med-lrg: 0 2px 4px 0 $boxShadowColor; // 0 1px 2px 0 $boxShadowColor
-$box-shad-hover-med-lrg: 0 6px 12px 0 $boxShadowColor; // 0 3px 6px 0 $boxShadowColor
-$border-med-lrg: 3px;
-
-$avatarMap: (
-  mini: (
-    box-shadow: $box-shad-mini-small,
-    box-shadow-hover: $box-shad-hover-mini-small,
-    border-width: $border-mini-small,
-    text: $text-mini-small,
-    chip: null,
-    badge: null,
-    horizontal: $horizontal-mini-small,
-    vertical: $vertical-mini-small
-  ),
-  small: (
-    box-shadow: $box-shad-mini-small,
-    box-shadow-hover: $box-shad-hover-mini-small,
-    border-width: $border-mini-small,
-    text: $text-mini-small,
-    chip: null,
-    badge: (
-      size: 16px,
-      top: 2px,
-      right: 1px
-    ),
-    horizontal: $horizontal-mini-small,
-    vertical: $vertical-mini-small
-  ),
-  medium: (
-    box-shadow: $box-shad-med-lrg,
-    box-shadow-hover: $box-shad-hover-med-lrg,
-    border-width: $border-med-lrg,
-    text: (
-      line-height: null,
-      text-slot-1: (
-        font: display $font-size-display-3 $font-weight-display-3
-          $line-height-heading
-      ),
-      text-slot-2: (
-        font: body $font-size-big-body
-      ),
-      text-slot-3: (
-        margin-top: 5px
-      )
-    ),
-    chip: (
-      margin-top: 6px
-    ),
-    badge: (
-      size: 24px,
-      top: 3px,
-      right: -1px
-    ),
-    horizontal: (
-      avatar-text-marg-left: 10px,
-      avatar-text-max-width: calc(100% - var(--avatar-size) + 10px)
-    ),
-    vertical: (
-      avatar-text-marg-top: 5px
-    )
-  ),
-  large: (
-    box-shadow: $box-shad-med-lrg,
-    box-shadow-hover: $box-shad-hover-med-lrg,
-    border-width: $border-med-lrg,
-    text: (
-      line-height: null,
-      text-slot-1: (
-        font: display $font-size-display-1 $font-weight-display-1 1
-      ),
-      text-slot-2: (
-        font: display $font-size-display-3 $font-weight-display-3
-          $line-height-heading
-      ),
-      text-slot-3: (
-        margin-top: 5px
-      )
-    ),
-    chip: (
-      margin-top: 8px
-    ),
-    badge: (
-      size: 24px,
-      top: 3px,
-      right: 3px
-    ),
-    horizontal: (
-      avatar-text-marg-left: 18px,
-      avatar-text-max-width: calc(100% - var(--avatar-size) + 18px)
-    ),
-    vertical: (
-      avatar-text-marg-top: 3px
-    )
-  )
-);
-
-@mixin setFont($prop) {
-  @if length($prop) < 4 {
-    @for $i from length($prop) through 4 {
-      $prop: append($prop, null);
+:host.mini {
+  .avatar {
+    box-shadow: 0 1px 2px 0 $boxShadowColor;
+    border-width: 2px;
+  }
+  &.clickable .avatar:hover {
+    box-shadow: 0 3px 6px 0 $boxShadowColor;
+  }
+  .avatar-text {
+    line-height: 1.35;
+  }
+  .slot1-big {
+    @include BodyFont(
+      $font-size-body,
+      $font-weight-bold-body,
+      null,
+      $addCssVars: true
+    );
+  }
+  .slot1-big:only-child {
+    font-weight: 400;
+  }
+  .slot2-medium {
+    @include BodyFont($font-size-body, null, null, $addCssVars: true);
+  }
+  &.horizontal {
+    .avatar-text {
+      margin-left: 5px;
+      max-width: calc(100% - (var(--avatar-size) + 5px));
     }
   }
-  @if contains($prop, 'body') {
-    @include BodyFont(
-      nth($prop, 2),
-      nth($prop, 3),
-      nth($prop, 4),
-      $addCssVars: true
-    );
-  }
-  @if contains($prop, 'display') {
-    @include DisplayFont(
-      nth($prop, 2),
-      nth($prop, 3),
-      nth($prop, 4),
-      $addCssVars: true
-    );
+  &.vertical {
+    .avatar-text {
+      margin-top: 3px;
+    }
   }
 }
 
-@each $type, $typeProps in $avatarMap {
-  :host.#{$type} {
-    .avatar {
-      box-shadow: map-get-deep($typeProps, 'box-shadow');
+:host.small {
+  .avatar {
+    box-shadow: 0 1px 2px 0 $boxShadowColor;
+    border-width: 2px;
+  }
+  &.clickable .avatar:hover {
+    box-shadow: 0 3px 6px 0 $boxShadowColor;
+  }
+  .avatar-badge {
+    width: 16px;
+    height: 16px;
+    top: 2px;
+    right: 1px;
+  }
+  .avatar-text {
+    line-height: 1.35;
+  }
+  .slot1-big {
+    @include BodyFont(
+      $font-size-body,
+      $font-weight-bold-body,
+      null,
+      $addCssVars: true
+    );
+  }
+  .slot1-big:only-child {
+    font-weight: 400;
+  }
+  .slot2-medium {
+    @include BodyFont($font-size-body, null, null, $addCssVars: true);
+  }
+  &.horizontal {
+    .avatar-text {
+      margin-left: 8px;
+      max-width: calc(100% - (var(--avatar-size) + 8px));
     }
-
-    &.clickable .avatar:hover {
-      box-shadow: map-get-deep($typeProps, 'box-shadow-hover');
+  }
+  &.vertical {
+    .avatar-text {
+      margin-top: 6px;
     }
+  }
+}
 
-    @if (map-get-deep($typeProps, 'badge')) {
-      .avatar-badge {
-        @include size(map-get-deep($typeProps, 'badge' 'size'));
-        top: map-get-deep($typeProps, 'badge' 'top');
-        right: map-get-deep($typeProps, 'badge' 'right');
-      }
+:host.medium {
+  .avatar {
+    box-shadow: 0 2px 4px 0 $boxShadowColor;
+    border-width: 3px;
+  }
+  &.clickable .avatar:hover {
+    box-shadow: 0 6px 12px 0 $boxShadowColor;
+  }
+  .chip {
+    margin-top: 6px;
+  }
+  .avatar-badge {
+    width: 24px;
+    height: 24px;
+    top: 3px;
+    right: -1px;
+  }
+  .slot1-big {
+    @include DisplayFont(
+      $font-size-display-3,
+      $font-weight-display-3,
+      $line-height-heading,
+      null,
+      $addCssVars: true
+    );
+  }
+  .slot2-medium {
+    @include BodyFont($font-size-big-body, null, null, $addCssVars: true);
+  }
+  .slot3-small {
+    margin-top: 5px;
+  }
+  &.horizontal {
+    .avatar-text {
+      margin-left: 10px;
+      max-width: calc(100% - (var(--avatar-size) + 10px));
     }
-
-    @if (map-get-deep($typeProps, 'text')) {
-      .avatar-text {
-        line-height: map-get-deep($typeProps, 'text' 'line-height');
-      }
+  }
+  &.vertical {
+    .avatar-text {
+      margin-top: 5px;
     }
+  }
+}
 
+:host.large {
+  .avatar {
+    box-shadow: 0 2px 4px 0 $boxShadowColor;
+    border-width: 3px;
+  }
+  &.clickable .avatar:hover {
+    box-shadow: 0 6px 12px 0 $boxShadowColor;
+  }
+  .chip {
+    margin-top: 8px;
+  }
+  .avatar-badge {
+    width: 24px;
+    height: 24px;
+    top: 3px;
+    right: 3px;
+  }
+  .slot1-big {
+    @include DisplayFont(
+      $font-size-display-1,
+      $font-weight-display-1,
+      1,
+      null,
+      $addCssVars: true
+    );
+  }
+  .slot2-medium {
+    @include DisplayFont(
+      $font-size-display-3,
+      $font-weight-display-3,
+      $line-height-heading,
+      null,
+      $addCssVars: true
+    );
+  }
+  .slot3-small {
+    margin-top: 5px;
+  }
+  &.horizontal {
+    .avatar-text {
+      margin-left: 16px;
+      max-width: calc(100% - (var(--avatar-size) + 16px));
+    }
+  }
+  &.vertical {
+    .avatar-text {
+      margin-top: 3px;
+    }
     .slot1-big {
-      @include setFont(map-get-deep($typeProps, 'text' 'text-slot-1' 'font'));
-    }
-
-    .slot2-medium {
-      @include setFont(map-get-deep($typeProps, 'text' 'text-slot-2' 'font'));
-    }
-
-    .slot3-small {
-      margin-top: map-get-deep($typeProps, 'text' 'text-slot-3' 'margin-top');
-    }
-
-    @if (map-get-deep($typeProps, 'chip')) {
-      .chip {
-        margin-top: map-get-deep($typeProps, 'chip' 'margin-top');
-      }
-    }
-
-    &.horizontal {
-      .avatar-text {
-        margin-left: map-get-deep(
-          $typeProps,
-          'horizontal' 'avatar-text-marg-left'
-        );
-        max-width: map-get-deep(
-          $typeProps,
-          'horizontal' 'avatar-text-max-width'
-        );
-      }
-    }
-
-    &.vertical {
-      .avatar-text {
-        margin-top: map-get-deep($typeProps, 'vertical' 'avatar-text-marg-top');
-      }
+      @include DisplayFont(
+        $font-size-display-2,
+        null,
+        null,
+        null,
+        null,
+        null,
+        $addCssVars: true
+      );
     }
   }
 }
