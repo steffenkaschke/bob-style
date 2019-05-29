@@ -1,12 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AvatarComponent } from './avatar.component';
-import {
-  AvatarSize,
-  BadgeSize,
-  AvatarBadge,
-  AvatarOrientation,
-  AvatarBadges
-} from './avatar.enum';
+import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { By } from '@angular/platform-browser';
 import { IconsModule } from '../../icons/icons.module';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
@@ -14,6 +8,7 @@ import { SimpleChange } from '@angular/core';
 import { ChipType } from '../chips/chips.enum';
 import { ChipsModule } from '../chips/chips.module';
 import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
+import { BadgeSize, AvatarBadges } from './avatar.consts';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
