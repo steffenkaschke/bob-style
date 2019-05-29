@@ -1,5 +1,9 @@
+@import '../../style/mixins';
+
 :host {
   display: block;
+  position: relative;
+  z-index: 2;
 
   ::ng-deep {
     :only-child,
@@ -19,6 +23,11 @@
     max-height: 1em;
     opacity: 0;
   }
+}
+
+.tooltip-trigger {
+  @include size;
+  @include position(0 0 0 0);
 }
 
 [data-max-lines='1'] {

@@ -6,25 +6,30 @@ import {
   ElementRef,
   AfterViewInit,
   ViewContainerRef,
-  DoCheck
+  DoCheck,
+  HostListener
 } from '@angular/core';
 import { UtilsService } from '../utils/utils.service';
 import { Subscription } from 'rxjs';
 import { DOMhelpers, TextProps } from '../utils/dom-helpers.service';
+import { TruncateTooltiptype } from './truncate-tooltip.enum';
 
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
   template: `
+    <i
+      class="tooltip-trigger"
+      *ngIf="tooltipAllowed && tooltipEnabled"
+      [matTooltip]="tooltipText"
+      [matTooltipShowDelay]="delay"
+      matTooltipPosition="above"
+      matTooltipClass="b-truncate-tooltip"
+    ></i>
     <span
       #textContainer
       class="btt"
       [ngClass]="{ initialized: initialized }"
       [attr.data-max-lines]="maxLines"
-      [matTooltip]="tooltipText"
-      [matTooltipDisabled]="!initialized || !tooltipEnabled"
-      [matTooltipShowDelay]="delay"
-      matTooltipPosition="above"
-      matTooltipClass="b-truncate-tooltip"
     >
       <ng-content></ng-content>
       <ng-template #directiveTemplate></ng-template>
@@ -52,8 +57,9 @@ export class TruncateTooltipComponent
     this.setMaxLines(value);
   }
   @Input() delay = 300;
-  @Input() expectChanges = true;
+  @Input() expectChanges = false;
   @Input() trustCssVars = false;
+  @Input() type: TruncateTooltiptype = TruncateTooltiptype.lazy;
 
   private resizeSubscription: Subscription;
   private textContainer: HTMLElement;
@@ -63,7 +69,25 @@ export class TruncateTooltipComponent
   public maxLines = this.maxLinesDefault;
   public tooltipText: string;
   public tooltipEnabled = false;
+  public tooltipAllowed = false;
   public initialized = this.trustCssVars;
+  private hoverTimer;
+
+  @HostListener('mouseenter')
+  onMouseEnter() {
+    if (this.type === TruncateTooltiptype.lazy && !this.tooltipAllowed) {
+      clearTimeout(this.hoverTimer);
+      this.hoverTimer = setTimeout(() => {
+        this.tooltipAllowed = true;
+      }, 200);
+    }
+  }
+  @HostListener('mouseleave')
+  onMouseLeave() {
+    if (this.hoverTimer) {
+      clearTimeout(this.hoverTimer);
+    }
+  }
 
   ngAfterViewInit(): void {
     this.maxLinesCache = this.maxLines;
@@ -76,6 +100,9 @@ export class TruncateTooltipComponent
     setTimeout(() => {
       this.checkTooltipNecessity();
       this.initialized = true;
+      if (this.type !== TruncateTooltiptype.lazy) {
+        this.tooltipAllowed = true;
+      }
     }, 0);
 
     this.resizeSubscription = this.utilsService
@@ -103,6 +130,9 @@ export class TruncateTooltipComponent
 
   ngOnDestroy(): void {
     this.resizeSubscription.unsubscribe();
+    if (this.hoverTimer) {
+      clearTimeout(this.hoverTimer);
+    }
   }
 
   private setCssVars(): void {
