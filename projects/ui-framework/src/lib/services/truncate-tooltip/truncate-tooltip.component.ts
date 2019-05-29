@@ -160,6 +160,12 @@ export class TruncateTooltipComponent
   }
 
   private checkTooltipNecessity(): void {
+    if (
+      this.type === TruncateTooltiptype.css &&
+      this.tooltipText.length > 100
+    ) {
+      this.type = TruncateTooltiptype.lazy;
+    }
     this.tooltipEnabled =
       (this.maxLines === 1 &&
         this.textContainer.scrollWidth > this.textContainer.offsetWidth) ||

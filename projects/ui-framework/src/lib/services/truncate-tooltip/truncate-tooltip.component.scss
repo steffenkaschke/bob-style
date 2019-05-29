@@ -19,6 +19,7 @@
 
 .btt {
   display: block;
+  overflow: hidden;
 
   &:not(.initialized) {
     max-height: 1em;
@@ -29,10 +30,12 @@
 .tooltip-trigger {
   @include size;
   @include position(0 0 0 0);
-  @include flex-align;
+  display: flex;
 }
 
 [data-max-lines='1'] {
+  white-space: nowrap;
+
   ::ng-deep {
     * {
       display: inline;
