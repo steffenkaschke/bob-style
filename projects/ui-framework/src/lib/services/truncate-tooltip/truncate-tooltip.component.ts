@@ -103,7 +103,7 @@ export class TruncateTooltipComponent
     this.maxLinesCache = this.maxLines;
 
     setTimeout(() => {
-      this.tooltipText = this.textContainer.innerText;
+      this.tooltipText = this.textContainer.textContent.trim();
       this.setCssVars();
     }, 0);
 
@@ -126,9 +126,9 @@ export class TruncateTooltipComponent
     if (this.expectChanges) {
       if (
         this.initialized &&
-        this.tooltipText !== this.textContainer.innerText
+        this.tooltipText !== this.textContainer.textContent.trim()
       ) {
-        this.tooltipText = this.textContainer.innerText;
+        this.tooltipText = this.textContainer.textContent.trim();
         this.checkTooltipNecessity();
       }
 
@@ -167,7 +167,7 @@ export class TruncateTooltipComponent
   private checkTooltipNecessity(): void {
     if (
       this.type === TruncateTooltiptype.css &&
-      this.tooltipText.length > 100
+      this.tooltipText.length > 130
     ) {
       this.type = TruncateTooltiptype.lazy;
     }
