@@ -27,7 +27,7 @@
   </h4>
 
   <p data-max-lines="1"
-     *ngIf="subtitle"
+     *ngIf="subtitle && (orientation === orient.horizontal || size > avatarSize.small)"
      class="slot2-medium subtitle">
     {{subtitle}}
   </p>

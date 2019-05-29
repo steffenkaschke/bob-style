@@ -58,7 +58,7 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   @Output() clicked?: EventEmitter<void> = new EventEmitter<void>();
 
   @HostBinding('class')
-  get typeClass() {
+  get typeClass(): string {
     return (
       getKeyByValue(AvatarSize, this.size) +
       ' ' +

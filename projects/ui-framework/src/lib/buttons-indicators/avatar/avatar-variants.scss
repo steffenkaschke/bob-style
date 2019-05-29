@@ -36,6 +36,7 @@
   &.vertical {
     .avatar-text {
       margin-top: 3px;
+      max-width: 80px;
     }
   }
 }
@@ -79,6 +80,7 @@
   }
   &.vertical {
     .avatar-text {
+      max-width: 100px;
       margin-top: 6px;
     }
   }
@@ -124,7 +126,19 @@
   }
   &.vertical {
     .avatar-text {
-      margin-top: 5px;
+      max-width: 160px;
+      margin-top: 14px;
+    }
+    .slot2-medium {
+      @include BodyFont(
+        $font-size-body,
+        null,
+        null,
+        null,
+        null,
+        $addCssVars: true
+      );
+      margin-top: 3px;
     }
   }
 }
@@ -175,6 +189,7 @@
   }
   &.vertical {
     .avatar-text {
+      max-width: 215px;
       margin-top: 3px;
     }
     .slot1-big {
@@ -187,6 +202,18 @@
         null,
         $addCssVars: true
       );
+    }
+    .slot3-small {
+      @include BodyFont(
+        $font-size-big-body,
+        null,
+        null,
+        null,
+        null,
+        $addCssVars: true
+      );
+      color: $grey-600;
+      margin-top: 2px;
     }
   }
 }
