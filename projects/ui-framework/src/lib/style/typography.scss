@@ -46,7 +46,7 @@ $font-size-subheading: $font-size-body;
   $weight,
   $lineHeight: $line-height-heading,
   $transform: capitalize,
-  $style: null,
+  $style: normal,
   $font-family: var(--display-font-family),
   $addCssVars: false
 ) {
@@ -60,7 +60,7 @@ $font-size-subheading: $font-size-body;
   $size,
   $weight: 700,
   $lineHeight: $line-height-heading,
-  $style: null,
+  $style: normal,
   $addCssVars: false
 ) {
   @include FontDefault($style, $weight, $size, $lineHeight, $addCssVars);
@@ -73,7 +73,7 @@ $font-size-subheading: $font-size-body;
   $size: $font-size-body,
   $weight: $font-weight-body,
   $lineHeight: $line-height-body,
-  $style: null,
+  $style: normal,
   $font-family: var(--body-font-family),
   $addCssVars: false
 ) {

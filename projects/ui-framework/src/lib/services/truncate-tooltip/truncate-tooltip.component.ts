@@ -18,12 +18,17 @@ import { TruncateTooltiptype } from './truncate-tooltip.enum';
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
   template: `
     <i
+      *ngIf="type !== types.css && tooltipAllowed && tooltipEnabled"
       class="tooltip-trigger"
-      *ngIf="tooltipAllowed && tooltipEnabled"
       [matTooltip]="tooltipText"
       [matTooltipShowDelay]="delay"
       matTooltipPosition="above"
       matTooltipClass="b-truncate-tooltip"
+    ></i>
+    <i
+      *ngIf="type === types.css && tooltipEnabled"
+      class="tooltip-trigger"
+      [attr.data-tooltip]="tooltipText"
     ></i>
     <span
       #textContainer
@@ -66,12 +71,13 @@ export class TruncateTooltipComponent
   private textElementTextProps: TextProps;
   private maxLinesDefault = 1;
   private maxLinesCache = this.maxLinesDefault;
+  private hoverTimer;
   public maxLines = this.maxLinesDefault;
   public tooltipText: string;
   public tooltipEnabled = false;
   public tooltipAllowed = false;
   public initialized = this.trustCssVars;
-  private hoverTimer;
+  readonly types = TruncateTooltiptype;
 
   @HostListener('mouseenter')
   onMouseEnter() {
