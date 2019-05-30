@@ -16,7 +16,7 @@ export class RteUtilsService {
   constructor(private DOM: DOMhelpers) {}
 
   getHtmlContent(editor: Quill): string {
-    return !editor.root.innerText.trim() ? '' : editor.root.innerHTML;
+    return !editor.root.textContent.trim() ? '' : editor.root.innerHTML;
   }
 
   getTextLength(editor: Quill): number {

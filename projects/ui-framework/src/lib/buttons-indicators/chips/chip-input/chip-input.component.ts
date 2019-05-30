@@ -146,7 +146,7 @@ export class ChipInputComponent extends BaseFormElement
     } else if (chipToAdd) {
       const existingChipElemnent = this.chipList.chips.find(
         ch =>
-          ch._elementRef.nativeElement.innerText.toLowerCase() ===
+          ch._elementRef.nativeElement.textContent.toLowerCase() ===
           chipToAdd.toLowerCase()
       )._elementRef.nativeElement;
 

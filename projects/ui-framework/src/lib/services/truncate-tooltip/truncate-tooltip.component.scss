@@ -1,5 +1,10 @@
+@import '../../style/mixins';
+@import '../../style/typography';
+
 :host {
   display: block;
+  position: relative;
+  z-index: 2;
 
   ::ng-deep {
     :only-child,
@@ -14,6 +19,7 @@
 
 .btt {
   display: block;
+  overflow: hidden;
 
   &:not(.initialized) {
     max-height: 1em;
@@ -21,7 +27,15 @@
   }
 }
 
+.tooltip-trigger {
+  @include size;
+  @include position(0 0 0 0);
+  display: flex;
+}
+
 [data-max-lines='1'] {
+  white-space: nowrap;
+
   ::ng-deep {
     * {
       display: inline;
