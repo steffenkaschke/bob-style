@@ -9,7 +9,7 @@ $toolti-offset: 10px;
 %tooltip-body {
   background-color: $tooltip-color;
   color: white;
-  max-width: 350px;
+  max-width: fit-content;
   padding: 8px 15px;
   margin: $toolti-offset 0;
   overflow: visible;
