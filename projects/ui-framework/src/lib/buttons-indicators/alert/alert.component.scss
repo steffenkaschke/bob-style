@@ -1,0 +1,39 @@
+@import '../../style/colors';
+@import '../../style/typography';
+
+::ng-deep {
+  .b-alert {
+    background-color: $white;
+    border-radius: 4px;
+    box-shadow: 0 5px 10px 0 rgba(83,83,83,0.2);
+    min-width: 395px;
+    min-height: 78px;
+
+    .alert-container {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0px 15px;
+      width: 100%;
+      .close-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+      .icon {
+        margin-right: 10px;
+      }
+      .content {
+        text-align: left;
+        .title {
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+        p {
+          margin: 4px 0 0;
+        }
+      }
+    }
+  }
+}
