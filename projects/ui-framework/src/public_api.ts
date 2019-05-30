@@ -63,8 +63,9 @@ export { ChipsModule } from './lib/buttons-indicators/chips/chips.module';
 export {
   ChipComponent
 } from './lib/buttons-indicators/chips/chip/chip.component';
-export { ChipType } from './lib/buttons-indicators/chips/chips.enum';
 export { ChipInputComponent } from './lib/buttons-indicators/chips/chip-input/chip-input.component';
+export { ChipType } from './lib/buttons-indicators/chips/chips.enum';
+export { Chip, ChipInputChange } from './lib/buttons-indicators/chips/chips.interface';
 // InfoStrip Module
 export { InfoStripModule } from './lib/buttons-indicators/info-strip/info-strip.module';
 export { InfoStripComponent } from './lib/buttons-indicators/info-strip/info-strip.component';
@@ -158,6 +159,9 @@ export { ListChange } from './lib/form-elements/lists/list-change/list-change';
 export {
   RichTextEditorModule
 } from './lib/form-elements/rich-text-editor/rte.module';
+export {
+  RTEType, BlotType, RTEchangeEvent
+} from './lib/form-elements/rich-text-editor/rte-core/rte.enum';
 export {
   RichTextEditorComponent
 } from './lib/form-elements/rich-text-editor/rte.component';
@@ -274,6 +278,8 @@ export { DividerModule } from './lib/layout/divider/divider.module';
 export { DividerComponent } from './lib/layout/divider/divider.component';
 // Cards
 export { CardsModule } from './lib/cards/cards.module';
+export { CardType } from './lib/cards/cards.enum';
+export { CardDataType, CardData, AddCardData, CardClickEvent } from './lib/cards/cards.interface';
 // Single card
 export { CardComponent } from './lib/cards/card/card.component';
 // Add new Card
@@ -284,7 +290,10 @@ export { CardsLayoutComponent } from './lib/cards/cards-layout/cards-layout.comp
 export { CardTableModule } from './lib/table/card-table/card-table.module';
 export { CardTableComponent } from './lib/table/card-table/card-table/card-table.component';
 export * from './lib/table/card-table/card-table.interface';
-
+// Collapsible
+export { CollapsibleModule } from './lib/layout/collapsible/collapsible.module';
+export { CollapsibleComponent } from './lib/layout/collapsible/collapsible.component';
+export { CollapsibleType } from './lib/layout/collapsible/collapsible.enum';
 
 /*
  * Misc
@@ -302,10 +311,12 @@ export { FiltersModule } from './lib/services/filters/filters.module';
 // Utils Module
 export { UtilsModule } from './lib/services/utils/utils.module';
 export { UtilsService } from './lib/services/utils/utils.service';
+export { DOMhelpers } from './lib/services/utils/dom-helpers.service';
 export { ScrollEvent }  from './lib/services/utils/utils.interface';
 // Component Renderer
 export { ComponentRendererModule } from './lib/services/component-renderer/component-renderer.module';
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';
+export { RenderedComponent } from './lib/services/component-renderer/component-renderer.interface';
 // Truncate Tooltip
 export { TruncateTooltipModule} from './lib/services/truncate-tooltip/truncate-tooltip.module';
 export { TruncateTooltipComponent} from './lib/services/truncate-tooltip/truncate-tooltip.component';

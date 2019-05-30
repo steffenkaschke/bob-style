@@ -6,3 +6,9 @@ export interface Chip {
   text?: string;
   removable?: boolean;
 }
+
+export interface ChipInputChange {
+  value: string[];
+  added?: string;
+  removed?: string;
+}

@@ -1,12 +1,22 @@
 import { storiesOf, moduleMetadata } from '@storybook/angular';
-import { text, array, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  text,
+  array,
+  boolean,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
+import { action } from '@storybook/addon-actions';
 import { ChipsModule } from '../chips.module';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { chipOptionsMock } from './chipsOptionsMock';
 import { randomFromArray } from '../../../services/utils/functional-utils';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const story = storiesOf(`${ComponentGroupType.ButtonsAndIndicators}.Chips`, module).addDecorator(withKnobs);
+const story = storiesOf(
+  `${ComponentGroupType.ButtonsAndIndicators}.Chips`,
+  module
+).addDecorator(withKnobs);
 
 const options = chipOptionsMock;
 const value = [...randomFromArray(chipOptionsMock, 3), 'Rimming'];
@@ -20,7 +30,8 @@ const template = `
                 [required]="required"
                 [disabled]="disabled"
                 [hintMessage]="hintMessage"
-                [errorMessage]="errorMessage">
+                [errorMessage]="errorMessage"
+                (changed)="chipInputChangeHandler($event)">
   </b-chip-input>
 `;
 const template2 = `
@@ -46,6 +57,7 @@ const note = `
   errorMessage | string | error text | none
   required | boolean | if input is required | false
   disabled | boolean | if input is disabled | false
+  changed | Function | handler for event of type ChipInputChange ({value, added, removed}) | none
 
 
   ~~~
@@ -74,10 +86,11 @@ story.add(
       required: boolean('required', false),
       hintMessage: text('hintMessage', 'Stick something in me'),
       errorMessage: text('errorMessage', ''),
-      options: array('options', options, ',')
+      options: array('options', options, ','),
+      chipInputChangeHandler: action('Chip input changed')
     },
     moduleMetadata: {
-      imports: [ChipsModule, StoryBookLayoutModule]
+      imports: [ChipsModule, StoryBookLayoutModule, BrowserAnimationsModule]
     }
   }),
   { notes: { markdown: note } }
