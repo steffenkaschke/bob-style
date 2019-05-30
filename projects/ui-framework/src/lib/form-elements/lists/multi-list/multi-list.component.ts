@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2, SimpleChanges } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep, flatMap, chain } from 'lodash';
 import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
@@ -16,7 +16,7 @@ import { ListFooterActions } from '../list.interface';
   templateUrl: 'multi-list.component.html',
   styleUrls: ['multi-list.component.scss'],
 })
-export class MultiListComponent extends BaseListElement implements OnChanges {
+export class MultiListComponent extends BaseListElement implements OnChanges, OnInit {
 
   @Input() options: SelectGroupOption[];
   @Input() maxHeight = this.listElHeight * 8;
@@ -35,6 +35,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   checkboxState = CheckboxStates;
 
   selectedIdsMap: (string | number)[];
+  private collapsedIndicator: boolean;
 
   constructor(
     private listModelService: ListModelService,
@@ -43,6 +44,14 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     listKeyboardService: ListKeyboardService,
   ) {
     super(renderer, listKeyboardService);
+  }
+
+  ngOnInit(): void {
+    this.listModelService.getModelHandlerSubscription()
+      .subscribe((data) => {
+        this.collapsedIndicator = data;
+        this.updateLists();
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -105,6 +114,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   searchChange(s: string): void {
     this.searchValue = s;
     this.filteredOptions = this.listModelService.getFilteredOptions(this.options, s);
+    this.collapsedIndicator = !this.searchValue;
     this.updateLists();
   }
 
@@ -113,8 +123,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   }
 
   private updateLists(): void {
-    this.listHeaders = this.listModelService
-      .getHeadersModel(this.filteredOptions);
+    this.listHeaders = this.listModelService.getHeadersModel(this.filteredOptions, this.collapsedIndicator);
     this.listOptions = this.listModelService
       .getOptionsModel(this.filteredOptions, this.listHeaders, this.noGroupHeaders);
     this.listModelService.setSelectedOptions(this.listHeaders, this.listOptions, this.selectedIdsMap);

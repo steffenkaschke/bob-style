@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2, SimpleChanges } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { ListHeader, ListOption, SelectGroupOption, SelectOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
@@ -13,7 +13,7 @@ import { ListChange } from '../list-change/list-change';
   templateUrl: 'single-list.component.html',
   styleUrls: ['single-list.component.scss'],
 })
-export class SingleListComponent extends BaseListElement implements OnChanges {
+export class SingleListComponent extends BaseListElement implements OnChanges, OnInit {
 
   @Input() options: SelectGroupOption[];
   @Input() maxHeight = this.listElHeight * 8;
@@ -26,7 +26,7 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
 
   private filteredOptions: SelectGroupOption[];
   private selectedOption: SelectOption;
-
+  private collapsedIndicator: boolean;
   constructor(
     private listModelService: ListModelService,
     private listChangeService: ListChangeService,
@@ -34,6 +34,14 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
     listKeyboardService: ListKeyboardService,
   ) {
     super(renderer, listKeyboardService);
+  }
+
+  ngOnInit(): void {
+    this.listModelService.getModelHandlerSubscription()
+      .subscribe((data) => {
+        this.collapsedIndicator = data;
+        this.updateLists();
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -71,12 +79,13 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   searchChange(s: string): void {
     this.searchValue = s;
     this.filteredOptions = this.listModelService.getFilteredOptions(this.options, s);
+    this.collapsedIndicator = !this.searchValue;
     this.updateLists();
   }
 
   private updateLists(): void {
     this.listHeaders = this.listModelService
-      .getHeadersModel(this.filteredOptions);
+      .getHeadersModel(this.filteredOptions, this.collapsedIndicator);
     this.listOptions = this.listModelService
       .getOptionsModel(this.filteredOptions, this.listHeaders, this.noGroupHeaders);
     this.selectedOption = find(this.listOptions, o => o.selected);

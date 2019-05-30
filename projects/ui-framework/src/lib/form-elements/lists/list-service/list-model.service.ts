@@ -1,13 +1,39 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import {
   flatten, forEach, map, concat, assign, find, set, includes, filter, every, escapeRegExp, some, compact, chain
 } from 'lodash';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { ListOption, ListHeader, SelectGroupOption } from '../list.interface';
+import { ReplaySubject } from 'rxjs';
 
 @Injectable()
-export class ListModelService {
+export class ListModelService implements OnDestroy {
+
+  public modelHandler$: ReplaySubject<boolean> = new ReplaySubject();
+
   constructor() {
+  }
+
+  public getModelHandlerSubscription(): ReplaySubject<boolean> {
+    if (!this.modelHandler$) {
+      this.initHandlerSubscription();
+    }
+    return this.modelHandler$;
+  }
+
+  private initHandlerSubscription() {
+    this.modelHandler$ = new ReplaySubject<boolean>(1);
+  }
+
+
+  public isCollapsedChange(value: boolean): void {
+    this.modelHandler$.next(value);
+  }
+
+  public ngOnDestroy(): void {
+    if (this.modelHandler$) {
+      this.modelHandler$.unsubscribe();
+    }
   }
 
   getOptionsModel(
@@ -57,10 +83,10 @@ export class ListModelService {
     return flatten(groupOptions);
   }
 
-  getHeadersModel(options: SelectGroupOption[]): ListHeader[] {
+  getHeadersModel(options: SelectGroupOption[], collapsedIndicator = true): ListHeader[] {
     return map(options, group => ({
       groupName: group.groupName,
-      isCollapsed: false,
+      isCollapsed: collapsedIndicator,
       placeHolderSize: group.options.length * LIST_EL_HEIGHT,
       selected: null,
     }));
@@ -97,6 +123,7 @@ export class ListModelService {
         : null;
       return filteredGroup;
     });
+    this.isCollapsedChange(false);
     return compact(filteredOptions);
   }
 
