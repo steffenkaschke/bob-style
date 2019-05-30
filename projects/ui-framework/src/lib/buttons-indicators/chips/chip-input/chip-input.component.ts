@@ -106,7 +106,6 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   private propagateValue(change: Partial<ChipInputChange>) {
-    console.log('www');
     this.propagateChange(this.value);
     this.changed.emit({ ...change, value: this.value });
     this.onTouched();
