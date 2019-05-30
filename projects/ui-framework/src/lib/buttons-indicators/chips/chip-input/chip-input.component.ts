@@ -7,7 +7,9 @@ import {
   OnInit,
   SimpleChanges,
   OnChanges,
-  HostListener
+  HostListener,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
@@ -23,6 +25,7 @@ import { startWith, map } from 'rxjs/operators';
 import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
 import { BaseFormElement } from '../../../form-elements/base-form-element';
 import { ChipType } from '../chips.enum';
+import { ChipInputChange } from '../chips.interface';
 
 @Component({
   selector: 'b-chip-input',
@@ -66,6 +69,10 @@ export class ChipInputComponent extends BaseFormElement
   @ViewChild('input', { read: MatAutocompleteTrigger })
   private autocompleteTrigger: MatAutocompleteTrigger;
 
+  @Output() changed: EventEmitter<ChipInputChange> = new EventEmitter<
+    ChipInputChange
+  >();
+
   constructor() {
     super();
 
@@ -98,8 +105,10 @@ export class ChipInputComponent extends BaseFormElement
     this.updatePossibleChips();
   }
 
-  private propagateValue() {
+  private propagateValue(change: Partial<ChipInputChange>) {
+    console.log('www');
     this.propagateChange(this.value);
+    this.changed.emit({ ...change, value: this.value });
     this.onTouched();
   }
 
@@ -132,7 +141,7 @@ export class ChipInputComponent extends BaseFormElement
     if (chipToAdd && !this.findChip(chipToAdd, this.value)) {
       this.value.push(chipToAdd);
       this.updatePossibleChips();
-      this.propagateValue();
+      this.propagateValue({ added: chipToAdd });
       this.input.nativeElement.value = '';
       this.chipInputControl.setValue(null);
     } else if (chipToAdd) {
@@ -173,7 +182,7 @@ export class ChipInputComponent extends BaseFormElement
   remove(name: string): void {
     this.value = this.removeChip(name, this.value);
     this.updatePossibleChips();
-    this.propagateValue();
+    this.propagateValue({ removed: name });
     this.autocompleteTrigger.closePanel();
   }
 

@@ -65,7 +65,7 @@ export {
 } from './lib/buttons-indicators/chips/chip/chip.component';
 export { ChipInputComponent } from './lib/buttons-indicators/chips/chip-input/chip-input.component';
 export { ChipType } from './lib/buttons-indicators/chips/chips.enum';
-export { Chip } from './lib/buttons-indicators/chips/chips.interface';
+export { Chip, ChipInputChange } from './lib/buttons-indicators/chips/chips.interface';
 // InfoStrip Module
 export { InfoStripModule } from './lib/buttons-indicators/info-strip/info-strip.module';
 export { InfoStripComponent } from './lib/buttons-indicators/info-strip/info-strip.component';
