@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { TruncateTooltipModule } from './truncate-tooltip.module';
+import { TruncateTooltiptype as type } from './truncate-tooltip.enum';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
@@ -18,10 +19,15 @@ const template1 = `
   </b-big-body>
 `;
 const template2 = `
-  <b-truncate-tooltip [maxLines]="maxLines" class="employee-title">
+  <b-truncate-tooltip [maxLines]="maxLines" class="employee-title"><!-- this html comment should not be displayed -->
     <b-display-3>
-      <span>{{ text1 }}</span>
-      <span>{{ text2 }}</span>
+      <span>
+        <!-- this html comment should not be displayed -->
+        By default, the tooltip is initialized lazily - only after user hovers over the element for 200ms.
+      </span>
+      <span>
+        Text truncation / line-clamping, however, is set immidiately.
+      </span>
     </b-display-3>
   </b-truncate-tooltip>
 `;
@@ -30,6 +36,15 @@ const template3 = `
     <span>{{ text1 }}</span>
     <span>{{ text2 }}</span>
   </p>
+`;
+
+const template4 = `
+  <div b-truncate-tooltip="2" [type]="'css'">
+    <h3>
+      This is a pure CSS tooltip! Looks and feels the same as matTooltip-based ones.
+      Can't be used inside overflow hidden containers.
+    </h3>
+  </div>
 `;
 
 const storyTemplate = `
@@ -41,6 +56,8 @@ const storyTemplate = `
       <p>${template2}</p>
       <br>
       ${template3}
+      <br>
+      ${template4}
     </div>
   </div>
 </b-story-book-layout>

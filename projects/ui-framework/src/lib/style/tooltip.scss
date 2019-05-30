@@ -4,28 +4,39 @@
 
 $tooltip-color: $grey-700;
 $tooltip-arrow-size: 12px;
+$toolti-offset: 10px;
 
-.mat-tooltip.mat-tooltip {
+%tooltip-body {
   background-color: $tooltip-color;
-  position: relative;
-  overflow: visible;
+  color: white;
   max-width: 350px;
   padding: 8px 15px;
-  margin: 10px;
-  font-size: $font-size-body;
+  margin: $toolti-offset 0;
+  overflow: visible;
+  border-radius: $border-radius;
+  @include BodyFont;
+}
+
+%tooltip-arrow-common {
+  @include pseudo;
+  position: absolute;
+  left: calc(50% - #{$tooltip-arrow-size/2});
+}
+
+.mat-tooltip[class] {
+  @extend %tooltip-body;
+  position: relative;
 
   &:before {
-    @include pseudo;
-    position: absolute;
-    left: calc(50% - #{$tooltip-arrow-size/2});
-    @include arrow($tooltip-arrow-size, $tooltip-color);
+    @extend %tooltip-arrow-common;
   }
 
   // position above
   &[style*='center bottom'],
   &[style*='50% 100% 0px'] {
     &:before {
-      bottom: -$tooltip-arrow-size/2;
+      @include arrow-down($tooltip-arrow-size / 2, $tooltip-color);
+      top: 100%;
     }
   }
 
@@ -33,7 +44,68 @@ $tooltip-arrow-size: 12px;
   &[style*='center top'],
   &[style*='50% 0% 0px'] {
     &:before {
-      top: -$tooltip-arrow-size/2;
+      @include arrow-up($tooltip-arrow-size / 2, $tooltip-color);
+      bottom: 100%;
+    }
+  }
+}
+
+@keyframes tooltip-apprnc {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateX(-50%) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+@keyframes tooltip-arrow-apprnc {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px) scale(0);
+  }
+  50% {
+    opacity: 0.65;
+    transform: translateY(0) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+[data-tooltip] {
+  &:after {
+    display: block;
+    content: attr(data-tooltip);
+    @extend %tooltip-body;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    transform-origin: center bottom;
+    @include animate(tooltip-apprnc, 0.1s, 0.3s);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  &:before {
+    @extend %tooltip-arrow-common;
+    @include arrow-down($tooltip-arrow-size / 2, $tooltip-color);
+    bottom: calc(100% + #{$toolti-offset - $tooltip-arrow-size/2});
+    transform-origin: center bottom;
+    @include animate(tooltip-arrow-apprnc, 0.1s, 0.3s);
+  }
+
+  &:not(:hover) {
+    &:before,
+    &:after {
+      display: none;
     }
   }
 }

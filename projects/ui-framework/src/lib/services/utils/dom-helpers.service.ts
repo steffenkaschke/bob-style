@@ -47,7 +47,7 @@ export class DOMhelpers {
   }
 
   public hasInnerText(element: HTMLElement): boolean {
-    return !!(element && element.innerText && element.innerText.trim());
+    return !!(element && element.textContent && element.textContent.trim());
   }
 
   public hasChildrenWithText(element: HTMLElement): NotEmptyChildren {

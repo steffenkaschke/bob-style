@@ -6,25 +6,35 @@ import {
   ElementRef,
   AfterViewInit,
   ViewContainerRef,
-  DoCheck
+  DoCheck,
+  HostListener
 } from '@angular/core';
 import { UtilsService } from '../utils/utils.service';
 import { Subscription } from 'rxjs';
 import { DOMhelpers, TextProps } from '../utils/dom-helpers.service';
+import { TruncateTooltiptype } from './truncate-tooltip.enum';
 
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
   template: `
+    <i
+      *ngIf="type !== types.css && tooltipAllowed && tooltipEnabled"
+      class="tooltip-trigger"
+      [matTooltip]="tooltipText"
+      [matTooltipShowDelay]="delay"
+      matTooltipPosition="above"
+      matTooltipClass="b-truncate-tooltip"
+    ></i>
+    <i
+      *ngIf="type === types.css && tooltipEnabled"
+      class="tooltip-trigger"
+      [attr.data-tooltip]="tooltipText"
+    ></i>
     <span
       #textContainer
       class="btt"
       [ngClass]="{ initialized: initialized }"
       [attr.data-max-lines]="maxLines"
-      [matTooltip]="tooltipText"
-      [matTooltipDisabled]="!initialized || !tooltipEnabled"
-      [matTooltipShowDelay]="delay"
-      matTooltipPosition="above"
-      matTooltipClass="b-truncate-tooltip"
     >
       <ng-content></ng-content>
       <ng-template #directiveTemplate></ng-template>
@@ -52,30 +62,58 @@ export class TruncateTooltipComponent
     this.setMaxLines(value);
   }
   @Input() delay = 300;
-  @Input() expectChanges = true;
+  @Input() lazyness = 200;
+  @Input() expectChanges = false;
   @Input() trustCssVars = false;
+  @Input() type: TruncateTooltiptype = TruncateTooltiptype.lazy;
 
   private resizeSubscription: Subscription;
   private textContainer: HTMLElement;
   private textElementTextProps: TextProps;
   private maxLinesDefault = 1;
   private maxLinesCache = this.maxLinesDefault;
+  private hoverTimer;
   public maxLines = this.maxLinesDefault;
   public tooltipText: string;
   public tooltipEnabled = false;
+  public tooltipAllowed = false;
   public initialized = this.trustCssVars;
+  readonly types = TruncateTooltiptype;
+
+  @HostListener('mouseenter')
+  onMouseEnter() {
+    if (
+      this.type === TruncateTooltiptype.lazy &&
+      !this.tooltipAllowed &&
+      !this.hoverTimer
+    ) {
+      this.hoverTimer = setTimeout(() => {
+        this.tooltipAllowed = true;
+      }, this.lazyness);
+    }
+  }
+  @HostListener('mouseleave')
+  onMouseLeave() {
+    if (this.hoverTimer) {
+      clearTimeout(this.hoverTimer);
+      this.hoverTimer = null;
+    }
+  }
 
   ngAfterViewInit(): void {
     this.maxLinesCache = this.maxLines;
 
     setTimeout(() => {
-      this.tooltipText = this.textContainer.innerText;
+      this.tooltipText = this.textContainer.textContent.trim();
       this.setCssVars();
     }, 0);
 
     setTimeout(() => {
       this.checkTooltipNecessity();
       this.initialized = true;
+      if (this.type !== TruncateTooltiptype.lazy) {
+        this.tooltipAllowed = true;
+      }
     }, 0);
 
     this.resizeSubscription = this.utilsService
@@ -89,9 +127,9 @@ export class TruncateTooltipComponent
     if (this.expectChanges) {
       if (
         this.initialized &&
-        this.tooltipText !== this.textContainer.innerText
+        this.tooltipText !== this.textContainer.textContent.trim()
       ) {
-        this.tooltipText = this.textContainer.innerText;
+        this.tooltipText = this.textContainer.textContent.trim();
         this.checkTooltipNecessity();
       }
 
@@ -103,6 +141,10 @@ export class TruncateTooltipComponent
 
   ngOnDestroy(): void {
     this.resizeSubscription.unsubscribe();
+    if (this.hoverTimer) {
+      clearTimeout(this.hoverTimer);
+      this.hoverTimer = null;
+    }
   }
 
   private setCssVars(): void {
@@ -124,6 +166,12 @@ export class TruncateTooltipComponent
   }
 
   private checkTooltipNecessity(): void {
+    if (
+      this.type === TruncateTooltiptype.css &&
+      this.tooltipText.length > 130
+    ) {
+      this.type = TruncateTooltiptype.lazy;
+    }
     this.tooltipEnabled =
       (this.maxLines === 1 &&
         this.textContainer.scrollWidth > this.textContainer.offsetWidth) ||

@@ -31,6 +31,7 @@ describe('EmployeesShowcaseComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(EmployeesShowcaseComponent);
         component = fixture.componentInstance;
+        fixture.nativeElement.style.width = '800px';
         fixture.detectChanges();
       });
   }));
