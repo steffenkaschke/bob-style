@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { TruncateTooltipModule } from './truncate-tooltip.module';
-import { TruncateTooltiptype as type } from './truncate-tooltip.enum';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
@@ -19,7 +18,7 @@ const template1 = `
   </b-big-body>
 `;
 const template2 = `
-  <b-truncate-tooltip [maxLines]="maxLines" class="employee-title"><!-- this html comment should not be displayed -->
+  <b-truncate-tooltip [maxLines]="maxLines" class="employee-title">
     <b-display-3>
       <span>
         <!-- this html comment should not be displayed -->
