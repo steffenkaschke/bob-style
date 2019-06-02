@@ -11,8 +11,6 @@ import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-b
   imports: [
     CommonModule,
     IconsModule,
-    NoopAnimationsModule,
-    BrowserAnimationsModule
   ],
   exports: [AlertComponent],
   providers: [AlertService],

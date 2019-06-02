@@ -1,6 +1,5 @@
 <ng-template #alertTemplateRef>
   <div class="alert-container">
-    <b-icon class="close-icon" [icon]="closeIcon" [color]="closeColor" [size]="closeSize"></b-icon>
     <b-icon class="icon" [icon]="iconsDic[alertConfig.alertType].icon" [color]="iconsDic[alertConfig.alertType].color" [size]="iconSize"></b-icon>
     <div class="content">
       <div class="title">{{alertConfig.title}}</div>

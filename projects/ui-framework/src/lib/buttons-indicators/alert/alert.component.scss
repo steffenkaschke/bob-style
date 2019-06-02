@@ -1,12 +1,15 @@
 @import '../../style/colors';
 @import '../../style/typography';
+@import '../../style/variables';
+
+$alert_width: 395px;
 
 ::ng-deep {
   .b-alert {
     background-color: $white;
-    border-radius: 4px;
+    border-radius: $border-radius;
     box-shadow: 0 5px 10px 0 rgba(83,83,83,0.2);
-    min-width: 395px;
+    min-width: $alert_width;
     min-height: 78px;
 
     .alert-container {
