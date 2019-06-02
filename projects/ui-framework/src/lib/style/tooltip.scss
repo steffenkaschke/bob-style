@@ -9,10 +9,11 @@ $toolti-offset: 10px;
 %tooltip-body {
   background-color: $tooltip-color;
   color: white;
-  max-width: fit-content;
+  max-width: 350px;
+  overflow: visible;
+  overflow-wrap: break-word;
   padding: 8px 15px;
   margin: $toolti-offset 0;
-  overflow: visible;
   border-radius: $border-radius;
   @include BodyFont;
 }

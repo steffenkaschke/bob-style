@@ -22,7 +22,9 @@
     border-radius: 0;
   }
 
-  .mat-form-field.autocomplete-open .mat-form-field-wrapper .mat-form-field-flex {
+  .mat-form-field.autocomplete-open
+    .mat-form-field-wrapper
+    .mat-form-field-flex {
     border-color: transparent;
   }
 
@@ -36,10 +38,15 @@
     box-shadow: none;
   }
 
-  .mat-form-field .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix input {
+  .mat-form-field
+    .mat-form-field-wrapper
+    .mat-form-field-flex
+    .mat-form-field-infix
+    input {
     margin: 4px;
     padding: 0;
     height: auto;
+    transition: max-height 0.2s, margin 0.2s;
 
     &::placeholder {
       @include text-truncate;
@@ -50,11 +57,18 @@
     }
   }
 
-  .mat-form-field .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
+  .mat-form-field
+    .mat-form-field-wrapper
+    .mat-form-field-flex
+    .mat-form-field-infix {
     position: static;
   }
 
-  .mat-form-field .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper {
+  .mat-form-field
+    .mat-form-field-wrapper
+    .mat-form-field-flex
+    .mat-form-field-infix
+    .mat-form-field-label-wrapper {
     height: $input-height;
   }
 
@@ -65,6 +79,21 @@
     .mat-form-field-label-wrapper
     .mat-form-field-label {
     width: auto;
+  }
+
+  .mat-form-field:not(.mat-focused)
+    .mat-form-field-wrapper
+    .mat-form-field-flex
+    .mat-form-field-infix
+    input {
+    max-height: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .mat-form-field.mat-focused {
+    .mat-form-field-infix input {
+      max-height: 20px;
+    }
   }
 }
 

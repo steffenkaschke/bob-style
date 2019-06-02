@@ -172,14 +172,18 @@ export class TruncateTooltipComponent
     ) {
       this.type = TruncateTooltiptype.lazy;
     }
+
+    const compareHeight = this.trustCssVars
+      ? this.textContainer.offsetHeight + 5
+      : this.textElementTextProps.maxHeight;
+
     this.tooltipEnabled =
       (this.maxLines === 1 &&
         this.textContainer.scrollWidth > this.textContainer.offsetWidth) ||
       (this.maxLines > 1 &&
-        this.textContainer.scrollHeight >
-          (this.trustCssVars
-            ? this.textContainer.offsetHeight + 5
-            : this.textElementTextProps.maxHeight))
+        (this.textContainer.scrollHeight > compareHeight ||
+          (this.textContainer.children[0] &&
+            (this.textContainer.children[0] as HTMLElement).offsetHeight)))
         ? true
         : false;
   }

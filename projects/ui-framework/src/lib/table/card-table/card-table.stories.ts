@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
 import { CardTableModule } from './card-table.module';
-import { CardTableMockMetaData, CardTableMockData } from './cardTableMockData';
+import { CardTableMockMetaData, CardTableMockData } from './card-table.mock';
 
 import { ChipsModule } from '../../buttons-indicators/chips/chips.module';
 import { ChipComponent } from '../../buttons-indicators/chips/chip/chip.component';
@@ -19,7 +19,9 @@ import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.componen
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 
-const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-card-table

@@ -12,6 +12,12 @@ const avatarComponentAttributes = {
 
 export const CardTableMockMetaData: CardTableCellMeta[] = [
   {
+    id: 5,
+    name: 'Status',
+    width: 16,
+    sortable: true
+  },
+  {
     id: 1,
     name: 'Requested For',
     width: 25,
@@ -35,18 +41,23 @@ export const CardTableMockMetaData: CardTableCellMeta[] = [
     id: 4,
     name: 'Assignee',
     sortable: false
-  },
-  {
-    id: 5,
-    name: 'Status',
-    width: 15,
-    align: 'right',
-    sortable: true
   }
 ];
 
 export const CardTableMockData: CardTableCellData[][] = [
   [
+    {
+      data: {
+        component: ButtonComponent,
+        attributes: {
+          type: 'secondary'
+        },
+        content: 'Approve',
+        handlers: {
+          clicked: action('Button was clicked')
+        }
+      }
+    },
     {
       data: {
         component: AvatarComponent,
@@ -70,21 +81,19 @@ export const CardTableMockData: CardTableCellData[][] = [
     {
       data: ['Madge Scott', '(You)'],
       class: 'highlight-second-line'
-    },
-    {
-      data: {
-        component: ButtonComponent,
-        attributes: {
-          type: 'secondary'
-        },
-        content: 'Approve',
-        handlers: {
-          clicked: action('Button was clicked')
-        }
-      }
     }
   ],
   [
+    {
+      data: {
+        component: ChipComponent,
+        attributes: {
+          type: 'attention',
+          color: 'red'
+        },
+        content: 'Pending'
+      }
+    },
     {
       data: {
         component: AvatarComponent,
@@ -107,19 +116,18 @@ export const CardTableMockData: CardTableCellData[][] = [
     },
     {
       data: ['Emelda Scandroot', 'CFO']
-    },
+    }
+  ],
+  [
     {
       data: {
         component: ChipComponent,
         attributes: {
-          type: 'attention',
-          color: 'red'
+          type: 'attention'
         },
         content: 'Pending'
       }
-    }
-  ],
-  [
+    },
     {
       data: {
         component: AvatarComponent,
@@ -142,18 +150,18 @@ export const CardTableMockData: CardTableCellData[][] = [
     },
     {
       data: ['Constanza Mariano', 'HR admin']
-    },
+    }
+  ],
+  [
     {
       data: {
         component: ChipComponent,
         attributes: {
-          type: 'attention'
+          type: 'success'
         },
-        content: 'Pending'
+        content: 'Approved'
       }
-    }
-  ],
-  [
+    },
     {
       data: {
         component: AvatarComponent,
@@ -177,7 +185,9 @@ export const CardTableMockData: CardTableCellData[][] = [
     {
       data:
         'Single line of some very long text that should truncate after two lines with an ellipsis.'
-    },
+    }
+  ],
+  [
     {
       data: {
         component: ChipComponent,
@@ -186,9 +196,7 @@ export const CardTableMockData: CardTableCellData[][] = [
         },
         content: 'Approved'
       }
-    }
-  ],
-  [
+    },
     {
       data: {
         component: AvatarComponent,
@@ -211,18 +219,18 @@ export const CardTableMockData: CardTableCellData[][] = [
     },
     {
       data: ''
-    },
+    }
+  ],
+  [
     {
       data: {
         component: ChipComponent,
         attributes: {
-          type: 'success'
+          type: 'warning'
         },
-        content: 'Approved'
+        content: 'Rejected'
       }
-    }
-  ],
-  [
+    },
     {
       data: {
         component: AvatarComponent,
@@ -245,15 +253,6 @@ export const CardTableMockData: CardTableCellData[][] = [
     },
     {
       data: ['Madge Scott', 'VP Product']
-    },
-    {
-      data: {
-        component: ChipComponent,
-        attributes: {
-          type: 'warning'
-        },
-        content: 'Rejected'
-      }
     }
   ]
 ];
