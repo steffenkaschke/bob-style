@@ -86,6 +86,23 @@
   text-overflow: ellipsis;
 }
 
+@mixin text-hide {
+  font-size: 0px;
+  font: 0/0 a;
+}
+
+@mixin text-hyphenate {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  hyphenate-limit-before: 4;
+  hyphenate-limit-after: 4;
+  hyphenate-limit-lines: 2;
+  hyphenate-limit-last: always;
+  hyphenate-limit-zone: 8%;
+  hyphenate-limit-chars: 10 4 4;
+}
+
 @mixin animate($name, $time: 0.3s, $delay: null, $iterate: 1, $dir: null) {
   animation-name: $name;
   animation-duration: $time;
@@ -150,39 +167,4 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-@mixin text-hide {
-  font-size: 0px;
-  font: 0/0 a;
-}
-
-@function map-get-deep($map, $keys...) {
-  @if length($keys) == 1 {
-    $keys: nth($keys, 1);
-  }
-  $length: length($keys);
-  $get: map-get($map, nth($keys, 1));
-  @if $length > 1 {
-    @for $i from 2 through $length {
-      @if $get != null and type-of($get) == 'map' {
-        $get: map-get($get, nth($keys, $i));
-        @if $get == null {
-          @return null;
-        }
-      } @else {
-        @return null;
-      }
-    }
-  }
-  @return $get;
-}
-
-@function contains($this, $that) {
-  @if type-of($this) == 'string' {
-    @return str-index($this, $that);
-  }
-  @if type-of($this) == 'list' {
-    @return index($this, $that);
-  }
 }

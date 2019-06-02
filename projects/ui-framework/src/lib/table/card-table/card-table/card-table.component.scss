@@ -23,7 +23,8 @@
 }
 
 .table-header-cell {
-  color: $grey-600;
+  color: $grey-800;
+  font-weight: 700;
   @include cell-style;
 }
 
