@@ -52,3 +52,13 @@ export const isArray = (val: any): boolean => {
 export const isRenderedComponent = (obj: any): boolean => {
   return obj && !!obj.component;
 };
+
+export const simpleUID = (length: number = 7, prefix: string = ''): string => {
+  return (
+    prefix +
+    Math.random()
+      .toString(16)
+      .substr(2)
+      .substr(0, length)
+  );
+};

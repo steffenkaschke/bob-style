@@ -5,18 +5,15 @@ import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxComponent } from './checkbox.component';
 
-describe('CheckboxComponent', () => {
+fdescribe('CheckboxComponent', () => {
   let component: CheckboxComponent;
   let fixture: ComponentFixture<CheckboxComponent>;
+  let checkboxLabel: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CheckboxComponent],
-      imports: [
-        NoopAnimationsModule,
-        CommonModule,
-        MatPseudoCheckboxModule,
-      ],
+      imports: [NoopAnimationsModule, CommonModule, MatPseudoCheckboxModule]
     })
       .compileComponents()
       .then(() => {
@@ -24,31 +21,40 @@ describe('CheckboxComponent', () => {
         component = fixture.componentInstance;
         spyOn(component.checkboxChange, 'emit');
         fixture.detectChanges();
+        checkboxLabel = fixture.debugElement.query(By.css('.bchk-label'))
+          .nativeElement;
       });
   }));
 
-  describe('emitInputEvent', () => {
+  describe('check / uncheck', () => {
     it('should turn checkbox on and trigger checkboxChange event with true', () => {
       component.value = false;
       fixture.detectChanges();
-      const checkboxTriggerEl = fixture.debugElement.query(By.css('.checkbox-wrapper'));
-      checkboxTriggerEl.triggerEventHandler('click', null);
+      checkboxLabel.click();
       fixture.detectChanges();
       expect(component.value).toBe(true);
       expect(component.checkboxChange.emit).toHaveBeenCalledWith(true);
-      const checkboxEl = fixture.debugElement.query(By.css('.checkbox'));
-      expect(checkboxEl.nativeElement.classList).toContain('mat-pseudo-checkbox-checked');
+      const checkboxEl = fixture.debugElement.query(
+        By.css('.bchk-input:checked')
+      );
+      expect(checkboxEl).toBeTruthy();
     });
     it('should turn checkbox off and trigger checkboxChange event with false', () => {
       component.value = true;
       fixture.detectChanges();
-      const checkboxTriggerEl = fixture.debugElement.query(By.css('.checkbox-wrapper'));
-      checkboxTriggerEl.triggerEventHandler('click', null);
+      checkboxLabel.click();
       fixture.detectChanges();
       expect(component.value).toBe(false);
       expect(component.checkboxChange.emit).toHaveBeenCalledWith(false);
-      const checkboxEl = fixture.debugElement.query(By.css('.checkbox'));
-      expect(checkboxEl.nativeElement.classList).not.toContain('mat-pseudo-checkbox-checked');
+      const checkboxEl = fixture.debugElement.query(
+        By.css('.bchk-input:checked')
+      );
+      expect(checkboxEl).toBeFalsy();
     });
   });
+
+  // disabled
+  // required
+  // UID
+  // indeterminate
 });

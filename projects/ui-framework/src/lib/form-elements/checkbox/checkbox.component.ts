@@ -1,24 +1,39 @@
-import { Component, EventEmitter, forwardRef, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  Output,
+  ElementRef,
+  ViewChild
+} from '@angular/core';
 import { set } from 'lodash';
 import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { simpleUID } from '../../services/utils/functional-utils';
 
 export enum CheckboxStates {
   checked = 'checked',
   unchecked = 'unchecked',
+  indeterminate = 'indeterminate'
 }
 
 @Component({
   selector: 'b-checkbox',
   template: `
-    <div class="checkbox-wrapper"
-         [ngClass]="{'disabled': disabled, 'required': required }"
-         (click)="toggleCheckbox()">
-      <mat-pseudo-checkbox [state]="checkboxState"
-                           class="checkbox">
-      </mat-pseudo-checkbox>
-      <label>{{label}}</label>
-    </div>
+    <input
+      #input
+      type="checkbox"
+      class="bchk-input"
+      [attr.id]="id"
+      [checked]="value"
+      (change)="toggleCheckbox()"
+      [required]="required"
+      [disabled]="disabled"
+    />
+    <label class="bchk-label" [attr.for]="id">
+      {{ label }}
+    </label>
   `,
   styleUrls: ['./checkbox.component.scss'],
   providers: [
@@ -32,34 +47,34 @@ export enum CheckboxStates {
       useExisting: forwardRef(() => CheckboxComponent),
       multi: true
     }
-  ],
+  ]
 })
-export class CheckboxComponent extends BaseFormElement implements OnChanges {
-
-  @Input() value = false;
-  @Input() label: string;
-  @Input() disabled: boolean;
-  @Input() required: boolean;
-  @Output() checkboxChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  checkboxState: CheckboxStates;
-
+export class CheckboxComponent extends BaseFormElement {
   constructor() {
     super();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.checkboxState = this.getCheckboxState();
+  @ViewChild('input') private input: ElementRef;
+  @Input() id = simpleUID(5, 'bchk-input-');
+  @Input() value = false;
+  @Input() label: string;
+  @Input() disabled: boolean;
+  @Input() required: boolean;
+
+  // indeterminate = false;
+  @Input('indeterminate')
+  set indState(value: boolean) {
+    // this.indeterminate = value;
+    this.input.nativeElement.indeterminate = value;
   }
+
+  @Output() checkboxChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   toggleCheckbox(): void {
+    // this.indeterminate = false;
     this.value = !this.value;
-    this.checkboxState = this.getCheckboxState();
     this.propagateChange(this.value);
+    this.onTouched();
     this.checkboxChange.emit(this.value);
-  }
-
-  getCheckboxState(): CheckboxStates {
-    return this.value ? CheckboxStates.checked : CheckboxStates.unchecked;
   }
 }

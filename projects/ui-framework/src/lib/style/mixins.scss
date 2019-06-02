@@ -157,9 +157,12 @@
 }
 
 @mixin disabled-state {
+  // color: $grey-500;
+  // border-color: $grey-300;
+  opacity: 0.5;
   pointer-events: none;
-  color: $grey-500;
-  border-color: $grey-300;
+  user-select: none;
+  cursor: default;
   @content;
 }
 
@@ -167,4 +170,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@mixin visually-hidden {
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  outline: 0;
+  overflow: hidden;
+  position: absolute;
+  appearance: none;
 }

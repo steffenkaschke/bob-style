@@ -1,17 +1,26 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxModule } from './checkbox.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const inputStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
+const inputStories = storiesOf(
+  ComponentGroupType.FormElements,
+  module
+).addDecorator(withKnobs);
 
 const template = `
 <b-checkbox (checkboxChange)="checkboxChange($event)"
             [value]="value"
             [label]="label"
+            [indeterminate]="indeterminate"
             [disabled]="disabled"
             [required]="required">
 </b-checkbox>
@@ -35,6 +44,7 @@ const note = `
   label | string | label text
   disabled | boolean | is field disabled
   required | boolean | is field required
+  indeterminate | boolean | indeterminate state
   checkboxChange | checkboxChange | checkboxChange emitter
 
   ~~~
@@ -50,11 +60,16 @@ inputStories.add(
         checkboxChange: action(),
         value: boolean('value', true),
         label: text('label', 'Check this'),
+        indeterminate: boolean('indeterminate', false),
         disabled: boolean('disabled', false),
         required: boolean('required', false)
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, CheckboxModule, StoryBookLayoutModule]
+        imports: [
+          BrowserAnimationsModule,
+          CheckboxModule,
+          StoryBookLayoutModule
+        ]
       }
     };
   },
