@@ -15,6 +15,10 @@
   &.error + .bchk-label:before {
     border-color: $color-error;
   }
+
+  &:disabled ~ .message {
+    @include disabled-state;
+  }
 }
 
 .bchk-label {
