@@ -55,6 +55,8 @@ $checkmark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
         border: 1px solid $grey-600;
         border-radius: $border-radius;
         cursor: pointer;
+        background-position: center;
+        background-repeat: no-repeat;
         background-size: 5px auto;
         transition: background-size 0.15s;
       }
@@ -69,8 +71,6 @@ $checkmark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
       &:before {
         background-color: $grey-600;
         background-image: $checkmark;
-        background-position: center;
-        background-repeat: no-repeat;
         background-size: 13px auto;
       }
     }
@@ -81,8 +81,6 @@ $checkmark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
       &:before {
         background-color: $grey-600;
         background-image: linear-gradient(white, white);
-        background-position: center;
-        background-repeat: no-repeat;
         background-size: 12px 3px;
       }
     }
