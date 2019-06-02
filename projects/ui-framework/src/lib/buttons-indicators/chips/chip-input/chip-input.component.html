@@ -21,7 +21,7 @@
       </b-chip>
     </mat-basic-chip>
 
-    <input [placeholder]="placeholder"
+    <input [placeholder]="value.length === 0 && placeholder"
            #input
            [disabled]="disabled"
            [formControl]="chipInputControl"
