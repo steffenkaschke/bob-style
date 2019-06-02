@@ -25,15 +25,28 @@ export enum CheckboxStates {
       #input
       type="checkbox"
       class="bchk-input"
+      [ngClass]="{
+        error: errorMessage && !disabled
+      }"
       [attr.id]="id"
       [checked]="value"
-      (change)="toggleCheckbox()"
       [required]="required"
       [disabled]="disabled"
+      (change)="toggleCheckbox()"
     />
     <label class="bchk-label" [attr.for]="id">
       {{ label }}
     </label>
+    <p
+      class="message"
+      *ngIf="errorMessage || hintMessage"
+      [ngClass]="{
+        'error-message': errorMessage && !disabled,
+        'hint-message': !errorMessage && hintMessage
+      }"
+    >
+      {{ errorMessage && !disabled ? errorMessage : hintMessage }}
+    </p>
   `,
   styleUrls: ['./checkbox.component.scss'],
   providers: [
@@ -58,8 +71,8 @@ export class CheckboxComponent extends BaseFormElement {
   @Input() id = simpleUID('bchk-input-');
   @Input() value = false;
   @Input() label: string;
-  @Input() disabled: boolean;
-  @Input() required: boolean;
+  @Input() disabled = false;
+  @Input() required = false;
 
   @Input('indeterminate')
   set indState(value: boolean) {

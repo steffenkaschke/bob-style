@@ -1,13 +1,20 @@
-@import '../../style/colors.scss';
+@import '../../style/colors';
+@import '../../style/typography';
 @import 'checkbox.scss';
 
 :host {
   display: inline-flex;
+  flex-wrap: wrap;
   margin: 20px 0;
+  text-align: left;
 }
 
 .bchk-input {
   @include checkbox2;
+
+  &.error + .bchk-label:before {
+    border-color: $color-error;
+  }
 }
 
 .bchk-label {
@@ -16,4 +23,18 @@
   &:before {
     margin-right: 10px;
   }
+}
+
+.message {
+  width: 100%;
+  margin: 2px 0 0;
+  font-size: $font-size-caption;
+}
+
+.hint-message {
+  color: $grey-600;
+}
+
+.error-message {
+  color: $color-error;
 }

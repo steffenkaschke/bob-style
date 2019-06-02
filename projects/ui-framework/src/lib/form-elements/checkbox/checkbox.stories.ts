@@ -22,7 +22,9 @@ const template = `
             [label]="label"
             [indeterminate]="indeterminate"
             [disabled]="disabled"
-            [required]="required">
+            [required]="required"
+            [hintMessage]="hintMessage"
+            [errorMessage]="errorMessage">
 </b-checkbox>
 `;
 
@@ -62,7 +64,9 @@ inputStories.add(
         label: text('label', 'Check this'),
         indeterminate: boolean('indeterminate', false),
         disabled: boolean('disabled', false),
-        required: boolean('required', false)
+        required: boolean('required', false),
+        hintMessage: text('hintMessage', 'Usefull hint'),
+        errorMessage: text('errorMessage', '')
       },
       moduleMetadata: {
         imports: [
