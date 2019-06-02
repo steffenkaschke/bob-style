@@ -61,17 +61,14 @@ export class CheckboxComponent extends BaseFormElement {
   @Input() disabled: boolean;
   @Input() required: boolean;
 
-  // indeterminate = false;
   @Input('indeterminate')
   set indState(value: boolean) {
-    // this.indeterminate = value;
     this.input.nativeElement.indeterminate = value;
   }
 
   @Output() checkboxChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   toggleCheckbox(): void {
-    // this.indeterminate = false;
     this.value = !this.value;
     this.propagateChange(this.value);
     this.onTouched();

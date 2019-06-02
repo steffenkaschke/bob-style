@@ -53,6 +53,8 @@ describe('CheckboxComponent', () => {
     });
   });
 
+  // TODO:
+
   // disabled
   // required
   // UID
