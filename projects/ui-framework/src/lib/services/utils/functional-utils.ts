@@ -53,12 +53,11 @@ export const isRenderedComponent = (obj: any): boolean => {
   return obj && !!obj.component;
 };
 
-export const simpleUID = (length: number = 7, prefix: string = ''): string => {
+export const simpleUID = (prefix: string = '', length: number = 5): string => {
   return (
     prefix +
     Math.random()
       .toString(16)
-      .substr(2)
-      .substr(0, length)
+      .substr(2, length)
   );
 };

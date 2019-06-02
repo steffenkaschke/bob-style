@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxComponent } from './checkbox.component';
 
-fdescribe('CheckboxComponent', () => {
+describe('CheckboxComponent', () => {
   let component: CheckboxComponent;
   let fixture: ComponentFixture<CheckboxComponent>;
   let checkboxLabel: HTMLElement;

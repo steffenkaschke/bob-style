@@ -9,3 +9,11 @@
 .bchk-input {
   @include checkbox2;
 }
+
+.bchk-label {
+  margin: 0;
+
+  &:before {
+    margin-right: 10px;
+  }
+}

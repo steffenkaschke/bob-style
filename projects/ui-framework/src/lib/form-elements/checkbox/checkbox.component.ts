@@ -55,7 +55,7 @@ export class CheckboxComponent extends BaseFormElement {
   }
 
   @ViewChild('input') private input: ElementRef;
-  @Input() id = simpleUID(5, 'bchk-input-');
+  @Input() id = simpleUID('bchk-input-');
   @Input() value = false;
   @Input() label: string;
   @Input() disabled: boolean;
