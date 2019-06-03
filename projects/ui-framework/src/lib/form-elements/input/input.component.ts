@@ -11,37 +11,38 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
 import { MatInput } from '@angular/material';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { simpleUID } from '../../services/utils/functional-utils';
 
 export const baseInputTemplate = `
-  <label class="bff-label" *ngIf="label" [attr.for]="id">
-    {{label}}
-  </label>
+  <label *ngIf="label" class="bfe-label" [attr.for]="id">{{label}}</label>
 
-  <div class="bff-wrap" [ngClass]="{focused: inputFouced, hasPrefix: hasPrefix, hasSuffix: hasSuffix}">
-    <div class="bff-prefix" #prefix>
+  <div class="bfe-wrap" [ngClass]="{focused: inputFocused, hasPrefix: hasPrefix, hasSuffix: hasSuffix}">
+
+    <div *ngIf="hasPrefix" class="bfe-prefix" #prefix>
       <ng-content select="[input-prefix]"></ng-content>
     </div>
 
-    <input class="bff-input" [attr.id]="id"
+    <input class="bfe-input"
+          [attr.placeholder]="placeholder"
+          [attr.id]="id"
           [type]="inputType"
-          [value]="value"
+          [attr.value]="value"
           [autocomplete]="enableBrowserAutoComplete"
           [disabled]="disabled"
           [required]="required"
-          (blur)="emitInputEvent(eventType.onBlur, value);inputFouced=false;"
-          (focus)="emitInputEvent(eventType.onFocus, value); inputFouced=true;"
-          (change)="emitInputEvent(eventType.onChange, value)"
+          (focus)="onFocus()"
+          (blur)="onBlur()"
+          (input)="onChange($event)"
           #bInput
           #moreattributes>
 
-    <div class="bff-suffix" #suffix>
+    <div *ngIf="hasSuffix" class="bfe-suffix" #suffix>
       <ng-content select="[input-suffix]"></ng-content>
     </div>
 
   </div>
 
-  <p class="bff-message"
-    b-input-message
+  <p b-input-message
     *ngIf="hintMessage || warnMessage || errorMessage"
     [hintMessage]="hintMessage"
     [warnMessage]="warnMessage"
@@ -75,10 +76,10 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   @ViewChild('prefix') prefix: ElementRef;
   @ViewChild('suffix') suffix: ElementRef;
 
-  public eventType = InputEventType;
   public hasPrefix = true;
   public hasSuffix = true;
-
+  public inputFocused = false;
+  public id = simpleUID('bfe-');
   private DOM = new DOMhelpers();
 
   static addAttributesToBaseInput(attributes: string): string {
@@ -90,5 +91,20 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
       this.hasPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
       this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
     }, 0);
+  }
+
+  onChange($event): void {
+    this.value = $event.target.value;
+    this.emitInputEvent(InputEventType.onChange, this.value);
+  }
+
+  onFocus(): void {
+    this.inputFocused = true;
+    this.emitInputEvent(InputEventType.onFocus, this.value);
+  }
+
+  onBlur(): void {
+    this.inputFocused = false;
+    this.emitInputEvent(InputEventType.onBlur, this.value);
   }
 }

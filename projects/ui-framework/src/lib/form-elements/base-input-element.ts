@@ -8,7 +8,8 @@ import {
 } from './input/input.enum';
 
 export abstract class BaseInputElement extends BaseFormElement {
-  @Input() inputType: InputTypes;
+  @Input() placeholder: string;
+  @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
   @Output() inputEvents: EventEmitter<InputEvent> = new EventEmitter<
@@ -18,7 +19,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   @HostBinding('class')
   get classes(): string {
     return (
-      (this.disabled ? 'disbled ' : '') +
+      (this.disabled ? 'disabled ' : '') +
       (this.required ? 'required ' : '') +
       (this.errorMessage && !this.disabled ? 'error ' : '') +
       (this.warnMessage && !this.errorMessage && !this.disabled ? 'warn' : '')

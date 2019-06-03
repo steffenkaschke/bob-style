@@ -2,10 +2,13 @@
 @import '../style/typography';
 @import '../style/mixins';
 
-$form-field-height: 44px;
+$wrap-height: 44px;
 $input-height: 42px;
+
 $textarea-height: 120px;
+
 $label-color: $grey-800;
+
 $input-focus-border-color: $grey-700;
 $input-border-color: $grey-500;
 
@@ -29,80 +32,105 @@ $input-border-color: $grey-500;
 
 @mixin input-requred($selector: '&') {
   &:after {
-    content: '*';
-    display: inline-block;
-    margin-left: 2px;
+    content: ' *';
   }
 }
 
-@mixin bFormField {
+@mixin bFormElement {
   display: flex;
   width: 100%;
   flex-direction: column;
   margin: 20px 0;
   box-sizing: border-box;
+  text-align: left;
 
   // wrap
 
-  .bff-wrap {
+  .bfe-wrap {
     box-sizing: border-box;
     display: flex;
     align-items: center;
     background-color: $white;
-    height: $form-field-height;
+    height: $wrap-height;
+    border: 1px solid $input-border-color;
     border-radius: $border-radius;
-    transition: box-shadow 0.2s;
+    transition: box-shadow 0.2s, border-color 0.2s;
   }
 
   // input
 
-  .bff-input {
+  .bfe-input {
     box-sizing: border-box;
-    margin: 0;
+    display: block;
+    flex-grow: 1;
     height: $input-height;
-    padding: 0 16px;
+    padding: 0 15px;
+    border: 0;
+    margin: 0;
+    outline: 0;
+    border-radius: inherit;
+    @include BodyFont;
+    color: $grey-800;
+
+    &::placeholder {
+      color: $grey-600;
+      transition: opacity 0.2s;
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+
+    &:focus::placeholder {
+      opacity: 0;
+    }
   }
 
   input {
     &[type='number']::-webkit-inner-spin-button,
     &[type='number']::-webkit-outer-spin-button {
-      -webkit-appearance: none;
+      display: none;
+      appearance: none;
       margin: 0;
     }
   }
 
   // label
 
-  .bff-label {
+  .bfe-label {
     box-sizing: border-box;
     margin: 0 0 6px 0;
     color: $label-color;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
   }
 
   // prefix-suffix
 
-  .bff-prefix,
-  .bff-suffix {
+  .bfe-prefix,
+  .bfe-suffix {
     display: flex;
     align-items: center;
   }
 
-  .bff-prefix {
+  .bfe-prefix {
     padding: 0 10px 0 16px;
   }
 
-  .bff-suffix {
+  .bfe-suffix {
     padding: 0 16px 0 10px;
   }
 
-  .bff-wrap {
+  .bfe-wrap {
     &.hasPrefix {
-      .bff-input {
+      .bfe-input {
         padding-left: 0;
       }
     }
     &.hasSuffix {
-      .bff-input {
+      .bfe-input {
         padding-right: 0;
       }
     }
@@ -111,16 +139,14 @@ $input-border-color: $grey-500;
   // states
 
   &:hover {
-    .bff-wrap {
-      box-shadow: 0 2px 3px 0 $boxShadowColor;
+    .bfe-wrap {
+      // box-shadow: 0 2px 3px 0 $boxShadowColor;
     }
   }
 
-  &.focused {
-    .bff-wrap {
-      border: 1px solid $input-focus-border-color;
-      box-shadow: none;
-    }
+  .bfe-wrap.focused {
+    border: 1px solid $input-focus-border-color;
+    box-shadow: none;
   }
 
   &.disabled {
@@ -128,203 +154,14 @@ $input-border-color: $grey-500;
   }
 
   &.required {
-    .bff-label {
+    .bfe-label {
       @include input-requred;
     }
   }
 
-  @include input-border-colors($add: ' .bff-wrap');
+  @include input-border-colors($add: ' .bfe-wrap');
 }
 
 @mixin MatFormField() {
-  //
-  .mat-form-field {
-    width: 100%;
-    font-family: inherit;
-    line-height: 1;
-
-    // margins
-    margin: 20px 0;
-    &:not(:only-child) {
-      margin-bottom: 0px;
-    }
-    & + [b-input-message] {
-      margin-bottom: 20px;
-    }
-  }
-
-  .mat-form-field-wrapper {
-    padding: 0;
-  }
-
-  .mat-form-field-underline {
-    display: none;
-  }
-
-  // messages
-  .mat-form-field-subscript-wrapper {
-    margin: 0;
-    position: static;
-    top: auto;
-    font-size: inherit;
-  }
-  .mat-hint {
-    display: block;
-    width: 100%;
-  }
-  .mat-form-field-hint-spacer {
-    display: none;
-  }
-
-  .mat-form-field-flex {
-    border: 1px solid $input-border-color;
-    box-sizing: border-box;
-    background-color: $white;
-    height: $form-field-height;
-    border-radius: 4px;
-    position: relative;
-    place-content: center;
-    align-items: center;
-    transition: box-shadow 0.2s;
-  }
-
-  .mat-form-field-prefix,
-  .mat-form-field-suffix {
-    display: flex;
-    align-items: center;
-  }
-
-  .mat-form-field-infix {
-    padding: 0;
-    border: none;
-    height: 100%;
-    position: relative;
-    width: auto;
-
-    input,
-    textarea,
-    mat-select {
-      margin: 0;
-      box-sizing: border-box;
-      height: $input-height;
-      padding: 0 16px;
-    }
-
-    input {
-      &[type='number']::-webkit-inner-spin-button,
-      &[type='number']::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
-    }
-  }
-
-  .mat-form-field-label-wrapper {
-    box-sizing: border-box;
-    top: 0;
-    padding: 0;
-    display: flex;
-    height: 100%;
-    place-content: center space-between;
-    align-items: center;
-    overflow: visible;
-  }
-
-  .mat-form-field-label {
-    box-sizing: border-box;
-    padding: 0;
-    margin-bottom: 6px;
-    display: block;
-    top: auto;
-    color: $label-color;
-    top: -21px;
-    transform: none;
-    transition: none;
-  }
-
-  .mat-form-field {
-    &:hover {
-      .mat-form-field-flex {
-        box-shadow: 0 2px 3px 0 $boxShadowColor;
-      }
-    }
-
-    &.mat-focused {
-      .mat-form-field-flex {
-        border: 1px solid $input-focus-border-color;
-        box-shadow: none;
-      }
-      .mat-form-field-label {
-        color: $label-color;
-      }
-    }
-
-    &.mat-form-field-should-float {
-      .mat-form-field-label {
-        transform: none;
-        transition: none;
-      }
-    }
-
-    &.disabled,
-    &.mat-form-field-disabled {
-      @include disabled-state;
-    }
-
-    &.required {
-      .mat-form-field-label {
-        @include input-requred;
-      }
-    }
-
-    // error border
-    @include input-border-colors(
-      $add: ' .mat-form-field-flex',
-      $warn-class: null
-    );
-
-    &.hide-label-on-focus {
-      &.mat-form-field-should-float {
-        .mat-form-field-label {
-          display: none;
-        }
-      }
-    }
-
-    &.has-prefix {
-      .mat-form-field-flex {
-        .mat-form-field-infix {
-          input,
-          textarea,
-          mat-select {
-            padding-left: 0;
-          }
-          .mat-form-field-label {
-            padding-left: 0;
-          }
-        }
-        .mat-form-field-prefix {
-          padding: 0 10px 0 16px;
-        }
-      }
-    }
-
-    &.has-suffix {
-      .mat-form-field-flex {
-        .mat-form-field-infix {
-          input,
-          textarea,
-          mat-select {
-            padding-right: 0;
-          }
-          .mat-form-field-label {
-            padding-right: 0;
-          }
-        }
-        .mat-form-field-suffix {
-          padding: 0 16px 0 10px;
-        }
-      }
-    }
-  }
+  @include bFormElement;
 }

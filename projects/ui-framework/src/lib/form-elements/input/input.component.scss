@@ -1,5 +1,5 @@
 @import '../form-element.scss';
 
 :host {
-  @include bFormField();
+  @include bFormElement();
 }

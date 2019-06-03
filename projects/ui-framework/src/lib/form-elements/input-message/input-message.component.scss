@@ -20,7 +20,7 @@
     color: $color-error;
   }
 
-  &.disabled {
-    @include disabled-state;
-  }
+  // &.disabled {
+  //   @include disabled-state;
+  // }
 }
