@@ -36,7 +36,7 @@ $toolti-offset: 10px;
   &[style*='center bottom'],
   &[style*='50% 100% 0px'] {
     &:before {
-      @include arrow-down($tooltip-arrow-size / 2, $tooltip-color);
+      @include arrow-down($tooltip-arrow-size, $tooltip-color);
       top: 100%;
     }
   }
@@ -45,7 +45,7 @@ $toolti-offset: 10px;
   &[style*='center top'],
   &[style*='50% 0% 0px'] {
     &:before {
-      @include arrow-up($tooltip-arrow-size / 2, $tooltip-color);
+      @include arrow-up($tooltip-arrow-size, $tooltip-color);
       bottom: 100%;
     }
   }
@@ -97,7 +97,7 @@ $toolti-offset: 10px;
 
   &:before {
     @extend %tooltip-arrow-common;
-    @include arrow-down($tooltip-arrow-size / 2, $tooltip-color);
+    @include arrow-down($tooltip-arrow-size, $tooltip-color);
     bottom: calc(100% + #{$toolti-offset - $tooltip-arrow-size/2});
     transform-origin: center bottom;
     @include animate(tooltip-arrow-apprnc, 0.1s, 0.3s);
