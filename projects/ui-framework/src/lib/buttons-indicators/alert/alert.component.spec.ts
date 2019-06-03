@@ -4,6 +4,8 @@ import {AlertType} from './alert.enum';
 import {AlertService} from './alert-service/alert.service';
 import {MockComponent} from 'ng-mocks';
 import {IconComponent} from '../../icons/icon.component';
+import {ButtonsModule} from '../buttons/buttons.module';
+import {TypographyModule} from '../../typography/typography.module';
 
 describe('AlertComponent', () => {
   let component: AlertComponent;
@@ -11,7 +13,10 @@ describe('AlertComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [],
+      imports: [
+        ButtonsModule,
+        TypographyModule,
+      ],
       declarations: [
         AlertComponent,
         MockComponent(IconComponent)

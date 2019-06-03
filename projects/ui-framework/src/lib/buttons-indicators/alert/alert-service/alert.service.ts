@@ -39,12 +39,10 @@ export class AlertService {
   private getConfig(): OverlayConfig {
     const positionStrategy = this.overlay.position().global()
       .centerHorizontally().top('20px');
-    const panelClass = 'b-alert';
-    const backdropClass = '';
+    const panelClass = 'b-alert-panel';
     return {
       disposeOnNavigation: true,
       hasBackdrop: false,
-      backdropClass,
       panelClass,
       positionStrategy,
     };

@@ -1,8 +1,9 @@
-import {Component, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, OnDestroy, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
 import {Dictionary} from 'lodash';
 import {IconColor, Icons, IconSize} from '../../icons/icons.enum';
 import {InfoStripIcon} from '../info-strip/info-strip.types';
 import {AlertConfig} from './alert.interface';
+import {ButtonType} from '../buttons/buttons.enum';
 
 @Component({
   selector: 'b-alert',
@@ -20,6 +21,8 @@ export class AlertComponent {
     success: { color: IconColor.positive, icon: Icons.success },
     information: { color: IconColor.inform, icon: Icons.baseline_info_icon },
   };
+  readonly closeButtonType: ButtonType = ButtonType.tertiary;
+  readonly closeButtonIcon: Icons = Icons.close;
 
   constructor(public viewContainerRef: ViewContainerRef) { }
 

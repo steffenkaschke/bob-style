@@ -10,7 +10,6 @@ export const ALERT_CONFIG_MOCK: AlertConfig = {
 export const OVERLAY_CONFIG_MOCK = {
   disposeOnNavigation: true,
   hasBackdrop: false,
-  backdropClass: '',
-  panelClass: 'b-alert',
+  panelClass: 'b-alert-panel',
   positionStrategy: 'strategy',
 }

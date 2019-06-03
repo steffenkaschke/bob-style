@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { AlertComponent } from './alert.component';
 import {IconsModule} from '../../icons/icons.module';
 import {AlertService} from './alert-service/alert.service';
-import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {ButtonsModule} from '../buttons/buttons.module';
+import {TypographyModule} from '../../typography/typography.module';
 
 @NgModule({
   declarations: [AlertComponent],
@@ -11,6 +12,8 @@ import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-b
   imports: [
     CommonModule,
     IconsModule,
+    ButtonsModule,
+    TypographyModule,
   ],
   exports: [AlertComponent],
   providers: [AlertService],
