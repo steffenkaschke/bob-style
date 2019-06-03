@@ -1,11 +1,21 @@
 <ng-container
         *ngFor="let employee of employees; let i = index; let last = last">
-    <b-avatar
-            *ngIf="i < avatarsToFit - 1 || (i < avatarsToFit && !showMore) || (i < avatarsToFit && last && showMore)"
-            [imageSource]="employee.imageSource"
-            [size]="avatarSize"></b-avatar>
-    <b-avatar class="show-more" *ngIf="i === avatarsToFit - 1 && !last && showMore"
-              [size]="avatarSize">
-        <b-icon [icon]="icon"></b-icon>
-    </b-avatar>
+    <b-avatar class="employees-showcase-avatar"
+              *ngIf="i < avatarsToFit - 1 || (i < avatarsToFit && !showMore) || (i < avatarsToFit && last && showMore)"
+              [imageSource]="employee.imageSource"
+              [size]="avatarSize"></b-avatar>
+    <div class="employees-showcase-panel-wrapper"
+         *ngIf="i === avatarsToFit - 1 && !last && showMore">
+        <b-panel [panelClass]="'employees-showcase-panel'">
+            <b-avatar class="show-more"
+                      [size]="avatarSize" panel-trigger>
+                <b-icon [icon]="icon"></b-icon>
+            </b-avatar>
+            <div panel-content>
+                <b-single-list [options]="showMoreOptions"
+                               (selectChange)="onSelectChange($event)">
+                </b-single-list>
+            </div>
+        </b-panel>
+    </div>
 </ng-container>

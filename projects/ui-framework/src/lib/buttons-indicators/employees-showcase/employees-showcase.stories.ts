@@ -49,9 +49,7 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Employees Showcase'">
-  <div style="display: flex; justify-content: center; padding: 20px;">
-    ${template}
-  </div>
+  ${template}
 </b-story-book-layout>
 `;
 
@@ -68,7 +66,7 @@ avatarStories.add(
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
-          EmployeesShowcaseModule
+          EmployeesShowcaseModule,
         ]
       }
     };

@@ -2,30 +2,48 @@ import { EmployeeShowcase } from './employees-showcase.interface';
 
 export const getEmployeesMock: () => EmployeeShowcase[] = () => [
   {
-    imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
+    id: 1,
+    displayName: 'Ben Baler',
+    imageSource: 'https://randomuser.me/api/portraits/men/1.jpg'
   },
   {
-    imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
+    id: 2,
+    displayName: 'Omri Hecht',
+    imageSource: 'https://randomuser.me/api/portraits/men/2.jpg'
   },
   {
-    imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
+    id: 3,
+    displayName: 'Guy Katz',
+    imageSource: 'https://randomuser.me/api/portraits/men/3.jpg'
   },
   {
-    imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
+    id: 4,
+    displayName: 'Dana Zelniker',
+    imageSource: 'https://randomuser.me/api/portraits/women/4.jpg'
   },
   {
-    imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
+    id: 5,
+    displayName: 'Revi Fridman',
+    imageSource: 'https://randomuser.me/api/portraits/women/5.jpg'
   },
   {
-    imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
+    id: 6,
+    displayName: 'Keshet Rozenfeld',
+    imageSource: 'https://randomuser.me/api/portraits/women/6.jpg'
   },
   {
-    imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
+    id: 7,
+    displayName: 'Liz',
+    imageSource: 'https://randomuser.me/api/portraits/women/7.jpg'
   },
   {
-    imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
+    id: 8,
+    displayName: 'Ori Danus',
+    imageSource: 'https://randomuser.me/api/portraits/men/8.jpg'
   },
   {
-    imageSource: 'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
+    id: 9,
+    displayName: 'Tomer Aronovski',
+    imageSource: 'https://randomuser.me/api/portraits/men/9.jpg'
   },
 ];
