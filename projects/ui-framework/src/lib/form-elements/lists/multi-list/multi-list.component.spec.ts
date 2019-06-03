@@ -172,23 +172,23 @@ describe('MultiListComponent', () => {
       const checkboxes = fixture.debugElement.queryAll(
         By.css('.option .checkbox')
       );
-      expect(checkboxes[0].nativeElement.classList).toContain(
-        'checkbox-checked'
+      expect(checkboxes[0].nativeElement.getAttribute('aria-checked')).toEqual(
+        'true'
       );
     });
     it('should set the checkbox of options where (id=2,11,12) as unchecked', () => {
       const checkboxes = fixture.debugElement.queryAll(
         By.css('.option .checkbox')
       );
-      expect(checkboxes[1].nativeElement.classList).not.toContain(
-        'checkbox-checked'
-      );
-      expect(checkboxes[2].nativeElement.classList).not.toContain(
-        'checkbox-checked'
-      );
-      expect(checkboxes[3].nativeElement.classList).not.toContain(
-        'checkbox-checked'
-      );
+      expect(
+        checkboxes[1].nativeElement.getAttribute('aria-checked')
+      ).not.toEqual('true');
+      expect(
+        checkboxes[2].nativeElement.getAttribute('aria-checked')
+      ).not.toEqual('true');
+      expect(
+        checkboxes[3].nativeElement.getAttribute('aria-checked')
+      ).not.toEqual('true');
     });
     it('should rerender lists if simpleChanges includes options', () => {
       let options = fixture.debugElement.queryAll(By.css('.option'));

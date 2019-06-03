@@ -79,7 +79,7 @@
 @include checkbox(
   $input-selector: null,
   $checkbox-selector: '.checkbox',
-  $checked-selector: '.checkbox[aria-checked]',
+  $checked-selector: '.checkbox[aria-checked="true"]',
   $disabled-selector: null,
   $required-selector: null,
   $indeterminate-selector: null,
