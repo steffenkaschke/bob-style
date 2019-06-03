@@ -11,7 +11,7 @@
 }
 
 .bchk-input {
-  @include checkbox2;
+  @include checkbox;
   @include input-border-colors($add: ' + .bchk-label:before');
 }
 
