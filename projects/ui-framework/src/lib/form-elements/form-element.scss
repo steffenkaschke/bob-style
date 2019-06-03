@@ -75,6 +75,7 @@ $input-border-color: $grey-500;
     &::placeholder {
       color: $grey-600;
       transition: opacity 0.2s;
+      @include text-truncate;
 
       &::first-letter {
         text-transform: uppercase;

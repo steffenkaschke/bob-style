@@ -1,12 +1,10 @@
-<mat-form-field (click)="input.focus();"
-                [ngClass]="{'disabled': disabled,
-                            'required': required,
-                            'error': errorMessage,
-                            'autocomplete-open': auto.isOpen,
-                            'empty': value.length === 0}"
-                [floatLabel]="placeholder ? 'always' : 'auto'">
+<label *ngIf="label"
+       class="bfe-label"
+       [attr.for]="bInput.id">{{label}}</label>
 
-  <mat-label *ngIf="label">{{label}}</mat-label>
+<div class="bfe-wrap"
+     [ngClass]="{focused: inputFocused, 'autocomplete-open': auto.isOpen,'empty': value.length === 0}"
+     (click)="bInput.focus();">
 
   <mat-chip-list #chipList
                  selectable="false">
@@ -15,24 +13,30 @@
                     selectable="false"
                     removable="false"
                     disableRipple="true">
-      <b-chip [type]="disabled ? chipType.disabled : chipType.tag"
+      <b-chip [type]="chipType.tag"
               [removable]="removable"
               (removed)="remove(chip)">
         {{chip}}
       </b-chip>
     </mat-basic-chip>
 
-    <input [placeholder]="value.length === 0 && placeholder"
-           #input
+    <input #bInput
+           class="bfe-input"
+           [attr.name]="bInput.id"
+           [type]="inputTypes.text"
+           [placeholder]="value.length === 0 && placeholder"
+           [attr.value]="value"
            [disabled]="disabled"
+           [required]="required"
            [formControl]="chipInputControl"
            [matAutocomplete]="auto"
            [matChipInputFor]="chipList"
            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
            [matChipInputAddOnBlur]="addOnBlur"
            (matChipInputTokenEnd)="add($event)"
+           (focus)="inputFocused = true"
+           (blur)="inputFocused = false"
            (keydown)="onInputKeydown($event)">
-
   </mat-chip-list>
 
   <mat-autocomplete #auto="matAutocomplete"
@@ -45,13 +49,12 @@
     </mat-option>
   </mat-autocomplete>
 
-  <mat-hint>
-    <p b-input-message
-       *ngIf="hintMessage || warnMessage || errorMessage"
-       [hintMessage]="hintMessage"
-       [warnMessage]="warnMessage"
-       [errorMessage]="errorMessage"
-       [disabled]="disabled"></p>
-  </mat-hint>
+</div>
 
-</mat-form-field>
+
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled"></p>

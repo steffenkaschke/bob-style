@@ -4,75 +4,45 @@
 @import '../../../form-elements/form-element';
 
 :host {
-  display: block;
-}
+  // Form field
 
-// Form field
+  @include bFormElement();
 
-:host ::ng-deep {
-  @include MatFormField();
-
-  .mat-form-field-flex {
+  .bfe-input {
+    margin: 4px;
+    padding: 0;
     height: auto;
+    transition: max-height 0.2s, margin 0.2s;
+  }
+
+  .bfe-wrap {
+    height: auto;
+    display: block;
     padding: 6px 0 8px;
     border-top: 0;
     border-left: 0;
     border-right: 0;
     border-radius: 0;
-  }
 
-  .mat-form-field {
-    &.autocomplete-open .mat-form-field-flex {
+    &.autocomplete-open {
       border-color: transparent;
     }
 
-    &:hover .mat-form-field-flex {
-      box-shadow: none;
-    }
+    &.focused {
+      border-top: 0;
+      border-left: 0;
+      border-right: 0;
 
-    input {
-      margin: 4px;
-      padding: 0;
-      height: auto;
-      transition: max-height 0.2s, margin 0.2s;
-
-      &::placeholder {
-        @include text-truncate;
-      }
-
-      &:focus::placeholder {
-        color: transparent;
-      }
-    }
-
-    &.mat-focused {
-      .mat-form-field-flex {
-        border-top: 0;
-        border-left: 0;
-        border-right: 0;
-        border-radius: 0;
-      }
-      input {
+      .bfe-input {
         max-height: 20px;
       }
     }
-
-    &:not(.mat-focused):not(.empty) input {
-      max-height: 0px;
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-
-    .mat-form-field-infix {
-      position: static;
-    }
-
-    .mat-form-field-label-wrapper {
-      height: $input-height;
-    }
-
-    .mat-form-field-label {
-      width: auto;
+    &:not(.focused):not(.empty) {
+      .bfe-input {
+        max-height: 0px;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
     }
   }
 }
@@ -150,20 +120,6 @@
 // states
 
 :host ::ng-deep {
-  .mat-form-field.disabled {
-    user-select: none;
-    pointer-events: none;
-
-    .mat-form-field-wrapper .mat-form-field-flex {
-      background-color: transparent;
-    }
-
-    .mat-form-field-wrapper .mat-form-field-infix input::placeholder,
-    .mat-hint {
-      color: $grey-500;
-    }
-  }
-
   .mat-form-field.error {
     .mat-form-field-wrapper .mat-form-field-flex {
       border-top: 0;
@@ -172,8 +128,5 @@
       border-radius: 0;
       border-color: var(--negative-500);
     }
-  }
-  .error-message {
-    color: var(--negative-500);
   }
 }

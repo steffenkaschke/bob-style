@@ -9,7 +9,8 @@ import {
   OnChanges,
   HostListener,
   Output,
-  EventEmitter
+  EventEmitter,
+  HostBinding
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
@@ -26,6 +27,7 @@ import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
 import { BaseFormElement } from '../../../form-elements/base-form-element';
 import { ChipType } from '../chips.enum';
 import { ChipInputChange } from '../chips.interface';
+import { InputTypes } from '../../../form-elements/input/input.enum';
 
 @Component({
   selector: 'b-chip-input',
@@ -49,7 +51,6 @@ export class ChipInputComponent extends BaseFormElement
   @Input() value: string[] = [];
   @Input() options: string[];
   @Input() acceptNew = true;
-  @Input() placeholder: string;
 
   filteredChips: Observable<string[]>;
   possibleChips: string[] = [];
@@ -62,9 +63,10 @@ export class ChipInputComponent extends BaseFormElement
   readonly iconColor = IconColor;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly chipInputControl = new FormControl();
+  public readonly inputTypes = InputTypes;
 
   @ViewChild('chipList') private chipList: MatChipList;
-  @ViewChild('input') private input: ElementRef<HTMLInputElement>;
+  @ViewChild('bInput') private bInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') private autocomplete: MatAutocomplete;
   @ViewChild('input', { read: MatAutocompleteTrigger })
   private autocompleteTrigger: MatAutocompleteTrigger;
@@ -72,6 +74,16 @@ export class ChipInputComponent extends BaseFormElement
   @Output() changed: EventEmitter<ChipInputChange> = new EventEmitter<
     ChipInputChange
   >();
+
+  @HostBinding('class')
+  get classes(): string {
+    return (
+      (this.disabled ? 'disabled ' : '') +
+      (this.required ? 'required ' : '') +
+      (this.errorMessage && !this.disabled ? 'error ' : '') +
+      (this.warnMessage && !this.errorMessage && !this.disabled ? 'warn' : '')
+    );
+  }
 
   constructor() {
     super();
@@ -141,7 +153,7 @@ export class ChipInputComponent extends BaseFormElement
       this.value.push(chipToAdd);
       this.updatePossibleChips();
       this.propagateValue({ added: chipToAdd });
-      this.input.nativeElement.value = '';
+      this.bInput.nativeElement.value = '';
       this.chipInputControl.setValue(null);
     } else if (chipToAdd) {
       const existingChipElemnent = this.chipList.chips.find(
@@ -197,7 +209,7 @@ export class ChipInputComponent extends BaseFormElement
 
   onInputKeydown(event: KeyboardEvent): void {
     if (event.key.toUpperCase() === 'BACKSPACE') {
-      if (this.input.nativeElement.value === '' && this.chipList.chips.last) {
+      if (this.bInput.nativeElement.value === '' && this.chipList.chips.last) {
         if ((this.chipList.chips.last as any).aboutToDelete) {
           this.value.pop();
           this.updatePossibleChips();
@@ -207,7 +219,7 @@ export class ChipInputComponent extends BaseFormElement
         }
 
         setTimeout(() => {
-          this.input.nativeElement.focus();
+          this.bInput.nativeElement.focus();
           this.autocompleteTrigger.closePanel();
         }, 0);
       }

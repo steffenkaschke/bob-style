@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { simpleUID } from '../../services/utils/functional-utils';
 
 export enum CheckboxStates {
   checked = 'checked',
@@ -29,6 +28,7 @@ export enum CheckboxStates {
         warn: warnMessage && !errorMessage && !disabled
       }"
       [attr.id]="id"
+      [attr.name]="id"
       [checked]="value"
       [required]="required"
       [disabled]="disabled"
@@ -68,10 +68,6 @@ export class CheckboxComponent extends BaseFormElement {
 
   @ViewChild('input') private input: ElementRef;
   @Input() value = false;
-  @Input() label: string;
-  @Input() disabled = false;
-  @Input() required = false;
-  public id = simpleUID('bchk-input-');
 
   @Input('indeterminate')
   set indState(value: boolean) {

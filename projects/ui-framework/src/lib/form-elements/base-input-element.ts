@@ -6,12 +6,9 @@ import {
   InputEventType,
   InputTypes
 } from './input/input.enum';
-import { simpleUID, pass } from '../services/utils/functional-utils';
+import { pass } from '../services/utils/functional-utils';
 
 export abstract class BaseInputElement extends BaseFormElement {
-  public inputFocused = false;
-  public id = simpleUID('bfe-');
-
   @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;

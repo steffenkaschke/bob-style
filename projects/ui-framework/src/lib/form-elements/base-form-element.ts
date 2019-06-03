@@ -1,5 +1,6 @@
 import { Input } from '@angular/core';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
+import { simpleUID } from '../services/utils/functional-utils';
 
 export abstract class BaseFormElement implements ControlValueAccessor {
   @Input() label: string;
@@ -11,7 +12,9 @@ export abstract class BaseFormElement implements ControlValueAccessor {
   @Input() hintMessage: string;
   @Input() errorMessage: string;
   @Input() warnMessage: string;
-
+  public inputFocused = false;
+  public inputTouched = false;
+  public id = simpleUID('bfe-');
   @Input() validateFn: Function = (_: FormControl) => {};
 
   onTouched: Function = (_: any) => {};
