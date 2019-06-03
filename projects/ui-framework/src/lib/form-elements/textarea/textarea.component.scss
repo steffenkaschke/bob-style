@@ -1,25 +1,5 @@
 @import '../form-element.scss';
 
-:host ::ng-deep {
-  display: inline-block;
-  width: 100%;
-
-  @include MatFormField();
-
-  .mat-form-field.text-area {
-    line-height: initial;
-  }
-
-  .mat-form-field-flex {
-    height: auto;
-
-    textarea {
-      height: $textarea-height;
-      padding: 16px;
-    }
-
-    .mat-form-field-label-wrapper {
-      align-items: start;
-    }
-  }
+:host {
+  @include bFormElement();
 }

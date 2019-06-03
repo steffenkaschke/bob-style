@@ -1,32 +1,33 @@
-<mat-form-field class="text-area"
-                [ngClass]="{'required': required, 'error': errorMessage}"
-                [floatLabel]="'always'">
+<label *ngIf="label"
+       class="bfe-label"
+       [attr.for]="id">{{label}}</label>
 
-  <mat-label>{{label}}</mat-label>
+<div class="bfe-wrap"
+     [ngClass]="{focused: inputFocused}">
 
-  <textarea matInput
-            #textarea
-            [maxlength]="maxChars"
+  <textarea #textarea
+            class="bfe-input bfe-textarea"
+            [attr.id]="id"
+            [attr.name]="id"
+            [attr.placeholder]="placeholder"
             [disabled]="disabled"
-            [(ngModel)]="value"
-            (blur)="emitInputEvent(eventType.onBlur, value)"
-            (focus)="emitInputEvent(eventType.onFocus, value)"
-            (ngModelChange)="emitInputEvent(eventType.onChange, value)">
-  </textarea>
+            [required]="required"
+            [attr.maxlength]="maxChars"
+            (focus)="onFocus()"
+            (blur)="onBlur()"
+            (input)="onChange($event)">{{value}}</textarea>
 
-  <mat-hint>
-    <p b-input-message
-       *ngIf="hintMessage || warnMessage || errorMessage"
-       [hintMessage]="hintMessage"
-       [warnMessage]="warnMessage"
-       [errorMessage]="errorMessage"
-       [disabled]="disabled">
+</div>
 
-      <span class="length-indicator"
-            *ngIf="maxChars">
-        {{textarea.value?.length || 0}}/{{maxChars}}
-      </span>
-    </p>
-  </mat-hint>
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled">
 
-</mat-form-field>
+  <span class="length-indicator"
+        *ngIf="maxChars">
+    {{textarea.value?.length || 0}}/{{maxChars}}
+  </span>
+</p>

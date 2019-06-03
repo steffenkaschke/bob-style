@@ -51,7 +51,7 @@ $input-border-color: $grey-500;
     display: flex;
     align-items: center;
     background-color: $white;
-    height: $wrap-height;
+    min-height: $wrap-height;
     border: 1px solid $input-border-color;
     border-radius: $border-radius;
     transition: box-shadow 0.2s, border-color 0.2s;
@@ -95,10 +95,20 @@ $input-border-color: $grey-500;
     }
   }
 
+  // text-area
+
+  .bfe-textarea {
+    height: auto;
+    min-height: $textarea-height;
+    padding: 11px 15px;
+    resize: vertical;
+  }
+
   // label
 
   .bfe-label {
     box-sizing: border-box;
+    display: block;
     margin: 0 0 6px 0;
     color: $label-color;
 

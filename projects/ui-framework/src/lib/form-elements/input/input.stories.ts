@@ -86,8 +86,8 @@ inputStories.add(
         required: boolean('required', false),
 
         hintMessage: text('hintMessage', 'This field should contain something'),
-        errorMessage: text('errorMessage', ''),
         warnMessage: text('warnMessage', ''),
+        errorMessage: text('errorMessage', ''),
 
         enableBrowserAutoComplete: select(
           'enableBrowserAutoComplete',

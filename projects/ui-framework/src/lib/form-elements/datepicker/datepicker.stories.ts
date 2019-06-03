@@ -1,5 +1,11 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  number,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { DatepickerModule } from './datepicker.module';
 import { ComponentGroupType } from '../../consts';
@@ -7,12 +13,12 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const datepickerStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
-  withKnobs
-);
+const datepickerStories = storiesOf(
+  ComponentGroupType.FormElements,
+  module
+).addDecorator(withKnobs);
 const template = `
-<b-datepicker style="width: 400px;"
-              (dateChange)="dateChange($event)"
+<b-datepicker (dateChange)="dateChange($event)"
               [inputLabel]="inputLabel"
               [dateFormat]="dateFormat"
               [errorMessage]="errorMessage"
@@ -24,7 +30,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Datepicker'">
-  ${template}
+  <div style="width: 400px; margin: 30px auto;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -59,7 +67,11 @@ datepickerStories.add(
         dateChange: action()
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, DatepickerModule, StoryBookLayoutModule]
+        imports: [
+          BrowserAnimationsModule,
+          DatepickerModule,
+          StoryBookLayoutModule
+        ]
       }
     };
   },

@@ -1,44 +1,36 @@
 @import '../../style/colors';
+@import '../form-element';
 
-:host {
-  display: inline-block;
-  width: 100%;
-  b-datepicker-input {
-    display: block;
-    width: 100%;
-    b-icon {
-      cursor: pointer;
-    }
-  }
+b-icon {
+  cursor: pointer;
 }
 
 ::ng-deep {
-  .mat-datepicker-content {
-    .past {
-      .mat-calendar-body-cell-content {
-        color: $grey-500;
-        background-color: $grey-100;
-      }
-    }
-    .today {
-      .mat-calendar-body-cell-content {
-        color: $grey-700;
-        background-color: $grey-100;
-      }
-    }
-    .future {
-      .mat-calendar-body-cell-content {
-        color: $grey-600;
-        background-color: $grey-100;
-      }
-    }
+  .mat-datepicker-popup {
+    margin-top: 1px;
+  }
+  .past {
     .mat-calendar-body-cell-content {
-      &.mat-calendar-body-selected {
-        background-color: var(--primary-500);
-        color: $white;
-      }
+      color: $grey-500;
+      background-color: $grey-100;
+    }
+  }
+  .today {
+    .mat-calendar-body-cell-content {
+      color: $grey-700;
+      background-color: $grey-100;
+    }
+  }
+  .future {
+    .mat-calendar-body-cell-content {
+      color: $grey-600;
+      background-color: $grey-100;
+    }
+  }
+  .mat-calendar-body-cell-content {
+    &.mat-calendar-body-selected {
+      background-color: var(--primary-500);
+      color: $white;
     }
   }
 }
-
-

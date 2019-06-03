@@ -1,21 +1,19 @@
-<b-datepicker-input
-  [inputType]="inputTypes.text"
-  [label]="inputLabel"
-  [value]="value"
-  [disabled]="disabled"
-  [required]="required"
-  [errorMessage]="errorMessage"
-  (inputEvents)="onInputEvents($event, picker)"
-  #datePickerInput
-  [datePickerId]="picker">
+<b-datepicker-input [inputType]="inputTypes.text"
+                    [label]="inputLabel"
+                    [value]="value"
+                    [disabled]="disabled"
+                    [required]="required"
+                    [errorMessage]="errorMessage"
+                    (inputEvents)="onInputEvents($event, picker)"
+                    #datePickerInput
+                    [datePickerId]="picker">
 
-  <div input-suffix>
-    <b-icon [icon]="calendarIcon"
-            [color]="calendarIconColor"
-            [size]="calendarIconSize"
-            (click)="picker.open()">
-    </b-icon>
-  </div>
+  <b-icon input-suffix
+          [icon]="calendarIcon"
+          [color]="calendarIconColor"
+          [size]="calendarIconSize"
+          (click)="picker.open()">
+  </b-icon>
 
   <mat-datepicker #picker
                   (closed)="datePickerClosed()"

@@ -5,13 +5,11 @@ import {
   AfterViewInit,
   ElementRef
 } from '@angular/core';
-import { InputEventType } from './input.enum';
 import { inputAttributesPlaceholder } from '../../consts';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
 import { MatInput } from '@angular/material';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
-import { simpleUID } from '../../services/utils/functional-utils';
 
 export const baseInputTemplate = `
   <label *ngIf="label" class="bfe-label" [attr.for]="id">{{label}}</label>
@@ -22,10 +20,12 @@ export const baseInputTemplate = `
       <ng-content select="[input-prefix]"></ng-content>
     </div>
 
-    <input class="bfe-input"
-          [attr.placeholder]="placeholder"
+    <input #bInput
+          class="bfe-input"
           [attr.id]="id"
+          [attr.name]="id"
           [type]="inputType"
+          [attr.placeholder]="placeholder"
           [attr.value]="value"
           [autocomplete]="enableBrowserAutoComplete"
           [disabled]="disabled"
@@ -33,7 +33,6 @@ export const baseInputTemplate = `
           (focus)="onFocus()"
           (blur)="onBlur()"
           (input)="onChange($event)"
-          #bInput
           #moreattributes>
 
     <div *ngIf="hasSuffix" class="bfe-suffix" #suffix>
@@ -78,8 +77,6 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
 
   public hasPrefix = true;
   public hasSuffix = true;
-  public inputFocused = false;
-  public id = simpleUID('bfe-');
   private DOM = new DOMhelpers();
 
   static addAttributesToBaseInput(attributes: string): string {
@@ -91,20 +88,5 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
       this.hasPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
       this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
     }, 0);
-  }
-
-  onChange($event): void {
-    this.value = $event.target.value;
-    this.emitInputEvent(InputEventType.onChange, this.value);
-  }
-
-  onFocus(): void {
-    this.inputFocused = true;
-    this.emitInputEvent(InputEventType.onFocus, this.value);
-  }
-
-  onBlur(): void {
-    this.inputFocused = false;
-    this.emitInputEvent(InputEventType.onBlur, this.value);
   }
 }

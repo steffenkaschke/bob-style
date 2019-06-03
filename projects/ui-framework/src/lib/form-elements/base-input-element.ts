@@ -6,8 +6,11 @@ import {
   InputEventType,
   InputTypes
 } from './input/input.enum';
+import { simpleUID } from '../services/utils/functional-utils';
 
 export abstract class BaseInputElement extends BaseFormElement {
+  public inputFocused = false;
+  public id = simpleUID('bfe-');
   @Input() placeholder: string;
   @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
@@ -28,6 +31,21 @@ export abstract class BaseInputElement extends BaseFormElement {
 
   protected constructor() {
     super();
+  }
+
+  onChange($event: any): void {
+    this.value = $event.target.value;
+    this.emitInputEvent(InputEventType.onChange, this.value);
+  }
+
+  onFocus(): void {
+    this.inputFocused = true;
+    this.emitInputEvent(InputEventType.onFocus, this.value);
+  }
+
+  onBlur(): void {
+    this.inputFocused = false;
+    this.emitInputEvent(InputEventType.onBlur, this.value);
   }
 
   emitInputEvent(event: InputEventType, value: string | number): void {
