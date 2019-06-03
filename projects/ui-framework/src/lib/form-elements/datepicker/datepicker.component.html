@@ -1,23 +1,43 @@
-<b-datepicker-input [inputType]="inputTypes.text"
-                    [label]="inputLabel"
-                    [value]="value"
-                    [disabled]="disabled"
-                    [required]="required"
-                    [errorMessage]="errorMessage"
-                    (inputEvents)="onInputEvents($event, picker)"
-                    #datePickerInput
-                    [datePickerId]="picker">
+<label *ngIf="label"
+       class="bfe-label"
+       [attr.for]="id">{{label}}</label>
 
-  <b-icon input-suffix
+<div class="bfe-wrap hasSuffix"
+     [ngClass]="{focused: inputFocused}">
+
+  <input #bInput
+         class="bfe-input"
+         [attr.id]="id"
+         [attr.name]="id"
+         [type]="inputTypes.text"
+         [attr.placeholder]="placeholder"
+         [value]="value"
+         [disabled]="disabled"
+         [required]="required"
+         (focus)="picker.open();inputFocused = true"
+         (blur)="picker.opened ? bInput.focus() : inputFocused = false"
+         (dateChange)="onBlur($event, checkDate)"
+         [matDatepicker]="picker">
+
+  <b-icon class="bfe-suffix"
+          (click)="picker.open()"
           [icon]="calendarIcon"
           [color]="calendarIconColor"
-          [size]="calendarIconSize"
-          (click)="picker.open()">
+          [size]="calendarIconSize">
   </b-icon>
 
-  <mat-datepicker #picker
-                  (closed)="datePickerClosed()"
-                  [dateClass]="dateClass">
-  </mat-datepicker>
+</div>
 
-</b-datepicker-input>
+<mat-datepicker *ngIf="!disabled"
+                #picker
+                (opened)="bInput.focus();inputFocused = true;"
+                (closed)="bInput.blur();inputFocused = false;"
+                [dateClass]="dateClass">
+</mat-datepicker>
+
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled"></p>

@@ -83,7 +83,8 @@ export class RichTextEditorComponent extends RTEformElement
       (!this.type ? 'rte-primary' : 'rte-' + this.type) +
       (this.required ? ' required' : '') +
       (this.disabled ? ' disabled' : '') +
-      (this.errorMessage ? ' error' : '')
+      (this.errorMessage && !this.disabled ? ' error' : '') +
+      (this.warnMessage && !this.errorMessage && !this.disabled ? ' warn' : '')
     );
   }
 

@@ -8,13 +8,8 @@ $button-icon-size: 14px;
 
 $icon-color: $grey-600;
 $icon-color-hover: $grey-700;
-$icon-color-disabled: $grey-500;
-
 $placeholder-color: $icon-color;
-
 $border-color: $grey-500;
-$border-color-disabled: $icon-color-disabled;
-$border-color-error: $color-error;
 
 :host {
   text-align: left;
@@ -222,13 +217,6 @@ $border-color-error: $color-error;
     }
   }
 
-  .mat-hint {
-    display: block;
-    margin-top: 5px;
-    padding: 0 16px;
-    @include BodyFont($font-size-caption);
-  }
-
   .ql-editor.ql-blank:before {
     color: $icon-color;
     font-style: normal;
@@ -260,55 +248,8 @@ $border-color-error: $color-error;
 // Disabled
 
 :host {
-  &.error:not(.disabled) ::ng-deep {
-    .mat-hint {
-      color: $color-error;
-    }
-  }
-
-  &.disabled ::ng-deep {
-    user-select: none;
-
-    .ql-container,
-    .ql-toolbar {
-      pointer-events: none;
-    }
-    .ql-fill,
-    .ql-stroke.ql-fill {
-      fill: $icon-color-disabled;
-    }
-    .ql-stroke {
-      stroke: $icon-color-disabled;
-    }
-    .ql-toolbar .mat-icon.normal {
-      path,
-      circle {
-        fill: $icon-color-disabled !important;
-      }
-    }
-    .ql-picker-item,
-    .ql-picker-label,
-    button.ql-active {
-      color: $icon-color-disabled;
-
-      .ql-fill,
-      .ql-stroke.ql-fill {
-        fill: $icon-color-disabled;
-      }
-      .ql-stroke {
-        stroke: $icon-color-disabled;
-      }
-    }
-
-    .ql-editor,
-    .ql-toolbar button,
-    .toolbar-suffix,
-    .ql-editor.ql-blank:before,
-    .mat-hint,
-    [style],
-    a {
-      color: $icon-color-disabled !important;
-    }
+  &.disabled {
+    @include disabled-state;
   }
 }
 
@@ -330,17 +271,21 @@ $border-color-error: $color-error;
       right: 7px;
     }
   }
-  &.error:not(.disabled) ::ng-deep {
+  &.error ::ng-deep {
     .quill-editor,
     .ql-toolbar {
-      border-color: $border-color-error;
+      border-color: $color-error;
+    }
+  }
+  &.warn ::ng-deep {
+    .quill-editor,
+    .ql-toolbar {
+      border-color: $color-warn;
     }
   }
   &.disabled ::ng-deep {
     .quill-editor {
-      background-color: $grey-100;
       box-shadow: none;
-      border-color: $border-color-disabled;
     }
   }
 }
@@ -355,13 +300,14 @@ $border-color-error: $color-error;
       padding-right: 0;
     }
   }
-  .mat-hint {
-    padding-left: 0;
-    padding-right: 0;
-  }
-  &.error:not(.disabled) ::ng-deep {
+  &.error ::ng-deep {
     .ql-toolbar {
-      border-bottom: 1px solid $border-color-error;
+      border-bottom: 1px solid $color-error;
+    }
+  }
+  &.warn ::ng-deep {
+    .ql-toolbar {
+      border-bottom: 1px solid $color-warn;
     }
   }
 }
@@ -487,7 +433,7 @@ $border-color-error: $color-error;
 
 // Editor text area CSS mods
 
-:host:not(.disabled) ::ng-deep {
+:host ::ng-deep {
   span[style],
   strong[style],
   u[style],

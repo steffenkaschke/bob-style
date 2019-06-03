@@ -3,6 +3,7 @@ import { ControlValueAccessor, FormControl } from '@angular/forms';
 
 export abstract class BaseFormElement implements ControlValueAccessor {
   @Input() label: string;
+  @Input() placeholder: string;
   @Input() value: any;
   @Input() disabled: boolean;
   @Input() required: boolean;

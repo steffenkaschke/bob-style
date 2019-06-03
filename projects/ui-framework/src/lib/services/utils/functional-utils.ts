@@ -61,3 +61,5 @@ export const simpleUID = (prefix: string = '', length: number = 5): string => {
       .substr(2, length)
   );
 };
+
+export const pass = (a: any): any => a;

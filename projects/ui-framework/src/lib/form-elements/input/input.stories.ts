@@ -77,7 +77,7 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        inputEvents: action(),
+        inputEvents: action('Input event'),
         inputType: select('inputType', inputTypes, InputTypes.text),
         value: text('value', ''),
         label: text('label', 'Input label'),

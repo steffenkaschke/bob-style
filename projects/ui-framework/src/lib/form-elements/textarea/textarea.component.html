@@ -4,7 +4,6 @@
 
 <div class="bfe-wrap"
      [ngClass]="{focused: inputFocused}">
-
   <textarea #textarea
             class="bfe-input bfe-textarea"
             [attr.id]="id"
@@ -13,10 +12,9 @@
             [disabled]="disabled"
             [required]="required"
             [attr.maxlength]="maxChars"
-            (focus)="onFocus()"
-            (blur)="onBlur()"
+            (focus)="onFocus($event)"
+            (blur)="onBlur($event)"
             (input)="onChange($event)">{{value}}</textarea>
-
 </div>
 
 <p b-input-message

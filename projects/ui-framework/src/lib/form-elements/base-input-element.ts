@@ -6,12 +6,12 @@ import {
   InputEventType,
   InputTypes
 } from './input/input.enum';
-import { simpleUID } from '../services/utils/functional-utils';
+import { simpleUID, pass } from '../services/utils/functional-utils';
 
 export abstract class BaseInputElement extends BaseFormElement {
   public inputFocused = false;
   public id = simpleUID('bfe-');
-  @Input() placeholder: string;
+
   @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
@@ -33,31 +33,45 @@ export abstract class BaseInputElement extends BaseFormElement {
     super();
   }
 
-  onChange($event: any): void {
-    this.value = $event.target.value;
-    this.emitInputEvent(InputEventType.onChange, this.value);
+  onChange($event: any, converter = pass): void {
+    this.emitInputEvent(
+      InputEventType.onChange,
+      converter($event.value || $event.target.value)
+    );
   }
 
-  onFocus(): void {
+  onFocus($event: any, converter = pass): void {
     this.inputFocused = true;
-    this.emitInputEvent(InputEventType.onFocus, this.value);
+    this.emitInputEvent(
+      InputEventType.onFocus,
+      converter($event.value || $event.target.value)
+    );
   }
 
-  onBlur(): void {
+  onBlur($event: any, converter = pass): void {
     this.inputFocused = false;
-    this.emitInputEvent(InputEventType.onBlur, this.value);
+    this.emitInputEvent(
+      InputEventType.onBlur,
+      converter($event.value || $event.target.value)
+    );
   }
 
   emitInputEvent(event: InputEventType, value: string | number): void {
-    this.inputEvents.emit({
-      event,
-      value
-    });
     if (event === InputEventType.onChange) {
-      this.propagateChange(value);
+      if (value !== this.value) {
+        this.value = value;
+        this.propagateChange(value);
+        this.inputEvents.emit({ event, value });
+      }
+    }
+    if (event === InputEventType.onFocus || event === InputEventType.onBlur) {
+      if (value !== this.value) {
+        this.value = value;
+      }
+      this.inputEvents.emit({ event, value: this.value });
     }
     if (event === InputEventType.onBlur) {
-      this.propagateChange(value);
+      this.propagateChange(this.value);
       this.onTouched();
     }
   }
