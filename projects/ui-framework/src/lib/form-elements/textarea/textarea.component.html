@@ -1,5 +1,9 @@
 <mat-form-field class="text-area"
-                [ngClass]="{'required': required, 'error': errorMessage}">
+                [ngClass]="{'required': required, 'error': errorMessage}"
+                [floatLabel]="'always'">
+
+  <mat-label>{{label}}</mat-label>
+
   <textarea matInput
             #textarea
             [maxlength]="maxChars"
@@ -10,24 +14,19 @@
             (ngModelChange)="emitInputEvent(eventType.onChange, value)">
   </textarea>
 
-  <mat-hint *ngIf="errorMessage"
-            align="start"
-            class="error-message">
-    {{errorMessage}}
-  </mat-hint>
+  <mat-hint>
+    <p b-input-message
+       *ngIf="hintMessage || warnMessage || errorMessage"
+       [hintMessage]="hintMessage"
+       [warnMessage]="warnMessage"
+       [errorMessage]="errorMessage"
+       [disabled]="disabled">
 
-  <mat-hint *ngIf="hintMessage && !errorMessage"
-            align="start"
-            class="hint-message">
-    {{hintMessage}}
+      <span class="length-indicator"
+            *ngIf="maxChars">
+        {{textarea.value?.length || 0}}/{{maxChars}}
+      </span>
+    </p>
   </mat-hint>
-
-  <mat-hint *ngIf="maxChars"
-            align="end"
-            class="length-indicator">
-    {{textarea.value?.length || 0}}/{{maxChars}}
-  </mat-hint>
-
-  <mat-label>{{label}}</mat-label>
 
 </mat-form-field>

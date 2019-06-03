@@ -1,7 +1,7 @@
 @import '../../style/colors';
 @import '../../style/typography';
 @import 'checkbox.mixin';
-@import '../input-message/input-border-colors.mixin';
+@import '../form-element';
 
 :host {
   display: inline-flex;
