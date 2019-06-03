@@ -10,7 +10,8 @@ $grey-800: #303030; // rgb(48,48,48)
 
 $body-text-color: $grey-700;
 $boxShadowColor: rgba($grey-700, 0.2);
-$color-error: var(--negative-500);
+$color-error: var(--negative-600);
+$color-warn: var(--primary-500);
 
 @function black($opacity) {
   @return rgba(0, 0, 0, $opacity);

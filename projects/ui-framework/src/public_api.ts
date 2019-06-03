@@ -181,6 +181,9 @@ export {
 export {
   RadioConfig
 } from './lib/form-elements/radio-button/radio-button.interface';
+// input message
+export {InputMessageModule} from './lib/form-elements/input-message/input-message.module';
+export {InputMessageComponent} from './lib/form-elements/input-message/input-message.component';
 
 /*
  * Navigation

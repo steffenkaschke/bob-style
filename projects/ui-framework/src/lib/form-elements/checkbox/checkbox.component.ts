@@ -26,7 +26,8 @@ export enum CheckboxStates {
       type="checkbox"
       class="bchk-input"
       [ngClass]="{
-        error: errorMessage && !disabled
+        error: errorMessage && !disabled,
+        warn: warnMessage && !errorMessage && !disabled
       }"
       [attr.id]="id"
       [checked]="value"
@@ -37,16 +38,15 @@ export enum CheckboxStates {
     <label class="bchk-label" [attr.for]="id">
       {{ label }}
     </label>
+
     <p
-      class="message"
-      *ngIf="errorMessage || hintMessage"
-      [ngClass]="{
-        'error-message': errorMessage && !disabled,
-        'hint-message': !errorMessage && hintMessage
-      }"
-    >
-      {{ errorMessage && !disabled ? errorMessage : hintMessage }}
-    </p>
+      b-input-message
+      *ngIf="hintMessage || warnMessage || errorMessage"
+      [hintMessage]="hintMessage"
+      [warnMessage]="warnMessage"
+      [errorMessage]="errorMessage"
+      [disabled]="disabled"
+    ></p>
   `,
   styleUrls: ['./checkbox.component.scss'],
   providers: [

@@ -24,6 +24,7 @@ const template = `
             [disabled]="disabled"
             [required]="required"
             [hintMessage]="hintMessage"
+            [warnMessage]="warnMessage"
             [errorMessage]="errorMessage">
 </b-checkbox>
 `;
@@ -66,6 +67,7 @@ inputStories.add(
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'Usefull hint'),
+        warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', '')
       },
       moduleMetadata: {

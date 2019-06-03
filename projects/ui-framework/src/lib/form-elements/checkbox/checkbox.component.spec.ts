@@ -59,4 +59,6 @@ describe('CheckboxComponent', () => {
   // required
   // UID
   // indeterminate
+  // hint
+  // error
 });

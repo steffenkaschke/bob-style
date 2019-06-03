@@ -1,7 +1,7 @@
 @import '../../../style/colors';
 @import '../../../style/mixins';
 @import '../../../style/typography';
-@import '../../../form-elements/checkbox/checkbox';
+@import '../../../form-elements/checkbox/checkbox.mixin';
 
 @mixin cell {
   text-align: left;
@@ -73,7 +73,6 @@
           @include cell;
         }
       }
-
     }
   }
 }

@@ -1,24 +1,18 @@
 @import '../../style/colors';
 @import '../../style/typography';
-@import 'checkbox.scss';
+@import 'checkbox.mixin';
+@import '../input-message/input-border-colors.mixin';
 
 :host {
   display: inline-flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   margin: 20px 0;
   text-align: left;
 }
 
 .bchk-input {
   @include checkbox2;
-
-  &.error + .bchk-label:before {
-    border-color: $color-error;
-  }
-
-  &:disabled ~ .message {
-    @include disabled-state;
-  }
+  @include input-border-colors($add: ' + .bchk-label:before');
 }
 
 .bchk-label {
@@ -27,18 +21,4 @@
   &:before {
     margin-right: 10px;
   }
-}
-
-.message {
-  width: 100%;
-  margin: 2px 0 0;
-  font-size: $font-size-caption;
-}
-
-.hint-message {
-  color: $grey-600;
-}
-
-.error-message {
-  color: $color-error;
 }
