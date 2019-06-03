@@ -2,33 +2,9 @@
 @import '../../style/colors';
 @import '../../style/mixins';
 
-@mixin checkbox {
-  width: 22px;
-  height: 22px;
-  border: 1px solid $grey-500;
-  color: $grey-600;
-  background: $white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  &:after {
-    width: 10px;
-    height: 5px;
-    color: $grey-800;
-    position: relative;
-    top: -1px;
-    transition: none;
-  }
-  &:hover {
-    box-shadow: 0 2px 5px $boxShadowColor;
-    border-color: $grey-600;
-  }
-}
-
 $checkmark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12.73 9.9' width='12.73' height='9.9'%3E%3Cpath fill='white' d='M4.6 6.36L1.77 3.54 0 5.3l4.6 4.6 8.13-8.13L10.96 0z'/%3E%3C/svg%3E");
 
-@mixin checkbox2(
+@mixin checkbox(
   $input-selector: '&',
   $checkbox-selector: $input-selector + ' + label',
   $checked-selector: $input-selector + ':checked + label',
@@ -49,11 +25,14 @@ $checkmark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
       display: flex;
       align-items: center;
       user-select: none;
+      background: none;
+      @include size(auto);
 
       &:before {
         display: block;
         content: '';
         @include size(24px);
+        @include text-hide;
         background-color: white;
         border: 1px solid $grey-600;
         border-radius: $border-radius;
@@ -79,6 +58,7 @@ $checkmark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
   @if ($checked-selector) {
     #{$checked-selector} {
       &:before {
+        content: '\2713';
         background-color: $grey-600;
         background-image: $checkmark;
         background-size: 13px auto;

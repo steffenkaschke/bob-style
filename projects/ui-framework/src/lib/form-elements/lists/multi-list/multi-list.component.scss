@@ -38,12 +38,6 @@
       .options {
         .option-select {
           @include listOption;
-          .checkbox {
-            position: relative;
-            z-index: 2;
-            @include checkbox;
-            margin-right: 12px;
-          }
         }
       }
       .headers {
@@ -80,4 +74,18 @@
       }
     }
   }
+}
+
+@include checkbox(
+  $input-selector: null,
+  $checkbox-selector: '.checkbox',
+  $checked-selector: '.checkbox[aria-checked="true"]',
+  $disabled-selector: null,
+  $required-selector: null,
+  $indeterminate-selector: null,
+  $hover-selector: '.checkbox:hover'
+) {
+  position: relative;
+  z-index: 2;
+  margin-right: 12px;
 }
