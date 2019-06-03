@@ -157,8 +157,6 @@
 }
 
 @mixin disabled-state {
-  // color: $grey-500;
-  // border-color: $grey-300;
   opacity: 0.5;
   pointer-events: none;
   user-select: none;

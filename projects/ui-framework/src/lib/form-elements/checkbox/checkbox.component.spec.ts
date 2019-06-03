@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MatPseudoCheckboxModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxComponent } from './checkbox.component';
+import { InputMessageModule } from '../input-message/input-message.module';
 
 describe('CheckboxComponent', () => {
   let component: CheckboxComponent;
@@ -13,7 +13,7 @@ describe('CheckboxComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CheckboxComponent],
-      imports: [NoopAnimationsModule, CommonModule, MatPseudoCheckboxModule]
+      imports: [NoopAnimationsModule, CommonModule, InputMessageModule]
     })
       .compileComponents()
       .then(() => {

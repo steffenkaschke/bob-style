@@ -7,7 +7,6 @@ import {
   ElementRef,
   ViewChild
 } from '@angular/core';
-import { set } from 'lodash';
 import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { simpleUID } from '../../services/utils/functional-utils';
@@ -68,11 +67,11 @@ export class CheckboxComponent extends BaseFormElement {
   }
 
   @ViewChild('input') private input: ElementRef;
-  @Input() id = simpleUID('bchk-input-');
   @Input() value = false;
   @Input() label: string;
   @Input() disabled = false;
   @Input() required = false;
+  public id = simpleUID('bchk-input-');
 
   @Input('indeterminate')
   set indState(value: boolean) {

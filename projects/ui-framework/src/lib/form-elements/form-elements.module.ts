@@ -34,8 +34,7 @@ import { InputMessageModule } from './input-message/input-message.module';
     DatepickerComponent,
     MultiSelectComponent,
     SingleSelectComponent,
-    CheckboxComponent,
-    InputMessageComponent
+    CheckboxComponent
   ]
 })
 export class FormElementsModule {}
