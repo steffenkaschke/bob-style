@@ -15,6 +15,7 @@ export const baseInputTemplate = `
     'has-prefix': prefix && prefix.childNodes.length > 0,
     'has-suffix': suffix && suffix.childNodes.length > 0
   }">
+  <mat-label>{{label}}</mat-label>
 
   <div matPrefix>
     <div class="prefix" #prefix>
@@ -39,18 +40,19 @@ export const baseInputTemplate = `
     </div>
   </div>
 
-  <mat-label>{{label}}</mat-label>
+  <mat-hint>
+    <p
+      b-input-message
+      *ngIf="hintMessage || warnMessage || errorMessage"
+      [hintMessage]="hintMessage"
+      [warnMessage]="warnMessage"
+      [errorMessage]="errorMessage"
+      [disabled]="disabled"
+    ></p>
+  </mat-hint>
 
 </mat-form-field>
 
-<p
-  b-input-message
-  *ngIf="hintMessage || warnMessage || errorMessage"
-  [hintMessage]="hintMessage"
-  [warnMessage]="warnMessage"
-  [errorMessage]="errorMessage"
-  [disabled]="disabled"
-></p>
 `;
 
 @Component({

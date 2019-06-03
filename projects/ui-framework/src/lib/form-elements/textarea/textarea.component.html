@@ -14,18 +14,19 @@
             (ngModelChange)="emitInputEvent(eventType.onChange, value)">
   </textarea>
 
+  <mat-hint>
+    <p b-input-message
+       *ngIf="hintMessage || warnMessage || errorMessage"
+       [hintMessage]="hintMessage"
+       [warnMessage]="warnMessage"
+       [errorMessage]="errorMessage"
+       [disabled]="disabled">
+
+      <span class="length-indicator"
+            *ngIf="maxChars">
+        {{textarea.value?.length || 0}}/{{maxChars}}
+      </span>
+    </p>
+  </mat-hint>
 
 </mat-form-field>
-
-<p b-input-message
-   *ngIf="hintMessage || warnMessage || errorMessage"
-   [hintMessage]="hintMessage"
-   [warnMessage]="warnMessage"
-   [errorMessage]="errorMessage"
-   [disabled]="disabled">
-
-  <span class="length-indicator"
-        *ngIf="maxChars">
-    {{textarea.value?.length || 0}}/{{maxChars}}
-  </span>
-</p>

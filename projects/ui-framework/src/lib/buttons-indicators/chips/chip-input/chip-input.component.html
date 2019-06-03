@@ -2,7 +2,8 @@
                 [ngClass]="{'disabled': disabled,
                             'required': required,
                             'error': errorMessage,
-                            'autocomplete-open': auto.isOpen}"
+                            'autocomplete-open': auto.isOpen,
+                            'empty': value.length === 0}"
                 [floatLabel]="placeholder ? 'always' : 'auto'">
 
   <mat-label *ngIf="label">{{label}}</mat-label>
@@ -44,11 +45,13 @@
     </mat-option>
   </mat-autocomplete>
 
-  <p b-input-message
-     *ngIf="hintMessage || warnMessage || errorMessage"
-     [hintMessage]="hintMessage"
-     [warnMessage]="warnMessage"
-     [errorMessage]="errorMessage"
-     [disabled]="disabled"></p>
+  <mat-hint>
+    <p b-input-message
+       *ngIf="hintMessage || warnMessage || errorMessage"
+       [hintMessage]="hintMessage"
+       [warnMessage]="warnMessage"
+       [errorMessage]="errorMessage"
+       [disabled]="disabled"></p>
+  </mat-hint>
 
 </mat-form-field>
