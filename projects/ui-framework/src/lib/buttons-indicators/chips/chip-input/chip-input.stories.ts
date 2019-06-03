@@ -9,7 +9,7 @@ import { action } from '@storybook/addon-actions';
 import { ChipsModule } from '../chips.module';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { chipOptionsMock } from './chipsOptionsMock';
+import { chipOptionsMock } from './chip-input.mock';
 import { randomFromArray } from '../../../services/utils/functional-utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 

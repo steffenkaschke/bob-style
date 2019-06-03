@@ -44,10 +44,11 @@
     </mat-option>
   </mat-autocomplete>
 
-  <mat-hint *ngIf="errorMessage || hintMessage"
-            align="start"
-            [ngClass]="{'error-message': errorMessage && !disabled, 'hint-message': !errorMessage && hintMessage}">
-    {{ errorMessage && !disabled ? errorMessage : hintMessage }}
-  </mat-hint>
+  <p b-input-message
+     *ngIf="hintMessage || warnMessage || errorMessage"
+     [hintMessage]="hintMessage"
+     [warnMessage]="warnMessage"
+     [errorMessage]="errorMessage"
+     [disabled]="disabled"></p>
 
 </mat-form-field>

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, SimpleChange } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
-import { chipOptionsMock } from '../../../ui-framework/src/lib/buttons-indicators/chips/chip-input/chipsOptionsMock';
+import { chipOptionsMock } from '../../../ui-framework/src/lib/buttons-indicators/chips/chip-input/chip-input.mock';
 
 import { RichTextEditorComponent } from '../../../ui-framework/src/lib/form-elements/rich-text-editor/rte.component';
 

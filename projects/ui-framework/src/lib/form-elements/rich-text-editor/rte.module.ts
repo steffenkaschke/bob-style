@@ -12,6 +12,7 @@ import { UtilsModule } from '../../services/utils/utils.module';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
 import { SingleListModule } from '../lists/single-list/single-list.module';
+import { InputMessageModule } from '../input-message/input-message.module';
 
 @NgModule({
   declarations: [RichTextEditorComponent, RteLinkEditorComponent],
@@ -23,7 +24,8 @@ import { SingleListModule } from '../lists/single-list/single-list.module';
     IconsModule,
     MatFormFieldModule,
     UtilsModule,
-    SingleListModule
+    SingleListModule,
+    InputMessageModule
   ],
   exports: [RichTextEditorComponent],
   providers: [RteUtilsService, DOMhelpers, PlaceholderRteConverterService]

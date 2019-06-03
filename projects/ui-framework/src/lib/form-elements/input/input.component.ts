@@ -7,6 +7,7 @@ import { MatInput } from '@angular/material';
 
 export const baseInputTemplate = `
 <mat-form-field
+  [floatLabel]="'always'"
   [ngClass]="{
     'required': required,
     'error': errorMessage,
@@ -32,14 +33,6 @@ export const baseInputTemplate = `
          #bInput
          #moreattributes>
 
-  <mat-hint class="error-message" *ngIf="errorMessage">
-    {{errorMessage}}
-  </mat-hint>
-
-  <mat-hint class="hint-message" *ngIf="hintMessage && !errorMessage">
-    {{hintMessage}}
-  </mat-hint>
-
   <div matSuffix>
     <div class="suffix" #suffix>
       <ng-content select="[input-suffix]"></ng-content>
@@ -49,6 +42,15 @@ export const baseInputTemplate = `
   <mat-label>{{label}}</mat-label>
 
 </mat-form-field>
+
+<p
+  b-input-message
+  *ngIf="hintMessage || warnMessage || errorMessage"
+  [hintMessage]="hintMessage"
+  [warnMessage]="warnMessage"
+  [errorMessage]="errorMessage"
+  [disabled]="disabled"
+></p>
 `;
 
 @Component({
@@ -59,17 +61,16 @@ export const baseInputTemplate = `
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => InputComponent),
-      multi: true,
+      multi: true
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => InputComponent),
-      multi: true,
+      multi: true
     }
-  ],
+  ]
 })
 export class InputComponent extends BaseInputElement {
-
   @ViewChild('bInput') bInput: MatInput;
   eventType = InputEventType;
 

@@ -3,28 +3,23 @@
 :host ::ng-deep {
   display: inline-block;
   width: 100%;
+
   @include MatFormField();
+
   .mat-form-field.text-area {
     line-height: initial;
-    .mat-form-field-wrapper .mat-form-field-flex {
-      height: auto;
-      .mat-form-field-infix {
-        textarea {
-          height: $textarea-height;
-          padding: 16px;
-        }
-        .mat-form-field-label-wrapper {
-          align-items: start;
-          .mat-form-field-label {
-            padding: 16px;
-          }
-        }
-      }
+  }
+
+  .mat-form-field-flex {
+    height: auto;
+
+    textarea {
+      height: $textarea-height;
+      padding: 16px;
     }
-    .mat-form-field-subscript-wrapper {
-      .length-indicator {
-        color: $grey-600;
-      }
+
+    .mat-form-field-label-wrapper {
+      align-items: start;
     }
   }
 }

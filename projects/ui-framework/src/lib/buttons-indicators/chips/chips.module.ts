@@ -3,9 +3,14 @@ import { ChipComponent } from './chip/chip.component';
 import { CommonModule } from '@angular/common';
 import { ColorService } from '../../services/color-service/color.service';
 import { ChipInputComponent } from './chip-input/chip-input.component';
-import { MatAutocompleteModule, MatChipsModule, MatFormFieldModule } from '@angular/material';
+import {
+  MatAutocompleteModule,
+  MatChipsModule,
+  MatFormFieldModule
+} from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IconsModule } from '../../icons/icons.module';
+import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 
 @NgModule({
   declarations: [ChipComponent, ChipInputComponent],
@@ -16,7 +21,8 @@ import { IconsModule } from '../../icons/icons.module';
     MatAutocompleteModule,
     FormsModule,
     ReactiveFormsModule,
-    IconsModule
+    IconsModule,
+    InputMessageModule
   ],
   exports: [ChipComponent, ChipInputComponent],
   providers: [ColorService]
