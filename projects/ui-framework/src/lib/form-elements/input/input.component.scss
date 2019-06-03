@@ -1,7 +1,5 @@
 @import '../form-element.scss';
 
-:host ::ng-deep {
-  display: inline-block;
-  width: 100%;
-  @include MatFormField();
+:host {
+  @include bFormField();
 }

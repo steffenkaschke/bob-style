@@ -1,5 +1,18 @@
-import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { DateAdapter, MAT_DATE_FORMATS, MatDatepicker } from '@angular/material';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MatDatepicker
+} from '@angular/material';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { InputEventType, InputTypes } from '../input/input.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
@@ -36,12 +49,14 @@ import { differenceInDays, format, isDate, isSameDay } from 'date-fns';
   ]
 })
 export class DatepickerComponent extends BaseInputElement implements OnInit {
-  @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
+  @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<
+    InputEvent
+  >();
   @Input() inputLabel: String;
   @Input() dateFormat?: string;
-  @Input() errorMessage: string;
-  @Input() disabled: boolean;
-  @Input() required: boolean;
+  // @Input() errorMessage: string;
+  // @Input() disabled: boolean;
+  // @Input() required: boolean;
 
   public readonly calendarIcon: String = Icons.calendar;
   public readonly calendarIconSize: String = IconSize.medium;

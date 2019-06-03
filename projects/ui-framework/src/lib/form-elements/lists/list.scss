@@ -1,5 +1,4 @@
 @import '../../style/typography';
-@import '../../style/colors';
 @import '../../style/shapes';
 @import '../../style/variables';
 
@@ -14,7 +13,9 @@
   &.mat-selected {
     background-color: initial;
   }
-  &:hover, &.selected, &.focus {
+  &:hover,
+  &.selected,
+  &.focus {
     background-color: $grey-100;
   }
 }
@@ -55,7 +56,8 @@
       &.collapsed .chevron {
         @include chevron-up($grey-600);
       }
-      &:hover, &.focus {
+      &:hover,
+      &.focus {
         background-color: $grey-100;
       }
     }

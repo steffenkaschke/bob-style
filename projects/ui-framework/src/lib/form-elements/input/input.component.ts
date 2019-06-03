@@ -1,54 +1,53 @@
-import { Component, forwardRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  forwardRef,
+  ViewChild,
+  AfterViewInit,
+  ElementRef
+} from '@angular/core';
 import { InputEventType } from './input.enum';
 import { inputAttributesPlaceholder } from '../../consts';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
 import { MatInput } from '@angular/material';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 export const baseInputTemplate = `
-<mat-form-field
-  [ngClass]="{
-    'required': required,
-    'error': errorMessage,
-    'hide-label-on-focus': hideLabelOnFocus,
-    'has-prefix': prefix && prefix.childNodes.length > 0,
-    'has-suffix': suffix && suffix.childNodes.length > 0
-  }">
+  <label class="bff-label" *ngIf="label" [attr.for]="id">
+    {{label}}
+  </label>
 
-  <div matPrefix>
-    <div class="prefix" #prefix>
+  <div class="bff-wrap" [ngClass]="{focused: inputFouced, hasPrefix: hasPrefix, hasSuffix: hasSuffix}">
+    <div class="bff-prefix" #prefix>
       <ng-content select="[input-prefix]"></ng-content>
     </div>
-  </div>
 
-  <input matInput
-         [type]="inputType"
-         [disabled]="disabled"
-         [(ngModel)]="value"
-         [autocomplete]="enableBrowserAutoComplete"
-         (blur)="emitInputEvent(eventType.onBlur, value)"
-         (focus)="emitInputEvent(eventType.onFocus, value)"
-         (ngModelChange)="emitInputEvent(eventType.onChange, value)"
-         #bInput
-         #moreattributes>
+    <input class="bff-input" [attr.id]="id"
+          [type]="inputType"
+          [value]="value"
+          [autocomplete]="enableBrowserAutoComplete"
+          [disabled]="disabled"
+          [required]="required"
+          (blur)="emitInputEvent(eventType.onBlur, value);inputFouced=false;"
+          (focus)="emitInputEvent(eventType.onFocus, value); inputFouced=true;"
+          (change)="emitInputEvent(eventType.onChange, value)"
+          #bInput
+          #moreattributes>
 
-  <mat-hint class="error-message" *ngIf="errorMessage">
-    {{errorMessage}}
-  </mat-hint>
-
-  <mat-hint class="hint-message" *ngIf="hintMessage && !errorMessage">
-    {{hintMessage}}
-  </mat-hint>
-
-  <div matSuffix>
-    <div class="suffix" #suffix>
+    <div class="bff-suffix" #suffix>
       <ng-content select="[input-suffix]"></ng-content>
     </div>
+
   </div>
 
-  <mat-label>{{label}}</mat-label>
-
-</mat-form-field>
+  <p class="bff-message"
+    b-input-message
+    *ngIf="hintMessage || warnMessage || errorMessage"
+    [hintMessage]="hintMessage"
+    [warnMessage]="warnMessage"
+    [errorMessage]="errorMessage"
+    [disabled]="disabled"
+  ></p>
 `;
 
 @Component({
@@ -59,25 +58,37 @@ export const baseInputTemplate = `
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => InputComponent),
-      multi: true,
+      multi: true
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => InputComponent),
-      multi: true,
+      multi: true
     }
-  ],
+  ]
 })
-export class InputComponent extends BaseInputElement {
-
-  @ViewChild('bInput') bInput: MatInput;
-  eventType = InputEventType;
-
+export class InputComponent extends BaseInputElement implements AfterViewInit {
   constructor() {
     super();
   }
+  @ViewChild('bInput') bInput: MatInput;
+  @ViewChild('prefix') prefix: ElementRef;
+  @ViewChild('suffix') suffix: ElementRef;
+
+  public eventType = InputEventType;
+  public hasPrefix = true;
+  public hasSuffix = true;
+
+  private DOM = new DOMhelpers();
 
   static addAttributesToBaseInput(attributes: string): string {
     return baseInputTemplate.replace(inputAttributesPlaceholder, attributes);
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.hasPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
+      this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
+    }, 0);
   }
 }
