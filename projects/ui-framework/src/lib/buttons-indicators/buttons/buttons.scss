@@ -56,8 +56,6 @@
   }
 
   @if $type == 'disabled' {
-    @include disabled-state {
-      background-color: $grey-200;
-    }
+    @include disabled-state;
   }
 }
