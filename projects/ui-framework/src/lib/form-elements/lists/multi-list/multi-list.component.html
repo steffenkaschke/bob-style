@@ -22,7 +22,8 @@
         </span>
         <div class="header-option">
           <span class="checkbox"
-                [ngClass]="{'checkbox-checked': header.selected}"
+                role="checkbox"
+                [attr.aria-checked]="header.selected"
                 (click)="headerSelect(header)"></span>
 
           <span [innerHTML]="header.groupName | highlight: searchValue"></span>
@@ -49,7 +50,8 @@
            }"
            class="option-select">
         <span class="checkbox"
-              [ngClass]="{'checkbox-checked': option.selected}"></span>
+              role="checkbox"
+              [attr.aria-checked]="option.selected"></span>
         <b-list-option [option]="option"
                        [searchValue]="searchValue">
         </b-list-option>
