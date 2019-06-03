@@ -234,7 +234,7 @@ describe('RichTextEditorComponent', () => {
     it('should set invalid style when errorMessage is present', () => {
       RTEComponent.errorMessage = 'test error';
       fixture.detectChanges();
-      RTEeditorNativeElement.style.setProperty('--negative-500', 'red');
+      RTEeditorNativeElement.style.setProperty('--negative-600', 'red');
 
       const errorNativeElement = fixture.debugElement.query(
         By.css('.error-message')

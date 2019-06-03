@@ -75,6 +75,7 @@ $textarea-height: 120px;
         padding: 0 16px;
         .mat-hint {
           @include BodyFont($font-size-caption);
+          color: $grey-600;
         }
       }
       .mat-form-field-underline {

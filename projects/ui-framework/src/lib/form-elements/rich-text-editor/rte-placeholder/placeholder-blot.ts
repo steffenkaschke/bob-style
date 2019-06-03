@@ -1,5 +1,6 @@
 import Quill from 'quill';
 import { RtePlaceholderUpdate } from './placeholder-rte-converter.interface';
+import { simpleUID } from '../../../services/utils/functional-utils';
 
 const Inline = Quill.import('blots/inline');
 
@@ -17,12 +18,7 @@ export class PlaceholderBlot extends Inline {
       node.setAttribute('data-text', focusOption.text);
     }
     node.setAttribute('contenteditable', 'false');
-    node.setAttribute(
-      'data-tag',
-      Math.random()
-        .toString()
-        .slice(-4)
-    );
+    node.setAttribute('data-tag', simpleUID());
 
     return node;
   }

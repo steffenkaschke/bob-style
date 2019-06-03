@@ -1,0 +1,10 @@
+@import '../../style/colors';
+
+@mixin input-border-colors($selector: '&', $add: '') {
+  #{$selector}.warn#{$add} {
+    border-color: $color-warn;
+  }
+  #{$selector}.error#{$add} {
+    border-color: $color-error;
+  }
+}

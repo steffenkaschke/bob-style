@@ -1,40 +1,24 @@
-@import '../../style/colors.scss';
-@import 'checkbox.scss';
+@import '../../style/colors';
+@import '../../style/typography';
+@import 'checkbox.mixin';
+@import '../input-message/input-border-colors.mixin';
 
 :host {
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
   margin: 20px 0;
-  .checkbox-wrapper {
-    display: flex;
-    place-content: center start;
-    align-items: center;
-    .checkbox {
-      @include checkbox;
-      margin-right: 10px;
-      cursor: pointer;
-    }
-    &.disabled {
-      pointer-events: none;
-      .checkbox {
-        background: $grey-100;
-        border-color: $grey-500;
-        &:after {
-          color: $grey-500;
-        }
-      }
-      label {
-        color: $grey-500;
-      }
-    }
-    &.required {
-      label {
-        &:after {
-          content: '*';
-          color: inherit;
-          display: inline-block;
-          margin-left: 2px;
-        }
-      }
-    }
+  text-align: left;
+}
+
+.bchk-input {
+  @include checkbox2;
+  @include input-border-colors($add: ' + .bchk-label:before');
+}
+
+.bchk-label {
+  margin: 0;
+
+  &:before {
+    margin-right: 10px;
   }
 }

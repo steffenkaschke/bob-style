@@ -102,6 +102,7 @@ export abstract class RTEformElement extends BaseFormElement
       this.editor.setContents(
         this.editor.clipboard.convert(newInputValue).insert(' \n')
       );
+      this.length = this.rteUtils.getTextLength(this.editor);
     } else if (this.editor) {
       this.editor.setText('\n');
     } else {

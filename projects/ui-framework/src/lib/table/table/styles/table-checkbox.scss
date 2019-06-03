@@ -1,14 +1,17 @@
 @import '../../../style/colors';
 @import '../../../style/mixins';
-@import '../../../form-elements/checkbox/checkbox';
+@import '../../../form-elements/checkbox/checkbox.mixin';
 
 :host ::ng-deep {
   ag-grid-angular {
-
-    .ag-selection-checkbox, .ag-header-select-all {
+    .ag-selection-checkbox,
+    .ag-header-select-all {
       @include checkbox;
       position: relative;
-      .ag-icon, .ag-header-select-all, .ag-checkbox-checked, .ag-checkbox-indeterminate {
+      .ag-icon,
+      .ag-header-select-all,
+      .ag-checkbox-checked,
+      .ag-checkbox-indeterminate {
         position: absolute;
         width: 100%;
         height: 100%;
