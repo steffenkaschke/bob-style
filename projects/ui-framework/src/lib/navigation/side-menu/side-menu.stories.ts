@@ -1,6 +1,12 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { boolean, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  object,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,7 +29,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Side Menu'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -53,7 +61,7 @@ inputStories.add(
       template: storyTemplate,
       props: {
         options: object<SideMenuOption[]>('options', sideMenuOptionsMock),
-        selectOption: action('Side menu select'),
+        selectOption: action('Side menu select')
       },
       moduleMetadata: {
         entryComponents: [IconComponent],
@@ -61,7 +69,7 @@ inputStories.add(
           BrowserAnimationsModule,
           SideMenuModule,
           StoryBookLayoutModule,
-          IconsModule,
+          IconsModule
         ]
       }
     };

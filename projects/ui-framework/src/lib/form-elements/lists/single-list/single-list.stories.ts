@@ -1,5 +1,12 @@
 import { storiesOf } from '@storybook/angular';
-import { select, withKnobs, object, text, number, boolean } from '@storybook/addon-knobs/angular';
+import {
+  select,
+  withKnobs,
+  object,
+  text,
+  number,
+  boolean
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
@@ -11,11 +18,13 @@ import { SelectGroupOption } from '../list.interface';
 import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.component';
 import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
 
-const buttonStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
+const buttonStories = storiesOf(
+  ComponentGroupType.FormElements,
+  module
+).addDecorator(withKnobs);
 
 const template = `
-<b-single-list style="width: 400px;"
-               [options]="options"
+<b-single-list [options]="options"
                (selectChange)="selectChange($event)"
                [showSingleGroupHeader]="showSingleGroupHeader">
 </b-single-list>
@@ -23,7 +32,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Single list'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 

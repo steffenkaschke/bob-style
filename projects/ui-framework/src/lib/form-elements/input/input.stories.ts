@@ -29,20 +29,17 @@ const template = `
         [value]="value"
         [disabled]="disabled"
         [required]="required"
-
         [hintMessage]="hintMessage"
         [warnMessage]="warnMessage"
         [errorMessage]="errorMessage"
-
         [enableBrowserAutoComplete]="enableBrowserAutoComplete"
-
         (inputEvents)="inputEvents($event)">
 </b-input>
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Input'">
-  <div style="width: 400px; margin: 30px auto;">
+  <div style="max-width: 400px; margin: 30px auto;">
     ${template}
   </div>
 </b-story-book-layout>

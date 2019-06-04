@@ -1,5 +1,12 @@
 import { storiesOf } from '@storybook/angular';
-import { select, withKnobs, object, text, boolean, number } from '@storybook/addon-knobs/angular';
+import {
+  select,
+  withKnobs,
+  object,
+  text,
+  boolean,
+  number
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
@@ -9,11 +16,13 @@ import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-lay
 import { SingleSelectModule } from './single-select.module';
 import { SelectGroupOption } from '../list.interface';
 
-const buttonStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
+const buttonStories = storiesOf(
+  ComponentGroupType.FormElements,
+  module
+).addDecorator(withKnobs);
 
 const template = `
-<b-single-select style="width: 400px;"
-                 [label]="label"
+<b-single-select [label]="label"
                  [options]="options"
                  (selectChange)="selectChange($event)"
                  [disabled]="disabled"
@@ -27,7 +36,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Single select'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -69,7 +80,7 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
             ? `Personal G${i}_E${k} and some other very long text and some more words to have ellipsis and tooltip`
             : `Personal G${i}_E${k}`,
         id: i * optionsNum + k,
-        selected: false,
+        selected: false
       };
     })
   };

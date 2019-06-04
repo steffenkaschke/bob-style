@@ -20,7 +20,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Search'">
-  <div style="width: 400px; margin: 30px auto;">
+  <div style="max-width: 400px; margin: 30px auto;">
     ${template}
   </div>
 </b-story-book-layout>

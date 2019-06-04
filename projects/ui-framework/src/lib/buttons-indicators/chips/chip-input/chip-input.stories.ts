@@ -67,7 +67,7 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Chip Input'">
-  <div style="padding: 50px;margin:auto;max-width:600px;">
+  <div style="padding: 30px;margin:auto;max-width:600px;">
     ${template}
   </div>
 </b-story-book-layout>

@@ -15,7 +15,10 @@ import { BreadcrumbsModule } from './breadcrumbs.module';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const inputStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
+const inputStories = storiesOf(
+  ComponentGroupType.Navigation,
+  module
+).addDecorator(withKnobs);
 
 const componmentTemplate = `
 <b-breadcrumbs [breadcrumbs]="breadcrumbs"
@@ -29,7 +32,9 @@ const componmentTemplate = `
 
 const template = `
 <b-story-book-layout [title]="'breadcrumbs'">
-  ${componmentTemplate}
+  <div style="max-width: 900px; margin: 30px auto; display:flex; justify-content: center;">
+    ${componmentTemplate}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -80,7 +85,11 @@ inputStories.add(
         prevClick: action()
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, BreadcrumbsModule, StoryBookLayoutModule]
+        imports: [
+          BrowserAnimationsModule,
+          BreadcrumbsModule,
+          StoryBookLayoutModule
+        ]
       }
     };
   },
