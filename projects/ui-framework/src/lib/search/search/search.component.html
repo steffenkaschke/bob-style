@@ -18,7 +18,7 @@
           [size]="iconSize.medium">
   </b-icon>
 
-  <b-icon *ngIf="value.length > 0"
+  <b-icon *ngIf="value && value.length > 0"
           input-suffix
           class="reset-button"
           [icon]="icons.reset_x"

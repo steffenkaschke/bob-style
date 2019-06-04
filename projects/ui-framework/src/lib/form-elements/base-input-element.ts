@@ -1,4 +1,4 @@
-import { EventEmitter, Input, Output, HostBinding } from '@angular/core';
+import { EventEmitter, Input, Output } from '@angular/core';
 import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
 import {
@@ -9,16 +9,17 @@ import {
 import { pass } from '../services/utils/functional-utils';
 
 export abstract class BaseInputElement extends BaseFormElement {
+  protected constructor() {
+    super();
+  }
+
+  @Input() value: any = '';
   @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
   @Output() inputEvents: EventEmitter<InputEvent> = new EventEmitter<
     InputEvent
   >();
-
-  protected constructor() {
-    super();
-  }
 
   onChange($event: any, converter = pass): void {
     this.emitInputEvent(

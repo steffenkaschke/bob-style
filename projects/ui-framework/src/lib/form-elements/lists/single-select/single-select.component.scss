@@ -6,56 +6,61 @@
   position: relative;
   display: inline-block;
   width: 100%;
+
   .panel-trigger {
     width: 100%;
     display: block;
     margin: 20px 0;
+
     b-input {
+      margin: 0;
       cursor: pointer;
-      .mat-form-field.has-prefix .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-prefix {
+      pointer-events: none;
+
+      .bfe-prefix {
         padding-right: 0;
       }
-      .mat-form-field {
-        margin: 0;
-        .mat-form-field-wrapper .mat-form-field-flex {
-          pointer-events: none;
-        }
-      }
+
       .clear-selection {
         pointer-events: all;
         cursor: pointer;
       }
+
       .select-chevron {
         @include chevron-down($grey-600);
       }
+
       input {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
       &.has-clear-prefix {
-        .mat-form-field.has-prefix .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-prefix {
+        .bfe-prefix {
           padding-right: 10px;
         }
       }
-      .mat-form-field-disabled {
+      &.disabled {
         .clear-selection {
           pointer-events: none;
-          opacity: .3;
+          opacity: 0.3;
         }
       }
     }
+
     &.panel-open b-input {
       .select-chevron {
         @include chevron-up($grey-600);
       }
-      .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+      .bfe-wrap {
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
       }
     }
     &.disabled {
       pointer-events: none;
+
       b-input .select-chevron {
         @include chevron-down($grey-500);
       }
@@ -69,6 +74,7 @@
   }
   .b-select-panel {
     @include selectPanel;
+
     b-single-list {
       display: block;
       border: none;

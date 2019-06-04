@@ -35,7 +35,6 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   @ViewChild('prefix') prefix: ElementRef;
   @ViewChild('suffix') suffix: ElementRef;
 
-  @Input() value = '';
   @Input() hasPrefix = false;
   @Input() hasSuffix = false;
   public showPrefix = true;
