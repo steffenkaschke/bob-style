@@ -1,6 +1,5 @@
 <b-search *ngIf="shouldDisplaySearch"
-          (searchChange)="searchChange($event)"
-          [hideLabelOnFocus]="true">
+          (searchChange)="searchChange($event)">
 </b-search>
 
 <div [ngStyle]="{height: listOptions.length * listElHeight + 'px', maxHeight: maxHeight + 'px'}"

@@ -1,7 +1,6 @@
 <b-input class="link-display-text"
          #textInput
          [inputType]="inputTypes.text"
-         [hideLabelOnFocus]="true"
          [value]="text"
          (inputEvents)="onTextChange($event)"
          placeholder="text">
@@ -9,7 +8,6 @@
 
 <b-input class="link-url"
          [inputType]="inputTypes.url"
-         [hideLabelOnFocus]="true"
          [value]="url"
          [hasSuffix]="true"
          (inputEvents)="onUrlChange($event)"
