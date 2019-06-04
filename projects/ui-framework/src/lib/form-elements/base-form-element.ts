@@ -23,7 +23,15 @@ export abstract class BaseFormElement implements ControlValueAccessor {
       (this.disabled ? 'disabled ' : '') +
       (this.required ? 'required ' : '') +
       (this.errorMessage && !this.disabled ? 'error ' : '') +
-      (this.warnMessage && !this.errorMessage && !this.disabled ? 'warn' : '')
+      (this.warnMessage && !this.errorMessage && !this.disabled
+        ? 'warn '
+        : '') +
+      (this.label ? 'has-label ' : '') +
+      (this.hintMessage ||
+      (this.errorMessage && !this.disabled) ||
+      (this.warnMessage && !this.disabled)
+        ? 'has-message'
+        : '')
     );
   }
 

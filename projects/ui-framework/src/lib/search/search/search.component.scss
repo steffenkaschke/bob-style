@@ -1,3 +1,10 @@
+@import '../../form-elements/form-element.mixin';
+
+:host {
+  display: block;
+  @include transfer-margins;
+}
+
 .reset-button {
   cursor: pointer;
 }

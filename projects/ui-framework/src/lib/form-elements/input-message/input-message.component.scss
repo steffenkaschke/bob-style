@@ -2,9 +2,11 @@
 @import '../../style/typography';
 @import '../../style/mixins';
 
+$label-hint-margin: 6px;
+
 :host {
   width: 100%;
-  margin: 6px 0 0;
+  margin: $label-hint-margin 0 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,8 +21,4 @@
   &.error {
     color: $color-error;
   }
-
-  // &.disabled {
-  //   @include disabled-state;
-  // }
 }

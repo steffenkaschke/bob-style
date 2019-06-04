@@ -1,34 +1,19 @@
 @import '../form-element.mixin';
 
+:host {
+  display: flex;
+  @include transfer-margins;
+}
+
+.social-icon {
+  @include align-to-input;
+  margin-right: 13px;
+}
+
 :host ::ng-deep {
-  display: inline-flex;
-  flex-direction: row;
-  width: 100%;
-  align-items: center;
   b-input {
-    width: 100%;
-
-    .mat-form-field {
-      line-height: initial;
-    }
-
-    .mat-form-field.has-prefix
-      .mat-form-field-wrapper
-      .mat-form-field-flex
-      .mat-form-field-prefix {
+    .bfe-wrap .bfe-prefix {
       padding-right: 0;
-    }
-
-    .social-input {
-      padding-right: 0;
-    }
-
-    .icon-container mat-icon {
-      margin-right: 13px;
-    }
-
-    .prefix-text {
-      align-self: center;
     }
   }
 }

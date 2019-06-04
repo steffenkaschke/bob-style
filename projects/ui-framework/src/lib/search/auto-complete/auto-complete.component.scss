@@ -1,4 +1,10 @@
 @import '../../style/colors';
+@import '../../form-elements/form-element.mixin';
+
+:host {
+  display: block;
+  @include transfer-margins;
+}
 
 :host ::ng-deep {
   .panel-trigger {

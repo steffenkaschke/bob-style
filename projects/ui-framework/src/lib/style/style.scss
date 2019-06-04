@@ -10,6 +10,7 @@
 @import './line-clamp';
 @import './dialog';
 
+html,
 body {
   color: $grey-800;
   @include BodyFont;
