@@ -176,8 +176,8 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   private unSelectLastChip(): void {
-    if (this.chipList.last && (this.chipList.last as any).aboutToDelete) {
-      delete (this.chipList.last as any).aboutToDelete;
+    if (this.chipList.last.chip.nativeElement.dataset.aboutToDelete) {
+      delete this.chipList.last.chip.nativeElement.dataset.aboutToDelete;
       this.chipList.last.chip.nativeElement.classList.remove('selected');
     }
   }
@@ -185,12 +185,12 @@ export class ChipInputComponent extends BaseFormElement
   public onInputKeyup(event: KeyboardEvent): void {
     if (keyIs(event.key, Keys.backspace)) {
       if (this.bInput.nativeElement.value === '' && this.chipList.last) {
-        if ((this.chipList.last as any).aboutToDelete) {
+        if (this.chipList.last.chip.nativeElement.dataset.aboutToDelete) {
           this.value.pop();
           this.updatePossibleChips();
         } else {
           this.chipList.last.chip.nativeElement.classList.add('selected');
-          (this.chipList.last as any).aboutToDelete = true;
+          this.chipList.last.chip.nativeElement.dataset.aboutToDelete = 'true';
         }
 
         setTimeout(() => {
