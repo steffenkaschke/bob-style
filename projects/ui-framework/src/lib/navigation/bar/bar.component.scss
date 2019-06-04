@@ -1,0 +1,9 @@
+:host {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  align-items: center;
+
+  .bar-actions-wrapper {
+    justify-self: end;
+  }
+}
