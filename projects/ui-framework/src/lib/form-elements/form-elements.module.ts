@@ -13,6 +13,8 @@ import { MultiSelectModule } from './lists/multi-select/multi-select.module';
 import { SingleSelectModule } from './lists/single-select/single-select.module';
 import { SearchModule } from '../search/search/search.module';
 import { SocialModule } from './social/social.module';
+import { InputMessageComponent } from './input-message/input-message.component';
+import { InputMessageModule } from './input-message/input-message.module';
 
 @NgModule({
   imports: [
@@ -23,7 +25,8 @@ import { SocialModule } from './social/social.module';
     CheckboxModule,
     MultiSelectModule,
     SingleSelectModule,
-    SocialModule
+    SocialModule,
+    InputMessageModule
   ],
   exports: [
     InputComponent,

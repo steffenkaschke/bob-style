@@ -1,7 +1,7 @@
 @import '../../../style/colors';
 @import '../../../style/typography';
 @import '../../../style/shapes';
-@import '../../checkbox/checkbox';
+@import '../../checkbox/checkbox.mixin';
 @import '../list';
 
 :host {
@@ -21,7 +21,8 @@
     z-index: 1;
     .mat-form-field {
       margin: 0;
-      &.mat-focused .mat-form-field-wrapper .mat-form-field-flex, .mat-form-field-wrapper .mat-form-field-flex {
+      &.mat-focused .mat-form-field-wrapper .mat-form-field-flex,
+      .mat-form-field-wrapper .mat-form-field-flex {
         border: none;
         border-bottom: 1px solid $grey-500;
         border-radius: 0;
@@ -33,15 +34,10 @@
     background-color: $white;
     .v-scroll {
       height: 100%;
-      .headers, .options {
+      .headers,
+      .options {
         .option-select {
           @include listOption;
-          .checkbox {
-            position: relative;
-            z-index: 2;
-            @include checkbox;
-            margin-right: 12px;
-          }
         }
       }
       .headers {
@@ -78,4 +74,18 @@
       }
     }
   }
+}
+
+@include checkbox(
+  $input-selector: null,
+  $checkbox-selector: '.checkbox',
+  $checked-selector: '.checkbox[aria-checked="true"]',
+  $disabled-selector: null,
+  $required-selector: null,
+  $indeterminate-selector: null,
+  $hover-selector: '.checkbox:hover'
+) {
+  position: relative;
+  z-index: 2;
+  margin-right: 12px;
 }

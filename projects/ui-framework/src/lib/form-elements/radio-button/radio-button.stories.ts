@@ -17,7 +17,10 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { RadioDirection } from './radio-button.enum';
 
 const direction = values(RadioDirection);
-const radioStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
+const radioStories = storiesOf(
+  ComponentGroupType.FormElements,
+  module
+).addDecorator(withKnobs);
 
 const template = `
 <b-radio-button [radioConfig]="radioConfig"
@@ -30,7 +33,9 @@ const template = `
 
 const stroyTemplate = `
 <b-story-book-layout [title]="'Radio Buttons'">
-  ${template}
+  <div style="padding: 30px; display: flex; justify-content: center;">
+    ${template}
+  </div>
 </b-story-book-layout>`;
 
 const note = `
@@ -70,7 +75,11 @@ radioStories.add(
         radioChange: action('Radio buttons value')
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, RadioButtonModule, StoryBookLayoutModule]
+        imports: [
+          BrowserAnimationsModule,
+          RadioButtonModule,
+          StoryBookLayoutModule
+        ]
       }
     };
   },

@@ -1,6 +1,8 @@
 @import '../style/colors.scss';
 @import '../style/shapes.scss';
 
+$panel-arrow-size: 16px;
+
 @mixin OverlayPanel($overflow: visible) {
   position: relative;
   overflow: $overflow;
@@ -19,12 +21,12 @@
     content: '';
     display: block;
     position: absolute;
-    @include arrow(16px);
+    @include arrow($panel-arrow-size);
   }
 
   &:before {
     z-index: 0;
-    box-shadow: 0 0 10px 0 $boxShadowColor;
+    box-shadow: 0 0 8px 0 rgba($grey-700, 0.25);
   }
   &:after {
     z-index: 2;
@@ -33,34 +35,39 @@
 
 @mixin OverlayPositionBounding($direction) {
   @if $direction == 'center' {
-    &:before, &:after {
-      left: calc(50% - 8px);
+    &:before,
+    &:after {
+      left: calc(50% - #{$panel-arrow-size/2});
     }
   }
 
   @if $direction == 'below' {
     top: 17px;
-    &:before, &:after {
-      top: -8px;
+    &:before,
+    &:after {
+      top: (-1 * $panel-arrow-size/2);
     }
   }
 
   @if $direction == 'above' {
     bottom: 17px;
-    &:before, &:after {
-      bottom: -8px;
+    &:before,
+    &:after {
+      bottom: (-1 * $panel-arrow-size/2);
     }
   }
 
   @if $direction == 'after' {
-    &:before, &:after {
+    &:before,
+    &:after {
       right: auto;
       left: 25px;
     }
   }
 
   @if $direction == 'before' {
-    &:before, &:after {
+    &:before,
+    &:after {
       left: auto;
       right: 25px;
     }

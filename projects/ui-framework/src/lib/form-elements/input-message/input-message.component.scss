@@ -1,0 +1,23 @@
+@import '../../style/colors';
+@import '../../style/typography';
+@import '../../style/mixins';
+
+:host {
+  display: block;
+  width: 100%;
+  margin: 2px 0 0;
+  @include BodyFont($font-size-caption);
+  color: $grey-600;
+
+  &.warn {
+    color: $color-warn;
+  }
+
+  &.error {
+    color: $color-error;
+  }
+
+  &.disabled {
+    @include disabled-state;
+  }
+}

@@ -14,7 +14,6 @@ $placeholder-color: $icon-color;
 
 $border-color: $grey-500;
 $border-color-disabled: $icon-color-disabled;
-$color-error: var(--negative-500);
 $border-color-error: $color-error;
 
 :host {
@@ -420,7 +419,8 @@ $border-color-error: $color-error;
 
 ::ng-deep {
   .b-panel.rte-size-controls,
-  .b-panel.rte-link-editor {
+  .b-panel.rte-link-editor,
+  .b-panel.placeholder-rte-panel {
     margin-top: -3px;
 
     .panel-position.panel-after {
@@ -436,6 +436,8 @@ $border-color-error: $color-error;
       box-shadow: 0 0px 9px 0 $boxShadowColor;
       display: flex;
       flex-direction: column;
+      padding: 10px;
+      margin-top: -2px;
     }
   }
 }

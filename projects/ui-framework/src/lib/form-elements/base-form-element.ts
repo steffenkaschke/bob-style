@@ -9,6 +9,7 @@ export abstract class BaseFormElement implements ControlValueAccessor {
   @Input() hideLabelOnFocus = false;
   @Input() hintMessage: string;
   @Input() errorMessage: string;
+  @Input() warnMessage: string;
 
   @Input() validateFn: Function = (_: FormControl) => {};
 

@@ -1,26 +1,47 @@
 @import './colors';
 
-@mixin arrow($size, $color: $white) {
+@mixin diamond($size, $color: $white) {
   width: $size;
   height: $size;
   background-color: $color;
   transform: rotate(45deg);
 }
 
+@mixin arrow($size, $color: white, $dir: up) {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border: ($size/2) solid transparent;
+  border-color: transparent transparent $color $color;
+
+  @if ($dir == 'up') or ($dir == 'top') {
+    transform: rotate(135deg);
+  }
+  @if ($dir == 'down') or ($dir == 'bottom') {
+    transform: rotate(-45deg);
+  }
+  @if ($dir == 'left') {
+    transform: rotate(45deg);
+  }
+  @if ($dir == 'right') {
+    transform: rotate(-135deg);
+  }
+}
+
 @mixin arrow-down($size, $color) {
   width: 0;
   height: 0;
-  border-left: $size solid transparent;
-  border-right: $size solid transparent;
-  border-top: $size solid $color;
+  border-left: ($size/2) solid transparent;
+  border-right: ($size/2) solid transparent;
+  border-top: ($size/2) solid $color;
 }
 
 @mixin arrow-up($size, $color) {
   width: 0;
   height: 0;
-  border-left: $size solid transparent;
-  border-right: $size solid transparent;
-  border-bottom: $size solid $color;
+  border-left: ($size/2) solid transparent;
+  border-right: ($size/2) solid transparent;
+  border-bottom: ($size/2) solid $color;
 }
 
 $chevronWidth: 2px;
