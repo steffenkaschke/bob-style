@@ -1,26 +1,28 @@
 <b-input class="search-input"
          [inputType]="inputTypes.text"
-         [label]="label"
          [value]="value"
-         [hideLabelOnFocus]="hideLabelOnFocus"
+         [label]="label"
+         [placeholder]="placeholder"
+         [hintMessage]="hintMessage"
+         [warnMessage]="warnMessage"
+         [errorMessage]="errorMessage"
+         [disabled]="disabled"
+         [required]="required"
          (inputEvents)="onInputEvents($event)">
 
-  <div input-prefix
-       class="search-icon">
-    <b-icon [icon]="icons.search"
-            [color]="searchIconColor"
-            [size]="iconSize.medium">
-    </b-icon>
-  </div>
+  <b-icon input-prefix
+          [icon]="icons.search"
+          [color]="searchIconColor"
+          [size]="iconSize.medium">
+  </b-icon>
 
-  <div input-suffix *ngIf="value.length > 0"
-       class="reset-button">
-    <b-icon [icon]="icons.reset_x"
-            (click)="onResetClick()"
-            [size]="iconSize.medium"
-            [color]="iconColor.normal"
-            [hasHoverState]="true">
-    </b-icon>
-  </div>
-
+  <b-icon *ngIf="value.length > 0"
+          input-suffix
+          class="reset-button"
+          [icon]="icons.reset_x"
+          (click)="onResetClick()"
+          [size]="iconSize.medium"
+          [color]="iconColor.normal"
+          [hasHoverState]="true">
+  </b-icon>
 </b-input>

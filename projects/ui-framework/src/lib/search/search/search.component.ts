@@ -1,7 +1,9 @@
-import { Component, EventEmitter, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { InputEventType, InputTypes } from '../../form-elements/input/input.enum';
-import { set, has } from 'lodash';
+import {
+  InputEventType,
+  InputTypes
+} from '../../form-elements/input/input.enum';
 import { InputEvent } from '../../form-elements/input/input.interface';
 import { BaseInputElement } from '../../form-elements/base-input-element';
 
@@ -10,8 +12,7 @@ import { BaseInputElement } from '../../form-elements/base-input-element';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent extends BaseInputElement implements OnChanges {
-
+export class SearchComponent extends BaseInputElement {
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
 
   readonly icons = Icons;
@@ -23,14 +24,6 @@ export class SearchComponent extends BaseInputElement implements OnChanges {
 
   constructor() {
     super();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (has(changes, 'value')) {
-      this.value = changes.value.currentValue;
-    } else {
-      this.value = this.value || '';
-    }
   }
 
   onInputEvents(event: InputEvent): void {
