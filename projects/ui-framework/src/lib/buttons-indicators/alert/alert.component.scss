@@ -1,0 +1,42 @@
+@import '../../style/colors';
+@import '../../style/typography';
+@import '../../style/variables';
+
+$alert_width: 400px;
+
+.alert-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 15px;
+  width: 100%;
+}
+
+.close-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+.content {
+  b-bold-body {
+    text-transform: uppercase;
+  }
+  p {
+    margin: 4px 0 0;
+  }
+}
+
+::ng-deep {
+  .b-alert-panel {
+    background-color: $white;
+    border-radius: $border-radius;
+    box-shadow: 0 5px 10px 0 $boxShadowColor;
+    width: $alert_width;
+  }
+}
