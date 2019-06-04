@@ -1,37 +1,16 @@
-@import './variables.scss';
-@import './typography.scss';
-@import './shapes.scss';
-@import './mixins.scss';
-@import './grid-layout.scss';
+@import './reset';
+@import './variables';
+@import './typography';
+@import './shapes';
+@import './mixins';
+@import './grid-layout';
 @import '~ag-grid-community/dist/styles/ag-grid.css';
-@import './quill/quill.scss';
+@import './quill/quill';
 @import './tooltip';
 @import './line-clamp';
 @import './dialog';
 
-html,
 body {
-  min-height: 100vh;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
   color: $grey-800;
   @include BodyFont;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  background-repeat: no-repeat;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-overflow-scrolling: touch;
 }

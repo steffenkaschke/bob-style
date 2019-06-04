@@ -5,7 +5,7 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 @Component({
   selector: 'b-textarea',
   templateUrl: './textarea.component.html',
-  styleUrls: ['./textarea.component.scss'],
+  styleUrls: ['../input/input.component.scss', './textarea.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

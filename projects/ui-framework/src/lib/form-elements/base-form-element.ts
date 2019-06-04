@@ -1,4 +1,4 @@
-import { Input } from '@angular/core';
+import { Input, HostBinding } from '@angular/core';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
 import { simpleUID } from '../services/utils/functional-utils';
 
@@ -16,6 +16,16 @@ export abstract class BaseFormElement implements ControlValueAccessor {
   public inputTouched = false;
   public id = simpleUID('bfe-');
   @Input() validateFn: Function = (_: FormControl) => {};
+
+  @HostBinding('class')
+  get classes(): string {
+    return (
+      (this.disabled ? 'disabled ' : '') +
+      (this.required ? 'required ' : '') +
+      (this.errorMessage && !this.disabled ? 'error ' : '') +
+      (this.warnMessage && !this.errorMessage && !this.disabled ? 'warn' : '')
+    );
+  }
 
   onTouched: Function = (_: any) => {};
 

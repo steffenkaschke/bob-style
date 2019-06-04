@@ -1,4 +1,4 @@
-@import '../form-element.scss';
+@import '../form-element.mixin';
 
 :host {
   @include bFormElement();

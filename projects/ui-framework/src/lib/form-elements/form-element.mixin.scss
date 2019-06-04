@@ -4,11 +4,7 @@
 
 $wrap-height: 44px;
 $input-height: 42px;
-
-$textarea-height: 120px;
-
 $label-color: $grey-800;
-
 $input-focus-border-color: $grey-700;
 $input-border-color: $grey-500;
 
@@ -87,24 +83,6 @@ $input-border-color: $grey-500;
     }
   }
 
-  input {
-    &[type='number']::-webkit-inner-spin-button,
-    &[type='number']::-webkit-outer-spin-button {
-      display: none;
-      appearance: none;
-      margin: 0;
-    }
-  }
-
-  // text-area
-
-  .bfe-textarea {
-    height: auto;
-    min-height: $textarea-height;
-    padding: 11px 15px;
-    resize: vertical;
-  }
-
   // label
 
   .bfe-label {
@@ -149,13 +127,8 @@ $input-border-color: $grey-500;
 
   // states
 
-  &:hover {
-    .bfe-wrap {
-      // box-shadow: 0 2px 3px 0 $boxShadowColor;
-    }
-  }
-
-  .bfe-wrap.focused {
+  .bfe-wrap.focused,
+  .focused .bfe-wrap {
     border: 1px solid $input-focus-border-color;
     box-shadow: none;
   }

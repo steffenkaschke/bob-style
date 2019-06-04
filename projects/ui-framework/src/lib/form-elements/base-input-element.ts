@@ -16,16 +16,6 @@ export abstract class BaseInputElement extends BaseFormElement {
     InputEvent
   >();
 
-  @HostBinding('class')
-  get classes(): string {
-    return (
-      (this.disabled ? 'disabled ' : '') +
-      (this.required ? 'required ' : '') +
-      (this.errorMessage && !this.disabled ? 'error ' : '') +
-      (this.warnMessage && !this.errorMessage && !this.disabled ? 'warn' : '')
-    );
-  }
-
   protected constructor() {
     super();
   }

@@ -1,5 +1,10 @@
-@import '../form-element.scss';
+$textarea-height: 120px;
 
 :host {
-  @include bFormElement();
+  .bfe-textarea {
+    height: auto;
+    min-height: $textarea-height;
+    padding: 11px 15px;
+    resize: vertical;
+  }
 }

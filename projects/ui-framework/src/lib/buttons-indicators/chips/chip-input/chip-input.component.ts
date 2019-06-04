@@ -10,29 +10,29 @@ import {
   HostListener,
   Output,
   EventEmitter,
-  HostBinding
+  ViewChildren,
+  QueryList
 } from '@angular/core';
-import { Observable } from 'rxjs';
 import {
   MatAutocompleteSelectedEvent,
-  MatChipInputEvent,
   MatAutocomplete,
-  MatChipList,
   MatAutocompleteTrigger
 } from '@angular/material';
-import { FormControl, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { startWith, map } from 'rxjs/operators';
-import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
 import { BaseFormElement } from '../../../form-elements/base-form-element';
 import { ChipType } from '../chips.enum';
 import { ChipInputChange } from '../chips.interface';
 import { InputTypes } from '../../../form-elements/input/input.enum';
+import { ChipComponent } from '../chip/chip.component';
 
 @Component({
   selector: 'b-chip-input',
   templateUrl: './chip-input.component.html',
-  styleUrls: ['./chip-input.component.scss'],
+  styleUrls: [
+    '../../../form-elements/input/input.component.scss',
+    './chip-input.component.scss'
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -48,61 +48,37 @@ import { InputTypes } from '../../../form-elements/input/input.enum';
 })
 export class ChipInputComponent extends BaseFormElement
   implements OnChanges, OnInit {
+  constructor() {
+    super();
+  }
+
   @Input() value: string[] = [];
   @Input() options: string[];
   @Input() acceptNew = true;
 
-  filteredChips: Observable<string[]>;
-  possibleChips: string[] = [];
-
-  removable = true;
-  addOnBlur = false;
-  readonly chipType = ChipType;
-  readonly resetIcon: String = Icons.reset_x;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  readonly chipInputControl = new FormControl();
+  private possibleChips: string[] = [];
+  public filteredChips: string[] = this.options;
+  public readonly removable = true;
+  public readonly chipType = ChipType;
   public readonly inputTypes = InputTypes;
 
-  @ViewChild('chipList') private chipList: MatChipList;
+  // public readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+
   @ViewChild('bInput') private bInput: ElementRef<HTMLInputElement>;
+  @ViewChildren('chipList') private chipList: QueryList<ChipComponent>;
   @ViewChild('auto') private autocomplete: MatAutocomplete;
-  @ViewChild('input', { read: MatAutocompleteTrigger })
+  @ViewChild('bInput', { read: MatAutocompleteTrigger })
   private autocompleteTrigger: MatAutocompleteTrigger;
 
   @Output() changed: EventEmitter<ChipInputChange> = new EventEmitter<
     ChipInputChange
   >();
 
-  @HostBinding('class')
-  get classes(): string {
-    return (
-      (this.disabled ? 'disabled ' : '') +
-      (this.required ? 'required ' : '') +
-      (this.errorMessage && !this.disabled ? 'error ' : '') +
-      (this.warnMessage && !this.errorMessage && !this.disabled ? 'warn' : '')
-    );
-  }
-
-  constructor() {
-    super();
-
-    this.filteredChips = this.chipInputControl.valueChanges.pipe(
-      startWith(null),
-      map((chip: string | null) =>
-        chip ? this.filterChips(chip) : this.possibleChips.slice()
-      )
-    );
-  }
-
-  @HostListener('document:click', ['$event']) handleDocClick(
-    event: MouseEvent
-  ) {
+  @HostListener('document:click', ['event']) handleDocClick(event: MouseEvent) {
     this.unSelectLastChip();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.value && !changes.value.firstChange) {
       this.value = changes.value.currentValue;
       this.updatePossibleChips();
@@ -117,13 +93,13 @@ export class ChipInputComponent extends BaseFormElement
     this.updatePossibleChips();
   }
 
-  private propagateValue(change: Partial<ChipInputChange>) {
+  private propagateValue(change: Partial<ChipInputChange>): void {
     this.propagateChange(this.value);
     this.changed.emit({ ...change, value: this.value });
     this.onTouched();
   }
 
-  private updatePossibleChips(init = false) {
+  private updatePossibleChips(): void {
     this.possibleChips = this.options.filter(
       ch => !this.value.find(c => c.toLowerCase() === ch.toLowerCase())
     );
@@ -143,9 +119,10 @@ export class ChipInputComponent extends BaseFormElement
     name: string,
     chipsSource = this.possibleChips
   ): string[] {
-    return chipsSource.filter(
+    const filtered = chipsSource.filter(
       chip => chip.toLowerCase().indexOf(name.toLowerCase()) === 0
     );
+    return filtered.length > 0 && filtered;
   }
 
   private commitChip(chipToAdd: string): void {
@@ -154,14 +131,14 @@ export class ChipInputComponent extends BaseFormElement
       this.updatePossibleChips();
       this.propagateValue({ added: chipToAdd });
       this.bInput.nativeElement.value = '';
-      this.chipInputControl.setValue(null);
     } else if (chipToAdd) {
-      const existingChipElemnent = this.chipList.chips.find(
-        ch =>
-          ch._elementRef.nativeElement.textContent.toLowerCase() ===
-          chipToAdd.toLowerCase()
-      )._elementRef.nativeElement;
-
+      const existingChipElemnent = this.chipList
+        .toArray()
+        .find(
+          ch =>
+            ch.chip.nativeElement.textContent.toLowerCase() ===
+            chipToAdd.toLowerCase()
+        ).chip.nativeElement;
       if (existingChipElemnent) {
         existingChipElemnent.classList.add('blink');
         setTimeout(() => {
@@ -171,26 +148,26 @@ export class ChipInputComponent extends BaseFormElement
     }
   }
 
-  add(event: MatChipInputEvent): void {
-    if (!this.autocomplete.isOpen) {
-      const name = (event.value || '').trim();
-      let chipToAdd = this.findChip(name);
-
-      if (!chipToAdd && this.acceptNew) {
-        chipToAdd = name;
-      }
-
-      this.commitChip(chipToAdd);
-      this.autocompleteTrigger.closePanel();
-    }
+  public onInput(event: any): void {
+    this.filteredChips =
+      this.filterChips(event.target.value) || this.possibleChips;
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
+  public add(name: string): void {
+    let chipToAdd = this.findChip(name);
+    if (!chipToAdd && this.acceptNew) {
+      chipToAdd = name;
+    }
+    this.commitChip(chipToAdd);
+    this.autocompleteTrigger.closePanel();
+  }
+
+  public optionSelected(event: MatAutocompleteSelectedEvent): void {
     const chipToAdd = this.findChip(event.option.viewValue);
     this.commitChip(chipToAdd);
   }
 
-  remove(name: string): void {
+  public remove(name: string): void {
     this.value = this.removeChip(name, this.value);
     this.updatePossibleChips();
     this.propagateValue({ removed: name });
@@ -198,30 +175,37 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   private unSelectLastChip(): void {
-    if (
-      this.chipList.chips.last &&
-      (this.chipList.chips.last as any).aboutToDelete
-    ) {
-      delete (this.chipList.chips.last as any).aboutToDelete;
-      this.chipList.chips.last.selected = false;
+    if (this.chipList.last && (this.chipList.last as any).aboutToDelete) {
+      delete (this.chipList.last as any).aboutToDelete;
+      this.chipList.last.chip.nativeElement.classList.remove('selected');
     }
   }
 
-  onInputKeydown(event: KeyboardEvent): void {
+  public onInputKeydown(event: KeyboardEvent): void {
     if (event.key.toUpperCase() === 'BACKSPACE') {
-      if (this.bInput.nativeElement.value === '' && this.chipList.chips.last) {
-        if ((this.chipList.chips.last as any).aboutToDelete) {
+      if (this.bInput.nativeElement.value === '' && this.chipList.last) {
+        if ((this.chipList.last as any).aboutToDelete) {
           this.value.pop();
           this.updatePossibleChips();
         } else {
-          this.chipList.chips.last.selected = true;
-          (this.chipList.chips.last as any).aboutToDelete = true;
+          this.chipList.last.chip.nativeElement.classList.add('selected');
+          (this.chipList.last as any).aboutToDelete = true;
         }
 
         setTimeout(() => {
           this.bInput.nativeElement.focus();
           this.autocompleteTrigger.closePanel();
         }, 0);
+      }
+    } else if (
+      event.key.toUpperCase() === 'ENTER' ||
+      event.key.toUpperCase() === ','
+    ) {
+      const name = (event.target as HTMLInputElement).value
+        .replace(',', '')
+        .trim();
+      if (name) {
+        this.add(name);
       }
     } else {
       this.unSelectLastChip();
