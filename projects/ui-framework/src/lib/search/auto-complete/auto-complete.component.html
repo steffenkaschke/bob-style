@@ -1,15 +1,11 @@
 <content [ngClass]="{'disabled': false, 'panel-open': panelOpen}"
          cdkOverlayOrigin
          class="panel-trigger">
-
   <b-search [label]="label"
             [value]="searchValue"
-            [hideLabelOnFocus]="true"
             (searchChange)="onSearchChange($event)">
   </b-search>
-
 </content>
-
 
 <ng-template #templateRef>
   <div class="panel-position"

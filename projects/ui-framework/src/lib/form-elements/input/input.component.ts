@@ -3,7 +3,8 @@ import {
   forwardRef,
   ViewChild,
   AfterViewInit,
-  ElementRef
+  ElementRef,
+  Input
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
@@ -34,14 +35,19 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   @ViewChild('prefix') prefix: ElementRef;
   @ViewChild('suffix') suffix: ElementRef;
 
-  public hasPrefix = true;
-  public hasSuffix = true;
+  @Input() hasPrefix = false;
+  @Input() hasSuffix = false;
+  public showPrefix = true;
+  public showSuffix = true;
+
   private DOM = new DOMhelpers();
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.hasPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
-      this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
+      this.showPrefix =
+        this.hasPrefix || !this.DOM.isEmpty(this.prefix.nativeElement);
+      this.showSuffix =
+        this.hasSuffix || !this.DOM.isEmpty(this.suffix.nativeElement);
     }, 0);
   }
 }

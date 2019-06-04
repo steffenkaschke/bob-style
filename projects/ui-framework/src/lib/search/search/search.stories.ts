@@ -1,16 +1,17 @@
 import { storiesOf } from '@storybook/angular';
-import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import { text, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { SearchModule } from './search.module';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const inputStories = storiesOf(ComponentGroupType.Search, module).addDecorator(withKnobs);
+const inputStories = storiesOf(ComponentGroupType.Search, module).addDecorator(
+  withKnobs
+);
 
 const template = `
-<b-search style="width: 400px;"
-          [value]="value"
+<b-search [value]="value"
           [label]="label"
           [hideLabelOnFocus]="hideLabelOnFocus"
           (searchChange)="searchChange($event)">
@@ -19,7 +20,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Search'">
-  ${template}
+  <div style="width: 400px; margin: 30px auto;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 

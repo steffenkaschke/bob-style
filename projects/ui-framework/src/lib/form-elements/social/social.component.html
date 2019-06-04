@@ -6,6 +6,7 @@
 <b-input class="social-input"
          [errorMessage]="errorMessage"
          [inputType]="inputTypes.text"
+         [hasPrefix]="true"
          [label]="placeholder"
          [value]="value"
          [disabled]="disabled"
@@ -13,7 +14,8 @@
          [hintMessage]="hintMessage"
          [hideLabelOnFocus]="true"
          (inputEvents)="onInputEvents($event)">
-  <div class="prefix-text" input-prefix>
+  <div class="prefix-text"
+       input-prefix>
     {{socialSelection.prefix}}
   </div>
 </b-input>

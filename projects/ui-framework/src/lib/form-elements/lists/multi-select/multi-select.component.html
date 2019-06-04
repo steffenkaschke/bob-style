@@ -10,16 +10,17 @@
            [hintMessage]="hintMessage"
            [label]="label"
            [required]="required"
+           [hasSuffix]="true"
            [matTooltip]="showTriggerTooltip ? triggerValue : null"
            matTooltipPosition="above"
            [hideLabelOnFocus]="hideLabelOnFocus"
            [value]="triggerValue">
 
     <div input-suffix>
-            <span *ngIf="showTriggerTooltip"
-                  class="trigger-tooltip">
-          ({{selectedValuesMap.length}})
-        </span>
+      <span *ngIf="showTriggerTooltip"
+            class="trigger-tooltip">
+        ({{selectedValuesMap.length}})
+      </span>
 
       <span class="select-chevron"></span>
 
