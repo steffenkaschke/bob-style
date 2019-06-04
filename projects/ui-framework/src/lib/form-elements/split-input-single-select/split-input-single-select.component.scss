@@ -1,41 +1,39 @@
 $selectFieldWidth: 140px;
 
 @import '../../style/colors';
+@import '../form-element.mixin';
 
-:host ::ng-deep {
-  display: inline-block;
-  width: 100%;
-  .split-single-select-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    align-items: center;
-    > b-input {
-      .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-      .mat-form-field.mat-form-field-should-float .mat-form-field-label-wrapper {
-        width: calc(100% + #{$selectFieldWidth});
-      }
-      .mat-form-field-subscript-wrapper {
-        width: calc(100% + #{$selectFieldWidth});
-      }
-    }
-    b-single-select {
-      width: $selectFieldWidth;
-      .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
-        border-left: none;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-    }
-    &.has-error {
-      b-single-select {
-        .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
-          border-color: var(--negative-500);
-        }
-      }
+:host {
+  display: flex;
+  @include transfer-margins;
+}
+
+:host b-input::ng-deep {
+  .bfe-wrap {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .bfe-label,
+  [b-input-message] {
+    width: calc(100% + #{$selectFieldWidth});
+  }
+}
+
+b-single-select {
+  @include align-to-input;
+  width: $selectFieldWidth;
+}
+
+:host b-single-select::ng-deep .bfe-wrap {
+  border-left: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+:host {
+  &.error {
+    b-single-select::ng-deep .bfe-wrap {
+      border-color: $color-error;
     }
   }
 }

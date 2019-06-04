@@ -4,7 +4,7 @@
          [hideLabelOnFocus]="true"
          [value]="text"
          (inputEvents)="onTextChange($event)"
-         label="text">
+         placeholder="text">
 </b-input>
 
 <b-input class="link-url"
@@ -13,7 +13,7 @@
          [value]="url"
          [hasSuffix]="true"
          (inputEvents)="onUrlChange($event)"
-         label="url">
+         placeholder="url">
 
   <b-icon *ngIf="url !== ''"
           input-suffix

@@ -30,9 +30,6 @@ $input-border-color: $grey-500;
     height: $wrap-height + $label-height + $label-hint-margin;
     padding-top: ($label-height + $label-hint-margin);
   }
-  :host-context(.has-message) {
-    // padding-bottom:
-  }
 }
 
 @mixin input-border-colors(

@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { BaseInputElement } from '../base-input-element';
 import { SelectGroupOption } from '../lists/list.interface';
 import { InputEventType, InputTypes } from '../input/input.enum';
@@ -10,20 +17,22 @@ import { ListChange } from '../lists/list-change/list-change';
 @Component({
   selector: 'b-split-input-single-select',
   templateUrl: './split-input-single-select.component.html',
-  styleUrls: ['./split-input-single-select.component.scss'],
+  styleUrls: ['./split-input-single-select.component.scss']
 })
-export class SplitInputSingleSelectComponent extends BaseInputElement implements OnChanges {
-
+export class SplitInputSingleSelectComponent extends BaseInputElement
+  implements OnChanges {
   @Input() value: InputSingleSelectValue;
   @Input() inputType: InputTypes;
   @Input() selectOptions: SelectGroupOption[];
-  @Output() elementChange: EventEmitter<InputSingleSelectValue> = new EventEmitter<InputSingleSelectValue>();
+  @Output() elementChange: EventEmitter<
+    InputSingleSelectValue
+  > = new EventEmitter<InputSingleSelectValue>();
 
   options: SelectGroupOption[];
 
   readonly baseValue: InputSingleSelectValue = {
     inputValue: null,
-    selectValue: null,
+    selectValue: null
   };
 
   constructor() {
@@ -54,12 +63,15 @@ export class SplitInputSingleSelectComponent extends BaseInputElement implements
     this.elementChange.emit(this.value);
   }
 
-  private enrichOptionsWithSelection(options: SelectGroupOption[]): SelectGroupOption[] {
-    return map(options, g => assign({}, g, {
+  private enrichOptionsWithSelection(
+    options: SelectGroupOption[]
+  ): SelectGroupOption[] {
+    return map(options, g =>
+      assign({}, g, {
         options: map(g.options, o =>
-          assign({}, o, { selected: o.id === this.value.selectValue }),
-        ),
-      }),
+          assign({}, o, { selected: o.id === this.value.selectValue })
+        )
+      })
     );
   }
 }

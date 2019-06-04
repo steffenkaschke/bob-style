@@ -4,10 +4,6 @@
 
 :host ::ng-deep {
   b-input {
-    .mat-form-field {
-      margin: 0;
-    }
-
     &:not(:hover) b-icon {
       opacity: 0;
     }
@@ -16,6 +12,10 @@
     cursor: pointer;
     display: block;
   }
+}
+
+.link-display-text {
+  margin: 0;
 }
 
 .link-url {
