@@ -85,6 +85,7 @@ export { InfoTooltipComponent } from './lib/popups/info-tooltip/info-tooltip.com
 export { AlertService } from './lib/buttons-indicators/alert/alert-service/alert.service';
 export { AlertModule } from './lib/buttons-indicators/alert/alert.module';
 export { AlertConfig } from './lib/buttons-indicators/alert/alert.interface';
+export { AlertComponent } from './lib/buttons-indicators/alert/alert.component';
 // Employees Showcase Module
 export { EmployeesShowcaseModule } from './lib/buttons-indicators/employees-showcase/employees-showcase.module';
 export { EmployeesShowcaseComponent } from './lib/buttons-indicators/employees-showcase/employees-showcase.component';

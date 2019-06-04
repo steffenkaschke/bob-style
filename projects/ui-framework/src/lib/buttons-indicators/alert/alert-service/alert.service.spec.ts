@@ -1,66 +1,59 @@
-import {fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
 import {AlertService} from './alert.service';
 import {AlertConfig} from '../alert.interface';
 import {AlertType} from '../alert.enum';
-import {ComponentFactoryResolver} from '@angular/core';
-import Spy = jasmine.Spy;
-import createSpyObj = jasmine.createSpyObj;
+import {ComponentFactoryResolver, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 import {AlertComponent} from '../alert.component';
 import {MockComponent} from 'ng-mocks';
-import {Overlay, OverlayModule} from '@angular/cdk/overlay';
+import {Overlay, OverlayContainer, OverlayModule} from '@angular/cdk/overlay';
+import {ALERT_CONFIG_MOCK} from '../alert.mock';
+import {ButtonsModule} from '../../buttons/buttons.module';
+import {IconsModule} from '../../../icons/icons.module';
+import {TypographyModule} from '../../../typography/typography.module';
+import {AlertModule} from '../alert.module';
+import {IconSize} from '../../../icons/icons.enum';
+import {IconComponent} from '../../../icons/icon.component';
+import {IconService} from '../../../icons/icon.service';
+import createSpyObj = jasmine.createSpyObj;
 import SpyObj = jasmine.SpyObj;
-import {ALERT_CONFIG_MOCK, OVERLAY_CONFIG_MOCK} from '../alert.mock';
+
+const ALERT_DURATION_TICK = 7001;
 
 describe('AlertService', () => {
   let alertService: AlertService;
-  let componentFactoryResolver: ComponentFactoryResolver;
-  let overlay: SpyObj<Overlay>;
+  let overlayElement: HTMLElement;
+  let spyIconService: SpyObj<IconService>;
 
   beforeEach(() => {
-    componentFactoryResolver = createSpyObj('componentFactoryResolver', ['resolveComponentFactory']);
-    (componentFactoryResolver.resolveComponentFactory as Spy).and.returnValue(
-      { create: () => ({ instance: { showAlert: jasmine.createSpy() } }) });
-
-    const overlayRefMock = {
-      attach: jasmine.createSpy(),
-      dispose: jasmine.createSpy(),
-    };
-
-    overlay = createSpyObj('overlay', ['create', 'position']);
-    overlay.create.and.returnValue(overlayRefMock);
-    overlay.position.and.returnValue({ global: () => ({ centerHorizontally: () => ({ top: () => 'strategy' })}) });
+    spyIconService = createSpyObj('spyIconService', ['initIcon']);
 
     TestBed.configureTestingModule({
       imports: [
+        AlertModule,
         OverlayModule,
+        ButtonsModule,
+        TypographyModule,
+        IconsModule,
       ],
       declarations: [
+        MockComponent(IconComponent),
         MockComponent(AlertComponent),
       ],
       providers: [
         AlertService,
-        { provide: ComponentFactoryResolver, useValue: componentFactoryResolver },
-        { provide: Overlay, useValue: overlay },
-      ],
+        { provide: IconService, useValue: spyIconService }],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     });
+    inject(
+      [OverlayContainer, ComponentFactoryResolver, Overlay], (oc: OverlayContainer) => {
+        overlayElement = oc.getContainerElement();
+      }
+    )();
     alertService = TestBed.get(AlertService);
   });
 
   describe('Alert Service', () => {
-    it('should open the alert with the right configuration', () => {
-      const alertConfig: AlertConfig = {
-        alertType: AlertType.success,
-        text: 'text',
-        title: 'title'
-      };
-      alertService.showAlert(alertConfig);
-      expect(alertService.alertComponentRef.instance.alertConfig).toEqual(ALERT_CONFIG_MOCK);
-      expect(overlay.create).toHaveBeenCalledWith(OVERLAY_CONFIG_MOCK);
-      expect(alertService.overlayRef.attach).toHaveBeenCalled();
-    });
-
-    it('should open the alert and close after 7 seconds', fakeAsync(() => {
-      const ALERT_DURATION_TICK = 7001;
+    it('should inject the alert component with the right configuration', fakeAsync(() => {
       const alertConfig: AlertConfig = {
         alertType: AlertType.success,
         text: 'text',
@@ -68,7 +61,49 @@ describe('AlertService', () => {
       };
       alertService.showAlert(alertConfig);
       tick(ALERT_DURATION_TICK);
-      expect(alertService.overlayRef.dispose).toHaveBeenCalled();
+      expect(alertService.alertComponentRef.instance.alertConfig).toEqual(ALERT_CONFIG_MOCK);
+    }));
+
+    it('should check alert native elements', fakeAsync(() => {
+      const alertConfig: AlertConfig = {
+        alertType: AlertType.success,
+        text: 'text',
+        title: 'title'
+      };
+      alertService.showAlert(alertConfig);
+      const titleElement = overlayElement.querySelector('b-bold-body') as HTMLElement;
+      const textElement = overlayElement.querySelector('.content p') as HTMLElement;
+      const iconElement = overlayElement.querySelector('.icon mat-icon') as HTMLElement;
+      expect(titleElement.innerText).toEqual('TITLE');
+      expect(textElement.innerText).toEqual('text');
+      expect(iconElement.classList.contains(IconSize.xLarge)).toBeTruthy();
+      tick(ALERT_DURATION_TICK);
+    }));
+
+    it('should close alert on button click', fakeAsync(() => {
+      const alertConfig: AlertConfig = {
+        alertType: AlertType.success,
+        text: 'text',
+        title: 'title'
+      };
+      alertService.showAlert(alertConfig);
+      const closeButton = overlayElement.querySelector('b-square-button button') as HTMLElement;
+      closeButton.click();
+      tick(ALERT_DURATION_TICK);
+      expect(alertService.overlayRef.hostElement).toBeNull();
+      expect(alertService.overlayRef.hasAttached()).toBeFalsy();
+    }));
+
+    it('should close the alert after 7 seconds', fakeAsync(() => {
+      const alertConfig: AlertConfig = {
+        alertType: AlertType.success,
+        text: 'text',
+        title: 'title'
+      };
+      alertService.showAlert(alertConfig);
+      tick(ALERT_DURATION_TICK);
+      expect(alertService.overlayRef.hostElement).toBeNull();
+      expect(alertService.overlayRef.hasAttached()).toBeFalsy();
     }));
   });
 });

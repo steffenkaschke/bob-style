@@ -1,7 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {AlertComponent} from './alert.component';
 import {AlertType} from './alert.enum';
-import {AlertService} from './alert-service/alert.service';
 import {MockComponent} from 'ng-mocks';
 import {IconComponent} from '../../icons/icon.component';
 import {ButtonsModule} from '../buttons/buttons.module';
@@ -21,26 +20,23 @@ describe('AlertComponent', () => {
         AlertComponent,
         MockComponent(IconComponent)
       ],
-      providers: [
-        { provide: AlertService, useValue: {} },
-      ]
     })
-    .compileComponents();
+    .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(AlertComponent);
+        component = fixture.componentInstance;
+        component.alertConfig = {
+          alertType: AlertType.success,
+          text: 'text',
+          title: 'title'
+        };
+        component.closeAlertCallback = Function;
+        spyOn(component, 'closeAlertCallback');
+        fixture.detectChanges();
+      });
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AlertComponent);
-    component = fixture.componentInstance;
-    component.alertConfig = {
-      alertType: AlertType.success,
-      text: 'text',
-      title: 'title'
-    };
-    fixture.detectChanges();
-  });
-
   it('should call to close alert callback', () => {
-    component.closeAlertCallback = jasmine.createSpy();
     component.closeAlert();
     expect(component.closeAlertCallback).toHaveBeenCalled();
   });

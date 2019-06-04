@@ -1,4 +1,4 @@
-import {Component, OnDestroy, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
 import {Dictionary} from 'lodash';
 import {IconColor, Icons, IconSize} from '../../icons/icons.enum';
 import {InfoStripIcon} from '../info-strip/info-strip.types';
