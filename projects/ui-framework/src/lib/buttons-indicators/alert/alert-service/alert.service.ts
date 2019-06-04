@@ -5,6 +5,7 @@ import {Overlay, OverlayConfig, OverlayRef} from '@angular/cdk/overlay';
 import {TemplatePortal} from '@angular/cdk/portal';
 import {cloneDeep, bind} from 'lodash';
 const ALERT_DURATION = 7000;
+const ANIMATION_DURATION = 500;
 
 @Injectable()
 export class AlertService {
@@ -12,6 +13,7 @@ export class AlertService {
   private overlayConfig: OverlayConfig;
   private templatePortal: TemplatePortal;
   public overlayRef: OverlayRef;
+  private timeRef: NodeJS.Timer;
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
               private injector: Injector,
@@ -28,7 +30,7 @@ export class AlertService {
       this.alertComponentRef.instance.viewContainerRef
     );
     this.overlayRef.attach(this.templatePortal);
-    setTimeout(() => this.closeAlert(), ALERT_DURATION);
+    this.timeRef = setTimeout(() => this.closeAlert(), ALERT_DURATION);
   }
 
   private injectAlertComponent(): void {
@@ -38,7 +40,7 @@ export class AlertService {
 
   private getConfig(): OverlayConfig {
     const positionStrategy = this.overlay.position().global()
-      .centerHorizontally().top('20px');
+      .centerHorizontally();
     const panelClass = 'b-alert-panel';
     return {
       disposeOnNavigation: true,
@@ -49,6 +51,10 @@ export class AlertService {
   }
 
   public closeAlert(): void {
-    this.overlayRef.dispose();
+    this.overlayRef.addPanelClass('close-panel');
+    setTimeout(() => {
+      this.overlayRef.dispose();
+      clearTimeout(this.timeRef);
+    }, ANIMATION_DURATION);
   }
 }

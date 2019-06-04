@@ -18,6 +18,7 @@ import createSpyObj = jasmine.createSpyObj;
 import SpyObj = jasmine.SpyObj;
 
 const ALERT_DURATION_TICK = 7001;
+const ANIMATION_DURATION_TICK = 501;
 
 describe('AlertService', () => {
   let alertService: AlertService;
@@ -61,6 +62,7 @@ describe('AlertService', () => {
       };
       alertService.showAlert(alertConfig);
       tick(ALERT_DURATION_TICK);
+      tick(ANIMATION_DURATION_TICK);
       expect(alertService.alertComponentRef.instance.alertConfig).toEqual(ALERT_CONFIG_MOCK);
     }));
 
@@ -78,6 +80,7 @@ describe('AlertService', () => {
       expect(textElement.innerText).toEqual('text');
       expect(iconElement.classList.contains(IconSize.xLarge)).toBeTruthy();
       tick(ALERT_DURATION_TICK);
+      tick(ANIMATION_DURATION_TICK);
     }));
 
     it('should close alert on button click', fakeAsync(() => {
@@ -90,6 +93,7 @@ describe('AlertService', () => {
       const closeButton = overlayElement.querySelector('b-square-button button') as HTMLElement;
       closeButton.click();
       tick(ALERT_DURATION_TICK);
+      tick(ANIMATION_DURATION_TICK);
       expect(alertService.overlayRef.hostElement).toBeNull();
       expect(alertService.overlayRef.hasAttached()).toBeFalsy();
     }));
@@ -102,8 +106,23 @@ describe('AlertService', () => {
       };
       alertService.showAlert(alertConfig);
       tick(ALERT_DURATION_TICK);
+      tick(ANIMATION_DURATION_TICK);
       expect(alertService.overlayRef.hostElement).toBeNull();
       expect(alertService.overlayRef.hasAttached()).toBeFalsy();
+    }));
+
+    it('should add the animation class on close', fakeAsync(() => {
+      const alertConfig: AlertConfig = {
+        alertType: AlertType.success,
+        text: 'text',
+        title: 'title'
+      };
+      alertService.showAlert(alertConfig);
+      spyOn(alertService.overlayRef, 'addPanelClass');
+      tick(ALERT_DURATION_TICK);
+      alertService.closeAlert();
+      tick(ANIMATION_DURATION_TICK);
+      expect(alertService.overlayRef.addPanelClass).toHaveBeenCalledWith('close-panel');
     }));
   });
 });

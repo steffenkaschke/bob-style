@@ -38,5 +38,22 @@ $alert_width: 400px;
     border-radius: $border-radius;
     box-shadow: 0 5px 10px 0 $boxShadowColor;
     width: $alert_width;
+    transform:translate(0%);
+    animation: fadeAlertIn 0.5s;
+    position: fixed !important;
+    top: 20px;
+  }
+  .close-panel {
+    animation: fadeAlertOut 0.5s;
+  }
+  @keyframes fadeAlertIn {
+    0% { top: 0px; opacity: 0; }
+    60% { top: 30px; opacity: 1; }
+    100% { top: 20px; opacity: 1; }
+  }
+  @keyframes fadeAlertOut {
+    0% { top: 20px; opacity: 1; }
+    40% { top: 30px; opacity: 1; }
+    100% { top: 0px; opacity: 0; }
   }
 }
