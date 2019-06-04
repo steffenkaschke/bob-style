@@ -13,7 +13,8 @@ import { SideMenuOption } from './side-menu-option.interface';
 import merge from 'lodash/merge';
 import isUndefined from 'lodash/isUndefined';
 import has from 'lodash/has';
-import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
+import { IconColor, Icons } from '../../../icons/icons.enum';
+import { ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
 
 @Component({
   selector: 'b-side-menu-option',
@@ -31,7 +32,7 @@ export class SideMenuOptionComponent implements OnChanges {
 
   public icons = Icons;
   public colors = IconColor;
-  public sizes = IconSize;
+  public types = ButtonType;
 
   public showActions = false;
 

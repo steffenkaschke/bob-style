@@ -5,6 +5,7 @@ import { SideMenuOptionComponent } from './side-menu-option/side-menu-option.com
 import { MenuModule } from '../menu/menu.module';
 import { IconsModule } from '../../icons/icons.module';
 import { MatTooltipModule } from '@angular/material';
+import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { MatTooltipModule } from '@angular/material';
     IconsModule,
     MenuModule,
     MatTooltipModule,
+    ButtonsModule,
   ],
   exports: [
     SideMenuComponent,
