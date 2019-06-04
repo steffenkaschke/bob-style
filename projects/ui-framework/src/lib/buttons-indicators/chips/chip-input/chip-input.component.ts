@@ -15,16 +15,16 @@ import {
 } from '@angular/core';
 import {
   MatAutocompleteSelectedEvent,
-  MatAutocomplete,
   MatAutocompleteTrigger
 } from '@angular/material';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { BaseFormElement } from '../../../form-elements/base-form-element';
 import { ChipType } from '../chips.enum';
 import { ChipInputChange } from '../chips.interface';
 import { InputTypes } from '../../../form-elements/input/input.enum';
 import { ChipComponent } from '../chip/chip.component';
+import { keyIs } from '../../../services/utils/functional-utils';
+import { Keys } from '../../../enums';
 
 @Component({
   selector: 'b-chip-input',
@@ -62,11 +62,8 @@ export class ChipInputComponent extends BaseFormElement
   public readonly chipType = ChipType;
   public readonly inputTypes = InputTypes;
 
-  // public readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-
   @ViewChild('bInput') private bInput: ElementRef<HTMLInputElement>;
   @ViewChildren('chipList') private chipList: QueryList<ChipComponent>;
-  @ViewChild('auto') private autocomplete: MatAutocomplete;
   @ViewChild('bInput', { read: MatAutocompleteTrigger })
   private autocompleteTrigger: MatAutocompleteTrigger;
 
@@ -136,7 +133,7 @@ export class ChipInputComponent extends BaseFormElement
         .toArray()
         .find(
           ch =>
-            ch.chip.nativeElement.textContent.toLowerCase() ===
+            ch.chip.nativeElement.textContent.trim().toLowerCase() ===
             chipToAdd.toLowerCase()
         ).chip.nativeElement;
       if (existingChipElemnent) {
@@ -144,6 +141,10 @@ export class ChipInputComponent extends BaseFormElement
         setTimeout(() => {
           existingChipElemnent.classList.remove('blink');
         }, 200);
+        this.bInput.nativeElement.value = this.bInput.nativeElement.value.replace(
+          /,/g,
+          ''
+        );
       }
     }
   }
@@ -181,8 +182,8 @@ export class ChipInputComponent extends BaseFormElement
     }
   }
 
-  public onInputKeydown(event: KeyboardEvent): void {
-    if (event.key.toUpperCase() === 'BACKSPACE') {
+  public onInputKeyup(event: KeyboardEvent): void {
+    if (keyIs(event.key, Keys.backspace)) {
       if (this.bInput.nativeElement.value === '' && this.chipList.last) {
         if ((this.chipList.last as any).aboutToDelete) {
           this.value.pop();
@@ -197,18 +198,34 @@ export class ChipInputComponent extends BaseFormElement
           this.autocompleteTrigger.closePanel();
         }, 0);
       }
-    } else if (
-      event.key.toUpperCase() === 'ENTER' ||
-      event.key.toUpperCase() === ','
-    ) {
+    } else if (keyIs(event.key, Keys.enter) || keyIs(event.key, Keys.comma)) {
       const name = (event.target as HTMLInputElement).value
-        .replace(',', '')
+        .replace(/,/g, '')
         .trim();
       if (name) {
         this.add(name);
       }
     } else {
       this.unSelectLastChip();
+    }
+  }
+
+  public onChipKeydown(event: KeyboardEvent): void {
+    if (keyIs(event.key, Keys.backspace) || keyIs(event.key, Keys.delete)) {
+      this.remove((event.target as HTMLElement).innerText);
+    }
+    if (keyIs(event.key, Keys.arrowleft)) {
+      const prevChip = (event.target as HTMLElement)
+        .previousSibling as HTMLElement;
+      if (prevChip.nodeName === 'B-CHIP') {
+        prevChip.focus();
+      }
+    }
+    if (keyIs(event.key, Keys.arrowright)) {
+      const nextChip = (event.target as HTMLElement).nextSibling as HTMLElement;
+      if (nextChip.nodeName === 'B-CHIP') {
+        nextChip.focus();
+      }
     }
   }
 }

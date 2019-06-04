@@ -1,7 +1,8 @@
 import { SpecialBlots, BlotData } from './rte.interface';
-import { QuillKeyboardKeys } from './rte.enum';
 import { RteUtilsService } from './rte-utils.service';
 import quillLib, { Quill, RangeStatic, Delta as DeltaType } from 'quill';
+import { keyIs } from '../../../services/utils/functional-utils';
+import { Keys } from '../../../enums';
 const Delta: typeof DeltaType = quillLib.import('delta');
 
 export class RteKeybindings {
@@ -90,7 +91,7 @@ export class RteKeybindings {
     // before backspace default action
     this.editor.keyboard.addBinding(
       {
-        key: QuillKeyboardKeys.backspace
+        key: Keys.backspace.toUpperCase()
       },
       range => {
         if (this.specialBlots.deleteAsWhole || this.specialBlots.treatAsWhole) {
@@ -104,7 +105,7 @@ export class RteKeybindings {
     this.editor.root.addEventListener('keydown', (event: KeyboardEvent) => {
       if (
         (this.specialBlots.deleteAsWhole || this.specialBlots.treatAsWhole) &&
-        event.key.toUpperCase() === QuillKeyboardKeys.backspace
+        keyIs(event.key, Keys.backspace)
       ) {
         this.checkCurrentBlot(true, [0, -1]);
       }
@@ -114,7 +115,7 @@ export class RteKeybindings {
     this.editor.root.addEventListener('keydown', (event: KeyboardEvent) => {
       if (
         (this.specialBlots.treatAsWhole || this.specialBlots.deleteAsWhole) &&
-        event.key.toUpperCase() === QuillKeyboardKeys.delete
+        keyIs(event.key, Keys.delete)
       ) {
         this.checkCurrentBlot(true, [+1, 0], true);
       }

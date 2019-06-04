@@ -12,12 +12,16 @@
           *ngFor="let chip of value"
           [type]="chipType.tag"
           [removable]="removable"
-          (removed)="remove(chip)">
+          [selectable]="true"
+          (removed)="remove(chip)"
+          (click)="$event.stopPropagation()"
+          (keydown)="onChipKeydown($event)">
     {{chip}}
   </b-chip>
 
   <input #bInput
          class="bfe-input"
+         [ngClass]="{empty: bInput.value === ''}"
          [attr.id]="id"
          [attr.name]="id"
          [type]="inputTypes.text"
@@ -29,7 +33,7 @@
          (focus)="inputFocused = true"
          (blur)="inputFocused = false"
          (input)="onInput($event)"
-         (keyup)="onInputKeydown($event)">
+         (keyup)="onInputKeyup($event)">
 
 </div>
 

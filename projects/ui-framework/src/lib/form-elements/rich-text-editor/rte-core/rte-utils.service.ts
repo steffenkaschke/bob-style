@@ -77,7 +77,8 @@ export class RteUtilsService {
     }
 
     const index = blot.offset(editor.scroll);
-    const text = blot.text || (node && node.textContent) || element.innerText;
+    const text =
+      blot.text || (node && node.textContent.trim()) || element.innerText;
     const length = text ? text.length : 0;
     const format =
       (!skipformat && {
