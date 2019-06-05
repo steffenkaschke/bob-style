@@ -28,7 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
     'bSocial'
   ];
 
-  globalEnableFormControl = false;
+  globalEnableFormControl = true;
 
   ///////////////////////////////////
 
@@ -223,7 +223,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(name) {
-    console.log('SUBMIT');
+    alert('SUBMIT');
   }
   onSubmitClick(name) {
     this[name + '_SubscrValue'] = `

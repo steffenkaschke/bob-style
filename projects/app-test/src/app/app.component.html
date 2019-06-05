@@ -175,6 +175,7 @@
 <section class="bTextarea"
          *ngIf="allFormElements.includes('bTextarea')">
   <form [formGroup]="bTextarea_Form"
+        (ngSubmit)="onSubmit('bTextarea')"
         class="column">
 
     <h3>
@@ -351,6 +352,7 @@
 <section class="bDatepicker"
          *ngIf="allFormElements.includes('bDatepicker')">
   <form [formGroup]="bDatepicker_Form"
+        (ngSubmit)="onSubmit('bDatepicker')"
         class="column">
 
     <h3>
@@ -542,6 +544,7 @@
 <section class="bChipinput"
          *ngIf="allFormElements.includes('bChipinput')">
   <form [formGroup]="bChipinput_Form"
+        (ngSubmit)="onSubmit('bChipinput')"
         class="column">
 
     <h3>
@@ -724,6 +727,7 @@
 <section class="bSocial"
          *ngIf="allFormElements.includes('bSocial')">
   <form [formGroup]="bSocial_Form"
+        (ngSubmit)="onSubmit('bSocial')"
         class="column">
 
     <h3>
