@@ -2,9 +2,7 @@ import { storiesOf } from '@storybook/angular';
 import {
   select,
   withKnobs,
-  object,
   text,
-  number,
   boolean
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
@@ -13,7 +11,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SocialModule } from './social.module';
 import { SearchModule } from '../../search/search/search.module';
-import { SocialType } from './social.interface';
+import { Social } from './social.interface';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -67,7 +65,7 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', SocialType, SocialType.Facebook),
+        type: select('type', Social, Social.facebook),
         value: text('value', ''),
         errorMessage: text('errorMessage', ''),
         label: text('label', ''),

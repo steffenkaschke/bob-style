@@ -80,11 +80,33 @@ form.column {
   }
 }
 
+label {
+  pointer-events: none;
+
+  * {
+    pointer-events: all;
+  }
+}
+input,
+button,
+select {
+  pointer-events: all;
+}
+
+.simple-radio,
 .simple-checkbox {
   width: 15px;
   height: 15px;
   outline: 0;
   margin: 0 10px 0 0;
+  cursor: pointer;
+}
+
+.simple-select {
+  display: block;
+  width: 100%;
+  outline: 0;
+  margin-bottom: 3px;
 }
 
 .full-width {
@@ -101,6 +123,7 @@ form.column {
   align-items: center;
   background-color: rgba(255, 255, 255, 0.5);
   overflow-wrap: break-word;
+  white-space: pre;
 }
 
 p {
@@ -112,4 +135,17 @@ h2,
 h3,
 h4 {
   text-transform: uppercase;
+}
+
+button {
+  display: block;
+  width: 100%;
+  border: 1px solid black;
+  background-color: rgba(black, 0.1);
+  outline: 0;
+}
+
+.submit-button {
+  background-color: rgba(green, 0.2);
+  margin-top: 10px;
 }

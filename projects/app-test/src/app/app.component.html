@@ -1,5 +1,6 @@
-<section>
+<section class="bInput">
   <form [formGroup]="bInput_Form"
+        (ngSubmit)="onSubmit('bInput')"
         class="column">
 
     <h3>
@@ -17,6 +18,10 @@
              [errorMessage]="bInput_error"
              (inputEvents)="onEvent('bInput',$event)">
     </b-input>
+
+    <P>
+      Form valid: {{bInput_Form.valid}}
+    </P>
   </form>
 
   <div class="column">
@@ -99,20 +104,48 @@
                type="checkbox">
         Emit on setValue
       </label>
+      <label><button class="submit-button"
+                (click)="onSubmitClick('bInput')"
+                [disabled]="!bInput_Form.valid"
+                type="submit">Submit form</button></label>
     </label>
 
     <label class="control-item col">
-      <button type="button"
-              (click)="toggleUpdateOnMode('bInput')">Toggle UpdateOn</button>
-
-      <span>Updating on: {{ bInput_updateOn.blur ? 'Blur' : 'Change' }}</span>
+      Updating on: {{ bInput_updateOn_mode }}
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bInput',bInput_updateOn_mode)"
+               [(ngModel)]="bInput_updateOn_mode"
+               name="bInput_updateOn_radio"
+               value="change">
+        Change
+      </label>
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bInput',bInput_updateOn_mode)"
+               [(ngModel)]="bInput_updateOn_mode"
+               name="bInput_updateOn_radio"
+               value="blur">
+        Blur
+      </label>
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bInput',bInput_updateOn_mode)"
+               [(ngModel)]="bInput_updateOn_mode"
+               name="bInput_updateOn_radio"
+               value="submit">
+        Submit
+      </label>
     </label>
 
   </div>
 
 </section>
 
-<section>
+<section class="bTextarea">
   <form [formGroup]="bTextarea_Form"
         class="column">
 
@@ -132,6 +165,10 @@
                 [maxChars]="50"
                 (inputEvents)="onEvent('bTextarea',$event)">
     </b-textarea>
+
+    <P>
+      Form valid: {{bTextarea_Form.valid}}
+    </P>
   </form>
 
   <div class="column">
@@ -214,20 +251,48 @@
                type="checkbox">
         Emit on setValue
       </label>
+      <label><button class="submit-button"
+                (click)="onSubmitClick('bTextarea')"
+                [disabled]="!bTextarea_Form.valid"
+                type="submit">Submit form</button></label>
     </label>
 
     <label class="control-item col">
-      <button type="button"
-              (click)="toggleUpdateOnMode('bTextarea')">Toggle UpdateOn</button>
-
-      <span>Updating on: {{ bTextarea_updateOn.blur ? 'Blur' : 'Change' }}</span>
+      Updating on: {{ bTextarea_updateOn_mode }}
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bTextarea',bTextarea_updateOn_mode)"
+               [(ngModel)]="bTextarea_updateOn_mode"
+               name="bTextarea_updateOn_radio"
+               value="change">
+        Change
+      </label>
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bTextarea',bTextarea_updateOn_mode)"
+               [(ngModel)]="bTextarea_updateOn_mode"
+               name="bTextarea_updateOn_radio"
+               value="blur">
+        Blur
+      </label>
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bTextarea',bTextarea_updateOn_mode)"
+               [(ngModel)]="bTextarea_updateOn_mode"
+               name="bTextarea_updateOn_radio"
+               value="submit">
+        Submit
+      </label>
     </label>
 
   </div>
 
 </section>
 
-<section>
+<section class="bDatepicker">
   <form [formGroup]="bDatepicker_Form"
         class="column">
 
@@ -239,6 +304,7 @@
                   [label]="bDatepicker_label"
                   [placeholder]="bDatepicker_placeholder"
                   [value]="bDatepicker_value"
+                  [dateFormat]="bDatepicker_dateFormat"
                   [disabled]="bDatepicker_disabled"
                   [required]="bDatepicker_required"
                   [hintMessage]="bDatepicker_hint"
@@ -246,6 +312,10 @@
                   [errorMessage]="bDatepicker_error"
                   (inputEvents)="onEvent('bDatepicker',$event)">
     </b-datepicker>
+
+    <P>
+      Form valid: {{bDatepicker_Form.valid}}
+    </P>
   </form>
 
   <div class="column">
@@ -295,14 +365,14 @@
       {{ bDatepicker_EventValue }}
     </div>
 
-    <label class="control-item col">
+    <label class="control-item col third">
       Value
       <input class="simple-input bigger"
              [(ngModel)]="bDatepicker_value"
              type="search">
     </label>
 
-    <div class="control-item col">
+    <div class="control-item col third">
       Props
       <label>
         <input class="simple-checkbox"
@@ -319,6 +389,17 @@
       </label>
     </div>
 
+    <div class="control-item col third">
+      <label>
+        dateFormat: {{ bDatepicker_dateFormat }}
+        <input class="simple-input"
+               #bDatepicker_dateFormat_input
+               [value]="bDatepicker_dateFormat"
+               (change)="bDatepicker_dateFormat = bDatepicker_dateFormat_input.value"
+               type="search">
+      </label>
+    </div>
+
     <label class="control-item col">
       <button type="button"
               (click)="setValue('bDatepicker')">SetValue</button>
@@ -328,20 +409,48 @@
                type="checkbox">
         Emit on setValue
       </label>
+      <label><button class="submit-button"
+                (click)="onSubmitClick('bDatepicker')"
+                [disabled]="!bDatepicker_Form.valid"
+                type="submit">Submit form</button></label>
     </label>
 
     <label class="control-item col">
-      <button type="button"
-              (click)="toggleUpdateOnMode('bDatepicker')">Toggle UpdateOn</button>
-
-      <span>Updating on: {{ bDatepicker_updateOn.blur ? 'Blur' : 'Change' }}</span>
+      Updating on: {{ bDatepicker_updateOn_mode }}
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bDatepicker',bDatepicker_updateOn_mode)"
+               [(ngModel)]="bDatepicker_updateOn_mode"
+               name="bDatepicker_updateOn_radio"
+               value="change">
+        Change
+      </label>
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bDatepicker',bDatepicker_updateOn_mode)"
+               [(ngModel)]="bDatepicker_updateOn_mode"
+               name="bDatepicker_updateOn_radio"
+               value="blur">
+        Blur
+      </label>
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bDatepicker',bDatepicker_updateOn_mode)"
+               [(ngModel)]="bDatepicker_updateOn_mode"
+               name="bDatepicker_updateOn_radio"
+               value="submit">
+        Submit
+      </label>
     </label>
 
   </div>
 
 </section>
 
-<section>
+<section class="bChipinput">
   <form [formGroup]="bChipinput_Form"
         class="column">
 
@@ -362,6 +471,10 @@
                   [errorMessage]="bChipinput_error"
                   (changed)="onEvent('bChipinput',$event)">
     </b-chip-input>
+
+    <P>
+      Form valid: {{bChipinput_Form.valid}}
+    </P>
   </form>
 
   <div class="column">
@@ -451,20 +564,48 @@
                type="checkbox">
         Emit on setValue
       </label>
+      <label><button class="submit-button"
+                (click)="onSubmitClick('bChipinput')"
+                [disabled]="!bChipinput_Form.valid"
+                type="submit">Submit form</button></label>
     </label>
 
     <label class="control-item col">
-      <button type="button"
-              (click)="toggleUpdateOnMode('bChipinput')">Toggle UpdateOn</button>
-
-      <span>Updating on: {{ bChipinput_updateOn.blur ? 'Blur' : 'Change' }}</span>
+      Updating on: {{ bChipinput_updateOn_mode }}
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bChipinput',bChipinput_updateOn_mode)"
+               [(ngModel)]="bChipinput_updateOn_mode"
+               name="bChipinput_updateOn_radio"
+               value="change">
+        Change
+      </label>
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bChipinput',bChipinput_updateOn_mode)"
+               [(ngModel)]="bChipinput_updateOn_mode"
+               name="bChipinput_updateOn_radio"
+               value="blur">
+        Blur
+      </label>
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bChipinput',bChipinput_updateOn_mode)"
+               [(ngModel)]="bChipinput_updateOn_mode"
+               name="bChipinput_updateOn_radio"
+               value="submit">
+        Submit
+      </label>
     </label>
 
   </div>
 
 </section>
 
-<section>
+<section class="bSocial">
   <form [formGroup]="bSocial_Form"
         class="column">
 
@@ -484,6 +625,10 @@
               [errorMessage]="bSocial_error"
               (socialInputChange)="onEvent('bSocial',$event)">
     </b-social>
+
+    <P>
+      Form valid: {{bSocial_Form.valid}}
+    </P>
   </form>
 
   <div class="column">
@@ -543,7 +688,8 @@
     <div class="control-item col">
       Props
       <label>
-        <select [(ngModel)]="bSocial_type">
+        <select [(ngModel)]="bSocial_type"
+                class="simple-select">
           <option value="facebook">facebook</option>
           <option value="linkedin">linkedin</option>
           <option value="twitter">twitter</option>
@@ -573,13 +719,41 @@
                type="checkbox">
         Emit on setValue
       </label>
+      <label><button class="submit-button"
+                (click)="onSubmitClick('bSocial')"
+                [disabled]="!bSocial_Form.valid"
+                type="submit">Submit form</button></label>
     </label>
 
     <label class="control-item col">
-      <button type="button"
-              (click)="toggleUpdateOnMode('bSocial')">Toggle UpdateOn</button>
-
-      <span>Updating on: {{ bSocial_updateOn.blur ? 'Blur' : 'Change' }}</span>
+      Updating on: {{ bSocial_updateOn_mode }}
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bSocial',bSocial_updateOn_mode)"
+               [(ngModel)]="bSocial_updateOn_mode"
+               name="bSocial_updateOn_radio"
+               value="change">
+        Change
+      </label>
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bSocial',bSocial_updateOn_mode)"
+               [(ngModel)]="bSocial_updateOn_mode"
+               name="bSocial_updateOn_radio"
+               value="blur">
+        Blur
+      </label>
+      <label>
+        <input type="radio"
+               class="simple-radio"
+               (change)="setUpdateOnMode('bSocial',bSocial_updateOn_mode)"
+               [(ngModel)]="bSocial_updateOn_mode"
+               name="bSocial_updateOn_radio"
+               value="submit">
+        Submit
+      </label>
     </label>
 
   </div>

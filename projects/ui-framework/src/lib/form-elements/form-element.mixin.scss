@@ -91,6 +91,7 @@ $input-border-color: $grey-500;
     border-radius: inherit;
     @include BodyFont;
     color: $grey-800;
+    background: transparent;
 
     &::placeholder {
       color: $grey-600;

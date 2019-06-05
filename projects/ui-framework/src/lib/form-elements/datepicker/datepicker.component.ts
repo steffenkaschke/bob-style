@@ -7,15 +7,17 @@ import {
   OnInit,
   Output,
   ViewChild,
-  AfterViewInit
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
 import {
   DateAdapter,
   MAT_DATE_FORMATS,
-  MatDatepicker
+  MatDatepicker,
+  MatDatepickerInputEvent
 } from '@angular/material';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { InputTypes } from '../input/input.enum';
+import { InputTypes, InputEventType } from '../input/input.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
 import { InputEvent } from '../input/input.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -49,17 +51,17 @@ import { differenceInDays, format, isDate, isSameDay } from 'date-fns';
   ]
 })
 export class DatepickerComponent extends BaseInputElement
-  implements OnInit, AfterViewInit {
+  implements OnChanges, OnInit {
   @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<
     InputEvent
   >();
   @Input() dateFormat?: string;
+  public date: Date;
 
   public readonly calendarIcon: String = Icons.calendar;
   public readonly calendarIconSize: String = IconSize.medium;
   public readonly calendarIconColor: String = IconColor.dark;
   public readonly inputTypes = InputTypes;
-  public initialized = false;
 
   @ViewChild('bInput') bInput: ElementRef;
   @ViewChild('picker') picker: MatDatepicker<any>;
@@ -70,18 +72,33 @@ export class DatepickerComponent extends BaseInputElement
 
   ngOnInit(): void {
     if (this.dateFormat) {
-      BDateAdapter.bFormat = this.dateFormat;
+      BDateAdapter.bFormat = this.dateFormat.toUpperCase();
     }
   }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.initialized = true;
-    }, 200);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.dateFormat && !changes.dateFormat.firstChange) {
+      this.dateFormat = changes.dateFormat.currentValue.toUpperCase();
+      BDateAdapter.bFormat = this.dateFormat;
+
+      if (this.date) {
+        this.onDateChange({ value: this.date });
+      }
+    }
   }
 
-  public checkDate(date: string): string {
-    return isDate(date) ? format(date, serverDateFormat) : date;
+  public onDateChange(event: Partial<MatDatepickerInputEvent<any>>) {
+    if (event.value) {
+      this.date = event.value;
+      this.value = this.formatDateForOutput(this.date);
+      this.emitInputEvent(InputEventType.onBlur, this.value);
+    }
+  }
+
+  private formatDateForOutput = (date: any): string => {
+    return isDate(date)
+      ? format(date, (!!this.dateFormat && this.dateFormat) || serverDateFormat)
+      : date;
   }
 
   public dateClass(date: Date): string {

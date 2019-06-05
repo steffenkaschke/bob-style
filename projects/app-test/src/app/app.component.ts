@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, SimpleChange } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  SimpleChange,
+  OnDestroy
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { chipOptionsMock } from '../../../ui-framework/src/lib/buttons-indicators/chips/chip-input/chip-input.mock';
@@ -10,8 +16,18 @@ import { RichTextEditorComponent } from '../../../ui-framework/src/lib/form-elem
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   constructor() {}
+
+  allFormElements = [
+    'bInput',
+    'bTextarea',
+    'bDatepicker',
+    'bChipinput',
+    'bSocial'
+  ];
+
+  ///////////////////////////////////
 
   bInput_SubscrValue;
   bInput_EventValue;
@@ -26,12 +42,12 @@ export class AppComponent implements OnInit {
   bInput_warn = '';
   bInput_error = '';
   bInput_setValEmit = true;
-  bInput_updateOn = { blur: false };
+  bInput_updateOn_mode = 'change';
   bInput_subscribtion;
 
   bInput_Form = new FormGroup({
     bInput: new FormControl(null, {
-      updateOn: this.bInput_updateOn.blur ? 'blur' : 'change'
+      updateOn: this.bInput_updateOn_mode as any
     })
   });
   bInput = this.bInput_Form.get('bInput');
@@ -51,12 +67,12 @@ export class AppComponent implements OnInit {
   bTextarea_warn = '';
   bTextarea_error = '';
   bTextarea_setValEmit = true;
-  bTextarea_updateOn = { blur: false };
+  bTextarea_updateOn_mode = 'change';
   bTextarea_subscribtion;
 
   bTextarea_Form = new FormGroup({
     bTextarea: new FormControl(null, {
-      updateOn: this.bTextarea_updateOn.blur ? 'blur' : 'change'
+      updateOn: this.bTextarea_updateOn_mode as any
     })
   });
   bTextarea = this.bTextarea_Form.get('bTextarea');
@@ -70,18 +86,19 @@ export class AppComponent implements OnInit {
   bDatepicker_label = 'Input label';
   bDatepicker_placeholder = 'Input placeholder';
   bDatepicker_value = 'Input value';
+  bDatepicker_dateFormat = '';
   bDatepicker_disabled = false;
   bDatepicker_required = true;
   bDatepicker_hint = 'Input hint text';
   bDatepicker_warn = '';
   bDatepicker_error = '';
   bDatepicker_setValEmit = true;
-  bDatepicker_updateOn = { blur: false };
+  bDatepicker_updateOn_mode = 'change';
   bDatepicker_subscribtion;
 
   bDatepicker_Form = new FormGroup({
     bDatepicker: new FormControl(null, {
-      updateOn: this.bDatepicker_updateOn.blur ? 'blur' : 'change'
+      updateOn: this.bDatepicker_updateOn_mode as any
     })
   });
   bDatepicker = this.bDatepicker_Form.get('bDatepicker');
@@ -103,12 +120,12 @@ export class AppComponent implements OnInit {
   bChipinput_warn = '';
   bChipinput_error = '';
   bChipinput_setValEmit = true;
-  bChipinput_updateOn = { blur: false };
+  bChipinput_updateOn_mode = 'change';
   bChipinput_subscribtion;
 
   bChipinput_Form = new FormGroup({
     bChipinput: new FormControl([], {
-      updateOn: this.bChipinput_updateOn.blur ? 'blur' : 'change'
+      updateOn: this.bChipinput_updateOn_mode as any
     })
   });
   bChipinput = this.bChipinput_Form.get('bChipinput');
@@ -129,12 +146,12 @@ export class AppComponent implements OnInit {
   bSocial_warn = '';
   bSocial_error = '';
   bSocial_setValEmit = true;
-  bSocial_updateOn = { blur: false };
+  bSocial_updateOn_mode = 'change';
   bSocial_subscribtion;
 
   bSocial_Form = new FormGroup({
     bSocial: new FormControl(null, {
-      updateOn: this.bSocial_updateOn.blur ? 'blur' : 'change'
+      updateOn: this.bSocial_updateOn_mode as any
     })
   });
   bSocial = this.bSocial_Form.get('bSocial');
@@ -152,10 +169,26 @@ export class AppComponent implements OnInit {
     this[name + '_EventCounter']++;
   }
 
-  subscribeTovalueChanges(name) {
+  subscribeToValueChanges(name) {
     this[name + '_subscribtion'] = this[name].valueChanges.subscribe(value => {
       this[name + '_SubscrValue'] = value;
       this[name + '_SubscrCounter']++;
+    });
+  }
+
+  unSubscribeFromValueChanges(name) {
+    this[name + '_subscribtion'].unsubscribe();
+  }
+
+  subscribeToAll(names) {
+    names.forEach(name => {
+      this.subscribeToValueChanges(name);
+    });
+  }
+
+  unSubscribeFromAll(names) {
+    names.forEach(name => {
+      this.unSubscribeFromValueChanges(name);
     });
   }
 
@@ -166,37 +199,34 @@ export class AppComponent implements OnInit {
     });
     this[name + '_Form'].setControl(name, newControl);
     this[name] = this[name + '_Form'].get(name);
-    this[name + '_subscribtion'].unsubscribe();
-    this.subscribeTovalueChanges(name);
+    this.unSubscribeFromValueChanges(name);
+    this.subscribeToValueChanges(name);
   }
 
-  toggleUpdateOnMode(name) {
-    let mode;
-    if (this[name + '_updateOn'].blur) {
-      mode = 'change';
-    } else {
-      mode = 'blur';
-    }
-    this[name + '_updateOn'].blur = !this[name + '_updateOn'].blur;
+  onSubmit(name) {
+    console.log('SUBMIT');
+    console.log(this[name + '_Form']);
 
-    const value = this[name + '_Form'].get(name).value;
-    const newControl = new FormControl(value, {
-      updateOn: mode
-    });
-    this[name + '_Form'].setControl(name, newControl);
-    this[name] = this[name + '_Form'].get(name);
-    this[name + '_subscribtion'].unsubscribe();
-    this.subscribeTovalueChanges(name);
+    this[name + '_SubscrValue'] = `Submitted form value:
+        ${JSON.stringify(this[name + '_Form'].value)}`;
+  }
+  onSubmitClick(name) {
+    console.log('click', this[name + '_Form']);
+
+    this[name + '_SubscrValue'] = `
+      Submitted form value:
+        ${JSON.stringify(this[name + '_Form'].value)}
+    `;
   }
 
   ///////////////////////////////////
 
   ngOnInit() {
-    this.subscribeTovalueChanges('bInput');
-    this.subscribeTovalueChanges('bTextarea');
-    this.subscribeTovalueChanges('bDatepicker');
-    this.subscribeTovalueChanges('bChipinput');
-    this.subscribeTovalueChanges('bSocial');
+    this.subscribeToAll(this.allFormElements);
+  }
+
+  ngOnDestroy() {
+    this.unSubscribeFromAll(this.allFormElements);
   }
 
   ///////////////////////////////////

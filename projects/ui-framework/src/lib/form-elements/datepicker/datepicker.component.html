@@ -16,8 +16,8 @@
          [required]="required"
          (focus)="picker.open();inputFocused = true"
          (blur)="picker.opened ? bInput.focus() : inputFocused = false"
-         (dateChange)="onBlur($event, checkDate)"
-         [matDatepicker]="initialized && !disabled && picker">
+         (dateChange)="onDateChange($event)"
+         [matDatepicker]="picker">
 
   <b-icon class="bfe-suffix"
           (click)="picker.open()"
@@ -28,8 +28,8 @@
 
 </div>
 
-<mat-datepicker *ngIf="initialized && !disabled"
-                #picker
+<mat-datepicker #picker
+                [disabled]="disabled"
                 (opened)="bInput.focus();inputFocused = true;"
                 (closed)="bInput.blur();inputFocused = false;"
                 [dateClass]="dateClass">

@@ -14,6 +14,7 @@ export abstract class BaseFormElement implements ControlValueAccessor {
   @Input() warnMessage: string;
   public inputFocused = false;
   public inputTouched = false;
+  public initialized = false;
   public id = simpleUID('bfe-');
   @Input() validateFn: Function = (_: FormControl) => {};
 
