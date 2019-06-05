@@ -243,7 +243,8 @@ export {
   BreadcrumbNavButton
 } from './lib/navigation/breadcrumbs/breadcrumbs.interface';
 export { BaseFormElement } from './lib/form-elements/base-form-element';
-
+export { BarModule } from './lib/navigation/bar/bar.module';
+export { BarComponent } from './lib/navigation/bar/bar.component';
 
 /*
  * Overlays
