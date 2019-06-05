@@ -1,6 +1,6 @@
 <b-icon class="social-icon"
         [color]="iconColor.normal"
-        [icon]="socialSelection.icon"
+        [icon]="socialTypes[type].icon"
         [size]="iconSize.large">
 </b-icon>
 <b-input [errorMessage]="errorMessage"
@@ -16,6 +16,6 @@
          [required]="required"
          (inputEvents)="onInputEvents($event)">
   <span input-prefix>
-    {{socialSelection.prefix}}
+    {{socialTypes[type].prefix}}
   </span>
 </b-input>

@@ -6,7 +6,8 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  AfterViewInit
 } from '@angular/core';
 import {
   DateAdapter,
@@ -47,7 +48,8 @@ import { differenceInDays, format, isDate, isSameDay } from 'date-fns';
     }
   ]
 })
-export class DatepickerComponent extends BaseInputElement implements OnInit {
+export class DatepickerComponent extends BaseInputElement
+  implements OnInit, AfterViewInit {
   @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<
     InputEvent
   >();
@@ -57,6 +59,7 @@ export class DatepickerComponent extends BaseInputElement implements OnInit {
   public readonly calendarIconSize: String = IconSize.medium;
   public readonly calendarIconColor: String = IconColor.dark;
   public readonly inputTypes = InputTypes;
+  public initialized = false;
 
   @ViewChild('bInput') bInput: ElementRef;
   @ViewChild('picker') picker: MatDatepicker<any>;
@@ -69,6 +72,12 @@ export class DatepickerComponent extends BaseInputElement implements OnInit {
     if (this.dateFormat) {
       BDateAdapter.bFormat = this.dateFormat;
     }
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.initialized = true;
+    }, 200);
   }
 
   public checkDate(date: string): string {

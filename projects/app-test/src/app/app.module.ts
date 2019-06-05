@@ -3,30 +3,27 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { RichTextEditorModule } from '../../../ui-framework/src/lib/form-elements/rich-text-editor/rte.module';
-import { MatFormFieldModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CheckboxModule } from '../../../ui-framework/src/lib/form-elements/checkbox/checkbox.module';
-import {
-  TruncateTooltipModule,
-  ChipsModule,
-  FormElementsModule
-} from '../../..//ui-framework/src/public_api';
+
+import { SocialModule } from '../../../ui-framework/src/lib/form-elements/social/social.module';
+import { FormElementsModule } from '../../../ui-framework/src/lib/form-elements/form-elements.module';
+import { ChipsModule } from '../../../ui-framework/src/lib/buttons-indicators/chips/chips.module';
+import { RichTextEditorModule } from '../../../ui-framework/src/lib/form-elements/rich-text-editor/rte.module';
+import { IconsModule } from '../../../ui-framework/src/lib/icons/icons.module';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    FormElementsModule,
-    TruncateTooltipModule,
-    CheckboxModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RichTextEditorModule,
     BrowserModule,
     BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    IconsModule,
 
-    MatFormFieldModule,
-    ChipsModule
+    FormElementsModule,
+    RichTextEditorModule,
+    ChipsModule,
+    SocialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

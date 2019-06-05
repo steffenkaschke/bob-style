@@ -1,28 +1,22 @@
 import { Icons } from '../../icons/icons.enum';
+import { Social } from './social.interface';
 
 export interface SocialInputConfig {
   icon: Icons;
   prefix: string;
 }
 
-
-const facebook: SocialInputConfig = {
-  icon: Icons.facebook,
-  prefix: 'www.facebook.com/'
-};
-
-const linkedin: SocialInputConfig = {
-  icon: Icons.linkedin,
-  prefix: 'www.linkedin.com/'
-};
-
-const twitter: SocialInputConfig = {
-  icon: Icons.twitter,
-  prefix: 'www.twitter.com/'
-};
-
-export const socialTypesConfig = {
-  facebook,
-  linkedin,
-  twitter
+export const SocialTypes: { [key in Social]: SocialInputConfig } = {
+  [Social.facebook]: {
+    icon: Icons.facebook,
+    prefix: 'www.facebook.com/'
+  },
+  [Social.linkedin]: {
+    icon: Icons.linkedin,
+    prefix: 'www.linkedin.com/'
+  },
+  [Social.twitter]: {
+    icon: Icons.twitter,
+    prefix: 'www.twitter.com/'
+  }
 };

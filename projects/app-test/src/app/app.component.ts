@@ -115,6 +115,32 @@ export class AppComponent implements OnInit {
 
   ///////////////////////////////////
 
+  bSocial_SubscrValue;
+  bSocial_EventValue;
+  bSocial_SubscrCounter = 0;
+  bSocial_EventCounter = 0;
+  bSocial_type = 'facebook';
+  bSocial_label = 'Input label';
+  bSocial_placeholder = 'Input placeholder';
+  bSocial_value = 'Input value';
+  bSocial_disabled = false;
+  bSocial_required = true;
+  bSocial_hint = 'Input hint text';
+  bSocial_warn = '';
+  bSocial_error = '';
+  bSocial_setValEmit = true;
+  bSocial_updateOn = { blur: false };
+  bSocial_subscribtion;
+
+  bSocial_Form = new FormGroup({
+    bSocial: new FormControl(null, {
+      updateOn: this.bSocial_updateOn.blur ? 'blur' : 'change'
+    })
+  });
+  bSocial = this.bSocial_Form.get('bSocial');
+
+  ///////////////////////////////////
+
   setValue(name) {
     this[name].setValue(this[name + '_value'], {
       emitEvent: this[name + '_setValEmit']
@@ -131,6 +157,17 @@ export class AppComponent implements OnInit {
       this[name + '_SubscrValue'] = value;
       this[name + '_SubscrCounter']++;
     });
+  }
+
+  setUpdateOnMode(name, mode) {
+    const value = this[name + '_Form'].get(name).value;
+    const newControl = new FormControl(value, {
+      updateOn: mode
+    });
+    this[name + '_Form'].setControl(name, newControl);
+    this[name] = this[name + '_Form'].get(name);
+    this[name + '_subscribtion'].unsubscribe();
+    this.subscribeTovalueChanges(name);
   }
 
   toggleUpdateOnMode(name) {
@@ -159,6 +196,7 @@ export class AppComponent implements OnInit {
     this.subscribeTovalueChanges('bTextarea');
     this.subscribeTovalueChanges('bDatepicker');
     this.subscribeTovalueChanges('bChipinput');
+    this.subscribeTovalueChanges('bSocial');
   }
 
   ///////////////////////////////////

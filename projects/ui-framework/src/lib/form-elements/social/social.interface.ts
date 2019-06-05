@@ -1,5 +1,5 @@
-export enum SocialType  {
-  Facebook = 'facebook',
-  Linkedin = 'linkedin',
-  Twitter = 'twitter'
+export enum Social {
+  facebook = 'facebook',
+  linkedin = 'linkedin',
+  twitter = 'twitter'
 }

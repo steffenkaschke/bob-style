@@ -464,6 +464,127 @@
 
 </section>
 
+<section>
+  <form [formGroup]="bSocial_Form"
+        class="column">
+
+    <h3>
+      b-social
+    </h3>
+
+    <b-social formControlName="bSocial"
+              [type]="bSocial_type"
+              [label]="bSocial_label"
+              [placeholder]="bSocial_placeholder"
+              [value]="bSocial_value"
+              [disabled]="bSocial_disabled"
+              [required]="bSocial_required"
+              [hintMessage]="bSocial_hint"
+              [warnMessage]="bSocial_warn"
+              [errorMessage]="bSocial_error"
+              (socialInputChange)="onEvent('bSocial',$event)">
+    </b-social>
+  </form>
+
+  <div class="column">
+
+    <label class="control-item col">
+      Label
+      <input class="simple-input"
+             [(ngModel)]="bSocial_label"
+             type="search">
+    </label>
+
+    <label class="control-item col">
+      Placeholder
+      <input class="simple-input"
+             [(ngModel)]="bSocial_placeholder"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      HintMessage
+      <input class="simple-input"
+             [(ngModel)]="bSocial_hint"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      WarnMessage
+      <input class="simple-input"
+             [(ngModel)]="bSocial_warn"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      ErrorMessage
+      <input class="simple-input"
+             [(ngModel)]="bSocial_error"
+             type="search">
+    </label>
+
+    <p class="full-width">ValueChanges: {{bSocial_SubscrCounter}}</p>
+    <div class="outputValue full-width">
+      {{ bSocial_SubscrValue }}
+    </div>
+
+    <p class="full-width">InputEvents: {{bSocial_EventCounter}}</p>
+    <div class="outputValue full-width">
+      {{ bSocial_EventValue }}
+    </div>
+
+    <label class="control-item col">
+      Value
+      <input class="simple-input bigger"
+             [(ngModel)]="bSocial_value"
+             type="search">
+    </label>
+
+    <div class="control-item col">
+      Props
+      <label>
+        <select [(ngModel)]="bSocial_type">
+          <option value="facebook">facebook</option>
+          <option value="linkedin">linkedin</option>
+          <option value="twitter">twitter</option>
+        </select>
+      </label>
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bSocial_required"
+               type="checkbox">
+        required
+      </label>
+
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bSocial_disabled"
+               type="checkbox">
+        disabled
+      </label>
+    </div>
+
+    <label class="control-item col">
+      <button type="button"
+              (click)="setValue('bSocial')">SetValue</button>
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bSocial_setValEmit"
+               type="checkbox">
+        Emit on setValue
+      </label>
+    </label>
+
+    <label class="control-item col">
+      <button type="button"
+              (click)="toggleUpdateOnMode('bSocial')">Toggle UpdateOn</button>
+
+      <span>Updating on: {{ bSocial_updateOn.blur ? 'Blur' : 'Change' }}</span>
+    </label>
+
+  </div>
+
+</section>
 
 <!--
 
