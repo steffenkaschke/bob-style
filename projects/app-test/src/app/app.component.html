@@ -1,4 +1,5 @@
-<section class="bInput">
+<section class="bInput"
+         *ngIf="allFormElements.includes('bInput')">
   <form [formGroup]="bInput_Form"
         (ngSubmit)="onSubmit('bInput')"
         class="column">
@@ -7,7 +8,8 @@
       b-input
     </h3>
 
-    <b-input formControlName="bInput"
+    <b-input *ngIf="bInput_formControlEnabled"
+             formControlName="bInput"
              [label]="bInput_label"
              [placeholder]="bInput_placeholder"
              [value]="bInput_value"
@@ -16,12 +18,26 @@
              [hintMessage]="bInput_hint"
              [warnMessage]="bInput_warn"
              [errorMessage]="bInput_error"
-             (inputEvents)="onEvent('bInput',$event)">
+             (inputEvents)="onEvent('bInput',$event)"
+             (changed)="onEvent('bInput',$event)">
     </b-input>
 
-    <P>
+    <b-input *ngIf="!bInput_formControlEnabled"
+             [label]="bInput_label"
+             [placeholder]="bInput_placeholder"
+             [value]="bInput_value"
+             [disabled]="bInput_disabled"
+             [required]="bInput_required"
+             [hintMessage]="bInput_hint"
+             [warnMessage]="bInput_warn"
+             [errorMessage]="bInput_error"
+             (inputEvents)="onEvent('bInput',$event)"
+             (changed)="onEvent('bInput',$event)">
+    </b-input>
+
+    <p>
       Form valid: {{bInput_Form.valid}}
-    </P>
+    </p>
   </form>
 
   <div class="column">
@@ -95,11 +111,19 @@
       </label>
     </div>
 
-    <label class="control-item col">
+    <div class="control-item col">
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bInput_formControlEnabled"
+               type="checkbox">
+        Enable FormControl
+      </label>
       <button type="button"
+              [disabled]="!bInput_formControlEnabled"
               (click)="setValue('bInput')">SetValue</button>
       <label>
         <input class="simple-checkbox"
+               [disabled]="!bInput_formControlEnabled"
                [(ngModel)]="bInput_setValEmit"
                type="checkbox">
         Emit on setValue
@@ -108,12 +132,13 @@
                 (click)="onSubmitClick('bInput')"
                 [disabled]="!bInput_Form.valid"
                 type="submit">Submit form</button></label>
-    </label>
+    </div>
 
-    <label class="control-item col">
+    <div class="control-item col">
       Updating on: {{ bInput_updateOn_mode }}
       <label>
         <input type="radio"
+               [disabled]="!bInput_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bInput',bInput_updateOn_mode)"
                [(ngModel)]="bInput_updateOn_mode"
@@ -123,6 +148,7 @@
       </label>
       <label>
         <input type="radio"
+               [disabled]="!bInput_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bInput',bInput_updateOn_mode)"
                [(ngModel)]="bInput_updateOn_mode"
@@ -132,6 +158,7 @@
       </label>
       <label>
         <input type="radio"
+               [disabled]="!bInput_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bInput',bInput_updateOn_mode)"
                [(ngModel)]="bInput_updateOn_mode"
@@ -139,13 +166,14 @@
                value="submit">
         Submit
       </label>
-    </label>
+    </div>
 
   </div>
 
 </section>
 
-<section class="bTextarea">
+<section class="bTextarea"
+         *ngIf="allFormElements.includes('bTextarea')">
   <form [formGroup]="bTextarea_Form"
         class="column">
 
@@ -153,7 +181,8 @@
       b-textarea
     </h3>
 
-    <b-textarea formControlName="bTextarea"
+    <b-textarea *ngIf="bTextarea_formControlEnabled"
+                formControlName="bTextarea"
                 [label]="bTextarea_label"
                 [placeholder]="bTextarea_placeholder"
                 [value]="bTextarea_value"
@@ -163,12 +192,27 @@
                 [warnMessage]="bTextarea_warn"
                 [errorMessage]="bTextarea_error"
                 [maxChars]="50"
-                (inputEvents)="onEvent('bTextarea',$event)">
+                (inputEvents)="onEvent('bTextarea',$event)"
+                (changed)="onEvent('bTextarea',$event)">
     </b-textarea>
 
-    <P>
+    <b-textarea *ngIf="!bTextarea_formControlEnabled"
+                [label]="bTextarea_label"
+                [placeholder]="bTextarea_placeholder"
+                [value]="bTextarea_value"
+                [disabled]="bTextarea_disabled"
+                [required]="bTextarea_required"
+                [hintMessage]="bTextarea_hint"
+                [warnMessage]="bTextarea_warn"
+                [errorMessage]="bTextarea_error"
+                [maxChars]="50"
+                (inputEvents)="onEvent('bTextarea',$event)"
+                (changed)="onEvent('bTextarea',$event)">
+    </b-textarea>
+
+    <p>
       Form valid: {{bTextarea_Form.valid}}
-    </P>
+    </p>
   </form>
 
   <div class="column">
@@ -242,11 +286,19 @@
       </label>
     </div>
 
-    <label class="control-item col">
+    <div class="control-item col">
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bTextarea_formControlEnabled"
+               type="checkbox">
+        Enable FormControl
+      </label>
       <button type="button"
+              [disabled]="!bTextarea_formControlEnabled"
               (click)="setValue('bTextarea')">SetValue</button>
       <label>
         <input class="simple-checkbox"
+               [disabled]="!bTextarea_formControlEnabled"
                [(ngModel)]="bTextarea_setValEmit"
                type="checkbox">
         Emit on setValue
@@ -255,12 +307,14 @@
                 (click)="onSubmitClick('bTextarea')"
                 [disabled]="!bTextarea_Form.valid"
                 type="submit">Submit form</button></label>
-    </label>
 
-    <label class="control-item col">
+    </div>
+
+    <div class="control-item col">
       Updating on: {{ bTextarea_updateOn_mode }}
       <label>
         <input type="radio"
+               [disabled]="!bTextarea_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bTextarea',bTextarea_updateOn_mode)"
                [(ngModel)]="bTextarea_updateOn_mode"
@@ -270,6 +324,7 @@
       </label>
       <label>
         <input type="radio"
+               [disabled]="!bTextarea_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bTextarea',bTextarea_updateOn_mode)"
                [(ngModel)]="bTextarea_updateOn_mode"
@@ -279,6 +334,7 @@
       </label>
       <label>
         <input type="radio"
+               [disabled]="!bTextarea_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bTextarea',bTextarea_updateOn_mode)"
                [(ngModel)]="bTextarea_updateOn_mode"
@@ -286,13 +342,14 @@
                value="submit">
         Submit
       </label>
-    </label>
+    </div>
 
   </div>
 
 </section>
 
-<section class="bDatepicker">
+<section class="bDatepicker"
+         *ngIf="allFormElements.includes('bDatepicker')">
   <form [formGroup]="bDatepicker_Form"
         class="column">
 
@@ -300,7 +357,8 @@
       b-datepicker
     </h3>
 
-    <b-datepicker formControlName="bDatepicker"
+    <b-datepicker *ngIf="bDatepicker_formControlEnabled"
+                  formControlName="bDatepicker"
                   [label]="bDatepicker_label"
                   [placeholder]="bDatepicker_placeholder"
                   [value]="bDatepicker_value"
@@ -310,12 +368,32 @@
                   [hintMessage]="bDatepicker_hint"
                   [warnMessage]="bDatepicker_warn"
                   [errorMessage]="bDatepicker_error"
-                  (inputEvents)="onEvent('bDatepicker',$event)">
+                  (inputEvents)="onEvent('bDatepicker',$event)"
+                  (changed)="onEvent('bDatepicker',$event)">
     </b-datepicker>
 
-    <P>
+    <b-datepicker *ngIf="!bDatepicker_formControlEnabled"
+                  [label]="bDatepicker_label"
+                  [placeholder]="bDatepicker_placeholder"
+                  [value]="bDatepicker_value"
+                  [dateFormat]="bDatepicker_dateFormat"
+                  [disabled]="bDatepicker_disabled"
+                  [required]="bDatepicker_required"
+                  [hintMessage]="bDatepicker_hint"
+                  [warnMessage]="bDatepicker_warn"
+                  [errorMessage]="bDatepicker_error"
+                  (inputEvents)="onEvent('bDatepicker',$event)"
+                  (changed)="onEvent('bDatepicker',$event)">
+    </b-datepicker>
+
+    <p>
       Form valid: {{bDatepicker_Form.valid}}
-    </P>
+    </p>
+
+    <p class="note">
+      Setting value via input or FormControl's setValue triggers the events, but does not put value in the input field
+      (date conversion / mat-datepicker issue).
+    </p>
   </form>
 
   <div class="column">
@@ -400,11 +478,19 @@
       </label>
     </div>
 
-    <label class="control-item col">
+    <div class="control-item col">
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bDatepicker_formControlEnabled"
+               type="checkbox">
+        Enable FormControl
+      </label>
       <button type="button"
+              [disabled]="!bDatepicker_formControlEnabled"
               (click)="setValue('bDatepicker')">SetValue</button>
       <label>
         <input class="simple-checkbox"
+               [disabled]="!bDatepicker_formControlEnabled"
                [(ngModel)]="bDatepicker_setValEmit"
                type="checkbox">
         Emit on setValue
@@ -413,12 +499,13 @@
                 (click)="onSubmitClick('bDatepicker')"
                 [disabled]="!bDatepicker_Form.valid"
                 type="submit">Submit form</button></label>
-    </label>
+    </div>
 
-    <label class="control-item col">
+    <div class="control-item col">
       Updating on: {{ bDatepicker_updateOn_mode }}
       <label>
         <input type="radio"
+               [disabled]="!bDatepicker_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bDatepicker',bDatepicker_updateOn_mode)"
                [(ngModel)]="bDatepicker_updateOn_mode"
@@ -428,6 +515,7 @@
       </label>
       <label>
         <input type="radio"
+               [disabled]="!bDatepicker_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bDatepicker',bDatepicker_updateOn_mode)"
                [(ngModel)]="bDatepicker_updateOn_mode"
@@ -437,6 +525,7 @@
       </label>
       <label>
         <input type="radio"
+               [disabled]="!bDatepicker_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bDatepicker',bDatepicker_updateOn_mode)"
                [(ngModel)]="bDatepicker_updateOn_mode"
@@ -444,13 +533,14 @@
                value="submit">
         Submit
       </label>
-    </label>
+    </div>
 
   </div>
 
 </section>
 
-<section class="bChipinput">
+<section class="bChipinput"
+         *ngIf="allFormElements.includes('bChipinput')">
   <form [formGroup]="bChipinput_Form"
         class="column">
 
@@ -458,7 +548,8 @@
       b-chip-input
     </h3>
 
-    <b-chip-input formControlName="bChipinput"
+    <b-chip-input *ngIf="bChipinput_formControlEnabled"
+                  formControlName="bChipinput"
                   [label]="bChipinput_label"
                   [placeholder]="bChipinput_placeholder"
                   [value]="bChipinput_value"
@@ -472,9 +563,23 @@
                   (changed)="onEvent('bChipinput',$event)">
     </b-chip-input>
 
-    <P>
+    <b-chip-input *ngIf="!bChipinput_formControlEnabled"
+                  [label]="bChipinput_label"
+                  [placeholder]="bChipinput_placeholder"
+                  [value]="bChipinput_value"
+                  [options]="bChipinput_options"
+                  [acceptNew]="bChipinput_acceptNew"
+                  [disabled]="bChipinput_disabled"
+                  [required]="bChipinput_required"
+                  [hintMessage]="bChipinput_hint"
+                  [warnMessage]="bChipinput_warn"
+                  [errorMessage]="bChipinput_error"
+                  (changed)="onEvent('bChipinput',$event)">
+    </b-chip-input>
+
+    <p>
       Form valid: {{bChipinput_Form.valid}}
-    </P>
+    </p>
   </form>
 
   <div class="column">
@@ -555,11 +660,19 @@
       </label>
     </div>
 
-    <label class="control-item col">
+    <div class="control-item col">
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bChipinput_formControlEnabled"
+               type="checkbox">
+        Enable FormControl
+      </label>
       <button type="button"
+              [disabled]="!bChipinput_formControlEnabled"
               (click)="setValue('bChipinput')">SetValue</button>
       <label>
         <input class="simple-checkbox"
+               [disabled]="!bChipinput_formControlEnabled"
                [(ngModel)]="bChipinput_setValEmit"
                type="checkbox">
         Emit on setValue
@@ -568,12 +681,13 @@
                 (click)="onSubmitClick('bChipinput')"
                 [disabled]="!bChipinput_Form.valid"
                 type="submit">Submit form</button></label>
-    </label>
+    </div>
 
-    <label class="control-item col">
+    <div class="control-item col">
       Updating on: {{ bChipinput_updateOn_mode }}
       <label>
         <input type="radio"
+               [disabled]="!bChipinput_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bChipinput',bChipinput_updateOn_mode)"
                [(ngModel)]="bChipinput_updateOn_mode"
@@ -583,6 +697,7 @@
       </label>
       <label>
         <input type="radio"
+               [disabled]="!bChipinput_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bChipinput',bChipinput_updateOn_mode)"
                [(ngModel)]="bChipinput_updateOn_mode"
@@ -592,6 +707,7 @@
       </label>
       <label>
         <input type="radio"
+               [disabled]="!bChipinput_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bChipinput',bChipinput_updateOn_mode)"
                [(ngModel)]="bChipinput_updateOn_mode"
@@ -599,13 +715,14 @@
                value="submit">
         Submit
       </label>
-    </label>
+    </div>
 
   </div>
 
 </section>
 
-<section class="bSocial">
+<section class="bSocial"
+         *ngIf="allFormElements.includes('bSocial')">
   <form [formGroup]="bSocial_Form"
         class="column">
 
@@ -613,7 +730,8 @@
       b-social
     </h3>
 
-    <b-social formControlName="bSocial"
+    <b-social *ngIf="bSocial_formControlEnabled"
+              formControlName="bSocial"
               [type]="bSocial_type"
               [label]="bSocial_label"
               [placeholder]="bSocial_placeholder"
@@ -623,12 +741,27 @@
               [hintMessage]="bSocial_hint"
               [warnMessage]="bSocial_warn"
               [errorMessage]="bSocial_error"
-              (socialInputChange)="onEvent('bSocial',$event)">
+              (socialInputChange)="onEvent('bSocial',$event)"
+              (changed)="onEvent('bSocial',$event)">
     </b-social>
 
-    <P>
+    <b-social *ngIf="!bSocial_formControlEnabled"
+              [type]="bSocial_type"
+              [label]="bSocial_label"
+              [placeholder]="bSocial_placeholder"
+              [value]="bSocial_value"
+              [disabled]="bSocial_disabled"
+              [required]="bSocial_required"
+              [hintMessage]="bSocial_hint"
+              [warnMessage]="bSocial_warn"
+              [errorMessage]="bSocial_error"
+              (socialInputChange)="onEvent('bSocial',$event)"
+              (changed)="onEvent('bSocial',$event)">
+    </b-social>
+
+    <p>
       Form valid: {{bSocial_Form.valid}}
-    </P>
+    </p>
   </form>
 
   <div class="column">
@@ -710,11 +843,19 @@
       </label>
     </div>
 
-    <label class="control-item col">
+    <div class="control-item col">
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bSocial_formControlEnabled"
+               type="checkbox">
+        Enable FormControl
+      </label>
       <button type="button"
+              [disabled]="!bSocial_formControlEnabled"
               (click)="setValue('bSocial')">SetValue</button>
       <label>
         <input class="simple-checkbox"
+               [disabled]="!bSocial_formControlEnabled"
                [(ngModel)]="bSocial_setValEmit"
                type="checkbox">
         Emit on setValue
@@ -723,12 +864,13 @@
                 (click)="onSubmitClick('bSocial')"
                 [disabled]="!bSocial_Form.valid"
                 type="submit">Submit form</button></label>
-    </label>
+    </div>
 
-    <label class="control-item col">
+    <div class="control-item col">
       Updating on: {{ bSocial_updateOn_mode }}
       <label>
         <input type="radio"
+               [disabled]="!bSocial_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bSocial',bSocial_updateOn_mode)"
                [(ngModel)]="bSocial_updateOn_mode"
@@ -738,6 +880,7 @@
       </label>
       <label>
         <input type="radio"
+               [disabled]="!bSocial_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bSocial',bSocial_updateOn_mode)"
                [(ngModel)]="bSocial_updateOn_mode"
@@ -747,6 +890,7 @@
       </label>
       <label>
         <input type="radio"
+               [disabled]="!bSocial_formControlEnabled"
                class="simple-radio"
                (change)="setUpdateOnMode('bSocial',bSocial_updateOn_mode)"
                [(ngModel)]="bSocial_updateOn_mode"
@@ -754,7 +898,7 @@
                value="submit">
         Submit
       </label>
-    </label>
+    </div>
 
   </div>
 

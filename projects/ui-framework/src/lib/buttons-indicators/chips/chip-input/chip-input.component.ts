@@ -71,7 +71,7 @@ export class ChipInputComponent extends BaseFormElement
     ChipInputChange
   >();
 
-  @HostListener('document:click', ['event']) handleDocClick(event: MouseEvent) {
+  @HostListener('document:click') handleDocClick() {
     this.unSelectLastChip();
   }
 

@@ -10,6 +10,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { chipOptionsMock } from '../../../ui-framework/src/lib/buttons-indicators/chips/chip-input/chip-input.mock';
 
 import { RichTextEditorComponent } from '../../../ui-framework/src/lib/form-elements/rich-text-editor/rte.component';
+import { isString } from '../../../ui-framework/src/lib/services/utils/functional-utils';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,8 @@ export class AppComponent implements OnInit, OnDestroy {
     'bChipinput',
     'bSocial'
   ];
+
+  globalEnableFormControl = false;
 
   ///////////////////////////////////
 
@@ -44,6 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
   bInput_setValEmit = true;
   bInput_updateOn_mode = 'change';
   bInput_subscribtion;
+  bInput_formControlEnabled = this.globalEnableFormControl;
 
   bInput_Form = new FormGroup({
     bInput: new FormControl(null, {
@@ -58,20 +62,21 @@ export class AppComponent implements OnInit, OnDestroy {
   bTextarea_EventValue;
   bTextarea_SubscrCounter = 0;
   bTextarea_EventCounter = 0;
-  bTextarea_label = 'Input label';
-  bTextarea_placeholder = 'Input placeholder';
-  bTextarea_value = 'Input value';
+  bTextarea_label = 'Textarea';
+  bTextarea_placeholder = 'Textarea placeholder';
+  bTextarea_value = 'Textarea value';
   bTextarea_disabled = false;
   bTextarea_required = true;
-  bTextarea_hint = 'Input hint text';
+  bTextarea_hint = 'Textarea hint text';
   bTextarea_warn = '';
   bTextarea_error = '';
   bTextarea_setValEmit = true;
   bTextarea_updateOn_mode = 'change';
   bTextarea_subscribtion;
+  bTextarea_formControlEnabled = this.globalEnableFormControl;
 
   bTextarea_Form = new FormGroup({
-    bTextarea: new FormControl(null, {
+    bTextarea: new FormControl(this.bTextarea_placeholder + ' / formControl', {
       updateOn: this.bTextarea_updateOn_mode as any
     })
   });
@@ -85,7 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
   bDatepicker_EventCounter = 0;
   bDatepicker_label = 'Input label';
   bDatepicker_placeholder = 'Input placeholder';
-  bDatepicker_value = 'Input value';
+  bDatepicker_value = '02/01/2013';
   bDatepicker_dateFormat = '';
   bDatepicker_disabled = false;
   bDatepicker_required = true;
@@ -95,6 +100,7 @@ export class AppComponent implements OnInit, OnDestroy {
   bDatepicker_setValEmit = true;
   bDatepicker_updateOn_mode = 'change';
   bDatepicker_subscribtion;
+  bDatepicker_formControlEnabled = this.globalEnableFormControl;
 
   bDatepicker_Form = new FormGroup({
     bDatepicker: new FormControl(null, {
@@ -122,6 +128,7 @@ export class AppComponent implements OnInit, OnDestroy {
   bChipinput_setValEmit = true;
   bChipinput_updateOn_mode = 'change';
   bChipinput_subscribtion;
+  bChipinput_formControlEnabled = this.globalEnableFormControl;
 
   bChipinput_Form = new FormGroup({
     bChipinput: new FormControl([], {
@@ -148,6 +155,7 @@ export class AppComponent implements OnInit, OnDestroy {
   bSocial_setValEmit = true;
   bSocial_updateOn_mode = 'change';
   bSocial_subscribtion;
+  bSocial_formControlEnabled = this.globalEnableFormControl;
 
   bSocial_Form = new FormGroup({
     bSocial: new FormControl(null, {
@@ -159,21 +167,32 @@ export class AppComponent implements OnInit, OnDestroy {
   ///////////////////////////////////
 
   setValue(name) {
-    this[name].setValue(this[name + '_value'], {
-      emitEvent: this[name + '_setValEmit']
-    });
+    if (this[name]) {
+      this[name].setValue(this[name + '_value'], {
+        emitEvent: this[name + '_setValEmit']
+      });
+    }
   }
 
   onEvent(name, $event) {
-    this[name + '_EventValue'] = JSON.stringify($event);
+    if (!isString($event)) {
+      $event = JSON.stringify($event);
+    }
+
+    this[name + '_EventValue'] =
+      (this[name + '_EventValue']
+        ? this[name + '_EventValue'].split('|').slice(-1) + ' | '
+        : '') + $event;
     this[name + '_EventCounter']++;
   }
 
   subscribeToValueChanges(name) {
-    this[name + '_subscribtion'] = this[name].valueChanges.subscribe(value => {
-      this[name + '_SubscrValue'] = value;
-      this[name + '_SubscrCounter']++;
-    });
+    this[name + '_subscribtion'] =
+      this[name] &&
+      this[name].valueChanges.subscribe(value => {
+        this[name + '_SubscrValue'] = value;
+        this[name + '_SubscrCounter']++;
+      });
   }
 
   unSubscribeFromValueChanges(name) {
@@ -205,14 +224,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onSubmit(name) {
     console.log('SUBMIT');
-    console.log(this[name + '_Form']);
-
-    this[name + '_SubscrValue'] = `Submitted form value:
-        ${JSON.stringify(this[name + '_Form'].value)}`;
   }
   onSubmitClick(name) {
-    console.log('click', this[name + '_Form']);
-
     this[name + '_SubscrValue'] = `
       Submitted form value:
         ${JSON.stringify(this[name + '_Form'].value)}

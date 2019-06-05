@@ -37,7 +37,6 @@ export abstract class BaseInputElement extends BaseFormElement {
   }
 
   onBlur($event: any, converter = pass): void {
-    console.log($event);
     this.inputFocused = false;
     this.emitInputEvent(
       InputEventType.onBlur,
@@ -46,7 +45,6 @@ export abstract class BaseInputElement extends BaseFormElement {
   }
 
   emitInputEvent(event: InputEventType, value: string | number): void {
-    console.log(event, value);
     if (event === InputEventType.onChange) {
       if (value !== this.value) {
         this.value = value;

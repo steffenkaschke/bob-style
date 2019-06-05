@@ -33,22 +33,19 @@ import { Social } from './social.interface';
   ]
 })
 export class SocialComponent extends BaseInputElement implements OnInit {
+  constructor() {
+    super();
+  }
+
   @Input() type: Social;
-  @Input() placeholder: string;
   @Output() socialInputChange: EventEmitter<string> = new EventEmitter<
     string
   >();
 
-  readonly icons = Icons;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
-
-  public inputTypes = InputTypes;
-  public socialTypes = SocialTypes;
-
-  constructor() {
-    super();
-  }
+  public readonly iconSize = IconSize;
+  public readonly iconColor = IconColor;
+  public readonly inputTypes = InputTypes;
+  public readonly socialTypes = SocialTypes;
 
   ngOnInit() {
     if (this.value) {

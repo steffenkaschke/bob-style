@@ -64,7 +64,7 @@ export abstract class RTEformElement extends BaseFormElement
   public lastCurrentBlot: BlotData;
   private latestOutputValue: string;
   public length: number;
-  private writingValue = false;
+  protected writingValue = false;
   private control: FormControl;
   protected specialBlots: SpecialBlots = {
     treatAsWholeDefs: [],

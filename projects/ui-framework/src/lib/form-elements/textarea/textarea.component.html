@@ -9,14 +9,14 @@
             [attr.id]="id"
             [attr.name]="id"
             [attr.placeholder]="placeholder"
+            [value]="value"
             [disabled]="disabled"
             [required]="required"
             [attr.maxlength]="maxChars"
             (focus)="onFocus($event)"
             (blur)="onBlur($event)"
-            (input)="onChange($event)">{{value}}</textarea>
+            (input)="onChange($event)"></textarea>
 </div>
-
 <p b-input-message
    *ngIf="hintMessage || warnMessage || errorMessage"
    [hintMessage]="hintMessage"
@@ -25,7 +25,7 @@
    [disabled]="disabled">
 
   <span class="length-indicator"
-        *ngIf="maxChars">
-    {{textarea.value?.length || 0}}/{{maxChars}}
+        *ngIf="maxChars && value">
+    {{value.length || 0}}/{{maxChars}}
   </span>
 </p>

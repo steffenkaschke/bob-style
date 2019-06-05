@@ -7,8 +7,7 @@ import {
   OnInit,
   Output,
   ViewChild,
-  SimpleChanges,
-  OnChanges
+  SimpleChanges
 } from '@angular/core';
 import {
   DateAdapter,
@@ -23,7 +22,7 @@ import { InputEvent } from '../input/input.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
 import { BaseInputElement } from '../base-input-element';
-import { differenceInDays, format, isDate, isSameDay } from 'date-fns';
+import { differenceInDays, format, isDate, isSameDay, isValid } from 'date-fns';
 
 @Component({
   selector: 'b-datepicker',
@@ -50,8 +49,7 @@ import { differenceInDays, format, isDate, isSameDay } from 'date-fns';
     }
   ]
 })
-export class DatepickerComponent extends BaseInputElement
-  implements OnChanges, OnInit {
+export class DatepickerComponent extends BaseInputElement implements OnInit {
   @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<
     InputEvent
   >();
@@ -76,10 +74,12 @@ export class DatepickerComponent extends BaseInputElement
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  // this extends BaseFormElement's ngOnChanges
+  onNgChanges(changes: SimpleChanges) {
     if (changes.dateFormat && !changes.dateFormat.firstChange) {
       this.dateFormat = changes.dateFormat.currentValue.toUpperCase();
-      BDateAdapter.bFormat = this.dateFormat;
+      BDateAdapter.bFormat =
+        (!!this.dateFormat && this.dateFormat) || 'DD/MM/YYYY';
 
       if (this.date) {
         this.onDateChange({ value: this.date });
@@ -90,8 +90,9 @@ export class DatepickerComponent extends BaseInputElement
   public onDateChange(event: Partial<MatDatepickerInputEvent<any>>) {
     if (event.value) {
       this.date = event.value;
-      this.value = this.formatDateForOutput(this.date);
-      this.emitInputEvent(InputEventType.onBlur, this.value);
+      const outputDate = this.formatDateForOutput(this.date);
+      this.emitInputEvent(InputEventType.onChange, outputDate);
+      this.emitInputEvent(InputEventType.onBlur, outputDate);
     }
   }
 
