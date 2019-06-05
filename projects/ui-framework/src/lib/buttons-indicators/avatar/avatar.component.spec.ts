@@ -164,15 +164,6 @@ describe('AvatarComponent', () => {
       );
       expect(badgeElement).toBeTruthy();
     });
-    it('Should not add badge icon to mini avatar', () => {
-      component.ngOnChanges({
-        badge: new SimpleChange(null, AvatarBadge.pending, false),
-        size: new SimpleChange(null, AvatarSize.mini, false)
-      });
-      fixture.detectChanges();
-      const badgeElement = fixture.debugElement.query(By.css('.avatar-badge'));
-      expect(badgeElement).toBeFalsy();
-    });
   });
 
   describe('Status', () => {

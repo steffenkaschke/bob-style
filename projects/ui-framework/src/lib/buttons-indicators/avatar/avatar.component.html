@@ -3,7 +3,7 @@
      [ngStyle]="avatarStyle"
      (click)="onClick($event)">
 
-  <b-icon *ngIf="badge && size !== avatarSize.mini"
+  <b-icon *ngIf="badge"
           class="avatar-badge"
           [size]="badgeSize[size]"
           [icon]="badgeConfig?.icon"
