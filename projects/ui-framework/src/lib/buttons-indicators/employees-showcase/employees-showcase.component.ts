@@ -1,10 +1,12 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Output,
   SimpleChanges
 } from '@angular/core';
 import { EmployeeShowcase } from './employees-showcase.interface';
@@ -14,31 +16,42 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { AvatarGap } from './employees-showcase.const';
 import { Icons } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
-import { Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import invoke from 'lodash/invoke';
+import map from 'lodash/map';
+import random from 'lodash/random';
+import { SelectGroupOption } from '../../form-elements/lists/list.interface';
+import { AvatarComponent } from '../avatar/avatar.component';
+import { ListChange } from '../../form-elements/lists/list-change/list-change';
+
+const SHUFFLE_EMPLOYEES_INTERVAL = 1000;
 
 @Component({
   selector: 'b-employees-showcase',
   templateUrl: './employees-showcase.component.html',
-  styleUrls: ['./employees-showcase.component.scss']
+  styleUrls: ['./employees-showcase.component.scss'],
 })
 export class EmployeesShowcaseComponent
   implements OnInit, OnChanges, OnDestroy {
   @Input() employees: EmployeeShowcase[] = [];
   @Input() avatarSize: AvatarSize = AvatarSize.mini;
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   private avatarGap: number = AvatarGap[AvatarSize.mini];
   private clientWidth = 0;
+  private resizeEventSubscriber: Subscription;
+  private intervalSubscriber: Subscription;
   public showMore = false;
   public avatarsToFit = 0;
   public icon: Icons = Icons.three_dots;
-  private resizeEventSubscriber: Subscription;
+  public showMoreOptions: SelectGroupOption[];
 
   constructor(
     private utilsService: UtilsService,
     private host: ElementRef,
     private DOM: DOMhelpers
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.resizeEventSubscriber = this.utilsService
@@ -46,7 +59,9 @@ export class EmployeesShowcaseComponent
       .subscribe(() => {
         this.clientWidth = this.getClientWidth();
         this.calcAvatarsToFit();
+        this.subscribeToShuffleEmployees();
       });
+    this.buildShowMoreOptions();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -55,11 +70,32 @@ export class EmployeesShowcaseComponent
       this.setAvatarGap();
       this.setAvatarGapCss();
       this.calcAvatarsToFit();
+      this.subscribeToShuffleEmployees();
     }
   }
 
   ngOnDestroy(): void {
     invoke(this.resizeEventSubscriber, 'unsubscribe');
+    invoke(this.intervalSubscriber, 'unsubscribe');
+  }
+
+  private buildShowMoreOptions() {
+    this.showMoreOptions = [
+      {
+        groupName: '',
+        options: map(this.employees, employee => ({
+          value: employee.displayName,
+          id: employee.id,
+          selected: false,
+          prefixComponent: {
+            component: AvatarComponent,
+            attributes: {
+              imageSource: employee.imageSource,
+            }
+          }
+        }))
+      }
+    ];
   }
 
   private getClientWidth() {
@@ -77,8 +113,8 @@ export class EmployeesShowcaseComponent
   private calcAvatarsToFit() {
     this.avatarsToFit = floor(
       (this.clientWidth - this.avatarSize) /
-        (this.avatarSize - this.avatarGap) +
-        1
+      (this.avatarSize - this.avatarGap) +
+      1
     );
   }
 
@@ -91,5 +127,29 @@ export class EmployeesShowcaseComponent
     this.DOM.setCssProps(this.host.nativeElement, {
       '--avatar-gap': '-' + this.avatarGap + 'px'
     });
+  }
+
+  onSelectChange(event) {
+    this.selectChange.emit(event);
+  }
+
+  private subscribeToShuffleEmployees() {
+    invoke(this.intervalSubscriber, 'unsubscribe');
+    if (!this.showMore && (this.avatarsToFit < this.employees.length)) {
+      this.intervalSubscriber = interval(SHUFFLE_EMPLOYEES_INTERVAL)
+        .subscribe(() => this.shuffleEmployees());
+    }
+  }
+
+  private shuffleEmployees() {
+    const firstIndex = random(0, this.avatarsToFit > 1 ? this.avatarsToFit - 1 : 0);
+    const secondIndex = random(this.avatarsToFit, this.employees.length > 1 ? this.employees.length - 1 : 0);
+    this.switchEmployees(firstIndex, secondIndex);
+  }
+
+  private switchEmployees(firstIndex, secondIndex) {
+    const firstEmployee = this.employees[firstIndex];
+    this.employees[firstIndex] = this.employees[secondIndex];
+    this.employees[secondIndex] = firstEmployee;
   }
 }

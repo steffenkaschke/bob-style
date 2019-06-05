@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { EmployeesShowcaseComponent } from './employees-showcase.component';
 import { DebugElement, NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
@@ -7,8 +7,8 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { By } from '@angular/platform-browser';
 import { getEmployeesMock } from './employees-showcase.mock';
 import { AvatarSize } from '../avatar/avatar.enum';
-import createSpyObj = jasmine.createSpyObj;
 import { AvatarGap } from './employees-showcase.const';
+import createSpyObj = jasmine.createSpyObj;
 
 describe('EmployeesShowcaseComponent', () => {
   let component: EmployeesShowcaseComponent;
@@ -35,6 +35,71 @@ describe('EmployeesShowcaseComponent', () => {
         fixture.detectChanges();
       });
   }));
+
+  describe('ngOnInit', () => {
+    it('should set showMoreOptions', () => {
+      component.employees = [getEmployeesMock()[0]];
+      component.ngOnInit();
+      expect(component.showMoreOptions).toEqual([{
+          groupName: '',
+          options: [{
+            value: 'Ben Baler',
+            id: 1,
+            selected: false,
+            prefixComponent: {
+              component: jasmine.any(Function),
+              attributes: {
+                imageSource:
+                  'https://randomuser.me/api/portraits/men/1.jpg'
+              }
+            }
+          }]
+        }]
+      );
+    });
+  });
+
+  describe('ngOnChanges', () => {
+    it('should shuffle employees when showMore is false and employees are larger than avatarsToFit', fakeAsync(() => {
+      spyOn<any>(component, 'getClientWidth').and.callFake(() => 200);
+      component.avatarSize = AvatarSize.medium;
+      component.employees = getEmployeesMock();
+      component.ngOnChanges({
+        avatarSize: new SimpleChange(null, AvatarSize.medium, false)
+      });
+      tick(1000);
+      expect(component.employees).not.toEqual(getEmployeesMock());
+      fixture.destroy();
+    }));
+    it('should not shuffle employees when showMore is true', fakeAsync(() => {
+      spyOn<any>(component, 'getClientWidth').and.callFake(() => 200);
+      component.employees = getEmployeesMock();
+      component.ngOnChanges({
+        avatarSize: new SimpleChange(null, AvatarSize.medium, false)
+      });
+      tick(1000);
+      expect(component.employees).toEqual(getEmployeesMock());
+      fixture.destroy();
+    }));
+    it('should not shuffle employees when employees are not larger than avatarsToFit', fakeAsync(() => {
+      component.avatarSize = AvatarSize.medium;
+      component.employees = getEmployeesMock();
+      component.ngOnChanges({
+        avatarSize: new SimpleChange(null, AvatarSize.medium, false)
+      });
+      tick(1000);
+      expect(component.employees).toEqual(getEmployeesMock());
+      fixture.destroy();
+    }));
+  });
+
+  describe('onSelectChange', () => {
+    it('should emit selectChange', () => {
+      const selectChange = spyOn(component.selectChange, 'emit');
+      component.onSelectChange({ test: 'test' });
+      expect(selectChange).toHaveBeenCalledWith({ test: 'test' });
+    });
+  });
 
   describe('template', () => {
     let bAvatars: DebugElement[];
