@@ -64,6 +64,6 @@ export const simpleUID = (prefix: string = '', length: number = 5): string => {
 
 export const pass = (a: any): any => a;
 
-export const keyIs = (key: string, expected: string): boolean => {
+export const isKey = (key: string, expected: string): boolean => {
   return key.toUpperCase() === expected.toUpperCase();
 };

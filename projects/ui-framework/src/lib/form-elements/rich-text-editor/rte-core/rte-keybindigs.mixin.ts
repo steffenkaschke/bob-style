@@ -1,7 +1,7 @@
 import { SpecialBlots, BlotData } from './rte.interface';
 import { RteUtilsService } from './rte-utils.service';
 import quillLib, { Quill, RangeStatic, Delta as DeltaType } from 'quill';
-import { keyIs } from '../../../services/utils/functional-utils';
+import { isKey } from '../../../services/utils/functional-utils';
 import { Keys } from '../../../enums';
 const Delta: typeof DeltaType = quillLib.import('delta');
 
@@ -105,7 +105,7 @@ export class RteKeybindings {
     this.editor.root.addEventListener('keydown', (event: KeyboardEvent) => {
       if (
         (this.specialBlots.deleteAsWhole || this.specialBlots.treatAsWhole) &&
-        keyIs(event.key, Keys.backspace)
+        isKey(event.key, Keys.backspace)
       ) {
         this.checkCurrentBlot(true, [0, -1]);
       }
@@ -115,7 +115,7 @@ export class RteKeybindings {
     this.editor.root.addEventListener('keydown', (event: KeyboardEvent) => {
       if (
         (this.specialBlots.treatAsWhole || this.specialBlots.deleteAsWhole) &&
-        keyIs(event.key, Keys.delete)
+        isKey(event.key, Keys.delete)
       ) {
         this.checkCurrentBlot(true, [+1, 0], true);
       }

@@ -23,7 +23,7 @@ import { ChipType } from '../chips.enum';
 import { ChipInputChange } from '../chips.interface';
 import { InputTypes } from '../../../form-elements/input/input.enum';
 import { ChipComponent } from '../chip/chip.component';
-import { keyIs } from '../../../services/utils/functional-utils';
+import { isKey, isArray } from '../../../services/utils/functional-utils';
 import { Keys } from '../../../enums';
 
 @Component({
@@ -78,6 +78,9 @@ export class ChipInputComponent extends BaseFormElement
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value && !changes.value.firstChange) {
       this.value = changes.value.currentValue;
+      if (!isArray(this.value)) {
+        (this.value as any) = [this.value];
+      }
       this.updatePossibleChips();
     }
     if (changes.options && !changes.options.firstChange) {
@@ -103,12 +106,16 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   private findChip(name: string, chipsSource = this.possibleChips): string {
-    return chipsSource.find(chip => chip.toLowerCase() === name.toLowerCase());
+    return (
+      chipsSource &&
+      chipsSource.find(chip => chip.toLowerCase() === name.toLowerCase())
+    );
   }
 
   private removeChip(name: string, chipsSource = this.possibleChips): string[] {
-    return chipsSource.filter(
-      chip => chip.toLowerCase() !== name.toLowerCase()
+    return (
+      chipsSource &&
+      chipsSource.filter(chip => chip.toLowerCase() !== name.toLowerCase())
     );
   }
 
@@ -176,14 +183,17 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   private unSelectLastChip(): void {
-    if (this.chipList.last.chip.nativeElement.dataset.aboutToDelete) {
+    if (
+      this.chipList.last &&
+      this.chipList.last.chip.nativeElement.dataset.aboutToDelete
+    ) {
       delete this.chipList.last.chip.nativeElement.dataset.aboutToDelete;
       this.chipList.last.chip.nativeElement.classList.remove('selected');
     }
   }
 
   public onInputKeyup(event: KeyboardEvent): void {
-    if (keyIs(event.key, Keys.backspace)) {
+    if (isKey(event.key, Keys.backspace)) {
       if (this.bInput.nativeElement.value === '' && this.chipList.last) {
         if (this.chipList.last.chip.nativeElement.dataset.aboutToDelete) {
           this.value.pop();
@@ -198,7 +208,7 @@ export class ChipInputComponent extends BaseFormElement
           this.autocompleteTrigger.closePanel();
         }, 0);
       }
-    } else if (keyIs(event.key, Keys.enter) || keyIs(event.key, Keys.comma)) {
+    } else if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.comma)) {
       const name = (event.target as HTMLInputElement).value
         .replace(/,/g, '')
         .trim();
@@ -211,17 +221,17 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   public onChipKeydown(event: KeyboardEvent): void {
-    if (keyIs(event.key, Keys.backspace) || keyIs(event.key, Keys.delete)) {
+    if (isKey(event.key, Keys.backspace) || isKey(event.key, Keys.delete)) {
       this.remove((event.target as HTMLElement).innerText);
     }
-    if (keyIs(event.key, Keys.arrowleft)) {
+    if (isKey(event.key, Keys.arrowleft)) {
       const prevChip = (event.target as HTMLElement)
         .previousSibling as HTMLElement;
       if (prevChip.nodeName === 'B-CHIP') {
         prevChip.focus();
       }
     }
-    if (keyIs(event.key, Keys.arrowright)) {
+    if (isKey(event.key, Keys.arrowright)) {
       const nextChip = (event.target as HTMLElement).nextSibling as HTMLElement;
       if (nextChip.nodeName === 'B-CHIP') {
         nextChip.focus();

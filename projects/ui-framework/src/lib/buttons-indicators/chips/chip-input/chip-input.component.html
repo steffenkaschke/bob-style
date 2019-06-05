@@ -5,7 +5,7 @@
 <div class="bfe-wrap"
      matAutocompleteOrigin
      #wrapper="matAutocompleteOrigin"
-     [ngClass]="{focused: inputFocused, 'autocomplete-open': auto.isOpen,'empty': value.length === 0}"
+     [ngClass]="{focused: inputFocused, 'autocomplete-open': auto.isOpen,'empty': !value || value.length === 0}"
      (click)="bInput.focus();">
 
   <b-chip #chipList
@@ -25,7 +25,7 @@
          [attr.id]="id"
          [attr.name]="id"
          [type]="inputTypes.text"
-         [attr.placeholder]="value.length === 0 && placeholder ? placeholder: null"
+         [attr.placeholder]="value && value.length === 0 && placeholder ? placeholder : null"
          [disabled]="disabled"
          [required]="required"
          [matAutocomplete]="auto"

@@ -1,3 +1,472 @@
+<section>
+  <form [formGroup]="bInput_Form"
+        class="column">
+
+    <h3>
+      b-input
+    </h3>
+
+    <b-input formControlName="bInput"
+             [label]="bInput_label"
+             [placeholder]="bInput_placeholder"
+             [value]="bInput_value"
+             [disabled]="bInput_disabled"
+             [required]="bInput_required"
+             [hintMessage]="bInput_hint"
+             [warnMessage]="bInput_warn"
+             [errorMessage]="bInput_error"
+             (inputEvents)="onEvent('bInput',$event)">
+    </b-input>
+  </form>
+
+  <div class="column">
+
+    <label class="control-item col">
+      Label
+      <input class="simple-input"
+             [(ngModel)]="bInput_label"
+             type="search">
+    </label>
+
+    <label class="control-item col">
+      Placeholder
+      <input class="simple-input"
+             [(ngModel)]="bInput_placeholder"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      HintMessage
+      <input class="simple-input"
+             [(ngModel)]="bInput_hint"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      WarnMessage
+      <input class="simple-input"
+             [(ngModel)]="bInput_warn"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      ErrorMessage
+      <input class="simple-input"
+             [(ngModel)]="bInput_error"
+             type="search">
+    </label>
+
+    <p class="full-width">ValueChanges: {{bInput_SubscrCounter}}</p>
+    <div class="outputValue full-width">
+      {{ bInput_SubscrValue }}
+    </div>
+
+    <p class="full-width">InputEvents: {{bInput_EventCounter}}</p>
+    <div class="outputValue full-width">
+      {{ bInput_EventValue }}
+    </div>
+
+    <label class="control-item col">
+      Value
+      <input class="simple-input bigger"
+             [(ngModel)]="bInput_value"
+             type="search">
+    </label>
+
+    <div class="control-item col">
+      Props
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bInput_required"
+               type="checkbox">
+        required
+      </label>
+
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bInput_disabled"
+               type="checkbox">
+        disabled
+      </label>
+    </div>
+
+    <label class="control-item col">
+      <button type="button"
+              (click)="setValue('bInput')">SetValue</button>
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bInput_setValEmit"
+               type="checkbox">
+        Emit on setValue
+      </label>
+    </label>
+
+    <label class="control-item col">
+      <button type="button"
+              (click)="toggleUpdateOnMode('bInput')">Toggle UpdateOn</button>
+
+      <span>Updating on: {{ bInput_updateOn.blur ? 'Blur' : 'Change' }}</span>
+    </label>
+
+  </div>
+
+</section>
+
+<section>
+  <form [formGroup]="bTextarea_Form"
+        class="column">
+
+    <h3>
+      b-textarea
+    </h3>
+
+    <b-textarea formControlName="bTextarea"
+                [label]="bTextarea_label"
+                [placeholder]="bTextarea_placeholder"
+                [value]="bTextarea_value"
+                [disabled]="bTextarea_disabled"
+                [required]="bTextarea_required"
+                [hintMessage]="bTextarea_hint"
+                [warnMessage]="bTextarea_warn"
+                [errorMessage]="bTextarea_error"
+                [maxChars]="50"
+                (inputEvents)="onEvent('bTextarea',$event)">
+    </b-textarea>
+  </form>
+
+  <div class="column">
+
+    <label class="control-item col">
+      Label
+      <input class="simple-input"
+             [(ngModel)]="bTextarea_label"
+             type="search">
+    </label>
+
+    <label class="control-item col">
+      Placeholder
+      <input class="simple-input"
+             [(ngModel)]="bTextarea_placeholder"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      HintMessage
+      <input class="simple-input"
+             [(ngModel)]="bTextarea_hint"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      WarnMessage
+      <input class="simple-input"
+             [(ngModel)]="bTextarea_warn"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      ErrorMessage
+      <input class="simple-input"
+             [(ngModel)]="bTextarea_error"
+             type="search">
+    </label>
+
+    <p class="full-width">ValueChanges: {{bTextarea_SubscrCounter}}</p>
+    <div class="outputValue full-width">
+      {{ bTextarea_SubscrValue }}
+    </div>
+
+    <p class="full-width">InputEvents: {{bTextarea_EventCounter}}</p>
+    <div class="outputValue full-width">
+      {{ bTextarea_EventValue }}
+    </div>
+
+    <label class="control-item col">
+      Value
+      <input class="simple-input bigger"
+             [(ngModel)]="bTextarea_value"
+             type="search">
+    </label>
+
+    <div class="control-item col">
+      Props
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bTextarea_required"
+               type="checkbox">
+        required
+      </label>
+
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bTextarea_disabled"
+               type="checkbox">
+        disabled
+      </label>
+    </div>
+
+    <label class="control-item col">
+      <button type="button"
+              (click)="setValue('bTextarea')">SetValue</button>
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bTextarea_setValEmit"
+               type="checkbox">
+        Emit on setValue
+      </label>
+    </label>
+
+    <label class="control-item col">
+      <button type="button"
+              (click)="toggleUpdateOnMode('bTextarea')">Toggle UpdateOn</button>
+
+      <span>Updating on: {{ bTextarea_updateOn.blur ? 'Blur' : 'Change' }}</span>
+    </label>
+
+  </div>
+
+</section>
+
+<section>
+  <form [formGroup]="bDatepicker_Form"
+        class="column">
+
+    <h3>
+      b-datepicker
+    </h3>
+
+    <b-datepicker formControlName="bDatepicker"
+                  [label]="bDatepicker_label"
+                  [placeholder]="bDatepicker_placeholder"
+                  [value]="bDatepicker_value"
+                  [disabled]="bDatepicker_disabled"
+                  [required]="bDatepicker_required"
+                  [hintMessage]="bDatepicker_hint"
+                  [warnMessage]="bDatepicker_warn"
+                  [errorMessage]="bDatepicker_error"
+                  (inputEvents)="onEvent('bDatepicker',$event)">
+    </b-datepicker>
+  </form>
+
+  <div class="column">
+
+    <label class="control-item col">
+      Label
+      <input class="simple-input"
+             [(ngModel)]="bDatepicker_label"
+             type="search">
+    </label>
+
+    <label class="control-item col">
+      Placeholder
+      <input class="simple-input"
+             [(ngModel)]="bDatepicker_placeholder"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      HintMessage
+      <input class="simple-input"
+             [(ngModel)]="bDatepicker_hint"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      WarnMessage
+      <input class="simple-input"
+             [(ngModel)]="bDatepicker_warn"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      ErrorMessage
+      <input class="simple-input"
+             [(ngModel)]="bDatepicker_error"
+             type="search">
+    </label>
+
+    <p class="full-width">ValueChanges: {{bDatepicker_SubscrCounter}}</p>
+    <div class="outputValue full-width">
+      {{ bDatepicker_SubscrValue }}
+    </div>
+
+    <p class="full-width">InputEvents: {{bDatepicker_EventCounter}}</p>
+    <div class="outputValue full-width">
+      {{ bDatepicker_EventValue }}
+    </div>
+
+    <label class="control-item col">
+      Value
+      <input class="simple-input bigger"
+             [(ngModel)]="bDatepicker_value"
+             type="search">
+    </label>
+
+    <div class="control-item col">
+      Props
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bDatepicker_required"
+               type="checkbox">
+        required
+      </label>
+
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bDatepicker_disabled"
+               type="checkbox">
+        disabled
+      </label>
+    </div>
+
+    <label class="control-item col">
+      <button type="button"
+              (click)="setValue('bDatepicker')">SetValue</button>
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bDatepicker_setValEmit"
+               type="checkbox">
+        Emit on setValue
+      </label>
+    </label>
+
+    <label class="control-item col">
+      <button type="button"
+              (click)="toggleUpdateOnMode('bDatepicker')">Toggle UpdateOn</button>
+
+      <span>Updating on: {{ bDatepicker_updateOn.blur ? 'Blur' : 'Change' }}</span>
+    </label>
+
+  </div>
+
+</section>
+
+<section>
+  <form [formGroup]="bChipinput_Form"
+        class="column">
+
+    <h3>
+      b-chip-input
+    </h3>
+
+    <b-chip-input formControlName="bChipinput"
+                  [label]="bChipinput_label"
+                  [placeholder]="bChipinput_placeholder"
+                  [value]="bChipinput_value"
+                  [options]="bChipinput_options"
+                  [acceptNew]="bChipinput_acceptNew"
+                  [disabled]="bChipinput_disabled"
+                  [required]="bChipinput_required"
+                  [hintMessage]="bChipinput_hint"
+                  [warnMessage]="bChipinput_warn"
+                  [errorMessage]="bChipinput_error"
+                  (changed)="onEvent('bChipinput',$event)">
+    </b-chip-input>
+  </form>
+
+  <div class="column">
+
+    <label class="control-item col">
+      Label
+      <input class="simple-input"
+             [(ngModel)]="bChipinput_label"
+             type="search">
+    </label>
+
+    <label class="control-item col">
+      Placeholder
+      <input class="simple-input"
+             [(ngModel)]="bChipinput_placeholder"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      HintMessage
+      <input class="simple-input"
+             [(ngModel)]="bChipinput_hint"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      WarnMessage
+      <input class="simple-input"
+             [(ngModel)]="bChipinput_warn"
+             type="search">
+    </label>
+
+    <label class="control-item col third">
+      ErrorMessage
+      <input class="simple-input"
+             [(ngModel)]="bChipinput_error"
+             type="search">
+    </label>
+
+    <p class="full-width">ValueChanges: {{bChipinput_SubscrCounter}}</p>
+    <div class="outputValue full-width">
+      {{ bChipinput_SubscrValue && bChipinput_SubscrValue.join(', ') }}
+    </div>
+
+    <p class="full-width">InputEvents: {{bChipinput_EventCounter}}</p>
+    <div class="outputValue full-width">
+      {{ bChipinput_EventValue }}
+    </div>
+
+    <label class="control-item col">
+      Value
+      <input class="simple-input bigger"
+             [(ngModel)]="bChipinput_value"
+             type="search">
+    </label>
+
+    <div class="control-item col">
+      Props
+
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bChipinput_acceptNew"
+               type="checkbox">
+        acceptNew
+      </label>
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bChipinput_required"
+               type="checkbox">
+        required
+      </label>
+
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bChipinput_disabled"
+               type="checkbox">
+        disabled
+      </label>
+    </div>
+
+    <label class="control-item col">
+      <button type="button"
+              (click)="setValue('bChipinput')">SetValue</button>
+      <label>
+        <input class="simple-checkbox"
+               [(ngModel)]="bChipinput_setValEmit"
+               type="checkbox">
+        Emit on setValue
+      </label>
+    </label>
+
+    <label class="control-item col">
+      <button type="button"
+              (click)="toggleUpdateOnMode('bChipinput')">Toggle UpdateOn</button>
+
+      <span>Updating on: {{ bChipinput_updateOn.blur ? 'Blur' : 'Change' }}</span>
+    </label>
+
+  </div>
+
+</section>
+
+
+<!--
+
 <div
      style="padding: 50px 100px; height: 100%; max-width: 700px; margin: auto; display: flex; flex-direction: column; justify-content: center; display: none; ">
 
@@ -23,7 +492,7 @@
         (ngSubmit)="onRteFormSubmit()">
     <p>
       Input: <br>
-      <input type="text"
+      <input type="search"
              #input
              formControlName="inputControl"
              style="height: 40px; padding: 0 10px; line-height: 38px;outline:0; font-size: 16px;" />
@@ -126,4 +595,4 @@
            [(ngModel)]="lines" />
   </p>
 
-</div>
+</div> -->
