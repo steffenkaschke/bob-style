@@ -15,11 +15,11 @@
                 (click)="stopBubbling($event)"
                 (mouseleave)="stopBubbling($event); setShowActions(true)"
                 (closeMenu)="showActions = false">
-            <b-icon menu-trigger
-                    [icon]="icons.three_dots"
-                    [size]="sizes.small"
-                    [color]="colors.dark">
-            </b-icon>
+            <b-square-button menu-trigger
+                             [type]="types.tertiary"
+                             [icon]="icons.three_dots_vert"
+                             [color]="selected ? colors.white : colors.normal">
+            </b-square-button>
         </b-menu>
     </div>
 </div>

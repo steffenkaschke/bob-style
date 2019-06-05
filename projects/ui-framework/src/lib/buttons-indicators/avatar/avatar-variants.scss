@@ -10,6 +10,10 @@
   &.clickable .avatar:hover {
     box-shadow: 0 3px 6px 0 $boxShadowColor;
   }
+  .avatar-badge {
+    top: 0px;
+    right: -1px;
+  }
   .avatar-text {
     line-height: 1.35;
   }
@@ -50,8 +54,6 @@
     box-shadow: 0 3px 6px 0 $boxShadowColor;
   }
   .avatar-badge {
-    width: 16px;
-    height: 16px;
     top: 2px;
     right: 1px;
   }
@@ -98,8 +100,6 @@
     margin-top: 6px;
   }
   .avatar-badge {
-    width: 24px;
-    height: 24px;
     top: 3px;
     right: -1px;
   }
@@ -155,8 +155,6 @@
     margin-top: 8px;
   }
   .avatar-badge {
-    width: 24px;
-    height: 24px;
     top: 3px;
     right: 3px;
   }
