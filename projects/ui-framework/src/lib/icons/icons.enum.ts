@@ -69,6 +69,9 @@ export enum Icons {
   facebook = 'Facebook',
   linkedin = 'Linkedin',
   twitter = 'Twitter',
+  download = 'download',
+  add_folder = 'add_folder',
+
 
   // duplicate icons for backwards compatibility
   // TODO: remove if not used
