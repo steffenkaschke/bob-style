@@ -52,6 +52,15 @@ export class ChipInputComponent extends BaseFormElement
   implements OnChanges, OnInit {
   constructor() {
     super();
+    this.inputTransformers = this.outputTransformers = [
+      value => {
+        return isArray(value)
+          ? value
+          : isString(value)
+          ? stringListToArray(value)
+          : [];
+      }
+    ];
   }
 
   @Input() value: string[] = [];
@@ -77,17 +86,10 @@ export class ChipInputComponent extends BaseFormElement
     this.unSelectLastChip();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value) {
-      this.value = changes.value.currentValue || [];
-      if (!isArray(this.value)) {
-        this.value = isString(this.value)
-          ? stringListToArray(this.value as any)
-          : [];
-      }
-      if (!changes.value.firstChange) {
-        this.updatePossibleChips();
-      }
+  // this extends BaseFormElement's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
+    if (changes.value && !changes.value.firstChange) {
+      this.updatePossibleChips();
     }
     if (changes.options && !changes.options.firstChange) {
       this.options = changes.options.currentValue || [];

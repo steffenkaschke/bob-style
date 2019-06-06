@@ -10,7 +10,6 @@ import { ControlValueAccessor, FormControl } from '@angular/forms';
 import { simpleUID, asArray } from '../services/utils/functional-utils';
 import { InputEvent } from './input/input.interface';
 import { InputEventType } from './input/input.enum';
-import { isArray } from 'util';
 
 export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {
@@ -36,7 +35,6 @@ export abstract class BaseFormElement
   @Input() value: any;
   @Input() disabled: boolean;
   @Input() required: boolean;
-  // @Input() hideLabelOnFocus = false;
   @Input() hintMessage: string;
   @Input() errorMessage: string;
   @Input() warnMessage: string;
@@ -44,12 +42,12 @@ export abstract class BaseFormElement
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
 
   public inputFocused = false;
-  // public inputTouched = false;
-  // public initialized = false;
-
   public id = simpleUID('bfe-');
+  public inputTransformers: Function[] = [];
+  public outputTransformers: Function[] = [];
 
   protected onNgChanges(changes: SimpleChanges): void {}
+
   @Input() validateFn: Function = (_: FormControl) => {};
 
   onTouched: Function = (_: any) => {};
@@ -74,7 +72,10 @@ export abstract class BaseFormElement
 
   writeValue(value: any): void {
     if (value !== undefined) {
-      this.value = value;
+      this.value = this.inputTransformers.reduce(
+        (previousResult, fn) => fn(previousResult),
+        value
+      );
     }
   }
 
@@ -87,6 +88,11 @@ export abstract class BaseFormElement
     if (value !== undefined && doPropagate) {
       eventType = asArray(eventType);
 
+      value = this.outputTransformers.reduce(
+        (previousResult, fn) => fn(previousResult),
+        value
+      );
+
       eventType.forEach(event => {
         this[eventName].emit({
           event,
@@ -94,7 +100,12 @@ export abstract class BaseFormElement
         } as InputEvent);
       });
 
-      this.propagateChange(value);
+      if (
+        eventType.includes(InputEventType.onChange) ||
+        eventType.includes(InputEventType.onBlur)
+      ) {
+        this.propagateChange(value);
+      }
 
       if (eventType.includes(InputEventType.onBlur)) {
         this.onTouched();

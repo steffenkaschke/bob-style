@@ -65,6 +65,16 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
 
   constructor() {
     super();
+    this.outputTransformers = [
+      date => {
+        return isDate(date)
+          ? format(
+              date,
+              (!!this.dateFormat && this.dateFormat) || serverDateFormat
+            )
+          : date;
+      }
+    ];
   }
 
   ngOnInit(): void {
@@ -74,7 +84,7 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
   }
 
   // this extends BaseFormElement's ngOnChanges
-  onNgChanges(changes: SimpleChanges) {
+  onNgChanges(changes: SimpleChanges): void {
     if (changes.dateFormat && !changes.dateFormat.firstChange) {
       this.dateFormat = changes.dateFormat.currentValue.toUpperCase();
       BDateAdapter.bFormat =
@@ -91,7 +101,7 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
       this.value = this.date = value;
 
       this.transmitValue(
-        this.formatDateForOutput(value),
+        value,
         [InputEventType.onChange, InputEventType.onBlur],
         'dateChange'
       );

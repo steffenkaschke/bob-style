@@ -6,7 +6,6 @@ import {
   InputEventType,
   InputTypes
 } from './input/input.enum';
-import { pass } from '../services/utils/functional-utils';
 
 export abstract class BaseInputElement extends BaseFormElement {
   protected constructor() {
@@ -23,7 +22,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   >();
 
   // this extends BaseFormElement's ngOnChanges
-  onNgChanges(changes: SimpleChanges) {
+  onNgChanges(changes: SimpleChanges): void {
     if (changes.value && !changes.value.currentValue) {
       this.value = '';
     }

@@ -751,7 +751,7 @@
 
      <p class="full-width">ValueChanges: {{bChipinput_SubscrCounter}}</p>
      <div class="outputValue full-width">
-       {{ bChipinput_SubscrValue && bChipinput_SubscrValue.join(', ') }}
+       {{ bChipinput_SubscrValue && (isArray(bChipinput_SubscrValue) ?bChipinput_SubscrValue.join(', ') : bChipinput_SubscrValue) }}
      </div>
 
      <p class="full-width">InputEvents: {{bChipinput_EventCounter}}</p>

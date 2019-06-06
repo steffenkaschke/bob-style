@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { chipOptionsMock } from '../../../../ui-framework/src/lib/form-elements/chip-input/chip-input.mock';
 import {
   isString,
-  stringListToArray
+  isArray
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
 
 @Component({
@@ -14,6 +14,8 @@ import {
 })
 export class FormElementsTestComponent implements OnInit, OnDestroy {
   constructor() {}
+
+  isArray = isArray;
 
   allFormElements = [
     'bInput',
