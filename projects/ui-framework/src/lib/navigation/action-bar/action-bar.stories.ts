@@ -3,28 +3,28 @@ import { text, withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { BarModule } from './bar.module';
+import { ActionBarModule } from './action-bar.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 
 const inputStories = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
 
 const componentTemplate = `
-<b-bar [label]="label">
+<b-action-bar [label]="label">
     <b-button>Test</b-button>
-</b-bar>
+</b-action-bar>
 `;
 
 const template = `
-<b-story-book-layout [title]="'bar'">
+<b-story-book-layout [title]="'action bar'">
   ${componentTemplate}
 </b-story-book-layout>
 `;
 
 const note = `
-  ## Bar Element
+  ## Action Bar Element
 
   #### Module
-  *BarModule*
+  *ActionBarModule*
 
   #### Properties
   Name | Type | Description
@@ -37,7 +37,7 @@ const note = `
 `;
 
 inputStories.add(
-  'Bar',
+  'Action Bar',
   () => {
     return {
       template,
@@ -45,7 +45,7 @@ inputStories.add(
         label: text('label', 'Test label'),
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, BarModule, StoryBookLayoutModule, ButtonsModule]
+        imports: [BrowserAnimationsModule, ActionBarModule, StoryBookLayoutModule, ButtonsModule]
       }
     };
   },
