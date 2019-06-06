@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BarComponent } from './bar.component';
+import { ActionBarComponent } from './action-bar.component';
 import { TypographyModule } from '../../typography/typography.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 
 @NgModule({
-  entryComponents: [BarComponent],
-  declarations: [BarComponent],
+  entryComponents: [ActionBarComponent],
+  declarations: [ActionBarComponent],
   imports: [
     CommonModule,
     TypographyModule,
     ButtonsModule,
   ],
-  exports: [BarComponent],
+  exports: [ActionBarComponent],
 })
-export class BarModule {
+export class ActionBarModule {
 }

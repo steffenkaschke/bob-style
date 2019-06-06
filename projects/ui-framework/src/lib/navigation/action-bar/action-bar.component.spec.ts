@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { BarComponent } from './bar.component';
+import { ActionBarComponent } from './action-bar.component';
 import { By } from '@angular/platform-browser';
 
-describe('BarComponent', () => {
-  let component: BarComponent;
-  let fixture: ComponentFixture<BarComponent>;
+describe('ActionBarComponent', () => {
+  let component: ActionBarComponent;
+  let fixture: ComponentFixture<ActionBarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BarComponent],
+      declarations: [ActionBarComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
-        fixture = TestBed.createComponent(BarComponent);
+        fixture = TestBed.createComponent(ActionBarComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
       });
@@ -25,7 +25,7 @@ describe('BarComponent', () => {
     it('should populate b-heading with the supplied label', () => {
       component.label = 'test';
       fixture.detectChanges();
-      labelElement = fixture.debugElement.query(By.css('b-heading'));
+      labelElement = fixture.debugElement.query(By.css('b-bold-body'));
       expect(labelElement.nativeElement.textContent).toEqual('test');
     });
   });
