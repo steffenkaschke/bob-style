@@ -7,13 +7,12 @@ import {
   forwardRef
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { BaseInputElement } from '../base-input-element';
+import { IconColor, IconSize } from '../../icons/icons.enum';
 import { InputEvent } from '../input/input.interface';
 import { InputTypes } from '../input/input.enum';
-import { SocialService } from './social.service';
 import { SocialTypes } from './social.const';
-import { Social } from './social.interface';
+import { Social } from './social.enum';
+import { BaseFormElement } from '../base-form-element';
 
 @Component({
   selector: 'b-social',
@@ -32,9 +31,13 @@ import { Social } from './social.interface';
     }
   ]
 })
-export class SocialComponent extends BaseInputElement implements OnInit {
+export class SocialComponent extends BaseFormElement {
   constructor() {
     super();
+    this.inputTransformers = [value => value.split('/')[1]];
+    this.outputTransformers = [
+      value => `${SocialTypes[this.type].prefix}${value}`
+    ];
   }
 
   @Input() type: Social;
@@ -47,18 +50,7 @@ export class SocialComponent extends BaseInputElement implements OnInit {
   public readonly inputTypes = InputTypes;
   public readonly socialTypes = SocialTypes;
 
-  ngOnInit() {
-    if (this.value) {
-      this.value = SocialService.inputToSocialFormat(this.value);
-    }
-  }
-
   public onInputEvents(event: InputEvent): void {
-    this.value = event.value as string;
-    const socialOutput = SocialService.inputTransformOut(
-      this.socialTypes[this.type].prefix,
-      this.value
-    );
-    this.socialInputChange.emit(socialOutput);
+    this.transmitValue(event.value, event.event, 'socialInputChange');
   }
 }

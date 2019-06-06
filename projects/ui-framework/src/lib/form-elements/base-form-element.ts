@@ -72,10 +72,12 @@ export abstract class BaseFormElement
 
   writeValue(value: any): void {
     if (value !== undefined) {
-      this.value = this.inputTransformers.reduce(
-        (previousResult, fn) => fn(previousResult),
-        value
-      );
+      this.value = value
+        ? this.inputTransformers.reduce(
+            (previousResult, fn) => fn(previousResult),
+            value
+          )
+        : value;
     }
   }
 

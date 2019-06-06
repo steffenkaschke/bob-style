@@ -11,7 +11,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SocialModule } from './social.module';
 import { SearchModule } from '../../search/search/search.module';
-import { Social } from './social.interface';
+import { Social } from './social.enum';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,

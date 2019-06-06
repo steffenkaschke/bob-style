@@ -1,5 +1,5 @@
 import { Icons } from '../../icons/icons.enum';
-import { Social } from './social.interface';
+import { Social } from './social.enum';
 
 export interface SocialInputConfig {
   icon: Icons;

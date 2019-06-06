@@ -5,16 +5,16 @@ import { InputModule } from '../../form-elements/input/input.module';
 import { IconsModule } from '../../icons/icons.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { SocialType } from './social.interface';
+import { Social } from './social.enum';
 import { Icons } from '../../icons/icons.enum';
-import { socialTypesConfig } from './social.const';
+import { SocialTypes } from './social.const';
 
 describe('SocialComponent', () => {
   let component: SocialComponent;
   let fixture: ComponentFixture<SocialComponent>;
 
-  const assignSocialSelection = (type) => {
-    const socialTypesRes = socialTypesConfig;
+  const assignSocialSelection = type => {
+    const socialTypesRes = SocialTypes;
     const res = {
       facebook: 'www.facebook.com/AlanTulin',
       linkedin: 'www.linkedin.com/AlanTulin',
@@ -23,33 +23,24 @@ describe('SocialComponent', () => {
     expect(`${socialTypesRes[type].prefix}AlanTulin`).toEqual(res[type]);
   };
 
-
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        SocialComponent,
-      ],
-      imports: [
-        NoopAnimationsModule,
-        FormsModule,
-        InputModule,
-        IconsModule,
-      ],
+      declarations: [SocialComponent],
+      imports: [NoopAnimationsModule, FormsModule, InputModule, IconsModule]
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(SocialComponent);
         component = fixture.componentInstance;
         spyOn(component.socialInputChange, 'emit');
-        component.type = SocialType.Facebook;
+        component.type = Social.facebook;
         fixture.detectChanges();
       });
   }));
 
   describe('ngOnInit', () => {
     it('should assign social selection (facebook) to social input type', () => {
-      const socialConfigRes = [  'facebook', 'linkedin', 'twitter'];
+      const socialConfigRes = ['facebook', 'linkedin', 'twitter'];
       for (const socialType of socialConfigRes) {
         assignSocialSelection(socialType);
       }
@@ -67,7 +58,9 @@ describe('SocialComponent', () => {
       inputElement.nativeElement.value = 'AlanTulin';
       inputElement.nativeElement.dispatchEvent(new Event('input'));
       fixture.detectChanges();
-      expect(component.socialInputChange.emit).toHaveBeenCalledWith('www.facebook.com/AlanTulin');
+      expect(component.socialInputChange.emit).toHaveBeenCalledWith(
+        'www.facebook.com/AlanTulin'
+      );
     });
   });
 });
