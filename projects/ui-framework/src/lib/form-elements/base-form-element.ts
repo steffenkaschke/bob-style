@@ -7,9 +7,10 @@ import {
   EventEmitter
 } from '@angular/core';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
-import { simpleUID } from '../services/utils/functional-utils';
+import { simpleUID, asArray } from '../services/utils/functional-utils';
 import { InputEvent } from './input/input.interface';
 import { InputEventType } from './input/input.enum';
+import { isArray } from 'util';
 
 export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {
@@ -35,17 +36,16 @@ export abstract class BaseFormElement
   @Input() value: any;
   @Input() disabled: boolean;
   @Input() required: boolean;
-  @Input() hideLabelOnFocus = false;
+  // @Input() hideLabelOnFocus = false;
   @Input() hintMessage: string;
   @Input() errorMessage: string;
   @Input() warnMessage: string;
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
 
-  protected writingValue = false;
   public inputFocused = false;
-  public inputTouched = false;
-  public initialized = false;
+  // public inputTouched = false;
+  // public initialized = false;
 
   public id = simpleUID('bfe-');
 
@@ -74,32 +74,38 @@ export abstract class BaseFormElement
 
   writeValue(value: any): void {
     if (value !== undefined) {
-      this.writingValue = true;
-      this.applyValue(value);
+      this.value = value;
     }
   }
 
-  protected applyValue(value: any): void {
-    this.value = value;
-    if (!this.writingValue) {
-      this.transmitValue(value);
-    } else {
-      this.writingValue = false;
-    }
-  }
+  protected transmitValue(
+    value: any = this.value,
+    eventType: InputEventType | InputEventType[] = [InputEventType.onChange],
+    eventName = 'changed',
+    doPropagate = true
+  ): void {
+    if (value !== undefined && doPropagate) {
+      eventType = asArray(eventType);
 
-  protected transmitValue(value: any): void {
-    this.changed.emit({
-      event: 'BASEFORM' + InputEventType.onChange,
-      value
-    } as InputEvent);
-    this.propagateChange(value);
-    this.writingValue = false;
+      eventType.forEach(event => {
+        this[eventName].emit({
+          event,
+          value
+        } as InputEvent);
+      });
+
+      this.propagateChange(value);
+
+      if (eventType.includes(InputEventType.onBlur)) {
+        this.onTouched();
+      }
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value) {
-      this.applyValue(changes.value.currentValue);
+      this.writeValue(changes.value.currentValue);
+      this.transmitValue(changes.value.currentValue);
     }
     this.onNgChanges(changes);
   }

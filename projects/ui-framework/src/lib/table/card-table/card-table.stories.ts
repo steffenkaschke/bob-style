@@ -8,8 +8,8 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { CardTableModule } from './card-table.module';
 import { CardTableMockMetaData, CardTableMockData } from './card-table.mock';
 
-import { ChipsModule } from '../../buttons-indicators/chips/chips.module';
-import { ChipComponent } from '../../buttons-indicators/chips/chip/chip.component';
+import { ChipModule } from '../../buttons-indicators/chip/chip.module';
+import { ChipComponent } from '../../buttons-indicators/chip/chip.component';
 
 import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
 
@@ -221,7 +221,7 @@ story.add(
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           CardTableModule,
-          ChipsModule,
+          ChipModule,
           ButtonsModule,
           AvatarModule
         ],

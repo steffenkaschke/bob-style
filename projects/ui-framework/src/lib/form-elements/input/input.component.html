@@ -21,9 +21,9 @@
          [autocomplete]="enableBrowserAutoComplete"
          [disabled]="disabled"
          [required]="required"
-         (focus)="onFocus($event)"
-         (blur)="onBlur($event)"
-         (input)="onChange($event)">
+         (focus)="emitInputEvent(eventType.onFocus,$event.target.value); inputFocused = true;"
+         (blur)="emitInputEvent(eventType.onBlur,$event.target.value)"
+         (input)="emitInputEvent(eventType.onChange,$event.target.value); inputFocused = false;">
 
   <div *ngIf="showSuffix"
        class="bfe-suffix"

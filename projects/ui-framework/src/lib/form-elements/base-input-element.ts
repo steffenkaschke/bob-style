@@ -1,4 +1,4 @@
-import { EventEmitter, Input, Output } from '@angular/core';
+import { EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
 import {
@@ -13,6 +13,7 @@ export abstract class BaseInputElement extends BaseFormElement {
     super();
   }
 
+  public eventType = InputEventType;
   @Input() value: any = '';
   @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
@@ -21,46 +22,22 @@ export abstract class BaseInputElement extends BaseFormElement {
     InputEvent
   >();
 
-  onChange($event: any, converter = pass): void {
-    this.emitInputEvent(
-      InputEventType.onChange,
-      converter($event.value || $event.target.value)
-    );
+  // this extends BaseFormElement's ngOnChanges
+  onNgChanges(changes: SimpleChanges) {
+    if (changes.value && !changes.value.currentValue) {
+      this.value = '';
+    }
   }
 
-  onFocus($event: any, converter = pass): void {
-    this.inputFocused = true;
-    this.emitInputEvent(
-      InputEventType.onFocus,
-      converter($event.value || $event.target.value)
-    );
-  }
-
-  onBlur($event: any, converter = pass): void {
-    this.inputFocused = false;
-    this.emitInputEvent(
-      InputEventType.onBlur,
-      converter($event.value || $event.target.value)
-    );
-  }
-
-  emitInputEvent(event: InputEventType, value: string | number): void {
-    if (event === InputEventType.onChange) {
+  emitInputEvent(event: InputEventType, value: any): void {
+    if (value && event === InputEventType.onChange) {
       if (value !== this.value) {
         this.value = value;
-        this.propagateChange(value);
-        this.inputEvents.emit({ event, value });
+        this.transmitValue(value, [event], 'inputEvents');
       }
     }
     if (event === InputEventType.onFocus || event === InputEventType.onBlur) {
-      if (value !== this.value) {
-        this.value = value;
-      }
-      this.inputEvents.emit({ event, value: this.value });
-    }
-    if (event === InputEventType.onBlur) {
-      this.propagateChange(this.value);
-      this.onTouched();
+      this.transmitValue(this.value, [event], 'inputEvents');
     }
   }
 }

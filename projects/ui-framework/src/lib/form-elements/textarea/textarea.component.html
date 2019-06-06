@@ -13,9 +13,9 @@
             [disabled]="disabled"
             [required]="required"
             [attr.maxlength]="maxChars"
-            (focus)="onFocus($event)"
-            (blur)="onBlur($event)"
-            (input)="onChange($event)"></textarea>
+            (focus)="emitInputEvent(eventType.onFocus,$event.target.value); inputFocused = true;"
+            (blur)="emitInputEvent(eventType.onBlur,$event.target.value)"
+            (input)="emitInputEvent(eventType.onChange,$event.target.value); inputFocused = false;"></textarea>
 </div>
 <p b-input-message
    *ngIf="hintMessage || warnMessage || errorMessage"

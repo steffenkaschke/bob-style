@@ -6,17 +6,16 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { ChipsModule } from '../chips.module';
-import { ComponentGroupType } from '../../../consts';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import { ChipModule } from '../../buttons-indicators/chip/chip.module';
+import { ComponentGroupType } from '../../consts';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { chipOptionsMock } from './chip-input.mock';
-import { randomFromArray } from '../../../services/utils/functional-utils';
+import { randomFromArray } from '../../services/utils/functional-utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const story = storiesOf(
-  `${ComponentGroupType.ButtonsAndIndicators}.Chips`,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
 const options = chipOptionsMock;
 const value = [...randomFromArray(chipOptionsMock, 3), 'Rimming'];
@@ -43,7 +42,7 @@ const template2 = `
 const note = `
   ## Text-only Chip
   #### Module
-  *ChipsModule*
+  *ChipModule*
 
   #### Properties
   Name | Type | Description | Default value
@@ -90,7 +89,7 @@ story.add(
       chipInputChangeHandler: action('Chip input changed')
     },
     moduleMetadata: {
-      imports: [ChipsModule, StoryBookLayoutModule, BrowserAnimationsModule]
+      imports: [ChipModule, StoryBookLayoutModule, BrowserAnimationsModule]
     }
   }),
   { notes: { markdown: note } }

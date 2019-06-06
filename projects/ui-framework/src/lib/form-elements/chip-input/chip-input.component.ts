@@ -18,21 +18,23 @@ import {
   MatAutocompleteTrigger
 } from '@angular/material';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
-import { BaseFormElement } from '../../../form-elements/base-form-element';
-import { ChipType } from '../chips.enum';
-import { ChipInputChange } from '../chips.interface';
-import { InputTypes } from '../../../form-elements/input/input.enum';
-import { ChipComponent } from '../chip/chip.component';
-import { isKey, isArray } from '../../../services/utils/functional-utils';
-import { Keys } from '../../../enums';
+import { BaseFormElement } from '../base-form-element';
+import { ChipType } from '../../buttons-indicators/chip/chip.enum';
+import { ChipInputChange } from './chip-input.interface';
+import { InputTypes } from '../input/input.enum';
+import { ChipComponent } from '../../buttons-indicators/chip/chip.component';
+import {
+  isKey,
+  isArray,
+  isString,
+  stringListToArray
+} from '../../services/utils/functional-utils';
+import { Keys } from '../../enums';
 
 @Component({
   selector: 'b-chip-input',
   templateUrl: './chip-input.component.html',
-  styleUrls: [
-    '../../../form-elements/input/input.component.scss',
-    './chip-input.component.scss'
-  ],
+  styleUrls: ['../input/input.component.scss', './chip-input.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -53,7 +55,7 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   @Input() value: string[] = [];
-  @Input() options: string[];
+  @Input() options: string[] = [];
   @Input() acceptNew = true;
 
   private possibleChips: string[] = [];
@@ -76,15 +78,19 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value && !changes.value.firstChange) {
-      this.value = changes.value.currentValue;
+    if (changes.value) {
+      this.value = changes.value.currentValue || [];
       if (!isArray(this.value)) {
-        (this.value as any) = [this.value];
+        this.value = isString(this.value)
+          ? stringListToArray(this.value as any)
+          : [];
       }
-      this.updatePossibleChips();
+      if (!changes.value.firstChange) {
+        this.updatePossibleChips();
+      }
     }
     if (changes.options && !changes.options.firstChange) {
-      this.options = changes.options.currentValue;
+      this.options = changes.options.currentValue || [];
       this.updatePossibleChips();
     }
   }
@@ -100,9 +106,14 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   private updatePossibleChips(): void {
-    this.possibleChips = this.options.filter(
-      ch => !this.value.find(c => c.toLowerCase() === ch.toLowerCase())
-    );
+    this.possibleChips = this.options
+      ? this.options.filter(
+          ch =>
+            (this.value &&
+              !this.value.find(c => c.toLowerCase() === ch.toLowerCase())) ||
+            true
+        )
+      : [];
   }
 
   private findChip(name: string, chipsSource = this.possibleChips): string {

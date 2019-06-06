@@ -1,0 +1,1700 @@
+ <button class="show-global-controls"
+         type="button">Global</button>
+ <div class="global-controls col">
+
+   <label>
+     <input class="simple-checkbox"
+            (change)="globalControlChange('global_warn')"
+            [(ngModel)]="global_warn"
+            type="checkbox">
+     enable all warnings
+   </label>
+
+   <label>
+     <input class="simple-checkbox"
+            (change)="globalControlChange('global_error')"
+            [(ngModel)]="global_error"
+            type="checkbox">
+     enable all errors
+   </label>
+
+ </div>
+
+
+ <section class="bInput"
+          *ngIf="allFormElements.includes('bInput')">
+   <form [formGroup]="bInput_Form"
+         (ngSubmit)="onSubmit('bInput')"
+         class="column">
+
+     <h3>
+       b-input
+     </h3>
+
+     <button class="show-code"
+             type="button">Code</button>
+     <pre class="code-example"><code>
+&#x3C;b-input formControlName=&#x22;bInput&#x22;
+      [label]=&#x22;bInput_label&#x22;
+      [placeholder]=&#x22;bInput_placeholder&#x22;
+      [value]=&#x22;bInput_value&#x22;
+      [disabled]=&#x22;bInput_disabled&#x22;
+      [required]=&#x22;bInput_required&#x22;
+      [hintMessage]=&#x22;bInput_hint&#x22;
+      [warnMessage]=&#x22;bInput_warn&#x22;
+      [errorMessage]=&#x22;bInput_error&#x22;
+      (inputEvents)=&#x22;onEvent(&#x27;bInput&#x27;,$event)&#x22;
+      (changed)=&#x22;onEvent(&#x27;bInput&#x27;,$event)&#x22;&#x3E;
+      &#x3C;/b-input&#x3E;
+    </code></pre>
+
+     <b-input *ngIf="bInput_formControlEnabled"
+              formControlName="bInput"
+              [label]="bInput_label"
+              [placeholder]="bInput_placeholder"
+              [value]="bInput_directValueInput ? bInput_value : undefined"
+              [disabled]="bInput_disabled"
+              [required]="bInput_required"
+              [hintMessage]="bInput_hint"
+              [warnMessage]="bInput_warn"
+              [errorMessage]="bInput_error"
+              (inputEvents)="onEvent('bInput',$event)"
+              (changed)="onEvent('bInput',$event)">
+     </b-input>
+
+     <b-input *ngIf="!bInput_formControlEnabled"
+              [label]="bInput_label"
+              [placeholder]="bInput_placeholder"
+              [value]="bInput_directValueInput ? bInput_value : undefined"
+              [disabled]="bInput_disabled"
+              [required]="bInput_required"
+              [hintMessage]="bInput_hint"
+              [warnMessage]="bInput_warn"
+              [errorMessage]="bInput_error"
+              (inputEvents)="onEvent('bInput',$event)"
+              (changed)="onEvent('bInput',$event)">
+     </b-input>
+
+     <p>
+       Form valid: {{bInput_Form.valid}}
+     </p>
+   </form>
+
+   <div class="column">
+
+     <label class="control-item col">
+       Label
+       <input class="simple-input"
+              [(ngModel)]="bInput_label"
+              type="search">
+     </label>
+
+     <label class="control-item col">
+       Placeholder
+       <input class="simple-input"
+              [(ngModel)]="bInput_placeholder"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       HintMessage
+       <input class="simple-input"
+              [(ngModel)]="bInput_hint"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       WarnMessage
+       <input class="simple-input"
+              [(ngModel)]="bInput_warn"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       ErrorMessage
+       <input class="simple-input"
+              [(ngModel)]="bInput_error"
+              type="search">
+     </label>
+
+     <p class="full-width">ValueChanges: {{bInput_SubscrCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bInput_SubscrValue }}
+     </div>
+
+     <p class="full-width">InputEvents: {{bInput_EventCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bInput_EventValue }}
+     </div>
+
+     <div class="control-item col">
+       <p class="side-by-side">
+         <strong class="value">Value</strong>
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bInput_directValueInput"
+                  type="checkbox">
+           enable direct input
+         </label>
+       </p>
+       <label>
+         <input class="simple-input bigger"
+                [(ngModel)]="bInput_value"
+                type="search">
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <strong class="props">Props</strong>
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bInput_required"
+                type="checkbox">
+         required
+       </label>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bInput_disabled"
+                type="checkbox">
+         disabled
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bInput_formControlEnabled"
+                (change)="bInput_directValueInput = !$event.target.checked"
+                type="checkbox">
+         Enable FormControl
+       </label>
+       <button type="button"
+               [disabled]="!bInput_formControlEnabled"
+               (click)="setValue('bInput')">SetValue</button>
+       <label>
+         <input class="simple-checkbox"
+                [disabled]="!bInput_formControlEnabled"
+                [(ngModel)]="bInput_setValEmit"
+                type="checkbox">
+         Emit on setValue
+       </label>
+       <label><button class="submit-button"
+                 (click)="onSubmitClick('bInput')"
+                 [disabled]="!bInput_Form.valid"
+                 type="submit">Submit form</button></label>
+     </div>
+
+     <div class="control-item col">
+       Updating on: {{ bInput_updateOn_mode }}
+       <label>
+         <input type="radio"
+                [disabled]="!bInput_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bInput',bInput_updateOn_mode)"
+                [(ngModel)]="bInput_updateOn_mode"
+                name="bInput_updateOn_radio"
+                value="change">
+         Change
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bInput_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bInput',bInput_updateOn_mode)"
+                [(ngModel)]="bInput_updateOn_mode"
+                name="bInput_updateOn_radio"
+                value="blur">
+         Blur
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bInput_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bInput',bInput_updateOn_mode)"
+                [(ngModel)]="bInput_updateOn_mode"
+                name="bInput_updateOn_radio"
+                value="submit">
+         Submit
+       </label>
+     </div>
+
+   </div>
+
+ </section>
+
+ <section class="bTextarea"
+          *ngIf="allFormElements.includes('bTextarea')">
+   <form [formGroup]="bTextarea_Form"
+         (ngSubmit)="onSubmit('bTextarea')"
+         class="column">
+
+     <h3>
+       b-textarea
+     </h3>
+
+     <button class="show-code"
+             type="button">Code</button>
+     <pre class="code-example"><code>
+&#x3C;b-textarea formControlName=&#x22;bTextarea&#x22;
+      [label]=&#x22;bTextarea_label&#x22;
+      [placeholder]=&#x22;bTextarea_placeholder&#x22;
+      [value]=&#x22;bTextarea_value&#x22;
+      [disabled]=&#x22;bTextarea_disabled&#x22;
+      [required]=&#x22;bTextarea_required&#x22;
+      [hintMessage]=&#x22;bTextarea_hint&#x22;
+      [warnMessage]=&#x22;bTextarea_warn&#x22;
+      [errorMessage]=&#x22;bTextarea_error&#x22;
+      [maxChars]=&#x22;50&#x22;
+      (inputEvents)=&#x22;onEvent(&#x27;bTextarea&#x27;,$event)&#x22;
+      (changed)=&#x22;onEvent(&#x27;bTextarea&#x27;,$event)&#x22;&#x3E;
+      &#x3C;/b-textarea&#x3E;
+    </code></pre>
+
+     <b-textarea *ngIf="bTextarea_formControlEnabled"
+                 formControlName="bTextarea"
+                 [label]="bTextarea_label"
+                 [placeholder]="bTextarea_placeholder"
+                 [value]="bTextarea_directValueInput ? bTextarea_value : undefined"
+                 [disabled]="bTextarea_disabled"
+                 [required]="bTextarea_required"
+                 [hintMessage]="bTextarea_hint"
+                 [warnMessage]="bTextarea_warn"
+                 [errorMessage]="bTextarea_error"
+                 [maxChars]="50"
+                 (inputEvents)="onEvent('bTextarea',$event)"
+                 (changed)="onEvent('bTextarea',$event)">
+     </b-textarea>
+
+     <b-textarea *ngIf="!bTextarea_formControlEnabled"
+                 [label]="bTextarea_label"
+                 [placeholder]="bTextarea_placeholder"
+                 [value]="bTextarea_directValueInput ? bTextarea_value : undefined"
+                 [disabled]="bTextarea_disabled"
+                 [required]="bTextarea_required"
+                 [hintMessage]="bTextarea_hint"
+                 [warnMessage]="bTextarea_warn"
+                 [errorMessage]="bTextarea_error"
+                 [maxChars]="50"
+                 (inputEvents)="onEvent('bTextarea',$event)"
+                 (changed)="onEvent('bTextarea',$event)">
+     </b-textarea>
+
+     <p>
+       Form valid: {{bTextarea_Form.valid}}
+     </p>
+   </form>
+
+   <div class="column">
+
+     <label class="control-item col">
+       Label
+       <input class="simple-input"
+              [(ngModel)]="bTextarea_label"
+              type="search">
+     </label>
+
+     <label class="control-item col">
+       Placeholder
+       <input class="simple-input"
+              [(ngModel)]="bTextarea_placeholder"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       HintMessage
+       <input class="simple-input"
+              [(ngModel)]="bTextarea_hint"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       WarnMessage
+       <input class="simple-input"
+              [(ngModel)]="bTextarea_warn"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       ErrorMessage
+       <input class="simple-input"
+              [(ngModel)]="bTextarea_error"
+              type="search">
+     </label>
+
+     <p class="full-width">ValueChanges: {{bTextarea_SubscrCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bTextarea_SubscrValue }}
+     </div>
+
+     <p class="full-width">InputEvents: {{bTextarea_EventCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bTextarea_EventValue }}
+     </div>
+
+     <div class="control-item col">
+       <p class="side-by-side">
+         <strong class="value">Value</strong>
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bTextarea_directValueInput"
+                  type="checkbox">
+           enable direct input
+         </label>
+       </p>
+       <label>
+         <input class="simple-input bigger"
+                [(ngModel)]="bTextarea_value"
+                type="search">
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <strong class="props">Props</strong>
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bTextarea_required"
+                type="checkbox">
+         required
+       </label>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bTextarea_disabled"
+                type="checkbox">
+         disabled
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bTextarea_formControlEnabled"
+                (change)="bTextarea_directValueInput = !$event.target.checked"
+                type="checkbox">
+         Enable FormControl
+       </label>
+       <button type="button"
+               [disabled]="!bTextarea_formControlEnabled"
+               (click)="setValue('bTextarea')">SetValue</button>
+       <label>
+         <input class="simple-checkbox"
+                [disabled]="!bTextarea_formControlEnabled"
+                [(ngModel)]="bTextarea_setValEmit"
+                type="checkbox">
+         Emit on setValue
+       </label>
+       <label><button class="submit-button"
+                 (click)="onSubmitClick('bTextarea')"
+                 [disabled]="!bTextarea_Form.valid"
+                 type="submit">Submit form</button></label>
+
+     </div>
+
+     <div class="control-item col">
+       Updating on: {{ bTextarea_updateOn_mode }}
+       <label>
+         <input type="radio"
+                [disabled]="!bTextarea_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bTextarea',bTextarea_updateOn_mode)"
+                [(ngModel)]="bTextarea_updateOn_mode"
+                name="bTextarea_updateOn_radio"
+                value="change">
+         Change
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bTextarea_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bTextarea',bTextarea_updateOn_mode)"
+                [(ngModel)]="bTextarea_updateOn_mode"
+                name="bTextarea_updateOn_radio"
+                value="blur">
+         Blur
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bTextarea_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bTextarea',bTextarea_updateOn_mode)"
+                [(ngModel)]="bTextarea_updateOn_mode"
+                name="bTextarea_updateOn_radio"
+                value="submit">
+         Submit
+       </label>
+     </div>
+
+   </div>
+
+ </section>
+
+ <section class="bDatepicker"
+          *ngIf="allFormElements.includes('bDatepicker')">
+   <form [formGroup]="bDatepicker_Form"
+         (ngSubmit)="onSubmit('bDatepicker')"
+         class="column">
+
+     <h3>
+       b-datepicker
+     </h3>
+
+     <button class="show-code"
+             type="button">Code</button>
+     <pre class="code-example"><code>
+&#x3C;b-datepicker formControlName=&#x22;bDatepicker&#x22;
+      [label]=&#x22;bDatepicker_label&#x22;
+      [placeholder]=&#x22;bDatepicker_placeholder&#x22;
+      [value]=&#x22;bDatepicker_value&#x22;
+      [dateFormat]=&#x22;bDatepicker_dateFormat&#x22;
+      [disabled]=&#x22;bDatepicker_disabled&#x22;
+      [required]=&#x22;bDatepicker_required&#x22;
+      [hintMessage]=&#x22;bDatepicker_hint&#x22;
+      [warnMessage]=&#x22;bDatepicker_warn&#x22;
+      [errorMessage]=&#x22;bDatepicker_error&#x22;
+      (dateChange)=&#x22;onEvent(&#x27;bDatepicker&#x27;,$event)&#x22;
+      (changed)=&#x22;onEvent(&#x27;bDatepicker&#x27;,$event)&#x22;&#x3E;
+      &#x3C;/b-datepicker&#x3E;
+    </code></pre>
+
+     <b-datepicker *ngIf="bDatepicker_formControlEnabled"
+                   formControlName="bDatepicker"
+                   [label]="bDatepicker_label"
+                   [placeholder]="bDatepicker_placeholder"
+                   [value]="bDatepicker_directValueInput ? bDatepicker_value : undefined"
+                   [dateFormat]="bDatepicker_dateFormat"
+                   [disabled]="bDatepicker_disabled"
+                   [required]="bDatepicker_required"
+                   [hintMessage]="bDatepicker_hint"
+                   [warnMessage]="bDatepicker_warn"
+                   [errorMessage]="bDatepicker_error"
+                   (dateChange)="onEvent('bDatepicker',$event)"
+                   (changed)="onEvent('bDatepicker',$event)">
+     </b-datepicker>
+
+     <b-datepicker *ngIf="!bDatepicker_formControlEnabled"
+                   [label]="bDatepicker_label"
+                   [placeholder]="bDatepicker_placeholder"
+                   [value]="bDatepicker_directValueInput ? bDatepicker_value : undefined"
+                   [dateFormat]="bDatepicker_dateFormat"
+                   [disabled]="bDatepicker_disabled"
+                   [required]="bDatepicker_required"
+                   [hintMessage]="bDatepicker_hint"
+                   [warnMessage]="bDatepicker_warn"
+                   [errorMessage]="bDatepicker_error"
+                   (dateChange)="onEvent('bDatepicker',$event)"
+                   (changed)="onEvent('bDatepicker',$event)">
+     </b-datepicker>
+
+     <p>
+       Form valid: {{bDatepicker_Form.valid}}
+     </p>
+
+     <p class="note">
+       Setting value via input or FormControl's setValue triggers the events, but does not put value in the input field
+       (date conversion / mat-datepicker issue).
+     </p>
+   </form>
+
+   <div class="column">
+
+     <label class="control-item col">
+       Label
+       <input class="simple-input"
+              [(ngModel)]="bDatepicker_label"
+              type="search">
+     </label>
+
+     <label class="control-item col">
+       Placeholder
+       <input class="simple-input"
+              [(ngModel)]="bDatepicker_placeholder"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       HintMessage
+       <input class="simple-input"
+              [(ngModel)]="bDatepicker_hint"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       WarnMessage
+       <input class="simple-input"
+              [(ngModel)]="bDatepicker_warn"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       ErrorMessage
+       <input class="simple-input"
+              [(ngModel)]="bDatepicker_error"
+              type="search">
+     </label>
+
+     <p class="full-width">ValueChanges: {{bDatepicker_SubscrCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bDatepicker_SubscrValue }}
+     </div>
+
+     <p class="full-width">InputEvents: {{bDatepicker_EventCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bDatepicker_EventValue }}
+     </div>
+
+     <div class="control-item col third">
+       <p class="side-by-side">
+         <strong class="value">Value</strong>
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bDatepicker_directValueInput"
+                  type="checkbox">
+           enable direct input
+         </label>
+       </p>
+       <label>
+         <input class="simple-input bigger"
+                [(ngModel)]="bDatepicker_value"
+                type="search">
+       </label>
+     </div>
+
+     <div class="control-item col third">
+       <strong class="props">Props</strong>
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bDatepicker_required"
+                type="checkbox">
+         required
+       </label>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bDatepicker_disabled"
+                type="checkbox">
+         disabled
+       </label>
+     </div>
+
+     <div class="control-item col third">
+       <label>
+         dateFormat: {{ bDatepicker_dateFormat }}
+         <input class="simple-input"
+                #bDatepicker_dateFormat_input
+                [value]="bDatepicker_dateFormat"
+                (change)="bDatepicker_dateFormat = bDatepicker_dateFormat_input.value"
+                type="search">
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bDatepicker_formControlEnabled"
+                (change)="bDatepicker_directValueInput = !$event.target.checked"
+                type="checkbox">
+         Enable FormControl
+       </label>
+       <button type="button"
+               [disabled]="!bDatepicker_formControlEnabled"
+               (click)="setValue('bDatepicker')">SetValue</button>
+       <label>
+         <input class="simple-checkbox"
+                [disabled]="!bDatepicker_formControlEnabled"
+                [(ngModel)]="bDatepicker_setValEmit"
+                type="checkbox">
+         Emit on setValue
+       </label>
+       <label><button class="submit-button"
+                 (click)="onSubmitClick('bDatepicker')"
+                 [disabled]="!bDatepicker_Form.valid"
+                 type="submit">Submit form</button></label>
+     </div>
+
+     <div class="control-item col">
+       Updating on: {{ bDatepicker_updateOn_mode }}
+       <label>
+         <input type="radio"
+                [disabled]="!bDatepicker_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bDatepicker',bDatepicker_updateOn_mode)"
+                [(ngModel)]="bDatepicker_updateOn_mode"
+                name="bDatepicker_updateOn_radio"
+                value="change">
+         Change
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bDatepicker_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bDatepicker',bDatepicker_updateOn_mode)"
+                [(ngModel)]="bDatepicker_updateOn_mode"
+                name="bDatepicker_updateOn_radio"
+                value="blur">
+         Blur
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bDatepicker_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bDatepicker',bDatepicker_updateOn_mode)"
+                [(ngModel)]="bDatepicker_updateOn_mode"
+                name="bDatepicker_updateOn_radio"
+                value="submit">
+         Submit
+       </label>
+     </div>
+
+   </div>
+
+ </section>
+
+ <section class="bChipinput"
+          *ngIf="allFormElements.includes('bChipinput')">
+   <form [formGroup]="bChipinput_Form"
+         (ngSubmit)="onSubmit('bChipinput')"
+         class="column">
+
+     <h3>
+       b-chip-input
+     </h3>
+
+     <button class="show-code"
+             type="button">Code</button>
+     <pre class="code-example"><code>
+&#x3C;b-chip-input formControlName=&#x22;bChipinput&#x22;
+      [label]=&#x22;bChipinput_label&#x22;
+      [placeholder]=&#x22;bChipinput_placeholder&#x22;
+      [value]=&#x22;bChipinput_value&#x22;
+      [options]=&#x22;bChipinput_options&#x22;
+      [acceptNew]=&#x22;bChipinput_acceptNew&#x22;
+      [disabled]=&#x22;bChipinput_disabled&#x22;
+      [required]=&#x22;bChipinput_required&#x22;
+      [hintMessage]=&#x22;bChipinput_hint&#x22;
+      [warnMessage]=&#x22;bChipinput_warn&#x22;
+      [errorMessage]=&#x22;bChipinput_error&#x22;
+      (changed)=&#x22;onEvent(&#x27;bChipinput&#x27;,$event)&#x22;&#x3E;
+      &#x3C;/b-chip-input&#x3E;
+    </code></pre>
+
+     <b-chip-input *ngIf="bChipinput_formControlEnabled"
+                   formControlName="bChipinput"
+                   [label]="bChipinput_label"
+                   [placeholder]="bChipinput_placeholder"
+                   [value]="bChipinput_directValueInput ? bChipinput_value : undefined"
+                   [options]="bChipinput_options"
+                   [acceptNew]="bChipinput_acceptNew"
+                   [disabled]="bChipinput_disabled"
+                   [required]="bChipinput_required"
+                   [hintMessage]="bChipinput_hint"
+                   [warnMessage]="bChipinput_warn"
+                   [errorMessage]="bChipinput_error"
+                   (changed)="onEvent('bChipinput',$event)">
+     </b-chip-input>
+
+     <b-chip-input *ngIf="!bChipinput_formControlEnabled"
+                   [label]="bChipinput_label"
+                   [placeholder]="bChipinput_placeholder"
+                   [value]="bChipinput_directValueInput ? bChipinput_value : undefined"
+                   [options]="bChipinput_options"
+                   [acceptNew]="bChipinput_acceptNew"
+                   [disabled]="bChipinput_disabled"
+                   [required]="bChipinput_required"
+                   [hintMessage]="bChipinput_hint"
+                   [warnMessage]="bChipinput_warn"
+                   [errorMessage]="bChipinput_error"
+                   (changed)="onEvent('bChipinput',$event)">
+     </b-chip-input>
+
+     <p>
+       Form valid: {{bChipinput_Form.valid}}
+     </p>
+   </form>
+
+   <div class="column">
+
+     <label class="control-item col">
+       Label
+       <input class="simple-input"
+              [(ngModel)]="bChipinput_label"
+              type="search">
+     </label>
+
+     <label class="control-item col">
+       Placeholder
+       <input class="simple-input"
+              [(ngModel)]="bChipinput_placeholder"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       HintMessage
+       <input class="simple-input"
+              [(ngModel)]="bChipinput_hint"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       WarnMessage
+       <input class="simple-input"
+              [(ngModel)]="bChipinput_warn"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       ErrorMessage
+       <input class="simple-input"
+              [(ngModel)]="bChipinput_error"
+              type="search">
+     </label>
+
+     <p class="full-width">ValueChanges: {{bChipinput_SubscrCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bChipinput_SubscrValue && bChipinput_SubscrValue.join(', ') }}
+     </div>
+
+     <p class="full-width">InputEvents: {{bChipinput_EventCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bChipinput_EventValue }}
+     </div>
+
+     <div class="control-item col">
+       <p class="side-by-side">
+         <strong class="value">Value</strong>
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bChipinput_directValueInput"
+                  type="checkbox">
+           enable direct input
+         </label>
+       </p>
+       <label>
+         <textarea class="simple-textarea bigger"
+                   [(ngModel)]="bChipinput_value"
+                   type="search"></textarea>
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <strong class="props">Props</strong>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bChipinput_acceptNew"
+                type="checkbox">
+         acceptNew
+       </label>
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bChipinput_required"
+                type="checkbox">
+         required
+       </label>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bChipinput_disabled"
+                type="checkbox">
+         disabled
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bChipinput_formControlEnabled"
+                (change)="bChipinput_directValueInput = !$event.target.checked"
+                type="checkbox">
+         Enable FormControl
+       </label>
+       <button type="button"
+               [disabled]="!bChipinput_formControlEnabled"
+               (click)="setValue('bChipinput')">SetValue</button>
+       <label>
+         <input class="simple-checkbox"
+                [disabled]="!bChipinput_formControlEnabled"
+                [(ngModel)]="bChipinput_setValEmit"
+                type="checkbox">
+         Emit on setValue
+       </label>
+       <label><button class="submit-button"
+                 (click)="onSubmitClick('bChipinput')"
+                 [disabled]="!bChipinput_Form.valid"
+                 type="submit">Submit form</button></label>
+     </div>
+
+     <div class="control-item col">
+       Updating on: {{ bChipinput_updateOn_mode }}
+       <label>
+         <input type="radio"
+                [disabled]="!bChipinput_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bChipinput',bChipinput_updateOn_mode)"
+                [(ngModel)]="bChipinput_updateOn_mode"
+                name="bChipinput_updateOn_radio"
+                value="change">
+         Change
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bChipinput_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bChipinput',bChipinput_updateOn_mode)"
+                [(ngModel)]="bChipinput_updateOn_mode"
+                name="bChipinput_updateOn_radio"
+                value="blur">
+         Blur
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bChipinput_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bChipinput',bChipinput_updateOn_mode)"
+                [(ngModel)]="bChipinput_updateOn_mode"
+                name="bChipinput_updateOn_radio"
+                value="submit">
+         Submit
+       </label>
+     </div>
+
+   </div>
+
+ </section>
+
+ <section class="bSocial"
+          *ngIf="allFormElements.includes('bSocial')">
+   <form [formGroup]="bSocial_Form"
+         (ngSubmit)="onSubmit('bSocial')"
+         class="column">
+
+     <h3>
+       b-social
+     </h3>
+
+     <button class="show-code"
+             type="button">Code</button>
+     <pre class="code-example"><code>
+&#x3C;b-social formControlName=&#x22;bSocial&#x22;
+      [type]=&#x22;bSocial_type&#x22;
+      [label]=&#x22;bSocial_label&#x22;
+      [placeholder]=&#x22;bSocial_placeholder&#x22;
+      [value]=&#x22;bSocial_value&#x22;
+      [disabled]=&#x22;bSocial_disabled&#x22;
+      [required]=&#x22;bSocial_required&#x22;
+      [hintMessage]=&#x22;bSocial_hint&#x22;
+      [warnMessage]=&#x22;bSocial_warn&#x22;
+      [errorMessage]=&#x22;bSocial_error&#x22;
+      (socialInputChange)=&#x22;onEvent(&#x27;bSocial&#x27;,$event)&#x22;
+      (changed)=&#x22;onEvent(&#x27;bSocial&#x27;,$event)&#x22;&#x3E;
+      &#x3C;/b-social&#x3E;
+    </code></pre>
+
+     <b-social *ngIf="bSocial_formControlEnabled"
+               formControlName="bSocial"
+               [type]="bSocial_type"
+               [label]="bSocial_label"
+               [placeholder]="bSocial_placeholder"
+               [value]="bSocial_directValueInput ? bSocial_value : undefined"
+               [disabled]="bSocial_disabled"
+               [required]="bSocial_required"
+               [hintMessage]="bSocial_hint"
+               [warnMessage]="bSocial_warn"
+               [errorMessage]="bSocial_error"
+               (socialInputChange)="onEvent('bSocial',$event)"
+               (changed)="onEvent('bSocial',$event)">
+     </b-social>
+
+     <b-social *ngIf="!bSocial_formControlEnabled"
+               [type]="bSocial_type"
+               [label]="bSocial_label"
+               [placeholder]="bSocial_placeholder"
+               [value]="bSocial_directValueInput ? bSocial_value : undefined"
+               [disabled]="bSocial_disabled"
+               [required]="bSocial_required"
+               [hintMessage]="bSocial_hint"
+               [warnMessage]="bSocial_warn"
+               [errorMessage]="bSocial_error"
+               (socialInputChange)="onEvent('bSocial',$event)"
+               (changed)="onEvent('bSocial',$event)">
+     </b-social>
+
+     <p>
+       Form valid: {{bSocial_Form.valid}}
+     </p>
+   </form>
+
+   <div class="column">
+
+     <label class="control-item col">
+       Label
+       <input class="simple-input"
+              [(ngModel)]="bSocial_label"
+              type="search">
+     </label>
+
+     <label class="control-item col">
+       Placeholder
+       <input class="simple-input"
+              [(ngModel)]="bSocial_placeholder"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       HintMessage
+       <input class="simple-input"
+              [(ngModel)]="bSocial_hint"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       WarnMessage
+       <input class="simple-input"
+              [(ngModel)]="bSocial_warn"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       ErrorMessage
+       <input class="simple-input"
+              [(ngModel)]="bSocial_error"
+              type="search">
+     </label>
+
+     <p class="full-width">ValueChanges: {{bSocial_SubscrCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bSocial_SubscrValue }}
+     </div>
+
+     <p class="full-width">InputEvents: {{bSocial_EventCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bSocial_EventValue }}
+     </div>
+
+     <div class="control-item col">
+       <p class="side-by-side">
+         <strong class="value">Value</strong>
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bSocial_directValueInput"
+                  type="checkbox">
+           enable direct input
+         </label>
+       </p>
+       <label>
+         <input class="simple-input bigger"
+                [(ngModel)]="bSocial_value"
+                type="search">
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <strong class="props">Props</strong>
+       <label class="side-by-side">
+         type
+         <select [(ngModel)]="bSocial_type"
+                 class="simple-select">
+           <option value="facebook">facebook</option>
+           <option value="linkedin">linkedin</option>
+           <option value="twitter">twitter</option>
+         </select>
+       </label>
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bSocial_required"
+                type="checkbox">
+         required
+       </label>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bSocial_disabled"
+                type="checkbox">
+         disabled
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bSocial_formControlEnabled"
+                (change)="bSocial_directValueInput = !$event.target.checked"
+                type="checkbox">
+         Enable FormControl
+       </label>
+       <button type="button"
+               [disabled]="!bSocial_formControlEnabled"
+               (click)="setValue('bSocial')">SetValue</button>
+       <label>
+         <input class="simple-checkbox"
+                [disabled]="!bSocial_formControlEnabled"
+                [(ngModel)]="bSocial_setValEmit"
+                type="checkbox">
+         Emit on setValue
+       </label>
+       <label><button class="submit-button"
+                 (click)="onSubmitClick('bSocial')"
+                 [disabled]="!bSocial_Form.valid"
+                 type="submit">Submit form</button></label>
+     </div>
+
+     <div class="control-item col">
+       Updating on: {{ bSocial_updateOn_mode }}
+       <label>
+         <input type="radio"
+                [disabled]="!bSocial_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bSocial',bSocial_updateOn_mode)"
+                [(ngModel)]="bSocial_updateOn_mode"
+                name="bSocial_updateOn_radio"
+                value="change">
+         Change
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bSocial_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bSocial',bSocial_updateOn_mode)"
+                [(ngModel)]="bSocial_updateOn_mode"
+                name="bSocial_updateOn_radio"
+                value="blur">
+         Blur
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bSocial_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bSocial',bSocial_updateOn_mode)"
+                [(ngModel)]="bSocial_updateOn_mode"
+                name="bSocial_updateOn_radio"
+                value="submit">
+         Submit
+       </label>
+     </div>
+
+   </div>
+
+ </section>
+
+ <section class="bCheckbox"
+          *ngIf="allFormElements.includes('bCheckbox')">
+   <form [formGroup]="bCheckbox_Form"
+         (ngSubmit)="onSubmit('bCheckbox')"
+         class="column">
+
+     <h3>
+       b-checkbox
+     </h3>
+
+     <button class="show-code"
+             type="button">Code</button>
+     <pre class="code-example"><code>
+&#x3C;b-checkbox
+      formControlName=&#x22;bCheckbox&#x22;
+      [label]=&#x22;bCheckbox_label&#x22;
+      [value]=&#x22;bCheckbox_value&#x22;
+      [indeterminate]=&#x22;bCheckbox_indeterminate&#x22;
+      [disabled]=&#x22;bCheckbox_disabled&#x22;
+      [required]=&#x22;bCheckbox_required&#x22;
+      [hintMessage]=&#x22;bCheckbox_hint&#x22;
+      [warnMessage]=&#x22;bCheckbox_warn&#x22;
+      [errorMessage]=&#x22;bCheckbox_error&#x22;
+      (checkboxChange)=&#x22;onEvent(&#x27;bCheckbox&#x27;,$event)&#x22;
+      (changed)=&#x22;onEvent(&#x27;bCheckbox&#x27;,$event)&#x22;&#x3E;
+      &#x3C;/b-checkbox&#x3E;
+    </code></pre>
+
+     <b-checkbox *ngIf="bCheckbox_formControlEnabled"
+                 formControlName="bCheckbox"
+                 [label]="bCheckbox_label"
+                 [value]="bCheckbox_directValueInput ? bCheckbox_value : undefined"
+                 [indeterminate]="bCheckbox_indeterminate"
+                 [disabled]="bCheckbox_disabled"
+                 [required]="bCheckbox_required"
+                 [hintMessage]="bCheckbox_hint"
+                 [warnMessage]="bCheckbox_warn"
+                 [errorMessage]="bCheckbox_error"
+                 (checkboxChange)="onEvent('bCheckbox',$event)"
+                 (changed)="onEvent('bCheckbox',$event)">
+     </b-checkbox>
+
+     <b-checkbox *ngIf="!bCheckbox_formControlEnabled"
+                 [label]="bCheckbox_label"
+                 [value]="bCheckbox_directValueInput ? bCheckbox_value : undefined"
+                 [disabled]="bCheckbox_disabled"
+                 [required]="bCheckbox_required"
+                 [hintMessage]="bCheckbox_hint"
+                 [warnMessage]="bCheckbox_warn"
+                 [errorMessage]="bCheckbox_error"
+                 (checkboxChange)="onEvent('bCheckbox',$event)"
+                 (changed)="onEvent('bCheckbox',$event)">
+     </b-checkbox>
+
+     <p>
+       Form valid: {{bCheckbox_Form.valid}}
+     </p>
+   </form>
+
+   <div class="column">
+
+     <label class="control-item col">
+       Label
+       <input class="simple-input"
+              [(ngModel)]="bCheckbox_label"
+              type="search">
+     </label>
+
+     <span class="control-item col">
+
+     </span>
+
+     <label class="control-item col third">
+       HintMessage
+       <input class="simple-input"
+              [(ngModel)]="bCheckbox_hint"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       WarnMessage
+       <input class="simple-input"
+              [(ngModel)]="bCheckbox_warn"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       ErrorMessage
+       <input class="simple-input"
+              [(ngModel)]="bCheckbox_error"
+              type="search">
+     </label>
+
+     <p class="full-width">ValueChanges: {{bCheckbox_SubscrCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bCheckbox_SubscrValue }}
+     </div>
+
+     <p class="full-width">InputEvents: {{bCheckbox_EventCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bCheckbox_EventValue }}
+     </div>
+
+     <div class="control-item col">
+       <p class="side-by-side">
+         <strong class="value">Value</strong>
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bCheckbox_directValueInput"
+                  type="checkbox">
+           enable direct input
+         </label>
+       </p>
+       <label>
+         <input class="simple-input bigger"
+                [(ngModel)]="bCheckbox_value"
+                type="search">
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <strong class="props">Props</strong>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bCheckbox_indeterminate"
+                type="checkbox">
+         indeterminate
+       </label>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bCheckbox_required"
+                type="checkbox">
+         required
+       </label>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bCheckbox_disabled"
+                type="checkbox">
+         disabled
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bCheckbox_formControlEnabled"
+                (change)="bCheckbox_directValueInput = !$event.target.checked"
+                type="checkbox">
+         Enable FormControl
+       </label>
+       <button type="button"
+               [disabled]="!bCheckbox_formControlEnabled"
+               (click)="setValue('bCheckbox')">SetValue</button>
+       <label>
+         <input class="simple-checkbox"
+                [disabled]="!bCheckbox_formControlEnabled"
+                [(ngModel)]="bCheckbox_setValEmit"
+                type="checkbox">
+         Emit on setValue
+       </label>
+       <label><button class="submit-button"
+                 (click)="onSubmitClick('bCheckbox')"
+                 [disabled]="!bCheckbox_Form.valid"
+                 type="submit">Submit form</button></label>
+     </div>
+
+     <div class="control-item col">
+       Updating on: {{ bCheckbox_updateOn_mode }}
+       <label>
+         <input type="radio"
+                [disabled]="!bCheckbox_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bCheckbox',bCheckbox_updateOn_mode)"
+                [(ngModel)]="bCheckbox_updateOn_mode"
+                name="bCheckbox_updateOn_radio"
+                value="change">
+         Change
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bCheckbox_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bCheckbox',bCheckbox_updateOn_mode)"
+                [(ngModel)]="bCheckbox_updateOn_mode"
+                name="bCheckbox_updateOn_radio"
+                value="blur">
+         Blur
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bCheckbox_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bCheckbox',bCheckbox_updateOn_mode)"
+                [(ngModel)]="bCheckbox_updateOn_mode"
+                name="bCheckbox_updateOn_radio"
+                value="submit">
+         Submit
+       </label>
+     </div>
+
+   </div>
+
+ </section>
+
+ <section class="bRadio"
+          *ngIf="allFormElements.includes('bRadio')">
+   <form [formGroup]="bRadio_Form"
+         (ngSubmit)="onSubmit('bRadio')"
+         class="column">
+
+     <h3>
+       b-radio
+     </h3>
+
+     <button class="show-code"
+             type="button">Code</button>
+     <pre class="code-example"><code>
+&#x3C;b-radio-button formControlName=&#x22;bRadio&#x22;
+      [label]=&#x22;bRadio_label&#x22;
+      [value]=&#x22;bRadio_value&#x22;
+      [radioConfig]=&#x22;bRadio_radioConfig&#x22;
+      [direction]=&#x22;bRadio_direction&#x22;
+      [disabled]=&#x22;bRadio_disabled&#x22;
+      [required]=&#x22;bRadio_required&#x22;
+      [hintMessage]=&#x22;bRadio_hint&#x22;
+      [warnMessage]=&#x22;bRadio_warn&#x22;
+      [errorMessage]=&#x22;bRadio_error&#x22;
+      (radioChange)=&#x22;onEvent(&#x27;bRadio&#x27;,$event)&#x22;
+      (changed)=&#x22;onEvent(&#x27;bRadio&#x27;,$event)&#x22;&#x3E;
+      &#x3C;/b-radio-button&#x3E;
+    </code></pre>
+
+     <br>
+
+     <b-radio-button *ngIf="bRadio_formControlEnabled"
+                     formControlName="bRadio"
+                     [label]="bRadio_label"
+                     [value]="bRadio_directValueInput ? bRadio_value : undefined"
+                     [radioConfig]="bRadio_radioConfig"
+                     [direction]="bRadio_direction"
+                     [disabled]="bRadio_disabled"
+                     [required]="bRadio_required"
+                     [hintMessage]="bRadio_hint"
+                     [warnMessage]="bRadio_warn"
+                     [errorMessage]="bRadio_error"
+                     (radioChange)="onEvent('bRadio',$event)"
+                     (changed)="onEvent('bRadio',$event)">
+     </b-radio-button>
+
+     <b-radio-button *ngIf="!bRadio_formControlEnabled"
+                     [label]="bRadio_label"
+                     [value]="bRadio_directValueInput ? bRadio_value : undefined"
+                     [radioConfig]="bRadio_radioConfig"
+                     [direction]="bRadio_direction"
+                     [disabled]="bRadio_disabled"
+                     [required]="bRadio_required"
+                     [hintMessage]="bRadio_hint"
+                     [warnMessage]="bRadio_warn"
+                     [errorMessage]="bRadio_error"
+                     (radioChange)="onEvent('bRadio',$event)"
+                     (changed)="onEvent('bRadio',$event)">
+     </b-radio-button>
+
+     <br>
+
+     <p>
+       Form valid: {{bRadio_Form.valid}}
+     </p>
+   </form>
+
+   <div class="column">
+
+     <label class="control-item col">
+       Label
+       <input class="simple-input"
+              [(ngModel)]="bRadio_label"
+              type="search">
+     </label>
+
+     <span class="control-item col">
+
+     </span>
+
+     <label class="control-item col third">
+       HintMessage
+       <input class="simple-input"
+              [(ngModel)]="bRadio_hint"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       WarnMessage
+       <input class="simple-input"
+              [(ngModel)]="bRadio_warn"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       ErrorMessage
+       <input class="simple-input"
+              [(ngModel)]="bRadio_error"
+              type="search">
+     </label>
+
+     <p class="full-width">ValueChanges: {{bRadio_SubscrCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bRadio_SubscrValue }}
+     </div>
+
+     <p class="full-width">InputEvents: {{bRadio_EventCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bRadio_EventValue }}
+     </div>
+
+     <div class="control-item col">
+       <p class="side-by-side">
+         <strong class="value">Value</strong>
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bRadio_directValueInput"
+                  type="checkbox">
+           enable direct input
+         </label>
+       </p>
+       <label>
+         <input class="simple-input bigger"
+                [(ngModel)]="bRadio_value"
+                type="search">
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <strong class="props">Props</strong>
+       <label class="side-by-side">
+         direction
+         <select [(ngModel)]="bRadio_direction"
+                 class="simple-select">
+           <option value="row">row</option>
+           <option value="column">column</option>
+         </select>
+       </label>
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bRadio_required"
+                type="checkbox">
+         required
+       </label>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bRadio_disabled"
+                type="checkbox">
+         disabled
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bRadio_formControlEnabled"
+                (change)="bRadio_directValueInput = !$event.target.checked"
+                type="checkbox">
+         Enable FormControl
+       </label>
+       <button type="button"
+               [disabled]="!bRadio_formControlEnabled"
+               (click)="setValue('bRadio')">SetValue</button>
+       <label>
+         <input class="simple-checkbox"
+                [disabled]="!bRadio_formControlEnabled"
+                [(ngModel)]="bRadio_setValEmit"
+                type="checkbox">
+         Emit on setValue
+       </label>
+       <label><button class="submit-button"
+                 (click)="onSubmitClick('bRadio')"
+                 [disabled]="!bRadio_Form.valid"
+                 type="submit">Submit form</button></label>
+     </div>
+
+     <div class="control-item col">
+       Updating on: {{ bRadio_updateOn_mode }}
+       <label>
+         <input type="radio"
+                [disabled]="!bRadio_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bRadio',bRadio_updateOn_mode)"
+                [(ngModel)]="bRadio_updateOn_mode"
+                name="bRadio_updateOn_radio"
+                value="change">
+         Change
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bRadio_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bRadio',bRadio_updateOn_mode)"
+                [(ngModel)]="bRadio_updateOn_mode"
+                name="bRadio_updateOn_radio"
+                value="blur">
+         Blur
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bRadio_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bRadio',bRadio_updateOn_mode)"
+                [(ngModel)]="bRadio_updateOn_mode"
+                name="bRadio_updateOn_radio"
+                value="submit">
+         Submit
+       </label>
+     </div>
+
+   </div>
+
+ </section>
+
+ <section class="bSplitInput"
+          *ngIf="allFormElements.includes('bSplitInput')">
+   <form [formGroup]="bSplitInput_Form"
+         (ngSubmit)="onSubmit('bSplitInput')"
+         class="column">
+
+     <h3>
+       b-input
+     </h3>
+
+     <button class="show-code"
+             type="button">Code</button>
+     <pre class="code-example"><code>
+&#x3C;b-input formControlName=&#x22;bSplitInput&#x22;
+      [label]=&#x22;bSplitInput_label&#x22;
+      [placeholder]=&#x22;bSplitInput_placeholder&#x22;
+      [value]=&#x22;bSplitInput_value&#x22;
+      [disabled]=&#x22;bSplitInput_disabled&#x22;
+      [required]=&#x22;bSplitInput_required&#x22;
+      [hintMessage]=&#x22;bSplitInput_hint&#x22;
+      [warnMessage]=&#x22;bSplitInput_warn&#x22;
+      [errorMessage]=&#x22;bSplitInput_error&#x22;
+      (inputEvents)=&#x22;onEvent(&#x27;bSplitInput&#x27;,$event)&#x22;
+      (changed)=&#x22;onEvent(&#x27;bSplitInput&#x27;,$event)&#x22;&#x3E;
+      &#x3C;/b-input&#x3E;
+    </code></pre>
+
+     <b-split-input-single-select *ngIf="bSplitInput_formControlEnabled"
+                                  formControlName="bSplitInput"
+                                  [label]="bSplitInput_label"
+                                  [placeholder]="bSplitInput_placeholder"
+                                  [value]="bSplitInput_directValueInput ? bSplitInput_value : undefined"
+                                  [disabled]="bSplitInput_disabled"
+                                  [required]="bSplitInput_required"
+                                  [hintMessage]="bSplitInput_hint"
+                                  [warnMessage]="bSplitInput_warn"
+                                  [errorMessage]="bSplitInput_error"
+                                  (inputEvents)="onEvent('bSplitInput',$event)"
+                                  (changed)="onEvent('bSplitInput',$event)">
+     </b-split-input-single-select>
+
+     <b-split-input-single-select *ngIf="!bSplitInput_formControlEnabled"
+                                  [label]="bSplitInput_label"
+                                  [placeholder]="bSplitInput_placeholder"
+                                  [value]="bSplitInput_directValueInput ? bSplitInput_value : undefined"
+                                  [disabled]="bSplitInput_disabled"
+                                  [required]="bSplitInput_required"
+                                  [hintMessage]="bSplitInput_hint"
+                                  [warnMessage]="bSplitInput_warn"
+                                  [errorMessage]="bSplitInput_error"
+                                  (inputEvents)="onEvent('bSplitInput',$event)"
+                                  (changed)="onEvent('bSplitInput',$event)">
+     </b-split-input-single-select>
+
+     <p>
+       Form valid: {{bSplitInput_Form.valid}}
+     </p>
+   </form>
+
+   <div class="column">
+
+     <label class="control-item col">
+       Label
+       <input class="simple-input"
+              [(ngModel)]="bSplitInput_label"
+              type="search">
+     </label>
+
+     <label class="control-item col">
+       Placeholder
+       <input class="simple-input"
+              [(ngModel)]="bSplitInput_placeholder"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       HintMessage
+       <input class="simple-input"
+              [(ngModel)]="bSplitInput_hint"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       WarnMessage
+       <input class="simple-input"
+              [(ngModel)]="bSplitInput_warn"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       ErrorMessage
+       <input class="simple-input"
+              [(ngModel)]="bSplitInput_error"
+              type="search">
+     </label>
+
+     <p class="full-width">ValueChanges: {{bSplitInput_SubscrCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bSplitInput_SubscrValue }}
+     </div>
+
+     <p class="full-width">InputEvents: {{bSplitInput_EventCounter}}</p>
+     <div class="outputValue full-width">
+       {{ bSplitInput_EventValue }}
+     </div>
+
+     <div class="control-item col">
+       <p class="side-by-side">
+         <strong class="value">Value</strong>
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bSplitInput_directValueInput"
+                  type="checkbox">
+           enable direct input
+         </label>
+       </p>
+       <label>
+         <input class="simple-input bigger"
+                [(ngModel)]="bSplitInput_value"
+                type="search">
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <strong class="props">Props</strong>
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bSplitInput_required"
+                type="checkbox">
+         required
+       </label>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bSplitInput_disabled"
+                type="checkbox">
+         disabled
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bSplitInput_formControlEnabled"
+                (change)="bSplitInput_directValueInput = !$event.target.checked"
+                type="checkbox">
+         Enable FormControl
+       </label>
+       <button type="button"
+               [disabled]="!bSplitInput_formControlEnabled"
+               (click)="setValue('bSplitInput')">SetValue</button>
+       <label>
+         <input class="simple-checkbox"
+                [disabled]="!bSplitInput_formControlEnabled"
+                [(ngModel)]="bSplitInput_setValEmit"
+                type="checkbox">
+         Emit on setValue
+       </label>
+       <label><button class="submit-button"
+                 (click)="onSubmitClick('bSplitInput')"
+                 [disabled]="!bSplitInput_Form.valid"
+                 type="submit">Submit form</button></label>
+     </div>
+
+     <div class="control-item col">
+       Updating on: {{ bSplitInput_updateOn_mode }}
+       <label>
+         <input type="radio"
+                [disabled]="!bSplitInput_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bSplitInput',bSplitInput_updateOn_mode)"
+                [(ngModel)]="bSplitInput_updateOn_mode"
+                name="bSplitInput_updateOn_radio"
+                value="change">
+         Change
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bSplitInput_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bSplitInput',bSplitInput_updateOn_mode)"
+                [(ngModel)]="bSplitInput_updateOn_mode"
+                name="bSplitInput_updateOn_radio"
+                value="blur">
+         Blur
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bSplitInput_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bSplitInput',bSplitInput_updateOn_mode)"
+                [(ngModel)]="bSplitInput_updateOn_mode"
+                name="bSplitInput_updateOn_radio"
+                value="submit">
+         Submit
+       </label>
+     </div>
+
+   </div>
+
+ </section>

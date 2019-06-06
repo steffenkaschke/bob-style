@@ -26,11 +26,6 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-:before,
-:after {
-  pointer-events: none;
-}
-
 @-webkit-viewport {
   width: device-width;
   zoom: 1;

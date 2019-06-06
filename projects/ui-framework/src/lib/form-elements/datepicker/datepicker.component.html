@@ -17,7 +17,7 @@
          [required]="required"
          (focus)="picker.open();inputFocused = true"
          (blur)="picker.opened ? bInput.focus() : inputFocused = false"
-         (dateChange)="onDateChange($event)"
+         (dateChange)="onDateChange($event.value)"
          [matDatepicker]="picker">
 
   <b-icon class="bfe-suffix"

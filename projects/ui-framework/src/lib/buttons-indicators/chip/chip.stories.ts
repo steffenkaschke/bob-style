@@ -1,4 +1,4 @@
-import { storiesOf, moduleMetadata } from '@storybook/angular';
+import { storiesOf } from '@storybook/angular';
 import {
   text,
   select,
@@ -6,14 +6,14 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { ChipsModule } from '../chips.module';
-import { ChipType } from '../chips.enum';
+import { ChipModule } from './chip.module';
+import { ChipType } from './chip.enum';
 import { values } from 'lodash';
-import { ComponentGroupType } from '../../../consts';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import { ComponentGroupType } from '../../consts';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
 const story = storiesOf(
-  `${ComponentGroupType.ButtonsAndIndicators}.Chips`,
+  ComponentGroupType.ButtonsAndIndicators,
   module
 ).addDecorator(withKnobs);
 
@@ -36,7 +36,7 @@ const template2 = `
 const note = `
   ## Chip
   #### Module
-  *ChipsModule*
+  *ChipModule*
 
   #### Properties
   Name | Type | Description | Default value
@@ -74,7 +74,7 @@ story.add(
       OnRemove: action('Chip removed')
     },
     moduleMetadata: {
-      imports: [ChipsModule, StoryBookLayoutModule]
+      imports: [ChipModule, StoryBookLayoutModule]
     }
   }),
   { notes: { markdown: note } }

@@ -12,8 +12,7 @@ import {
 import {
   DateAdapter,
   MAT_DATE_FORMATS,
-  MatDatepicker,
-  MatDatepickerInputEvent
+  MatDatepicker
 } from '@angular/material';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { InputTypes, InputEventType } from '../input/input.enum';
@@ -21,8 +20,8 @@ import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
 import { InputEvent } from '../input/input.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
-import { BaseInputElement } from '../base-input-element';
-import { differenceInDays, format, isDate, isSameDay, isValid } from 'date-fns';
+import { differenceInDays, format, isDate, isSameDay } from 'date-fns';
+import { BaseFormElement } from '../base-form-element';
 
 @Component({
   selector: 'b-datepicker',
@@ -49,7 +48,7 @@ import { differenceInDays, format, isDate, isSameDay, isValid } from 'date-fns';
     }
   ]
 })
-export class DatepickerComponent extends BaseInputElement implements OnInit {
+export class DatepickerComponent extends BaseFormElement implements OnInit {
   @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<
     InputEvent
   >();
@@ -82,17 +81,20 @@ export class DatepickerComponent extends BaseInputElement implements OnInit {
         (!!this.dateFormat && this.dateFormat) || 'DD/MM/YYYY';
 
       if (this.date) {
-        this.onDateChange({ value: this.date });
+        this.onDateChange(this.date);
       }
     }
   }
 
-  public onDateChange(event: Partial<MatDatepickerInputEvent<any>>) {
-    if (event.value) {
-      this.date = event.value;
-      const outputDate = this.formatDateForOutput(this.date);
-      this.emitInputEvent(InputEventType.onChange, outputDate);
-      this.emitInputEvent(InputEventType.onBlur, outputDate);
+  public onDateChange(value: Date) {
+    if (value) {
+      this.value = this.date = value;
+
+      this.transmitValue(
+        this.formatDateForOutput(value),
+        [InputEventType.onChange, InputEventType.onBlur],
+        'dateChange'
+      );
     }
   }
 

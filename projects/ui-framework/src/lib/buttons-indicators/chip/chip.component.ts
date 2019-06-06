@@ -10,9 +10,9 @@ import {
   HostListener,
   HostBinding
 } from '@angular/core';
-import { ChipType } from '../chips.enum';
-import { ColorService } from '../../../services/color-service/color.service';
-import { Icons, IconSize, IconColor } from '../../../icons/icons.enum';
+import { ChipType } from './chip.enum';
+import { ColorService } from '../../services/color-service/color.service';
+import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-chip, [b-chip]',

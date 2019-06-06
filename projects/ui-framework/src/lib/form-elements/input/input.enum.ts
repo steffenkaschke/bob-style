@@ -6,16 +6,16 @@ export enum InputTypes {
   search = 'search',
   tel = 'tel',
   url = 'url',
-  date = 'date',
+  date = 'date'
 }
 
 export enum InputEventType {
-  onFocus = 'onFocus',
-  onBlur = 'onBlur',
-  onChange = 'onChange',
+  onFocus = 'focus',
+  onBlur = 'blur',
+  onChange = 'change'
 }
 
 export enum InputAutoCompleteOptions {
   on = 'on',
-  off = 'off',
+  off = 'off'
 }

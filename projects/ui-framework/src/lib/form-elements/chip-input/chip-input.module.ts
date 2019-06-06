@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
-import { ChipComponent } from './chip/chip.component';
 import { CommonModule } from '@angular/common';
-import { ColorService } from '../../services/color-service/color.service';
-import { ChipInputComponent } from './chip-input/chip-input.component';
+import { ChipInputComponent } from './chip-input.component';
 import { MatAutocompleteModule } from '@angular/material';
 import { IconsModule } from '../../icons/icons.module';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
+import { ChipModule } from '../../buttons-indicators/chip/chip.module';
 
 @NgModule({
-  declarations: [ChipComponent, ChipInputComponent],
+  declarations: [ChipInputComponent],
   imports: [
     CommonModule,
+    ChipModule,
     MatAutocompleteModule,
     IconsModule,
     InputMessageModule
   ],
-  exports: [ChipComponent, ChipInputComponent],
-  providers: [ColorService]
+  exports: [ChipInputComponent],
+  providers: []
 })
-export class ChipsModule {}
+export class ChipInputModule {}
