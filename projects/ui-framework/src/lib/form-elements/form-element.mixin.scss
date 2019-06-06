@@ -53,6 +53,24 @@ $input-border-color: $grey-500;
 @mixin input-requred($selector: '&') {
   &:after {
     content: ' *';
+    display: inline-block;
+    margin-left: 1px;
+  }
+}
+
+@mixin bFormElement-label {
+  box-sizing: border-box;
+  display: block;
+  min-height: $label-height;
+  margin: 0 0 $label-hint-margin 0;
+  color: $label-color;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+
+  &:empty {
+    display: none;
   }
 }
 
@@ -111,19 +129,7 @@ $input-border-color: $grey-500;
   // label
 
   .bfe-label {
-    box-sizing: border-box;
-    display: block;
-    min-height: $label-height;
-    margin: 0 0 $label-hint-margin 0;
-    color: $label-color;
-
-    &::first-letter {
-      text-transform: uppercase;
-    }
-
-    &:empty {
-      display: none;
-    }
+    @include bFormElement-label;
   }
 
   // prefix-suffix

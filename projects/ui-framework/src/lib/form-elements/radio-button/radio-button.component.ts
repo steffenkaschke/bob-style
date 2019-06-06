@@ -1,4 +1,12 @@
-import { Component, EventEmitter, forwardRef, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
 import { MatRadioChange } from '@angular/material';
@@ -21,12 +29,18 @@ import { RadioDirection } from './radio-button.enum';
       useExisting: forwardRef(() => RadioButtonComponent),
       multi: true
     }
-  ],
+  ]
 })
 export class RadioButtonComponent extends BaseFormElement implements OnChanges {
-  @Input() value: number = null;
-  @Input() radioConfig: RadioConfig[];
+  @Input() value: string;
+  @Input() options: string[];
   @Input() direction: RadioDirection = RadioDirection.row;
+
+  /////////////////
+
+  // @Input() value: number = null;
+  @Input() radioConfig: RadioConfig[];
+
   @Output() radioChange: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {

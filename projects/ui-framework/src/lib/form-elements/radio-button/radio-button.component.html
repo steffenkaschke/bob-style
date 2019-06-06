@@ -11,3 +11,18 @@
   </mat-radio-button>
 
 </mat-radio-group>
+
+
+<ng-content *ngFor="let radio of options">
+
+  <input type="radio">
+  <label>{{radio}}</label>
+
+</ng-content>
+
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled"></p>

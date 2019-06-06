@@ -1093,10 +1093,10 @@
      <button class="show-code"
              type="button">Code</button>
      <pre class="code-example"><code>
-&#x3C;b-checkbox
-      formControlName=&#x22;bCheckbox&#x22;
+&#x3C;b-checkbox formControlName=&#x22;bCheckbox&#x22;
       [label]=&#x22;bCheckbox_label&#x22;
-      [value]=&#x22;bCheckbox_value&#x22;
+      [placeholder]=&#x22;bCheckbox_placeholder&#x22;
+      [value]=&#x22;bCheckbox_directValueInput ? bCheckbox_value : undefined&#x22;
       [indeterminate]=&#x22;bCheckbox_indeterminate&#x22;
       [disabled]=&#x22;bCheckbox_disabled&#x22;
       [required]=&#x22;bCheckbox_required&#x22;
@@ -1105,12 +1105,12 @@
       [errorMessage]=&#x22;bCheckbox_error&#x22;
       (checkboxChange)=&#x22;onEvent(&#x27;bCheckbox&#x27;,$event)&#x22;
       (changed)=&#x22;onEvent(&#x27;bCheckbox&#x27;,$event)&#x22;&#x3E;
-      &#x3C;/b-checkbox&#x3E;
     </code></pre>
 
      <b-checkbox *ngIf="bCheckbox_formControlEnabled"
                  formControlName="bCheckbox"
                  [label]="bCheckbox_label"
+                 [placeholder]="bCheckbox_placeholder"
                  [value]="bCheckbox_directValueInput ? bCheckbox_value : undefined"
                  [indeterminate]="bCheckbox_indeterminate"
                  [disabled]="bCheckbox_disabled"
@@ -1124,6 +1124,7 @@
 
      <b-checkbox *ngIf="!bCheckbox_formControlEnabled"
                  [label]="bCheckbox_label"
+                 [placeholder]="bCheckbox_placeholder"
                  [value]="bCheckbox_directValueInput ? bCheckbox_value : undefined"
                  [disabled]="bCheckbox_disabled"
                  [required]="bCheckbox_required"
@@ -1148,9 +1149,12 @@
               type="search">
      </label>
 
-     <span class="control-item col">
-
-     </span>
+     <label class="control-item col">
+       Placeholder
+       <input class="simple-input"
+              [(ngModel)]="bCheckbox_placeholder"
+              type="search">
+     </label>
 
      <label class="control-item col third">
        HintMessage

@@ -12,9 +12,12 @@
   @include input-border-colors($add: ' .bchk-label:before');
 }
 
+.bfe-label {
+  @include bFormElement-label;
+}
+
 .bchk-input {
   @include checkbox;
-  // @include input-border-colors($add: ' + .bchk-label:before');
 }
 
 .bchk-label {

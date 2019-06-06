@@ -181,6 +181,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bCheckbox_SubscrCounter = 0;
   bCheckbox_EventCounter = 0;
   bCheckbox_label = 'Checkbox label';
+  bCheckbox_placeholder = 'Checkbox Placeholder';
   bCheckbox_value = 'true';
   bCheckbox_indeterminate = false;
   bCheckbox_disabled = false;
