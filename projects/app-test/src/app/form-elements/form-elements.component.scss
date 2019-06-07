@@ -239,3 +239,10 @@ button {
 .value {
   margin-bottom: 5px;
 }
+
+p,
+label {
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
