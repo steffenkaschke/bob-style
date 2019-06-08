@@ -1,4 +1,10 @@
-import { Input, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  Input,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
+  ElementRef
+} from '@angular/core';
 import {
   CdkOverlayOrigin,
   FlexibleConnectedPositionStrategy,
@@ -15,7 +21,7 @@ import { BaseFormElement } from '../base-form-element';
 export abstract class BaseSelectPanelElement extends BaseFormElement {
   @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef') templateRef: TemplateRef<any>;
-  @ViewChild('triggerInput') triggerInput;
+  @ViewChild('triggerInput', { read: ElementRef }) triggerInput: ElementRef;
 
   @Input() isQuickFilter = false;
 
@@ -54,7 +60,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
     });
 
     const searchInput = this.overlayRef.overlayElement.querySelector(
-      'b-input input'
+      'b-search .bfe-input'
     ) as HTMLElement;
     if (searchInput) {
       searchInput.focus();
@@ -118,8 +124,10 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
   updateTriggerTooltip(
     element: HTMLElement = this.triggerInput.nativeElement
   ): void {
-    setTimeout(() => {
-      this.showTriggerTooltip = element.scrollWidth > element.offsetWidth;
-    });
+    if (element) {
+      setTimeout(() => {
+        this.showTriggerTooltip = element.scrollWidth > element.offsetWidth;
+      });
+    }
   }
 }

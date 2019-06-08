@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  Input,
+  ViewChild
+} from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { InputTypes } from '../../form-elements/input/input.enum';
 import { simpleUID } from '../../services/utils/functional-utils';

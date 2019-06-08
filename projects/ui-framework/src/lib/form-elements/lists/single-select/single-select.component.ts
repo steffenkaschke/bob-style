@@ -44,8 +44,6 @@ import { ListFooterActions } from '../list.interface';
 })
 export class SingleSelectComponent extends BaseSelectPanelElement
   implements OnChanges, OnDestroy {
-  @ViewChild('triggerInput') triggerInput: ElementRef;
-
   @Input() options: SelectGroupOption[];
   @Input() showSingleGroupHeader = false;
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
