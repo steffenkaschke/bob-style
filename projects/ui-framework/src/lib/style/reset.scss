@@ -79,18 +79,6 @@ textarea {
 
 // removing extra browser controls on inputs
 
-input[type='number']::-webkit-outer-spin-button,
-input[type='number']::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  appearance: none;
-  margin: 0;
-  height: auto;
-}
-
-input[type='number'] {
-  -moz-appearance: textfield;
-}
-
 input {
   &::-ms-clear {
     display: none;
@@ -104,15 +92,36 @@ select {
   }
 }
 
-input[type='date']::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  appearance: none;
-  display: none;
+input[type='number'] {
+  -moz-appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+    height: auto;
+  }
 }
-input[type='date']::-webkit-calendar-picker-indicator {
-  -webkit-appearance: none;
-  appearance: none;
-  display: none;
+
+input[type='date'] {
+  &::-webkit-inner-spin-button,
+  &::-webkit-calendar-picker-indicator {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+  }
+}
+
+input[type='search'] {
+  &::-webkit-search-decoration,
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+  }
 }
 
 // removing Yellow autocomplete background

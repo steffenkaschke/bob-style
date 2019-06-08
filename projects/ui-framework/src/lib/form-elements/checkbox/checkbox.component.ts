@@ -9,12 +9,8 @@ import {
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-export enum CheckboxStates {
-  checked = 'checked',
-  unchecked = 'unchecked',
-  indeterminate = 'indeterminate'
-}
+import { InputEvent } from '../input/input.interface';
+import { InputEventType } from '../input/input.enum';
 
 @Component({
   selector: 'b-checkbox',
@@ -46,12 +42,13 @@ export class CheckboxComponent extends BaseFormElement {
     this.input.nativeElement.indeterminate = value;
   }
 
-  @Output() checkboxChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() checkboxChange: EventEmitter<InputEvent> = new EventEmitter<
+    InputEvent
+  >();
 
   toggleCheckbox(): void {
     this.value = !this.value;
-    this.propagateChange(this.value);
-    this.onTouched();
-    this.checkboxChange.emit(this.value);
+
+    this.transmitValue(this.value, [InputEventType.onBlur], 'checkboxChange');
   }
 }

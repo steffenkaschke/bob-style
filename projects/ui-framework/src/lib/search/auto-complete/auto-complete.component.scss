@@ -3,22 +3,20 @@
 
 :host {
   display: block;
-  @include transfer-margins;
+  @include transfer-margins(b-search);
 }
 
-:host ::ng-deep {
-  .panel-trigger {
-    width: 100%;
-    display: block;
-    margin: 20px 0;
+:host b-search {
+  &.panel-open ::ng-deep {
+    position: relative;
+    z-index: 10000;
 
-    &.panel-open {
-      position: relative;
-      z-index: 10000;
+    .bfe-wrap {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
 
-      .bfe-wrap {
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
+      &.focused {
+        border-color: $grey-500;
       }
     }
   }

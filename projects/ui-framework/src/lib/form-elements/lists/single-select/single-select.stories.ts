@@ -29,8 +29,7 @@ const template = `
                  [required]="required"
                  [errorMessage]="errorMessage"
                  [hintMessage]="hintMessage"
-                 [showSingleGroupHeader]="showSingleGroupHeader"
-                 [hideLabelOnFocus]="hideLabelOnFocus">
+                 [showSingleGroupHeader]="showSingleGroupHeader">
 </b-single-select>
 `;
 
@@ -60,7 +59,6 @@ const note = `
   hintMessage | text | hint text | none
   errorMessage | text | error text | none
   showSingleGroupHeader | boolean | displays single group with group header | false
-  hideLabelOnFocus | boolean | hides label instead of top | false
 
   ~~~
   ${template}
@@ -100,8 +98,7 @@ buttonStories.add(
       required: boolean('required', false),
       hintMessage: text('hintMessage', 'This field should contain something'),
       errorMessage: text('errorMessage', ''),
-      showSingleGroupHeader: boolean('showSingleGroupHeader', false),
-      hideLabelOnFocus: boolean('hideLabelOnFocus', false)
+      showSingleGroupHeader: boolean('showSingleGroupHeader', false)
     },
     moduleMetadata: {
       imports: [

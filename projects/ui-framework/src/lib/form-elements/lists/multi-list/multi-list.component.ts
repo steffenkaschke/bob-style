@@ -3,7 +3,6 @@ import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep, flatMap, chain } from 'lodash';
 import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
-import { CheckboxStates } from '../../checkbox/checkbox.component';
 import has from 'lodash/has';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
@@ -32,8 +31,6 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   shouldDisplaySearch = false;
   searchValue: string;
   filteredOptions: SelectGroupOption[];
-  checkboxState = CheckboxStates;
-
   selectedIdsMap: (string | number)[];
 
   constructor(

@@ -108,12 +108,6 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
     }
   }
 
-  private formatDateForOutput = (date: any): string => {
-    return isDate(date)
-      ? format(date, (!!this.dateFormat && this.dateFormat) || serverDateFormat)
-      : date;
-  }
-
   public dateClass(date: Date): string {
     const today = new Date();
     const diff = differenceInDays(date, today);

@@ -95,12 +95,14 @@ export abstract class BaseFormElement
         value
       );
 
-      eventType.forEach(event => {
-        this[eventName].emit({
-          event,
-          value
-        } as InputEvent);
-      });
+      if (eventName) {
+        eventType.forEach(event => {
+          this[eventName].emit({
+            event,
+            value
+          } as InputEvent);
+        });
+      }
 
       if (
         eventType.includes(InputEventType.onChange) ||

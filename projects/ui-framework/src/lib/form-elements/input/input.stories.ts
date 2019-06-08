@@ -61,7 +61,6 @@ const note = `
   hintMessage | text | hint text
   errorMessage | text | error text
   enableBrowserAutoComplete | InputAutoCompleteOptions | shows browser autocomplete options
-  hideLabelOnFocus | boolean | hides label on focus
   inputEvents | InputEvents | input events emitter
 
   ~~~

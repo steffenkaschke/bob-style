@@ -27,7 +27,6 @@ const template = `
           [disabled]="disabled"
           [required]="required"
           [hintMessage]="hintMessage"
-          [hideLabelOnFocus]="hideLabelOnFocus"
           (socialInputChange)="socialInputChange($event)">
 </b-social>
 `;
@@ -51,7 +50,6 @@ const note = `
   --- | --- | --- | ---
   value | string | type of input field | none
   label | string | label text | none
-  hideLabelOnFocus | boolean | should hide label on focus | false
   socialInputChange | action | socialInputChange output string | none
 
   ~~~

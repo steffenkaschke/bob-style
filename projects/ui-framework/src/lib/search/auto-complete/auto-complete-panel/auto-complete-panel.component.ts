@@ -14,19 +14,23 @@ import { AutoCompleteOption } from '../auto-complete.interface';
 import { has } from 'lodash';
 import { Subscription } from 'rxjs';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { ListKeyboardService, NavigationKeys } from '../../../form-elements/lists/list-service/list-keyboard.service';
+import { ListKeyboardService } from '../../../form-elements/lists/list-service/list-keyboard.service';
+import { Keys } from '../../../enums';
 
 @Component({
   selector: 'b-auto-complete-panel',
   templateUrl: './auto-complete-panel.component.html',
   styleUrls: ['./auto-complete-panel.component.scss']
 })
-export class AutoCompletePanelComponent implements OnChanges, OnInit, OnDestroy {
+export class AutoCompletePanelComponent
+  implements OnChanges, OnInit, OnDestroy {
   @ViewChild('vScroll') vScroll: CdkVirtualScrollViewport;
 
   @Input() options: AutoCompleteOption[];
   @Input() searchValue: string;
-  @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<AutoCompleteOption>();
+  @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<
+    AutoCompleteOption
+  >();
   @Output() escapeClick: EventEmitter<void> = new EventEmitter<void>();
 
   readonly listElHeight = LIST_EL_HEIGHT;
@@ -48,29 +52,39 @@ export class AutoCompletePanelComponent implements OnChanges, OnInit, OnDestroy 
     this.keyDownSubscriber = this.listKeyboardService
       .getKeyboardNavigationObservable()
       .subscribe((e: KeyboardEvent) => {
-        switch (e.code) {
-          case NavigationKeys.down:
+        switch (e.key) {
+          case Keys.arrowdown:
             this.focusIndex = this.listKeyboardService.getNextFocusIndex(
-              NavigationKeys.down,
+              Keys.arrowdown,
               this.focusIndex,
               this.options.length
             );
             this.focusOption = this.options[this.focusIndex];
-            this.vScroll.scrollToIndex(this.listKeyboardService.getScrollToIndex(this.focusIndex, this.maxHeight));
+            this.vScroll.scrollToIndex(
+              this.listKeyboardService.getScrollToIndex(
+                this.focusIndex,
+                this.maxHeight
+              )
+            );
             break;
-          case NavigationKeys.up:
+          case Keys.arrowup:
             this.focusIndex = this.listKeyboardService.getNextFocusIndex(
-              NavigationKeys.up,
+              Keys.arrowup,
               this.focusIndex,
               this.options.length
             );
             this.focusOption = this.options[this.focusIndex];
-            this.vScroll.scrollToIndex(this.listKeyboardService.getScrollToIndex(this.focusIndex, this.maxHeight));
+            this.vScroll.scrollToIndex(
+              this.listKeyboardService.getScrollToIndex(
+                this.focusIndex,
+                this.maxHeight
+              )
+            );
             break;
-          case NavigationKeys.enter:
+          case Keys.enter:
             this.optionClick(this.focusOption);
             break;
-          case NavigationKeys.escape:
+          case Keys.escape:
             this.escapeClick.emit();
             break;
           default:

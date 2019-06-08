@@ -2,41 +2,37 @@ import { Injectable } from '@angular/core';
 import { fromEvent, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { LIST_EL_HEIGHT } from '../list.consts';
-
-export enum NavigationKeys {
-  up = 'ArrowUp',
-  down = 'ArrowDown',
-  enter = 'Enter',
-  escape = 'Escape',
-}
+import { Keys } from '../../../enums';
+import { isKey } from '../../../services/utils/functional-utils';
 
 @Injectable()
 export class ListKeyboardService {
-  constructor() {
-  }
+  constructor() {}
 
   getKeyboardNavigationObservable(): Observable<KeyboardEvent> {
-    return fromEvent(document, 'keydown')
-      .pipe(filter((e: KeyboardEvent) =>
-        e.code === NavigationKeys.up ||
-        e.code === NavigationKeys.down ||
-        e.code === NavigationKeys.enter ||
-        e.code === NavigationKeys.escape
-      ));
+    return fromEvent(document, 'keydown').pipe(
+      filter(
+        (e: KeyboardEvent) =>
+          isKey(e.key, Keys.arrowup) ||
+          isKey(e.key, Keys.arrowdown) ||
+          isKey(e.key, Keys.enter) ||
+          isKey(e.key, Keys.escape)
+      )
+    );
   }
 
   getNextFocusIndex(
-    navKey: NavigationKeys,
+    navKey: Keys,
     focusIndex: number,
-    listLength: number,
+    listLength: number
   ): number {
     let nextFocusIndex;
     switch (navKey) {
-      case(NavigationKeys.down):
+      case Keys.arrowdown:
         nextFocusIndex = (focusIndex + 1) % listLength;
         break;
-      case(NavigationKeys.up):
-        nextFocusIndex = (focusIndex - 1) > -1 ? focusIndex - 1 : listLength - 1;
+      case Keys.arrowup:
+        nextFocusIndex = focusIndex - 1 > -1 ? focusIndex - 1 : listLength - 1;
         break;
       default:
         break;
@@ -44,10 +40,7 @@ export class ListKeyboardService {
     return nextFocusIndex;
   }
 
-  getScrollToIndex(
-    focusIndex: number,
-    listHeight: number,
-  ): number {
-     return focusIndex - (listHeight / LIST_EL_HEIGHT) + 2;
+  getScrollToIndex(focusIndex: number, listHeight: number): number {
+    return focusIndex - listHeight / LIST_EL_HEIGHT + 2;
   }
 }

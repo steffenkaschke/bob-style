@@ -3,6 +3,7 @@ export enum Keys {
   control = 'Control',
   shift = 'Shift',
   enter = 'Enter',
+  escape = 'Escape',
   tab = 'Tab',
   arrowdown = 'ArrowDown',
   arrowleft = 'ArrowLeft',

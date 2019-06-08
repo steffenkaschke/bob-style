@@ -64,8 +64,8 @@ inputStories.add(
       props: {
         label: text('label', 'search auto-complete'),
         options: object('options', optionsMock),
-        searchChange: action(),
-        optionSelect: action()
+        searchChange: action('searchChange'),
+        optionSelect: action('optionSelect')
       },
       moduleMetadata: {
         imports: [

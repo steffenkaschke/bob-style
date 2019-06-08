@@ -22,8 +22,8 @@
          [disabled]="disabled"
          [required]="required"
          (focus)="emitInputEvent(eventType.onFocus,$event.target.value); inputFocused = true;"
-         (blur)="emitInputEvent(eventType.onBlur,$event.target.value)"
-         (input)="emitInputEvent(eventType.onChange,$event.target.value); inputFocused = false;">
+         (blur)="emitInputEvent(eventType.onBlur,$event.target.value); inputFocused = false;"
+         (input)="emitInputEvent(eventType.onChange,$event.target.value);">
 
   <div *ngIf="showSuffix"
        class="bfe-suffix"

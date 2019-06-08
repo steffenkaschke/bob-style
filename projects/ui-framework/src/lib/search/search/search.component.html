@@ -1,30 +1,33 @@
-<b-input class="search-input"
-         [inputType]="inputTypes.text"
-         [hasPrefix]="true"
-         [hasSuffix]="true"
+<label *ngIf="label"
+       class="bfe-label"
+       [attr.for]="id">{{label}}</label>
+
+<div class="bfe-wrap hasPrefix hasSuffix"
+     [ngClass]="{focused: inputFocused}">
+  <div class="bfe-prefix">
+    <b-icon [icon]="icons.search"
+            [color]="searchIconColor"
+            [size]="iconSize.medium">
+    </b-icon>
+  </div>
+
+  <input #bInput
+         class="bfe-input"
+         type="search"
+         [attr.id]="id"
          [value]="value"
-         [label]="label"
-         [placeholder]="placeholder"
-         [hintMessage]="hintMessage"
-         [warnMessage]="warnMessage"
-         [errorMessage]="errorMessage"
-         [disabled]="disabled"
-         [required]="required"
-         (inputEvents)="onInputEvents($event)">
+         [attr.placeholder]="placeholder"
+         (input)="onInput($event)"
+         (focus)="onFocus()"
+         (blur)="onBlur()">
 
-  <b-icon input-prefix
-          [icon]="icons.search"
-          [color]="searchIconColor"
-          [size]="iconSize.medium">
-  </b-icon>
-
-  <b-icon *ngIf="value && value.length > 0"
-          input-suffix
-          class="reset-button"
-          [icon]="icons.reset_x"
-          (click)="onResetClick()"
-          [size]="iconSize.medium"
-          [color]="iconColor.normal"
-          [hasHoverState]="true">
-  </b-icon>
-</b-input>
+  <div *ngIf="value && value.length > 0"
+       class="bfe-suffix">
+    <b-icon class="reset-button"
+            [icon]="icons.reset_x"
+            (click)="onResetClick()"
+            [size]="iconSize.medium"
+            [color]="iconColor.normal"
+            [hasHoverState]="true">
+    </b-icon>
+  </div>

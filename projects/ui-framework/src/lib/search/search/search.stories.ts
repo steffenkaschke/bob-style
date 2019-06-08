@@ -13,7 +13,6 @@ const inputStories = storiesOf(ComponentGroupType.Search, module).addDecorator(
 const template = `
 <b-search [value]="value"
           [label]="label"
-          [hideLabelOnFocus]="hideLabelOnFocus"
           (searchChange)="searchChange($event)">
 </b-search>
 `;
@@ -37,7 +36,6 @@ const note = `
   --- | --- | --- | ---
   value | string/number/float | type of input field | none
   label | string | label text | none
-  hideLabelOnFocus | boolean | should hide label on focus | false
   searchChange | action | searchChange output string | none
 
   ~~~
@@ -50,10 +48,9 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        value: text('value', 'Alan Tulin'),
+        value: text('value', ''),
         label: text('label', 'Search'),
-        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
-        searchChange: action()
+        searchChange: action('searchChange')
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, SearchModule, StoryBookLayoutModule]
