@@ -1,27 +1,33 @@
-<content (click)="openPanel()"
-         [ngClass]="{'disabled': disabled, 'panel-open': panelOpen}"
-         cdkOverlayOrigin
-         class="panel-trigger">
+<label *ngIf="label"
+       class="bfe-label"
+       [attr.for]="id">{{label}}</label>
 
-  <b-input #triggerInput
-           [disabled]="disabled"
-           [errorMessage]="errorMessage"
-           [hintMessage]="hintMessage"
-           [label]="label"
-           [required]="required"
-           [hasSuffix]="true"
-           [matTooltip]="showTriggerTooltip ? triggerValue : null"
-           [ngClass]="{'has-clear-prefix': selectedOptionId != null}"
-           [value]="triggerValue"
-           matTooltipPosition="above">
+<div class="bfe-wrap hasSuffix"
+     [ngClass]="{focused: inputFocused, 'panel-open': panelOpen}"
+     (click)="openPanel()"
+     cdkOverlayOrigin>
 
-    <div class="select-chevron"
-         input-suffix>
-    </div>
+  <span class="bfe-input trigger-input"
+        #triggerInput
+        [b-truncate-tooltip]="1"
+        [expectChanges]="true"
+        [trustCssVars]="true"
+        [attr.data-placeholder]="placeholder">
+    {{triggerValue}}
+  </span>
 
-  </b-input>
+  <div class="bfe-suffix">
+    <span class="select-chevron"
+          [ngClass]="{up: panelOpen, down: !panelOpen}"></span>
+  </div>
+</div>
 
-</content>
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled"></p>
 
 <ng-template #templateRef>
   <div class="panel-position"

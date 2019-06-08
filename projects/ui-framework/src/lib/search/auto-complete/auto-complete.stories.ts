@@ -16,6 +16,7 @@ const inputStories = storiesOf(ComponentGroupType.Search, module)
 const template = `
 <b-auto-complete [options]="options"
                  [label]="label"
+                 [placeholder]="placeholder"
                  (searchChange)="searchChange($event)"
                  (optionSelect)="optionSelect($event)">
 </b-auto-complete>
@@ -62,7 +63,8 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        label: text('label', 'search auto-complete'),
+        label: text('label', ''),
+        placeholder: text('placeholder', 'Search auto-complete'),
         options: object('options', optionsMock),
         searchChange: action('searchChange'),
         optionSelect: action('optionSelect')

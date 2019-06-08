@@ -8,7 +8,8 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  ElementRef
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, isNull, isUndefined } from 'lodash';
@@ -24,7 +25,10 @@ import { ListFooterActions } from '../list.interface';
 @Component({
   selector: 'b-single-select',
   templateUrl: 'single-select.component.html',
-  styleUrls: ['single-select.component.scss'],
+  styleUrls: [
+    '../../input/input.component.scss',
+    'single-select.component.scss'
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -38,12 +42,15 @@ import { ListFooterActions } from '../list.interface';
     }
   ]
 })
-export class SingleSelectComponent extends BaseSelectPanelElement implements OnChanges, OnDestroy {
-  @ViewChild('triggerInput') triggerInput;
+export class SingleSelectComponent extends BaseSelectPanelElement
+  implements OnChanges, OnDestroy {
+  @ViewChild('triggerInput') triggerInput: ElementRef;
 
   @Input() options: SelectGroupOption[];
   @Input() showSingleGroupHeader = false;
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
 
   triggerValue: string;
   showTriggerTooltip: boolean;
@@ -52,14 +59,14 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
 
   readonly listElHeight = LIST_EL_HEIGHT;
   readonly listActions: ListFooterActions = {
-    clear: true,
+    clear: true
   };
 
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
-    private listChangeService: ListChangeService,
+    private listChangeService: ListChangeService
   ) {
     super(overlay, viewContainerRef, panelPositionService);
     this.value = null;
@@ -68,7 +75,9 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.options) {
       this.singleSelectOptions = changes.options.currentValue;
-      this.selectedOptionId = this.getSelectedOptionId(this.singleSelectOptions);
+      this.selectedOptionId = this.getSelectedOptionId(
+        this.singleSelectOptions
+      );
     }
     this.triggerValue = isNull(this.selectedOptionId)
       ? null
@@ -85,7 +94,10 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
   clearSelection(): void {
     this.selectedOptionId = null;
     this.triggerValue = this.getTriggerValue(this.selectedOptionId);
-    const listChange = this.listChangeService.getListChange(this.singleSelectOptions, []);
+    const listChange = this.listChangeService.getListChange(
+      this.singleSelectOptions,
+      []
+    );
     this.emitChange(listChange);
     this.destroyPanel();
   }
@@ -95,16 +107,16 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
   }
 
   private getTriggerValue(selectedOptionId: string | number): string {
-    this.updateTriggerTooltip();
+    this.updateTriggerTooltip(this.triggerInput.nativeElement);
     return chain(this.singleSelectOptions)
       .flatMap('options')
-      .filter((option) => option.id === selectedOptionId)
+      .filter(option => option.id === selectedOptionId)
       .first()
       .get('value', null)
       .value();
   }
 
-  private getSelectedOptionId(options: SelectGroupOption[]): (number | string) {
+  private getSelectedOptionId(options: SelectGroupOption[]): number | string {
     return chain(options)
       .flatMap('options')
       .filter(o => o.selected)

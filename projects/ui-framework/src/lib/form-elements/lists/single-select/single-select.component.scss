@@ -2,69 +2,30 @@
 @import '../../../style/shapes';
 @import '../list';
 
-:host ::ng-deep {
+:host {
   position: relative;
-  display: inline-block;
-  width: 100%;
+}
 
-  .panel-trigger {
-    width: 100%;
-    display: block;
-    margin: 20px 0;
+.trigger-input {
+  cursor: pointer;
+  position: static;
+}
 
-    b-input {
-      margin: 0;
-      cursor: pointer;
-      pointer-events: none;
+.bfe-wrap {
+  position: relative;
 
-      .bfe-prefix {
-        padding-right: 0;
-      }
+  &.panel-open {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
 
-      .clear-selection {
-        pointer-events: all;
-        cursor: pointer;
-      }
-
-      .select-chevron {
-        @include chevron-down($grey-600);
-      }
-
-      input {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      &.has-clear-prefix {
-        .bfe-prefix {
-          padding-right: 10px;
-        }
-      }
-      &.disabled {
-        .clear-selection {
-          pointer-events: none;
-          opacity: 0.3;
-        }
-      }
-    }
-
-    &.panel-open b-input {
-      .select-chevron {
-        @include chevron-up($grey-600);
-      }
-      .bfe-wrap {
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-    }
-    &.disabled {
-      pointer-events: none;
-
-      b-input .select-chevron {
-        @include chevron-down($grey-500);
-      }
-    }
+.select-chevron {
+  &.down {
+    @include chevron-down($grey-600);
+  }
+  &.up {
+    @include chevron-up($grey-600);
   }
 }
 

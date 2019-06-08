@@ -1,9 +1,12 @@
+@import '../../style/typography';
+
 $textarea-height: 120px;
 
 :host {
   .bfe-textarea {
     height: auto;
     min-height: $textarea-height;
+    line-height: $line-height-body;
     padding: 11px 15px;
     resize: vertical;
   }

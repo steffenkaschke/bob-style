@@ -33,9 +33,12 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   @ViewChild('templateRef') templateRef: TemplateRef<any>;
 
   @Input() label: string;
+  @Input() placeholder: string;
   @Input() options: AutoCompleteOption[];
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
-  @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<AutoCompleteOption>();
+  @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<
+    AutoCompleteOption
+  >();
 
   positionClassList: { [key: string]: boolean } = {};
   searchValue = '';
@@ -106,7 +109,10 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     this.panelOpen = true;
     this.panelConfig = this.getConfig();
     this.overlayRef = this.overlay.create(this.panelConfig);
-    this.templatePortal = new TemplatePortal(this.templateRef, this.viewContainerRef);
+    this.templatePortal = new TemplatePortal(
+      this.templateRef,
+      this.viewContainerRef
+    );
     this.overlayRef.attach(this.templatePortal);
 
     this.overlayRef.updatePosition();
@@ -114,9 +120,11 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
       width: this.overlayOrigin.elementRef.nativeElement.offsetWidth
     });
 
-    this.backdropClickSubscriber = this.overlayRef.backdropClick().subscribe(() => {
-      this.destroyPanel();
-    });
+    this.backdropClickSubscriber = this.overlayRef
+      .backdropClick()
+      .subscribe(() => {
+        this.destroyPanel();
+      });
   }
 
   private destroyPanel(): void {
@@ -129,8 +137,12 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   }
 
   private getConfig(): OverlayConfig {
-    const positionStrategy = this.panelPositionService.getCenterPanelPositionStrategy(this.overlayOrigin);
-    this.subscribeToPositions(positionStrategy as FlexibleConnectedPositionStrategy);
+    const positionStrategy = this.panelPositionService.getCenterPanelPositionStrategy(
+      this.overlayOrigin
+    );
+    this.subscribeToPositions(
+      positionStrategy as FlexibleConnectedPositionStrategy
+    );
     return {
       disposeOnNavigation: true,
       hasBackdrop: true,
@@ -141,14 +153,23 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     };
   }
 
-  private subscribeToPositions(positionStrategy: FlexibleConnectedPositionStrategy): void {
-    this.positionChangeSubscriber = positionStrategy.positionChanges.subscribe((change) => {
-      this.positionClassList = this.panelPositionService.getPositionClassList(change);
-    });
+  private subscribeToPositions(
+    positionStrategy: FlexibleConnectedPositionStrategy
+  ): void {
+    this.positionChangeSubscriber = positionStrategy.positionChanges.subscribe(
+      change => {
+        this.positionClassList = this.panelPositionService.getPositionClassList(
+          change
+        );
+      }
+    );
   }
 
   private getFilteredOptions(): AutoCompleteOption[] {
     const matcher = new RegExp(escapeRegExp(this.searchValue), 'i');
-    return filter(this.options, (option) => option.value.match(matcher) || option.subText.match(matcher));
+    return filter(
+      this.options,
+      option => option.value.match(matcher) || option.subText.match(matcher)
+    );
   }
 }

@@ -5,7 +5,6 @@
 
 :host {
   display: block;
-  width: 100%;
   text-align: left;
   border-radius: 4px;
   border: 1px solid $grey-500;
@@ -22,59 +21,70 @@
     .bfe-wrap {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-    }
-    .bfe-wrap,
-    .bfe-wrap.focused {
-      border-top: 0;
-      border-left: 0;
-      border-right: 0;
-    }
-    .bfe-wrap.focused {
-      // box-shadow: 0 0 0 1px $grey-700;
+
+      &,
+      &.focused {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+      }
+
+      &.focused {
+        border-color: $grey-500;
+      }
     }
   }
 }
 
 :host ::ng-deep {
-  @include BodyFont;
-
   .v-scroll-wrapper {
     position: relative;
     background-color: $white;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
 
-    .v-scroll {
-      height: 100%;
-      .headers,
-      .options {
-        .option-select {
-          @include listOption;
-        }
-      }
-      .headers {
-        @include headers;
-      }
-      .options {
-        position: relative;
-        z-index: 1;
-        .option-select {
-          display: flex;
-          flex-direction: row;
-          align-content: flex-start;
-          align-items: center;
-          &.header-placeholder {
-            visibility: hidden;
-          }
-          &.option {
-            padding-left: 36px;
-          }
-        }
+    @include BodyFont;
+
+    &.no-group-header {
+      .option-select.option {
+        padding-left: 16px;
       }
     }
-    &.no-group-header {
-      .v-scroll .options .option-select.option {
-        padding-left: 16px;
+  }
+
+  .v-scroll {
+    height: 100%;
+  }
+
+  .option-select {
+    @include listOption;
+  }
+
+  .headers {
+    @include headers;
+  }
+
+  .header {
+    .header-option {
+      display: flex;
+      flex-direction: row;
+      align-content: flex-start;
+      align-items: center;
+    }
+  }
+
+  .options {
+    position: relative;
+    z-index: 1;
+
+    .option-select {
+      display: flex;
+      align-items: center;
+
+      &.header-placeholder {
+        visibility: hidden;
+      }
+
+      &.option {
+        padding-left: 36px;
       }
     }
   }

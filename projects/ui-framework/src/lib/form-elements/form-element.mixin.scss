@@ -23,7 +23,8 @@ $input-border-color: $grey-500;
 @mixin align-to-input {
   height: $wrap-height;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   align-self: flex-start;
 
   :host-context(.has-label) & {
@@ -93,6 +94,16 @@ $input-border-color: $grey-500;
     border: 1px solid $input-border-color;
     border-radius: $border-radius;
     transition: box-shadow 0.2s, border-color 0.2s;
+    @include BodyFont(
+      $weight: null,
+      $style: null,
+      $font-family: null,
+      $addCssVars: true
+    );
+
+    &:only-child {
+      width: 100%;
+    }
   }
 
   // input
@@ -100,18 +111,21 @@ $input-border-color: $grey-500;
   .bfe-input {
     box-sizing: border-box;
     display: block;
+    min-width: 0;
     flex-grow: 1;
     height: $input-height;
+    line-height: $input-height;
     padding: 0 15px;
     border: 0;
     margin: 0;
     outline: 0;
     border-radius: inherit;
-    @include BodyFont;
+    @include BodyFont($lineHeight: null);
     color: $grey-800;
     background: transparent;
 
-    &::placeholder {
+    &::placeholder,
+    &[data-placeholder]:before {
       color: $grey-600;
       transition: opacity 0.2s;
       @include text-truncate;
@@ -121,8 +135,13 @@ $input-border-color: $grey-500;
       }
     }
 
-    &:focus::placeholder {
+    &:focus::placeholder,
+    &[data-placeholder]:focus:before {
       opacity: 0;
+    }
+
+    &[data-placeholder]:before {
+      content: attr(data-placeholder);
     }
   }
 

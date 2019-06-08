@@ -5,17 +5,21 @@ $selectFieldWidth: 140px;
 
 :host {
   display: flex;
-  @include transfer-margins;
+  @include transfer-margins('b-input,b-single-select');
 }
 
-:host b-input::ng-deep {
-  .bfe-wrap {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  .bfe-label,
-  [b-input-message] {
-    width: calc(100% + #{$selectFieldWidth});
+:host b-input {
+  width: calc(100% - #{$selectFieldWidth});
+
+  &::ng-deep {
+    .bfe-wrap {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .bfe-label,
+    [b-input-message] {
+      width: calc(100% + #{$selectFieldWidth});
+    }
   }
 }
 

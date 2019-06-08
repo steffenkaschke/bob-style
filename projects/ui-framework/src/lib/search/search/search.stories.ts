@@ -13,6 +13,7 @@ const inputStories = storiesOf(ComponentGroupType.Search, module).addDecorator(
 const template = `
 <b-search [value]="value"
           [label]="label"
+          [placeholder]="placeholder"
           (searchChange)="searchChange($event)">
 </b-search>
 `;
@@ -49,7 +50,8 @@ inputStories.add(
       template: storyTemplate,
       props: {
         value: text('value', ''),
-        label: text('label', 'Search'),
+        label: text('label', ''),
+        placeholder: text('placeholder', 'Search'),
         searchChange: action('searchChange')
       },
       moduleMetadata: {

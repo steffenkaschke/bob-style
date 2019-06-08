@@ -90,6 +90,7 @@ $toolti-offset: 10px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
+    white-space: normal;
     transform-origin: center bottom;
     @include animate(tooltip-apprnc, 0.1s, 0.3s);
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
