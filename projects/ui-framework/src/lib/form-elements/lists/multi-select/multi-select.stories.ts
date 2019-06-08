@@ -32,7 +32,7 @@ const template = `
                 [disabled]="disabled"
                 [required]="required"
                 [errorMessage]="errorMessage"
-                [hintMessage]="hintMessage"
+                [hintMessage]="hintMessage">
 </b-multi-select>
 `;
 

@@ -15,8 +15,14 @@
   position: relative;
 
   &.panel-open {
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
+    &.panel-below {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    &.panel-above {
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+    }
   }
 }
 
@@ -33,14 +39,30 @@
   .b-select-backdrop {
     opacity: 0;
   }
-  .b-select-panel {
-    @include selectPanel;
 
-    b-single-list {
-      display: block;
-      border: none;
-      overflow: initial;
-      border-radius: 0;
+  .b-select-panel {
+    flex-direction: column;
+
+    .b-select-list {
+      border: 0;
+      box-shadow: none;
+    }
+
+    .b-select-panel {
+      width: 100%;
+      border: 1px solid $grey-500;
+      border-radius: $border-radius;
+      box-shadow: 0 2px 5px $boxShadowColor;
+    }
+    .panel-below {
+      border-top: 0;
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+    }
+    .panel-above {
+      border-bottom: 0;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
     }
   }
 }

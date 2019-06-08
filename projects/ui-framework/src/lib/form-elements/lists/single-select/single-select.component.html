@@ -3,7 +3,8 @@
        [attr.for]="id">{{label}}</label>
 
 <div class="bfe-wrap hasSuffix"
-     [ngClass]="{focused: inputFocused, 'panel-open': panelOpen}"
+     [ngClass]="{'panel-open': panelOpen, 'panel-above': positionClassList['panel-above'],
+     'panel-below': positionClassList['panel-below']}"
      (click)="openPanel()"
      cdkOverlayOrigin>
 
@@ -30,10 +31,10 @@
    [disabled]="disabled"></p>
 
 <ng-template #templateRef>
-  <div class="panel-position"
+  <div class="b-select-panel"
        [ngClass]="positionClassList">
-
-    <b-single-list (selectChange)="onSelect($event)"
+    <b-single-list class="b-select-list"
+                   (selectChange)="onSelect($event)"
                    [options]="singleSelectOptions"
                    [maxHeight]="listElHeight*6"
                    [showSingleGroupHeader]="showSingleGroupHeader">
@@ -42,6 +43,5 @@
     <b-list-footer [listActions]="listActions"
                    (clear)="clearSelection()">
     </b-list-footer>
-
   </div>
 </ng-template>

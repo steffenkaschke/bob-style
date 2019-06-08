@@ -66,13 +66,3 @@
     }
   }
 }
-
-@mixin selectPanel {
-  display: block;
-  box-sizing: border-box;
-  border: 1px solid $grey-500;
-  border-top: none;
-  border-bottom-right-radius: $border-radius;
-  border-bottom-left-radius: $border-radius;
-  box-shadow: 0 2px 5px $boxShadowColor;
-}

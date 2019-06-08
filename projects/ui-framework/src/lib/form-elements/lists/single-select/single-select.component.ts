@@ -7,9 +7,7 @@ import {
   OnDestroy,
   Output,
   SimpleChanges,
-  ViewChild,
-  ViewContainerRef,
-  ElementRef
+  ViewContainerRef
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, isNull, isUndefined } from 'lodash';

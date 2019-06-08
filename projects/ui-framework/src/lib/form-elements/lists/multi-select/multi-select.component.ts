@@ -8,7 +8,6 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild,
   ViewContainerRef
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
@@ -26,7 +25,11 @@ import { ListFooterActions } from '../list.interface';
 @Component({
   selector: 'b-multi-select',
   templateUrl: 'multi-select.component.html',
-  styleUrls: ['multi-select.component.scss'],
+  styleUrls: [
+    '../../input/input.component.scss',
+    '../single-select/single-select.component.scss',
+    'multi-select.component.scss'
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -40,14 +43,19 @@ import { ListFooterActions } from '../list.interface';
     }
   ]
 })
-export class MultiSelectComponent extends BaseSelectPanelElement implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('triggerInput') triggerInput;
-
+export class MultiSelectComponent extends BaseSelectPanelElement
+  implements OnInit, OnChanges, OnDestroy {
   @Input() options: SelectGroupOption[];
   @Input() showSingleGroupHeader = false;
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
-  @Output() selectModified: EventEmitter<ListChange> = new EventEmitter<ListChange>();
-  @Output() selectCancelled: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
+  @Output() selectModified: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
+  @Output() selectCancelled: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
 
   triggerValue: string;
   selectedValuesMap: (number | string)[];
@@ -55,7 +63,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
   readonly listActions: ListFooterActions = {
     clear: true,
     apply: true,
-    cancel: true,
+    cancel: true
   };
   readonly listElHeight = LIST_EL_HEIGHT;
 
@@ -66,7 +74,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
     private listChangeService: ListChangeService,
-    private listModelService: ListModelService,
+    private listModelService: ListModelService
   ) {
     super(overlay, viewContainerRef, panelPositionService);
   }
@@ -113,6 +121,43 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
     this.destroyPanel();
   }
 
+  private setTriggerValue(): void {
+    this.triggerValue = this.getTriggerValue(this.selectedValuesMap);
+    this.updateTriggerTooltip();
+  }
+
+  private getTriggerValue(selectedValuesMap: (string | number)[]): string {
+    return chain(this.options)
+      .flatMap('options')
+      .filter(option => includes(selectedValuesMap, option.id))
+      .map('value')
+      .join(', ')
+      .value();
+  }
+
+  private getSelectedValuesMap(
+    options: SelectGroupOption[]
+  ): (number | string)[] {
+    return this.listModelService.getSelectedIdsMap(options);
+  }
+
+  private removeAllSelected(options: SelectGroupOption[]): SelectGroupOption[] {
+    return map(options, g => {
+      return assign({}, g, {
+        options: map(g.options, o => {
+          return assign({}, o, { selected: false });
+        })
+      });
+    });
+  }
+
+  private getListChange(): ListChange {
+    return this.listChangeService.getListChange(
+      this.options,
+      this.selectedValuesMap
+    );
+  }
+
   private emitSelectChange(listChange: ListChange): void {
     this.options = listChange.getSelectGroupOptions();
     this.selectChange.emit(listChange);
@@ -122,37 +167,5 @@ export class MultiSelectComponent extends BaseSelectPanelElement implements OnIn
 
   private emitSelectModified(listChange: ListChange): void {
     this.selectModified.emit(listChange);
-  }
-
-  private setTriggerValue(): void {
-    this.triggerValue = this.getTriggerValue(this.selectedValuesMap);
-    this.updateTriggerTooltip();
-  }
-
-  private getTriggerValue(selectedValuesMap: (string | number)[]): string {
-    return chain(this.options)
-      .flatMap('options')
-      .filter((option) => includes(selectedValuesMap, option.id))
-      .map('value')
-      .join(', ')
-      .value();
-  }
-
-  private getSelectedValuesMap(options: SelectGroupOption[]): (number | string)[] {
-    return this.listModelService.getSelectedIdsMap(options);
-  }
-
-  private removeAllSelected(options: SelectGroupOption[]): SelectGroupOption[] {
-    return map(options, g => {
-      return assign({}, g, {
-        options: map(g.options, o => {
-          return assign({}, o, { selected: false });
-        }),
-      });
-    });
-  }
-
-  private getListChange(): ListChange {
-    return this.listChangeService.getListChange(this.options, this.selectedValuesMap);
   }
 }

@@ -20,6 +20,7 @@ const template = `
 <b-checkbox (checkboxChange)="checkboxChange($event)"
             [value]="value"
             [label]="label"
+            [placeholder]="placeholder"
             [indeterminate]="indeterminate"
             [disabled]="disabled"
             [required]="required"
@@ -64,7 +65,8 @@ inputStories.add(
       props: {
         checkboxChange: action(),
         value: boolean('value', true),
-        label: text('label', 'Check this'),
+        label: text('label', 'Form element label'),
+        placeholder: text('placeholder', 'Check this'),
         indeterminate: boolean('indeterminate', false),
         disabled: boolean('disabled', false),
         required: boolean('required', false),

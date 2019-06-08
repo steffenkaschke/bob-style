@@ -1,4 +1,4 @@
-import { storiesOf, moduleMetadata } from '@storybook/angular';
+import { storiesOf } from '@storybook/angular';
 import {
   text,
   array,
@@ -6,12 +6,13 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { ChipModule } from '../../buttons-indicators/chip/chip.module';
+
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { chipOptionsMock } from './chip-input.mock';
 import { randomFromArray } from '../../services/utils/functional-utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChipInputModule } from './chip-input.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -89,7 +90,7 @@ story.add(
       chipInputChangeHandler: action('Chip input changed')
     },
     moduleMetadata: {
-      imports: [ChipModule, StoryBookLayoutModule, BrowserAnimationsModule]
+      imports: [ChipInputModule, StoryBookLayoutModule, BrowserAnimationsModule]
     }
   }),
   { notes: { markdown: note } }

@@ -4,7 +4,8 @@
 @import '../list';
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   text-align: left;
   border-radius: 4px;
   border: 1px solid $grey-500;
