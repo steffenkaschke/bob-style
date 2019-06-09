@@ -33,25 +33,18 @@ export const setPropsOnChanges = (
 export const randomFromArray = (array: any[], num: number = 1) =>
   array.sort(() => 0.5 - Math.random()).slice(0, num);
 
-export const keysFromArrayOrObject = (smth: string[] | {}): string[] => {
-  return Array.isArray(smth) ? smth : Object.keys(smth);
-};
+export const keysFromArrayOrObject = (smth: string[] | {}): string[] =>
+  Array.isArray(smth) ? smth : Object.keys(smth);
 
-export const getKeyByValue = (object: object, value: any) => {
-  return Object.keys(object).find(key => object[key] === value);
-};
+export const getKeyByValue = (object: object, value: any) =>
+  Object.keys(object).find(key => object[key] === value);
 
-export const isString = (val: any): boolean => {
-  return val && typeof val === 'string';
-};
+export const isString = (val: any): boolean => val && typeof val === 'string';
 
-export const isArray = (val: any): boolean => {
-  return val && Array.isArray(val);
-};
+export const isArray = (val: any): boolean => val && Array.isArray(val);
 
-export const isRenderedComponent = (obj: any): boolean => {
-  return obj && !!obj.component;
-};
+export const isRenderedComponent = (obj: any): boolean =>
+  obj && !!obj.component;
 
 export const simpleUID = (
   prefix: string = '',
@@ -69,9 +62,8 @@ export const simpleUID = (
 
 export const pass = (a: any): any => a;
 
-export const isKey = (key: string, expected: string): boolean => {
-  return key.toUpperCase() === expected.toUpperCase();
-};
+export const isKey = (key: string, expected: string): boolean =>
+  key.toUpperCase() === expected.toUpperCase();
 
 export const stringListToArray = (list: string): string[] => {
   if (isArray(list) || !list) {
@@ -85,6 +77,10 @@ export const stringListToArray = (list: string): string[] => {
   ).filter(i => !!i);
 };
 
-export const asArray = (smth: any): any[] => {
-  return smth && (isArray(smth) ? smth : [smth]);
-};
+export const asArray = (smth: any): any[] =>
+  smth && (isArray(smth) ? smth : [smth]);
+
+export const compareStringsAsNumbers = (
+  a: string | number,
+  b: string | number
+): boolean => parseInt(a as string, 10) === parseInt(b as string, 10);

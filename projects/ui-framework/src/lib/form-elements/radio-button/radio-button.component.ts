@@ -10,6 +10,7 @@ import { BaseFormElement } from '../base-form-element';
 import { RadioDirection } from './radio-button.enum';
 import { InputEventType } from '../input/input.enum';
 import { RadioConfig } from './radio-button.interface';
+import { compareStringsAsNumbers } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-radio-button',
@@ -34,6 +35,7 @@ export class RadioButtonComponent extends BaseFormElement {
   @Input() direction: RadioDirection = RadioDirection.row;
 
   public dir = RadioDirection;
+  public compare = compareStringsAsNumbers;
 
   @Output() radioChange: EventEmitter<number | string> = new EventEmitter<
     number | string
@@ -41,10 +43,6 @@ export class RadioButtonComponent extends BaseFormElement {
 
   constructor() {
     super();
-  }
-
-  compare(a: string | number, b: string | number) {
-    return parseInt(a as string, 10) === parseInt(b as string, 10);
   }
 
   onRadioChange(event): void {

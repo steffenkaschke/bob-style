@@ -58,8 +58,9 @@ const note = `
   label | string | label text
   disabled | boolean | is field disabled
   required | boolean | is field required
-  hintMessage | text | hint text
-  errorMessage | text | error text
+  hintMessage | string | hint text
+  warnMessage | string | warning text
+  errorMessage | string | error text
   enableBrowserAutoComplete | InputAutoCompleteOptions | shows browser autocomplete options
   inputEvents | InputEvents | input events emitter
 

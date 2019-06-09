@@ -2,8 +2,6 @@ import { storiesOf } from '@storybook/angular';
 import {
   array,
   boolean,
-  number,
-  object,
   select,
   text,
   withKnobs
@@ -25,8 +23,13 @@ const radioStories = storiesOf(
 const template = `
 <b-radio-button [options]="options"
                 [value]="value"
+                [label]="label"
                 [direction]="direction"
                 [disabled]="disabled"
+                [required]="required"
+                [hintMessage]="hintMessage"
+                [warnMessage]="warnMessage"
+                [errorMessage]="errorMessage"
                 (radioChange)="radioChange($event)">
 </b-radio-button>
 `;
@@ -47,11 +50,16 @@ const note = `
 
   Name | Type | Description
   --- | --- | ---
-  disabled | boolean | is field disabled
+  options | string[] / RadioConfig[] | list of possible values or array of RadioConfig ({id,value}) objects
+  value | string / number | value representing one of the string[] options or id of one of the RadioConfig ({id,value}) objects
   direction | RadioDirection | column or row, default=row
-  options | string[] | list of possible values
-  value | string | value
-  radioChange | action | callback with the selected id
+  label | string | label text
+  hintMessage | string | hint text
+  warnMessage | string | warning text
+  errorMessage | string | error text
+  disabled | boolean | is field disabled
+  required | boolean | is field required
+  radioChange | Function | callback for radioChange event
 
   ~~~
   ${template}
@@ -64,19 +72,27 @@ radioStories.add(
     return {
       template: stroyTemplate,
       props: {
-        value: text('value', '11'),
-        // options: array(
-        //   'options',
-        //   ['Option one', 'Option two', 'Option three'],
-        //   '\n'
-        // ),
-        options: array('radioConfig', [
-          { id: 11, label: 'Option one' },
-          { id: 12, label: 'Option two' },
-          { id: 13, label: 'Option three' }
-        ]),
+        value: text('value', 'Option one'),
+        options: array(
+          'options',
+          ['Option one', 'Option two', 'Option three'],
+          '\n'
+        ),
+        // options: array('radioConfig', [
+        //   { id: 11, label: 'Option one' },
+        //   { id: 12, label: 'Option two' },
+        //   { id: 13, label: 'Option three' }
+        // ]),
         direction: select('direction', direction, direction.row),
+
+        label: text('label', 'Radio label'),
+        required: boolean('required', false),
         disabled: boolean('disabled', false),
+
+        hintMessage: text('hintMessage', 'Useful hint'),
+        warnMessage: text('warnMessage', ''),
+        errorMessage: text('errorMessage', ''),
+
         radioChange: action('radioChange')
       },
       moduleMetadata: {
