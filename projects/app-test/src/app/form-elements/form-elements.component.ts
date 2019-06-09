@@ -212,11 +212,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bRadio_label = 'Radio button label';
   bRadio_value = 'Option one';
 
-  bRadio_radioConfig = [
-    { id: 11, label: 'Option one' },
-    { id: 12, label: 'Option two' },
-    { id: 13, label: 'Option three' }
-  ];
+  bRadio_options = ['Option one', 'Option two', 'Option three'];
   bRadio_direction = 'row';
 
   bRadio_disabled = false;

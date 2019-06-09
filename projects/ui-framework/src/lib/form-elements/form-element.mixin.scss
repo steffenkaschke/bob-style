@@ -204,7 +204,3 @@ $input-border-color: $grey-500;
 
   @include input-border-colors($add: ' .bfe-wrap');
 }
-
-@mixin MatFormField() {
-  @include bFormElement;
-}

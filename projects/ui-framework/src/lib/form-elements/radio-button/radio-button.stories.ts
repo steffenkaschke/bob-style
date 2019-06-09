@@ -23,7 +23,7 @@ const radioStories = storiesOf(
 ).addDecorator(withKnobs);
 
 const template = `
-<b-radio-button [radioConfig]="radioConfig"
+<b-radio-button [options]="options"
                 [value]="value"
                 [direction]="direction"
                 [disabled]="disabled"
@@ -49,8 +49,8 @@ const note = `
   --- | --- | ---
   disabled | boolean | is field disabled
   direction | RadioDirection | column or row, default=row
-  radioConfig | RadioConfig | radio select config
-  value | number | the id of selected option
+  options | string[] | list of possible values
+  value | string | value
   radioChange | action | callback with the selected id
 
   ~~~
@@ -64,15 +64,20 @@ radioStories.add(
     return {
       template: stroyTemplate,
       props: {
-        value: number('value', 11),
-        radioConfig: object('radioConfig', [
+        value: text('value', '11'),
+        // options: array(
+        //   'options',
+        //   ['Option one', 'Option two', 'Option three'],
+        //   '\n'
+        // ),
+        options: array('radioConfig', [
           { id: 11, label: 'Option one' },
           { id: 12, label: 'Option two' },
           { id: 13, label: 'Option three' }
         ]),
         direction: select('direction', direction, direction.row),
         disabled: boolean('disabled', false),
-        radioChange: action('Radio buttons value')
+        radioChange: action('radioChange')
       },
       moduleMetadata: {
         imports: [

@@ -47,6 +47,18 @@ export class SplitInputSingleSelectComponent extends BaseInputElement
     }
   }
 
+  private enrichOptionsWithSelection(
+    options: SelectGroupOption[]
+  ): SelectGroupOption[] {
+    return map(options, g =>
+      assign({}, g, {
+        options: map(g.options, o =>
+          assign({}, o, { selected: o.id === this.value.selectValue })
+        )
+      })
+    );
+  }
+
   onInputChange($event: InputEvent): void {
     if ($event.event === InputEventType.onChange) {
       this.value.inputValue = $event.value;
@@ -61,17 +73,5 @@ export class SplitInputSingleSelectComponent extends BaseInputElement
 
   private emitChange(): void {
     this.elementChange.emit(this.value);
-  }
-
-  private enrichOptionsWithSelection(
-    options: SelectGroupOption[]
-  ): SelectGroupOption[] {
-    return map(options, g =>
-      assign({}, g, {
-        options: map(g.options, o =>
-          assign({}, o, { selected: o.id === this.value.selectValue })
-        )
-      })
-    );
   }
 }
