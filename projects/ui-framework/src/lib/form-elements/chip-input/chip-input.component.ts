@@ -52,14 +52,9 @@ export class ChipInputComponent extends BaseFormElement
   implements OnChanges, OnInit {
   constructor() {
     super();
-    this.inputTransformers = this.outputTransformers = [
-      value => {
-        return isArray(value)
-          ? value
-          : isString(value)
-          ? stringListToArray(value)
-          : [];
-      }
+    this.inputTransformers = [
+      value =>
+        isArray(value) ? value : isString(value) ? stringListToArray(value) : []
     ];
   }
 

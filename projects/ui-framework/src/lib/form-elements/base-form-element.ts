@@ -9,7 +9,8 @@ import {
 import { ControlValueAccessor, FormControl } from '@angular/forms';
 import { simpleUID, asArray } from '../services/utils/functional-utils';
 import { InputEvent } from './input/input.interface';
-import { InputEventType } from './input/input.enum';
+import { InputEventType } from './form-elements.enum';
+import { FormEvents } from './form-elements.enum';
 
 export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {
@@ -38,6 +39,7 @@ export abstract class BaseFormElement
   @Input() hintMessage: string;
   @Input() errorMessage: string;
   @Input() warnMessage: string;
+  @Input() doPropagate = true;
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
 
@@ -72,22 +74,20 @@ export abstract class BaseFormElement
 
   writeValue(value: any): void {
     if (value !== undefined) {
-      this.value = value
-        ? this.inputTransformers.reduce(
-            (previousResult, fn) => fn(previousResult),
-            value
-          )
-        : value;
+      this.value = this.inputTransformers.reduce(
+        (previousResult, fn) => fn(previousResult),
+        value
+      );
     }
   }
 
   protected transmitValue(
     value: any = this.value,
     eventType: InputEventType | InputEventType[] = [InputEventType.onChange],
-    eventName = 'changed',
-    doPropagate = true
+    eventName = FormEvents.changed,
+    doPropagate = this.doPropagate
   ): void {
-    if (value !== undefined && doPropagate) {
+    if (value !== undefined) {
       eventType = asArray(eventType);
 
       value = this.outputTransformers.reduce(
@@ -104,15 +104,17 @@ export abstract class BaseFormElement
         });
       }
 
-      if (
-        eventType.includes(InputEventType.onChange) ||
-        eventType.includes(InputEventType.onBlur)
-      ) {
-        this.propagateChange(value);
-      }
+      if (doPropagate) {
+        if (
+          eventType.includes(InputEventType.onChange) ||
+          eventType.includes(InputEventType.onBlur)
+        ) {
+          this.propagateChange(value);
+        }
 
-      if (eventType.includes(InputEventType.onBlur)) {
-        this.onTouched();
+        if (eventType.includes(InputEventType.onBlur)) {
+          this.onTouched();
+        }
       }
     }
   }
@@ -120,7 +122,7 @@ export abstract class BaseFormElement
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value) {
       this.writeValue(changes.value.currentValue);
-      this.transmitValue(changes.value.currentValue);
+      this.transmitValue(this.value, [InputEventType.onWrite]);
     }
     this.onNgChanges(changes);
   }

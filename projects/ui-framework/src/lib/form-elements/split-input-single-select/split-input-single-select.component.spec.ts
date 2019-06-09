@@ -4,7 +4,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SplitInputSingleSelectComponent } from './split-input-single-select.component';
 import { SingleSelectComponent } from '../lists/single-select/single-select.component';
 import { MockComponent } from 'ng-mocks';
-import { InputEventType } from '../input/input.enum';
+import { InputEventType } from '../form-elements.enum';
 import { InputComponent } from '../input/input.component';
 import { SelectGroupOption } from '../lists/list.interface';
 import { InputSingleSelectValue } from './split-input-single-select.interface';

@@ -4,44 +4,63 @@ import {
   Input,
   OnChanges,
   Output,
-  SimpleChanges
+  SimpleChanges,
+  forwardRef
 } from '@angular/core';
-import { BaseInputElement } from '../base-input-element';
 import { SelectGroupOption } from '../lists/list.interface';
-import { InputEventType, InputTypes } from '../input/input.enum';
+import { InputTypes } from '../input/input.enum';
+import { InputEventType } from '../form-elements.enum';
 import { InputSingleSelectValue } from './split-input-single-select.interface';
 import { assign, has, map } from 'lodash';
 import { InputEvent } from '../input/input.interface';
 import { ListChange } from '../lists/list-change/list-change';
+import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
+import { BaseFormElement } from '../base-form-element';
+import { FormEvents } from '../form-elements.enum';
 
 @Component({
   selector: 'b-split-input-single-select',
   templateUrl: './split-input-single-select.component.html',
-  styleUrls: ['./split-input-single-select.component.scss']
+  styleUrls: ['./split-input-single-select.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SplitInputSingleSelectComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => SplitInputSingleSelectComponent),
+      multi: true
+    }
+  ]
 })
-export class SplitInputSingleSelectComponent extends BaseInputElement
+export class SplitInputSingleSelectComponent extends BaseFormElement
   implements OnChanges {
-  @Input() value: InputSingleSelectValue;
-  @Input() inputType: InputTypes;
-  @Input() selectOptions: SelectGroupOption[];
-  @Output() elementChange: EventEmitter<
-    InputSingleSelectValue
-  > = new EventEmitter<InputSingleSelectValue>();
-
-  options: SelectGroupOption[];
+  constructor() {
+    super();
+    this.inputTransformers = [
+      value => (value ? assign({}, this.baseValue, value) : this.baseValue)
+    ];
+  }
 
   readonly baseValue: InputSingleSelectValue = {
     inputValue: null,
     selectValue: null
   };
 
-  constructor() {
-    super();
-  }
+  @Input() value: InputSingleSelectValue = this.baseValue;
+  @Input() inputType: InputTypes;
+  @Input() selectOptions: SelectGroupOption[];
+  @Output() elementChange: EventEmitter<
+    InputSingleSelectValue
+  > = new EventEmitter<InputSingleSelectValue>();
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.value = assign({}, this.baseValue, this.value);
-    if (has(changes, 'selectOptions')) {
+  options: SelectGroupOption[] = [];
+
+  // this extends BaseFormElement's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
+    if (changes.selectOptions) {
       this.selectOptions = changes.selectOptions.currentValue;
       this.options = this.enrichOptionsWithSelection(this.selectOptions);
     }
@@ -59,19 +78,22 @@ export class SplitInputSingleSelectComponent extends BaseInputElement
     );
   }
 
-  onInputChange($event: InputEvent): void {
-    if ($event.event === InputEventType.onChange) {
-      this.value.inputValue = $event.value;
-      this.emitChange();
+  onInputChange(event: InputEvent): void {
+    if (
+      event.event === InputEventType.onChange ||
+      event.event === InputEventType.onBlur
+    ) {
+      this.value.inputValue = event.value;
+      this.transmitValue(this.value, [event.event], FormEvents.elementChange);
     }
   }
 
   onSelectChange(listChange: ListChange): void {
     this.value.selectValue = listChange.getSelectedIds()[0];
-    this.emitChange();
-  }
-
-  private emitChange(): void {
-    this.elementChange.emit(this.value);
+    this.transmitValue(
+      this.value,
+      [InputEventType.onChange, InputEventType.onBlur],
+      FormEvents.elementChange
+    );
   }
 }

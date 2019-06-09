@@ -10,6 +10,7 @@
     padding: 0;
     height: auto;
     transition: max-height 0.2s, margin 0.2s;
+    max-height: 20px;
   }
 
   .bfe-wrap {
@@ -31,11 +32,8 @@
       border-top: 0;
       border-left: 0;
       border-right: 0;
-
-      .bfe-input {
-        max-height: 20px;
-      }
     }
+
     &:not(.focused):not(.empty) {
       .bfe-input.empty {
         max-height: 0px;

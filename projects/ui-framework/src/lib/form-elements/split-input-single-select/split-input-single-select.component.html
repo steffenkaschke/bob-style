@@ -1,15 +1,19 @@
 <b-input (inputEvents)="onInputChange($event)"
+         [value]="value?.inputValue"
+         [inputType]="inputType"
+         [label]="label"
+         [placeholder]="placeholder"
+         [required]="required"
          [disabled]="disabled"
          [hintMessage]="hintMessage"
          [errorMessage]="errorMessage"
-         [inputType]="inputType"
-         [label]="label"
-         [required]="required"
-         [value]="value?.inputValue">
+         [warnMessage]="errorMessage"
+         [doPropagate]="false">
 </b-input>
 
 <b-single-select (selectChange)="onSelectChange($event)"
                  [disabled]="disabled"
                  [options]="options"
-                 [showSingleGroupHeader]="false">
+                 [showSingleGroupHeader]="false"
+                 [doPropagate]="false">
 </b-single-select>

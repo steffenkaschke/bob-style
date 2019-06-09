@@ -18,7 +18,7 @@ const datepickerStories = storiesOf(
   module
 ).addDecorator(withKnobs);
 const template = `
-<b-datepicker (inputEvents)="dateChange($event)"
+<b-datepicker (dateChange)="dateChange($event)"
               [dateFormat]="dateFormat"
 
               [label]="label"

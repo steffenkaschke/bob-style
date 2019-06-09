@@ -5,6 +5,7 @@
 $form-element-margin: 20px 0;
 $wrap-height: 44px;
 $input-height: 42px;
+$input-padding: 15px;
 $label-height: 18px;
 $label-color: $grey-800;
 $label-hint-margin: 6px;
@@ -65,6 +66,7 @@ $input-border-color: $grey-500;
   min-height: $label-height;
   margin: 0 0 $label-hint-margin 0;
   color: $label-color;
+  @include BodyFont();
 
   &::first-letter {
     text-transform: uppercase;
@@ -115,7 +117,7 @@ $input-border-color: $grey-500;
     flex-grow: 1;
     height: $input-height;
     line-height: $input-height;
-    padding: 0 15px;
+    padding: 0 $input-padding;
     border: 0;
     margin: 0;
     outline: 0;
@@ -153,6 +155,19 @@ $input-border-color: $grey-500;
 
   // prefix-suffix
 
+  .bfe-wrap {
+    &.hasPrefix {
+      .bfe-input {
+        padding-left: 0;
+      }
+    }
+    &.hasSuffix {
+      .bfe-input {
+        padding-right: 0;
+      }
+    }
+  }
+
   .bfe-prefix,
   .bfe-suffix {
     display: flex;
@@ -165,23 +180,14 @@ $input-border-color: $grey-500;
 
   .bfe-prefix {
     padding: 0 10px 0 16px;
+
+    &:empty + .bfe-input {
+      padding-left: $input-padding;
+    }
   }
 
   .bfe-suffix {
     padding: 0 16px 0 10px;
-  }
-
-  .bfe-wrap {
-    &.hasPrefix {
-      .bfe-input {
-        padding-left: 0;
-      }
-    }
-    &.hasSuffix {
-      .bfe-input {
-        padding-right: 0;
-      }
-    }
   }
 
   // states

@@ -15,13 +15,15 @@ import {
   MatDatepicker
 } from '@angular/material';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { InputTypes, InputEventType } from '../input/input.enum';
+import { InputTypes } from '../input/input.enum';
+import { InputEventType } from '../form-elements.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
 import { InputEvent } from '../input/input.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
 import { differenceInDays, format, isDate, isSameDay } from 'date-fns';
 import { BaseFormElement } from '../base-form-element';
+import { FormEvents } from '../form-elements.enum';
 
 @Component({
   selector: 'b-datepicker',
@@ -103,7 +105,7 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
       this.transmitValue(
         value,
         [InputEventType.onChange, InputEventType.onBlur],
-        'dateChange'
+        FormEvents.dateChange
       );
     }
   }

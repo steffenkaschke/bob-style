@@ -9,12 +9,6 @@ export enum InputTypes {
   date = 'date'
 }
 
-export enum InputEventType {
-  onFocus = 'focus',
-  onBlur = 'blur',
-  onChange = 'change'
-}
-
 export enum InputAutoCompleteOptions {
   on = 'on',
   off = 'off'

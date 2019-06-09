@@ -95,6 +95,9 @@ export { EmployeeShowcase } from './lib/buttons-indicators/employees-showcase/em
 
 // FormElements Module
 export { FormElementsModule } from './lib/form-elements/form-elements.module';
+export {
+  FormEvents, InputEventType,
+} from './lib/form-elements/form-elements.enum';
 // Textarea Module
 export { TextareaModule } from './lib/form-elements/textarea/textarea.module';
 export {
@@ -117,9 +120,7 @@ export { InputModule } from './lib/form-elements/input/input.module';
 export { InputComponent } from './lib/form-elements/input/input.component';
 export { InputEvent } from './lib/form-elements/input/input.interface';
 export {
-  InputTypes,
-  InputEventType,
-  InputAutoCompleteOptions
+  InputTypes, InputAutoCompleteOptions
 } from './lib/form-elements/input/input.enum';
 // Split input + single select Module
 export {

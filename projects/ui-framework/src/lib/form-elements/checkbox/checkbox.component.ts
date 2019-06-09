@@ -10,7 +10,8 @@ import {
 import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { InputEvent } from '../input/input.interface';
-import { InputEventType } from '../input/input.enum';
+import { InputEventType } from '../form-elements.enum';
+import { FormEvents } from '../form-elements.enum';
 
 @Component({
   selector: 'b-checkbox',
@@ -49,6 +50,10 @@ export class CheckboxComponent extends BaseFormElement {
   toggleCheckbox(): void {
     this.value = !this.value;
 
-    this.transmitValue(this.value, [InputEventType.onBlur], 'checkboxChange');
+    this.transmitValue(
+      this.value,
+      [InputEventType.onBlur],
+      FormEvents.checkboxChange
+    );
   }
 }

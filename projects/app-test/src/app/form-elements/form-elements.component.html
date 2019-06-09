@@ -18,13 +18,34 @@
      enable all errors
    </label>
 
+   <label>
+     set all FormControl to:
+     <select required
+             class="simple-select"
+             (change)="setGlobalFormControlValue($event)">
+       <option value=""
+               disabled
+               selected
+               hidden></option>
+       <option value="string">string</option>
+       <option value="empty">empty string</option>
+       <option value="number">number</option>
+       <option value="null">null</option>
+       <option value="undefined">undefined</option>
+       <option value="true">true</option>
+       <option value="false">false</option>
+       <option value="array">array</option>
+       <option value="object">object</option>
+     </select>
+   </label>
+
  </div>
 
 
- <section class="bInput"
+ <section class="bInput status-done"
           *ngIf="allFormElements.includes('bInput')">
    <form [formGroup]="bInput_Form"
-         (ngSubmit)="onSubmit('bInput')"
+         (ngSubmit)="onSubmit($event,'bInput')"
          class="column">
 
      <h3>
@@ -75,8 +96,8 @@
               (changed)="onEvent('bInput',$event)">
      </b-input>
 
-     <p>
-       Form valid: {{bInput_Form.valid}}
+     <p [attr.data-valid]="bInput_Form.valid">
+       {{bInput_Form.valid ? 'Form valid' : 'Form invalid'}}
      </p>
    </form>
 
@@ -122,7 +143,7 @@
        {{ bInput_SubscrValue }}
      </div>
 
-     <p class="full-width">InputEvents: {{bInput_EventCounter}}</p>
+     <p class="full-width">Custom event: {{bInput_EventCounter}}</p>
      <div class="outputValue full-width">
        {{ bInput_EventValue }}
      </div>
@@ -181,7 +202,7 @@
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bInput')"
-                 [disabled]="!bInput_Form.valid"
+                 [disabled]="!bInput_Form.valid && bInput_updateOn_mode !== 'submit'"
                  type="submit">Submit form</button></label>
      </div>
 
@@ -223,10 +244,10 @@
 
  </section>
 
- <section class="bTextarea"
+ <section class="bTextarea status-done"
           *ngIf="allFormElements.includes('bTextarea')">
    <form [formGroup]="bTextarea_Form"
-         (ngSubmit)="onSubmit('bTextarea')"
+         (ngSubmit)="onSubmit($event,'bTextarea')"
          class="column">
 
      <h3>
@@ -280,8 +301,8 @@
                  (changed)="onEvent('bTextarea',$event)">
      </b-textarea>
 
-     <p>
-       Form valid: {{bTextarea_Form.valid}}
+     <p [attr.data-valid]="bTextarea_Form.valid">
+       {{bTextarea_Form.valid ? 'Form valid' : 'Form invalid'}}
      </p>
    </form>
 
@@ -327,7 +348,7 @@
        {{ bTextarea_SubscrValue }}
      </div>
 
-     <p class="full-width">InputEvents: {{bTextarea_EventCounter}}</p>
+     <p class="full-width">Custom event: {{bTextarea_EventCounter}}</p>
      <div class="outputValue full-width">
        {{ bTextarea_EventValue }}
      </div>
@@ -386,7 +407,7 @@
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bTextarea')"
-                 [disabled]="!bTextarea_Form.valid"
+                 [disabled]="!bTextarea_Form.valid && bTextarea_updateOn_mode !== 'submit'"
                  type="submit">Submit form</button></label>
 
      </div>
@@ -429,10 +450,10 @@
 
  </section>
 
- <section class="bDatepicker"
+ <section class="bDatepicker status-wip"
           *ngIf="allFormElements.includes('bDatepicker')">
    <form [formGroup]="bDatepicker_Form"
-         (ngSubmit)="onSubmit('bDatepicker')"
+         (ngSubmit)="onSubmit($event,'bDatepicker')"
          class="column">
 
      <h3>
@@ -486,8 +507,8 @@
                    (changed)="onEvent('bDatepicker',$event)">
      </b-datepicker>
 
-     <p>
-       Form valid: {{bDatepicker_Form.valid}}
+     <p [attr.data-valid]="bDatepicker_Form.valid">
+       {{bDatepicker_Form.valid ? 'Form valid' : 'Form invalid'}}
      </p>
 
      <p class="note">
@@ -538,13 +559,13 @@
        {{ bDatepicker_SubscrValue }}
      </div>
 
-     <p class="full-width">InputEvents: {{bDatepicker_EventCounter}}</p>
+     <p class="full-width">Custom event: {{bDatepicker_EventCounter}}</p>
      <div class="outputValue full-width">
        {{ bDatepicker_EventValue }}
      </div>
 
      <div class="control-item col third">
-       <p class="side-by-side">
+       <p class="col">
          <strong class="value">Value</strong>
          <label>
            <input class="simple-checkbox"
@@ -554,7 +575,7 @@
          </label>
        </p>
        <label>
-         <input class="simple-input bigger"
+         <input class="simple-input"
                 [(ngModel)]="bDatepicker_value"
                 type="search">
        </label>
@@ -608,7 +629,7 @@
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bDatepicker')"
-                 [disabled]="!bDatepicker_Form.valid"
+                 [disabled]="!bDatepicker_Form.valid && bDatepicker_updateOn_mode !== 'submit'"
                  type="submit">Submit form</button></label>
      </div>
 
@@ -650,10 +671,10 @@
 
  </section>
 
- <section class="bChipinput"
+ <section class="bChipinput status-wip"
           *ngIf="allFormElements.includes('bChipinput')">
    <form [formGroup]="bChipinput_Form"
-         (ngSubmit)="onSubmit('bChipinput')"
+         (ngSubmit)="onSubmit($event,'bChipinput')"
          class="column">
 
      <h3>
@@ -707,8 +728,8 @@
                    (changed)="onEvent('bChipinput',$event)">
      </b-chip-input>
 
-     <p>
-       Form valid: {{bChipinput_Form.valid}}
+     <p [attr.data-valid]="bChipinput_Form.valid">
+       {{bChipinput_Form.valid ? 'Form valid' : 'Form invalid'}}
      </p>
    </form>
 
@@ -749,12 +770,13 @@
               type="search">
      </label>
 
-     <p class="full-width">ValueChanges: {{bChipinput_SubscrCounter}}</p>
+     <p class="full-width">ValueChanges: {{bChipinput_SubscrCounter}} / {{ type(bChipinput_SubscrValue) }}</p>
      <div class="outputValue full-width">
-       {{ bChipinput_SubscrValue && (isArray(bChipinput_SubscrValue) ?bChipinput_SubscrValue.join(', ') : bChipinput_SubscrValue) }}
+       {{ bChipinput_SubscrValue }}
      </div>
 
-     <p class="full-width">InputEvents: {{bChipinput_EventCounter}}</p>
+     <p class="full-width">Custom event: {{bChipinput_EventCounter}}
+     </p>
      <div class="outputValue full-width">
        {{ bChipinput_EventValue }}
      </div>
@@ -820,7 +842,7 @@
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bChipinput')"
-                 [disabled]="!bChipinput_Form.valid"
+                 [disabled]="!bChipinput_Form.valid && bChipinput_updateOn_mode !== 'submit'"
                  type="submit">Submit form</button></label>
      </div>
 
@@ -862,10 +884,10 @@
 
  </section>
 
- <section class="bSocial"
+ <section class="bSocial status-wip"
           *ngIf="allFormElements.includes('bSocial')">
    <form [formGroup]="bSocial_Form"
-         (ngSubmit)="onSubmit('bSocial')"
+         (ngSubmit)="onSubmit($event,'bSocial')"
          class="column">
 
      <h3>
@@ -919,8 +941,8 @@
                (changed)="onEvent('bSocial',$event)">
      </b-social>
 
-     <p>
-       Form valid: {{bSocial_Form.valid}}
+     <p [attr.data-valid]="bSocial_Form.valid">
+       {{bSocial_Form.valid ? 'Form valid' : 'Form invalid'}}
      </p>
 
      <p class="note">
@@ -970,7 +992,7 @@
        {{ bSocial_SubscrValue }}
      </div>
 
-     <p class="full-width">InputEvents: {{bSocial_EventCounter}}</p>
+     <p class="full-width">Custom event: {{bSocial_EventCounter}}</p>
      <div class="outputValue full-width">
        {{ bSocial_EventValue }}
      </div>
@@ -1038,7 +1060,7 @@
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bSocial')"
-                 [disabled]="!bSocial_Form.valid"
+                 [disabled]="!bSocial_Form.valid && bSocial_updateOn_mode !== 'submit'"
                  type="submit">Submit form</button></label>
      </div>
 
@@ -1080,10 +1102,10 @@
 
  </section>
 
- <section class="bCheckbox"
+ <section class="bCheckbox status-done"
           *ngIf="allFormElements.includes('bCheckbox')">
    <form [formGroup]="bCheckbox_Form"
-         (ngSubmit)="onSubmit('bCheckbox')"
+         (ngSubmit)="onSubmit($event,'bCheckbox')"
          class="column">
 
      <h3>
@@ -1135,8 +1157,8 @@
                  (changed)="onEvent('bCheckbox',$event)">
      </b-checkbox>
 
-     <p>
-       Form valid: {{bCheckbox_Form.valid}}
+     <p [attr.data-valid]="bCheckbox_Form.valid">
+       {{bCheckbox_Form.valid ? 'Form valid' : 'Form invalid'}}
      </p>
    </form>
 
@@ -1182,7 +1204,7 @@
        {{ bCheckbox_SubscrValue }}
      </div>
 
-     <p class="full-width">InputEvents: {{bCheckbox_EventCounter}}</p>
+     <p class="full-width">Custom event: {{bCheckbox_EventCounter}}</p>
      <div class="outputValue full-width">
        {{ bCheckbox_EventValue }}
      </div>
@@ -1249,7 +1271,7 @@
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bCheckbox')"
-                 [disabled]="!bCheckbox_Form.valid"
+                 [disabled]="!bCheckbox_Form.valid && bCheckbox_updateOn_mode !== 'submit'"
                  type="submit">Submit form</button></label>
      </div>
 
@@ -1291,10 +1313,10 @@
 
  </section>
 
- <section class="bRadio"
+ <section class="bRadio status-done"
           *ngIf="allFormElements.includes('bRadio')">
    <form [formGroup]="bRadio_Form"
-         (ngSubmit)="onSubmit('bRadio')"
+         (ngSubmit)="onSubmit($event,'bRadio')"
          class="column">
 
      <h3>
@@ -1306,8 +1328,8 @@
      <pre class="code-example"><code>
 &#x3C;b-radio-button formControlName=&#x22;bRadio&#x22;
       [label]=&#x22;bRadio_label&#x22;
-      [value]=&#x22;bRadio_value&#x22;
-      [radioConfig]=&#x22;bRadio_radioConfig&#x22;
+      [value]=&#x22;bRadio_directValueInput ? bRadio_value : undefined&#x22;
+      [options]=&#x22;bRadio_options&#x22;
       [direction]=&#x22;bRadio_direction&#x22;
       [disabled]=&#x22;bRadio_disabled&#x22;
       [required]=&#x22;bRadio_required&#x22;
@@ -1316,10 +1338,7 @@
       [errorMessage]=&#x22;bRadio_error&#x22;
       (radioChange)=&#x22;onEvent(&#x27;bRadio&#x27;,$event)&#x22;
       (changed)=&#x22;onEvent(&#x27;bRadio&#x27;,$event)&#x22;&#x3E;
-      &#x3C;/b-radio-button&#x3E;
     </code></pre>
-
-     <br>
 
      <b-radio-button *ngIf="bRadio_formControlEnabled"
                      formControlName="bRadio"
@@ -1350,10 +1369,8 @@
                      (changed)="onEvent('bRadio',$event)">
      </b-radio-button>
 
-     <br>
-
-     <p>
-       Form valid: {{bRadio_Form.valid}}
+     <p [attr.data-valid]="bRadio_Form.valid">
+       {{bRadio_Form.valid ? 'Form valid' : 'Form invalid'}}
      </p>
    </form>
 
@@ -1396,7 +1413,7 @@
        {{ bRadio_SubscrValue }}
      </div>
 
-     <p class="full-width">InputEvents: {{bRadio_EventCounter}}</p>
+     <p class="full-width">Custom event: {{bRadio_EventCounter}}</p>
      <div class="outputValue full-width">
        {{ bRadio_EventValue }}
      </div>
@@ -1463,7 +1480,7 @@
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bRadio')"
-                 [disabled]="!bRadio_Form.valid"
+                 [disabled]="!bRadio_Form.valid && bRadio_updateOn_mode !== 'submit'"
                  type="submit">Submit form</button></label>
      </div>
 
@@ -1505,14 +1522,14 @@
 
  </section>
 
- <section class="bSplitInput"
+ <section class="bSplitInput status-todo"
           *ngIf="allFormElements.includes('bSplitInput')">
    <form [formGroup]="bSplitInput_Form"
-         (ngSubmit)="onSubmit('bSplitInput')"
+         (ngSubmit)="onSubmit($event,'bSplitInput')"
          class="column">
 
      <h3>
-       b-input
+       b-split-input
      </h3>
 
      <button class="show-code"
@@ -1537,6 +1554,7 @@
                                   [label]="bSplitInput_label"
                                   [placeholder]="bSplitInput_placeholder"
                                   [value]="bSplitInput_directValueInput ? bSplitInput_value : undefined"
+                                  [selectOptions]="bSplitInput_selectOptions"
                                   [disabled]="bSplitInput_disabled"
                                   [required]="bSplitInput_required"
                                   [hintMessage]="bSplitInput_hint"
@@ -1559,8 +1577,8 @@
                                   (changed)="onEvent('bSplitInput',$event)">
      </b-split-input-single-select>
 
-     <p>
-       Form valid: {{bSplitInput_Form.valid}}
+     <p [attr.data-valid]="bSplitInput_Form.valid">
+       {{bSplitInput_Form.valid ? 'Form valid' : 'Form invalid'}}
      </p>
    </form>
 
@@ -1603,10 +1621,10 @@
 
      <p class="full-width">ValueChanges: {{bSplitInput_SubscrCounter}}</p>
      <div class="outputValue full-width">
-       {{ bSplitInput_SubscrValue }}
+       {{ bSplitInput_SubscrValue | json }}
      </div>
 
-     <p class="full-width">InputEvents: {{bSplitInput_EventCounter}}</p>
+     <p class="full-width">Custom event: {{bSplitInput_EventCounter}}</p>
      <div class="outputValue full-width">
        {{ bSplitInput_EventValue }}
      </div>
@@ -1622,9 +1640,9 @@
          </label>
        </p>
        <label>
-         <input class="simple-input bigger"
-                [(ngModel)]="bSplitInput_value"
-                type="search">
+         <textarea class="simple-textarea bigger"
+                   (input)="bSplitInput_value = json.parse($event.target.value)"
+                   type="search">{{bSplitInput_value | json}}</textarea>
        </label>
      </div>
 
@@ -1665,7 +1683,7 @@
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bSplitInput')"
-                 [disabled]="!bSplitInput_Form.valid"
+                 [disabled]="!bSplitInput_Form.valid && bSplitInput_updateOn_mode !== 'submit'"
                  type="submit">Submit form</button></label>
      </div>
 

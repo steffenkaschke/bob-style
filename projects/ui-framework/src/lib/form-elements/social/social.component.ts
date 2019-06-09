@@ -13,6 +13,7 @@ import { InputTypes } from '../input/input.enum';
 import { SocialTypes } from './social.const';
 import { Social } from './social.enum';
 import { BaseFormElement } from '../base-form-element';
+import { FormEvents } from '../form-elements.enum';
 
 @Component({
   selector: 'b-social',
@@ -34,9 +35,9 @@ import { BaseFormElement } from '../base-form-element';
 export class SocialComponent extends BaseFormElement {
   constructor() {
     super();
-    this.inputTransformers = [value => value.split('/')[1]];
+    this.inputTransformers = [value => (value ? value.split('/')[1] : '')];
     this.outputTransformers = [
-      value => `${SocialTypes[this.type].prefix}${value}`
+      value => (value ? `http://${SocialTypes[this.type].prefix}${value}` : '')
     ];
   }
 
@@ -51,6 +52,6 @@ export class SocialComponent extends BaseFormElement {
   public readonly socialTypes = SocialTypes;
 
   public onInputEvents(event: InputEvent): void {
-    this.transmitValue(event.value, event.event, 'socialInputChange');
+    this.transmitValue(event.value, event.event, FormEvents.socialInputChange);
   }
 }

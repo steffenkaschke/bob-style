@@ -8,9 +8,10 @@ import {
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
 import { RadioDirection } from './radio-button.enum';
-import { InputEventType } from '../input/input.enum';
+import { InputEventType } from '../form-elements.enum';
 import { RadioConfig } from './radio-button.interface';
 import { compareStringsAsNumbers } from '../../services/utils/functional-utils';
+import { FormEvents } from '../form-elements.enum';
 
 @Component({
   selector: 'b-radio-button',
@@ -50,6 +51,10 @@ export class RadioButtonComponent extends BaseFormElement {
       ? parseInt(event.target.value, 10)
       : event.target.value;
 
-    this.transmitValue(this.value, [InputEventType.onBlur], 'radioChange');
+    this.transmitValue(
+      this.value,
+      [InputEventType.onBlur],
+      FormEvents.radioChange
+    );
   }
 }

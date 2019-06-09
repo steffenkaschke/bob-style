@@ -15,6 +15,8 @@ import {
 export class FormElementsTestComponent implements OnInit, OnDestroy {
   constructor() {}
 
+  public json = JSON;
+
   isArray = isArray;
 
   allFormElements = [
@@ -25,10 +27,24 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
     'bSocial',
     'bCheckbox',
     'bRadio'
+    // 'bSplitInput'
   ];
 
   globalEnableFormControl = true;
   globalEnableDirectInput = false;
+
+  globalFormControlStartValues = {
+    null: null,
+    empty: '',
+    undefined: undefined,
+    string: 'Some value',
+    number: 123,
+    true: true,
+    false: false,
+    array: ['a', 'b', 'c'],
+    object: { a: 'a', b: 'b', c: 'c' }
+  };
+  globalFormControlStartValue = this.globalFormControlStartValues.null;
 
   global_warn = false;
   global_warn_value = 'Warning message';
@@ -56,7 +72,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bInput_directValueInput = this.globalEnableDirectInput;
 
   bInput_Form = new FormGroup({
-    bInput: new FormControl(null, {
+    bInput: new FormControl(this.globalFormControlStartValue, {
       updateOn: this.bInput_updateOn_mode as any
     })
   });
@@ -83,7 +99,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bTextarea_directValueInput = this.globalEnableDirectInput;
 
   bTextarea_Form = new FormGroup({
-    bTextarea: new FormControl(this.bTextarea_placeholder + ' / formControl', {
+    bTextarea: new FormControl(this.globalFormControlStartValue, {
       updateOn: this.bTextarea_updateOn_mode as any
     })
   });
@@ -111,7 +127,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bDatepicker_directValueInput = this.globalEnableDirectInput;
 
   bDatepicker_Form = new FormGroup({
-    bDatepicker: new FormControl(null, {
+    bDatepicker: new FormControl(this.globalFormControlStartValue, {
       updateOn: this.bDatepicker_updateOn_mode as any
     })
   });
@@ -125,7 +141,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bChipinput_EventCounter = 0;
   bChipinput_label = 'Chip Input label';
   bChipinput_placeholder = 'Chip Input placeholder';
-  bChipinput_value = [];
+  bChipinput_value = 'petting, fisting, rimming';
   bChipinput_options = chipOptionsMock;
   bChipinput_acceptNew = true;
   bChipinput_disabled = false;
@@ -140,7 +156,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bChipinput_directValueInput = this.globalEnableDirectInput;
 
   bChipinput_Form = new FormGroup({
-    bChipinput: new FormControl([], {
+    bChipinput: new FormControl(this.globalFormControlStartValue, {
       updateOn: this.bChipinput_updateOn_mode as any
     })
   });
@@ -168,7 +184,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bSocial_directValueInput = this.globalEnableDirectInput;
 
   bSocial_Form = new FormGroup({
-    bSocial: new FormControl(null, {
+    bSocial: new FormControl(this.globalFormControlStartValue, {
       updateOn: this.bSocial_updateOn_mode as any
     })
   });
@@ -196,7 +212,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bCheckbox_directValueInput = this.globalEnableDirectInput;
 
   bCheckbox_Form = new FormGroup({
-    bCheckbox: new FormControl(null, {
+    bCheckbox: new FormControl(this.globalFormControlStartValue, {
       updateOn: this.bCheckbox_updateOn_mode as any
     })
   });
@@ -227,7 +243,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bRadio_directValueInput = this.globalEnableDirectInput;
 
   bRadio_Form = new FormGroup({
-    bRadio: new FormControl(null, {
+    bRadio: new FormControl(this.globalFormControlStartValue, {
       updateOn: this.bRadio_updateOn_mode as any
     })
   });
@@ -235,13 +251,83 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
 
   ///////////////////////////////////
 
+  currencies = [
+    { value: 'AED', serverId: null },
+    { value: 'ANG', serverId: null },
+    { value: 'AUD', serverId: null },
+    { value: 'AZN', serverId: null },
+    { value: 'BAM', serverId: null },
+    { value: 'BGN', serverId: null },
+    { value: 'BRL', serverId: null },
+    { value: 'BTC', serverId: null },
+    { value: 'BWP', serverId: null },
+    { value: 'CAD', serverId: null },
+    { value: 'CHF', serverId: null },
+    { value: 'CLP', serverId: null },
+    { value: 'CNY', serverId: null },
+    { value: 'COP', serverId: null },
+    { value: 'CZK', serverId: null },
+    { value: 'DKK', serverId: null },
+    { value: 'EGP', serverId: null },
+    { value: 'EUR', serverId: null },
+    { value: 'GBP', serverId: null },
+    { value: 'HKD', serverId: null },
+    { value: 'HUF', serverId: null },
+    { value: 'IDR', serverId: null },
+    { value: 'ILS', serverId: null },
+    { value: 'INR', serverId: null },
+    { value: 'JPY', serverId: null },
+    { value: 'KES', serverId: null },
+    { value: 'KRW', serverId: null },
+    { value: 'MAD', serverId: null },
+    { value: 'MMK', serverId: null },
+    { value: 'MXN', serverId: null },
+    { value: 'MYR', serverId: null },
+    { value: 'NGN', serverId: null },
+    { value: 'NOK', serverId: null },
+    { value: 'NPR', serverId: null },
+    { value: 'NZD', serverId: null },
+    { value: 'PEN', serverId: null },
+    { value: 'PHP', serverId: null },
+    { value: 'PLN', serverId: null },
+    { value: 'RON', serverId: null },
+    { value: 'RUB', serverId: null },
+    { value: 'SEK', serverId: null },
+    { value: 'SGD', serverId: null },
+    { value: 'THB', serverId: null },
+    { value: 'TRY', serverId: null },
+    { value: 'TWD', serverId: null },
+    { value: 'TZS', serverId: null },
+    { value: 'UAH', serverId: null },
+    { value: 'USD', serverId: null },
+    { value: 'UYU', serverId: null },
+    { value: 'VND', serverId: null },
+    { value: 'XOF', serverId: null },
+    { value: 'ZAR', serverId: null }
+  ];
+
+  optionsMock = Array.from(Array(1), (_, i) => {
+    return {
+      groupName: 'all currencies',
+      options: this.currencies.map(currency => ({
+        value: currency.value,
+        id: currency.value,
+        selected: null
+      }))
+    };
+  });
+
   bSplitInput_SubscrValue;
   bSplitInput_EventValue;
   bSplitInput_SubscrCounter = 0;
   bSplitInput_EventCounter = 0;
   bSplitInput_label = 'Input label';
   bSplitInput_placeholder = 'Input placeholder';
-  bSplitInput_value = 'Input value';
+  bSplitInput_value = {
+    inputValue: 100,
+    selectValue: 'AED'
+  };
+  bSplitInput_selectOptions = this.optionsMock;
   bSplitInput_disabled = false;
   bSplitInput_required = true;
   bSplitInput_hint = 'Input hint text';
@@ -254,7 +340,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bSplitInput_directValueInput = this.globalEnableDirectInput;
 
   bSplitInput_Form = new FormGroup({
-    bSplitInput: new FormControl(null, {
+    bSplitInput: new FormControl(this.globalFormControlStartValue, {
       updateOn: this.bSplitInput_updateOn_mode as any
     })
   });
@@ -328,18 +414,62 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmit(name) {
-    alert('SUBMIT');
+  setGlobalFormControlValue(event) {
+    const val = this.globalFormControlStartValues[event.target.value];
+
+    this.globalFormControlStartValue = val;
+
+    this.allFormElements.forEach(name => {
+      this[name + '_value'] = val;
+      this.setValue(name);
+    });
   }
+
+  onSubmit(event, name) {
+    console.log('------------------------');
+    console.log(name + ' form submitted.');
+    console.log(this[name + '_Form'].value);
+  }
+
   onSubmitClick(name) {
-    this[name + '_SubscrValue'] = `
-      Submitted form value:
-        ${JSON.stringify(this[name + '_Form'].value)}
-    `;
+    const form = document.querySelector(
+      'section.' + name + ' form'
+    ) as HTMLFormElement;
+
+    let submitButton = document.querySelector(
+      'section.' + name + ' .hidden-submit'
+    ) as HTMLElement;
+
+    if (!submitButton) {
+      submitButton = document.createElement('button');
+      (submitButton as any).type = 'submit';
+      submitButton.id = 'hidden-submit-' + name;
+      submitButton.className = 'hidden-submit';
+      submitButton.style.opacity = '0';
+      submitButton.style.position = 'absolute';
+      submitButton.style.border = '0';
+      submitButton.style.padding = '0';
+      submitButton.style.overflow = 'hidden';
+      submitButton.style.width = '1px';
+      submitButton.style.height = '1px';
+      submitButton.style.clip = 'rect(0 0 0 0)';
+      submitButton.style.margin = '-1px';
+      submitButton = form.appendChild(submitButton) as HTMLElement;
+    }
+
+    submitButton.click();
   }
 
   logEvent(event) {
     console.log(event);
+  }
+
+  type(smth) {
+    let thisType = String(typeof smth);
+    if (thisType === 'object' && isArray(smth)) {
+      thisType = 'array';
+    }
+    return thisType;
   }
 
   ///////////////////////////////////
