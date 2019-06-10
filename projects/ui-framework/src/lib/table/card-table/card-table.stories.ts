@@ -51,25 +51,26 @@ const storyTemplate = `
       (cellClicked)="cellClickHandler($event)">
     </b-card-table>
 
-    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: 30px auto;">
+    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: auto;">
       <span>Width: </span>
-      <b-radio-button [radioConfig]="[
+
+      <b-radio-button [options]="[
           {id: '95%', label: 'auto'},
           {id: '840px', label: '840px'},
           {id: '630px', label: '630px'}
         ]"
         [value]="'840px'"
-        (radioChange)="res = $event">
+        (radioChange)="res = $event.value">
       </b-radio-button>
     </p>
 
-    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: 30px auto;">
+    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: auto;">
       <span>Data: </span>
-      <b-radio-button [radioConfig]="[
-          {id: {id: 1, data: CardTableData}, label: 'original'},
-          {id: {id: 2, data: []}, label: 'empty'}
+      <b-radio-button [options]="[
+          {id: 1, label: 'original'},
+          {id: 2, label: 'empty'}
         ]"
-        (radioChange)="tableData = $event.data">
+        (radioChange)="tableData = $event.value === '1' ? CardTableData : []">
       </b-radio-button>
     </p>
 
