@@ -17,5 +17,6 @@ export enum InputEventType {
   onFocus = 'focus',
   onBlur = 'blur',
   onChange = 'change',
-  onWrite = 'write'
+  onWrite = 'write',
+  onKey = 'keydown'
 }

@@ -2,48 +2,131 @@
          type="button">Global</button>
  <div class="global-controls col">
 
-   <label>
-     <input class="simple-checkbox"
-            (change)="globalControlChange('global_warn')"
-            [(ngModel)]="global_warn"
-            type="checkbox">
-     enable all warnings
-   </label>
+   <p class="col">
+     <label>
+       <input class="simple-checkbox"
+              (change)="globalControlChange('global_warn')"
+              [(ngModel)]="global_warn"
+              type="checkbox">
+       enable all warnings
+     </label>
 
-   <label>
-     <input class="simple-checkbox"
-            (change)="globalControlChange('global_error')"
-            [(ngModel)]="global_error"
-            type="checkbox">
-     enable all errors
-   </label>
+     <label>
+       <input class="simple-checkbox"
+              (change)="globalControlChange('global_error')"
+              [(ngModel)]="global_error"
+              type="checkbox">
+       enable all errors
+     </label>
+   </p>
 
-   <label>
-     set all FormControl to:
-     <select required
-             class="simple-select"
-             (change)="setGlobalFormControlValue($event)">
-       <option value=""
-               disabled
-               selected
-               hidden></option>
-       <option value="string">string</option>
-       <option value="empty">empty string</option>
-       <option value="number">number</option>
-       <option value="null">null</option>
-       <option value="undefined">undefined</option>
-       <option value="true">true</option>
-       <option value="false">false</option>
-       <option value="array">array</option>
-       <option value="object">object</option>
-     </select>
-   </label>
+   <p class="col">
+     <label>
+       <input class="simple-checkbox"
+              (change)="globalControlChange('global_required')"
+              [(ngModel)]="global_required"
+              type="checkbox">
+       enable all required
+     </label>
+
+     <label>
+       <input class="simple-checkbox"
+              (change)="globalControlChange('global_disabled')"
+              [(ngModel)]="global_disabled"
+              type="checkbox">
+       enable all disabled
+     </label>
+   </p>
+
+   <p class="side-by-side">
+     <span>clear warnings & errors</span>
+     <button class="small-button"
+             type="button"
+             (click)="globalClearWarnErrors()">
+       Clear
+     </button>
+   </p>
+
+   <p class="col">
+     <label>
+       <input class="simple-checkbox"
+              (change)="globalControlChange('global_directValueInput')"
+              [(ngModel)]="global_directValueInput"
+              type="checkbox">
+       enable all direct input
+     </label>
+
+     <label>
+       <input class="simple-checkbox"
+              (change)="globalControlChange('global_setInputProgrammatically')"
+              [(ngModel)]="global_setInputProgrammatically"
+              type="checkbox">
+       enable all set programmatically
+     </label>
+   </p>
+
+   <p class="col">
+     <label>
+       <input class="simple-checkbox"
+              (change)="globalControlChange('global_formControlEnabled')"
+              [(ngModel)]="global_formControlEnabled"
+              type="checkbox">
+       enable all FormControl
+     </label>
+     <label>
+       <input class="simple-checkbox"
+              (change)="globalControlChange('global_setValEmit')"
+              [(ngModel)]="global_setValEmit"
+              type="checkbox">
+       enable all emit on setValue
+     </label>
+   </p>
+
+   <p>
+     <label>
+       set all FormControl to:
+       <select required
+               class="simple-select"
+               (change)="setGlobalFormControlValue($event)">
+         <option value=""
+                 disabled
+                 selected
+                 hidden></option>
+         <option value="string">string</option>
+         <option value="empty">empty string</option>
+         <option value="number">number</option>
+         <option value="null">null</option>
+         <option value="undefined">undefined</option>
+         <option value="true">true</option>
+         <option value="false">false</option>
+         <option value="array">array</option>
+         <option value="object">object</option>
+       </select>
+     </label>
+   </p>
+
+   <div class="show-components">
+     <p class="full-width"><strong>Show components:</strong></p>
+
+     <div>
+       <label *ngFor="let comp of allFormElements">
+         <input class="simple-checkbox"
+                [(ngModel)]="global_visibleComponents[comp]"
+                type="checkbox">
+         {{comp}}
+       </label>
+
+       <button type="button"
+               class="small-button"
+               (click)="inverseVisibleComponents()">Inverse</button>
+     </div>
+   </div>
 
  </div>
 
 
  <section class="bInput status-done"
-          *ngIf="allFormElements.includes('bInput')">
+          *ngIf="global_visibleComponents['bInput']">
    <form [formGroup]="bInput_Form"
          (ngSubmit)="onSubmit($event,'bInput')"
          class="column">
@@ -70,6 +153,7 @@
     </code></pre>
 
      <b-input *ngIf="bInput_formControlEnabled"
+              #bInput
               formControlName="bInput"
               [label]="bInput_label"
               [placeholder]="bInput_placeholder"
@@ -84,6 +168,7 @@
      </b-input>
 
      <b-input *ngIf="!bInput_formControlEnabled"
+              #bInput
               [label]="bInput_label"
               [placeholder]="bInput_placeholder"
               [value]="bInput_directValueInput ? bInput_value : undefined"
@@ -149,7 +234,7 @@
      </div>
 
      <div class="control-item col">
-       <p class="side-by-side">
+       <p class="col">
          <strong class="value">Value</strong>
          <label>
            <input class="simple-checkbox"
@@ -157,10 +242,18 @@
                   type="checkbox">
            enable direct input
          </label>
+         <label>
+           <input [disabled]="!bInput_directValueInput"
+                  class="simple-checkbox"
+                  [(ngModel)]="bInput_setInputProgrammatically"
+                  type="checkbox">
+           set programmatically
+         </label>
        </p>
        <label>
          <input class="simple-input bigger"
-                [(ngModel)]="bInput_value"
+                (input)="onValueInput('bInput', $event)"
+                [value]="bInput_value"
                 type="search">
        </label>
      </div>
@@ -245,7 +338,7 @@
  </section>
 
  <section class="bTextarea status-done"
-          *ngIf="allFormElements.includes('bTextarea')">
+          *ngIf="global_visibleComponents['bTextarea']">
    <form [formGroup]="bTextarea_Form"
          (ngSubmit)="onSubmit($event,'bTextarea')"
          class="column">
@@ -272,7 +365,8 @@
       &#x3C;/b-textarea&#x3E;
     </code></pre>
 
-     <b-textarea *ngIf="bTextarea_formControlEnabled"
+     <b-textarea #bTextarea
+                 *ngIf="bTextarea_formControlEnabled"
                  formControlName="bTextarea"
                  [label]="bTextarea_label"
                  [placeholder]="bTextarea_placeholder"
@@ -287,7 +381,8 @@
                  (changed)="onEvent('bTextarea',$event)">
      </b-textarea>
 
-     <b-textarea *ngIf="!bTextarea_formControlEnabled"
+     <b-textarea #bTextarea
+                 *ngIf="!bTextarea_formControlEnabled"
                  [label]="bTextarea_label"
                  [placeholder]="bTextarea_placeholder"
                  [value]="bTextarea_directValueInput ? bTextarea_value : undefined"
@@ -354,7 +449,7 @@
      </div>
 
      <div class="control-item col">
-       <p class="side-by-side">
+       <p class="col">
          <strong class="value">Value</strong>
          <label>
            <input class="simple-checkbox"
@@ -362,10 +457,18 @@
                   type="checkbox">
            enable direct input
          </label>
+         <label>
+           <input [disabled]="!bTextarea_directValueInput"
+                  class="simple-checkbox"
+                  [(ngModel)]="bTextarea_setInputProgrammatically"
+                  type="checkbox">
+           set programmatically
+         </label>
        </p>
        <label>
          <input class="simple-input bigger"
-                [(ngModel)]="bTextarea_value"
+                (input)="onValueInput('bTextarea', $event)"
+                [value]="bTextarea_value"
                 type="search">
        </label>
      </div>
@@ -451,7 +554,7 @@
  </section>
 
  <section class="bDatepicker status-wip"
-          *ngIf="allFormElements.includes('bDatepicker')">
+          *ngIf="global_visibleComponents['bDatepicker']">
    <form [formGroup]="bDatepicker_Form"
          (ngSubmit)="onSubmit($event,'bDatepicker')"
          class="column">
@@ -478,7 +581,8 @@
       &#x3C;/b-datepicker&#x3E;
     </code></pre>
 
-     <b-datepicker *ngIf="bDatepicker_formControlEnabled"
+     <b-datepicker #bDatepicker
+                   *ngIf="bDatepicker_formControlEnabled"
                    formControlName="bDatepicker"
                    [label]="bDatepicker_label"
                    [placeholder]="bDatepicker_placeholder"
@@ -493,7 +597,8 @@
                    (changed)="onEvent('bDatepicker',$event)">
      </b-datepicker>
 
-     <b-datepicker *ngIf="!bDatepicker_formControlEnabled"
+     <b-datepicker #bDatepicker
+                   *ngIf="!bDatepicker_formControlEnabled"
                    [label]="bDatepicker_label"
                    [placeholder]="bDatepicker_placeholder"
                    [value]="bDatepicker_directValueInput ? bDatepicker_value : undefined"
@@ -573,10 +678,18 @@
                   type="checkbox">
            enable direct input
          </label>
+         <label>
+           <input [disabled]="!bDatepicker_directValueInput"
+                  class="simple-checkbox"
+                  [(ngModel)]="bDatepicker_setInputProgrammatically"
+                  type="checkbox">
+           set programmatically
+         </label>
        </p>
        <label>
          <input class="simple-input"
-                [(ngModel)]="bDatepicker_value"
+                (input)="onValueInput('bDatepicker', $event)"
+                [value]="bDatepicker_value"
                 type="search">
        </label>
      </div>
@@ -672,7 +785,7 @@
  </section>
 
  <section class="bChipinput status-wip"
-          *ngIf="allFormElements.includes('bChipinput')">
+          *ngIf="global_visibleComponents['bChipinput']">
    <form [formGroup]="bChipinput_Form"
          (ngSubmit)="onSubmit($event,'bChipinput')"
          class="column">
@@ -699,7 +812,8 @@
       &#x3C;/b-chip-input&#x3E;
     </code></pre>
 
-     <b-chip-input *ngIf="bChipinput_formControlEnabled"
+     <b-chip-input #bChipinput
+                   *ngIf="bChipinput_formControlEnabled"
                    formControlName="bChipinput"
                    [label]="bChipinput_label"
                    [placeholder]="bChipinput_placeholder"
@@ -714,7 +828,8 @@
                    (changed)="onEvent('bChipinput',$event)">
      </b-chip-input>
 
-     <b-chip-input *ngIf="!bChipinput_formControlEnabled"
+     <b-chip-input #bChipinput
+                   *ngIf="!bChipinput_formControlEnabled"
                    [label]="bChipinput_label"
                    [placeholder]="bChipinput_placeholder"
                    [value]="bChipinput_directValueInput ? bChipinput_value : undefined"
@@ -782,7 +897,7 @@
      </div>
 
      <div class="control-item col">
-       <p class="side-by-side">
+       <p class="col">
          <strong class="value">Value</strong>
          <label>
            <input class="simple-checkbox"
@@ -790,10 +905,18 @@
                   type="checkbox">
            enable direct input
          </label>
+         <label>
+           <input [disabled]="!bChipinput_directValueInput"
+                  class="simple-checkbox"
+                  [(ngModel)]="bChipinput_setInputProgrammatically"
+                  type="checkbox">
+           set programmatically
+         </label>
        </p>
        <label>
          <textarea class="simple-textarea bigger"
-                   [(ngModel)]="bChipinput_value"
+                   (input)="onValueInput('bChipinput', $event)"
+                   [value]="bChipinput_value"
                    type="search"></textarea>
        </label>
      </div>
@@ -885,7 +1008,7 @@
  </section>
 
  <section class="bSocial status-wip"
-          *ngIf="allFormElements.includes('bSocial')">
+          *ngIf="global_visibleComponents['bSocial']">
    <form [formGroup]="bSocial_Form"
          (ngSubmit)="onSubmit($event,'bSocial')"
          class="column">
@@ -912,7 +1035,8 @@
       &#x3C;/b-social&#x3E;
     </code></pre>
 
-     <b-social *ngIf="bSocial_formControlEnabled"
+     <b-social #bSocial
+               *ngIf="bSocial_formControlEnabled"
                formControlName="bSocial"
                [type]="bSocial_type"
                [label]="bSocial_label"
@@ -927,7 +1051,8 @@
                (changed)="onEvent('bSocial',$event)">
      </b-social>
 
-     <b-social *ngIf="!bSocial_formControlEnabled"
+     <b-social #bSocial
+               *ngIf="!bSocial_formControlEnabled"
                [type]="bSocial_type"
                [label]="bSocial_label"
                [placeholder]="bSocial_placeholder"
@@ -998,7 +1123,7 @@
      </div>
 
      <div class="control-item col">
-       <p class="side-by-side">
+       <p class="col">
          <strong class="value">Value</strong>
          <label>
            <input class="simple-checkbox"
@@ -1006,10 +1131,18 @@
                   type="checkbox">
            enable direct input
          </label>
+         <label>
+           <input [disabled]="!bSocial_directValueInput"
+                  class="simple-checkbox"
+                  [(ngModel)]="bSocial_setInputProgrammatically"
+                  type="checkbox">
+           set programmatically
+         </label>
        </p>
        <label>
          <input class="simple-input bigger"
-                [(ngModel)]="bSocial_value"
+                (input)="onValueInput('bSocial', $event)"
+                [value]="bSocial_value"
                 type="search">
        </label>
      </div>
@@ -1103,7 +1236,7 @@
  </section>
 
  <section class="bCheckbox status-done"
-          *ngIf="allFormElements.includes('bCheckbox')">
+          *ngIf="global_visibleComponents['bCheckbox']">
    <form [formGroup]="bCheckbox_Form"
          (ngSubmit)="onSubmit($event,'bCheckbox')"
          class="column">
@@ -1129,7 +1262,8 @@
       (changed)=&#x22;onEvent(&#x27;bCheckbox&#x27;,$event)&#x22;&#x3E;
     </code></pre>
 
-     <b-checkbox *ngIf="bCheckbox_formControlEnabled"
+     <b-checkbox #bCheckbox
+                 *ngIf="bCheckbox_formControlEnabled"
                  formControlName="bCheckbox"
                  [label]="bCheckbox_label"
                  [placeholder]="bCheckbox_placeholder"
@@ -1144,7 +1278,8 @@
                  (changed)="onEvent('bCheckbox',$event)">
      </b-checkbox>
 
-     <b-checkbox *ngIf="!bCheckbox_formControlEnabled"
+     <b-checkbox #bCheckbox
+                 *ngIf="!bCheckbox_formControlEnabled"
                  [label]="bCheckbox_label"
                  [placeholder]="bCheckbox_placeholder"
                  [value]="bCheckbox_directValueInput ? bCheckbox_value : undefined"
@@ -1210,7 +1345,7 @@
      </div>
 
      <div class="control-item col">
-       <p class="side-by-side">
+       <p class="col">
          <strong class="value">Value</strong>
          <label>
            <input class="simple-checkbox"
@@ -1218,10 +1353,18 @@
                   type="checkbox">
            enable direct input
          </label>
+         <label>
+           <input [disabled]="!bCheckbox_directValueInput"
+                  class="simple-checkbox"
+                  [(ngModel)]="bCheckbox_setInputProgrammatically"
+                  type="checkbox">
+           set programmatically
+         </label>
        </p>
        <label>
          <input class="simple-input bigger"
-                [(ngModel)]="bCheckbox_value"
+                (input)="onValueInput('bCheckbox', $event)"
+                [value]="bCheckbox_value"
                 type="search">
        </label>
      </div>
@@ -1314,7 +1457,7 @@
  </section>
 
  <section class="bRadio status-done"
-          *ngIf="allFormElements.includes('bRadio')">
+          *ngIf="global_visibleComponents['bRadio']">
    <form [formGroup]="bRadio_Form"
          (ngSubmit)="onSubmit($event,'bRadio')"
          class="column">
@@ -1340,7 +1483,8 @@
       (changed)=&#x22;onEvent(&#x27;bRadio&#x27;,$event)&#x22;&#x3E;
     </code></pre>
 
-     <b-radio-button *ngIf="bRadio_formControlEnabled"
+     <b-radio-button #bRadio
+                     *ngIf="bRadio_formControlEnabled"
                      formControlName="bRadio"
                      [label]="bRadio_label"
                      [value]="bRadio_directValueInput ? bRadio_value : undefined"
@@ -1355,7 +1499,8 @@
                      (changed)="onEvent('bRadio',$event)">
      </b-radio-button>
 
-     <b-radio-button *ngIf="!bRadio_formControlEnabled"
+     <b-radio-button #bRadio
+                     *ngIf="!bRadio_formControlEnabled"
                      [label]="bRadio_label"
                      [value]="bRadio_directValueInput ? bRadio_value : undefined"
                      [options]="bRadio_options"
@@ -1419,7 +1564,7 @@
      </div>
 
      <div class="control-item col">
-       <p class="side-by-side">
+       <p class="col">
          <strong class="value">Value</strong>
          <label>
            <input class="simple-checkbox"
@@ -1427,10 +1572,18 @@
                   type="checkbox">
            enable direct input
          </label>
+         <label>
+           <input [disabled]="!bRadio_directValueInput"
+                  class="simple-checkbox"
+                  [(ngModel)]="bRadio_setInputProgrammatically"
+                  type="checkbox">
+           set programmatically
+         </label>
        </p>
        <label>
          <input class="simple-input bigger"
-                [(ngModel)]="bRadio_value"
+                (input)="onValueInput('bRadio', $event)"
+                [value]="bRadio_value"
                 type="search">
        </label>
      </div>
@@ -1523,7 +1676,7 @@
  </section>
 
  <section class="bSplitInput status-todo"
-          *ngIf="allFormElements.includes('bSplitInput')">
+          *ngIf="global_visibleComponents['bSplitInput']">
    <form [formGroup]="bSplitInput_Form"
          (ngSubmit)="onSubmit($event,'bSplitInput')"
          class="column">
@@ -1549,7 +1702,8 @@
       &#x3C;/b-input&#x3E;
     </code></pre>
 
-     <b-split-input-single-select *ngIf="bSplitInput_formControlEnabled"
+     <b-split-input-single-select #bSplitInput
+                                  *ngIf="bSplitInput_formControlEnabled"
                                   formControlName="bSplitInput"
                                   [label]="bSplitInput_label"
                                   [placeholder]="bSplitInput_placeholder"
@@ -1564,7 +1718,8 @@
                                   (changed)="onEvent('bSplitInput',$event)">
      </b-split-input-single-select>
 
-     <b-split-input-single-select *ngIf="!bSplitInput_formControlEnabled"
+     <b-split-input-single-select #bSplitInput
+                                  *ngIf="!bSplitInput_formControlEnabled"
                                   [label]="bSplitInput_label"
                                   [placeholder]="bSplitInput_placeholder"
                                   [value]="bSplitInput_directValueInput ? bSplitInput_value : undefined"
@@ -1630,7 +1785,7 @@
      </div>
 
      <div class="control-item col">
-       <p class="side-by-side">
+       <p class="col">
          <strong class="value">Value</strong>
          <label>
            <input class="simple-checkbox"
@@ -1638,11 +1793,20 @@
                   type="checkbox">
            enable direct input
          </label>
+         <label>
+           <input [disabled]="!bSplitInput_directValueInput"
+                  class="simple-checkbox"
+                  [(ngModel)]="bSplitInput_setInputProgrammatically"
+                  type="checkbox">
+           set programmatically
+         </label>
        </p>
        <label>
+         <!-- {{bSplitInput_value | json}} -->
          <textarea class="simple-textarea bigger"
-                   (input)="bSplitInput_value = json.parse($event.target.value)"
-                   type="search">{{bSplitInput_value | json}}</textarea>
+                   (input)="onValueInput('bInput', $event, true)"
+                   [value]="bSplitInput_value"
+                   type="search"></textarea>
        </label>
      </div>
 

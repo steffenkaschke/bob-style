@@ -15,5 +15,3 @@ export enum ComponentGroupType {
 }
 
 export const serverDateFormat = 'YYYY-MM-DD';
-
-export const inputAttributesPlaceholder = '#moreattributes';

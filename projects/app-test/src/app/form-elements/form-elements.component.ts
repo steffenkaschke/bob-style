@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  SimpleChange
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { chipOptionsMock } from '../../../../ui-framework/src/lib/form-elements/chip-input/chip-input.mock';
@@ -15,10 +21,6 @@ import {
 export class FormElementsTestComponent implements OnInit, OnDestroy {
   constructor() {}
 
-  public json = JSON;
-
-  isArray = isArray;
-
   allFormElements = [
     'bInput',
     'bTextarea',
@@ -30,8 +32,16 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
     // 'bSplitInput'
   ];
 
-  globalEnableFormControl = true;
-  globalEnableDirectInput = false;
+  global_visibleComponents = this.allFormElements.reduce((acc, comp) => {
+    return { ...acc, [comp]: true };
+  }, {});
+
+  global_formControlEnabled = true;
+  global_directValueInput = false;
+  global_setInputProgrammatically = false;
+  global_setValEmit = true;
+  global_disabled = false;
+  global_required = true;
 
   globalFormControlStartValues = {
     null: null,
@@ -53,6 +63,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
 
   ///////////////////////////////////
 
+  @ViewChild('bInput') private bInput_component;
   bInput_SubscrValue;
   bInput_EventValue;
   bInput_SubscrCounter = 0;
@@ -60,16 +71,17 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bInput_label = 'Input label';
   bInput_placeholder = 'Input placeholder';
   bInput_value = 'Input value';
-  bInput_disabled = false;
-  bInput_required = true;
+  bInput_disabled = this.global_disabled;
+  bInput_required = this.global_required;
   bInput_hint = 'Input hint text';
   bInput_warn = this.global_warn ? this.global_warn_value : '';
   bInput_error = this.global_error ? this.global_error_value : '';
-  bInput_setValEmit = true;
+  bInput_setValEmit = this.global_setValEmit;
   bInput_updateOn_mode = 'change';
   bInput_subscribtion;
-  bInput_formControlEnabled = this.globalEnableFormControl;
-  bInput_directValueInput = this.globalEnableDirectInput;
+  bInput_formControlEnabled = this.global_formControlEnabled;
+  bInput_directValueInput = this.global_directValueInput;
+  bInput_setInputProgrammatically = this.global_setInputProgrammatically;
 
   bInput_Form = new FormGroup({
     bInput: new FormControl(this.globalFormControlStartValue, {
@@ -80,6 +92,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
 
   ///////////////////////////////////
 
+  @ViewChild('bTextarea') private bTextarea_component;
   bTextarea_SubscrValue;
   bTextarea_EventValue;
   bTextarea_SubscrCounter = 0;
@@ -87,16 +100,17 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bTextarea_label = 'Textarea label';
   bTextarea_placeholder = 'Textarea placeholder';
   bTextarea_value = 'Textarea value';
-  bTextarea_disabled = false;
-  bTextarea_required = true;
+  bTextarea_disabled = this.global_disabled;
+  bTextarea_required = this.global_required;
   bTextarea_hint = 'Textarea hint text';
   bTextarea_warn = this.global_warn ? this.global_warn_value : '';
   bTextarea_error = this.global_error ? this.global_error_value : '';
-  bTextarea_setValEmit = true;
+  bTextarea_setValEmit = this.global_setValEmit;
   bTextarea_updateOn_mode = 'change';
   bTextarea_subscribtion;
-  bTextarea_formControlEnabled = this.globalEnableFormControl;
-  bTextarea_directValueInput = this.globalEnableDirectInput;
+  bTextarea_formControlEnabled = this.global_formControlEnabled;
+  bTextarea_directValueInput = this.global_directValueInput;
+  bTextarea_setInputProgrammatically = this.global_setInputProgrammatically;
 
   bTextarea_Form = new FormGroup({
     bTextarea: new FormControl(this.globalFormControlStartValue, {
@@ -107,6 +121,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
 
   ///////////////////////////////////
 
+  @ViewChild('bDatepicker') private bDatepicker_component;
   bDatepicker_SubscrValue;
   bDatepicker_EventValue;
   bDatepicker_SubscrCounter = 0;
@@ -115,16 +130,17 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bDatepicker_placeholder = 'Date placeholder';
   bDatepicker_value = '02/01/2013';
   bDatepicker_dateFormat = '';
-  bDatepicker_disabled = false;
-  bDatepicker_required = true;
+  bDatepicker_disabled = this.global_disabled;
+  bDatepicker_required = this.global_required;
   bDatepicker_hint = 'Datepicker hint text';
   bDatepicker_warn = this.global_warn ? this.global_warn_value : '';
   bDatepicker_error = this.global_error ? this.global_error_value : '';
-  bDatepicker_setValEmit = true;
+  bDatepicker_setValEmit = this.global_setValEmit;
   bDatepicker_updateOn_mode = 'change';
   bDatepicker_subscribtion;
-  bDatepicker_formControlEnabled = this.globalEnableFormControl;
-  bDatepicker_directValueInput = this.globalEnableDirectInput;
+  bDatepicker_formControlEnabled = this.global_formControlEnabled;
+  bDatepicker_directValueInput = this.global_directValueInput;
+  bDatepicker_setInputProgrammatically = this.global_setInputProgrammatically;
 
   bDatepicker_Form = new FormGroup({
     bDatepicker: new FormControl(this.globalFormControlStartValue, {
@@ -135,6 +151,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
 
   ///////////////////////////////////
 
+  @ViewChild('bChipinput') private bChipinput_component;
   bChipinput_SubscrValue;
   bChipinput_EventValue;
   bChipinput_SubscrCounter = 0;
@@ -144,16 +161,17 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bChipinput_value = 'petting, fisting, rimming';
   bChipinput_options = chipOptionsMock;
   bChipinput_acceptNew = true;
-  bChipinput_disabled = false;
-  bChipinput_required = true;
+  bChipinput_disabled = this.global_disabled;
+  bChipinput_required = this.global_required;
   bChipinput_hint = 'Chip Input hint text';
   bChipinput_warn = this.global_warn ? this.global_warn_value : '';
   bChipinput_error = this.global_error ? this.global_error_value : '';
-  bChipinput_setValEmit = true;
+  bChipinput_setValEmit = this.global_setValEmit;
   bChipinput_updateOn_mode = 'change';
   bChipinput_subscribtion;
-  bChipinput_formControlEnabled = this.globalEnableFormControl;
-  bChipinput_directValueInput = this.globalEnableDirectInput;
+  bChipinput_formControlEnabled = this.global_formControlEnabled;
+  bChipinput_directValueInput = this.global_directValueInput;
+  bChipinput_setInputProgrammatically = this.global_setInputProgrammatically;
 
   bChipinput_Form = new FormGroup({
     bChipinput: new FormControl(this.globalFormControlStartValue, {
@@ -164,6 +182,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
 
   ///////////////////////////////////
 
+  @ViewChild('bSocial') private bSocial_component;
   bSocial_SubscrValue;
   bSocial_EventValue;
   bSocial_SubscrCounter = 0;
@@ -172,16 +191,17 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bSocial_label = 'Social Input label';
   bSocial_placeholder = 'Your Name';
   bSocial_value = 'Social Input value';
-  bSocial_disabled = false;
-  bSocial_required = true;
+  bSocial_disabled = this.global_disabled;
+  bSocial_required = this.global_required;
   bSocial_hint = 'Social Input hint text';
   bSocial_warn = this.global_warn ? this.global_warn_value : '';
   bSocial_error = this.global_error ? this.global_error_value : '';
-  bSocial_setValEmit = true;
+  bSocial_setValEmit = this.global_setValEmit;
   bSocial_updateOn_mode = 'change';
   bSocial_subscribtion;
-  bSocial_formControlEnabled = this.globalEnableFormControl;
-  bSocial_directValueInput = this.globalEnableDirectInput;
+  bSocial_formControlEnabled = this.global_formControlEnabled;
+  bSocial_directValueInput = this.global_directValueInput;
+  bSocial_setInputProgrammatically = this.global_setInputProgrammatically;
 
   bSocial_Form = new FormGroup({
     bSocial: new FormControl(this.globalFormControlStartValue, {
@@ -192,6 +212,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
 
   ///////////////////////////////////
 
+  @ViewChild('bCheckbox') private bCheckbox_component;
   bCheckbox_SubscrValue;
   bCheckbox_EventValue;
   bCheckbox_SubscrCounter = 0;
@@ -200,16 +221,17 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bCheckbox_placeholder = 'Checkbox Placeholder';
   bCheckbox_value = 'true';
   bCheckbox_indeterminate = false;
-  bCheckbox_disabled = false;
-  bCheckbox_required = true;
+  bCheckbox_disabled = this.global_disabled;
+  bCheckbox_required = this.global_required;
   bCheckbox_hint = 'Checkbox hint';
   bCheckbox_warn = this.global_warn ? this.global_warn_value : '';
   bCheckbox_error = this.global_error ? this.global_error_value : '';
-  bCheckbox_setValEmit = true;
+  bCheckbox_setValEmit = this.global_setValEmit;
   bCheckbox_updateOn_mode = 'change';
   bCheckbox_subscribtion;
-  bCheckbox_formControlEnabled = this.globalEnableFormControl;
-  bCheckbox_directValueInput = this.globalEnableDirectInput;
+  bCheckbox_formControlEnabled = this.global_formControlEnabled;
+  bCheckbox_directValueInput = this.global_directValueInput;
+  bCheckbox_setInputProgrammatically = this.global_setInputProgrammatically;
 
   bCheckbox_Form = new FormGroup({
     bCheckbox: new FormControl(this.globalFormControlStartValue, {
@@ -220,27 +242,26 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
 
   ///////////////////////////////////
 
+  @ViewChild('bRadio') private bRadio_component;
   bRadio_SubscrValue;
   bRadio_EventValue;
   bRadio_SubscrCounter = 0;
   bRadio_EventCounter = 0;
-
   bRadio_label = 'Radio button label';
   bRadio_value = 'Option one';
-
   bRadio_options = ['Option one', 'Option two', 'Option three'];
   bRadio_direction = 'row';
-
-  bRadio_disabled = false;
-  bRadio_required = true;
+  bRadio_disabled = this.global_disabled;
+  bRadio_required = this.global_required;
   bRadio_hint = 'Radio hint';
   bRadio_warn = this.global_warn ? this.global_warn_value : '';
   bRadio_error = this.global_error ? this.global_error_value : '';
-  bRadio_setValEmit = true;
+  bRadio_setValEmit = this.global_setValEmit;
   bRadio_updateOn_mode = 'change';
   bRadio_subscribtion;
-  bRadio_formControlEnabled = this.globalEnableFormControl;
-  bRadio_directValueInput = this.globalEnableDirectInput;
+  bRadio_formControlEnabled = this.global_formControlEnabled;
+  bRadio_directValueInput = this.global_directValueInput;
+  bRadio_setInputProgrammatically = this.global_setInputProgrammatically;
 
   bRadio_Form = new FormGroup({
     bRadio: new FormControl(this.globalFormControlStartValue, {
@@ -317,6 +338,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
     };
   });
 
+  @ViewChild('bSplitInput') private bSplitInput_component;
   bSplitInput_SubscrValue;
   bSplitInput_EventValue;
   bSplitInput_SubscrCounter = 0;
@@ -328,16 +350,17 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
     selectValue: 'AED'
   };
   bSplitInput_selectOptions = this.optionsMock;
-  bSplitInput_disabled = false;
-  bSplitInput_required = true;
+  bSplitInput_disabled = this.global_disabled;
+  bSplitInput_required = this.global_required;
   bSplitInput_hint = 'Input hint text';
   bSplitInput_warn = this.global_warn ? this.global_warn_value : '';
   bSplitInput_error = this.global_error ? this.global_error_value : '';
-  bSplitInput_setValEmit = true;
+  bSplitInput_setValEmit = this.global_setValEmit;
   bSplitInput_updateOn_mode = 'change';
   bSplitInput_subscribtion;
-  bSplitInput_formControlEnabled = this.globalEnableFormControl;
-  bSplitInput_directValueInput = this.globalEnableDirectInput;
+  bSplitInput_formControlEnabled = this.global_formControlEnabled;
+  bSplitInput_directValueInput = this.global_directValueInput;
+  bSplitInput_setInputProgrammatically = this.global_setInputProgrammatically;
 
   bSplitInput_Form = new FormGroup({
     bSplitInput: new FormControl(this.globalFormControlStartValue, {
@@ -353,6 +376,19 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
       this[name].setValue(this[name + '_value'], {
         emitEvent: this[name + '_setValEmit']
       });
+    }
+  }
+
+  onValueInput(name, event, parse = false) {
+    const value = parse ? JSON.parse(event.target.value) : event.target.value;
+    if (this[name + '_setInputProgrammatically']) {
+      event.preventDefault();
+      this[name + '_component'].value = value;
+      this[name + '_component'].ngOnChanges({
+        value: new SimpleChange(null, value, false)
+      });
+    } else {
+      this[name + '_value'] = value;
     }
   }
 
@@ -405,23 +441,40 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   }
 
   globalControlChange(control) {
-    let value = '';
-    if (this[control]) {
+    let value;
+
+    if (control.includes('error') || control.includes('warn')) {
       value = this[control + '_value'];
+    } else {
+      value = this[control];
     }
     this.allFormElements.forEach(name => {
       this[name + '_' + control.split('_')[1]] = value;
     });
   }
 
+  globalClearWarnErrors() {
+    this.global_error = false;
+    this.global_warn = false;
+    this.allFormElements.forEach(name => {
+      this[name + '_warn'] = '';
+      this[name + '_error'] = '';
+    });
+  }
+
   setGlobalFormControlValue(event) {
     const val = this.globalFormControlStartValues[event.target.value];
-
     this.globalFormControlStartValue = val;
 
     this.allFormElements.forEach(name => {
       this[name + '_value'] = val;
       this.setValue(name);
+    });
+  }
+
+  inverseVisibleComponents() {
+    Object.keys(this.global_visibleComponents).forEach(key => {
+      this.global_visibleComponents[key] = !this.global_visibleComponents[key];
     });
   }
 

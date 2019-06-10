@@ -15,7 +15,8 @@
             [attr.maxlength]="maxChars"
             (focus)="emitInputEvent(eventType.onFocus,$event.target.value); inputFocused = true;"
             (blur)="emitInputEvent(eventType.onBlur,$event.target.value); inputFocused = false;"
-            (input)="emitInputEvent(eventType.onChange,$event.target.value);"></textarea>
+            (input)="emitInputEvent(eventType.onChange,$event.target.value)"
+            (keydown)="emitInputEvent(eventType.onKey,$event.key)"></textarea>
 </div>
 <p b-input-message
    *ngIf="hintMessage || warnMessage || errorMessage"

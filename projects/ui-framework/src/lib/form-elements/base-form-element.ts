@@ -85,7 +85,8 @@ export abstract class BaseFormElement
     value: any = this.value,
     eventType: InputEventType | InputEventType[] = [InputEventType.onChange],
     eventName = FormEvents.changed,
-    doPropagate = this.doPropagate
+    doPropagate = this.doPropagate,
+    addToEventObj = {}
   ): void {
     if (value !== undefined) {
       eventType = asArray(eventType);
@@ -99,16 +100,14 @@ export abstract class BaseFormElement
         eventType.forEach(event => {
           this[eventName].emit({
             event,
-            value
+            value,
+            ...addToEventObj
           } as InputEvent);
         });
       }
 
       if (doPropagate) {
-        if (
-          eventType.includes(InputEventType.onChange) ||
-          eventType.includes(InputEventType.onBlur)
-        ) {
+        if (!eventType.includes(InputEventType.onFocus)) {
           this.propagateChange(value);
         }
 

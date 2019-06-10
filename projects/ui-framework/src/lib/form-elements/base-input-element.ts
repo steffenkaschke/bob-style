@@ -3,6 +3,8 @@ import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
 import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
 import { FormEvents, InputEventType } from './form-elements.enum';
+import { isKey } from '../services/utils/functional-utils';
+import { Keys } from '../enums';
 
 export abstract class BaseInputElement extends BaseFormElement {
   protected constructor() {
@@ -34,6 +36,14 @@ export abstract class BaseInputElement extends BaseFormElement {
     }
     if (event === InputEventType.onFocus || event === InputEventType.onBlur) {
       this.transmitValue(this.value, [event], FormEvents.inputEvents);
+    }
+    if (
+      event === InputEventType.onKey &&
+      (isKey(value, Keys.enter) || isKey(value, Keys.escape))
+    ) {
+      this.transmitValue(this.value, [event], FormEvents.inputEvents, false, {
+        key: value
+      });
     }
   }
 }

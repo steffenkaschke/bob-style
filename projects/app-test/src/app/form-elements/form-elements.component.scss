@@ -155,6 +155,12 @@ button {
   outline: 0;
 }
 
+.small-button {
+  height: 20px;
+  padding: 0;
+  max-width: 56px;
+}
+
 .submit-button {
   background-color: rgba(green, 0.2);
   margin-top: 10px;
@@ -226,12 +232,55 @@ button {
   z-index: 200;
 }
 
+.global-controls {
+  max-width: 300px;
+
+  p {
+    margin-top: 10px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .side-by-side {
+    margin-top: 0;
+  }
+}
+
+.show-components {
+  margin-top: 10px;
+
+  & > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  label,
+  button {
+    width: 49%;
+  }
+
+  .small-button {
+    margin-right: auto;
+    margin-top: 4px;
+
+    &:nth-child(even) {
+      margin-left: 2%;
+    }
+  }
+}
+
 .side-by-side {
   display: flex;
 
   select,
   input,
-  label {
+  label,
+  button {
     margin-left: 10px;
   }
 }

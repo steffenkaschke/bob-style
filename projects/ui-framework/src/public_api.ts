@@ -3,6 +3,12 @@
  */
 
 /*
+* Global
+*/
+
+export { Keys } from './lib/enums';
+
+/*
  * Typography
  */
 
