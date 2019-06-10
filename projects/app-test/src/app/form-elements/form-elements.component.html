@@ -150,6 +150,10 @@
        b-input
      </h3>
 
+     <button type="button"
+             class="log-component"
+             (click)="logComponent('bInput')">Log component</button>
+
      <button class="show-code"
              type="button">Code</button>
      <pre class="code-example"><code>
@@ -376,6 +380,10 @@
        b-textarea
      </h3>
 
+     <button type="button"
+             class="log-component"
+             (click)="logComponent('bTextarea')">Log component</button>
+
      <button class="show-code"
              type="button">Code</button>
      <pre class="code-example"><code>
@@ -389,8 +397,7 @@
       [warnMessage]=&#x22;bTextarea_warn&#x22;
       [errorMessage]=&#x22;bTextarea_error&#x22;
       [maxChars]=&#x22;bTextarea_maxChars&#x22;
-      (inputEvents)=&#x22;onEvent(&#x27;bTextarea&#x27;,$event)&#x22;
-      (changed)=&#x22;onEvent(&#x27;bTextarea&#x27;,$event)&#x22;&#x3E;
+      (inputEvents)=&#x22;onEvent(&#x27;bTextarea&#x27;,$event)&#x22;&#x3E;
       &#x3C;/b-textarea&#x3E;
     </code></pre>
 
@@ -406,8 +413,7 @@
                  [warnMessage]="bTextarea_warn"
                  [errorMessage]="bTextarea_error"
                  [maxChars]="bTextarea_maxChars"
-                 (inputEvents)="onEvent('bTextarea',$event)"
-                 (changed)="onEvent('bTextarea',$event)">
+                 (inputEvents)="onEvent('bTextarea',$event)">
      </b-textarea>
 
      <b-textarea #bTextarea
@@ -421,8 +427,7 @@
                  [warnMessage]="bTextarea_warn"
                  [errorMessage]="bTextarea_error"
                  [maxChars]="bTextarea_maxChars"
-                 (inputEvents)="onEvent('bTextarea',$event)"
-                 (changed)="onEvent('bTextarea',$event)">
+                 (inputEvents)="onEvent('bTextarea',$event)">
      </b-textarea>
 
      <p [attr.data-valid]="bTextarea_Form.valid"
@@ -602,6 +607,10 @@
      <h3>
        b-datepicker
      </h3>
+
+     <button type="button"
+             class="log-component"
+             (click)="logComponent('bDatepicker')">Log component</button>
 
      <button class="show-code"
              type="button">Code</button>
@@ -836,6 +845,10 @@
        b-chip-input
      </h3>
 
+     <button type="button"
+             class="log-component"
+             (click)="logComponent('bChipinput')">Log component</button>
+
      <button class="show-code"
              type="button">Code</button>
      <pre class="code-example"><code>
@@ -1064,6 +1077,10 @@
      <h3>
        b-social
      </h3>
+
+     <button type="button"
+             class="log-component"
+             (click)="logComponent('bSocial')">Log component</button>
 
      <button class="show-code"
              type="button">Code</button>
@@ -1294,6 +1311,10 @@
        b-checkbox
      </h3>
 
+     <button type="button"
+             class="log-component"
+             (click)="logComponent('bCheckbox')">Log component</button>
+
      <button class="show-code"
              type="button">Code</button>
      <pre class="code-example"><code>
@@ -1518,6 +1539,10 @@
        b-radio
      </h3>
 
+     <button type="button"
+             class="log-component"
+             (click)="logComponent('bRadio')">Log component</button>
+
      <button class="show-code"
              type="button">Code</button>
      <pre class="code-example"><code>
@@ -1737,6 +1762,10 @@
      <h3>
        b-split-input
      </h3>
+
+     <button type="button"
+             class="log-component"
+             (click)="logComponent('bSplitInput')">Log component</button>
 
      <button class="show-code"
              type="button">Code</button>

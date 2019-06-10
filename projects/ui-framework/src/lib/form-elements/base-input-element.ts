@@ -19,10 +19,9 @@ export abstract class BaseInputElement extends BaseFormElement {
     InputAutoCompleteOptions.off;
   @Input() maxChars: number;
 
-  public outputEventName = FormEvents.inputEvents;
-  @Output() inputEvents: EventEmitter<InputEvent> = new EventEmitter<
+  @Output(FormEvents.inputEvents) changed: EventEmitter<
     InputEvent
-  >();
+  > = new EventEmitter<InputEvent>();
 
   // this extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
@@ -32,10 +31,10 @@ export abstract class BaseInputElement extends BaseFormElement {
   }
 
   emitInputEvent(event: InputEventType, value: any): void {
-    if (value && event === InputEventType.onChange) {
+    if (event === InputEventType.onChange) {
       if (value !== this.value) {
         this.value = value;
-        this.transmitValue(value, { eventType: [event] });
+        this.transmitValue(this.value, { eventType: [event] });
       }
     }
     if (event === InputEventType.onFocus || event === InputEventType.onBlur) {

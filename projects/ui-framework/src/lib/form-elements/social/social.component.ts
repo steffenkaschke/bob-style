@@ -47,10 +47,9 @@ export class SocialComponent extends BaseFormElement {
   public readonly inputTypes = InputTypes;
   public readonly socialTypes = SocialTypes;
 
-  public outputEventName = FormEvents.socialInputChange;
-  @Output() socialInputChange: EventEmitter<string> = new EventEmitter<
+  @Output(FormEvents.socialInputChange) changed: EventEmitter<
     string
-  >();
+  > = new EventEmitter<string>();
 
   public onInputEvents(event: InputEvent): void {
     this.transmitValue(event.value, { eventType: [event.event] });

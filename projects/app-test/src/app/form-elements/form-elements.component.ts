@@ -561,6 +561,10 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
     console.log(event);
   }
 
+  logComponent(name) {
+    console.log(this[name + '_component']);
+  }
+
   type(smth) {
     let thisType = String(typeof smth);
 

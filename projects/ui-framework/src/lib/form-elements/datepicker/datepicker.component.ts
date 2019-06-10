@@ -62,10 +62,9 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
   @ViewChild('bInput') bInput: ElementRef;
   @ViewChild('picker') picker: MatDatepicker<any>;
 
-  public outputEventName = FormEvents.dateChange;
-  @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<
+  @Output(FormEvents.dateChange) changed: EventEmitter<
     InputEvent
-  >();
+  > = new EventEmitter<InputEvent>();
 
   constructor() {
     super();

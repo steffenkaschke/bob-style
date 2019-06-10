@@ -42,10 +42,9 @@ export class RadioButtonComponent extends BaseFormElement {
   public dir = RadioDirection;
   public compare = compareStringsAsNumbers;
 
-  public outputEventName = FormEvents.radioChange;
-  @Output() radioChange: EventEmitter<number | string> = new EventEmitter<
+  @Output(FormEvents.radioChange) changed: EventEmitter<
     number | string
-  >();
+  > = new EventEmitter<number | string>();
 
   onRadioChange(event): void {
     this.value = (this.options as any)[0].id

@@ -42,19 +42,19 @@ export abstract class BaseFormElement
   @Input() warnMessage: string;
   @Input() doPropagate = true;
 
-  @Output() changed: EventEmitter<any> = new EventEmitter<any>();
-
   public inputFocused = false;
   public id = simpleUID('bfe-');
   public inputTransformers: Function[] = [];
   public outputTransformers: Function[] = [];
-  public outputEventName = FormEvents.changed;
 
   private transmitValueDefOptions: Partial<TransmitOptions> = {
     eventType: [InputEventType.onChange],
+    eventName: FormEvents.changed,
     doPropagate: this.doPropagate,
     addToEventObj: {}
   };
+
+  @Output() changed: EventEmitter<any> = new EventEmitter<any>();
 
   protected onNgChanges(changes: SimpleChanges): void {}
 
@@ -95,7 +95,6 @@ export abstract class BaseFormElement
   ): void {
     options = {
       ...this.transmitValueDefOptions,
-      eventName: this.outputEventName,
       ...options
     };
     // tslint:disable-next-line: prefer-const

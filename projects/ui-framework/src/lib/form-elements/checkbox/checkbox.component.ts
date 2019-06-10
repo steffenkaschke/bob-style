@@ -50,10 +50,9 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
   @Input() value = false;
   @Input() indeterminate = false;
 
-  public outputEventName = FormEvents.checkboxChange;
-  @Output() checkboxChange: EventEmitter<InputEvent> = new EventEmitter<
+  @Output(FormEvents.checkboxChange) changed: EventEmitter<
     InputEvent
-  >();
+  > = new EventEmitter<InputEvent>();
 
   private transmit(event): void {
     this.transmitValue(this.value, {
@@ -73,13 +72,13 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
       this.writeValue(changes.value.currentValue);
     }
     if (changes.value || changes.indeterminate) {
-      this.transmit([InputEventType.onWrite]);
+      this.transmit(InputEventType.onWrite);
     }
   }
 
   public toggleCheckbox(): void {
     this.value = !this.value;
     this.indeterminate = false;
-    this.transmit([InputEventType.onBlur]);
+    this.transmit(InputEventType.onBlur);
   }
 }
