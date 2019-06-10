@@ -87,3 +87,17 @@ export const compareAsNumbers = (
 
 export const compareAsStrings = (a: any, b: any): boolean =>
   String(a) === String(b);
+
+export const countChildren = (parentSelector, parent) => {
+  parent = parentSelector ? document.querySelector(parentSelector) : parent;
+  let relevantChildren = 0;
+  for (const child of parent.childNodes) {
+    if (child.nodeType !== 3 && child.nodeType !== 8) {
+      if (child.tagName && child.tagName.toLowerCase() !== 'svg') {
+        relevantChildren += countChildren(null, child);
+      }
+      relevantChildren++;
+    }
+  }
+  return relevantChildren;
+};

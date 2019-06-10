@@ -205,6 +205,10 @@
        <span>{{bInput_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
        <strong *ngIf="bInput_formSubmitted">Form submitted</strong>
      </p>
+
+     <p class="node-count">
+       DOM elements: <span class="now">{{ bInput_nodeCount }}</span> vs <span class="then">20</span>
+     </p>
    </form>
 
    <div class="column">
@@ -434,6 +438,10 @@
         class="col">
        <span>{{bTextarea_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
        <strong *ngIf="bTextarea_formSubmitted">Form submitted</strong>
+     </p>
+
+     <p class="node-count">
+       DOM elements: <span class="now">{{ bTextarea_nodeCount }}</span> vs <span class="then">14</span>
      </p>
    </form>
 
@@ -668,6 +676,10 @@
      <p class="note">
        Setting value via input or FormControl's setValue triggers the events, but does not put value in the input field
        (date conversion / mat-datepicker issue).
+     </p>
+
+     <p class="node-count">
+       DOM elements: <span class="now">{{ bDatepicker_nodeCount }}</span> vs <span class="then">24</span>
      </p>
    </form>
 
@@ -904,6 +916,9 @@
        <strong *ngIf="bChipinput_formSubmitted">Form submitted</strong>
      </p>
 
+     <p class="node-count">
+       DOM elements: <span class="now">{{ bChipinput_nodeCount }}</span> vs <span class="then">17</span>
+     </p>
    </form>
 
    <div class="column">
@@ -1137,6 +1152,10 @@
      <p class="note">
        THIS COMPONENT SUCKS!
      </p>
+
+     <p class="node-count">
+       DOM elements: <span class="now">{{ bSocial_nodeCount }}</span> vs <span class="then">25</span>
+     </p>
    </form>
 
    <div class="column">
@@ -1364,6 +1383,10 @@
         class="col">
        <span> {{bCheckbox_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
        <strong *ngIf="bCheckbox_formSubmitted">Form submitted</strong>
+     </p>
+
+     <p class="node-count">
+       DOM elements: <span class="now">{{ bCheckbox_nodeCount }}</span> vs <span class="then">?</span>
      </p>
    </form>
 
@@ -1593,6 +1616,10 @@
        <span>{{bRadio_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
        <strong *ngIf="bRadio_formSubmitted">Form submitted</strong>
      </p>
+
+     <p class="node-count">
+       DOM elements: <span class="now">{{ bRadio_nodeCount }}</span> vs <span class="then">33</span>
+     </p>
    </form>
 
    <div class="column">
@@ -1815,6 +1842,10 @@
         class="col">
        <span>{{bSplitInput_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
        <strong *ngIf="bSplitInput_formSubmitted">Form submitted</strong>
+     </p>
+
+     <p class="node-count">
+       DOM elements: <span class="now">{{ bSplitInput_nodeCount }}</span> vs <span class="then">45</span>
      </p>
    </form>
 

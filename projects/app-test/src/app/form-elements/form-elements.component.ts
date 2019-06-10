@@ -3,14 +3,17 @@ import {
   OnInit,
   OnDestroy,
   ViewChild,
-  SimpleChange
+  SimpleChange,
+  ElementRef,
+  AfterViewInit
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { chipOptionsMock } from '../../../../ui-framework/src/lib/form-elements/chip-input/chip-input.mock';
 import {
   isString,
-  isArray
+  isArray,
+  countChildren
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
 
 @Component({
@@ -18,7 +21,8 @@ import {
   templateUrl: './form-elements.component.html',
   styleUrls: ['./form-elements.component.scss']
 })
-export class FormElementsTestComponent implements OnInit, OnDestroy {
+export class FormElementsTestComponent
+  implements OnInit, OnDestroy, AfterViewInit {
   constructor() {}
 
   allFormElements = [
@@ -67,6 +71,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   ///////////////////////////////////
 
   @ViewChild('bInput') private bInput_component;
+  @ViewChild('bInput', { read: ElementRef }) private bInput_element: ElementRef;
   bInput_SubscrValue;
   bInput_EventValue;
   bInput_SubscrCounter = 0;
@@ -87,6 +92,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bInput_setInputProgrammatically = this.global_setInputProgrammatically;
   bInput_maxChars = this.global_maxChars;
   bInput_formSubmitted = false;
+  bInput_nodeCount = 0;
 
   bInput_Form = new FormGroup({
     bInput: new FormControl(this.globalFormControlStartValue, {
@@ -98,6 +104,8 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   ///////////////////////////////////
 
   @ViewChild('bTextarea') private bTextarea_component;
+  @ViewChild('bTextarea', { read: ElementRef })
+  private bTextarea_element: ElementRef;
   bTextarea_SubscrValue;
   bTextarea_EventValue;
   bTextarea_SubscrCounter = 0;
@@ -118,6 +126,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bTextarea_setInputProgrammatically = this.global_setInputProgrammatically;
   bTextarea_maxChars = this.global_maxChars;
   bTextarea_formSubmitted = false;
+  bTextarea_nodeCount = 0;
 
   bTextarea_Form = new FormGroup({
     bTextarea: new FormControl(this.globalFormControlStartValue, {
@@ -129,6 +138,8 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   ///////////////////////////////////
 
   @ViewChild('bDatepicker') private bDatepicker_component;
+  @ViewChild('bDatepicker', { read: ElementRef })
+  private bDatepicker_element: ElementRef;
   bDatepicker_SubscrValue;
   bDatepicker_EventValue;
   bDatepicker_SubscrCounter = 0;
@@ -149,6 +160,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bDatepicker_directValueInput = this.global_directValueInput;
   bDatepicker_setInputProgrammatically = this.global_setInputProgrammatically;
   bDatepicker_formSubmitted = false;
+  bDatepicker_nodeCount = 0;
 
   bDatepicker_Form = new FormGroup({
     bDatepicker: new FormControl(this.globalFormControlStartValue, {
@@ -160,6 +172,8 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   ///////////////////////////////////
 
   @ViewChild('bChipinput') private bChipinput_component;
+  @ViewChild('bChipinput', { read: ElementRef })
+  private bChipinput_element: ElementRef;
   bChipinput_SubscrValue;
   bChipinput_EventValue;
   bChipinput_SubscrCounter = 0;
@@ -181,6 +195,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bChipinput_directValueInput = this.global_directValueInput;
   bChipinput_setInputProgrammatically = this.global_setInputProgrammatically;
   bChipinput_formSubmitted = false;
+  bChipinput_nodeCount = 0;
 
   bChipinput_Form = new FormGroup({
     bChipinput: new FormControl(this.globalFormControlStartValue, {
@@ -192,6 +207,8 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   ///////////////////////////////////
 
   @ViewChild('bSocial') private bSocial_component;
+  @ViewChild('bSocial', { read: ElementRef })
+  private bSocial_element: ElementRef;
   bSocial_SubscrValue;
   bSocial_EventValue;
   bSocial_SubscrCounter = 0;
@@ -212,6 +229,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bSocial_directValueInput = this.global_directValueInput;
   bSocial_setInputProgrammatically = this.global_setInputProgrammatically;
   bSocial_formSubmitted = false;
+  bSocial_nodeCount = 0;
 
   bSocial_Form = new FormGroup({
     bSocial: new FormControl(this.globalFormControlStartValue, {
@@ -223,6 +241,8 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   ///////////////////////////////////
 
   @ViewChild('bCheckbox') private bCheckbox_component;
+  @ViewChild('bCheckbox', { read: ElementRef })
+  private bCheckbox_element: ElementRef;
   bCheckbox_SubscrValue;
   bCheckbox_EventValue;
   bCheckbox_SubscrCounter = 0;
@@ -243,6 +263,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bCheckbox_directValueInput = this.global_directValueInput;
   bCheckbox_setInputProgrammatically = this.global_setInputProgrammatically;
   bCheckbox_formSubmitted = false;
+  bCheckbox_nodeCount = 0;
 
   bCheckbox_Form = new FormGroup({
     bCheckbox: new FormControl(this.globalFormControlStartValue, {
@@ -254,6 +275,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   ///////////////////////////////////
 
   @ViewChild('bRadio') private bRadio_component;
+  @ViewChild('bRadio', { read: ElementRef }) private bRadio_element: ElementRef;
   bRadio_SubscrValue;
   bRadio_EventValue;
   bRadio_SubscrCounter = 0;
@@ -274,6 +296,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bRadio_directValueInput = this.global_directValueInput;
   bRadio_setInputProgrammatically = this.global_setInputProgrammatically;
   bRadio_formSubmitted = false;
+  bRadio_nodeCount = 0;
 
   bRadio_Form = new FormGroup({
     bRadio: new FormControl(this.globalFormControlStartValue, {
@@ -351,6 +374,8 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   });
 
   @ViewChild('bSplitInput') private bSplitInput_component;
+  @ViewChild('bSplitInput', { read: ElementRef })
+  private bSplitInput_element: ElementRef;
   bSplitInput_SubscrValue;
   bSplitInput_EventValue;
   bSplitInput_SubscrCounter = 0;
@@ -374,6 +399,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bSplitInput_directValueInput = this.global_directValueInput;
   bSplitInput_setInputProgrammatically = this.global_setInputProgrammatically;
   bSplitInput_formSubmitted = false;
+  bSplitInput_nodeCount = 0;
 
   bSplitInput_Form = new FormGroup({
     bSplitInput: new FormControl(this.globalFormControlStartValue, {
@@ -581,6 +607,17 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscribeToAll(this.allFormElements);
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.allFormElements.forEach(name => {
+        this[name + '_nodeCount'] = countChildren(
+          null,
+          this[name + '_element'].nativeElement
+        );
+      });
+    }, 0);
   }
 
   ngOnDestroy() {

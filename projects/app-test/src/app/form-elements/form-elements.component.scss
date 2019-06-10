@@ -380,3 +380,20 @@ section h3 {
   margin-left: 5px;
   font-weight: 400;
 }
+
+.node-count {
+  margin-top: 15px;
+
+  .now,
+  .then {
+    font-size: 110%;
+    display: inline-block;
+    font-weight: 700;
+  }
+  .now {
+    color: green;
+  }
+  .then {
+    color: orange;
+  }
+}
