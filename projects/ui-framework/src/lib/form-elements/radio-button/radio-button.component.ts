@@ -33,6 +33,15 @@ import { FormEvents } from '../form-elements.enum';
 export class RadioButtonComponent extends BaseFormElement {
   constructor() {
     super();
+    this.inputTransformers = [
+      (value): string => {
+        return ((this.options as RadioConfig[])[0].label &&
+          !Object.values(this.options).includes(parseInt(value, 10))) ||
+          !(this.options as string[]).includes(value)
+          ? null
+          : (value as string);
+      }
+    ];
   }
 
   @Input() value: string;
@@ -47,7 +56,7 @@ export class RadioButtonComponent extends BaseFormElement {
   > = new EventEmitter<number | string>();
 
   onRadioChange(event): void {
-    this.value = (this.options as any)[0].id
+    this.value = (this.options as any)[0].label
       ? parseInt(event.target.value, 10)
       : event.target.value;
 
