@@ -31,6 +31,10 @@ import { FormEvents } from '../form-elements.enum';
   ]
 })
 export class RadioButtonComponent extends BaseFormElement {
+  constructor() {
+    super();
+  }
+
   @Input() value: string;
   @Input() options: string[] | RadioConfig[];
   @Input() direction: RadioDirection = RadioDirection.row;
@@ -38,23 +42,16 @@ export class RadioButtonComponent extends BaseFormElement {
   public dir = RadioDirection;
   public compare = compareStringsAsNumbers;
 
+  public outputEventName = FormEvents.radioChange;
   @Output() radioChange: EventEmitter<number | string> = new EventEmitter<
     number | string
   >();
-
-  constructor() {
-    super();
-  }
 
   onRadioChange(event): void {
     this.value = (this.options as any)[0].id
       ? parseInt(event.target.value, 10)
       : event.target.value;
 
-    this.transmitValue(
-      this.value,
-      [InputEventType.onBlur],
-      FormEvents.radioChange
-    );
+    this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
   }
 }

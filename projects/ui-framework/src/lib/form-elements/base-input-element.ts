@@ -12,10 +12,14 @@ export abstract class BaseInputElement extends BaseFormElement {
   }
 
   public eventType = InputEventType;
+
   @Input() value: any = '';
   @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
+  @Input() maxChars: number;
+
+  public outputEventName = FormEvents.inputEvents;
   @Output() inputEvents: EventEmitter<InputEvent> = new EventEmitter<
     InputEvent
   >();
@@ -31,19 +35,25 @@ export abstract class BaseInputElement extends BaseFormElement {
     if (value && event === InputEventType.onChange) {
       if (value !== this.value) {
         this.value = value;
-        this.transmitValue(value, [event], FormEvents.inputEvents);
+        this.transmitValue(value, { eventType: [event] });
       }
     }
     if (event === InputEventType.onFocus || event === InputEventType.onBlur) {
-      this.transmitValue(this.value, [event], FormEvents.inputEvents);
+      this.transmitValue(this.value, { eventType: [event] });
     }
     if (
       event === InputEventType.onKey &&
       (isKey(value, Keys.enter) || isKey(value, Keys.escape))
     ) {
-      this.transmitValue(this.value, [event], FormEvents.inputEvents, false, {
-        key: value
-      });
+      setTimeout(() => {
+        this.transmitValue(this.value, {
+          eventType: [event],
+          doPropagate: false,
+          addToEventObj: {
+            key: value
+          }
+        });
+      }, 0);
     }
   }
 }

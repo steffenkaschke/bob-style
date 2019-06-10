@@ -11,6 +11,7 @@ import { simpleUID, asArray } from '../services/utils/functional-utils';
 import { InputEvent } from './input/input.interface';
 import { InputEventType } from './form-elements.enum';
 import { FormEvents } from './form-elements.enum';
+import { TransmitOptions } from './form-elements.interface';
 
 export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {
@@ -47,6 +48,13 @@ export abstract class BaseFormElement
   public id = simpleUID('bfe-');
   public inputTransformers: Function[] = [];
   public outputTransformers: Function[] = [];
+  public outputEventName = FormEvents.changed;
+
+  private transmitValueDefOptions: Partial<TransmitOptions> = {
+    eventType: [InputEventType.onChange],
+    doPropagate: this.doPropagate,
+    addToEventObj: {}
+  };
 
   protected onNgChanges(changes: SimpleChanges): void {}
 
@@ -83,11 +91,16 @@ export abstract class BaseFormElement
 
   protected transmitValue(
     value: any = this.value,
-    eventType: InputEventType | InputEventType[] = [InputEventType.onChange],
-    eventName = FormEvents.changed,
-    doPropagate = this.doPropagate,
-    addToEventObj = {}
+    options: Partial<TransmitOptions> = {}
   ): void {
+    options = {
+      ...this.transmitValueDefOptions,
+      eventName: this.outputEventName,
+      ...options
+    };
+    // tslint:disable-next-line: prefer-const
+    let { eventType, eventName, doPropagate, addToEventObj } = options;
+
     if (value !== undefined) {
       eventType = asArray(eventType);
 
@@ -121,7 +134,7 @@ export abstract class BaseFormElement
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value) {
       this.writeValue(changes.value.currentValue);
-      this.transmitValue(this.value, [InputEventType.onWrite]);
+      this.transmitValue(this.value, { eventType: [InputEventType.onWrite] });
     }
     this.onNgChanges(changes);
   }

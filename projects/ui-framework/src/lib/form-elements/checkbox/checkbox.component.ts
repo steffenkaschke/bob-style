@@ -5,7 +5,9 @@ import {
   Input,
   Output,
   ElementRef,
-  ViewChild
+  ViewChild,
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -30,30 +32,54 @@ import { FormEvents } from '../form-elements.enum';
     }
   ]
 })
-export class CheckboxComponent extends BaseFormElement {
+export class CheckboxComponent extends BaseFormElement implements OnChanges {
   constructor() {
     super();
+    this.inputTransformers = [
+      value => {
+        const truthy = ['true', 'on', '1', 1];
+        if (typeof value !== 'boolean') {
+          value = truthy.includes(value) ? true : false;
+        }
+        return value;
+      }
+    ];
   }
 
   @ViewChild('input') private input: ElementRef;
   @Input() value = false;
+  @Input() indeterminate = false;
 
-  @Input('indeterminate')
-  set indState(value: boolean) {
-    this.input.nativeElement.indeterminate = value;
-  }
-
+  public outputEventName = FormEvents.checkboxChange;
   @Output() checkboxChange: EventEmitter<InputEvent> = new EventEmitter<
     InputEvent
   >();
 
-  toggleCheckbox(): void {
-    this.value = !this.value;
+  private transmit(event): void {
+    this.transmitValue(this.value, {
+      eventType: [event],
+      addToEventObj: {
+        indeterminate: this.indeterminate
+      }
+    });
+  }
 
-    this.transmitValue(
-      this.value,
-      [InputEventType.onBlur],
-      FormEvents.checkboxChange
-    );
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.indeterminate) {
+      this.indeterminate = changes.indeterminate.currentValue;
+      this.input.nativeElement.indeterminate = this.indeterminate;
+    }
+    if (changes.value) {
+      this.writeValue(changes.value.currentValue);
+    }
+    if (changes.value || changes.indeterminate) {
+      this.transmit([InputEventType.onWrite]);
+    }
+  }
+
+  public toggleCheckbox(): void {
+    this.value = !this.value;
+    this.indeterminate = false;
+    this.transmit([InputEventType.onBlur]);
   }
 }

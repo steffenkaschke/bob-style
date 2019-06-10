@@ -56,14 +56,14 @@ form.column {
 }
 
 [type='search'] {
-  -webkit-appearance: none;
-  appearance: none;
-  border: 1px solid gray;
-  box-shadow: silver;
-  background-color: rgba(255, 255, 255, 0.5);
+  // -webkit-appearance: none;
+  // appearance: none;
 }
 
 .simple-input {
+  border: 1px solid gray;
+  box-shadow: silver;
+  background-color: rgba(255, 255, 255, 0.5);
   height: 25px;
   padding: 0 5px 0 10px;
   line-height: 25px;
@@ -76,6 +76,10 @@ form.column {
     height: 50px;
     line-height: 50px;
     font-size: 15px;
+  }
+
+  &.small {
+    max-width: 50px;
   }
 }
 
@@ -110,6 +114,11 @@ select {
   outline: 0;
   margin: 0;
   cursor: pointer;
+
+  & + span {
+    display: inline-block;
+    margin-left: 4px;
+  }
 }
 
 .simple-select {
@@ -134,6 +143,7 @@ select {
   background-color: rgba(255, 255, 255, 0.5);
   overflow-wrap: break-word;
   word-break: break-all;
+  white-space: pre-line;
 }
 
 p {
@@ -155,9 +165,17 @@ button {
   outline: 0;
 }
 
+.smaller-button,
 .small-button {
   height: 20px;
   padding: 0;
+}
+
+.smaller-button {
+  max-width: 120px;
+}
+
+.small-button {
   max-width: 56px;
 }
 
@@ -166,14 +184,22 @@ button {
   margin-top: 10px;
 }
 
-* {
-  :disabled,
-  .disabled,
-  [disabled] {
-    pointer-events: none;
-    cursor: default;
-    user-select: none;
+:disabled,
+.disabled,
+[disabled] {
+  pointer-events: none;
+  cursor: default;
+  user-select: none;
+
+  &,
+  * {
+    border-color: silver;
   }
+}
+
+.disabled,
+[disabled] + span {
+  opacity: 0.5;
 }
 
 .note {
@@ -247,6 +273,9 @@ button {
   }
   .side-by-side {
     margin-top: 0;
+  }
+  .more-margin-top {
+    margin-top: 20px;
   }
 }
 
@@ -337,4 +366,9 @@ section h3 {
     content: '  TODO 😬';
     color: red;
   }
+}
+
+.type {
+  margin-left: 5px;
+  font-weight: 400;
 }

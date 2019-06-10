@@ -19,7 +19,6 @@ describe('SplitInputSingleSelectComponent', () => {
   let valueMock: InputSingleSelectValue;
 
   beforeEach(async(() => {
-
     valueMock = {
       inputValue: 200,
       selectValue: 'USD'
@@ -31,7 +30,7 @@ describe('SplitInputSingleSelectComponent', () => {
         options: [
           { value: 'USD', id: 'USD', selected: false },
           { value: 'GBP', id: 'GBP', selected: false },
-          { value: 'ILS', id: 'ILS', selected: false },
+          { value: 'ILS', id: 'ILS', selected: false }
         ]
       }
     ];
@@ -78,13 +77,12 @@ describe('SplitInputSingleSelectComponent', () => {
       expectedOptions[0].options[0].selected = true;
       component.value = valueMock;
       component.ngOnChanges({
-        selectOptions:
-          {
-            previousValue: undefined,
-            currentValue: optionsMock,
-            firstChange: false,
-            isFirstChange: () => false,
-          },
+        selectOptions: {
+          previousValue: undefined,
+          currentValue: optionsMock,
+          firstChange: false,
+          isFirstChange: () => false
+        }
       });
       expect(component.options).toEqual(expectedOptions);
     });
@@ -93,13 +91,12 @@ describe('SplitInputSingleSelectComponent', () => {
       expectedOptions[0].options[0].selected = true;
       component.value = valueMock;
       component.ngOnChanges({
-        selectOptions:
-          {
-            previousValue: undefined,
-            currentValue: optionsMock,
-            firstChange: false,
-            isFirstChange: () => false,
-          },
+        selectOptions: {
+          previousValue: undefined,
+          currentValue: optionsMock,
+          firstChange: false,
+          isFirstChange: () => false
+        }
       });
       fixture.detectChanges();
       const selectEl = fixture.debugElement.query(By.css('b-single-select'));
@@ -153,7 +150,7 @@ describe('SplitInputSingleSelectComponent', () => {
       fixture.detectChanges();
       expect(component.elementChange.emit).toHaveBeenCalledWith({
         inputValue: 200,
-        selectValue: 'GBP',
+        selectValue: 'GBP'
       });
     });
   });

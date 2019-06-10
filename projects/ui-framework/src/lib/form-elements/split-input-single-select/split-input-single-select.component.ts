@@ -52,11 +52,13 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
   @Input() value: InputSingleSelectValue = this.baseValue;
   @Input() inputType: InputTypes;
   @Input() selectOptions: SelectGroupOption[];
+
+  public options: SelectGroupOption[] = [];
+
+  public outputEventName = FormEvents.elementChange;
   @Output() elementChange: EventEmitter<
     InputSingleSelectValue
   > = new EventEmitter<InputSingleSelectValue>();
-
-  options: SelectGroupOption[] = [];
 
   // this extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
@@ -84,16 +86,14 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
       event.event === InputEventType.onBlur
     ) {
       this.value.inputValue = event.value;
-      this.transmitValue(this.value, [event.event], FormEvents.elementChange);
+      this.transmitValue(this.value, { eventType: [event.event] });
     }
   }
 
   onSelectChange(listChange: ListChange): void {
     this.value.selectValue = listChange.getSelectedIds()[0];
-    this.transmitValue(
-      this.value,
-      [InputEventType.onChange, InputEventType.onBlur],
-      FormEvents.elementChange
-    );
+    this.transmitValue(this.value, {
+      eventType: [InputEventType.onChange, InputEventType.onBlur]
+    });
   }
 }

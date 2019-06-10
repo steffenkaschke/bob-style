@@ -30,6 +30,7 @@ import {
   stringListToArray
 } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
+import { InputEventType, FormEvents } from '../form-elements.enum';
 
 @Component({
   selector: 'b-chip-input',
@@ -96,19 +97,19 @@ export class ChipInputComponent extends BaseFormElement
     this.updatePossibleChips();
   }
 
-  private propagateValue(change: Partial<ChipInputChange>): void {
-    this.propagateChange(this.value);
-    this.changed.emit({ ...change, value: this.value });
-    this.onTouched();
+  private transmit(change: Partial<ChipInputChange>): void {
+    this.transmitValue(this.value, {
+      eventType: [InputEventType.onChange, InputEventType.onBlur],
+      addToEventObj: change
+    });
   }
 
   private updatePossibleChips(): void {
     this.possibleChips = this.options
-      ? this.options.filter(
-          ch =>
-            (this.value &&
-              !this.value.find(c => c.toLowerCase() === ch.toLowerCase())) ||
-            true
+      ? this.options.filter(ch =>
+          this.value
+            ? !this.value.find(c => c.toLowerCase() === ch.toLowerCase())
+            : true
         )
       : [];
   }
@@ -141,7 +142,7 @@ export class ChipInputComponent extends BaseFormElement
     if (chipToAdd && !this.findChip(chipToAdd, this.value)) {
       this.value.push(chipToAdd);
       this.updatePossibleChips();
-      this.propagateValue({ added: chipToAdd });
+      this.transmit({ added: chipToAdd });
       this.bInput.nativeElement.value = '';
     } else if (chipToAdd) {
       const existingChipElemnent = this.chipList
@@ -186,7 +187,7 @@ export class ChipInputComponent extends BaseFormElement
   public remove(name: string): void {
     this.value = this.removeChip(name, this.value);
     this.updatePossibleChips();
-    this.propagateValue({ removed: name });
+    this.transmit({ removed: name });
     this.autocompleteTrigger.closePanel();
   }
 
@@ -225,6 +226,12 @@ export class ChipInputComponent extends BaseFormElement
       }
     } else {
       this.unSelectLastChip();
+    }
+  }
+
+  public onInputKeydown(event: KeyboardEvent): void {
+    if (isKey(event.key, Keys.enter)) {
+      event.preventDefault();
     }
   }
 

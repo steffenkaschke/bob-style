@@ -42,6 +42,9 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   global_setValEmit = true;
   global_disabled = false;
   global_required = true;
+  global_maxChars = 30;
+  global_numberOfCustEvents = 2;
+  global_consoleLog = false;
 
   globalFormControlStartValues = {
     null: null,
@@ -82,6 +85,8 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bInput_formControlEnabled = this.global_formControlEnabled;
   bInput_directValueInput = this.global_directValueInput;
   bInput_setInputProgrammatically = this.global_setInputProgrammatically;
+  bInput_maxChars = this.global_maxChars;
+  bInput_formSubmitted = false;
 
   bInput_Form = new FormGroup({
     bInput: new FormControl(this.globalFormControlStartValue, {
@@ -111,6 +116,8 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bTextarea_formControlEnabled = this.global_formControlEnabled;
   bTextarea_directValueInput = this.global_directValueInput;
   bTextarea_setInputProgrammatically = this.global_setInputProgrammatically;
+  bTextarea_maxChars = this.global_maxChars;
+  bTextarea_formSubmitted = false;
 
   bTextarea_Form = new FormGroup({
     bTextarea: new FormControl(this.globalFormControlStartValue, {
@@ -141,6 +148,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bDatepicker_formControlEnabled = this.global_formControlEnabled;
   bDatepicker_directValueInput = this.global_directValueInput;
   bDatepicker_setInputProgrammatically = this.global_setInputProgrammatically;
+  bDatepicker_formSubmitted = false;
 
   bDatepicker_Form = new FormGroup({
     bDatepicker: new FormControl(this.globalFormControlStartValue, {
@@ -172,6 +180,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bChipinput_formControlEnabled = this.global_formControlEnabled;
   bChipinput_directValueInput = this.global_directValueInput;
   bChipinput_setInputProgrammatically = this.global_setInputProgrammatically;
+  bChipinput_formSubmitted = false;
 
   bChipinput_Form = new FormGroup({
     bChipinput: new FormControl(this.globalFormControlStartValue, {
@@ -202,6 +211,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bSocial_formControlEnabled = this.global_formControlEnabled;
   bSocial_directValueInput = this.global_directValueInput;
   bSocial_setInputProgrammatically = this.global_setInputProgrammatically;
+  bSocial_formSubmitted = false;
 
   bSocial_Form = new FormGroup({
     bSocial: new FormControl(this.globalFormControlStartValue, {
@@ -219,7 +229,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bCheckbox_EventCounter = 0;
   bCheckbox_label = 'Checkbox label';
   bCheckbox_placeholder = 'Checkbox Placeholder';
-  bCheckbox_value = 'true';
+  bCheckbox_value = true;
   bCheckbox_indeterminate = false;
   bCheckbox_disabled = this.global_disabled;
   bCheckbox_required = this.global_required;
@@ -232,6 +242,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bCheckbox_formControlEnabled = this.global_formControlEnabled;
   bCheckbox_directValueInput = this.global_directValueInput;
   bCheckbox_setInputProgrammatically = this.global_setInputProgrammatically;
+  bCheckbox_formSubmitted = false;
 
   bCheckbox_Form = new FormGroup({
     bCheckbox: new FormControl(this.globalFormControlStartValue, {
@@ -262,6 +273,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bRadio_formControlEnabled = this.global_formControlEnabled;
   bRadio_directValueInput = this.global_directValueInput;
   bRadio_setInputProgrammatically = this.global_setInputProgrammatically;
+  bRadio_formSubmitted = false;
 
   bRadio_Form = new FormGroup({
     bRadio: new FormControl(this.globalFormControlStartValue, {
@@ -361,6 +373,7 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
   bSplitInput_formControlEnabled = this.global_formControlEnabled;
   bSplitInput_directValueInput = this.global_directValueInput;
   bSplitInput_setInputProgrammatically = this.global_setInputProgrammatically;
+  bSplitInput_formSubmitted = false;
 
   bSplitInput_Form = new FormGroup({
     bSplitInput: new FormControl(this.globalFormControlStartValue, {
@@ -397,11 +410,23 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
       $event = JSON.stringify($event);
     }
 
-    this[name + '_EventValue'] =
-      (this[name + '_EventValue']
-        ? this[name + '_EventValue'].split('|').slice(-1) + ' | '
-        : '') + $event;
+    const value =
+      this.global_numberOfCustEvents === 1
+        ? $event
+        : (this[name + '_EventValue']
+            ? this[name + '_EventValue']
+                .split('\n')
+                .slice((this.global_numberOfCustEvents - 1) * -1) + ' \n '
+            : '') + $event;
+
+    this[name + '_EventValue'] = value;
     this[name + '_EventCounter']++;
+
+    if (this.global_consoleLog) {
+      console.log('------------------------');
+      console.log(name + ' custom event ' + this[name + '_EventCounter'] + ':');
+      console.log($event);
+    }
   }
 
   subscribeToValueChanges(name) {
@@ -410,6 +435,13 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
       this[name].valueChanges.subscribe(value => {
         this[name + '_SubscrValue'] = value;
         this[name + '_SubscrCounter']++;
+        if (this.global_consoleLog) {
+          console.log('------------------------');
+          console.log(
+            name + ' valueChanges ' + this[name + '_SubscrCounter'] + ':'
+          );
+          console.log(this[name + '_SubscrValue']);
+        }
       });
   }
 
@@ -478,10 +510,22 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
     });
   }
 
+  getProp(prop) {
+    return this[prop];
+  }
+
   onSubmit(event, name) {
-    console.log('------------------------');
-    console.log(name + ' form submitted.');
-    console.log(this[name + '_Form'].value);
+    if (!this[name + '_Form'].valid) {
+      event.preventDefault();
+      return false;
+    }
+
+    this[name + '_formSubmitted'] = true;
+    if (this.global_consoleLog) {
+      console.log('------------------------');
+      console.log(name + ' form submitted.');
+      console.log(this[name + '_Form'].value);
+    }
   }
 
   onSubmitClick(name) {
@@ -519,6 +563,10 @@ export class FormElementsTestComponent implements OnInit, OnDestroy {
 
   type(smth) {
     let thisType = String(typeof smth);
+
+    if (smth === null) {
+      thisType = 'null';
+    }
     if (thisType === 'object' && isArray(smth)) {
       thisType = 'array';
     }

@@ -61,11 +61,11 @@
               (change)="globalControlChange('global_setInputProgrammatically')"
               [(ngModel)]="global_setInputProgrammatically"
               type="checkbox">
-       enable all set programmatically
+       enable all <span>set programmatically</span>
      </label>
    </p>
 
-   <p class="col">
+   <p class="col more-margin-top">
      <label>
        <input class="simple-checkbox"
               (change)="globalControlChange('global_formControlEnabled')"
@@ -78,7 +78,7 @@
               (change)="globalControlChange('global_setValEmit')"
               [(ngModel)]="global_setValEmit"
               type="checkbox">
-       enable all emit on setValue
+       enable all <span>Emit on setValue</span>
      </label>
    </p>
 
@@ -105,7 +105,7 @@
      </label>
    </p>
 
-   <div class="show-components">
+   <div class="show-components more-margin-top">
      <p class="full-width"><strong>Show components:</strong></p>
 
      <div>
@@ -121,6 +121,21 @@
                (click)="inverseVisibleComponents()">Inverse</button>
      </div>
    </div>
+
+   <p class="more-margin-top">
+     <label class="side-by-side">
+       Show custom events
+       <input type="number"
+              class="simple-input small"
+              [(ngModel)]="global_numberOfCustEvents">
+     </label>
+     <label>
+       <input class="simple-checkbox"
+              [(ngModel)]="global_consoleLog"
+              type="checkbox">
+       enable console.log
+     </label>
+   </p>
 
  </div>
 
@@ -144,11 +159,11 @@
       [value]=&#x22;bInput_value&#x22;
       [disabled]=&#x22;bInput_disabled&#x22;
       [required]=&#x22;bInput_required&#x22;
+      [maxChars]=&#x22;bInput_maxChars&#x22;
       [hintMessage]=&#x22;bInput_hint&#x22;
       [warnMessage]=&#x22;bInput_warn&#x22;
       [errorMessage]=&#x22;bInput_error&#x22;
-      (inputEvents)=&#x22;onEvent(&#x27;bInput&#x27;,$event)&#x22;
-      (changed)=&#x22;onEvent(&#x27;bInput&#x27;,$event)&#x22;&#x3E;
+      (inputEvents)=&#x22;onEvent(&#x27;bInput&#x27;,$event)&#x22;&#x3E;
       &#x3C;/b-input&#x3E;
     </code></pre>
 
@@ -160,11 +175,11 @@
               [value]="bInput_directValueInput ? bInput_value : undefined"
               [disabled]="bInput_disabled"
               [required]="bInput_required"
+              [maxChars]="bInput_maxChars"
               [hintMessage]="bInput_hint"
               [warnMessage]="bInput_warn"
               [errorMessage]="bInput_error"
-              (inputEvents)="onEvent('bInput',$event)"
-              (changed)="onEvent('bInput',$event)">
+              (inputEvents)="onEvent('bInput',$event)">
      </b-input>
 
      <b-input *ngIf="!bInput_formControlEnabled"
@@ -174,15 +189,17 @@
               [value]="bInput_directValueInput ? bInput_value : undefined"
               [disabled]="bInput_disabled"
               [required]="bInput_required"
+              [maxChars]="bInput_maxChars"
               [hintMessage]="bInput_hint"
               [warnMessage]="bInput_warn"
               [errorMessage]="bInput_error"
-              (inputEvents)="onEvent('bInput',$event)"
-              (changed)="onEvent('bInput',$event)">
+              (inputEvents)="onEvent('bInput',$event)">
      </b-input>
 
-     <p [attr.data-valid]="bInput_Form.valid">
-       {{bInput_Form.valid ? 'Form valid' : 'Form invalid'}}
+     <p [attr.data-valid]="bInput_Form.valid"
+        class="col">
+       <span>{{bInput_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
+       <strong *ngIf="bInput_formSubmitted">Form submitted</strong>
      </p>
    </form>
 
@@ -223,19 +240,24 @@
               type="search">
      </label>
 
-     <p class="full-width">ValueChanges: {{bInput_SubscrCounter}}</p>
-     <div class="outputValue full-width">
+     <p class="full-width"
+        [ngClass]="{disabled: !bInput_formControlEnabled}">ValueChanges: {{bInput_SubscrCounter}}</p>
+     <div class="outputValue full-width"
+          [ngClass]="{disabled: !bInput_formControlEnabled}">
        {{ bInput_SubscrValue }}
      </div>
 
-     <p class="full-width">Custom event: {{bInput_EventCounter}}</p>
+     <p class="
+          full-width">Custom event: {{bInput_EventCounter}}</p>
      <div class="outputValue full-width">
        {{ bInput_EventValue }}
      </div>
 
      <div class="control-item col">
        <p class="col">
-         <strong class="value">Value</strong>
+         <strong class="value">Value
+           <span class="type">{{ type(bInput.value) }}</span>
+         </strong>
          <label>
            <input class="simple-checkbox"
                   [(ngModel)]="bInput_directValueInput"
@@ -247,7 +269,7 @@
                   class="simple-checkbox"
                   [(ngModel)]="bInput_setInputProgrammatically"
                   type="checkbox">
-           set programmatically
+           <span>set programmatically</span>
          </label>
        </p>
        <label>
@@ -273,6 +295,13 @@
                 type="checkbox">
          disabled
        </label>
+
+       <label class="side-by-side">
+         maxChars:
+         <input type="number"
+                class="simple-input small"
+                [(ngModel)]="bInput_maxChars">
+       </label>
      </div>
 
      <div class="control-item col">
@@ -291,7 +320,7 @@
                 [disabled]="!bInput_formControlEnabled"
                 [(ngModel)]="bInput_setValEmit"
                 type="checkbox">
-         Emit on setValue
+         <span>Emit on setValue</span>
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bInput')"
@@ -309,7 +338,7 @@
                 [(ngModel)]="bInput_updateOn_mode"
                 name="bInput_updateOn_radio"
                 value="change">
-         Change
+         <span>Change</span>
        </label>
        <label>
          <input type="radio"
@@ -319,7 +348,7 @@
                 [(ngModel)]="bInput_updateOn_mode"
                 name="bInput_updateOn_radio"
                 value="blur">
-         Blur
+         <span>Blur</span>
        </label>
        <label>
          <input type="radio"
@@ -329,7 +358,7 @@
                 [(ngModel)]="bInput_updateOn_mode"
                 name="bInput_updateOn_radio"
                 value="submit">
-         Submit
+         <span>Submit</span>
        </label>
      </div>
 
@@ -359,7 +388,7 @@
       [hintMessage]=&#x22;bTextarea_hint&#x22;
       [warnMessage]=&#x22;bTextarea_warn&#x22;
       [errorMessage]=&#x22;bTextarea_error&#x22;
-      [maxChars]=&#x22;50&#x22;
+      [maxChars]=&#x22;bTextarea_maxChars&#x22;
       (inputEvents)=&#x22;onEvent(&#x27;bTextarea&#x27;,$event)&#x22;
       (changed)=&#x22;onEvent(&#x27;bTextarea&#x27;,$event)&#x22;&#x3E;
       &#x3C;/b-textarea&#x3E;
@@ -376,7 +405,7 @@
                  [hintMessage]="bTextarea_hint"
                  [warnMessage]="bTextarea_warn"
                  [errorMessage]="bTextarea_error"
-                 [maxChars]="50"
+                 [maxChars]="bTextarea_maxChars"
                  (inputEvents)="onEvent('bTextarea',$event)"
                  (changed)="onEvent('bTextarea',$event)">
      </b-textarea>
@@ -391,13 +420,15 @@
                  [hintMessage]="bTextarea_hint"
                  [warnMessage]="bTextarea_warn"
                  [errorMessage]="bTextarea_error"
-                 [maxChars]="50"
+                 [maxChars]="bTextarea_maxChars"
                  (inputEvents)="onEvent('bTextarea',$event)"
                  (changed)="onEvent('bTextarea',$event)">
      </b-textarea>
 
-     <p [attr.data-valid]="bTextarea_Form.valid">
-       {{bTextarea_Form.valid ? 'Form valid' : 'Form invalid'}}
+     <p [attr.data-valid]="bTextarea_Form.valid"
+        class="col">
+       <span>{{bTextarea_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
+       <strong *ngIf="bTextarea_formSubmitted">Form submitted</strong>
      </p>
    </form>
 
@@ -450,7 +481,9 @@
 
      <div class="control-item col">
        <p class="col">
-         <strong class="value">Value</strong>
+         <strong class="value">Value
+           <span class="type">{{ type(bTextarea.value) }}</span>
+         </strong>
          <label>
            <input class="simple-checkbox"
                   [(ngModel)]="bTextarea_directValueInput"
@@ -462,7 +495,7 @@
                   class="simple-checkbox"
                   [(ngModel)]="bTextarea_setInputProgrammatically"
                   type="checkbox">
-           set programmatically
+           <span>set programmatically</span>
          </label>
        </p>
        <label>
@@ -488,6 +521,13 @@
                 type="checkbox">
          disabled
        </label>
+
+       <label class="side-by-side">
+         maxChars:
+         <input type="number"
+                class="simple-input small"
+                [(ngModel)]="bTextarea_maxChars">
+       </label>
      </div>
 
      <div class="control-item col">
@@ -506,7 +546,7 @@
                 [disabled]="!bTextarea_formControlEnabled"
                 [(ngModel)]="bTextarea_setValEmit"
                 type="checkbox">
-         Emit on setValue
+         <span>Emit on setValue</span>
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bTextarea')"
@@ -525,7 +565,7 @@
                 [(ngModel)]="bTextarea_updateOn_mode"
                 name="bTextarea_updateOn_radio"
                 value="change">
-         Change
+         <span>Change</span>
        </label>
        <label>
          <input type="radio"
@@ -535,7 +575,7 @@
                 [(ngModel)]="bTextarea_updateOn_mode"
                 name="bTextarea_updateOn_radio"
                 value="blur">
-         Blur
+         <span>Blur</span>
        </label>
        <label>
          <input type="radio"
@@ -545,7 +585,7 @@
                 [(ngModel)]="bTextarea_updateOn_mode"
                 name="bTextarea_updateOn_radio"
                 value="submit">
-         Submit
+         <span>Submit</span>
        </label>
      </div>
 
@@ -576,8 +616,7 @@
       [hintMessage]=&#x22;bDatepicker_hint&#x22;
       [warnMessage]=&#x22;bDatepicker_warn&#x22;
       [errorMessage]=&#x22;bDatepicker_error&#x22;
-      (dateChange)=&#x22;onEvent(&#x27;bDatepicker&#x27;,$event)&#x22;
-      (changed)=&#x22;onEvent(&#x27;bDatepicker&#x27;,$event)&#x22;&#x3E;
+      (dateChange)=&#x22;onEvent(&#x27;bDatepicker&#x27;,$event)&#x22;&#x3E;
       &#x3C;/b-datepicker&#x3E;
     </code></pre>
 
@@ -593,8 +632,7 @@
                    [hintMessage]="bDatepicker_hint"
                    [warnMessage]="bDatepicker_warn"
                    [errorMessage]="bDatepicker_error"
-                   (dateChange)="onEvent('bDatepicker',$event)"
-                   (changed)="onEvent('bDatepicker',$event)">
+                   (dateChange)="onEvent('bDatepicker',$event)">
      </b-datepicker>
 
      <b-datepicker #bDatepicker
@@ -608,12 +646,14 @@
                    [hintMessage]="bDatepicker_hint"
                    [warnMessage]="bDatepicker_warn"
                    [errorMessage]="bDatepicker_error"
-                   (dateChange)="onEvent('bDatepicker',$event)"
-                   (changed)="onEvent('bDatepicker',$event)">
+                   (dateChange)="onEvent('bDatepicker',$event)">
      </b-datepicker>
 
-     <p [attr.data-valid]="bDatepicker_Form.valid">
-       {{bDatepicker_Form.valid ? 'Form valid' : 'Form invalid'}}
+     <p [attr.data-valid]="bDatepicker_Form.valid"
+        class="col">
+       <span>{{bDatepicker_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
+       <strong *ngIf="bDatepicker_formSubmitted">Form submitted</strong>
+
      </p>
 
      <p class="note">
@@ -671,7 +711,9 @@
 
      <div class="control-item col third">
        <p class="col">
-         <strong class="value">Value</strong>
+         <strong class="value">Value
+           <span class="type">{{ type(bDatepicker.value) }}</span>
+         </strong>
          <label>
            <input class="simple-checkbox"
                   [(ngModel)]="bDatepicker_directValueInput"
@@ -683,7 +725,7 @@
                   class="simple-checkbox"
                   [(ngModel)]="bDatepicker_setInputProgrammatically"
                   type="checkbox">
-           set programmatically
+           <span>set programmatically</span>
          </label>
        </p>
        <label>
@@ -738,7 +780,7 @@
                 [disabled]="!bDatepicker_formControlEnabled"
                 [(ngModel)]="bDatepicker_setValEmit"
                 type="checkbox">
-         Emit on setValue
+         <span>Emit on setValue</span>
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bDatepicker')"
@@ -756,7 +798,7 @@
                 [(ngModel)]="bDatepicker_updateOn_mode"
                 name="bDatepicker_updateOn_radio"
                 value="change">
-         Change
+         <span>Change</span>
        </label>
        <label>
          <input type="radio"
@@ -766,7 +808,7 @@
                 [(ngModel)]="bDatepicker_updateOn_mode"
                 name="bDatepicker_updateOn_radio"
                 value="blur">
-         Blur
+         <span>Blur</span>
        </label>
        <label>
          <input type="radio"
@@ -776,7 +818,7 @@
                 [(ngModel)]="bDatepicker_updateOn_mode"
                 name="bDatepicker_updateOn_radio"
                 value="submit">
-         Submit
+         <span>Submit</span>
        </label>
      </div>
 
@@ -784,7 +826,7 @@
 
  </section>
 
- <section class="bChipinput status-wip"
+ <section class="bChipinput status-done"
           *ngIf="global_visibleComponents['bChipinput']">
    <form [formGroup]="bChipinput_Form"
          (ngSubmit)="onSubmit($event,'bChipinput')"
@@ -843,9 +885,12 @@
                    (changed)="onEvent('bChipinput',$event)">
      </b-chip-input>
 
-     <p [attr.data-valid]="bChipinput_Form.valid">
-       {{bChipinput_Form.valid ? 'Form valid' : 'Form invalid'}}
+     <p [attr.data-valid]="bChipinput_Form.valid"
+        class="col">
+       <span>{{bChipinput_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
+       <strong *ngIf="bChipinput_formSubmitted">Form submitted</strong>
      </p>
+
    </form>
 
    <div class="column">
@@ -885,9 +930,10 @@
               type="search">
      </label>
 
-     <p class="full-width">ValueChanges: {{bChipinput_SubscrCounter}} / {{ type(bChipinput_SubscrValue) }}</p>
+     <p class="full-width">ValueChanges: {{bChipinput_SubscrCounter}} / {{ type(bChipinput_SubscrValue) }}
+       ({{bChipinput_SubscrValue?.length}})</p>
      <div class="outputValue full-width">
-       {{ bChipinput_SubscrValue }}
+       {{ bChipinput_SubscrValue ? bChipinput_SubscrValue + '' : '' }}
      </div>
 
      <p class="full-width">Custom event: {{bChipinput_EventCounter}}
@@ -898,7 +944,9 @@
 
      <div class="control-item col">
        <p class="col">
-         <strong class="value">Value</strong>
+         <strong class="value">Value
+           <span class="type">{{ type(bChipinput.value) }} ({{ bChipinput.value?.length }})</span>
+         </strong>
          <label>
            <input class="simple-checkbox"
                   [(ngModel)]="bChipinput_directValueInput"
@@ -910,7 +958,7 @@
                   class="simple-checkbox"
                   [(ngModel)]="bChipinput_setInputProgrammatically"
                   type="checkbox">
-           set programmatically
+           <span>set programmatically</span>
          </label>
        </p>
        <label>
@@ -961,7 +1009,7 @@
                 [disabled]="!bChipinput_formControlEnabled"
                 [(ngModel)]="bChipinput_setValEmit"
                 type="checkbox">
-         Emit on setValue
+         <span>Emit on setValue</span>
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bChipinput')"
@@ -979,7 +1027,7 @@
                 [(ngModel)]="bChipinput_updateOn_mode"
                 name="bChipinput_updateOn_radio"
                 value="change">
-         Change
+         <span>Change</span>
        </label>
        <label>
          <input type="radio"
@@ -989,7 +1037,7 @@
                 [(ngModel)]="bChipinput_updateOn_mode"
                 name="bChipinput_updateOn_radio"
                 value="blur">
-         Blur
+         <span>Blur</span>
        </label>
        <label>
          <input type="radio"
@@ -999,7 +1047,7 @@
                 [(ngModel)]="bChipinput_updateOn_mode"
                 name="bChipinput_updateOn_radio"
                 value="submit">
-         Submit
+         <span>Submit</span>
        </label>
      </div>
 
@@ -1030,8 +1078,7 @@
       [hintMessage]=&#x22;bSocial_hint&#x22;
       [warnMessage]=&#x22;bSocial_warn&#x22;
       [errorMessage]=&#x22;bSocial_error&#x22;
-      (socialInputChange)=&#x22;onEvent(&#x27;bSocial&#x27;,$event)&#x22;
-      (changed)=&#x22;onEvent(&#x27;bSocial&#x27;,$event)&#x22;&#x3E;
+      (socialInputChange)=&#x22;onEvent(&#x27;bSocial&#x27;,$event)&#x22;&#x3E;
       &#x3C;/b-social&#x3E;
     </code></pre>
 
@@ -1047,8 +1094,7 @@
                [hintMessage]="bSocial_hint"
                [warnMessage]="bSocial_warn"
                [errorMessage]="bSocial_error"
-               (socialInputChange)="onEvent('bSocial',$event)"
-               (changed)="onEvent('bSocial',$event)">
+               (socialInputChange)="onEvent('bSocial',$event)">
      </b-social>
 
      <b-social #bSocial
@@ -1062,12 +1108,13 @@
                [hintMessage]="bSocial_hint"
                [warnMessage]="bSocial_warn"
                [errorMessage]="bSocial_error"
-               (socialInputChange)="onEvent('bSocial',$event)"
-               (changed)="onEvent('bSocial',$event)">
+               (socialInputChange)="onEvent('bSocial',$event)">
      </b-social>
 
-     <p [attr.data-valid]="bSocial_Form.valid">
-       {{bSocial_Form.valid ? 'Form valid' : 'Form invalid'}}
+     <p [attr.data-valid]="bSocial_Form.valid"
+        class="col">
+       <span>{{bSocial_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
+       <strong *ngIf="bSocial_formSubmitted">Form submitted</strong>
      </p>
 
      <p class="note">
@@ -1124,7 +1171,9 @@
 
      <div class="control-item col">
        <p class="col">
-         <strong class="value">Value</strong>
+         <strong class="value">Value
+           <span class="type">{{ type(bSocial.value) }}</span>
+         </strong>
          <label>
            <input class="simple-checkbox"
                   [(ngModel)]="bSocial_directValueInput"
@@ -1136,7 +1185,7 @@
                   class="simple-checkbox"
                   [(ngModel)]="bSocial_setInputProgrammatically"
                   type="checkbox">
-           set programmatically
+           <span>set programmatically</span>
          </label>
        </p>
        <label>
@@ -1189,7 +1238,7 @@
                 [disabled]="!bSocial_formControlEnabled"
                 [(ngModel)]="bSocial_setValEmit"
                 type="checkbox">
-         Emit on setValue
+         <span>Emit on setValue</span>
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bSocial')"
@@ -1207,7 +1256,7 @@
                 [(ngModel)]="bSocial_updateOn_mode"
                 name="bSocial_updateOn_radio"
                 value="change">
-         Change
+         <span>Change</span>
        </label>
        <label>
          <input type="radio"
@@ -1217,7 +1266,7 @@
                 [(ngModel)]="bSocial_updateOn_mode"
                 name="bSocial_updateOn_radio"
                 value="blur">
-         Blur
+         <span>Blur</span>
        </label>
        <label>
          <input type="radio"
@@ -1227,7 +1276,7 @@
                 [(ngModel)]="bSocial_updateOn_mode"
                 name="bSocial_updateOn_radio"
                 value="submit">
-         Submit
+         <span>Submit</span>
        </label>
      </div>
 
@@ -1258,8 +1307,7 @@
       [hintMessage]=&#x22;bCheckbox_hint&#x22;
       [warnMessage]=&#x22;bCheckbox_warn&#x22;
       [errorMessage]=&#x22;bCheckbox_error&#x22;
-      (checkboxChange)=&#x22;onEvent(&#x27;bCheckbox&#x27;,$event)&#x22;
-      (changed)=&#x22;onEvent(&#x27;bCheckbox&#x27;,$event)&#x22;&#x3E;
+      (checkboxChange)=&#x22;onEvent(&#x27;bCheckbox&#x27;,$event)&#x22;&#x3E;
     </code></pre>
 
      <b-checkbox #bCheckbox
@@ -1274,8 +1322,7 @@
                  [hintMessage]="bCheckbox_hint"
                  [warnMessage]="bCheckbox_warn"
                  [errorMessage]="bCheckbox_error"
-                 (checkboxChange)="onEvent('bCheckbox',$event)"
-                 (changed)="onEvent('bCheckbox',$event)">
+                 (checkboxChange)="onEvent('bCheckbox',$event)">
      </b-checkbox>
 
      <b-checkbox #bCheckbox
@@ -1283,17 +1330,19 @@
                  [label]="bCheckbox_label"
                  [placeholder]="bCheckbox_placeholder"
                  [value]="bCheckbox_directValueInput ? bCheckbox_value : undefined"
+                 [indeterminate]="bCheckbox_indeterminate"
                  [disabled]="bCheckbox_disabled"
                  [required]="bCheckbox_required"
                  [hintMessage]="bCheckbox_hint"
                  [warnMessage]="bCheckbox_warn"
                  [errorMessage]="bCheckbox_error"
-                 (checkboxChange)="onEvent('bCheckbox',$event)"
-                 (changed)="onEvent('bCheckbox',$event)">
+                 (checkboxChange)="onEvent('bCheckbox',$event)">
      </b-checkbox>
 
-     <p [attr.data-valid]="bCheckbox_Form.valid">
-       {{bCheckbox_Form.valid ? 'Form valid' : 'Form invalid'}}
+     <p [attr.data-valid]="bCheckbox_Form.valid"
+        class="col">
+       <span> {{bCheckbox_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
+       <strong *ngIf="bCheckbox_formSubmitted">Form submitted</strong>
      </p>
    </form>
 
@@ -1334,7 +1383,7 @@
               type="search">
      </label>
 
-     <p class="full-width">ValueChanges: {{bCheckbox_SubscrCounter}}</p>
+     <p class="full-width">ValueChanges: {{bCheckbox_SubscrCounter}} / {{ type(bCheckbox_SubscrValue) }}</p>
      <div class="outputValue full-width">
        {{ bCheckbox_SubscrValue }}
      </div>
@@ -1346,7 +1395,9 @@
 
      <div class="control-item col">
        <p class="col">
-         <strong class="value">Value</strong>
+         <strong class="value">Value
+           <span class="type">{{ type(bCheckbox.value) }}: {{bCheckbox.value}}</span>
+         </strong>
          <label>
            <input class="simple-checkbox"
                   [(ngModel)]="bCheckbox_directValueInput"
@@ -1358,7 +1409,7 @@
                   class="simple-checkbox"
                   [(ngModel)]="bCheckbox_setInputProgrammatically"
                   type="checkbox">
-           set programmatically
+           <span>set programmatically</span>
          </label>
        </p>
        <label>
@@ -1373,10 +1424,11 @@
        <strong class="props">Props</strong>
 
        <label>
-         <input class="simple-checkbox"
-                [(ngModel)]="bCheckbox_indeterminate"
-                type="checkbox">
-         indeterminate
+         <button type="button"
+                 class="smaller-button"
+                 (click)="bCheckbox_indeterminate=true">
+           indeterminate
+         </button>
        </label>
 
        <label>
@@ -1410,7 +1462,7 @@
                 [disabled]="!bCheckbox_formControlEnabled"
                 [(ngModel)]="bCheckbox_setValEmit"
                 type="checkbox">
-         Emit on setValue
+         <span>Emit on setValue</span>
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bCheckbox')"
@@ -1428,7 +1480,7 @@
                 [(ngModel)]="bCheckbox_updateOn_mode"
                 name="bCheckbox_updateOn_radio"
                 value="change">
-         Change
+         <span>Change</span>
        </label>
        <label>
          <input type="radio"
@@ -1438,7 +1490,7 @@
                 [(ngModel)]="bCheckbox_updateOn_mode"
                 name="bCheckbox_updateOn_radio"
                 value="blur">
-         Blur
+         <span>Blur</span>
        </label>
        <label>
          <input type="radio"
@@ -1448,7 +1500,7 @@
                 [(ngModel)]="bCheckbox_updateOn_mode"
                 name="bCheckbox_updateOn_radio"
                 value="submit">
-         Submit
+         <span>Submit</span>
        </label>
      </div>
 
@@ -1479,8 +1531,7 @@
       [hintMessage]=&#x22;bRadio_hint&#x22;
       [warnMessage]=&#x22;bRadio_warn&#x22;
       [errorMessage]=&#x22;bRadio_error&#x22;
-      (radioChange)=&#x22;onEvent(&#x27;bRadio&#x27;,$event)&#x22;
-      (changed)=&#x22;onEvent(&#x27;bRadio&#x27;,$event)&#x22;&#x3E;
+      (radioChange)=&#x22;onEvent(&#x27;bRadio&#x27;,$event)&#x22;&#x3E;
     </code></pre>
 
      <b-radio-button #bRadio
@@ -1495,8 +1546,7 @@
                      [hintMessage]="bRadio_hint"
                      [warnMessage]="bRadio_warn"
                      [errorMessage]="bRadio_error"
-                     (radioChange)="onEvent('bRadio',$event)"
-                     (changed)="onEvent('bRadio',$event)">
+                     (radioChange)="onEvent('bRadio',$event)">
      </b-radio-button>
 
      <b-radio-button #bRadio
@@ -1510,12 +1560,13 @@
                      [hintMessage]="bRadio_hint"
                      [warnMessage]="bRadio_warn"
                      [errorMessage]="bRadio_error"
-                     (radioChange)="onEvent('bRadio',$event)"
-                     (changed)="onEvent('bRadio',$event)">
+                     (radioChange)="onEvent('bRadio',$event)">
      </b-radio-button>
 
-     <p [attr.data-valid]="bRadio_Form.valid">
-       {{bRadio_Form.valid ? 'Form valid' : 'Form invalid'}}
+     <p [attr.data-valid]="bRadio_Form.valid"
+        class="col">
+       <span>{{bRadio_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
+       <strong *ngIf="bRadio_formSubmitted">Form submitted</strong>
      </p>
    </form>
 
@@ -1565,7 +1616,9 @@
 
      <div class="control-item col">
        <p class="col">
-         <strong class="value">Value</strong>
+         <strong class="value">Value
+           <span class="type">{{ type(bRadio.value) }}</span>
+         </strong>
          <label>
            <input class="simple-checkbox"
                   [(ngModel)]="bRadio_directValueInput"
@@ -1577,7 +1630,7 @@
                   class="simple-checkbox"
                   [(ngModel)]="bRadio_setInputProgrammatically"
                   type="checkbox">
-           set programmatically
+           <span>set programmatically</span>
          </label>
        </p>
        <label>
@@ -1629,7 +1682,7 @@
                 [disabled]="!bRadio_formControlEnabled"
                 [(ngModel)]="bRadio_setValEmit"
                 type="checkbox">
-         Emit on setValue
+         <span>Emit on setValue</span>
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bRadio')"
@@ -1647,7 +1700,7 @@
                 [(ngModel)]="bRadio_updateOn_mode"
                 name="bRadio_updateOn_radio"
                 value="change">
-         Change
+         <span>Change</span>
        </label>
        <label>
          <input type="radio"
@@ -1657,7 +1710,7 @@
                 [(ngModel)]="bRadio_updateOn_mode"
                 name="bRadio_updateOn_radio"
                 value="blur">
-         Blur
+         <span>Blur</span>
        </label>
        <label>
          <input type="radio"
@@ -1667,7 +1720,7 @@
                 [(ngModel)]="bRadio_updateOn_mode"
                 name="bRadio_updateOn_radio"
                 value="submit">
-         Submit
+         <span>Submit</span>
        </label>
      </div>
 
@@ -1697,8 +1750,7 @@
       [hintMessage]=&#x22;bSplitInput_hint&#x22;
       [warnMessage]=&#x22;bSplitInput_warn&#x22;
       [errorMessage]=&#x22;bSplitInput_error&#x22;
-      (inputEvents)=&#x22;onEvent(&#x27;bSplitInput&#x27;,$event)&#x22;
-      (changed)=&#x22;onEvent(&#x27;bSplitInput&#x27;,$event)&#x22;&#x3E;
+      (inputEvents)=&#x22;onEvent(&#x27;bSplitInput&#x27;,$event)&#x22;&#x3E;
       &#x3C;/b-input&#x3E;
     </code></pre>
 
@@ -1714,8 +1766,7 @@
                                   [hintMessage]="bSplitInput_hint"
                                   [warnMessage]="bSplitInput_warn"
                                   [errorMessage]="bSplitInput_error"
-                                  (inputEvents)="onEvent('bSplitInput',$event)"
-                                  (changed)="onEvent('bSplitInput',$event)">
+                                  (inputEvents)="onEvent('bSplitInput',$event)">
      </b-split-input-single-select>
 
      <b-split-input-single-select #bSplitInput
@@ -1728,12 +1779,13 @@
                                   [hintMessage]="bSplitInput_hint"
                                   [warnMessage]="bSplitInput_warn"
                                   [errorMessage]="bSplitInput_error"
-                                  (inputEvents)="onEvent('bSplitInput',$event)"
-                                  (changed)="onEvent('bSplitInput',$event)">
+                                  (inputEvents)="onEvent('bSplitInput',$event)">
      </b-split-input-single-select>
 
-     <p [attr.data-valid]="bSplitInput_Form.valid">
-       {{bSplitInput_Form.valid ? 'Form valid' : 'Form invalid'}}
+     <p [attr.data-valid]="bSplitInput_Form.valid"
+        class="col">
+       <span>{{bSplitInput_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
+       <strong *ngIf="bSplitInput_formSubmitted">Form submitted</strong>
      </p>
    </form>
 
@@ -1786,7 +1838,9 @@
 
      <div class="control-item col">
        <p class="col">
-         <strong class="value">Value</strong>
+         <strong class="value">Value
+           <span class="type">{{ type(bSplitInput.value) }}</span>
+         </strong>
          <label>
            <input class="simple-checkbox"
                   [(ngModel)]="bSplitInput_directValueInput"
@@ -1798,7 +1852,7 @@
                   class="simple-checkbox"
                   [(ngModel)]="bSplitInput_setInputProgrammatically"
                   type="checkbox">
-           set programmatically
+           <span>set programmatically</span>
          </label>
        </p>
        <label>
@@ -1843,7 +1897,7 @@
                 [disabled]="!bSplitInput_formControlEnabled"
                 [(ngModel)]="bSplitInput_setValEmit"
                 type="checkbox">
-         Emit on setValue
+         <span>Emit on setValue</span>
        </label>
        <label><button class="submit-button"
                  (click)="onSubmitClick('bSplitInput')"
@@ -1861,7 +1915,7 @@
                 [(ngModel)]="bSplitInput_updateOn_mode"
                 name="bSplitInput_updateOn_radio"
                 value="change">
-         Change
+         <span>Change</span>
        </label>
        <label>
          <input type="radio"
@@ -1871,7 +1925,7 @@
                 [(ngModel)]="bSplitInput_updateOn_mode"
                 name="bSplitInput_updateOn_radio"
                 value="blur">
-         Blur
+         <span>Blur</span>
        </label>
        <label>
          <input type="radio"
@@ -1881,7 +1935,7 @@
                 [(ngModel)]="bSplitInput_updateOn_mode"
                 name="bSplitInput_updateOn_radio"
                 value="submit">
-         Submit
+         <span>Submit</span>
        </label>
      </div>
 

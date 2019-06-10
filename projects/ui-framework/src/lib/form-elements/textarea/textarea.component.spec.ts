@@ -19,7 +19,7 @@ describe('TextareaComponent', () => {
         FormsModule,
         MatFormFieldModule,
         MatInputModule
-      ],
+      ]
     })
       .compileComponents()
       .then(() => {
@@ -32,7 +32,8 @@ describe('TextareaComponent', () => {
 
   describe('emitInputEvent', () => {
     beforeEach(() => {
-      textareaElement = fixture.debugElement.query(By.css('textarea')).nativeElement;
+      textareaElement = fixture.debugElement.query(By.css('textarea'))
+        .nativeElement;
     });
 
     it('expect 11', () => {
@@ -44,7 +45,7 @@ describe('TextareaComponent', () => {
       textareaElement.dispatchEvent(new Event('focus'));
       expect(component.inputEvents.emit).toHaveBeenCalledWith({
         event: InputEventType.onFocus,
-        value: 'input value',
+        value: 'input value'
       });
     });
     it('should emitInputEvent on input blur with input value', () => {
@@ -52,7 +53,7 @@ describe('TextareaComponent', () => {
       textareaElement.dispatchEvent(new Event('blur'));
       expect(component.inputEvents.emit).toHaveBeenCalledWith({
         event: InputEventType.onBlur,
-        value: 'input value',
+        value: 'input value'
       });
     });
     it('should emitInputEvent on model change with input value', () => {
@@ -60,9 +61,8 @@ describe('TextareaComponent', () => {
       textareaElement.dispatchEvent(new Event('input'));
       expect(component.inputEvents.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
-        value: 'change input value',
+        value: 'change input value'
       });
     });
   });
-
 });

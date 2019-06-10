@@ -51,9 +51,6 @@ import { FormEvents } from '../form-elements.enum';
   ]
 })
 export class DatepickerComponent extends BaseFormElement implements OnInit {
-  @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<
-    InputEvent
-  >();
   @Input() dateFormat?: string;
   public date: Date;
 
@@ -64,6 +61,11 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
 
   @ViewChild('bInput') bInput: ElementRef;
   @ViewChild('picker') picker: MatDatepicker<any>;
+
+  public outputEventName = FormEvents.dateChange;
+  @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<
+    InputEvent
+  >();
 
   constructor() {
     super();
@@ -102,11 +104,9 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
     if (value) {
       this.value = this.date = value;
 
-      this.transmitValue(
-        value,
-        [InputEventType.onChange, InputEventType.onBlur],
-        FormEvents.dateChange
-      );
+      this.transmitValue(value, {
+        eventType: [InputEventType.onChange, InputEventType.onBlur]
+      });
     }
   }
 

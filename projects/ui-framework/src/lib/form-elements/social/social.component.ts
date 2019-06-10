@@ -42,16 +42,17 @@ export class SocialComponent extends BaseFormElement {
   }
 
   @Input() type: Social;
-  @Output() socialInputChange: EventEmitter<string> = new EventEmitter<
-    string
-  >();
-
   public readonly iconSize = IconSize;
   public readonly iconColor = IconColor;
   public readonly inputTypes = InputTypes;
   public readonly socialTypes = SocialTypes;
 
+  public outputEventName = FormEvents.socialInputChange;
+  @Output() socialInputChange: EventEmitter<string> = new EventEmitter<
+    string
+  >();
+
   public onInputEvents(event: InputEvent): void {
-    this.transmitValue(event.value, event.event, FormEvents.socialInputChange);
+    this.transmitValue(event.value, { eventType: [event.event] });
   }
 }

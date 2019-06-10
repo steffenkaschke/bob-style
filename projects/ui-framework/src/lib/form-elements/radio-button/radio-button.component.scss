@@ -41,7 +41,7 @@
 }
 
 .brd-input {
-  @include radio;
+  @include radio($disabled-selector: null);
 }
 
 .brd-label {

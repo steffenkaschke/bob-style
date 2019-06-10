@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import { BaseInputElement } from '../base-input-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -20,8 +20,6 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class TextareaComponent extends BaseInputElement {
-  @Input() maxChars: number;
-
   constructor() {
     super();
   }
