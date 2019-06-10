@@ -1,8 +1,9 @@
-<div [ngTemplateOutletContext]="{ $implicit: quickFilterConfig }"
-     [ngTemplateOutlet]="getTemplate()">
-</div>
+<ng-container [ngTemplateOutletContext]="{ $implicit: quickFilterConfig }"
+              [ngTemplateOutlet]="getTemplate()">
+</ng-container>
 
-<ng-template #multiSelect let-quickFilterConfig>
+<ng-template #multiSelect
+             let-quickFilterConfig>
   <b-multi-select [ngClass]="{'has-value': hasValue}"
                   [label]="quickFilterConfig.label"
                   [options]="quickFilterConfig.options"
@@ -17,7 +18,8 @@
   </b-multi-select>
 </ng-template>
 
-<ng-template #singleSelect let-quickFilterConfig>
+<ng-template #singleSelect
+             let-quickFilterConfig>
   <b-single-select [ngClass]="{'has-value': hasValue}"
                    [label]="quickFilterConfig.label"
                    [options]="quickFilterConfig.options"

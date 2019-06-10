@@ -47,8 +47,8 @@ const template4 = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Truncate Tooltip'">
-  <div style="min-width: 100%; min-height: 100%; background-color: rgb(247,247,247);">
+<b-story-book-layout [title]="'Truncate Tooltip'" style="background-color: rgb(247,247,247);">
+  <div style="min-width: 100%; min-height: 100%;">
     <div style="padding: 100px 50px 50px; max-width: 600px; margin: auto; text-align: left;">
       <p>${template1}</p>
       <br>

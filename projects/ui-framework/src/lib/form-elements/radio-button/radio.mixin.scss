@@ -42,7 +42,7 @@
         @include size($size);
         @include text-hide;
         background-color: white;
-        border: 1px solid $grey-500;
+        border: 1px solid $input-border-color;
         border-radius: 50%;
         cursor: pointer;
         pointer-events: auto;

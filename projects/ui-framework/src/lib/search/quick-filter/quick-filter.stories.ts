@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import { boolean, object, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { cloneDeep, values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
@@ -11,7 +11,10 @@ import { QuickFilterSelectType } from './quick-filter.enum';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import { QuickFilterConfig } from './quick-filter.interface';
 
-const textareaStories = storiesOf(ComponentGroupType.Search, module).addDecorator(withKnobs);
+const textareaStories = storiesOf(
+  ComponentGroupType.Search,
+  module
+).addDecorator(withKnobs);
 
 const template = `
 <b-quick-filter-bar [quickFilters]="quickFilters"
@@ -26,7 +29,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Textarea'">
+<b-story-book-layout [title]="'Textarea'" style="background-color: rgb(247,247,247);">
 <div style="width: calc(100vw - 100px); margin: 40px auto;">
   ${template}
 </div>
@@ -104,7 +107,12 @@ textareaStories.add(
         resetFilters: action('Reset Filters click')
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, StoryBookLayoutModule, QuickFilterModule, ButtonsModule]
+        imports: [
+          BrowserAnimationsModule,
+          StoryBookLayoutModule,
+          QuickFilterModule,
+          ButtonsModule
+        ]
       }
     };
   },

@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 @Component({
   selector: 'b-input',
@@ -40,14 +39,12 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   public showPrefix = true;
   public showSuffix = true;
 
-  private DOM = new DOMhelpers();
-
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.showPrefix =
-        this.hasPrefix || !this.DOM.isEmpty(this.prefix.nativeElement);
+        this.hasPrefix || this.prefix.nativeElement.childNodes.length > 0;
       this.showSuffix =
-        this.hasSuffix || !this.DOM.isEmpty(this.suffix.nativeElement);
+        this.hasSuffix || this.suffix.nativeElement.childNodes.length > 0;
     }, 0);
   }
 }

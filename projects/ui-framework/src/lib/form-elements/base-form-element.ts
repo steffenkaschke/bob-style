@@ -100,6 +100,9 @@ export abstract class BaseFormElement
     // tslint:disable-next-line: prefer-const
     let { eventType, eventName, doPropagate, addToEventObj } = options;
 
+    // If value is undefined, it will not be transmitted.
+    // Transformers may intentionally set value to undefined,
+    // to prevent transmission
     if (value !== undefined) {
       eventType = asArray(eventType);
 

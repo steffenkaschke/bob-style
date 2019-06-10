@@ -9,24 +9,31 @@
 
 <div class="bar-content"
      [ngClass]="{
-        'has-prefix': prefix && prefix.childNodes.length > 0,
-        'has-suffix': suffix && suffix.childNodes.length > 0
+        'has-prefix':hasPrefix,
+        'has-suffix': hasSuffix
      }">
+
   <div #prefix
+       *ngIf="hasPrefix"
        class="bar-prefix">
     <ng-content select="[bar-prefix]"></ng-content>
   </div>
+
   <div class="bar-filters">
-    <div *ngFor="let quickFilterConfig of quickFilters"
-         class="quick-filter-holder"
-         [ngStyle]="{width: 100/quickFilters.length + '%'}">
-      <b-quick-filter [quickFilterConfig]="quickFilterConfig"
-                      (filterChange)="onFilterChange($event)">
-      </b-quick-filter>
-    </div>
+
+    <b-quick-filter *ngFor="let quickFilterConfig of quickFilters"
+                    class="quick-filter-holder"
+                    [ngStyle]="{width: 100/quickFilters.length + '%'}"
+                    [quickFilterConfig]="quickFilterConfig"
+                    (filterChange)="onFilterChange($event)">
+    </b-quick-filter>
+
   </div>
+
   <div #suffix
+       *ngIf="hasSuffix"
        class="bar-suffix">
     <ng-content select="[bar-suffix]"></ng-content>
   </div>
+
 </div>

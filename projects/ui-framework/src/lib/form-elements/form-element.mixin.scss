@@ -9,8 +9,8 @@ $input-padding: 15px;
 $label-height: 18px;
 $label-color: $grey-800;
 $label-hint-margin: 6px;
-$input-focus-border-color: $grey-700;
 $input-border-color: $grey-500;
+$input-focus-border-color: $grey-700;
 
 @mixin transfer-margins($from: 'b-input') {
   margin: $form-element-margin;
@@ -156,12 +156,12 @@ $input-border-color: $grey-500;
   // prefix-suffix
 
   .bfe-wrap {
-    &.hasPrefix {
+    &.has-prefix {
       .bfe-input {
         padding-left: 0;
       }
     }
-    &.hasSuffix {
+    &.has-suffix {
       .bfe-input {
         padding-right: 0;
       }
