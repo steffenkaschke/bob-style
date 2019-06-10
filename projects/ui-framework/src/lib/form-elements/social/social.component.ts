@@ -2,7 +2,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   forwardRef
 } from '@angular/core';
@@ -48,8 +47,8 @@ export class SocialComponent extends BaseFormElement {
   public readonly socialTypes = SocialTypes;
 
   @Output(FormEvents.socialInputChange) changed: EventEmitter<
-    string
-  > = new EventEmitter<string>();
+    InputEvent
+  > = new EventEmitter<InputEvent>();
 
   public onInputEvents(event: InputEvent): void {
     this.transmitValue(event.value, { eventType: [event.event] });

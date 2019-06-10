@@ -80,7 +80,10 @@ export const stringListToArray = (list: string): string[] => {
 export const asArray = (smth: any): any[] =>
   smth && (isArray(smth) ? smth : [smth]);
 
-export const compareStringsAsNumbers = (
+export const compareAsNumbers = (
   a: string | number,
   b: string | number
 ): boolean => parseInt(a as string, 10) === parseInt(b as string, 10);
+
+export const compareAsStrings = (a: any, b: any): boolean =>
+  String(a) === String(b);
