@@ -62,7 +62,7 @@ export class RadioButtonComponent extends BaseFormElement {
     this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
   }
 
-  // add - RadioConfig option to test App
+  // add - RadioConfig option to test App!
   // add - sense ID format (string/number) - onNgChanges optiopns
   // ass - pass any props in RadioConfig with value output
 }
