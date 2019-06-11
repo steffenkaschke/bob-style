@@ -8,7 +8,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewContainerRef,
+  ViewContainerRef
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { assign, chain, includes, map } from 'lodash';
