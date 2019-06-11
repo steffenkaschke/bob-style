@@ -3,7 +3,6 @@ import {
   Input,
   Output,
   SimpleChanges,
-  ElementRef
 } from '@angular/core';
 import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
@@ -13,8 +12,8 @@ import { isKey } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
 
 export abstract class BaseInputElement extends BaseFormElement {
-  protected constructor(public host: ElementRef) {
-    super(host);
+  protected constructor() {
+    super();
   }
 
   public eventType = InputEventType;

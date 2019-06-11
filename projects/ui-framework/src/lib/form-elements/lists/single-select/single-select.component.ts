@@ -8,7 +8,6 @@ import {
   Output,
   SimpleChanges,
   ViewContainerRef,
-  ElementRef
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, isNull, isUndefined } from 'lodash';
@@ -60,13 +59,12 @@ export class SingleSelectComponent extends BaseSelectPanelElement
   };
 
   constructor(
-    public host: ElementRef,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
     private listChangeService: ListChangeService
   ) {
-    super(host, overlay, viewContainerRef, panelPositionService);
+    super(overlay, viewContainerRef, panelPositionService);
     this.value = null;
   }
 

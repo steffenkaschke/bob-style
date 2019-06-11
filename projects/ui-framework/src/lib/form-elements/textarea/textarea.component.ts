@@ -1,4 +1,4 @@
-import { Component, forwardRef, ElementRef } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import { BaseInputElement } from '../base-input-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -20,7 +20,7 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class TextareaComponent extends BaseInputElement {
-  constructor(public host: ElementRef) {
-    super(host);
+  constructor() {
+    super();
   }
 }

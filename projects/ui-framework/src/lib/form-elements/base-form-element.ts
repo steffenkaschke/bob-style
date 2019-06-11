@@ -5,7 +5,6 @@ import {
   OnChanges,
   Output,
   EventEmitter,
-  ElementRef
 } from '@angular/core';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
 import { simpleUID, asArray } from '../services/utils/functional-utils';
@@ -15,32 +14,14 @@ import { TransmitOptions } from './form-elements.interface';
 
 export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {
-  protected constructor(public host: ElementRef = null) {}
-  @HostBinding('class')
-  get classes(): string {
-    return (
-      this.host.nativeElement.className +
-      ' ' +
-      (this.disabled ? 'disabled ' : '') +
-      (this.required ? 'required ' : '') +
-      (this.errorMessage && !this.disabled ? 'error ' : '') +
-      (this.warnMessage && !this.errorMessage && !this.disabled
-        ? 'warn '
-        : '') +
-      (this.label ? 'has-label ' : '') +
-      (this.hintMessage ||
-      (this.errorMessage && !this.disabled) ||
-      (this.warnMessage && !this.disabled)
-        ? 'has-message'
-        : '')
-    );
-  }
+  protected constructor() {}
+
   @Input() label: string;
   @Input() placeholder: string;
   @Input() value: any;
   @Input() hideLabelOnFocus = false;
-  @Input() disabled: boolean;
-  @Input() required: boolean;
+  @Input() disabled = false;
+  @Input() required = false;
   @Input() hintMessage: string;
   @Input() errorMessage: string;
   @Input() warnMessage: string;
@@ -60,6 +41,29 @@ export abstract class BaseFormElement
   };
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
+
+  @HostBinding('class.disabled') get isDisabled(): boolean {
+    return this.disabled;
+  }
+  @HostBinding('class.required') get isRequired(): boolean {
+    return this.required;
+  }
+  @HostBinding('class.error') get hasError(): boolean {
+    return this.errorMessage && !this.disabled;
+  }
+  @HostBinding('class.warn') get hasWarn(): boolean {
+    return this.warnMessage && !this.errorMessage && !this.disabled;
+  }
+  @HostBinding('class.has-label') get hasLabel(): boolean {
+    return !!this.label; // check for hideLabelOnFocus
+  }
+  @HostBinding('class.has-message') get hasMessage(): boolean {
+    return (
+      !!this.hintMessage ||
+      (this.errorMessage && !this.disabled) ||
+      (this.warnMessage && !this.disabled)
+    );
+  }
 
   protected onNgChanges(changes: SimpleChanges): void {}
 

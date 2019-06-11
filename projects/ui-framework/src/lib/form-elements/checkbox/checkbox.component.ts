@@ -33,8 +33,8 @@ import { FormEvents } from '../form-elements.enum';
   ]
 })
 export class CheckboxComponent extends BaseFormElement implements OnChanges {
-  constructor(public host: ElementRef) {
-    super(host);
+  constructor() {
+    super();
     this.inputTransformers = [
       value => {
         const truthy = ['true', 'on', '1', 1];

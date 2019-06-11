@@ -51,8 +51,8 @@ import { InputEventType } from '../form-elements.enum';
 })
 export class ChipInputComponent extends BaseFormElement
   implements OnChanges, OnInit {
-  constructor(public host: ElementRef) {
-    super(host);
+  constructor() {
+    super();
     this.inputTransformers = [
       value =>
         isArray(value) ? value : isString(value) ? stringListToArray(value) : []

@@ -70,21 +70,12 @@ quillLib.register(Italic);
 export class RichTextEditorComponent extends RTEformElement
   implements AfterViewInit, RteLinkBlot, RtePlaceholderBlot, RteKeybindings {
   constructor(
-    public host: ElementRef,
     private DOM: DOMhelpers,
     public rteUtils: RteUtilsService,
     changeDetector: ChangeDetectorRef,
     injector: Injector
   ) {
-    super(host, rteUtils, changeDetector, injector);
-  }
-
-  @HostBinding('class') get classes() {
-    return (
-      this.host.nativeElement.className +
-      ' ' +
-      (!this.type ? 'rte-primary' : 'rte-' + this.type)
-    );
+    super(rteUtils, changeDetector, injector);
   }
 
   @Input() public type: RTEType = RTEType.primary;
@@ -95,6 +86,16 @@ export class RichTextEditorComponent extends RTEformElement
     BlotType.align,
     BlotType.direction
   ];
+
+  @HostBinding('class.rte-primary') get isOfTypePrimary(): boolean {
+    return !this.type || this.type === RTEType.primary;
+  }
+  @HostBinding('class.rte-secondary') get isOfTypeSecondary(): boolean {
+    return this.type === RTEType.secondary;
+  }
+  @HostBinding('class.rte-tertiary') get isOfTypeTertiary(): boolean {
+    return this.type === RTEType.tertiary;
+  }
 
   @ViewChild('toolbar') private toolbar: ElementRef;
   @ViewChild('suffix') private suffix: ElementRef;

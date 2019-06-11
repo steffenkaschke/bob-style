@@ -6,7 +6,6 @@ import {
   Output,
   SimpleChanges,
   forwardRef,
-  ElementRef
 } from '@angular/core';
 import { SelectGroupOption } from '../lists/list.interface';
 import { InputTypes } from '../input/input.enum';
@@ -38,8 +37,8 @@ import { FormEvents } from '../form-elements.enum';
 })
 export class SplitInputSingleSelectComponent extends BaseFormElement
   implements OnChanges {
-  constructor(public host: ElementRef) {
-    super(host);
+  constructor() {
+    super();
     this.inputTransformers = [
       value => (value ? assign({}, this.baseValue, value) : this.baseValue)
     ];

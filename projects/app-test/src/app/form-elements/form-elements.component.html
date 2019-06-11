@@ -171,8 +171,10 @@
       &#x3C;/b-input&#x3E;
     </code></pre>
 
-     <b-input *ngIf="bInput_formControlEnabled"
-              #bInput
+
+     <b-input #bInput
+              class="bInput-component"
+              *ngIf="bInput_formControlEnabled"
               formControlName="bInput"
               [label]="bInput_label"
               [placeholder]="bInput_placeholder"
@@ -186,8 +188,9 @@
               (inputEvents)="onEvent('bInput',$event,'inputEvents')">
      </b-input>
 
-     <b-input *ngIf="!bInput_formControlEnabled"
-              #bInput
+     <b-input #bInput
+              class="bInput-component"
+              *ngIf="!bInput_formControlEnabled"
               [label]="bInput_label"
               [placeholder]="bInput_placeholder"
               [value]="bInput_directValueInput ? bInput_value : undefined"
@@ -417,6 +420,7 @@
     </code></pre>
 
      <b-textarea #bTextarea
+                 class="bTextarea-component"
                  *ngIf="bTextarea_formControlEnabled"
                  formControlName="bTextarea"
                  [label]="bTextarea_label"
@@ -432,6 +436,7 @@
      </b-textarea>
 
      <b-textarea #bTextarea
+                 class="bTextarea-component"
                  *ngIf="!bTextarea_formControlEnabled"
                  [label]="bTextarea_label"
                  [placeholder]="bTextarea_placeholder"
@@ -654,7 +659,7 @@
     </code></pre>
 
      <b-datepicker #bDatepicker
-                   class="datepicker-component"
+                   class="bDatepicker-component"
                    *ngIf="bDatepicker_formControlEnabled"
                    formControlName="bDatepicker"
                    [label]="bDatepicker_label"
@@ -670,6 +675,7 @@
      </b-datepicker>
 
      <b-datepicker #bDatepicker
+                   class="bDatepicker-component"
                    *ngIf="!bDatepicker_formControlEnabled"
                    [label]="bDatepicker_label"
                    [placeholder]="bDatepicker_placeholder"
@@ -900,6 +906,7 @@
     </code></pre>
 
      <b-chip-input #bChipinput
+                   class="bChipinput-component"
                    *ngIf="bChipinput_formControlEnabled"
                    formControlName="bChipinput"
                    [label]="bChipinput_label"
@@ -916,6 +923,7 @@
      </b-chip-input>
 
      <b-chip-input #bChipinput
+                   class="bChipinput-component"
                    *ngIf="!bChipinput_formControlEnabled"
                    [label]="bChipinput_label"
                    [placeholder]="bChipinput_placeholder"
@@ -1136,6 +1144,7 @@
     </code></pre>
 
      <b-social #bSocial
+               class="bSocial-component"
                *ngIf="bSocial_formControlEnabled"
                formControlName="bSocial"
                [type]="bSocial_type"
@@ -1151,6 +1160,7 @@
      </b-social>
 
      <b-social #bSocial
+               class="bSocial-component"
                *ngIf="!bSocial_formControlEnabled"
                [type]="bSocial_type"
                [label]="bSocial_label"
@@ -1385,6 +1395,7 @@
     </code></pre>
 
      <b-checkbox #bCheckbox
+                 class="bCheckbox-component"
                  *ngIf="bCheckbox_formControlEnabled"
                  formControlName="bCheckbox"
                  [label]="bCheckbox_label"
@@ -1400,6 +1411,7 @@
      </b-checkbox>
 
      <b-checkbox #bCheckbox
+                 class="bCheckbox-component"
                  *ngIf="!bCheckbox_formControlEnabled"
                  [label]="bCheckbox_label"
                  [placeholder]="bCheckbox_placeholder"
@@ -1621,6 +1633,7 @@
     </code></pre>
 
      <b-radio-button #bRadio
+                     class="bRadio-component"
                      *ngIf="bRadio_formControlEnabled"
                      formControlName="bRadio"
                      [label]="bRadio_label"
@@ -1636,6 +1649,7 @@
      </b-radio-button>
 
      <b-radio-button #bRadio
+                     class="bRadio-component"
                      *ngIf="!bRadio_formControlEnabled"
                      [label]="bRadio_label"
                      [value]="bRadio_directValueInput ? bRadio_value : undefined"
@@ -1860,8 +1874,9 @@
 
     </code></pre>
 
-     <b-single-select *ngIf="bSingleSelect_formControlEnabled"
-                      #bSingleSelect
+     <b-single-select #bSingleSelect
+                      class="bSingleSelect-component"
+                      *ngIf="bSingleSelect_formControlEnabled"
                       formControlName="bSingleSelect"
                       [label]="bSingleSelect_label"
                       [placeholder]="bSingleSelect_placeholder"
@@ -1876,8 +1891,9 @@
                       (selectChange)="onEvent('bSingleSelect',$event,'selectChange')">
      </b-single-select>
 
-     <b-single-select *ngIf="!bSingleSelect_formControlEnabled"
-                      #bSingleSelect
+     <b-single-select #bSingleSelect
+                      class="bSingleSelect-component"
+                      *ngIf="!bSingleSelect_formControlEnabled"
                       [label]="bSingleSelect_label"
                       [placeholder]="bSingleSelect_placeholder"
                       [options]="bSingleSelect_options"
@@ -2097,8 +2113,9 @@
 
     </code></pre>
 
-     <b-multi-select *ngIf="bMultiSelect_formControlEnabled"
-                     #bMultiSelect
+     <b-multi-select #bMultiSelect
+                     class="bMultiSelect-component"
+                     *ngIf="bMultiSelect_formControlEnabled"
                      formControlName="bMultiSelect"
                      [label]="bMultiSelect_label"
                      [placeholder]="bMultiSelect_placeholder"
@@ -2115,8 +2132,9 @@
                      (selectCancelled)="onEvent('bMultiSelect',$event,'selectCancelled')">
      </b-multi-select>
 
-     <b-multi-select *ngIf="!bMultiSelect_formControlEnabled"
-                     #bMultiSelect
+     <b-multi-select #bMultiSelect
+                     class="bMultiSelect-component"
+                     *ngIf="!bMultiSelect_formControlEnabled"
                      [label]="bMultiSelect_label"
                      [placeholder]="bMultiSelect_placeholder"
                      [options]="bMultiSelect_options"
@@ -2348,6 +2366,7 @@
     </code></pre>
 
      <b-split-input-single-select #bSplitInput
+                                  class="bSplitInput-component"
                                   *ngIf="bSplitInput_formControlEnabled"
                                   formControlName="bSplitInput"
                                   [label]="bSplitInput_label"
@@ -2363,6 +2382,7 @@
      </b-split-input-single-select>
 
      <b-split-input-single-select #bSplitInput
+                                  class="bSplitInput-component"
                                   *ngIf="!bSplitInput_formControlEnabled"
                                   [label]="bSplitInput_label"
                                   [placeholder]="bSplitInput_placeholder"
@@ -2574,8 +2594,9 @@
 
       </code></pre>
 
-     <b-rich-text-editor *ngIf="bRTE_formControlEnabled"
-                         #bRTE
+     <b-rich-text-editor #bRTE
+                         class="bRTE-component"
+                         *ngIf="bRTE_formControlEnabled"
                          formControlName="bRTE"
                          [type]="bRTE_type"
                          [label]="bRTE_label"
@@ -2593,8 +2614,9 @@
                          (changed)="onEvent('bRTE',$event,'changed')">
      </b-rich-text-editor>
 
-     <b-rich-text-editor *ngIf="!bRTE_formControlEnabled"
-                         #bRTE
+     <b-rich-text-editor #bRTE
+                         class="bRTE-component"
+                         *ngIf="!bRTE_formControlEnabled"
                          [type]="bRTE_type"
                          [label]="bRTE_label"
                          [value]="bRTE_directValueInput ? bRTE_value : undefined"

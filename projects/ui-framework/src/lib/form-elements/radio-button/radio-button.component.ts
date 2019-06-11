@@ -6,7 +6,6 @@ import {
   Output,
   SimpleChanges,
   OnChanges,
-  ElementRef
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
@@ -34,8 +33,8 @@ import { InputEvent } from '../input/input.interface';
   ]
 })
 export class RadioButtonComponent extends BaseFormElement implements OnChanges {
-  constructor(public host: ElementRef) {
-    super(host);
+  constructor() {
+    super();
     this.inputTransformers = [
       (value): string | number => {
         value = this.conformValueToIDtype(value);

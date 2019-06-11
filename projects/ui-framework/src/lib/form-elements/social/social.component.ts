@@ -4,7 +4,6 @@ import {
   Input,
   Output,
   forwardRef,
-  ElementRef
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { IconColor, IconSize } from '../../icons/icons.enum';
@@ -33,8 +32,8 @@ import { FormEvents, InputEventType } from '../form-elements.enum';
   ]
 })
 export class SocialComponent extends BaseFormElement {
-  constructor(public host: ElementRef) {
-    super(host);
+  constructor() {
+    super();
     this.inputTransformers = [
       value =>
         value ? (value.split('/')[1] ? value.split('/')[1] : value) : ''
