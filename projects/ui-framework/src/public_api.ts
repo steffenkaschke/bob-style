@@ -196,6 +196,10 @@ export {
 export { ChipInputModule } from './lib/form-elements/chip-input/chip-input.module';
 export { ChipInputComponent } from './lib/form-elements/chip-input/chip-input.component';
 export { ChipInputChange } from './lib/form-elements/chip-input/chip-input.interface';
+// Social Module
+export { SocialModule } from './lib/form-elements/social/social.module';
+export { Social } from './lib/form-elements/social/social.enum';
+
 
 /*
  * Navigation
@@ -346,6 +350,3 @@ export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/trunca
  */
 
 export { SLIDE_UP_DOWN } from './lib/style/animations';
-
-export { SocialModule} from './lib/form-elements/social/social.module';
-export { SocialType } from './lib/form-elements/social/social.interface';
