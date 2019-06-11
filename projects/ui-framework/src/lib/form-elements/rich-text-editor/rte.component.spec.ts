@@ -378,7 +378,7 @@ describe('RichTextEditorComponent', () => {
       });
       fixture.detectChanges();
 
-      expect(RTEqlEditorNativeElement.textContent.trim()).toEqual('test text');
+      expect(RTEqlEditorNativeElement.innerText.trim()).toEqual('test text');
     });
   });
 
