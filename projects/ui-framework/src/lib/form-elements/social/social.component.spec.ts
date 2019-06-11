@@ -1,12 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 import { SocialComponent } from './social.component';
 import { InputModule } from '../../form-elements/input/input.module';
 import { IconsModule } from '../../icons/icons.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { Social } from './social.enum';
-import { Icons } from '../../icons/icons.enum';
 import { SocialTypes } from './social.const';
 
 describe('SocialComponent', () => {
@@ -26,13 +24,13 @@ describe('SocialComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SocialComponent],
-      imports: [NoopAnimationsModule, FormsModule, InputModule, IconsModule]
+      imports: [NoopAnimationsModule, InputModule, IconsModule]
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(SocialComponent);
         component = fixture.componentInstance;
-        spyOn(component.socialInputChange, 'emit');
+        spyOn(component.changed, 'emit');
         component.type = Social.facebook;
         fixture.detectChanges();
       });
@@ -53,12 +51,12 @@ describe('SocialComponent', () => {
   });
 
   describe('onInputEvents', () => {
-    it('should invoke socialInputChange.emit with social value', () => {
+    it('should invoke changed.emit with social value', () => {
       const inputElement = fixture.debugElement.query(By.css('input'));
       inputElement.nativeElement.value = 'AlanTulin';
       inputElement.nativeElement.dispatchEvent(new Event('input'));
       fixture.detectChanges();
-      expect(component.socialInputChange.emit).toHaveBeenCalledWith(
+      expect(component.changed.emit).toHaveBeenCalledWith(
         'www.facebook.com/AlanTulin'
       );
     });

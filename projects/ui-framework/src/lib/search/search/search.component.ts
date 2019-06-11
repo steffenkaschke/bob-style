@@ -3,7 +3,7 @@ import {
   EventEmitter,
   Output,
   Input,
-  ViewChild
+  SimpleChanges
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { InputTypes } from '../../form-elements/input/input.enum';
@@ -34,12 +34,18 @@ export class SearchComponent {
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
 
-  onFocus() {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.value) {
+      this.value = changes.value.currentValue;
+    }
+  }
+
+  onFocus(): void {
     this.inputFocused = true;
     this.searchIconColor = IconColor.dark;
   }
 
-  onBlur() {
+  onBlur(): void {
     this.inputFocused = false;
     this.searchIconColor = IconColor.normal;
   }
@@ -49,7 +55,7 @@ export class SearchComponent {
     this.searchChange.emit(this.value);
   }
 
-  onResetClick() {
+  onResetClick(): void {
     this.value = '';
     this.searchChange.emit(this.value);
   }

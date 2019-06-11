@@ -1,6 +1,6 @@
-import {DatepickerComponent} from './datepicker.component';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { DatepickerComponent } from './datepicker.component';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('DatePickerModule', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
@@ -17,7 +17,7 @@ describe('DatePickerModule', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DatepickerComponent);
     component = fixture.componentInstance;
-    spyOn(component.dateChange, 'emit');
+    spyOn(component.changed, 'emit');
     fixture.detectChanges();
   });
   describe('dateClass', () => {

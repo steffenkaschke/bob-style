@@ -1,12 +1,17 @@
-import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatInputModule } from '@angular/material';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  inject,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { InputModule } from '../../input/input.module';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IconService } from '../../../icons/icon.service';
@@ -19,6 +24,7 @@ import { cloneDeep } from 'lodash';
 import { ListChange } from '../list-change/list-change';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import { TruncateTooltipModule } from '../../../services/truncate-tooltip/truncate-tooltip.module';
 
 describe('MultiSelectComponent', () => {
   let component;
@@ -36,41 +42,34 @@ describe('MultiSelectComponent', () => {
         groupName: 'Basic Info',
         options: [
           { value: 'Basic Info 1', id: 1, selected: true },
-          { value: 'Basic Info 2', id: 2, selected: false },
+          { value: 'Basic Info 2', id: 2, selected: false }
         ]
       },
       {
         groupName: 'Personal',
         options: [
           { value: 'Personal 1', id: 11, selected: true },
-          { value: 'Personal 2', id: 12, selected: false },
+          { value: 'Personal 2', id: 12, selected: false }
         ]
       }
     ];
 
     TestBed.configureTestingModule({
-      declarations: [
-        MultiSelectComponent,
-      ],
+      declarations: [MultiSelectComponent],
       providers: [
         PanelPositionService,
         { provide: IconService, useValue: spyIconService },
-        ListModelService,
+        ListModelService
       ],
       imports: [
         MultiListModule,
         OverlayModule,
         NoopAnimationsModule,
         CommonModule,
-        FormsModule,
-        InputModule,
-        MatFormFieldModule,
-        MatInputModule,
         ButtonsModule,
+        TruncateTooltipModule
       ],
-      schemas: [
-        NO_ERRORS_SCHEMA,
-      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents()
       .then(() => {
@@ -84,11 +83,14 @@ describe('MultiSelectComponent', () => {
         fixture.autoDetectChanges();
       });
 
-    inject([OverlayContainer, Platform], (oc: OverlayContainer, p: Platform) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-      platform = p;
-    })();
+    inject(
+      [OverlayContainer, Platform],
+      (oc: OverlayContainer, p: Platform) => {
+        overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
+        platform = p;
+      }
+    )();
   }));
 
   describe('OnInit', () => {
@@ -111,8 +113,8 @@ describe('MultiSelectComponent', () => {
           previousValue: undefined,
           currentValue: newOptionsMock,
           firstChange: false,
-          isFirstChange: () => false,
-        },
+          isFirstChange: () => false
+        }
       });
     });
     it('should update selectedValuesMap', () => {
@@ -128,9 +130,13 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
+      (overlayContainerElement.querySelectorAll(
+        'b-multi-list .option'
+      )[3] as HTMLElement).click();
       expect(component.selectedValuesMap).toEqual([1, 11, 12]);
-      expect(component.triggerValue).toEqual('Basic Info 1, Personal 1, Personal 2');
+      expect(component.triggerValue).toEqual(
+        'Basic Info 1, Personal 1, Personal 2'
+      );
       flush();
     }));
     it('should emit onSelectModified with listChange', fakeAsync(() => {
@@ -139,9 +145,13 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
+      (overlayContainerElement.querySelectorAll(
+        'b-multi-list .option'
+      )[3] as HTMLElement).click();
       const expectedListChange = new ListChange(expectedOptionsMock);
-      expect(component.selectModified.emit).toHaveBeenCalledWith(expectedListChange);
+      expect(component.selectModified.emit).toHaveBeenCalledWith(
+        expectedListChange
+      );
       flush();
     }));
   });
@@ -152,10 +162,13 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      const applyButton = overlayContainerElement
-        .querySelectorAll('b-list-footer .cancel-apply b-button')[1] as HTMLElement;
+      const applyButton = overlayContainerElement.querySelector(
+        'b-list-footer .apply-button'
+      ) as HTMLElement;
       applyButton.click();
-      expect(component.selectChange.emit).toHaveBeenCalledWith(expectedListChange);
+      expect(component.selectChange.emit).toHaveBeenCalledWith(
+        expectedListChange
+      );
       expect(component.propagateChange).toHaveBeenCalledWith([1, 11]);
       flush();
     }));
@@ -164,8 +177,9 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      const applyButton = overlayContainerElement
-        .querySelectorAll('b-list-footer .cancel-apply b-button')[1] as HTMLElement;
+      const applyButton = overlayContainerElement.querySelector(
+        'b-list-footer .apply-button'
+      ) as HTMLElement;
       applyButton.click();
       expect(component.destroyPanel).toHaveBeenCalled();
       flush();
@@ -178,8 +192,9 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      const cancelButton = overlayContainerElement
-        .querySelectorAll('b-list-footer .cancel-apply b-button')[0] as HTMLElement;
+      const cancelButton = overlayContainerElement.querySelector(
+        'b-list-footer .cancel-button'
+      ) as HTMLElement;
       cancelButton.click();
       expect(component.destroyPanel).toHaveBeenCalled();
       flush();
@@ -189,11 +204,16 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
-      const cancelButton = overlayContainerElement
-        .querySelectorAll('b-list-footer .cancel-apply b-button')[0] as HTMLElement;
+      (overlayContainerElement.querySelectorAll(
+        'b-multi-list .option'
+      )[3] as HTMLElement).click();
+      const cancelButton = overlayContainerElement.querySelector(
+        'b-list-footer .cancel-button'
+      ) as HTMLElement;
       cancelButton.click();
-      expect(component.selectCancelled.emit).toHaveBeenCalledWith(expectedListChange);
+      expect(component.selectCancelled.emit).toHaveBeenCalledWith(
+        expectedListChange
+      );
       flush();
     }));
   });
@@ -209,13 +229,17 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
+      (overlayContainerElement.querySelectorAll(
+        'b-multi-list .option'
+      )[3] as HTMLElement).click();
       fixture.autoDetectChanges();
-      const clearButton = overlayContainerElement
-        .querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
+      const clearButton = overlayContainerElement.querySelector(
+        'b-list-footer .clear-button'
+      ) as HTMLElement;
       clearButton.click();
-      const applyButton = overlayContainerElement
-        .querySelectorAll('b-list-footer .cancel-apply b-button')[1] as HTMLElement;
+      const applyButton = overlayContainerElement.querySelector(
+        'b-list-footer .apply-button'
+      ) as HTMLElement;
       applyButton.click();
       fixture.autoDetectChanges();
       expect(component.selectedValuesMap).toEqual([]);
@@ -228,16 +252,22 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
+      (overlayContainerElement.querySelectorAll(
+        'b-multi-list .option'
+      )[3] as HTMLElement).click();
       fixture.autoDetectChanges();
-      const clearButton = overlayContainerElement
-        .querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
+      const clearButton = overlayContainerElement.querySelector(
+        'b-list-footer .clear-button'
+      ) as HTMLElement;
       clearButton.click();
-      const applyButton = overlayContainerElement
-        .querySelectorAll('b-list-footer .cancel-apply b-button')[1] as HTMLElement;
+      const applyButton = overlayContainerElement.querySelector(
+        'b-list-footer .apply-button'
+      ) as HTMLElement;
       applyButton.click();
       fixture.autoDetectChanges();
-      expect(component.selectChange.emit).toHaveBeenCalledWith(expectedListChange);
+      expect(component.selectChange.emit).toHaveBeenCalledWith(
+        expectedListChange
+      );
       expect(component.propagateChange).toHaveBeenCalledWith([]);
       flush();
     }));
@@ -248,13 +278,17 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
+      (overlayContainerElement.querySelectorAll(
+        'b-multi-list .option'
+      )[3] as HTMLElement).click();
       fixture.autoDetectChanges();
-      const clearButton = overlayContainerElement
-        .querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
+      const clearButton = overlayContainerElement.querySelector(
+        'b-list-footer .clear-button'
+      ) as HTMLElement;
       clearButton.click();
-      const cancelButton = overlayContainerElement
-        .querySelectorAll('b-list-footer .cancel-apply b-button')[0] as HTMLElement;
+      const cancelButton = overlayContainerElement.querySelector(
+        'b-list-footer .cancel-button'
+      ) as HTMLElement;
       cancelButton.click();
       fixture.autoDetectChanges();
       expect(component.selectedValuesMap).toEqual([1, 11]);
@@ -267,16 +301,22 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
+      (overlayContainerElement.querySelectorAll(
+        'b-multi-list .option'
+      )[3] as HTMLElement).click();
       fixture.autoDetectChanges();
-      const clearButton = overlayContainerElement
-        .querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
+      const clearButton = overlayContainerElement.querySelector(
+        'b-list-footer .clear-button'
+      ) as HTMLElement;
       clearButton.click();
-      const cancelButton = overlayContainerElement
-        .querySelectorAll('b-list-footer .cancel-apply b-button')[0] as HTMLElement;
+      const cancelButton = overlayContainerElement.querySelector(
+        'b-list-footer .cancel-button'
+      ) as HTMLElement;
       cancelButton.click();
       fixture.autoDetectChanges();
-      expect(component.selectCancelled.emit).toHaveBeenCalledWith(expectedListChange);
+      expect(component.selectCancelled.emit).toHaveBeenCalledWith(
+        expectedListChange
+      );
       flush();
     }));
   });
@@ -309,14 +349,18 @@ describe('MultiSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelectorAll('b-multi-list .option')[3] as HTMLElement).click();
+      (overlayContainerElement.querySelectorAll(
+        'b-multi-list .option'
+      )[3] as HTMLElement).click();
       fixture.autoDetectChanges();
       tick(0);
-      const tooltipEl = fixture.debugElement.query(By.css('b-input'));
-
+      const tooltipEl = fixture.debugElement.query(
+        By.css('.btt.tooltip-enabled')
+      );
       expect(tooltipEl).not.toBe(null);
-      expect(tooltipEl.properties.matTooltip).toEqual('Basic Info 1, Personal 1, Personal 2');
-      expect(tooltipEl.nativeElement.innerText).toContain('(3)');
+      expect(tooltipEl.nativeElement.innerText).toEqual(
+        'Basic Info 1, Personal 1, Personal 2'
+      );
       flush();
     }));
   });

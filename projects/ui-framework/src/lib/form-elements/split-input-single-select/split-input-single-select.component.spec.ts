@@ -47,7 +47,7 @@ describe('SplitInputSingleSelectComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(SplitInputSingleSelectComponent);
         component = fixture.componentInstance;
-        spyOn(component.elementChange, 'emit');
+        spyOn(component.changed, 'emit');
         fixture.detectChanges();
       });
   }));
@@ -118,7 +118,7 @@ describe('SplitInputSingleSelectComponent', () => {
         value: 10
       });
       fixture.detectChanges();
-      expect(component.elementChange.emit).not.toHaveBeenCalled();
+      expect(component.changed.emit).not.toHaveBeenCalled();
     });
     it('should update value and emit event with updated value', () => {
       const inputEl = fixture.debugElement.query(By.css('b-input'));
@@ -127,7 +127,7 @@ describe('SplitInputSingleSelectComponent', () => {
         value: 500
       });
       fixture.detectChanges();
-      expect(component.elementChange.emit).toHaveBeenCalledWith({
+      expect(component.changed.emit).toHaveBeenCalledWith({
         inputValue: 500,
         selectValue: 'USD'
       });
@@ -148,7 +148,7 @@ describe('SplitInputSingleSelectComponent', () => {
       const listChange = new ListChange(listElOptions);
       selectEl.context.selectChange.emit(listChange);
       fixture.detectChanges();
-      expect(component.elementChange.emit).toHaveBeenCalledWith({
+      expect(component.changed.emit).toHaveBeenCalledWith({
         inputValue: 200,
         selectValue: 'GBP'
       });
