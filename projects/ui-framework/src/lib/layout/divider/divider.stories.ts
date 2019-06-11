@@ -1,11 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  text,
-  select,
-  boolean,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
+import { text, withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DividerModule } from './divider.module';
@@ -16,20 +10,25 @@ const inputStories = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
-const template = `
-  <b-divider></b-divider>
+const template1 = `
+  <b-divider [text]="text"></b-divider>
 `;
 
 const template2 = `
-  <hr b-divider>
+  <b-divider></b-divider>
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Divider'">
-  <div style="padding: 30px;">
-    ${template}
-    <b-caption>Simple Divider line</b-caption>
-  </div>
+
+  <div style="margin: 5px auto;"><b-caption>Simple Divider line:</b-caption></div>
+  ${ template2 }
+
+  <br /><br /><br />
+
+  <div style="margin: 5px auto;"><b-caption>Simple Text Divider:</b-caption></div>
+  ${ template1 }
+
 </b-story-book-layout>
 `;
 
@@ -39,11 +38,12 @@ const note = `
   *DividerModule*
 
   #### Properties
-  *None*
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  text | string | text to be displayed in divider | null
 
   ~~~
-  ${template}
-  ${template2}
+  ${ template1 }
   ~~~
 `;
 
@@ -52,7 +52,9 @@ inputStories.add(
   () => {
     return {
       template: storyTemplate,
-      props: {},
+      props: {
+        text: text('text', 'Some text'),
+      },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,

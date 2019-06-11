@@ -87,7 +87,7 @@ describe('AutoCompletePanelComponent', () => {
   describe('ngOnInit', () => {
     it('should listen to Keys.arrowdown and update focus option to second option', () => {
       document.dispatchEvent(
-        new KeyboardEvent('keydown', { code: Keys.arrowdown })
+        new KeyboardEvent('keydown', { key: Keys.arrowdown })
       );
       fixture.autoDetectChanges();
       const option = fixture.debugElement.queryAll(By.css('.option-select'))[1];
@@ -95,7 +95,7 @@ describe('AutoCompletePanelComponent', () => {
     });
     it('should listen to Keys.arrowup and update focus option to second option', () => {
       document.dispatchEvent(
-        new KeyboardEvent('keydown', { code: Keys.arrowup })
+        new KeyboardEvent('keydown', { key: Keys.arrowup })
       );
       fixture.autoDetectChanges();
       const option = fixture.debugElement.queryAll(By.css('.option-select'))[
@@ -105,16 +105,14 @@ describe('AutoCompletePanelComponent', () => {
     });
     it('should listen to Keys.enter and emit option click', () => {
       document.dispatchEvent(
-        new KeyboardEvent('keydown', { code: Keys.arrowdown })
+        new KeyboardEvent('keydown', { key: Keys.arrowdown })
       );
-      document.dispatchEvent(
-        new KeyboardEvent('keydown', { code: Keys.enter })
-      );
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.enter }));
       expect(component.optionSelect.emit).toHaveBeenCalledWith(optionsMock[1]);
     });
     it('should listen to escape and emit escape event', () => {
       document.dispatchEvent(
-        new KeyboardEvent('keydown', { code: Keys.escape })
+        new KeyboardEvent('keydown', { key: Keys.escape })
       );
       expect(component.escapeClick.emit).toHaveBeenCalled();
     });

@@ -346,3 +346,6 @@ export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/trunca
  */
 
 export { SLIDE_UP_DOWN } from './lib/style/animations';
+
+export { SocialModule} from './lib/form-elements/social/social.module';
+export { SocialType } from './lib/form-elements/social/social.interface';
