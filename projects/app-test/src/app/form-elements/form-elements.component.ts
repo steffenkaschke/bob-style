@@ -13,8 +13,11 @@ import { chipOptionsMock } from '../../../../ui-framework/src/lib/form-elements/
 import {
   isString,
   isArray,
-  countChildren
+  countChildren,
+  flatten
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
+import { BlotType } from '../../../../ui-framework/src/lib/form-elements/rich-text-editor/rte-core/rte.enum';
+import { AvatarComponent } from '../../../../ui-framework/src/lib/buttons-indicators/avatar/avatar.component';
 
 @Component({
   selector: 'app-form-elements-test',
@@ -32,8 +35,11 @@ export class FormElementsTestComponent
     'bChipinput',
     'bSocial',
     'bCheckbox',
-    'bRadio'
-    // 'bSplitInput'
+    'bRadio',
+    'bSingleSelect',
+    'bMultiSelect',
+    'bSplitInput',
+    'bRTE'
   ];
 
   global_visibleComponents = this.allFormElements.reduce((acc, comp) => {
@@ -93,6 +99,7 @@ export class FormElementsTestComponent
   bInput_maxChars = this.global_maxChars;
   bInput_formSubmitted = false;
   bInput_nodeCount = 0;
+  bInput_lastEventName;
 
   bInput_Form = new FormGroup({
     bInput: new FormControl(this.globalFormControlStartValue, {
@@ -127,6 +134,7 @@ export class FormElementsTestComponent
   bTextarea_maxChars = this.global_maxChars;
   bTextarea_formSubmitted = false;
   bTextarea_nodeCount = 0;
+  bTextarea_lastEventName;
 
   bTextarea_Form = new FormGroup({
     bTextarea: new FormControl(this.globalFormControlStartValue, {
@@ -161,6 +169,7 @@ export class FormElementsTestComponent
   bDatepicker_setInputProgrammatically = this.global_setInputProgrammatically;
   bDatepicker_formSubmitted = false;
   bDatepicker_nodeCount = 0;
+  bDatepicker_lastEventName;
 
   bDatepicker_Form = new FormGroup({
     bDatepicker: new FormControl(this.globalFormControlStartValue, {
@@ -196,6 +205,7 @@ export class FormElementsTestComponent
   bChipinput_setInputProgrammatically = this.global_setInputProgrammatically;
   bChipinput_formSubmitted = false;
   bChipinput_nodeCount = 0;
+  bChipinput_lastEventName;
 
   bChipinput_Form = new FormGroup({
     bChipinput: new FormControl(this.globalFormControlStartValue, {
@@ -230,6 +240,7 @@ export class FormElementsTestComponent
   bSocial_setInputProgrammatically = this.global_setInputProgrammatically;
   bSocial_formSubmitted = false;
   bSocial_nodeCount = 0;
+  bSocial_lastEventName;
 
   bSocial_Form = new FormGroup({
     bSocial: new FormControl(this.globalFormControlStartValue, {
@@ -264,6 +275,7 @@ export class FormElementsTestComponent
   bCheckbox_setInputProgrammatically = this.global_setInputProgrammatically;
   bCheckbox_formSubmitted = false;
   bCheckbox_nodeCount = 0;
+  bCheckbox_lastEventName;
 
   bCheckbox_Form = new FormGroup({
     bCheckbox: new FormControl(this.globalFormControlStartValue, {
@@ -297,6 +309,7 @@ export class FormElementsTestComponent
   bRadio_setInputProgrammatically = this.global_setInputProgrammatically;
   bRadio_formSubmitted = false;
   bRadio_nodeCount = 0;
+  bRadio_lastEventName;
 
   bRadio_Form = new FormGroup({
     bRadio: new FormControl(this.globalFormControlStartValue, {
@@ -304,6 +317,131 @@ export class FormElementsTestComponent
     })
   });
   bRadio = this.bRadio_Form.get('bRadio');
+
+  ///////////////////////////////////
+
+  groupNum = 6;
+  optionsNum = 3;
+
+  bSingleSelect_optionsMock = Array.from(Array(this.groupNum), (_, i) => {
+    return {
+      groupName: `Personal G${i}`,
+      options: Array.from(Array(this.optionsNum), (_, k) => {
+        return {
+          value:
+            k % 2 === 0
+              ? `Personal G${i}_E${k} and some other very long text and some more words to have ellipsis and tooltip`
+              : `Personal G${i}_E${k}`,
+          id: i * this.optionsNum + k,
+          selected: false
+        };
+      })
+    };
+  });
+
+  @ViewChild('bSingleSelect') private bSingleSelect_component;
+  @ViewChild('bSingleSelect', { read: ElementRef })
+  private bSingleSelect_element: ElementRef;
+  bSingleSelect_SubscrValue;
+  bSingleSelect_EventValue;
+  bSingleSelect_SubscrCounter = 0;
+  bSingleSelect_EventCounter = 0;
+
+  bSingleSelect_label = 'Input label';
+  bSingleSelect_placeholder = 'Input placeholder';
+  bSingleSelect_value = 'Input value';
+
+  bSingleSelect_options = this.bSingleSelect_optionsMock;
+  bSingleSelect_showSingleGroupHeader = false;
+
+  bSingleSelect_disabled = this.global_disabled;
+  bSingleSelect_required = this.global_required;
+  bSingleSelect_hint = 'Input hint text';
+  bSingleSelect_warn = this.global_warn ? this.global_warn_value : '';
+  bSingleSelect_error = this.global_error ? this.global_error_value : '';
+  bSingleSelect_setValEmit = this.global_setValEmit;
+  bSingleSelect_updateOn_mode = 'change';
+  bSingleSelect_subscribtion;
+  bSingleSelect_formControlEnabled = this.global_formControlEnabled;
+  bSingleSelect_directValueInput = this.global_directValueInput;
+  bSingleSelect_setInputProgrammatically = this.global_setInputProgrammatically;
+  bSingleSelect_formSubmitted = false;
+  bSingleSelect_nodeCount = 0;
+  bSingleSelect_lastEventName;
+  bSingleSelect_numberOfCustEvents = 1;
+
+  bSingleSelect_Form = new FormGroup({
+    bSingleSelect: new FormControl(this.globalFormControlStartValue, {
+      updateOn: this.bSingleSelect_updateOn_mode as any
+    })
+  });
+  bSingleSelect = this.bSingleSelect_Form.get('bSingleSelect');
+
+  ///////////////////////////////////
+
+  bMultiSelect_groupNum = 3;
+  bMultiSelect_optionsNum = 4;
+
+  bMultiSelect_optionsMock = Array.from(
+    Array(this.bMultiSelect_groupNum),
+    (_, i) => {
+      return {
+        groupName: `Basic Info G${i} - header`,
+        options: Array.from(Array(this.bMultiSelect_optionsNum), (_, k) => {
+          return {
+            value: `Basic Info G${i}_E${k} - option`,
+            id: i * this.bMultiSelect_groupNum + k,
+            selected: false,
+            prefixComponent: {
+              component: AvatarComponent,
+              attributes: {
+                imageSource:
+                  'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
+              }
+            }
+          };
+        })
+      };
+    }
+  );
+
+  @ViewChild('bMultiSelect') private bMultiSelect_component;
+  @ViewChild('bMultiSelect', { read: ElementRef })
+  private bMultiSelect_element: ElementRef;
+  bMultiSelect_SubscrValue;
+  bMultiSelect_EventValue;
+  bMultiSelect_SubscrCounter = 0;
+  bMultiSelect_EventCounter = 0;
+
+  bMultiSelect_label = 'Input label';
+  bMultiSelect_placeholder = 'Input placeholder';
+
+  bMultiSelect_value = 'Input value';
+  bMultiSelect_options = this.bMultiSelect_optionsMock;
+  bMultiSelect_showSingleGroupHeader = false;
+
+  bMultiSelect_disabled = this.global_disabled;
+  bMultiSelect_required = this.global_required;
+  bMultiSelect_hint = 'Input hint text';
+  bMultiSelect_warn = this.global_warn ? this.global_warn_value : '';
+  bMultiSelect_error = this.global_error ? this.global_error_value : '';
+  bMultiSelect_setValEmit = this.global_setValEmit;
+  bMultiSelect_updateOn_mode = 'change';
+  bMultiSelect_subscribtion;
+  bMultiSelect_formControlEnabled = this.global_formControlEnabled;
+  bMultiSelect_directValueInput = this.global_directValueInput;
+  bMultiSelect_setInputProgrammatically = this.global_setInputProgrammatically;
+  bMultiSelect_formSubmitted = false;
+  bMultiSelect_nodeCount = 0;
+  bMultiSelect_lastEventName;
+  bMultiSelect_numberOfCustEvents = 1;
+
+  bMultiSelect_Form = new FormGroup({
+    bMultiSelect: new FormControl(this.globalFormControlStartValue, {
+      updateOn: this.bMultiSelect_updateOn_mode as any
+    })
+  });
+  bMultiSelect = this.bMultiSelect_Form.get('bMultiSelect');
 
   ///////////////////////////////////
 
@@ -362,7 +500,7 @@ export class FormElementsTestComponent
     { value: 'ZAR', serverId: null }
   ];
 
-  optionsMock = Array.from(Array(1), (_, i) => {
+  bSplitInput_optionsMock = Array.from(Array(1), (_, i) => {
     return {
       groupName: 'all currencies',
       options: this.currencies.map(currency => ({
@@ -386,7 +524,7 @@ export class FormElementsTestComponent
     inputValue: 100,
     selectValue: 'AED'
   };
-  bSplitInput_selectOptions = this.optionsMock;
+  bSplitInput_selectOptions = this.bSplitInput_optionsMock;
   bSplitInput_disabled = this.global_disabled;
   bSplitInput_required = this.global_required;
   bSplitInput_hint = 'Input hint text';
@@ -400,6 +538,7 @@ export class FormElementsTestComponent
   bSplitInput_setInputProgrammatically = this.global_setInputProgrammatically;
   bSplitInput_formSubmitted = false;
   bSplitInput_nodeCount = 0;
+  bSplitInput_lastEventName;
 
   bSplitInput_Form = new FormGroup({
     bSplitInput: new FormControl(this.globalFormControlStartValue, {
@@ -407,6 +546,76 @@ export class FormElementsTestComponent
     })
   });
   bSplitInput = this.bSplitInput_Form.get('bSplitInput');
+
+  ///////////////////////////////////
+
+  RTEvalueMock = `<div> <span style="color: red;">Hello</span> <a href="http://www.google.com">World</a>!</div>
+<div>Some <em>initial</em> <strong>bold</strong> text</div> {{/work/title}}`;
+
+  placeholderMock = [
+    {
+      groupName: 'Basic Info - header',
+      options: [
+        {
+          displayName: 'First name',
+          id: '/root/firstName',
+          value: 'First name'
+        },
+        {
+          displayName: 'title',
+          id: '/work/title',
+          category: 'Work',
+          value: 'title'
+        }
+      ]
+    }
+  ];
+
+  disableControlsDef = [BlotType.align, BlotType.direction];
+  controlsDef = Object.values(BlotType).filter(
+    cntrl => !this.disableControlsDef.includes(cntrl)
+  );
+
+  @ViewChild('bRTE') private bRTE_component;
+  @ViewChild('bRTE', { read: ElementRef }) private bRTE_element: ElementRef;
+  bRTE_SubscrValue;
+  bRTE_EventValue;
+  bRTE_SubscrCounter = 0;
+  bRTE_EventCounter = 0;
+
+  bRTE_type = 'primary';
+  bRTE_value = this.RTEvalueMock;
+
+  RTE_controls = this.controlsDef;
+  RTE_disableControls = this.disableControlsDef;
+  bRTE_placeholderList = this.placeholderMock;
+
+  bRTE_label = 'Rich text label';
+  bRTE_maxChars = 100;
+  bRTE_minChars = 20;
+
+  bRTE_disabled = this.global_disabled;
+  bRTE_required = this.global_required;
+  bRTE_hint = 'Rich text hint text';
+  bRTE_warn = this.global_warn ? this.global_warn_value : '';
+  bRTE_error = this.global_error ? this.global_error_value : '';
+
+  bRTE_setValEmit = this.global_setValEmit;
+  bRTE_updateOn_mode = 'change';
+  bRTE_subscribtion;
+  bRTE_formControlEnabled = this.global_formControlEnabled;
+  bRTE_directValueInput = this.global_directValueInput;
+  bRTE_setInputProgrammatically = this.global_setInputProgrammatically;
+  bRTE_formSubmitted = false;
+  bRTE_nodeCount = 0;
+  bRTE_lastEventName;
+
+  bRTE_Form = new FormGroup({
+    bRTE: new FormControl(this.globalFormControlStartValue, {
+      updateOn: this.bRTE_updateOn_mode as any
+    })
+  });
+  bRTE = this.bRTE_Form.get('bRTE');
 
   ///////////////////////////////////
 
@@ -431,26 +640,40 @@ export class FormElementsTestComponent
     }
   }
 
-  onEvent(name, $event) {
+  onEvent(name, $event, eventName, flat = false) {
     if (!isString($event)) {
       $event = JSON.stringify($event);
     }
 
-    const value =
-      this.global_numberOfCustEvents === 1
+    const max =
+      this[name + '_numberOfCustEvents'] || this.global_numberOfCustEvents;
+
+    let value =
+      max === 1
         ? $event
         : (this[name + '_EventValue']
-            ? this[name + '_EventValue']
-                .split('\n')
-                .slice((this.global_numberOfCustEvents - 1) * -1) + ' \n '
+            ? this[name + '_EventValue'].split('\n').slice((max - 1) * -1) +
+              ' \n '
             : '') + $event;
+
+    if (max === 1 && flat) {
+      value = flatten(value as any);
+    }
 
     this[name + '_EventValue'] = value;
     this[name + '_EventCounter']++;
+    this[name + '_lastEventName'] = eventName;
 
     if (this.global_consoleLog) {
       console.log('------------------------');
-      console.log(name + ' custom event ' + this[name + '_EventCounter'] + ':');
+      console.log(
+        name +
+          ' custom event (' +
+          eventName +
+          ') ' +
+          this[name + '_EventCounter'] +
+          ':'
+      );
       console.log($event);
     }
   }
@@ -540,6 +763,10 @@ export class FormElementsTestComponent
     return this[prop];
   }
 
+  resetValue(name, vari) {
+    this[name + '_value'] = this[vari];
+  }
+
   onSubmit(event, name) {
     if (!this[name + '_Form'].valid) {
       event.preventDefault();
@@ -591,6 +818,10 @@ export class FormElementsTestComponent
     console.log(this[name + '_component']);
   }
 
+  logFlattenedObject(prop) {
+    console.log(flatten(this[prop]));
+  }
+
   type(smth) {
     let thisType = String(typeof smth);
 
@@ -603,20 +834,29 @@ export class FormElementsTestComponent
     return thisType;
   }
 
+  countKids(name) {
+    return (this[name + '_nodeCount'] = countChildren(
+      null,
+      this[name + '_element'] && this[name + '_element'].nativeElement
+    ));
+  }
+
   ///////////////////////////////////
 
   ngOnInit() {
     this.subscribeToAll(this.allFormElements);
+
+    this.global_visibleComponents['bSocial'] = false;
+    this.global_visibleComponents['bSplitInput'] = false;
+
+    this.bSingleSelect_options[0].options[1].selected = true;
+    this.bMultiSelect_optionsMock[0].options[1].selected = true;
+    this.bMultiSelect_optionsMock[1].options[2].selected = true;
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.allFormElements.forEach(name => {
-        this[name + '_nodeCount'] = countChildren(
-          null,
-          this[name + '_element'].nativeElement
-        );
-      });
+      this.allFormElements.forEach(name => this.countKids(name));
     }, 0);
   }
 

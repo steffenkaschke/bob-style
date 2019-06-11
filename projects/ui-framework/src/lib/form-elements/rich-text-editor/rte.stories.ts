@@ -34,6 +34,7 @@ const template = `
       [value]="value"
       [controls]="controls"
       [disableControls]="disableControls"
+      [placeholderList]="placeholderList"
       [minChars]="minChars"
       [maxChars]="maxChars"
       [minHeight]="minHeight"
@@ -44,7 +45,6 @@ const template = `
       [errorMessage]="errorMessage"
       (changed)="change($event)"
       (focused)="focus($event)"
-      [placeholderList]="placeholderList"
       (blurred)="blur($event)">
     Some custom toolbar thing
   </b-rich-text-editor>

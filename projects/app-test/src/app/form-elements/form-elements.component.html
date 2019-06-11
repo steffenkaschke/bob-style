@@ -124,7 +124,7 @@
 
    <p class="more-margin-top">
      <label class="side-by-side">
-       Show custom events
+       <span>Show custom events</span>
        <input type="number"
               class="simple-input small"
               [(ngModel)]="global_numberOfCustEvents">
@@ -151,7 +151,7 @@
      </h3>
 
      <button type="button"
-             class="log-component"
+             class="log-stuff"
              (click)="logComponent('bInput')">Log component</button>
 
      <button class="show-code"
@@ -183,7 +183,7 @@
               [hintMessage]="bInput_hint"
               [warnMessage]="bInput_warn"
               [errorMessage]="bInput_error"
-              (inputEvents)="onEvent('bInput',$event)">
+              (inputEvents)="onEvent('bInput',$event,'inputEvents')">
      </b-input>
 
      <b-input *ngIf="!bInput_formControlEnabled"
@@ -197,7 +197,7 @@
               [hintMessage]="bInput_hint"
               [warnMessage]="bInput_warn"
               [errorMessage]="bInput_error"
-              (inputEvents)="onEvent('bInput',$event)">
+              (inputEvents)="onEvent('bInput',$event,'inputEvents')">
      </b-input>
 
      <p [attr.data-valid]="bInput_Form.valid"
@@ -256,7 +256,10 @@
      </div>
 
      <p class="
-          full-width">Custom event: {{bInput_EventCounter}}</p>
+          full-width">Custom event: {{bInput_EventCounter}}
+       <span class="eventName">{{bInput_lastEventName}}</span>
+     </p>
+
      <div class="outputValue full-width">
        {{ bInput_EventValue }}
      </div>
@@ -290,22 +293,25 @@
 
      <div class="control-item col">
        <strong class="props">Props</strong>
-       <label>
-         <input class="simple-checkbox"
-                [(ngModel)]="bInput_required"
-                type="checkbox">
-         required
-       </label>
 
-       <label>
-         <input class="simple-checkbox"
-                [(ngModel)]="bInput_disabled"
-                type="checkbox">
-         disabled
-       </label>
+       <p class="side-by-side">
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bInput_required"
+                  type="checkbox">
+           required
+         </label>
+
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bInput_disabled"
+                  type="checkbox">
+           disabled
+         </label>
+       </p>
 
        <label class="side-by-side">
-         maxChars:
+         <span>maxChars:</span>
          <input type="number"
                 class="simple-input small"
                 [(ngModel)]="bInput_maxChars">
@@ -385,7 +391,7 @@
      </h3>
 
      <button type="button"
-             class="log-component"
+             class="log-stuff"
              (click)="logComponent('bTextarea')">Log component</button>
 
      <button class="show-code"
@@ -417,7 +423,7 @@
                  [warnMessage]="bTextarea_warn"
                  [errorMessage]="bTextarea_error"
                  [maxChars]="bTextarea_maxChars"
-                 (inputEvents)="onEvent('bTextarea',$event)">
+                 (inputEvents)="onEvent('bTextarea',$event,'inputEvents')">
      </b-textarea>
 
      <b-textarea #bTextarea
@@ -431,7 +437,7 @@
                  [warnMessage]="bTextarea_warn"
                  [errorMessage]="bTextarea_error"
                  [maxChars]="bTextarea_maxChars"
-                 (inputEvents)="onEvent('bTextarea',$event)">
+                 (inputEvents)="onEvent('bTextarea',$event,'inputEvents')">
      </b-textarea>
 
      <p [attr.data-valid]="bTextarea_Form.valid"
@@ -487,7 +493,9 @@
        {{ bTextarea_SubscrValue }}
      </div>
 
-     <p class="full-width">Custom event: {{bTextarea_EventCounter}}</p>
+     <p class="full-width">Custom event: {{bTextarea_EventCounter}}
+       <span class="eventName">{{bTextarea_lastEventName}}</span>
+     </p>
      <div class="outputValue full-width">
        {{ bTextarea_EventValue }}
      </div>
@@ -521,22 +529,25 @@
 
      <div class="control-item col">
        <strong class="props">Props</strong>
-       <label>
-         <input class="simple-checkbox"
-                [(ngModel)]="bTextarea_required"
-                type="checkbox">
-         required
-       </label>
 
-       <label>
-         <input class="simple-checkbox"
-                [(ngModel)]="bTextarea_disabled"
-                type="checkbox">
-         disabled
-       </label>
+       <p class="side-by-side">
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bTextarea_required"
+                  type="checkbox">
+           required
+         </label>
+
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bTextarea_disabled"
+                  type="checkbox">
+           disabled
+         </label>
+       </p>
 
        <label class="side-by-side">
-         maxChars:
+         <span>maxChars:</span>
          <input type="number"
                 class="simple-input small"
                 [(ngModel)]="bTextarea_maxChars">
@@ -617,7 +628,7 @@
      </h3>
 
      <button type="button"
-             class="log-component"
+             class="log-stuff"
              (click)="logComponent('bDatepicker')">Log component</button>
 
      <button class="show-code"
@@ -649,7 +660,7 @@
                    [hintMessage]="bDatepicker_hint"
                    [warnMessage]="bDatepicker_warn"
                    [errorMessage]="bDatepicker_error"
-                   (dateChange)="onEvent('bDatepicker',$event)">
+                   (dateChange)="onEvent('bDatepicker',$event,'dateChange')">
      </b-datepicker>
 
      <b-datepicker #bDatepicker
@@ -663,7 +674,7 @@
                    [hintMessage]="bDatepicker_hint"
                    [warnMessage]="bDatepicker_warn"
                    [errorMessage]="bDatepicker_error"
-                   (dateChange)="onEvent('bDatepicker',$event)">
+                   (dateChange)="onEvent('bDatepicker',$event,'dateChange')">
      </b-datepicker>
 
      <p [attr.data-valid]="bDatepicker_Form.valid"
@@ -725,12 +736,14 @@
        {{ bDatepicker_SubscrValue }}
      </div>
 
-     <p class="full-width">Custom event: {{bDatepicker_EventCounter}}</p>
+     <p class="full-width">Custom event: {{bDatepicker_EventCounter}}
+       <span class="eventName">{{bDatepicker_lastEventName}}</span>
+     </p>
      <div class="outputValue full-width">
        {{ bDatepicker_EventValue }}
      </div>
 
-     <div class="control-item col third">
+     <div class="control-item col">
        <p class="col">
          <strong class="value">Value
            <span class="type">{{ type(bDatepicker.value) }}</span>
@@ -750,33 +763,34 @@
          </label>
        </p>
        <label>
-         <input class="simple-input"
+         <input class="simple-input bigger"
                 (input)="onValueInput('bDatepicker', $event)"
                 [value]="bDatepicker_value"
                 type="search">
        </label>
      </div>
 
-     <div class="control-item col third">
+     <div class="control-item col">
        <strong class="props">Props</strong>
-       <label>
-         <input class="simple-checkbox"
-                [(ngModel)]="bDatepicker_required"
-                type="checkbox">
-         required
-       </label>
 
-       <label>
-         <input class="simple-checkbox"
-                [(ngModel)]="bDatepicker_disabled"
-                type="checkbox">
-         disabled
-       </label>
-     </div>
+       <p class="side-by-side">
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bDatepicker_required"
+                  type="checkbox">
+           required
+         </label>
 
-     <div class="control-item col third">
-       <label>
-         dateFormat: {{ bDatepicker_dateFormat }}
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bDatepicker_disabled"
+                  type="checkbox">
+           disabled
+         </label>
+       </p>
+
+       <label class="side-by-side">
+         <span>dateFormat: {{ bDatepicker_dateFormat }}</span>
          <input class="simple-input"
                 #bDatepicker_dateFormat_input
                 [value]="bDatepicker_dateFormat"
@@ -858,7 +872,7 @@
      </h3>
 
      <button type="button"
-             class="log-component"
+             class="log-stuff"
              (click)="logComponent('bChipinput')">Log component</button>
 
      <button class="show-code"
@@ -892,7 +906,7 @@
                    [hintMessage]="bChipinput_hint"
                    [warnMessage]="bChipinput_warn"
                    [errorMessage]="bChipinput_error"
-                   (changed)="onEvent('bChipinput',$event)">
+                   (changed)="onEvent('bChipinput',$event,'changed')">
      </b-chip-input>
 
      <b-chip-input #bChipinput
@@ -907,7 +921,7 @@
                    [hintMessage]="bChipinput_hint"
                    [warnMessage]="bChipinput_warn"
                    [errorMessage]="bChipinput_error"
-                   (changed)="onEvent('bChipinput',$event)">
+                   (changed)="onEvent('bChipinput',$event,'changed')">
      </b-chip-input>
 
      <p [attr.data-valid]="bChipinput_Form.valid"
@@ -965,6 +979,7 @@
      </div>
 
      <p class="full-width">Custom event: {{bChipinput_EventCounter}}
+       <span class="eventName">{{bChipinput_lastEventName}}</span>
      </p>
      <div class="outputValue full-width">
        {{ bChipinput_EventValue }}
@@ -1094,7 +1109,7 @@
      </h3>
 
      <button type="button"
-             class="log-component"
+             class="log-stuff"
              (click)="logComponent('bSocial')">Log component</button>
 
      <button class="show-code"
@@ -1126,7 +1141,7 @@
                [hintMessage]="bSocial_hint"
                [warnMessage]="bSocial_warn"
                [errorMessage]="bSocial_error"
-               (socialInputChange)="onEvent('bSocial',$event)">
+               (socialInputChange)="onEvent('bSocial',$event,'socialInputChange')">
      </b-social>
 
      <b-social #bSocial
@@ -1140,7 +1155,7 @@
                [hintMessage]="bSocial_hint"
                [warnMessage]="bSocial_warn"
                [errorMessage]="bSocial_error"
-               (socialInputChange)="onEvent('bSocial',$event)">
+               (socialInputChange)="onEvent('bSocial',$event,'socialInputChange')">
      </b-social>
 
      <p [attr.data-valid]="bSocial_Form.valid"
@@ -1200,7 +1215,9 @@
        {{ bSocial_SubscrValue }}
      </div>
 
-     <p class="full-width">Custom event: {{bSocial_EventCounter}}</p>
+     <p class="full-width">Custom event: {{bSocial_EventCounter}}
+       <span class="eventName">{{bSocial_lastEventName}}</span>
+     </p>
      <div class="outputValue full-width">
        {{ bSocial_EventValue }}
      </div>
@@ -1234,8 +1251,25 @@
 
      <div class="control-item col">
        <strong class="props">Props</strong>
+
+       <p class="side-by-side">
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bSocial_required"
+                  type="checkbox">
+           required
+         </label>
+
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bSocial_disabled"
+                  type="checkbox">
+           disabled
+         </label>
+       </p>
+
        <label class="side-by-side">
-         type
+         <span>type</span>
          <select [(ngModel)]="bSocial_type"
                  class="simple-select">
            <option value="facebook">facebook</option>
@@ -1243,19 +1277,8 @@
            <option value="twitter">twitter</option>
          </select>
        </label>
-       <label>
-         <input class="simple-checkbox"
-                [(ngModel)]="bSocial_required"
-                type="checkbox">
-         required
-       </label>
 
-       <label>
-         <input class="simple-checkbox"
-                [(ngModel)]="bSocial_disabled"
-                type="checkbox">
-         disabled
-       </label>
+
      </div>
 
      <div class="control-item col">
@@ -1331,7 +1354,7 @@
      </h3>
 
      <button type="button"
-             class="log-component"
+             class="log-stuff"
              (click)="logComponent('bCheckbox')">Log component</button>
 
      <button class="show-code"
@@ -1362,7 +1385,7 @@
                  [hintMessage]="bCheckbox_hint"
                  [warnMessage]="bCheckbox_warn"
                  [errorMessage]="bCheckbox_error"
-                 (checkboxChange)="onEvent('bCheckbox',$event)">
+                 (checkboxChange)="onEvent('bCheckbox',$event,'checkboxChange')">
      </b-checkbox>
 
      <b-checkbox #bCheckbox
@@ -1376,7 +1399,7 @@
                  [hintMessage]="bCheckbox_hint"
                  [warnMessage]="bCheckbox_warn"
                  [errorMessage]="bCheckbox_error"
-                 (checkboxChange)="onEvent('bCheckbox',$event)">
+                 (checkboxChange)="onEvent('bCheckbox',$event,'checkboxChange')">
      </b-checkbox>
 
      <p [attr.data-valid]="bCheckbox_Form.valid"
@@ -1386,7 +1409,7 @@
      </p>
 
      <p class="node-count">
-       DOM elements: <span class="now">{{ bCheckbox_nodeCount }}</span> vs <span class="then">?</span>
+       DOM elements: <span class="now">{{ bCheckbox_nodeCount }}</span> vs <span class="then">7</span>
      </p>
    </form>
 
@@ -1432,7 +1455,9 @@
        {{ bCheckbox_SubscrValue }}
      </div>
 
-     <p class="full-width">Custom event: {{bCheckbox_EventCounter}}</p>
+     <p class="full-width">Custom event: {{bCheckbox_EventCounter}}
+       <span class="eventName">{{bCheckbox_lastEventName}}</span>
+     </p>
      <div class="outputValue full-width">
        {{ bCheckbox_EventValue }}
      </div>
@@ -1467,6 +1492,21 @@
      <div class="control-item col">
        <strong class="props">Props</strong>
 
+       <p class="side-by-side">
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bCheckbox_required"
+                  type="checkbox">
+           required
+         </label>
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bCheckbox_disabled"
+                  type="checkbox">
+           disabled
+         </label>
+       </p>
+
        <label>
          <button type="button"
                  class="smaller-button"
@@ -1475,19 +1515,6 @@
          </button>
        </label>
 
-       <label>
-         <input class="simple-checkbox"
-                [(ngModel)]="bCheckbox_required"
-                type="checkbox">
-         required
-       </label>
-
-       <label>
-         <input class="simple-checkbox"
-                [(ngModel)]="bCheckbox_disabled"
-                type="checkbox">
-         disabled
-       </label>
      </div>
 
      <div class="control-item col">
@@ -1563,7 +1590,7 @@
      </h3>
 
      <button type="button"
-             class="log-component"
+             class="log-stuff"
              (click)="logComponent('bRadio')">Log component</button>
 
      <button class="show-code"
@@ -1594,7 +1621,7 @@
                      [hintMessage]="bRadio_hint"
                      [warnMessage]="bRadio_warn"
                      [errorMessage]="bRadio_error"
-                     (radioChange)="onEvent('bRadio',$event)">
+                     (radioChange)="onEvent('bRadio',$event,'radioChange')">
      </b-radio-button>
 
      <b-radio-button #bRadio
@@ -1608,7 +1635,7 @@
                      [hintMessage]="bRadio_hint"
                      [warnMessage]="bRadio_warn"
                      [errorMessage]="bRadio_error"
-                     (radioChange)="onEvent('bRadio',$event)">
+                     (radioChange)="onEvent('bRadio',$event,'radioChange')">
      </b-radio-button>
 
      <p [attr.data-valid]="bRadio_Form.valid"
@@ -1661,7 +1688,9 @@
        {{ bRadio_SubscrValue }}
      </div>
 
-     <p class="full-width">Custom event: {{bRadio_EventCounter}}</p>
+     <p class="full-width">Custom event: {{bRadio_EventCounter}}
+       <span class="eventName">{{bRadio_lastEventName}}</span>
+     </p>
      <div class="outputValue full-width">
        {{ bRadio_EventValue }}
      </div>
@@ -1695,27 +1724,32 @@
 
      <div class="control-item col">
        <strong class="props">Props</strong>
+
+       <p class="side-by-side">
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bRadio_required"
+                  type="checkbox">
+           required
+         </label>
+
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bRadio_disabled"
+                  type="checkbox">
+           disabled
+         </label>
+       </p>
+
        <label class="side-by-side">
-         direction
+         <span>direction</span>
          <select [(ngModel)]="bRadio_direction"
                  class="simple-select">
            <option value="row">row</option>
            <option value="column">column</option>
          </select>
        </label>
-       <label>
-         <input class="simple-checkbox"
-                [(ngModel)]="bRadio_required"
-                type="checkbox">
-         required
-       </label>
 
-       <label>
-         <input class="simple-checkbox"
-                [(ngModel)]="bRadio_disabled"
-                type="checkbox">
-         disabled
-       </label>
      </div>
 
      <div class="control-item col">
@@ -1780,6 +1814,483 @@
 
  </section>
 
+ <section class="bSingleSelect status-wip"
+          *ngIf="global_visibleComponents['bSingleSelect']">
+   <form [formGroup]="bSingleSelect_Form"
+         (ngSubmit)="onSubmit($event,'bSingleSelect')"
+         class="column">
+
+     <h3>
+       b-single-select
+     </h3>
+
+     <button type="button"
+             class="log-stuff"
+             (click)="logComponent('bSingleSelect')">Log component</button>
+
+     <button class="show-code"
+             type="button">Code</button>
+     <pre class="code-example"><code>
+
+    </code></pre>
+
+     <b-single-select *ngIf="bSingleSelect_formControlEnabled"
+                      #bSingleSelect
+                      formControlName="bSingleSelect"
+                      [label]="bSingleSelect_label"
+                      [placeholder]="bSingleSelect_placeholder"
+                      [options]="bSingleSelect_options"
+                      [value]="bSingleSelect_directValueInput ? bSingleSelect_value : undefined"
+                      [showSingleGroupHeader]="bSingleSelect_showSingleGroupHeader"
+                      [disabled]="bSingleSelect_disabled"
+                      [required]="bSingleSelect_required"
+                      [hintMessage]="bSingleSelect_hint"
+                      [warnMessage]="bSingleSelect_warn"
+                      [errorMessage]="bSingleSelect_error"
+                      (selectChange)="onEvent('bSingleSelect',$event,'selectChange')">
+     </b-single-select>
+
+     <b-single-select *ngIf="!bSingleSelect_formControlEnabled"
+                      #bSingleSelect
+                      [label]="bSingleSelect_label"
+                      [placeholder]="bSingleSelect_placeholder"
+                      [options]="bSingleSelect_options"
+                      [value]="bSingleSelect_directValueInput ? bSingleSelect_value : undefined"
+                      [showSingleGroupHeader]="bSingleSelect_showSingleGroupHeader"
+                      [disabled]="bSingleSelect_disabled"
+                      [required]="bSingleSelect_required"
+                      [hintMessage]="bSingleSelect_hint"
+                      [warnMessage]="bSingleSelect_warn"
+                      [errorMessage]="bSingleSelect_error"
+                      (selectChange)="onEvent('bSingleSelect',$event,'selectChange')">
+     </b-single-select>
+
+     <p [attr.data-valid]="bSingleSelect_Form.valid"
+        class="col">
+       <span>{{bSingleSelect_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
+       <strong *ngIf="bSingleSelect_formSubmitted">Form submitted</strong>
+     </p>
+
+     <p class="node-count">
+       DOM elements: <span class="now">{{ bSingleSelect_nodeCount }}</span> vs <span class="then">23</span>
+     </p>
+
+     <br>
+     <button type="button"
+             class="log-stuff"
+             (click)="logFlattenedObject('bSingleSelect_options')">Log options</button>
+   </form>
+
+   <div class="column">
+
+     <label class="control-item col">
+       Label
+       <input class="simple-input"
+              [(ngModel)]="bSingleSelect_label"
+              type="search">
+     </label>
+
+     <label class="control-item col">
+       Placeholder
+       <input class="simple-input"
+              [(ngModel)]="bSingleSelect_placeholder"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       HintMessage
+       <input class="simple-input"
+              [(ngModel)]="bSingleSelect_hint"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       WarnMessage
+       <input class="simple-input"
+              [(ngModel)]="bSingleSelect_warn"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       ErrorMessage
+       <input class="simple-input"
+              [(ngModel)]="bSingleSelect_error"
+              type="search">
+     </label>
+
+     <p class="full-width"
+        [ngClass]="{disabled: !bSingleSelect_formControlEnabled}">ValueChanges: {{bSingleSelect_SubscrCounter}}</p>
+     <div class="outputValue full-width"
+          [ngClass]="{disabled: !bSingleSelect_formControlEnabled}">
+       {{ bSingleSelect_SubscrValue }}
+     </div>
+
+     <p class="
+          full-width">Custom event: {{bSingleSelect_EventCounter}}
+       <span class="eventName">{{bSingleSelect_lastEventName}}</span>
+     </p>
+
+     <div class="outputValue full-width">
+       {{ bSingleSelect_EventValue }}
+     </div>
+
+     <div class="control-item col">
+       <p class="col">
+         <strong class="value">Value
+           <span class="type">{{ type(bSingleSelect.value) }}</span>
+         </strong>
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bSingleSelect_directValueInput"
+                  type="checkbox">
+           enable direct input
+         </label>
+         <label>
+           <input [disabled]="!bSingleSelect_directValueInput"
+                  class="simple-checkbox"
+                  [(ngModel)]="bSingleSelect_setInputProgrammatically"
+                  type="checkbox">
+           <span>set programmatically</span>
+         </label>
+       </p>
+       <label>
+         <input class="simple-input bigger"
+                (input)="onValueInput('bSingleSelect', $event)"
+                [value]="bSingleSelect_value"
+                type="search">
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <strong class="props">Props</strong>
+
+       <p class="side-by-side">
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bSingleSelect_required"
+                  type="checkbox">
+           required
+         </label>
+
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bSingleSelect_disabled"
+                  type="checkbox">
+           disabled
+         </label>
+       </p>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bSingleSelect_showSingleGroupHeader"
+                type="checkbox">
+         showSingleGroupHeader
+       </label>
+
+     </div>
+
+     <div class="control-item col">
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bSingleSelect_formControlEnabled"
+                (change)="bSingleSelect_directValueInput = !$event.target.checked"
+                type="checkbox">
+         Enable FormControl
+       </label>
+       <button type="button"
+               [disabled]="!bSingleSelect_formControlEnabled"
+               (click)="setValue('bSingleSelect')">SetValue</button>
+       <label>
+         <input class="simple-checkbox"
+                [disabled]="!bSingleSelect_formControlEnabled"
+                [(ngModel)]="bSingleSelect_setValEmit"
+                type="checkbox">
+         <span>Emit on setValue</span>
+       </label>
+       <label><button class="submit-button"
+                 (click)="onSubmitClick('bSingleSelect')"
+                 [disabled]="!bSingleSelect_Form.valid && bSingleSelect_updateOn_mode !== 'submit'"
+                 type="submit">Submit form</button></label>
+     </div>
+
+     <div class="control-item col">
+       Updating on: {{ bSingleSelect_updateOn_mode }}
+       <label>
+         <input type="radio"
+                [disabled]="!bSingleSelect_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bSingleSelect',bSingleSelect_updateOn_mode)"
+                [(ngModel)]="bSingleSelect_updateOn_mode"
+                name="bSingleSelect_updateOn_radio"
+                value="change">
+         <span>Change</span>
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bSingleSelect_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bSingleSelect',bSingleSelect_updateOn_mode)"
+                [(ngModel)]="bSingleSelect_updateOn_mode"
+                name="bSingleSelect_updateOn_radio"
+                value="blur">
+         <span>Blur</span>
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bSingleSelect_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bSingleSelect',bSingleSelect_updateOn_mode)"
+                [(ngModel)]="bSingleSelect_updateOn_mode"
+                name="bSingleSelect_updateOn_radio"
+                value="submit">
+         <span>Submit</span>
+       </label>
+     </div>
+
+   </div>
+
+ </section>
+
+ <section class="bMultiSelect status-wip"
+          *ngIf="global_visibleComponents['bMultiSelect']">
+   <form [formGroup]="bMultiSelect_Form"
+         (ngSubmit)="onSubmit($event,'bMultiSelect')"
+         class="column">
+
+     <h3>
+       b-multi-select
+     </h3>
+
+     <button type="button"
+             class="log-stuff"
+             (click)="logComponent('bMultiSelect')">Log component</button>
+
+     <button class="show-code"
+             type="button">Code</button>
+     <pre class="code-example"><code>
+
+    </code></pre>
+
+     <b-multi-select *ngIf="bMultiSelect_formControlEnabled"
+                     #bMultiSelect
+                     formControlName="bMultiSelect"
+                     [label]="bMultiSelect_label"
+                     [placeholder]="bMultiSelect_placeholder"
+                     [options]="bMultiSelect_options"
+                     [value]="bMultiSelect_directValueInput ? bMultiSelect_value : undefined"
+                     [showSingleGroupHeader]="bMultiSelect_showSingleGroupHeader"
+                     [disabled]="bMultiSelect_disabled"
+                     [required]="bMultiSelect_required"
+                     [hintMessage]="bMultiSelect_hint"
+                     [warnMessage]="bMultiSelect_warn"
+                     [errorMessage]="bMultiSelect_error"
+                     (selectChange)="onEvent('bMultiSelect',$event,'selectChange')"
+                     (selectModified)="onEvent('bMultiSelect',$event,'selectModified')"
+                     (selectCancelled)="onEvent('bMultiSelect',$event,'selectCancelled')">
+     </b-multi-select>
+
+     <b-multi-select *ngIf="!bMultiSelect_formControlEnabled"
+                     #bMultiSelect
+                     [label]="bMultiSelect_label"
+                     [placeholder]="bMultiSelect_placeholder"
+                     [options]="bMultiSelect_options"
+                     [value]="bMultiSelect_directValueInput ? bMultiSelect_value : undefined"
+                     [showSingleGroupHeader]="bMultiSelect_showSingleGroupHeader"
+                     [disabled]="bMultiSelect_disabled"
+                     [required]="bMultiSelect_required"
+                     [hintMessage]="bMultiSelect_hint"
+                     [warnMessage]="bMultiSelect_warn"
+                     [errorMessage]="bMultiSelect_error"
+                     (selectChange)="onEvent('bMultiSelect',$event,'selectChange')"
+                     (selectModified)="onEvent('bMultiSelect',$event,'selectModified')"
+                     (selectCancelled)="onEvent('bMultiSelect',$event,'selectCancelled')">
+     </b-multi-select>
+
+     <p [attr.data-valid]="bMultiSelect_Form.valid"
+        class="col">
+       <span>{{bMultiSelect_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
+       <strong *ngIf="bMultiSelect_formSubmitted">Form submitted</strong>
+     </p>
+
+     <p class="node-count">
+       DOM elements: <span class="now">{{ bMultiSelect_nodeCount }}</span> vs <span class="then">24</span>
+     </p>
+
+     <br>
+     <button type="button"
+             class="log-stuff"
+             (click)="logFlattenedObject('bMultiSelect_options')">Log options</button>
+   </form>
+
+   <div class="column">
+
+     <label class="control-item col">
+       Label
+       <input class="simple-input"
+              [(ngModel)]="bMultiSelect_label"
+              type="search">
+     </label>
+
+     <label class="control-item col">
+       Placeholder
+       <input class="simple-input"
+              [(ngModel)]="bMultiSelect_placeholder"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       HintMessage
+       <input class="simple-input"
+              [(ngModel)]="bMultiSelect_hint"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       WarnMessage
+       <input class="simple-input"
+              [(ngModel)]="bMultiSelect_warn"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       ErrorMessage
+       <input class="simple-input"
+              [(ngModel)]="bMultiSelect_error"
+              type="search">
+     </label>
+
+     <p class="full-width"
+        [ngClass]="{disabled: !bMultiSelect_formControlEnabled}">ValueChanges: {{bMultiSelect_SubscrCounter}}</p>
+     <div class="outputValue full-width"
+          [ngClass]="{disabled: !bMultiSelect_formControlEnabled}">
+       {{ bMultiSelect_SubscrValue }}
+     </div>
+
+     <p class="
+          full-width">Custom event: {{bMultiSelect_EventCounter}}
+       <span class="eventName">{{bMultiSelect_lastEventName}}</span>
+     </p>
+
+     <div class="outputValue full-width">
+       {{ bMultiSelect_EventValue }}
+     </div>
+
+     <div class="control-item col">
+       <p class="col">
+         <strong class="value">Value
+           <span class="type">{{ type(bMultiSelect.value) }}</span>
+         </strong>
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bMultiSelect_directValueInput"
+                  type="checkbox">
+           enable direct input
+         </label>
+         <label>
+           <input [disabled]="!bMultiSelect_directValueInput"
+                  class="simple-checkbox"
+                  [(ngModel)]="bMultiSelect_setInputProgrammatically"
+                  type="checkbox">
+           <span>set programmatically</span>
+         </label>
+       </p>
+       <label>
+         <input class="simple-input bigger"
+                (input)="onValueInput('bMultiSelect', $event)"
+                [value]="bMultiSelect_value"
+                type="search">
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <strong class="props">Props</strong>
+
+       <p class="side-by-side">
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bMultiSelect_required"
+                  type="checkbox">
+           required
+         </label>
+
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bMultiSelect_disabled"
+                  type="checkbox">
+           disabled
+         </label>
+       </p>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bMultiSelect_showSingleGroupHeader"
+                type="checkbox">
+         showSingleGroupHeader
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bMultiSelect_formControlEnabled"
+                (change)="bMultiSelect_directValueInput = !$event.target.checked"
+                type="checkbox">
+         Enable FormControl
+       </label>
+       <button type="button"
+               [disabled]="!bMultiSelect_formControlEnabled"
+               (click)="setValue('bMultiSelect')">SetValue</button>
+       <label>
+         <input class="simple-checkbox"
+                [disabled]="!bMultiSelect_formControlEnabled"
+                [(ngModel)]="bMultiSelect_setValEmit"
+                type="checkbox">
+         <span>Emit on setValue</span>
+       </label>
+       <label><button class="submit-button"
+                 (click)="onSubmitClick('bMultiSelect')"
+                 [disabled]="!bMultiSelect_Form.valid && bMultiSelect_updateOn_mode !== 'submit'"
+                 type="submit">Submit form</button></label>
+     </div>
+
+     <div class="control-item col">
+       Updating on: {{ bMultiSelect_updateOn_mode }}
+       <label>
+         <input type="radio"
+                [disabled]="!bMultiSelect_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bMultiSelect',bMultiSelect_updateOn_mode)"
+                [(ngModel)]="bMultiSelect_updateOn_mode"
+                name="bMultiSelect_updateOn_radio"
+                value="change">
+         <span>Change</span>
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bMultiSelect_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bMultiSelect',bMultiSelect_updateOn_mode)"
+                [(ngModel)]="bMultiSelect_updateOn_mode"
+                name="bMultiSelect_updateOn_radio"
+                value="blur">
+         <span>Blur</span>
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bMultiSelect_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bMultiSelect',bMultiSelect_updateOn_mode)"
+                [(ngModel)]="bMultiSelect_updateOn_mode"
+                name="bMultiSelect_updateOn_radio"
+                value="submit">
+         <span>Submit</span>
+       </label>
+     </div>
+
+   </div>
+
+ </section>
+
  <section class="bSplitInput status-todo"
           *ngIf="global_visibleComponents['bSplitInput']">
    <form [formGroup]="bSplitInput_Form"
@@ -1791,7 +2302,7 @@
      </h3>
 
      <button type="button"
-             class="log-component"
+             class="log-stuff"
              (click)="logComponent('bSplitInput')">Log component</button>
 
      <button class="show-code"
@@ -1806,7 +2317,7 @@
       [hintMessage]=&#x22;bSplitInput_hint&#x22;
       [warnMessage]=&#x22;bSplitInput_warn&#x22;
       [errorMessage]=&#x22;bSplitInput_error&#x22;
-      (inputEvents)=&#x22;onEvent(&#x27;bSplitInput&#x27;,$event)&#x22;&#x3E;
+      (elementChange)=&#x22;onEvent(&#x27;bSplitInput&#x27;,$event)&#x22;&#x3E;
       &#x3C;/b-input&#x3E;
     </code></pre>
 
@@ -1822,7 +2333,7 @@
                                   [hintMessage]="bSplitInput_hint"
                                   [warnMessage]="bSplitInput_warn"
                                   [errorMessage]="bSplitInput_error"
-                                  (inputEvents)="onEvent('bSplitInput',$event)">
+                                  (elementChange)="onEvent('bSplitInput',$event,'elementChange')">
      </b-split-input-single-select>
 
      <b-split-input-single-select #bSplitInput
@@ -1835,7 +2346,7 @@
                                   [hintMessage]="bSplitInput_hint"
                                   [warnMessage]="bSplitInput_warn"
                                   [errorMessage]="bSplitInput_error"
-                                  (inputEvents)="onEvent('bSplitInput',$event)">
+                                  (elementChange)="onEvent('elementChange',$event)">
      </b-split-input-single-select>
 
      <p [attr.data-valid]="bSplitInput_Form.valid"
@@ -1891,7 +2402,9 @@
        {{ bSplitInput_SubscrValue | json }}
      </div>
 
-     <p class="full-width">Custom event: {{bSplitInput_EventCounter}}</p>
+     <p class="full-width">Custom event: {{bSplitInput_EventCounter}}
+       <span class="eventName">{{bSplitInput_lastEventName}}</span>
+     </p>
      <div class="outputValue full-width">
        {{ bSplitInput_EventValue }}
      </div>
@@ -1926,6 +2439,7 @@
 
      <div class="control-item col">
        <strong class="props">Props</strong>
+
        <label>
          <input class="simple-checkbox"
                 [(ngModel)]="bSplitInput_required"
@@ -1939,6 +2453,7 @@
                 type="checkbox">
          disabled
        </label>
+
      </div>
 
      <div class="control-item col">
@@ -1994,6 +2509,265 @@
                 (change)="setUpdateOnMode('bSplitInput',bSplitInput_updateOn_mode)"
                 [(ngModel)]="bSplitInput_updateOn_mode"
                 name="bSplitInput_updateOn_radio"
+                value="submit">
+         <span>Submit</span>
+       </label>
+     </div>
+
+   </div>
+
+ </section>
+
+ <section class="bRTE status-wip"
+          *ngIf="global_visibleComponents['bRTE']">
+   <form [formGroup]="bRTE_Form"
+         (ngSubmit)="onSubmit($event,'bRTE')"
+         class="column">
+
+     <h3>
+       b-rich-text-editor
+     </h3>
+
+     <button type="button"
+             class="log-stuff"
+             (click)="logComponent('bRTE')">Log component</button>
+
+     <button class="show-code"
+             type="button">Code</button>
+     <pre class="code-example"><code>
+
+
+      </code></pre>
+
+     <b-rich-text-editor *ngIf="bRTE_formControlEnabled"
+                         #bRTE
+                         formControlName="bRTE"
+                         [type]="bRTE_type"
+                         [label]="bRTE_label"
+                         [value]="bRTE_directValueInput ? bRTE_value : undefined"
+                         [controls]="RTE_controls"
+                         [disableControls]="RTE_disableControls"
+                         [placeholderList]="bRTE_placeholderList"
+                         [disabled]="bRTE_disabled"
+                         [required]="bRTE_required"
+                         [minChars]="bRTE_minChars"
+                         [maxChars]="bRTE_maxChars"
+                         [hintMessage]="bRTE_hint"
+                         [warnMessage]="bRTE_warn"
+                         [errorMessage]="bRTE_error"
+                         (changed)="onEvent('bRTE',$event,'changed')">
+     </b-rich-text-editor>
+
+     <b-rich-text-editor *ngIf="!bRTE_formControlEnabled"
+                         #bRTE
+                         [type]="bRTE_type"
+                         [label]="bRTE_label"
+                         [value]="bRTE_directValueInput ? bRTE_value : undefined"
+                         [controls]="RTE_controls"
+                         [disableControls]="RTE_disableControls"
+                         [placeholderList]="bRTE_placeholderList"
+                         [disabled]="bRTE_disabled"
+                         [required]="bRTE_required"
+                         [minChars]="bRTE_minChars"
+                         [maxChars]="bRTE_maxChars"
+                         [hintMessage]="bRTE_hint"
+                         [warnMessage]="bRTE_warn"
+                         [errorMessage]="bRTE_error"
+                         (changed)="onEvent('bRTE',$event,'changed')">
+     </b-rich-text-editor>
+
+     <p [attr.data-valid]="bRTE_Form.valid"
+        class="col">
+       <span>{{bRTE_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
+       <strong *ngIf="bRTE_formSubmitted">Form submitted</strong>
+     </p>
+
+     <p class="node-count">
+       DOM elements: <span class="now">{{ bRTE_nodeCount }}</span>
+     </p>
+   </form>
+
+   <div class="column">
+
+     <label class="control-item col">
+       Label
+       <input class="simple-input"
+              [(ngModel)]="bRTE_label"
+              type="search">
+     </label>
+
+     <span class="control-item col">
+
+     </span>
+
+     <label class="control-item col third">
+       HintMessage
+       <input class="simple-input"
+              [(ngModel)]="bRTE_hint"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       WarnMessage
+       <input class="simple-input"
+              [(ngModel)]="bRTE_warn"
+              type="search">
+     </label>
+
+     <label class="control-item col third">
+       ErrorMessage
+       <input class="simple-input"
+              [(ngModel)]="bRTE_error"
+              type="search">
+     </label>
+
+     <p class="full-width"
+        [ngClass]="{disabled: !bRTE_formControlEnabled}">ValueChanges: {{bRTE_SubscrCounter}}</p>
+     <div class="outputValue full-width"
+          [ngClass]="{disabled: !bRTE_formControlEnabled}">
+       {{ bRTE_SubscrValue }}
+     </div>
+
+     <p class="
+            full-width">Custom event: {{bRTE_EventCounter}}
+       <span class="eventName">{{bRTE_lastEventName}}</span>
+     </p>
+     <div class="outputValue full-width">
+       {{ bRTE_EventValue }}
+     </div>
+
+     <div class="control-item col">
+       <p class="col">
+         <strong class="value">Value
+           <span class="type">{{ type(bRTE.value) }}</span>
+
+           <button type="button"
+                   class="small-button"
+                   (click)="resetValue('bRTE','RTEvalueMock')">Reset</button>
+         </strong>
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bRTE_directValueInput"
+                  type="checkbox">
+           enable direct input
+         </label>
+         <label>
+           <input [disabled]="!bRTE_directValueInput"
+                  class="simple-checkbox"
+                  [(ngModel)]="bRTE_setInputProgrammatically"
+                  type="checkbox">
+           <span>set programmatically</span>
+         </label>
+       </p>
+       <label>
+         <input class="simple-input bigger"
+                (input)="onValueInput('bRTE', $event)"
+                [value]="bRTE_value"
+                type="search">
+       </label>
+     </div>
+
+     <div class="control-item col">
+       <strong class="props">Props</strong>
+
+       <p class="side-by-side">
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bRTE_required"
+                  type="checkbox">
+           required
+         </label>
+
+         <label>
+           <input class="simple-checkbox"
+                  [(ngModel)]="bRTE_disabled"
+                  type="checkbox">
+           disabled
+         </label>
+       </p>
+
+       <label class="side-by-side">
+         <span>type</span>
+         <select [(ngModel)]="bRTE_type"
+                 class="simple-select">
+           <option value="primary">primary</option>
+           <option value="secondary">secondary</option>
+           <option value="tertiary">tertiary</option>
+         </select>
+       </label>
+
+       <p class="side-by-side"
+          style="margin-top:10px;">
+
+         <label class="col">
+           <span>minChars:</span>
+           <input type="number"
+                  class="simple-input small"
+                  [(ngModel)]="bRTE_minChars">
+         </label>
+
+         <label class="col">
+           <span>maxChars:</span>
+           <input type="number"
+                  class="simple-input small"
+                  [(ngModel)]="bRTE_maxChars">
+         </label>
+       </p>
+     </div>
+
+     <div class="control-item col">
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bRTE_formControlEnabled"
+                (change)="bRTE_directValueInput = !$event.target.checked"
+                type="checkbox">
+         Enable FormControl
+       </label>
+       <button type="button"
+               [disabled]="!bRTE_formControlEnabled"
+               (click)="setValue('bRTE')">SetValue</button>
+       <label>
+         <input class="simple-checkbox"
+                [disabled]="!bRTE_formControlEnabled"
+                [(ngModel)]="bRTE_setValEmit"
+                type="checkbox">
+         <span>Emit on setValue</span>
+       </label>
+       <label><button class="submit-button"
+                 (click)="onSubmitClick('bRTE')"
+                 [disabled]="!bRTE_Form.valid && bRTE_updateOn_mode !== 'submit'"
+                 type="submit">Submit form</button></label>
+     </div>
+
+     <div class="control-item col">
+       Updating on: {{ bRTE_updateOn_mode }}
+       <label>
+         <input type="radio"
+                [disabled]="!bRTE_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bRTE',bRTE_updateOn_mode)"
+                [(ngModel)]="bRTE_updateOn_mode"
+                name="bRTE_updateOn_radio"
+                value="change">
+         <span>Change</span>
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bRTE_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bRTE',bRTE_updateOn_mode)"
+                [(ngModel)]="bRTE_updateOn_mode"
+                name="bRTE_updateOn_radio"
+                value="blur">
+         <span>Blur</span>
+       </label>
+       <label>
+         <input type="radio"
+                [disabled]="!bRTE_formControlEnabled"
+                class="simple-radio"
+                (change)="setUpdateOnMode('bRTE',bRTE_updateOn_mode)"
+                [(ngModel)]="bRTE_updateOn_mode"
+                name="bRTE_updateOn_radio"
                 value="submit">
          <span>Submit</span>
        </label>

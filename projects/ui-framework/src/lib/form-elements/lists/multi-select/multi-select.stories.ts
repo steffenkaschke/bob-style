@@ -1,11 +1,9 @@
 import { storiesOf } from '@storybook/angular';
 import {
-  select,
   withKnobs,
   object,
   text,
-  boolean,
-  array
+  boolean
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';

@@ -120,14 +120,4 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
       }
     );
   }
-
-  updateTriggerTooltip(
-    element: HTMLElement = this.triggerInput.nativeElement
-  ): void {
-    if (element) {
-      setTimeout(() => {
-        this.showTriggerTooltip = element.scrollWidth > element.offsetWidth;
-      });
-    }
-  }
 }

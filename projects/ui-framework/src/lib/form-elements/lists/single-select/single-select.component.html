@@ -13,7 +13,7 @@
         [b-truncate-tooltip]="1"
         [expectChanges]="true"
         [trustCssVars]="true"
-        [attr.data-placeholder]="placeholder">
+        [attr.data-placeholder]="!triggerValue ? placeholder : null">
     {{triggerValue}}
   </span>
 

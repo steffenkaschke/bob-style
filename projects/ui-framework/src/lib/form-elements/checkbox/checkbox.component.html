@@ -1,4 +1,4 @@
-<label *ngIf="label"
+<label *ngIf="label && placeholder"
        class="bfe-label">{{label}}</label>
 
 <input #input
@@ -16,7 +16,7 @@
        (change)="toggleCheckbox()" />
 <label class="bchk-label"
        [attr.for]="id">
-  {{ placeholder }}
+  {{ placeholder || label }}
 </label>
 
 <p b-input-message

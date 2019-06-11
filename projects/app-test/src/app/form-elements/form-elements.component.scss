@@ -55,11 +55,6 @@ form.column {
   align-items: center;
 }
 
-[type='search'] {
-  // -webkit-appearance: none;
-  // appearance: none;
-}
-
 .simple-input {
   border: 1px solid gray;
   box-shadow: silver;
@@ -76,6 +71,7 @@ form.column {
     height: 50px;
     line-height: 50px;
     font-size: 15px;
+    margin-top: 4px;
   }
 
   &.small {
@@ -169,6 +165,7 @@ button {
 .small-button {
   height: 20px;
   padding: 0;
+  font-weight: 400;
 }
 
 .smaller-button {
@@ -233,7 +230,7 @@ button {
   }
 }
 
-.log-component {
+.log-stuff {
   width: 110px;
   padding: 0;
   border-radius: 10px;
@@ -319,7 +316,15 @@ button {
   label,
   button {
     margin-left: 10px;
+
+    &:first-child {
+      margin-left: 0;
+    }
   }
+}
+
+p.side-by-side {
+  margin: 5px 0;
 }
 
 .props,
@@ -395,5 +400,22 @@ section h3 {
   }
   .then {
     color: orange;
+  }
+}
+
+.eventName {
+  &:before {
+    content: ': ';
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 5px;
+  }
+  font-size: 90%;
+  font-weight: 500;
+  display: inline-block;
+  text-decoration: underline;
+
+  &:empty {
+    display: none;
   }
 }

@@ -103,7 +103,6 @@ export class SingleSelectComponent extends BaseSelectPanelElement
   }
 
   private getTriggerValue(selectedOptionId: string | number): string {
-    this.updateTriggerTooltip(this.triggerInput.nativeElement);
     return chain(this.singleSelectOptions)
       .flatMap('options')
       .filter(option => option.id === selectedOptionId)
@@ -125,6 +124,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement
     this.singleSelectOptions = listChange.getSelectGroupOptions();
     this.selectChange.emit(listChange);
     const selectedValue = listChange.getSelectedIds()[0];
+
     this.propagateChange(isUndefined(selectedValue) ? null : selectedValue);
   }
 }

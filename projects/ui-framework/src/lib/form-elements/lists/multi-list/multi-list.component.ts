@@ -59,9 +59,12 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.options = changes.options.currentValue;
       this.selectedIdsMap = this.getSelectedIdsMap();
       this.noGroupHeaders =
-        this.options.length === 1 && !this.showSingleGroupHeader;
+        this.options &&
+        this.options.length === 1 &&
+        !this.showSingleGroupHeader;
       this.filteredOptions = cloneDeep(this.options);
       this.shouldDisplaySearch =
+        this.options &&
         flatMap(this.options, 'options').length > DISPLAY_SEARCH_OPTION_NUM;
       this.updateLists();
     }

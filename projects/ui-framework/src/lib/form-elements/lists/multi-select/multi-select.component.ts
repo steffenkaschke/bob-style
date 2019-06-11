@@ -123,7 +123,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement
 
   private setTriggerValue(): void {
     this.triggerValue = this.getTriggerValue(this.selectedValuesMap);
-    this.updateTriggerTooltip();
   }
 
   private getTriggerValue(selectedValuesMap: (string | number)[]): string {

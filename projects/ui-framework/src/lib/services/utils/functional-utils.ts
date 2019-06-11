@@ -90,6 +90,9 @@ export const compareAsStrings = (a: any, b: any): boolean =>
 
 export const countChildren = (parentSelector, parent) => {
   parent = parentSelector ? document.querySelector(parentSelector) : parent;
+  if (!parent) {
+    return 0;
+  }
   let relevantChildren = 0;
   for (const child of parent.childNodes) {
     if (child.nodeType !== 3 && child.nodeType !== 8) {
@@ -101,3 +104,28 @@ export const countChildren = (parentSelector, parent) => {
   }
   return relevantChildren;
 };
+
+import {
+  isPlainObject as _isPlainObject,
+  isArray as _isArray,
+  reduce as _reduce,
+  merge as _merge,
+  toPairs as _toPairs,
+  set as _set,
+  compose as _compose
+} from 'lodash/fp';
+
+export const flatten = (obj, path = []) => {
+  return _isPlainObject(obj) || _isArray(obj)
+    ? _reduce(
+        (acc, [k, v]) => _merge(acc, flatten(v, [...path, k])),
+        {},
+        _toPairs(obj)
+      )
+    : { [path.join('.')]: obj };
+};
+
+export const unflatten = _compose(
+  _reduce((acc, [k, v]) => _set(k, v, acc), {}),
+  _toPairs
+);

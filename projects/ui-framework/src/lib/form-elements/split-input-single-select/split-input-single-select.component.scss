@@ -5,6 +5,7 @@ $selectFieldWidth: 140px;
 
 :host {
   display: flex;
+  width: 100%;
   @include transfer-margins('b-input,b-single-select');
 }
 

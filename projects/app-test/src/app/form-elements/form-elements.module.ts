@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FormElementsModule } from '../../../../ui-framework/src/lib/form-elements/form-elements.module';
 import { IconsModule } from '../../../../ui-framework/src/lib/icons/icons.module';
 import { FormElementsTestComponent } from './form-elements.component';
+import { AvatarModule } from '../../../../ui-framework/src/lib/buttons-indicators/avatar/avatar.module';
 
 @NgModule({
   declarations: [FormElementsTestComponent],
@@ -15,7 +16,8 @@ import { FormElementsTestComponent } from './form-elements.component';
     FormsModule,
     ReactiveFormsModule,
     IconsModule,
-    FormElementsModule
+    FormElementsModule,
+    AvatarModule
   ],
   providers: []
 })
