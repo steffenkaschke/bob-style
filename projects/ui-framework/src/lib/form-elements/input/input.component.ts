@@ -27,8 +27,8 @@ import { BaseInputElement } from '../base-input-element';
   ]
 })
 export class InputComponent extends BaseInputElement implements AfterViewInit {
-  constructor() {
-    super();
+  constructor(public host: ElementRef) {
+    super(host);
   }
   @ViewChild('bInput') bInput: ElementRef;
   @ViewChild('prefix') prefix: ElementRef;

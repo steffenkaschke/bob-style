@@ -32,11 +32,12 @@ quillLib.register(Block, true);
 export abstract class RTEformElement extends BaseFormElement
   implements OnChanges, AfterViewInit {
   protected constructor(
+    public host: ElementRef,
     public rteUtils: RteUtilsService,
     private changeDetector: ChangeDetectorRef,
     private injector: Injector
   ) {
-    super();
+    super(host);
   }
 
   @Input() public value: string;

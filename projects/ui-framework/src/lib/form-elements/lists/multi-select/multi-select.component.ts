@@ -8,7 +8,8 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewContainerRef
+  ViewContainerRef,
+  ElementRef
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { assign, chain, includes, map } from 'lodash';
@@ -70,13 +71,14 @@ export class MultiSelectComponent extends BaseSelectPanelElement
   private listChange: ListChange;
 
   constructor(
+    public host: ElementRef,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
     private listChangeService: ListChangeService,
     private listModelService: ListModelService
   ) {
-    super(overlay, viewContainerRef, panelPositionService);
+    super(host, overlay, viewContainerRef, panelPositionService);
   }
 
   ngOnInit(): void {

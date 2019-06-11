@@ -4,20 +4,23 @@ import {
   SimpleChanges,
   OnChanges,
   Output,
-  EventEmitter
+  EventEmitter,
+  ElementRef
 } from '@angular/core';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
 import { simpleUID, asArray } from '../services/utils/functional-utils';
-import { InputEvent } from './input/input.interface';
 import { InputEventType } from './form-elements.enum';
 import { FormEvents } from './form-elements.enum';
 import { TransmitOptions } from './form-elements.interface';
 
 export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {
+  protected constructor(public host: ElementRef = null) {}
   @HostBinding('class')
   get classes(): string {
     return (
+      this.host.nativeElement.className +
+      ' ' +
       (this.disabled ? 'disabled ' : '') +
       (this.required ? 'required ' : '') +
       (this.errorMessage && !this.disabled ? 'error ' : '') +

@@ -37,11 +37,12 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
   private positionChangeSubscriber: Subscription;
 
   protected constructor(
+    host: ElementRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService
   ) {
-    super();
+    super(host);
   }
 
   openPanel(): void {

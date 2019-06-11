@@ -68,8 +68,8 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  constructor() {
-    super();
+  constructor(public host: ElementRef) {
+    super(host);
     this.outputTransformers = [
       date => {
         return isDate(date)

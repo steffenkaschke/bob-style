@@ -30,7 +30,7 @@ import {
   stringListToArray
 } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
-import { InputEventType, FormEvents } from '../form-elements.enum';
+import { InputEventType } from '../form-elements.enum';
 
 @Component({
   selector: 'b-chip-input',
@@ -51,8 +51,8 @@ import { InputEventType, FormEvents } from '../form-elements.enum';
 })
 export class ChipInputComponent extends BaseFormElement
   implements OnChanges, OnInit {
-  constructor() {
-    super();
+  constructor(public host: ElementRef) {
+    super(host);
     this.inputTransformers = [
       value =>
         isArray(value) ? value : isString(value) ? stringListToArray(value) : []
