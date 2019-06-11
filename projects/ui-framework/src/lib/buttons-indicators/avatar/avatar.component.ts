@@ -56,8 +56,6 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   @HostBinding('class')
   get typeClass(): string {
     return (
-      this.host.nativeElement.className +
-      ' ' +
       getKeyByValue(AvatarSize, this.size) +
       ' ' +
       this.orientation +
