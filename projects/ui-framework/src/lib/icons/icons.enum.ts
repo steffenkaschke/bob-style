@@ -51,7 +51,7 @@ export enum Icons {
   department_icon = 'department_icon',
   company_icon = 'company_icon',
   edit_field_pencil = 'edit_field_pencil',
-  folder = 'folder',
+  folder = 'baseline-folder-24px',
   add_doc = 'add_doc',
   add = 'add',
   timeline = 'Icon_timeline',
@@ -69,8 +69,8 @@ export enum Icons {
   facebook = 'Facebook',
   linkedin = 'Linkedin',
   twitter = 'Twitter',
-  download = 'download',
-  add_folder = 'add_folder',
+  download = 'baseline-get_app-24px',
+  add_folder = 'baseline-create_new_folder-24px',
 
 
   // duplicate icons for backwards compatibility
