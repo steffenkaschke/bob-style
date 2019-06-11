@@ -3,14 +3,15 @@ import {
   EventEmitter,
   forwardRef,
   Input,
-  Output
+  Output,
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
 import { RadioDirection } from './radio-button.enum';
 import { InputEventType } from '../form-elements.enum';
 import { RadioConfig } from './radio-button.interface';
-import { compareAsStrings } from '../../services/utils/functional-utils';
 import { FormEvents } from '../form-elements.enum';
 import { InputEvent } from '../input/input.interface';
 
@@ -31,38 +32,76 @@ import { InputEvent } from '../input/input.interface';
     }
   ]
 })
-export class RadioButtonComponent extends BaseFormElement {
+export class RadioButtonComponent extends BaseFormElement implements OnChanges {
   constructor() {
     super();
     this.inputTransformers = [
-      (value): string => {
-        return ((this.options as RadioConfig[])[0].label &&
-          !Object.values(this.options).includes(value)) ||
-          !(this.options as string[]).includes(value)
-          ? null
-          : (value as string);
+      (value): string | number => {
+        value = this.conformValueToIDtype(value);
+        const options = this.idType
+          ? (this.options as RadioConfig[]).map(o => o.id)
+          : this.options;
+        return (options as string[]).includes(value) ? value : null;
       }
     ];
   }
 
-  @Input() value: string;
+  @Input() value: string | number;
   @Input() options: string[] | RadioConfig[];
   @Input() direction: RadioDirection = RadioDirection.row;
 
   public dir = RadioDirection;
-  public compare = compareAsStrings;
+  public idType: string;
+  public includeOptionInEvent = true;
 
   @Output(FormEvents.radioChange) changed: EventEmitter<
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  onRadioChange(event): void {
-    this.value = event.target.value;
-
-    this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
+  private checkIDtype(options = this.options as RadioConfig[]): string {
+    for (const opt of options) {
+      if (!opt.label) {
+        return null;
+      }
+      if (typeof opt.id !== 'number') {
+        return 'string';
+      }
+    }
+    return 'number';
   }
 
-  // add - RadioConfig option to test App!
-  // add - sense ID format (string/number) - onNgChanges optiopns
-  // ass - pass any props in RadioConfig with value output
+  private conformValueToIDtype(value): number | string {
+    return this.idType === 'number' ? parseInt(value, 10) : value;
+  }
+
+  private transmit(event: InputEventType): void {
+    this.transmitValue(this.value, {
+      eventType: [event],
+      addToEventObj:
+        this.idType && this.includeOptionInEvent
+          ? {
+              option: (this.options as RadioConfig[]).find(
+                o => o.id === this.value
+              )
+            }
+          : {}
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.options) {
+      this.options = changes.options.currentValue;
+      this.idType = this.checkIDtype();
+    }
+
+    if (changes.value || changes.options) {
+      this.writeValue(changes.value ? changes.value.currentValue : this.value);
+      this.transmit(InputEventType.onWrite);
+    }
+  }
+
+  public onRadioChange(event): void {
+    this.writeValue(event.target.value);
+    this.transmit(InputEventType.onBlur);
+  }
 }

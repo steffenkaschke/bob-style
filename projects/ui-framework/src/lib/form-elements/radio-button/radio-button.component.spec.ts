@@ -3,12 +3,12 @@ import { RadioButtonComponent } from './radio-button.component';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
-import { SimpleChanges } from '@angular/core';
+import { SimpleChanges, SimpleChange } from '@angular/core';
 import { RadioDirection } from './radio-button.enum';
 import { RadioConfig } from './radio-button.interface';
 import { InputMessageModule } from '../input-message/input-message.module';
 
-fdescribe('RadioButtonComponent', () => {
+describe('RadioButtonComponent', () => {
   let component: RadioButtonComponent;
   let fixture: ComponentFixture<RadioButtonComponent>;
   let radioConfigMock: RadioConfig[];
@@ -27,7 +27,10 @@ fdescribe('RadioButtonComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(RadioButtonComponent);
         component = fixture.componentInstance;
-        component.options = radioConfigMock;
+        component.includeOptionInEvent = false;
+        component.ngOnChanges({
+          options: new SimpleChange(null, radioConfigMock, true)
+        });
         spyOn(component.changed, 'emit');
         spyOn(component, 'propagateChange');
         fixture.detectChanges();
@@ -43,23 +46,23 @@ fdescribe('RadioButtonComponent', () => {
 
   describe('option click', () => {
     it('should set selected option to be checked and emit changed event with id', () => {
-      const matRadioButtonLabel = fixture.debugElement.queryAll(
+      const radioButtonLabel = fixture.debugElement.queryAll(
         By.css('.brd-label')
       )[2];
-      matRadioButtonLabel.nativeElement.click();
+      radioButtonLabel.nativeElement.click();
       fixture.detectChanges();
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'blur',
-        value: '13'
+        value: 13
       });
     });
     it('should invoke propagateChange', () => {
-      const matRadioButtonLabel = fixture.debugElement.queryAll(
+      const radioButtonLabel = fixture.debugElement.queryAll(
         By.css('.brd-label')
       )[2];
-      matRadioButtonLabel.nativeElement.click();
+      radioButtonLabel.nativeElement.click();
       fixture.detectChanges();
-      expect(component.propagateChange).toHaveBeenCalledWith('13');
+      expect(component.propagateChange).toHaveBeenCalledWith(13);
     });
   });
 
@@ -100,7 +103,7 @@ fdescribe('RadioButtonComponent', () => {
         }
       }
     });
-    it('should not emit change from value change', () => {
+    it('should emit change from value change', () => {
       const changes: SimpleChanges = {
         value: {
           previousValue: undefined,
@@ -111,7 +114,7 @@ fdescribe('RadioButtonComponent', () => {
       };
       component.ngOnChanges(changes);
       fixture.detectChanges();
-      expect(component.changed.emit).not.toHaveBeenCalled();
+      expect(component.changed.emit).toHaveBeenCalled();
     });
   });
 });

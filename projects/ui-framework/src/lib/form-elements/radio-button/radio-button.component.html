@@ -11,15 +11,14 @@
            class="brd-input"
            [attr.id]="id+'-'+i"
            [attr.name]="id"
-           [checked]="(radio.id && compare(value,radio.id)) || value === radio"
-           [value]="radio.id || radio"
+           [checked]="(idType && value === radio.id) || value === radio"
+           [value]="radio.label ? radio.id : radio"
            [required]="required"
            [disabled]="disabled"
            (change)="onRadioChange($event)" />
     <label class="brd-label"
            [attr.for]="id+'-'+i">{{radio.label || radio}}</label>
   </ng-container>
-
 </div>
 
 <p b-input-message

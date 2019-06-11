@@ -54,7 +54,7 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  private transmit(event): void {
+  private transmit(event: InputEventType): void {
     this.transmitValue(this.value, {
       eventType: [event],
       addToEventObj: {

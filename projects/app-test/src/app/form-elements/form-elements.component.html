@@ -1647,6 +1647,11 @@
      <p class="node-count">
        DOM elements: <span class="now">{{ bRadio_nodeCount }}</span> vs <span class="then">33</span>
      </p>
+
+     <br>
+     <button type="button"
+             class="log-stuff"
+             (click)="logProp('bRadio_options')">Log options</button>
    </form>
 
    <div class="column">
@@ -1747,6 +1752,16 @@
                  class="simple-select">
            <option value="row">row</option>
            <option value="column">column</option>
+         </select>
+       </label>
+
+       <label class="col">
+         <span>options type</span>
+         <select [(ngModel)]="bRadio_optionsType"
+                 (change)="bRadio_options=bRadio_optionsMock[bRadio_optionsType]"
+                 class="simple-select">
+           <option value="array">string[]</option>
+           <option value="radioConfig">RadioConfig[] </option>
          </select>
        </label>
 

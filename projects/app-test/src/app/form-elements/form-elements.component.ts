@@ -286,6 +286,15 @@ export class FormElementsTestComponent
 
   ///////////////////////////////////
 
+  bRadio_optionsMock = {
+    array: ['Option one', 'Option two', 'Option three'],
+    radioConfig: [
+      { id: 11, label: 'option one' },
+      { id: 12, label: 'option two' },
+      { id: 13, label: 'option three' }
+    ]
+  };
+
   @ViewChild('bRadio') private bRadio_component;
   @ViewChild('bRadio', { read: ElementRef }) private bRadio_element: ElementRef;
   bRadio_SubscrValue;
@@ -294,7 +303,8 @@ export class FormElementsTestComponent
   bRadio_EventCounter = 0;
   bRadio_label = 'Radio button label';
   bRadio_value = 'Option one';
-  bRadio_options = ['Option one', 'Option two', 'Option three'];
+  bRadio_optionsType = 'array';
+  bRadio_options = this.bRadio_optionsMock[this.bRadio_optionsType];
   bRadio_direction = 'row';
   bRadio_disabled = this.global_disabled;
   bRadio_required = this.global_required;
@@ -759,6 +769,18 @@ export class FormElementsTestComponent
     });
   }
 
+  showComponents(comps) {
+    comps.forEach(comp => {
+      this.global_visibleComponents[comp] = true;
+    });
+  }
+
+  hideComponents(comps) {
+    comps.forEach(comp => {
+      this.global_visibleComponents[comp] = false;
+    });
+  }
+
   getProp(prop) {
     return this[prop];
   }
@@ -818,6 +840,10 @@ export class FormElementsTestComponent
     console.log(this[name + '_component']);
   }
 
+  logProp(name) {
+    console.log(this[name]);
+  }
+
   logFlattenedObject(prop) {
     console.log(flatten(this[prop]));
   }
@@ -846,8 +872,11 @@ export class FormElementsTestComponent
   ngOnInit() {
     this.subscribeToAll(this.allFormElements);
 
-    this.global_visibleComponents['bSocial'] = false;
-    this.global_visibleComponents['bSplitInput'] = false;
+    // this.global_visibleComponents['bSocial'] = false;
+    // this.global_visibleComponents['bSplitInput'] = false;
+
+    this.hideComponents(this.allFormElements);
+    this.showComponents(['bRadio']);
 
     this.bSingleSelect_options[0].options[1].selected = true;
     this.bMultiSelect_optionsMock[0].options[1].selected = true;
