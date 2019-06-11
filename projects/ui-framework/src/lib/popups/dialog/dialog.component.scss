@@ -33,6 +33,9 @@ $footerSize: 50px;
         div[b-dialog-sub-title] {
           margin-top: 5px;
         }
+        b-display-2 {
+          overflow-wrap: break-word;
+        }
       }
       .mat-dialog-content {
         padding: 0 $dialogPadding 20px;
