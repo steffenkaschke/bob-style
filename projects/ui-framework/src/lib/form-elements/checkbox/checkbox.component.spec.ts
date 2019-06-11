@@ -20,6 +20,7 @@ describe('CheckboxComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(CheckboxComponent);
         component = fixture.componentInstance;
+        component.wrapEvent = true;
         spyOn(component.changed, 'emit');
         fixture.detectChanges();
         checkboxLabel = fixture.debugElement.query(By.css('.bchk-label'))

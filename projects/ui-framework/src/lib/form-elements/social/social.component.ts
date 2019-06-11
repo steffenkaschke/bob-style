@@ -38,6 +38,7 @@ export class SocialComponent extends BaseFormElement {
     this.outputTransformers = [
       value => (value ? `http://${SocialTypes[this.type].prefix}${value}` : '')
     ];
+    this.wrapEvent = false;
   }
 
   @Input() type: Social;

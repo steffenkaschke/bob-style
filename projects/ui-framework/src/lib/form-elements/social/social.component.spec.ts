@@ -31,6 +31,7 @@ describe('SocialComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(SocialComponent);
         component = fixture.componentInstance;
+        component.wrapEvent = true;
         spyOn(component.changed, 'emit');
         component.type = Social.facebook;
         fixture.detectChanges();

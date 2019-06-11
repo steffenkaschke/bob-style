@@ -2356,12 +2356,13 @@
                                   [label]="bSplitInput_label"
                                   [placeholder]="bSplitInput_placeholder"
                                   [value]="bSplitInput_directValueInput ? bSplitInput_value : undefined"
+                                  [selectOptions]="bSplitInput_selectOptions"
                                   [disabled]="bSplitInput_disabled"
                                   [required]="bSplitInput_required"
                                   [hintMessage]="bSplitInput_hint"
                                   [warnMessage]="bSplitInput_warn"
                                   [errorMessage]="bSplitInput_error"
-                                  (elementChange)="onEvent('elementChange',$event)">
+                                  (elementChange)="onEvent(bSplitInput,$event,'elementChange')">
      </b-split-input-single-select>
 
      <p [attr.data-valid]="bSplitInput_Form.valid"
@@ -2373,6 +2374,14 @@
      <p class="node-count">
        DOM elements: <span class="now">{{ bSplitInput_nodeCount }}</span> vs <span class="then">45</span>
      </p>
+
+     <br>
+     <button type="button"
+             class="log-stuff"
+             (click)="logProp('bSplitInput_selectOptions')">Log options</button>
+     <button type="button"
+             class="log-stuff"
+             (click)="logComponentProp('bSplitInput')">Log value</button>
    </form>
 
    <div class="column">

@@ -44,6 +44,7 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
         return value;
       }
     ];
+    this.wrapEvent = false;
   }
 
   @ViewChild('input') private input: ElementRef;

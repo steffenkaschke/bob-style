@@ -46,6 +46,7 @@ export abstract class BaseFormElement
   public id = simpleUID('bfe-');
   public inputTransformers: Function[] = [];
   public outputTransformers: Function[] = [];
+  public wrapEvent = true;
 
   private transmitValueDefOptions: Partial<TransmitOptions> = {
     eventType: [InputEventType.onChange],
@@ -113,11 +114,15 @@ export abstract class BaseFormElement
 
       if (eventName) {
         eventType.forEach(event => {
-          this[eventName].emit({
-            event,
-            value,
-            ...addToEventObj
-          } as InputEvent);
+          this[eventName].emit(
+            this.wrapEvent
+              ? {
+                  event,
+                  value,
+                  ...addToEventObj
+                }
+              : value
+          );
         });
       }
 

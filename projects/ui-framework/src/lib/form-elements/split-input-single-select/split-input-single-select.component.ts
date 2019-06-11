@@ -42,6 +42,7 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
     this.inputTransformers = [
       value => (value ? assign({}, this.baseValue, value) : this.baseValue)
     ];
+    this.wrapEvent = false;
   }
 
   readonly baseValue: InputSingleSelectValue = {
@@ -70,13 +71,15 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
   private enrichOptionsWithSelection(
     options: SelectGroupOption[]
   ): SelectGroupOption[] {
-    return map(options, g =>
-      assign({}, g, {
-        options: map(g.options, o =>
-          assign({}, o, { selected: o.id === this.value.selectValue })
-        )
-      })
-    );
+    return !this.value
+      ? []
+      : map(options, g =>
+          assign({}, g, {
+            options: map(g.options, o =>
+              assign({}, o, { selected: o.id === this.value.selectValue })
+            )
+          })
+        );
   }
 
   onInputChange(event: InputEvent): void {
@@ -91,6 +94,7 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
 
   onSelectChange(listChange: ListChange): void {
     this.value.selectValue = listChange.getSelectedIds()[0];
+
     this.transmitValue(this.value, {
       eventType: [InputEventType.onChange, InputEventType.onBlur]
     });

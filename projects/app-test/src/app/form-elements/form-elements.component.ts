@@ -840,6 +840,10 @@ export class FormElementsTestComponent
     console.log(this[name + '_component']);
   }
 
+  logComponentProp(name, prop = 'value') {
+    console.log(this[name + '_component'][prop]);
+  }
+
   logProp(name) {
     console.log(this[name]);
   }
@@ -872,11 +876,10 @@ export class FormElementsTestComponent
   ngOnInit() {
     this.subscribeToAll(this.allFormElements);
 
-    // this.global_visibleComponents['bSocial'] = false;
-    // this.global_visibleComponents['bSplitInput'] = false;
+    this.hideComponents(['bSocial', 'bSplitInput']);
 
-    this.hideComponents(this.allFormElements);
-    this.showComponents(['bRadio']);
+    // this.hideComponents(this.allFormElements);
+    // this.showComponents(['bRadio']);
 
     this.bSingleSelect_options[0].options[1].selected = true;
     this.bMultiSelect_optionsMock[0].options[1].selected = true;

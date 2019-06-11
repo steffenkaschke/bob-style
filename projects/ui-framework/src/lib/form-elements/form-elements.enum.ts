@@ -14,9 +14,9 @@ export enum FormEvents {
 }
 
 export enum InputEventType {
-  onFocus = 'focus',
-  onBlur = 'blur',
-  onChange = 'change',
-  onWrite = 'write',
-  onKey = 'keydown'
+  onFocus = 'onFocus',
+  onBlur = 'onBlur',
+  onChange = 'onChange',
+  onWrite = 'onWrite',
+  onKey = 'onKey'
 }

@@ -29,6 +29,7 @@ describe('RadioButtonComponent', () => {
         fixture = TestBed.createComponent(RadioButtonComponent);
         component = fixture.componentInstance;
         component.includeOptionInEvent = false;
+        component.wrapEvent = true;
         component.ngOnChanges({
           options: new SimpleChange(null, radioConfigMock, true)
         });

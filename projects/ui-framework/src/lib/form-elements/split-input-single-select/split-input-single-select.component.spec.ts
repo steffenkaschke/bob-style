@@ -47,6 +47,7 @@ describe('SplitInputSingleSelectComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(SplitInputSingleSelectComponent);
         component = fixture.componentInstance;
+        component.wrapEvent = true;
         spyOn(component.changed, 'emit');
         fixture.detectChanges();
       });

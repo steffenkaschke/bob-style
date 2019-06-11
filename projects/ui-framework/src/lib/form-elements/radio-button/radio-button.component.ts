@@ -44,6 +44,7 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
         return (options as string[]).includes(value) ? value : null;
       }
     ];
+    this.wrapEvent = false;
   }
 
   @Input() value: string | number;
