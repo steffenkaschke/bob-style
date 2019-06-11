@@ -763,6 +763,12 @@ export class FormElementsTestComponent
     });
   }
 
+  setComponentProp(name, prop, value) {
+    if (this[name + '_component']) {
+      this[name + '_component'][prop] = value;
+    }
+  }
+
   inverseVisibleComponents() {
     Object.keys(this.global_visibleComponents).forEach(key => {
       this.global_visibleComponents[key] = !this.global_visibleComponents[key];
@@ -876,7 +882,7 @@ export class FormElementsTestComponent
   ngOnInit() {
     this.subscribeToAll(this.allFormElements);
 
-    this.hideComponents(['bSocial', 'bSplitInput']);
+    // this.hideComponents(['bSocial', 'bSplitInput']);
 
     // this.hideComponents(this.allFormElements);
     // this.showComponents(['bRadio']);
@@ -888,6 +894,10 @@ export class FormElementsTestComponent
 
   ngAfterViewInit() {
     setTimeout(() => {
+      this.allFormElements.forEach(name => {
+        this.setComponentProp(name, 'wrapEvent', true);
+      });
+
       this.allFormElements.forEach(name => this.countKids(name));
     }, 0);
   }

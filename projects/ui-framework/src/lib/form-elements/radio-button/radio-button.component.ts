@@ -38,10 +38,7 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
     this.inputTransformers = [
       (value): string | number => {
         value = this.conformValueToIDtype(value);
-        const options = this.idType
-          ? (this.options as RadioConfig[]).map(o => o.id)
-          : this.options;
-        return (options as string[]).includes(value) ? value : null;
+        return this.optionsFlat.includes(value) ? value : null;
       }
     ];
     this.wrapEvent = false;
@@ -54,6 +51,7 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
   public dir = RadioDirection;
   public idType: string;
   public includeOptionInEvent = true;
+  private optionsFlat: (string | number)[] = [];
 
   @Output(FormEvents.radioChange) changed: EventEmitter<
     InputEvent
@@ -93,6 +91,9 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
     if (changes.options) {
       this.options = changes.options.currentValue;
       this.idType = this.checkIDtype();
+      this.optionsFlat = this.idType
+        ? (this.options as RadioConfig[]).map(o => o.id)
+        : (this.options as string[]);
     }
 
     if (changes.value || changes.options) {

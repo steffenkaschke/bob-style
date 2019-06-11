@@ -35,6 +35,7 @@ export abstract class BaseFormElement
   @Input() label: string;
   @Input() placeholder: string;
   @Input() value: any;
+  @Input() hideLabelOnFocus = false;
   @Input() disabled: boolean;
   @Input() required: boolean;
   @Input() hintMessage: string;

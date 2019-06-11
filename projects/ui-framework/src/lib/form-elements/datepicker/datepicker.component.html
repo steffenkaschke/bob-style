@@ -1,4 +1,4 @@
-<label *ngIf="label"
+<label *ngIf="label && !hideLabelOnFocus"
        class="bfe-label"
        [attr.for]="id">{{label}}</label>
 
@@ -10,9 +10,9 @@
          [attr.id]="id"
          [attr.name]="id"
          [type]="inputTypes.text"
-         [attr.placeholder]="placeholder"
+         [attr.placeholder]="hideLabelOnFocus ? label : placeholder"
          [value]="value"
-         [attr.value]="value"
+         [autocomplete]="enableBrowserAutoComplete"
          [disabled]="disabled"
          [required]="required"
          (focus)="picker.open();inputFocused = true"

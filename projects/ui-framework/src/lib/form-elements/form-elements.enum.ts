@@ -18,5 +18,6 @@ export enum InputEventType {
   onBlur = 'onBlur',
   onChange = 'onChange',
   onWrite = 'onWrite',
-  onKey = 'onKey'
+  onKey = 'onKey',
+  onPaste = 'onPaste'
 }

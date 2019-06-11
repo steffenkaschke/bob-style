@@ -131,8 +131,6 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(1), (_, i) => {
   };
 });
 
-console.log(optionsMock);
-
 const value: InputSingleSelectValue = {
   inputValue: 100,
   selectValue: 'AED'

@@ -15,7 +15,7 @@ import {
   MatDatepicker
 } from '@angular/material';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { InputTypes } from '../input/input.enum';
+import { InputTypes, InputAutoCompleteOptions } from '../input/input.enum';
 import { InputEventType } from '../form-elements.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
 import { InputEvent } from '../input/input.interface';
@@ -52,6 +52,8 @@ import { FormEvents } from '../form-elements.enum';
 })
 export class DatepickerComponent extends BaseFormElement implements OnInit {
   @Input() dateFormat?: string;
+  @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
+    InputAutoCompleteOptions.off;
   public date: Date;
 
   public readonly calendarIcon: String = Icons.calendar;

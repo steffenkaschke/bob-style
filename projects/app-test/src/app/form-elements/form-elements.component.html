@@ -209,6 +209,11 @@
      <p class="node-count">
        DOM elements: <span class="now">{{ bInput_nodeCount }}</span> vs <span class="then">20</span>
      </p>
+
+     <br>
+     <button type="button"
+             class="log-stuff"
+             (click)="logComponentProp('bInput')">Log value</button>
    </form>
 
    <div class="column">
@@ -1171,6 +1176,11 @@
      <p class="node-count">
        DOM elements: <span class="now">{{ bSocial_nodeCount }}</span> vs <span class="then">25</span>
      </p>
+
+     <br>
+     <button type="button"
+             class="log-stuff"
+             (click)="logComponentProp('bSocial')">Log value</button>
    </form>
 
    <div class="column">

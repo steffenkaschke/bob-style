@@ -22,6 +22,7 @@ import {
   OverlayRef
 } from '@angular/cdk/overlay';
 import { AutoCompleteOption } from './auto-complete.interface';
+import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
 
 @Component({
   selector: 'b-auto-complete',
@@ -34,6 +35,9 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
 
   @Input() label: string;
   @Input() placeholder: string;
+  @Input() hideLabelOnFocus = true;
+  @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
+    InputAutoCompleteOptions.off;
   @Input() options: AutoCompleteOption[];
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<

@@ -1,4 +1,4 @@
-<label *ngIf="label"
+<label *ngIf="label && !hideLabelOnFocus"
        class="bfe-label"
        [attr.for]="id">{{label}}</label>
 
@@ -16,15 +16,16 @@
          [attr.id]="id"
          [attr.name]="id"
          [type]="inputType"
-         [attr.placeholder]="placeholder"
+         [attr.placeholder]="hideLabelOnFocus ? label : placeholder"
          [value]="value"
          [autocomplete]="enableBrowserAutoComplete"
          [disabled]="disabled"
          [required]="required"
          [attr.maxlength]="maxChars"
-         (focus)="emitInputEvent(eventType.onFocus,$event.target.value); inputFocused = true;"
-         (blur)="emitInputEvent(eventType.onBlur,$event.target.value); inputFocused = false;"
          (input)="emitInputEvent(eventType.onChange,$event.target.value)"
+         (blur)="emitInputEvent(eventType.onBlur,$event.target.value); inputFocused = false;"
+         (focus)="emitInputEvent(eventType.onFocus,$event.target.value); inputFocused = true;"
+         (paste)="emitInputEvent(eventType.onPaste,$event.target.value)"
          (keydown)="emitInputEvent(eventType.onKey,$event.key)">
 
   <div *ngIf="showSuffix"

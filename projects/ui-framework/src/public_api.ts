@@ -68,6 +68,7 @@ export {
   SwitchToggleComponent
 } from './lib/buttons-indicators/switch-toggle/switch-toggle.component';
 // Chip Module
+export { ChipsModule } from './lib/buttons-indicators/chip/chips.module';
 export { ChipModule } from './lib/buttons-indicators/chip/chip.module';
 export {
   ChipComponent

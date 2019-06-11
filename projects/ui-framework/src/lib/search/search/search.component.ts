@@ -3,10 +3,14 @@ import {
   EventEmitter,
   Output,
   Input,
-  SimpleChanges
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { InputTypes } from '../../form-elements/input/input.enum';
+import {
+  InputTypes,
+  InputAutoCompleteOptions
+} from '../../form-elements/input/input.enum';
 import { simpleUID } from '../../services/utils/functional-utils';
 
 @Component({
@@ -17,12 +21,15 @@ import { simpleUID } from '../../services/utils/functional-utils';
     './search.component.scss'
   ]
 })
-export class SearchComponent {
+export class SearchComponent implements OnChanges {
   constructor() {}
 
   @Input() value = '';
   @Input() label: string;
   @Input() placeholder: string;
+  @Input() hideLabelOnFocus = true;
+  @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
+    InputAutoCompleteOptions.off;
 
   public id = simpleUID('bsrch-');
   public inputFocused = false;

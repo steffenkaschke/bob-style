@@ -1,9 +1,11 @@
 <b-search [ngClass]="{'panel-open': panelOpen}"
           cdkOverlayOrigin
           class="panel-trigger"
+          [value]="searchValue"
           [label]="label"
           [placeholder]="placeholder"
-          [value]="searchValue"
+          [hideLabelOnFocus]="hideLabelOnFocus"
+          [enableBrowserAutoComplete]="enableBrowserAutoComplete"
           (searchChange)="onSearchChange($event)">
 </b-search>
 
