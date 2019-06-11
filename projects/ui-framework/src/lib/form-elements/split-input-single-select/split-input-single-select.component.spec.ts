@@ -111,25 +111,16 @@ describe('SplitInputSingleSelectComponent', () => {
       component.ngOnChanges({});
       fixture.detectChanges();
     });
-    it('should not emit event if inputEvent is not change', () => {
-      const inputEl = fixture.debugElement.query(By.css('b-input'));
-      inputEl.context.inputEvents.emit({
-        event: InputEventType.onBlur,
-        value: 10
-      });
-      fixture.detectChanges();
-      expect(component.changed.emit).not.toHaveBeenCalled();
-    });
     it('should update value and emit event with updated value', () => {
       const inputEl = fixture.debugElement.query(By.css('b-input'));
-      inputEl.context.inputEvents.emit({
+      inputEl.componentInstance.changed.emit({
         event: InputEventType.onChange,
         value: 500
       });
       fixture.detectChanges();
       expect(component.changed.emit).toHaveBeenCalledWith({
-        inputValue: 500,
-        selectValue: 'USD'
+        event: InputEventType.onChange,
+        value: { inputValue: 500, selectValue: 'USD' }
       });
     });
   });
@@ -149,8 +140,8 @@ describe('SplitInputSingleSelectComponent', () => {
       selectEl.context.selectChange.emit(listChange);
       fixture.detectChanges();
       expect(component.changed.emit).toHaveBeenCalledWith({
-        inputValue: 200,
-        selectValue: 'GBP'
+        event: InputEventType.onChange,
+        value: { inputValue: 200, selectValue: 'GBP' }
       });
     });
   });

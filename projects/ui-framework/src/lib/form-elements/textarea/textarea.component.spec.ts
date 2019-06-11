@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 import { TextareaComponent } from './textarea.component';
 import { InputEventType } from '../form-elements.enum';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { InputMessageModule } from '../input-message/input-message.module';
 
 describe('TextareaComponent', () => {
   let component: TextareaComponent;
@@ -12,7 +13,7 @@ describe('TextareaComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TextareaComponent],
-      imports: [NoopAnimationsModule]
+      imports: [NoopAnimationsModule, InputMessageModule]
     })
       .compileComponents()
       .then(() => {
@@ -27,10 +28,6 @@ describe('TextareaComponent', () => {
     beforeEach(() => {
       textareaElement = fixture.debugElement.query(By.css('textarea'))
         .nativeElement;
-    });
-
-    it('expect 11', () => {
-      expect(1 === 1).toBe(true);
     });
 
     it('should emitInputEvent on input focus with input value', () => {

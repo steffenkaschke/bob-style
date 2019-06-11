@@ -6,6 +6,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { Social } from './social.enum';
 import { SocialTypes } from './social.const';
+import { InputEventType } from '../form-elements.enum';
 
 describe('SocialComponent', () => {
   let component: SocialComponent;
@@ -56,9 +57,10 @@ describe('SocialComponent', () => {
       inputElement.nativeElement.value = 'AlanTulin';
       inputElement.nativeElement.dispatchEvent(new Event('input'));
       fixture.detectChanges();
-      expect(component.changed.emit).toHaveBeenCalledWith(
-        'www.facebook.com/AlanTulin'
-      );
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: InputEventType.onChange,
+        value: 'http://www.facebook.com/AlanTulin'
+      });
     });
   });
 });

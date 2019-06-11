@@ -7,6 +7,7 @@ import { SimpleChanges, SimpleChange } from '@angular/core';
 import { RadioDirection } from './radio-button.enum';
 import { RadioConfig } from './radio-button.interface';
 import { InputMessageModule } from '../input-message/input-message.module';
+import { InputEventType } from '../form-elements.enum';
 
 describe('RadioButtonComponent', () => {
   let component: RadioButtonComponent;
@@ -52,7 +53,7 @@ describe('RadioButtonComponent', () => {
       radioButtonLabel.nativeElement.click();
       fixture.detectChanges();
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'blur',
+        event: InputEventType.onBlur,
         value: 13
       });
     });

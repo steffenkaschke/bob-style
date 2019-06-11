@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxComponent } from './checkbox.component';
 import { InputMessageModule } from '../input-message/input-message.module';
+import { InputEventType } from '../form-elements.enum';
 
 describe('CheckboxComponent', () => {
   let component: CheckboxComponent;
@@ -34,7 +35,7 @@ describe('CheckboxComponent', () => {
       fixture.detectChanges();
       expect(component.value).toBe(true);
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'blur',
+        event: InputEventType.onBlur,
         value: true,
         indeterminate: false
       });
@@ -50,7 +51,7 @@ describe('CheckboxComponent', () => {
       fixture.detectChanges();
       expect(component.value).toBe(false);
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'blur',
+        event: InputEventType.onBlur,
         value: false,
         indeterminate: false
       });
