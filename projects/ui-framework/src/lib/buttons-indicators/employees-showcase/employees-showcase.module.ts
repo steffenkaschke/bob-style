@@ -10,7 +10,7 @@ import { SingleListModule } from '../../form-elements/lists/single-list/single-l
   declarations: [EmployeesShowcaseComponent],
   imports: [CommonModule, AvatarModule, IconsModule, PanelModule, SingleListModule],
   exports: [EmployeesShowcaseComponent],
-  entryComponents: [EmployeesShowcaseComponent]
+  entryComponents: []
 })
 export class EmployeesShowcaseModule {
 }
