@@ -162,6 +162,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     this.selectChange.emit(listChange);
     const selectedValue = listChange.getSelectedIds();
     this.propagateChange(selectedValue);
+    this.onTouched();
   }
 
   private emitSelectModified(listChange: ListChange): void {

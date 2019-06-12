@@ -1,4 +1,4 @@
-<label *ngIf="label"
+<label *ngIf="label && !hideLabelOnFocus"
        class="bfe-label"
        [attr.for]="id">{{label}}</label>
 
@@ -13,7 +13,7 @@
         [b-truncate-tooltip]="1"
         [expectChanges]="true"
         [trustCssVars]="true"
-        [attr.data-placeholder]="!triggerValue ? placeholder : null">
+        [attr.data-placeholder]="!triggerValue ? (hideLabelOnFocus ?label : placeholder) : null">
     {{triggerValue}}
   </span>
 

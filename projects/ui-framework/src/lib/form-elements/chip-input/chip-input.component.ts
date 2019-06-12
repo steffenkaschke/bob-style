@@ -31,6 +31,7 @@ import {
 } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { InputEventType } from '../form-elements.enum';
+import { arrayOrFail } from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-chip-input',
@@ -53,10 +54,7 @@ export class ChipInputComponent extends BaseFormElement
   implements OnChanges, OnInit {
   constructor() {
     super();
-    this.inputTransformers = [
-      value =>
-        isArray(value) ? value : isString(value) ? stringListToArray(value) : []
-    ];
+    this.inputTransformers = [arrayOrFail];
   }
 
   @Input() value: string[] = [];
@@ -69,9 +67,9 @@ export class ChipInputComponent extends BaseFormElement
   public readonly chipType = ChipType;
   public readonly inputTypes = InputTypes;
 
-  @ViewChild('bInput') private bInput: ElementRef<HTMLInputElement>;
+  @ViewChild('input') private input: ElementRef<HTMLInputElement>;
   @ViewChildren('chipList') private chipList: QueryList<ChipComponent>;
-  @ViewChild('bInput', { read: MatAutocompleteTrigger })
+  @ViewChild('input', { read: MatAutocompleteTrigger })
   private autocompleteTrigger: MatAutocompleteTrigger;
 
   @Output() changed: EventEmitter<ChipInputChange> = new EventEmitter<
@@ -143,7 +141,7 @@ export class ChipInputComponent extends BaseFormElement
       this.value.push(chipToAdd);
       this.updatePossibleChips();
       this.transmit({ added: chipToAdd });
-      this.bInput.nativeElement.value = '';
+      this.input.nativeElement.value = '';
     } else if (chipToAdd) {
       const existingChipElemnent = this.chipList
         .toArray()
@@ -157,7 +155,7 @@ export class ChipInputComponent extends BaseFormElement
         setTimeout(() => {
           existingChipElemnent.classList.remove('blink');
         }, 200);
-        this.bInput.nativeElement.value = this.bInput.nativeElement.value.replace(
+        this.input.nativeElement.value = this.input.nativeElement.value.replace(
           /,/g,
           ''
         );
@@ -203,7 +201,7 @@ export class ChipInputComponent extends BaseFormElement
 
   public onInputKeyup(event: KeyboardEvent): void {
     if (isKey(event.key, Keys.backspace)) {
-      if (this.bInput.nativeElement.value === '' && this.chipList.last) {
+      if (this.input.nativeElement.value === '' && this.chipList.last) {
         if (this.chipList.last.chip.nativeElement.dataset.aboutToDelete) {
           this.value.pop();
           this.updatePossibleChips();
@@ -213,7 +211,7 @@ export class ChipInputComponent extends BaseFormElement
         }
 
         setTimeout(() => {
-          this.bInput.nativeElement.focus();
+          this.input.nativeElement.focus();
           this.autocompleteTrigger.closePanel();
         }, 0);
       }

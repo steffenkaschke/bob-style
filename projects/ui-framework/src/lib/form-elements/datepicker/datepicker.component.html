@@ -5,7 +5,7 @@
 <div class="bfe-wrap has-suffix"
      [ngClass]="{focused: inputFocused}">
 
-  <input #bInput
+  <input #input
          class="bfe-input"
          [attr.id]="id"
          [attr.name]="id"
@@ -16,7 +16,7 @@
          [disabled]="disabled"
          [required]="required"
          (focus)="picker.open();inputFocused = true"
-         (blur)="picker.opened ? bInput.focus() : inputFocused = false"
+         (blur)="picker.opened ? input.focus() : inputFocused = false"
          (dateChange)="onDateChange($event.value)"
          [matDatepicker]="picker">
 
@@ -31,8 +31,8 @@
 
 <mat-datepicker #picker
                 [disabled]="disabled"
-                (opened)="bInput.focus();inputFocused = true;"
-                (closed)="bInput.blur();inputFocused = false;"
+                (opened)="input.focus();inputFocused = true;"
+                (closed)="input.blur();inputFocused = false;"
                 [dateClass]="dateClass">
 </mat-datepicker>
 

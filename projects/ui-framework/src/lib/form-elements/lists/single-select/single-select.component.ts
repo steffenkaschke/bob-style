@@ -126,5 +126,6 @@ export class SingleSelectComponent extends BaseSelectPanelElement
     const selectedValue = listChange.getSelectedIds()[0];
 
     this.propagateChange(isUndefined(selectedValue) ? null : selectedValue);
+    this.onTouched();
   }
 }

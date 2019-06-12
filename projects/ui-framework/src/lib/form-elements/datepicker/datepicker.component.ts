@@ -61,7 +61,7 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
   public readonly calendarIconColor: String = IconColor.dark;
   public readonly inputTypes = InputTypes;
 
-  @ViewChild('bInput') bInput: ElementRef;
+  @ViewChild('input') input: ElementRef;
   @ViewChild('picker') picker: MatDatepicker<any>;
 
   @Output(FormEvents.dateChange) changed: EventEmitter<

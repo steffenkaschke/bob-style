@@ -20,6 +20,14 @@
      </label>
    </p>
 
+   <label>
+     <input class="simple-checkbox"
+            (change)="globalControlChange('global_hideLabelOnFocus')"
+            [(ngModel)]="global_hideLabelOnFocus"
+            type="checkbox">
+     enable all hide label on focus
+   </label>
+
    <p class="col">
      <label>
        <input class="simple-checkbox"
@@ -179,6 +187,7 @@
               [label]="bInput_label"
               [placeholder]="bInput_placeholder"
               [value]="bInput_directValueInput ? bInput_value : undefined"
+              [hideLabelOnFocus]="bInput_hideLabelOnFocus"
               [disabled]="bInput_disabled"
               [required]="bInput_required"
               [maxChars]="bInput_maxChars"
@@ -194,6 +203,7 @@
               [label]="bInput_label"
               [placeholder]="bInput_placeholder"
               [value]="bInput_directValueInput ? bInput_value : undefined"
+              [hideLabelOnFocus]="bInput_hideLabelOnFocus"
               [disabled]="bInput_disabled"
               [required]="bInput_required"
               [maxChars]="bInput_maxChars"
@@ -324,6 +334,14 @@
                 class="simple-input small"
                 [(ngModel)]="bInput_maxChars">
        </label>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bInput_hideLabelOnFocus"
+                type="checkbox">
+         hide label on focus
+       </label>
+
      </div>
 
      <div class="control-item col">
@@ -426,6 +444,7 @@
                  [label]="bTextarea_label"
                  [placeholder]="bTextarea_placeholder"
                  [value]="bTextarea_directValueInput ? bTextarea_value : undefined"
+                 [hideLabelOnFocus]="bTextarea_hideLabelOnFocus"
                  [disabled]="bTextarea_disabled"
                  [required]="bTextarea_required"
                  [hintMessage]="bTextarea_hint"
@@ -441,6 +460,7 @@
                  [label]="bTextarea_label"
                  [placeholder]="bTextarea_placeholder"
                  [value]="bTextarea_directValueInput ? bTextarea_value : undefined"
+                 [hideLabelOnFocus]="bTextarea_hideLabelOnFocus"
                  [disabled]="bTextarea_disabled"
                  [required]="bTextarea_required"
                  [hintMessage]="bTextarea_hint"
@@ -562,6 +582,13 @@
                 class="simple-input small"
                 [(ngModel)]="bTextarea_maxChars">
        </label>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bTextarea_hideLabelOnFocus"
+                type="checkbox">
+         hide label on focus
+       </label>
      </div>
 
      <div class="control-item col">
@@ -666,6 +693,7 @@
                    [placeholder]="bDatepicker_placeholder"
                    [value]="bDatepicker_directValueInput ? bDatepicker_value : undefined"
                    [dateFormat]="bDatepicker_dateFormat"
+                   [hideLabelOnFocus]="bDatepicker_hideLabelOnFocus"
                    [disabled]="bDatepicker_disabled"
                    [required]="bDatepicker_required"
                    [hintMessage]="bDatepicker_hint"
@@ -681,6 +709,7 @@
                    [placeholder]="bDatepicker_placeholder"
                    [value]="bDatepicker_directValueInput ? bDatepicker_value : undefined"
                    [dateFormat]="bDatepicker_dateFormat"
+                   [hideLabelOnFocus]="bDatepicker_hideLabelOnFocus"
                    [disabled]="bDatepicker_disabled"
                    [required]="bDatepicker_required"
                    [hintMessage]="bDatepicker_hint"
@@ -808,6 +837,13 @@
                 [value]="bDatepicker_dateFormat"
                 (change)="bDatepicker_dateFormat = bDatepicker_dateFormat_input.value"
                 type="search">
+       </label>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bDatepicker_hideLabelOnFocus"
+                type="checkbox">
+         hide label on focus
        </label>
      </div>
 
@@ -1020,7 +1056,7 @@
        </p>
        <label>
          <textarea class="simple-textarea bigger"
-                   (input)="onValueInput('bChipinput', $event)"
+                   (change)="onValueInput('bChipinput', arrayOfStringsOrArrayFromString($event.target.value))"
                    [value]="bChipinput_value"
                    type="search"></textarea>
        </label>
@@ -1151,6 +1187,7 @@
                [label]="bSocial_label"
                [placeholder]="bSocial_placeholder"
                [value]="bSocial_directValueInput ? bSocial_value : undefined"
+               [hideLabelOnFocus]="bSocial_hideLabelOnFocus"
                [disabled]="bSocial_disabled"
                [required]="bSocial_required"
                [hintMessage]="bSocial_hint"
@@ -1166,6 +1203,7 @@
                [label]="bSocial_label"
                [placeholder]="bSocial_placeholder"
                [value]="bSocial_directValueInput ? bSocial_value : undefined"
+               [hideLabelOnFocus]="bSocial_hideLabelOnFocus"
                [disabled]="bSocial_disabled"
                [required]="bSocial_required"
                [hintMessage]="bSocial_hint"
@@ -1299,6 +1337,12 @@
          </select>
        </label>
 
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bSocial_hideLabelOnFocus"
+                type="checkbox">
+         hide label on focus
+       </label>
 
      </div>
 
@@ -1434,6 +1478,14 @@
      <p class="node-count">
        DOM elements: <span class="now">{{ bCheckbox_nodeCount }}</span> vs <span class="then">7</span>
      </p>
+
+     <br>
+     <button type="button"
+             class="log-stuff"
+             (click)="logComponentProp('bCheckbox')">Log value</button>
+     <button type="button"
+             class="log-stuff"
+             (click)="logComponentProp('bCheckbox','input')">Log input element</button>
    </form>
 
    <div class="column">
@@ -1506,7 +1558,7 @@
        </p>
        <label>
          <input class="simple-input bigger"
-                (input)="onValueInput('bCheckbox', $event)"
+                (change)="onValueInput('bCheckbox', truthyOrFalse($event.target.value))"
                 [value]="bCheckbox_value"
                 type="search">
        </label>
@@ -1531,11 +1583,15 @@
        </p>
 
        <label>
-         <button type="button"
+         <!-- <button type="button"
                  class="smaller-button"
-                 (click)="bCheckbox_indeterminate=true">
+                 (click)="bCheckbox_indeterminate = true">
            indeterminate
-         </button>
+         </button> -->
+         <input class="simple-checkbox"
+                [(ngModel)]="bCheckbox_indeterminate"
+                type="checkbox">
+         indeterminate
        </label>
 
      </div>
@@ -1883,6 +1939,7 @@
                       [options]="bSingleSelect_options"
                       [value]="bSingleSelect_directValueInput ? bSingleSelect_value : undefined"
                       [showSingleGroupHeader]="bSingleSelect_showSingleGroupHeader"
+                      [hideLabelOnFocus]="bSingleSelect_hideLabelOnFocus"
                       [disabled]="bSingleSelect_disabled"
                       [required]="bSingleSelect_required"
                       [hintMessage]="bSingleSelect_hint"
@@ -1899,6 +1956,7 @@
                       [options]="bSingleSelect_options"
                       [value]="bSingleSelect_directValueInput ? bSingleSelect_value : undefined"
                       [showSingleGroupHeader]="bSingleSelect_showSingleGroupHeader"
+                      [hideLabelOnFocus]="bSingleSelect_hideLabelOnFocus"
                       [disabled]="bSingleSelect_disabled"
                       [required]="bSingleSelect_required"
                       [hintMessage]="bSingleSelect_hint"
@@ -2029,6 +2087,12 @@
          showSingleGroupHeader
        </label>
 
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bSingleSelect_hideLabelOnFocus"
+                type="checkbox">
+         hide label on focus
+       </label>
      </div>
 
      <div class="control-item col">
@@ -2122,6 +2186,7 @@
                      [options]="bMultiSelect_options"
                      [value]="bMultiSelect_directValueInput ? bMultiSelect_value : undefined"
                      [showSingleGroupHeader]="bMultiSelect_showSingleGroupHeader"
+                     [hideLabelOnFocus]="bMultiSelect_hideLabelOnFocus"
                      [disabled]="bMultiSelect_disabled"
                      [required]="bMultiSelect_required"
                      [hintMessage]="bMultiSelect_hint"
@@ -2140,6 +2205,7 @@
                      [options]="bMultiSelect_options"
                      [value]="bMultiSelect_directValueInput ? bMultiSelect_value : undefined"
                      [showSingleGroupHeader]="bMultiSelect_showSingleGroupHeader"
+                     [hideLabelOnFocus]="bMultiSelect_hideLabelOnFocus"
                      [disabled]="bMultiSelect_disabled"
                      [required]="bMultiSelect_required"
                      [hintMessage]="bMultiSelect_hint"
@@ -2271,6 +2337,13 @@
                 type="checkbox">
          showSingleGroupHeader
        </label>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bMultiSelect_hideLabelOnFocus"
+                type="checkbox">
+         hide label on focus
+       </label>
      </div>
 
      <div class="control-item col">
@@ -2373,6 +2446,7 @@
                                   [placeholder]="bSplitInput_placeholder"
                                   [value]="bSplitInput_directValueInput ? bSplitInput_value : undefined"
                                   [selectOptions]="bSplitInput_selectOptions"
+                                  [hideLabelOnFocus]="bSplitInput_hideLabelOnFocus"
                                   [disabled]="bSplitInput_disabled"
                                   [required]="bSplitInput_required"
                                   [hintMessage]="bSplitInput_hint"
@@ -2388,6 +2462,7 @@
                                   [placeholder]="bSplitInput_placeholder"
                                   [value]="bSplitInput_directValueInput ? bSplitInput_value : undefined"
                                   [selectOptions]="bSplitInput_selectOptions"
+                                  [hideLabelOnFocus]="bSplitInput_hideLabelOnFocus"
                                   [disabled]="bSplitInput_disabled"
                                   [required]="bSplitInput_required"
                                   [hintMessage]="bSplitInput_hint"
@@ -2507,6 +2582,13 @@
                 [(ngModel)]="bSplitInput_disabled"
                 type="checkbox">
          disabled
+       </label>
+
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="bSplitInput_hideLabelOnFocus"
+                type="checkbox">
+         hide label on focus
        </label>
 
      </div>

@@ -14,6 +14,7 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { InputEvent } from '../input/input.interface';
 import { InputEventType } from '../form-elements.enum';
 import { FormEvents } from '../form-elements.enum';
+import { booleanOrFail } from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-checkbox',
@@ -35,21 +36,13 @@ import { FormEvents } from '../form-elements.enum';
 export class CheckboxComponent extends BaseFormElement implements OnChanges {
   constructor() {
     super();
-    this.inputTransformers = [
-      value => {
-        const truthy = ['true', 'on', '1', 1];
-        if (typeof value !== 'boolean') {
-          value = truthy.includes(value) ? true : false;
-        }
-        return value;
-      }
-    ];
+    this.inputTransformers = [booleanOrFail];
     this.wrapEvent = false;
   }
 
-  @ViewChild('input') private input: ElementRef;
-  @Input() value = false;
-  @Input() indeterminate = false;
+  @ViewChild('input') public input: ElementRef;
+  @Input() public value = false;
+  @Input() public indeterminate = false;
 
   @Output(FormEvents.checkboxChange) changed: EventEmitter<
     InputEvent
@@ -78,7 +71,7 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
   }
 
   public toggleCheckbox(): void {
-    this.value = !this.value;
+    this.value = this.input.nativeElement.checked;
     this.indeterminate = false;
     this.transmit(InputEventType.onBlur);
   }

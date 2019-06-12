@@ -18,6 +18,10 @@ import {
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
 import { BlotType } from '../../../../ui-framework/src/lib/form-elements/rich-text-editor/rte-core/rte.enum';
 import { AvatarComponent } from '../../../../ui-framework/src/lib/buttons-indicators/avatar/avatar.component';
+import {
+  truthyOrFalse,
+  arrayOfStringsOrArrayFromString
+} from '../../../../ui-framework/src/lib/services/utils/transformers';
 
 @Component({
   selector: 'app-form-elements-test',
@@ -55,6 +59,7 @@ export class FormElementsTestComponent
   global_maxChars = 30;
   global_numberOfCustEvents = 2;
   global_consoleLog = false;
+  global_hideLabelOnFocus = false;
 
   globalFormControlStartValues = {
     null: null,
@@ -100,6 +105,7 @@ export class FormElementsTestComponent
   bInput_formSubmitted = false;
   bInput_nodeCount = 0;
   bInput_lastEventName;
+  bInput_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bInput_Form = new FormGroup({
     bInput: new FormControl(this.globalFormControlStartValue, {
@@ -135,6 +141,7 @@ export class FormElementsTestComponent
   bTextarea_formSubmitted = false;
   bTextarea_nodeCount = 0;
   bTextarea_lastEventName;
+  bTextarea_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bTextarea_Form = new FormGroup({
     bTextarea: new FormControl(this.globalFormControlStartValue, {
@@ -170,6 +177,7 @@ export class FormElementsTestComponent
   bDatepicker_formSubmitted = false;
   bDatepicker_nodeCount = 0;
   bDatepicker_lastEventName;
+  bDatepicker_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bDatepicker_Form = new FormGroup({
     bDatepicker: new FormControl(this.globalFormControlStartValue, {
@@ -189,7 +197,7 @@ export class FormElementsTestComponent
   bChipinput_EventCounter = 0;
   bChipinput_label = 'Chip Input label';
   bChipinput_placeholder = 'Chip Input placeholder';
-  bChipinput_value = 'petting, fisting, rimming';
+  bChipinput_value = ['petting', 'fisting', 'rimming']; // 'petting, fisting, rimming';
   bChipinput_options = chipOptionsMock;
   bChipinput_acceptNew = true;
   bChipinput_disabled = this.global_disabled;
@@ -208,9 +216,12 @@ export class FormElementsTestComponent
   bChipinput_lastEventName;
 
   bChipinput_Form = new FormGroup({
-    bChipinput: new FormControl(this.globalFormControlStartValue, {
-      updateOn: this.bChipinput_updateOn_mode as any
-    })
+    bChipinput: new FormControl(
+      this.bChipinput_value, // this.globalFormControlStartValue
+      {
+        updateOn: this.bChipinput_updateOn_mode as any
+      }
+    )
   });
   bChipinput = this.bChipinput_Form.get('bChipinput');
 
@@ -241,6 +252,7 @@ export class FormElementsTestComponent
   bSocial_formSubmitted = false;
   bSocial_nodeCount = 0;
   bSocial_lastEventName;
+  bSocial_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bSocial_Form = new FormGroup({
     bSocial: new FormControl(this.globalFormControlStartValue, {
@@ -260,7 +272,7 @@ export class FormElementsTestComponent
   bCheckbox_EventCounter = 0;
   bCheckbox_label = 'Checkbox label';
   bCheckbox_placeholder = 'Checkbox Placeholder';
-  bCheckbox_value = true;
+  bCheckbox_value = true; // 'true';
   bCheckbox_indeterminate = false;
   bCheckbox_disabled = this.global_disabled;
   bCheckbox_required = this.global_required;
@@ -278,9 +290,12 @@ export class FormElementsTestComponent
   bCheckbox_lastEventName;
 
   bCheckbox_Form = new FormGroup({
-    bCheckbox: new FormControl(this.globalFormControlStartValue, {
-      updateOn: this.bCheckbox_updateOn_mode as any
-    })
+    bCheckbox: new FormControl(
+      this.bCheckbox_value, // this.globalFormControlStartValue
+      {
+        updateOn: this.bCheckbox_updateOn_mode as any
+      }
+    )
   });
   bCheckbox = this.bCheckbox_Form.get('bCheckbox');
 
@@ -379,6 +394,7 @@ export class FormElementsTestComponent
   bSingleSelect_nodeCount = 0;
   bSingleSelect_lastEventName;
   bSingleSelect_numberOfCustEvents = 1;
+  bSingleSelect_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bSingleSelect_Form = new FormGroup({
     bSingleSelect: new FormControl(this.globalFormControlStartValue, {
@@ -445,6 +461,7 @@ export class FormElementsTestComponent
   bMultiSelect_nodeCount = 0;
   bMultiSelect_lastEventName;
   bMultiSelect_numberOfCustEvents = 1;
+  bMultiSelect_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bMultiSelect_Form = new FormGroup({
     bMultiSelect: new FormControl(this.globalFormControlStartValue, {
@@ -549,6 +566,7 @@ export class FormElementsTestComponent
   bSplitInput_formSubmitted = false;
   bSplitInput_nodeCount = 0;
   bSplitInput_lastEventName;
+  bSplitInput_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bSplitInput_Form = new FormGroup({
     bSplitInput: new FormControl(this.globalFormControlStartValue, {
@@ -629,6 +647,11 @@ export class FormElementsTestComponent
 
   ///////////////////////////////////
 
+  truthyOrFalse = truthyOrFalse;
+  arrayOfStringsOrArrayFromString = arrayOfStringsOrArrayFromString;
+
+  ///////////////////////////////////
+
   setValue(name) {
     if (this[name]) {
       this[name].setValue(this[name + '_value'], {
@@ -638,7 +661,8 @@ export class FormElementsTestComponent
   }
 
   onValueInput(name, event, parse = false) {
-    const value = parse ? JSON.parse(event.target.value) : event.target.value;
+    let value = event.target ? event.target.value : event;
+    value = parse ? JSON.parse(value) : value;
     if (this[name + '_setInputProgrammatically']) {
       event.preventDefault();
       this[name + '_component'].value = value;
@@ -660,11 +684,16 @@ export class FormElementsTestComponent
 
     let value =
       max === 1
-        ? $event
+        ? typeof $event === 'string' && $event.length > 150
+          ? $event.substring(0, 150) + '...'
+          : $event
         : (this[name + '_EventValue']
             ? this[name + '_EventValue'].split('\n').slice((max - 1) * -1) +
               ' \n '
-            : '') + $event;
+            : '') +
+          (typeof $event === 'string' && $event.length > 150
+            ? $event.substring(0, 150) + '...'
+            : $event);
 
     if (max === 1 && flat) {
       value = flatten(value as any);

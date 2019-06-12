@@ -53,7 +53,7 @@ export class RteLinkEditorComponent {
   }
 
   focusTextInput(): void {
-    (this.textInput.bInput as any).nativeElement.focus();
+    (this.textInput.input as any).nativeElement.focus();
   }
 
   onTextChange(e: InputEvent) {

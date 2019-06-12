@@ -4,7 +4,7 @@ import {
   SimpleChanges,
   OnChanges,
   Output,
-  EventEmitter,
+  EventEmitter
 } from '@angular/core';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
 import { simpleUID, asArray } from '../services/utils/functional-utils';
@@ -55,7 +55,7 @@ export abstract class BaseFormElement
     return this.warnMessage && !this.errorMessage && !this.disabled;
   }
   @HostBinding('class.has-label') get hasLabel(): boolean {
-    return !!this.label; // check for hideLabelOnFocus
+    return this.label && !this.hideLabelOnFocus;
   }
   @HostBinding('class.has-message') get hasMessage(): boolean {
     return (
@@ -113,15 +113,13 @@ export abstract class BaseFormElement
     // Transformers may intentionally set value to undefined,
     // to prevent transmission
     if (value !== undefined) {
-      eventType = asArray(eventType);
-
       value = this.outputTransformers.reduce(
         (previousResult, fn) => fn(previousResult),
         value
       );
 
       if (eventName) {
-        eventType.forEach(event => {
+        asArray(eventType).forEach(event => {
           this[eventName].emit(
             this.wrapEvent
               ? {
