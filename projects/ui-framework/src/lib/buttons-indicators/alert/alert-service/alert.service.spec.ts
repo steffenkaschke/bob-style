@@ -77,6 +77,7 @@ describe('AlertService', () => {
       expect(titleElement.innerText).toEqual('TITLE');
       expect(textElement.innerText).toEqual('text');
       expect(iconElement.classList.contains(IconSize.xLarge)).toBeTruthy();
+      expect(alertService.isOpen).toBeTruthy();
       tick(ALERT_DURATION_TICK);
     }));
 
@@ -92,6 +93,7 @@ describe('AlertService', () => {
       tick(ALERT_DURATION_TICK);
       expect(alertService.overlayRef.hostElement).toBeNull();
       expect(alertService.overlayRef.hasAttached()).toBeFalsy();
+      expect(alertService.isOpen).toBeFalsy();
     }));
 
     it('should close the alert after 7 seconds', fakeAsync(() => {
@@ -104,6 +106,7 @@ describe('AlertService', () => {
       tick(ALERT_DURATION_TICK);
       expect(alertService.overlayRef.hostElement).toBeNull();
       expect(alertService.overlayRef.hasAttached()).toBeFalsy();
+      expect(alertService.isOpen).toBeFalsy();
     }));
   });
 });
