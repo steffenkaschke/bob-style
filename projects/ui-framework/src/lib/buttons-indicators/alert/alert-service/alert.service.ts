@@ -12,23 +12,28 @@ export class AlertService {
   private overlayConfig: OverlayConfig;
   private templatePortal: TemplatePortal;
   public overlayRef: OverlayRef;
+  public isOpen: boolean;
+  private timeRef: NodeJS.Timer;
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
               private injector: Injector,
               private overlay: Overlay) { }
 
   public showAlert(config: AlertConfig): void {
-    this.injectAlertComponent();
-    this.alertComponentRef.instance.alertConfig = cloneDeep(config);
-    this.alertComponentRef.instance.closeAlertCallback = bind(this.closeAlert, this);
-    this.overlayConfig = this.getConfig();
-    this.overlayRef = this.overlay.create(this.overlayConfig);
-    this.templatePortal = new TemplatePortal(
-      this.alertComponentRef.instance.alertTemplateRef,
-      this.alertComponentRef.instance.viewContainerRef
-    );
-    this.overlayRef.attach(this.templatePortal);
-    setTimeout(() => this.closeAlert(), ALERT_DURATION);
+    if (!this.isOpen) {
+      this.injectAlertComponent();
+      this.alertComponentRef.instance.alertConfig = cloneDeep(config);
+      this.alertComponentRef.instance.closeAlertCallback = bind(this.closeAlert, this);
+      this.overlayConfig = this.getConfig();
+      this.overlayRef = this.overlay.create(this.overlayConfig);
+      this.templatePortal = new TemplatePortal(
+        this.alertComponentRef.instance.alertTemplateRef,
+        this.alertComponentRef.instance.viewContainerRef
+      );
+      this.overlayRef.attach(this.templatePortal);
+      this.isOpen = true;
+      this.timeRef = setTimeout(() => this.closeAlert(), ALERT_DURATION);
+    }
   }
 
   private injectAlertComponent(): void {
@@ -50,5 +55,7 @@ export class AlertService {
 
   public closeAlert(): void {
     this.overlayRef.dispose();
+    this.isOpen = false;
+    clearTimeout(this.timeRef);
   }
 }
