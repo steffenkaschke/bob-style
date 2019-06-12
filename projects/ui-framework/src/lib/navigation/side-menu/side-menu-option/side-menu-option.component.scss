@@ -8,6 +8,9 @@
     cursor: pointer;
     align-items: center;
     @include listOption;
+    &:hover, &.selected, &.focus {
+      background-color: $grey-200;
+    }
 
     &.no-prefix {
       grid-template-columns: 0px 1fr max-content;
