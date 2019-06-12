@@ -1802,8 +1802,9 @@
        </p>
        <label>
          <input class="simple-input bigger"
-                (change)="onValueInput('bRadio', $event)"
-                [value]="bRadio_value"
+                (change)="onValueInput('bRadio', $event, false,
+                valueToObjectWithKeyOfValueFromArray($event.target.value, 'id', bRadio_options))"
+                [value]="bRadio_value.id || bRadio_value"
                 type="search">
        </label>
      </div>

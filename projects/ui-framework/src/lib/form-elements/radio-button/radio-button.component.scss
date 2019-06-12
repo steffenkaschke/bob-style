@@ -40,8 +40,12 @@
   @include bFormElement-label;
 }
 
+:host.required .bfe-label {
+  @include input-requred;
+}
+
 .brd-input {
-  @include radio($disabled-selector: null);
+  @include radio($disabled-selector: null, $required-selector: null);
 }
 
 .brd-label {

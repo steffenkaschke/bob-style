@@ -6,18 +6,18 @@
      [attr.id]="id"
      [ngClass]="{'direction-row': !direction || direction === dir.row, 'direction-column': direction === dir.column}">
 
-  <ng-container *ngFor="let radio of optionsFlat; let i = index;">
+  <ng-container *ngFor="let radio of options; let i = index;">
     <input type="radio"
            class="brd-input"
            [attr.id]="id+'-'+i"
            [attr.name]="id"
-           [value]="radio"
-           [checked]="value === radio"
+           [value]="radio[key]"
+           [checked]="value && value[key] === radio[key]"
            [required]="required"
            [disabled]="disabled"
-           (change)="onRadioChange($event)" />
+           (change)="onRadioChange(radio[key])" />
     <label class="brd-label"
-           [attr.for]="id+'-'+i">{{radio}}</label>
+           [attr.for]="id+'-'+i">{{radio.label || radio[key] || radio}}</label>
   </ng-container>
 </div>
 

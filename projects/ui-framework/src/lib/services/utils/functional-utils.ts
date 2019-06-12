@@ -31,6 +31,12 @@ export const isString = (val: any): boolean => val && typeof val === 'string';
 
 export const isArray = (val: any): boolean => val && Array.isArray(val);
 
+export const isObject = (val: any): boolean =>
+  val && !isArray(val) && val === Object(val);
+
+export const isNullOrUndefined = (val: any): boolean =>
+  val === undefined || val === null;
+
 export const isRenderedComponent = (obj: any): boolean =>
   obj && !!obj.component;
 

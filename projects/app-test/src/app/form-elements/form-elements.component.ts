@@ -20,7 +20,8 @@ import { BlotType } from '../../../../ui-framework/src/lib/form-elements/rich-te
 import { AvatarComponent } from '../../../../ui-framework/src/lib/buttons-indicators/avatar/avatar.component';
 import {
   truthyOrFalse,
-  arrayOfStringsOrArrayFromString
+  arrayOfStringsOrArrayFromString,
+  valueToObjectWithKeyOfValueFromArray
 } from '../../../../ui-framework/src/lib/services/utils/transformers';
 
 @Component({
@@ -53,7 +54,7 @@ export class FormElementsTestComponent
   global_formControlEnabled = true;
   global_directValueInput = false;
   global_setInputProgrammatically = false;
-  global_setValEmit = true;
+  global_setValEmit = false;
   global_disabled = false;
   global_required = true;
   global_maxChars = 30;
@@ -217,7 +218,8 @@ export class FormElementsTestComponent
 
   bChipinput_Form = new FormGroup({
     bChipinput: new FormControl(
-      this.bChipinput_value, // this.globalFormControlStartValue
+      // this.bChipinput_value,
+      this.globalFormControlStartValue,
       {
         updateOn: this.bChipinput_updateOn_mode as any
       }
@@ -291,7 +293,8 @@ export class FormElementsTestComponent
 
   bCheckbox_Form = new FormGroup({
     bCheckbox: new FormControl(
-      this.bCheckbox_value, // this.globalFormControlStartValue
+      // this.bCheckbox_value,
+      this.globalFormControlStartValue,
       {
         updateOn: this.bCheckbox_updateOn_mode as any
       }
@@ -304,9 +307,10 @@ export class FormElementsTestComponent
   bRadio_optionsMock = {
     array: ['Option one', 'Option two', 'Option three'],
     radioConfig: [
-      { id: 11, label: 'option one' },
-      { id: 12, label: 'option two' },
-      { id: 13, label: 'option three' }
+      { id: 11, label: 'option 1' },
+      { id: 12, label: 'option 2' },
+      { id: 13, label: 'option 3' },
+      { id: 'option 4' }
     ]
   };
 
@@ -317,8 +321,8 @@ export class FormElementsTestComponent
   bRadio_SubscrCounter = 0;
   bRadio_EventCounter = 0;
   bRadio_label = 'Radio button label';
-  bRadio_value = 'Option one';
-  bRadio_optionsType = 'array';
+  bRadio_value = { id: 11, label: 'option one' };
+  bRadio_optionsType = 'radioConfig';
   bRadio_options = this.bRadio_optionsMock[this.bRadio_optionsType];
   bRadio_direction = 'row';
   bRadio_disabled = this.global_disabled;
@@ -649,6 +653,7 @@ export class FormElementsTestComponent
 
   truthyOrFalse = truthyOrFalse;
   arrayOfStringsOrArrayFromString = arrayOfStringsOrArrayFromString;
+  valueToObjectWithKeyOfValueFromArray = valueToObjectWithKeyOfValueFromArray;
 
   ///////////////////////////////////
 
@@ -721,6 +726,9 @@ export class FormElementsTestComponent
     this[name + '_subscribtion'] =
       this[name] &&
       this[name].valueChanges.subscribe(value => {
+        if (!isString(value)) {
+          value = JSON.stringify(value);
+        }
         this[name + '_SubscrValue'] = value;
         this[name + '_SubscrCounter']++;
         if (this.global_consoleLog) {

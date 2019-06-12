@@ -14,7 +14,11 @@ import { InputEventType } from '../form-elements.enum';
 import { RadioConfig } from './radio-button.interface';
 import { FormEvents } from '../form-elements.enum';
 import { InputEvent } from '../input/input.interface';
-import { valueInArrayOrFail } from '../../services/utils/transformers';
+import {
+  valueInArrayOrFail,
+  objectHasKeyOrFail
+} from '../../services/utils/transformers';
+import { interfaceAsObject } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-radio-button',
@@ -37,54 +41,46 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
   constructor() {
     super();
     this.inputTransformers = [
-      value => valueInArrayOrFail(value, this.optionsFlat)
+      value => objectHasKeyOrFail(value, this.key),
+      value => valueInArrayOrFail(value, this.options, this.key)
     ];
     this.wrapEvent = false;
   }
 
-  @Input() value: string | number;
-  @Input() options: string[] | RadioConfig[];
-  public optionsFlat: (string | number)[] = [];
+  @Input() value: RadioConfig;
+  @Input() options: RadioConfig[];
   @Input() direction: RadioDirection = RadioDirection.row;
 
   public dir = RadioDirection;
-  public includeOptionInEvent = true;
+  public key = 'id';
+  public returnId = true;
 
   @Output(FormEvents.radioChange) changed: EventEmitter<
     InputEvent
   > = new EventEmitter<InputEvent>();
 
   private transmit(event: InputEventType): void {
-    this.transmitValue(this.value, {
-      eventType: [event],
-      addToEventObj:
-        (this.options as RadioConfig[])[0].label && this.includeOptionInEvent
-          ? {
-              option: (this.options as RadioConfig[]).find(
-                o => o.label === this.value
-              )
-            }
-          : {}
+    this.transmitValue(this.returnId ? this.value[this.key] : this.value, {
+      eventType: [event]
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.options) {
       this.options = changes.options.currentValue;
-
-      this.optionsFlat = (this.options as RadioConfig[])[0].label
-        ? (this.options as RadioConfig[]).map(o => o.label)
-        : (this.options as string[]);
     }
 
     if (changes.value || changes.options) {
-      this.writeValue(changes.value ? changes.value.currentValue : this.value);
-      this.transmit(InputEventType.onWrite);
+      const val = changes.value ? changes.value.currentValue : this.value;
+      if (val) {
+        this.writeValue(val);
+        this.transmit(InputEventType.onWrite);
+      }
     }
   }
 
-  public onRadioChange(event): void {
-    this.writeValue(event.target.value);
+  public onRadioChange(key): void {
+    this.writeValue(this.options.find(o => o[this.key] === key));
     this.transmit(InputEventType.onBlur);
   }
 }
