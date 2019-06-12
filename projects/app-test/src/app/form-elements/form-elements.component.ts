@@ -321,7 +321,7 @@ export class FormElementsTestComponent
   bRadio_SubscrCounter = 0;
   bRadio_EventCounter = 0;
   bRadio_label = 'Radio button label';
-  bRadio_value = { id: 11, label: 'option one' };
+  bRadio_value = { id: 11, label: 'option 1' };
   bRadio_optionsType = 'radioConfig';
   bRadio_options = this.bRadio_optionsMock[this.bRadio_optionsType];
   bRadio_direction = 'row';
@@ -573,9 +573,13 @@ export class FormElementsTestComponent
   bSplitInput_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bSplitInput_Form = new FormGroup({
-    bSplitInput: new FormControl(this.globalFormControlStartValue, {
-      updateOn: this.bSplitInput_updateOn_mode as any
-    })
+    bSplitInput: new FormControl(
+      // this.globalFormControlStartValue
+      this.bSplitInput_value,
+      {
+        updateOn: this.bSplitInput_updateOn_mode as any
+      }
+    )
   });
   bSplitInput = this.bSplitInput_Form.get('bSplitInput');
 
@@ -657,6 +661,10 @@ export class FormElementsTestComponent
 
   ///////////////////////////////////
 
+  asString(value) {
+    return isString(value) ? value : JSON.stringify(value);
+  }
+
   setValue(name) {
     if (this[name]) {
       this[name].setValue(this[name + '_value'], {
@@ -680,9 +688,7 @@ export class FormElementsTestComponent
   }
 
   onEvent(name, $event, eventName, flat = false) {
-    if (!isString($event)) {
-      $event = JSON.stringify($event);
-    }
+    $event = this.asString($event);
 
     const max =
       this[name + '_numberOfCustEvents'] || this.global_numberOfCustEvents;
@@ -726,9 +732,7 @@ export class FormElementsTestComponent
     this[name + '_subscribtion'] =
       this[name] &&
       this[name].valueChanges.subscribe(value => {
-        if (!isString(value)) {
-          value = JSON.stringify(value);
-        }
+        value = this.asString(value);
         this[name + '_SubscrValue'] = value;
         this[name + '_SubscrCounter']++;
         if (this.global_consoleLog) {

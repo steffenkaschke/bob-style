@@ -3,7 +3,8 @@
         [icon]="socialTypes[type].icon"
         [size]="iconSize.large">
 </b-icon>
-<b-input [errorMessage]="errorMessage"
+<b-input #bInput
+         [errorMessage]="errorMessage"
          [inputType]="inputTypes.text"
          [hasPrefix]="true"
          [value]="value"

@@ -4,6 +4,7 @@ import {
   Input,
   Output,
   forwardRef,
+  ViewChild
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { IconColor, IconSize } from '../../icons/icons.enum';
@@ -13,6 +14,8 @@ import { SocialTypes } from './social.const';
 import { Social } from './social.enum';
 import { BaseFormElement } from '../base-form-element';
 import { FormEvents, InputEventType } from '../form-elements.enum';
+import { domainFromUrl } from '../../services/utils/functional-utils';
+import { InputComponent } from '../input/input.component';
 
 @Component({
   selector: 'b-social',
@@ -35,14 +38,31 @@ export class SocialComponent extends BaseFormElement {
   constructor() {
     super();
     this.inputTransformers = [
-      value =>
-        value ? (value.split('/')[1] ? value.split('/')[1] : value) : ''
+      value => {
+        if (value) {
+          const origLength = value.length;
+          const domain = domainFromUrl(value);
+          value = value.split(domain)[value.split(domain).length - 1];
+          if (origLength !== value.length) {
+            if (this.type && SocialTypes[this.type].parseSplit) {
+              value = value.split(SocialTypes[this.type].parseSplit)[1];
+            } else {
+              value = value.split('/');
+              value.shift();
+              value = value.join('/');
+            }
+          }
+        }
+        return value;
+      }
     ];
     this.outputTransformers = [
       value => (value ? `http://${SocialTypes[this.type].prefix}${value}` : '')
     ];
     this.wrapEvent = false;
   }
+
+  @ViewChild('bInput') bInput: InputComponent;
 
   @Input() type: Social;
   public readonly iconSize = IconSize;
@@ -57,7 +77,20 @@ export class SocialComponent extends BaseFormElement {
   public onInputEvents(event: InputEvent): void {
     if (event.event === InputEventType.onChange) {
       this.writeValue(event.value);
+      this.transmitValue(this.value, {
+        eventType: [InputEventType.onChange]
+      });
+    }
+    if (
+      event.event === InputEventType.onFocus ||
+      event.event === InputEventType.onBlur
+    ) {
       this.transmitValue(this.value, { eventType: [event.event] });
+    }
+    if (event.event === InputEventType.onBlur) {
+      setTimeout(() => {
+        this.bInput.input.nativeElement.value = this.value;
+      }, 0);
     }
   }
 }

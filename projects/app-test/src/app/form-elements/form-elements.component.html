@@ -2530,7 +2530,7 @@
 
      <p class="full-width">ValueChanges: {{bSplitInput_SubscrCounter}}</p>
      <div class="outputValue full-width">
-       {{ bSplitInput_SubscrValue | json }}
+       {{ bSplitInput_SubscrValue }}
      </div>
 
      <p class="full-width">Custom event: {{bSplitInput_EventCounter}}
@@ -2560,10 +2560,10 @@
          </label>
        </p>
        <label>
-         <!-- {{bSplitInput_value | json}} -->
+
          <textarea class="simple-textarea bigger"
-                   (input)="onValueInput('bInput', $event, true)"
-                   [value]="bSplitInput_value"
+                   (change)="onValueInput('bSplitInput', $event)"
+                   [value]="asString(bSplitInput_value)"
                    type="search"></textarea>
        </label>
      </div>

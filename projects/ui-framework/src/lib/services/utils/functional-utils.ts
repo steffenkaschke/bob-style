@@ -125,3 +125,11 @@ export const unflatten = _compose(
   _reduce((acc, [k, v]) => _set(k, v, acc), {}),
   _toPairs
 );
+
+export const domainFromUrl = (url: string) => {
+  let a = document.createElement('a');
+  a.href = url;
+  const domain = a.hostname || '.com';
+  a = null;
+  return domain;
+};

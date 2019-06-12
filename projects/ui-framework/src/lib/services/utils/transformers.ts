@@ -7,6 +7,8 @@ import {
   compareAsStrings
 } from './functional-utils';
 
+// Typecheckers
+
 export const booleanOrFail = value => {
   if (isNullOrUndefined(value)) {
     return undefined;
@@ -33,6 +35,20 @@ export const arrayOrFail = value => {
   return value;
 };
 
+export const objectOrFail = value => {
+  if (isNullOrUndefined(value)) {
+    return undefined;
+  }
+  if (!isObject(value)) {
+    throw new Error(
+      `Value (${value}) must be an object, instead ${typeof value} was provided.`
+    );
+  }
+  return value;
+};
+
+// Validators
+
 export const objectHasKeyOrFail = (value: object, key: string) => {
   if (isNullOrUndefined(value)) {
     return undefined;
@@ -54,7 +70,7 @@ export const valueInArrayOrFail = (
     return undefined;
   }
   if (
-    (key && !array.find(i => i[key] === value[key])) ||
+    !(key && array.find(i => i[key] === value[key])) ||
     !array.includes(value)
   ) {
     value = isString(value) ? value : JSON.stringify(value);
@@ -65,6 +81,8 @@ export const valueInArrayOrFail = (
   }
   return value;
 };
+
+// Transformers
 
 export const truthyOrFalse = value => {
   const truthy = ['true', '1', 1, 'on', 'yes'];

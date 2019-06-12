@@ -5,7 +5,7 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
-  forwardRef,
+  forwardRef
 } from '@angular/core';
 import { SelectGroupOption } from '../lists/list.interface';
 import { InputTypes } from '../input/input.enum';
@@ -17,6 +17,10 @@ import { ListChange } from '../lists/list-change/list-change';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
 import { FormEvents } from '../form-elements.enum';
+import {
+  objectOrFail,
+  setDefaultIfUndefined
+} from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-split-input-single-select',
@@ -39,9 +43,6 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
   implements OnChanges {
   constructor() {
     super();
-    this.inputTransformers = [
-      value => (value ? assign({}, this.baseValue, value) : this.baseValue)
-    ];
     this.wrapEvent = false;
   }
 
@@ -60,10 +61,15 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
     InputSingleSelectValue
   > = new EventEmitter<InputSingleSelectValue>();
 
-  // this extends BaseFormElement's ngOnChanges
-  onNgChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.value) {
+      // this.value = assign(this.baseValue, changes.value.currentValue);
+      // console.log('ngOnChanges value', this.value);
+    }
     if (changes.selectOptions) {
       this.selectOptions = changes.selectOptions.currentValue;
+    }
+    if (changes.value || changes.selectOptions) {
       this.options = this.enrichOptionsWithSelection(this.selectOptions);
     }
   }
@@ -71,15 +77,13 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
   private enrichOptionsWithSelection(
     options: SelectGroupOption[]
   ): SelectGroupOption[] {
-    return !this.value
-      ? []
-      : map(options, g =>
-          assign({}, g, {
-            options: map(g.options, o =>
-              assign({}, o, { selected: o.id === this.value.selectValue })
-            )
-          })
-        );
+    return map(options, g =>
+      assign({}, g, {
+        options: map(g.options, o =>
+          assign({}, o, { selected: o.id === this.value.selectValue })
+        )
+      })
+    );
   }
 
   onInputChange(event: InputEvent): void {

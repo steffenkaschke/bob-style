@@ -18,7 +18,6 @@ import {
   valueInArrayOrFail,
   objectHasKeyOrFail
 } from '../../services/utils/transformers';
-import { interfaceAsObject } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-radio-button',

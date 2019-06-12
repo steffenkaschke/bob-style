@@ -5,9 +5,9 @@
        type="checkbox"
        class="bchk-input"
        [ngClass]="{
-    error: errorMessage && !disabled,
-    warn: warnMessage && !errorMessage && !disabled
-  }"
+          error: errorMessage && !disabled,
+          warn: warnMessage && !errorMessage && !disabled
+        }"
        [attr.id]="id"
        [attr.name]="id"
        [checked]="value === true"
