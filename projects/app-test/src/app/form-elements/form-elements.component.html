@@ -1148,7 +1148,7 @@
 
  </section>
 
- <section class="bSocial status-wip"
+ <section class="bSocial status-done"
           *ngIf="global_visibleComponents['bSocial']">
    <form [formGroup]="bSocial_Form"
          (ngSubmit)="onSubmit($event,'bSocial')"
@@ -1216,10 +1216,6 @@
         class="col">
        <span>{{bSocial_Form.valid ? 'Form valid' : 'Form invalid'}}</span>
        <strong *ngIf="bSocial_formSubmitted">Form submitted</strong>
-     </p>
-
-     <p class="note">
-       THIS COMPONENT SUCKS!
      </p>
 
      <p class="node-count">
@@ -1911,7 +1907,7 @@
 
  </section>
 
- <section class="bSingleSelect status-wip"
+ <section class="bSingleSelect status-done"
           *ngIf="global_visibleComponents['bSingleSelect']">
    <form [formGroup]="bSingleSelect_Form"
          (ngSubmit)="onSubmit($event,'bSingleSelect')"
@@ -2158,7 +2154,7 @@
 
  </section>
 
- <section class="bMultiSelect status-wip"
+ <section class="bMultiSelect status-done"
           *ngIf="global_visibleComponents['bMultiSelect']">
    <form [formGroup]="bMultiSelect_Form"
          (ngSubmit)="onSubmit($event,'bMultiSelect')"
@@ -2656,7 +2652,7 @@
 
  </section>
 
- <section class="bRTE status-wip"
+ <section class="bRTE status-done"
           *ngIf="global_visibleComponents['bRTE']">
    <form [formGroup]="bRTE_Form"
          (ngSubmit)="onSubmit($event,'bRTE')"

@@ -4,6 +4,7 @@ import {
   boolean,
   select,
   text,
+  object,
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
@@ -72,17 +73,13 @@ radioStories.add(
     return {
       template: stroyTemplate,
       props: {
-        value: text('value', 'Option one'),
-        options: array(
-          'options',
-          ['Option one', 'Option two', 'Option three'],
-          '\n'
-        ),
-        // options: array('radioConfig', [
-        //   { id: 11, label: 'Option one' },
-        //   { id: 12, label: 'Option two' },
-        //   { id: 13, label: 'Option three' }
-        // ]),
+        value: object('value', { id: 11 }),
+
+        options: array('radioConfig', [
+          { id: 11, label: 'Option one' },
+          { id: 12, label: 'Option two' },
+          { id: 13, label: 'Option three' }
+        ]),
         direction: select('direction', direction, direction.row),
 
         label: text('label', 'Radio label'),

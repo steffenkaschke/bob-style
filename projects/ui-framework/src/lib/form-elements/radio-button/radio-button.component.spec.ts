@@ -28,7 +28,6 @@ describe('RadioButtonComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(RadioButtonComponent);
         component = fixture.componentInstance;
-        component.includeOptionInEvent = false;
         component.wrapEvent = true;
         component.ngOnChanges({
           options: new SimpleChange(null, radioConfigMock, true)
@@ -88,7 +87,7 @@ describe('RadioButtonComponent', () => {
       const changes: SimpleChanges = {
         value: {
           previousValue: undefined,
-          currentValue: 12,
+          currentValue: { id: 12 },
           firstChange: true,
           isFirstChange: () => true
         }
@@ -109,7 +108,7 @@ describe('RadioButtonComponent', () => {
       const changes: SimpleChanges = {
         value: {
           previousValue: undefined,
-          currentValue: 12,
+          currentValue: { id: 12 },
           firstChange: true,
           isFirstChange: () => true
         }

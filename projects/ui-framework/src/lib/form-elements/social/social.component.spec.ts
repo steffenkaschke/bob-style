@@ -16,7 +16,7 @@ describe('SocialComponent', () => {
     const socialTypesRes = SocialTypes;
     const res = {
       facebook: 'www.facebook.com/AlanTulin',
-      linkedin: 'www.linkedin.com/AlanTulin',
+      linkedin: 'www.linkedin.com/in/AlanTulin',
       twitter: 'www.twitter.com/AlanTulin'
     };
     expect(`${socialTypesRes[type].prefix}AlanTulin`).toEqual(res[type]);
@@ -48,7 +48,7 @@ describe('SocialComponent', () => {
     it('should assign value with value if exists', () => {
       component.value = 'www.facebook.com/AlanTulin';
       fixture.detectChanges();
-      expect(component.value).toEqual('www.facebook.com/AlanTulin');
+      expect(component.value).toContain('www.facebook.com/AlanTulin');
     });
   });
 

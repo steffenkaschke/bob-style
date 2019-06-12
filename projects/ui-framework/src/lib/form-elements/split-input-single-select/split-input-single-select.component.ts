@@ -17,10 +17,6 @@ import { ListChange } from '../lists/list-change/list-change';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
 import { FormEvents } from '../form-elements.enum';
-import {
-  objectOrFail,
-  setDefaultIfUndefined
-} from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-split-input-single-select',

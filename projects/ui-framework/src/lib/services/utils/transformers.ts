@@ -66,12 +66,13 @@ export const valueInArrayOrFail = (
   array: any[],
   key: string = null
 ) => {
+  console.log(value, array, key);
   if (isNullOrUndefined(value) || isNullOrUndefined(array)) {
     return undefined;
   }
   if (
-    !(key && array.find(i => i[key] === value[key])) ||
-    !array.includes(value)
+    (key && !array.find(i => i[key] === value[key])) ||
+    (!key && !array.includes(value))
   ) {
     value = isString(value) ? value : JSON.stringify(value);
     array = array.map(i => (isString(i) ? i : JSON.stringify(i)));
