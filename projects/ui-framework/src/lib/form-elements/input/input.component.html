@@ -16,7 +16,7 @@
          [attr.id]="id"
          [attr.name]="id"
          [type]="inputType"
-         [attr.placeholder]="hideLabelOnFocus ? label : placeholder"
+         [attr.placeholder]="hideLabelOnFocus && label ? label : placeholder"
          [value]="value"
          [autocomplete]="enableBrowserAutoComplete"
          [disabled]="disabled"

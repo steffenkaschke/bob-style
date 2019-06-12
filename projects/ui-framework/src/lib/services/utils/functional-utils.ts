@@ -18,18 +18,6 @@ export function MixIn(baseCtors: Function[]) {
   };
 }
 
-export const setPropsOnChanges = (
-  propKeys: string[],
-  changes: SimpleChanges,
-  target: any
-) => {
-  for (const key of propKeys) {
-    if (changes[key] && changes[key].currentValue !== target[key]) {
-      target[key] = changes[key].currentValue;
-    }
-  }
-};
-
 export const randomFromArray = (array: any[], num: number = 1) =>
   array.sort(() => 0.5 - Math.random()).slice(0, num);
 
@@ -79,6 +67,8 @@ export const stringListToArray = (list: string): string[] => {
 
 export const asArray = (smth: any): any[] =>
   smth && (isArray(smth) ? smth : [smth]);
+
+export const asNumber = (smth: any): number => parseInt(smth, 10);
 
 export const compareAsNumbers = (
   a: string | number,

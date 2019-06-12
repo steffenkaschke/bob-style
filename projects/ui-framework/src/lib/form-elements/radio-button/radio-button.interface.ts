@@ -1,5 +1,5 @@
 export interface RadioConfig {
-  id: number;
   label: string;
+  id?: number | string;
   [key: string]: any;
 }

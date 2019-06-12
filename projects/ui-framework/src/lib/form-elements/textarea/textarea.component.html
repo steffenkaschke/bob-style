@@ -8,7 +8,7 @@
             class="bfe-input bfe-textarea"
             [attr.id]="id"
             [attr.name]="id"
-            [attr.placeholder]="hideLabelOnFocus ? label : placeholder"
+            [attr.placeholder]="hideLabelOnFocus && label ? label : placeholder"
             [value]="value"
             [disabled]="disabled"
             [required]="required"

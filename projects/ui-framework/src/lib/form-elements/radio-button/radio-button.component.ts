@@ -5,7 +5,7 @@ import {
   Input,
   Output,
   SimpleChanges,
-  OnChanges,
+  OnChanges
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
@@ -14,6 +14,7 @@ import { InputEventType } from '../form-elements.enum';
 import { RadioConfig } from './radio-button.interface';
 import { FormEvents } from '../form-elements.enum';
 import { InputEvent } from '../input/input.interface';
+import { valueInArrayOrFail } from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-radio-button',
@@ -36,51 +37,31 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
   constructor() {
     super();
     this.inputTransformers = [
-      (value): string | number => {
-        value = this.conformValueToIDtype(value);
-        return this.optionsFlat.includes(value) ? value : null;
-      }
+      value => valueInArrayOrFail(value, this.optionsFlat)
     ];
     this.wrapEvent = false;
   }
 
   @Input() value: string | number;
   @Input() options: string[] | RadioConfig[];
+  public optionsFlat: (string | number)[] = [];
   @Input() direction: RadioDirection = RadioDirection.row;
 
   public dir = RadioDirection;
-  public idType: string;
   public includeOptionInEvent = true;
-  private optionsFlat: (string | number)[] = [];
 
   @Output(FormEvents.radioChange) changed: EventEmitter<
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  private checkIDtype(options = this.options as RadioConfig[]): string {
-    for (const opt of options) {
-      if (!opt.label) {
-        return null;
-      }
-      if (typeof opt.id !== 'number') {
-        return 'string';
-      }
-    }
-    return 'number';
-  }
-
-  private conformValueToIDtype(value): number | string {
-    return this.idType === 'number' ? parseInt(value, 10) : value;
-  }
-
   private transmit(event: InputEventType): void {
     this.transmitValue(this.value, {
       eventType: [event],
       addToEventObj:
-        this.idType && this.includeOptionInEvent
+        (this.options as RadioConfig[])[0].label && this.includeOptionInEvent
           ? {
               option: (this.options as RadioConfig[]).find(
-                o => o.id === this.value
+                o => o.label === this.value
               )
             }
           : {}
@@ -90,9 +71,9 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.options) {
       this.options = changes.options.currentValue;
-      this.idType = this.checkIDtype();
-      this.optionsFlat = this.idType
-        ? (this.options as RadioConfig[]).map(o => o.id)
+
+      this.optionsFlat = (this.options as RadioConfig[])[0].label
+        ? (this.options as RadioConfig[]).map(o => o.label)
         : (this.options as string[]);
     }
 

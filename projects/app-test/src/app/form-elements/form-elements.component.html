@@ -1056,7 +1056,7 @@
        </p>
        <label>
          <textarea class="simple-textarea bigger"
-                   (change)="onValueInput('bChipinput', arrayOfStringsOrArrayFromString($event.target.value))"
+                   (change)="onValueInput('bChipinput', $event, false, arrayOfStringsOrArrayFromString($event.target.value))"
                    [value]="bChipinput_value"
                    type="search"></textarea>
        </label>
@@ -1558,7 +1558,7 @@
        </p>
        <label>
          <input class="simple-input bigger"
-                (change)="onValueInput('bCheckbox', truthyOrFalse($event.target.value))"
+                (change)="onValueInput('bCheckbox', $event, false, truthyOrFalse($event.target.value))"
                 [value]="bCheckbox_value"
                 type="search">
        </label>
@@ -1802,7 +1802,7 @@
        </p>
        <label>
          <input class="simple-input bigger"
-                (input)="onValueInput('bRadio', $event)"
+                (change)="onValueInput('bRadio', $event)"
                 [value]="bRadio_value"
                 type="search">
        </label>

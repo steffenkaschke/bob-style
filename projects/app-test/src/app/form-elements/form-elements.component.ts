@@ -660,9 +660,9 @@ export class FormElementsTestComponent
     }
   }
 
-  onValueInput(name, event, parse = false) {
-    let value = event.target ? event.target.value : event;
-    value = parse ? JSON.parse(value) : value;
+  onValueInput(name, event, parse = false, value = NaN) {
+    value = value === value ? value : event.target.value;
+    value = parse ? JSON.parse(value as any) : value;
     if (this[name + '_setInputProgrammatically']) {
       event.preventDefault();
       this[name + '_component'].value = value;

@@ -20,6 +20,18 @@ export const arrayOrFail = value => {
   return value;
 };
 
+export const valueInArrayOrFail = (value, array) => {
+  if (!value || !array) {
+    return undefined;
+  }
+  if (!array.includes(value)) {
+    throw new Error(
+      `Value (${value}) is not part of array (${array.join(', ')}).`
+    );
+  }
+  return value;
+};
+
 export const truthyOrFalse = value => {
   const truthy = ['true', '1', 1, 'on', 'yes'];
   if (typeof value !== 'boolean') {

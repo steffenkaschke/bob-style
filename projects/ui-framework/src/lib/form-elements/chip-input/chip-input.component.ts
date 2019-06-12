@@ -25,9 +25,6 @@ import { InputTypes } from '../input/input.enum';
 import { ChipComponent } from '../../buttons-indicators/chip/chip.component';
 import {
   isKey,
-  isArray,
-  isString,
-  stringListToArray
 } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { InputEventType } from '../form-elements.enum';

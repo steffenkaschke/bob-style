@@ -15,7 +15,7 @@
          type="search"
          [attr.id]="id"
          [value]="value"
-         [attr.placeholder]="hideLabelOnFocus ? label : placeholder"
+         [attr.placeholder]="hideLabelOnFocus && label ? label : placeholder"
          [autocomplete]="enableBrowserAutoComplete"
          (input)="onInput($event)"
          (focus)="onFocus()"
