@@ -62,16 +62,21 @@ export class EmployeesShowcaseComponent
         this.subscribeToShuffleEmployees();
       });
     this.buildShowMoreOptions();
+    this.calcAvatars();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.avatarSize) {
+      this.calcAvatars();
+    }
+  }
+
+  private calcAvatars() {
       this.clientWidth = this.getClientWidth();
       this.setAvatarGap();
       this.setAvatarGapCss();
       this.calcAvatarsToFit();
       this.subscribeToShuffleEmployees();
-    }
   }
 
   ngOnDestroy(): void {
