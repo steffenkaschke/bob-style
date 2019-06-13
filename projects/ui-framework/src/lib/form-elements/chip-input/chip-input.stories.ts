@@ -30,20 +30,16 @@ const template = `
                 [required]="required"
                 [disabled]="disabled"
                 [hintMessage]="hintMessage"
+                [warnMessage]="warnMessage"
                 [errorMessage]="errorMessage"
                 (changed)="chipInputChangeHandler($event)">
   </b-chip-input>
 `;
-const template2 = `
-  <p b-chip [type]="type">
-    Used as directive
-  </p>
-`;
 
 const note = `
-  ## Text-only Chip
+  ## Chip Input
   #### Module
-  *ChipModule*
+  *ChipInputModule*
 
   #### Properties
   Name | Type | Description | Default value
@@ -54,6 +50,7 @@ const note = `
   label | string | label (on top of input) | none
   placeholder | string | placeholder (inide input) | none
   hintMessage | string | text below input | none
+  warnMessage | string | warning text
   errorMessage | string | error text | none
   required | boolean | if input is required | false
   disabled | boolean | if input is disabled | false
@@ -85,6 +82,7 @@ story.add(
       disabled: boolean('disabled', false),
       required: boolean('required', false),
       hintMessage: text('hintMessage', 'Stick something in me'),
+      warnMessage: text('warnMessage', ''),
       errorMessage: text('errorMessage', ''),
       options: array('options', options, ','),
       chipInputChangeHandler: action('Chip input changed')

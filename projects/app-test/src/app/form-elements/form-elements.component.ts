@@ -14,7 +14,8 @@ import {
   isString,
   countChildren,
   flatten,
-  getType
+  getType,
+  isNullOrUndefined
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
 import { BlotType } from '../../../../ui-framework/src/lib/form-elements/rich-text-editor/rte-core/rte.enum';
 import { AvatarComponent } from '../../../../ui-framework/src/lib/buttons-indicators/avatar/avatar.component';
@@ -54,7 +55,7 @@ export class FormElementsTestComponent
   global_formControlEnabled = true;
   global_directValueInput = false;
   global_setInputProgrammatically = false;
-  global_setValEmit = false;
+  global_setValEmit = true;
   global_disabled = false;
   global_required = true;
   global_maxChars = 30;
@@ -295,12 +296,9 @@ export class FormElementsTestComponent
   bCheckbox_lastEventName;
 
   bCheckbox_Form = new FormGroup({
-    bCheckbox: new FormControl(
-      this.globalFormControlStartValue,
-      {
-        updateOn: this.bCheckbox_updateOn_mode as any
-      }
-    )
+    bCheckbox: new FormControl(this.globalFormControlStartValue, {
+      updateOn: this.bCheckbox_updateOn_mode as any
+    })
   });
   bCheckbox = this.bCheckbox_Form.get('bCheckbox');
 
@@ -706,6 +704,8 @@ export class FormElementsTestComponent
 
     this.allFormElements.forEach(name => {
       if (this.global_visibleComponents[name]) {
+        this[name + '_value'] = val;
+        console.log('Setting value of ' + name + ' to', val);
         this[this.global_setGlobalFormControlValueStrategy](name, val);
       }
     });
@@ -936,9 +936,8 @@ export class FormElementsTestComponent
   ngOnInit() {
     this.subscribeToAll(this.allFormElements);
 
-    this.hideComponents(this.allFormElements);
-    this.showComponents(['bChipinput']);
-
+    // this.hideComponents(this.allFormElements);
+    // this.showComponents(['bDatepicker']);
 
     // 'bInput'
     // 'bTextarea'
@@ -951,7 +950,6 @@ export class FormElementsTestComponent
     // 'bMultiSelect'
     // 'bSplitInput'
     // 'bRTE'
-
 
     this.bSingleSelect_options[0].options[1].selected = true;
     this.bMultiSelect_optionsMock[0].options[1].selected = true;

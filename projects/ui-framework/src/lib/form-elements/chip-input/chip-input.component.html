@@ -25,7 +25,7 @@
          [attr.id]="id"
          [attr.name]="id"
          [type]="inputTypes.text"
-         [attr.placeholder]="value && value.length === 0 && placeholder ? placeholder : null"
+         [attr.placeholder]="(!value || value.length === 0) && placeholder ? placeholder : null"
          [disabled]="disabled"
          [required]="required"
          [matAutocomplete]="auto"

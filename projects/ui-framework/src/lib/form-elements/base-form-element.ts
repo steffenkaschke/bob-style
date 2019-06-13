@@ -97,8 +97,7 @@ export abstract class BaseFormElement
   writeValue(value: any): void {
     if (isNullOrUndefined(value) && this.baseValue !== undefined) {
       this.value = this.baseValue;
-    }
-    if (value !== undefined) {
+    } else if (value !== undefined) {
       this.value = this.inputTransformers.reduce(
         (previousResult, fn) => fn(previousResult),
         value

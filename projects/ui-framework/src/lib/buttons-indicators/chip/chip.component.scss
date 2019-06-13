@@ -109,6 +109,9 @@ span {
     align-items: center;
   }
 }
+:host-context(.disabled) .remove-button {
+  pointer-events: none;
+}
 
 @each $type, $typeProps in $chipsMap {
   .chip-#{$type} {
