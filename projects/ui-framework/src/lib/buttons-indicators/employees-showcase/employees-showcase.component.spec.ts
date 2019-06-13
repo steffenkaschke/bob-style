@@ -67,7 +67,7 @@ describe('EmployeesShowcaseComponent', () => {
       component.ngOnChanges({
         avatarSize: new SimpleChange(null, AvatarSize.medium, false)
       });
-      tick(1000);
+      tick(2000);
       expect(component.employees).not.toEqual(getEmployeesMock());
       fixture.destroy();
     }));
@@ -77,7 +77,7 @@ describe('EmployeesShowcaseComponent', () => {
       component.ngOnChanges({
         avatarSize: new SimpleChange(null, AvatarSize.medium, false)
       });
-      tick(1000);
+      tick(2000);
       expect(component.employees).toEqual(getEmployeesMock());
       fixture.destroy();
     }));
@@ -87,7 +87,7 @@ describe('EmployeesShowcaseComponent', () => {
       component.ngOnChanges({
         avatarSize: new SimpleChange(null, AvatarSize.medium, false)
       });
-      tick(1000);
+      tick(2000);
       expect(component.employees).toEqual(getEmployeesMock());
       fixture.destroy();
     }));

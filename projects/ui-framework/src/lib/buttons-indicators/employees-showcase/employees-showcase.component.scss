@@ -4,9 +4,13 @@
   position: relative;
   display: flex;
 
-  ::ng-deep .avatar .avatar-content {
-    @include flex-align;
-    opacity: 1;
+  ::ng-deep .avatar {
+    transition: background-image 1s ease-in-out !important;
+
+    .avatar-content {
+      @include flex-align;
+      opacity: 1;
+    }
   }
 
   b-avatar, .employees-showcase-panel-wrapper {
