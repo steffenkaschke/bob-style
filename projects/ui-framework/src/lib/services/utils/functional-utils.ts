@@ -72,7 +72,7 @@ export const stringListToArray = (list: string): string[] => {
 };
 
 export const asArray = (smth: any): any[] =>
-  smth && (isArray(smth) ? smth : [smth]);
+  !isNullOrUndefined(smth) ? (isArray(smth) ? smth : [smth]) : [];
 
 export const asNumber = (smth: any): number => parseInt(smth, 10);
 
@@ -110,6 +110,7 @@ import {
   set as _set,
   compose as _compose
 } from 'lodash/fp';
+import { type } from 'os';
 
 export const flatten = (obj, path = []) => {
   return _isPlainObject(obj) || _isArray(obj)
@@ -133,3 +134,15 @@ export const domainFromUrl = (url: string) => {
   a = null;
   return domain;
 };
+
+export const stringify = (smth: any): string =>
+  isString(smth)
+    ? smth
+    : isArray(smth)
+    ? smth.join(', ')
+    : isObject(smth)
+    ? JSON.stringify(smth)
+    : String(smth);
+
+export const getType = smth =>
+  smth === null ? 'null' : isArray(smth) ? 'array' : String(typeof smth);

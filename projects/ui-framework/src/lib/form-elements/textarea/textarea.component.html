@@ -8,15 +8,15 @@
             class="bfe-input bfe-textarea"
             [attr.id]="id"
             [attr.name]="id"
-            [attr.placeholder]="hideLabelOnFocus && label ? label : placeholder"
+            [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
             [value]="value"
             [disabled]="disabled"
             [required]="required"
             [attr.maxlength]="maxChars"
-            (focus)="emitInputEvent(eventType.onFocus,$event.target.value); inputFocused = true;"
-            (blur)="emitInputEvent(eventType.onBlur,$event.target.value); inputFocused = false;"
-            (input)="emitInputEvent(eventType.onChange,$event.target.value)"
-            (keydown)="emitInputEvent(eventType.onKey,$event.key)"></textarea>
+            (input)="onInputChange($event)"
+            (blur)="onInputBlur()"
+            (focus)="onInputFocus()"
+            (keydown)="onInputKeydown($event)"></textarea>
 </div>
 <p b-input-message
    *ngIf="hintMessage || warnMessage || errorMessage"
@@ -27,6 +27,6 @@
 
   <span class="length-indicator"
         *ngIf="maxChars && value">
-    {{value.length || 0}}/{{maxChars}}
+    {{value && value.length || 0}}/{{maxChars}}
   </span>
 </p>

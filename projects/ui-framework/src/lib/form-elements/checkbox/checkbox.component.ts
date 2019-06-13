@@ -38,10 +38,11 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
     super();
     this.inputTransformers = [booleanOrFail];
     this.wrapEvent = false;
+    this.baseValue = false;
   }
 
   @ViewChild('input') public input: ElementRef;
-  @Input() public value = false;
+  @Input() public value = this.baseValue;
   @Input() public indeterminate = false;
 
   @Output(FormEvents.checkboxChange) changed: EventEmitter<

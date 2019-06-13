@@ -1,8 +1,25 @@
  <button class="show-global-controls"
          type="button">Global</button>
- <div class="global-controls col">
+ <div class="global-controls col"
+      [ngClass]="{visible:global_keepControlMenuOpen, 'at-bottom': global_ControlMenuOnBottom}">
 
    <p class="col">
+
+     <span class="stick-me col">
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="global_keepControlMenuOpen"
+                type="checkbox">
+         keep open
+       </label>
+       <label>
+         <input class="simple-checkbox"
+                [(ngModel)]="global_ControlMenuOnBottom"
+                type="checkbox">
+         pin to bottom
+       </label>
+     </span>
+
      <label>
        <input class="simple-checkbox"
               (change)="globalControlChange('global_warn')"
@@ -110,6 +127,13 @@
          <option value="array">array</option>
          <option value="object">object</option>
        </select>
+       Strategy:
+       <select class="simple-select"
+               [(ngModel)]="global_setGlobalFormControlValueStrategy">
+         <option value="runComponentNgOnChanges">runComponentNgOnChanges</option>
+         <option value="setValue">setValue</option>
+         <option value="setComponentProp">setComponentProp</option>
+       </select>
      </label>
    </p>
 
@@ -124,9 +148,17 @@
          {{comp}}
        </label>
 
-       <button type="button"
-               class="small-button"
-               (click)="inverseVisibleComponents()">Inverse</button>
+       <p class="row">
+         <button type="button"
+                 class="small-button"
+                 (click)="showComponents(allFormElements)">All</button>
+         <button type="button"
+                 class="small-button"
+                 (click)="hideComponents(allFormElements)">None</button>
+         <button type="button"
+                 class="small-button"
+                 (click)="inverseVisibleComponents()">Inverse</button>
+       </p>
      </div>
    </div>
 
@@ -2405,7 +2437,7 @@
 
  </section>
 
- <section class="bSplitInput status-todo"
+ <section class="bSplitInput status-done"
           *ngIf="global_visibleComponents['bSplitInput']">
    <form [formGroup]="bSplitInput_Form"
          (ngSubmit)="onSubmit($event,'bSplitInput')"

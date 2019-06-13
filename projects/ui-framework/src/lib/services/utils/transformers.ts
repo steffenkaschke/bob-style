@@ -4,7 +4,10 @@ import {
   stringListToArray,
   isObject,
   isNullOrUndefined,
-  compareAsStrings
+  compareAsStrings,
+  asArray,
+  stringify,
+  getType
 } from './functional-utils';
 
 // Typecheckers
@@ -15,8 +18,8 @@ export const booleanOrFail = value => {
   }
   if (typeof value !== 'boolean') {
     throw new Error(
-      `Value (${value}) must be of type boolean, instead ${
-        value === null ? 'null' : typeof value
+      `Value (${stringify(value)}) must be of type boolean, instead ${
+        value === null ? 'null' : getType(value)
       } was provided.`
     );
   }
@@ -29,7 +32,9 @@ export const arrayOrFail = value => {
   }
   if (!isArray(value)) {
     throw new Error(
-      `Value (${value}) must be an array, instead ${typeof value} was provided.`
+      `Value (${stringify(value)}) must be an array, instead ${getType(
+        value
+      )} was provided.`
     );
   }
   return value;
@@ -41,7 +46,21 @@ export const objectOrFail = value => {
   }
   if (!isObject(value)) {
     throw new Error(
-      `Value (${value}) must be an object, instead ${typeof value} was provided.`
+      `Value (${stringify(value)}) must be an object, instead ${getType(
+        value
+      )} was provided.`
+    );
+  }
+  return value;
+};
+
+export const stringyOrFail = value => {
+  if (isNullOrUndefined(value)) {
+    return '';
+  }
+  if (isArray(value) || isObject(value)) {
+    throw new Error(
+      `Value (${stringify(value)}) should not be an ${getType(value)}.`
     );
   }
   return value;
@@ -49,14 +68,26 @@ export const objectOrFail = value => {
 
 // Validators
 
-export const objectHasKeyOrFail = (value: object, key: string) => {
+export const defaultValue = def => value =>
+  isNullOrUndefined(value) ? def : value;
+
+export const objectHasKeyOrFail = (key: string | string[]) => (
+  value: object
+) => {
   if (isNullOrUndefined(value)) {
     return undefined;
   }
-  if (!key || !isObject(value) || !value.hasOwnProperty(key)) {
+  if (isNullOrUndefined(key) || !isObject(value)) {
     throw new Error(
-      `Value object (${value}) is not an object or has no key (${key}).`
+      `Value (${stringify(value)}) is not an object or key (${key}) is invalid.`
     );
+  }
+  for (const k of asArray(key)) {
+    if (!value.hasOwnProperty(k)) {
+      throw new Error(
+        `Value object (${stringify(value)}) has no key (${key}).`
+      );
+    }
   }
   return value;
 };
@@ -73,10 +104,10 @@ export const valueInArrayOrFail = (
     (key && !array.find(i => i[key] === value[key])) ||
     (!key && !array.includes(value))
   ) {
-    value = isString(value) ? value : JSON.stringify(value);
-    array = array.map(i => (isString(i) ? i : JSON.stringify(i)));
+    value = stringify(value);
+    array = array.map(i => stringify(i));
     throw new Error(
-      `Value (${value}) is not part of array (${array.join(', ')}).`
+      `Value (${stringify(value)}) is not part of array (${stringify(array)}).`
     );
   }
   return value;

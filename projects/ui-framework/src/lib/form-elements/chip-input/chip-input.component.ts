@@ -50,9 +50,10 @@ export class ChipInputComponent extends BaseFormElement
   constructor() {
     super();
     this.inputTransformers = [arrayOrFail];
+    this.baseValue = [];
   }
 
-  @Input() value: string[] = [];
+  @Input() value: string[] = this.baseValue;
   @Input() options: string[] = [];
   @Input() acceptNew = true;
 
@@ -159,7 +160,7 @@ export class ChipInputComponent extends BaseFormElement
     }
   }
 
-  public onInput(event: any): void {
+  public onInputChange(event: any): void {
     this.filteredChips =
       this.filterChips(event.target.value) || this.possibleChips;
   }
@@ -195,7 +196,7 @@ export class ChipInputComponent extends BaseFormElement
     }
   }
 
-  addChipFromInputEvent(event): void {
+  private addChipFromInputEvent(event): void {
     const name = (event.target as HTMLInputElement).value
       .replace(/,/g, '')
       .trim();
@@ -204,11 +205,11 @@ export class ChipInputComponent extends BaseFormElement
     }
   }
 
-  onInputFocus(): void {
+  public onInputFocus(): void {
     this.inputFocused = true;
   }
 
-  onInputBlur(event): void {
+  public onInputBlur(event): void {
     this.inputFocused = false;
     if (this.addOnBlur) {
       this.addChipFromInputEvent(event);

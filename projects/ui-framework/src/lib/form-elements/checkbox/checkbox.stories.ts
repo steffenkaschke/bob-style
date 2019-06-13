@@ -47,10 +47,14 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   value | boolean | start checkbox state
-  label | string | label text
+  label | string | label text (above input)
+  placeholder | string | placeholder text (next to input)
   disabled | boolean | is field disabled
   required | boolean | is field required
   indeterminate | boolean | indeterminate state
+  hintMessage | string | hint text
+  warnMessage | string | warning text
+  errorMessage | string | error text
   checkboxChange | checkboxChange | checkboxChange emitter
 
   ~~~

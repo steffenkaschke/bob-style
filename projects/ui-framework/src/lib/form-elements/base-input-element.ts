@@ -1,24 +1,22 @@
-import {
-  EventEmitter,
-  Input,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { EventEmitter, Input, Output } from '@angular/core';
 import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
 import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
 import { FormEvents, InputEventType } from './form-elements.enum';
 import { isKey } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
+import { stringyOrFail } from '../services/utils/transformers';
 
 export abstract class BaseInputElement extends BaseFormElement {
   protected constructor() {
     super();
+    this.inputTransformers = [stringyOrFail];
+    this.baseValue = '';
   }
 
   public eventType = InputEventType;
 
-  @Input() value: any = '';
+  @Input() value: string | number = this.baseValue;
   @Input() inputType: InputTypes = InputTypes.text;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
@@ -28,33 +26,31 @@ export abstract class BaseInputElement extends BaseFormElement {
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  // this extends BaseFormElement's ngOnChanges
-  onNgChanges(changes: SimpleChanges): void {
-    if (changes.value && !changes.value.currentValue) {
-      this.value = '';
+  onInputChange(event) {
+    if (event.target.value !== this.value) {
+      this.writeValue(event.target.value);
+      this.transmitValue(this.value, { eventType: [InputEventType.onChange] });
     }
   }
 
-  emitInputEvent(event: InputEventType, value: any): void {
-    if (event === InputEventType.onChange) {
-      if (value !== this.value) {
-        this.value = value;
-        this.transmitValue(this.value, { eventType: [event] });
-      }
-    }
-    if (event === InputEventType.onFocus || event === InputEventType.onBlur) {
-      this.transmitValue(this.value, { eventType: [event] });
-    }
-    if (
-      event === InputEventType.onKey &&
-      (isKey(value, Keys.enter) || isKey(value, Keys.escape))
-    ) {
+  onInputFocus() {
+    this.transmitValue(this.value, { eventType: [InputEventType.onFocus] });
+    this.inputFocused = true;
+  }
+
+  onInputBlur() {
+    this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
+    this.inputFocused = false;
+  }
+
+  onInputKeydown(event: KeyboardEvent) {
+    if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) {
       setTimeout(() => {
         this.transmitValue(this.value, {
-          eventType: [event],
+          eventType: [InputEventType.onKey],
           doPropagate: false,
           addToEventObj: {
-            key: value
+            key: event.key
           }
         });
       }, 0);

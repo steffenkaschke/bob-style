@@ -40,7 +40,7 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
   constructor() {
     super();
     this.inputTransformers = [
-      value => objectHasKeyOrFail(value, this.key),
+      objectHasKeyOrFail(this.key),
       value => valueInArrayOrFail(value, this.options, this.key)
     ];
     this.wrapEvent = false;

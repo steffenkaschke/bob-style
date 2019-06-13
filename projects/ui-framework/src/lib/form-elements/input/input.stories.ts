@@ -3,7 +3,8 @@ import {
   text,
   select,
   boolean,
-  withKnobs
+  withKnobs,
+  number
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
@@ -24,11 +25,13 @@ const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
 const template = `
 <b-input
         [inputType]="inputType"
+        [value]="value"
         [label]="label"
         [placeholder]="placeholder"
-        [value]="value"
+        [hideLabelOnFocus]="hideLabelOnFocus"
         [disabled]="disabled"
         [required]="required"
+        [maxChars]="maxChars"
         [hintMessage]="hintMessage"
         [warnMessage]="warnMessage"
         [errorMessage]="errorMessage"
@@ -53,9 +56,12 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  type | InputType | type of input field
-  value | string/number/float | type of input field
-  label | string | label text
+  InputType | InputTypes | type of input field
+  value | string/number | value of input field
+  label | string | label text (above input)
+  placeholder | string | placeholder text (inside input)
+  hideLabelOnFocus | boolean | if true: there will be no label above input, label text (if present) will be used as placeholder
+  maxChars | number | maximum length
   disabled | boolean | is field disabled
   required | boolean | is field required
   hintMessage | string | hint text
@@ -79,6 +85,8 @@ inputStories.add(
         value: text('value', ''),
         label: text('label', 'Input label'),
         placeholder: text('placeholder', 'Input placeholder'),
+        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
+        maxChars: number('maxChars', 30),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
 

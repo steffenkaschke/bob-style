@@ -16,16 +16,16 @@
          [attr.id]="id"
          [attr.name]="id"
          [type]="inputType"
-         [attr.placeholder]="hideLabelOnFocus && label ? label : placeholder"
+         [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
          [value]="value"
          [autocomplete]="enableBrowserAutoComplete"
          [disabled]="disabled"
          [required]="required"
          [attr.maxlength]="maxChars"
-         (input)="emitInputEvent(eventType.onChange,$event.target.value)"
-         (blur)="emitInputEvent(eventType.onBlur,$event.target.value); inputFocused = false;"
-         (focus)="emitInputEvent(eventType.onFocus,$event.target.value); inputFocused = true;"
-         (keydown)="emitInputEvent(eventType.onKey,$event.key)">
+         (input)="onInputChange($event)"
+         (blur)="onInputBlur();"
+         (focus)="onInputFocus()"
+         (keydown)="onInputKeydown($event)">
 
   <div *ngIf="showSuffix"
        class="bfe-suffix"

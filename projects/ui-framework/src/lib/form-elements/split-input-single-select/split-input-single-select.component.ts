@@ -17,6 +17,10 @@ import { ListChange } from '../lists/list-change/list-change';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
 import { FormEvents } from '../form-elements.enum';
+import {
+  defaultValue,
+  objectHasKeyOrFail
+} from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-split-input-single-select',
@@ -39,13 +43,15 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
   implements OnChanges {
   constructor() {
     super();
+    this.inputTransformers = [
+      objectHasKeyOrFail(['inputValue', 'selectValue'])
+    ];
     this.wrapEvent = false;
+    this.baseValue = {
+      inputValue: null,
+      selectValue: null
+    } as InputSingleSelectValue;
   }
-
-  readonly baseValue: InputSingleSelectValue = {
-    inputValue: null,
-    selectValue: null
-  };
 
   @Input() value: InputSingleSelectValue = this.baseValue;
   @Input() inputType: InputTypes;
@@ -57,11 +63,7 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
     InputSingleSelectValue
   > = new EventEmitter<InputSingleSelectValue>();
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value) {
-      // this.value = assign(this.baseValue, changes.value.currentValue);
-      // console.log('ngOnChanges value', this.value);
-    }
+  onNgChanges(changes: SimpleChanges): void {
     if (changes.selectOptions) {
       this.selectOptions = changes.selectOptions.currentValue;
     }

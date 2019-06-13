@@ -225,7 +225,8 @@ button {
   padding: 15px;
   font-size: 13px;
 
-  &:hover {
+  &:hover,
+  &.visible {
     display: flex !important;
   }
 }
@@ -251,7 +252,7 @@ button {
   }
 }
 .show-global-controls {
-  &:not(:focus) + .global-controls {
+  &:not(:focus):not(:hover) + .global-controls {
     display: none;
   }
 }
@@ -265,6 +266,8 @@ button {
 
 .global-controls {
   max-width: 300px;
+  transition: transform 0.2s, opacity 0.2s;
+  transform-origin: left top;
 
   p {
     margin-top: 10px;
@@ -282,6 +285,23 @@ button {
   .more-margin-top {
     margin-top: 20px;
   }
+
+  .stick-me {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  &.visible:not(:hover) {
+    transform: scale(0.75);
+    opacity: 0.85;
+  }
+
+  &.at-bottom {
+    top: auto;
+    bottom: 20px;
+    transform-origin: left bottom;
+  }
 }
 
 .show-components {
@@ -294,17 +314,17 @@ button {
   }
 
   label,
-  button {
+  .row {
     width: 49%;
+  }
+  .row {
+    margin-top: 4px;
   }
 
   .small-button {
-    margin-right: auto;
-    margin-top: 4px;
-
-    &:nth-child(even) {
-      margin-left: 2%;
-    }
+    width: auto;
+    padding: 0 3px;
+    margin-right: 3px;
   }
 }
 

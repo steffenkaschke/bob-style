@@ -12,9 +12,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { chipOptionsMock } from '../../../../ui-framework/src/lib/form-elements/chip-input/chip-input.mock';
 import {
   isString,
-  isArray,
   countChildren,
-  flatten
+  flatten,
+  getType
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
 import { BlotType } from '../../../../ui-framework/src/lib/form-elements/rich-text-editor/rte-core/rte.enum';
 import { AvatarComponent } from '../../../../ui-framework/src/lib/buttons-indicators/avatar/avatar.component';
@@ -61,6 +61,7 @@ export class FormElementsTestComponent
   global_numberOfCustEvents = 2;
   global_consoleLog = false;
   global_hideLabelOnFocus = false;
+  global_setGlobalFormControlValueStrategy = 'runComponentNgOnChanges';
 
   globalFormControlStartValues = {
     null: null,
@@ -79,6 +80,8 @@ export class FormElementsTestComponent
   global_warn_value = 'Warning message';
   global_error = false;
   global_error_value = 'Error message';
+  global_keepControlMenuOpen = false;
+  global_ControlMenuOnBottom = false;
 
   ///////////////////////////////////
 
@@ -293,7 +296,6 @@ export class FormElementsTestComponent
 
   bCheckbox_Form = new FormGroup({
     bCheckbox: new FormControl(
-      // this.bCheckbox_value,
       this.globalFormControlStartValue,
       {
         updateOn: this.bCheckbox_updateOn_mode as any
@@ -542,6 +544,11 @@ export class FormElementsTestComponent
     };
   });
 
+  bSplitInput_startValue = {
+    inputValue: 100,
+    selectValue: 'AED'
+  };
+
   @ViewChild('bSplitInput') private bSplitInput_component;
   @ViewChild('bSplitInput', { read: ElementRef })
   private bSplitInput_element: ElementRef;
@@ -551,10 +558,7 @@ export class FormElementsTestComponent
   bSplitInput_EventCounter = 0;
   bSplitInput_label = 'Input label';
   bSplitInput_placeholder = 'Input placeholder';
-  bSplitInput_value = {
-    inputValue: 100,
-    selectValue: 'AED'
-  };
+  bSplitInput_value;
   bSplitInput_selectOptions = this.bSplitInput_optionsMock;
   bSplitInput_disabled = this.global_disabled;
   bSplitInput_required = this.global_required;
@@ -574,8 +578,9 @@ export class FormElementsTestComponent
 
   bSplitInput_Form = new FormGroup({
     bSplitInput: new FormControl(
-      // this.globalFormControlStartValue
-      this.bSplitInput_value,
+      // this.globalFormControlStartValue,
+      // this.bSplitInput_value,
+      undefined,
       {
         updateOn: this.bSplitInput_updateOn_mode as any
       }
@@ -665,12 +670,45 @@ export class FormElementsTestComponent
     return isString(value) ? value : JSON.stringify(value);
   }
 
-  setValue(name) {
+  setValue(name, value: any = NaN) {
+    if (value !== value) {
+      value = this[name + '_value'];
+    }
     if (this[name]) {
-      this[name].setValue(this[name + '_value'], {
+      this[name].setValue(value, {
         emitEvent: this[name + '_setValEmit']
       });
     }
+  }
+
+  runComponentNgOnChanges(name, value: any = NaN) {
+    if (value !== value) {
+      value = this[name + '_value'];
+    }
+    // this[name + '_component'].value = value;
+    this[name + '_component'].ngOnChanges({
+      value: new SimpleChange(null, value, false)
+    });
+  }
+
+  setComponentProp(name, prop = 'value', value: any = NaN) {
+    if (value !== value) {
+      value = this[name + '_value'];
+    }
+    if (this[name + '_component']) {
+      this[name + '_component'][prop] = value;
+    }
+  }
+
+  setGlobalFormControlValue(event) {
+    const val = this.globalFormControlStartValues[event.target.value];
+    this.globalFormControlStartValue = val;
+
+    this.allFormElements.forEach(name => {
+      if (this.global_visibleComponents[name]) {
+        this[this.global_setGlobalFormControlValueStrategy](name, val);
+      }
+    });
   }
 
   onValueInput(name, event, parse = false, value = NaN) {
@@ -678,10 +716,7 @@ export class FormElementsTestComponent
     value = parse ? JSON.parse(value as any) : value;
     if (this[name + '_setInputProgrammatically']) {
       event.preventDefault();
-      this[name + '_component'].value = value;
-      this[name + '_component'].ngOnChanges({
-        value: new SimpleChange(null, value, false)
-      });
+      this.runComponentNgOnChanges(name, value);
     } else {
       this[name + '_value'] = value;
     }
@@ -798,22 +833,6 @@ export class FormElementsTestComponent
     });
   }
 
-  setGlobalFormControlValue(event) {
-    const val = this.globalFormControlStartValues[event.target.value];
-    this.globalFormControlStartValue = val;
-
-    this.allFormElements.forEach(name => {
-      this[name + '_value'] = val;
-      this.setValue(name);
-    });
-  }
-
-  setComponentProp(name, prop, value) {
-    if (this[name + '_component']) {
-      this[name + '_component'][prop] = value;
-    }
-  }
-
   inverseVisibleComponents() {
     Object.keys(this.global_visibleComponents).forEach(key => {
       this.global_visibleComponents[key] = !this.global_visibleComponents[key];
@@ -903,17 +922,7 @@ export class FormElementsTestComponent
     console.log(flatten(this[prop]));
   }
 
-  type(smth) {
-    let thisType = String(typeof smth);
-
-    if (smth === null) {
-      thisType = 'null';
-    }
-    if (thisType === 'object' && isArray(smth)) {
-      thisType = 'array';
-    }
-    return thisType;
-  }
+  type = smth => getType(smth);
 
   countKids(name) {
     return (this[name + '_nodeCount'] = countChildren(
@@ -928,9 +937,21 @@ export class FormElementsTestComponent
     this.subscribeToAll(this.allFormElements);
 
     this.hideComponents(this.allFormElements);
-    this.showComponents(['bSplitInput']);
+    this.showComponents(['bChipinput']);
 
-    // this.showComponents(['bRTE']);
+
+    // 'bInput'
+    // 'bTextarea'
+    // 'bDatepicker'
+    // 'bChipinput'
+    // 'bSocial'
+    // 'bCheckbox'
+    // 'bRadio'
+    // 'bSingleSelect'
+    // 'bMultiSelect'
+    // 'bSplitInput'
+    // 'bRTE'
+
 
     this.bSingleSelect_options[0].options[1].selected = true;
     this.bMultiSelect_optionsMock[0].options[1].selected = true;

@@ -7,7 +7,11 @@ import {
   EventEmitter
 } from '@angular/core';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
-import { simpleUID, asArray } from '../services/utils/functional-utils';
+import {
+  simpleUID,
+  asArray,
+  isNullOrUndefined
+} from '../services/utils/functional-utils';
 import { InputEventType } from './form-elements.enum';
 import { FormEvents } from './form-elements.enum';
 import { TransmitOptions } from './form-elements.interface';
@@ -32,6 +36,7 @@ export abstract class BaseFormElement
   public inputTransformers: Function[] = [];
   public outputTransformers: Function[] = [];
   public wrapEvent = true;
+  public baseValue;
 
   private transmitValueDefOptions: Partial<TransmitOptions> = {
     eventType: [InputEventType.onChange],
@@ -90,6 +95,9 @@ export abstract class BaseFormElement
   }
 
   writeValue(value: any): void {
+    if (isNullOrUndefined(value) && this.baseValue !== undefined) {
+      this.value = this.baseValue;
+    }
     if (value !== undefined) {
       this.value = this.inputTransformers.reduce(
         (previousResult, fn) => fn(previousResult),
@@ -106,8 +114,7 @@ export abstract class BaseFormElement
       ...this.transmitValueDefOptions,
       ...options
     };
-    // tslint:disable-next-line: prefer-const
-    let { eventType, eventName, doPropagate, addToEventObj } = options;
+    const { eventType, eventName, doPropagate, addToEventObj } = options;
 
     // If value is undefined, it will not be transmitted.
     // Transformers may intentionally set value to undefined,
