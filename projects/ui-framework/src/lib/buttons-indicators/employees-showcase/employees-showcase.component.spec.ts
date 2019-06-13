@@ -57,6 +57,11 @@ describe('EmployeesShowcaseComponent', () => {
         }]
       );
     });
+    it('should call calcAvatars', () => {
+      const calcAvatars = spyOn<any>(component, 'calcAvatars');
+      component.ngOnInit();
+      expect(calcAvatars).toHaveBeenCalled();
+    });
   });
 
   describe('ngOnChanges', () => {
