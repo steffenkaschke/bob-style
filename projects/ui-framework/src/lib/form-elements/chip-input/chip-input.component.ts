@@ -23,9 +23,7 @@ import { ChipType } from '../../buttons-indicators/chip/chip.enum';
 import { ChipInputChange } from './chip-input.interface';
 import { InputTypes } from '../input/input.enum';
 import { ChipComponent } from '../../buttons-indicators/chip/chip.component';
-import {
-  isKey,
-} from '../../services/utils/functional-utils';
+import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { InputEventType } from '../form-elements.enum';
 import { arrayOrFail } from '../../services/utils/transformers';
@@ -63,6 +61,7 @@ export class ChipInputComponent extends BaseFormElement
   public readonly removable = true;
   public readonly chipType = ChipType;
   public readonly inputTypes = InputTypes;
+  readonly addOnBlur = true;
 
   @ViewChild('input') private input: ElementRef<HTMLInputElement>;
   @ViewChildren('chipList') private chipList: QueryList<ChipComponent>;
@@ -196,6 +195,26 @@ export class ChipInputComponent extends BaseFormElement
     }
   }
 
+  addChipFromInputEvent(event): void {
+    const name = (event.target as HTMLInputElement).value
+      .replace(/,/g, '')
+      .trim();
+    if (name) {
+      this.add(name);
+    }
+  }
+
+  onInputFocus(): void {
+    this.inputFocused = true;
+  }
+
+  onInputBlur(event): void {
+    this.inputFocused = false;
+    if (this.addOnBlur) {
+      this.addChipFromInputEvent(event);
+    }
+  }
+
   public onInputKeyup(event: KeyboardEvent): void {
     if (isKey(event.key, Keys.backspace)) {
       if (this.input.nativeElement.value === '' && this.chipList.last) {
@@ -213,12 +232,7 @@ export class ChipInputComponent extends BaseFormElement
         }, 0);
       }
     } else if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.comma)) {
-      const name = (event.target as HTMLInputElement).value
-        .replace(/,/g, '')
-        .trim();
-      if (name) {
-        this.add(name);
-      }
+      this.addChipFromInputEvent(event);
     } else {
       this.unSelectLastChip();
     }

@@ -66,7 +66,6 @@ export const valueInArrayOrFail = (
   array: any[],
   key: string = null
 ) => {
-  console.log(value, array, key);
   if (isNullOrUndefined(value) || isNullOrUndefined(array)) {
     return undefined;
   }

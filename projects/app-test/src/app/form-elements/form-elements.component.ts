@@ -637,7 +637,7 @@ export class FormElementsTestComponent
   bRTE_error = this.global_error ? this.global_error_value : '';
 
   bRTE_setValEmit = this.global_setValEmit;
-  bRTE_updateOn_mode = 'change';
+  bRTE_updateOn_mode = 'blur';
   bRTE_subscribtion;
   bRTE_formControlEnabled = this.global_formControlEnabled;
   bRTE_directValueInput = this.global_directValueInput;
@@ -763,13 +763,17 @@ export class FormElementsTestComponent
 
   setUpdateOnMode(name, mode) {
     const value = this[name + '_Form'].get(name).value;
-    const newControl = new FormControl(value, {
-      updateOn: mode
-    });
-    this[name + '_Form'].setControl(name, newControl);
-    this[name] = this[name + '_Form'].get(name);
-    this.unSubscribeFromValueChanges(name);
-    this.subscribeToValueChanges(name);
+    this[name + '_formControlEnabled'] = false;
+    setTimeout(() => {
+      this[name + '_formControlEnabled'] = true;
+      const newControl = new FormControl(value, {
+        updateOn: mode
+      });
+      this[name + '_Form'].setControl(name, newControl);
+      this[name] = this[name + '_Form'].get(name);
+      this.unSubscribeFromValueChanges(name);
+      this.subscribeToValueChanges(name);
+    }, 10);
   }
 
   globalControlChange(control) {
@@ -923,10 +927,10 @@ export class FormElementsTestComponent
   ngOnInit() {
     this.subscribeToAll(this.allFormElements);
 
-    // this.hideComponents(['bSocial', 'bSplitInput']);
+    this.hideComponents(this.allFormElements);
+    this.showComponents(['bSplitInput']);
 
-    // this.hideComponents(this.allFormElements);
-    // this.showComponents(['bRadio']);
+    // this.showComponents(['bRTE']);
 
     this.bSingleSelect_options[0].options[1].selected = true;
     this.bMultiSelect_optionsMock[0].options[1].selected = true;

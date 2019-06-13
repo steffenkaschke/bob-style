@@ -30,8 +30,8 @@
          [required]="required"
          [matAutocomplete]="auto"
          [matAutocompleteConnectedTo]="wrapper"
-         (focus)="inputFocused = true"
-         (blur)="inputFocused = false"
+         (focus)="onInputFocus()"
+         (blur)="onInputBlur($event)"
          (input)="onInput($event)"
          (keydown)="onInputKeydown($event)"
          (keyup)="onInputKeyup($event)">
