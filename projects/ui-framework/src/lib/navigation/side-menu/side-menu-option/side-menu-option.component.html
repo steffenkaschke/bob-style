@@ -12,9 +12,8 @@
          *ngIf="option.actions?.length"
          [ngStyle]="{'opacity': (showActions || selected) ? 1 : 0}">
         <b-menu [menu]="option.actions"
-                (click)="stopBubbling($event)"
-                (mouseleave)="stopBubbling($event); setShowActions(true)"
-                (closeMenu)="showActions = false">
+                (click)="stopBubbling($event); setShowActions(true, 25)"
+                (closeMenu)="setShowActions(false)">
             <b-square-button menu-trigger
                              [type]="types.tertiary"
                              [icon]="icons.three_dots_vert"

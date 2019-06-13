@@ -75,8 +75,8 @@ export class SideMenuOptionComponent implements OnChanges {
     $event.stopPropagation();
   }
 
-  setShowActions(status: boolean): void {
-    setTimeout(() => this.showActions = status);
+  setShowActions(status: boolean, timeout: number = 0): void {
+    setTimeout(() => this.showActions = status, timeout);
   }
 
   onActionClick(): void {

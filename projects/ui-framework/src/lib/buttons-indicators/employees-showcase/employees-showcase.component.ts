@@ -24,7 +24,7 @@ import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import { AvatarComponent } from '../avatar/avatar.component';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
 
-const SHUFFLE_EMPLOYEES_INTERVAL = 1000;
+const SHUFFLE_EMPLOYEES_INTERVAL = 2000;
 
 @Component({
   selector: 'b-employees-showcase',
@@ -144,12 +144,12 @@ export class EmployeesShowcaseComponent
   private shuffleEmployees() {
     const firstIndex = random(0, this.avatarsToFit > 1 ? this.avatarsToFit - 1 : 0);
     const secondIndex = random(this.avatarsToFit, this.employees.length > 1 ? this.employees.length - 1 : 0);
-    this.switchEmployees(firstIndex, secondIndex);
+    this.switchEmployeesImage(firstIndex, secondIndex);
   }
 
-  private switchEmployees(firstIndex, secondIndex) {
-    const firstEmployee = this.employees[firstIndex];
-    this.employees[firstIndex] = this.employees[secondIndex];
-    this.employees[secondIndex] = firstEmployee;
+  private switchEmployeesImage(firstIndex, secondIndex) {
+    const firstEmployeeImage = this.employees[firstIndex].imageSource;
+    this.employees[firstIndex].imageSource = this.employees[secondIndex].imageSource;
+    this.employees[secondIndex].imageSource = firstEmployeeImage;
   }
 }
