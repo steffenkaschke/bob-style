@@ -5,7 +5,7 @@
   display: flex;
 
   ::ng-deep .avatar {
-    transition: background-image 1s ease-in-out !important;
+    transition: background-image 0.3s ease !important;
 
     .avatar-content {
       @include flex-align;
