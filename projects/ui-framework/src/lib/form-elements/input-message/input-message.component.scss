@@ -2,10 +2,15 @@
 @import '../../style/typography';
 @import '../../style/mixins';
 
+$label-hint-margin: 6px;
+
 :host {
-  display: block;
   width: 100%;
-  margin: 2px 0 0;
+  margin: $label-hint-margin 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
   @include BodyFont($font-size-caption);
   color: $grey-600;
 
@@ -15,9 +20,5 @@
 
   &.error {
     color: $color-error;
-  }
-
-  &.disabled {
-    @include disabled-state;
   }
 }

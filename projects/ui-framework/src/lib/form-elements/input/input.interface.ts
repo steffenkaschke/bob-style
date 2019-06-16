@@ -1,6 +1,7 @@
-import { InputEventType } from './input.enum';
+import { InputEventType } from '../form-elements.enum';
 
 export interface InputEvent {
   event: InputEventType;
-  value: string | number;
+  value: any;
+  [key: string]: any;
 }

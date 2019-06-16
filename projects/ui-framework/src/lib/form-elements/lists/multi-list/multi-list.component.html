@@ -1,9 +1,8 @@
 <b-search *ngIf="shouldDisplaySearch"
-          (searchChange)="searchChange($event)"
-          [hideLabelOnFocus]="true">
+          (searchChange)="searchChange($event)">
 </b-search>
 
-<div [ngStyle]="{height: listOptions.length * listElHeight + 'px', maxHeight: maxHeight + 'px'}"
+<div [ngStyle]="{height: listOptions && (listOptions.length * listElHeight + 'px'), maxHeight: maxHeight + 'px'}"
      [ngClass]="{'no-group-header': noGroupHeaders}"
      class="v-scroll-wrapper">
 

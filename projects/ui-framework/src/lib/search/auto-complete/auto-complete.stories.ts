@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { boolean, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import { object, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,9 +14,9 @@ const inputStories = storiesOf(ComponentGroupType.Search, module)
   .addDecorator(withKnobs);
 
 const template = `
-<b-auto-complete style="width: 400px;"
-                 [options]="options"
+<b-auto-complete [options]="options"
                  [label]="label"
+                 [placeholder]="placeholder"
                  (searchChange)="searchChange($event)"
                  (optionSelect)="optionSelect($event)">
 </b-auto-complete>
@@ -24,7 +24,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Auto complete'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -61,13 +63,19 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        label: text('label', 'search auto-complete'),
+        label: text('label', ''),
+        placeholder: text('placeholder', 'Search auto-complete'),
         options: object('options', optionsMock),
-        searchChange: action(),
-        optionSelect: action()
+        searchChange: action('searchChange'),
+        optionSelect: action('optionSelect')
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, TypographyModule, StoryBookLayoutModule, AutoCompleteModule]
+        imports: [
+          BrowserAnimationsModule,
+          TypographyModule,
+          StoryBookLayoutModule,
+          AutoCompleteModule
+        ]
       }
     };
   },

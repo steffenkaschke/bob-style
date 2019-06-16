@@ -1,33 +1,32 @@
-<mat-form-field class="text-area"
-                [ngClass]="{'required': required, 'error': errorMessage}">
-  <textarea matInput
-            #textarea
-            [maxlength]="maxChars"
+<label *ngIf="label && !hideLabelOnFocus"
+       class="bfe-label"
+       [attr.for]="id">{{label}}</label>
+
+<div class="bfe-wrap"
+     [ngClass]="{focused: inputFocused}">
+  <textarea #textarea
+            class="bfe-input bfe-textarea"
+            [attr.id]="id"
+            [attr.name]="id"
+            [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
+            [value]="value"
             [disabled]="disabled"
-            [(ngModel)]="value"
-            (blur)="emitInputEvent(eventType.onBlur, value)"
-            (focus)="emitInputEvent(eventType.onFocus, value)"
-            (ngModelChange)="emitInputEvent(eventType.onChange, value)">
-  </textarea>
+            [required]="required"
+            [attr.maxlength]="maxChars"
+            (input)="onInputChange($event)"
+            (blur)="onInputBlur()"
+            (focus)="onInputFocus()"
+            (keydown)="onInputKeydown($event)"></textarea>
+</div>
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled">
 
-  <mat-hint *ngIf="errorMessage"
-            align="start"
-            class="error-message">
-    {{errorMessage}}
-  </mat-hint>
-
-  <mat-hint *ngIf="hintMessage && !errorMessage"
-            align="start"
-            class="hint-message">
-    {{hintMessage}}
-  </mat-hint>
-
-  <mat-hint *ngIf="maxChars"
-            align="end"
-            class="length-indicator">
-    {{textarea.value?.length || 0}}/{{maxChars}}
-  </mat-hint>
-
-  <mat-label>{{label}}</mat-label>
-
-</mat-form-field>
+  <span class="length-indicator"
+        *ngIf="maxChars && value">
+    {{value && value.length || 0}}/{{maxChars}}
+  </span>
+</p>

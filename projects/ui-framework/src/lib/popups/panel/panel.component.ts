@@ -51,9 +51,7 @@ export class PanelComponent implements OnDestroy {
   readonly mouseLeaveDebounce: any;
   positionClassList: { [key: string]: boolean } = {};
 
-  @HostListener('document:keydown.escape', ['$event']) handleEscape(
-    event: KeyboardEvent
-  ) {
+  @HostListener('document:keydown.escape') handleEscape() {
     this.closePanel();
   }
 

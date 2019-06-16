@@ -4,13 +4,14 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SplitInputSingleSelectComponent } from './split-input-single-select.component';
 import { SingleSelectComponent } from '../lists/single-select/single-select.component';
 import { MockComponent } from 'ng-mocks';
-import { InputEventType } from '../input/input.enum';
+import { InputEventType } from '../form-elements.enum';
 import { InputComponent } from '../input/input.component';
 import { SelectGroupOption } from '../lists/list.interface';
 import { InputSingleSelectValue } from './split-input-single-select.interface';
 import { By } from '@angular/platform-browser';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../lists/list-change/list-change';
+import { SimpleChange } from '@angular/core';
 
 describe('SplitInputSingleSelectComponent', () => {
   let component: SplitInputSingleSelectComponent;
@@ -19,7 +20,6 @@ describe('SplitInputSingleSelectComponent', () => {
   let valueMock: InputSingleSelectValue;
 
   beforeEach(async(() => {
-
     valueMock = {
       inputValue: 200,
       selectValue: 'USD'
@@ -31,7 +31,7 @@ describe('SplitInputSingleSelectComponent', () => {
         options: [
           { value: 'USD', id: 'USD', selected: false },
           { value: 'GBP', id: 'GBP', selected: false },
-          { value: 'ILS', id: 'ILS', selected: false },
+          { value: 'ILS', id: 'ILS', selected: false }
         ]
       }
     ];
@@ -48,14 +48,18 @@ describe('SplitInputSingleSelectComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(SplitInputSingleSelectComponent);
         component = fixture.componentInstance;
-        spyOn(component.elementChange, 'emit');
+        component.wrapEvent = true;
+        spyOn(component.changed, 'emit');
         fixture.detectChanges();
       });
   }));
 
   describe('OnChanges', () => {
     it('should set default value object with null values if no value is provided', () => {
-      component.ngOnChanges({});
+      component.ngOnChanges({
+        selectOptions: new SimpleChange(null, undefined, true),
+        value: new SimpleChange(null, undefined, true)
+      });
       expect(component.value).toEqual({
         inputValue: null,
         selectValue: null
@@ -78,13 +82,12 @@ describe('SplitInputSingleSelectComponent', () => {
       expectedOptions[0].options[0].selected = true;
       component.value = valueMock;
       component.ngOnChanges({
-        selectOptions:
-          {
-            previousValue: undefined,
-            currentValue: optionsMock,
-            firstChange: false,
-            isFirstChange: () => false,
-          },
+        selectOptions: {
+          previousValue: undefined,
+          currentValue: optionsMock,
+          firstChange: false,
+          isFirstChange: () => false
+        }
       });
       expect(component.options).toEqual(expectedOptions);
     });
@@ -93,13 +96,12 @@ describe('SplitInputSingleSelectComponent', () => {
       expectedOptions[0].options[0].selected = true;
       component.value = valueMock;
       component.ngOnChanges({
-        selectOptions:
-          {
-            previousValue: undefined,
-            currentValue: optionsMock,
-            firstChange: false,
-            isFirstChange: () => false,
-          },
+        selectOptions: {
+          previousValue: undefined,
+          currentValue: optionsMock,
+          firstChange: false,
+          isFirstChange: () => false
+        }
       });
       fixture.detectChanges();
       const selectEl = fixture.debugElement.query(By.css('b-single-select'));
@@ -114,25 +116,16 @@ describe('SplitInputSingleSelectComponent', () => {
       component.ngOnChanges({});
       fixture.detectChanges();
     });
-    it('should not emit event if inputEvent is not change', () => {
-      const inputEl = fixture.debugElement.query(By.css('b-input'));
-      inputEl.context.inputEvents.emit({
-        event: InputEventType.onBlur,
-        value: 10
-      });
-      fixture.detectChanges();
-      expect(component.elementChange.emit).not.toHaveBeenCalled();
-    });
     it('should update value and emit event with updated value', () => {
       const inputEl = fixture.debugElement.query(By.css('b-input'));
-      inputEl.context.inputEvents.emit({
+      inputEl.componentInstance.changed.emit({
         event: InputEventType.onChange,
         value: 500
       });
       fixture.detectChanges();
-      expect(component.elementChange.emit).toHaveBeenCalledWith({
-        inputValue: 500,
-        selectValue: 'USD'
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: InputEventType.onChange,
+        value: { inputValue: 500, selectValue: 'USD' }
       });
     });
   });
@@ -151,9 +144,9 @@ describe('SplitInputSingleSelectComponent', () => {
       const listChange = new ListChange(listElOptions);
       selectEl.context.selectChange.emit(listChange);
       fixture.detectChanges();
-      expect(component.elementChange.emit).toHaveBeenCalledWith({
-        inputValue: 200,
-        selectValue: 'GBP',
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: InputEventType.onChange,
+        value: { inputValue: 200, selectValue: 'GBP' }
       });
     });
   });

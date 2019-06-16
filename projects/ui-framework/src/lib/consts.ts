@@ -8,11 +8,10 @@ export enum ComponentGroupType {
   Misc = 'Components|Misc',
   Navigation = 'Components|Navigation',
   Search = 'Components|Search',
+  Lists = 'Components|Lists',
   Icons = 'Icons',
   Typography = 'Typography',
   Services = 'Services'
 }
 
 export const serverDateFormat = 'YYYY-MM-DD';
-
-export const inputAttributesPlaceholder = '#moreattributes';

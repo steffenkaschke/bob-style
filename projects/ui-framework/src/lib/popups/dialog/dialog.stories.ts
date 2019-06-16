@@ -8,7 +8,9 @@ import { DialogModule } from './dialog.module';
 import { DialogExampleModule } from './dialog-example.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const buttonStories = storiesOf(ComponentGroupType.Popups, module).addDecorator(withKnobs);
+const buttonStories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-dialog-example></b-dialog-example>
@@ -16,7 +18,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Dialog'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -114,7 +118,13 @@ buttonStories.add(
     template: storyTemplate,
     props: {},
     moduleMetadata: {
-      imports: [DialogModule, ButtonsModule, BrowserAnimationsModule, DialogExampleModule, StoryBookLayoutModule]
+      imports: [
+        DialogModule,
+        ButtonsModule,
+        BrowserAnimationsModule,
+        DialogExampleModule,
+        StoryBookLayoutModule
+      ]
     }
   }),
   { notes: { markdown: note } }

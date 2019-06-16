@@ -1,10 +1,24 @@
-import { Component, EventEmitter, forwardRef, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  Output,
+  SimpleChanges,
+  OnChanges
+} from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
-import { MatRadioChange } from '@angular/material';
-import has from 'lodash/has';
-import { RadioConfig } from './radio-button.interface';
 import { RadioDirection } from './radio-button.enum';
+import { InputEventType } from '../form-elements.enum';
+import { RadioConfig } from './radio-button.interface';
+import { FormEvents } from '../form-elements.enum';
+import { InputEvent } from '../input/input.interface';
+import {
+  valueInArrayOrFail,
+  objectHasKeyOrFail,
+  valueToObjectKey
+} from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-radio-button',
@@ -21,26 +35,55 @@ import { RadioDirection } from './radio-button.enum';
       useExisting: forwardRef(() => RadioButtonComponent),
       multi: true
     }
-  ],
+  ]
 })
 export class RadioButtonComponent extends BaseFormElement implements OnChanges {
-  @Input() value: number = null;
-  @Input() radioConfig: RadioConfig[];
-  @Input() direction: RadioDirection = RadioDirection.row;
-  @Output() radioChange: EventEmitter<number> = new EventEmitter<number>();
-
   constructor() {
     super();
+    this.inputTransformers = [
+      valueToObjectKey(this.key),
+      objectHasKeyOrFail(this.key),
+      value => valueInArrayOrFail(value, this.options, this.key)
+    ];
+    this.outputTransformers = [
+      value => (value && value.id ? value.id : undefined)
+    ];
+    this.baseValue = {};
+    this.wrapEvent = false;
+  }
+
+  @Input() value: RadioConfig = this.baseValue;
+  // tslint:disable-next-line: no-input-rename
+  @Input('radioConfig') options: RadioConfig[];
+  @Input() direction: RadioDirection = RadioDirection.row;
+
+  public dir = RadioDirection;
+  public key = 'id';
+
+  @Output(FormEvents.radioChange) changed: EventEmitter<
+    InputEvent
+  > = new EventEmitter<InputEvent>();
+
+  private transmit(event: InputEventType): void {
+    this.transmitValue(this.value, {
+      eventType: [event]
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (has(changes, 'value')) {
-      this.value = changes.value.currentValue;
+    if (changes.radioConfig) {
+      this.options = changes.radioConfig.currentValue;
+    }
+
+    if (changes.value || changes.radioConfig) {
+      const val = changes.value ? changes.value.currentValue : this.value;
+      this.writeValue(val);
+      this.transmit(InputEventType.onWrite);
     }
   }
 
-  onRadioChange(e: MatRadioChange): void {
-    this.radioChange.emit(e.value);
-    this.propagateChange(e.value);
+  public onRadioChange(key): void {
+    this.writeValue(this.options.find(o => o[this.key] === key));
+    this.transmit(InputEventType.onBlur);
   }
 }

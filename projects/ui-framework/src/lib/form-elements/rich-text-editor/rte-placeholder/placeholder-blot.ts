@@ -9,7 +9,7 @@ export class PlaceholderBlot extends Inline {
   static tagName = 'span';
 
   static create(focusOption: RtePlaceholderUpdate): HTMLElement {
-    const node: HTMLElement = super.create('woooooow');
+    const node: HTMLElement = super.create();
     node.setAttribute('data-placeholder-id', focusOption.id);
     if (focusOption.category && focusOption.category !== 'undefined') {
       node.setAttribute('data-placeholder-category', focusOption.category);
@@ -18,7 +18,12 @@ export class PlaceholderBlot extends Inline {
       node.setAttribute('data-text', focusOption.text);
     }
     node.setAttribute('contenteditable', 'false');
-    node.setAttribute('data-tag', simpleUID());
+    node.setAttribute(
+      'data-tag',
+      Math.random()
+        .toString()
+        .slice(-4)
+    );
 
     return node;
   }

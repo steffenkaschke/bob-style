@@ -1,5 +1,19 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { QuickFilterBarChangeEvent, QuickFilterChangeEvent, QuickFilterConfig } from './quick-filter.interface';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  ElementRef,
+  AfterViewInit
+} from '@angular/core';
+import {
+  QuickFilterBarChangeEvent,
+  QuickFilterChangeEvent,
+  QuickFilterConfig
+} from './quick-filter.interface';
 import { chain, has } from 'lodash';
 import { ListChangeService } from '../../form-elements/lists/list-change/list-change.service';
 import { ListModelService } from '../../form-elements/lists/list-service/list-model.service';
@@ -9,13 +23,17 @@ import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 @Component({
   selector: 'b-quick-filter-bar',
   templateUrl: './quick-filter-bar.component.html',
-  styleUrls: ['./quick-filter-bar.component.scss'],
+  styleUrls: ['./quick-filter-bar.component.scss']
 })
-export class QuickFilterBarComponent implements OnChanges {
+export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
+  @ViewChild('prefix') prefix: ElementRef;
+  @ViewChild('suffix') suffix: ElementRef;
 
   @Input() quickFilters: QuickFilterConfig[];
   @Input() showResetFilter = false;
-  @Output() filtersChange: EventEmitter<QuickFilterBarChangeEvent> = new EventEmitter<QuickFilterBarChangeEvent>();
+  @Output() filtersChange: EventEmitter<
+    QuickFilterBarChangeEvent
+  > = new EventEmitter<QuickFilterBarChangeEvent>();
   @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>();
 
   quickFiltersChanges: QuickFilterBarChangeEvent = {};
@@ -24,12 +42,13 @@ export class QuickFilterBarComponent implements OnChanges {
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
   readonly buttonType = ButtonType;
+  public hasPrefix = true;
+  public hasSuffix = true;
 
   constructor(
     private listModelService: ListModelService,
-    private listChangeService: ListChangeService,
-  ) {
-  }
+    private listChangeService: ListChangeService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'quickFilters')) {
@@ -39,8 +58,8 @@ export class QuickFilterBarComponent implements OnChanges {
           key: qf.key,
           listChange: this.listChangeService.getListChange(
             qf.options,
-            this.listModelService.getSelectedIdsMap(qf.options),
-          ),
+            this.listModelService.getSelectedIdsMap(qf.options)
+          )
         }))
         .keyBy('key')
         .value();
@@ -50,5 +69,12 @@ export class QuickFilterBarComponent implements OnChanges {
   onFilterChange(quickFilterChange: QuickFilterChangeEvent): void {
     this.quickFiltersChanges[quickFilterChange.key] = quickFilterChange;
     this.filtersChange.emit(this.quickFiltersChanges);
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.hasPrefix = this.prefix.nativeElement.childNodes.length > 0;
+      this.hasSuffix = this.suffix.nativeElement.childNodes.length > 0;
+    }, 0);
   }
 }

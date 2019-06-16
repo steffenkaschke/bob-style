@@ -5,48 +5,20 @@ import {
   Input,
   Output,
   ElementRef,
-  ViewChild
+  ViewChild,
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { simpleUID } from '../../services/utils/functional-utils';
-
-export enum CheckboxStates {
-  checked = 'checked',
-  unchecked = 'unchecked',
-  indeterminate = 'indeterminate'
-}
+import { InputEvent } from '../input/input.interface';
+import { InputEventType } from '../form-elements.enum';
+import { FormEvents } from '../form-elements.enum';
+import { booleanOrFail } from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-checkbox',
-  template: `
-    <input
-      #input
-      type="checkbox"
-      class="bchk-input"
-      [ngClass]="{
-        error: errorMessage && !disabled,
-        warn: warnMessage && !errorMessage && !disabled
-      }"
-      [attr.id]="id"
-      [checked]="value"
-      [required]="required"
-      [disabled]="disabled"
-      (change)="toggleCheckbox()"
-    />
-    <label class="bchk-label" [attr.for]="id">
-      {{ label }}
-    </label>
-
-    <p
-      b-input-message
-      *ngIf="hintMessage || warnMessage || errorMessage"
-      [hintMessage]="hintMessage"
-      [warnMessage]="warnMessage"
-      [errorMessage]="errorMessage"
-      [disabled]="disabled"
-    ></p>
-  `,
+  templateUrl: './checkbox.component.html',
   styleUrls: ['./checkbox.component.scss'],
   providers: [
     {
@@ -61,29 +33,47 @@ export enum CheckboxStates {
     }
   ]
 })
-export class CheckboxComponent extends BaseFormElement {
+export class CheckboxComponent extends BaseFormElement implements OnChanges {
   constructor() {
     super();
+    this.inputTransformers = [booleanOrFail];
+    this.wrapEvent = false;
+    this.baseValue = false;
   }
 
-  @ViewChild('input') private input: ElementRef;
-  @Input() value = false;
-  @Input() label: string;
-  @Input() disabled = false;
-  @Input() required = false;
-  public id = simpleUID('bchk-input-');
+  @ViewChild('input') public input: ElementRef;
+  @Input() public value = this.baseValue;
+  @Input() public indeterminate = false;
 
-  @Input('indeterminate')
-  set indState(value: boolean) {
-    this.input.nativeElement.indeterminate = value;
+  @Output(FormEvents.checkboxChange) changed: EventEmitter<
+    InputEvent
+  > = new EventEmitter<InputEvent>();
+
+  private transmit(event: InputEventType): void {
+    this.transmitValue(this.value, {
+      eventType: [event],
+      addToEventObj: {
+        indeterminate: this.indeterminate
+      }
+    });
   }
 
-  @Output() checkboxChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.indeterminate) {
+      this.indeterminate = changes.indeterminate.currentValue;
+      this.input.nativeElement.indeterminate = this.indeterminate;
+    }
+    if (changes.value) {
+      this.writeValue(changes.value.currentValue);
+    }
+    if (changes.value || changes.indeterminate) {
+      this.transmit(InputEventType.onWrite);
+    }
+  }
 
-  toggleCheckbox(): void {
-    this.value = !this.value;
-    this.propagateChange(this.value);
-    this.onTouched();
-    this.checkboxChange.emit(this.value);
+  public toggleCheckbox(): void {
+    this.value = this.input.nativeElement.checked;
+    this.indeterminate = false;
+    this.transmit(InputEventType.onBlur);
   }
 }

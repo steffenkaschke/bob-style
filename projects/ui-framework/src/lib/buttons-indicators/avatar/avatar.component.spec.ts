@@ -5,8 +5,8 @@ import { By } from '@angular/platform-browser';
 import { IconsModule } from '../../icons/icons.module';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { SimpleChange } from '@angular/core';
-import { ChipType } from '../chips/chips.enum';
-import { ChipsModule } from '../chips/chips.module';
+import { ChipType } from '../chip/chip.enum';
+import { ChipModule } from '../chip/chip.module';
 import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
 import { BadgeSize, AvatarBadges } from './avatar.consts';
 
@@ -20,7 +20,7 @@ describe('AvatarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AvatarComponent],
-      imports: [IconsModule, ChipsModule, TruncateTooltipModule],
+      imports: [IconsModule, ChipModule, TruncateTooltipModule],
       providers: [DOMhelpers]
     })
       .compileComponents()

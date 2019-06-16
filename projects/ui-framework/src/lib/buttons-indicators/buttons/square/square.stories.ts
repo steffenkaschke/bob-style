@@ -9,7 +9,10 @@ import { IconsModule } from '../../../icons/icons.module';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
-const buttonStories = storiesOf(`${ComponentGroupType.ButtonsAndIndicators}.Buttons`, module).addDecorator(withKnobs);
+const buttonStories = storiesOf(
+  `${ComponentGroupType.ButtonsAndIndicators}.Buttons`,
+  module
+).addDecorator(withKnobs);
 
 const typeOptions = values(ButtonType);
 const iconColor = values(IconColor);
@@ -44,7 +47,9 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Square button'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -57,7 +62,7 @@ buttonStories.add(
       icon: select('icon', icons, Icons.phone_link),
       color: select('color', iconColor, IconColor.dark),
       disabled: boolean('disabled', false),
-      onClick: action('Square button'),
+      onClick: action('Square button')
     },
     moduleMetadata: {
       imports: [ButtonsModule, IconsModule, StoryBookLayoutModule]

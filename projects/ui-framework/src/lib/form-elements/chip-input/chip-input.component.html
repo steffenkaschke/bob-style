@@ -1,0 +1,58 @@
+<label *ngIf="label"
+       class="bfe-label"
+       [attr.for]="id">{{label}}</label>
+
+<div class="bfe-wrap"
+     matAutocompleteOrigin
+     #wrapper="matAutocompleteOrigin"
+     [ngClass]="{focused: inputFocused, 'autocomplete-open': auto.isOpen,'empty': !value || value.length === 0}"
+     (click)="input.focus();">
+
+  <div class="chips-wrap">
+    <b-chip #chipList
+            *ngFor="let chip of value"
+            [type]="chipType.tag"
+            [removable]="removable"
+            [selectable]="true"
+            (removed)="remove(chip)"
+            (click)="$event.stopPropagation()"
+            (keydown)="onChipKeydown($event)">
+      {{chip}}
+    </b-chip>
+  </div>
+
+  <input #input
+         class="bfe-input"
+         [ngClass]="{empty: input.value === ''}"
+         [attr.id]="id"
+         [attr.name]="id"
+         [type]="inputTypes.text"
+         [attr.placeholder]="(!value || value.length === 0) && placeholder ? placeholder : null"
+         [disabled]="disabled"
+         [required]="required"
+         [matAutocomplete]="auto"
+         [matAutocompleteConnectedTo]="wrapper"
+         (focus)="onInputFocus()"
+         (blur)="onInputBlur($event)"
+         (input)="onInputChange($event)"
+         (keydown)="onInputKeydown($event)"
+         (keyup)="onInputKeyup($event)">
+
+</div>
+
+<mat-autocomplete #auto="matAutocomplete"
+                  (optionSelected)="optionSelected($event)"
+                  [class]="'chip-input-autocomplete'"
+                  disableRipple="true">
+  <mat-option *ngFor="let chip of filteredChips"
+              [value]="chip">
+    {{chip}}
+  </mat-option>
+</mat-autocomplete>
+
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled"></p>

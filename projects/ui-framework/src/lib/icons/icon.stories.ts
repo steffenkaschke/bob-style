@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { IconsModule } from './icons.module';
 import { IconColor, Icons, IconSize } from './icons.enum';
 import { reduce, values } from 'lodash';
@@ -7,7 +12,9 @@ import { ComponentGroupType } from '../consts';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const iconStories = storiesOf(ComponentGroupType.Icons, module).addDecorator(withKnobs);
+const iconStories = storiesOf(ComponentGroupType.Icons, module).addDecorator(
+  withKnobs
+);
 
 const icons = values(Icons).sort();
 const size = values(IconSize);
@@ -43,7 +50,9 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Icon'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -83,17 +92,37 @@ const iconsListTemplate = `
 <b-story-book-layout [title]="'Icon list'">
     <style>
       .icons-list {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-gap: 10px;
+        max-width: 100%;
+        padding: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
       }
-      b-icon { text-align: center; }
-      .icon-title { text-align: center; padding-top:12px; }
-      .icon-wrapper { background-color: #F8F7F7; border: 1px solid #535353; padding: 20px; border-radius: 4px; }
+      .icon-wrapper {
+        width: calc(25% - 5px);
+        margin-bottom: 5px;
+        background-color: #F8F7F7;
+        border: 1px solid #535353;
+        padding: 20px;
+        border-radius: 4px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      b-icon {
+        display: block;
+      }
+      .icon-title {
+        padding-top: 12px;
+        max-width: 100%;
+        overflow-wrap: break-word;
+      }
     </style>
-    <div class="icons-list">
-      ${listHtml}
-    </div>
+      <div class="icons-list">
+        ${listHtml}
+      </div>
 </b-story-book-layout>
   `;
 iconStories.add(

@@ -1,22 +1,26 @@
-@import '../../../style/colors';
+@import '../../../style/variables';
 
 :host {
-  display: block;
-  padding: 8px 8px;
-  border-top: 1px solid $grey-500;
-  z-index: 1;
-  background-color: $white;
   display: flex;
   justify-content: space-between;
-  .cancel-apply {
-    display: flex;
-    margin-left: auto;
-    b-button {
-      display: block;
-      margin-right: 6px;
-      &:last-child {
-        margin-right: 0;
-      }
-    }
+  padding: 8px 8px;
+  border-top: 1px solid $grey-500;
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+  z-index: 1;
+  background-color: $white;
+}
+
+.cancel-apply {
+  display: flex;
+  margin-left: auto;
+}
+
+b-button {
+  display: block;
+  margin-right: 6px;
+
+  &:last-child {
+    margin-right: 0;
   }
 }

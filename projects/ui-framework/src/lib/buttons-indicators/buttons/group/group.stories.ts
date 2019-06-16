@@ -8,7 +8,10 @@ import { values } from 'lodash';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 
-const buttonStories = storiesOf(`${ComponentGroupType.ButtonsAndIndicators}.Buttons`, module).addDecorator(withKnobs);
+const buttonStories = storiesOf(
+  `${ComponentGroupType.ButtonsAndIndicators}.Buttons`,
+  module
+).addDecorator(withKnobs);
 
 const template = `
 <b-group>
@@ -26,7 +29,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Grouped buttons'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 

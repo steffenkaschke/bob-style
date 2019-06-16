@@ -8,8 +8,8 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { CardTableModule } from './card-table.module';
 import { CardTableMockMetaData, CardTableMockData } from './card-table.mock';
 
-import { ChipsModule } from '../../buttons-indicators/chips/chips.module';
-import { ChipComponent } from '../../buttons-indicators/chips/chip/chip.component';
+import { ChipModule } from '../../buttons-indicators/chip/chip.module';
+import { ChipComponent } from '../../buttons-indicators/chip/chip.component';
 
 import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
 
@@ -51,25 +51,27 @@ const storyTemplate = `
       (cellClicked)="cellClickHandler($event)">
     </b-card-table>
 
-    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: 30px auto;">
+    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: auto;">
       <span>Width: </span>
-      <b-radio-button [radioConfig]="[
+
+      <b-radio-button [options]="[
           {id: '95%', label: 'auto'},
           {id: '840px', label: '840px'},
           {id: '630px', label: '630px'}
         ]"
-        [value]="'840px'"
-        (radioChange)="res = $event">
+        [value]="{id: '840px'}"
+        (radioChange)="res = ($event && $event.value) || $event">
       </b-radio-button>
     </p>
 
-    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: 30px auto;">
+    <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: auto;">
       <span>Data: </span>
-      <b-radio-button [radioConfig]="[
-          {id: {id: 1, data: CardTableData}, label: 'original'},
-          {id: {id: 2, data: []}, label: 'empty'}
+      <b-radio-button [options]="[
+          {id: 1, label: 'original'},
+          {id: 2, label: 'empty'}
         ]"
-        (radioChange)="tableData = $event.data">
+        [value]="{id: 1}"
+        (radioChange)="tableData = ($event && $event.value === 2) || ($event === 2) ? [] : CardTableData">
       </b-radio-button>
     </p>
 
@@ -221,7 +223,7 @@ story.add(
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           CardTableModule,
-          ChipsModule,
+          ChipModule,
           ButtonsModule,
           AvatarModule
         ],

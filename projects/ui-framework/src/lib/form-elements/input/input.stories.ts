@@ -1,5 +1,11 @@
 import { storiesOf } from '@storybook/angular';
-import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  text,
+  select,
+  boolean,
+  withKnobs,
+  number
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { InputModule } from './input.module';
@@ -8,29 +14,37 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const inputStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
+const inputStories = storiesOf(
+  ComponentGroupType.FormElements,
+  module
+).addDecorator(withKnobs);
 
 const inputTypes = values(InputTypes);
 const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
 
 const template = `
-<b-input style="width: 400px;"
+<b-input
         [inputType]="inputType"
-        [label]="label"
         [value]="value"
+        [label]="label"
+        [placeholder]="placeholder"
+        [hideLabelOnFocus]="hideLabelOnFocus"
         [disabled]="disabled"
         [required]="required"
-        [errorMessage]="errorMessage"
-        [hideLabelOnFocus]="hideLabelOnFocus"
-        [enableBrowserAutoComplete]="enableBrowserAutoComplete"
+        [maxChars]="maxChars"
         [hintMessage]="hintMessage"
+        [warnMessage]="warnMessage"
+        [errorMessage]="errorMessage"
+        [enableBrowserAutoComplete]="enableBrowserAutoComplete"
         (inputEvents)="inputEvents($event)">
 </b-input>
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Input'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -42,15 +56,18 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  type | InputType | type of input field
-  value | string/number/float | type of input field
-  label | string | label text
+  InputType | InputTypes | type of input field
+  value | string/number | value of input field
+  label | string | label text (above input)
+  placeholder | string | placeholder text (inside input)
+  hideLabelOnFocus | boolean | if true: there will be no label above input, label text (if present) will be used as placeholder
+  maxChars | number | maximum length
   disabled | boolean | is field disabled
   required | boolean | is field required
-  hintMessage | text | hint text
-  errorMessage | text | error text
+  hintMessage | string | hint text
+  warnMessage | string | warning text
+  errorMessage | string | error text
   enableBrowserAutoComplete | InputAutoCompleteOptions | shows browser autocomplete options
-  hideLabelOnFocus | boolean | hides label on focus
   inputEvents | InputEvents | input events emitter
 
   ~~~
@@ -63,15 +80,20 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        inputEvents: action(),
+        inputEvents: action('Input event'),
         inputType: select('inputType', inputTypes, InputTypes.text),
         value: text('value', ''),
-        label: text('label', 'label text'),
+        label: text('label', 'Input label'),
+        placeholder: text('placeholder', 'Input placeholder'),
+        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
+        maxChars: number('maxChars', 30),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
-        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
+
         hintMessage: text('hintMessage', 'This field should contain something'),
+        warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
+
         enableBrowserAutoComplete: select(
           'enableBrowserAutoComplete',
           inputAutoCompleteOptions,

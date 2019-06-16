@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { number, object, select, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  number,
+  object,
+  select,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../consts';
@@ -12,11 +17,12 @@ import { AvatarCellComponent } from './table-cell-components/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { RowSelection } from './table/table.interface';
 
-const tableStories = storiesOf(ComponentGroupType.Tables, module).addDecorator(withKnobs);
+const tableStories = storiesOf(ComponentGroupType.Tables, module).addDecorator(
+  withKnobs
+);
 
 const template = `
-<b-table style="width: calc(100% - 40px); margin: 0 auto;"
-         [rowData]="rowData"
+<b-table [rowData]="rowData"
          [columnDefs]="columnDefs"
          [rowSelection]="rowSelection"
          (rowClicked)="rowClicked($event)"
@@ -27,7 +33,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Data Table'">
-  ${template}
+  <div style="width: calc(100% - 60px); margin: 30px auto;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -62,7 +70,11 @@ tableStories.add(
       template: storyTemplate,
       props: {
         maxHeight: number('maxHeight', null),
-        rowSelection: select('rowSelection', rowSelection, RowSelection.Multiple),
+        rowSelection: select(
+          'rowSelection',
+          rowSelection,
+          RowSelection.Multiple
+        ),
         rowData: object('rowData', mockRowData),
         columnDefs: object('columnDefs', mockColumnsDefs),
         rowClicked: action('Row clicked'),

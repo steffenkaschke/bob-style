@@ -19,11 +19,6 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 export class CollapsibleComponent implements AfterViewInit {
   constructor(private DOM: DOMhelpers) {}
 
-  @HostBinding('class')
-  get typeClass() {
-    return 'collapsible-' + this.type;
-  }
-
   @Input() type: CollapsibleType = CollapsibleType.small;
 
   @Input() expanded = false;
@@ -36,6 +31,13 @@ export class CollapsibleComponent implements AfterViewInit {
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
   @ViewChild('suffix') suffix: ElementRef;
+
+  @HostBinding('class.collapsible-small') get isOfTypeSmall(): boolean {
+    return this.type === CollapsibleType.small;
+  }
+  @HostBinding('class.collapsible-big') get isOfTypeBig(): boolean {
+    return this.type === CollapsibleType.big;
+  }
 
   hasSuffix = true;
   collapsibleType = CollapsibleType;

@@ -2,64 +2,36 @@
 @import '../../../style/shapes';
 @import '../list';
 
-:host ::ng-deep {
+:host {
   position: relative;
-  display: inline-block;
-  width: 100%;
-  .panel-trigger {
-    width: 100%;
-    display: block;
-    margin: 20px 0;
-    b-input {
-      cursor: pointer;
-      .mat-form-field.has-prefix .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-prefix {
-        padding-right: 0;
-      }
-      .mat-form-field {
-        margin: 0;
-        .mat-form-field-wrapper .mat-form-field-flex {
-          pointer-events: none;
-        }
-      }
-      .clear-selection {
-        pointer-events: all;
-        cursor: pointer;
-      }
-      .select-chevron {
-        @include chevron-down($grey-600);
-      }
-      input {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      &.has-clear-prefix {
-        .mat-form-field.has-prefix .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-prefix {
-          padding-right: 10px;
-        }
-      }
-      .mat-form-field-disabled {
-        .clear-selection {
-          pointer-events: none;
-          opacity: .3;
-        }
-      }
+}
+
+.trigger-input {
+  cursor: pointer;
+  position: static;
+}
+
+.bfe-wrap {
+  position: relative;
+
+  &.panel-open {
+    &.panel-below {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
     }
-    &.panel-open b-input {
-      .select-chevron {
-        @include chevron-up($grey-600);
-      }
-      .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-      }
+    &.panel-above {
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
     }
-    &.disabled {
-      pointer-events: none;
-      b-input .select-chevron {
-        @include chevron-down($grey-500);
-      }
-    }
+  }
+}
+
+.select-chevron {
+  &.down {
+    @include chevron-down($grey-600);
+  }
+  &.up {
+    @include chevron-up($grey-600);
   }
 }
 
@@ -67,13 +39,30 @@
   .b-select-backdrop {
     opacity: 0;
   }
+
   .b-select-panel {
-    @include selectPanel;
-    b-single-list {
-      display: block;
-      border: none;
-      overflow: initial;
-      border-radius: 0;
+    flex-direction: column;
+
+    .b-select-list {
+      border: 0;
+      box-shadow: none;
+    }
+
+    .b-select-panel {
+      width: 100%;
+      border: 1px solid $grey-500;
+      border-radius: $border-radius;
+      box-shadow: 0 2px 5px $boxShadowColor;
+    }
+    .panel-below {
+      border-top: 0;
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+    }
+    .panel-above {
+      border-bottom: 0;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
     }
   }
 }

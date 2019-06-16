@@ -33,22 +33,3 @@ export enum RTEchangeEvent {
   change = 'change',
   blur = 'blur'
 }
-
-export enum QuillKeyboardKeys {
-  backspace = 'BACKSPACE',
-  tab = 'TAB',
-  enter = 'ENTER',
-  escape = 'ESCAPE',
-  left = 'LEFT',
-  up = 'UP',
-  right = 'RIGHT',
-  down = 'DOWN',
-  delete = 'DELETE'
-}
-
-export enum DOMkeyboardKeys {
-  left = 'ARROWLEFT',
-  up = 'ARROWUP',
-  right = 'ARROWRIGHT',
-  down = 'ARROWDOWN'
-}

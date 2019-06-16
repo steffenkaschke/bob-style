@@ -6,7 +6,7 @@ import { DialogService } from './dialog-service/dialog.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { FormElementsModule } from '../../form-elements/form-elements.module';
-import { InputEventType } from '../../form-elements/input/input.enum';
+import { InputEventType } from '../../form-elements/form-elements.enum';
 import { InputEvent } from '../../form-elements/input/input.interface';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import { DialogSize } from './dialog.enum';

@@ -1,13 +1,29 @@
-<mat-radio-group [ngClass]="[direction === 'column'
-                 ? 'direction' + '-column'
-                 : 'direction' + '-row']"
-                 [disabled]="disabled"
-                 (change)="onRadioChange($event)">
+<label *ngIf="label"
+       class="bfe-label"
+       [attr.for]="id">{{label}}</label>
 
-  <mat-radio-button *ngFor="let radioButton of radioConfig"
-                    [checked]="value===radioButton.id"
-                    [value]="radioButton.id">
-    {{radioButton.label}}
-  </mat-radio-button>
+<div class="bfe-wrap"
+     [attr.id]="id"
+     [ngClass]="{'direction-row': !direction || direction === dir.row, 'direction-column': direction === dir.column}">
 
-</mat-radio-group>
+  <ng-container *ngFor="let radio of options; let i = index;">
+    <input type="radio"
+           class="brd-input"
+           [attr.id]="id+'-'+i"
+           [attr.name]="id"
+           [value]="radio[key]"
+           [checked]="(value && value[key] === radio[key]) || value == radio[key]"
+           [required]="required"
+           [disabled]="disabled"
+           (change)="onRadioChange(radio[key])" />
+    <label class="brd-label"
+           [attr.for]="id+'-'+i">{{radio.label || radio[key] || radio}}</label>
+  </ng-container>
+</div>
+
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled"></p>

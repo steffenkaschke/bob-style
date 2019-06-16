@@ -1,52 +1,68 @@
-import { Component, EventEmitter, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  Input,
+  SimpleChanges,
+  OnChanges
+} from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { InputEventType, InputTypes } from '../../form-elements/input/input.enum';
-import { set, has } from 'lodash';
-import { InputEvent } from '../../form-elements/input/input.interface';
-import { BaseInputElement } from '../../form-elements/base-input-element';
+import {
+  InputTypes,
+  InputAutoCompleteOptions
+} from '../../form-elements/input/input.enum';
+import { simpleUID } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  styleUrls: [
+    '../../form-elements/input/input.component.scss',
+    './search.component.scss'
+  ]
 })
-export class SearchComponent extends BaseInputElement implements OnChanges {
+export class SearchComponent implements OnChanges {
+  constructor() {}
+
+  @Input() value = '';
+  @Input() label: string;
+  @Input() placeholder: string;
+  @Input() hideLabelOnFocus = true;
+  @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
+    InputAutoCompleteOptions.off;
+
+  public id = simpleUID('bsrch-');
+  public inputFocused = false;
+  public searchIconColor: String = IconColor.normal;
+  public readonly icons = Icons;
+  public readonly iconSize = IconSize;
+  public readonly iconColor = IconColor;
+  public readonly inputTypes = InputTypes;
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
 
-  readonly icons = Icons;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
-  searchIconColor: String = IconColor.normal;
-
-  inputTypes = InputTypes;
-
-  constructor() {
-    super();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (has(changes, 'value')) {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.value) {
       this.value = changes.value.currentValue;
-    } else {
-      this.value = this.value || '';
     }
   }
 
-  onInputEvents(event: InputEvent): void {
-    this.value = event.value as string;
-    if (event.event === InputEventType.onChange) {
-      this.searchChange.emit(this.value);
-    }
-    if (event.event === InputEventType.onFocus) {
-      this.searchIconColor = IconColor.dark;
-    }
-    if (event.event === InputEventType.onBlur) {
-      this.searchIconColor = IconColor.normal;
-    }
+  onFocus(): void {
+    this.inputFocused = true;
+    this.searchIconColor = IconColor.dark;
   }
 
-  onResetClick() {
+  onBlur(): void {
+    this.inputFocused = false;
+    this.searchIconColor = IconColor.normal;
+  }
+
+  onInput(event): void {
+    this.value = (event.target as HTMLInputElement).value;
+    this.searchChange.emit(this.value);
+  }
+
+  onResetClick(): void {
     this.value = '';
     this.searchChange.emit(this.value);
   }

@@ -22,7 +22,6 @@
              *ngIf="controls.includes(BlotType.size)"
              [defaultPosVer]="panelDefaultPosVer.below"
              (closed)="restoreSelection()">
-
       <button type="button"
               class="rte-size"
               panel-trigger
@@ -34,7 +33,6 @@
                 color="normal">
         </b-icon>
       </button>
-
       <ng-container panel-content>
         <button type="button"
                 class="rte-button rte-size-small"
@@ -125,9 +123,9 @@
 
 </div>
 
-<mat-hint *ngIf="errorMessage || hintMessage"
-          align="start"
-          [ngClass]="{'error-message': errorMessage && !disabled, 'hint-message': !errorMessage && hintMessage}"
-          class="error-message">
-  {{ errorMessage && !disabled ? errorMessage : hintMessage }}
-</mat-hint>
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled"></p>

@@ -3,6 +3,12 @@
  */
 
 /*
+* Global
+*/
+
+export { Keys } from './lib/enums';
+
+/*
  * Typography
  */
 
@@ -61,14 +67,14 @@ export {
 export {
   SwitchToggleComponent
 } from './lib/buttons-indicators/switch-toggle/switch-toggle.component';
-// Chips Module
-export { ChipsModule } from './lib/buttons-indicators/chips/chips.module';
+// Chip Module
+export { ChipsModule } from './lib/buttons-indicators/chip/chips.module';
+export { ChipModule } from './lib/buttons-indicators/chip/chip.module';
 export {
   ChipComponent
-} from './lib/buttons-indicators/chips/chip/chip.component';
-export { ChipInputComponent } from './lib/buttons-indicators/chips/chip-input/chip-input.component';
-export { ChipType } from './lib/buttons-indicators/chips/chips.enum';
-export { Chip, ChipInputChange } from './lib/buttons-indicators/chips/chips.interface';
+} from './lib/buttons-indicators/chip/chip.component';
+export { ChipType } from './lib/buttons-indicators/chip/chip.enum';
+export { Chip } from './lib/buttons-indicators/chip/chip.interface';
 // InfoStrip Module
 export { InfoStripModule } from './lib/buttons-indicators/info-strip/info-strip.module';
 export { InfoStripComponent } from './lib/buttons-indicators/info-strip/info-strip.component';
@@ -97,6 +103,9 @@ export { EmployeeShowcase } from './lib/buttons-indicators/employees-showcase/em
 
 // FormElements Module
 export { FormElementsModule } from './lib/form-elements/form-elements.module';
+export {
+  FormEvents, InputEventType,
+} from './lib/form-elements/form-elements.enum';
 // Textarea Module
 export { TextareaModule } from './lib/form-elements/textarea/textarea.module';
 export {
@@ -119,9 +128,7 @@ export { InputModule } from './lib/form-elements/input/input.module';
 export { InputComponent } from './lib/form-elements/input/input.component';
 export { InputEvent } from './lib/form-elements/input/input.interface';
 export {
-  InputTypes,
-  InputEventType,
-  InputAutoCompleteOptions
+  InputTypes, InputAutoCompleteOptions
 } from './lib/form-elements/input/input.enum';
 // Split input + single select Module
 export {
@@ -187,6 +194,14 @@ export {
 export {
   RadioConfig
 } from './lib/form-elements/radio-button/radio-button.interface';
+// Chip Input Module
+export { ChipInputModule } from './lib/form-elements/chip-input/chip-input.module';
+export { ChipInputComponent } from './lib/form-elements/chip-input/chip-input.component';
+export { ChipInputChange } from './lib/form-elements/chip-input/chip-input.interface';
+// Social Module
+export { SocialModule } from './lib/form-elements/social/social.module';
+export { Social } from './lib/form-elements/social/social.enum';
+
 
 /*
  * Navigation
@@ -337,6 +352,3 @@ export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/trunca
  */
 
 export { SLIDE_UP_DOWN } from './lib/style/animations';
-
-export { SocialModule} from './lib/form-elements/social/social.module';
-export { SocialType } from './lib/form-elements/social/social.interface';

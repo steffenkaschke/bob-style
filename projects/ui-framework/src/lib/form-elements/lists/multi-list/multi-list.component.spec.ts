@@ -1,16 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import {
-  MatFormFieldModule,
-  MatIconModule,
-  MatInputModule,
-  MatTooltipModule
-} from '@angular/material';
+
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { IconsModule } from '../../../icons/icons.module';
-import { InputModule } from '../../input/input.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ListModelService } from '../list-service/list-model.service';
 import { SelectGroupOption } from '../list.interface';
@@ -53,15 +46,9 @@ describe('MultiListComponent', () => {
       imports: [
         NoopAnimationsModule,
         CommonModule,
-        FormsModule,
-        InputModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
         SearchModule,
         ButtonsModule,
         IconsModule,
-        MatTooltipModule,
         ScrollingModule,
         FiltersModule,
         ListOptionModule

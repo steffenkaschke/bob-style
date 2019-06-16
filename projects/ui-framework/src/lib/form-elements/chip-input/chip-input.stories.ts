@@ -1,4 +1,4 @@
-import { storiesOf, moduleMetadata } from '@storybook/angular';
+import { storiesOf } from '@storybook/angular';
 import {
   text,
   array,
@@ -6,17 +6,17 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { ChipsModule } from '../chips.module';
-import { ComponentGroupType } from '../../../consts';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { chipOptionsMock } from './chipsOptionsMock';
-import { randomFromArray } from '../../../services/utils/functional-utils';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const story = storiesOf(
-  `${ComponentGroupType.ButtonsAndIndicators}.Chips`,
-  module
-).addDecorator(withKnobs);
+import { ComponentGroupType } from '../../consts';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { chipOptionsMock } from './chip-input.mock';
+import { randomFromArray } from '../../services/utils/functional-utils';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChipInputModule } from './chip-input.module';
+
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
 const options = chipOptionsMock;
 const value = [...randomFromArray(chipOptionsMock, 3), 'Rimming'];
@@ -30,20 +30,16 @@ const template = `
                 [required]="required"
                 [disabled]="disabled"
                 [hintMessage]="hintMessage"
+                [warnMessage]="warnMessage"
                 [errorMessage]="errorMessage"
                 (changed)="chipInputChangeHandler($event)">
   </b-chip-input>
 `;
-const template2 = `
-  <p b-chip [type]="type">
-    Used as directive
-  </p>
-`;
 
 const note = `
-  ## Text-only Chip
+  ## Chip Input
   #### Module
-  *ChipsModule*
+  *ChipInputModule*
 
   #### Properties
   Name | Type | Description | Default value
@@ -54,6 +50,7 @@ const note = `
   label | string | label (on top of input) | none
   placeholder | string | placeholder (inide input) | none
   hintMessage | string | text below input | none
+  warnMessage | string | warning text
   errorMessage | string | error text | none
   required | boolean | if input is required | false
   disabled | boolean | if input is disabled | false
@@ -67,7 +64,7 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Chip Input'">
-  <div style="padding: 50px;margin:auto;max-width:600px;">
+  <div style="padding: 30px;margin:auto;max-width:600px;">
     ${template}
   </div>
 </b-story-book-layout>
@@ -85,12 +82,13 @@ story.add(
       disabled: boolean('disabled', false),
       required: boolean('required', false),
       hintMessage: text('hintMessage', 'Stick something in me'),
+      warnMessage: text('warnMessage', ''),
       errorMessage: text('errorMessage', ''),
       options: array('options', options, ','),
       chipInputChangeHandler: action('Chip input changed')
     },
     moduleMetadata: {
-      imports: [ChipsModule, StoryBookLayoutModule, BrowserAnimationsModule]
+      imports: [ChipInputModule, StoryBookLayoutModule, BrowserAnimationsModule]
     }
   }),
   { notes: { markdown: note } }

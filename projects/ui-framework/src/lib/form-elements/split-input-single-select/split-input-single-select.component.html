@@ -1,18 +1,20 @@
-<div [ngClass]="{'has-error': errorMessage}"
-     class="split-single-select-wrapper">
-  <b-input (inputEvents)="onInputChange($event)"
-           [disabled]="disabled"
-           [hintMessage]="hintMessage"
-           [errorMessage]="errorMessage"
-           [inputType]="inputType"
-           [label]="label"
-           [required]="required"
-           [value]="value?.inputValue">
-  </b-input>
+<b-input (inputEvents)="onInputChange($event)"
+         [value]="value?.inputValue"
+         [inputType]="inputType"
+         [label]="label"
+         [placeholder]="placeholder"
+         [hideLabelOnFocus]="hideLabelOnFocus"
+         [required]="required"
+         [disabled]="disabled"
+         [hintMessage]="hintMessage"
+         [errorMessage]="errorMessage"
+         [warnMessage]="errorMessage"
+         [doPropagate]="false">
+</b-input>
 
-  <b-single-select (selectChange)="onSelectChange($event)"
-                   [disabled]="disabled"
-                   [options]="options"
-                   [showSingleGroupHeader]="false">
-  </b-single-select>
-</div>
+<b-single-select (selectChange)="onSelectChange($event)"
+                 [disabled]="disabled"
+                 [options]="options"
+                 [showSingleGroupHeader]="false"
+                 [doPropagate]="false">
+</b-single-select>
