@@ -15,7 +15,7 @@
          [autocomplete]="enableBrowserAutoComplete"
          [disabled]="disabled"
          [required]="required"
-         (focus)="picker.open();inputFocused = true"
+         (focus)="input.select();picker.open();inputFocused = true"
          (blur)="picker.opened ? input.focus() : inputFocused = false"
          (dateChange)="onDateChange($event.value)"
          [matDatepicker]="picker">

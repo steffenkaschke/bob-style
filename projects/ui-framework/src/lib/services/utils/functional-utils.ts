@@ -145,4 +145,10 @@ export const stringify = (smth: any): string =>
     : String(smth);
 
 export const getType = smth =>
-  smth === null ? 'null' : isArray(smth) ? 'array' : String(typeof smth);
+  smth === null
+    ? 'null'
+    : isArray(smth)
+    ? 'array'
+    : smth instanceof Date
+    ? 'date'
+    : String(typeof smth);

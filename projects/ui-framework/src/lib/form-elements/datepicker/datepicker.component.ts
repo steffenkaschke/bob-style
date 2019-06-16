@@ -24,6 +24,11 @@ import { serverDateFormat } from '../../consts';
 import { differenceInDays, format, isDate, isSameDay } from 'date-fns';
 import { BaseFormElement } from '../base-form-element';
 import { FormEvents } from '../form-elements.enum';
+import {
+  stringyOrFail,
+  dateyOrFail,
+  dateToString
+} from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-datepicker',
@@ -70,15 +75,22 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
 
   constructor() {
     super();
+    this.inputTransformers = [dateyOrFail];
     this.outputTransformers = [
-      date => {
-        return isDate(date)
-          ? format(
-              date,
-              (!!this.dateFormat && this.dateFormat) || serverDateFormat
-            )
-          : date;
-      }
+      // date => {
+      //   return isDate(date)
+      //     ? format(
+      //         date,
+      //         (!!this.dateFormat && this.dateFormat) || serverDateFormat // 'YYYY-MM-DD'
+      //       )
+      //     : date;
+      // },
+      date =>
+        dateToString(
+          date,
+          (!!this.dateFormat && this.dateFormat) || serverDateFormat
+        )
+      // stringyOrFail
     ];
   }
 

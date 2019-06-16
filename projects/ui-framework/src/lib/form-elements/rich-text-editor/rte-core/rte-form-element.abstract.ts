@@ -84,21 +84,19 @@ export abstract class RTEformElement extends BaseFormElement
     }
   };
 
-  public inputTransformers: Function[] = [];
-  public outputTransformers: Function[] = [];
   protected outputFormatTransformer: Function = (val: string): any => val;
-
-  protected onNgChanges(changes: SimpleChanges): void {}
   protected onNgAfterViewInit(): void {}
 
   protected applyValue(newInputValue: string): void {
-    this.value = newInputValue = newInputValue ? newInputValue.trim() : '';
-
-    if (!!newInputValue && this.editor) {
+    if (newInputValue !== undefined) {
       newInputValue = this.inputTransformers.reduce(
         (previousResult, fn) => fn(previousResult),
         newInputValue
       );
+      this.value = newInputValue = newInputValue ? newInputValue.trim() : '';
+    }
+
+    if (!!newInputValue && this.editor) {
       this.editor.setContents(
         this.editor.clipboard.convert(newInputValue).insert(' \n')
       );

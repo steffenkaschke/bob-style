@@ -44,6 +44,7 @@ import { RtePlaceholderBlot } from './rte-placeholder/rte-placeholder.mixin';
 import { RteKeybindings } from './rte-core/rte-keybindigs.mixin';
 import { MixIn } from '../../services/utils/functional-utils';
 import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
+import { stringyOrFail } from '../../services/utils/transformers';
 
 quillLib.register(LinkBlot);
 quillLib.register(PlaceholderBlot);
@@ -138,7 +139,7 @@ export class RichTextEditorComponent extends RTEformElement
 
   // registering input/output transformers
   private initTransformers(): void {
-    this.inputTransformers = [];
+    this.inputTransformers = [stringyOrFail];
     this.outputTransformers = [this.rteUtils.cleanupHtml];
 
     if (this.placeholderList && this.controls.includes(BlotType.placeholder)) {

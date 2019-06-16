@@ -126,6 +126,8 @@
          <option value="false">false</option>
          <option value="array">array</option>
          <option value="object">object</option>
+         <option value="date">date</option>
+         <option value="dateString">dateString</option>
        </select>
        Strategy:
        <select class="simple-select"
@@ -134,6 +136,8 @@
          <option value="setValue">setValue</option>
          <option value="setComponentProp">setComponentProp</option>
        </select>
+       <button (click)="setGlobalFormControlValueToEach()"
+               type="button">God help us all</button>
      </label>
    </p>
 
@@ -765,6 +769,11 @@
      <p class="node-count">
        DOM elements: <span class="now">{{ bDatepicker_nodeCount }}</span> vs <span class="then">24</span>
      </p>
+
+     <br>
+     <button type="button"
+             class="log-stuff"
+             (click)="logComponentProp('bDatepicker')">Log value</button>
    </form>
 
    <div class="column">
@@ -1837,7 +1846,7 @@
          <input class="simple-input bigger"
                 (change)="onValueInput('bRadio', $event, false,
                 valueToObjectWithKeyOfValueFromArray($event.target.value, 'id', bRadio_options))"
-                [value]="bRadio_value.id || bRadio_value"
+                [value]="bRadio_value ? (bRadio_value.id || bRadio_value) : undefined"
                 type="search">
        </label>
      </div>
@@ -2013,6 +2022,10 @@
      <button type="button"
              class="log-stuff"
              (click)="logFlattenedObject('bSingleSelect_options')">Log options</button>
+
+     <p class="note">
+       Component does not take value input
+     </p>
    </form>
 
    <div class="column">
@@ -2264,6 +2277,10 @@
      <button type="button"
              class="log-stuff"
              (click)="logFlattenedObject('bMultiSelect_options')">Log options</button>
+
+     <p class="note">
+       Component does not take value input
+     </p>
    </form>
 
    <div class="column">

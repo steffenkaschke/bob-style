@@ -43,10 +43,11 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
       objectHasKeyOrFail(this.key),
       value => valueInArrayOrFail(value, this.options, this.key)
     ];
+    this.baseValue = {};
     this.wrapEvent = false;
   }
 
-  @Input() value: RadioConfig;
+  @Input() value: RadioConfig = this.baseValue;
   @Input() options: RadioConfig[];
   @Input() direction: RadioDirection = RadioDirection.row;
 
@@ -71,10 +72,8 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
 
     if (changes.value || changes.options) {
       const val = changes.value ? changes.value.currentValue : this.value;
-      if (val) {
-        this.writeValue(val);
-        this.transmit(InputEventType.onWrite);
-      }
+      this.writeValue(val);
+      this.transmit(InputEventType.onWrite);
     }
   }
 

@@ -73,9 +73,13 @@ export class FormElementsTestComponent
     true: true,
     false: false,
     array: ['a', 'b', 'c'],
-    object: { a: 'a', b: 'b', c: 'c' }
+    object: { a: 'a', b: 'b', c: 'c' },
+    date: new Date(),
+    dateString: '2019-06-16'
   };
   globalFormControlStartValue = this.globalFormControlStartValues.null;
+
+  global_intiFormWithNull = false;
 
   global_warn = false;
   global_warn_value = 'Warning message';
@@ -113,9 +117,14 @@ export class FormElementsTestComponent
   bInput_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bInput_Form = new FormGroup({
-    bInput: new FormControl(this.globalFormControlStartValue, {
-      updateOn: this.bInput_updateOn_mode as any
-    })
+    bInput: new FormControl(
+      this.global_intiFormWithNull
+        ? this.globalFormControlStartValue
+        : this.bInput_value,
+      {
+        updateOn: this.bInput_updateOn_mode as any
+      }
+    )
   });
   bInput = this.bInput_Form.get('bInput');
 
@@ -149,9 +158,14 @@ export class FormElementsTestComponent
   bTextarea_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bTextarea_Form = new FormGroup({
-    bTextarea: new FormControl(this.globalFormControlStartValue, {
-      updateOn: this.bTextarea_updateOn_mode as any
-    })
+    bTextarea: new FormControl(
+      this.global_intiFormWithNull
+        ? this.globalFormControlStartValue
+        : this.bTextarea_value,
+      {
+        updateOn: this.bTextarea_updateOn_mode as any
+      }
+    )
   });
   bTextarea = this.bTextarea_Form.get('bTextarea');
 
@@ -185,9 +199,14 @@ export class FormElementsTestComponent
   bDatepicker_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bDatepicker_Form = new FormGroup({
-    bDatepicker: new FormControl(this.globalFormControlStartValue, {
-      updateOn: this.bDatepicker_updateOn_mode as any
-    })
+    bDatepicker: new FormControl(
+      this.global_intiFormWithNull
+        ? this.globalFormControlStartValue
+        : this.bDatepicker_value,
+      {
+        updateOn: this.bDatepicker_updateOn_mode as any
+      }
+    )
   });
   bDatepicker = this.bDatepicker_Form.get('bDatepicker');
 
@@ -222,8 +241,9 @@ export class FormElementsTestComponent
 
   bChipinput_Form = new FormGroup({
     bChipinput: new FormControl(
-      // this.bChipinput_value,
-      this.globalFormControlStartValue,
+      this.global_intiFormWithNull
+        ? this.globalFormControlStartValue
+        : this.bChipinput_value,
       {
         updateOn: this.bChipinput_updateOn_mode as any
       }
@@ -243,7 +263,7 @@ export class FormElementsTestComponent
   bSocial_type = 'facebook';
   bSocial_label = 'Social Input label';
   bSocial_placeholder = 'Your Name';
-  bSocial_value = 'Social Input value';
+  bSocial_value = 'https://www.facebook.com/galloween';
   bSocial_disabled = this.global_disabled;
   bSocial_required = this.global_required;
   bSocial_hint = 'Social Input hint text';
@@ -261,9 +281,14 @@ export class FormElementsTestComponent
   bSocial_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bSocial_Form = new FormGroup({
-    bSocial: new FormControl(this.globalFormControlStartValue, {
-      updateOn: this.bSocial_updateOn_mode as any
-    })
+    bSocial: new FormControl(
+      this.global_intiFormWithNull
+        ? this.globalFormControlStartValue
+        : this.bSocial_value,
+      {
+        updateOn: this.bSocial_updateOn_mode as any
+      }
+    )
   });
   bSocial = this.bSocial_Form.get('bSocial');
 
@@ -296,9 +321,14 @@ export class FormElementsTestComponent
   bCheckbox_lastEventName;
 
   bCheckbox_Form = new FormGroup({
-    bCheckbox: new FormControl(this.globalFormControlStartValue, {
-      updateOn: this.bCheckbox_updateOn_mode as any
-    })
+    bCheckbox: new FormControl(
+      this.global_intiFormWithNull
+        ? this.globalFormControlStartValue
+        : this.bCheckbox_value,
+      {
+        updateOn: this.bCheckbox_updateOn_mode as any
+      }
+    )
   });
   bCheckbox = this.bCheckbox_Form.get('bCheckbox');
 
@@ -341,9 +371,14 @@ export class FormElementsTestComponent
   bRadio_lastEventName;
 
   bRadio_Form = new FormGroup({
-    bRadio: new FormControl(this.globalFormControlStartValue, {
-      updateOn: this.bRadio_updateOn_mode as any
-    })
+    bRadio: new FormControl(
+      this.global_intiFormWithNull
+        ? this.globalFormControlStartValue
+        : this.bRadio_value,
+      {
+        updateOn: this.bRadio_updateOn_mode as any
+      }
+    )
   });
   bRadio = this.bRadio_Form.get('bRadio');
 
@@ -378,7 +413,7 @@ export class FormElementsTestComponent
 
   bSingleSelect_label = 'Input label';
   bSingleSelect_placeholder = 'Input placeholder';
-  bSingleSelect_value = 'Input value';
+  bSingleSelect_value = undefined;
 
   bSingleSelect_options = this.bSingleSelect_optionsMock;
   bSingleSelect_showSingleGroupHeader = false;
@@ -401,9 +436,14 @@ export class FormElementsTestComponent
   bSingleSelect_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bSingleSelect_Form = new FormGroup({
-    bSingleSelect: new FormControl(this.globalFormControlStartValue, {
-      updateOn: this.bSingleSelect_updateOn_mode as any
-    })
+    bSingleSelect: new FormControl(
+      this.global_intiFormWithNull
+        ? this.globalFormControlStartValue
+        : this.bSingleSelect_value,
+      {
+        updateOn: this.bSingleSelect_updateOn_mode as any
+      }
+    )
   });
   bSingleSelect = this.bSingleSelect_Form.get('bSingleSelect');
 
@@ -446,7 +486,7 @@ export class FormElementsTestComponent
   bMultiSelect_label = 'Input label';
   bMultiSelect_placeholder = 'Input placeholder';
 
-  bMultiSelect_value = 'Input value';
+  bMultiSelect_value = undefined;
   bMultiSelect_options = this.bMultiSelect_optionsMock;
   bMultiSelect_showSingleGroupHeader = false;
 
@@ -468,9 +508,14 @@ export class FormElementsTestComponent
   bMultiSelect_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bMultiSelect_Form = new FormGroup({
-    bMultiSelect: new FormControl(this.globalFormControlStartValue, {
-      updateOn: this.bMultiSelect_updateOn_mode as any
-    })
+    bMultiSelect: new FormControl(
+      this.global_intiFormWithNull
+        ? this.globalFormControlStartValue
+        : this.bMultiSelect_value,
+      {
+        updateOn: this.bMultiSelect_updateOn_mode as any
+      }
+    )
   });
   bMultiSelect = this.bMultiSelect_Form.get('bMultiSelect');
 
@@ -556,7 +601,7 @@ export class FormElementsTestComponent
   bSplitInput_EventCounter = 0;
   bSplitInput_label = 'Input label';
   bSplitInput_placeholder = 'Input placeholder';
-  bSplitInput_value;
+  bSplitInput_value = undefined;
   bSplitInput_selectOptions = this.bSplitInput_optionsMock;
   bSplitInput_disabled = this.global_disabled;
   bSplitInput_required = this.global_required;
@@ -576,9 +621,9 @@ export class FormElementsTestComponent
 
   bSplitInput_Form = new FormGroup({
     bSplitInput: new FormControl(
-      // this.globalFormControlStartValue,
-      // this.bSplitInput_value,
-      undefined,
+      this.global_intiFormWithNull
+        ? this.globalFormControlStartValue
+        : this.bSplitInput_value,
       {
         updateOn: this.bSplitInput_updateOn_mode as any
       }
@@ -650,9 +695,14 @@ export class FormElementsTestComponent
   bRTE_lastEventName;
 
   bRTE_Form = new FormGroup({
-    bRTE: new FormControl(this.globalFormControlStartValue, {
-      updateOn: this.bRTE_updateOn_mode as any
-    })
+    bRTE: new FormControl(
+      this.global_intiFormWithNull
+        ? this.globalFormControlStartValue
+        : this.bRTE_value,
+      {
+        updateOn: this.bRTE_updateOn_mode as any
+      }
+    )
   });
   bRTE = this.bRTE_Form.get('bRTE');
 
@@ -705,13 +755,28 @@ export class FormElementsTestComponent
     this.allFormElements.forEach(name => {
       if (this.global_visibleComponents[name]) {
         this[name + '_value'] = val;
-        console.log('Setting value of ' + name + ' to', val);
+        if (this.global_consoleLog) {
+          console.log('--------<<<<<<<<-----------');
+          console.log(
+            'Setting value of ' + name + ' to ' + (getType(val)) + ':',
+            val
+          );
+        }
         this[this.global_setGlobalFormControlValueStrategy](name, val);
       }
     });
   }
 
-  onValueInput(name, event, parse = false, value = NaN) {
+  setGlobalFormControlValueToEach() {
+    let counter = 0;
+    Object.keys(this.globalFormControlStartValues).forEach(key => {
+      setTimeout(() => {
+        this.setGlobalFormControlValue({ target: { value: key } });
+      }, 100 * ++counter);
+    });
+  }
+
+  onValueInput(name, event = null, parse = false, value = NaN) {
     value = value === value ? value : event.target.value;
     value = parse ? JSON.parse(value as any) : value;
     if (this[name + '_setInputProgrammatically']) {
@@ -750,7 +815,7 @@ export class FormElementsTestComponent
     this[name + '_lastEventName'] = eventName;
 
     if (this.global_consoleLog) {
-      console.log('------------------------');
+      console.log('-------->>>>>>>>-----------');
       console.log(
         name +
           ' custom event (' +
@@ -771,7 +836,7 @@ export class FormElementsTestComponent
         this[name + '_SubscrValue'] = value;
         this[name + '_SubscrCounter']++;
         if (this.global_consoleLog) {
-          console.log('------------------------');
+          console.log('-------->>>>>>>>-----------');
           console.log(
             name + ' valueChanges ' + this[name + '_SubscrCounter'] + ':'
           );
@@ -867,7 +932,7 @@ export class FormElementsTestComponent
 
     this[name + '_formSubmitted'] = true;
     if (this.global_consoleLog) {
-      console.log('------------------------');
+      console.log('--------<><><><>-----------');
       console.log(name + ' form submitted.');
       console.log(this[name + '_Form'].value);
     }

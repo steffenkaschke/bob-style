@@ -16,6 +16,7 @@ import { BaseFormElement } from '../base-form-element';
 import { FormEvents, InputEventType } from '../form-elements.enum';
 import { domainFromUrl } from '../../services/utils/functional-utils';
 import { InputComponent } from '../input/input.component';
+import { stringyOrFail } from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-social',
@@ -38,6 +39,7 @@ export class SocialComponent extends BaseFormElement {
   constructor() {
     super();
     this.inputTransformers = [
+      stringyOrFail,
       value => {
         if (value) {
           const origLength = value.length;
@@ -53,7 +55,7 @@ export class SocialComponent extends BaseFormElement {
             }
           }
         }
-        return value;
+        return value || '';
       }
     ];
     this.outputTransformers = [

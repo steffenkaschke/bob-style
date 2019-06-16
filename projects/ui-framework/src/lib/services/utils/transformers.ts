@@ -10,110 +10,11 @@ import {
   getType
 } from './functional-utils';
 
-// Typecheckers
+import { parse, format, isDate } from 'date-fns';
 
-export const booleanOrFail = value => {
-  if (isNullOrUndefined(value)) {
-    return undefined;
-  }
-  if (typeof value !== 'boolean') {
-    throw new Error(
-      `Value (${stringify(value)}) must be of type boolean, instead ${
-        value === null ? 'null' : getType(value)
-      } was provided.`
-    );
-  }
-  return value;
-};
-
-export const arrayOrFail = value => {
-  if (isNullOrUndefined(value)) {
-    return undefined;
-  }
-  if (!isArray(value)) {
-    throw new Error(
-      `Value (${stringify(value)}) must be an array, instead ${getType(
-        value
-      )} was provided.`
-    );
-  }
-  return value;
-};
-
-export const objectOrFail = value => {
-  if (isNullOrUndefined(value)) {
-    return undefined;
-  }
-  if (!isObject(value)) {
-    throw new Error(
-      `Value (${stringify(value)}) must be an object, instead ${getType(
-        value
-      )} was provided.`
-    );
-  }
-  return value;
-};
-
-export const stringyOrFail = value => {
-  if (isNullOrUndefined(value)) {
-    return '';
-  }
-  if (isArray(value) || isObject(value)) {
-    throw new Error(
-      `Value (${stringify(value)}) should not be an ${getType(value)}.`
-    );
-  }
-  return value;
-};
-
-// Validators
-
-export const defaultValue = def => value =>
-  isNullOrUndefined(value) ? def : value;
-
-export const objectHasKeyOrFail = (key: string | string[]) => (
-  value: object
-) => {
-  if (isNullOrUndefined(value)) {
-    return undefined;
-  }
-  if (isNullOrUndefined(key) || !isObject(value)) {
-    throw new Error(
-      `Value (${stringify(value)}) is not an object or key (${key}) is invalid.`
-    );
-  }
-  for (const k of asArray(key)) {
-    if (!value.hasOwnProperty(k)) {
-      throw new Error(
-        `Value object (${stringify(value)}) has no key (${key}).`
-      );
-    }
-  }
-  return value;
-};
-
-export const valueInArrayOrFail = (
-  value: any,
-  array: any[],
-  key: string = null
-) => {
-  if (isNullOrUndefined(value) || isNullOrUndefined(array)) {
-    return undefined;
-  }
-  if (
-    (key && !array.find(i => i[key] === value[key])) ||
-    (!key && !array.includes(value))
-  ) {
-    value = stringify(value);
-    array = array.map(i => stringify(i));
-    throw new Error(
-      `Value (${stringify(value)}) is not part of array (${stringify(array)}).`
-    );
-  }
-  return value;
-};
-
+// -------------------------------
 // Transformers
+// -------------------------------
 
 export const truthyOrFalse = value => {
   const truthy = ['true', '1', 1, 'on', 'yes'];
@@ -135,4 +36,150 @@ export const valueToObjectWithKeyOfValueFromArray = (
     return undefined;
   }
   return array.find(i => compareAsStrings(i[key], value));
+};
+
+export const stringToDate = date => {
+  if (isNullOrUndefined(date)) {
+    return date;
+  }
+  const converted = parse(date);
+  return isDate(date)
+    ? date
+    : String(converted) !== 'Invalid Date'
+    ? converted
+    : undefined;
+};
+
+export const dateToString = (date, frmt) =>
+  isDate(date) ? format(date, frmt) : date;
+
+// -------------------------------
+// Typecheckers
+// -------------------------------
+
+export const booleanOrFail = value => {
+  if (isNullOrUndefined(value)) {
+    return value;
+  }
+  if (typeof value !== 'boolean') {
+    throw new Error(
+      `Value (${stringify(value)}) must be of type boolean, instead ${
+        value === null ? 'null' : getType(value)
+      } was provided.`
+    );
+  }
+  return value;
+};
+
+export const arrayOrFail = value => {
+  if (isNullOrUndefined(value)) {
+    return value;
+  }
+  if (!isArray(value)) {
+    throw new Error(
+      `Value (${stringify(value)}) must be an array, instead ${getType(
+        value
+      )} was provided.`
+    );
+  }
+  return value;
+};
+
+export const objectOrFail = value => {
+  if (isNullOrUndefined(value)) {
+    return value;
+  }
+  if (!isObject(value)) {
+    throw new Error(
+      `Value (${stringify(value)}) must be an object, instead ${getType(
+        value
+      )} was provided.`
+    );
+  }
+  return value;
+};
+
+export const stringyOrFail = value => {
+  if (isNullOrUndefined(value)) {
+    return '';
+  }
+  if (isArray(value) || isObject(value)) {
+    throw new Error(
+      `Value (${stringify(value)}) should not be ${getType(
+        value
+      ).toUpperCase()}.`
+    );
+  }
+  return String(value);
+};
+
+export const dateyOrFail = value => {
+  if (isNullOrUndefined(value)) {
+    return value;
+  }
+  const converted = stringToDate(value);
+  if (
+    typeof value === 'boolean' ||
+    Date.parse(value) <= 0 ||
+    converted === undefined
+  ) {
+    throw new Error(`Value (${stringify(value)}) could not be parsed to Date.`);
+  }
+  return converted;
+};
+
+// -------------------------------
+// Validators
+// -------------------------------
+
+export const defaultValue = def => value =>
+  isNullOrUndefined(value) ? def : value;
+
+export const objectHasKeyOrFail = (key: string | string[]) => (
+  value: object
+) => {
+  const c = 0;
+  if (isNullOrUndefined(value)) {
+    return value;
+  }
+  if (isNullOrUndefined(key) || !isObject(value)) {
+    throw new Error(
+      `Value (${stringify(
+        value
+      )}) is  not an object or key (${key}) is invalid.`
+    );
+  }
+  for (const k of asArray(key)) {
+    if (!value.hasOwnProperty(k)) {
+      throw new Error(
+        `Value object (${stringify(value)}) has no key (${key}).`
+      );
+    }
+  }
+  return value;
+};
+
+export const valueInArrayOrFail = (
+  value: any,
+  array: any[],
+  key: string = null
+) => {
+  if (isNullOrUndefined(value)) {
+    return value;
+  }
+  if (isNullOrUndefined(array)) {
+    return undefined;
+  }
+  if (
+    (key && !array.find(i => i[key] === value[key])) ||
+    (!key && !array.includes(value))
+  ) {
+    value = stringify(value);
+    array = array.map(i => stringify(i));
+    throw new Error(
+      `Value (${stringify(value)}) is not part of array (${stringify(array)}).`
+    );
+  }
+
+  return value;
 };
