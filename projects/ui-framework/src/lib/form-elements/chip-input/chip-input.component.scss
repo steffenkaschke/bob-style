@@ -9,19 +9,16 @@
     margin: 4px;
     padding: 0;
     height: auto;
-    // transition: max-height 0.2s, margin 0.2s;
     max-height: 20px;
   }
 
   .bfe-wrap {
     height: auto;
     min-height: 0;
-
     border-top: 0;
     border-left: 0;
     border-right: 0;
     border-radius: 0;
-    flex-wrap: wrap;
     background: transparent;
 
     &.autocomplete-open {
@@ -53,6 +50,8 @@
 
   .chips-wrap {
     margin: 0 -4px;
+    display: flex;
+    flex-wrap: wrap;
   }
 
   b-chip {

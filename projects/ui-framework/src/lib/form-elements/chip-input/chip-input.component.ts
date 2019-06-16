@@ -15,7 +15,8 @@ import {
 } from '@angular/core';
 import {
   MatAutocompleteSelectedEvent,
-  MatAutocompleteTrigger
+  MatAutocompleteTrigger,
+  MatAutocomplete
 } from '@angular/material';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
@@ -68,6 +69,8 @@ export class ChipInputComponent extends BaseFormElement
   @ViewChildren('chipList') private chipList: QueryList<ChipComponent>;
   @ViewChild('input', { read: MatAutocompleteTrigger })
   private autocompleteTrigger: MatAutocompleteTrigger;
+  @ViewChild('auto')
+  private autocompletePanel: MatAutocomplete;
 
   @Output() changed: EventEmitter<ChipInputChange> = new EventEmitter<
     ChipInputChange
@@ -165,15 +168,6 @@ export class ChipInputComponent extends BaseFormElement
       this.filterChips(event.target.value) || this.possibleChips;
   }
 
-  public add(name: string): void {
-    let chipToAdd = this.findChip(name);
-    if (!chipToAdd && this.acceptNew) {
-      chipToAdd = name;
-    }
-    this.commitChip(chipToAdd);
-    this.autocompleteTrigger.closePanel();
-  }
-
   public optionSelected(event: MatAutocompleteSelectedEvent): void {
     const chipToAdd = this.findChip(event.option.viewValue);
     this.commitChip(chipToAdd);
@@ -201,8 +195,13 @@ export class ChipInputComponent extends BaseFormElement
       .replace(/,/g, '')
       .trim();
     if (name) {
-      this.add(name);
+      let chipToAdd = this.findChip(name);
+      if (!chipToAdd && this.acceptNew) {
+        chipToAdd = name;
+      }
+      this.commitChip(chipToAdd);
     }
+    this.autocompleteTrigger.closePanel();
   }
 
   public onInputFocus(): void {
@@ -211,7 +210,7 @@ export class ChipInputComponent extends BaseFormElement
 
   public onInputBlur(event): void {
     this.inputFocused = false;
-    if (this.addOnBlur) {
+    if (this.addOnBlur && !this.autocompletePanel.isOpen) {
       this.addChipFromInputEvent(event);
     }
   }
