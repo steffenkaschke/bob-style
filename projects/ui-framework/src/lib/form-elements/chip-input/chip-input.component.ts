@@ -168,15 +168,6 @@ export class ChipInputComponent extends BaseFormElement
       this.filterChips(event.target.value) || this.possibleChips;
   }
 
-  // public add(name: string): void {
-  //   let chipToAdd = this.findChip(name);
-  //   if (!chipToAdd && this.acceptNew) {
-  //     chipToAdd = name;
-  //   }
-  //   this.commitChip(chipToAdd);
-  //   this.autocompleteTrigger.closePanel();
-  // }
-
   public optionSelected(event: MatAutocompleteSelectedEvent): void {
     const chipToAdd = this.findChip(event.option.viewValue);
     this.commitChip(chipToAdd);
