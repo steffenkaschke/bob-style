@@ -9,7 +9,7 @@ import { RadioConfig } from './radio-button.interface';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { InputEventType } from '../form-elements.enum';
 
-describe('RadioButtonComponent', () => {
+fdescribe('RadioButtonComponent', () => {
   let component: RadioButtonComponent;
   let fixture: ComponentFixture<RadioButtonComponent>;
   let radioConfigMock: RadioConfig[];
