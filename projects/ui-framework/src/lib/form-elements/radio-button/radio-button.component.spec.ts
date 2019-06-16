@@ -9,7 +9,7 @@ import { RadioConfig } from './radio-button.interface';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { InputEventType } from '../form-elements.enum';
 
-fdescribe('RadioButtonComponent', () => {
+describe('RadioButtonComponent', () => {
   let component: RadioButtonComponent;
   let fixture: ComponentFixture<RadioButtonComponent>;
   let radioConfigMock: RadioConfig[];
@@ -104,7 +104,7 @@ fdescribe('RadioButtonComponent', () => {
         }
       }
     });
-    it('should emit change from value change', () => {
+    it('should not emit change from value change', () => {
       const changes: SimpleChanges = {
         value: {
           previousValue: undefined,
@@ -115,7 +115,7 @@ fdescribe('RadioButtonComponent', () => {
       };
       component.ngOnChanges(changes);
       fixture.detectChanges();
-      expect(component.changed.emit).toHaveBeenCalled();
+      expect(component.changed.emit).not.toHaveBeenCalled();
     });
   });
 });
