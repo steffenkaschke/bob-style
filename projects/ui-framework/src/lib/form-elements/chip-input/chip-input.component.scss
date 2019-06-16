@@ -9,14 +9,14 @@
     margin: 4px;
     padding: 0;
     height: auto;
-    transition: max-height 0.2s, margin 0.2s;
+    // transition: max-height 0.2s, margin 0.2s;
     max-height: 20px;
   }
 
   .bfe-wrap {
     height: auto;
     min-height: 0;
-    padding: 6px 0 8px;
+
     border-top: 0;
     border-left: 0;
     border-right: 0;
@@ -48,7 +48,11 @@
 
 :host {
   .bfe-wrap {
-    margin: -4px;
+    padding: 2px 0 4px;
+  }
+
+  .chips-wrap {
+    margin: 0 -4px;
   }
 
   b-chip {

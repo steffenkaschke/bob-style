@@ -8,16 +8,18 @@
      [ngClass]="{focused: inputFocused, 'autocomplete-open': auto.isOpen,'empty': !value || value.length === 0}"
      (click)="input.focus();">
 
-  <b-chip #chipList
-          *ngFor="let chip of value"
-          [type]="chipType.tag"
-          [removable]="removable"
-          [selectable]="true"
-          (removed)="remove(chip)"
-          (click)="$event.stopPropagation()"
-          (keydown)="onChipKeydown($event)">
-    {{chip}}
-  </b-chip>
+  <div class="chips-wrap">
+    <b-chip #chipList
+            *ngFor="let chip of value"
+            [type]="chipType.tag"
+            [removable]="removable"
+            [selectable]="true"
+            (removed)="remove(chip)"
+            (click)="$event.stopPropagation()"
+            (keydown)="onChipKeydown($event)">
+      {{chip}}
+    </b-chip>
+  </div>
 
   <input #input
          class="bfe-input"
