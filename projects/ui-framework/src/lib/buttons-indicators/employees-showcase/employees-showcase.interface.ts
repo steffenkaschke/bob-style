@@ -1,5 +1,5 @@
 export interface EmployeeShowcase {
-  id: number;
+  id: string;
   displayName: string;
   imageSource: string;
 }
