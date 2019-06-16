@@ -19,25 +19,24 @@
             (keydown)="onChipKeydown($event)">
       {{chip}}
     </b-chip>
+
+    <input #input
+           class="bfe-input"
+           [ngClass]="{empty: input.value === ''}"
+           [attr.id]="id"
+           [attr.name]="id"
+           [type]="inputTypes.text"
+           [attr.placeholder]="(!value || value.length === 0) && placeholder ? placeholder : null"
+           [disabled]="disabled"
+           [required]="required"
+           [matAutocomplete]="auto"
+           [matAutocompleteConnectedTo]="wrapper"
+           (focus)="onInputFocus()"
+           (blur)="onInputBlur($event)"
+           (input)="onInputChange($event)"
+           (keydown)="onInputKeydown($event)"
+           (keyup)="onInputKeyup($event)">
   </div>
-
-  <input #input
-         class="bfe-input"
-         [ngClass]="{empty: input.value === ''}"
-         [attr.id]="id"
-         [attr.name]="id"
-         [type]="inputTypes.text"
-         [attr.placeholder]="(!value || value.length === 0) && placeholder ? placeholder : null"
-         [disabled]="disabled"
-         [required]="required"
-         [matAutocomplete]="auto"
-         [matAutocompleteConnectedTo]="wrapper"
-         (focus)="onInputFocus()"
-         (blur)="onInputBlur($event)"
-         (input)="onInputChange($event)"
-         (keydown)="onInputKeydown($event)"
-         (keyup)="onInputKeyup($event)">
-
 </div>
 
 <mat-autocomplete #auto="matAutocomplete"

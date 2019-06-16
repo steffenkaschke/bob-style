@@ -15,7 +15,8 @@
 // layout
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   position: relative;
 }
@@ -23,6 +24,7 @@
 .bar-content {
   display: flex;
   align-items: flex-end;
+  width: 100%;
 }
 
 .bar-filters {
