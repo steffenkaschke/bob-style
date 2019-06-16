@@ -3,7 +3,6 @@
 
 :host {
   display: block;
-  @include transfer-margins(b-search);
 }
 
 :host b-search {

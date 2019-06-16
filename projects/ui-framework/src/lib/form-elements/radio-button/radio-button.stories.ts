@@ -22,7 +22,7 @@ const radioStories = storiesOf(
 ).addDecorator(withKnobs);
 
 const template = `
-<b-radio-button [options]="options"
+<b-radio-button [radioConfig]="options"
                 [value]="value"
                 [label]="label"
                 [direction]="direction"
@@ -51,7 +51,7 @@ const note = `
 
   Name | Type | Description
   --- | --- | ---
-  options | string[] / RadioConfig[] | list of possible values or array of RadioConfig ({id,value}) objects
+  radioConfig | string[] / RadioConfig[] | list of possible values or array of RadioConfig ({id,value}) objects
   value | string / number | value representing one of the string[] options or id of one of the RadioConfig ({id,value}) objects
   direction | RadioDirection | column or row, default=row
   label | string | label text

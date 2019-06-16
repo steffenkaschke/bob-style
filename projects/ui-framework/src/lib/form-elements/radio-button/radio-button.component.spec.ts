@@ -30,7 +30,7 @@ describe('RadioButtonComponent', () => {
         component = fixture.componentInstance;
         component.wrapEvent = true;
         component.ngOnChanges({
-          options: new SimpleChange(null, radioConfigMock, true)
+          radioConfig: new SimpleChange(null, radioConfigMock, true)
         });
         spyOn(component.changed, 'emit');
         spyOn(component, 'propagateChange');

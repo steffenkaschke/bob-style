@@ -59,8 +59,8 @@ const storyTemplate = `
           {id: '840px', label: '840px'},
           {id: '630px', label: '630px'}
         ]"
-        [value]="'840px'"
-        (radioChange)="res = $event.value">
+        [value]="{id: '840px'}"
+        (radioChange)="res = ($event && $event.value) || $event">
       </b-radio-button>
     </p>
 
@@ -70,7 +70,8 @@ const storyTemplate = `
           {id: 1, label: 'original'},
           {id: 2, label: 'empty'}
         ]"
-        (radioChange)="tableData = $event.value === '1' ? CardTableData : []">
+        [value]="{id: 1}"
+        (radioChange)="tableData = ($event && $event.value === 2) || ($event === 2) ? [] : CardTableData">
       </b-radio-button>
     </p>
 

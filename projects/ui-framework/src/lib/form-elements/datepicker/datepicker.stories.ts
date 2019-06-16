@@ -21,7 +21,7 @@ const template = `
 <b-datepicker (dateChange)="dateChange($event)"
               [dateFormat]="dateFormat"
 
-              [label]="label"
+              [inputLabel]="label"
               [placeholder]="placeholder"
 
               [hintMessage]="hintMessage"

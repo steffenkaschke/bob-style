@@ -56,6 +56,8 @@ import {
   ]
 })
 export class DatepickerComponent extends BaseFormElement implements OnInit {
+  // tslint:disable-next-line: no-input-rename
+  @Input('inputLabel') label: string;
   @Input() dateFormat?: string;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
@@ -77,20 +79,11 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
     super();
     this.inputTransformers = [dateyOrFail];
     this.outputTransformers = [
-      // date => {
-      //   return isDate(date)
-      //     ? format(
-      //         date,
-      //         (!!this.dateFormat && this.dateFormat) || serverDateFormat // 'YYYY-MM-DD'
-      //       )
-      //     : date;
-      // },
       date =>
         dateToString(
           date,
           (!!this.dateFormat && this.dateFormat) || serverDateFormat
         )
-      // stringyOrFail
     ];
   }
 

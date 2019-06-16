@@ -12,7 +12,7 @@
            [attr.id]="id+'-'+i"
            [attr.name]="id"
            [value]="radio[key]"
-           [checked]="value && value[key] === radio[key]"
+           [checked]="(value && value[key] === radio[key]) || value == radio[key]"
            [required]="required"
            [disabled]="disabled"
            (change)="onRadioChange(radio[key])" />

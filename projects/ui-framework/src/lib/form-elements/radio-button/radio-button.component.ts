@@ -16,7 +16,8 @@ import { FormEvents } from '../form-elements.enum';
 import { InputEvent } from '../input/input.interface';
 import {
   valueInArrayOrFail,
-  objectHasKeyOrFail
+  objectHasKeyOrFail,
+  valueToObjectKey
 } from '../../services/utils/transformers';
 
 @Component({
@@ -40,27 +41,31 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
   constructor() {
     super();
     this.inputTransformers = [
+      valueToObjectKey(this.key),
       objectHasKeyOrFail(this.key),
       value => valueInArrayOrFail(value, this.options, this.key)
+    ];
+    this.outputTransformers = [
+      value => (value && value.id ? value.id : undefined)
     ];
     this.baseValue = {};
     this.wrapEvent = false;
   }
 
   @Input() value: RadioConfig = this.baseValue;
-  @Input() options: RadioConfig[];
+  // tslint:disable-next-line: no-input-rename
+  @Input('radioConfig') options: RadioConfig[];
   @Input() direction: RadioDirection = RadioDirection.row;
 
   public dir = RadioDirection;
   public key = 'id';
-  public returnId = true;
 
   @Output(FormEvents.radioChange) changed: EventEmitter<
     InputEvent
   > = new EventEmitter<InputEvent>();
 
   private transmit(event: InputEventType): void {
-    this.transmitValue(this.returnId ? this.value[this.key] : this.value, {
+    this.transmitValue(this.value, {
       eventType: [event]
     });
   }

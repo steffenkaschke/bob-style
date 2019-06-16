@@ -53,6 +53,10 @@ export const stringToDate = date => {
 export const dateToString = (date, frmt) =>
   isDate(date) ? format(date, frmt) : date;
 
+export const valueToObjectKey = key => value => {
+  return isObject(value) && value[key] ? value : { [key]: value };
+};
+
 // -------------------------------
 // Typecheckers
 // -------------------------------
