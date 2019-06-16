@@ -3,15 +3,18 @@ import { object, withKnobs } from '@storybook/addon-knobs/angular';
 import { LinkModule } from './link.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import {LinkColor, LinkTarget} from './link.enum';
+import { LinkColor, LinkTarget } from './link.enum';
 
-const linkStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
-  withKnobs
-);
+const linkStories = storiesOf(
+  ComponentGroupType.ButtonsAndIndicators,
+  module
+).addDecorator(withKnobs);
 const template = `<b-link [config]="config"></b-link>`;
 
 const storyTemplate = `<b-story-book-layout [title]="'Link'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
+    ${template}
+  </div>
 </b-story-book-layout>`;
 
 const note = `
@@ -34,8 +37,12 @@ linkStories.add(
     return {
       template: storyTemplate,
       props: {
-        config: object('config', { text: 'Learn more', url: 'https://app.hibob.com', target: LinkTarget.blank,
-          color: LinkColor.none }),
+        config: object('config', {
+          text: 'Learn more',
+          url: 'https://app.hibob.com',
+          target: LinkTarget.blank,
+          color: LinkColor.none
+        })
       },
       moduleMetadata: {
         imports: [LinkModule, StoryBookLayoutModule]

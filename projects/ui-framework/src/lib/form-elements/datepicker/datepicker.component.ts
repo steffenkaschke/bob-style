@@ -1,19 +1,39 @@
-import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { DateAdapter, MAT_DATE_FORMATS, MatDatepicker } from '@angular/material';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+  SimpleChanges
+} from '@angular/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MatDatepicker
+} from '@angular/material';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { InputEventType, InputTypes } from '../input/input.enum';
+import { InputTypes, InputAutoCompleteOptions } from '../input/input.enum';
+import { InputEventType } from '../form-elements.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
-import { invoke } from 'lodash';
 import { InputEvent } from '../input/input.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
-import { BaseInputElement } from '../base-input-element';
 import { differenceInDays, format, isDate, isSameDay } from 'date-fns';
+import { BaseFormElement } from '../base-form-element';
+import { FormEvents } from '../form-elements.enum';
+import {
+  stringyOrFail,
+  dateyOrFail,
+  dateToString
+} from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-datepicker',
   templateUrl: './datepicker.component.html',
-  styleUrls: ['./datepicker.component.scss'],
+  styleUrls: ['../input/input.component.scss', './datepicker.component.scss'],
   providers: [
     {
       provide: DateAdapter,
@@ -35,48 +55,65 @@ import { differenceInDays, format, isDate, isSameDay } from 'date-fns';
     }
   ]
 })
-export class DatepickerComponent extends BaseInputElement implements OnInit {
-  @Output() dateChange: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
-  @Input() inputLabel: String;
+export class DatepickerComponent extends BaseFormElement implements OnInit {
+  // tslint:disable-next-line: no-input-rename
+  @Input('inputLabel') label: string;
   @Input() dateFormat?: string;
-  @Input() errorMessage: string;
-  @Input() disabled: boolean;
-  @Input() required: boolean;
+  @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
+    InputAutoCompleteOptions.off;
+  public date: Date;
 
   public readonly calendarIcon: String = Icons.calendar;
   public readonly calendarIconSize: String = IconSize.medium;
   public readonly calendarIconColor: String = IconColor.dark;
+  public readonly inputTypes = InputTypes;
 
-  inputTypes = InputTypes;
-  @ViewChild('datePickerInput') datePickerInput: ElementRef;
+  @ViewChild('input') input: ElementRef;
+  @ViewChild('picker') picker: MatDatepicker<any>;
+
+  @Output(FormEvents.dateChange) changed: EventEmitter<
+    InputEvent
+  > = new EventEmitter<InputEvent>();
 
   constructor() {
     super();
+    this.inputTransformers = [dateyOrFail];
+    this.outputTransformers = [
+      date =>
+        dateToString(
+          date,
+          (!!this.dateFormat && this.dateFormat) || serverDateFormat
+        )
+    ];
   }
 
   ngOnInit(): void {
     if (this.dateFormat) {
-      BDateAdapter.bFormat = this.dateFormat;
+      BDateAdapter.bFormat = this.dateFormat.toUpperCase();
     }
   }
 
-  onInputEvents(inputEvent: InputEvent, picker: MatDatepicker<any>): void {
-    switch (inputEvent.event) {
-      case InputEventType.onBlur:
-        if (picker.opened) {
-          invoke(this, 'datePickerInput.bInput.nativeElement.focus');
-        }
-        break;
-      case InputEventType.onChange:
-        inputEvent.value = isDate(inputEvent.value)
-          ? format(inputEvent.value, serverDateFormat)
-          : inputEvent.value;
-        this.propagateChange(inputEvent.value);
-        this.dateChange.emit(inputEvent);
-        break;
-      case InputEventType.onFocus:
-        picker.open();
-        break;
+  // this extends BaseFormElement's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
+    if (changes.dateFormat && !changes.dateFormat.firstChange) {
+      this.dateFormat = changes.dateFormat.currentValue.toUpperCase();
+      BDateAdapter.bFormat =
+        (!!this.dateFormat && this.dateFormat) || 'DD/MM/YYYY';
+
+      if (this.date) {
+        this.onDateChange(this.date);
+      }
+    }
+  }
+
+  public onDateChange(value: Date) {
+    if (value) {
+      this.value = this.date = value;
+
+      this.transmitValue(value, {
+        eventType: [InputEventType.onChange, InputEventType.onBlur],
+        addToEventObj: { date: this.date }
+      });
     }
   }
 
@@ -85,9 +122,5 @@ export class DatepickerComponent extends BaseInputElement implements OnInit {
     const diff = differenceInDays(date, today);
     const same = isSameDay(today, date);
     return same ? 'today' : diff < 0 ? 'past' : 'future';
-  }
-
-  datePickerClosed() {
-    invoke(this, 'datePickerInput.bInput.nativeElement.blur');
   }
 }

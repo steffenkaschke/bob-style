@@ -34,6 +34,7 @@ const template = `
       [value]="value"
       [controls]="controls"
       [disableControls]="disableControls"
+      [placeholderList]="placeholderList"
       [minChars]="minChars"
       [maxChars]="maxChars"
       [minHeight]="minHeight"
@@ -44,16 +45,17 @@ const template = `
       [errorMessage]="errorMessage"
       (changed)="change($event)"
       (focused)="focus($event)"
-      [placeholderList]="placeholderList"
       (blurred)="blur($event)">
     Some custom toolbar thing
   </b-rich-text-editor>
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Rich text editor'">
-  <div style="padding: 30px; background-color: rgb(0,0,0,0.1); height: 100%;">
-    ${template}
+<b-story-book-layout [title]="'Rich text editor'" style="background-color: rgb(247,247,247);">
+  <div style="padding: 30px; height: 100%;">
+    <div style="max-width:600px; margin:auto;">
+      ${template}
+    </div>
   </div>
 </b-story-book-layout>
 `;

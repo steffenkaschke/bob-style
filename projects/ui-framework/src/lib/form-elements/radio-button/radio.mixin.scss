@@ -1,0 +1,100 @@
+@import '../../style/colors';
+@import '../../style/mixins';
+@import '../form-element.mixin';
+
+@mixin radio(
+  $size: 19px,
+  $checkmark-size: 8px,
+  $input-selector: '&',
+  $radio-selector: $input-selector + ' + label',
+  $checked-selector: $input-selector + ':checked + label',
+  $disabled-selector: $input-selector + ':disabled + label',
+  $required-selector: $input-selector + ':required + label',
+  $hover-selector: $input-selector + ':focus + label,' + $input-selector +
+    '+ label:hover',
+  $checked-hover-selector: $input-selector + ':checked:focus + label,' +
+    $input-selector + ':checked + label:hover'
+) {
+  $shadow-inset-size-def: $size/2;
+  $shadow-inset-size-checked: floor($size / 2 - 1px - $checkmark-size / 2);
+  $shadow-def: inset 0 0 0 $shadow-inset-size-def white;
+  $shadow-hover: $shadow-def, 0 2px 5px $boxShadowColor;
+  $shadow-checked: inset 0 0 0 $shadow-inset-size-checked white;
+  $shadow-checked-hover: $shadow-checked, 0 2px 5px $boxShadowColor;
+
+  @if ($input-selector) {
+    #{$input-selector} {
+      @include visually-hidden;
+    }
+  }
+
+  @if ($radio-selector) {
+    #{$radio-selector} {
+      display: flex;
+      align-items: center;
+      user-select: none;
+      background: none;
+      @include size(auto);
+
+      &:before {
+        display: block;
+        content: '';
+        @include size($size);
+        @include text-hide;
+        background-color: white;
+        border: 1px solid $input-border-color;
+        border-radius: 50%;
+        cursor: pointer;
+        pointer-events: auto;
+        flex-shrink: 0;
+        box-shadow: $shadow-def;
+        transition: box-shadow 0.2s;
+      }
+
+      @content;
+    }
+  }
+
+  @if ($hover-selector) {
+    #{$hover-selector} {
+      &:before {
+        border-color: $grey-600;
+        box-shadow: $shadow-hover;
+      }
+    }
+  }
+
+  @if ($checked-selector) {
+    #{$checked-selector} {
+      &:before {
+        content: '\2713';
+        background-color: var(--primary-500);
+        box-shadow: $shadow-checked;
+      }
+    }
+  }
+
+  @if ($checked-hover-selector) {
+    #{$checked-hover-selector} {
+      &:before {
+        box-shadow: $shadow-checked-hover;
+      }
+    }
+  }
+
+  @if ($disabled-selector) {
+    #{$disabled-selector} {
+      @include disabled-state;
+
+      &:before {
+        pointer-events: none;
+      }
+    }
+  }
+
+  @if ($required-selector) {
+    #{$required-selector} {
+      @include input-requred;
+    }
+  }
+}

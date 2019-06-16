@@ -1,4 +1,4 @@
 export interface RadioConfig {
-  id: number;
-  label: string;
+  id: number | string;
+  label?: string;
 }

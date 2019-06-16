@@ -1,13 +1,18 @@
-import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatInputModule } from '@angular/material';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  inject,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SingleSelectComponent } from './single-select.component';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { InputModule } from '../../input/input.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IconService } from '../../../icons/icon.service';
 import { By } from '@angular/platform-browser';
@@ -18,6 +23,7 @@ import createSpyObj = jasmine.createSpyObj;
 import { ListFooterModule } from '../list-footer/list-footer.module';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
 import { SingleListModule } from '../single-list/single-list.module';
+import { TruncateTooltipModule } from '../../../services/truncate-tooltip/truncate-tooltip.module';
 
 describe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
@@ -34,28 +40,34 @@ describe('SingleSelectComponent', () => {
     optionsMock = [
       {
         groupName: 'Basic Info',
-        options: [{ value: 'Basic Info 1', id: 1, selected: true }, { value: 'Basic Info 2', id: 2, selected: false }]
+        options: [
+          { value: 'Basic Info 1', id: 1, selected: true },
+          { value: 'Basic Info 2', id: 2, selected: false }
+        ]
       },
       {
         groupName: 'Personal',
-        options: [{ value: 'Personal 1', id: 11, selected: false }, { value: 'Personal 2', id: 12, selected: false }]
+        options: [
+          { value: 'Personal 1', id: 11, selected: false },
+          { value: 'Personal 2', id: 12, selected: false }
+        ]
       }
     ];
 
     TestBed.configureTestingModule({
       declarations: [SingleSelectComponent],
-      providers: [PanelPositionService, { provide: IconService, useValue: spyIconService }],
+      providers: [
+        PanelPositionService,
+        { provide: IconService, useValue: spyIconService }
+      ],
       imports: [
         SingleListModule,
         OverlayModule,
         NoopAnimationsModule,
         CommonModule,
-        FormsModule,
-        InputModule,
-        MatFormFieldModule,
-        MatInputModule,
         ButtonsModule,
-        ListFooterModule
+        ListFooterModule,
+        TruncateTooltipModule
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -76,11 +88,14 @@ describe('SingleSelectComponent', () => {
         fixture.autoDetectChanges();
       });
 
-    inject([OverlayContainer, Platform], (oc: OverlayContainer, p: Platform) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-      platform = p;
-    })();
+    inject(
+      [OverlayContainer, Platform],
+      (oc: OverlayContainer, p: Platform) => {
+        overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
+        platform = p;
+      }
+    )();
   }));
 
   describe('ngOnChanges', () => {
@@ -117,8 +132,13 @@ describe('SingleSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
-      const listChange = component['listChangeService'].getListChange(optionsMock, [12]);
+      (overlayContainerElement.querySelectorAll(
+        'b-single-list .option'
+      )[3] as HTMLElement).click();
+      const listChange = component['listChangeService'].getListChange(
+        optionsMock,
+        [12]
+      );
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
       expect(component.propagateChange).toHaveBeenCalledWith(12);
       flush();
@@ -130,7 +150,9 @@ describe('SingleSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      const clearButton = overlayContainerElement.querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
+      const clearButton = overlayContainerElement.querySelector(
+        'b-list-footer .clear-button'
+      ) as HTMLElement;
       clearButton.click();
       fixture.autoDetectChanges();
       expect(component.triggerValue).toBe(null);
@@ -140,10 +162,15 @@ describe('SingleSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      const clearButton = overlayContainerElement.querySelectorAll('b-list-footer .clear b-button')[0] as HTMLElement;
+      const clearButton = overlayContainerElement.querySelector(
+        'b-list-footer .clear-button'
+      ) as HTMLElement;
       clearButton.click();
       fixture.autoDetectChanges();
-      const listChange = component['listChangeService'].getListChange(optionsMock, []);
+      const listChange = component['listChangeService'].getListChange(
+        optionsMock,
+        []
+      );
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
       flush();
     }));
@@ -160,7 +187,8 @@ describe('SingleSelectComponent', () => {
   describe('tooltip', () => {
     beforeEach(async(() => {
       const testOptionsMock = cloneDeep(optionsMock);
-      testOptionsMock[1].options[1].value = 'a very long text that has a tooltip';
+      testOptionsMock[1].options[1].value =
+        'a very long text that has a tooltip';
       fixture = TestBed.createComponent(SingleSelectComponent);
       component = fixture.componentInstance;
       spyOn(component.selectChange, 'emit');
@@ -176,18 +204,26 @@ describe('SingleSelectComponent', () => {
       fixture.autoDetectChanges();
     }));
     it('should not show tooltip', () => {
-      const inputEl = fixture.debugElement.query(By.css('b-input'));
-      expect(inputEl.properties.matTooltip).toBe(null);
+      const tooltipEl = fixture.debugElement.query(
+        By.css('.btt.tooltip-enabled')
+      );
+      expect(tooltipEl).toBe(null);
     });
     it('should add tooltip', fakeAsync(() => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      (overlayContainerElement.querySelectorAll('b-single-list .option')[3] as HTMLElement).click();
+      (overlayContainerElement.querySelectorAll(
+        'b-single-list .option'
+      )[3] as HTMLElement).click();
       fixture.autoDetectChanges();
       tick(0);
-      const inputEl = fixture.debugElement.query(By.css('b-input'));
-      expect(inputEl.properties.matTooltip).toEqual('a very long text that has a tooltip');
+      const tooltipEl = fixture.debugElement.query(
+        By.css('.btt.tooltip-enabled')
+      );
+      expect(tooltipEl.nativeElement.innerText).toEqual(
+        'a very long text that has a tooltip'
+      );
       flush();
     }));
   });

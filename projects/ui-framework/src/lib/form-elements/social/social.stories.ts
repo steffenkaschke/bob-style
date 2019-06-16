@@ -1,33 +1,41 @@
 import { storiesOf } from '@storybook/angular';
-import { select, withKnobs, object, text, number, boolean } from '@storybook/addon-knobs/angular';
+import {
+  select,
+  withKnobs,
+  text,
+  boolean
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SocialModule } from './social.module';
 import { SearchModule } from '../../search/search/search.module';
-import { SocialType } from './social.interface';
+import { Social } from './social.enum';
 
-
-const inputStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
+const inputStories = storiesOf(
+  ComponentGroupType.FormElements,
+  module
+).addDecorator(withKnobs);
 
 const template = `
-<b-social style="width: 400px;"
-          [value]="value"
+<b-social [value]="value"
           [type]="type"
           [errorMessage]="errorMessage"
+          [label]="label"
           [placeholder]="placeholder"
           [disabled]="disabled"
           [required]="required"
           [hintMessage]="hintMessage"
-          [hideLabelOnFocus]="hideLabelOnFocus"
           (socialInputChange)="socialInputChange($event)">
 </b-social>
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Social'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -42,7 +50,6 @@ const note = `
   --- | --- | --- | ---
   value | string | type of input field | none
   label | string | label text | none
-  hideLabelOnFocus | boolean | should hide label on focus | false
   socialInputChange | action | socialInputChange output string | none
 
   ~~~
@@ -56,17 +63,23 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', SocialType, SocialType.Facebook),
+        type: select('type', Social, Social.facebook),
         value: text('value', ''),
         errorMessage: text('errorMessage', ''),
+        label: text('label', ''),
         placeholder: text('placeholder', 'Your name'),
         socialInputChange: action('social'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
-        hintMessage: text('hintMessage', ''),
+        hintMessage: text('hintMessage', '')
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, SearchModule, StoryBookLayoutModule, SocialModule]
+        imports: [
+          BrowserAnimationsModule,
+          SearchModule,
+          StoryBookLayoutModule,
+          SocialModule
+        ]
       }
     };
   },

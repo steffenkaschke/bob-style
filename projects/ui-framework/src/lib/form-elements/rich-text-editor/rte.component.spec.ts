@@ -40,6 +40,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
+import { InputMessageModule } from '../input-message/input-message.module';
 
 @Component({
   template: `
@@ -106,7 +107,8 @@ describe('RichTextEditorComponent', () => {
         InputModule,
         ButtonsModule,
         IconsModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        InputMessageModule
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [RteUtilsService, DOMhelpers, PlaceholderRteConverterService]
@@ -210,9 +212,8 @@ describe('RichTextEditorComponent', () => {
       RTEComponent.hintMessage = 'test hint';
       fixture.detectChanges();
 
-      const hintNativeElement = fixture.debugElement.query(
-        By.css('.hint-message')
-      ).nativeElement;
+      const hintNativeElement = fixture.debugElement.query(By.css('.hint'))
+        .nativeElement;
       expect(hintNativeElement.innerText).toEqual('test hint');
     });
   });
@@ -236,12 +237,11 @@ describe('RichTextEditorComponent', () => {
       fixture.detectChanges();
       RTEeditorNativeElement.style.setProperty('--negative-600', 'red');
 
-      const errorNativeElement = fixture.debugElement.query(
-        By.css('.error-message')
-      ).nativeElement;
+      const errorNativeElement = fixture.debugElement.query(By.css('.error'))
+        .nativeElement;
 
       expect(RTEnativeElement.classList).toContain('error');
-      expect(errorNativeElement.innerText).toEqual('test error');
+      expect(errorNativeElement.innerText).toContain('test error');
       expect(getComputedStyle(RTEeditorNativeElement).borderColor).toEqual(
         'rgb(255, 0, 0)'
       );
@@ -350,14 +350,10 @@ describe('RichTextEditorComponent', () => {
       linkButtonElement.click();
 
       const textInputElement = <HTMLInputElement>(
-        overlayContainerElement.querySelector(
-          'input.mat-input-element[type="text"]'
-        )
+        overlayContainerElement.querySelector('.bfe-input[type="text"]')
       );
       const urlInputElement = <HTMLInputElement>(
-        overlayContainerElement.querySelector(
-          'input.mat-input-element[type="url"]'
-        )
+        overlayContainerElement.querySelector('.bfe-input[type="url"]')
       );
       const addButtonElement = overlayContainerElement.querySelector(
         'b-rte-link-editor .mat-button.primary'
@@ -382,7 +378,7 @@ describe('RichTextEditorComponent', () => {
       });
       fixture.detectChanges();
 
-      expect(RTEqlEditorNativeElement.textContent.trim()).toEqual('test text');
+      expect(RTEqlEditorNativeElement.innerText.trim()).toEqual('test text');
     });
   });
 

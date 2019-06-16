@@ -1,30 +1,38 @@
 import { storiesOf } from '@storybook/angular';
-import { text, select, withKnobs, number, boolean } from '@storybook/addon-knobs/angular';
+import {
+  text,
+  select,
+  withKnobs,
+  number,
+  boolean
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { SliderModule } from './slider.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const sliderStories = storiesOf(ComponentGroupType.ButtonsAndIndicators, module).addDecorator(
-  withKnobs
-);
+const sliderStories = storiesOf(
+  ComponentGroupType.ButtonsAndIndicators,
+  module
+).addDecorator(withKnobs);
 const template = `
-<b-slider style="width: 400px;"
-  [value]="value"
-  [min]="min"
-  [max]="max"
-  [step]="step"
-  [disabled]="disabled"
-  [showLabel]="showLabel"
-  [readOnly]="readOnly"
-  [labelSymbol]="labelSymbol"
-  (progressChange)="progressChange($event)">
+<b-slider [value]="value"
+          [min]="min"
+          [max]="max"
+          [step]="step"
+          [disabled]="disabled"
+          [showLabel]="showLabel"
+          [readOnly]="readOnly"
+          [labelSymbol]="labelSymbol"
+          (progressChange)="progressChange($event)">
 </b-slider>
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Slider'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 

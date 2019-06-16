@@ -1,12 +1,11 @@
-import { Component, forwardRef, Input } from '@angular/core';
-import { InputEventType } from '../input/input.enum';
+import { Component, forwardRef } from '@angular/core';
 import { BaseInputElement } from '../base-input-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'b-textarea',
   templateUrl: './textarea.component.html',
-  styleUrls: ['./textarea.component.scss'],
+  styleUrls: ['../input/input.component.scss', './textarea.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -18,14 +17,9 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
       useExisting: forwardRef(() => TextareaComponent),
       multi: true
     }
-  ],
+  ]
 })
 export class TextareaComponent extends BaseInputElement {
-
-  @Input() maxChars: number;
-
-  eventType = InputEventType;
-
   constructor() {
     super();
   }

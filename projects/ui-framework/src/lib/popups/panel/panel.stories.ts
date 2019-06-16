@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { PanelModule } from './panel.module';
@@ -11,14 +16,15 @@ import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
 import { PanelDefaultPosVer, PanelSize } from './panel.enum';
 import { values } from 'lodash';
 
-const buttonStories = storiesOf(ComponentGroupType.Popups, module).addDecorator(withKnobs);
+const buttonStories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+  withKnobs
+);
 
 const panelSize = values(PanelSize);
 const panelDefaultPosVer = values(PanelDefaultPosVer);
 
 const template = `
-<b-panel style="position: absolute; top: 20px; left: 20px;"
-         [panelClass]="panelClass"
+<b-panel [panelClass]="panelClass"
          [size]="panelSize"
          [showBackdrop]="showBackdrop"
          [defaultPosVer]="panelDefaultPosVer"
@@ -41,7 +47,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Overlay panel'">
-  ${template}
+  <div style="position: absolute; top: 30px; left: 30px;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -72,7 +80,11 @@ buttonStories.add(
     props: {
       panelClass: text('panelClass', 'my-panel-class'),
       panelSize: select('size', panelSize, PanelSize.medium),
-      defaultPosVer: select('defaultPosVer', panelDefaultPosVer, PanelDefaultPosVer.above),
+      defaultPosVer: select(
+        'defaultPosVer',
+        panelDefaultPosVer,
+        PanelDefaultPosVer.above
+      ),
       showBackdrop: boolean('showBackdrop', true),
       openOnHover: boolean('openOnHover', false),
       onPanelDestroyed: action('Panel destroyed')

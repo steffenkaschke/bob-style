@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatIconModule, MatInputModule, MatTooltipModule } from '@angular/material';
+
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchModule } from '../../../search/search/search.module';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { IconsModule } from '../../../icons/icons.module';
-import { InputModule } from '../../input/input.module';
+
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { SingleListComponent } from './single-list.component';
 import { ListModelService } from '../list-service/list-model.service';
@@ -17,7 +17,7 @@ import { ListOptionModule } from '../list-option/list-option.module';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 
-describe('SingleSelectComponent', () => {
+describe('SingleListComponent', () => {
   let component: SingleListComponent;
   let optionsMock: SelectGroupOption[];
   let fixture: ComponentFixture<SingleListComponent>;
@@ -26,11 +26,17 @@ describe('SingleSelectComponent', () => {
     optionsMock = [
       {
         groupName: 'Basic Info Header',
-        options: [{ value: 'Basic Info 1', id: 1, selected: true }, { value: 'Basic Info 2', id: 2, selected: false }]
+        options: [
+          { value: 'Basic Info 1', id: 1, selected: true },
+          { value: 'Basic Info 2', id: 2, selected: false }
+        ]
       },
       {
         groupName: 'Personal Header',
-        options: [{ value: 'Personal 1', id: 11, selected: false }, { value: 'Personal 2', id: 12, selected: false }]
+        options: [
+          { value: 'Personal 1', id: 11, selected: false },
+          { value: 'Personal 2', id: 12, selected: false }
+        ]
       }
     ];
 
@@ -41,14 +47,9 @@ describe('SingleSelectComponent', () => {
         NoopAnimationsModule,
         CommonModule,
         FormsModule,
-        InputModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
         SearchModule,
         ButtonsModule,
         IconsModule,
-        MatTooltipModule,
         ScrollingModule,
         FiltersModule,
         ListOptionModule
@@ -162,7 +163,10 @@ describe('SingleSelectComponent', () => {
       const changedOptions = [
         {
           groupName: 'Basic Info Header',
-          options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
+          options: [
+            { value: 'Basic Info 1', id: 1 },
+            { value: 'Basic Info 2', id: 2 }
+          ]
         }
       ];
       component.ngOnChanges({
@@ -180,14 +184,19 @@ describe('SingleSelectComponent', () => {
     it('should not show group header if options.length=1 && showSingleGroupHeader=false (default)', () => {
       let options = fixture.debugElement.queryAll(By.css('.option'));
       let headers = fixture.debugElement.queryAll(By.css('.header'));
-      let headerPlaceholder = fixture.debugElement.queryAll(By.css('.header-placeholder'));
+      let headerPlaceholder = fixture.debugElement.queryAll(
+        By.css('.header-placeholder')
+      );
       expect(options.length).toEqual(4);
       expect(headers.length).toEqual(2);
       expect(headerPlaceholder.length).toEqual(2);
       const changedOptions = [
         {
           groupName: 'Basic Info Header',
-          options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
+          options: [
+            { value: 'Basic Info 1', id: 1 },
+            { value: 'Basic Info 2', id: 2 }
+          ]
         }
       ];
       component.ngOnChanges({
@@ -201,7 +210,9 @@ describe('SingleSelectComponent', () => {
       fixture.autoDetectChanges();
       options = fixture.debugElement.queryAll(By.css('.option'));
       headers = fixture.debugElement.queryAll(By.css('.header'));
-      headerPlaceholder = fixture.debugElement.queryAll(By.css('.header-placeholder'));
+      headerPlaceholder = fixture.debugElement.queryAll(
+        By.css('.header-placeholder')
+      );
       expect(options.length).toEqual(2);
       expect(headers.length).toEqual(0);
       expect(headerPlaceholder.length).toEqual(0);
@@ -211,7 +222,10 @@ describe('SingleSelectComponent', () => {
       const changedOptions = [
         {
           groupName: 'Basic Info Header',
-          options: [{ value: 'Basic Info 1', id: 1 }, { value: 'Basic Info 2', id: 2 }]
+          options: [
+            { value: 'Basic Info 1', id: 1 },
+            { value: 'Basic Info 2', id: 2 }
+          ]
         }
       ];
       component.ngOnChanges({
@@ -225,7 +239,9 @@ describe('SingleSelectComponent', () => {
       fixture.autoDetectChanges();
       expect(component.noGroupHeaders).toBe(false);
       const options = fixture.debugElement.queryAll(By.css('.option'));
-      const headerPlaceholder = fixture.debugElement.queryAll(By.css('.header-placeholder'));
+      const headerPlaceholder = fixture.debugElement.queryAll(
+        By.css('.header-placeholder')
+      );
       const headers = fixture.debugElement.queryAll(By.css('.header'));
       expect(options.length).toEqual(2);
       expect(headerPlaceholder.length).toEqual(1);
@@ -361,7 +377,10 @@ describe('SingleSelectComponent', () => {
     it('should emit event when selecting an option', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
-      const listChange = component['listChangeService'].getListChange(component.options, [12]);
+      const listChange = component['listChangeService'].getListChange(
+        component.options,
+        [12]
+      );
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
     });
   });
@@ -369,7 +388,10 @@ describe('SingleSelectComponent', () => {
   describe('singleList listChange class', () => {
     let listChange;
     beforeEach(() => {
-      listChange = component['listChangeService'].getListChange(component.options, [12]);
+      listChange = component['listChangeService'].getListChange(
+        component.options,
+        [12]
+      );
     });
 
     it('should return updated options model', () => {
@@ -383,7 +405,10 @@ describe('SingleSelectComponent', () => {
         },
         {
           groupName: 'Personal Header',
-          options: [{ value: 'Personal 1', id: 11, selected: false }, { value: 'Personal 2', id: 12, selected: true }]
+          options: [
+            { value: 'Personal 1', id: 11, selected: false },
+            { value: 'Personal 2', id: 12, selected: true }
+          ]
         }
       ]);
     });
@@ -401,7 +426,9 @@ describe('SingleSelectComponent', () => {
       expect(options.length).toEqual(1);
       expect(headers.length).toEqual(1);
       expect(options[0].nativeElement.innerText.trim()).toEqual('Basic Info 1');
-      expect(headers[0].nativeElement.innerText.trim()).toEqual('Basic Info Header');
+      expect(headers[0].nativeElement.innerText.trim()).toEqual(
+        'Basic Info Header'
+      );
     });
     it('should show group headers and no options if search only matches headers', () => {
       component.searchChange('Personal He');
@@ -410,7 +437,9 @@ describe('SingleSelectComponent', () => {
       const headers = fixture.debugElement.queryAll(By.css('.header'));
       expect(options.length).toEqual(0);
       expect(headers.length).toEqual(1);
-      expect(headers[0].nativeElement.innerText.trim()).toEqual('Personal Header');
+      expect(headers[0].nativeElement.innerText.trim()).toEqual(
+        'Personal Header'
+      );
     });
   });
 });

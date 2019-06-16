@@ -1,13 +1,21 @@
-import { storiesOf, moduleMetadata } from '@storybook/angular';
-import { text, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import { storiesOf } from '@storybook/angular';
+import {
+  text,
+  select,
+  boolean,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { ChipsModule } from '../chips.module';
-import { ChipType } from '../chips.enum';
+import { ChipModule } from './chip.module';
+import { ChipType } from './chip.enum';
 import { values } from 'lodash';
-import { ComponentGroupType } from '../../../consts';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import { ComponentGroupType } from '../../consts';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const story = storiesOf(`${ComponentGroupType.ButtonsAndIndicators}.Chips`, module).addDecorator(withKnobs);
+const story = storiesOf(
+  ComponentGroupType.ButtonsAndIndicators,
+  module
+).addDecorator(withKnobs);
 
 const typeOptions = values(ChipType);
 const template = `
@@ -28,7 +36,7 @@ const template2 = `
 const note = `
   ## Chip
   #### Module
-  *ChipsModule*
+  *ChipModule*
 
   #### Properties
   Name | Type | Description | Default value
@@ -47,7 +55,7 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Chip'">
-  <div style="margin: 100px auto;">
+  <div style="margin: 50px auto;">
     ${template}
   </div>
 </b-story-book-layout>
@@ -66,7 +74,7 @@ story.add(
       OnRemove: action('Chip removed')
     },
     moduleMetadata: {
-      imports: [ChipsModule, StoryBookLayoutModule]
+      imports: [ChipModule, StoryBookLayoutModule]
     }
   }),
   { notes: { markdown: note } }

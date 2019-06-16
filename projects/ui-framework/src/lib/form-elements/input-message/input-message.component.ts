@@ -3,13 +3,16 @@ import { Component, Input, HostBinding } from '@angular/core';
 @Component({
   selector: 'b-input-message, [b-input-message]',
   template: `
-    {{
-      errorMessage && !disabled
-        ? errorMessage
-        : warnMessage && !errorMessage && !disabled
-        ? warnMessage
-        : hintMessage
-    }}
+    <span>
+      {{
+        errorMessage && !disabled
+          ? errorMessage
+          : warnMessage && !errorMessage && !disabled
+          ? warnMessage
+          : hintMessage
+      }}
+    </span>
+    <ng-content></ng-content>
   `,
   styleUrls: ['./input-message.component.scss']
 })

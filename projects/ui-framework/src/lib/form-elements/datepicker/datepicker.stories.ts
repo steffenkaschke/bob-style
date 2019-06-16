@@ -1,5 +1,11 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  number,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { DatepickerModule } from './datepicker.module';
 import { ComponentGroupType } from '../../consts';
@@ -7,16 +13,21 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const datepickerStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
-  withKnobs
-);
+const datepickerStories = storiesOf(
+  ComponentGroupType.FormElements,
+  module
+).addDecorator(withKnobs);
 const template = `
-<b-datepicker style="width: 400px;"
-              (dateChange)="dateChange($event)"
-              [inputLabel]="inputLabel"
+<b-datepicker (dateChange)="dateChange($event)"
               [dateFormat]="dateFormat"
+
+              [inputLabel]="label"
+              [placeholder]="placeholder"
+
+              [hintMessage]="hintMessage"
+              [warnMessage]="warnMessage"
               [errorMessage]="errorMessage"
-              [label]="label"
+
               [disabled]="disabled"
               [required]="required">
 </b-datepicker>
@@ -24,7 +35,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Datepicker'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -50,16 +63,22 @@ datepickerStories.add(
     return {
       template: storyTemplate,
       props: {
-        inputLabel: text('inputLabel', 'Choose a date'),
         dateFormat: text('dateFormat', 'DD/MM/YYYY'),
-        errorMessage: text('errorMessage', ''),
-        required: boolean('required', false),
         label: text('label', 'Date picker'),
+        placeholder: text('placeholder', 'Input placeholder'),
         disabled: boolean('disabled', false),
-        dateChange: action()
+        required: boolean('required', false),
+        hintMessage: text('hintMessage', 'This field should contain something'),
+        warnMessage: text('warnMessage', ''),
+        errorMessage: text('errorMessage', ''),
+        dateChange: action('Date Changed')
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, DatepickerModule, StoryBookLayoutModule]
+        imports: [
+          BrowserAnimationsModule,
+          DatepickerModule,
+          StoryBookLayoutModule
+        ]
       }
     };
   },

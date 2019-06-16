@@ -5,7 +5,9 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { LinkColor, LinkTarget } from '../../buttons-indicators/link/link.enum';
 
-const stories = storiesOf(ComponentGroupType.Popups, module).addDecorator(withKnobs);
+const stories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+  withKnobs
+);
 
 const template = `<b-info-tooltip [text]="text" [link]="link" [title]="title"></b-info-tooltip>`;
 
@@ -26,7 +28,9 @@ const note = `
 `;
 
 const storyTemplate = `<b-story-book-layout [title]="'Info Tooltip'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
+    ${template}
+  </div>
 </b-story-book-layout>`;
 
 stories.add(

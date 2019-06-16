@@ -11,23 +11,21 @@ describe('ListModelService', () => {
       {
         groupName: 'Basic Info',
         options: [
-          { value: 'Basic Info 1', id: 1, selected: true, },
-          { value: 'Basic Info 2', id: 2, selected: false, },
-        ],
+          { value: 'Basic Info 1', id: 1, selected: true },
+          { value: 'Basic Info 2', id: 2, selected: false }
+        ]
       },
       {
         groupName: 'Personal',
         options: [
-          { value: 'Personal 1', id: 11, selected: false, },
-          { value: 'Personal 2', id: 12, selected: false, },
-        ],
-      },
+          { value: 'Personal 1', id: 11, selected: false },
+          { value: 'Personal 2', id: 12, selected: false }
+        ]
+      }
     ];
 
     TestBed.configureTestingModule({
-      providers: [
-        ListModelService,
-      ]
+      providers: [ListModelService]
     });
 
     listModelService = TestBed.get(ListModelService);
@@ -41,13 +39,13 @@ describe('ListModelService', () => {
           groupName: 'Basic Info',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: null,
+          selected: null
         },
         {
           groupName: 'Personal',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: null,
+          selected: null
         }
       ]);
     });
@@ -57,50 +55,54 @@ describe('ListModelService', () => {
     it('should return options model for virtual scroll', () => {
       const noGroupHeaders = false;
       const headerModel = listModelService.getHeadersModel(optionsMock);
-      const optionsModel = listModelService.getOptionsModel(optionsMock, headerModel, noGroupHeaders);
+      const optionsModel = listModelService.getOptionsModel(
+        optionsMock,
+        headerModel,
+        noGroupHeaders
+      );
       expect(optionsModel).toEqual([
         {
           isPlaceHolder: true,
           groupName: 'Basic Info',
           value: 'Basic Info',
           id: 'Basic Info',
-          selected: null,
+          selected: null
         },
         {
           value: 'Basic Info 1',
           id: 1,
           groupName: 'Basic Info',
           isPlaceHolder: false,
-          selected: true,
+          selected: true
         },
         {
           value: 'Basic Info 2',
           id: 2,
           groupName: 'Basic Info',
           isPlaceHolder: false,
-          selected: false,
+          selected: false
         },
         {
           isPlaceHolder: true,
           groupName: 'Personal',
           value: 'Personal',
           id: 'Personal',
-          selected: null,
+          selected: null
         },
         {
           value: 'Personal 1',
           id: 11,
           groupName: 'Personal',
           isPlaceHolder: false,
-          selected: false,
+          selected: false
         },
         {
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal',
           isPlaceHolder: false,
-          selected: false,
-        },
+          selected: false
+        }
       ]);
     });
     it('should return options model for virtual scroll filtered by collapsed headers', () => {
@@ -110,31 +112,35 @@ describe('ListModelService', () => {
           groupName: 'Basic Info',
           isCollapsed: true,
           placeHolderSize: 88,
-          selected: null,
+          selected: null
         },
         {
           groupName: 'Personal',
           isCollapsed: true,
           placeHolderSize: 88,
-          selected: null,
+          selected: null
         }
       ];
-      const optionsModel = listModelService.getOptionsModel(optionsMock, headerModel, noGroupHeaders);
+      const optionsModel = listModelService.getOptionsModel(
+        optionsMock,
+        headerModel,
+        noGroupHeaders
+      );
       expect(optionsModel).toEqual([
         {
           isPlaceHolder: true,
           groupName: 'Basic Info',
           value: 'Basic Info',
           id: 'Basic Info',
-          selected: null,
+          selected: null
         },
         {
           isPlaceHolder: true,
           groupName: 'Personal',
           value: 'Personal',
           id: 'Personal',
-          selected: null,
-        },
+          selected: null
+        }
       ]);
     });
   });
@@ -147,30 +153,38 @@ describe('ListModelService', () => {
           groupName: 'Basic Info',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: null,
+          selected: null
         },
         {
           groupName: 'Personal',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: null,
+          selected: null
         }
       ];
-      const optionsModel = listModelService.getOptionsModel(optionsMock, headerModel, noGroupHeaders);
+      const optionsModel = listModelService.getOptionsModel(
+        optionsMock,
+        headerModel,
+        noGroupHeaders
+      );
       const selectedValues = [1, 11, 12];
-      listModelService.setSelectedOptions(headerModel, optionsModel, selectedValues);
+      listModelService.setSelectedOptions(
+        headerModel,
+        optionsModel,
+        selectedValues
+      );
       expect(headerModel).toEqual([
         {
           groupName: 'Basic Info',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: false,
+          selected: false
         },
         {
           groupName: 'Personal',
           isCollapsed: false,
           placeHolderSize: 88,
-          selected: true,
+          selected: true
         }
       ]);
       expect(optionsModel).toEqual([
@@ -179,43 +193,43 @@ describe('ListModelService', () => {
           groupName: 'Basic Info',
           value: 'Basic Info',
           id: 'Basic Info',
-          selected: null,
+          selected: null
         },
         {
           value: 'Basic Info 1',
           id: 1,
           groupName: 'Basic Info',
           isPlaceHolder: false,
-          selected: true,
+          selected: true
         },
         {
           value: 'Basic Info 2',
           id: 2,
           groupName: 'Basic Info',
           isPlaceHolder: false,
-          selected: false,
+          selected: false
         },
         {
           isPlaceHolder: true,
           groupName: 'Personal',
           value: 'Personal',
           id: 'Personal',
-          selected: null,
+          selected: null
         },
         {
           value: 'Personal 1',
           id: 11,
           groupName: 'Personal',
           isPlaceHolder: false,
-          selected: true,
+          selected: true
         },
         {
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal',
           isPlaceHolder: false,
-          selected: true,
-        },
+          selected: true
+        }
       ]);
     });
     it('should enrich header selected values if also when header is collapsed', () => {
@@ -225,30 +239,38 @@ describe('ListModelService', () => {
           groupName: 'Basic Info',
           isCollapsed: true,
           placeHolderSize: 88,
-          selected: true,
+          selected: true
         },
         {
           groupName: 'Personal',
           isCollapsed: true,
           placeHolderSize: 88,
-          selected: true,
+          selected: true
         }
       ];
-      const optionsModel = listModelService.getOptionsModel(optionsMock, headerModel, noGroupHeaders);
+      const optionsModel = listModelService.getOptionsModel(
+        optionsMock,
+        headerModel,
+        noGroupHeaders
+      );
       const selectedValues = [1, 11, 12];
-      listModelService.setSelectedOptions(headerModel, optionsModel, selectedValues);
+      listModelService.setSelectedOptions(
+        headerModel,
+        optionsModel,
+        selectedValues
+      );
       expect(headerModel).toEqual([
         {
           groupName: 'Basic Info',
           isCollapsed: true,
           placeHolderSize: 88,
-          selected: true,
+          selected: true
         },
         {
           groupName: 'Personal',
           isCollapsed: true,
           placeHolderSize: 88,
-          selected: true,
+          selected: true
         }
       ]);
       expect(optionsModel).toEqual([
@@ -257,15 +279,15 @@ describe('ListModelService', () => {
           groupName: 'Basic Info',
           value: 'Basic Info',
           id: 'Basic Info',
-          selected: null,
+          selected: null
         },
         {
           isPlaceHolder: true,
           groupName: 'Personal',
           value: 'Personal',
           id: 'Personal',
-          selected: null,
-        },
+          selected: null
+        }
       ]);
     });
   });

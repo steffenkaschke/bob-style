@@ -1,5 +1,17 @@
-import { Input, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { CdkOverlayOrigin, FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
+import {
+  Input,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
+  ElementRef
+} from '@angular/core';
+import {
+  CdkOverlayOrigin,
+  FlexibleConnectedPositionStrategy,
+  Overlay,
+  OverlayConfig,
+  OverlayRef
+} from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import invoke from 'lodash/invoke';
 import { Subscription } from 'rxjs';
@@ -7,10 +19,9 @@ import { PanelPositionService } from '../../popups/panel/panel-position-service/
 import { BaseFormElement } from '../base-form-element';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement {
-
   @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef') templateRef: TemplateRef<any>;
-  @ViewChild('triggerInput') triggerInput;
+  @ViewChild('triggerInput', { read: ElementRef }) triggerInput: ElementRef;
 
   @Input() isQuickFilter = false;
 
@@ -28,7 +39,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
   protected constructor(
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService,
+    private panelPositionService: PanelPositionService
   ) {
     super();
   }
@@ -37,20 +48,26 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
     this.panelOpen = true;
     this.panelConfig = this.getDefaultConfig();
     this.overlayRef = this.overlay.create(this.panelConfig);
-    this.templatePortal = new TemplatePortal(this.templateRef, this.viewContainerRef);
+    this.templatePortal = new TemplatePortal(
+      this.templateRef,
+      this.viewContainerRef
+    );
     this.overlayRef.attach(this.templatePortal);
 
     this.overlayRef.updatePosition();
     this.overlayRef.updateSize({
-      width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
+      width: this.overlayOrigin.elementRef.nativeElement.offsetWidth
     });
 
-    const searchInput = this.overlayRef.overlayElement.querySelector('b-input input') as HTMLElement;
+    const searchInput = this.overlayRef.overlayElement.querySelector(
+      'b-search .bfe-input'
+    ) as HTMLElement;
     if (searchInput) {
       searchInput.focus();
     }
 
-    this.backdropClickSubscriber = this.overlayRef.backdropClick()
+    this.backdropClickSubscriber = this.overlayRef
+      .backdropClick()
       .subscribe(() => {
         this.onCancel();
       });
@@ -70,11 +87,17 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
   }
 
   private getDefaultConfig(): OverlayConfig {
-    const positionStrategy = this.panelPositionService.getCenterPanelPositionStrategy(this.overlayOrigin);
+    const positionStrategy = this.panelPositionService.getCenterPanelPositionStrategy(
+      this.overlayOrigin
+    );
 
-    this.subscribeToPositions(positionStrategy as FlexibleConnectedPositionStrategy);
+    this.subscribeToPositions(
+      positionStrategy as FlexibleConnectedPositionStrategy
+    );
 
-    const panelClass = this.isQuickFilter ? ['b-select-panel', 'b-quick-filter-panel'] : ['b-select-panel'];
+    const panelClass = this.isQuickFilter
+      ? ['b-select-panel', 'b-quick-filter-panel']
+      : ['b-select-panel'];
 
     return {
       disposeOnNavigation: true,
@@ -82,21 +105,19 @@ export abstract class BaseSelectPanelElement extends BaseFormElement {
       backdropClass: 'b-select-backdrop',
       panelClass,
       positionStrategy,
-      scrollStrategy: this.panelPositionService.getScrollStrategy(),
+      scrollStrategy: this.panelPositionService.getScrollStrategy()
     };
   }
 
-  private subscribeToPositions(positionStrategy: FlexibleConnectedPositionStrategy): void {
-    this.positionChangeSubscriber = positionStrategy.positionChanges
-      .subscribe(change => {
-        this.positionClassList = this.panelPositionService.getPositionClassList(change);
-      });
-  }
-
-  updateTriggerTooltip(): void {
-    setTimeout(() => {
-      this.showTriggerTooltip = this.triggerInput.bInput.nativeElement.scrollWidth >
-        this.triggerInput.bInput.nativeElement.offsetWidth;
-    });
+  private subscribeToPositions(
+    positionStrategy: FlexibleConnectedPositionStrategy
+  ): void {
+    this.positionChangeSubscriber = positionStrategy.positionChanges.subscribe(
+      change => {
+        this.positionClassList = this.panelPositionService.getPositionClassList(
+          change
+        );
+      }
+    );
   }
 }

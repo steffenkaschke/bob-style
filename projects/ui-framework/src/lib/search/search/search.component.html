@@ -1,26 +1,33 @@
-<b-input class="search-input"
-         [inputType]="inputTypes.text"
-         [label]="label"
-         [value]="value"
-         [hideLabelOnFocus]="hideLabelOnFocus"
-         (inputEvents)="onInputEvents($event)">
+<label *ngIf="label && !hideLabelOnFocus"
+       class="bfe-label"
+       [attr.for]="id">{{label}}</label>
 
-  <div input-prefix
-       class="search-icon">
+<div class="bfe-wrap has-prefix has-suffix"
+     [ngClass]="{focused: inputFocused}">
+  <div class="bfe-prefix">
     <b-icon [icon]="icons.search"
             [color]="searchIconColor"
             [size]="iconSize.medium">
     </b-icon>
   </div>
 
-  <div input-suffix *ngIf="value.length > 0"
-       class="reset-button">
-    <b-icon [icon]="icons.reset_x"
+  <input class="bfe-input"
+         type="search"
+         [attr.id]="id"
+         [value]="value"
+         [attr.placeholder]="hideLabelOnFocus && label ? label : placeholder"
+         [autocomplete]="enableBrowserAutoComplete"
+         (input)="onInput($event)"
+         (focus)="onFocus()"
+         (blur)="onBlur()">
+
+  <div *ngIf="value && value.length > 0"
+       class="bfe-suffix">
+    <b-icon class="reset-button"
+            [icon]="icons.reset_x"
             (click)="onResetClick()"
             [size]="iconSize.medium"
             [color]="iconColor.normal"
             [hasHoverState]="true">
     </b-icon>
   </div>
-
-</b-input>

@@ -1,13 +1,20 @@
-import { AfterViewInit, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription } from 'rxjs';
 import { ListHeader, ListOption } from './list.interface';
 import find from 'lodash/find';
 import { LIST_EL_HEIGHT } from './list.consts';
-import { ListKeyboardService, NavigationKeys } from './list-service/list-keyboard.service';
+import { ListKeyboardService } from './list-service/list-keyboard.service';
+import { Keys } from '../../enums';
 
-export abstract class BaseListElement implements OnInit, OnDestroy, AfterViewInit {
-
+export abstract class BaseListElement
+  implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('vScroll') vScroll: CdkVirtualScrollViewport;
   @ViewChild('headers') headers;
 
@@ -24,31 +31,50 @@ export abstract class BaseListElement implements OnInit, OnDestroy, AfterViewIni
 
   protected constructor(
     private renderer: Renderer2,
-    private listKeyboardService: ListKeyboardService,
-  ) {
-  }
+    private listKeyboardService: ListKeyboardService
+  ) {}
 
   ngOnInit(): void {
     this.focusIndex = -1;
-    this.keyDownSubscriber = this.listKeyboardService.getKeyboardNavigationObservable()
+    this.keyDownSubscriber = this.listKeyboardService
+      .getKeyboardNavigationObservable()
       .subscribe((e: KeyboardEvent) => {
-        switch (e.code) {
-          case(NavigationKeys.down):
-            this.focusIndex = this.listKeyboardService
-              .getNextFocusIndex(NavigationKeys.down, this.focusIndex, this.listOptions.length);
+        switch (e.key) {
+          case Keys.arrowdown:
+            this.focusIndex = this.listKeyboardService.getNextFocusIndex(
+              Keys.arrowdown,
+              this.focusIndex,
+              this.listOptions.length
+            );
             this.focusOption = this.listOptions[this.focusIndex];
-            this.vScroll.scrollToIndex(this.listKeyboardService.getScrollToIndex(this.focusIndex, this.maxHeight));
+            this.vScroll.scrollToIndex(
+              this.listKeyboardService.getScrollToIndex(
+                this.focusIndex,
+                this.maxHeight
+              )
+            );
             break;
-          case(NavigationKeys.up):
-            this.focusIndex = this.listKeyboardService
-              .getNextFocusIndex(NavigationKeys.up, this.focusIndex, this.listOptions.length);
+          case Keys.arrowup:
+            this.focusIndex = this.listKeyboardService.getNextFocusIndex(
+              Keys.arrowup,
+              this.focusIndex,
+              this.listOptions.length
+            );
             this.focusOption = this.listOptions[this.focusIndex];
-            this.vScroll.scrollToIndex(this.listKeyboardService
-              .getScrollToIndex(this.focusIndex, this.maxHeight));
+            this.vScroll.scrollToIndex(
+              this.listKeyboardService.getScrollToIndex(
+                this.focusIndex,
+                this.maxHeight
+              )
+            );
             break;
-          case(NavigationKeys.enter):
+          case Keys.enter:
             this.focusOption.isPlaceHolder
-              ? this.headerClick(find(this.listHeaders, { groupName: this.focusOption.groupName }))
+              ? this.headerClick(
+                  find(this.listHeaders, {
+                    groupName: this.focusOption.groupName
+                  })
+                )
               : this.optionClick(this.focusOption);
             break;
           default:
@@ -66,14 +92,12 @@ export abstract class BaseListElement implements OnInit, OnDestroy, AfterViewIni
       this.renderer.insertBefore(
         this.vScroll.elementRef.nativeElement,
         this.headers.nativeElement,
-        this.vScroll.elementRef.nativeElement.firstChild,
+        this.vScroll.elementRef.nativeElement.firstChild
       );
     }
   }
 
-  optionClick(option: ListOption): void {
-  }
+  optionClick(option: ListOption): void {}
 
-  headerClick(header: ListHeader): void {
-  }
+  headerClick(header: ListHeader): void {}
 }

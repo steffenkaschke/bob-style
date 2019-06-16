@@ -14,7 +14,9 @@ import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { SliderModule } from '../../buttons-indicators/slider/slider.module';
 import { SliderComponent } from '../../buttons-indicators/slider/slider.component';
 
-const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-card [card]="cardData"
@@ -24,7 +26,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Single Card'">
-  <div style="width:280px; margin: 100px auto;">
+  <div style="display: flex; width:280px; margin: 50px auto; justify-content: center;">
     ${template}
   </div>
 </b-story-book-layout>
@@ -66,7 +68,13 @@ story.add(
         cardData: object('card', CardsMockData[1])
       },
       moduleMetadata: {
-        imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule, AvatarModule, SliderModule],
+        imports: [
+          StoryBookLayoutModule,
+          BrowserAnimationsModule,
+          CardsModule,
+          AvatarModule,
+          SliderModule
+        ],
         entryComponents: [AvatarComponent, SliderComponent]
       }
     };

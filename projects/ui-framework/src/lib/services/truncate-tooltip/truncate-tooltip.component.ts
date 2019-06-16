@@ -33,7 +33,10 @@ import { TruncateTooltiptype } from './truncate-tooltip.enum';
     <span
       #textContainer
       class="btt"
-      [ngClass]="{ initialized: initialized }"
+      [ngClass]="{
+        initialized: initialized,
+        'tooltip-enabled': tooltipEnabled
+      }"
       [attr.data-max-lines]="maxLines"
     >
       <ng-content></ng-content>

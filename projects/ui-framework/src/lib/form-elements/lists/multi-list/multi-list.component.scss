@@ -1,82 +1,10 @@
-@import '../../../style/colors';
-@import '../../../style/typography';
-@import '../../../style/shapes';
+@import '../../../style/variables';
 @import '../../checkbox/checkbox.mixin';
-@import '../list';
-
-:host {
-  display: inline-block;
-  width: 100%;
-  text-align: left;
-  border-radius: 4px;
-  border: 1px solid $grey-500;
-  overflow: hidden;
-  box-shadow: 0 2px 3px 0 $boxShadowColor;
-}
-:host ::ng-deep {
-  @include BodyFont;
-  b-search {
-    display: block;
-    top: 0;
-    z-index: 1;
-    .mat-form-field {
-      margin: 0;
-      &.mat-focused .mat-form-field-wrapper .mat-form-field-flex,
-      .mat-form-field-wrapper .mat-form-field-flex {
-        border: none;
-        border-bottom: 1px solid $grey-500;
-        border-radius: 0;
-      }
-    }
-  }
-  .v-scroll-wrapper {
-    position: relative;
-    background-color: $white;
-    .v-scroll {
-      height: 100%;
-      .headers,
-      .options {
-        .option-select {
-          @include listOption;
-        }
-      }
-      .headers {
-        @include headers;
-        .header {
-          .header-option {
-            display: flex;
-            flex-direction: row;
-            align-content: flex-start;
-            align-items: center;
-          }
-        }
-      }
-      .options {
-        position: relative;
-        z-index: 1;
-        .option-select {
-          display: flex;
-          flex-direction: row;
-          align-content: flex-start;
-          align-items: center;
-          &.header-placeholder {
-            visibility: hidden;
-          }
-          &.option {
-            padding-left: 36px;
-          }
-        }
-      }
-    }
-    &.no-group-header {
-      .v-scroll .options .option-select.option {
-        padding-left: 16px;
-      }
-    }
-  }
-}
 
 @include checkbox(
+  $size: 16px,
+  $checkmark-size: 9px,
+  $border-radius: $border-radius / 2,
   $input-selector: null,
   $checkbox-selector: '.checkbox',
   $checked-selector: '.checkbox[aria-checked="true"]',

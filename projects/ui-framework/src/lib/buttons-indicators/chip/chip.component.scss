@@ -1,6 +1,16 @@
-@import '../../../style/colors';
-@import '../../../style/typography';
-@import '../../../style/mixins';
+@import '../../style/colors';
+@import '../../style/typography';
+@import '../../style/mixins';
+
+@keyframes blink {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: 0 0 0 2px $grey-300;
+  }
+}
 
 $chipsMap: (
   empty: (
@@ -48,7 +58,7 @@ $chipsMap: (
 
 :host {
   display: inline-flex;
-  pointer-events: all;
+  outline: 0;
 }
 
 span {
@@ -70,6 +80,21 @@ span {
   cursor: default;
   outline: 0;
   pointer-events: none;
+
+  &.blink {
+    @include animate(blink, 0.3s);
+  }
+
+  &.selected {
+    position: relative;
+    &:before {
+      @include pseudo;
+      @include size(100%);
+      @include position;
+      border-radius: inherit;
+      background-color: black(0.15);
+    }
+  }
 }
 
 :host ::ng-deep .remove-button {
@@ -83,6 +108,9 @@ span {
     display: flex;
     align-items: center;
   }
+}
+:host-context(.disabled) .remove-button {
+  pointer-events: none;
 }
 
 @each $type, $typeProps in $chipsMap {

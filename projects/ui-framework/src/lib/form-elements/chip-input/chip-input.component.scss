@@ -1,0 +1,79 @@
+@import '../../style/colors';
+@import '../../style/typography';
+@import '../../style/mixins';
+
+// Form field
+
+:host {
+  .bfe-input {
+    margin: 4px;
+    padding: 0;
+    height: auto;
+    max-height: 20px;
+  }
+
+  .bfe-wrap {
+    height: auto;
+    min-height: 0;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+    background: transparent;
+
+    &.autocomplete-open {
+      border-color: transparent;
+    }
+
+    &.focused {
+      border-top: 0;
+      border-left: 0;
+      border-right: 0;
+    }
+
+    &:not(.focused):not(.empty) {
+      .bfe-input.empty {
+        max-height: 0px;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Chips
+
+:host {
+  .bfe-wrap {
+    padding: 2px 0 4px;
+  }
+
+  .chips-wrap {
+    margin: 0 -4px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  b-chip {
+    margin: 4px;
+  }
+}
+
+// Autocomplete
+
+::ng-deep .chip-input-autocomplete {
+  &.mat-autocomplete-panel {
+    margin-top: -1px;
+    border: 1px solid $grey-500;
+    box-shadow: 0 2px 3px 0 $boxShadowColor;
+  }
+  .mat-option {
+    color: $body-text-color;
+    @include BodyFont();
+    height: 44px;
+
+    &:hover:not(.mat-option-disabled) {
+      background-color: $grey-100;
+    }
+  }
+}

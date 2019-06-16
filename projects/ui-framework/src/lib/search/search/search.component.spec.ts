@@ -12,15 +12,8 @@ describe('SearchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        SearchComponent,
-      ],
-      imports: [
-        NoopAnimationsModule,
-        FormsModule,
-        InputModule,
-        IconsModule,
-      ],
+      declarations: [SearchComponent],
+      imports: [NoopAnimationsModule, FormsModule, InputModule, IconsModule]
     })
       .compileComponents()
       .then(() => {
@@ -39,7 +32,10 @@ describe('SearchComponent', () => {
     it('should assign value with value if exists', () => {
       component.ngOnChanges({
         value: {
-          previousValue: undefined, currentValue: 'Alan Tulin', firstChange: false, isFirstChange: () => true,
+          previousValue: undefined,
+          currentValue: 'Alan Tulin',
+          firstChange: false,
+          isFirstChange: () => true
         }
       });
       fixture.detectChanges();
@@ -65,7 +61,9 @@ describe('SearchComponent', () => {
       inputElement.nativeElement.value = 'change input value';
       inputElement.nativeElement.dispatchEvent(new Event('input'));
       fixture.detectChanges();
-      expect(component.searchChange.emit).toHaveBeenCalledWith('change input value');
+      expect(component.searchChange.emit).toHaveBeenCalledWith(
+        'change input value'
+      );
     });
   });
 
@@ -79,8 +77,8 @@ describe('SearchComponent', () => {
       fixture.detectChanges();
       expect(component.value).toBe('change input value');
 
-      const resetElement = fixture.debugElement.query(By.css('.reset-button b-icon'));
-      resetElement.triggerEventHandler('click', null);
+      const resetElement = fixture.debugElement.query(By.css('.reset-button'));
+      resetElement.nativeElement.click();
       fixture.detectChanges();
       expect(component.value).toBe('');
     });

@@ -1,5 +1,11 @@
 import { storiesOf } from '@storybook/angular';
-import { select, withKnobs, object, array, boolean } from '@storybook/addon-knobs/angular';
+import {
+  select,
+  withKnobs,
+  object,
+  array,
+  boolean
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
@@ -11,11 +17,12 @@ import { SelectGroupOption } from '../list.interface';
 import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.component';
 import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
 
-const buttonStories = storiesOf(ComponentGroupType.FormElements, module).addDecorator(withKnobs);
+const buttonStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+  withKnobs
+);
 
 const template = `
-<b-multi-list style="width: 400px;"
-              [options]="options"
+<b-multi-list [options]="options"
               [showSingleGroupHeader]="showSingleGroupHeader"
               (selectChange)="selectChange($event)">
 </b-multi-list>
@@ -23,7 +30,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Single select'">
-  ${ template }
+  <div style="max-width: 400px; margin: 30px auto;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -42,7 +51,7 @@ const note = `
   maxHeight | number | component max height | 352 (8 rows)
 
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 
@@ -51,10 +60,10 @@ const optionsNum = 3;
 
 const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
   return {
-    groupName: `Basic Info G${ i } - header`,
+    groupName: `Basic Info G${i} - header`,
     options: Array.from(Array(optionsNum), (_, k) => {
       return {
-        value: `Basic Info G${ i }_E${ k } - option`,
+        value: `Basic Info G${i}_E${k} - option`,
         id: i * optionsNum + k,
         selected: false,
         prefixComponent: {

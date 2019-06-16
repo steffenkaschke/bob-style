@@ -13,7 +13,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { AvatarModule } from './avatar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsModule } from '../../icons/icons.module';
-import { ChipType } from '../chips/chips.enum';
+import { ChipType } from '../chip/chip.enum';
 
 const avatarStories = storiesOf(
   `${ComponentGroupType.ButtonsAndIndicators}.Avatar`,
@@ -78,7 +78,7 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Avatar'">
-  <div style="display: flex; justify-content: center; padding: 20px;">
+  <div style="display: flex; justify-content: center; padding: 30px;">
     ${template}
   </div>
 </b-story-book-layout>

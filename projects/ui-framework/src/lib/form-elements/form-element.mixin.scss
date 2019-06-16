@@ -1,0 +1,215 @@
+@import '../style/variables';
+@import '../style/typography';
+@import '../style/mixins';
+
+$form-element-margin: 20px 0;
+$wrap-height: 44px;
+$input-height: 42px;
+$input-padding: 15px;
+$label-height: 18px;
+$label-color: $grey-800;
+$label-hint-margin: 6px;
+$input-border-color: $grey-500;
+$input-focus-border-color: $grey-700;
+
+@mixin transfer-margins($from: 'b-input') {
+  margin: $form-element-margin;
+  &::ng-deep {
+    #{$from} {
+      margin: 0;
+    }
+  }
+}
+
+@mixin align-to-input {
+  height: $wrap-height;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: flex-start;
+
+  :host-context(.has-label) & {
+    height: $wrap-height + $label-height + $label-hint-margin;
+    padding-top: ($label-height + $label-hint-margin);
+  }
+}
+
+@mixin input-border-colors(
+  $selector: '&',
+  $add: '',
+  $error-class: '.error',
+  $warn-class: '.warn'
+) {
+  @if $warn-class {
+    #{$selector}#{$warn-class}#{$add} {
+      border-color: $color-warn;
+    }
+  }
+  @if $error-class {
+    #{$selector}#{$error-class}#{$add} {
+      border-color: $color-error;
+    }
+  }
+}
+
+@mixin input-requred($selector: '&') {
+  &:after {
+    content: ' *';
+    display: inline-block;
+    margin-left: 1px;
+  }
+}
+
+@mixin bFormElement-label {
+  box-sizing: border-box;
+  display: block;
+  min-height: $label-height;
+  margin: 0 0 $label-hint-margin 0;
+  color: $label-color;
+  @include BodyFont();
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+
+  &:empty {
+    display: none;
+  }
+}
+
+@mixin bFormElement {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  margin: $form-element-margin;
+  box-sizing: border-box;
+  text-align: left;
+
+  // wrap
+
+  .bfe-wrap {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    background-color: $white;
+    min-height: $wrap-height;
+    border: 1px solid $input-border-color;
+    border-radius: $border-radius;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    @include BodyFont(
+      $weight: null,
+      $style: null,
+      $font-family: null,
+      $addCssVars: true
+    );
+
+    &:only-child {
+      width: 100%;
+    }
+  }
+
+  // input
+
+  .bfe-input {
+    box-sizing: border-box;
+    display: block;
+    min-width: 0;
+    flex-grow: 1;
+    height: $input-height;
+    line-height: $input-height;
+    padding: 0 $input-padding;
+    border: 0;
+    margin: 0;
+    outline: 0;
+    border-radius: inherit;
+    @include BodyFont($lineHeight: null);
+    color: $grey-800;
+    background: transparent;
+
+    &::placeholder,
+    &[data-placeholder]:before {
+      color: $grey-600;
+      transition: opacity 0.2s;
+      @include text-truncate;
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+
+    &:focus::placeholder,
+    &[data-placeholder]:focus:before {
+      opacity: 0;
+    }
+
+    &[data-placeholder]:before {
+      @include size;
+      @include position(0 0 0 0);
+      padding: inherit;
+      content: attr(data-placeholder);
+    }
+  }
+
+  // label
+
+  .bfe-label {
+    @include bFormElement-label;
+  }
+
+  // prefix-suffix
+
+  .bfe-wrap {
+    &.has-prefix {
+      .bfe-input {
+        padding-left: 0;
+      }
+    }
+    &.has-suffix {
+      .bfe-input {
+        padding-right: 0;
+      }
+    }
+  }
+
+  .bfe-prefix,
+  .bfe-suffix {
+    display: flex;
+    align-items: center;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  .bfe-prefix {
+    padding: 0 10px 0 16px;
+
+    &:empty + .bfe-input {
+      padding-left: $input-padding;
+    }
+  }
+
+  .bfe-suffix {
+    padding: 0 16px 0 10px;
+  }
+
+  // states
+
+  .bfe-wrap.focused,
+  .focused .bfe-wrap {
+    border: 1px solid $input-focus-border-color;
+    box-shadow: none;
+  }
+
+  &.disabled {
+    @include disabled-state;
+  }
+
+  &.required {
+    .bfe-label {
+      @include input-requred;
+    }
+  }
+
+  @include input-border-colors($add: ' .bfe-wrap');
+}

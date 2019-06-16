@@ -44,6 +44,7 @@ import { RtePlaceholderBlot } from './rte-placeholder/rte-placeholder.mixin';
 import { RteKeybindings } from './rte-core/rte-keybindigs.mixin';
 import { MixIn } from '../../services/utils/functional-utils';
 import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
+import { stringyOrFail } from '../../services/utils/transformers';
 
 quillLib.register(LinkBlot);
 quillLib.register(PlaceholderBlot);
@@ -78,15 +79,6 @@ export class RichTextEditorComponent extends RTEformElement
     super(rteUtils, changeDetector, injector);
   }
 
-  @HostBinding('class') get classes() {
-    return (
-      (!this.type ? 'rte-primary' : 'rte-' + this.type) +
-      (this.required ? ' required' : '') +
-      (this.disabled ? ' disabled' : '') +
-      (this.errorMessage ? ' error' : '')
-    );
-  }
-
   @Input() public type: RTEType = RTEType.primary;
   @Input() public minHeight = 185;
   @Input() public maxHeight = 295;
@@ -95,6 +87,16 @@ export class RichTextEditorComponent extends RTEformElement
     BlotType.align,
     BlotType.direction
   ];
+
+  @HostBinding('class.rte-primary') get isOfTypePrimary(): boolean {
+    return !this.type || this.type === RTEType.primary;
+  }
+  @HostBinding('class.rte-secondary') get isOfTypeSecondary(): boolean {
+    return this.type === RTEType.secondary;
+  }
+  @HostBinding('class.rte-tertiary') get isOfTypeTertiary(): boolean {
+    return this.type === RTEType.tertiary;
+  }
 
   @ViewChild('toolbar') private toolbar: ElementRef;
   @ViewChild('suffix') private suffix: ElementRef;
@@ -137,7 +139,7 @@ export class RichTextEditorComponent extends RTEformElement
 
   // registering input/output transformers
   private initTransformers(): void {
-    this.inputTransformers = [];
+    this.inputTransformers = [stringyOrFail];
     this.outputTransformers = [this.rteUtils.cleanupHtml];
 
     if (this.placeholderList && this.controls.includes(BlotType.placeholder)) {

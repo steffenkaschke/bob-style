@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import { values } from 'lodash';
@@ -9,7 +14,10 @@ import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { LinkColor } from '../../link/link.enum';
 
-const buttonStories = storiesOf(`${ ComponentGroupType.ButtonsAndIndicators }.Buttons`, module).addDecorator(withKnobs);
+const buttonStories = storiesOf(
+  `${ComponentGroupType.ButtonsAndIndicators}.Buttons`,
+  module
+).addDecorator(withKnobs);
 
 const color = values(LinkColor);
 const icons = values(Icons);
@@ -45,14 +53,21 @@ const note = `
   disabled | boolean | disabled | false
 
   ~~~
-  ${ button1 }
+  ${button1}
   ~~~
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Text button'">
-  <span style="margin-right: 40px;">${ button1 }</span>
-  <span>${ button2 }</span>
+  <style>
+    b-text-button {
+      margin: 0 20px;
+    }
+  </style>
+  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
+    ${button1}
+    ${button2}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -65,14 +80,10 @@ buttonStories.add(
       icon: select('icon', icons, Icons.phone_link),
       color: select('color', color, LinkColor.none),
       disabled: boolean('disabled', false),
-      onClick: action('Text button'),
+      onClick: action('Text button')
     },
     moduleMetadata: {
-      imports: [
-        ButtonsModule,
-        IconsModule,
-        StoryBookLayoutModule,
-      ],
+      imports: [ButtonsModule, IconsModule, StoryBookLayoutModule]
     }
   }),
   { notes: { markdown: note } }

@@ -1,21 +1,11 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {RadioButtonComponent} from './radio-button.component';
-import {MatRadioModule} from '@angular/material';
-import {FormsModule} from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RadioButtonComponent } from './radio-button.component';
+import { InputMessageModule } from '../input-message/input-message.module';
 
 @NgModule({
-  declarations: [
-    RadioButtonComponent,
-  ],
-  imports: [
-    CommonModule,
-    MatRadioModule,
-    FormsModule,
-  ],
-  exports: [
-    RadioButtonComponent,
-  ],
+  declarations: [RadioButtonComponent],
+  imports: [CommonModule, InputMessageModule],
+  exports: [RadioButtonComponent]
 })
-export class RadioButtonModule {
-}
+export class RadioButtonModule {}

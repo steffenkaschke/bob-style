@@ -6,16 +6,24 @@ import {
   OnChanges,
   SimpleChanges,
   Output,
-  EventEmitter
+  EventEmitter,
+  HostListener,
+  HostBinding
 } from '@angular/core';
-import { ChipType } from '../chips.enum';
-import { ColorService } from '../../../services/color-service/color.service';
-import { Icons, IconSize, IconColor } from '../../../icons/icons.enum';
+import { ChipType } from './chip.enum';
+import { ColorService } from '../../services/color-service/color.service';
+import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-chip, [b-chip]',
   template: `
-    <span #chip [ngClass]="class ? class : 'chip-' + type" [ngStyle]="style">
+    <span
+      #chip
+      [ngClass]="
+        (class ? class : 'chip-' + type) + (selected ? ' selected' : '')
+      "
+      [ngStyle]="style"
+    >
       {{ text }}
       <ng-content></ng-content>
 
@@ -27,7 +35,7 @@ import { Icons, IconSize, IconColor } from '../../../icons/icons.enum';
         [icon]="resetIcon"
         [hasHoverState]="true"
         [size]="iconSize.small"
-        (click)="onClick($event)"
+        (click)="onRemoveClick($event)"
       >
       </b-icon>
     </span>
@@ -41,18 +49,35 @@ export class ChipComponent implements OnChanges {
   @Input() color?: string;
   @Input() text?: string;
   @Input() removable = false;
+  @Input() selectable = false;
   @Output() removed: EventEmitter<void> = new EventEmitter<void>();
 
-  style = null;
-  class = null;
-  bgColorIsDark = false;
+  public style = null;
+  public class = null;
+  public bgColorIsDark = false;
+  public selected = false;
 
   readonly iconColor = IconColor;
   readonly chipType = ChipType;
   readonly resetIcon: String = Icons.close;
   readonly iconSize = IconSize;
 
-  @ViewChild('chip', { read: ElementRef }) private chip: ElementRef;
+  @ViewChild('chip', { read: ElementRef }) public chip: ElementRef;
+
+  @HostBinding('tabindex')
+  get tabind(): string {
+    return this.selectable ? '0' : '-1';
+  }
+
+  @HostListener('focus')
+  onFocus() {
+    this.selected = this.selectable;
+  }
+
+  @HostListener('blur')
+  onBlur() {
+    this.selected = false;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.type || changes.color) {
@@ -86,7 +111,7 @@ export class ChipComponent implements OnChanges {
     }
   }
 
-  onClick(event: MouseEvent) {
+  onRemoveClick(event: MouseEvent) {
     event.stopPropagation();
     this.removed.emit();
   }

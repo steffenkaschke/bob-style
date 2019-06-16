@@ -20,6 +20,7 @@ const template = `
 <b-checkbox (checkboxChange)="checkboxChange($event)"
             [value]="value"
             [label]="label"
+            [placeholder]="placeholder"
             [indeterminate]="indeterminate"
             [disabled]="disabled"
             [required]="required"
@@ -31,7 +32,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Checkbox'">
-  ${template}
+  <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 
@@ -44,10 +47,14 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   value | boolean | start checkbox state
-  label | string | label text
+  label | string | label text (above input)
+  placeholder | string | placeholder text (next to input)
   disabled | boolean | is field disabled
   required | boolean | is field required
   indeterminate | boolean | indeterminate state
+  hintMessage | string | hint text
+  warnMessage | string | warning text
+  errorMessage | string | error text
   checkboxChange | checkboxChange | checkboxChange emitter
 
   ~~~
@@ -62,7 +69,8 @@ inputStories.add(
       props: {
         checkboxChange: action(),
         value: boolean('value', true),
-        label: text('label', 'Check this'),
+        label: text('label', 'Form element label'),
+        placeholder: text('placeholder', 'Check this'),
         indeterminate: boolean('indeterminate', false),
         disabled: boolean('disabled', false),
         required: boolean('required', false),

@@ -6,7 +6,8 @@ import {
   ViewChild,
   HostListener
 } from '@angular/core';
-import { InputEventType, InputTypes } from '../../input/input.enum';
+import { InputTypes } from '../../input/input.enum';
+import { InputEventType } from '../../form-elements.enum';
 import {
   ButtonSize,
   ButtonType
@@ -52,7 +53,7 @@ export class RteLinkEditorComponent {
   }
 
   focusTextInput(): void {
-    (this.textInput.bInput as any).nativeElement.focus();
+    (this.textInput.input as any).nativeElement.focus();
   }
 
   onTextChange(e: InputEvent) {

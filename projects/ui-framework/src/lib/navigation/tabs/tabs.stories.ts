@@ -24,18 +24,18 @@ const inputStories = storiesOf(
 const tabs: Tab[] = [
   {
     label: 'Add new hire',
-    key: 'add.new.hire',
+    key: 'add.new.hire'
   },
   {
     label: 'Employee changes',
-    key: 'employee.changes',
+    key: 'employee.changes'
   },
   {
     label: 'Leave',
-    key: 'leave',
+    key: 'leave'
   },
   {
-    label: 'Termination',
+    label: 'Termination'
   }
 ];
 const template = `
@@ -47,7 +47,9 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Tabs'">
-  ${template}
+  <div style="max-width: 900px; margin: 30px auto;">
+    ${template}
+  </div>
 </b-story-book-layout>
 `;
 

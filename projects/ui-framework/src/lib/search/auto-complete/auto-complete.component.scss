@@ -1,25 +1,21 @@
 @import '../../style/colors';
+@import '../../form-elements/form-element.mixin';
 
-:host ::ng-deep {
-  display: inline-block;
-  .panel-trigger {
-    width: 100%;
-    display: block;
-    margin: 20px 0;
-    b-search b-input {
-      .mat-form-field {
-        margin: 0;
-      }
-    }
-    &.panel-open {
-      position:relative;
-      z-index: 10000;
-      b-search b-input {
-        .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
-          border-color: $grey-500;
-        }
+:host {
+  display: block;
+}
+
+:host b-search {
+  &.panel-open ::ng-deep {
+    position: relative;
+    z-index: 10000;
+
+    .bfe-wrap {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+
+      &.focused {
+        border-color: $grey-500;
       }
     }
   }
@@ -30,9 +26,10 @@
     opacity: 0;
   }
   .b-auto-complete-panel {
-    overflow:hidden;
+    overflow: hidden;
     display: block;
     box-sizing: border-box;
+
     border: 1px solid $grey-500;
     border-top: none;
     border-bottom-right-radius: 4px;

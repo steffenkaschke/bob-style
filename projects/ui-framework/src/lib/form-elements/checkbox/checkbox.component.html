@@ -1,0 +1,27 @@
+<label *ngIf="label && placeholder"
+       class="bfe-label">{{label}}</label>
+
+<input #input
+       type="checkbox"
+       class="bchk-input"
+       [ngClass]="{
+          error: errorMessage && !disabled,
+          warn: warnMessage && !errorMessage && !disabled
+        }"
+       [attr.id]="id"
+       [attr.name]="id"
+       [checked]="value === true"
+       [required]="required"
+       [disabled]="disabled"
+       (change)="toggleCheckbox()" />
+<label class="bchk-label"
+       [attr.for]="id">
+  {{ placeholder || label }}
+</label>
+
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled"></p>

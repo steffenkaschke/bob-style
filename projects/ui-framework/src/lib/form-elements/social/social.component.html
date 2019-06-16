@@ -1,19 +1,24 @@
-<b-icon class="icon-container"
+<b-icon class="social-icon"
         [color]="iconColor.normal"
-        [icon]="socialSelection.icon"
+        [icon]="socialTypes[type].icon"
         [size]="iconSize.large">
 </b-icon>
-<b-input class="social-input"
+<b-input #bInput
          [errorMessage]="errorMessage"
          [inputType]="inputTypes.text"
-         [label]="placeholder"
+         [hasPrefix]="true"
          [value]="value"
+         [label]="label"
+         [placeholder]="placeholder"
+         [hideLabelOnFocus]="hideLabelOnFocus"
+         [hintMessage]="hintMessage"
+         [warnMessage]="warnMessage"
+         [errorMessage]="errorMessage"
          [disabled]="disabled"
          [required]="required"
-         [hintMessage]="hintMessage"
-         [hideLabelOnFocus]="true"
-         (inputEvents)="onInputEvents($event)">
-  <div class="prefix-text" input-prefix>
-    {{socialSelection.prefix}}
-  </div>
+         (inputEvents)="onInputEvents($event)"
+         [doPropagate]="false">
+  <span input-prefix>
+    {{socialTypes[type].prefix}}
+  </span>
 </b-input>

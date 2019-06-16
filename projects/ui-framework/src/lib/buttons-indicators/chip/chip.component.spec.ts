@@ -2,9 +2,9 @@ import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChipComponent } from './chip.component';
-import { ChipType } from '../chips.enum';
+import { ChipType } from './chip.enum';
 import { By } from '@angular/platform-browser';
-import { ColorService } from '../../../services/color-service/color.service';
+import { ColorService } from '../../services/color-service/color.service';
 
 describe('ChipComponent', () => {
   let component: ChipComponent;
