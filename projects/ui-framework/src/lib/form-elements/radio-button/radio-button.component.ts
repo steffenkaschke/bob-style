@@ -71,11 +71,11 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.options) {
-      this.options = changes.options.currentValue;
+    if (changes.radioConfig) {
+      this.options = changes.radioConfig.currentValue;
     }
 
-    if (changes.value || changes.options) {
+    if (changes.value || changes.radioConfig) {
       const val = changes.value ? changes.value.currentValue : this.value;
       this.writeValue(val);
       this.transmit(InputEventType.onWrite);
