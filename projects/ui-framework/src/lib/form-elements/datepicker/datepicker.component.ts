@@ -21,14 +21,9 @@ import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
 import { InputEvent } from '../input/input.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
-import { differenceInDays, format, isDate, isSameDay } from 'date-fns';
 import { BaseFormElement } from '../base-form-element';
 import { FormEvents } from '../form-elements.enum';
-import {
-  stringyOrFail,
-  dateyOrFail,
-  dateToString
-} from '../../services/utils/transformers';
+import { dateyOrFail, dateToString } from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-datepicker',
@@ -117,10 +112,10 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
     }
   }
 
-  public dateClass(date: Date): string {
-    const today = new Date();
-    const diff = differenceInDays(date, today);
-    const same = isSameDay(today, date);
-    return same ? 'today' : diff < 0 ? 'past' : 'future';
-  }
+  // public dateClass(date: Date): string {
+  //   const today = new Date();
+  //   const diff = differenceInDays(date, today);
+  //   const same = isSameDay(today, date);
+  //   return same ? 'today' : diff < 0 ? 'past' : 'future';
+  // }
 }
