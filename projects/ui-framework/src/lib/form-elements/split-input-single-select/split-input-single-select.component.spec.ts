@@ -11,6 +11,7 @@ import { InputSingleSelectValue } from './split-input-single-select.interface';
 import { By } from '@angular/platform-browser';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../lists/list-change/list-change';
+import { SimpleChange } from '@angular/core';
 
 describe('SplitInputSingleSelectComponent', () => {
   let component: SplitInputSingleSelectComponent;
@@ -55,7 +56,10 @@ describe('SplitInputSingleSelectComponent', () => {
 
   describe('OnChanges', () => {
     it('should set default value object with null values if no value is provided', () => {
-      component.ngOnChanges({});
+      component.ngOnChanges({
+        selectOptions: new SimpleChange(null, undefined, true),
+        value: new SimpleChange(null, undefined, true)
+      });
       expect(component.value).toEqual({
         inputValue: null,
         selectValue: null
