@@ -47,7 +47,9 @@ export class LightboxService {
   }
 
   public closeLightbox(): void {
-    this.overlayRef.dispose();
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+    }
     this.lightboxComponentRef = null;
     this.lightboxPortal = null;
     this.isOpen = false;

@@ -4,12 +4,14 @@
                  [color]="iconColor.white"
                  class="close-button"></b-square-button>
 
-<b-component-renderer *ngIf="config.render"
+<b-component-renderer class="lightbox-component"
+                      *ngIf="config.render"
                       [render]="config.render">
 </b-component-renderer>
 
-<img *ngIf="config.image"
-     class="lightbox-image"
-     [src]="config.image"
-     border="0"
-     alt="">
+<div class="lightbox-image">
+  <img *ngIf="config.image"
+       [src]="config.image"
+       border="0"
+       alt="">
+</div>

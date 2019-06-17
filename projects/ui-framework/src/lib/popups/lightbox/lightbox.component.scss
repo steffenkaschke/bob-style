@@ -3,23 +3,6 @@
 // @import '../../style/variables';
 @import '../../style/mixins';
 
-:host {
-  background-color: $grey-500;
-}
-
-:host,
-b-component-renderer {
-  @include size(100%);
-  flex: 1;
-  @include flex-align;
-}
-
-.close-button {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-}
-
 ::ng-deep {
   .b-lightbox-panel {
     @include size(100%);
@@ -27,4 +10,34 @@ b-component-renderer {
     background-color: black(0.6);
     overflow: hidden;
   }
+}
+
+:host {
+  @include size(100%);
+  @include flex-align;
+  flex: 1;
+  overflow: hidden;
+}
+
+.lightbox-component,
+.lightbox-image {
+}
+
+.lightbox-component,
+.lightbox-image {
+  background-color: $grey-500;
+}
+
+.lightbox-image {
+  img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
 }
