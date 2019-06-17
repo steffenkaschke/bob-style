@@ -1,7 +1,7 @@
-import { LightboxType } from './lightbox.enum';
+import { RenderedComponent } from '../../services/component-renderer/component-renderer.interface';
 
 export interface LightboxConfig {
-  lightboxType: LightboxType;
-  text: string;
-  title: string;
+  render?: RenderedComponent;
+  image?: string;
+  video?: string;
 }

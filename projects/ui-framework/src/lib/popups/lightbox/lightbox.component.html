@@ -1,16 +1,15 @@
-<ng-template #lightboxTemplateRef>
-  <div class="lightbox-container">
-    <b-square-button (clicked)="closeLightbox()"
-                     [type]="closeButtonType"
-                     [icon]="closeButtonIcon"
-                     class="close-button"></b-square-button>
-    <b-icon class="icon"
-            [icon]="iconsDic[lightboxConfig.lightboxType].icon"
-            [color]="iconsDic[lightboxConfig.lightboxType].color"
-            [size]="iconSize"></b-icon>
-    <div class="content">
-      <b-bold-body>{{lightboxConfig.title}}</b-bold-body>
-      <p>{{lightboxConfig.text}}</p>
-    </div>
-  </div>
-</ng-template>
+<b-square-button (clicked)="closeLightbox()"
+                 [type]="buttons.tertiary"
+                 [icon]="icons.close"
+                 [color]="iconColor.white"
+                 class="close-button"></b-square-button>
+
+<b-component-renderer *ngIf="config.render"
+                      [render]="config.render">
+</b-component-renderer>
+
+<img *ngIf="config.image"
+     class="lightbox-image"
+     [src]="config.image"
+     border="0"
+     alt="">

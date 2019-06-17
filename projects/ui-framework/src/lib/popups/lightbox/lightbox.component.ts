@@ -1,14 +1,10 @@
 import {
   Component,
-  TemplateRef,
-  ViewChild,
-  ViewContainerRef
+  Input
 } from '@angular/core';
-import { Dictionary } from 'lodash';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { InfoStripIcon } from '../../buttons-indicators/info-strip/info-strip.types';
-import { LightboxConfig } from './lightbox.interface';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { LightboxConfig } from './lightbox.interface';
 
 @Component({
   selector: 'b-lightbox',
@@ -16,20 +12,16 @@ import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
   styleUrls: ['./lightbox.component.scss']
 })
 export class LightboxComponent {
-  @ViewChild('lightboxTemplateRef') lightboxTemplateRef: TemplateRef<any>;
-  public lightboxConfig: LightboxConfig;
-  public closeLightboxCallback: Function;
-  readonly iconSize: IconSize = IconSize.xLarge;
-  readonly iconsDic: Dictionary<InfoStripIcon> = {
-    warning: { color: IconColor.primary, icon: Icons.warning },
-    error: { color: IconColor.negative, icon: Icons.error },
-    success: { color: IconColor.positive, icon: Icons.success },
-    information: { color: IconColor.inform, icon: Icons.baseline_info_icon }
-  };
-  readonly closeButtonType: ButtonType = ButtonType.tertiary;
-  readonly closeButtonIcon: Icons = Icons.close;
+  constructor() { }
 
-  constructor(public viewContainerRef: ViewContainerRef) {}
+  @Input() config: LightboxConfig;
+
+  public closeLightboxCallback: Function;
+
+  readonly icons = Icons;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
+  readonly buttons = ButtonType;
 
   public closeLightbox(): void {
     this.closeLightboxCallback();

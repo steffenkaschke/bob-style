@@ -1,42 +1,30 @@
 @import '../../style/colors';
 @import '../../style/typography';
-@import '../../style/variables';
+// @import '../../style/variables';
+@import '../../style/mixins';
 
-$lightbox_width: 400px;
+:host {
+  background-color: $grey-500;
+}
 
-.lightbox-container {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 15px;
-  width: 100%;
+:host,
+b-component-renderer {
+  @include size(100%);
+  flex: 1;
+  @include flex-align;
 }
 
 .close-button {
   position: absolute;
-  top: 5px;
-  right: 5px;
-}
-
-.icon {
-  margin-right: 10px;
-}
-
-.content {
-  b-bold-body {
-    text-transform: uppercase;
-  }
-  p {
-    margin: 4px 0 0;
-  }
+  top: 8px;
+  right: 8px;
 }
 
 ::ng-deep {
   .b-lightbox-panel {
-    background-color: $white;
-    border-radius: $border-radius;
-    box-shadow: 0 5px 10px 0 $boxShadowColor;
-    width: $lightbox_width;
+    @include size(100%);
+    padding: 50px;
+    background-color: black(0.6);
+    overflow: hidden;
   }
 }

@@ -1,76 +1,55 @@
-import {
-  ComponentFactoryResolver,
-  ComponentRef,
-  Injectable,
-  Injector
-} from '@angular/core';
+import { ComponentRef, Injectable } from '@angular/core';
 import { LightboxConfig } from '../lightbox.interface';
 import { LightboxComponent } from '../lightbox.component';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
-import { cloneDeep, bind } from 'lodash';
-const ALERT_DURATION = 7000;
+import { ComponentPortal } from '@angular/cdk/portal';
+import { bind } from 'lodash';
 
 @Injectable()
 export class LightboxService {
-  lightboxComponentRef: ComponentRef<LightboxComponent>;
-  private overlayConfig: OverlayConfig;
-  private templatePortal: TemplatePortal;
-  public overlayRef: OverlayRef;
-  public isOpen: boolean;
-  private timeRef: NodeJS.Timer;
+  constructor(private overlay: Overlay) {}
 
-  constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private injector: Injector,
-    private overlay: Overlay
-  ) {}
+  lightboxComponentRef: ComponentRef<LightboxComponent>;
+  private lightboxPortal: ComponentPortal<LightboxComponent>;
+
+  private overlayConfig: OverlayConfig;
+  public overlayRef: OverlayRef;
+
+  public isOpen: boolean;
 
   public showLightbox(config: LightboxConfig): void {
     if (!this.isOpen) {
-      this.injectLightboxComponent();
-      this.lightboxComponentRef.instance.lightboxConfig = cloneDeep(config);
+      this.overlayConfig = {
+        disposeOnNavigation: true,
+        hasBackdrop: true,
+        panelClass: 'b-lightbox-panel',
+        positionStrategy: this.overlay
+          .position()
+          .global()
+          .centerHorizontally()
+      };
+
+      this.overlayRef = this.overlay.create(this.overlayConfig);
+
+      this.lightboxPortal = new ComponentPortal(LightboxComponent);
+
+      this.lightboxComponentRef = this.overlayRef.attach(this.lightboxPortal);
+
       this.lightboxComponentRef.instance.closeLightboxCallback = bind(
         this.closeLightbox,
         this
       );
-      this.overlayConfig = this.getConfig();
-      this.overlayRef = this.overlay.create(this.overlayConfig);
-      this.templatePortal = new TemplatePortal(
-        this.lightboxComponentRef.instance.lightboxTemplateRef,
-        this.lightboxComponentRef.instance.viewContainerRef
-      );
-      this.overlayRef.attach(this.templatePortal);
+
+      this.lightboxComponentRef.instance.config = config;
+
       this.isOpen = true;
-      this.timeRef = setTimeout(() => this.closeLightbox(), ALERT_DURATION);
     }
-  }
-
-  private injectLightboxComponent(): void {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      LightboxComponent
-    );
-    this.lightboxComponentRef = componentFactory.create(this.injector);
-  }
-
-  private getConfig(): OverlayConfig {
-    const positionStrategy = this.overlay
-      .position()
-      .global()
-      .centerHorizontally()
-      .top('20px');
-    const panelClass = 'b-lightbox-panel';
-    return {
-      disposeOnNavigation: true,
-      hasBackdrop: false,
-      panelClass,
-      positionStrategy
-    };
   }
 
   public closeLightbox(): void {
     this.overlayRef.dispose();
+    this.lightboxComponentRef = null;
+    this.lightboxPortal = null;
     this.isOpen = false;
-    clearTimeout(this.timeRef);
   }
 }

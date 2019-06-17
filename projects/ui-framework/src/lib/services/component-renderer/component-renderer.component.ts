@@ -147,7 +147,9 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
 
   private insertComponent(comp: RenderedComponent): void {
     this.reset();
-    this.componentRef = this.createComponent(comp, true, this.container);
+    if (comp) {
+      this.componentRef = this.createComponent(comp, true, this.container);
+    }
   }
 
   private reset(): void {
@@ -157,7 +159,9 @@ export class ComponentRendererComponent implements OnInit, OnDestroy {
   private destroyComponent(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
-    this.componentRef.destroy();
-    this.componentRef = null;
+    if (this.componentRef) {
+      this.componentRef.destroy();
+      this.componentRef = null;
+    }
   }
 }
