@@ -1,7 +1,6 @@
 import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { LightboxService } from './lightbox.service';
 import { LightboxConfig } from '../lightbox.interface';
-import { LightboxType } from '../lightbox.enum';
 import {
   ComponentFactoryResolver,
   CUSTOM_ELEMENTS_SCHEMA,
@@ -10,7 +9,6 @@ import {
 import { LightboxComponent } from '../lightbox.component';
 import { MockComponent } from 'ng-mocks';
 import { Overlay, OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { ALERT_CONFIG_MOCK } from '../lightbox.mock';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { IconsModule } from '../../../icons/icons.module';
 import { TypographyModule } from '../../../typography/typography.module';
