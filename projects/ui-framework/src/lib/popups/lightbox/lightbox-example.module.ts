@@ -15,9 +15,10 @@ import { LightboxConfig } from './lightbox.interface';
   selector: 'b-lightbox-example',
   template: `
     <b-button (click)="showLightbox(showImgCongig)">Show image</b-button>
-    <br />
-    <br />
+    &nbsp;
     <b-button (click)="showLightbox(showCompConfig)">Show component</b-button>
+    &nbsp;
+    <b-button (click)="showLightbox(showUrlConfig)">Show link</b-button>
   `,
   providers: []
 })
@@ -30,13 +31,17 @@ export class LightboxExampleComponent implements OnDestroy {
   };
 
   showCompConfig = {
-    render: {
+    component: {
       component: AvatarComponent,
       attributes: {
         imageSource: 'http://i.pravatar.cc/200',
         size: AvatarSize.large
       }
     }
+  };
+
+  showUrlConfig = {
+    url: 'https://www.youtube.com/embed/p3j2NYZ8FKs'
   };
 
   showLightbox(config: LightboxConfig): void {

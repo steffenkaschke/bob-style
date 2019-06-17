@@ -1,5 +1,4 @@
 @import '../../style/colors';
-// @import '../../style/typography';
 @import '../../style/mixins';
 @import '../../buttons-indicators/mini-preloader/mini-preloader-mixin';
 
@@ -53,8 +52,10 @@
 }
 
 .lightbox-component,
-.lightbox-image {
+.lightbox-image,
+.lightbox-iframe {
   @include animate(zoom-in);
+  background: transparent;
 }
 
 .lightbox-image {
@@ -63,6 +64,10 @@
     max-width: 100%;
     max-height: 100%;
   }
+}
+
+.lightbox-iframe {
+  @include size(100%);
 }
 
 .close-button {
