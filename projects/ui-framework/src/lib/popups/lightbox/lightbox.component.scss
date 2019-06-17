@@ -1,34 +1,60 @@
 @import '../../style/colors';
-@import '../../style/typography';
-// @import '../../style/variables';
+// @import '../../style/typography';
 @import '../../style/mixins';
 @import '../../buttons-indicators/mini-preloader/mini-preloader-mixin';
+
+@keyframes zoom-in {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 
 ::ng-deep {
   .b-lightbox-panel {
     @include size(100%);
+    @include flex-align;
     padding: 50px;
-    background-color: black(0.6);
+    background-color: black(0.75);
     overflow: hidden;
+    position: relative;
+    @include animate(fade-in);
+
+    @include mini-preloader(
+      $base-selector: '&',
+      $full-size-selector: null,
+      $abs-pos-center: true
+    );
   }
 }
 
 :host {
   @include size(100%);
-  @include flex-align;
   flex: 1;
   overflow: hidden;
 }
 
+:host,
 .lightbox-component,
 .lightbox-image {
+  @include flex-align;
 }
 
 .lightbox-component,
 .lightbox-image {
-  background-color: $grey-500;
-
-  @include mini-preloader($base-selector: '&');
+  @include animate(zoom-in);
 }
 
 .lightbox-image {

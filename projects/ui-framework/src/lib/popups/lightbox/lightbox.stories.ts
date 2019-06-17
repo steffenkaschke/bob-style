@@ -5,6 +5,7 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { values } from 'lodash';
 import { LightboxExampleModule } from './lightbox-example.module';
+import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 
 const lightboxStories = storiesOf(
   ComponentGroupType.Popups,
@@ -40,7 +41,12 @@ lightboxStories.add(
       template: storyTemplate,
       props: {},
       moduleMetadata: {
-        imports: [LightboxModule, LightboxExampleModule, StoryBookLayoutModule]
+        imports: [
+          LightboxModule,
+          LightboxExampleModule,
+          StoryBookLayoutModule,
+          ButtonsModule
+        ]
       }
     };
   },

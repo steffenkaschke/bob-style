@@ -8,8 +8,10 @@ $preloader-svg: url("data:image/svg+xml,%3Csvg viewBox='0 0 210 60' width='210' 
 
 @mixin mini-preloader(
   $size: 48px 12px,
-  $base-selector: '&:empty', // use '&' to insert preloader on non-empty container element
-  $full-size-selector: '&'
+  $base-selector: '&:empty',
+  // use '&' to insert preloader on non-empty container element
+    $full-size-selector: '&',
+  $abs-pos-center: false
 ) {
   #{$base-selector} {
     &:before {
@@ -23,12 +25,21 @@ $preloader-svg: url("data:image/svg+xml,%3Csvg viewBox='0 0 210 60' width='210' 
         $color: var(--primary-500),
         $align: center bottom
       );
+      @if $abs-pos-center {
+        position: absolute;
+        top: calc(50% - 6px);
+        left: calc(50% - 24px);
+        z-index: -1;
+      }
+      @content;
     }
 
-    #{$full-size-selector} {
-      @include flex-align;
-      @include size(100%);
-      flex-grow: 5;
+    @if ($full-size-selector) {
+      #{$full-size-selector} {
+        @include flex-align;
+        @include size(100%);
+        flex-grow: 5;
+      }
     }
   }
 }

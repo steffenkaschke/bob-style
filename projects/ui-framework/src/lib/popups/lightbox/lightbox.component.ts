@@ -1,7 +1,4 @@
-import {
-  Component,
-  Input
-} from '@angular/core';
+import { Component, Input, HostListener } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { LightboxConfig } from './lightbox.interface';
@@ -12,7 +9,7 @@ import { LightboxConfig } from './lightbox.interface';
   styleUrls: ['./lightbox.component.scss']
 })
 export class LightboxComponent {
-  constructor() { }
+  constructor() {}
 
   @Input() config: LightboxConfig;
 
@@ -22,6 +19,10 @@ export class LightboxComponent {
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
   readonly buttons = ButtonType;
+
+  @HostListener('document:keydown.escape') handleEscape() {
+    this.closeLightboxCallback();
+  }
 
   public closeLightbox(): void {
     this.closeLightboxCallback();

@@ -21,27 +21,23 @@ export class LightboxService {
     if (!this.isOpen) {
       this.overlayConfig = {
         disposeOnNavigation: true,
-        hasBackdrop: true,
+        hasBackdrop: false,
         panelClass: 'b-lightbox-panel',
-        positionStrategy: this.overlay
-          .position()
-          .global()
-          .centerHorizontally()
+        positionStrategy: this.overlay.position().global()
       };
 
       this.overlayRef = this.overlay.create(this.overlayConfig);
+      this.overlayRef.overlayElement.addEventListener('click', () => {
+        this.closeLightbox();
+      });
 
       this.lightboxPortal = new ComponentPortal(LightboxComponent);
-
       this.lightboxComponentRef = this.overlayRef.attach(this.lightboxPortal);
-
       this.lightboxComponentRef.instance.closeLightboxCallback = bind(
         this.closeLightbox,
         this
       );
-
       this.lightboxComponentRef.instance.config = config;
-
       this.isOpen = true;
     }
   }
@@ -49,6 +45,9 @@ export class LightboxService {
   public closeLightbox(): void {
     if (this.overlayRef) {
       this.overlayRef.dispose();
+    }
+    if (this.lightboxComponentRef) {
+      this.lightboxComponentRef.destroy();
     }
     this.lightboxComponentRef = null;
     this.lightboxPortal = null;

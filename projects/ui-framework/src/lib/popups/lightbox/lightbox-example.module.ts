@@ -9,29 +9,38 @@ import {
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { LightboxConfig } from './lightbox.interface';
 
 @Component({
   selector: 'b-lightbox-example',
   template: `
-    <b-button (click)="showLightbox()">Show lightbox</b-button>
+    <b-button (click)="showLightbox(showImgCongig)">Show image</b-button>
+    <br />
+    <br />
+    <b-button (click)="showLightbox(showCompConfig)">Show component</b-button>
   `,
   providers: []
 })
 export class LightboxExampleComponent implements OnDestroy {
   constructor(private lightboxService: LightboxService) {}
 
-  showLightbox(): void {
-    this.lightboxService.showLightbox({
-      image:
-        'https://prod-cdn.wetransfer.net/assets/curated/wallpaper/one_thumbnail_large-99b8c8faf500513d369d009ee036c7ac0b1e1c9eff85cc784e2e10f3a24970ae.jpg'
-      // render: {
-      //   component: AvatarComponent,
-      //   attributes: {
-      //     imageSource: 'http://i.pravatar.cc/200',
-      //     size: AvatarSize.large
-      //   }
-      // }
-    });
+  showImgCongig = {
+    image:
+      'http://deelay.me/3000/https://prod-cdn.wetransfer.net/assets/curated/wallpaper/one_thumbnail_large-99b8c8faf500513d369d009ee036c7ac0b1e1c9eff85cc784e2e10f3a24970ae.jpg'
+  };
+
+  showCompConfig = {
+    render: {
+      component: AvatarComponent,
+      attributes: {
+        imageSource: 'http://i.pravatar.cc/200',
+        size: AvatarSize.large
+      }
+    }
+  };
+
+  showLightbox(config: LightboxConfig): void {
+    this.lightboxService.showLightbox(config);
   }
 
   ngOnDestroy(): void {

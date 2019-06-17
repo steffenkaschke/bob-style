@@ -6,12 +6,14 @@
 
 <b-component-renderer class="lightbox-component"
                       *ngIf="config.render"
-                      [render]="config.render">
+                      [render]="config.render"
+                      (click)="$event.stopPropagation()">
 </b-component-renderer>
 
-<div class="lightbox-image">
-  <img *ngIf="config.image"
-       [src]="config.image"
+<div class="lightbox-image"
+     *ngIf="config.image"
+     (click)="$event.stopPropagation()">
+  <img [src]="config.image"
        border="0"
        alt="">
 </div>
