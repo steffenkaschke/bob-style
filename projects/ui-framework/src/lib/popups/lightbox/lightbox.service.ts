@@ -1,6 +1,6 @@
 import { ComponentRef, Injectable, SimpleChange } from '@angular/core';
-import { LightboxConfig } from '../lightbox.interface';
-import { LightboxComponent } from '../lightbox.component';
+import { LightboxConfig } from './lightbox.interface';
+import { LightboxComponent } from './lightbox.component';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { bind } from 'lodash';

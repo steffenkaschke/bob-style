@@ -1,21 +1,21 @@
 import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { LightboxService } from './lightbox.service';
-import { LightboxConfig } from '../lightbox.interface';
+import { LightboxConfig } from './lightbox.interface';
 import {
   ComponentFactoryResolver,
   CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA
 } from '@angular/core';
-import { LightboxComponent } from '../lightbox.component';
+import { LightboxComponent } from './lightbox.component';
 import { MockComponent } from 'ng-mocks';
 import { Overlay, OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
-import { IconsModule } from '../../../icons/icons.module';
-import { TypographyModule } from '../../../typography/typography.module';
-import { LightboxModule } from '../lightbox.module';
-import { IconSize } from '../../../icons/icons.enum';
-import { IconComponent } from '../../../icons/icon.component';
-import { IconService } from '../../../icons/icon.service';
+import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { IconsModule } from '../../icons/icons.module';
+import { TypographyModule } from '../../typography/typography.module';
+import { LightboxModule } from './lightbox.module';
+import { IconSize } from '../../icons/icons.enum';
+import { IconComponent } from '../../icons/icon.component';
+import { IconService } from '../../icons/icon.service';
 import createSpyObj = jasmine.createSpyObj;
 import SpyObj = jasmine.SpyObj;
 

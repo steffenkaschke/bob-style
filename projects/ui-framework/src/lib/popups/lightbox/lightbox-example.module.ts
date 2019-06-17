@@ -1,6 +1,6 @@
 import { Component, NgModule, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LightboxService } from './lightbox-service/lightbox.service';
+import { LightboxService } from './lightbox.service';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import {
   BrowserAnimationsModule,
