@@ -2,8 +2,6 @@
 @import '../../checkbox/checkbox.mixin';
 
 @include checkbox(
-  $size: 16px,
-  $checkmark-size: 9px,
   $border-radius: $border-radius / 2,
   $input-selector: null,
   $checkbox-selector: '.checkbox',

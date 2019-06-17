@@ -54,7 +54,7 @@ const storyTemplate = `
     <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: auto;">
       <span>Width: </span>
 
-      <b-radio-button [options]="[
+      <b-radio-button [radioConfig]="[
           {id: '95%', label: 'auto'},
           {id: '840px', label: '840px'},
           {id: '630px', label: '630px'}
@@ -66,7 +66,7 @@ const storyTemplate = `
 
     <p style="display:flex; justify-content: space-between; align-items: center; max-width: 300px; margin: auto;">
       <span>Data: </span>
-      <b-radio-button [options]="[
+      <b-radio-button [radioConfig]="[
           {id: 1, label: 'original'},
           {id: 2, label: 'empty'}
         ]"
