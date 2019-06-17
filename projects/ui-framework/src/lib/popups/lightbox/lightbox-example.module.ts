@@ -21,15 +21,15 @@ import { LightboxConfig } from './lightbox.interface';
     >
     &nbsp;
     <b-button id="b3" (click)="showLightbox(configs[4])">Show link</b-button>
-    <br /><br />
-    <b-button id="b4" (click)="showLightboxAll()">Show all</b-button>
+    <!-- <br /><br />
+    <b-button id="b4" (click)="showLightboxAll()">Show all</b-button> -->
   `,
   providers: []
 })
 export class LightboxExampleComponent implements OnDestroy {
   constructor(private lightboxService: LightboxService) {}
 
-  imgDelay = ''; // 'http://deelay.me/1000/';
+  imgDelay = 'http://deelay.me/1000/';
 
   configs = [
     {

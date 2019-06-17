@@ -49,7 +49,7 @@
   right: 8px;
 }
 
-// mods
+// variants
 
 :host {
   &.type-component,
@@ -97,8 +97,7 @@
     .lightbox-image {
       img {
         object-fit: cover;
-        width: 100%;
-        height: 100%;
+        @include size(100%);
       }
     }
   }
@@ -144,9 +143,6 @@
   }
 }
 
-// .lightbox-component,
-// .lightbox-image,
-// .lightbox-iframe
 .lightbox-container {
   @include animate(zoom-out);
 }
