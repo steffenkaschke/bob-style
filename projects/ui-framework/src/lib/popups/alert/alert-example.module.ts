@@ -13,7 +13,8 @@ import {
   selector: 'b-alert-example',
   template: `
     <b-button (click)="showAlert()">Show alert</b-button>
-  `
+  `,
+  providers: []
 })
 export class AlertExampleComponent implements OnDestroy {
   @Input() public alertType: AlertType;
