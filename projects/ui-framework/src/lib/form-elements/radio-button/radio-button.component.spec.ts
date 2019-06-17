@@ -104,7 +104,7 @@ describe('RadioButtonComponent', () => {
         }
       }
     });
-    it('should emit change from value change', () => {
+    it('should not emit change from value change', () => {
       const changes: SimpleChanges = {
         value: {
           previousValue: undefined,
@@ -115,7 +115,7 @@ describe('RadioButtonComponent', () => {
       };
       component.ngOnChanges(changes);
       fixture.detectChanges();
-      expect(component.changed.emit).toHaveBeenCalled();
+      expect(component.changed.emit).not.toHaveBeenCalled();
     });
   });
 });

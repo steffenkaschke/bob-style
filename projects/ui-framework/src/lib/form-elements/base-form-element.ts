@@ -30,6 +30,7 @@ export abstract class BaseFormElement
   @Input() errorMessage: string;
   @Input() warnMessage: string;
   @Input() doPropagate = true;
+  @Input() emitOnWrite = false;
 
   public inputFocused = false;
   public id = simpleUID('bfe-');
@@ -124,7 +125,11 @@ export abstract class BaseFormElement
         value
       );
 
-      if (eventName) {
+      if (
+        eventName &&
+        ((!this.emitOnWrite && !eventType.includes(InputEventType.onWrite)) ||
+          this.emitOnWrite)
+      ) {
         asArray(eventType).forEach(event => {
           this[eventName].emit(
             this.wrapEvent
@@ -138,7 +143,11 @@ export abstract class BaseFormElement
         });
       }
 
-      if (doPropagate) {
+      if (
+        doPropagate &&
+        ((!this.emitOnWrite && !eventType.includes(InputEventType.onWrite)) ||
+          this.emitOnWrite)
+      ) {
         if (!eventType.includes(InputEventType.onFocus)) {
           this.propagateChange(value);
         }
