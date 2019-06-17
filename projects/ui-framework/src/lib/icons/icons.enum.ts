@@ -73,6 +73,7 @@ export enum Icons {
   download = 'baseline-get_app-24px',
   add_folder = 'baseline-create_new_folder-24px',
   add_photo_camera_icon = 'baseline-add_a_photo-24px',
+  folder_shared = 'baseline-folder_shared-24px',
 
 
   // duplicate icons for backwards compatibility
