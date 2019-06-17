@@ -88,11 +88,11 @@ export { LinkColor, LinkTarget } from './lib/buttons-indicators/link/link.enum';
 export { InfoTooltipModule } from './lib/popups/info-tooltip/info-tooltip.module';
 export { InfoTooltipComponent } from './lib/popups/info-tooltip/info-tooltip.component';
 // Alert Module
-export { AlertService } from './lib/buttons-indicators/alert/alert-service/alert.service';
-export { AlertModule } from './lib/buttons-indicators/alert/alert.module';
-export { AlertConfig } from './lib/buttons-indicators/alert/alert.interface';
-export { AlertComponent } from './lib/buttons-indicators/alert/alert.component';
-export { AlertType } from './lib/buttons-indicators/alert/alert.enum';
+export { AlertService } from './lib/popups/alert/alert-service/alert.service';
+export { AlertModule } from './lib/popups/alert/alert.module';
+export { AlertConfig } from './lib/popups/alert/alert.interface';
+export { AlertComponent } from './lib/popups/alert/alert.component';
+export { AlertType } from './lib/popups/alert/alert.enum';
 // Employees Showcase Module
 export { EmployeesShowcaseModule } from './lib/buttons-indicators/employees-showcase/employees-showcase.module';
 export { EmployeesShowcaseComponent } from './lib/buttons-indicators/employees-showcase/employees-showcase.component';
