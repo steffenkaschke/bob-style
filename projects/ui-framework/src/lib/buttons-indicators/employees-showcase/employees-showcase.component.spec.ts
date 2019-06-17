@@ -44,7 +44,7 @@ describe('EmployeesShowcaseComponent', () => {
           groupName: '',
           options: [{
             value: 'Ben Baler',
-            id: 1,
+            id: '1',
             selected: false,
             prefixComponent: {
               component: jasmine.any(Function),

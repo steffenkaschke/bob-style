@@ -11,16 +11,13 @@ import { SelectGroupOption } from '../lists/list.interface';
 import { InputTypes } from '../input/input.enum';
 import { InputEventType } from '../form-elements.enum';
 import { InputSingleSelectValue } from './split-input-single-select.interface';
-import { assign, has, map } from 'lodash';
+import { assign, map } from 'lodash';
 import { InputEvent } from '../input/input.interface';
 import { ListChange } from '../lists/list-change/list-change';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
 import { FormEvents } from '../form-elements.enum';
-import {
-  defaultValue,
-  objectHasKeyOrFail
-} from '../../services/utils/transformers';
+import { objectHasKeyOrFail } from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-split-input-single-select',

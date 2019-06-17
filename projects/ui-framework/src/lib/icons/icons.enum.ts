@@ -75,7 +75,6 @@ export enum Icons {
   add_photo_camera_icon = 'baseline-add_a_photo-24px',
   folder_shared = 'baseline-folder_shared-24px',
 
-
   // duplicate icons for backwards compatibility
   // TODO: remove if not used
   approve_badge = 'success_icon',

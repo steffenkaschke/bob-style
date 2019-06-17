@@ -4,9 +4,11 @@
 
 $checkmark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12.73 9.9' width='12.73' height='9.9'%3E%3Cpath fill='white' d='M4.6 6.36L1.77 3.54 0 5.3l4.6 4.6 8.13-8.13L10.96 0z'/%3E%3C/svg%3E");
 
+// bigger size: 24px, 13px, 12px 3px
 @mixin checkbox(
-  $size: 24px,
-  $checkmark-size: 13px,
+  $size: 16px,
+  $checkmark-size: 9px,
+  $indeterminate-check-size: 8px 2px,
   $border-radius: $border-radius,
   $input-selector: '&',
   $checkbox-selector: $input-selector + ' + label',
@@ -15,7 +17,8 @@ $checkmark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
   $required-selector: $input-selector + ':required + label',
   $indeterminate-selector: $input-selector + ':indeterminate + label',
   $hover-selector: $input-selector + ':focus + label,' + $input-selector +
-    '+ label:hover'
+    '+ label:hover',
+  $animate: false
 ) {
   @if ($input-selector) {
     #{$input-selector} {
@@ -44,8 +47,7 @@ $checkmark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
         flex-shrink: 0;
         background-position: center;
         background-repeat: no-repeat;
-        background-size: 20% auto;
-        transition: background-size 0.15s;
+        background-size: $checkmark-size auto;
       }
 
       @content;
@@ -66,7 +68,6 @@ $checkmark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
         content: '\2713';
         background-color: $grey-600;
         background-image: $checkmark;
-        background-size: $checkmark-size auto;
       }
     }
   }
@@ -76,7 +77,7 @@ $checkmark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
       &:before {
         background-color: $grey-600;
         background-image: linear-gradient(white, white);
-        background-size: 12px 3px;
+        background-size: $indeterminate-check-size;
       }
     }
   }
