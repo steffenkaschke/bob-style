@@ -2,6 +2,7 @@
 @import '../../style/typography';
 // @import '../../style/variables';
 @import '../../style/mixins';
+@import '../../buttons-indicators/mini-preloader/mini-preloader-mixin';
 
 ::ng-deep {
   .b-lightbox-panel {
@@ -26,6 +27,8 @@
 .lightbox-component,
 .lightbox-image {
   background-color: $grey-500;
+
+  @include mini-preloader($base-selector: '&');
 }
 
 .lightbox-image {
