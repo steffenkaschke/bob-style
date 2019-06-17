@@ -1,4 +1,4 @@
-import { ComponentRef, Injectable } from '@angular/core';
+import { ComponentRef, Injectable, SimpleChange } from '@angular/core';
 import { LightboxConfig } from '../lightbox.interface';
 import { LightboxComponent } from '../lightbox.component';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
@@ -9,23 +9,20 @@ import { bind } from 'lodash';
 export class LightboxService {
   constructor(private overlay: Overlay) {}
 
-  lightboxComponentRef: ComponentRef<LightboxComponent>;
   private lightboxPortal: ComponentPortal<LightboxComponent>;
-
-  private overlayConfig: OverlayConfig;
+  public lightboxComponentRef: ComponentRef<LightboxComponent>;
   public overlayRef: OverlayRef;
+  public isOpen = false;
 
-  public isOpen: boolean;
+  private overlayConfig: OverlayConfig = {
+    disposeOnNavigation: true,
+    hasBackdrop: false,
+    panelClass: 'b-lightbox-panel',
+    positionStrategy: this.overlay.position().global()
+  };
 
   public showLightbox(config: LightboxConfig): void {
     if (!this.isOpen) {
-      this.overlayConfig = {
-        disposeOnNavigation: true,
-        hasBackdrop: false,
-        panelClass: 'b-lightbox-panel',
-        positionStrategy: this.overlay.position().global()
-      };
-
       this.overlayRef = this.overlay.create(this.overlayConfig);
       this.overlayRef.overlayElement.addEventListener('click', () => {
         this.closeLightbox();
@@ -37,20 +34,24 @@ export class LightboxService {
         this.closeLightbox,
         this
       );
-      this.lightboxComponentRef.instance.config = config;
-      this.isOpen = true;
     }
+
+    this.lightboxComponentRef.instance.ngOnChanges({
+      config: new SimpleChange(null, config, this.isOpen)
+    });
+    this.isOpen = true;
   }
 
   public closeLightbox(): void {
     if (this.overlayRef) {
       this.overlayRef.dispose();
+      this.overlayRef = null;
     }
     if (this.lightboxComponentRef) {
       this.lightboxComponentRef.destroy();
+      this.lightboxComponentRef = null;
+      this.lightboxPortal = null;
     }
-    this.lightboxComponentRef = null;
-    this.lightboxPortal = null;
     this.isOpen = false;
   }
 }

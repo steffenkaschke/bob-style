@@ -1,10 +1,114 @@
-@import '../../style/colors';
+@import '../../style/variables';
 @import '../../style/mixins';
 @import '../../buttons-indicators/mini-preloader/mini-preloader-mixin';
 
+// layout
+
+::ng-deep {
+  .b-lightbox-panel {
+    @include size(100%);
+    @include flex-align;
+    padding: 50px;
+    background-color: black(0.75);
+    overflow: hidden;
+    position: relative;
+  }
+}
+
+:host {
+  @include size(100%);
+  flex: 1;
+}
+
+:host,
+.lightbox-container,
+.lightbox-component,
+.lightbox-image {
+  @include flex-align;
+}
+
+.lightbox-component,
+.lightbox-image,
+.lightbox-iframe {
+  position: relative;
+}
+
+.lightbox-image {
+  img {
+    display: block;
+  }
+}
+
+.lightbox-iframe {
+  @include size(100%);
+}
+
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+// mods
+
+:host {
+  &.type-component,
+  &.type-url {
+    .lightbox-container {
+      background-color: white;
+    }
+  }
+
+  &.type-url,
+  &.fill-cover {
+    .lightbox-container {
+      @include size(100%);
+    }
+  }
+
+  &.fill-contain {
+    .lightbox-image {
+      img {
+        object-fit: contain;
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+
+    &.type-component {
+      .lightbox-container {
+        border-radius: $border-radius;
+      }
+    }
+
+    .lightbox-component {
+      min-width: 320px;
+      min-height: 320px;
+      padding: 20px;
+    }
+  }
+
+  &.fill-cover {
+    .lightbox-image,
+    .lightbox-component {
+      @include size(100%);
+    }
+
+    .lightbox-image {
+      img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
+
+// animations
+
 @keyframes zoom-out {
   0% {
-    transform: scale(1.1);
+    transform: scale(1.05);
     opacity: 0;
   }
   100% {
@@ -23,61 +127,26 @@
 
 ::ng-deep {
   .b-lightbox-panel {
-    @include size(100%);
-    @include flex-align;
-    padding: 50px;
-    background-color: black(0.75);
-    overflow: hidden;
-    position: relative;
     @include animate(fade-in);
-
-    @include mini-preloader(
-      $base-selector: '&',
-      $full-size-selector: null,
-      $abs-pos-center: true
-    );
   }
 }
 
-:host,
-.lightbox-container {
-  @include size(100%);
-  flex: 1;
+:host {
+  &.type-url,
+  &.type-image {
+    .lightbox-container {
+      @include mini-preloader(
+        $base-selector: '&',
+        $full-size-selector: null,
+        $abs-pos-center: true
+      );
+    }
+  }
 }
 
+// .lightbox-component,
+// .lightbox-image,
+// .lightbox-iframe
 .lightbox-container {
   @include animate(zoom-out);
-  overflow: hidden;
-}
-
-:host,
-.lightbox-container,
-.lightbox-component,
-.lightbox-image {
-  @include flex-align;
-}
-
-.lightbox-component,
-.lightbox-image,
-.lightbox-iframe {
-  background: transparent;
-}
-
-.lightbox-image {
-  img {
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-}
-
-.lightbox-iframe {
-  @include size(100%);
-}
-
-.close-button {
-  position: absolute;
-  top: 8px;
-  right: 8px;
 }

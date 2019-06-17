@@ -4,4 +4,5 @@ export interface LightboxConfig {
   component?: RenderedComponent;
   image?: string;
   url?: string;
+  fillScreen?: boolean;
 }
