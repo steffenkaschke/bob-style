@@ -2,9 +2,9 @@
 @import '../../style/mixins';
 @import '../../buttons-indicators/mini-preloader/mini-preloader-mixin';
 
-@keyframes zoom-in {
+@keyframes zoom-out {
   0% {
-    transform: scale(0.9);
+    transform: scale(1.1);
     opacity: 0;
   }
   100% {
@@ -39,13 +39,19 @@
   }
 }
 
-:host {
+:host,
+.lightbox-container {
   @include size(100%);
   flex: 1;
+}
+
+.lightbox-container {
+  @include animate(zoom-out);
   overflow: hidden;
 }
 
 :host,
+.lightbox-container,
 .lightbox-component,
 .lightbox-image {
   @include flex-align;
@@ -54,7 +60,6 @@
 .lightbox-component,
 .lightbox-image,
 .lightbox-iframe {
-  @include animate(zoom-in);
   background: transparent;
 }
 
@@ -63,6 +68,7 @@
     display: block;
     max-width: 100%;
     max-height: 100%;
+    object-fit: contain;
   }
 }
 

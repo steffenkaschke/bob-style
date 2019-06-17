@@ -4,23 +4,27 @@
                  [color]="iconColor.white"
                  class="close-button"></b-square-button>
 
-<div class="lightbox-image"
-     *ngIf="config.image"
-     (click)="$event.stopPropagation()">
-  <img [src]="config.image"
-       border="0"
-       alt="">
+<div class="lightbox-container">
+
+  <div class="lightbox-image"
+       *ngIf="config.image"
+       (click)="$event.stopPropagation()">
+    <img [src]="config.image"
+         border="0"
+         alt="">
+  </div>
+
+  <iframe class="lightbox-iframe"
+          *ngIf="config.url && !config.image"
+          [src]="sanitizer.bypassSecurityTrustResourceUrl(config.url)"
+          frameborder="0"
+          allowfullscreen>
+  </iframe>
+
+  <b-component-renderer class="lightbox-component"
+                        *ngIf="config.component && !config.image && !config.url"
+                        [render]="config.component"
+                        (click)="$event.stopPropagation()">
+  </b-component-renderer>
+
 </div>
-
-<iframe class="lightbox-iframe"
-        *ngIf="config.url && !config.image"
-        [src]="sanitizer.bypassSecurityTrustResourceUrl(config.url)"
-        frameborder="0"
-        allowfullscreen>
-</iframe>
-
-<b-component-renderer class="lightbox-component"
-                      *ngIf="config.component && !config.image && !config.url"
-                      [render]="config.component"
-                      (click)="$event.stopPropagation()">
-</b-component-renderer>
