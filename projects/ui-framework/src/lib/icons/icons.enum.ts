@@ -42,6 +42,7 @@ export enum Icons {
   three_dots_vert = '3_dots_vert',
   search = 'search_card_17px',
   reset = 'baseline-settings_backup_restore-24px',
+  refresh = 'baseline-refresh-24px',
   bold = 'bold',
   italic = 'italic',
   underline = 'underline',
