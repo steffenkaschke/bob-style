@@ -3,7 +3,6 @@ import { select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { LightboxModule } from './lightbox.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { values } from 'lodash';
 import { LightboxExampleModule } from './lightbox-example.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 
@@ -12,7 +11,11 @@ const lightboxStories = storiesOf(
   module
 ).addDecorator(withKnobs);
 
-const template = `<b-lightbox-example></b-lightbox-example>`;
+const template = `<b-lightbox-example
+                  [imageLink]="imageLink"
+                  [videoLink]="videoLink"
+                  [showInLightbox]="showInLightbox">
+                </b-lightbox-example>`;
 
 const storyTemplate = `<b-story-book-layout [title]="'Lightbox'">
   <div style="max-width: 400px; margin: 30px auto; display:flex; justify-content: center;">
@@ -21,7 +24,7 @@ const storyTemplate = `<b-story-book-layout [title]="'Lightbox'">
 </b-story-book-layout>`;
 
 const note = `
-  ## Lightbox Service
+  ## LightboxService
 
   #### Module
   *LightboxModule*
@@ -29,15 +32,33 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  lightboxSize | LightboxSize | sizes - small, medium, large
-  lightboxType | LightboxType | types - success, error, information, warning
-  text | string | The text inside the lightbox
+  config | LightboxConfig | config object with properties:
+  config.component | RenderedComponent | component to be rendered in lightbox | none
+  config.image | string | valid image URL to show in lightbox | none
+  config.video | string | embedable youtube or vimeo link to show in lightbox (other URLs will throw error) | none
 
 
   #### Example call
 
   \`\`\`
+    this.lightboxService.showLightbox({
+      video: 'https://www.youtube.com/embed/p3j2NYZ8FKs
+    })
+  \`\`\`
 
+  \`\`\`
+    this.lightboxService.showLightbox({
+      component: {
+        component: AvatarComponent,
+        attributes: {
+          title: 'John Malkovich',
+          subtitle: 'American actor',
+          orientation: 'vertical',
+          imageSource: 'https://randomuser.me/api/portraits/men/1.jpg,
+          size: AvatarSize.large
+        }
+      }
+    })
   \`\`\`
 
 `;
@@ -47,7 +68,21 @@ lightboxStories.add(
   () => {
     return {
       template: storyTemplate,
-      props: {},
+      props: {
+        showInLightbox: select(
+          'showInLightbox',
+          ['image', 'video', 'component'],
+          'image'
+        ),
+        imageLink: text(
+          'imageLink',
+          'https://prod-cdn.wetransfer.net/assets/curated/wallpaper/one_thumbnail_large-99b8c8faf500513d369d009ee036c7ac0b1e1c9eff85cc784e2e10f3a24970ae.jpg'
+        ),
+        videoLink: text(
+          'videoLink',
+          'https://www.youtube.com/embed/p3j2NYZ8FKs'
+        )
+      },
       moduleMetadata: {
         imports: [
           LightboxModule,

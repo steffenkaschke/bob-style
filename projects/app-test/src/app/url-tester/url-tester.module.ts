@@ -1,7 +1,6 @@
 import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UrlSanitizer } from '../../../../ui-framework/src/lib/services/url/url-sanitizer.service';
-import { getUrlData } from '../../../../ui-framework/src/lib/services/url/url.const';
+import { URLutils } from '../../../../ui-framework/src/lib/services/url/url-utils';
 
 @Component({
   selector: 'url-tester',
@@ -9,14 +8,14 @@ import { getUrlData } from '../../../../ui-framework/src/lib/services/url/url.co
     <input #input type="text" />
     <button (click)="testUrl(input.value)" type="button">test</button>
   `,
-  providers: [UrlSanitizer]
+  providers: [URLutils]
 })
 export class UrlTesterComponent {
-  constructor(private sanitizer: UrlSanitizer) {}
+  constructor(private url: URLutils) {}
 
   testUrl(url: string) {
-    console.log(url, getUrlData(url));
-    console.log(this.sanitizer.checkUrl(url));
+    console.log(url, this.url.getData(url));
+    console.log(this.url.domainAllowed(url));
   }
 }
 

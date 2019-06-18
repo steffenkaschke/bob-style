@@ -4,7 +4,8 @@
                  [color]="iconColor.white"
                  class="close-button"></b-square-button>
 
-<div class="lightbox-container">
+<div class="lightbox-container"
+     *ngIf="config">
 
   <img class="lightbox-image"
        *ngIf="config.image"
@@ -14,7 +15,7 @@
 
   <iframe class="lightbox-video"
           *ngIf="config.video && !config.image"
-          [src]="sanitizer.checkUrl(config.video)"
+          [src]="config.video"
           frameborder="0"
           allowfullscreen>
   </iframe>

@@ -4,10 +4,11 @@ import { LightboxComponent } from './lightbox.component';
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { bind } from 'lodash';
+import { URLutils } from '../../services/url/url-utils';
 
 @Injectable()
 export class LightboxService {
-  constructor(private overlay: Overlay) {}
+  constructor(private overlay: Overlay, private url: URLutils) {}
 
   private lightboxPortal: ComponentPortal<LightboxComponent>;
   public lightboxComponentRef: ComponentRef<LightboxComponent>;
@@ -22,24 +23,37 @@ export class LightboxService {
   };
 
   public showLightbox(config: LightboxConfig): void {
-    if (!this.isOpen) {
-      this.overlayRef = this.overlay.create(this.overlayConfig);
-      this.overlayRef.overlayElement.addEventListener('click', () => {
-        this.closeLightbox();
+    try {
+      config = {
+        image: config.image && this.url.validateImg(config.image),
+        video: config.video && this.url.domainAllowed(config.video as string),
+        component: config.component && config.component
+      };
+
+      if (!this.isOpen) {
+        this.overlayRef = this.overlay.create(this.overlayConfig);
+        this.overlayRef.overlayElement.addEventListener('click', () => {
+          this.closeLightbox();
+        });
+
+        this.lightboxPortal = new ComponentPortal(LightboxComponent);
+        this.lightboxComponentRef = this.overlayRef.attach(this.lightboxPortal);
+        this.lightboxComponentRef.instance.closeLightboxCallback = bind(
+          this.closeLightbox,
+          this
+        );
+      }
+
+      this.lightboxComponentRef.instance.ngOnChanges({
+        config: new SimpleChange(null, config, this.isOpen)
       });
-
-      this.lightboxPortal = new ComponentPortal(LightboxComponent);
-      this.lightboxComponentRef = this.overlayRef.attach(this.lightboxPortal);
-      this.lightboxComponentRef.instance.closeLightboxCallback = bind(
-        this.closeLightbox,
-        this
-      );
+      this.isOpen = true;
+    } catch (e) {
+      if (this.isOpen) {
+        this.closeLightbox();
+      }
+      throw new Error(e.message);
     }
-
-    this.lightboxComponentRef.instance.ngOnChanges({
-      config: new SimpleChange(null, config, this.isOpen)
-    });
-    this.isOpen = true;
   }
 
   public closeLightbox(): void {

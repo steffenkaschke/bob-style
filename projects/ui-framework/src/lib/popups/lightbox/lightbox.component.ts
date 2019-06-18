@@ -9,7 +9,6 @@ import {
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { LightboxConfig } from './lightbox.interface';
-import { UrlSanitizer } from '../../services/url/url-sanitizer.service';
 
 @Component({
   selector: 'b-lightbox',
@@ -17,7 +16,7 @@ import { UrlSanitizer } from '../../services/url/url-sanitizer.service';
   styleUrls: ['./lightbox.component.scss']
 })
 export class LightboxComponent implements OnChanges {
-  constructor(public sanitizer: UrlSanitizer) {}
+  constructor() {}
 
   @Input() config: LightboxConfig;
 
@@ -30,12 +29,13 @@ export class LightboxComponent implements OnChanges {
   @HostBinding('class')
   get getClass(): string {
     return (
+      this.config &&
       (this.config.component && !this.config.image && !this.config.video
         ? 'type-component'
         : this.config.video && !this.config.image
         ? 'type-video'
         : 'type-image') +
-      (this.config.fillScreen ? ' fill-cover' : ' fill-contain')
+        (this.config.fillScreen ? ' fill-cover' : ' fill-contain')
     );
   }
 

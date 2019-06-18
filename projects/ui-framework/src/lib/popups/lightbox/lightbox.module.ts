@@ -5,13 +5,13 @@ import { IconsModule } from '../../icons/icons.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 
 import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
-import { UrlSanitizer } from '../../services/url/url-sanitizer.service';
+import { URLutils } from '../../services/url/url-utils';
 
 @NgModule({
   declarations: [LightboxComponent],
   entryComponents: [LightboxComponent],
   imports: [CommonModule, IconsModule, ButtonsModule, ComponentRendererModule],
   exports: [],
-  providers: [UrlSanitizer]
+  providers: [URLutils]
 })
 export class LightboxModule {}
