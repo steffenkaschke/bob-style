@@ -8,7 +8,8 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewContainerRef
+  ViewContainerRef,
+  ViewChild
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { assign, chain, includes, map } from 'lodash';
@@ -21,6 +22,7 @@ import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
 import { ListFooterActions } from '../list.interface';
+import { TruncateTooltipComponent } from '../../../services/truncate-tooltip/truncate-tooltip.component';
 
 @Component({
   selector: 'b-multi-select',
@@ -45,6 +47,10 @@ import { ListFooterActions } from '../list.interface';
 })
 export class MultiSelectComponent extends BaseSelectPanelElement
   implements OnInit, OnChanges, OnDestroy {
+
+  @ViewChild('triggerInput')
+  truncate: TruncateTooltipComponent;
+
   @Input() options: SelectGroupOption[];
   @Input() showSingleGroupHeader = false;
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<

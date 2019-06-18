@@ -18,6 +18,10 @@
   </span>
 
   <div class="bfe-suffix">
+    <span *ngIf="truncate.tooltipEnabled"
+          class="total-values">
+      ({{selectedValuesMap.length}})
+    </span>
     <span class="select-chevron"
           [ngClass]="{up: panelOpen, down: !panelOpen}"></span>
   </div>
