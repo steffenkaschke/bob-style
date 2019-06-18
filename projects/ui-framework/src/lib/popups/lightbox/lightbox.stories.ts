@@ -21,7 +21,8 @@ const storyTemplate = `<b-story-book-layout [title]="'Lightbox'">
 </b-story-book-layout>`;
 
 const note = `
-  ## Lightbox Element
+  ## Lightbox Service
+
   #### Module
   *LightboxModule*
 
@@ -31,7 +32,14 @@ const note = `
   lightboxSize | LightboxSize | sizes - small, medium, large
   lightboxType | LightboxType | types - success, error, information, warning
   text | string | The text inside the lightbox
-  ~~~
+
+
+  #### Example call
+
+  \`\`\`
+
+  \`\`\`
+
 `;
 
 lightboxStories.add(
