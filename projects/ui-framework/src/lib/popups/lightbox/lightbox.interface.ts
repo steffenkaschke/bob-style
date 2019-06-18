@@ -3,6 +3,6 @@ import { RenderedComponent } from '../../services/component-renderer/component-r
 export interface LightboxConfig {
   component?: RenderedComponent;
   image?: string;
-  url?: string;
+  video?: string;
   fillScreen?: boolean;
 }

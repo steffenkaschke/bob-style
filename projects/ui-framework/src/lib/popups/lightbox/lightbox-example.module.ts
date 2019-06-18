@@ -69,10 +69,10 @@ export class LightboxExampleComponent implements OnDestroy {
       fillScreen: true
     },
     {
-      url: `https://www.youtube.com/embed/p3j2NYZ8FKs`
+      video: `https://www.youtube.com/embed/p3j2NYZ8FKs`
     },
     {
-      url: `https://en.wikipedia.org/wiki/Vladimir_Putin`
+      video: `https://en.wikipedia.org/wiki/Vladimir_Putin`
     }
   ];
 

@@ -30,9 +30,9 @@ export class LightboxComponent implements OnChanges {
   @HostBinding('class')
   get getClass(): string {
     return (
-      (this.config.component && !this.config.image && !this.config.url
+      (this.config.component && !this.config.image && !this.config.video
         ? 'type-component'
-        : this.config.url && !this.config.image
+        : this.config.video && !this.config.image
         ? 'type-video'
         : 'type-image') +
       (this.config.fillScreen ? ' fill-cover' : ' fill-contain')
