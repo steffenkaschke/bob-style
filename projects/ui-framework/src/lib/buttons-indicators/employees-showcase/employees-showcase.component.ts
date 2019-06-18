@@ -24,7 +24,7 @@ import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import { AvatarComponent } from '../avatar/avatar.component';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
 
-const SHUFFLE_EMPLOYEES_INTERVAL = 2000;
+const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
 
 @Component({
   selector: 'b-employees-showcase',
