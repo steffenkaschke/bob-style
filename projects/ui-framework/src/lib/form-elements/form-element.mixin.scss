@@ -12,8 +12,25 @@ $label-hint-margin: 6px;
 $input-border-color: $grey-500;
 $input-focus-border-color: $grey-700;
 
-@mixin transfer-margins($from: 'b-input') {
+@mixin form-element-margins {
   margin: $form-element-margin;
+
+  &:only-child {
+    margin: 0;
+  }
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@mixin transfer-margins($from: 'b-input') {
+  @include form-element-margins;
+
   &::ng-deep {
     #{$from} {
       margin: 0;
@@ -77,9 +94,9 @@ $input-focus-border-color: $grey-700;
   display: flex;
   width: 100%;
   flex-direction: column;
-  margin: $form-element-margin;
   box-sizing: border-box;
   text-align: left;
+  @include form-element-margins;
 
   // wrap
 

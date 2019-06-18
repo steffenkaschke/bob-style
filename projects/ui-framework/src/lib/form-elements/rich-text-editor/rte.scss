@@ -1,6 +1,7 @@
 @import '../../style/typography';
 @import '../../style/colors';
 @import '../../style/mixins';
+@import '../form-element.mixin';
 
 $button-width: 25px;
 $button-icon-size: 14px;
@@ -16,6 +17,8 @@ $border-color: $grey-500;
   display: block;
   min-width: 250px;
   width: 100%;
+
+  @include form-element-margins;
 }
 
 .quill-editor {
