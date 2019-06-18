@@ -8,6 +8,14 @@
   text-align: left;
 
   @include input-border-colors($add: ' .brd-label:before');
+
+  &.disabled {
+    @include disabled-state;
+
+    .brd-label:before {
+      pointer-events: none;
+    }
+  }
 }
 
 .bfe-wrap {
