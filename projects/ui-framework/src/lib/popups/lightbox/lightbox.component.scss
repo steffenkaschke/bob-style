@@ -112,7 +112,7 @@ $lighbox-padding: 50px;
 
 // animations
 
-@include keyframes(zoom-out);
+@include keyframes(slide-up);
 @include keyframes(fade-in);
 
 ::ng-deep {
@@ -135,5 +135,5 @@ $lighbox-padding: 50px;
 }
 
 .lightbox-container {
-  @include animate(zoom-out);
+  @include animate(slide-up);
 }
