@@ -1,14 +1,15 @@
 @import '../../style/variables';
+@import '../../style/keyframes';
 @import '../../style/mixins';
 @import '../../buttons-indicators/mini-preloader/mini-preloader-mixin';
 
-// layout
+$lighbox-padding: 50px;
 
 ::ng-deep {
   .b-lightbox-panel {
     @include size(100%);
     @include flex-align;
-    padding: 50px;
+    padding: $lighbox-padding;
     background-color: black(0.75);
     overflow: hidden;
     position: relative;
@@ -17,30 +18,12 @@
 
 :host {
   @include size(100%);
-  flex: 1;
 }
 
 :host,
-.lightbox-container,
-.lightbox-component,
-.lightbox-image {
-  @include flex-align;
-}
-
-.lightbox-component,
-.lightbox-image,
-.lightbox-iframe {
-  position: relative;
-}
-
-.lightbox-image {
-  img {
-    display: block;
-  }
-}
-
-.lightbox-iframe {
-  @include size(100%);
+.lightbox-container {
+  display: flex;
+  justify-content: center;
 }
 
 .close-button {
@@ -49,80 +32,53 @@
   right: 8px;
 }
 
-// variants
+// image
 
-:host {
-  &.type-component,
-  &.type-url {
-    .lightbox-container {
-      background-color: white;
-    }
+.lightbox-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  position: relative;
+}
+
+// video
+
+:host.type-video {
+  .lightbox-container {
+    align-items: center;
+    width: 100%;
   }
+}
 
-  &.type-url,
-  &.fill-cover {
-    .lightbox-container {
-      @include size(100%);
-    }
+.lightbox-video {
+  @include size(100%);
+  max-width: calc((100vh - #{$lighbox-padding * 2}) * 16 / 9);
+  max-height: calc((100vw - #{$lighbox-padding * 2}) * 9 / 16);
+  position: relative;
+}
+
+// component
+
+:host.type-component {
+  .lightbox-container {
+    align-items: center;
+    width: 100%;
   }
+}
 
-  &.fill-contain {
-    .lightbox-image {
-      img {
-        object-fit: contain;
-        max-width: 100%;
-        max-height: 100%;
-      }
-    }
-
-    &.type-component {
-      .lightbox-container {
-        border-radius: $border-radius;
-      }
-    }
-
-    .lightbox-component {
-      min-width: 320px;
-      min-height: 320px;
-      padding: 20px;
-    }
-  }
-
-  &.fill-cover {
-    .lightbox-image,
-    .lightbox-component {
-      @include size(100%);
-    }
-
-    .lightbox-image {
-      img {
-        object-fit: cover;
-        @include size(100%);
-      }
-    }
-  }
+.lightbox-component {
+  @include flex-align;
+  min-width: 320px;
+  min-height: 320px;
+  padding: 20px;
+  border-radius: $border-radius;
+  background-color: white;
 }
 
 // animations
 
-@keyframes zoom-out {
-  0% {
-    transform: scale(1.05);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
+@include keyframes(zoom-out);
+@include keyframes(fade-in);
 
 ::ng-deep {
   .b-lightbox-panel {
@@ -131,7 +87,7 @@
 }
 
 :host {
-  &.type-url,
+  &.type-video,
   &.type-image {
     .lightbox-container {
       @include mini-preloader(

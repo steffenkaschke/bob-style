@@ -6,16 +6,15 @@
 
 <div class="lightbox-container">
 
-  <div class="lightbox-image"
+  <img class="lightbox-image"
        *ngIf="config.image"
-       (click)="$event.stopPropagation()">
-    <img [src]="config.image"
-         alt="">
-  </div>
+       (click)="$event.stopPropagation()"
+       [src]="config.image"
+       alt="">
 
-  <iframe class="lightbox-iframe"
+  <iframe class="lightbox-video"
           *ngIf="config.url && !config.image"
-          [src]="sanitizer.bypassSecurityTrustResourceUrl(config.url)"
+          [src]="sanitizer.checkUrl(config.url)"
           frameborder="0"
           allowfullscreen>
   </iframe>

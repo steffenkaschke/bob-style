@@ -13,7 +13,8 @@ $preloader-size: 48px 12px;
   $base-selector: '&:empty',
   // use '&' to insert preloader on non-empty container element
     $full-size-selector: '&',
-  $abs-pos-center: false
+  $abs-pos-center: false,
+  $color: var(--primary-500)
 ) {
   #{$base-selector} {
     &:before {
@@ -23,7 +24,7 @@ $preloader-size: 48px 12px;
       overflow: hidden;
       @include size($size);
 
-      @include mask-image($img: $preloader-svg, $color: var(--primary-500));
+      @include mask-image($img: $preloader-svg, $color: $color);
 
       @if $abs-pos-center {
         position: absolute;

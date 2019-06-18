@@ -9,7 +9,7 @@ import {
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { LightboxConfig } from './lightbox.interface';
-import { DomSanitizer } from '@angular/platform-browser';
+import { UrlSanitizer } from '../../services/url/url-sanitizer.service';
 
 @Component({
   selector: 'b-lightbox',
@@ -17,7 +17,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./lightbox.component.scss']
 })
 export class LightboxComponent implements OnChanges {
-  constructor(public sanitizer: DomSanitizer) {}
+  constructor(public sanitizer: UrlSanitizer) {}
 
   @Input() config: LightboxConfig;
 
@@ -33,8 +33,9 @@ export class LightboxComponent implements OnChanges {
       (this.config.component && !this.config.image && !this.config.url
         ? 'type-component'
         : this.config.url && !this.config.image
-        ? 'type-url'
-        : 'type-image') + (this.config.fillScreen ? ' fill-cover' : ' fill-contain')
+        ? 'type-video'
+        : 'type-image') +
+      (this.config.fillScreen ? ' fill-cover' : ' fill-contain')
     );
   }
 
