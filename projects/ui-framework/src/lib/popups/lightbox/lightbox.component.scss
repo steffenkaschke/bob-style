@@ -34,12 +34,20 @@ $lighbox-padding: 50px;
 
 // image
 
+:host.type-image {
+  .lightbox-container {
+    align-items: center;
+  }
+}
+
 .lightbox-image {
-  display: block;
   max-width: 100%;
+  display: block;
+  min-width: 0;
+  min-height: 0;
   max-height: 100%;
-  object-fit: contain;
-  position: relative;
+  width: auto;
+  height: auto;
 }
 
 // video

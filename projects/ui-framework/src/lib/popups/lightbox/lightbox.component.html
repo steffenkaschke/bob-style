@@ -4,13 +4,12 @@
                  [color]="iconColor.white"
                  class="close-button"></b-square-button>
 
-<div class="lightbox-container"
-     *ngIf="config">
+<div class="lightbox-container">
 
   <img class="lightbox-image"
        *ngIf="config.image"
-       (click)="$event.stopPropagation()"
        [src]="config.image"
+       (click)="$event.stopPropagation()"
        alt="">
 
   <iframe class="lightbox-video"
