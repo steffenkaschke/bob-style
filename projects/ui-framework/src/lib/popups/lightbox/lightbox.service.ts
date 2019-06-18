@@ -27,7 +27,8 @@ export class LightboxService {
       config = {
         image: config.image && this.url.validateImg(config.image),
         video: config.video && this.url.domainAllowed(config.video as string),
-        component: config.component && config.component
+        component: config.component && config.component,
+        fillScreen: config.fillScreen
       };
 
       if (!this.isOpen) {

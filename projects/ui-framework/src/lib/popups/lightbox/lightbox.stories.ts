@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  select,
+  text,
+  withKnobs,
+  boolean
+} from '@storybook/addon-knobs/angular';
 import { LightboxModule } from './lightbox.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -14,7 +19,8 @@ const lightboxStories = storiesOf(
 const template = `<b-lightbox-example
                   [imageLink]="imageLink"
                   [videoLink]="videoLink"
-                  [showInLightbox]="showInLightbox">
+                  [showInLightbox]="showInLightbox"
+                  [fillScreen]="fillScreen">
                 </b-lightbox-example>`;
 
 const storyTemplate = `<b-story-book-layout [title]="'Lightbox'">
@@ -36,6 +42,7 @@ const note = `
   config.component | RenderedComponent | component to be rendered in lightbox | none
   config.image | string | valid image URL to show in lightbox | none
   config.video | string | embedable youtube or vimeo link to show in lightbox (other URLs will throw error) | none
+  config.fillScreen | boolean | if content should fill most of the screen (may be important for components) | none
 
 
   #### Example call
@@ -57,7 +64,8 @@ const note = `
           imageSource: 'https://randomuser.me/api/portraits/men/1.jpg,
           size: AvatarSize.large
         }
-      }
+      },
+      fillScreen: true
     })
   \`\`\`
 
@@ -81,7 +89,8 @@ lightboxStories.add(
         videoLink: text(
           'videoLink',
           'https://www.youtube.com/embed/p3j2NYZ8FKs'
-        )
+        ),
+        fillScreen: boolean('fillScreen', false)
       },
       moduleMetadata: {
         imports: [
