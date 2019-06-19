@@ -36,8 +36,8 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   @ViewChild('suffix') suffix: ElementRef;
 
   @Input() hasPrefix = false;
-  @Input() hasSuffix = false;
   public showPrefix = true;
+  @Input() hasSuffix = false;
   public showSuffix = true;
 
   ngAfterViewInit(): void {
