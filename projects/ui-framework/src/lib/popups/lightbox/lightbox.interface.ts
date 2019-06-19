@@ -14,7 +14,6 @@ export interface LightboxConfig {
 
 export interface LightboxData {
   overlayRef: OverlayRef;
-  lightboxPortal: ComponentPortal<LightboxComponent>;
   lightboxComponentRef: ComponentRef<LightboxComponent>;
   config?: LightboxConfig;
 }

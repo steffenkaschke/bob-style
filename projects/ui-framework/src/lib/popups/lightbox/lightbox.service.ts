@@ -56,9 +56,12 @@ export class LightboxService {
   public closeLightbox(lightbox: LightboxData): void {
     if (lightbox && lightbox.lightboxComponentRef) {
       lightbox.lightboxComponentRef.destroy();
+      lightbox.lightboxComponentRef = null;
     }
     if (lightbox && lightbox.overlayRef) {
       lightbox.overlayRef.dispose();
+      lightbox.overlayRef = null;
     }
+    lightbox = null;
   }
 }
