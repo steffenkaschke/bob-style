@@ -1,4 +1,9 @@
-<div class="quill-editor">
+<label *ngIf="label && placeholder"
+       class="bfe-label"
+       [attr.for]="id">{{label}}</label>
+
+<div class="quill-editor"
+     [attr.id]="id">
   <div #quillEditor
        [attr.data-length]="(minChars > 0 || maxChars) ? ( (length || 0) + (maxChars ? '/' + maxChars : '')) : null"
        (keydown)="$event.stopPropagation()"

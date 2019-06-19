@@ -21,6 +21,10 @@ $border-color: $grey-500;
   @include form-element-margins;
 }
 
+.bfe-label {
+  @include bFormElement-label;
+}
+
 .quill-editor {
   display: flex;
   flex-direction: column;

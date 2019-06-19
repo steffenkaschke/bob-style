@@ -197,11 +197,16 @@ export abstract class RTEformElement extends BaseFormElement
         this.editor.enable(!this.disabled);
       }
     }
+    if (changes.placeholder) {
+      this.placeholder = changes.placeholder.currentValue;
+    }
     if (changes.label) {
       this.label = changes.label.currentValue;
+    }
+    if (changes.placeholder || changes.label) {
       this.rteUtils.setEditorPlaceholder(
         this.editor,
-        this.label,
+        this.placeholder || this.label,
         this.required
       );
     }
@@ -209,7 +214,7 @@ export abstract class RTEformElement extends BaseFormElement
       this.required = changes.required.currentValue;
       this.rteUtils.setEditorPlaceholder(
         this.editor,
-        this.label,
+        this.placeholder || this.label,
         this.required
       );
     }

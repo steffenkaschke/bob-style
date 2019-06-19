@@ -7,7 +7,6 @@ import {
   ViewChild,
   HostBinding,
   Input,
-  ElementRef,
   SimpleChanges
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -166,7 +165,7 @@ export class RichTextEditorComponent extends RTEformElement
   onNgAfterViewInit(): void {
     merge(this.editorOptions, {
       placeholder: this.rteUtils.getEditorPlaceholder(
-        this.label,
+        this.placeholder || this.label,
         this.required
       ),
       modules: {

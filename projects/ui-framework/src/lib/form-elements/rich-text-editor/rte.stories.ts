@@ -31,6 +31,7 @@ const template = `
   <b-rich-text-editor
       [type]="type"
       [label]="label"
+      [placeholder]="placeholder"
       [value]="value"
       [controls]="controls"
       [disableControls]="disableControls"
@@ -129,7 +130,8 @@ inputStories.add(
       template: storyTemplate,
       props: {
         type: select('type', values(RTEType), RTEType.primary),
-        label: text('label', 'Compose an epic...'),
+        placeholder: text('placeholder', 'Compose an epic...'),
+        label: text('label', 'Edit rich textor'),
         value: text('value', value),
         controls: array('controls', controlsDef, '\n'),
         disableControls: array('disableControls', disableControlsDef, '\n'),
