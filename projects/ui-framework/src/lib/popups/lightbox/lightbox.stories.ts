@@ -84,7 +84,7 @@ lightboxStories.add(
         ),
         imageLink: text(
           'imageLink',
-          'https://ksassets.timeincuk.net/wp/uploads/sites/55/2018/03/GettyImages-74308096-920x584.jpg'
+          'https://prod-cdn.wetransfer.net/assets/curated/wallpaper/one_thumbnail_large-99b8c8faf500513d369d009ee036c7ac0b1e1c9eff85cc784e2e10f3a24970ae.jpg'
         ),
         videoLink: text(
           'videoLink',
