@@ -32,6 +32,12 @@ $border-color: $grey-500;
   &:not(.ql-toolbar) {
     opacity: 0;
   }
+
+  &[hidden],
+  [hidden] {
+    display: none !important;
+    pointer-events: none;
+  }
 }
 
 :host ::ng-deep {
@@ -424,14 +430,6 @@ $border-color: $grey-500;
         @include BodyFont(32px, $lineHeight: 1);
       }
     }
-  }
-}
-
-// Align panel
-
-.quill-toolbar[hide-align='true'] ::ng-deep {
-  .ql-align {
-    display: none;
   }
 }
 

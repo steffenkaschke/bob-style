@@ -39,16 +39,21 @@ export abstract class RTEformElement extends BaseFormElement
     super();
   }
 
+  public controlsDef = Object.values(BlotType);
+  public disableControlsDef = [];
+
   @Input() public value: string;
   @Input() public minChars = 0;
   @Input() public maxChars: number;
-  @Input() public controls: BlotType[] = Object.values(BlotType);
-  @Input() public disableControls: BlotType[] = [];
+  @Input() public controls: BlotType[] = this.controlsDef;
+  @Input() public disableControls: BlotType[] = this.disableControlsDef;
   @Input() public sendChangeOn: RTEchangeEvent = RTEchangeEvent.blur;
   @Input() private formControlName: any;
   @Input() private formControl: any;
 
   @ViewChild('quillEditor') protected quillEditor: ElementRef;
+  @ViewChild('toolbar') protected toolbar: ElementRef;
+  @ViewChild('suffix') protected suffix: ElementRef;
   @ViewChild('sizePanel') protected sizePanel: PanelComponent;
 
   @Output() blurred: EventEmitter<any> = new EventEmitter<any>();
@@ -159,11 +164,15 @@ export abstract class RTEformElement extends BaseFormElement
 
   private onControlChanges(changes: SimpleChanges) {
     if (changes.controls) {
-      this.controls = changes.controls.currentValue;
+      this.controls = changes.controls.currentValue || this.controlsDef;
     }
     if (changes.disableControls) {
-      this.disableControls = changes.disableControls.currentValue;
-      if (changes.disableControls.previousValue) {
+      this.disableControls =
+        changes.disableControls.currentValue || this.disableControlsDef;
+      if (
+        changes.disableControls.previousValue &&
+        (this.controls && this.controls.length !== 0)
+      ) {
         this.controls = this.controls.concat(
           changes.disableControls.previousValue
         );
@@ -176,6 +185,7 @@ export abstract class RTEformElement extends BaseFormElement
       if (this.editor) {
         (this.editor as any).options.formats = Object.values(this.controls);
       }
+
       this.updateSpecialBlots();
     }
   }

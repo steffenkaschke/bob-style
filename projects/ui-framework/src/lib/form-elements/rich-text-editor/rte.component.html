@@ -11,8 +11,7 @@
 
   <div #toolbar
        class="quill-toolbar"
-       [attr.hide-align]="!controls.includes(BlotType.align)"
-       *ngIf="controls.length > 0 || hasSuffix"
+       [hidden]="controls.length === 0 && !hasSuffix"
        (mousedown)="$event.preventDefault()">
 
     <b-panel #sizePanel
@@ -50,17 +49,17 @@
     </b-panel>
 
     <button class="ql-bold"
-            *ngIf="controls.includes(BlotType.bold)"></button>
+            [hidden]="!controls.includes(BlotType.bold)"></button>
     <button class="ql-italic"
-            *ngIf="controls.includes(BlotType.italic)"></button>
+            [hidden]="!controls.includes(BlotType.italic)"></button>
     <button class="ql-underline"
-            *ngIf="controls.includes(BlotType.underline)"></button>
+            [hidden]="!controls.includes(BlotType.underline)"></button>
 
     <b-panel #linkPanel
              panelClass="rte-link-editor"
              [showBackdrop]="false"
              [size]="panelSize.medium"
-             *ngIf="controls.includes(BlotType.link)"
+             [hidden]="!controls.includes(BlotType.link)"
              [defaultPosVer]="panelDefaultPosVer.below"
              (closed)="restoreSelection()">
       <button class="ql-link"
@@ -75,14 +74,14 @@
     <button type="button"
             class="ql-list"
             value="ordered"
-            *ngIf="controls.includes(BlotType.list)"></button>
+            [hidden]="!controls.includes(BlotType.list)"></button>
     <button type="button"
             class="ql-list"
             value="bullet"
-            *ngIf="controls.includes(BlotType.list)"></button>
+            [hidden]="!controls.includes(BlotType.list)"></button>
 
     <select class="ql-align"
-            *ngIf="controls.includes(BlotType.align)">
+            [hidden]="!controls.includes(BlotType.align)">
       <option selected></option>
       <option value="center"></option>
       <option value="right"></option>
@@ -92,7 +91,7 @@
     <button type="button"
             class="ql-direction"
             value="rtl"
-            *ngIf="controls.includes(BlotType.direction)"></button>
+            [hidden]="!controls.includes(BlotType.direction)"></button>
 
     <b-panel #placeholderPanel
              class="placeholder-panel"
