@@ -3,9 +3,9 @@
        [attr.for]="id">{{label}}</label>
 
 <div class="bfe-wrap"
-     [ngClass]="{focused: inputFocused, 'has-prefix': showPrefix, 'has-suffix': showSuffix}">
+     [ngClass]="{focused: inputFocused, 'has-prefix': hasPrefix || showPrefix, 'has-suffix': hasSuffix || showSuffix}">
 
-  <div *ngIf="showPrefix"
+  <div *ngIf="hasPrefix || showPrefix"
        class="bfe-prefix"
        #prefix>
     <ng-content select="[input-prefix]"></ng-content>
@@ -27,7 +27,7 @@
          (focus)="onInputFocus()"
          (keydown)="onInputKeydown($event)">
 
-  <div *ngIf="showSuffix"
+  <div *ngIf="hasSuffix || showSuffix"
        class="bfe-suffix"
        #suffix>
     <ng-content select="[input-suffix]"></ng-content>
