@@ -74,7 +74,6 @@ describe('MultiSelectComponent', () => {
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(MultiSelectComponent);
-        fixture.nativeElement.style.width = '200px';
         component = fixture.componentInstance;
         component.options = optionsMock;
         spyOn(component.selectChange, 'emit');
@@ -370,6 +369,7 @@ describe('MultiSelectComponent', () => {
 
   describe('total-values counter', () => {
     it('should put a selected values number in suffix, if tooltip is enabled', fakeAsync(() => {
+      fixture.nativeElement.style.width = '200px';
       component.options = optionsMock;
       fixture.autoDetectChanges();
       component.openPanel();
