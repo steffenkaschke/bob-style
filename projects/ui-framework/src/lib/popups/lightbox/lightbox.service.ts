@@ -1,75 +1,64 @@
-import { ComponentRef, Injectable, SimpleChange } from '@angular/core';
-import { LightboxConfig } from './lightbox.interface';
+import { Injectable, SimpleChange } from '@angular/core';
+import { LightboxConfig, LightboxData } from './lightbox.interface';
 import { LightboxComponent } from './lightbox.component';
-import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
+import { Overlay, OverlayConfig } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { bind } from 'lodash';
 import { URLutils } from '../../services/url/url-utils';
 
 @Injectable()
 export class LightboxService {
   constructor(private overlay: Overlay, private url: URLutils) {}
 
-  private lightboxPortal: ComponentPortal<LightboxComponent>;
-  public lightboxComponentRef: ComponentRef<LightboxComponent>;
-  public overlayRef: OverlayRef;
-  public isOpen = false;
-
   private overlayConfig: OverlayConfig = {
     disposeOnNavigation: true,
     hasBackdrop: false,
     panelClass: 'b-lightbox-panel',
     positionStrategy: this.overlay.position().global(),
-    // scrollStrategy:
+    scrollStrategy: this.overlay.scrollStrategies.block()
   };
 
-  public showLightbox(config: LightboxConfig): void {
-    let overlayRef, lightboxPortal, lightboxComponentRef;
+  public showLightbox(config: LightboxConfig): LightboxData {
+    const lightbox: Partial<LightboxData> = {};
+    let lightboxPortal: ComponentPortal<LightboxComponent>;
 
     try {
-      config = {
+      lightbox.config = {
         image: config.image && this.url.validateImg(config.image),
         video: config.video && this.url.domainAllowed(config.video as string),
         component: config.component,
         fillScreen: config.fillScreen
       };
 
-      // if (!this.isOpen) {
-        overlayRef = this.overlay.create(this.overlayConfig);
-        overlayRef.overlayElement.addEventListener('click', () => {
-          this.closeLightbox();
-        });
+      lightbox.overlayRef = this.overlay.create(this.overlayConfig);
+      lightboxPortal = new ComponentPortal(LightboxComponent);
+      lightbox.lightboxComponentRef = lightbox.overlayRef.attach(
+        lightboxPortal
+      );
 
-        lightboxPortal = new ComponentPortal(LightboxComponent);
-        lightboxComponentRef = this.overlayRef.attach(this.lightboxPortal);
-        lightboxComponentRef.instance.closeLightboxCallback = bind(
-          this.closeLightbox,
-          this
-        );
-      // }
-
-      this.lightboxComponentRef.instance.ngOnChanges({
-        config: new SimpleChange(null, config, this.isOpen)
+      lightbox.lightboxComponentRef.instance.ngOnChanges({
+        config: new SimpleChange(null, lightbox.config, true)
       });
-      this.isOpen = true;
+
+      lightbox.lightboxComponentRef.instance.closeLightboxCallback = () =>
+        this.closeLightbox(lightbox as LightboxData);
+
+      lightbox.overlayRef.overlayElement.addEventListener('click', () =>
+        this.closeLightbox(lightbox as LightboxData)
+      );
+
+      return lightbox as LightboxData;
     } catch (e) {
-      if (this.isOpen) {
-        this.closeLightbox();
-      }
+      this.closeLightbox(lightbox as LightboxData);
       throw new Error(e.message);
     }
   }
 
-  public closeLightbox(): void {
-    if (this.overlayRef) {
-      this.overlayRef.dispose();
-      this.overlayRef = null;
+  public closeLightbox(lightbox: LightboxData): void {
+    if (lightbox && lightbox.lightboxComponentRef) {
+      lightbox.lightboxComponentRef.destroy();
     }
-    if (this.lightboxComponentRef) {
-      this.lightboxComponentRef.destroy();
-      this.lightboxComponentRef = null;
-      this.lightboxPortal = null;
+    if (lightbox && lightbox.overlayRef) {
+      lightbox.overlayRef.dispose();
     }
-    this.isOpen = false;
   }
 }
