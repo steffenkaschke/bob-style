@@ -3,13 +3,13 @@
        [attr.for]="id">{{label}}</label>
 
 <div class="bfe-wrap has-suffix"
-     [ngClass]="{'has-prefix': showPrefix, 'panel-open': panelOpen, 'panel-above':
+     [ngClass]="{'has-prefix': showPrefix(), 'panel-open': panelOpen, 'panel-above':
      positionClassList['panel-above'],
      'panel-below': positionClassList['panel-below']}"
      (click)="openPanel()"
      cdkOverlayOrigin>
 
-  <div *ngIf="showPrefix"
+  <div *ngIf="showPrefix()"
        class="bfe-prefix"
        #prefix>
     <ng-content select="[input-prefix]"></ng-content>
