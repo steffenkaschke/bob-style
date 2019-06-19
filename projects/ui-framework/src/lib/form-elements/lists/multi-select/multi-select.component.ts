@@ -9,7 +9,8 @@ import {
   Output,
   SimpleChanges,
   ViewContainerRef,
-  ViewChild
+  ViewChild,
+  ElementRef
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { assign, chain, includes, map } from 'lodash';
@@ -47,12 +48,14 @@ import { TruncateTooltipComponent } from '../../../services/truncate-tooltip/tru
 })
 export class MultiSelectComponent extends BaseSelectPanelElement
   implements OnInit, OnChanges, OnDestroy {
-
   @ViewChild('triggerInput')
   truncate: TruncateTooltipComponent;
+  @ViewChild('prefix') prefix: ElementRef;
 
   @Input() options: SelectGroupOption[];
   @Input() showSingleGroupHeader = false;
+  @Input() hasPrefix = false;
+  public showPrefix = true;
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
@@ -98,6 +101,13 @@ export class MultiSelectComponent extends BaseSelectPanelElement
       this.selectedValuesMap = this.getSelectedValuesMap(this.options);
       this.setTriggerValue();
     }
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.showPrefix =
+        this.hasPrefix || this.prefix.nativeElement.childNodes.length > 0;
+    }, 0);
   }
 
   ngOnDestroy(): void {
