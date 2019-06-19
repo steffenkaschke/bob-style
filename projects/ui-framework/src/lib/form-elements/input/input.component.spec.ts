@@ -5,6 +5,7 @@ import { InputEventType } from '../form-elements.enum';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMessageModule } from '../input-message/input-message.module';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 describe('InputComponent', () => {
   let component: InputComponent;
@@ -14,7 +15,8 @@ describe('InputComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [InputComponent],
-      imports: [NoopAnimationsModule, CommonModule, InputMessageModule]
+      imports: [NoopAnimationsModule, CommonModule, InputMessageModule],
+      providers: [DOMhelpers]
     })
       .compileComponents()
       .then(() => {
