@@ -94,8 +94,8 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.hasPrefix = this.DOM.isEmpty(this.prefix.nativeElement);
-      this.hasSuffix = this.DOM.isEmpty(this.suffix.nativeElement);
+      this.hasPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
+      this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
     }, 0);
   }
 }

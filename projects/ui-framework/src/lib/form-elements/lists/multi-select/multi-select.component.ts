@@ -109,7 +109,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.showPrefix =
-        this.hasPrefix || this.DOM.isEmpty(this.prefix.nativeElement);
+        this.hasPrefix || !this.DOM.isEmpty(this.prefix.nativeElement);
     }, 0);
   }
 
