@@ -19,31 +19,34 @@ export class LightboxService {
     disposeOnNavigation: true,
     hasBackdrop: false,
     panelClass: 'b-lightbox-panel',
-    positionStrategy: this.overlay.position().global()
+    positionStrategy: this.overlay.position().global(),
+    // scrollStrategy:
   };
 
   public showLightbox(config: LightboxConfig): void {
+    let overlayRef, lightboxPortal, lightboxComponentRef;
+
     try {
       config = {
         image: config.image && this.url.validateImg(config.image),
         video: config.video && this.url.domainAllowed(config.video as string),
-        component: config.component && config.component,
+        component: config.component,
         fillScreen: config.fillScreen
       };
 
-      if (!this.isOpen) {
-        this.overlayRef = this.overlay.create(this.overlayConfig);
-        this.overlayRef.overlayElement.addEventListener('click', () => {
+      // if (!this.isOpen) {
+        overlayRef = this.overlay.create(this.overlayConfig);
+        overlayRef.overlayElement.addEventListener('click', () => {
           this.closeLightbox();
         });
 
-        this.lightboxPortal = new ComponentPortal(LightboxComponent);
-        this.lightboxComponentRef = this.overlayRef.attach(this.lightboxPortal);
-        this.lightboxComponentRef.instance.closeLightboxCallback = bind(
+        lightboxPortal = new ComponentPortal(LightboxComponent);
+        lightboxComponentRef = this.overlayRef.attach(this.lightboxPortal);
+        lightboxComponentRef.instance.closeLightboxCallback = bind(
           this.closeLightbox,
           this
         );
-      }
+      // }
 
       this.lightboxComponentRef.instance.ngOnChanges({
         config: new SimpleChange(null, config, this.isOpen)
