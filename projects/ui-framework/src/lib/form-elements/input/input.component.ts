@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 @Component({
   selector: 'b-input',
@@ -27,7 +28,7 @@ import { BaseInputElement } from '../base-input-element';
   ]
 })
 export class InputComponent extends BaseInputElement implements AfterViewInit {
-  constructor() {
+  constructor(private DOM: DOMhelpers) {
     super();
   }
   @ViewChild('input') input: ElementRef;
@@ -42,9 +43,9 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.showPrefix =
-        this.hasPrefix || this.prefix.nativeElement.childNodes.length > 0;
+        this.hasPrefix || !this.DOM.isEmpty(this.prefix.nativeElement);
       this.showSuffix =
-        this.hasSuffix || this.suffix.nativeElement.childNodes.length > 0;
+        this.hasSuffix || !this.DOM.isEmpty(this.suffix.nativeElement);
     }, 0);
   }
 }

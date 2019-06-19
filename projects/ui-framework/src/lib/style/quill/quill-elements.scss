@@ -48,16 +48,9 @@
     }
 
     li {
-      &:not(.ql-direction-rtl) {
-        padding-left: 1.5em;
-      }
       counter-increment: list-0;
       &:before {
         content: counter(list-0, decimal) '. ';
-      }
-
-      &.ql-direction-rtl {
-        padding-right: 1.5em;
       }
     }
     li.ql-indent-1 {
@@ -133,14 +126,6 @@
         content: '\2022';
       }
     }
-    li {
-      &:not(.ql-direction-rtl) {
-        padding-left: 1.5em;
-      }
-    }
-    li.ql-direction-rtl {
-      padding-right: 1.5em;
-    }
   }
 
   ul[data-checked='true'] {
@@ -177,21 +162,21 @@
     &::before {
       display: inline-block;
       white-space: nowrap;
-      width: 1.2em;
+      min-width: 2em;
     }
     &:not(.ql-direction-rtl) {
       &::before {
-        margin-left: -1.5em;
         margin-right: 0.3em;
+        margin-left: -0.5em;
         text-align: right;
       }
     }
-  }
 
-  li.ql-direction-rtl {
-    &::before {
-      margin-left: 0.3em;
-      margin-right: -1.5em;
+    &.ql-direction-rtl {
+      &::before {
+        margin-left: 0.3em;
+        margin-right: -0.5em;
+      }
     }
   }
 }

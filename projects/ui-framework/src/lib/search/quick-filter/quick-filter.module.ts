@@ -8,27 +8,17 @@ import { SingleSelectModule } from '../../form-elements/lists/single-select/sing
 import { ListModelService } from '../../form-elements/lists/list-service/list-model.service';
 import { ListChangeService } from '../../form-elements/lists/list-change/list-change.service';
 import { IconsModule } from '../../icons/icons.module';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 @NgModule({
-  declarations: [
-    QuickFilterComponent,
-    QuickFilterBarComponent,
-  ],
-  imports: [
-    CommonModule,
-    MultiSelectModule,
-    SingleSelectModule,
-    IconsModule,
-  ],
+  declarations: [QuickFilterComponent, QuickFilterBarComponent],
+  imports: [CommonModule, MultiSelectModule, SingleSelectModule, IconsModule],
   providers: [
     PanelPositionService,
     ListModelService,
     ListChangeService,
+    DOMhelpers
   ],
-  exports: [
-    QuickFilterComponent,
-    QuickFilterBarComponent,
-  ],
+  exports: [QuickFilterComponent, QuickFilterBarComponent]
 })
-export class QuickFilterModule {
-}
+export class QuickFilterModule {}
