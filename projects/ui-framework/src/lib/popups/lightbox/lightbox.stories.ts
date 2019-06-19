@@ -50,7 +50,7 @@ const note = `
   --- | --- | ---
   <i>interface</i>   | **LightboxData** | service call will return an    object containing:
   overlayRef | OverlayRef | reference to the the overlay instance
-  lightboxComponentRef | ComponentRef<LightboxComponent> | reference to the Lightbox component
+  lightboxComponentRef | ComponentRef&lt;LightboxComponent&gt; | reference to the Lightbox component
   config | LightboxConfig | the original configuration, with which the service was called, but with sanitized video/image links (if any)
 
   #### Example call
