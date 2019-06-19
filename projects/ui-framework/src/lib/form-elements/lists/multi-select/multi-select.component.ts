@@ -10,7 +10,8 @@ import {
   SimpleChanges,
   ViewContainerRef,
   ViewChild,
-  ElementRef
+  ElementRef,
+  AfterViewInit
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { assign, chain, includes, map } from 'lodash';
@@ -24,6 +25,7 @@ import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
 import { ListFooterActions } from '../list.interface';
 import { TruncateTooltipComponent } from '../../../services/truncate-tooltip/truncate-tooltip.component';
+import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
 
 @Component({
   selector: 'b-multi-select',
@@ -47,7 +49,7 @@ import { TruncateTooltipComponent } from '../../../services/truncate-tooltip/tru
   ]
 })
 export class MultiSelectComponent extends BaseSelectPanelElement
-  implements OnInit, OnChanges, OnDestroy {
+  implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @ViewChild('triggerInput')
   truncate: TruncateTooltipComponent;
   @ViewChild('prefix') prefix: ElementRef;
@@ -83,7 +85,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
     private listChangeService: ListChangeService,
-    private listModelService: ListModelService
+    private listModelService: ListModelService,
+    private DOM: DOMhelpers
   ) {
     super(overlay, viewContainerRef, panelPositionService);
   }
@@ -106,7 +109,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.showPrefix =
-        this.hasPrefix || this.prefix.nativeElement.childNodes.length > 0;
+        this.hasPrefix || this.DOM.isEmpty(this.prefix.nativeElement);
     }, 0);
   }
 

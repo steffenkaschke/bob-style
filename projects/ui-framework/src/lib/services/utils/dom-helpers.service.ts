@@ -17,29 +17,12 @@ export interface NotEmptyChildren {
 export class DOMhelpers {
   constructor() {}
 
-  // set any css properties
-  // (provided as JSON with props in kebab-case),
-  // including css variables ('--color-red')
-  public setCssProps(element: HTMLElement, props: Styles): void {
-    for (const prop of Object.keys(props)) {
-      element.style.setProperty(prop, props[prop] as string);
-    }
+  public isTextNode(element: any) {
+    return element.nodeType === Node.TEXT_NODE;
   }
 
-  // returns line-height and font-size as unitless numbers
-  public getElementTextProps(element: HTMLElement): TextProps {
-    const computedStyle = getComputedStyle(element),
-      fontSize = parseFloat(computedStyle.fontSize),
-      lineHeight =
-        computedStyle.lineHeight.indexOf('px') !== -1
-          ? parseFloat(computedStyle.lineHeight) / fontSize
-          : computedStyle.lineHeight.indexOf('%') !== -1
-          ? parseFloat(computedStyle.lineHeight) / 100
-          : undefined;
-    return {
-      fontSize: fontSize,
-      lineHeight: lineHeight
-    };
+  public isElement(element: any) {
+    return element.nodeType === Node.ELEMENT_NODE;
   }
 
   public hasChildren(element: HTMLElement): boolean {
@@ -65,12 +48,7 @@ export class DOMhelpers {
   }
 
   public getTextNode(element: HTMLElement): Node {
-    return (
-      element &&
-      Array.from(element.childNodes).find(
-        node => node.nodeType === Node.TEXT_NODE
-      )
-    );
+    return element && Array.from(element.childNodes).find(this.isTextNode);
   }
 
   public hasTextNodes(element: HTMLElement): boolean {
@@ -79,6 +57,31 @@ export class DOMhelpers {
 
   public isEmpty(element: HTMLElement): boolean {
     return element && !this.hasChildren(element) && !this.hasTextNodes(element);
+  }
+
+  // set any css properties
+  // (provided as JSON with props in kebab-case),
+  // including css variables ('--color-red')
+  public setCssProps(element: HTMLElement, props: Styles): void {
+    for (const prop of Object.keys(props)) {
+      element.style.setProperty(prop, props[prop] as string);
+    }
+  }
+
+  // returns line-height and font-size as unitless numbers
+  public getElementTextProps(element: HTMLElement): TextProps {
+    const computedStyle = getComputedStyle(element),
+      fontSize = parseFloat(computedStyle.fontSize),
+      lineHeight =
+        computedStyle.lineHeight.indexOf('px') !== -1
+          ? parseFloat(computedStyle.lineHeight) / fontSize
+          : computedStyle.lineHeight.indexOf('%') !== -1
+          ? parseFloat(computedStyle.lineHeight) / 100
+          : undefined;
+    return {
+      fontSize: fontSize,
+      lineHeight: lineHeight
+    };
   }
 
   // returns deepest element that has text
@@ -100,15 +103,7 @@ export class DOMhelpers {
     );
   }
 
-  isTextNode(element: any) {
-    return element.nodeType === Node.TEXT_NODE;
-  }
-
-  isElement(element: any) {
-    return element.nodeType === Node.ELEMENT_NODE;
-  }
-
-  getInnerWidth(element: HTMLElement) {
+  public getInnerWidth(element: HTMLElement) {
     const computedStyle = getComputedStyle(element);
     return (
       element.offsetWidth -
@@ -121,7 +116,7 @@ export class DOMhelpers {
 
   // find closest parent either by CSS selector or by test function
   // can return element or test result
-  getClosest(
+  public getClosest(
     element: HTMLElement,
     test: string | Function,
     rtrn: 'element' | 'result' = 'element'
