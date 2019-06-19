@@ -21,7 +21,6 @@ import { BaseFormElement } from '../base-form-element';
 export abstract class BaseSelectPanelElement extends BaseFormElement {
   @ViewChild(CdkOverlayOrigin) overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef') templateRef: TemplateRef<any>;
-  @ViewChild('triggerInput', { read: ElementRef }) triggerInput: ElementRef;
 
   @Input() isQuickFilter = false;
 

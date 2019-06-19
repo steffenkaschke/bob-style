@@ -8,7 +8,10 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewContainerRef
+  ViewContainerRef,
+  ViewChild,
+  ElementRef,
+  AfterViewInit
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { assign, chain, includes, map } from 'lodash';
@@ -21,6 +24,8 @@ import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
 import { ListFooterActions } from '../list.interface';
+import { TruncateTooltipComponent } from '../../../services/truncate-tooltip/truncate-tooltip.component';
+import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
 
 @Component({
   selector: 'b-multi-select',
@@ -44,9 +49,16 @@ import { ListFooterActions } from '../list.interface';
   ]
 })
 export class MultiSelectComponent extends BaseSelectPanelElement
-  implements OnInit, OnChanges, OnDestroy {
+  implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+  @ViewChild('triggerInput')
+  truncate: TruncateTooltipComponent;
+  @ViewChild('prefix') prefix: ElementRef;
+
   @Input() options: SelectGroupOption[];
   @Input() showSingleGroupHeader = false;
+  @Input() hasPrefix = false;
+  public showPrefix = true;
+
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
@@ -74,7 +86,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
     private listChangeService: ListChangeService,
-    private listModelService: ListModelService
+    private listModelService: ListModelService,
+    private DOM: DOMhelpers
   ) {
     super(overlay, viewContainerRef, panelPositionService);
   }
@@ -92,6 +105,12 @@ export class MultiSelectComponent extends BaseSelectPanelElement
       this.selectedValuesMap = this.getSelectedValuesMap(this.options);
       this.setTriggerValue();
     }
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.showPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
+    }, 0);
   }
 
   ngOnDestroy(): void {
