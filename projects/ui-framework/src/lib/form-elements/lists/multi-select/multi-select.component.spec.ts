@@ -74,6 +74,7 @@ describe('MultiSelectComponent', () => {
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(MultiSelectComponent);
+        fixture.nativeElement.style.width = '200px';
         component = fixture.componentInstance;
         component.options = optionsMock;
         spyOn(component.selectChange, 'emit');
@@ -340,7 +341,9 @@ describe('MultiSelectComponent', () => {
       optionsMock[0].options[0].selected = false;
       component.options = optionsMock;
       fixture.autoDetectChanges();
-      const tooltipEl = fixture.debugElement.query(By.css('.trigger-tooltip'));
+      const tooltipEl = fixture.debugElement.query(
+        By.css('.btt.tooltip-enabled')
+      );
       expect(tooltipEl).toBe(null);
     });
     it('should add tooltip', fakeAsync(() => {
@@ -361,6 +364,31 @@ describe('MultiSelectComponent', () => {
       expect(tooltipEl.nativeElement.innerText).toEqual(
         'Basic Info 1, Personal 1, Personal 2'
       );
+      flush();
+    }));
+  });
+
+  describe('total-values counter', () => {
+    it('should put a selected values number in suffix, if tooltip is enabled', fakeAsync(() => {
+      component.options = optionsMock;
+      fixture.autoDetectChanges();
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      const options = overlayContainerElement.querySelectorAll(
+        'b-multi-list .option'
+      );
+      (options[1] as HTMLElement).click();
+      (options[3] as HTMLElement).click();
+      tick(0);
+      const tooltipEl = fixture.debugElement.query(
+        By.css('.btt.tooltip-enabled')
+      );
+      const totalValuesCounter = fixture.debugElement.query(
+        By.css('.total-values')
+      ).nativeElement;
+      expect(tooltipEl).not.toBe(null);
+      expect(totalValuesCounter.innerText).toEqual('(4)');
       flush();
     }));
   });
