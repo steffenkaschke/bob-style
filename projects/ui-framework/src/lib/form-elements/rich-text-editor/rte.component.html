@@ -5,9 +5,11 @@
 <div class="quill-editor"
      [attr.id]="id">
   <div #quillEditor
-       [attr.data-length]="(minChars > 0 || maxChars) ? ( (length || 0) + (maxChars ? '/' + maxChars : '')) : null"
+       [attr.data-length]="hasSuffix && (minChars > 0 || maxChars) ? ( (length || 0) + (maxChars ? '/' + maxChars : '')) :
+       null"
        (keydown)="$event.stopPropagation()"
-       [ngClass]="{'length-invalid': length < minChars || (maxChars && length > maxChars)}"
+       [ngClass]="{'length-invalid': hasSuffix && (length < minChars
+         || (maxChars && length > maxChars))}"
        [ngStyle]="{
          minHeight: minHeight ? (minHeight - 43) + 'px' : null,
          maxHeight: maxHeight ? (maxHeight - 43) + 'px' : null
@@ -123,12 +125,24 @@
       <ng-content></ng-content>
     </div>
 
+    <span class="length-indicator"
+          *ngIf="!hasSuffix && (minChars > 0 || maxChars)"
+          [ngClass]="{'length-invalid': length < minChars ||
+            (maxChars && length > maxChars)}">
+      {{ (length || 0) + (maxChars ? '/' + maxChars : '') }}
+    </span>
+
   </div>
 
 </div>
 
 <p b-input-message
-   *ngIf="hintMessage || warnMessage || errorMessage"
+   *ngIf="
+          hintMessage
+          ||
+          warnMessage
+          ||
+          errorMessage"
    [hintMessage]="hintMessage"
    [warnMessage]="warnMessage"
    [errorMessage]="errorMessage"

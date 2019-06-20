@@ -259,6 +259,16 @@ $border-color: $grey-500;
   }
 }
 
+.length-indicator {
+  font-size: $font-size-caption;
+  color: $grey-600;
+  margin-left: auto;
+
+  &.length-invalid {
+    color: $color-error;
+  }
+}
+
 // Disabled
 
 :host {

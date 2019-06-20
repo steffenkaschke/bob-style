@@ -47,7 +47,6 @@ const template = `
       (changed)="change($event)"
       (focused)="focus($event)"
       (blurred)="blur($event)">
-    Some custom toolbar thing
   </b-rich-text-editor>
 `;
 
@@ -114,11 +113,7 @@ const placeholderMock = [
   }
 ];
 
-const disableControlsDef = [
-  // BlotType.color,
-  BlotType.align,
-  BlotType.direction
-];
+const disableControlsDef = [BlotType.align, BlotType.direction];
 const controlsDef = values(BlotType).filter(
   cntrl => !disableControlsDef.includes(cntrl)
 );
