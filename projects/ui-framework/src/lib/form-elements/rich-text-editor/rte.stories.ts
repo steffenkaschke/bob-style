@@ -74,9 +74,10 @@ const note = `
   Name | Type | Description | default
   --- | --- | --- | ---
   type | RTEType | primary (white bg, border) or secondary (transparent bg, no borders) | primary
-  label | string | placeholder text | none (optional)
+  label | string | label text (above editor) | none (optional)
+  placeholder | string | placeholder text (inside editor. if only label is present, it will be treated as placeholder) | none (optional)
   value | string | html content to be placed inside editor | none (optional)
-  controls | BlotType[] | array of toolbar controls. Possible controls: size, bold, italic, underline, link, list, align, dir. Defaults to all controls. Pass empty array to disable all controls. | all
+  controls | BlotType[] | array of toolbar controls (check BlotType enum for all possible controls). Defaults to all controls. Pass empty array to disable all controls | all
   minChars | number | minimum (plain) text length | 0
   maxChars | number | maximum (plain) text length | none (optional)
   minHeight | number | minimum height of editor (including toolbar). Set to null or 0 to disable min-height | 185 (optional)
@@ -84,7 +85,8 @@ const note = `
   disabled | boolean | disables editor | false (optional)
   required | boolean | adds * to placeholder | false (optional)
   hintMessage | string | adds a hint message below editor | none (optional)
-  errorMessage | string | adds 'invalid' style, hides hint message and displays error message below editor | none (optional)
+  warnMessage | string | adds a warning message below editor | none (optional)
+  errorMessage | string | adds 'invalid' style, hides hint/warn message and displays error message below editor | none (optional)
   sendChangeOn | RTEchangeEvent | When to transmit value changes - on change (every keystroke) or on blur | blur (optional)
   changed | function | change event handler (event transmits latest change: {body,plainText}) |
   focused | function | focus event handler (event transmits latest change: {body,plainText}) |
