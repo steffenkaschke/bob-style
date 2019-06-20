@@ -17,7 +17,8 @@ const inputStories = storiesOf(
   module
 ).addDecorator(withKnobs);
 
-const template = `<b-section-container [title]="'titleHere'">
+const template =
+`<b-section-container [title]="'titleHere'">
 <div section-action>
 <p>Action here</p>
 </div>
@@ -28,7 +29,7 @@ const template = `<b-section-container [title]="'titleHere'">
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Section Container'">
-  <div style="max-width: 600px; margin: 30px auto;">
+  <div style="text-align:left; max-width: 600px; margin: 30px auto;">
     ${template}
   </div>
 </b-story-book-layout>
@@ -43,7 +44,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  title | string | type of input field | none
+  title | string | title of section container | none
   ~~~
   ${template}
   ~~~
