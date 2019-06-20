@@ -43,6 +43,7 @@ const template = `
       [disabled]="disabled"
       [required]="required"
       [hintMessage]="hintMessage"
+      [warnMessage]="warnMessage"
       [errorMessage]="errorMessage"
       (changed)="change($event)"
       (focused)="focus($event)"
@@ -140,6 +141,7 @@ inputStories.add(
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
+        warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
         change: action('Something has changed'),
         focus: action('Editor focused'),

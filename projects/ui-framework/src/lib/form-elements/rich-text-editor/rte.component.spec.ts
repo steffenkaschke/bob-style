@@ -75,7 +75,7 @@ class TestComponent implements OnInit, OnDestroy {
   }
 }
 
-fdescribe('RichTextEditorComponent', () => {
+describe('RichTextEditorComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 
@@ -180,53 +180,95 @@ fdescribe('RichTextEditorComponent', () => {
       );
     });
 
-    it('should insert label placeholder text', () => {
+    it('should insert hintMessage text', () => {
+      RTEComponent.hintMessage = 'test hint';
+      fixture.detectChanges();
+
+      const messageElement = fixture.debugElement.query(
+        By.css('[b-input-message]')
+      ).nativeElement;
+      expect(messageElement.innerText).toEqual('test hint');
+    });
+
+    it('should insert warnMessage text over hintMessage text', () => {
+      RTEComponent.hintMessage = 'test hint';
+      RTEComponent.warnMessage = 'test warn';
+      fixture.detectChanges();
+
+      const messageElement = fixture.debugElement.query(
+        By.css('[b-input-message]')
+      ).nativeElement;
+      expect(messageElement.innerText).toEqual('test warn');
+    });
+  });
+
+  describe('Label & placeholder', () => {
+    it('should insert placeholder text', () => {
+      expect(RTEqlEditorNativeElement.getAttribute('data-placeholder')).toEqual(
+        'placeholder text'
+      );
+    });
+
+    it('should update placeholder text', () => {
+      RTEComponent.ngOnChanges({
+        placeholder: new SimpleChange(null, 'test placeholder', false)
+      });
+      fixture.detectChanges();
+
+      expect(RTEqlEditorNativeElement.getAttribute('data-placeholder')).toEqual(
+        'test placeholder'
+      );
+    });
+
+    it('should insert label text', () => {
+      const labelElem = fixture.debugElement.query(By.css('.bfe-label'))
+        .nativeElement;
+      expect(labelElem.innerText).toEqual('label text');
+    });
+
+    it('should insert label text into placeholder slot if no placeholder text provided', () => {
+      RTEComponent.ngOnChanges({
+        placeholder: new SimpleChange(null, undefined, false)
+      });
+      fixture.detectChanges();
+
+      const labelElem = fixture.debugElement.query(By.css('.bfe-label'));
+
+      expect(labelElem).toBeFalsy();
       expect(RTEqlEditorNativeElement.getAttribute('data-placeholder')).toEqual(
         'label text'
       );
     });
 
-    it('should update label placeholder text', () => {
+    it('should add * to placeholder text, when required is true and no label provided', () => {
       RTEComponent.ngOnChanges({
-        label: new SimpleChange(null, 'test label', false)
-      });
-      fixture.detectChanges();
-
-      expect(RTEqlEditorNativeElement.getAttribute('data-placeholder')).toEqual(
-        'test label'
-      );
-    });
-
-    it('should add * to placeholder text, when required is true', () => {
-      RTEComponent.ngOnChanges({
-        label: new SimpleChange(null, 'test label', false),
+        label: new SimpleChange(null, undefined, false),
         required: new SimpleChange(null, true, false)
       });
       fixture.detectChanges();
 
       expect(RTEqlEditorNativeElement.getAttribute('data-placeholder')).toEqual(
-        'test label *'
+        'placeholder text *'
       );
     });
 
-    // it('should put', () => {
-    //   RTEComponent.ngOnChanges({
-    //     label: new SimpleChange(null, 'test label', false)
-    //   });
-    //   fixture.detectChanges();
-
-    //   expect(RTEqlEditorNativeElement.getAttribute('data-placeholder')).toEqual(
-    //     'test label'
-    //   );
-    // });
-
-    it('should insert hintMessage text', () => {
-      RTEComponent.hintMessage = 'test hint';
+    it('should add * to label text, and not placeholder, when required is true and both label and placeholder provided', () => {
+      RTEComponent.ngOnChanges({
+        required: new SimpleChange(null, true, false)
+      });
       fixture.detectChanges();
 
-      const hintNativeElement = fixture.debugElement.query(By.css('.hint'))
+      expect(RTEqlEditorNativeElement.getAttribute('data-placeholder')).toEqual(
+        'placeholder text'
+      );
+      const labelElem = fixture.debugElement.query(By.css('.bfe-label'))
         .nativeElement;
-      expect(hintNativeElement.innerText).toEqual('test hint');
+
+      const labelBeforeStyle = window.getComputedStyle(labelElem, '::after');
+      const labelBeforeText = labelBeforeStyle.getPropertyValue('content');
+
+      expect(labelElem.innerText).toEqual('label text');
+      expect(labelBeforeText).toContain('*');
     });
   });
 
