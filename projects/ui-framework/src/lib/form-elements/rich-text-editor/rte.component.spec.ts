@@ -41,6 +41,7 @@ import { Platform } from '@angular/cdk/platform';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
 import { InputMessageModule } from '../input-message/input-message.module';
+import { not } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   template: `
@@ -136,10 +137,10 @@ describe('RichTextEditorComponent', () => {
         rteControl = testComponent.rteForm.get('rteControl');
 
         RTEComponent.ngOnChanges({
-          controls: new SimpleChange(null, RTEComponent.controls, true),
+          controls: new SimpleChange(null, RTEComponent.controlsDef, true),
           disableControls: new SimpleChange(
             null,
-            RTEComponent.disableControls,
+            RTEComponent.disableControlsDef,
             true
           )
         });
@@ -282,15 +283,10 @@ describe('RichTextEditorComponent', () => {
     it('should display toolbar with controls present in controls array', () => {
       RTEComponent.controls = [BlotType.bold, BlotType.italic];
       fixture.detectChanges();
-
-      const toolbarElement = fixture.debugElement.query(
-        By.css('.quill-toolbar')
-      ).nativeElement;
-
-      expect(toolbarElement.children.length).toEqual(3);
-      expect(toolbarElement.children[0].className).toContain('ql-bold');
-      expect(toolbarElement.children[1].className).toContain('ql-italic');
-      expect(toolbarElement.children[2].nodeName).toEqual('SPAN');
+      const controlElems = fixture.debugElement.queryAll(
+        By.css('.quill-toolbar > [class*="ql-"]:not([hidden])')
+      );
+      expect(controlElems.length).toEqual(2);
     });
   });
 
@@ -337,7 +333,7 @@ describe('RichTextEditorComponent', () => {
       linkButtonElement.click();
 
       const linkPanelElement = overlayContainerElement.querySelector(
-        '.b-panel.rte-link-editor'
+        '.b-panel.rte-link-editor-panel'
       ) as HTMLElement;
 
       expect(linkPanelElement).toBeTruthy();
