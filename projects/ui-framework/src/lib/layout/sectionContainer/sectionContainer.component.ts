@@ -1,5 +1,5 @@
 import {
-  Component, Input, OnInit, TemplateRef,
+  Component, Input,
 } from '@angular/core';
 
 @Component({
@@ -11,7 +11,4 @@ import {
 })
 export class SectionContainerComponent {
   @Input() title: string;
-  constructor() {
-
-  }
 }

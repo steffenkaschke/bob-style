@@ -43,7 +43,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  value | string | type of input field | none
+  title | string | type of input field | none
   ~~~
   ${template}
   ~~~

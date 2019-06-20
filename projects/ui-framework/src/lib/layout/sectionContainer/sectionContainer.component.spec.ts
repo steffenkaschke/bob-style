@@ -51,13 +51,12 @@ describe('SectionContainerComponent', () => {
       });
   }));
 
-  fdescribe('Lazy content init', () => {
+  describe('Lazy content init', () => {
     it('should put transcluded element with attribute [section-action] in the header', () => {
       fixture.detectChanges();
       const suffixElement = fixture.debugElement.query(
         By.css('.label-container [section-action]')
       );
-      console.log('suffixElement.nativeElement.innerHTML', suffixElement.nativeElement.innerHTML);
       expect(suffixElement).toBeTruthy();
       expect(suffixElement.nativeElement.innerHTML).toEqual('<p>Hello</p>');
     });
@@ -66,7 +65,6 @@ describe('SectionContainerComponent', () => {
       const suffixElement = fixture.debugElement.query(
         By.css('.content-container [section-content]')
       );
-      console.log('suffixElement.nativeElement.innerHTML', suffixElement.nativeElement.innerHTML);
       expect(suffixElement).toBeTruthy();
       expect(suffixElement.nativeElement.innerHTML).toEqual('<p>world</p>');
     });
@@ -75,7 +73,6 @@ describe('SectionContainerComponent', () => {
       const suffixElement = fixture.debugElement.query(
         By.css('.title')
       );
-      console.log('suffixElement.nativeElement.innerHTML', suffixElement.nativeElement.innerHTML);
       expect(suffixElement).toBeTruthy();
       expect(suffixElement.nativeElement.innerHTML).toEqual(' TitleHere ');
     });
