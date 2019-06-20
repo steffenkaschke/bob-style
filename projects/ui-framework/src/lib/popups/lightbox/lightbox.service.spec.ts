@@ -28,59 +28,59 @@ import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.componen
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 
-describe('LightboxService', () => {
-  let overlayRef: OverlayRef;
-  let lightboxComponentRef: ComponentRef<LightboxComponent>;
-  let config: LightboxConfig;
-  let lightbox: LightboxData;
-  let lightboxService: LightboxService;
-  let overlayElement: HTMLElement;
+// describe('LightboxService', () => {
+//   let overlayRef: OverlayRef;
+//   let lightboxComponentRef: ComponentRef<LightboxComponent>;
+//   let config: LightboxConfig;
+//   let lightbox: LightboxData;
+//   let lightboxService: LightboxService;
+//   let overlayElement: HTMLElement;
 
-  const testConfigImage = {
-    image:
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
-  };
-  const testConfigVideo = {
-    video: 'youtube.com/imagination/123'
-  };
-  const testConfigComponent = {
-    component: {
-      component: AvatarComponent,
-      attributes: {
-        title: 'John Malkovich',
-        subtitle: 'American actor',
-        orientation: 'vertical',
-        imageSource:
-          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
-        size: AvatarSize.large
-      }
-    },
-    fillScreen: this.fillScreen
-  };
+//   const testConfigImage = {
+//     image:
+//       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
+//   };
+//   const testConfigVideo = {
+//     video: 'youtube.com/imagination/123'
+//   };
+//   const testConfigComponent = {
+//     component: {
+//       component: AvatarComponent,
+//       attributes: {
+//         title: 'John Malkovich',
+//         subtitle: 'American actor',
+//         orientation: 'vertical',
+//         imageSource:
+//           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+//         size: AvatarSize.large
+//       }
+//     },
+//     fillScreen: this.fillScreen
+//   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [LightboxModule, OverlayModule, ButtonsModule, AvatarModule],
-      declarations: [LightboxComponent],
-      providers: [LightboxService],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
-    });
+//   beforeEach(async(() => {
+//     TestBed.configureTestingModule({
+//       imports: [LightboxModule, OverlayModule, ButtonsModule, AvatarModule],
+//       declarations: [LightboxComponent],
+//       providers: [LightboxService],
+//       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
+//     });
 
-    inject(
-      [OverlayContainer, ComponentFactoryResolver, Overlay],
-      (oc: OverlayContainer) => {
-        overlayElement = oc.getContainerElement();
-      }
-    )();
+//     inject(
+//       [OverlayContainer, ComponentFactoryResolver, Overlay],
+//       (oc: OverlayContainer) => {
+//         overlayElement = oc.getContainerElement();
+//       }
+//     )();
 
-    lightboxService = TestBed.get(LightboxService);
-  }));
+//     lightboxService = TestBed.get(LightboxService);
+//   }));
 
-  describe('Lightbox Service', () => {
-    it('should open Lightbox with image', fakeAsync(() => {
-      lightbox = lightboxService.showLightbox(testConfigImage);
+//   describe('Lightbox Service', () => {
+//     it('should open Lightbox with image', fakeAsync(() => {
+//       lightbox = lightboxService.showLightbox(testConfigImage);
 
-      TestBed.dete;
-    }));
-  });
-});
+//       TestBed.dete;
+//     }));
+//   });
+// });
