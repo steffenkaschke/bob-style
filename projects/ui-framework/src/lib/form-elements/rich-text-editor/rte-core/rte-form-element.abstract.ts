@@ -203,21 +203,17 @@ export abstract class RTEformElement extends BaseFormElement
     if (changes.label) {
       this.label = changes.label.currentValue;
     }
-    if (changes.placeholder || changes.label) {
-      this.rteUtils.setEditorPlaceholder(
-        this.editor,
-        this.placeholder || this.label,
-        this.required
-      );
-    }
     if (changes.required) {
       this.required = changes.required.currentValue;
+    }
+    if (changes.placeholder || changes.label || changes.required) {
       this.rteUtils.setEditorPlaceholder(
         this.editor,
         this.placeholder || this.label,
-        this.required
+        this.required && this.placeholder && this.label ? false : this.required
       );
     }
+
     this.onControlChanges(changes);
 
     this.onNgChanges(changes);

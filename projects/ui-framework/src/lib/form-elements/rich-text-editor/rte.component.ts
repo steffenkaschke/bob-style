@@ -166,7 +166,7 @@ export class RichTextEditorComponent extends RTEformElement
     merge(this.editorOptions, {
       placeholder: this.rteUtils.getEditorPlaceholder(
         this.placeholder || this.label,
-        this.required
+        this.required && this.placeholder && this.label ? false : this.required
       ),
       modules: {
         toolbar: {

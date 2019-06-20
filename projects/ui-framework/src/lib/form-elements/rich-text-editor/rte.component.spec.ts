@@ -41,13 +41,13 @@ import { Platform } from '@angular/cdk/platform';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
 import { InputMessageModule } from '../input-message/input-message.module';
-import { not } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   template: `
     <form class="form" [formGroup]="rteForm">
       <b-rich-text-editor
         [label]="'label text'"
+        [placeholder]="'placeholder text'"
         formControlName="rteControl"
       ></b-rich-text-editor>
     </form>
@@ -75,7 +75,7 @@ class TestComponent implements OnInit, OnDestroy {
   }
 }
 
-describe('RichTextEditorComponent', () => {
+fdescribe('RichTextEditorComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 
@@ -208,6 +208,17 @@ describe('RichTextEditorComponent', () => {
         'test label *'
       );
     });
+
+    // it('should put', () => {
+    //   RTEComponent.ngOnChanges({
+    //     label: new SimpleChange(null, 'test label', false)
+    //   });
+    //   fixture.detectChanges();
+
+    //   expect(RTEqlEditorNativeElement.getAttribute('data-placeholder')).toEqual(
+    //     'test label'
+    //   );
+    // });
 
     it('should insert hintMessage text', () => {
       RTEComponent.hintMessage = 'test hint';

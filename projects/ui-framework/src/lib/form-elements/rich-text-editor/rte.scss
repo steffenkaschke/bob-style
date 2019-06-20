@@ -24,6 +24,11 @@ $border-color: $grey-500;
 .bfe-label {
   @include bFormElement-label;
 }
+:host.required {
+  .bfe-label {
+    @include input-requred;
+  }
+}
 
 .quill-editor {
   display: flex;
