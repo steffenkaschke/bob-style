@@ -14,7 +14,7 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
     >
       <b-icon
         [icon]="icon"
-        [size]="iconSize"
+        [size]="iconSize.large"
         [color]="disabled ? iconColor.light : color"
       >
       </b-icon>
@@ -25,12 +25,12 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 export class SquareButtonComponent {
   @Input() type?: ButtonType = ButtonType.primary;
   @Input() icon: Icons;
-  @Input() iconSize: IconSize = IconSize.large;
   @Input() color: IconColor = IconColor.dark;
   @Input() disabled = false;
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
 
   iconColor = IconColor;
+  iconSize = IconSize;
 
   constructor() {}
 

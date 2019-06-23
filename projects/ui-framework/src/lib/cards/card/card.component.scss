@@ -48,11 +48,18 @@
 
 .card-menu {
   position: absolute;
-  top: 0;
+  top: 2px;
   right: 0;
   transition: opacity 0.2s;
   opacity: 0;
   pointer-events: none;
+
+  &::ng-deep {
+    .mat-button {
+      width: 30px;
+      min-width: 30px;
+    }
+  }
 }
 
 .card-content {
@@ -109,7 +116,11 @@
 :host.card-secondary,
 :host.card-tertiary {
   .card-content {
-    @include DisplayFont($font-size-display-3, $font-weight-display-3, $transform: null);
+    @include DisplayFont(
+      $font-size-display-3,
+      $font-weight-display-3,
+      $transform: null
+    );
   }
 }
 
