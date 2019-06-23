@@ -4,9 +4,9 @@
 :host {
   display: inline-flex;
   flex-direction: column;
-  margin: $form-element-margin;
   text-align: left;
 
+  @include form-element-margins;
   @include input-border-colors($add: ' .brd-label:before');
 
   &.disabled {

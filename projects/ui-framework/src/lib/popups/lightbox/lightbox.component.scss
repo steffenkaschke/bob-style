@@ -24,6 +24,7 @@ $lighbox-padding: 50px;
 .lightbox-container {
   display: flex;
   justify-content: center;
+  flex: 1;
 }
 
 .close-button {

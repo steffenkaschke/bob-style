@@ -35,26 +35,34 @@ const note = `
   #### Module
   *LightboxModule*
 
-  #### Properties
-  Name | Type | Description | Default value
+  #### Call arguments
+  Name | Type | Description
   --- | --- | --- | ---
-  config | LightboxConfig | config object with properties:
-  config.component | RenderedComponent | component to be rendered in lightbox | none
-  config.image | string | valid image URL to show in lightbox | none
-  config.video | string | embedable youtube or vimeo link to show in lightbox (other URLs will throw error) | none
-  config.fillScreen | boolean | if content should fill most of the screen (may be important for components) | none
+   <i>interface</i>   | **LightboxConfig** | config object with properties:
+  component | RenderedComponent | component to be rendered in lightbox
+  image | string | valid image URL to show in lightbox
+  video | string | embedable youtube or vimeo link to show in lightbox (other URLs will throw error)
+  fillScreen | boolean | if content should fill most of the screen (may be important for components)
 
+  #### Return object properties
+
+  Name | Type | Description
+  --- | --- | ---
+  <i>interface</i>   | **LightboxData** | service call will return an    object containing:
+  overlayRef | OverlayRef | reference to the the overlay instance
+  lightboxComponentRef | ComponentRef&lt;LightboxComponent&gt; | reference to the Lightbox component
+  config | LightboxConfig | the original configuration, with which the service was called, but with sanitized video/image links (if any)
 
   #### Example call
 
   \`\`\`
-    this.lightboxService.showLightbox({
+this.lightbox = this.lightboxService.showLightbox({
       video: 'https://www.youtube.com/embed/p3j2NYZ8FKs
     })
   \`\`\`
 
   \`\`\`
-    this.lightboxService.showLightbox({
+this.lightbox = this.lightboxService.showLightbox({
       component: {
         component: AvatarComponent,
         attributes: {

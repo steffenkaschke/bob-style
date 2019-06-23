@@ -9,6 +9,7 @@ import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
 import { TruncateTooltipModule } from '../../../services/truncate-tooltip/truncate-tooltip.module';
 import { InputMessageModule } from '../../input-message/input-message.module';
+import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
 
 @NgModule({
   declarations: [MultiSelectComponent],
@@ -22,6 +23,6 @@ import { InputMessageModule } from '../../input-message/input-message.module';
     InputMessageModule
   ],
   exports: [MultiSelectComponent],
-  providers: [ListChangeService, ListModelService]
+  providers: [ListChangeService, ListModelService, DOMhelpers]
 })
 export class MultiSelectModule {}

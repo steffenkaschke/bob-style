@@ -5,6 +5,8 @@ import { InputEventType } from '../form-elements.enum';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMessageModule } from '../input-message/input-message.module';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { InputTypes } from './input.enum';
 
 describe('InputComponent', () => {
   let component: InputComponent;
@@ -14,7 +16,8 @@ describe('InputComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [InputComponent],
-      imports: [NoopAnimationsModule, CommonModule, InputMessageModule]
+      imports: [NoopAnimationsModule, CommonModule, InputMessageModule],
+      providers: [DOMhelpers]
     })
       .compileComponents()
       .then(() => {
@@ -22,12 +25,12 @@ describe('InputComponent', () => {
         component = fixture.componentInstance;
         spyOn(component.changed, 'emit');
         spyOn(component, 'propagateChange');
-        fixture.detectChanges();
       });
   }));
 
   describe('emitInputEvent', () => {
     beforeEach(() => {
+      fixture.detectChanges();
       inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
     });
 
@@ -57,6 +60,21 @@ describe('InputComponent', () => {
       expect(component.propagateChange).toHaveBeenCalledWith(
         'change input value'
       );
+    });
+  });
+
+  describe('transforms', () => {
+    it('should return input value as number', () => {
+      component.inputType = InputTypes.number;
+      fixture.detectChanges();
+      inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
+      inputElement.value = 500;
+      inputElement.dispatchEvent(new Event('input'));
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: InputEventType.onChange,
+        value: 500,
+      });
+      expect(component.propagateChange).toHaveBeenCalledWith(500);
     });
   });
 });

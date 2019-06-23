@@ -18,7 +18,6 @@ import { ChipType } from '../chip/chip.enum';
 import { Chip } from '../chip/chip.interface';
 import { BadgeConfig } from './avatar.interface';
 import { getKeyByValue } from '../../services/utils/functional-utils';
-import { IconSize } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-avatar',

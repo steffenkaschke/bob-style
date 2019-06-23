@@ -9,7 +9,7 @@ import {
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
-import { LightboxConfig } from './lightbox.interface';
+import { LightboxConfig, LightboxData } from './lightbox.interface';
 
 @Component({
   selector: 'b-lightbox-example',
@@ -25,6 +25,8 @@ export class LightboxExampleComponent implements OnDestroy {
   @Input() videoLink: string;
   @Input() showInLightbox: string;
   @Input() fillScreen = false;
+
+  private lightbox: LightboxData;
 
   showLightbox(): void {
     const config: LightboxConfig =
@@ -54,11 +56,11 @@ export class LightboxExampleComponent implements OnDestroy {
           }
         : null;
 
-    this.lightboxService.showLightbox(config);
+    this.lightbox = this.lightboxService.showLightbox(config);
   }
 
   ngOnDestroy(): void {
-    this.lightboxService.closeLightbox();
+    this.lightboxService.closeLightbox(this.lightbox);
   }
 }
 

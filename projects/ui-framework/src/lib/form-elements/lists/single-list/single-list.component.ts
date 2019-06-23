@@ -30,9 +30,9 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   @Input() options: SelectGroupOption[];
   @Input() maxHeight = this.listElHeight * 8;
   @Input() showSingleGroupHeader = false;
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
+  @Input() showNoneOption = false;
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() clear: EventEmitter<void> = new EventEmitter<void>();
 
   noGroupHeaders: boolean;
   searchValue: string;
@@ -97,6 +97,10 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
       s
     );
     this.updateLists();
+  }
+
+  getListHeight(): number {
+    return (this.listOptions.length + (this.showNoneOption ? 1 : 0)) * this.listElHeight;
   }
 
   private updateLists(): void {
