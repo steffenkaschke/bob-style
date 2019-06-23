@@ -72,11 +72,11 @@ describe('SectionContainerComponent', () => {
         '<p>world</p>'
       );
     });
-    it('should init label', () => {
+    it('should init title', () => {
       fixture.detectChanges();
-      const labelElement = fixture.debugElement.query(By.css('b-display-3'));
-      expect(labelElement).toBeTruthy();
-      expect(labelElement.nativeElement.innerHTML).toEqual('TitleHere');
+      const titleElement = fixture.debugElement.query(By.css('b-display-3'));
+      expect(titleElement).toBeTruthy();
+      expect(titleElement.nativeElement.innerHTML).toEqual('TitleHere');
     });
   });
 });
