@@ -28,59 +28,115 @@ import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.componen
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 
-// describe('LightboxService', () => {
-//   let overlayRef: OverlayRef;
-//   let lightboxComponentRef: ComponentRef<LightboxComponent>;
-//   let config: LightboxConfig;
-//   let lightbox: LightboxData;
-//   let lightboxService: LightboxService;
-//   let overlayElement: HTMLElement;
+fdescribe('LightboxService', () => {
+  let overlayRef: OverlayRef;
+  let lightboxComponentRef: ComponentRef<LightboxComponent>;
+  let config: LightboxConfig;
+  let lightbox: LightboxData;
+  let lightboxService: LightboxService;
+  let overlayElement: HTMLElement;
 
-//   const testConfigImage = {
-//     image:
-//       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
-//   };
-//   const testConfigVideo = {
-//     video: 'youtube.com/imagination/123'
-//   };
-//   const testConfigComponent = {
-//     component: {
-//       component: AvatarComponent,
-//       attributes: {
-//         title: 'John Malkovich',
-//         subtitle: 'American actor',
-//         orientation: 'vertical',
-//         imageSource:
-//           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
-//         size: AvatarSize.large
-//       }
-//     },
-//     fillScreen: this.fillScreen
-//   };
+  const testConfigImage = {
+    image:
+      // tslint:disable-next-line: max-line-length
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
+  };
+  const testConfigVideo = {
+    video: 'youtube.com/imagination/123'
+  };
+  const testConfigComponent = {
+    component: {
+      component: AvatarComponent,
+      attributes: {
+        title: 'John Malkovich',
+        subtitle: 'American actor',
+        orientation: 'vertical',
+        imageSource:
+          // tslint:disable-next-line: max-line-length
+          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+        size: AvatarSize.large
+      }
+    },
+    fillScreen: false
+  };
 
-//   beforeEach(async(() => {
-//     TestBed.configureTestingModule({
-//       imports: [LightboxModule, OverlayModule, ButtonsModule, AvatarModule],
-//       declarations: [LightboxComponent],
-//       providers: [LightboxService],
-//       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
-//     });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [LightboxModule, OverlayModule, ButtonsModule, AvatarModule],
+      declarations: [],
+      providers: [LightboxService],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
+    });
 
-//     inject(
-//       [OverlayContainer, ComponentFactoryResolver, Overlay],
-//       (oc: OverlayContainer) => {
-//         overlayElement = oc.getContainerElement();
-//       }
-//     )();
+    inject(
+      [OverlayContainer, ComponentFactoryResolver, Overlay],
+      (oc: OverlayContainer) => {
+        overlayElement = oc.getContainerElement();
+      }
+    )();
 
-//     lightboxService = TestBed.get(LightboxService);
-//   }));
+    lightboxService = TestBed.get(LightboxService);
+  }));
 
-//   describe('Lightbox Service', () => {
-//     it('should open Lightbox with image', fakeAsync(() => {
-//       lightbox = lightboxService.showLightbox(testConfigImage);
+  describe('Lightbox Service', () => {
+    it('should open Lightbox with image', () => {
+      lightbox = lightboxService.showLightbox(testConfigImage);
+      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
 
-//       TestBed.dete;
-//     }));
-//   });
-// });
+      const lightContainerEl = overlayElement.querySelector(
+        '.lightbox-container'
+      ) as HTMLElement;
+      const imageEl = overlayElement.querySelector(
+        '.lightbox-image'
+      ) as HTMLElement;
+
+      expect(lightContainerEl.children.length).toEqual(1);
+      expect(imageEl).toBeTruthy();
+      expect(imageEl.getAttribute('src')).toContain(
+        'iVBORw0KGgoAAAANSUhEUgAAAA'
+      );
+    });
+    it('should open Lightbox with video', () => {
+      lightbox = lightboxService.showLightbox(testConfigVideo);
+      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+
+      const lightContainerEl = overlayElement.querySelector(
+        '.lightbox-container'
+      ) as HTMLElement;
+      const videoEl = overlayElement.querySelector(
+        '.lightbox-video'
+      ) as HTMLElement;
+
+      expect(lightContainerEl.children.length).toEqual(1);
+      expect(videoEl).toBeTruthy();
+      expect(videoEl.getAttribute('src')).toEqual(
+        'http://youtube.com/imagination/123'
+      );
+    });
+    it('should open Lightbox with Avatar component', () => {
+      lightbox = lightboxService.showLightbox(testConfigComponent);
+      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+
+      const lightContainerEl = overlayElement.querySelector(
+        '.lightbox-container'
+      ) as HTMLElement;
+
+      const avatarEl = overlayElement.querySelector(
+        '.lightbox-component b-avatar'
+      ) as HTMLElement;
+      const avatarElImg = overlayElement.querySelector(
+        '.lightbox-component b-avatar .avatar'
+      ) as HTMLElement;
+      const avatarElTitle = overlayElement.querySelector(
+        '.lightbox-component b-avatar .title'
+      ) as HTMLElement;
+
+      expect(lightContainerEl.children.length).toEqual(1);
+      expect(avatarEl).toBeTruthy();
+
+      expect(avatarElImg.getAttribute('style')).toEqual(
+        'http://youtube.com/imagination/123'
+      );
+    });
+  });
+});
