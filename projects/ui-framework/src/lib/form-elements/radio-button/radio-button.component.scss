@@ -11,6 +11,10 @@
 
   &.disabled {
     @include disabled-state;
+
+    .brd-label:before {
+      pointer-events: none;
+    }
   }
 }
 
