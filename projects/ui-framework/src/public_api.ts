@@ -94,8 +94,10 @@ export { InfoTooltipComponent } from './lib/popups/info-tooltip/info-tooltip.com
 export { EmployeesShowcaseModule } from './lib/buttons-indicators/employees-showcase/employees-showcase.module';
 export { EmployeesShowcaseComponent } from './lib/buttons-indicators/employees-showcase/employees-showcase.component';
 export { EmployeeShowcase } from './lib/buttons-indicators/employees-showcase/employees-showcase.interface';
-
-
+// Empty State Module
+export { EmptyStateModule } from './lib/buttons-indicators/empty-state/empty-state.module';
+export { EmptyStateComponent } from './lib/buttons-indicators/empty-state/empty-state.component';
+export { EmptyStateConfig } from './lib/buttons-indicators/empty-state/empty-state.types';
 /*
  * Form Elements
  */
