@@ -84,7 +84,6 @@ $input-focus-border-color: $grey-700;
 
 @mixin bFormElement {
   display: flex;
-  width: 100%;
   flex-direction: column;
   box-sizing: border-box;
   text-align: left;
