@@ -34,3 +34,13 @@
     margin-right: 10px;
   }
 }
+
+:host.required.has-label {
+  .bfe-label {
+    @include input-requred;
+  }
+
+  .bchk-label:after {
+    display: none;
+  }
+}
