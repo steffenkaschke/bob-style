@@ -9,7 +9,7 @@ import {
 import { CardData } from '../cards.interface';
 import { CardType } from '../cards.enum';
 import { RenderedComponent } from '../../services/component-renderer/component-renderer.interface';
-import { Icons, IconSize } from '../../icons/icons.enum';
+import { Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 
 import {
@@ -33,7 +33,6 @@ export class CardComponent {
   cardType = CardType;
   button = ButtonType;
   icons = Icons;
-  iconSize = IconSize;
   ifString = isString;
   ifComponent = isRenderedComponent;
 
