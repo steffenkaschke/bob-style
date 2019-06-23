@@ -13,7 +13,7 @@ import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.componen
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 
-fdescribe('LightboxService', () => {
+describe('LightboxService', () => {
   let lightbox: LightboxData;
   let lightboxService: LightboxService;
   let overlayElement: HTMLElement;
@@ -21,7 +21,8 @@ fdescribe('LightboxService', () => {
   const testConfigImage = {
     image:
       // tslint:disable-next-line: max-line-length
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+    fillScreen: true
   };
   const testConfigVideo = {
     video: 'youtube.com/imagination/123'
@@ -38,8 +39,7 @@ fdescribe('LightboxService', () => {
           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
         size: AvatarSize.large
       }
-    },
-    fillScreen: false
+    }
   };
 
   beforeEach(async(() => {
@@ -61,9 +61,6 @@ fdescribe('LightboxService', () => {
   }));
 
   describe('Lightbox Service', () => {
-    // it('should return', () => {
-
-    // });
     it('should open Lightbox with image', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
       lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
@@ -82,6 +79,7 @@ fdescribe('LightboxService', () => {
       );
       lightboxService.closeLightbox(lightbox);
     });
+
     it('should open Lightbox with video', () => {
       lightbox = lightboxService.showLightbox(testConfigVideo);
       lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
@@ -100,6 +98,7 @@ fdescribe('LightboxService', () => {
       );
       lightboxService.closeLightbox(lightbox);
     });
+
     it('should open Lightbox with Avatar component', () => {
       lightbox = lightboxService.showLightbox(testConfigComponent);
       lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
@@ -126,6 +125,16 @@ fdescribe('LightboxService', () => {
       expect(avatarElTitle.textContent).toContain('John Malkovich');
       lightboxService.closeLightbox(lightbox);
     });
+
+    it('should add the right classnames and respect fillScreen property', () => {
+      lightbox = lightboxService.showLightbox(testConfigImage);
+      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+      const lightContainerEl = overlayElement.querySelector(
+        'b-lightbox'
+      ) as HTMLElement;
+      expect(lightContainerEl.className).toEqual('type-image fill-cover');
+    });
+
     it('should close Lightbox Close button', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
       lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
