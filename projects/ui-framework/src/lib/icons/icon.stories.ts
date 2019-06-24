@@ -18,6 +18,7 @@ const iconStories = storiesOf(ComponentGroupType.Icons, module).addDecorator(
   withKnobs
 );
 
+const allIcons = Icons;
 const iconClasses = Object.values(Icons).sort();
 
 let iconKeys = iconClasses.reduce((acc, ic) => {
@@ -34,8 +35,9 @@ const size = values(IconSize);
 const color = values(IconColor);
 
 const template = `
+
 <b-icon [toolTipSummary]="toolTipSummary"
-        [icon]="Icons[icon]"
+        [icon]="icon"
         [size]="size"
         [color]="color"
         [hasHoverState]="hasHoverState">
@@ -76,7 +78,7 @@ iconStories.add(
       template: storyTemplate,
       props: {
         toolTipSummary: text('toolTipSummary', 'This is the icon element'),
-        icon: select('icon', iconKeys, 'person'),
+        icon: select('icon', iconClasses, Icons.person),
         size: select('size', size, IconSize.large),
         color: select('color', color, IconColor.normal),
         hasHoverState: boolean('hasHoverState', true)
