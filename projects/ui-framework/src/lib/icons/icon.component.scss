@@ -1,6 +1,12 @@
 @import '../style/colors.scss';
 @import '../style/mixins.scss';
 
+$icon-size-small: 12px;
+$icon-size-medium: 16px;
+$icon-size-large: 24px;
+$icon-size-xlarge: 46px;
+$icon-size-xxlarge: 60px;
+
 :host {
   display: inline-flex;
   vertical-align: middle;
@@ -26,34 +32,34 @@
 
 .b-icon {
   &.small {
-    @include size(12px);
-    font-size: 12px;
-    line-height: 12px;
+    @include size($icon-size-small);
+    font-size: $icon-size-small;
+    line-height: $icon-size-small;
   }
 
   &.medium {
-    @include size(16px);
-    font-size: 16px;
-    line-height: 16px;
+    @include size($icon-size-medium);
+    font-size: $icon-size-medium;
+    line-height: $icon-size-medium;
   }
 
   &,
   &.large {
-    @include size(24px);
-    font-size: 24px;
-    line-height: 24px;
+    @include size($icon-size-large);
+    font-size: $icon-size-large;
+    line-height: $icon-size-large;
   }
 
   &.x-large {
-    @include size(46px);
-    font-size: 46px;
-    line-height: 46px;
+    @include size($icon-size-xlarge);
+    font-size: $icon-size-xlarge;
+    line-height: $icon-size-xlarge;
   }
 
   &.xx-large {
-    @include size(60px);
-    font-size: 60px;
-    line-height: 60px;
+    @include size($icon-size-xxlarge);
+    font-size: $icon-size-xxlarge;
+    line-height: $icon-size-xxlarge;
   }
 
   &,

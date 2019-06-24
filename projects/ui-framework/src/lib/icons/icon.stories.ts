@@ -11,14 +11,11 @@ import { reduce, values, keys } from 'lodash';
 import { ComponentGroupType } from '../consts';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { access } from 'fs';
-import { getKeyByValue } from '../services/utils/functional-utils';
 
 const iconStories = storiesOf(ComponentGroupType.Icons, module).addDecorator(
   withKnobs
 );
 
-const allIcons = Icons;
 const iconClasses = Object.values(Icons).sort();
 
 let iconKeys = iconClasses.reduce((acc, ic) => {
