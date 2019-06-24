@@ -21,7 +21,6 @@ import { TypographyModule } from '../../typography/typography.module';
 import { LightboxModule } from './lightbox.module';
 import { IconSize } from '../../icons/icons.enum';
 import { IconComponent } from '../../icons/icon.component';
-import { IconService } from '../../icons/icon.service';
 import createSpyObj = jasmine.createSpyObj;
 import SpyObj = jasmine.SpyObj;
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
