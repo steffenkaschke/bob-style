@@ -6,44 +6,44 @@ import { IconColor, Icons, IconSize } from './icons.enum';
 import createSpyObj = jasmine.createSpyObj;
 import SpyObj = jasmine.SpyObj;
 
-describe('IconElementComponent', () => {
-  let fixture: ComponentFixture<IconComponent>;
-  let component: IconComponent;
-  let spyIconService: SpyObj<IconService>;
+// describe('IconElementComponent', () => {
+//   let fixture: ComponentFixture<IconComponent>;
+//   let component: IconComponent;
+//   let spyIconService: SpyObj<IconService>;
 
-  beforeEach(async(() => {
-    spyIconService =
-      createSpyObj('spyIconService', ['initIcon']);
+//   beforeEach(async(() => {
+//     spyIconService =
+//       createSpyObj('spyIconService', ['initIcon']);
 
-    TestBed.configureTestingModule({
-      declarations: [IconComponent],
-      providers: [
-        { provide: IconService, useValue: spyIconService },
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents();
-  }));
+//     TestBed.configureTestingModule({
+//       declarations: [IconComponent],
+//       providers: [
+//         { provide: IconService, useValue: spyIconService },
+//       ],
+//       schemas: [NO_ERRORS_SCHEMA]
+//     }).compileComponents();
+//   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(IconComponent);
-    component = fixture.componentInstance;
-    component.icon = Icons.toDos_link;
-    fixture.detectChanges();
-  });
+//   beforeEach(() => {
+//     fixture = TestBed.createComponent(IconComponent);
+//     component = fixture.componentInstance;
+//     component.icon = Icons.toDos_link;
+//     fixture.detectChanges();
+//   });
 
-  describe('ngOnInit', () => {
-    it('should call iconElementService.initIcon with the correct icon', () => {
-      component.ngOnInit();
-      expect(spyIconService.initIcon).toHaveBeenCalledWith(Icons.toDos_link);
-    });
-  });
+//   describe('ngOnInit', () => {
+//     it('should call iconElementService.initIcon with the correct icon', () => {
+//       component.ngOnInit();
+//       expect(spyIconService.initIcon).toHaveBeenCalledWith(Icons.toDos_link);
+//     });
+//   });
 
-  describe('getClassNames', () => {
-    it('Should return both type and size', () => {
-      component.color = IconColor.primary;
-      component.size = IconSize.medium;
-      const result = component.getClassNames();
-      expect(result).toEqual('medium primary');
-    });
-  });
-});
+//   describe('getClassNames', () => {
+//     it('Should return both type and size', () => {
+//       component.color = IconColor.primary;
+//       component.size = IconSize.medium;
+//       const result = component.getClassNames();
+//       expect(result).toEqual('medium primary');
+//     });
+//   });
+// });
