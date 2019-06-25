@@ -109,7 +109,12 @@
   min-height: 240px;
 
   .card-content {
-    @include DisplayFont($font-size-display-4, 600, $transform: null);
+    @include DisplayFont(
+      $font-size-display-4,
+      600,
+      $transform: null,
+      $addCssVars: true
+    );
   }
 }
 
@@ -119,7 +124,8 @@
     @include DisplayFont(
       $font-size-display-3,
       $font-weight-display-3,
-      $transform: null
+      $transform: null,
+      $addCssVars: true
     );
   }
 }

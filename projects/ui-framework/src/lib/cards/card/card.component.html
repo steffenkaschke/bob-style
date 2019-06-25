@@ -23,7 +23,8 @@
 
 <p class="card-content"
    [b-truncate-tooltip]="type === cardType.primary ? 4 : 3"
-   [delay]="100">
+   [delay]="100"
+   [trustCssVars]="true">
   {{ card.data.text }}
 </p>
 
