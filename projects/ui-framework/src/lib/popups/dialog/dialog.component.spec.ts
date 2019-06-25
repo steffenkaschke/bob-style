@@ -211,7 +211,7 @@ describe('DialogComponent', () => {
         okButton.clicked.emit();
         fixture.detectChanges();
         const okButtonEl = fixture.debugElement.query(By.css('.ok-button'));
-        expect(okButtonEl.nativeElement.innerText).toEqual('confirm');
+        expect(okButtonEl.nativeElement.innerText).toContain('confirm');
       });
       it('should remove confirmation when clicking cancel and not close dialog', () => {
         const okButton = fixture.debugElement.query(By.css('.ok-button'))
