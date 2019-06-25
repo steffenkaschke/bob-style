@@ -11,6 +11,10 @@
 
   &.disabled {
     @include disabled-state;
+
+    .brd-label:before {
+      pointer-events: none;
+    }
   }
 }
 
@@ -44,10 +48,6 @@
   @include bFormElement-label;
 }
 
-:host.required .bfe-label {
-  @include input-requred;
-}
-
 .brd-input {
   @include radio($disabled-selector: null, $required-selector: null);
 }
@@ -58,4 +58,8 @@
   &:before {
     margin-right: 10px;
   }
+}
+
+:host.required .bfe-label {
+  @include input-requred;
 }

@@ -1,3 +1,4 @@
+@import '../../style/mixins';
 @import './checkbox.mixin';
 @import '../form-element.mixin';
 
@@ -11,6 +12,10 @@
 
   &.disabled {
     @include disabled-state;
+
+    .bchk-label:before {
+      pointer-events: none;
+    }
   }
 }
 
@@ -27,5 +32,15 @@
 
   &:before {
     margin-right: 10px;
+  }
+}
+
+:host.required.has-label {
+  .bfe-label {
+    @include input-requred;
+  }
+
+  .bchk-label:after {
+    display: none;
   }
 }
