@@ -1,172 +1,132 @@
 @import '../style/colors.scss';
+@import '../style/mixins.scss';
 
-:host ::ng-deep {
-  line-height: 1;
-  .mat-icon {
-    vertical-align: top;
-    svg {
-      pointer-events: none;
-      path, line {
-        transition: fill .1s ease, stroke .1s ease;
-      }
-      path[fill='none'] {
-        fill: transparent !important;
-      }
-    }
-    &.dark {
-      path, circle {
-        fill: $grey-700 !important;
-      }
-      line {
-        stroke: $grey-700 !important;
-      }
-    }
-    &.normal {
-      path, circle {
-        fill: $grey-600 !important;
-      }
-      line {
-        stroke: $grey-600 !important;
-      }
-    }
-    &.light {
-      path, circle {
-        fill: $grey-500 !important;
-      }
-      line {
-        stroke: $grey-500 !important;
-      }
-    }
-    &.white {
-      path, circle {
-        fill: $white !important;
-      }
-      line {
-        stroke: $white !important;
-      }
-    }
-    &.primary {
-      path, circle {
-        fill: var(--primary-500) !important;
-      }
-      line {
-        stroke: var(--primary-500) !important;
-      }
-    }
-    &.inform {
-      path, circle {
-        fill: var(--inform-500) !important;
-      }
-      line {
-        stroke: var(--inform-500) !important;
-      }
-    }
-    &.negative {
-      path, circle {
-        fill: var(--negative-500) !important;
-      }
-      line {
-        stroke: var(--negative-500) !important;
-      }
-    }
-    &.positive {
-      path, circle {
-        fill: var(--positive-500) !important;
-      }
-      line {
-        stroke: var(--positive-500) !important;
-      }
-    }
-    &.has-hover-state:hover {
-      svg path[fill='none'] {
-        fill: transparent !important;
-      }
-      &.dark {
-        path, circle {
-          fill: $grey-700 !important;
-        }
-        line {
-          stroke: $grey-700 !important;
-        }
-      }
-      &.normal {
-        path, circle {
-          fill: $grey-700 !important;
-        }
-        line {
-          stroke: $grey-700 !important;
-        }
+$icon-size-small: 12px;
+$icon-size-medium: 16px;
+$icon-size-large: 24px;
+$icon-size-xlarge: 46px;
+$icon-size-xxlarge: 60px;
 
-      }
-      &.light {
-        path, circle {
-          fill: $grey-600 !important;
-        }
-        line {
-          stroke: $grey-600 !important;
+:host {
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  position: relative;
+  transition: color 0.1s ease;
 
-        }
-      }
-      &.white {
-        path, circle {
-          fill: $white !important;
-        }
-        line {
-          stroke: $white !important;
-        }
-      }
-      &.primary {
-        path, circle {
-          fill: var(--primary-700) !important;
-        }
-        line {
-          stroke: var(--primary-700) !important;
-        }
-      }
-      &.inform {
-        path, circle {
-          fill: var(--inform-700) !important;
-        }
-        line {
-          stroke: var(--inform-700) !important;
-        }
-      }
-      &.positive {
-        path, circle {
-          fill: var(--positive-700) !important;
-        }
-        line {
-          stroke: var(--positive-700) !important;
-        }
-      }
-      &.negative {
-        path, circle {
-          fill: var(--negative-700) !important;
-        }
-        line {
-          stroke: var(--negative-700) !important;
-        }
-      }
+  .b-icon {
+    position: relative;
+    pointer-events: none;
+
+    &,
+    &:before {
+      display: block;
+      text-decoration: none !important;
     }
-    &.small {
-      height: 12px;
-      width: 12px;
+
+    &:before {
+      @include size(inherit);
     }
-    &.medium {
-      height: 16px;
-      width: 16px;
-    }
-    &.large {
-      height: 24px;
-      width: 24px;
-    }
-    &.x-large {
-      height: 46px;
-      width: 46px;
-    }
-    &.xx-large {
-      height: 60px;
-      width: 60px;
-    }
+  }
+}
+
+.b-icon {
+  &.small {
+    @include size($icon-size-small);
+    font-size: $icon-size-small;
+    line-height: $icon-size-small;
+  }
+
+  &.medium {
+    @include size($icon-size-medium);
+    font-size: $icon-size-medium;
+    line-height: $icon-size-medium;
+  }
+
+  &,
+  &.large {
+    @include size($icon-size-large);
+    font-size: $icon-size-large;
+    line-height: $icon-size-large;
+  }
+
+  &.x-large {
+    @include size($icon-size-xlarge);
+    font-size: $icon-size-xlarge;
+    line-height: $icon-size-xlarge;
+  }
+
+  &.xx-large {
+    @include size($icon-size-xxlarge);
+    font-size: $icon-size-xxlarge;
+    line-height: $icon-size-xxlarge;
+  }
+
+  &,
+  &.dark {
+    color: $grey-700;
+  }
+
+  &.normal {
+    color: $grey-600;
+  }
+
+  &.light {
+    color: $grey-500;
+  }
+
+  &.white {
+    color: $white;
+  }
+
+  &.primary {
+    color: var(--primary-500);
+  }
+
+  &.inform {
+    color: var(--inform-500);
+  }
+
+  &.negative {
+    color: var(--negative-500);
+  }
+
+  &.positive {
+    color: var(--positive-500);
+  }
+}
+
+:host:hover .b-icon.has-hover {
+  &,
+  &.dark {
+    color: $grey-800;
+  }
+
+  &.normal {
+    color: $grey-700;
+  }
+
+  &.light {
+    color: $grey-600;
+  }
+
+  &.white {
+    color: $white;
+  }
+
+  &.primary {
+    color: var(--primary-700);
+  }
+
+  &.inform {
+    color: var(--inform-700);
+  }
+
+  &.positive {
+    color: var(--positive-700);
+  }
+
+  &.negative {
+    color: var(--negative-700);
   }
 }
