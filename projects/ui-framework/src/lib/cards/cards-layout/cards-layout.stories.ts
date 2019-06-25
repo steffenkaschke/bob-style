@@ -1,11 +1,23 @@
 import { storiesOf } from '@storybook/angular';
-import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  array,
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardsModule } from '../cards.module';
 
-import { CardsMockData, AddCardMockData } from '../cardsMockData';
+import {
+  CardsMockData,
+  AddCardMockData,
+  EmployeeCardsMockData
+} from '../cards.mock';
 import { CardType } from '../cards.enum';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,7 +27,9 @@ import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { SliderModule } from '../../buttons-indicators/slider/slider.module';
 import { SliderComponent } from '../../buttons-indicators/slider/slider.component';
 
-const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-cards
@@ -26,10 +40,22 @@ const template = `
 </b-cards>
 `;
 
+const template2 = `
+<b-cards
+    [type]="type"
+    [cards]="employeeCardsData"
+    (cardClicked)="cardClickHandler($event)">
+</b-cards>
+`;
+
 const storyTemplate = `
 <b-story-book-layout [title]="'Cards Layout'">
   <div style="min-width:100%; min-height: 100%; padding: 30px; background: rgb(247,247,247);">
+  <h3>Cards</h3>
     ${template}
+    <br><br>
+    <h3>Employee Cards</h3>
+    ${template2}
   </div>
 </b-story-book-layout>
 `;
@@ -119,11 +145,18 @@ story.add(
       props: {
         type: select('type', values(CardType), CardType.primary),
         addCard: object('addCard', addCardMockData),
-        cardsData: object('cards', CardsMockData),
+        cardsData: object('cardsData', CardsMockData),
+        employeeCardsData: object('employeeCardsData', EmployeeCardsMockData),
         cardClickHandler: action('Card clicked')
       },
       moduleMetadata: {
-        imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule, AvatarModule, SliderModule],
+        imports: [
+          StoryBookLayoutModule,
+          BrowserAnimationsModule,
+          CardsModule,
+          AvatarModule,
+          SliderModule
+        ],
         entryComponents: [AvatarComponent, SliderComponent]
       }
     };

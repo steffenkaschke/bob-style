@@ -6,7 +6,7 @@ import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-import { CardsMockData } from '../cardsMockData';
+import { CardsMockData } from '../cards.mock';
 import { CardType } from '../cards.enum';
 
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';

@@ -16,7 +16,6 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  min-width: 150px;
   padding: 20px;
   border: 1px solid $grey-500;
   border-radius: 4px;
@@ -107,6 +106,7 @@
 
 :host.card-primary {
   min-height: 240px;
+  min-width: 190px;
 
   .card-content {
     @include DisplayFont(
@@ -120,6 +120,8 @@
 
 :host.card-secondary,
 :host.card-tertiary {
+  min-width: 260px;
+
   .card-content {
     @include DisplayFont(
       $font-size-display-3,

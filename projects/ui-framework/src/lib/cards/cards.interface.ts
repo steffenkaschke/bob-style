@@ -3,7 +3,7 @@ import { MenuItem } from '../navigation/menu/menu.interface';
 import { Avatar } from '../buttons-indicators/avatar/avatar.interface';
 
 export interface CardDataType {
-  text: string;
+  text?: string;
   header?: string | RenderedComponent;
   footer?: string | RenderedComponent;
   employee?: Avatar;

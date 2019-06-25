@@ -6,23 +6,12 @@ import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-import { CardsMockData } from '../cardsMockData';
+import { EmployeeCardsMockData } from '../cards.mock';
 import { CardType } from '../cards.enum';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
 );
-
-const card = {
-  data: {
-    employee: {
-      imageSource:
-        'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg',
-      title: 'John Doe',
-      subtitle: 'Web Developer'
-    }
-  }
-};
 
 const template = `
 <b-card-employee [card]="cardData"
@@ -71,7 +60,7 @@ story.add(
       template: storyTemplate,
       props: {
         type: select('type', values(CardType), CardType.primary),
-        cardData: object('card', card)
+        cardData: object('card', EmployeeCardsMockData[0])
       },
       moduleMetadata: {
         imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule],
