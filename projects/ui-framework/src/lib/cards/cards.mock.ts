@@ -119,7 +119,7 @@ export const CardsMockData: CardData[] = [
 export const EmployeeCardsMockData: CardData[] = [
   {
     data: {
-      employee: {
+      avatar: {
         imageSource: 'http://i.pravatar.cc/200?img=3',
         title: 'Dylan Herrera',
         subtitle: 'Product designer'
@@ -128,7 +128,7 @@ export const EmployeeCardsMockData: CardData[] = [
   },
   {
     data: {
-      employee: {
+      avatar: {
         imageSource: 'http://i.pravatar.cc/200?img=2',
         title: 'Joel Sanders',
         subtitle: 'Business developer'
@@ -137,7 +137,7 @@ export const EmployeeCardsMockData: CardData[] = [
   },
   {
     data: {
-      employee: {
+      avatar: {
         imageSource: 'http://i.pravatar.cc/200?img=1',
         title: 'Nora Herrera',
         subtitle: 'Front-end engineer'
@@ -146,7 +146,7 @@ export const EmployeeCardsMockData: CardData[] = [
   },
   {
     data: {
-      employee: {
+      avatar: {
         imageSource: 'http://i.pravatar.cc/200?img=4',
         title: 'Jaspreet Bhamrai',
         subtitle: 'Product designer'
@@ -155,7 +155,7 @@ export const EmployeeCardsMockData: CardData[] = [
   },
   {
     data: {
-      employee: {
+      avatar: {
         imageSource: 'http://i.pravatar.cc/200?img=5',
         title: 'Chioke Okonkwo',
         subtitle: 'Business developer'
@@ -164,7 +164,7 @@ export const EmployeeCardsMockData: CardData[] = [
   },
   {
     data: {
-      employee: {
+      avatar: {
         imageSource: 'http://i.pravatar.cc/200?img=6',
         title: 'Abhoy Latif',
         subtitle: 'Business developer'

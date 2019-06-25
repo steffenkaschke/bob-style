@@ -1,5 +1,11 @@
 import { storiesOf } from '@storybook/angular';
-import { object, select, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  object,
+  select,
+  withKnobs,
+  boolean
+} from '@storybook/addon-knobs/angular';
+import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardsModule } from '../cards.module';
@@ -14,8 +20,11 @@ const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
 );
 
 const template = `
-<b-card-employee [card]="cardData"
-        [type]="type">
+<b-card-employee
+        [card]="cardData"
+        [type]="type"
+        [clickable]="clickable"
+        (clicked)="cardClickHandler($event)">
 </b-card-employee>
 `;
 
@@ -28,7 +37,7 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Single Card
+  ## Employee Card
 
   #### Module
   *CardsModule*
@@ -42,14 +51,18 @@ const note = `
   --- | --- | --- | ---
   type | CardType | Card theme | primary (optional)
   card | CardData | card contents data | none
+  clickable | boolean | is the card clickable? | false
+  clicked | Function | handler of Card Clicked event | none
 
   #### card: CardData - single card data properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
   data | CardDataType | card data | none
-  menu | MenuItem[] | array of menu items | none (optional)
+  data.avatar | Avatar | object describing user avatar: {imageSource, title, subtitle} | none
 
-  *Note:* For desctiption of [data: CardDataType] properties, see <u>Cards Layout</u> story.
+
+
+  *Note:* For more info on [data: CardDataType] properties, see <u>Cards Layout</u> story.
 
 `;
 
@@ -60,7 +73,9 @@ story.add(
       template: storyTemplate,
       props: {
         type: select('type', values(CardType), CardType.primary),
-        cardData: object('card', EmployeeCardsMockData[0])
+        clickable: boolean('clickable', true),
+        cardData: object('card', EmployeeCardsMockData[0]),
+        cardClickHandler: action('Card clicked')
       },
       moduleMetadata: {
         imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule],

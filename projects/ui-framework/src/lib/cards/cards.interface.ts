@@ -6,7 +6,7 @@ export interface CardDataType {
   text?: string;
   header?: string | RenderedComponent;
   footer?: string | RenderedComponent;
-  employee?: Avatar;
+  avatar?: Avatar;
 }
 
 export interface CardData {

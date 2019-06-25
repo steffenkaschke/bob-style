@@ -92,6 +92,7 @@ const note = `
   - | RenderedComponent  | object describing a Component to be displayed in the card header | none
   footer | string  | text to put in card footer | none
   - | RenderedComponent  | object describing a Component to be displayed in the card footer | none
+  avatar | Avatar | <u>for employee-card</u> - object describing user avatar: {imageSource, title, subtitle} | none
 
   *Note:* If using RenderedComponent for footer/header, consumer must
    declare the component to be used in entryComponents section of the module
@@ -100,37 +101,49 @@ const note = `
 
   ##### CardData example
 
-  \`\`\`
-
-{
-  data: {
-    text: 'Compensation update',
-    header: {
-      component: AvatarComponent,
-      attributes: {
-        imageSource: 'http://....',
-        size: AvatarSize.mini,
-        title: 'Dylan Herrera'
+\`\`\`
+  {
+    data: {
+      text: 'Compensation update',
+      header: {
+        component: AvatarComponent,
+        attributes: {
+          imageSource: 'http://....',
+          size: AvatarSize.mini,
+          title: 'Dylan Herrera'
+        }
+      },
+      footer: {
+        component: SliderComponent,
+        attributes: {
+          value: 78,
+          showLabel: false,
+          readOnly: true
+        }
       }
     },
-    footer: {
-      component: SliderComponent,
-      attributes: {
-        value: 78,
-        showLabel: false,
-        readOnly: true
+    menu: [
+      {
+        label: 'Do this',
+        action: handler()
+      }, ...
+    ]
+  }
+\`\`\`
+
+  ##### Employee-card CardData example
+
+\`\`\`
+  {
+    data: {
+      avatar: {
+        imageSource: 'http://i.pravatar.cc/200?img=5',
+        title: 'Chioke Okonkwo',
+        subtitle: 'Business developer'
       }
     }
-  },
-  menu: [
-    {
-      label: 'Do this',
-      action: handler()
-    }, ...
-  ]
-}
-
-  \`\`\`
+  }
+\`\`\`
 
 `;
 
