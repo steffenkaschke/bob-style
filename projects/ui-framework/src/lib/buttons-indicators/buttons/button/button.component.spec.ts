@@ -5,22 +5,16 @@ import { ButtonSize, ButtonType } from '../buttons.enum';
 import { By } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
 import { IconsModule } from '../../../icons/icons.module';
-import { IconService } from '../../../icons/icon.service';
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
-import SpyObj = jasmine.SpyObj;
-import createSpyObj = jasmine.createSpyObj;
 
 describe('ButtonComponent', () => {
   let component: ButtonComponent;
   let fixture: ComponentFixture<ButtonComponent>;
-  let spyIconService: SpyObj<IconService>;
 
   beforeEach(async(() => {
-    spyIconService = createSpyObj('spyIconService', ['initIcon']);
-
     TestBed.configureTestingModule({
       declarations: [ButtonComponent],
-      providers: [{ provide: IconService, useValue: spyIconService }],
+      providers: [],
       imports: [MatButtonModule, IconsModule]
     })
       .compileComponents()
