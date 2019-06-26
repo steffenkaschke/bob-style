@@ -12,28 +12,24 @@ import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-import { CardsMockData } from '../cards.mock';
+import { EmployeeCardsMockData } from '../cards.mock';
 import { CardType } from '../cards.enum';
-
-import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
-import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
-import { SliderModule } from '../../buttons-indicators/slider/slider.module';
-import { SliderComponent } from '../../buttons-indicators/slider/slider.component';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-card [card]="cardData"
+<b-card-employee
+        [card]="cardData"
         [type]="type"
         [clickable]="clickable"
         (clicked)="cardClickHandler($event)">
-</b-card>
+</b-card-employee>
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Single Card'">
+<b-story-book-layout [title]="'Employee Card'">
   <div style="display: flex; width:280px; margin: 50px auto; justify-content: center;">
     ${template}
   </div>
@@ -41,7 +37,7 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Single Card
+  ## Employee Card
 
   #### Module
   *CardsModule*
@@ -62,32 +58,28 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   data | CardDataType | card data | none
-  menu | MenuItem[] | array of menu items | none (optional)
+  data.avatar | Avatar | object describing user avatar: {imageSource, title, subtitle} | none
 
-  *Note:* For description of [data: CardDataType] properties, see <u>Cards Layout</u> story.
+
+
+  *Note:* For more info on [data: CardDataType] properties, see <u>Cards Layout</u> story.
 
 `;
 
 story.add(
-  'Card',
+  'EmployeeCard',
   () => {
     return {
       template: storyTemplate,
       props: {
         type: select('type', values(CardType), CardType.primary),
         clickable: boolean('clickable', true),
-        cardData: object('card', CardsMockData[1]),
+        cardData: object('card', EmployeeCardsMockData[0]),
         cardClickHandler: action('Card clicked')
       },
       moduleMetadata: {
-        imports: [
-          StoryBookLayoutModule,
-          BrowserAnimationsModule,
-          CardsModule,
-          AvatarModule,
-          SliderModule
-        ],
-        entryComponents: [AvatarComponent, SliderComponent]
+        imports: [StoryBookLayoutModule, BrowserAnimationsModule, CardsModule],
+        entryComponents: []
       }
     };
   },
