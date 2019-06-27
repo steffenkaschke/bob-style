@@ -71,13 +71,13 @@ export {
   SwitchToggleComponent
 } from './lib/buttons-indicators/switch-toggle/switch-toggle.component';
 // Chip Module
-export { ChipsModule } from './lib/buttons-indicators/chip/chips.module';
-export { ChipModule } from './lib/buttons-indicators/chip/chip.module';
+export { ChipsModule } from './lib/chips/chip/chips.module';
+export { ChipModule } from './lib/chips/chip/chip.module';
 export {
   ChipComponent
-} from './lib/buttons-indicators/chip/chip.component';
-export { ChipType } from './lib/buttons-indicators/chip/chip.enum';
-export { Chip } from './lib/buttons-indicators/chip/chip.interface';
+} from './lib/chips/chip/chip.component';
+export { ChipType } from './lib/chips/chip/chip.enum';
+export { Chip } from './lib/chips/chip/chip.interface';
 // InfoStrip Module
 export { InfoStripModule } from './lib/buttons-indicators/info-strip/info-strip.module';
 export { InfoStripComponent } from './lib/buttons-indicators/info-strip/info-strip.component';
@@ -196,9 +196,9 @@ export {
   RadioConfig
 } from './lib/form-elements/radio-button/radio-button.interface';
 // Chip Input Module
-export { ChipInputModule } from './lib/form-elements/chip-input/chip-input.module';
-export { ChipInputComponent } from './lib/form-elements/chip-input/chip-input.component';
-export { ChipInputChange } from './lib/form-elements/chip-input/chip-input.interface';
+export { ChipInputModule } from './lib/chips/chip-input/chip-input.module';
+export { ChipInputComponent } from './lib/chips/chip-input/chip-input.component';
+export { ChipInputChange } from './lib/chips/chip-input/chip-input.interface';
 // Social Module
 export { SocialModule } from './lib/form-elements/social/social.module';
 export { Social } from './lib/form-elements/social/social.enum';

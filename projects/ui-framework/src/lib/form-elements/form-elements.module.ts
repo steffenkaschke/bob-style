@@ -14,8 +14,8 @@ import { SingleSelectComponent } from './lists/single-select/single-select.compo
 import { SocialModule } from './social/social.module';
 import { SocialComponent } from './social/social.component';
 import { InputMessageModule } from './input-message/input-message.module';
-import { ChipInputModule } from './chip-input/chip-input.module';
-import { ChipInputComponent } from './chip-input/chip-input.component';
+import { ChipInputModule } from '../chips/chip-input/chip-input.module';
+import { ChipInputComponent } from '../chips/chip-input/chip-input.component';
 import { RadioButtonModule } from './radio-button/radio-button.module';
 import { RadioButtonComponent } from './radio-button/radio-button.component';
 import { SplitInputSingleSelectModule } from './split-input-single-select/split-input-single-select.module';

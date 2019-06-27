@@ -18,10 +18,9 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
 
-const story2 = storiesOf(
-  `${ComponentGroupType.ButtonsAndIndicators}.Buttons`,
-  module
-).addDecorator(withKnobs);
+const story2 = storiesOf(ComponentGroupType.Chips, module).addDecorator(
+  withKnobs
+);
 
 const options = chipOptionsMock;
 const value = [...randomFromArray(chipOptionsMock, 3), 'Rimming'];

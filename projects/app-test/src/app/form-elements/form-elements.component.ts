@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
-import { chipOptionsMock } from '../../../../ui-framework/src/lib/form-elements/chip-input/chip-input.mock';
+import { chipOptionsMock } from '../../../../ui-framework/src/lib/chips/chip-input/chip-input.mock';
 import {
   isString,
   countChildren,

@@ -12,10 +12,9 @@ import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const story = storiesOf(
-  ComponentGroupType.ButtonsAndIndicators,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
+  withKnobs
+);
 
 const typeOptions = values(ChipType);
 const template = `

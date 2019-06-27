@@ -13,22 +13,29 @@ import {
   ViewChildren,
   QueryList
 } from '@angular/core';
-import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
+import {
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteTrigger,
+  MatAutocomplete
+} from '@angular/material/autocomplete';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
-import { BaseFormElement } from '../base-form-element';
-import { ChipType } from '../../buttons-indicators/chip/chip.enum';
+import { BaseFormElement } from '../../form-elements/base-form-element';
+import { ChipType } from '../chip/chip.enum';
 import { ChipInputChange } from './chip-input.interface';
-import { InputTypes } from '../input/input.enum';
-import { ChipComponent } from '../../buttons-indicators/chip/chip.component';
+import { InputTypes } from '../../form-elements/input/input.enum';
+import { ChipComponent } from '../chip/chip.component';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
-import { InputEventType } from '../form-elements.enum';
+import { InputEventType } from '../../form-elements/form-elements.enum';
 import { arrayOrFail } from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-chip-input',
   templateUrl: './chip-input.component.html',
-  styleUrls: ['../input/input.component.scss', './chip-input.component.scss'],
+  styleUrls: [
+    '../../form-elements/input/input.component.scss',
+    './chip-input.component.scss'
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -61,7 +68,9 @@ export class ChipInputComponent extends BaseFormElement
   public readonly inputTypes = InputTypes;
   readonly addOnBlur = true;
 
-  @ViewChild('input', { static: true }) private input: ElementRef<HTMLInputElement>;
+  @ViewChild('input', { static: true }) private input: ElementRef<
+    HTMLInputElement
+  >;
   @ViewChildren('chipList') private chipList: QueryList<ChipComponent>;
   @ViewChild('input', { read: MatAutocompleteTrigger, static: true })
   private autocompleteTrigger: MatAutocompleteTrigger;
