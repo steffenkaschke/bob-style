@@ -1,8 +1,8 @@
 import { ChipType } from './chip.enum';
 
 export interface Chip {
-  type: ChipType;
-  color?: string;
   text?: string;
+  type?: ChipType;
+  color?: string;
   removable?: boolean;
 }

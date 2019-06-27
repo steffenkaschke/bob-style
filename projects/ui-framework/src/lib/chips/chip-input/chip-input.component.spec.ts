@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChipInputComponent } from './chip-input.component';
-import { ChipType } from '../chip/chip.enum';
+import { ChipType } from '../chip.enum';
 import { By } from '@angular/platform-browser';
 import { ColorService } from '../../services/color-service/color.service';
 

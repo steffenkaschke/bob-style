@@ -10,7 +10,7 @@ import {
   HostListener,
   HostBinding
 } from '@angular/core';
-import { ChipType } from './chip.enum';
+import { ChipType } from '../chip.enum';
 import { ColorService } from '../../services/color-service/color.service';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 
@@ -62,7 +62,8 @@ export class ChipComponent implements OnChanges {
   readonly resetIcon: String = Icons.close;
   readonly iconSize = IconSize;
 
-  @ViewChild('chip', { read: ElementRef, static: true }) public chip: ElementRef;
+  @ViewChild('chip', { read: ElementRef, static: true })
+  public chip: ElementRef;
 
   @HostBinding('tabindex')
   get tabind(): string {

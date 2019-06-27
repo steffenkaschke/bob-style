@@ -1,4 +1,4 @@
-export const chipOptionsMock = [
+export const chipsMock = [
   'Aircraft Spotting',
   'Airbrushing',
   'Airsofting',

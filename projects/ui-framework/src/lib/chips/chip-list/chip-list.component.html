@@ -1,0 +1,12 @@
+<ul class="chip-list">
+
+  <li *ngFor="let chip of chips"
+      class="chip"
+      b-chip
+      [type]="chip.type"
+      [color]="chip.color"
+      [removable]="chip.removable">
+    {{chip.text}}
+  </li>
+
+</ul>
