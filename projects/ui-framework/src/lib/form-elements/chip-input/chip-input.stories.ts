@@ -18,6 +18,11 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
 
+const story2 = storiesOf(
+  `${ComponentGroupType.ButtonsAndIndicators}.Buttons`,
+  module
+).addDecorator(withKnobs);
+
 const options = chipOptionsMock;
 const value = [...randomFromArray(chipOptionsMock, 3), 'Rimming'];
 
@@ -70,26 +75,26 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-story.add(
-  'Chip Input',
-  () => ({
-    template: storyTemplate,
-    props: {
-      value: array('value', value, ','),
-      acceptNew: boolean('acceptNew', true),
-      label: text('label', 'What are your hobbies?'),
-      placeholder: text('placehodler', 'Add tags and press ‘Enter’'),
-      disabled: boolean('disabled', false),
-      required: boolean('required', false),
-      hintMessage: text('hintMessage', 'Stick something in me'),
-      warnMessage: text('warnMessage', ''),
-      errorMessage: text('errorMessage', ''),
-      options: array('options', options, ','),
-      chipInputChangeHandler: action('Chip input changed')
-    },
-    moduleMetadata: {
-      imports: [ChipInputModule, StoryBookLayoutModule, BrowserAnimationsModule]
-    }
-  }),
-  { notes: { markdown: note } }
-);
+const toAdd = () => ({
+  template: storyTemplate,
+  props: {
+    value: array('value', value, ','),
+    acceptNew: boolean('acceptNew', true),
+    label: text('label', 'What are your hobbies?'),
+    placeholder: text('placehodler', 'Add tags and press ‘Enter’'),
+    disabled: boolean('disabled', false),
+    required: boolean('required', false),
+    hintMessage: text('hintMessage', 'Stick something in me'),
+    warnMessage: text('warnMessage', ''),
+    errorMessage: text('errorMessage', ''),
+    options: array('options', options, ','),
+    chipInputChangeHandler: action('Chip input changed')
+  },
+  moduleMetadata: {
+    imports: [ChipInputModule, StoryBookLayoutModule, BrowserAnimationsModule]
+  }
+});
+
+story.add('Chip Input', toAdd, { notes: { markdown: note } });
+
+story2.add('Chip Input', toAdd, { notes: { markdown: note } });
