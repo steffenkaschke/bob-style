@@ -13,9 +13,10 @@ import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.mo
 import { TableModule } from './table.module';
 import { AvatarModule } from '../buttons-indicators/avatar/avatar.module';
 import { mockColumnsDefs, mockRowData } from './table-mocks/table-story.mock';
-import { AvatarCellComponent } from './table-cell-components/avatar.component';
+import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { RowSelection, TableType } from './table/table.enum';
+import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
 
 const tableStories = storiesOf(ComponentGroupType.Tables, module).addDecorator(
   withKnobs
@@ -83,7 +84,10 @@ tableStories.add(
         sortChanged: action('sort changed')
       },
       moduleMetadata: {
-        entryComponents: [AvatarCellComponent],
+        entryComponents: [
+          AvatarCellComponent,
+          ActionsCellComponent,
+        ],
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,

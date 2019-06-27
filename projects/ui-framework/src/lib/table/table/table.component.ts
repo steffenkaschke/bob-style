@@ -1,6 +1,4 @@
-import {
-  Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, } from '@angular/core';
 import { GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
 import { cloneDeep, get, has, map, once, toString } from 'lodash';
 import { ColumnDef, RowClickedEvent, RowNodeDef, SortChangedEvent } from './table.interface';
@@ -38,7 +36,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
 
-  readonly rowHeight: number = 50;
+  readonly rowHeight: number = 56;
   readonly autoSizePadding: number = 30;
   readonly tableType = TableType;
 
@@ -47,6 +45,7 @@ export class TableComponent implements OnInit, OnChanges {
   gridColumnDefs: ColumnDef[];
 
   readonly tableLicense = once(() =>
+    // @ts-ignore
     import('ag-grid-enterprise')
       .then((agGrig) => {
         if (!TableComponent.isLicenseSet) {
@@ -62,11 +61,11 @@ export class TableComponent implements OnInit, OnChanges {
       suppressAutoSize: true,
       suppressRowClickSelection: true,
       autoSizePadding: this.autoSizePadding,
+      suppressColumnVirtualisation: this.suppressColumnVirtualisation,
       rowHeight: this.rowHeight,
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
       suppressContextMenu: true,
-      suppressColumnVirtualisation: this.suppressColumnVirtualisation,
       onGridReady: (event: GridReadyEvent) => {
         event.columnApi.autoSizeAllColumns();
         this.gridReady = true;

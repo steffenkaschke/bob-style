@@ -5,7 +5,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { TableModule } from '../table.module';
-import { AvatarCellComponent } from '../table-cell-components/avatar.component';
+import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { ColumnDef, RowNodeDef } from './table.interface';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
@@ -176,8 +176,8 @@ describe('TableComponent', () => {
             autoSizePadding: 30,
             suppressAutoSize: true,
             suppressRowClickSelection: true,
-            rowHeight: 50,
-            headerHeight: 50,
+            rowHeight: 56,
+            headerHeight: 56,
             rowSelection: null
           };
           const actualPartialOptions = pick(

@@ -3,6 +3,7 @@ import { TableUtilsService } from './table-utils.service';
 import { ColumnDef } from '../table/table.interface';
 import { concat } from 'lodash';
 import { PinDirection, RowSelection, SortDirections } from '../table/table.enum';
+import { IconColor, Icons } from '../../icons/icons.enum';
 
 describe('TableUtilsService', () => {
   let tableUtilsService: TableUtilsService;
@@ -20,7 +21,9 @@ describe('TableUtilsService', () => {
         lockPosition: true,
         resizable: false,
         sortable: false,
-        menuTabs: []
+        menuTabs: [],
+        cellClass: [],
+        cellStyle: {},
       },
       {
         headerName: 'Display Name',
@@ -28,28 +31,32 @@ describe('TableUtilsService', () => {
         sort: SortDirections.Asc,
         resizable: true,
         sortable: true,
-        menuTabs: []
+        menuTabs: [],
+        cellClass: [],
+        cellStyle: {},
       },
       {
         headerName: 'Email',
         field: 'email',
         resizable: true,
         sortable: true,
-        menuTabs: []
+        menuTabs: [],
+        cellClass: [],
+        cellStyle: {},
       }
     ];
     tableColumnsMock = [
       {
         colId: 'about.avatar',
-        colDef: columnDefsMock[0]
+        colDef: columnDefsMock[0],
       },
       {
         colId: 'fullName',
-        colDef: columnDefsMock[1]
+        colDef: columnDefsMock[1],
       },
       {
         colId: 'email',
-        colDef: columnDefsMock[2]
+        colDef: columnDefsMock[2],
       }
     ];
     gridOptionsMock = {
@@ -90,7 +97,7 @@ describe('TableUtilsService', () => {
         headerName: '',
         lockPosition: true,
         pinned: 'left',
-        menuTabs: []
+        menuTabs: [],
       };
       const columnDefs = tableUtilsService.getGridColumnDef(
         columnDefsMock,
@@ -107,13 +114,73 @@ describe('TableUtilsService', () => {
         headerName: '',
         lockPosition: true,
         pinned: 'left',
-        menuTabs: []
+        menuTabs: [],
       };
       const columnDefs = tableUtilsService.getGridColumnDef(
         columnDefsMock,
         rowSelectionMock
       );
       expect(columnDefs).toEqual(concat(multiColumnDef, columnDefsMock));
+    });
+    it('should add icon cellClass and cellStyle and color normal by default', () => {
+      rowSelectionMock = null;
+      const colDefIconMock: ColumnDef[] = [
+        {
+          headerName: 'Email',
+          field: 'email',
+          resizable: true,
+          sortable: true,
+          icon: Icons.email,
+        },
+      ];
+      const expectedColDefs: ColumnDef[] = [
+        {
+          headerName: 'Email',
+          field: 'email',
+          resizable: true,
+          sortable: true,
+          icon: Icons.email,
+          menuTabs: [],
+          cellClass: ['b-icon-email', 'b-icon-normal', 'b-icon-medium'],
+          cellStyle: { padding: '0 15px 0 43px' },
+        },
+      ];
+      const columnDefs = tableUtilsService.getGridColumnDef(
+        colDefIconMock,
+        rowSelectionMock
+      );
+      expect(columnDefs).toEqual(expectedColDefs);
+    });
+    it('should add icon cellClass and cellStyle and color from spec', () => {
+      rowSelectionMock = null;
+      const colDefIconMock: ColumnDef[] = [
+        {
+          headerName: 'Email',
+          field: 'email',
+          resizable: true,
+          sortable: true,
+          icon: Icons.email,
+          iconColor: IconColor.inform,
+        },
+      ];
+      const expectedColDefs: ColumnDef[] = [
+        {
+          headerName: 'Email',
+          field: 'email',
+          resizable: true,
+          sortable: true,
+          icon: Icons.email,
+          iconColor: IconColor.inform,
+          menuTabs: [],
+          cellClass: ['b-icon-email', 'b-icon-inform', 'b-icon-medium'],
+          cellStyle: { padding: '0 15px 0 43px' },
+        },
+      ];
+      const columnDefs = tableUtilsService.getGridColumnDef(
+        colDefIconMock,
+        rowSelectionMock
+      );
+      expect(columnDefs).toEqual(expectedColDefs);
     });
   });
 });
