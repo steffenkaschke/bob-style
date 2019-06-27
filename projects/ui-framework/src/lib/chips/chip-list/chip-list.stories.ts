@@ -76,12 +76,7 @@ story.add(
       chips: object('chips', chips)
     },
     moduleMetadata: {
-      imports: [
-        ChipListModule,
-        ChipModule,
-        StoryBookLayoutModule,
-        BrowserAnimationsModule
-      ]
+      imports: [ChipListModule, StoryBookLayoutModule, BrowserAnimationsModule]
     }
   }),
   { notes: { markdown: note } }

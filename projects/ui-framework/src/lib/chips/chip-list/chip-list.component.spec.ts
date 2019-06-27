@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { ChipListComponent } from './chip-list.component';
+import { ChipListModule } from './chip-list.module';
 
 describe('ChipListComponent', () => {
   let component: ChipListComponent;
@@ -11,9 +12,9 @@ describe('ChipListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChipListComponent ]
-    })
-    .compileComponents();
+      declarations: [ChipListComponent],
+      imports: [ChipListModule]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
