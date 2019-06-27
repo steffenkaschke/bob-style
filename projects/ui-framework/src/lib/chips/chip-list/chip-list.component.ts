@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostBinding } from '@angular/core';
 import { Chip } from '../chip.interface';
 
 @Component({
@@ -10,4 +10,6 @@ export class ChipListComponent {
   constructor() {}
 
   @Input() chips: Chip[];
+
+  @HostBinding('attr.role') role = 'list';
 }

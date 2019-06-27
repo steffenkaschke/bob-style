@@ -31,8 +31,8 @@ import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
         *ngIf="removable && type !== chipType.disabled"
         class="remove-button"
         [ngClass]="{ light: style.color, dark: !style.color }"
-        [color]="bgColorIsDark ? iconColor.white : iconColor.dark"
-        [icon]="resetIcon"
+        [color]="bgColorIsDark ? iconColor.white : iconColor.normal"
+        [icon]="icons.reset_x"
         [hasHoverState]="true"
         [size]="iconSize.small"
         (click)="onRemoveClick($event)"
@@ -57,9 +57,9 @@ export class ChipComponent implements OnChanges {
   public bgColorIsDark = false;
   public selected = false;
 
-  readonly iconColor = IconColor;
   readonly chipType = ChipType;
-  readonly resetIcon: String = Icons.close;
+  readonly icons = Icons;
+  readonly iconColor = IconColor;
   readonly iconSize = IconSize;
 
   @ViewChild('chip', { read: ElementRef, static: true })

@@ -1,13 +1,9 @@
-<ul class="chips-wrap">
-
-  <li *ngFor="let chip of chips"
-      class="chip"
-      b-chip
-      [type]="chip.type"
-      [color]="chip.color"
-      [removable]="chip.removable"
-      [selectable]="chip.selectable">
-    {{chip.text}}
-  </li>
-
-</ul>
+<b-chip *ngFor="let chip of chips"
+        class="chip"
+        role="listitem"
+        [type]="chip.type"
+        [color]="chip.color"
+        [removable]="chip.removable"
+        [selectable]="chip.selectable">
+  {{chip.text}}
+</b-chip>

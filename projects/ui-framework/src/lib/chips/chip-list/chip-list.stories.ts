@@ -8,6 +8,7 @@ import { randomFromArray } from '../../services/utils/functional-utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipListModule } from './chip-list.module';
 import { Chip } from '../chip.interface';
+import { ChipType } from '../chip.enum';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -18,6 +19,7 @@ const chips = [...randomFromArray(chipsMock, 10), 'Rimming'].reduce(
   (acc, chip) => {
     acc.push({
       text: chip,
+      type: ChipType.tag,
       removable: true,
       selectable: true
     } as Chip);
