@@ -1,8 +1,9 @@
 import { ColumnDef } from '../table/table.interface';
-import { AvatarCellComponent } from '../table-cell-components/avatar.component';
+import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar.component';
 import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
 import { GridActions } from '../table-cell-components/actions-cell/actions-cell.interface';
 import { PinDirection, SortDirections } from '../table/table.enum';
+import { Icons } from '../../icons/icons.enum';
 
 export const mockColumnsDefs: ColumnDef[] = [
   {
@@ -22,6 +23,7 @@ export const mockColumnsDefs: ColumnDef[] = [
   {
     headerName: 'Email',
     field: 'email',
+    icon: Icons.email,
   },
   {
     headerName: 'Status',
@@ -30,6 +32,7 @@ export const mockColumnsDefs: ColumnDef[] = [
   {
     headerName: 'Hired Date',
     field: 'hiredDate',
+    icon: Icons.date,
   },
   {
     headerName: '',

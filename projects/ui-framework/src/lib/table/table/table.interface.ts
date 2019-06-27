@@ -1,4 +1,5 @@
 import { PinDirection, SortDirections } from './table.enum';
+import { IconColor, Icons } from '../../icons/icons.enum';
 
 export interface ColumnDef {
   headerName: string;
@@ -14,7 +15,11 @@ export interface ColumnDef {
   comparator?: Function;
   lockPosition?: boolean;
   headerCheckboxSelection?: boolean | Function;
-  menuTabs?: string[],
+  menuTabs?: string[];
+  icon?: Icons;
+  iconColor?: IconColor;
+  cellClass?: (Icons | string)[];
+  cellStyle?: any;
 }
 
 export interface RowClickedEvent {

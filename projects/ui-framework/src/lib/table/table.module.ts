@@ -5,7 +5,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkTableModule } from '@angular/cdk/table';
 import { AgGridModule } from 'ag-grid-angular';
 import { AvatarModule, ButtonsModule, MenuModule } from '../../public_api';
-import { AvatarCellComponent } from './table-cell-components/avatar.component';
+import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
 import { TableUtilsService } from './table-utils-service/table-utils.service';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
 
@@ -32,7 +32,7 @@ import { ActionsCellComponent } from './table-cell-components/actions-cell/actio
   exports: [
     TableComponent,
     AvatarCellComponent,
-    ActionsCellComponent
+    ActionsCellComponent,
   ],
 })
 export class TableModule {
