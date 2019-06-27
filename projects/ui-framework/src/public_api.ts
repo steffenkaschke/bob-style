@@ -71,13 +71,13 @@ export {
   SwitchToggleComponent
 } from './lib/buttons-indicators/switch-toggle/switch-toggle.component';
 // Chip Module
-export { ChipsModule } from './lib/chips/chip/chips.module';
+export { ChipsModule } from './lib/chips/chips.module';
 export { ChipModule } from './lib/chips/chip/chip.module';
 export {
   ChipComponent
 } from './lib/chips/chip/chip.component';
-export { ChipType } from './lib/chips/chip/chip.enum';
-export { Chip } from './lib/chips/chip/chip.interface';
+export { ChipType } from './lib/chips/chip.enum';
+export { Chip } from './lib/chips/chip.interface';
 // InfoStrip Module
 export { InfoStripModule } from './lib/buttons-indicators/info-strip/info-strip.module';
 export { InfoStripComponent } from './lib/buttons-indicators/info-strip/info-strip.component';

@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
-import { chipOptionsMock } from '../../../../ui-framework/src/lib/chips/chip-input/chip-input.mock';
+import { chipsMock } from '../../../../ui-framework/src/lib/chips/chips.mock';
 import {
   isString,
   countChildren,
@@ -222,7 +222,7 @@ export class FormElementsTestComponent
   bChipinput_label = 'Chip Input label';
   bChipinput_placeholder = 'Chip Input placeholder';
   bChipinput_value = ['petting', 'fisting', 'rimming']; // 'petting, fisting, rimming';
-  bChipinput_options = chipOptionsMock;
+  bChipinput_options = chipsMock;
   bChipinput_acceptNew = true;
   bChipinput_disabled = this.global_disabled;
   bChipinput_required = this.global_required;

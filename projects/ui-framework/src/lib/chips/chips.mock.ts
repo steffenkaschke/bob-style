@@ -1,4 +1,4 @@
-export const chipOptionsMock = [
+export const chipsMock = [
   'Aircraft Spotting',
   'Airbrushing',
   'Airsofting',
@@ -9,7 +9,7 @@ export const chipOptionsMock = [
   'Animals/pets/dogs',
   'Archery',
   'Arts',
-  'Aquarium (Freshwater & Saltwater)',
+  'Aquarium',
   'Astrology',
   'Astronomy',
   'Backgammon',

@@ -7,7 +7,7 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ChipModule } from './chip.module';
-import { ChipType } from './chip.enum';
+import { ChipType } from '../chip.enum';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';

@@ -1,4 +1,4 @@
-import { Chip } from '../../chips/chip/chip.interface';
+import { Chip } from '../../chips/chip.interface';
 import { AvatarBadge, AvatarOrientation } from './avatar.enum';
 
 export interface BadgeConfig {

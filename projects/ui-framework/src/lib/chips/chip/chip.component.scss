@@ -99,15 +99,10 @@ span {
 
 :host ::ng-deep .remove-button {
   margin-left: 5px;
-  margin-right: -3px;
+  margin-right: -9px;
   display: block;
   pointer-events: all;
   cursor: pointer;
-
-  .mat-icon.small {
-    display: flex;
-    align-items: center;
-  }
 }
 :host-context(.disabled) .remove-button {
   pointer-events: none;
