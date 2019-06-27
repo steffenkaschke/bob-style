@@ -3,7 +3,7 @@
 @import '../../style/mixins';
 
 :host {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   text-align: left;
   max-width: 100%;

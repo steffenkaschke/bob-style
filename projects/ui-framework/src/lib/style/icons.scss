@@ -196,7 +196,6 @@ $icon-colors: (
 .b-icon,
 [class*='b-icon'] {
   display: block;
-  position: relative;
 
   &:not(.has-hover) {
     pointer-events: none;
