@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AvatarComponent } from './avatar.component';
 import { IconsModule } from '../../icons/icons.module';
 import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
-import { ChipModule } from '../chip/chip.module';
+import { ChipModule } from '../../chips/chip/chip.module';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
 @NgModule({

@@ -1,5 +1,5 @@
 import { CardTableCellMeta, CardTableCellData } from './card-table.interface';
-import { ChipComponent } from '../../buttons-indicators/chip/chip.component';
+import { ChipComponent } from '../../chips/chip/chip.component';
 import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
 import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
 import { action } from '@storybook/addon-actions';

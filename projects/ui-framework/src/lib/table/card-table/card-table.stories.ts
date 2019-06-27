@@ -8,8 +8,8 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { CardTableModule } from './card-table.module';
 import { CardTableMockMetaData, CardTableMockData } from './card-table.mock';
 
-import { ChipModule } from '../../buttons-indicators/chip/chip.module';
-import { ChipComponent } from '../../buttons-indicators/chip/chip.component';
+import { ChipModule } from '../../chips/chip/chip.module';
+import { ChipComponent } from '../../chips/chip/chip.component';
 
 import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
 
