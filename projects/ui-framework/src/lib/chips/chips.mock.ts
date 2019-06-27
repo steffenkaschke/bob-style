@@ -9,7 +9,7 @@ export const chipsMock = [
   'Animals/pets/dogs',
   'Archery',
   'Arts',
-  'Aquarium (Freshwater & Saltwater)',
+  'Aquarium',
   'Astrology',
   'Astronomy',
   'Backgammon',

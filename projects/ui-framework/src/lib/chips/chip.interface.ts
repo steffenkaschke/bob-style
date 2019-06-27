@@ -5,4 +5,5 @@ export interface Chip {
   type?: ChipType;
   color?: string;
   removable?: boolean;
+  selectable?: boolean;
 }
