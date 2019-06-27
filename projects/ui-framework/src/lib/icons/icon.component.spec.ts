@@ -40,7 +40,6 @@ describe('IconElementComponent', () => {
     });
 
     it('Should put tooltip text in attribute', () => {
-      console.log(componentElement);
       expect(componentElement.dataset.tooltip).toEqual('tooltip text');
     });
   });

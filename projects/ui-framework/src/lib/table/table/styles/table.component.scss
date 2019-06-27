@@ -12,6 +12,14 @@
   &:focus {
     outline: none;
   }
+  &[class*='b-icon'] {
+    &:before {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
 }
 
 :host ::ng-deep {

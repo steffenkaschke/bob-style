@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ColumnDef } from '../table/table.interface';
-import { assign, compact, concat, flatMap, get, map } from 'lodash';
+import { assign, compact, concat, flatMap, get, map, chain, has } from 'lodash';
 import { SELECTION_COLUMN_DEF } from '../table/table.consts';
 import { GridOptions } from 'ag-grid-community';
 import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
 import { PinDirection, RowSelection } from '../table/table.enum';
+import { IconColor, IconSize } from '../../icons/icons.enum';
+
+const ICON_CELL_STYLE = { 'padding': '0 15px 0 43px' };
 
 @Injectable()
 export class TableUtilsService {
@@ -40,8 +43,33 @@ export class TableUtilsService {
       assign({}, colDef, {
         resizable: get(colDef, 'resizable', true),
         sortable: get(colDef, 'sortable', true),
-        menuTabs: []
+        menuTabs: [],
+        cellClass: this.getCellClass(colDef),
+        cellStyle: this.getCellStyle(colDef),
       }));
+  }
+
+  private getCellClass(colDef: ColumnDef): string[] {
+    const iconClass = has(colDef, 'icon')
+      ? this.getIconClass(colDef)
+      : [];
+    return chain(get(colDef, 'cellClass'))
+      .concat(iconClass)
+      .compact()
+      .value();
+  }
+
+  private getCellStyle(colDef): { [key: string]: string } {
+    return has(colDef, 'icon')
+      ? assign({}, get(colDef, 'cellStyle'), ICON_CELL_STYLE)
+      : get(colDef, 'cellStyle', {});
+  }
+
+  private getIconClass(colDef: ColumnDef): string[] {
+    const iconColorClass = has(colDef, 'iconColor')
+      ? `b-icon-${ colDef.iconColor }`
+      : 'b-icon-normal';
+    return [colDef.icon, iconColorClass, `b-icon-${ IconSize.medium }`];
   }
 
   private getRowSelectionColumnDef(rowSelection: RowSelection): ColumnDef {
