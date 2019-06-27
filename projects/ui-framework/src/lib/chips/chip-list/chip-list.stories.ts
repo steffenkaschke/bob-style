@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipListModule } from './chip-list.module';
 import { Chip } from '../chip.interface';
 import { ChipType } from '../chip.enum';
+import { ChipModule } from '../chip/chip.module';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -75,7 +76,12 @@ story.add(
       chips: object('chips', chips)
     },
     moduleMetadata: {
-      imports: [ChipListModule, StoryBookLayoutModule, BrowserAnimationsModule]
+      imports: [
+        ChipListModule,
+        ChipModule,
+        StoryBookLayoutModule,
+        BrowserAnimationsModule
+      ]
     }
   }),
   { notes: { markdown: note } }
