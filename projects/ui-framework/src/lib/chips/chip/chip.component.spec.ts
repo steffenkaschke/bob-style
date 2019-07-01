@@ -22,63 +22,66 @@ describe('ChipComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(ChipComponent);
         component = fixture.componentInstance;
-        chipElement = fixture.debugElement.query(By.css('span')).nativeElement;
+        chipElement = fixture.nativeElement;
       });
   }));
 
-  describe('color & disabled', () => {
-    it('should not apply custom color if type is disabled', () => {
-      component.ngOnChanges({
-        color: new SimpleChange(null, 'red', false),
-        type: new SimpleChange(null, ChipType.info, false)
-      });
+  describe('text', () => {
+    it('should put the right text', () => {
+      component.text = 'test';
       fixture.detectChanges();
-      expect(getComputedStyle(chipElement).backgroundColor).toEqual(
-        'rgb(255, 0, 0)'
-      );
-
-      component.ngOnChanges({
-        type: new SimpleChange(null, ChipType.disabled, false)
-      });
-      fixture.detectChanges();
-      expect(chipElement.classList).toContain('chip-disabled');
-      expect(getComputedStyle(chipElement).backgroundColor).not.toEqual(
-        'rgb(255, 0, 0)'
-      );
+      expect(chipElement.innerText).toEqual('test');
     });
   });
 
   describe('class', () => {
-    it('should have type class', () => {
+    it('should have the right type class', () => {
       component.type = ChipType.info;
       fixture.detectChanges();
       expect(chipElement.classList).toContain('chip-info');
-
-      component.ngOnChanges({
-        type: new SimpleChange(null, ChipType.success, false)
-      });
+      component.type = ChipType.success;
       fixture.detectChanges();
       expect(chipElement.classList).not.toContain('chip-info');
       expect(chipElement.classList).toContain('chip-success');
     });
   });
 
-  describe('color', () => {
-    it('should apply custom color with color input', () => {
-      component.ngOnChanges({
-        type: new SimpleChange(null, ChipType.info, false)
-      });
-      fixture.detectChanges();
-      expect(chipElement.classList).toContain('chip-info');
+  describe('removable', () => {
+    it('should have remove button, if removable is true', () => {
+      let removeButton = fixture.debugElement.query(By.css('.remove-button'));
+      expect(removeButton).toBeFalsy();
 
-      component.ngOnChanges({
-        color: new SimpleChange(null, 'red', false)
-      });
+      component.removable = true;
+      fixture.detectChanges();
+
+      removeButton = fixture.debugElement.query(By.css('.remove-button'));
+      expect(removeButton).toBeTruthy();
+    });
+  });
+
+  describe('disabled', () => {
+    it('should not put type class, when disabled is true, instead put disabled class', () => {
+      component.type = ChipType.info;
+      component.disabled = true;
       fixture.detectChanges();
       expect(chipElement.classList).not.toContain('chip-info');
-      expect(getComputedStyle(chipElement).backgroundColor).toEqual(
-        'rgb(255, 0, 0)'
-      );
+      expect(chipElement.classList).toContain('chip-disabled');
+    });
+    it('should not put remove button, when disabled is true, even if removable is true as well', () => {
+      component.type = ChipType.info;
+      component.removable = true;
+      component.disabled = true;
+      fixture.detectChanges();
+      const removeButton = fixture.debugElement.query(By.css('.remove-button'));
+      expect(removeButton).toBeFalsy();
+    });
+  });
+
+  describe('selectable', () => {
+    it('should add tabindex="0", if selectable is true', () => {
+      component.selectable = true;
+      fixture.detectChanges();
+      expect(chipElement.getAttribute('tabindex')).toEqual('0');
     });
   });
 });

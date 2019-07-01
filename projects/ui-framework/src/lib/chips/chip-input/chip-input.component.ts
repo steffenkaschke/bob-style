@@ -179,7 +179,6 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   public remove(name: string): void {
-    console.log(name);
     this.value = this.removeChip(name, this.value);
     this.updatePossibleChips();
     this.transmit({ removed: name });

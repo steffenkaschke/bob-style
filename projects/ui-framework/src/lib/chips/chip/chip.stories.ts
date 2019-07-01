@@ -43,7 +43,7 @@ const note = `
   --- | --- | --- | ---
   text | string | chip text | ''
   type | ChipType | enum for setting the chip type (empty, default, info, success, attention, warning) | default (optional)
-  color | string | custom chip color | '' (optional)
+
   removable | boolean | if chip has a 'x' button | false
   removed | Function | handler for chip-removed event | none
 
@@ -68,7 +68,7 @@ story.add(
     props: {
       type: select('type', typeOptions, ChipType.tag),
       text: text('text', 'Chip text'),
-      color: text('color', ''),
+
       removable: boolean('removable', true),
       selectable: boolean('selectable', true),
       disabled: boolean('disabled', false),
