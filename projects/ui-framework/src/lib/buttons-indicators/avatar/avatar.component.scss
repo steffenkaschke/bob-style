@@ -51,6 +51,10 @@
   }
 }
 
+b-chip {
+  margin-right: auto;
+}
+
 .avatar-content {
   @include size(100%);
   @include flex-align;
@@ -77,7 +81,7 @@
   .slot1-big,
   .slot2-medium,
   .slot3-small,
-  .chip {
+  b-chip {
     &:first-child,
     &:only-child {
       margin-top: 0;
@@ -105,14 +109,21 @@
   }
 
   &.disabled {
-    .avatar {
-      pointer-events: none;
-      opacity: 0.5;
-      box-shadow: none;
-    }
-    .avatar-text {
-      color: $grey-500;
-    }
+    @include disabled-state;
+
+    // .avatar {
+    //   pointer-events: none;
+    //   opacity: 0.5;
+    //   box-shadow: none;
+    // }
+
+    // .avatar-text {
+    //   .slot1-big,
+    //   .slot2-medium,
+    //   .slot3-small {
+    //     color: $grey-500;
+    //   }
+    // }
   }
 
   &.vertical {
