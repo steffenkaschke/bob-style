@@ -1,10 +1,10 @@
 export enum ChipType {
-  disabled = 'disabled',
-  empty = 'empty',
-  default = 'default',
+  tag = 'tag',
   info = 'info',
-  success = 'success',
-  attention = 'attention',
   warning = 'warning',
-  tag = 'tag'
+  error = 'error',
+  success = 'success',
+  avatar = 'avatar',
+  disabled = 'disabled',
+  selected = 'selected'
 }

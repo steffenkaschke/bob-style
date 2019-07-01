@@ -467,7 +467,7 @@ $border-color: $grey-500;
 
   [style] a,
   a {
-    color: #e52c51;
+    color: $color-error;
     text-decoration: underline;
   }
 }

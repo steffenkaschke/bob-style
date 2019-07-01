@@ -4,6 +4,9 @@
         [type]="chip.type"
         [color]="chip.color"
         [removable]="chip.removable"
-        [selectable]="chip.selectable">
+        [selectable]="chip.selectable"
+        (removed)="onChipRemove(chip)"
+        (click)="$event.stopPropagation()"
+        (keydown)="onChipKeydown($event, chip)">
   {{chip.text}}
 </b-chip>

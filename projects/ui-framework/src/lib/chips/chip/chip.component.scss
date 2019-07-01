@@ -13,46 +13,51 @@
 }
 
 $chipsMap: (
-  empty: (
-    background-color: white,
+  tag: (
+    background-color: $grey-300,
     color: $grey-700,
-    border-color: $grey-500
-  ),
-  default: (
-    background-color: $grey-600,
-    color: white,
-    border-color: $grey-600
+    border-color: $grey-300,
+    font-weight: $font-weight-body
   ),
   info: (
     background-color: var(--inform-500),
     color: white,
-    border-color: var(--inform-500)
+    border-color: var(--inform-500),
+    button-color: white
+  ),
+  warning: (
+    background-color: $color-warn,
+    color: white,
+    border-color: $color-warn,
+    button-color: white
+  ),
+  error: (
+    background-color: $color-error,
+    color: white,
+    border-color: $color-error,
+    button-color: white
   ),
   success: (
     background-color: var(--positive-500),
     color: white,
-    border-color: var(--positive-500)
+    border-color: var(--positive-500),
+    button-color: white
   ),
-  attention: (
-    background-color: var(--primary-600),
-    color: white,
-    border-color: var(--primary-600)
-  ),
-  warning: (
-    background-color: var(--negative-500),
-    color: white,
-    border-color: var(--negative-500)
+  avatar: (
+    background-color: white,
+    color: $grey-800,
+    border-color: $grey-300
   ),
   disabled: (
     background-color: $grey-200,
     color: $grey-500,
     border-color: $grey-200
   ),
-  tag: (
-    background-color: $grey-300,
-    color: $grey-700,
-    border-color: $grey-300,
-    font-weight: $font-weight-body
+  selected: (
+    background-color: $primary-600,
+    color: white,
+    border-color: $primary-600,
+    button-color: white
   )
 );
 
@@ -85,7 +90,7 @@ span {
     @include animate(blink, 0.3s);
   }
 
-  &.selected {
+  &.focused {
     position: relative;
     &:before {
       @include pseudo;
