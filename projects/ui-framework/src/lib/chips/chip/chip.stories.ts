@@ -20,8 +20,9 @@ const typeOptions = values(ChipType);
 const template = `
   <b-chip
     [type]="type"
-    [color]="color"
     [removable]="removable"
+    [selectable]="selectable"
+    [disabled]="disabled"
     (removed)="OnRemove()">
     {{ text }}
   </b-chip>
@@ -65,11 +66,12 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      type: select('type', typeOptions, ChipType.default),
+      type: select('type', typeOptions, ChipType.tag),
       text: text('text', 'Chip text'),
       color: text('color', ''),
-      removable: boolean('removable', false),
-      OnClick: action('Chip clicked'),
+      removable: boolean('removable', true),
+      selectable: boolean('selectable', true),
+      disabled: boolean('disabled', false),
       OnRemove: action('Chip removed')
     },
     moduleMetadata: {

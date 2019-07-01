@@ -22,26 +22,22 @@ $chipsMap: (
   info: (
     background-color: var(--inform-500),
     color: white,
-    border-color: var(--inform-500),
-    button-color: white
+    border-color: var(--inform-500)
   ),
   warning: (
     background-color: $color-warn,
     color: white,
-    border-color: $color-warn,
-    button-color: white
+    border-color: $color-warn
   ),
   error: (
     background-color: $color-error,
     color: white,
-    border-color: $color-error,
-    button-color: white
+    border-color: $color-error
   ),
   success: (
     background-color: var(--positive-500),
     color: white,
-    border-color: var(--positive-500),
-    button-color: white
+    border-color: var(--positive-500)
   ),
   avatar: (
     background-color: white,
@@ -56,19 +52,13 @@ $chipsMap: (
   selected: (
     background-color: $primary-600,
     color: white,
-    border-color: $primary-600,
-    button-color: white
+    border-color: $primary-600
   )
 );
 
 :host {
-  display: inline-flex;
-  outline: 0;
-}
-
-span {
   box-sizing: border-box;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   border-radius: 13px;
@@ -84,7 +74,6 @@ span {
   user-select: none;
   cursor: default;
   outline: 0;
-  pointer-events: none;
 
   &.blink {
     @include animate(blink, 0.3s);
@@ -97,26 +86,22 @@ span {
       @include size(100%);
       @include position;
       border-radius: inherit;
-      background-color: black(0.15);
+      background-color: black(0.1);
+    }
+  }
+
+  @each $type, $typeProps in $chipsMap {
+    &.chip-#{$type} {
+      @each $prop, $value in $typeProps {
+        #{$prop}: $value;
+      }
     }
   }
 }
 
-:host ::ng-deep .remove-button {
+.remove-button {
   margin-left: 5px;
   margin-right: -9px;
   display: block;
-  pointer-events: all;
   cursor: pointer;
-}
-:host-context(.disabled) .remove-button {
-  pointer-events: none;
-}
-
-@each $type, $typeProps in $chipsMap {
-  .chip-#{$type} {
-    @each $prop, $value in $typeProps {
-      #{$prop}: $value;
-    }
-  }
 }
