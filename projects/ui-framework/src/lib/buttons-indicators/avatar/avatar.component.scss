@@ -51,10 +51,6 @@
   }
 }
 
-b-chip {
-  margin-right: auto;
-}
-
 .avatar-content {
   @include size(100%);
   @include flex-align;
@@ -110,20 +106,12 @@ b-chip {
 
   &.disabled {
     @include disabled-state;
+  }
 
-    // .avatar {
-    //   pointer-events: none;
-    //   opacity: 0.5;
-    //   box-shadow: none;
-    // }
-
-    // .avatar-text {
-    //   .slot1-big,
-    //   .slot2-medium,
-    //   .slot3-small {
-    //     color: $grey-500;
-    //   }
-    // }
+  &.horizontal {
+    b-chip {
+      margin-right: auto;
+    }
   }
 
   &.vertical {

@@ -3,7 +3,7 @@
      [ngStyle]="avatarStyle"
      (click)="onClick($event)">
 
-  <b-icon *ngIf="badge"
+  <b-icon *ngIf="badge && !disabled"
           class="avatar-badge"
           [size]="badgeSize[size]"
           [icon]="badgeConfig?.icon"
@@ -37,7 +37,7 @@
     {{caption}}
   </p>
 
-  <b-chip *ngIf="chip && size > avatarSize.small"
+  <b-chip *ngIf="chip && !disabled && size > avatarSize.small"
           [type]="chip.type"
           [text]="chip.text">
   </b-chip>
