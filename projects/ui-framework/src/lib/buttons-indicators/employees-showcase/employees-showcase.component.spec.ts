@@ -201,4 +201,12 @@ describe('EmployeesShowcaseComponent', () => {
       expect(calcAvatars).toHaveBeenCalled();
     }));
   });
+
+  describe('onAvatarClick', () => {
+    it('should invoke clicked with the correct employee id', () => {
+      const emit = spyOn(component.clicked, 'emit');
+      component.onAvatarClick('12345');
+      expect(emit).toHaveBeenCalledWith('12345');
+    });
+  });
 });

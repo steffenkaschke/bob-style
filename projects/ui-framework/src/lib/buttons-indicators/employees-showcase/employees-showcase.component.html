@@ -3,7 +3,9 @@
     <b-avatar class="employees-showcase-avatar"
               *ngIf="i < avatarsToFit - 1 || (i < avatarsToFit && !showMore) || (i < avatarsToFit && last && showMore)"
               [imageSource]="employee.imageSource"
-              [size]="avatarSize"></b-avatar>
+              [size]="avatarSize"
+              [isClickable]="clicked.observers.length > 0"
+    (clicked)="onAvatarClick(employee.id)"></b-avatar>
     <div class="employees-showcase-panel-wrapper"
          *ngIf="i === avatarsToFit - 1 && !last && showMore">
         <b-panel [panelClass]="'employees-showcase-panel'">
