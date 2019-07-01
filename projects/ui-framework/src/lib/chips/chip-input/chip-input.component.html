@@ -32,7 +32,7 @@
            [matAutocomplete]="auto"
            [matAutocompleteConnectedTo]="wrapper"
            (focus)="onInputFocus()"
-           (blur)="onInputBlur($event)"
+           (blur)="onInputBlur()"
            (input)="onInputChange($event)"
            (keydown)="onInputKeydown($event)"
            (keyup)="onInputKeyup($event)">
@@ -41,6 +41,7 @@
 
 <mat-autocomplete #auto="matAutocomplete"
                   (optionSelected)="optionSelected($event)"
+                  (closed)="onAutoClosed()"
                   [class]="'chip-input-autocomplete'"
                   disableRipple="true">
   <mat-option *ngFor="let chip of filteredChips"

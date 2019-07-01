@@ -195,10 +195,8 @@ export class ChipInputComponent extends BaseFormElement
     }
   }
 
-  private addChipFromInputEvent(event): void {
-    const name = (event.target as HTMLInputElement).value
-      .replace(/,/g, '')
-      .trim();
+  private addChipFromInput(): void {
+    const name = this.input.nativeElement.value.replace(/,/g, '').trim();
     if (name) {
       let chipToAdd = this.findChip(name);
       if (!chipToAdd && this.acceptNew) {
@@ -206,17 +204,21 @@ export class ChipInputComponent extends BaseFormElement
       }
       this.commitChip(chipToAdd);
     }
-    this.autocompleteTrigger.closePanel();
+  }
+
+  public onAutoClosed(): void {
+    this.addChipFromInput();
   }
 
   public onInputFocus(): void {
     this.inputFocused = true;
   }
 
-  public onInputBlur(event): void {
+  public onInputBlur(): void {
     this.inputFocused = false;
     if (this.addOnBlur && !this.autocompletePanel.isOpen) {
-      this.addChipFromInputEvent(event);
+      this.addChipFromInput();
+      this.autocompleteTrigger.closePanel();
     }
   }
 
@@ -237,7 +239,8 @@ export class ChipInputComponent extends BaseFormElement
         }, 0);
       }
     } else if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.comma)) {
-      this.addChipFromInputEvent(event);
+      this.addChipFromInput();
+      this.autocompleteTrigger.closePanel();
     } else {
       this.unSelectLastChip();
     }
