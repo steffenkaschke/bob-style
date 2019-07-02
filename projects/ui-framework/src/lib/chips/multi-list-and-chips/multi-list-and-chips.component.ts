@@ -3,8 +3,7 @@ import {
   Input,
   ViewChild,
   SimpleChanges,
-  OnChanges,
-  SimpleChange
+  OnChanges
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../form-elements/lists/list.consts';
 import {
@@ -15,6 +14,8 @@ import { ChipListConfig, Chip } from '../chips.interface';
 import { ChipType } from '../chips.enum';
 import { MultiListComponent } from '../../form-elements/lists/multi-list/multi-list.component';
 import { ChipListComponent } from '../chip-list/chip-list.component';
+import { ListChange } from '../../form-elements/lists/list-change/list-change';
+import { simpleUID } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-multi-list-and-chips',
@@ -29,6 +30,9 @@ export class MultiListAndChipsComponent implements OnChanges {
 
   @Input() options: SelectGroupOption[] = [];
 
+  @Input() listLabel = 'Select fields:';
+  @Input() chipsLabel = 'Selected fields:';
+
   public chips = [];
 
   readonly listElHeight: number = LIST_EL_HEIGHT;
@@ -37,6 +41,13 @@ export class MultiListAndChipsComponent implements OnChanges {
     selectable: false,
     removable: true
   };
+  readonly listID = simpleUID('mlacl-');
+  readonly chipListID = simpleUID('mlacc-');
+
+  public onListChange(listChange: ListChange): void {
+    this.options = listChange.getSelectGroupOptions();
+    this.optionsToChips(listChange.getSelectGroupOptions());
+  }
 
   private optionsToChips(options: SelectGroupOption[] = this.options): Chip[] {
     const chips = [];
@@ -67,8 +78,10 @@ export class MultiListAndChipsComponent implements OnChanges {
   }
 
   public removeChipAndOption(chip: Chip) {
+    const options = [].concat(this.options);
+
     if ((chip as any).group) {
-      const group = this.options.find(
+      const group = options.find(
         (g: SelectGroupOption) =>
           (g.key && g.key === (chip as any).group.key) ||
           g.groupName === (chip as any).group.name
@@ -87,7 +100,7 @@ export class MultiListAndChipsComponent implements OnChanges {
             (ch.group && ch.group.name !== (chip as any).group.name))
       );
     } else {
-      this.options.find((group: SelectGroupOption) => {
+      options.find((group: SelectGroupOption) => {
         const opt = group.options.find((o: SelectOption) => o.id === chip.id);
         if (opt) {
           opt.selected = false;
@@ -99,9 +112,7 @@ export class MultiListAndChipsComponent implements OnChanges {
       this.chips = this.chips.filter((ch: any) => ch.id !== chip.id);
     }
 
-    this.list.ngOnChanges({
-      options: new SimpleChange(null, this.options, false)
-    });
+    return (this.options = options);
   }
 
   ngOnChanges(changes: SimpleChanges) {

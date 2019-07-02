@@ -1,26 +1,44 @@
 @import '../../style/variables';
+@import '../../form-elements/form-element.mixin';
 
 $gap: 20px;
 
 :host {
   display: flex;
   justify-content: space-between;
+  text-align: left;
+}
 
-  max-height: 50px + 44px + 44px * 6 + 2px;
+.mlac-list,
+.mlac-chips {
+  display: flex;
+  flex-direction: column;
+}
+
+.mlac-list {
+  width: calc(40% - #{$gap / 2});
+}
+
+.mlac-chips {
+  width: calc(60% - #{$gap / 2});
+}
+
+.mlac-list-label,
+.mlac-chips-label {
+  @include bFormElement-label;
 }
 
 b-multi-list,
 b-chip-list {
-  max-height: inherit;
+  max-height: (50px + 44px + 44px * 6 + 2px);
+  flex-grow: 5;
 }
 
 b-multi-list {
   box-shadow: none;
-  width: calc(40% - #{$gap / 2});
 }
 
 b-chip-list {
-  width: calc(60% - #{$gap / 2});
   border: 1px solid $grey-500;
   border-radius: $border-radius;
   margin: 0;

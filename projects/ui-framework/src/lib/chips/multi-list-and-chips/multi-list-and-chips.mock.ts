@@ -1,67 +1,5 @@
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
-import { simpleUID } from '../../services/utils/functional-utils';
-
-const indoorHobbies = [
-  'Book Clubs',
-  'Coffee Roasting',
-  'Airbrushing',
-  'Gunsmithing',
-  'Pinochle',
-  'Calligraphy',
-  'Chocolate Making',
-  'Ceramics',
-  'Scrapbooking',
-  'Fishkeeping',
-  'Soap Making',
-  'Knife Making',
-  'Dandyism',
-  'Collecting Model Trains',
-  'War Gaming',
-  'Making Your Own Hot Sauce',
-  'Poker',
-  'Playing Darts',
-  'Sculpting',
-  'Lockpicking',
-  'Watch Making',
-  'Jam Making',
-  'Floristry',
-  'Ghost Hunting',
-  '3D Printing And Physibles',
-  'Macrame',
-  'Knapping',
-  'Lacemaking',
-  'Lapidary',
-  'Crocheting',
-  'Book Restoration',
-  'Podcasting',
-  'Table Tennis',
-  'Yo-Yoing',
-  'Reef Aquarium',
-  'Bookbinding',
-  'Building Dollhouses',
-  'Conworlding',
-  'Dominoes',
-  'Matchstick Modeling',
-  'Impersonations',
-  'Inventing',
-  'Kitchen Chemistry',
-  'Knotting',
-  'Playing Pool/Darts/Foosball',
-  'Making Model Cars',
-  'Tarot Reading',
-  'Sushi Making',
-  'Scale Miniature Building',
-  'Collecting Diecast Cars',
-  'Building Ships In Bottles',
-  'Poetry',
-  'Beatboxing',
-  'Bridge Building',
-  'Glowsticking',
-  'Tatting',
-  'Storytelling',
-  'Crossword Puzzles',
-  'Embroidery'
-];
+import { simpleUID, randomNumber } from '../../services/utils/functional-utils';
 
 const oldPeopleHobbies = [
   'Rock And Mineral Collecting',
@@ -220,11 +158,8 @@ const kidsHobbies = [
   'Gymnastics'
 ];
 
-const random = (min = 0, max = 100): number =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
-
 const mayBeSelected = () => {
-  return random() > 90;
+  return randomNumber() > 90;
 };
 
 export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
