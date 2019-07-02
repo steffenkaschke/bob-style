@@ -17,8 +17,11 @@
 }
 
 .btt {
-  display: block;
   overflow: hidden;
+
+  &:not([data-max-lines]) {
+    display: block;
+  }
 
   &:not(.initialized) {
     max-height: 1em;
