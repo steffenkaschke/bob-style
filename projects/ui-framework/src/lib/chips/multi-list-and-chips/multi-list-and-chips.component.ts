@@ -40,7 +40,7 @@ export class MultiListAndChipsComponent implements OnChanges {
     ListChange
   >();
 
-  public chips = [];
+  public chips: Chip[] = [];
 
   readonly listElHeight: number = LIST_EL_HEIGHT;
   readonly chipListConfig: ChipListConfig = {
@@ -48,8 +48,8 @@ export class MultiListAndChipsComponent implements OnChanges {
     selectable: false,
     removable: true
   };
-  readonly listID = simpleUID('mlacl-');
-  readonly chipListID = simpleUID('mlacc-');
+  readonly listID: string = simpleUID('mlacl-');
+  readonly chipListID: string = simpleUID('mlacc-');
 
   public onListChange(listChange: ListChange): void {
     this.options = listChange.getSelectGroupOptions();
@@ -91,7 +91,7 @@ export class MultiListAndChipsComponent implements OnChanges {
   }
 
   private removeChipAndOption(chip: Chip) {
-    const options = [].concat(this.options);
+    const options: SelectGroupOption[] = [].concat(this.options);
 
     if ((chip as any).group) {
       const group = options.find(
