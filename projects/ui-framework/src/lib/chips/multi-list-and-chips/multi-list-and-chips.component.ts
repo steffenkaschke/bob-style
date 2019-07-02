@@ -4,7 +4,9 @@ import {
   ViewChild,
   SimpleChanges,
   OnChanges,
-  ElementRef
+  ElementRef,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../form-elements/lists/list.consts';
 import {
@@ -31,8 +33,12 @@ export class MultiListAndChipsComponent implements OnChanges {
 
   @Input() options: SelectGroupOption[] = [];
 
-  @Input() listLabel = 'Select fields:';
-  @Input() chipsLabel = 'Selected fields:';
+  @Input() listLabel: string;
+  @Input() chipsLabel: string;
+
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
 
   public chips = [];
 
@@ -48,6 +54,12 @@ export class MultiListAndChipsComponent implements OnChanges {
   public onListChange(listChange: ListChange): void {
     this.options = listChange.getSelectGroupOptions();
     this.optionsToChips(listChange.getSelectGroupOptions());
+    this.selectChange.emit(new ListChange(this.options));
+  }
+
+  public onChipRemoved(chip: Chip) {
+    this.removeChipAndOption(chip);
+    this.selectChange.emit(new ListChange(this.options));
   }
 
   private optionsToChips(options: SelectGroupOption[] = this.options): Chip[] {
@@ -78,7 +90,7 @@ export class MultiListAndChipsComponent implements OnChanges {
     return (this.chips = chips);
   }
 
-  public removeChipAndOption(chip: Chip) {
+  private removeChipAndOption(chip: Chip) {
     const options = [].concat(this.options);
 
     if ((chip as any).group) {

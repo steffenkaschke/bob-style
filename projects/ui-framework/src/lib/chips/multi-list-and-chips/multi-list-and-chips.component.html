@@ -4,7 +4,7 @@
      *ngIf="listLabel">{{listLabel}}</p>
 
   <b-multi-list #list
-                [attr.aria-labelledby]="listID"
+                [attr.aria-labelledby]="listLabel ? listID : null"
                 [options]="options"
                 [maxHeight]="listElHeight*6"
                 (selectChange)="onListChange($event)">
@@ -17,9 +17,9 @@
      *ngIf="chipsLabel">{{chipsLabel}}</p>
 
   <b-chip-list #chiplist
-               [attr.aria-labelledby]="chipListID"
+               [attr.aria-labelledby]="chipsLabel ? chipListID : null"
                [chips]="chips"
                [config]="chipListConfig"
-               (removed)="removeChipAndOption($event)">
+               (removed)="onChipRemoved($event)">
   </b-chip-list>
 </div>
