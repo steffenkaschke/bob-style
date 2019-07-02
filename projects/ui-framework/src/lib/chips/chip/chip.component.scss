@@ -13,57 +13,52 @@
 }
 
 $chipsMap: (
-  empty: (
-    background-color: white,
+  tag: (
+    background-color: $grey-300,
     color: $grey-700,
-    border-color: $grey-500
-  ),
-  default: (
-    background-color: $grey-600,
-    color: white,
-    border-color: $grey-600
+    border-color: $grey-300,
+    font-weight: $font-weight-body
   ),
   info: (
     background-color: var(--inform-500),
     color: white,
     border-color: var(--inform-500)
   ),
+  warning: (
+    background-color: $color-warn,
+    color: white,
+    border-color: $color-warn
+  ),
+  error: (
+    background-color: $color-error,
+    color: white,
+    border-color: $color-error
+  ),
   success: (
     background-color: var(--positive-500),
     color: white,
     border-color: var(--positive-500)
   ),
-  attention: (
-    background-color: var(--primary-600),
-    color: white,
-    border-color: var(--primary-600)
-  ),
-  warning: (
-    background-color: var(--negative-500),
-    color: white,
-    border-color: var(--negative-500)
+  avatar: (
+    background-color: white,
+    color: $grey-800,
+    border-color: $grey-300
   ),
   disabled: (
     background-color: $grey-200,
     color: $grey-500,
     border-color: $grey-200
   ),
-  tag: (
-    background-color: $grey-300,
-    color: $grey-700,
-    border-color: $grey-300,
-    font-weight: $font-weight-body
+  selected: (
+    background-color: $primary-600,
+    color: white,
+    border-color: $primary-600
   )
 );
 
 :host {
-  display: inline-flex;
-  outline: 0;
-}
-
-span {
   box-sizing: border-box;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   border-radius: 13px;
@@ -79,39 +74,34 @@ span {
   user-select: none;
   cursor: default;
   outline: 0;
-  pointer-events: none;
 
   &.blink {
     @include animate(blink, 0.3s);
   }
 
-  &.selected {
+  &.focused {
     position: relative;
     &:before {
       @include pseudo;
       @include size(100%);
       @include position;
       border-radius: inherit;
-      background-color: black(0.15);
+      background-color: black(0.1);
+    }
+  }
+
+  @each $type, $typeProps in $chipsMap {
+    &.chip-#{$type} {
+      @each $prop, $value in $typeProps {
+        #{$prop}: $value;
+      }
     }
   }
 }
 
-:host ::ng-deep .remove-button {
+.remove-button {
   margin-left: 5px;
   margin-right: -9px;
   display: block;
-  pointer-events: all;
   cursor: pointer;
-}
-:host-context(.disabled) .remove-button {
-  pointer-events: none;
-}
-
-@each $type, $typeProps in $chipsMap {
-  .chip-#{$type} {
-    @each $prop, $value in $typeProps {
-      #{$prop}: $value;
-    }
-  }
 }

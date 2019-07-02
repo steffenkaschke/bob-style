@@ -77,7 +77,7 @@
   .slot1-big,
   .slot2-medium,
   .slot3-small,
-  .chip {
+  b-chip {
     &:first-child,
     &:only-child {
       margin-top: 0;
@@ -105,13 +105,12 @@
   }
 
   &.disabled {
-    .avatar {
-      pointer-events: none;
-      opacity: 0.5;
-      box-shadow: none;
-    }
-    .avatar-text {
-      color: $grey-500;
+    @include disabled-state;
+  }
+
+  &.horizontal {
+    b-chip {
+      margin-right: auto;
     }
   }
 

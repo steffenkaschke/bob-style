@@ -191,7 +191,7 @@ export class ChipInputComponent extends BaseFormElement
       this.chipList.last.chip.nativeElement.dataset.aboutToDelete
     ) {
       delete this.chipList.last.chip.nativeElement.dataset.aboutToDelete;
-      this.chipList.last.chip.nativeElement.classList.remove('selected');
+      this.chipList.last.chip.nativeElement.classList.remove('focused');
     }
   }
 
@@ -227,7 +227,7 @@ export class ChipInputComponent extends BaseFormElement
           this.value.pop();
           this.updatePossibleChips();
         } else {
-          this.chipList.last.chip.nativeElement.classList.add('selected');
+          this.chipList.last.chip.nativeElement.classList.add('focused');
           this.chipList.last.chip.nativeElement.dataset.aboutToDelete = 'true';
         }
 
