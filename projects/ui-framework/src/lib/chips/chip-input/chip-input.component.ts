@@ -20,8 +20,8 @@ import {
 } from '@angular/material/autocomplete';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../../form-elements/base-form-element';
-import { ChipType } from '../chip.enum';
-import { ChipInputChange } from './chip-input.interface';
+import { ChipType } from '../chips.enum';
+import { ChipInputChange } from '../chips.interface';
 import { InputTypes } from '../../form-elements/input/input.enum';
 import { ChipComponent } from '../chip/chip.component';
 import { isKey } from '../../services/utils/functional-utils';
@@ -195,10 +195,8 @@ export class ChipInputComponent extends BaseFormElement
     }
   }
 
-  private addChipFromInputEvent(event): void {
-    const name = (event.target as HTMLInputElement).value
-      .replace(/,/g, '')
-      .trim();
+  private addChipFromInput(): void {
+    const name = this.input.nativeElement.value.replace(/,/g, '').trim();
     if (name) {
       let chipToAdd = this.findChip(name);
       if (!chipToAdd && this.acceptNew) {
@@ -206,17 +204,21 @@ export class ChipInputComponent extends BaseFormElement
       }
       this.commitChip(chipToAdd);
     }
-    this.autocompleteTrigger.closePanel();
+  }
+
+  public onAutoClosed(): void {
+    this.addChipFromInput();
   }
 
   public onInputFocus(): void {
     this.inputFocused = true;
   }
 
-  public onInputBlur(event): void {
+  public onInputBlur(): void {
     this.inputFocused = false;
     if (this.addOnBlur && !this.autocompletePanel.isOpen) {
-      this.addChipFromInputEvent(event);
+      this.addChipFromInput();
+      this.autocompleteTrigger.closePanel();
     }
   }
 
@@ -237,7 +239,8 @@ export class ChipInputComponent extends BaseFormElement
         }, 0);
       }
     } else if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.comma)) {
-      this.addChipFromInputEvent(event);
+      this.addChipFromInput();
+      this.autocompleteTrigger.closePanel();
     } else {
       this.unSelectLastChip();
     }

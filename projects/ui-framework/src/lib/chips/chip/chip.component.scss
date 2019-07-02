@@ -12,7 +12,7 @@
   }
 }
 
-$chipsMap: (
+$chipTypeMap: (
   tag: (
     background-color: $grey-300,
     color: $grey-700,
@@ -43,7 +43,10 @@ $chipsMap: (
     background-color: white,
     color: $grey-800,
     border-color: $grey-300
-  ),
+  )
+);
+
+$chipStateMap: (
   disabled: (
     background-color: $grey-200,
     color: $grey-500,
@@ -90,9 +93,17 @@ $chipsMap: (
     }
   }
 
-  @each $type, $typeProps in $chipsMap {
-    &.chip-#{$type} {
+  @each $type, $typeProps in $chipTypeMap {
+    &[data-type='#{$type}'] {
       @each $prop, $value in $typeProps {
+        #{$prop}: $value;
+      }
+    }
+  }
+
+  @each $state, $stateProps in $chipStateMap {
+    &[data-#{$state}='true'] {
+      @each $prop, $value in $stateProps {
         #{$prop}: $value;
       }
     }
