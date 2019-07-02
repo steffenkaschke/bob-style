@@ -6,7 +6,7 @@
         [selectable]="config.selectable || chip.selectable"
         [selected]="chip.selected"
         (removed)="onChipRemove(chip)"
-        (click)="onChipClick($event, chip)"
+        (click)="onChipClick(chip)"
         (keydown)="onChipKeydown($event, chip)">
   {{chip.text}}
 </b-chip>

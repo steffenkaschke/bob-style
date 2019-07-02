@@ -22,14 +22,18 @@ export class ChipListComponent {
 
   @Output() removed: EventEmitter<Chip> = new EventEmitter<Chip>();
   @Output() selected: EventEmitter<Chip> = new EventEmitter<Chip>();
+  @Output() clicked: EventEmitter<Chip> = new EventEmitter<Chip>();
   @Output() keyPressed: EventEmitter<{
     event: KeyboardEvent;
     chip: Chip;
   }> = new EventEmitter<{ event: KeyboardEvent; chip: Chip }>();
 
-  onChipClick(event: MouseEvent, chip: Chip) {
-    chip.selected = !chip.selected;
-    this.selected.emit(chip);
+  onChipClick(chip: Chip) {
+    if (this.config.selectable || chip.selectable) {
+      chip.selected = !chip.selected;
+      this.selected.emit(chip);
+    }
+    this.clicked.emit(chip);
   }
 
   onChipRemove(chip: Chip) {

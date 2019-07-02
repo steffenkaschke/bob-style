@@ -177,7 +177,7 @@ describe('AvatarComponent', () => {
       };
       fixture.detectChanges();
       const statusElement = fixture.debugElement.query(
-        By.css('b-chip.chip-success')
+        By.css('[data-type="success"]')
       );
       expect(statusElement).toBeTruthy();
       expect(statusElement.nativeElement.innerText).toEqual('status');
@@ -192,7 +192,7 @@ describe('AvatarComponent', () => {
       };
       fixture.detectChanges();
       const statusElement = fixture.debugElement.query(
-        By.css('b-chip.chip-success')
+        By.css('[data-type="success"]')
       );
       expect(statusElement).toBeFalsy();
     });
