@@ -30,7 +30,7 @@
   @include size(var(--avatar-size));
 
   &.emptyAvatar {
-    background-size: auto;
+    background-size: 60% auto;
   }
 }
 
