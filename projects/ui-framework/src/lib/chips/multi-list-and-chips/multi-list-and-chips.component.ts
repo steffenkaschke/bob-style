@@ -3,7 +3,8 @@ import {
   Input,
   ViewChild,
   SimpleChanges,
-  OnChanges
+  OnChanges,
+  SimpleChange
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../form-elements/lists/list.consts';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
@@ -64,8 +65,6 @@ export class MultiListAndChipsComponent implements OnChanges {
     return (this.chips = chips);
   }
 
-  private chipsToOptions(chips) {}
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes.options) {
       this.options = changes.options.currentValue;
@@ -73,24 +72,30 @@ export class MultiListAndChipsComponent implements OnChanges {
     }
   }
 
-  public onSelectChange(change: ListChange) {
-    console.log(change);
-    this.optionsToChips(change.getSelectGroupOptions());
-  }
-
-  public onChipRemoved(chip: Chip) {
-    console.log(chip);
-
+  public chipsToOptions(chip: Chip) {
     if ((chip as any).group) {
       const group = this.options.find(
         g =>
           (g.key && g.key === (chip as any).group.key) ||
           g.groupName === (chip as any).group.name
       );
-      console.log(group);
+
       group.options.forEach(option => {
         option.selected = false;
       });
+
+      this.list.ngOnChanges({
+        options: new SimpleChange(null, this.options, false)
+      });
+
+      this.chips = this.chips.filter(
+        ch =>
+          !ch.group ||
+          ((ch.group &&
+            ch.group.key &&
+            ch.group.key !== (chip as any).group.key) ||
+            (ch.group && ch.group.name !== (chip as any).group.name))
+      );
     }
   }
 }

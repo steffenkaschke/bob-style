@@ -1,11 +1,11 @@
 <b-multi-list #list
               [options]="options"
               [maxHeight]="listElHeight*6"
-              (selectChange)="onSelectChange($event)">
+              (selectChange)="optionsToChips($event.getSelectGroupOptions())">
 </b-multi-list>
 
 <b-chip-list #chiplist
              [chips]="chips"
              [config]="chipListConfig"
-             (removed)="onChipRemoved($event)">
+             (removed)="chipsToOptions($event)">
 </b-chip-list>
