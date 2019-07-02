@@ -7,10 +7,12 @@ import {
   SimpleChange
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../form-elements/lists/list.consts';
-import { SelectGroupOption } from '../../form-elements/lists/list.interface';
+import {
+  SelectGroupOption,
+  SelectOption
+} from '../../form-elements/lists/list.interface';
 import { ChipListConfig, Chip } from '../chips.interface';
 import { ChipType } from '../chips.enum';
-import { ListChange } from '../../form-elements/lists/list-change/list-change';
 import { MultiListComponent } from '../../form-elements/lists/multi-list/multi-list.component';
 import { ChipListComponent } from '../chip-list/chip-list.component';
 
@@ -39,11 +41,10 @@ export class MultiListAndChipsComponent implements OnChanges {
   private optionsToChips(options: SelectGroupOption[] = this.options): Chip[] {
     const chips = [];
 
-    options.forEach(group => {
-      if (group.options.every(option => option.selected)) {
+    options.forEach((group: SelectGroupOption) => {
+      if (group.options.every((option: SelectOption) => option.selected)) {
         chips.push({
           text: group.groupName + ' (all)',
-
           group: {
             key: group.key,
             name: group.groupName
@@ -51,7 +52,7 @@ export class MultiListAndChipsComponent implements OnChanges {
           type: ChipType.info
         });
       } else {
-        group.options.forEach(option => {
+        group.options.forEach((option: SelectOption) => {
           if (option.selected) {
             chips.push({
               text: option.value,
@@ -65,37 +66,48 @@ export class MultiListAndChipsComponent implements OnChanges {
     return (this.chips = chips);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.options) {
-      this.options = changes.options.currentValue;
-      this.optionsToChips();
-    }
-  }
-
-  public chipsToOptions(chip: Chip) {
+  public removeChipAndOption(chip: Chip) {
     if ((chip as any).group) {
       const group = this.options.find(
-        g =>
+        (g: SelectGroupOption) =>
           (g.key && g.key === (chip as any).group.key) ||
           g.groupName === (chip as any).group.name
       );
 
-      group.options.forEach(option => {
+      group.options.forEach((option: SelectOption) => {
         option.selected = false;
       });
 
-      this.list.ngOnChanges({
-        options: new SimpleChange(null, this.options, false)
-      });
-
       this.chips = this.chips.filter(
-        ch =>
+        (ch: any) =>
           !ch.group ||
           ((ch.group &&
             ch.group.key &&
             ch.group.key !== (chip as any).group.key) ||
             (ch.group && ch.group.name !== (chip as any).group.name))
       );
+    } else {
+      this.options.find((group: SelectGroupOption) => {
+        const opt = group.options.find((o: SelectOption) => o.id === chip.id);
+        if (opt) {
+          opt.selected = false;
+          return true;
+        }
+        return false;
+      });
+
+      this.chips = this.chips.filter((ch: any) => ch.id !== chip.id);
+    }
+
+    this.list.ngOnChanges({
+      options: new SimpleChange(null, this.options, false)
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.options) {
+      this.options = changes.options.currentValue;
+      this.optionsToChips();
     }
   }
 }
