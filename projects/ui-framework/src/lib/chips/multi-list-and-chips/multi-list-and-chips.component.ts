@@ -3,7 +3,8 @@ import {
   Input,
   ViewChild,
   SimpleChanges,
-  OnChanges
+  OnChanges,
+  ElementRef
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../form-elements/lists/list.consts';
 import {
@@ -23,7 +24,7 @@ import { simpleUID } from '../../services/utils/functional-utils';
   styleUrls: ['./multi-list-and-chips.component.scss']
 })
 export class MultiListAndChipsComponent implements OnChanges {
-  constructor() {}
+  constructor(private host: ElementRef) {}
 
   @ViewChild('list', { static: true }) list: MultiListComponent;
   @ViewChild('chips', { static: true }) chiplist: ChipListComponent;
@@ -119,6 +120,11 @@ export class MultiListAndChipsComponent implements OnChanges {
     if (changes.options) {
       this.options = changes.options.currentValue;
       this.optionsToChips();
+
+      setTimeout(() => {
+        this.host.nativeElement.style.height =
+          this.host.nativeElement.offsetHeight + 'px';
+      }, 0);
     }
   }
 }
