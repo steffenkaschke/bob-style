@@ -28,7 +28,8 @@ export class ChipListComponent {
     chip: Chip;
   }> = new EventEmitter<{ event: KeyboardEvent; chip: Chip }>();
 
-  onChipClick(chip: Chip) {
+  onChipClick(event: MouseEvent, chip: Chip) {
+    event.stopPropagation();
     if (this.config.selectable || chip.selectable) {
       chip.selected = !chip.selected;
       this.selected.emit(chip);
