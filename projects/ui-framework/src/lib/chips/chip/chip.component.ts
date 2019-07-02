@@ -59,13 +59,12 @@ export class ChipComponent implements OnChanges {
   readonly iconSize = IconSize.small;
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.type && !changes.currentValue) {
-      this.type = ChipType.tag;
+    if (changes.type) {
+      this.type = changes.type.currentValue || ChipType.tag;
     }
   }
 
   onRemoveClick(event: MouseEvent) {
-    console.log('remove click');
     event.stopPropagation();
     this.removed.emit();
   }

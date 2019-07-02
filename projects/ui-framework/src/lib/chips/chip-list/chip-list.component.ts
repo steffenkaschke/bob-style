@@ -33,7 +33,6 @@ export class ChipListComponent {
   }
 
   onChipRemove(chip: Chip) {
-    console.log('remove click!');
     this.removed.emit(chip);
   }
 
