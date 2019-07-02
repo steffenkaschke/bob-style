@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { Chip } from '../chip.interface';
+import { Chip, ChipListConfig } from '../chip.interface';
 
 @Component({
   selector: 'b-chip-list',
@@ -15,9 +15,11 @@ import { Chip } from '../chip.interface';
 export class ChipListComponent {
   constructor() {}
 
-  @Input() chips: Chip[];
+  @Input() chips: Chip[] = [];
+  @Input() config: ChipListConfig = {};
 
   @Output() removed: EventEmitter<Chip> = new EventEmitter<Chip>();
+  @Output() selected: EventEmitter<Chip> = new EventEmitter<Chip>();
   @Output() clicked: EventEmitter<{
     event: KeyboardEvent;
     chip: Chip;
@@ -25,7 +27,13 @@ export class ChipListComponent {
 
   @HostBinding('attr.role') role = 'list';
 
+  onChipClick(event: MouseEvent, chip: Chip) {
+    chip.selected = !chip.selected;
+    this.selected.emit(chip);
+  }
+
   onChipRemove(chip: Chip) {
+    console.log('remove click!');
     this.removed.emit(chip);
   }
 

@@ -10,3 +10,10 @@ export interface Chip {
   disabled?: boolean;
   selected?: boolean;
 }
+
+export interface ChipListConfig {
+  type?: ChipType;
+  removable?: boolean;
+  selectable?: boolean;
+  disabled?: boolean;
+}

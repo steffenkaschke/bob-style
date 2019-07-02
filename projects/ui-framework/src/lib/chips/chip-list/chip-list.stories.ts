@@ -19,10 +19,7 @@ const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
 const chips = [...randomFromArray(chipsMock, 10), 'Rimming'].reduce(
   (acc, chip) => {
     acc.push({
-      text: chip,
-      type: ChipType.tag,
-      removable: true,
-      selectable: true
+      text: chip
     } as Chip);
     return acc;
   },
