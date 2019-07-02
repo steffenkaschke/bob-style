@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   OnChanges
 } from '@angular/core';
-import { ChipType } from '../chip.enum';
+import { ChipType } from '../chips.enum';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 
 @Component({

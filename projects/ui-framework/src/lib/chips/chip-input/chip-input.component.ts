@@ -20,7 +20,7 @@ import {
 } from '@angular/material/autocomplete';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../../form-elements/base-form-element';
-import { ChipType } from '../chip.enum';
+import { ChipType } from '../chips.enum';
 import { ChipInputChange } from './chip-input.interface';
 import { InputTypes } from '../../form-elements/input/input.enum';
 import { ChipComponent } from '../chip/chip.component';

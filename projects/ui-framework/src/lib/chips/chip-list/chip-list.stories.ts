@@ -12,9 +12,8 @@ import { chipsMock } from '../chips.mock';
 import { randomFromArray } from '../../services/utils/functional-utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipListModule } from './chip-list.module';
-import { Chip } from '../chip.interface';
-import { ChipType } from '../chip.enum';
-import { ChipModule } from '../chip/chip.module';
+import { Chip } from '../chips.interface';
+import { ChipType } from '../chips.enum';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs

@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { IconsModule } from '../../icons/icons.module';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { SimpleChange } from '@angular/core';
-import { ChipType } from '../../chips/chip.enum';
+import { ChipType } from '../../chips/chips.enum';
 import { ChipModule } from '../../chips/chip/chip.module';
 import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
 import { BadgeSize, AvatarBadges } from './avatar.consts';

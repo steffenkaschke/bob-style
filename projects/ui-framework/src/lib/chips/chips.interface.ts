@@ -1,4 +1,5 @@
-import { ChipType } from './chip.enum';
+import { ChipType } from './chips.enum';
+import { InputEventType } from '../form-elements/form-elements.enum';
 
 export interface Chip {
   text: string;
@@ -16,4 +17,11 @@ export interface ChipListConfig {
   removable?: boolean;
   selectable?: boolean;
   disabled?: boolean;
+}
+
+export interface ChipInputChange {
+  value: string[];
+  added?: string;
+  removed?: string;
+  event?: InputEventType;
 }
