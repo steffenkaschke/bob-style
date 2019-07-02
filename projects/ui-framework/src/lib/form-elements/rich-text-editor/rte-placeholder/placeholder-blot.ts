@@ -18,12 +18,7 @@ export class PlaceholderBlot extends Inline {
       node.setAttribute('data-text', focusOption.text);
     }
     node.setAttribute('contenteditable', 'false');
-    node.setAttribute(
-      'data-tag',
-      Math.random()
-        .toString()
-        .slice(-4)
-    );
+    node.setAttribute('data-tag', simpleUID());
 
     return node;
   }
