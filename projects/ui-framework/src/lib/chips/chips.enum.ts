@@ -4,6 +4,5 @@ export enum ChipType {
   warning = 'warning',
   error = 'error',
   success = 'success',
-  avatar = 'avatar',
-  disabled = 'disabled'
+  avatar = 'avatar'
 }

@@ -1,15 +1,19 @@
 import { storiesOf } from '@storybook/angular';
-import { object, withKnobs } from '@storybook/addon-knobs/angular';
-
+import {
+  object,
+  withKnobs,
+  select,
+  boolean
+} from '@storybook/addon-knobs/angular';
+import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { chipsMock } from '../chips.mock';
 import { randomFromArray } from '../../services/utils/functional-utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipListModule } from './chip-list.module';
-import { Chip } from '../chip.interface';
-import { ChipType } from '../chip.enum';
-import { ChipModule } from '../chip/chip.module';
+import { Chip } from '../chips.interface';
+import { ChipType } from '../chips.enum';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -19,10 +23,7 @@ const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
 const chips = [...randomFromArray(chipsMock, 10), 'Rimming'].reduce(
   (acc, chip) => {
     acc.push({
-      text: chip,
-      type: ChipType.tag,
-      removable: true,
-      selectable: true
+      text: chip
     } as Chip);
     return acc;
   },
@@ -30,7 +31,12 @@ const chips = [...randomFromArray(chipsMock, 10), 'Rimming'].reduce(
 );
 
 const template = `
-  <b-chip-list [chips]="chips">
+  <b-chip-list [chips]="chips"
+               [config]="{
+                  type: type,
+                  selectable: selectable,
+                  removable: removable,
+                  disabled: disabled}">
   </b-chip-list>
 `;
 
@@ -42,17 +48,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  value | string[] | array of selected chips | none
-  options | string[] | array of all possible chips | none
-  acceptNew | boolean | if the input accepts new entries | true
-  label | string | label (on top of input) | none
-  placeholder | string | placeholder (inide input) | none
-  hintMessage | string | text below input | none
-  warnMessage | string | warning text
-  errorMessage | string | error text | none
-  required | boolean | if input is required | false
-  disabled | boolean | if input is disabled | false
-  changed | Function | handler for event of type ChipInputChange ({value, added, removed}) | none
+
 
 
   ~~~
@@ -68,12 +64,18 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
+const typeOptions = values(ChipType);
+
 story.add(
   'Chip List',
   () => ({
     template: storyTemplate,
     props: {
-      chips: object('chips', chips)
+      chips: object('chips', chips),
+      type: select('type', typeOptions, ChipType.tag),
+      removable: boolean('removable', true),
+      selectable: boolean('selectable', true),
+      disabled: boolean('disabled', false)
     },
     moduleMetadata: {
       imports: [ChipListModule, StoryBookLayoutModule, BrowserAnimationsModule]

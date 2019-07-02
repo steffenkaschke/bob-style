@@ -32,9 +32,9 @@
               [ngClass]="{'ql-active': hasSizeSet}"
               (click)="storeSelection()">
 
-        <b-icon icon="text_size_option"
-                size="medium"
-                color="normal">
+        <b-icon [icon]="icons.text_size"
+                [size]="iconSize.large"
+                [color]="iconColor.normal">
         </b-icon>
       </button>
       <ng-container panel-content>

@@ -1,8 +1,8 @@
-import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChipComponent } from './chip.component';
-import { ChipType } from '../chip.enum';
+import { ChipType } from '../chips.enum';
 import { By } from '@angular/platform-browser';
 import { ColorService } from '../../services/color-service/color.service';
 
@@ -26,7 +26,7 @@ describe('ChipComponent', () => {
       });
   }));
 
-  describe('text', () => {
+  describe('Text', () => {
     it('should put the right text', () => {
       component.text = 'test';
       fixture.detectChanges();
@@ -34,19 +34,18 @@ describe('ChipComponent', () => {
     });
   });
 
-  describe('class', () => {
-    it('should have the right type class', () => {
+  describe('Type', () => {
+    it('should have the right type attribute', () => {
       component.type = ChipType.info;
       fixture.detectChanges();
-      expect(chipElement.classList).toContain('chip-info');
+      expect(chipElement.dataset.type).toEqual('info');
       component.type = ChipType.success;
       fixture.detectChanges();
-      expect(chipElement.classList).not.toContain('chip-info');
-      expect(chipElement.classList).toContain('chip-success');
+      expect(chipElement.dataset.type).toEqual('success');
     });
   });
 
-  describe('removable', () => {
+  describe('Removable', () => {
     it('should have remove button, if removable is true', () => {
       let removeButton = fixture.debugElement.query(By.css('.remove-button'));
       expect(removeButton).toBeFalsy();
@@ -59,13 +58,13 @@ describe('ChipComponent', () => {
     });
   });
 
-  describe('disabled', () => {
-    it('should not put type class, when disabled is true, instead put disabled class', () => {
+  describe('Disabled', () => {
+    it('should add disabled attribute when disabled is true', () => {
       component.type = ChipType.info;
+      expect(chipElement.dataset.disabled).not.toEqual('true');
       component.disabled = true;
       fixture.detectChanges();
-      expect(chipElement.classList).not.toContain('chip-info');
-      expect(chipElement.classList).toContain('chip-disabled');
+      expect(chipElement.dataset.disabled).toEqual('true');
     });
     it('should not put remove button, when disabled is true, even if removable is true as well', () => {
       component.type = ChipType.info;
@@ -77,7 +76,7 @@ describe('ChipComponent', () => {
     });
   });
 
-  describe('selectable', () => {
+  describe('Selectable', () => {
     it('should add tabindex="0", if selectable is true', () => {
       component.selectable = true;
       fixture.detectChanges();
