@@ -18,7 +18,7 @@ import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
     <ng-content></ng-content>
 
     <b-icon
-      *ngIf="removable && type !== chipType.disabled && !disabled"
+      *ngIf="removable && !disabled"
       class="remove-button"
       [icon]="icon"
       [color]="
