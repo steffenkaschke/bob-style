@@ -29,7 +29,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Single select'">
+<b-story-book-layout [title]="'Multi list'">
   <div style="max-width: 400px; margin: 30px auto;">
     ${template}
   </div>

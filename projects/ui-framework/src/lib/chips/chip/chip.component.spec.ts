@@ -75,12 +75,4 @@ describe('ChipComponent', () => {
       expect(removeButton).toBeFalsy();
     });
   });
-
-  describe('Selectable', () => {
-    it('should add tabindex="0", if selectable is true', () => {
-      component.selectable = true;
-      fixture.detectChanges();
-      expect(chipElement.getAttribute('tabindex')).toEqual('0');
-    });
-  });
 });

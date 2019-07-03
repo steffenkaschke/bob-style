@@ -1,7 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { TabsComponent } from './tabs.component';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTab, MatTabsModule } from '@angular/material/tabs';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TabsType } from './tabs.enum';
@@ -33,6 +33,7 @@ describe('TabsComponent', () => {
       }
     ];
     spyOn(component.selectChange, 'emit');
+    spyOn(component.selectClick, 'emit');
     fixture.detectChanges();
   });
 
@@ -41,12 +42,12 @@ describe('TabsComponent', () => {
   });
 
   describe('tabs', () => {
-    it('Should have 3 tabs', () => {
+    it('should have 3 tabs', () => {
       const progressEl = fixture.debugElement.query(By.css('.mat-tab-header'));
       expect(progressEl.childNodes.length).toEqual(3);
     });
 
-    it('Should be able to set type (style)', () => {
+    it('should to set type (style)', () => {
       component.type = TabsType.secondary;
       fixture.detectChanges();
 
@@ -56,7 +57,7 @@ describe('TabsComponent', () => {
       expect(tabsGroupEl.classList).toContain('tabs-secondary');
     });
 
-    it('Should be able to set selected tab via selectedIndex', () => {
+    it('should to set selected tab via selectedIndex', () => {
       component.selectedIndex = 2;
       fixture.detectChanges();
       const labelEl = fixture.debugElement.query(
@@ -65,9 +66,28 @@ describe('TabsComponent', () => {
       expect(labelEl.classList).toContain('mat-tab-label-active');
     });
 
-    it('Should output selectChange event', () => {
+    it('should output selectChange event',
+      fakeAsync(() => {
+        component.selectedIndex = 1;
+        fixture.detectChanges();
+        const matTabLabel = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[0];
+        matTabLabel.triggerEventHandler('click', null);
+        fixture.detectChanges();
+        tick(500);
+        expect(component.selectChange.emit).toHaveBeenCalledTimes(2);
+      }));
+
+    it('should output select click event', () => {
       component.selectedIndex = 1;
-      expect(component.selectChange.emit).not.toHaveBeenCalled();
+      fixture.detectChanges();
+      const label = fixture.debugElement.queryAll(By.css('.tab-label'))[1];
+      label.triggerEventHandler('click', null);
+      const matTab: MatTab = component.matTabs.toArray()[1];
+      expect(component.selectClick.emit).toHaveBeenCalledTimes(1);
+      expect(component.selectClick.emit).toHaveBeenCalledWith({
+        index: 1,
+        tab: matTab,
+      });
     });
 
     it('should add class from key param when exists in model', () => {
