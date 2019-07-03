@@ -4,9 +4,7 @@ import { RenderedComponent } from '../services/component-renderer/component-rend
 import { AvatarComponent } from '../buttons-indicators/avatar/avatar.component';
 import { AvatarSize } from '../buttons-indicators/avatar/avatar.enum';
 import { CardData, AddCardData } from './cards.interface';
-
-const random = (min = 0, max = 100): number =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
+import { randomNumber } from '../services/utils/functional-utils';
 
 const names = [
   'Dylan Herrera',
@@ -50,7 +48,7 @@ const headerComponent = (index: number): RenderedComponent => ({
 const footerComponent = (): RenderedComponent => ({
   component: SliderComponent,
   attributes: {
-    value: random(10, 90),
+    value: randomNumber(10, 90),
     showLabel: false,
     readOnly: true
   }

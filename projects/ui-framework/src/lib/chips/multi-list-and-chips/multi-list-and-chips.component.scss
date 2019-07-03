@@ -1,0 +1,47 @@
+@import '../../style/variables';
+@import '../../form-elements/form-element.mixin';
+
+$gap: 20px;
+
+:host {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.mlac-list,
+.mlac-chips {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.mlac-list {
+  width: calc(40% - #{$gap / 2});
+}
+
+.mlac-chips {
+  width: calc(60% - #{$gap / 2});
+}
+
+.mlac-list-label,
+.mlac-chips-label {
+  @include bFormElement-label;
+}
+
+b-multi-list,
+b-chip-list {
+  max-height: (50px + 44px + 44px * 6 + 2px);
+  flex-grow: 5;
+}
+
+b-multi-list {
+  box-shadow: none;
+}
+
+b-chip-list {
+  border: 1px solid $grey-500;
+  border-radius: $border-radius;
+  margin: 0;
+  padding: ($gap - 4px);
+}

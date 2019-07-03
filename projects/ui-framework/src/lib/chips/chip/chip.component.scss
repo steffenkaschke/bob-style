@@ -82,6 +82,7 @@ $chipStateMap: (
     @include animate(blink, 0.3s);
   }
 
+  &[tabindex='0']:focus,
   &.focused {
     position: relative;
     &:before {
@@ -89,7 +90,7 @@ $chipStateMap: (
       @include size(100%);
       @include position;
       border-radius: inherit;
-      background-color: black(0.1);
+      background-color: black(0.05);
     }
   }
 

@@ -7,7 +7,6 @@ export interface Chip {
   type?: ChipType;
   avatar?: string;
   removable?: boolean;
-  selectable?: boolean;
   disabled?: boolean;
   selected?: boolean;
 }
@@ -16,7 +15,13 @@ export interface ChipListConfig {
   type?: ChipType;
   removable?: boolean;
   selectable?: boolean;
+  focusable?: boolean;
   disabled?: boolean;
+}
+
+export interface ChipKeydownEvent {
+  event: KeyboardEvent;
+  chip: Chip;
 }
 
 export interface ChipInputChange {
