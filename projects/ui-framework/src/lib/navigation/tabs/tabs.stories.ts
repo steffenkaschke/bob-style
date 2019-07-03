@@ -25,13 +25,14 @@ const tabs: Tab[] = [
   },
   {
     label: 'Termination'
-  }
+  },
 ];
 const template = `
 <b-tabs [tabs]="tabs"
         [type]="type"
         [selectedIndex]="selectedIndex"
-        (selectChange)="onSelectedTabChange($event)">
+        (selectClick)="selectClick($event)"
+        (selectChange)="selectChange($event)">
 </b-tabs>`;
 
 const storyTemplate = `
@@ -52,8 +53,9 @@ const note = `
   --- | --- | ---
   tabs | Tabs[] | tabs metadata
   type | TabsType | tabs style (defaults to 'primary')
-  selectChange | event | tab event which contains the change index
   selectedIndex | number | the selected tab index 0-n
+  selectClick | MatTabChangeEvent | event contains the index (number) and the matTab
+  selectChange | MatTabChangeEvent | event contains the index (number) and the matTab
 
   ~~~
   ${template}
@@ -67,7 +69,8 @@ inputStories.add(
       props: {
         tabs: object<Tab>('tabs', tabs),
         type: select('type', Object.values(TabsType), TabsType.primary),
-        onSelectedTabChange: action('onSelectedTabChange'),
+        selectClick: action('selectClick'),
+        selectChange: action('selectChange'),
         selectedIndex: number('selectedIndex', 0, 0)
       },
       moduleMetadata: {

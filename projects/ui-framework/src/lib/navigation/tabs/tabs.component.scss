@@ -42,11 +42,16 @@
   .mat-tab-label {
     height: 30px;
     min-width: 0;
-    padding: 0 15px;
+    padding: 0;
     color: $grey-700;
     opacity: 1;
     text-transform: uppercase;
     font-weight: 400;
+
+    .tab-label {
+      line-height: 28px;
+      padding: 0 15px;
+    }
 
     &.mat-tab-label-active {
       font-weight: 700;
