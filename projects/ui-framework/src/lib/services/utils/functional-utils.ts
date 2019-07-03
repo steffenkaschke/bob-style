@@ -52,18 +52,6 @@ export const pass = (a: any): any => a;
 export const isKey = (key: string, expected: string): boolean =>
   key.toUpperCase() === expected.toUpperCase();
 
-export const stringListToArray = (list: string): string[] => {
-  if (isArray(list) || !list) {
-    return list as any;
-  }
-  if (!isString(list)) {
-    return [list];
-  }
-  return Array.from(
-    new Set(list.split(/[^\w\u0020]+/).map(i => i.trim()))
-  ).filter(i => !!i);
-};
-
 export const asArray = (smth: any): any[] =>
   !isNullOrUndefined(smth) ? (isArray(smth) ? smth : [smth]) : [];
 

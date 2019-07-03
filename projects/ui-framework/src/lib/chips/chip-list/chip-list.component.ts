@@ -10,9 +10,10 @@ import {
   QueryList
 } from '@angular/core';
 import { Chip, ChipListConfig, ChipKeydownEvent } from '../chips.interface';
-import { isKey, isString } from '../../services/utils/functional-utils';
+import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { ChipComponent } from '../chip/chip.component';
+import { arrayOfValuesToArrayOfObjects } from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-chip-list',
@@ -38,13 +39,9 @@ export class ChipListComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.chips) {
-      if (isString(changes.chips.currentValue[0])) {
-        this.chips = changes.chips.currentValue.map((ch: string) => ({
-          text: ch
-        }));
-      } else {
-        this.chips = changes.chips.currentValue;
-      }
+      this.chips = arrayOfValuesToArrayOfObjects('text')(
+        changes.chips.currentValue
+      );
     }
   }
 
