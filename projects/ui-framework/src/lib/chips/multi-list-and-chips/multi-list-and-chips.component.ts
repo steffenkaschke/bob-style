@@ -13,12 +13,13 @@ import {
   SelectGroupOption,
   SelectOption
 } from '../../form-elements/lists/list.interface';
-import { ChipListConfig, Chip } from '../chips.interface';
+import { ChipListConfig, Chip, ChipKeydownEvent } from '../chips.interface';
 import { ChipType } from '../chips.enum';
 import { MultiListComponent } from '../../form-elements/lists/multi-list/multi-list.component';
 import { ChipListComponent } from '../chip-list/chip-list.component';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
-import { simpleUID } from '../../services/utils/functional-utils';
+import { simpleUID, isKey } from '../../services/utils/functional-utils';
+import { Keys } from '../../enums';
 
 @Component({
   selector: 'b-multi-list-and-chips',
@@ -27,9 +28,6 @@ import { simpleUID } from '../../services/utils/functional-utils';
 })
 export class MultiListAndChipsComponent implements OnChanges {
   constructor(private host: ElementRef) {}
-
-  @ViewChild('list', { static: true }) list: MultiListComponent;
-  @ViewChild('chips', { static: true }) chiplist: ChipListComponent;
 
   @Input() options: SelectGroupOption[] = [];
 
@@ -46,6 +44,7 @@ export class MultiListAndChipsComponent implements OnChanges {
   readonly chipListConfig: ChipListConfig = {
     type: ChipType.tag,
     selectable: false,
+    focusable: true,
     removable: true
   };
   readonly listID: string = simpleUID('mlacl-');
@@ -53,13 +52,22 @@ export class MultiListAndChipsComponent implements OnChanges {
 
   public onListChange(listChange: ListChange): void {
     this.options = listChange.getSelectGroupOptions();
-    this.optionsToChips(listChange.getSelectGroupOptions());
+    this.optionsToChips();
     this.selectChange.emit(new ListChange(this.options));
   }
 
   public onChipRemoved(chip: Chip) {
     this.removeChipAndOption(chip);
     this.selectChange.emit(new ListChange(this.options));
+  }
+
+  public onChipKeydown(event: ChipKeydownEvent) {
+    if (
+      isKey(event.event.key, Keys.backspace) ||
+      isKey(event.event.key, Keys.delete)
+    ) {
+      this.removeChipAndOption(event.chip);
+    }
   }
 
   private optionsToChips(options: SelectGroupOption[] = this.options): Chip[] {

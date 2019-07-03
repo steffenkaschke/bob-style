@@ -5,7 +5,9 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { Chip, ChipListConfig } from '../chips.interface';
+import { Chip, ChipListConfig, ChipKeydownEvent } from '../chips.interface';
+import { isKey } from '../../services/utils/functional-utils';
+import { Keys } from '../../enums';
 
 @Component({
   selector: 'b-chip-list',
@@ -23,10 +25,9 @@ export class ChipListComponent {
   @Output() removed: EventEmitter<Chip> = new EventEmitter<Chip>();
   @Output() selected: EventEmitter<Chip> = new EventEmitter<Chip>();
   @Output() clicked: EventEmitter<Chip> = new EventEmitter<Chip>();
-  @Output() keyPressed: EventEmitter<{
-    event: KeyboardEvent;
-    chip: Chip;
-  }> = new EventEmitter<{ event: KeyboardEvent; chip: Chip }>();
+  @Output() keyPressed: EventEmitter<ChipKeydownEvent> = new EventEmitter<
+    ChipKeydownEvent
+  >();
 
   onChipClick(event: MouseEvent, chip: Chip) {
     event.stopPropagation();
@@ -43,5 +44,19 @@ export class ChipListComponent {
 
   onChipKeydown(event: KeyboardEvent, chip: Chip) {
     this.keyPressed.emit({ event, chip });
+
+    if (isKey(event.key, Keys.arrowleft)) {
+      const prevChip = (event.target as HTMLElement)
+        .previousSibling as HTMLElement;
+      if (prevChip.nodeName === 'B-CHIP') {
+        prevChip.focus();
+      }
+    }
+    if (isKey(event.key, Keys.arrowright)) {
+      const nextChip = (event.target as HTMLElement).nextSibling as HTMLElement;
+      if (nextChip.nodeName === 'B-CHIP') {
+        nextChip.focus();
+      }
+    }
   }
 }

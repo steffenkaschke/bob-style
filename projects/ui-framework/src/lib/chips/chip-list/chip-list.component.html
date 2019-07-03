@@ -4,6 +4,7 @@
         [disabled]="chip.disabled || config.disabled"
         [removable]="chip.removable || config.removable"
         [selectable]="chip.selectable || config.selectable"
+        [focusable]="chip.focusable || config.focusable"
         [selected]="chip.selected"
         (removed)="onChipRemove(chip)"
         (click)="onChipClick($event, chip)"

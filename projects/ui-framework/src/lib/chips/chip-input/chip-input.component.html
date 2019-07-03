@@ -13,7 +13,8 @@
             *ngFor="let chip of value"
             [type]="chipType.tag"
             [removable]="removable"
-            [selectable]="true"
+            [selectable]="false"
+            [focusable]="true"
             (removed)="remove(chip)"
             (click)="$event.stopPropagation()"
             (keydown)="onChipKeydown($event)">

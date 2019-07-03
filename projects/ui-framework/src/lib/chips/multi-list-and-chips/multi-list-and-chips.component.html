@@ -20,6 +20,7 @@
                [attr.aria-labelledby]="chipsLabel ? chipListID : null"
                [chips]="chips"
                [config]="chipListConfig"
-               (removed)="onChipRemoved($event)">
+               (removed)="onChipRemoved($event)"
+               (keyPressed)="onChipKeydown($event)">
   </b-chip-list>
 </div>
