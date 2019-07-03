@@ -264,11 +264,8 @@ describe('TableComponent', () => {
     it('should update rows', () => {
       fixture.autoDetectChanges();
       spyOn(component.agGrid.api, 'updateRowData');
-      const rowDef: RowNodeDef = {
-        rowIndex: 2,
-        data: { 'test:': 2 }
-      };
-      component.updateRows([rowDef]);
+      const rowData = { 'test:': 2 };
+      component.updateRows([rowData]);
       expect(component.agGrid.api.updateRowData).toHaveBeenCalledWith({
         update: [{ 'test:': 2 }]
       });

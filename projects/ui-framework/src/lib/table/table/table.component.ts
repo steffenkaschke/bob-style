@@ -1,7 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, }
+from '@angular/core';
 import { GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
 import { cloneDeep, get, has, map, once, toString } from 'lodash';
-import { ColumnDef, RowClickedEvent, RowNodeDef, SortChangedEvent } from './table.interface';
+import { ColumnDef, RowClickedEvent, SortChangedEvent } from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { RowSelection, TableType } from './table.enum';
@@ -117,12 +118,7 @@ export class TableComponent implements OnInit, OnChanges {
     this.gridOptions.api.updateRowData({ remove: rows });
   }
 
-  public updateRows(rows: RowNodeDef[]): void {
-    const rowsData: any[] = map(rows, (row: RowNodeDef) => {
-      const getRow: RowNode = this.getRow(toString(row.rowIndex));
-      getRow.data = cloneDeep(row.data);
-      return getRow.data;
-    });
+  public updateRows(rowsData: any[]): void {
     this.gridOptions.api.updateRowData({ update: rowsData });
   }
 
