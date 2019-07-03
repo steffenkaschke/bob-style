@@ -1,5 +1,9 @@
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
-import { simpleUID, randomNumber } from '../../services/utils/functional-utils';
+import {
+  simpleUID,
+  randomNumber,
+  randomFromArray
+} from '../../services/utils/functional-utils';
 
 const oldPeopleHobbies = [
   'Rock And Mineral Collecting',
@@ -162,10 +166,12 @@ const mayBeSelected = () => {
   return randomNumber() > 90;
 };
 
+const maxOpts = 10;
+
 export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
   {
     groupName: 'For kids',
-    options: kidsHobbies.map(hobby => ({
+    options: randomFromArray(kidsHobbies, maxOpts).map(hobby => ({
       value: hobby,
       id: simpleUID(),
       selected: mayBeSelected()
@@ -173,7 +179,7 @@ export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
   },
   {
     groupName: 'For couples',
-    options: couplesHobbies.map(hobby => ({
+    options: randomFromArray(couplesHobbies, maxOpts).map(hobby => ({
       value: hobby,
       id: simpleUID(),
       selected: mayBeSelected()
@@ -181,7 +187,7 @@ export const MultiListAndChipsOptionsMock: SelectGroupOption[] = [
   },
   {
     groupName: 'For old people',
-    options: oldPeopleHobbies.map(hobby => ({
+    options: randomFromArray(oldPeopleHobbies, maxOpts).map(hobby => ({
       value: hobby,
       id: simpleUID(),
       selected: mayBeSelected()

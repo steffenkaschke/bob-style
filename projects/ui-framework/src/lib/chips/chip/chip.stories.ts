@@ -21,7 +21,8 @@ const template = `
   <b-chip
     [type]="type"
     [disabled]="disabled"
-    (removed)="onRemove()">
+    [removable]="removable"
+    (removed)="onRemove($event)">
     {{ text }}
   </b-chip>
 `;
@@ -42,7 +43,7 @@ const note = `
   text | string | chip text | ''
   type | ChipType | enum for setting the chip type (empty, default, info, success, attention, warning) | default (optional)
   removable | boolean | if chip has a 'x' button | false
-  removed | Function | handler for chip-removed event | none
+  removed | &lt;void&gt; | handler for chip-removed event | none
 
   ~~~
   ${template}
@@ -65,6 +66,7 @@ story.add(
     props: {
       type: select('type', typeOptions, ChipType.tag),
       text: text('text', 'Chip text'),
+      removable: boolean('removable', false),
       disabled: boolean('disabled', false),
       onRemove: action('Chip removed')
     },

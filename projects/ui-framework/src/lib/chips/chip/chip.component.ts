@@ -6,7 +6,7 @@ import {
   EventEmitter,
   HostBinding,
   SimpleChanges,
-  OnChanges,
+  OnChanges
 } from '@angular/core';
 import { ChipType } from '../chips.enum';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';

@@ -5,7 +5,7 @@
 
   <b-multi-list #list
                 [attr.aria-labelledby]="listLabel ? listID : null"
-                [options]="options"
+                [options]="listOptions"
                 [maxHeight]="listElHeight*6"
                 (selectChange)="onListChange($event)">
   </b-multi-list>
@@ -20,7 +20,6 @@
                [attr.aria-labelledby]="chipsLabel ? chipListID : null"
                [chips]="chips"
                [config]="chipListConfig"
-               (removed)="onChipRemoved($event)"
-               (keyPressed)="onChipKeydown($event)">
+               (removed)="onChipRemoved($event)">
   </b-chip-list>
 </div>

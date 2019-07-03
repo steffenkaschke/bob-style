@@ -58,7 +58,7 @@ const note = `
   errorMessage | string | error text | none
   required | boolean | if input is required | false
   disabled | boolean | if input is disabled | false
-  changed | Function | handler for event of type ChipInputChange ({value, added, removed}) | none
+  changed | &lt;ChipInputChange&gt; | handler for event of type ChipInputChange ({value, added, removed}) | none
 
 
   ~~~

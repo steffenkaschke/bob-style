@@ -1,7 +1,6 @@
 import {
   Component,
   Input,
-  ViewChild,
   SimpleChanges,
   OnChanges,
   ElementRef,
@@ -13,13 +12,10 @@ import {
   SelectGroupOption,
   SelectOption
 } from '../../form-elements/lists/list.interface';
-import { ChipListConfig, Chip, ChipKeydownEvent } from '../chips.interface';
+import { ChipListConfig, Chip } from '../chips.interface';
 import { ChipType } from '../chips.enum';
-import { MultiListComponent } from '../../form-elements/lists/multi-list/multi-list.component';
-import { ChipListComponent } from '../chip-list/chip-list.component';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
-import { simpleUID, isKey } from '../../services/utils/functional-utils';
-import { Keys } from '../../enums';
+import { simpleUID } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-multi-list-and-chips',
@@ -30,7 +26,6 @@ export class MultiListAndChipsComponent implements OnChanges {
   constructor(private host: ElementRef) {}
 
   @Input() options: SelectGroupOption[] = [];
-
   @Input() listLabel: string;
   @Input() chipsLabel: string;
 
@@ -38,13 +33,14 @@ export class MultiListAndChipsComponent implements OnChanges {
     ListChange
   >();
 
+  public listOptions: SelectGroupOption[] = [];
   public chips: Chip[] = [];
 
   readonly listElHeight: number = LIST_EL_HEIGHT;
   readonly chipListConfig: ChipListConfig = {
     type: ChipType.tag,
     selectable: false,
-    focusable: true,
+    focusable: false,
     removable: true
   };
   readonly listID: string = simpleUID('mlacl-');
@@ -52,22 +48,13 @@ export class MultiListAndChipsComponent implements OnChanges {
 
   public onListChange(listChange: ListChange): void {
     this.options = listChange.getSelectGroupOptions();
-    this.optionsToChips();
+    this.optionsToChips(this.options);
     this.selectChange.emit(new ListChange(this.options));
   }
 
   public onChipRemoved(chip: Chip) {
-    this.removeChipAndOption(chip);
+    this.listOptions = this.removeChipAndOption(chip);
     this.selectChange.emit(new ListChange(this.options));
-  }
-
-  public onChipKeydown(event: ChipKeydownEvent) {
-    if (
-      isKey(event.event.key, Keys.backspace) ||
-      isKey(event.event.key, Keys.delete)
-    ) {
-      this.removeChipAndOption(event.chip);
-    }
   }
 
   private optionsToChips(options: SelectGroupOption[] = this.options): Chip[] {
@@ -138,12 +125,14 @@ export class MultiListAndChipsComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.options) {
-      this.options = changes.options.currentValue;
-      this.optionsToChips();
+      this.options = this.listOptions = changes.options.currentValue;
+      this.optionsToChips(this.options);
 
       setTimeout(() => {
         this.host.nativeElement.style.height =
-          this.host.nativeElement.offsetHeight + 'px';
+          this.host.nativeElement.offsetHeight > 200
+            ? this.host.nativeElement.offsetHeight + 'px'
+            : null;
       }, 0);
     }
   }
