@@ -5,12 +5,14 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { IconsModule } from '../../icons/icons.module';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 import { ChipModule } from '../chip/chip.module';
+import { ChipListModule } from '../chip-list/chip-list.module';
 
 @NgModule({
   declarations: [ChipInputComponent],
   imports: [
     CommonModule,
     ChipModule,
+    ChipListModule,
     MatAutocompleteModule,
     IconsModule,
     InputMessageModule

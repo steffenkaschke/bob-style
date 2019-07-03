@@ -86,7 +86,7 @@ export class MultiListAndChipsComponent implements OnChanges {
   }
 
   private removeChipAndOption(chip: Chip) {
-    const options: SelectGroupOption[] = [].concat(this.options);
+    const options: SelectGroupOption[] = this.options.slice();
 
     if ((chip as any).group) {
       const group = options.find(

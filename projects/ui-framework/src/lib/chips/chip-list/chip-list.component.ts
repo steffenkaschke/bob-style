@@ -3,19 +3,27 @@ import {
   Input,
   HostBinding,
   Output,
-  EventEmitter
+  EventEmitter,
+  SimpleChanges,
+  OnChanges,
+  ViewChildren,
+  QueryList
 } from '@angular/core';
 import { Chip, ChipListConfig, ChipKeydownEvent } from '../chips.interface';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
+import { ChipComponent } from '../chip/chip.component';
+import { arrayOfValuesToArrayOfObjects } from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-chip-list',
   templateUrl: './chip-list.component.html',
   styleUrls: ['./chip-list.component.scss']
 })
-export class ChipListComponent {
+export class ChipListComponent implements OnChanges {
   constructor() {}
+
+  @ViewChildren('list') public list: QueryList<ChipComponent>;
 
   @HostBinding('attr.role') role = 'list';
 
@@ -28,6 +36,14 @@ export class ChipListComponent {
   @Output() keyPressed: EventEmitter<ChipKeydownEvent> = new EventEmitter<
     ChipKeydownEvent
   >();
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.chips) {
+      this.chips = arrayOfValuesToArrayOfObjects('text')(
+        changes.chips.currentValue
+      );
+    }
+  }
 
   private selectChip(chip: Chip) {
     chip.selected = !chip.selected;
