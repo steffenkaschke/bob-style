@@ -13,11 +13,10 @@
             *ngFor="let chip of value"
             [type]="chipType.tag"
             [removable]="removable"
-            [selectable]="false"
-            [focusable]="true"
             (removed)="remove(chip)"
             (click)="$event.stopPropagation()"
-            (keydown)="onChipKeydown($event)">
+            (keydown)="onChipKeydown($event)"
+            tabindex="0">
       {{chip}}
     </b-chip>
 
