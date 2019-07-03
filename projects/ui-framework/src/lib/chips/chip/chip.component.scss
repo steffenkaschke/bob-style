@@ -1,6 +1,7 @@
 @import '../../style/colors';
 @import '../../style/typography';
 @import '../../style/mixins';
+@import '../../buttons-indicators//avatar/avatar.mixin';
 
 @keyframes blink {
   0%,
@@ -42,7 +43,12 @@ $chipTypeMap: (
   avatar: (
     background-color: white,
     color: $grey-800,
-    border-color: $grey-300
+    border-color: $grey-300,
+    height: map-get($avatarSizes, mini) + 2px,
+    border-radius: (
+      map-get($avatarSizes, mini) + 2px
+    ) /2,
+    padding-left: 0
   )
 );
 
@@ -116,4 +122,16 @@ $chipStateMap: (
   margin-right: -9px;
   display: block;
   cursor: pointer;
+}
+
+// additional styles for Avatar Chip
+
+:host[data-type='avatar']::ng-deep {
+  b-avatar {
+    margin-right: 5px;
+  }
+
+  .remove-button {
+    margin-right: -4px;
+  }
 }

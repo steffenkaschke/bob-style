@@ -13,25 +13,7 @@ import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-chip, [b-chip]',
-  template: `
-    {{ text }}
-    <ng-content></ng-content>
-
-    <b-icon
-      *ngIf="removable && !disabled"
-      class="remove-button"
-      [icon]="icon"
-      [color]="
-        (type === chipType.tag || type === chipType.avatar) && !selected
-          ? iconColor.normal
-          : iconColor.white
-      "
-      [hasHoverState]="true"
-      [size]="iconSize"
-      (click)="onRemoveClick($event)"
-    >
-    </b-icon>
-  `,
+  templateUrl: './chip.component.html',
   styleUrls: ['./chip.component.scss']
 })
 export class ChipComponent implements OnChanges {

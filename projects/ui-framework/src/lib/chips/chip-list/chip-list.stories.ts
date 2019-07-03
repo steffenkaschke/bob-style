@@ -12,7 +12,8 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { chipsMock } from '../chips.mock';
 import {
   randomFromArray,
-  simpleUID
+  simpleUID,
+  randomNumber
 } from '../../services/utils/functional-utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipListModule } from './chip-list.module';
@@ -24,7 +25,8 @@ const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
 
 const chips = [...randomFromArray(chipsMock, 10), 'Rimming'].map(chip => ({
   text: chip,
-  id: simpleUID()
+  id: simpleUID(),
+  avatar: 'https://i.pravatar.cc/150?img=' + randomNumber(0, 70)
 }));
 
 const template = `
@@ -78,7 +80,7 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      type: select('type', typeOptions, ChipType.tag),
+      type: select('type', typeOptions, ChipType.avatar),
       removable: boolean('removable', true),
       selectable: boolean('selectable', true),
       focusable: boolean('focusable', true),
