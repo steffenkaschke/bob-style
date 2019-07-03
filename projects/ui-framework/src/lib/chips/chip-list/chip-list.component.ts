@@ -14,6 +14,8 @@ import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { ChipComponent } from '../chip/chip.component';
 import { arrayOfValuesToArrayOfObjects } from '../../services/utils/transformers';
+import { ChipType } from '../chips.enum';
+import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 
 @Component({
   selector: 'b-chip-list',
@@ -36,6 +38,9 @@ export class ChipListComponent implements OnChanges {
   @Output() keyPressed: EventEmitter<ChipKeydownEvent> = new EventEmitter<
     ChipKeydownEvent
   >();
+
+  readonly chipType = ChipType;
+  readonly avatarSize = AvatarSize;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.chips) {
