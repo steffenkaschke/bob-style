@@ -1,4 +1,4 @@
-import { chain } from 'lodash';
+import { chain, concat, map } from 'lodash';
 import { SelectGroupOption } from '../list.interface';
 
 export class ListChange {
@@ -19,6 +19,21 @@ export class ListChange {
       .flatMap('options')
       .filter(o => o.selected)
       .flatMap('id')
+      .value();
+  }
+
+  getSelected(): { id: number | string; groupName: string }[] {
+    return chain(this.selectGroupOptions)
+      .reduce(
+        (selected, group) =>
+          concat(
+            selected,
+            map(group.options, option => ({ option,  groupName: group.groupName }))
+          ),
+        [],
+      )
+      .filter(groupOption => groupOption.option.selected)
+      .map(groupOption => ({ id: groupOption.option.id, groupName: groupOption.groupName }))
       .value();
   }
 }
