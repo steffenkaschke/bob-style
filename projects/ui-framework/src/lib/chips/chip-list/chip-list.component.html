@@ -3,11 +3,12 @@
         [type]="chip.type || config.type"
         [disabled]="chip.disabled || config.disabled"
         [removable]="chip.removable || config.removable"
-        [selectable]="chip.selectable || config.selectable"
-        [focusable]="chip.focusable || config.focusable"
         [selected]="chip.selected"
+        [attr.tabindex]="config.focusable ? 0 : -1"
         (removed)="onChipRemove(chip)"
         (click)="onChipClick($event, chip)"
         (keydown)="onChipKeydown($event, chip)">
   {{chip.text}}
 </b-chip>
+
+<ng-content></ng-content>

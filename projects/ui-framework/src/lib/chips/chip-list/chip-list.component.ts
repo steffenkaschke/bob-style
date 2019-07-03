@@ -31,7 +31,7 @@ export class ChipListComponent {
 
   onChipClick(event: MouseEvent, chip: Chip) {
     event.stopPropagation();
-    if (this.config.selectable || chip.selectable) {
+    if (this.config.selectable) {
       chip.selected = !chip.selected;
       this.selected.emit(chip);
     }
@@ -45,14 +45,16 @@ export class ChipListComponent {
   onChipKeydown(event: KeyboardEvent, chip: Chip) {
     this.keyPressed.emit({ event, chip });
 
-    if (isKey(event.key, Keys.arrowleft)) {
+    if (isKey(event.key, Keys.arrowleft) || isKey(event.key, Keys.arrowup)) {
+      event.stopPropagation();
       const prevChip = (event.target as HTMLElement)
         .previousSibling as HTMLElement;
       if (prevChip.nodeName === 'B-CHIP') {
         prevChip.focus();
       }
     }
-    if (isKey(event.key, Keys.arrowright)) {
+    if (isKey(event.key, Keys.arrowright) || isKey(event.key, Keys.arrowdown)) {
+      event.stopPropagation();
       const nextChip = (event.target as HTMLElement).nextSibling as HTMLElement;
       if (nextChip.nodeName === 'B-CHIP') {
         nextChip.focus();

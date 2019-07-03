@@ -7,8 +7,6 @@ export interface Chip {
   type?: ChipType;
   avatar?: string;
   removable?: boolean;
-  selectable?: boolean;
-  focusable?: boolean;
   disabled?: boolean;
   selected?: boolean;
 }

@@ -7,7 +7,6 @@ import {
   HostBinding,
   SimpleChanges,
   OnChanges,
-  HostListener
 } from '@angular/core';
 import { ChipType } from '../chips.enum';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
@@ -39,19 +38,11 @@ export class ChipComponent implements OnChanges {
   constructor(public chip: ElementRef) {}
 
   @Input() text: string;
-
   @Input() removable = false;
-  @Input() selectable = false;
-  @Input() focusable = false;
 
   @HostBinding('attr.data-type') @Input() type: ChipType = ChipType.tag;
   @HostBinding('attr.data-disabled') @Input() disabled = false;
   @HostBinding('attr.data-selected') @Input() selected = false;
-
-  @HostBinding('attr.tabindex')
-  get tabIndex(): string {
-    return this.focusable ? '0' : '-1';
-  }
 
   @Output() removed: EventEmitter<void> = new EventEmitter<void>();
 
