@@ -4,10 +4,10 @@ import {
   Input,
   Output,
   ViewChild,
-  AfterViewInit
+  AfterViewInit, ViewChildren, QueryList, ElementRef
 } from '@angular/core';
 import { Tab } from './tabs.interface';
-import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
+import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { TabsType } from './tabs.enum';
 
 @Component({
@@ -16,25 +16,36 @@ import { TabsType } from './tabs.enum';
   styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent implements AfterViewInit {
+  @ViewChild('tabgroup', { static: true }) tabGroup: MatTabGroup;
+  @ViewChildren('matTabs') matTabs: QueryList<MatTab>;
+  @ViewChildren('matLabels') matLabels: QueryList<ElementRef>;
+
   @Input() public type: TabsType = TabsType.primary;
   @Input() public tabs: Tab[] = [];
   @Input() public selectedIndex = 0;
-  @Output() selectChange: EventEmitter<MatTabChangeEvent> = new EventEmitter<
-    MatTabChangeEvent
-  >();
 
-  @ViewChild('tabgroup', { static: true }) tabGroup: MatTabGroup;
+  @Output() selectChange: EventEmitter<MatTabChangeEvent> = new EventEmitter<MatTabChangeEvent>();
+  @Output() selectClick: EventEmitter<MatTabChangeEvent> = new EventEmitter<MatTabChangeEvent>();
 
-  constructor() {}
+  constructor() {
+  }
 
   ngAfterViewInit() {
-    this.tabGroup._tabHeader._labelWrappers.forEach(label => {
-      const element = label.elementRef.nativeElement;
+    this.matLabels.toArray().forEach(label => {
+      const element = label.nativeElement;
       element.style.width = element.clientWidth + 10 + 'px';
     });
   }
 
-  public onSelectChange($event: MatTabChangeEvent) {
+  tabClick(tab: Tab, i: number): void {
+    const matTabChangeEvent: MatTabChangeEvent = {
+      index: i,
+      tab: this.matTabs.toArray()[i],
+    };
+    this.selectClick.emit(matTabChangeEvent);
+  }
+
+  onSelectChange($event: MatTabChangeEvent): void {
     this.selectChange.emit($event);
   }
 }
