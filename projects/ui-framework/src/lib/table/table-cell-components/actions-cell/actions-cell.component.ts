@@ -24,7 +24,7 @@ export class ActionsCellComponent implements ICellRendererAngularComp {
     this.menuItems = map(params.value.menuItems, (item: MenuItem) => {
       return assign({}, item, {
         action: () => {
-          item.action(params.rowIndex);
+          item.action(params.data);
         }
       });
     });
