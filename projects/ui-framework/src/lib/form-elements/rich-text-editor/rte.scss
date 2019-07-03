@@ -147,11 +147,6 @@ $border-color: $grey-500;
     svg {
       @include size($button-icon-size);
     }
-
-    .mat-icon {
-      @include size(auto);
-      display: block;
-    }
   }
 
   // button mods
@@ -196,11 +191,8 @@ $border-color: $grey-500;
         stroke: $icon-color-hover;
       }
 
-      .mat-icon {
-        path,
-        circle {
-          fill: $grey-700 !important;
-        }
+      .b-icon:before {
+        color: $grey-700 !important;
       }
     }
   }
@@ -467,7 +459,7 @@ $border-color: $grey-500;
 
   [style] a,
   a {
-    color: #e52c51;
+    color: $color-error;
     text-decoration: underline;
   }
 }

@@ -290,7 +290,6 @@ describe('RichTextEditorComponent', () => {
     it('should set invalid style when errorMessage is present', () => {
       RTEComponent.errorMessage = 'test error';
       fixture.detectChanges();
-      RTEeditorNativeElement.style.setProperty('--negative-600', 'red');
 
       const errorNativeElement = fixture.debugElement.query(By.css('.error'))
         .nativeElement;
@@ -298,7 +297,7 @@ describe('RichTextEditorComponent', () => {
       expect(RTEnativeElement.classList).toContain('error');
       expect(errorNativeElement.innerText).toContain('test error');
       expect(getComputedStyle(RTEeditorNativeElement).borderColor).toEqual(
-        'rgb(255, 0, 0)'
+        'rgb(229, 44, 81)'
       );
     });
   });

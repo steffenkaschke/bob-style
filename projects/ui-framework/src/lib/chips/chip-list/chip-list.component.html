@@ -1,9 +1,12 @@
 <b-chip *ngFor="let chip of chips"
-        class="chip"
         role="listitem"
-        [type]="chip.type"
-        [color]="chip.color"
-        [removable]="chip.removable"
-        [selectable]="chip.selectable">
+        [type]="config.type || chip.type"
+        [disabled]="config.disabled || chip.disabled"
+        [removable]="config.removable || chip.removable"
+        [selectable]="config.selectable || chip.selectable"
+        [selected]="chip.selected"
+        (removed)="onChipRemove(chip)"
+        (click)="onChipClick(chip)"
+        (keydown)="onChipKeydown($event, chip)">
   {{chip.text}}
 </b-chip>

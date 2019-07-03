@@ -124,7 +124,10 @@ $input-focus-border-color: $grey-700;
     @include BodyFont($lineHeight: null);
     color: $grey-800;
     background: transparent;
-    position: relative;
+
+    &[data-placeholder] {
+      position: relative;
+    }
 
     &::placeholder,
     &[data-placeholder]:before {

@@ -16,7 +16,7 @@ import { merge } from 'lodash';
 import { PanelComponent } from '../../popups/panel/panel.component';
 import { SingleListComponent } from '../lists/single-list/single-list.component';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
-import { Icons } from '../../icons/icons.enum';
+import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { PanelDefaultPosVer, PanelSize } from '../../popups/panel/panel.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
@@ -98,6 +98,8 @@ export class RichTextEditorComponent extends RTEformElement
   public hasSuffix = true;
   readonly buttonType = ButtonType;
   readonly icons = Icons;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
   readonly panelSize = PanelSize;
   readonly BlotType = BlotType;
   readonly RTEFontSize = RTEFontSize;
