@@ -129,6 +129,10 @@ $chipStateMap: (
 :host[data-type='avatar']::ng-deep {
   b-avatar {
     margin-right: 5px;
+
+    .avatar.avatar {
+      box-shadow: none;
+    }
   }
 
   .remove-button {

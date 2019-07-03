@@ -132,3 +132,9 @@ export const domainFromUrl = (url: string) => {
   a = null;
   return domain;
 };
+
+export const arrayDifference = (arrA: any[], arrB: any[]) => {
+  return arrA
+    .filter(x => !arrB.includes(x))
+    .concat(arrB.filter(x => !arrA.includes(x)));
+};

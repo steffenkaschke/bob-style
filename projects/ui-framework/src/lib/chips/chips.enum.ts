@@ -10,5 +10,6 @@ export enum ChipType {
 export enum ChipListAlign {
   left = 'left',
   right = 'right',
+  center = 'center',
   justify = 'justify'
 }

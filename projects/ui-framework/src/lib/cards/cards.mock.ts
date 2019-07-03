@@ -4,22 +4,11 @@ import { RenderedComponent } from '../services/component-renderer/component-rend
 import { AvatarComponent } from '../buttons-indicators/avatar/avatar.component';
 import { AvatarSize } from '../buttons-indicators/avatar/avatar.enum';
 import { CardData, AddCardData } from './cards.interface';
-import { randomNumber } from '../services/utils/functional-utils';
-
-const names = [
-  'Dylan Herrera',
-  'Elsie Hunter',
-  'Madge Scott',
-  'Joel Sanders',
-  'Fakhri Shokoohi',
-  'Emelda Scandroot',
-  'Nora Herrera',
-  'Constanza Mariano',
-  'Jaspreet Bhamrai',
-  'Chioke Okonkwo',
-  'Abhoy Latif',
-  'Gopichand Sana'
-];
+import {
+  randomNumber,
+  randomFromArray
+} from '../services/utils/functional-utils';
+import { mockNames } from '../mock.const';
 
 const menuMock: MenuItem[] = [
   {
@@ -41,7 +30,7 @@ const headerComponent = (index: number): RenderedComponent => ({
   attributes: {
     imageSource: 'http://i.pravatar.cc/200?img=' + index,
     size: AvatarSize.mini,
-    title: names[index]
+    title: randomFromArray(mockNames, 30)[index]
   }
 });
 

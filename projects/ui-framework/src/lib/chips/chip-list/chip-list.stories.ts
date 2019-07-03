@@ -8,7 +8,6 @@ import {
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { chipsMock } from '../chips.mock';
 import {
   randomFromArray,
   simpleUID,
@@ -17,15 +16,16 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipListModule } from './chip-list.module';
 import { ChipType, ChipListAlign } from '../chips.enum';
+import { mockHobbies, mockAvatar } from '../../mock.const';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
 );
 
-const chips = [...randomFromArray(chipsMock, 10), 'Rimming'].map(chip => ({
+const chips = [...randomFromArray(mockHobbies, 10), 'Rimming'].map(chip => ({
   text: chip,
   id: simpleUID(),
-  avatar: 'https://i.pravatar.cc/150?img=' + randomNumber(0, 70)
+  avatar: mockAvatar()
 }));
 
 const template = `
@@ -69,6 +69,7 @@ const storyTemplate = `
 <b-story-book-layout [title]="'Chip List'">
   <div style="padding: 30px;margin:auto;max-width:600px;">
     ${template}
+    <br>
     <p>
       * Set chip type to Avatar (in Knobs panel) to see Avatar Chip List
     </p>

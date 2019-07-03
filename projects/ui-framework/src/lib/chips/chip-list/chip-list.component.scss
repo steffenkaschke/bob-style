@@ -13,6 +13,9 @@
   &[data-align='right'] {
     justify-content: flex-end;
   }
+  &[data-align='center'] {
+    justify-content: center;
+  }
   &[data-align='justify'] {
     b-chip {
       flex: 1;
