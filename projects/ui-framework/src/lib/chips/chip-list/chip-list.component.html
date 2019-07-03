@@ -1,4 +1,5 @@
-<b-chip *ngFor="let chip of chips"
+<b-chip #list
+        *ngFor="let chip of chips"
         role="listitem"
         [type]="chip.type || config.type"
         [disabled]="chip.disabled || config.disabled"

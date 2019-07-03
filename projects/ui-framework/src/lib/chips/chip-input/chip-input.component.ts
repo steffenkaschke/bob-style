@@ -9,9 +9,7 @@ import {
   OnChanges,
   HostListener,
   Output,
-  EventEmitter,
-  ViewChildren,
-  QueryList
+  EventEmitter
 } from '@angular/core';
 import {
   MatAutocompleteSelectedEvent,
@@ -21,13 +19,13 @@ import {
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import { ChipType } from '../chips.enum';
-import { ChipInputChange } from '../chips.interface';
+import { ChipInputChange, ChipListConfig, Chip } from '../chips.interface';
 import { InputTypes } from '../../form-elements/input/input.enum';
-import { ChipComponent } from '../chip/chip.component';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { InputEventType } from '../../form-elements/form-elements.enum';
 import { arrayOrFail } from '../../services/utils/transformers';
+import { ChipListComponent } from '../chip-list/chip-list.component';
 
 @Component({
   selector: 'b-chip-input',
@@ -63,15 +61,18 @@ export class ChipInputComponent extends BaseFormElement
 
   private possibleChips: string[] = [];
   public filteredChips: string[] = this.options;
-  public readonly removable = true;
-  public readonly chipType = ChipType;
   public readonly inputTypes = InputTypes;
-  readonly addOnBlur = true;
 
+  readonly chipListConfig: ChipListConfig = {
+    type: ChipType.tag,
+    removable: true,
+    focusable: true
+  };
+
+  @ViewChild('chips', { static: true }) private chips: ChipListComponent;
   @ViewChild('input', { static: true }) private input: ElementRef<
     HTMLInputElement
   >;
-  @ViewChildren('chipList') private chipList: QueryList<ChipComponent>;
   @ViewChild('input', { read: MatAutocompleteTrigger, static: true })
   private autocompleteTrigger: MatAutocompleteTrigger;
   @ViewChild('auto', { static: true })
@@ -143,12 +144,12 @@ export class ChipInputComponent extends BaseFormElement
 
   private commitChip(chipToAdd: string): void {
     if (chipToAdd && !this.findChip(chipToAdd, this.value)) {
-      this.value.push(chipToAdd);
+      this.value = this.value.concat(chipToAdd);
       this.updatePossibleChips();
       this.transmit({ added: chipToAdd });
       this.input.nativeElement.value = '';
     } else if (chipToAdd) {
-      const existingChipElemnent = this.chipList
+      const existingChipElemnent = this.chips.list
         .toArray()
         .find(
           ch =>
@@ -178,7 +179,8 @@ export class ChipInputComponent extends BaseFormElement
     this.commitChip(chipToAdd);
   }
 
-  public remove(name: string): void {
+  public remove(event: Chip): void {
+    const name = event.text;
     this.value = this.removeChip(name, this.value);
     this.updatePossibleChips();
     this.transmit({ removed: name });
@@ -187,11 +189,11 @@ export class ChipInputComponent extends BaseFormElement
 
   private unSelectLastChip(): void {
     if (
-      this.chipList.last &&
-      this.chipList.last.chip.nativeElement.dataset.aboutToDelete
+      this.chips.list.last &&
+      this.chips.list.last.chip.nativeElement.dataset.aboutToDelete
     ) {
-      delete this.chipList.last.chip.nativeElement.dataset.aboutToDelete;
-      this.chipList.last.chip.nativeElement.classList.remove('focused');
+      delete this.chips.list.last.chip.nativeElement.dataset.aboutToDelete;
+      this.chips.list.last.chip.nativeElement.classList.remove('focused');
     }
   }
 
@@ -216,7 +218,7 @@ export class ChipInputComponent extends BaseFormElement
 
   public onInputBlur(): void {
     this.inputFocused = false;
-    if (this.addOnBlur && !this.autocompletePanel.isOpen) {
+    if (!this.autocompletePanel.isOpen) {
       this.addChipFromInput();
       this.autocompleteTrigger.closePanel();
     }
@@ -224,13 +226,16 @@ export class ChipInputComponent extends BaseFormElement
 
   public onInputKeyup(event: KeyboardEvent): void {
     if (isKey(event.key, Keys.backspace)) {
-      if (this.input.nativeElement.value === '' && this.chipList.last) {
-        if (this.chipList.last.chip.nativeElement.dataset.aboutToDelete) {
-          this.value.pop();
+      if (this.input.nativeElement.value === '' && this.chips.list.last) {
+        if (this.chips.list.last.chip.nativeElement.dataset.aboutToDelete) {
+          const lastChipName = this.value.slice(-1)[0];
+          this.value = this.value.slice(0, -1);
           this.updatePossibleChips();
+          this.transmit({ removed: lastChipName });
         } else {
-          this.chipList.last.chip.nativeElement.classList.add('focused');
-          this.chipList.last.chip.nativeElement.dataset.aboutToDelete = 'true';
+          this.chips.list.last.chip.nativeElement.classList.add('focused');
+          this.chips.list.last.chip.nativeElement.dataset.aboutToDelete =
+            'true';
         }
 
         setTimeout(() => {
@@ -249,25 +254,6 @@ export class ChipInputComponent extends BaseFormElement
   public onInputKeydown(event: KeyboardEvent): void {
     if (isKey(event.key, Keys.enter)) {
       event.preventDefault();
-    }
-  }
-
-  public onChipKeydown(event: KeyboardEvent): void {
-    if (isKey(event.key, Keys.backspace) || isKey(event.key, Keys.delete)) {
-      this.remove((event.target as HTMLElement).innerText);
-    }
-    if (isKey(event.key, Keys.arrowleft)) {
-      const prevChip = (event.target as HTMLElement)
-        .previousSibling as HTMLElement;
-      if (prevChip.nodeName === 'B-CHIP') {
-        prevChip.focus();
-      }
-    }
-    if (isKey(event.key, Keys.arrowright)) {
-      const nextChip = (event.target as HTMLElement).nextSibling as HTMLElement;
-      if (nextChip.nodeName === 'B-CHIP') {
-        nextChip.focus();
-      }
     }
   }
 }
