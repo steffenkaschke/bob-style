@@ -43,4 +43,21 @@ describe('ListChange', () => {
       expect(listChange.getSelectedIds()).toEqual([1, 11]);
     });
   });
+
+  describe('getSelected', () => {
+    it('should return empty array when non are selected', () => {
+      listChange = new ListChange(optionsMock);
+      expect(listChange.getSelected()).toEqual([]);
+    });
+    it('should return selected option ids with group name', () => {
+      optionsMock[0].options[0].selected = true;
+      optionsMock[1].options[0].selected = true;
+      listChange = new ListChange(optionsMock);
+      expect(listChange.getSelected()).toEqual([{
+        id: 1, groupName: 'Basic Info',
+      }, {
+        id: 11, groupName: 'Personal',
+      }]);
+    });
+  });
 });
