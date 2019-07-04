@@ -9,13 +9,13 @@ import { mockHobbies } from '../../mock.const';
 
 const maxOpts = 10;
 
-const oldPeopleHobbies = randomFromArray(mockHobbies, maxOpts);
+const oldPeopleHobbies = randomFromArray(mockHobbies(), maxOpts);
 const couplesHobbies = randomFromArray(
-  arrayDifference(mockHobbies, oldPeopleHobbies),
+  arrayDifference(mockHobbies(), oldPeopleHobbies),
   maxOpts
 );
 const kidsHobbies = randomFromArray(
-  arrayDifference(mockHobbies, oldPeopleHobbies.concat(couplesHobbies)),
+  arrayDifference(mockHobbies(), oldPeopleHobbies.concat(couplesHobbies)),
   maxOpts
 );
 

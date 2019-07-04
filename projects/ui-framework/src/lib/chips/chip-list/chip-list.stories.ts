@@ -8,21 +8,17 @@ import {
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import {
-  randomFromArray,
-  simpleUID,
-  randomNumber
-} from '../../services/utils/functional-utils';
+import { simpleUID } from '../../services/utils/functional-utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipListModule } from './chip-list.module';
 import { ChipType, ChipListAlign } from '../chips.enum';
-import { mockHobbies, mockAvatar } from '../../mock.const';
+import { mockAvatar, mockNames } from '../../mock.const';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
 );
 
-const chips = [...randomFromArray(mockHobbies, 10), 'Rimming'].map(chip => ({
+const chips = mockNames(10).map(chip => ({
   text: chip,
   id: simpleUID(),
   avatar: mockAvatar()
@@ -36,11 +32,12 @@ const template = `
                   removable: removable,
                   focusable: focusable,
                   selectable: selectable,
-                  disabled: disabled}"
-                  (removed)="onChipRemove($event)"
-                  (clicked)="onChipClicked($event)"
-                  (selected)="inChipSelected($event)"
-                  (keyPressed)="onChipKeydown($event)">
+                  disabled: disabled
+                }"
+                (removed)="onChipRemove($event)"
+                (clicked)="onChipClicked($event)"
+                (selected)="inChipSelected($event)"
+                (keyPressed)="onChipKeydown($event)">
   </b-chip-list>
 `;
 
@@ -53,7 +50,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  chips | Chip[] | Array of Chip objects | none
+  chips | Chip[] / string[] | Array of Chip objects (will also accept an array of strings) | none
   config | ChipListConfig | list configuration (options common to all chips, including: type, removable, selectable, focusable, disabled, align) | none
   removed | &lt;Chip&gt; | handler for chip removed event | none
   clicked | &lt;Chip&gt; | handler for chip clicked event | none

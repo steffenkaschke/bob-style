@@ -1,9 +1,10 @@
-import { randomNumber } from './services/utils/functional-utils';
+import {
+  randomNumber,
+  randomFromArray,
+  padWith0
+} from './services/utils/functional-utils';
 
-export const mockAvatar = () =>
-  `https://i.pravatar.cc/150?img=${randomNumber(0, 70)}`;
-
-export const mockNames = [
+export const mockNamesList = [
   'Nada Gish',
   'Mathilde Vogler',
   'Casie Wadkins',
@@ -66,7 +67,51 @@ export const mockNames = [
   'Stefania Dollinger'
 ];
 
-export const mockHobbies = [
+export const mockJobsList = [
+  'A/B tester',
+  'Application analyst',
+  'Business analyst',
+  'Computer operator',
+  'Computer repair technician',
+  'Computer scientist',
+  'Computer analyst',
+  'Data entry clerk',
+  'Database administrator',
+  'Data analyst',
+  'Data designer',
+  'Data scientist',
+  'Hardware engineer',
+  'Information systems technician',
+  'IT assistant',
+  'Network analyst',
+  'Network administrator',
+  'Programmer',
+  'Product manager',
+  'Project manager',
+  'Rapid prototyper',
+  'Scrum master',
+  'Security engineer',
+  'Software analyst',
+  'Software architect',
+  'Software design',
+  'Software engineer',
+  'Software project manager',
+  'Software quality analyst',
+  'Software test engineer (Tester)',
+  'Solution architect',
+  'Support technician (Help Desk)',
+  'System administrator',
+  'Systems analyst',
+  'Test engineer',
+  'User experience designer',
+  'User interaction designer',
+  'User researcher',
+  'Visual designer',
+  'Web developer',
+  'Website administrator'
+];
+
+export const mockHobbiesList = [
   'Aircraft Spotting',
   'Airbrushing',
   'Airsofting',
@@ -376,3 +421,21 @@ export const mockHobbies = [
   'Ziplining',
   'Zumba'
 ];
+
+export const mockAvatar = () =>
+  `https://randomuser.me/api/portraits/${randomFromArray([
+    'men',
+    'women'
+  ])}/${randomNumber(0, 99)}.jpg`;
+
+export const mockNames = (num = null) => randomFromArray(mockNamesList, num);
+
+export const mockJobs = (num = null) => randomFromArray(mockJobsList, num);
+
+export const mockHobbies = (num = null) =>
+  randomFromArray(mockHobbiesList, num);
+
+export const mockDate = () =>
+  `${padWith0(randomNumber(1, 31))}/${padWith0(
+    randomNumber(1, 12)
+  )}/${randomNumber(2018, 2020)}`;

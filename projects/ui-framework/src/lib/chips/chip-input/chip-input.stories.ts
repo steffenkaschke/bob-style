@@ -9,7 +9,6 @@ import { action } from '@storybook/addon-actions';
 
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { randomFromArray } from '../../services/utils/functional-utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipInputModule } from './chip-input.module';
 import { mockHobbies } from '../../mock.const';
@@ -23,7 +22,7 @@ const story2 = storiesOf(ComponentGroupType.Chips, module).addDecorator(
 );
 
 const options = mockHobbies;
-const value = [...randomFromArray(mockHobbies, 3), 'Rimming'];
+const value = [...mockHobbies(3), 'Rimming'];
 
 const template = `
   <b-chip-input [options]="options"

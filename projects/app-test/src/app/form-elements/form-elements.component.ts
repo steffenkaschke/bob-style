@@ -220,7 +220,7 @@ export class FormElementsTestComponent
   bChipinput_label = 'Chip Input label';
   bChipinput_placeholder = 'Chip Input placeholder';
   bChipinput_value = ['petting', 'fisting', 'rimming']; // 'petting, fisting, rimming';
-  bChipinput_options = mockHobbies;
+  bChipinput_options = mockHobbies();
   bChipinput_acceptNew = true;
   bChipinput_disabled = this.global_disabled;
   bChipinput_required = this.global_required;

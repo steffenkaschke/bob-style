@@ -40,8 +40,8 @@ export class ChipListComponent implements OnChanges {
     ChipKeydownEvent
   >();
 
-  @HostBinding('attr.role') private role = 'list';
-  @HostBinding('attr.data-align') private alignChips = ChipListAlign.left;
+  @HostBinding('attr.role') role = 'list';
+  @HostBinding('attr.data-align') alignChips = ChipListAlign.left;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.chips) {
