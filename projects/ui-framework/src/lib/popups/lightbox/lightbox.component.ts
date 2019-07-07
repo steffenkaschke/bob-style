@@ -12,6 +12,7 @@ import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { LightboxConfig } from './lightbox.interface';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { Keys } from '../../enums';
 import { isKey } from '../../services/utils/functional-utils';
 
@@ -30,7 +31,7 @@ export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
   public readonly iconSize = IconSize;
   public readonly iconColor = IconColor;
   public readonly buttons = ButtonType;
-  private windowKeydownSubscriber: Subscription;
+  public windowKeydownSubscriber: Subscription;
 
   @HostBinding('class')
   get getClass(): string {
@@ -48,10 +49,10 @@ export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.windowKeydownSubscriber = this.utilsService
       .getWindowKeydownEvent()
-      .subscribe(event => {
-        if (isKey(event.key, Keys.escape)) {
-          this.closeLightboxCallback();
-        }
+      .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
+      .subscribe(() => {
+        console.log('escape!!');
+        this.closeLightboxCallback();
       });
   }
 
