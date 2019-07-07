@@ -7,9 +7,9 @@ import {
   OnInit,
   SimpleChanges,
   OnChanges,
-  HostListener,
   Output,
-  EventEmitter
+  EventEmitter,
+  OnDestroy
 } from '@angular/core';
 import {
   MatAutocompleteSelectedEvent,
@@ -26,6 +26,8 @@ import { Keys } from '../../enums';
 import { InputEventType } from '../../form-elements/form-elements.enum';
 import { arrayOrFail } from '../../services/utils/transformers';
 import { ChipListComponent } from '../chip-list/chip-list.component';
+import { UtilsService } from '../../services/utils/utils.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'b-chip-input',
@@ -48,8 +50,8 @@ import { ChipListComponent } from '../chip-list/chip-list.component';
   ]
 })
 export class ChipInputComponent extends BaseFormElement
-  implements OnChanges, OnInit {
-  constructor() {
+  implements OnChanges, OnInit, OnDestroy {
+  constructor(private utilsService: UtilsService) {
     super();
     this.inputTransformers = [arrayOrFail];
     this.baseValue = [];
@@ -77,14 +79,11 @@ export class ChipInputComponent extends BaseFormElement
   private autocompleteTrigger: MatAutocompleteTrigger;
   @ViewChild('auto', { static: true })
   private autocompletePanel: MatAutocomplete;
+  private windowClickSubscriber: Subscription;
 
   @Output() changed: EventEmitter<ChipInputChange> = new EventEmitter<
     ChipInputChange
   >();
-
-  @HostListener('document:click') handleDocClick() {
-    this.unSelectLastChip();
-  }
 
   // this extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
@@ -99,6 +98,15 @@ export class ChipInputComponent extends BaseFormElement
 
   ngOnInit(): void {
     this.updatePossibleChips();
+
+    this.windowClickSubscriber = this.utilsService
+      .getWindowClickEvent()
+      .subscribe(() => {
+        this.unSelectLastChip();
+      });
+  }
+  ngOnDestroy(): void {
+    this.windowClickSubscriber.unsubscribe();
   }
 
   private transmit(change: Partial<ChipInputChange>): void {

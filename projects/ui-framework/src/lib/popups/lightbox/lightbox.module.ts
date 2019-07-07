@@ -6,12 +6,13 @@ import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 
 import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
 import { URLutils } from '../../services/url/url-utils';
+import { UtilsService } from '../../services/utils/utils.service';
 
 @NgModule({
   declarations: [LightboxComponent],
   entryComponents: [LightboxComponent],
   imports: [CommonModule, IconsModule, ButtonsModule, ComponentRendererModule],
   exports: [],
-  providers: [URLutils]
+  providers: [URLutils, UtilsService]
 })
 export class LightboxModule {}

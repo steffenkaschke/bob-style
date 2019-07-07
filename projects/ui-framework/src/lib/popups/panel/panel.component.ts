@@ -6,7 +6,6 @@ import {
   TemplateRef,
   ViewChild,
   ViewContainerRef,
-  HostListener,
   EventEmitter,
   Output
 } from '@angular/core';
@@ -22,6 +21,10 @@ import { PanelPositionService } from './panel-position-service/panel-position.se
 import { Subscription } from 'rxjs';
 import { PanelDefaultPosVer, PanelSize } from './panel.enum';
 import { concat, compact, get, invoke, debounce } from 'lodash';
+import { UtilsService } from '../../services/utils/utils.service';
+import { isKey } from '../../services/utils/functional-utils';
+import { Keys } from '../../enums';
+import { filter } from 'rxjs/operators';
 
 const HOVER_DELAY_DURATION = 300;
 
@@ -30,8 +33,9 @@ const HOVER_DELAY_DURATION = 300;
   templateUrl: 'panel.component.html',
   styleUrls: ['panel.component.scss']
 })
-export class PanelComponent implements OnDestroy {
-  @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
+export class PanelComponent implements OnInit, OnDestroy {
+  @ViewChild(CdkOverlayOrigin, { static: true })
+  overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
 
   @Input() panelClass: string;
@@ -50,21 +54,29 @@ export class PanelComponent implements OnDestroy {
   readonly mouseEnterDebounce: any;
   readonly mouseLeaveDebounce: any;
   positionClassList: { [key: string]: boolean } = {};
-
-  @HostListener('document:keydown.escape') handleEscape() {
-    this.closePanel();
-  }
+  private windowKeydownSubscriber: Subscription;
 
   constructor(
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService
+    private panelPositionService: PanelPositionService,
+    private utilsService: UtilsService
   ) {
     this.mouseEnterDebounce = debounce(this.openPanel, HOVER_DELAY_DURATION);
     this.mouseLeaveDebounce = debounce(this.closePanel, HOVER_DELAY_DURATION);
   }
 
+  ngOnInit(): void {
+    this.windowKeydownSubscriber = this.utilsService
+      .getWindowKeydownEvent()
+      .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
+      .subscribe(() => {
+        this.closePanel();
+      });
+  }
+
   ngOnDestroy(): void {
+    this.windowKeydownSubscriber.unsubscribe();
     this.destroyPanel();
   }
 
