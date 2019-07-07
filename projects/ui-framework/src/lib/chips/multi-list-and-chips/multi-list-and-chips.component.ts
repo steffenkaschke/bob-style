@@ -5,7 +5,8 @@ import {
   OnChanges,
   ElementRef,
   Output,
-  EventEmitter
+  EventEmitter,
+  NgZone
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../form-elements/lists/list.consts';
 import {
@@ -23,7 +24,7 @@ import { simpleUID } from '../../services/utils/functional-utils';
   styleUrls: ['./multi-list-and-chips.component.scss']
 })
 export class MultiListAndChipsComponent implements OnChanges {
-  constructor(private host: ElementRef) {}
+  constructor(private host: ElementRef, private zone: NgZone) {}
 
   @Input() options: SelectGroupOption[] = [];
   @Input() listLabel: string;
@@ -80,9 +81,8 @@ export class MultiListAndChipsComponent implements OnChanges {
               text: option.value,
               id: option.id,
               avatar:
-                this.chipListConfig.type === ChipType.avatar
-                  ? option.prefixComponent.attributes.imageSource
-                  : null,
+                this.chipListConfig.type === ChipType.avatar &&
+                option.prefixComponent.attributes.imageSource,
               type: this.chipListConfig.type
             });
           }
@@ -146,12 +146,14 @@ export class MultiListAndChipsComponent implements OnChanges {
       this.chipListConfig.type = this.detectChipType(this.options);
       this.optionsToChips(this.options);
 
-      setTimeout(() => {
-        this.host.nativeElement.style.height =
-          this.host.nativeElement.offsetHeight > 200
-            ? this.host.nativeElement.offsetHeight + 'px'
-            : null;
-      }, 0);
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.host.nativeElement.style.height =
+            this.host.nativeElement.offsetHeight > 200
+              ? this.host.nativeElement.offsetHeight + 'px'
+              : null;
+        }, 0);
+      });
     }
   }
 }
