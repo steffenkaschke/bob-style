@@ -1,22 +1,28 @@
 import {
   Component,
   Input,
-  HostListener,
   SimpleChanges,
   OnChanges,
-  HostBinding
+  HostBinding,
+  OnInit,
+  OnDestroy
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
 import { LightboxConfig } from './lightbox.interface';
+import { UtilsService } from '../../services/utils/utils.service';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { Keys } from '../../enums';
+import { isKey } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-lightbox',
   templateUrl: './lightbox.component.html',
   styleUrls: ['./lightbox.component.scss']
 })
-export class LightboxComponent implements OnChanges {
-  constructor() {}
+export class LightboxComponent implements OnInit, OnChanges, OnDestroy {
+  constructor(private utilsService: UtilsService) {}
 
   @Input() config: LightboxConfig;
 
@@ -25,6 +31,7 @@ export class LightboxComponent implements OnChanges {
   public readonly iconSize = IconSize;
   public readonly iconColor = IconColor;
   public readonly buttons = ButtonType;
+  public windowKeydownSubscriber: Subscription;
 
   @HostBinding('class')
   get getClass(): string {
@@ -39,8 +46,18 @@ export class LightboxComponent implements OnChanges {
     );
   }
 
-  @HostListener('document:keydown.escape') handleEscape() {
-    this.closeLightboxCallback();
+  ngOnInit(): void {
+    this.windowKeydownSubscriber = this.utilsService
+      .getWindowKeydownEvent()
+      .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
+      .subscribe(() => {
+        console.log('escape!!');
+        this.closeLightboxCallback();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.windowKeydownSubscriber.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

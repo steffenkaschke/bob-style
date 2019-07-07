@@ -133,9 +133,10 @@ describe('LightboxService', () => {
         'b-lightbox'
       ) as HTMLElement;
       expect(lightContainerEl.className).toEqual('type-image fill-cover');
+      lightboxService.closeLightbox(lightbox);
     });
 
-    it('should close Lightbox Close button', () => {
+    it('should close Lightbox with Close button', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
       lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
 
@@ -164,6 +165,7 @@ describe('LightboxService', () => {
       } catch (e) {
         expect(e).toBeTruthy();
       }
+      lightboxService.closeLightbox(lightbox);
     });
 
     it('should not accept random links for image link', () => {
@@ -176,6 +178,22 @@ describe('LightboxService', () => {
       } catch (e) {
         expect(e).toBeTruthy();
       }
+      lightboxService.closeLightbox(lightbox);
+    });
+  });
+
+  describe('LightboxComponent windowKeydownSubscriber', () => {
+    it('should unsubscribe windowKeydownSubscriber', () => {
+      lightbox = lightboxService.showLightbox(testConfigImage);
+      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+      expect(
+        lightbox.lightboxComponentRef.instance['windowKeydownSubscriber'].closed
+      ).toBe(false);
+      lightbox.lightboxComponentRef.instance.ngOnDestroy();
+      expect(
+        lightbox.lightboxComponentRef.instance['windowKeydownSubscriber'].closed
+      ).toBe(true);
+      lightboxService.closeLightbox(lightbox);
     });
   });
 });

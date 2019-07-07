@@ -22,6 +22,13 @@ const note = `
   ##### getScrollEvent
   Returns observable of scroll event with ScrollEvent interface
 
+  ##### getWindowClickEvent
+  Returns observable of window click event with MouseEvent interface
+
+  ##### getWindowKeydownEvent
+  Returns observable of window keydown event with KeyboardEvent interface
+
+
 `;
 
 utilsStories.add(
