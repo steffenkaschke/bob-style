@@ -1,6 +1,7 @@
 @import '../../style/colors';
 @import '../../style/typography';
 @import '../../style/mixins';
+@import '../../buttons-indicators//avatar/avatar.mixin';
 
 @keyframes blink {
   0%,
@@ -12,7 +13,7 @@
   }
 }
 
-$chipsMap: (
+$chipTypeMap: (
   tag: (
     background-color: $grey-300,
     color: $grey-700,
@@ -42,24 +43,32 @@ $chipsMap: (
   avatar: (
     background-color: white,
     color: $grey-800,
-    border-color: $grey-300
+    border-color: $grey-300,
+    height: map-get($avatarSizes, mini) + 2px,
+    border-radius: (
+      map-get($avatarSizes, mini) + 2px
+    ) /2,
+    padding-left: 0
+  )
+);
+
+$chipStateMap: (
+  selected: (
+    background-color: $primary-600,
+    color: white,
+    border-color: $primary-600
   ),
   disabled: (
     background-color: $grey-200,
     color: $grey-500,
     border-color: $grey-200
-  ),
-  selected: (
-    background-color: $primary-600,
-    color: white,
-    border-color: $primary-600
   )
 );
 
 :host {
   box-sizing: border-box;
   display: inline-flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border-radius: 13px;
   white-space: nowrap;
@@ -79,6 +88,7 @@ $chipsMap: (
     @include animate(blink, 0.3s);
   }
 
+  &[tabindex='0']:focus,
   &.focused {
     position: relative;
     &:before {
@@ -86,13 +96,21 @@ $chipsMap: (
       @include size(100%);
       @include position;
       border-radius: inherit;
-      background-color: black(0.1);
+      background-color: black(0.05);
     }
   }
 
-  @each $type, $typeProps in $chipsMap {
-    &.chip-#{$type} {
+  @each $type, $typeProps in $chipTypeMap {
+    &[data-type='#{$type}'] {
       @each $prop, $value in $typeProps {
+        #{$prop}: $value;
+      }
+    }
+  }
+
+  @each $state, $stateProps in $chipStateMap {
+    &[data-#{$state}='true'] {
+      @each $prop, $value in $stateProps {
         #{$prop}: $value;
       }
     }
@@ -104,4 +122,20 @@ $chipsMap: (
   margin-right: -9px;
   display: block;
   cursor: pointer;
+}
+
+// additional styles for Avatar Chip
+
+:host[data-type='avatar']::ng-deep {
+  b-avatar {
+    margin-right: 5px;
+
+    .avatar.avatar {
+      box-shadow: none;
+    }
+  }
+
+  .remove-button {
+    margin-right: -4px;
+  }
 }

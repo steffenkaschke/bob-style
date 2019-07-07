@@ -36,7 +36,7 @@ $selector: '';
   mask-repeat: no-repeat;
 
   @supports (-webkit-line-clamp: 2) {
-    display: -webkit-box;
+    display: -webkit-box !important;
     -webkit-box-orient: vertical;
     mask-image: none;
   }

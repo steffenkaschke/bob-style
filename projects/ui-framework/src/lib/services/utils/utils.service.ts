@@ -6,25 +6,28 @@ import { ScrollEvent } from './utils.interface';
 
 @Injectable()
 export class UtilsService {
-  constructor(
-    public windowRef: WindowRef,
-  ) {
-  }
+  constructor(public windowRef: WindowRef) {}
 
   public getResizeEvent(): Observable<any> {
-    return fromEvent(this.windowRef.nativeWindow, 'resize')
-      .pipe(
-        debounceTime(500)
-      );
+    return fromEvent(this.windowRef.nativeWindow, 'resize').pipe(
+      debounceTime(500)
+    );
   }
 
   public getScrollEvent(): Observable<ScrollEvent> {
-    return fromEvent(this.windowRef.nativeWindow, 'scroll')
-      .pipe(
-        map((e: Event) => ({
-          scrollY: (e.currentTarget as Window).scrollY,
-          scrollX: (e.currentTarget as Window).scrollX,
-        }))
-      );
+    return fromEvent(this.windowRef.nativeWindow, 'scroll').pipe(
+      map((e: Event) => ({
+        scrollY: (e.currentTarget as Window).scrollY,
+        scrollX: (e.currentTarget as Window).scrollX
+      }))
+    );
+  }
+
+  public getWindowClickEvent(): Observable<MouseEvent> {
+    return fromEvent(this.windowRef.nativeWindow, 'click');
+  }
+
+  public getWindowKeydownEvent(): Observable<KeyboardEvent> {
+    return fromEvent(this.windowRef.nativeWindow, 'keydown');
   }
 }

@@ -11,8 +11,9 @@ import { PanelDefaultPosVer } from './panel.enum';
 import { of } from 'rxjs';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import { _ } from 'ag-grid-community';
 
-describe('SearchComponent', () => {
+describe('PanelComponent', () => {
   let component: PanelComponent;
   let fixture: ComponentFixture<PanelComponent>;
   let panelPositionService: SpyObj<PanelPositionService>;
@@ -23,17 +24,15 @@ describe('SearchComponent', () => {
 
   beforeEach(async(() => {
     positionStrategyMock = {
-      positionChanges: of(null),
+      positionChanges: of(null)
     };
     scrollStrategyMock = {};
     overlayRefMock = {
-      attach: () => {
-      },
-      updatePosition: () => {
-      },
+      attach: () => {},
+      updatePosition: () => {},
       backdropClick: () => {
         return of(null);
-      },
+      }
     };
 
     overlay = createSpyObj('overlay', ['create']);
@@ -42,30 +41,27 @@ describe('SearchComponent', () => {
     panelPositionService = createSpyObj('panelPositionService', [
       'getPanelPositionStrategy',
       'getScrollStrategy',
-      'getPositionClassList',
+      'getPositionClassList'
     ]);
-    panelPositionService.getPanelPositionStrategy.and.returnValue(positionStrategyMock);
+    panelPositionService.getPanelPositionStrategy.and.returnValue(
+      positionStrategyMock
+    );
     panelPositionService.getScrollStrategy.and.returnValue(scrollStrategyMock);
     panelPositionService.getPositionClassList.and.returnValue({
       'panel-below': true,
       'panel-above': false,
       'panel-after': true,
-      'panel-before': false,
+      'panel-before': false
     });
 
     TestBed.configureTestingModule({
       declarations: [],
-      imports: [
-        NoopAnimationsModule,
-        CommonModule,
-        OverlayModule,
-        PanelModule,
-      ],
+      imports: [NoopAnimationsModule, CommonModule, OverlayModule, PanelModule],
       providers: [
         { provide: PanelPositionService, useValue: panelPositionService },
         { provide: Overlay, useValue: overlay },
-        ViewContainerRef,
-      ],
+        ViewContainerRef
+      ]
     })
       .compileComponents()
       .then(() => {
@@ -78,20 +74,22 @@ describe('SearchComponent', () => {
   describe('openPanel', () => {
     it('should request position strategy from positionService with above by default', () => {
       component.openPanel();
-      expect(panelPositionService.getPanelPositionStrategy)
-        .toHaveBeenCalledWith(
-          jasmine.any(CdkOverlayOrigin),
-          PanelDefaultPosVer.above,
-        );
+      expect(
+        panelPositionService.getPanelPositionStrategy
+      ).toHaveBeenCalledWith(
+        jasmine.any(CdkOverlayOrigin),
+        PanelDefaultPosVer.above
+      );
     });
     it('should request position strategy from positionService with below from input', () => {
       component.defaultPosVer = PanelDefaultPosVer.below;
       component.openPanel();
-      expect(panelPositionService.getPanelPositionStrategy)
-        .toHaveBeenCalledWith(
-          jasmine.any(CdkOverlayOrigin),
-          PanelDefaultPosVer.below,
-        );
+      expect(
+        panelPositionService.getPanelPositionStrategy
+      ).toHaveBeenCalledWith(
+        jasmine.any(CdkOverlayOrigin),
+        PanelDefaultPosVer.below
+      );
     });
     it('should request scrollStrategy from positionService', () => {
       component.openPanel();
@@ -105,8 +103,15 @@ describe('SearchComponent', () => {
         backdropClass: 'b-panel-backdrop',
         panelClass: ['b-panel'],
         positionStrategy: positionStrategyMock,
-        scrollStrategy: scrollStrategyMock,
+        scrollStrategy: scrollStrategyMock
       });
+    });
+  });
+  describe('windowKeydownSubscriber', () => {
+    it('should unsubscribe windowKeydownSubscriber', () => {
+      expect(component['windowKeydownSubscriber'].closed).toBe(false);
+      component.ngOnDestroy();
+      expect(component['windowKeydownSubscriber'].closed).toBe(true);
     });
   });
 });

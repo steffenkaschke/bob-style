@@ -29,12 +29,12 @@
       <button type="button"
               class="rte-size"
               panel-trigger
-              [ngClass]="{'ql-active': hasSizeSet}"
+              [ngClass]="{'ql-active': false && hasSizeSet}"
               (click)="storeSelection()">
 
-        <b-icon icon="text_size_option"
-                size="medium"
-                color="normal">
+        <b-icon [icon]="icons.text_size"
+                [size]="iconSize.medium"
+                [color]="iconColor.normal">
         </b-icon>
       </button>
       <ng-container panel-content>

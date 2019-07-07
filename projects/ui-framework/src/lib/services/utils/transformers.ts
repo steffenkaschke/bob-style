@@ -1,7 +1,6 @@
 import {
   isArray,
   isString,
-  stringListToArray,
   isObject,
   isNullOrUndefined,
   compareAsStrings,
@@ -23,6 +22,18 @@ export const truthyOrFalse = value => {
     value = truthy.includes(value) ? true : false;
   }
   return value;
+};
+
+export const stringListToArray = (list: string): string[] => {
+  if (isArray(list) || !list) {
+    return list as any;
+  }
+  if (!isString(list)) {
+    return [list];
+  }
+  return Array.from(
+    new Set(list.split(/[^\w\u0020]+/).map(i => i.trim()))
+  ).filter(i => !!i);
 };
 
 export const arrayOfStringsOrArrayFromString = value =>
@@ -54,8 +65,17 @@ export const stringToDate = date => {
 export const dateToString = (date, frmt) =>
   isDate(date) ? format(date, frmt) : date;
 
-export const valueToObjectKey = key => value => {
+export const valueToObjectKey = (key: string) => (value: any) => {
   return isObject(value) && value[key] ? value : { [key]: value };
+};
+
+export const arrayOfValuesToArrayOfObjects = (key: string) => (
+  value: any[]
+) => {
+  if (isNullOrUndefined(value) || !isArray(value)) {
+    return value;
+  }
+  return value.map(valueToObjectKey(key));
 };
 
 export const asNumber = (inputType: InputTypes, value: any) =>

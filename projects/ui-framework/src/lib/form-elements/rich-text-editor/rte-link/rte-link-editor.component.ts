@@ -38,7 +38,7 @@ export class RteLinkEditorComponent {
   readonly inputTypes = InputTypes;
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType;
-  readonly resetIcon: String = Icons.reset_x;
+  readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
 

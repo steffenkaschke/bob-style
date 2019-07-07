@@ -7,26 +7,29 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ChipModule } from './chip.module';
-import { ChipType } from '../chip.enum';
-import { values } from 'lodash';
+import { ChipType } from '../chips.enum';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { mockHobbies } from '../../mock.const';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
 );
 
-const typeOptions = values(ChipType);
+const chipType = Object.values(ChipType).filter(o => o !== ChipType.avatar);
+
+const textMock = mockHobbies(1);
+
 const template = `
   <b-chip
     [type]="type"
-    [removable]="removable"
-    [selectable]="selectable"
     [disabled]="disabled"
-    (removed)="OnRemove()">
+    [removable]="removable"
+    (removed)="onRemove($event)">
     {{ text }}
   </b-chip>
 `;
+
 const template2 = `
   <p b-chip [type]="type">
     Used as directive
@@ -42,10 +45,9 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   text | string | chip text | ''
-  type | ChipType | enum for setting the chip type (empty, default, info, success, attention, warning) | default (optional)
-
+  type | ChipType | enum for setting the chip type (tag, info, warning, error, success, avatar) | default (optional)
   removable | boolean | if chip has a 'x' button | false
-  removed | Function | handler for chip-removed event | none
+  removed | &lt;void&gt; | handler for chip-removed event | none
 
   ~~~
   ${template}
@@ -66,13 +68,11 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      type: select('type', typeOptions, ChipType.tag),
-      text: text('text', 'Chip text'),
-
-      removable: boolean('removable', true),
-      selectable: boolean('selectable', true),
+      type: select('type', chipType, ChipType.tag),
+      text: text('text', textMock),
+      removable: boolean('removable', false),
       disabled: boolean('disabled', false),
-      OnRemove: action('Chip removed')
+      onRemove: action('Chip removed')
     },
     moduleMetadata: {
       imports: [ChipModule, StoryBookLayoutModule]

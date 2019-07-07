@@ -1,11 +1,18 @@
-<b-chip *ngFor="let chip of chips"
-        class="chip"
+<b-chip #list
+        *ngFor="let chip of chips; let index = index;"
         role="listitem"
-        [type]="chip.type"
-        [removable]="chip.removable"
-        [selectable]="chip.selectable"
+        [type]="chip.type || config.type"
+        [disabled]="chip.disabled || config.disabled"
+        [removable]="chip.removable || config.removable"
+        [selected]="chip.selected"
+        [attr.tabindex]="config.focusable ? 0 : -1"
         (removed)="onChipRemove(chip)"
-        (click)="$event.stopPropagation()"
-        (keydown)="onChipKeydown($event, chip)">
+        (click)="onChipClick($event, chip)"
+        (keydown)="onChipKeydown($event, chip, index)">
+  <b-avatar *ngIf="(chip.type === chipType.avatar || config.type === chipType.avatar) && chip.avatar"
+            [imageSource]="chip.avatar"
+            [size]="avatarSize.mini"></b-avatar>
   {{chip.text}}
 </b-chip>
+
+<ng-content></ng-content>

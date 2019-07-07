@@ -76,8 +76,8 @@ export { ChipModule } from './lib/chips/chip/chip.module';
 export {
   ChipComponent
 } from './lib/chips/chip/chip.component';
-export { ChipType } from './lib/chips/chip.enum';
-export { Chip } from './lib/chips/chip.interface';
+export { ChipType } from './lib/chips/chips.enum';
+export { Chip } from './lib/chips/chips.interface';
 // InfoStrip Module
 export { InfoStripModule } from './lib/buttons-indicators/info-strip/info-strip.module';
 export { InfoStripComponent } from './lib/buttons-indicators/info-strip/info-strip.component';
@@ -198,7 +198,7 @@ export {
 // Chip Input Module
 export { ChipInputModule } from './lib/chips/chip-input/chip-input.module';
 export { ChipInputComponent } from './lib/chips/chip-input/chip-input.component';
-export { ChipInputChange } from './lib/chips/chip-input/chip-input.interface';
+export { ChipInputChange } from './lib/chips/chips.interface';
 // Social Module
 export { SocialModule } from './lib/form-elements/social/social.module';
 export { Social } from './lib/form-elements/social/social.enum';
@@ -361,6 +361,7 @@ export { DOMhelpers } from './lib/services/utils/dom-helpers.service';
 export { ScrollEvent }  from './lib/services/utils/utils.interface';
 export { WindowRef } from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
+export { MobileService } from './lib/services/utils/mobile.service';
 // Component Renderer
 export { ComponentRendererModule } from './lib/services/component-renderer/component-renderer.module';
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';

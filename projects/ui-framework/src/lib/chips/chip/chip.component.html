@@ -1,0 +1,16 @@
+ <ng-content select="b-avatar"></ng-content>
+
+ {{ text }}
+ <ng-content></ng-content>
+
+ <b-icon *ngIf="removable && !disabled"
+         class="remove-button"
+         [icon]="icon"
+         [color]="
+          (type === chipType.tag || type === chipType.avatar) && !selected
+          ? iconColor.normal
+          : iconColor.white"
+         [hasHoverState]="true"
+         [size]="iconSize"
+         (click)="onRemoveClick($event)">
+ </b-icon>

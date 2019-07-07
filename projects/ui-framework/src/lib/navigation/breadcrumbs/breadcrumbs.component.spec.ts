@@ -4,17 +4,20 @@ import { BreadcrumbsComponent } from './breadcrumbs.component';
 import { Breadcrumb } from './breadcrumbs.interface';
 import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { UtilsService } from '../../services/utils/utils.service';
-import { cold } from 'jasmine-marbles';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MobileService } from '../../services/utils/mobile.service';
+import createSpyObj = jasmine.createSpyObj;
 
 describe('BreadcrumbsComponent', () => {
-  let utilsServiceMock: jasmine.SpyObj<UtilsService>;
   let component: BreadcrumbsComponent;
   let fixture: ComponentFixture<BreadcrumbsComponent>;
   let breadCrumbsMock: Breadcrumb[];
+  let mobileServiceStub: jasmine.SpyObj<MobileService>;
 
   beforeEach(async(() => {
+    mobileServiceStub = createSpyObj('MobileService', ['isMobileBrowser']);
+    mobileServiceStub.isMobileBrowser.and.returnValue(false);
+
     breadCrumbsMock = [
       { title: 'details', disabled: false },
       { title: 'avatar', disabled: false },
@@ -22,14 +25,20 @@ describe('BreadcrumbsComponent', () => {
       { title: 'summary', disabled: true }
     ];
 
-    utilsServiceMock = jasmine.createSpyObj('UtilsService', ['getResizeEvent']);
-    utilsServiceMock.getResizeEvent.and.callFake(() => cold('x', { x: true }));
-
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [BreadcrumbsComponent],
-      imports: [NoopAnimationsModule, MatTooltipModule],
-      providers: [{ provide: UtilsService, useValue: utilsServiceMock }]
+      declarations: [
+        BreadcrumbsComponent,
+      ],
+      imports: [
+        NoopAnimationsModule,
+        MatTooltipModule,
+      ],
+      providers: [
+        { provide: MobileService, useValue: mobileServiceStub },
+      ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA,
+      ],
     })
       .compileComponents()
       .then(() => {
@@ -37,12 +46,24 @@ describe('BreadcrumbsComponent', () => {
         component = fixture.componentInstance;
         component.breadcrumbs = breadCrumbsMock;
         component.activeIndex = 2;
+        component.buttons = {
+          nextBtn: {
+            label: 'Next',
+            isVisible: true,
+          },
+          backBtn: {
+            label: 'Back',
+            isVisible: true,
+          },
+        };
         spyOn(component.stepClick, 'emit');
-        fixture.detectChanges();
       });
   }));
 
   describe('breadcrumbs model', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
     it('should generate 4 steps', () => {
       const stepsElements = fixture.debugElement.queryAll(By.css('.step'));
       expect(stepsElements.length).toBe(4);
@@ -57,8 +78,35 @@ describe('BreadcrumbsComponent', () => {
         }
       }
     });
-    it('should put active class on the active step', () => {
-      fixture = TestBed.createComponent(BreadcrumbsComponent);
+    it('should show step title on active state', () => {
+      const titleElement = fixture.debugElement.queryAll(By.css('.title'));
+      expect(titleElement.length).toEqual(1);
+      expect(titleElement[0].nativeElement.innerText).toEqual('to dos');
+    });
+  });
+
+  describe('onStepClick', () => {
+    it('show emit value with index', () => {
+      fixture.detectChanges();
+      const step = fixture.debugElement.queryAll(By.css('.step'))[1];
+      step.triggerEventHandler('click', null);
+      fixture.detectChanges();
+      expect(component.stepClick.emit).toHaveBeenCalledWith(1);
+    });
+  });
+
+  describe('mobile', () => {
+    beforeEach(() => {
+      mobileServiceStub.isMobileBrowser.and.returnValue(true);
+      fixture.detectChanges();
+    });
+    it('should show text buttons and not regular buttons', () => {
+      const regularButtons =  fixture.debugElement.queryAll(By.css('b-button'));
+      const textButtons =  fixture.debugElement.queryAll(By.css('b-text-button'));
+      expect(regularButtons.length).toEqual(0);
+      expect(textButtons.length).toEqual(2);
+    });
+    it('should add active class to active step', () => {
       const stepsElements = fixture.debugElement.queryAll(By.css('.step'));
       for (let i = 0; i < stepsElements.length; i++) {
         if (i === 2) {
@@ -67,15 +115,6 @@ describe('BreadcrumbsComponent', () => {
           expect(stepsElements[i].nativeElement.classList).not.toContain('active');
         }
       }
-    });
-  });
-
-  describe('onStepClick', () => {
-    it('show emit value with index', () => {
-      const step = fixture.debugElement.queryAll(By.css('.step'))[1];
-      step.triggerEventHandler('click', null);
-      fixture.detectChanges();
-      expect(component.stepClick.emit).toHaveBeenCalledWith(1);
     });
   });
 });

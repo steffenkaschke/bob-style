@@ -4,67 +4,39 @@ import {
   ElementRef,
   Output,
   EventEmitter,
-  HostBinding
+  HostBinding,
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
-import { ChipType } from '../chip.enum';
+import { ChipType } from '../chips.enum';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-chip, [b-chip]',
-  template: `
-    {{ text }}
-    <ng-content></ng-content>
-
-    <b-icon
-      *ngIf="removable && type !== chipType.disabled && !disabled"
-      class="remove-button"
-      [icon]="icon"
-      [color]="
-        type === chipType.tag || type === chipType.avatar
-          ? iconColor.normal
-          : iconColor.white
-      "
-      [hasHoverState]="true"
-      [size]="iconSize"
-      (click)="onRemoveClick($event)"
-    >
-    </b-icon>
-  `,
+  templateUrl: './chip.component.html',
   styleUrls: ['./chip.component.scss']
 })
-export class ChipComponent {
+export class ChipComponent implements OnChanges {
   constructor(public chip: ElementRef) {}
 
-  @Input() type: ChipType = ChipType.tag;
-  @Input() text?: string;
-
+  @Input() text: string;
   @Input() removable = false;
-  @Input() selectable = false;
 
-  @Input() disabled = false;
-  @Input() selected = false;
+  @HostBinding('attr.data-type') @Input() type: ChipType = ChipType.tag;
+  @HostBinding('attr.data-disabled') @Input() disabled = false;
+  @HostBinding('attr.data-selected') @Input() selected = false;
 
   @Output() removed: EventEmitter<void> = new EventEmitter<void>();
 
   readonly chipType = ChipType;
   readonly icon = Icons.reset_x;
-  public iconColor = IconColor;
+  readonly iconColor = IconColor;
   readonly iconSize = IconSize.small;
 
-  @HostBinding('class')
-  get chipClass(): string {
-    return (
-      (this.type !== ChipType.disabled && !this.disabled
-        ? 'chip-' + this.type
-        : '') +
-      (this.selected ? ' chip-selected' : '') +
-      (this.disabled || this.type === ChipType.disabled ? ' chip-disabled' : '')
-    );
-  }
-
-  @HostBinding('tabindex')
-  get tabIndex(): string {
-    return this.selectable ? '0' : '-1';
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.type) {
+      this.type = changes.type.currentValue || ChipType.tag;
+    }
   }
 
   onRemoveClick(event: MouseEvent) {

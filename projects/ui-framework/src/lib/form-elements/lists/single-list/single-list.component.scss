@@ -42,6 +42,7 @@
   .v-scroll-wrapper {
     position: relative;
     background-color: $white;
+    flex-grow: 5;
 
     @include BodyFont;
 

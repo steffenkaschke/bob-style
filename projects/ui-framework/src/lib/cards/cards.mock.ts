@@ -4,24 +4,8 @@ import { RenderedComponent } from '../services/component-renderer/component-rend
 import { AvatarComponent } from '../buttons-indicators/avatar/avatar.component';
 import { AvatarSize } from '../buttons-indicators/avatar/avatar.enum';
 import { CardData, AddCardData } from './cards.interface';
-
-const random = (min = 0, max = 100): number =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
-
-const names = [
-  'Dylan Herrera',
-  'Elsie Hunter',
-  'Madge Scott',
-  'Joel Sanders',
-  'Fakhri Shokoohi',
-  'Emelda Scandroot',
-  'Nora Herrera',
-  'Constanza Mariano',
-  'Jaspreet Bhamrai',
-  'Chioke Okonkwo',
-  'Abhoy Latif',
-  'Gopichand Sana'
-];
+import { randomNumber } from '../services/utils/functional-utils';
+import { mockNames, mockAvatar, mockJobs } from '../mock.const';
 
 const menuMock: MenuItem[] = [
   {
@@ -41,16 +25,16 @@ const menuMock: MenuItem[] = [
 const headerComponent = (index: number): RenderedComponent => ({
   component: AvatarComponent,
   attributes: {
-    imageSource: 'http://i.pravatar.cc/200?img=' + index,
+    imageSource: mockAvatar(),
     size: AvatarSize.mini,
-    title: names[index]
+    title: mockNames(30)[index]
   }
 });
 
 const footerComponent = (): RenderedComponent => ({
   component: SliderComponent,
   attributes: {
-    value: random(10, 90),
+    value: randomNumber(10, 90),
     showLabel: false,
     readOnly: true
   }
@@ -116,59 +100,12 @@ export const CardsMockData: CardData[] = [
   }
 ];
 
-export const EmployeeCardsMockData: CardData[] = [
-  {
-    data: {
-      avatar: {
-        imageSource: 'http://i.pravatar.cc/200?img=3',
-        title: 'Dylan Herrera',
-        subtitle: 'Product designer'
-      }
-    }
-  },
-  {
-    data: {
-      avatar: {
-        imageSource: 'http://i.pravatar.cc/200?img=2',
-        title: 'Joel Sanders',
-        subtitle: 'Business developer'
-      }
-    }
-  },
-  {
-    data: {
-      avatar: {
-        imageSource: 'http://i.pravatar.cc/200?img=1',
-        title: 'Nora Herrera',
-        subtitle: 'Front-end engineer'
-      }
-    }
-  },
-  {
-    data: {
-      avatar: {
-        imageSource: 'http://i.pravatar.cc/200?img=4',
-        title: 'Jaspreet Bhamrai',
-        subtitle: 'Product designer'
-      }
-    }
-  },
-  {
-    data: {
-      avatar: {
-        imageSource: 'http://i.pravatar.cc/200?img=5',
-        title: 'Chioke Okonkwo',
-        subtitle: 'Business developer'
-      }
-    }
-  },
-  {
-    data: {
-      avatar: {
-        imageSource: 'http://i.pravatar.cc/200?img=6',
-        title: 'Abhoy Latif',
-        subtitle: 'Business developer'
-      }
+export const EmployeeCardsMockData: CardData[] = mockNames(6).map(name => ({
+  data: {
+    avatar: {
+      imageSource: mockAvatar(),
+      title: name,
+      subtitle: mockJobs(1)
     }
   }
-];
+}));

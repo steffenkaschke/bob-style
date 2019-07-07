@@ -39,7 +39,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  employees | EmployeeShowcaseObject[] | employees list | []
+  employees | EmployeeShowcase[] | employees list | []
   avatarSize | AvatarSize | avatar size | 'mini'
 
   ~~~

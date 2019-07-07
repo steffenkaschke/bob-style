@@ -14,7 +14,7 @@ export class ActionsCellComponent implements ICellRendererAngularComp {
   public menuItems: MenuItem[];
   public openLeft: boolean;
   readonly buttonType: ButtonType = ButtonType.tertiary;
-  readonly buttonColor: IconColor = IconColor.dark;
+  readonly buttonColor: IconColor = IconColor.normal;
   readonly buttonIcon: Icons = Icons.three_dots_vert;
 
   constructor() { }
@@ -24,7 +24,7 @@ export class ActionsCellComponent implements ICellRendererAngularComp {
     this.menuItems = map(params.value.menuItems, (item: MenuItem) => {
       return assign({}, item, {
         action: () => {
-          item.action(params.rowIndex);
+          item.action(params.data);
         }
       });
     });

@@ -21,6 +21,8 @@ import { interval, Subscription } from 'rxjs';
 import invoke from 'lodash/invoke';
 import map from 'lodash/map';
 import random from 'lodash/random';
+import assign from 'lodash/assign';
+import cloneDeep from 'lodash/cloneDeep';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import { AvatarComponent } from '../avatar/avatar.component';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
@@ -37,6 +39,7 @@ export class EmployeesShowcaseComponent
   @Input() employees: EmployeeShowcase[] = [];
   @Input() avatarSize: AvatarSize = AvatarSize.mini;
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() clicked: EventEmitter<string> = new EventEmitter<string>();
 
   private avatarGap: number = AvatarGap[AvatarSize.mini];
   private clientWidth = 0;
@@ -76,11 +79,11 @@ export class EmployeesShowcaseComponent
   }
 
   private calcAvatars() {
-      this.clientWidth = this.getClientWidth();
-      this.setAvatarGap();
-      this.setAvatarGapCss();
-      this.calcAvatarsToFit();
-      this.subscribeToShuffleEmployees();
+    this.clientWidth = this.getClientWidth();
+    this.setAvatarGap();
+    this.setAvatarGapCss();
+    this.calcAvatarsToFit();
+    this.subscribeToShuffleEmployees();
   }
 
   ngOnDestroy(): void {
@@ -157,8 +160,12 @@ export class EmployeesShowcaseComponent
   }
 
   private switchEmployeesImage(firstIndex, secondIndex) {
-    const firstEmployeeImage = this.employees[firstIndex].imageSource;
-    this.employees[firstIndex].imageSource = this.employees[secondIndex].imageSource;
-    this.employees[secondIndex].imageSource = firstEmployeeImage;
+    const firstEmployee = cloneDeep(this.employees[firstIndex]);
+    assign(this.employees[firstIndex], this.employees[secondIndex]);
+    this.employees[secondIndex] = firstEmployee;
+  }
+
+  onAvatarClick(id: string) {
+    this.clicked.emit(id);
   }
 }

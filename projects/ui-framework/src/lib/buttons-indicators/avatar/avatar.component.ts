@@ -14,8 +14,8 @@ import {
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { AvatarBadges, BadgeSize } from './avatar.consts';
 import { DOMhelpers, Styles } from '../../services/utils/dom-helpers.service';
-import { ChipType } from '../../chips/chip.enum';
-import { Chip } from '../../chips/chip.interface';
+import { ChipType } from '../../chips/chips.enum';
+import { Chip } from '../../chips/chips.interface';
 import { BadgeConfig } from './avatar.interface';
 import { getKeyByValue } from '../../services/utils/functional-utils';
 

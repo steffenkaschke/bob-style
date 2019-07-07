@@ -30,7 +30,7 @@ import { TruncateTooltiptype } from './truncate-tooltip.enum';
       class="tooltip-trigger"
       [attr.data-tooltip]="tooltipText"
     ></i>
-    <span
+    <div
       #textContainer
       class="btt"
       [ngClass]="{
@@ -41,7 +41,7 @@ import { TruncateTooltiptype } from './truncate-tooltip.enum';
     >
       <ng-content></ng-content>
       <ng-template #directiveTemplate></ng-template>
-    </span>
+    </div>
   `,
   styleUrls: ['./truncate-tooltip.component.scss']
 })

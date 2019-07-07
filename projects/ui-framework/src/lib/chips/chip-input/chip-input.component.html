@@ -8,17 +8,11 @@
      [ngClass]="{focused: inputFocused, 'autocomplete-open': auto.isOpen,'empty': !value || value.length === 0}"
      (click)="input.focus();">
 
-  <div class="chips-wrap">
-    <b-chip #chipList
-            *ngFor="let chip of value"
-            [type]="chipType.tag"
-            [removable]="removable"
-            [selectable]="true"
-            (removed)="remove(chip)"
-            (click)="$event.stopPropagation()"
-            (keydown)="onChipKeydown($event)">
-      {{chip}}
-    </b-chip>
+  <b-chip-list #chips
+               class="chips-wrap"
+               [chips]="value"
+               [config]="chipListConfig"
+               (removed)="remove($event)">
 
     <input #input
            class="bfe-input"
@@ -32,15 +26,18 @@
            [matAutocomplete]="auto"
            [matAutocompleteConnectedTo]="wrapper"
            (focus)="onInputFocus()"
-           (blur)="onInputBlur($event)"
+           (blur)="onInputBlur()"
            (input)="onInputChange($event)"
            (keydown)="onInputKeydown($event)"
            (keyup)="onInputKeyup($event)">
-  </div>
+
+  </b-chip-list>
+
 </div>
 
 <mat-autocomplete #auto="matAutocomplete"
                   (optionSelected)="optionSelected($event)"
+                  (closed)="onAutoClosed()"
                   [class]="'chip-input-autocomplete'"
                   disableRipple="true">
   <mat-option *ngFor="let chip of filteredChips"
