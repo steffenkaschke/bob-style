@@ -37,7 +37,7 @@ export class MultiListAndChipsComponent implements OnChanges {
   public chips: Chip[] = [];
 
   readonly listElHeight: number = LIST_EL_HEIGHT;
-  readonly chipListConfig: ChipListConfig = {
+  public chipListConfig: ChipListConfig = {
     type: ChipType.tag,
     selectable: false,
     focusable: true,
@@ -61,21 +61,29 @@ export class MultiListAndChipsComponent implements OnChanges {
     const chips = [];
 
     options.forEach((group: SelectGroupOption) => {
-      if (group.options.every((option: SelectOption) => option.selected)) {
+      if (
+        this.chipListConfig.type !== ChipType.avatar &&
+        group.options.every((option: SelectOption) => option.selected)
+      ) {
         chips.push({
           text: group.groupName + ' (all)',
           group: {
             key: group.key,
             name: group.groupName
           },
-          type: this.chipListConfig.type !== ChipType.avatar && ChipType.info
+          type: ChipType.info
         });
       } else {
         group.options.forEach((option: SelectOption) => {
           if (option.selected) {
             chips.push({
               text: option.value,
-              id: option.id
+              id: option.id,
+              avatar:
+                this.chipListConfig.type === ChipType.avatar
+                  ? option.prefixComponent.attributes.imageSource
+                  : null,
+              type: this.chipListConfig.type
             });
           }
         });
@@ -123,9 +131,19 @@ export class MultiListAndChipsComponent implements OnChanges {
     return (this.options = options);
   }
 
+  detectChipType(options: SelectGroupOption[] = this.options): ChipType {
+    return options[0].options[0].prefixComponent &&
+      options[0].options[0].prefixComponent.attributes &&
+      options[0].options[0].prefixComponent.attributes.imageSource
+      ? ChipType.avatar
+      : ChipType.tag;
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.options) {
       this.options = this.listOptions = changes.options.currentValue;
+
+      this.chipListConfig.type = this.detectChipType(this.options);
       this.optionsToChips(this.options);
 
       setTimeout(() => {
