@@ -21,7 +21,7 @@ import { ChipType } from '../../chips/chips.enum';
 import { Chip } from '../../chips/chips.interface';
 import { BadgeConfig } from './avatar.interface';
 import { getKeyByValue } from '../../services/utils/functional-utils';
-import { TruncateTooltiptype } from '../../services/truncate-tooltip/truncate-tooltip.enum';
+import { TruncateTooltipType } from '../../services/truncate-tooltip/truncate-tooltip.enum';
 
 @Component({
   selector: 'b-avatar',
@@ -44,7 +44,7 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   readonly badgeSize = BadgeSize;
   readonly chipType = ChipType;
   readonly orient = AvatarOrientation;
-  readonly tooltipType = TruncateTooltiptype;
+  readonly tooltipType = TruncateTooltipType;
   public badgeConfig: BadgeConfig;
   public avatarClass: string;
   public avatarStyle: Styles;
