@@ -97,6 +97,10 @@ const note = `
   maxLines | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0 or null. | 1 (optional)
   type | TruncateTooltipType | Use Material tooltip or CSS tooltip. Defaut 'auto' type will use Material for text longer than 130 chars, otherwise CSS | auto
   position | TruncateTooltipPosition | above or below | above
+  trustCssVars | boolean | performance can be optimised, if --line-height and --font-size CSS variables exist on the element | false
+  expectChanges | boolean | if text inside truncate-tooltip component will be changing, set to true | false
+  delay | number | time in ms before tooltip shows | 300
+  lazyness | number | if type is Material, it will be initialized lazyly after this many ms of hover | 200
 
    --------
 
@@ -109,6 +113,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   b-truncate-tooltip (or maxLines) | number | maximum lines | 1 (optional)
+  other properties are the same as in example 1
 
  --------
 
@@ -121,6 +126,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   bTruncateTooltip | number | maximum lines  | 1 (optional)
+  other properties are not supported
 
   --------
 
