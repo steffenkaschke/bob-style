@@ -12,7 +12,10 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { TypographyModule } from '../../typography/typography.module';
 import { TruncateTooltipModule } from './truncate-tooltip.module';
 import { UtilComponentsModule } from '../util-components/utilComponents.module';
-import { TruncateTooltiptype } from './truncate-tooltip.enum';
+import {
+  TruncateTooltipType,
+  TruncateTooltipPosition
+} from './truncate-tooltip.enum';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
@@ -25,7 +28,9 @@ const template1 = `
   </b-big-body>
 `;
 const template2 = `
-  <b-truncate-tooltip [maxLines]="maxLines" [type]="type" class="employee-title">
+  <b-truncate-tooltip [maxLines]="maxLines"
+                      [type]="type" class="employee-title"
+                      [position]="position">
     <b-display-3>
       <span>
         <!-- this html comment should not be displayed -->
@@ -38,14 +43,17 @@ const template2 = `
   </b-truncate-tooltip>
 `;
 const template3 = `
-  <p b-truncate-tooltip="3" [type]="type" class="employee-title">
+  <p b-truncate-tooltip="3"
+     [type]="type"
+     [position]="position" class="employee-title">
     <span>{{ text1 }}</span>
     <span>{{ text2 }}</span>
   </p>
 `;
 
 const template4 = `
-  <div b-truncate-tooltip="2" [type]="'css'">
+  <div b-truncate-tooltip="2" [type]="'css'"
+                              [position]="position">
     <h3>
       This is a pure CSS tooltip! Looks and feels the same as matTooltip-based ones.
       Can't be used inside overflow hidden containers.
@@ -87,7 +95,12 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   maxLines | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0 or null. | 1 (optional)
-  type | TruncateTooltiptype | Use Material tooltip or CSS tooltip. Defaut 'auto' type will use Material for text longer than 130 chars, otherwise CSS | auto
+  type | TruncateTooltipType | Use Material tooltip or CSS tooltip. Defaut 'auto' type will use Material for text longer than 130 chars, otherwise CSS | auto
+  position | TruncateTooltipPosition | above or below | above
+  trustCssVars | boolean | performance can be optimised, if --line-height and --font-size CSS variables exist on the element | false
+  expectChanges | boolean | if text inside truncate-tooltip component will be changing, set to true | false
+  delay | number | time in ms before tooltip shows | 300
+  lazyness | number | if type is Material, it will be initialized lazyly after this many ms of hover | 200
 
    --------
 
@@ -100,6 +113,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   b-truncate-tooltip (or maxLines) | number | maximum lines | 1 (optional)
+  other properties are the same as in example 1
 
  --------
 
@@ -112,6 +126,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   bTruncateTooltip | number | maximum lines  | 1 (optional)
+  other properties are not supported
 
   --------
 
@@ -140,8 +155,13 @@ story.add(
         maxLines: number('bTruncateTooltip/maxLines', 2),
         type: select(
           'type',
-          Object.values(TruncateTooltiptype),
-          TruncateTooltiptype.auto
+          Object.values(TruncateTooltipType),
+          TruncateTooltipType.auto
+        ),
+        position: select(
+          'position',
+          Object.values(TruncateTooltipPosition),
+          TruncateTooltipPosition.above
         ),
         text1: text(
           'text1',

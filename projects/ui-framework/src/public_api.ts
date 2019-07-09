@@ -370,6 +370,7 @@ export { RenderedComponent } from './lib/services/component-renderer/component-r
 export { TruncateTooltipModule} from './lib/services/truncate-tooltip/truncate-tooltip.module';
 export { TruncateTooltipComponent} from './lib/services/truncate-tooltip/truncate-tooltip.component';
 export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/truncate-tooltip.directive';
+export { TruncateTooltipType, TruncateTooltipPosition } from './lib/services/truncate-tooltip/truncate-tooltip.enum';
 
 
 /*

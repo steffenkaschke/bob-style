@@ -9,11 +9,13 @@ import {
   DoCheck,
   NgZone,
   OnInit,
-  ChangeDetectorRef,
-  ChangeDetectionStrategy
+  ChangeDetectorRef
 } from '@angular/core';
 import { DOMhelpers, TextProps } from '../utils/dom-helpers.service';
-import { TruncateTooltiptype } from './truncate-tooltip.enum';
+import {
+  TruncateTooltipType,
+  TruncateTooltipPosition
+} from './truncate-tooltip.enum';
 import { debounce } from 'lodash';
 
 @Component({
@@ -24,13 +26,14 @@ import { debounce } from 'lodash';
       class="tooltip-trigger"
       [matTooltip]="tooltipText"
       [matTooltipShowDelay]="delay"
-      matTooltipPosition="above"
+      [matTooltipPosition]="position"
       matTooltipClass="b-truncate-tooltip"
     ></i>
     <i
       *ngIf="type === types.css && tooltipEnabled"
       class="tooltip-trigger"
       [attr.data-tooltip]="tooltipText"
+      [attr.data-tooltip-position]="position"
     ></i>
     <div
       #textContainer
@@ -71,7 +74,8 @@ export class TruncateTooltipComponent
   @Input() lazyness = 200;
   @Input() expectChanges = false;
   @Input() trustCssVars = false;
-  @Input() type: TruncateTooltiptype = TruncateTooltiptype.auto;
+  @Input() type: TruncateTooltipType = TruncateTooltipType.auto;
+  @Input() position = TruncateTooltipPosition.above;
 
   private textElementTextProps: TextProps;
   private maxLinesDefault = 1;
@@ -82,10 +86,10 @@ export class TruncateTooltipComponent
   public tooltipEnabled = false;
   public tooltipAllowed = false;
   public initialized = this.trustCssVars;
-  readonly types = TruncateTooltiptype;
+  readonly types = TruncateTooltipType;
 
   ngOnInit(): void {
-    if (this.lazyness !== 0 && this.type !== TruncateTooltiptype.css) {
+    if (this.lazyness !== 0 && this.type !== TruncateTooltipType.css) {
       this.textContainer.nativeElement.addEventListener(
         'mouseenter',
         this.startHoverTimer
@@ -112,7 +116,7 @@ export class TruncateTooltipComponent
         this.checkTooltipNecessity();
 
         this.initialized = true;
-        if (this.type === TruncateTooltiptype.css || this.lazyness === 0) {
+        if (this.type === TruncateTooltipType.css || this.lazyness === 0) {
           this.tooltipAllowed = true;
           this.stopHoverTimer();
           this.removeMouseListeners();
@@ -181,11 +185,11 @@ export class TruncateTooltipComponent
   }
 
   private checkTooltipNecessity(): void {
-    if (this.type === TruncateTooltiptype.auto) {
+    if (this.type === TruncateTooltipType.auto) {
       this.type =
         this.tooltipText.length > 130
-          ? TruncateTooltiptype.material
-          : TruncateTooltiptype.css;
+          ? TruncateTooltipType.material
+          : TruncateTooltipType.css;
     }
 
     const compareHeight = this.trustCssVars
