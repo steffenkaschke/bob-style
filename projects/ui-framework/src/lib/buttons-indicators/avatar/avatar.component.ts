@@ -11,7 +11,8 @@ import {
   OnChanges,
   OnInit,
   ChangeDetectorRef,
-  NgZone
+  NgZone,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { AvatarBadges, BadgeSize } from './avatar.consts';
@@ -20,11 +21,13 @@ import { ChipType } from '../../chips/chips.enum';
 import { Chip } from '../../chips/chips.interface';
 import { BadgeConfig } from './avatar.interface';
 import { getKeyByValue } from '../../services/utils/functional-utils';
+import { TruncateTooltiptype } from '../../services/truncate-tooltip/truncate-tooltip.enum';
 
 @Component({
   selector: 'b-avatar',
   templateUrl: './avatar.component.html',
-  styleUrls: ['./avatar.component.scss']
+  styleUrls: ['./avatar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   constructor(
@@ -41,9 +44,11 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   readonly badgeSize = BadgeSize;
   readonly chipType = ChipType;
   readonly orient = AvatarOrientation;
+  readonly tooltipType = TruncateTooltiptype;
   public badgeConfig: BadgeConfig;
   public avatarClass: string;
   public avatarStyle: Styles;
+  public expectChanges = true;
 
   @Input() imageSource: string;
   @Input() backgroundColor?: string;
@@ -53,22 +58,17 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() chip?: Chip;
   @Input() caption?: string;
   @Input() badge: AvatarBadge | BadgeConfig;
-  @Input() orientation: AvatarOrientation = AvatarOrientation.horizontal;
-  @Input() isClickable = false;
-  @Input() disabled = false;
 
   @Output() clicked?: EventEmitter<void> = new EventEmitter<void>();
 
-  @HostBinding('class')
-  get typeClass(): string {
-    return (
-      getKeyByValue(AvatarSize, this.size) +
-      ' ' +
-      this.orientation +
-      (this.isClickable ? ' clickable' : '') +
-      (this.disabled ? ' disabled' : '')
-    );
+  @HostBinding('attr.data-size') get sizeClass() {
+    return getKeyByValue(AvatarSize, this.size);
   }
+  @HostBinding('attr.data-orientation')
+  @Input()
+  orientation: AvatarOrientation = AvatarOrientation.horizontal;
+  @HostBinding('attr.data-clickable') @Input() isClickable = false;
+  @HostBinding('attr.data-disabled') @Input() disabled = false;
 
   ngOnInit(): void {
     this.setAvatarClass();
