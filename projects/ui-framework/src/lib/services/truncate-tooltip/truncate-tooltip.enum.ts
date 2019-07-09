@@ -1,5 +1,5 @@
 export enum TruncateTooltiptype {
-  eager = 'eager',
-  lazy = 'lazy',
+  auto = 'auto',
+  material = 'material',
   css = 'css'
 }
