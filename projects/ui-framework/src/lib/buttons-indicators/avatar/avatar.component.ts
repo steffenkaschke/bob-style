@@ -48,7 +48,6 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   public badgeConfig: BadgeConfig;
   public avatarClass: string;
   public avatarStyle: Styles;
-  public expectChanges = true;
 
   @Input() imageSource: string;
   @Input() backgroundColor?: string;
@@ -58,6 +57,7 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() chip?: Chip;
   @Input() caption?: string;
   @Input() badge: AvatarBadge | BadgeConfig;
+  @Input() expectChanges = false;
 
   @Output() clicked?: EventEmitter<void> = new EventEmitter<void>();
 
