@@ -9,8 +9,8 @@
         (removed)="onChipRemove(chip)"
         (click)="onChipClick($event, chip)"
         (keydown)="onChipKeydown($event, chip, index)">
-  <b-avatar *ngIf="(chip.type === chipType.avatar || config.type === chipType.avatar) && chip.avatar"
-            [imageSource]="chip.avatar"
+  <b-avatar *ngIf="(chip.type === chipType.avatar || config.type === chipType.avatar) && chip.imageSource"
+            [imageSource]="chip.imageSource"
             [size]="avatarSize.mini"></b-avatar>
   {{chip.text}}
 </b-chip>
