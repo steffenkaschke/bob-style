@@ -21,7 +21,7 @@ const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
 const chips = mockNames(10).map(chip => ({
   text: chip,
   id: simpleUID(),
-  avatar: mockAvatar()
+  imageSource: mockAvatar()
 }));
 
 const template = `
