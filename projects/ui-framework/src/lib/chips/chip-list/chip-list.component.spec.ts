@@ -8,6 +8,7 @@ import {
 } from '../../services/utils/test-helpers';
 import { ChipComponent } from '../chip/chip.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 
 describe('ChipListComponent', () => {
   let component: ChipListComponent;
@@ -16,6 +17,10 @@ describe('ChipListComponent', () => {
   let listElement: HTMLElement;
   let chipsElements: HTMLElement[];
   let chipsComponents: ChipComponent[];
+
+  // tslint:disable-next-line: max-line-length
+  const emptyImg =
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
 
   const chips = [
     {
@@ -32,10 +37,28 @@ describe('ChipListComponent', () => {
     }
   ];
 
+  const avatarChips = [
+    {
+      text: 'A',
+      id: 1,
+      imageSource: emptyImg
+    },
+    {
+      text: 'B',
+      id: 2,
+      imageSource: emptyImg
+    },
+    {
+      text: 'C',
+      id: 3,
+      imageSource: emptyImg
+    }
+  ];
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ChipListComponent],
-      imports: [ChipModule],
+      imports: [ChipModule, AvatarModule],
       providers: [],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -170,6 +193,33 @@ describe('ChipListComponent', () => {
     it('should emit Keypressed event', () => {
       chipsElements[0].dispatchEvent(new Event('keydown'));
       expect(component.keyPressed.emit).toHaveBeenCalled();
+    });
+  });
+
+  describe('Avatar chips', () => {
+    it('should display avatar Chips', () => {
+      component.config = {
+        type: ChipType.avatar
+      };
+      fixture.detectChanges();
+      component.chips = avatarChips;
+      fixture.detectChanges();
+      chipsElements = elementsFromFixture(fixture, 'b-chip');
+
+      expect(
+        chipsComponents.filter(comp => comp.type === ChipType.avatar).length
+      ).toEqual(3);
+
+      expect(
+        chipsElements.filter(
+          elem => elem.children[0].tagName === 'b-avatar'.toUpperCase()
+        ).length
+      ).toEqual(3);
+
+      expect(
+        (chipsElements[0].children[0].children[0] as HTMLElement).style
+          .backgroundImage
+      ).toContain('iVBORw0KGgoAAAANSUhEUgAAA');
     });
   });
 
