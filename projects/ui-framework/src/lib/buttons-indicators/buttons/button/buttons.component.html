@@ -1,18 +1,15 @@
-<button mat-button
+<button type="button"
         class="{{type}} {{size}}"
-        [disableRipple]="true"
-        [ngClass]="{'disabled': disabled, 'has-icon': icon}"
+        [ngClass]="{'disabled': disabled}"
         (click)="onClick($event)">
 
-  <div *ngIf="icon"
-       class="icon-wrapper">
-    <b-icon [icon]="icon"
-            [color]="iconColor"
-            [size]="iconSize">
-    </b-icon>
-  </div>
+  <b-icon *ngIf="icon"
+          [icon]="icon"
+          [color]="iconColor"
+          [size]="iconSize">
+  </b-icon>
 
-  <span><ng-content></ng-content></span>
+  <ng-content></ng-content>
 
 </button>
 

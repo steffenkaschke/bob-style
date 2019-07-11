@@ -1,54 +1,43 @@
-@import '../../style/colors';
 @import '../../style/typography';
 @import '../../style/mixins';
+@import '../../style/variables';
 
-@mixin MatButton() {
-  .mat-ripple,
-  .mat-button-focus-overlay {
-    display: none !important;
-  }
-}
+$sizeSmall: 30px;
+$sizeMedium: 36px;
+$sizeLarge: 44px;
 
 @mixin Button($type) {
-  box-sizing: border-box;
-
-  border-radius: 4px;
   @include BodyFont;
-  line-height: 1;
+  @include flex-align;
+  box-sizing: border-box;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-radius: $border-radius;
 
-  &:first-letter {
+  :first-letter {
     text-transform: capitalize;
   }
 
   @if $type == 'primary' {
     background-color: var(--primary-600);
-    border: 1px solid var(--primary-600);
     color: $white;
-    &:hover {
+    &:hover, &:focus {
       background-color: var(--primary-500);
-      box-shadow: 0 1px 3px 0 $boxShadowColor;
-      border: 1px solid var(--primary-600);
     }
     &:active {
       background-color: var(--primary-700);
-      box-shadow: inset 0 1px 3px $boxShadowColor;
     }
   }
 
   @if $type == 'secondary' {
-    background-color: $grey-300;
-    &:hover {
-      background-color: $grey-200;
-      box-shadow: 0 1px 3px 0 $boxShadowColor;
+    background-color: $grey-400;
+    &:hover, &:focus {
+      background-color: $grey-300;
     }
     &:active {
       background-color: $grey-500;
-      box-shadow: inset 0 1px 3px $boxShadowColor;
     }
-  }
-
-  @if $type == 'tertiary' {
-    border: 1px solid transparent;
   }
 
   @if $type == 'disabled' {

@@ -2,9 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SquareButtonComponent } from './square.component';
 import { MatButtonModule } from '@angular/material/button';
-import { IconsModule } from '../../../icons/icons.module';
-import { ButtonType } from '../buttons.enum';
+import { ButtonSize, ButtonType } from '../buttons.enum';
 import { By } from '@angular/platform-browser';
+import { MockComponent } from 'ng-mocks';
+import { IconComponent } from '../../../icons/icon.component';
+import { Icons, IconSize } from '../../../icons/icons.enum';
+import { SimpleChanges } from '@angular/core';
 
 describe('ButtonComponent', () => {
   let component: SquareButtonComponent;
@@ -12,14 +15,19 @@ describe('ButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SquareButtonComponent],
-      providers: [],
-      imports: [MatButtonModule, IconsModule]
+      declarations: [
+        SquareButtonComponent,
+        MockComponent(IconComponent),
+      ],
+      imports: [
+        MatButtonModule,
+      ],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(SquareButtonComponent);
         component = fixture.componentInstance;
+        component.icon = Icons.file_copy;
         spyOn(component.clicked, 'emit');
         fixture.detectChanges();
       });
@@ -32,6 +40,27 @@ describe('ButtonComponent', () => {
       };
       component.onClick(e);
       expect(component.clicked.emit).toHaveBeenCalledWith(e);
+    });
+  });
+
+  describe('OnChanges', () => {
+    it('should set icon size to large by default', () => {
+      const icon = fixture.debugElement.query(By.css('b-icon'));
+      expect(icon.componentInstance.size).toEqual(IconSize.large);
+    });
+    it('should set icon size to medium if size is small', () => {
+      const changes: SimpleChanges = {
+        size: {
+          previousValue: undefined,
+          currentValue: ButtonSize.small,
+          firstChange: true,
+          isFirstChange: () => true
+        }
+      };
+      component.ngOnChanges(changes);
+      fixture.detectChanges();
+      const icon = fixture.debugElement.query(By.css('b-icon'));
+      expect(icon.componentInstance.size).toEqual(IconSize.large);
     });
   });
 
