@@ -31,6 +31,7 @@ export class MultiListAndChipsComponent implements OnChanges {
   @Input() options: SelectGroupOption[] = [];
   @Input() listLabel: string;
   @Input() chipsLabel: string;
+  @Input() showSingleGroupHeader = false;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
