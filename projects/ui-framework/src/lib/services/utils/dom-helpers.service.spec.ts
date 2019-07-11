@@ -47,7 +47,7 @@ class TestComponent {
   constructor() {}
 }
 
-fdescribe('DOMhelpers', () => {
+describe('DOMhelpers', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
   let DOM: DOMhelpers;
