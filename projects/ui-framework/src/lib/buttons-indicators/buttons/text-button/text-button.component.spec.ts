@@ -7,7 +7,7 @@ import { By } from '@angular/platform-browser';
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 import { LinkColor } from '../../link/link.enum';
 
-fdescribe('TextButtonComponent', () => {
+describe('TextButtonComponent', () => {
   let component: TextButtonComponent;
   let fixture: ComponentFixture<TextButtonComponent>;
   let element: HTMLElement;
@@ -34,15 +34,18 @@ fdescribe('TextButtonComponent', () => {
 
   it('should not display icon if no input is passed', () => {
     fixture.detectChanges();
-    expect(element.className).not.toContain('b-icon');
+    expect(element.children.length).toEqual(0);
   });
 
   it('should display icon if is input', () => {
     component.icon = Icons.home;
     fixture.detectChanges();
-    expect(element.className).toContain(Icons.home);
-    expect(element.className).toContain('b-icon-' + IconColor.dark);
-    expect(element.className).toContain('b-icon-' + IconSize.medium);
+    expect(element.children.length).toEqual(1);
+    expect(element.children[0].className).toContain(Icons.home);
+    expect(element.children[0].className).toContain('b-icon-' + IconColor.dark);
+    expect(element.children[0].className).toContain(
+      'b-icon-' + IconSize.medium
+    );
   });
 
   it('should set color to orange for component and icon', () => {
@@ -50,7 +53,9 @@ fdescribe('TextButtonComponent', () => {
     component.color = LinkColor.primary;
     fixture.detectChanges();
     expect(element.classList).toContain('color-primary');
-    expect(element.className).toContain('b-icon-' + IconColor.primary);
+    expect(element.children[0].className).toContain(
+      'b-icon-' + IconColor.primary
+    );
   });
 
   it('should emit clicked when clicking the component', () => {
