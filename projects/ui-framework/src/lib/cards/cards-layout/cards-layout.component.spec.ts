@@ -13,12 +13,8 @@ describe('CardsLayoutComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
-      imports: [
-        CardsModule,
-      ],
-      schemas: [
-        NO_ERRORS_SCHEMA,
-      ]
+      imports: [CardsModule],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents()
       .then(() => {
