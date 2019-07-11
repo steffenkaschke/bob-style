@@ -52,13 +52,6 @@
   transition: opacity 0.2s;
   opacity: 0;
   pointer-events: none;
-
-  &::ng-deep {
-    .mat-button {
-      width: 30px;
-      min-width: 30px;
-    }
-  }
 }
 
 .card-content {
