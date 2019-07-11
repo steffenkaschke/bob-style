@@ -405,7 +405,7 @@ describe('RichTextEditorComponent', () => {
         overlayContainerElement.querySelector('.bfe-input[type="url"]')
       );
       const addButtonElement = overlayContainerElement.querySelector(
-        'b-rte-link-editor .mat-button.primary'
+        'b-rte-link-editor button.primary'
       ) as HTMLElement;
 
       textInputElement.value = 'test1';
