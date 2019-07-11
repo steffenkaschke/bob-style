@@ -1,33 +1,46 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable, of } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, map, share, shareReplay } from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
 import { ScrollEvent } from './utils.interface';
 
 @Injectable()
 export class UtilsService {
-  constructor(public windowRef: WindowRef) {}
+  winResize$: Observable<any>;
+  winScroll$: Observable<ScrollEvent>;
+  winClick$: Observable<MouseEvent>;
+  winKey$: Observable<KeyboardEvent>;
 
-  public getResizeEvent(): Observable<any> {
-    return fromEvent(this.windowRef.nativeWindow, 'resize').pipe(
-      debounceTime(500)
+  constructor(public windowRef: WindowRef) {
+    this.winResize$ = fromEvent(this.windowRef.nativeWindow, 'resize').pipe(
+      debounceTime(500),
+      shareReplay()
     );
-  }
-
-  public getScrollEvent(): Observable<ScrollEvent> {
-    return fromEvent(this.windowRef.nativeWindow, 'scroll').pipe(
+    this.winScroll$ = fromEvent(this.windowRef.nativeWindow, 'scroll').pipe(
+      debounceTime(100),
       map((e: Event) => ({
         scrollY: (e.currentTarget as Window).scrollY,
         scrollX: (e.currentTarget as Window).scrollX
-      }))
+      })),
+      shareReplay()
     );
+    this.winClick$ = fromEvent(this.windowRef.nativeWindow, 'click');
+    this.winKey$ = fromEvent(this.windowRef.nativeWindow, 'keydown');
+  }
+
+  public getResizeEvent(): Observable<any> {
+    return this.winResize$;
+  }
+
+  public getScrollEvent(): Observable<ScrollEvent> {
+    return this.winScroll$;
   }
 
   public getWindowClickEvent(): Observable<MouseEvent> {
-    return fromEvent(this.windowRef.nativeWindow, 'click');
+    return this.winClick$;
   }
 
   public getWindowKeydownEvent(): Observable<KeyboardEvent> {
-    return fromEvent(this.windowRef.nativeWindow, 'keydown');
+    return this.winKey$;
   }
 }
