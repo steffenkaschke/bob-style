@@ -5,11 +5,7 @@
   display: inline-block;
 }
 
-:host ::ng-deep .mat-button {
-  @include MatButton;
-  height: 36px;
-  width: 36px;
-  min-width: 36px;
+button {
   text-align: center;
   padding: 0;
 
@@ -25,13 +21,16 @@
   &.disabled {
     @include Button(disabled);
   }
-}
-
-:host {
-  &[rotate="90"] ::ng-deep .mat-icon {
-    transform: rotate(90deg);
+  &.small {
+    height: $sizeSmall;
+    width: $sizeSmall;
   }
-  &[rotate="180"] ::ng-deep .mat-icon {
-    transform: rotate(180deg);
+  &.medium {
+    height: $sizeMedium;
+    width: $sizeMedium;
+  }
+  &.large {
+    height: $sizeLarge;
+    width: $sizeLarge;
   }
 }

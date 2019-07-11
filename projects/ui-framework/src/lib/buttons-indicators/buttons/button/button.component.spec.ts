@@ -58,7 +58,7 @@ describe('ButtonComponent', () => {
     });
   });
 
-  describe('has-icon', () => {
+  describe('icon', () => {
     it('should not add icon if no icon is passed', () => {
       const iconElement = fixture.debugElement.query(By.css('b-icon'));
       expect(iconElement).toBeFalsy();
@@ -68,12 +68,6 @@ describe('ButtonComponent', () => {
       fixture.detectChanges();
       const iconElement = fixture.debugElement.query(By.css('b-icon'));
       expect(iconElement).toBeTruthy();
-    });
-    it('should add has-icon class to button', () => {
-      component.icon = Icons.timeline;
-      fixture.detectChanges();
-      const buttonElement = fixture.debugElement.query(By.css('button'));
-      expect(buttonElement.nativeElement.classList).toContain('has-icon');
     });
   });
 

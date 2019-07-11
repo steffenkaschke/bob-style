@@ -113,7 +113,7 @@ describe('CardTableComponent', () => {
         ).componentInstance;
 
         buttonElement = fixture.debugElement.query(
-          By.css('b-button .mat-button')
+          By.css('b-button button')
         ).nativeElement;
 
         spyOn(component.rowClicked, 'emit');
