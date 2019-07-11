@@ -5,15 +5,15 @@ import { SimpleChange } from '@angular/core';
 export const elementsFromFixture = (
   fixtr: ComponentFixture<any>,
   selector: string
-) => {
+): HTMLElement[] => {
   const debugElems = fixtr.debugElement.queryAll(By.css(selector));
-
-  if (debugElems.length === 1) {
-    return debugElems[0].nativeElement;
-  } else {
-    return debugElems.map(de => de.nativeElement);
-  }
+  return debugElems.map(de => de.nativeElement);
 };
+
+export const elementFromFixture = (
+  fixtr: ComponentFixture<any>,
+  selector: string
+): HTMLElement => elementsFromFixture(fixtr, selector)[0];
 
 export const simpleChange = changes => {
   const simpleChanges = {};
@@ -21,4 +21,20 @@ export const simpleChange = changes => {
     simpleChanges[key] = new SimpleChange(undefined, changes[key], false);
   });
   return simpleChanges;
+};
+
+export const inputValue = (inputElem: any, value: string | number): void => {
+  (inputElem as HTMLInputElement).value = value as string;
+  (inputElem as HTMLElement).dispatchEvent(
+    new Event('input', {
+      target: inputElem,
+      type: 'input'
+    } as EventInit)
+  );
+  (inputElem as HTMLElement).dispatchEvent(
+    new Event('blur', {
+      target: inputElem,
+      type: 'blur'
+    } as EventInit)
+  );
 };
