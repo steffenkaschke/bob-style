@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChipInputComponent } from './chip-input.component';
 
@@ -38,6 +38,9 @@ describe('ChipInputComponent', () => {
       providers: [ColorService],
       schemas: [NO_ERRORS_SCHEMA]
     })
+      .overrideComponent(ChipInputComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default }
+      })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(ChipInputComponent);
