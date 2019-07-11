@@ -39,6 +39,7 @@ export class SquareButtonComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.size) {
+      this.size = changes.size.currentValue;
       this.iconSize =
         this.size === ButtonSize.small ? IconSize.medium : IconSize.large;
     }

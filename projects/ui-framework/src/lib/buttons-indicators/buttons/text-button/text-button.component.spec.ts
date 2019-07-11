@@ -7,24 +7,21 @@ import { By } from '@angular/platform-browser';
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 import { LinkColor } from '../../link/link.enum';
 
-describe('TextButtonComponent', () => {
+fdescribe('TextButtonComponent', () => {
   let component: TextButtonComponent;
   let fixture: ComponentFixture<TextButtonComponent>;
+  let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(IconComponent),
-        TextButtonComponent,
-      ],
-      imports: [
-        TypographyModule,
-      ],
+      declarations: [MockComponent(IconComponent), TextButtonComponent],
+      imports: [TypographyModule]
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(TextButtonComponent);
         component = fixture.componentInstance;
+        element = fixture.debugElement.nativeElement;
         spyOn(component.clicked, 'emit');
       });
   }));
@@ -32,32 +29,28 @@ describe('TextButtonComponent', () => {
   it('should display input text', () => {
     component.text = 'Button text';
     fixture.detectChanges();
-    const text = fixture.debugElement.query(By.css('b-bold-body'));
-    expect(text.nativeElement.innerText).toEqual('Button text');
+    expect(element.innerText).toEqual('Button text');
   });
 
   it('should not display icon if no input is passed', () => {
     fixture.detectChanges();
-    const icon = fixture.debugElement.query(By.css('b-icon'));
-    expect(icon).toBeNull();
+    expect(element.className).not.toContain('b-icon');
   });
 
   it('should display icon if is input', () => {
     component.icon = Icons.home;
     fixture.detectChanges();
-    const icon = fixture.debugElement.query(By.css('b-icon'));
-    expect(icon.componentInstance.icon).toEqual(Icons.home);
-    expect(icon.componentInstance.color).toEqual(IconColor.dark);
-    expect(icon.componentInstance.size).toEqual(IconSize.medium);
+    expect(element.className).toContain(Icons.home);
+    expect(element.className).toContain('b-icon-' + IconColor.dark);
+    expect(element.className).toContain('b-icon-' + IconSize.medium);
   });
 
   it('should set color to orange for component and icon', () => {
     component.icon = Icons.home;
     component.color = LinkColor.primary;
     fixture.detectChanges();
-    expect(fixture.nativeElement.classList).toContain('color-primary');
-    const icon = fixture.debugElement.query(By.css('b-icon'));
-    expect(icon.componentInstance.color).toEqual(IconColor.primary);
+    expect(element.classList).toContain('color-primary');
+    expect(element.className).toContain('b-icon-' + IconColor.primary);
   });
 
   it('should emit clicked when clicking the component', () => {
