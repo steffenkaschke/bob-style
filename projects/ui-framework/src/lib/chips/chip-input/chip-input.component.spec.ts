@@ -57,6 +57,8 @@ describe('ChipInputComponent', () => {
 
         fixture.detectChanges();
 
+        spyOn(component.changed, 'emit');
+
         chipsComponents = () => component.chips.list.toArray();
         inputElement = elementFromFixture(
           fixture,
@@ -119,6 +121,11 @@ describe('ChipInputComponent', () => {
       expect(component.value).toEqual(['ABC']);
       expect(chipsComponents().length).toEqual(1);
       expect(inputElement.value).toEqual('');
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: 'onChange',
+        added: 'ABC',
+        value: ['ABC']
+      });
     });
     it('should not add chip if its already present in value', () => {
       component.value = ['ABC'];
@@ -130,6 +137,7 @@ describe('ChipInputComponent', () => {
       expect(component.value).toEqual(['ABC']);
       expect(chipsComponents().length).toEqual(1);
       expect(chipsElements()[0].className).toContain('blink');
+      expect(component.changed.emit).not.toHaveBeenCalled();
     });
   });
 
@@ -142,6 +150,11 @@ describe('ChipInputComponent', () => {
       expect(component.value).toEqual(['XYZ']);
       expect(chipsComponents().length).toEqual(1);
       expect(inputElement.value).toEqual('');
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: 'onChange',
+        added: 'XYZ',
+        value: ['XYZ']
+      });
     });
     it('should not add new chip if acceptNew is false', () => {
       component.acceptNew = false;
@@ -151,6 +164,7 @@ describe('ChipInputComponent', () => {
       expect(component.value.length).toEqual(0);
       expect(chipsComponents().length).toEqual(0);
       expect(inputElement.value).toEqual('XYZ');
+      expect(component.changed.emit).not.toHaveBeenCalled();
     });
   });
 
@@ -166,6 +180,11 @@ describe('ChipInputComponent', () => {
 
       expect(chipsComponents().length).toEqual(1);
       expect(component.value.length).toEqual(1);
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: 'onChange',
+        removed: 'ABC',
+        value: ['ACB']
+      });
     });
   });
 
@@ -185,6 +204,11 @@ describe('ChipInputComponent', () => {
       fixture.detectChanges();
       expect(component.value).toEqual(['ABC']);
       expect(chipsComponents().length).toEqual(1);
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: 'onChange',
+        added: 'ABC',
+        value: ['ABC']
+      });
     });
     it('should not add chip if its already present in value', () => {
       component.value = ['ABC'];
@@ -200,6 +224,7 @@ describe('ChipInputComponent', () => {
       expect(component.value).toEqual(['ABC']);
       expect(chipsComponents().length).toEqual(1);
       expect(chipsElements()[0].className).toContain('blink');
+      expect(component.changed.emit).not.toHaveBeenCalled();
     });
   });
 });
