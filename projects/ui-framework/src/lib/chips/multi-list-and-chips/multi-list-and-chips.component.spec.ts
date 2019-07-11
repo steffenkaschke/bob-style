@@ -5,7 +5,7 @@ import { MultiListAndChipsComponent } from './multi-list-and-chips.component';
 import { ChipListModule } from '../chip-list/chip-list.module';
 import { MultiListModule } from '../../form-elements/lists/multi-list/multi-list.module';
 
-describe('ChipListComponent', () => {
+xdescribe('MultiListAndChipsComponent', () => {
   let component: MultiListAndChipsComponent;
   let fixture: ComponentFixture<MultiListAndChipsComponent>;
 
