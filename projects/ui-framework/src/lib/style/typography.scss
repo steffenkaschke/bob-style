@@ -58,7 +58,7 @@ $font-size-subheading: $font-size-body;
 
 @mixin HeadingFont(
   $size,
-  $weight: 700,
+  $weight: 600,
   $lineHeight: $line-height-heading,
   $style: normal,
   $addCssVars: false
