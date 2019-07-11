@@ -12,16 +12,16 @@ import { LinkColor } from '../../link/link.enum';
 @Component({
   selector: 'b-text-button',
   template: `
-    <span
+    <i
       *ngIf="icon"
-      class="icon {{
+      class="b-icon {{
         icon +
           ' b-icon-' +
           iconSize.medium +
           ' b-icon-' +
           (color === linkColor.none ? iconColor.dark : iconColor.primary)
       }}"
-    ></span>
+    ></i>
 
     {{ text }}
     <ng-content></ng-content>
