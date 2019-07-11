@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { CardsLayoutComponent } from './cards-layout.component';
 import { CardsModule } from '../cards.module';
 import { CardType } from '../cards.enum';
@@ -13,13 +13,12 @@ describe('CardsLayoutComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
-      imports: [
-        CardsModule,
-      ],
-      schemas: [
-        NO_ERRORS_SCHEMA,
-      ]
+      imports: [CardsModule],
+      schemas: [NO_ERRORS_SCHEMA]
     })
+      .overrideComponent(CardsLayoutComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default }
+      })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(CardsLayoutComponent);
