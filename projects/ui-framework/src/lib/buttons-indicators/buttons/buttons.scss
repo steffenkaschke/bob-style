@@ -47,9 +47,7 @@ $sizeLarge: 44px;
     }
 
     @if $type == 'tertiary' {
-      &.b-icon-white {
-        background-color: transparent;
-      }
+      background-color: transparent;
     }
 
     @if $type == 'disabled' {
