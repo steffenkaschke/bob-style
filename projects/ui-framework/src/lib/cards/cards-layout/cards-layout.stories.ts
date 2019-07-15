@@ -6,6 +6,7 @@ import { CardType } from '../cards.enum';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { CardLayoutExampleModule } from './card-layout-example.module';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
@@ -23,17 +24,18 @@ const template3 = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Cards Layout'">
-  <div style="min-width:100%; min-height: 100%; padding: 30px; background: rgb(247,247,247);">
+<b-story-book-layout [title]="'Cards Layout'" style=" background: rgb(247,247,247);">
+  <div style="max-width: none;">
   <h3>Cards</h3>
-    ${ template }
+    ${template}
     <br><br>
     <h3>Employee Cards</h3>
-    ${ template2 }
+    ${template2}
     <br><br>
     <h3>Employee Cards</h3>
-    ${ template3 }
+    ${template3}
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -89,14 +91,15 @@ story.add(
       template: storyTemplate,
       props: {
         type: select('type', values(CardType), CardType.regular),
-        alignCenter: boolean('alignCenter', false),
+        alignCenter: boolean('alignCenter', false)
       },
       moduleMetadata: {
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           CardLayoutExampleModule,
-        ],
+          UtilComponentsModule
+        ]
       }
     };
   },
