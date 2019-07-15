@@ -102,7 +102,10 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
       setTimeout(() => {
         this.hasContent =
           this.content && !this.DOM.isEmpty(this.content.nativeElement);
-        this.cd.markForCheck();
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
       }, 0);
     });
   }

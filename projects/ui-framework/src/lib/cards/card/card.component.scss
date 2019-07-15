@@ -24,7 +24,7 @@
   background-color: white;
 
   &:hover,
-  &.focus-inside {
+  &[data-focus-inside='true'] {
     box-shadow: 0 2px 15px 0 $grey-500;
     transform: translateY(-10px);
 
@@ -40,7 +40,7 @@
     }
   }
 
-  &.clickable {
+  &[data-clickable='true'] {
     cursor: pointer;
   }
 }
@@ -97,7 +97,7 @@
 
 // Types
 
-:host.card-regular {
+:host[data-type='regular'] {
   min-height: 240px;
   min-width: 190px;
 
@@ -111,7 +111,7 @@
   }
 }
 
-:host.card-large {
+:host[data-type='large'] {
   min-width: 260px;
 
   .card-content {
