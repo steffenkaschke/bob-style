@@ -8,7 +8,9 @@ import {
   OnChanges,
   ViewChildren,
   QueryList,
-  HostListener
+  HostListener,
+  ChangeDetectionStrategy,
+  NgZone
 } from '@angular/core';
 import { Chip, ChipListConfig, ChipKeydownEvent } from '../chips.interface';
 import { isKey } from '../../services/utils/functional-utils';
@@ -21,10 +23,11 @@ import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 @Component({
   selector: 'b-chip-list',
   templateUrl: './chip-list.component.html',
-  styleUrls: ['./chip-list.component.scss']
+  styleUrls: ['./chip-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChipListComponent implements OnChanges {
-  constructor() {}
+  constructor(private zone: NgZone) {}
 
   @ViewChildren('list') public list: QueryList<ChipComponent>;
 
@@ -121,11 +124,13 @@ export class ChipListComponent implements OnChanges {
       event.stopPropagation();
       this.onChipRemove(chip);
 
-      setTimeout(() => {
-        this.focusChipElByIndex(
-          isKey(event.key, Keys.backspace) ? index - 1 : index
-        );
-      }, 0);
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.focusChipElByIndex(
+            isKey(event.key, Keys.backspace) ? index - 1 : index
+          );
+        }, 0);
+      });
     }
   }
 
