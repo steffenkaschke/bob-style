@@ -1,6 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {ChangeDetectionStrategy, ElementRef, NO_ERRORS_SCHEMA} from '@angular/core';
+import {ChangeDetectionStrategy, NO_ERRORS_SCHEMA} from '@angular/core';
 import {CardsLayoutComponent, GAP_SIZE} from './cards-layout.component';
 import {CardsModule} from '../cards.module';
 import {CardType} from '../cards.enum';
@@ -113,6 +113,9 @@ describe('CardsLayoutComponent', () => {
         cardsInRowSubscribeCalled++;
       });
     });
+
+  });
+  describe('component init', () => {
     it('should have align-center class if input align center is true', (done) => {
       component.type = CardType.regular;
       component.alignCenter = true;
@@ -126,6 +129,5 @@ describe('CardsLayoutComponent', () => {
       expect(cardsListElement.classList).not.toContain('align-center');
       done();
     });
-
   });
 });
