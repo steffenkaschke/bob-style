@@ -7,7 +7,7 @@ import {
   simpleChange
 } from '../../services/utils/test-helpers';
 import { ChipComponent } from '../chip/chip.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 
 describe('ChipListComponent', () => {
@@ -62,6 +62,9 @@ describe('ChipListComponent', () => {
       providers: [],
       schemas: [NO_ERRORS_SCHEMA]
     })
+      .overrideComponent(ChipListComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default }
+      })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(ChipListComponent);

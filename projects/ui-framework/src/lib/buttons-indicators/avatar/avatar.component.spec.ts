@@ -11,7 +11,7 @@ import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-
 import { BadgeSize, AvatarBadges } from './avatar.consts';
 import { simpleChange } from '../../services/utils/test-helpers';
 
-fdescribe('AvatarComponent', () => {
+describe('AvatarComponent', () => {
   let component: AvatarComponent;
   let fixture: ComponentFixture<AvatarComponent>;
   let avatarElement: HTMLElement;
@@ -106,7 +106,7 @@ fdescribe('AvatarComponent', () => {
     });
   });
 
-  fdescribe('Text', () => {
+  describe('Text', () => {
     it('Should put title & subtitle text', () => {
       component.subtitle = 'Subtitle';
       component.ngOnChanges(
