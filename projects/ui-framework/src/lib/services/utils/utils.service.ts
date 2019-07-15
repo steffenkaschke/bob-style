@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { fromEvent, Observable, of } from 'rxjs';
-import { debounceTime, map, share, shareReplay } from 'rxjs/operators';
+import { fromEvent, Observable } from 'rxjs';
+import { debounceTime, map, shareReplay } from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
 import { ScrollEvent } from './utils.interface';
 
@@ -21,7 +21,7 @@ export class UtilsService {
       map((e: Event) => ({
         scrollY: (e.currentTarget as Window).scrollY,
         scrollX: (e.currentTarget as Window).scrollX
-      })),
+      }))
     );
     this.winClick$ = fromEvent(this.windowRef.nativeWindow, 'click');
     this.winKey$ = fromEvent(this.windowRef.nativeWindow, 'keydown');
