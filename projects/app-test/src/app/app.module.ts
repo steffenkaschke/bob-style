@@ -7,7 +7,11 @@ import { FormElementsTestModule } from './form-elements/form-elements.module';
 import { UrlTesterModule } from './url-tester/url-tester.module';
 import { UtilComponentsModule } from '../../../ui-framework/src/lib/services/util-components/utilComponents.module';
 import { TooltipTesterModule } from './truncate-tooltip/truncate-tooltip.module';
-import { FormElementsModule } from '../../../ui-framework/src/public_api';
+import {
+  FormElementsModule,
+  ComponentRendererModule,
+  ButtonComponent
+} from '../../../ui-framework/src/public_api';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -20,9 +24,11 @@ import { FormsModule } from '@angular/forms';
     UtilComponentsModule,
     TooltipTesterModule,
     FormElementsModule,
-    FormsModule
+    FormsModule,
+    ComponentRendererModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ButtonComponent]
 })
 export class AppModule {}

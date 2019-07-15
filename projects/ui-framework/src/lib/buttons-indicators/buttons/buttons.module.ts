@@ -9,6 +9,8 @@ import { IconsModule } from '../../icons/icons.module';
 import { CommonModule } from '@angular/common';
 import { TextButtonComponent } from './text-button/text-button.component';
 import { TypographyModule } from '../../typography/typography.module';
+import { EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
+import { OutsideZonePlugin } from '../../services/utils/eventManager.plugins';
 
 @NgModule({
   declarations: [
@@ -16,21 +18,28 @@ import { TypographyModule } from '../../typography/typography.module';
     SquareButtonComponent,
     GroupComponent,
     BackButtonComponent,
-    TextButtonComponent,
+    TextButtonComponent
   ],
   imports: [
     CommonModule,
     MatButtonModule,
     MatRippleModule,
     IconsModule,
-    TypographyModule,
+    TypographyModule
   ],
   exports: [
     ButtonComponent,
     SquareButtonComponent,
     GroupComponent,
     BackButtonComponent,
-    TextButtonComponent,
+    TextButtonComponent
+  ],
+  providers: [
+    {
+      multi: true,
+      provide: EVENT_MANAGER_PLUGINS,
+      useClass: OutsideZonePlugin
+    }
   ]
 })
-export class ButtonsModule { }
+export class ButtonsModule {}

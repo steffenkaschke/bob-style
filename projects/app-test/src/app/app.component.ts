@@ -12,6 +12,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { DOMhelpers } from '../../../ui-framework/src/lib/services/utils/dom-helpers.service';
+import { ButtonComponent } from '../../../ui-framework/src/lib/buttons-indicators/buttons/button/button.component';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,19 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   resizeSubscription: Subscription;
 
   classes = '';
+
+  renderButton = {
+    component: ButtonComponent,
+    attributes: {
+      text: 'click me!'
+    },
+    content: ['button'],
+    handlers: {
+      clicked: () => {
+        console.log('Render component button clicked!');
+      }
+    }
+  };
 
   addClasses() {
     this.DOM.bindClasses(this.testDiv.nativeElement, [

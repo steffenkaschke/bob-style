@@ -4,7 +4,7 @@
 
 <tooltip-tester></tooltip-tester> -->
 
-<div style="width: 600px; margin: auto; height: 200vh;">
+<div style="width: 600px; margin: 0 auto">
   <b-rich-text-editor [value]="editorValue"
                       (changed)="updateValue($event)">
 
@@ -15,7 +15,7 @@
   </div>
 </div>
 
-<div style="width: 600px; margin: auto; text-align: center;">
+<div style="width: 600px; margin: 40px auto 0; text-align: center;">
 
   <div #testDiv
        [ngClass]="classes"
@@ -32,6 +32,14 @@
           (click)="addClasses()">add classes</button>
   <button type="button"
           (click)="removeClasses()">remove classes</button>
+
+  <br><br>
+
+  <b-mock>
+    <b-component-renderer slot1
+                          [render]="renderButton"></b-component-renderer>
+  </b-mock>
+
 </div>
 
 <b-stats></b-stats>
