@@ -14,7 +14,7 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-const CARD_TYPE_WIDTH = {
+export const CARD_TYPE_WIDTH = {
   [CardType.small]: 160,
   [CardType.regular]: 190,
   [CardType.large]: 260
