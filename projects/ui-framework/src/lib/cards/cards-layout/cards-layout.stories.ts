@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { select, withKnobs } from '@storybook/addon-knobs/angular';
+import { boolean, select, withKnobs } from '@storybook/addon-knobs/angular';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardType } from '../cards.enum';
@@ -13,14 +13,14 @@ const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
 );
 
 const template = `
-  <b-card-layout-example-1 [type]="type"></b-card-layout-example-1>
+  <b-card-layout-example-1 [type]="type" [alignCenter]="alignCenter"></b-card-layout-example-1>
 `;
 
 const template2 = `
-  <b-card-layout-example-2 [type]="type"></b-card-layout-example-2>
+  <b-card-layout-example-2 [type]="type" [alignCenter]="alignCenter"></b-card-layout-example-2>
 `;
 const template3 = `
-  <b-card-layout-example-3></b-card-layout-example-3>
+  <b-card-layout-example-3 [alignCenter]="alignCenter"></b-card-layout-example-3>
 `;
 
 const storyTemplate = `
@@ -90,7 +90,8 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', values(CardType), CardType.regular)
+        type: select('type', values(CardType), CardType.regular),
+        alignCenter: boolean('alignCenter', false)
       },
       moduleMetadata: {
         imports: [
