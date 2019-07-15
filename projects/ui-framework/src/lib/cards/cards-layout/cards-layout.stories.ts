@@ -26,13 +26,13 @@ const storyTemplate = `
 <b-story-book-layout [title]="'Cards Layout'">
   <div style="min-width:100%; min-height: 100%; padding: 30px; background: rgb(247,247,247);">
   <h3>Cards</h3>
-    ${ template }
+    ${template}
     <br><br>
     <h3>Employee Cards</h3>
-    ${ template2 }
+    ${template2}
     <br><br>
     <h3>Employee Cards</h3>
-    ${ template3 }
+    ${template3}
   </div>
 </b-story-book-layout>
 `;
@@ -47,6 +47,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   type | CardType | Card theme | primary (optional)
+  alignCenter | boolean | put cards in the center | false
 
 ~~~
 <b-cards [type]="type">
@@ -89,14 +90,14 @@ story.add(
       template: storyTemplate,
       props: {
         type: select('type', values(CardType), CardType.regular),
-        alignCenter: boolean('alignCenter', false),
+        alignCenter: boolean('alignCenter', false)
       },
       moduleMetadata: {
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          CardLayoutExampleModule,
-        ],
+          CardLayoutExampleModule
+        ]
       }
     };
   },

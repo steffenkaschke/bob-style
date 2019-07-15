@@ -5,13 +5,14 @@ import {
   EventEmitter,
   Output,
   ElementRef,
-  AfterViewInit, OnDestroy
+  AfterViewInit,
+  OnDestroy
 } from '@angular/core';
-import {CardType} from '../cards.enum';
-import {DOMhelpers} from '../../services/utils/dom-helpers.service';
-import {UtilsService} from '../../services/utils/utils.service';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
-import {filter} from 'rxjs/operators';
+import { CardType } from '../cards.enum';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { UtilsService } from '../../services/utils/utils.service';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 const CARD_TYPE_WIDTH = {
   [CardType.small]: 160,
@@ -28,7 +29,6 @@ export const GAP_SIZE = 16;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardsLayoutComponent implements AfterViewInit, OnDestroy {
-
   resizeSubscription: Subscription;
 
   private cardsInRow$: BehaviorSubject<number>;
@@ -37,16 +37,20 @@ export class CardsLayoutComponent implements AfterViewInit, OnDestroy {
   constructor(
     private hostRef: ElementRef,
     private domUtils: DOMhelpers,
-    private utilsService: UtilsService,
-  ) {
-  }
+    private utilsService: UtilsService
+  ) {}
 
-  @Input('align-center') alignCenter = false;
+  @Input() alignCenter = false;
   @Input() type: CardType = CardType.regular;
-  @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<number>();
+  @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<
+    number
+  >();
 
   ngAfterViewInit(): void {
-    this.hostRef.nativeElement.style.setProperty(`--${this.type}-max-width`, `${CARD_TYPE_WIDTH[this.type]}px`);
+    this.domUtils.setCssProps(this.hostRef.nativeElement, {
+      '--card-max-width': CARD_TYPE_WIDTH[this.type] + 'px',
+      '--card-grid-gap': GAP_SIZE + 'px'
+    });
     this.calcCardsInRow();
     this.listenToResize();
   }
@@ -56,10 +60,12 @@ export class CardsLayoutComponent implements AfterViewInit, OnDestroy {
   }
 
   listenToResize() {
-    this.resizeSubscription = this.utilsService.getResizeEvent().pipe(
-    ).subscribe(() => {
-      this.calcCardsInRow();
-    });
+    this.resizeSubscription = this.utilsService
+      .getResizeEvent()
+      .pipe()
+      .subscribe(() => {
+        this.calcCardsInRow();
+      });
   }
 
   getCardsInRow$(): Observable<number> {
@@ -68,10 +74,12 @@ export class CardsLayoutComponent implements AfterViewInit, OnDestroy {
       this.cardsInRow$ = new BehaviorSubject<number>(this.cardsInRow);
       this.resizeSubscription = this.utilsService
         .getResizeEvent()
-        .pipe(filter(() => {
-          const cardsInRow = this.calcCardsInRow();
-          return this.cardsInRow !== cardsInRow;
-        }))
+        .pipe(
+          filter(() => {
+            const cardsInRow = this.calcCardsInRow();
+            return this.cardsInRow !== cardsInRow;
+          })
+        )
         .subscribe(() => {
           this.cardsInRow = this.calcCardsInRow();
           this.cardsInRow$.next(this.cardsInRow);
@@ -82,7 +90,8 @@ export class CardsLayoutComponent implements AfterViewInit, OnDestroy {
 
   private calcCardsInRow(): number {
     const hostWidth = this.domUtils.getInnerWidth(this.hostRef.nativeElement);
-    const gaps = (Math.floor(hostWidth / CARD_TYPE_WIDTH[this.type]) - 1) * GAP_SIZE;
+    const gaps =
+      (Math.floor(hostWidth / CARD_TYPE_WIDTH[this.type]) - 1) * GAP_SIZE;
     return Math.floor((hostWidth - gaps) / CARD_TYPE_WIDTH[this.type]);
   }
 }
