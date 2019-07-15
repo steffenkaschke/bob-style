@@ -24,6 +24,7 @@
   background-color: white;
 
   &:hover,
+  &:focus,
   &[data-focus-inside='true'] {
     box-shadow: 0 2px 15px 0 $grey-500;
     transform: translateY(-10px);
@@ -34,7 +35,8 @@
     }
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     .card-content {
       @include animate(enablePointer, 0s, 0.2s);
     }
@@ -42,6 +44,10 @@
 
   &[data-clickable='true'] {
     cursor: pointer;
+  }
+
+  &:focus {
+    outline: 0;
   }
 }
 
@@ -113,6 +119,7 @@
 
 :host[data-type='large'] {
   min-width: 260px;
+  min-height: 260px;
 
   .card-content {
     @include DisplayFont(
@@ -122,8 +129,4 @@
       $addCssVars: true
     );
   }
-}
-
-:host.card-large {
-  min-height: 260px;
 }

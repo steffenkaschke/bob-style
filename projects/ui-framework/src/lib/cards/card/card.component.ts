@@ -30,6 +30,9 @@ export class CardComponent {
   @HostBinding('attr.data-focus-inside') menuIsOpened: boolean;
   @HostBinding('attr.data-type') @Input() type: CardType = CardType.regular;
   @HostBinding('attr.data-clickable') @Input() clickable = false;
+  @HostBinding('attr.tabindex') get tabindex() {
+    return this.clickable ? '0' : '-1';
+  }
 
   @HostListener('click', ['$event'])
   onClick($event) {

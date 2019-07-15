@@ -6,7 +6,6 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardsModule } from '../cards.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -80,7 +79,13 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', values(CardType), CardType.regular),
+        type: select(
+          'type',
+          Object.values(CardType).filter(
+            t => t === CardType.regular || t === CardType.large
+          ),
+          CardType.regular
+        ),
         clickable: boolean('clickable', true),
         cardData: object('card', CardsMockData[1]),
         cardClickHandler: action('Card clicked')
