@@ -18,6 +18,7 @@ import { RichTextEditorModule } from './rte.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BlotType, RTEType } from './rte-core/rte.enum';
 import { SelectGroupOption } from '../lists/list.interface';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -53,11 +54,10 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Rich text editor'" style="background-color: rgb(247,247,247);">
-  <div style="padding: 30px; height: 100%;">
-    <div style="max-width:600px; margin:auto;">
-      ${template}
-    </div>
+  <div style="flex:1; max-width: 600px;">
+    ${template}
   </div>
+  <b-stats></b-stats>
 </b-story-book-layout>
 `;
 
@@ -154,7 +154,8 @@ inputStories.add(
           BrowserAnimationsModule,
           TypographyModule,
           StoryBookLayoutModule,
-          RichTextEditorModule
+          RichTextEditorModule,
+          UtilComponentsModule
         ]
       }
     };
