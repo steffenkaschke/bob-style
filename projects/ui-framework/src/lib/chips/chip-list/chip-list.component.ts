@@ -64,7 +64,6 @@ export class ChipListComponent implements OnChanges {
   @HostListener('keydown', ['$event'])
   onHostKeydown($event: KeyboardEvent) {
     const target = $event.target as HTMLElement;
-
     if (target.nodeName.toUpperCase() === 'B-CHIP') {
       const index = parseInt(target.dataset.index, 10);
       const chip = this.chips[index];
@@ -93,6 +92,7 @@ export class ChipListComponent implements OnChanges {
   }
 
   onChipKeydown(event: KeyboardEvent, chip: Chip, index: number): void {
+    console.log(event);
     this.keyPressed.emit({ event, chip });
 
     if (this.config.focusable) {

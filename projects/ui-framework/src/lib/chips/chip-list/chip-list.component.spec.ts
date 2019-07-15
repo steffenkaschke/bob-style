@@ -4,7 +4,8 @@ import { ChipType, ChipListAlign } from '../chips.enum';
 import { ChipModule } from '../chip/chip.module';
 import {
   elementsFromFixture,
-  simpleChange
+  simpleChange,
+  emitNativeEvent
 } from '../../services/utils/test-helpers';
 import { ChipComponent } from '../chip/chip.component';
 import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
@@ -13,7 +14,7 @@ import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 describe('ChipListComponent', () => {
   let component: ChipListComponent;
   let fixture: ComponentFixture<ChipListComponent>;
-
+  let componentEl: HTMLElement;
   let listElement: HTMLElement;
   let chipsElements: HTMLElement[];
   let chipsComponents: ChipComponent[];
@@ -69,6 +70,7 @@ describe('ChipListComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(ChipListComponent);
         component = fixture.componentInstance;
+        componentEl = fixture.debugElement.nativeElement;
         component.config = {};
         component.chips = chips;
         spyOn(component.clicked, 'emit');
@@ -194,7 +196,8 @@ describe('ChipListComponent', () => {
 
   describe('Key events', () => {
     it('should emit Keypressed event', () => {
-      chipsElements[0].dispatchEvent(new Event('keydown'));
+      emitNativeEvent(chipsElements[0], 'keydown');
+      fixture.detectChanges();
       expect(component.keyPressed.emit).toHaveBeenCalled();
     });
   });
