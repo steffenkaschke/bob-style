@@ -49,6 +49,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   type | CardType | Card theme | primary (optional)
+  alignCenter | boolean | put cards in the center | false
 
 ~~~
 <b-cards [type]="type">
