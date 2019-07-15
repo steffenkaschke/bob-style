@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
-import { CardsLayoutComponent } from './cards-layout.component';
-import { CardsModule } from '../cards.module';
-import { CardType } from '../cards.enum';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {By} from '@angular/platform-browser';
+import {ChangeDetectionStrategy, NO_ERRORS_SCHEMA} from '@angular/core';
+import {CardsLayoutComponent} from './cards-layout.component';
+import {CardsModule} from '../cards.module';
+import {CardType} from '../cards.enum';
 
 describe('CardsLayoutComponent', () => {
   let fixture: ComponentFixture<CardsLayoutComponent>;
@@ -44,6 +44,50 @@ describe('CardsLayoutComponent', () => {
       component.type = CardType.small;
       fixture.detectChanges();
       expect(cardsListElement.classList).toContain('cards-small');
+    });
+  });
+  describe('cards in a row calculation', () => {
+    it('should have 5 cards on 917px container small cards', () => {
+      component.type = CardType.small;
+      fixture.nativeElement.style.width = '917px';
+      component.getCardsInRow$().subscribe((numberOfCards) => {
+        expect(numberOfCards).toEqual(5);
+      });
+    });
+    it('should have 4 cards on 917px container regular cards', () => {
+      component.type = CardType.regular;
+      fixture.nativeElement.style.width = '917px';
+      component.getCardsInRow$().subscribe((numberOfCards) => {
+        expect(numberOfCards).toEqual(4);
+      });
+    });
+    it('should have 4 cards on 727px container small cards', () => {
+      component.type = CardType.small;
+      fixture.nativeElement.style.width = '727px';
+      component.getCardsInRow$().subscribe((numberOfCards) => {
+        expect(numberOfCards).toEqual(4);
+      });
+    });
+    it('should have 3 cards on 727px container regular cards', () => {
+      component.type = CardType.regular;
+      fixture.nativeElement.style.width = '727px';
+      component.getCardsInRow$().subscribe((numberOfCards) => {
+        expect(numberOfCards).toEqual(3);
+      });
+    });
+    it('should have 3 cards on 600px container small cards', () => {
+      component.type = CardType.small;
+      fixture.nativeElement.style.width = '600px';
+      component.getCardsInRow$().subscribe((numberOfCards) => {
+        expect(numberOfCards).toEqual(3);
+      });
+    });
+    it('should have 2 cards on 600px container regular cards', () => {
+      component.type = CardType.regular;
+      fixture.nativeElement.style.width = '600px';
+      component.getCardsInRow$().subscribe((numberOfCards) => {
+        expect(numberOfCards).toEqual(2);
+      });
     });
   });
 });
