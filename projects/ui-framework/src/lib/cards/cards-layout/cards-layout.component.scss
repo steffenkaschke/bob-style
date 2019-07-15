@@ -13,14 +13,49 @@ $grid-gap: 16px;
   grid-gap: $grid-gap;
 
   &.cards-small {
-    grid-template-columns: repeat($fit-strategy, minmax(160px, 1fr));
+    grid-template-columns: repeat($fit-strategy, minmax(var(--small-max-width), 1fr));
   }
-
   &.cards-regular {
-    grid-template-columns: repeat($fit-strategy, minmax(190px, 1fr));
+    grid-template-columns: repeat($fit-strategy, minmax(var(--regular-max-width), 1fr));
   }
 
   &.cards-large {
-    grid-template-columns: repeat($fit-strategy, minmax(260px, 1fr));
+    grid-template-columns: repeat($fit-strategy, minmax(var(--large-max-width), 1fr));
+  }
+  &.align-center {
+    display: flex;
+    margin: 0 -($grid-gap/2);
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    > ::ng-deep *, > * {
+      margin: $grid-gap/2;
+    }
+    &.cards-small {
+      > ::ng-deep *, > * {
+        min-width: var(--small-max-width);
+        max-width: var(--small-max-width);
+        width: 100%;
+      }
+      grid-template-columns: none;
+    }
+
+    &.cards-regular {
+      > ::ng-deep *, > * {
+        min-width: var(--regular-max-width);
+        max-width: var(--regular-max-width);
+        width: 100%;
+      }
+      grid-template-columns: none;
+    }
+
+    &.cards-large {
+      > ::ng-deep *, > * {
+        min-width: var(--large-max-width);
+        max-width: var(--large-max-width);
+        width: 100%;
+      }
+      grid-template-columns: none;
+    }
   }
 }
