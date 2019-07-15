@@ -16,7 +16,7 @@ import {Subscription} from 'rxjs';
 @Component({
   selector: 'b-card-layout-example-1',
   template: `
-      <b-cards [type]="type">
+      <b-cards [type]="type" [align-center]="alignCenter">
           <b-card-add [type]="type"
                       (clicked)="onAddCardClick()"
                       [card]="addCard">
@@ -41,6 +41,7 @@ import {Subscription} from 'rxjs';
 export class CardLayoutExample1Component implements OnInit {
 
   @Input() type: CardType = CardType.regular;
+  @Input() alignCenter = false;
 
   addCard: AddCardData = {
     title: 'Add a new flow',
@@ -81,7 +82,7 @@ export class CardLayoutExample1Component implements OnInit {
 @Component({
   selector: 'b-card-layout-example-2',
   template: `
-      <b-cards [type]="type">
+      <b-cards [type]="type" [align-center]="alignCenter">
           <b-card-employee *ngFor="let card of cards; let i = index"
                            [clickable]="true"
                            (clicked)="onCardClick(card, i)"
@@ -91,7 +92,7 @@ export class CardLayoutExample1Component implements OnInit {
   `,
 })
 export class CardLayoutExample2Component implements OnInit {
-
+  @Input() alignCenter = false;
   @Input() type: CardType = CardType.regular;
 
   cards: CardEmployee[] = [];
@@ -118,7 +119,7 @@ export class CardLayoutExample2Component implements OnInit {
 @Component({
   selector: 'b-card-layout-example-3',
   template: `
-      <b-cards [type]="type">
+      <b-cards [type]="type" [align-center]="alignCenter">
           <b-mini-employee-card *ngFor="let card of cards; let i = index"
                                 [clickable]="true"
                                 [card]="card">
@@ -128,6 +129,7 @@ export class CardLayoutExample2Component implements OnInit {
 })
 export class CardLayoutExample3Component implements OnInit, OnDestroy {
 
+  @Input() alignCenter = false;
   @Input() type: CardType = CardType.small;
 
   cards: MiniEmployeeCard[] = [];

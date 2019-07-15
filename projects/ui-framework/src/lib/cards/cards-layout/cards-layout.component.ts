@@ -19,7 +19,7 @@ const CARD_TYPE_WIDTH = {
   [CardType.large]: 260
 };
 
-const GAP_SIZE = 16;
+export const GAP_SIZE = 16;
 
 @Component({
   selector: 'b-cards',
@@ -41,6 +41,7 @@ export class CardsLayoutComponent implements AfterViewInit, OnDestroy {
   ) {
   }
 
+  @Input('align-center') alignCenter = false;
   @Input() type: CardType = CardType.regular;
   @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<number>();
 
