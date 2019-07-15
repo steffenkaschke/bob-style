@@ -7,7 +7,8 @@ import {
   SimpleChanges,
   OnChanges,
   ViewChildren,
-  QueryList
+  QueryList,
+  HostListener
 } from '@angular/core';
 import { Chip, ChipListConfig, ChipKeydownEvent } from '../chips.interface';
 import { isKey } from '../../services/utils/functional-utils';
@@ -44,6 +45,28 @@ export class ChipListComponent implements OnChanges {
   @HostBinding('attr.data-align')
   get alignChips() {
     return this.config.align || ChipListAlign.left;
+  }
+
+  @HostListener('click', ['$event'])
+  onHostClick($event: MouseEvent) {
+    const target = $event.target as HTMLElement;
+
+    if (target.nodeName.toUpperCase() === 'B-CHIP') {
+      const index = parseInt(target.dataset.index, 10);
+      const chip = this.chips[index];
+      this.onChipClick($event, chip);
+    }
+  }
+
+  @HostListener('keydown', ['$event'])
+  onHostKeydown($event: KeyboardEvent) {
+    const target = $event.target as HTMLElement;
+
+    if (target.nodeName.toUpperCase() === 'B-CHIP') {
+      const index = parseInt(target.dataset.index, 10);
+      const chip = this.chips[index];
+      this.onChipKeydown($event, chip, index);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
