@@ -9,6 +9,7 @@ import {
 import { CardsModule } from '../cards.module';
 import { CardType } from '../cards.enum';
 import { MockComponent } from 'ng-mocks';
+import { simpleChange } from '../../services/utils/test-helpers';
 
 describe('CardsLayoutComponent', () => {
   let fixture: ComponentFixture<CardsLayoutComponent>;
@@ -49,9 +50,9 @@ describe('CardsLayoutComponent', () => {
       );
     });
     it('should change type on type input change', () => {
-      component.type = CardType.large;
-      component.ngAfterViewInit();
+      component.ngOnChanges(simpleChange({ type: CardType.large }));
       fixture.detectChanges();
+
       expect(getCardMaxWidth()).toEqual(CARD_TYPE_WIDTH[CardType.large] + 'px');
     });
   });

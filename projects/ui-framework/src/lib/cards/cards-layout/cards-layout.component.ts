@@ -6,7 +6,9 @@ import {
   Output,
   ElementRef,
   AfterViewInit,
-  OnDestroy
+  OnDestroy,
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
 import { CardType } from '../cards.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
@@ -28,7 +30,8 @@ export const GAP_SIZE = 16;
   styleUrls: ['./cards-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CardsLayoutComponent implements AfterViewInit, OnDestroy {
+export class CardsLayoutComponent
+  implements AfterViewInit, OnDestroy, OnChanges {
   resizeSubscription: Subscription;
 
   private cardsInRow$: BehaviorSubject<number>;
@@ -47,16 +50,27 @@ export class CardsLayoutComponent implements AfterViewInit, OnDestroy {
   >();
 
   ngAfterViewInit(): void {
-    this.domUtils.setCssProps(this.hostRef.nativeElement, {
-      '--card-max-width': CARD_TYPE_WIDTH[this.type] + 'px',
-      '--card-grid-gap': GAP_SIZE + 'px'
-    });
+    this.setCssVars();
+
     this.calcCardsInRow();
     this.listenToResize();
   }
 
   ngOnDestroy(): void {
     this.resizeSubscription.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.type && !changes.type.firstChange) {
+      this.setCssVars();
+    }
+  }
+
+  private setCssVars(): void {
+    this.domUtils.setCssProps(this.hostRef.nativeElement, {
+      '--card-max-width': CARD_TYPE_WIDTH[this.type] + 'px',
+      '--card-grid-gap': GAP_SIZE + 'px'
+    });
   }
 
   listenToResize() {
