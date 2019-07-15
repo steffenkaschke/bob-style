@@ -62,6 +62,7 @@ export class CardsLayoutComponent
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.type && !changes.type.firstChange) {
+      this.type = changes.type.currentValue;
       this.setCssVars();
     }
   }
