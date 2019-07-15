@@ -16,3 +16,22 @@
     {{editorValue}}
   </div>
 </div>
+
+<div style="width: 600px; margin: auto; text-align: center;">
+
+  <div #testDiv
+       [ngClass]="classes"
+       class="test {{'test2'}}"
+       style="width:250px;padding:10px;border:2px solid black;margin:auto;">
+    {{getClasses()}}
+  </div>
+  <p>
+    <input #classInput
+           type="text"
+           [(ngModel)]="classes">
+  </p>
+  <button type="button"
+          (click)="addClasses()">add classes</button>
+  <button type="button"
+          (click)="removeClasses()">remove classes</button>
+</div>
