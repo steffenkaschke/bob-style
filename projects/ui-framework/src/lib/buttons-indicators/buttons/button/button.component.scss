@@ -37,6 +37,9 @@ button {
 
     &:before {
       margin-right: 6px;
+      display: inline-block;
+      vertical-align: middle;
+      pointer-events: none;
     }
   }
 }
