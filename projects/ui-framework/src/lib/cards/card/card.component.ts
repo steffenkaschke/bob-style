@@ -34,7 +34,7 @@ export class CardComponent {
     return this.clickable ? '0' : '-1';
   }
 
-  @HostListener('click.outside-zone', ['$event'])
+  @HostListener('click', ['$event'])
   onClick($event) {
     this.clicked.emit($event);
   }

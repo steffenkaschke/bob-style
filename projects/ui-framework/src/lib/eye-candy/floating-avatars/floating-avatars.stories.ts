@@ -50,7 +50,7 @@ const storyTemplate = `
   ">
     ${ template }
   </div>
-  <b-stats></b-stats>
+
 </b-story-book-layout>
 `;
 

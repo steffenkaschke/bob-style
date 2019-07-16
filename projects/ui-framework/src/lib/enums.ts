@@ -28,6 +28,8 @@ export enum NativeEvents {
   mouseup = 'mouseup',
   mouseover = 'mouseover',
   mousemove = 'mousemove',
+  mouseenter = 'mouseenter',
+  mouseleave = 'mouseleave',
   mouseout = 'mouseout',
   dragstart = 'dragstart',
   drag = 'drag',

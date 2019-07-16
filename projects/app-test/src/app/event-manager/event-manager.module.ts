@@ -5,8 +5,9 @@ import {
   EventEmitter,
   ViewChild,
   ElementRef,
-  HostBinding,
-  HostListener
+  HostListener,
+  ChangeDetectorRef,
+  NgZone
 } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 // tslint:disable-next-line: max-line-length
@@ -14,7 +15,10 @@ import { ComponentRendererModule } from '../../../../ui-framework/src/lib/servic
 import { ButtonsModule } from '../../../../ui-framework/src/lib/buttons-indicators/buttons/buttons.module';
 import { EventManagerPlugins } from '../../../../ui-framework/src/lib/services/utils/eventManager.plugins';
 import { UtilComponentsModule } from '../../../../ui-framework/src/lib/services/util-components/utilComponents.module';
-import { stringify } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
+import {
+  stringify,
+  simpleUID
+} from '../../../../ui-framework/src/lib/services/utils/functional-utils';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -24,51 +28,37 @@ import { FormsModule } from '@angular/forms';
     <button
       *ngIf="outside && !ignoreMove"
       type="button"
-      (click.outside-zone)="onClick($event)"
-      (keydown.outside-zone)="onKeyDown($event)"
-      (focus.outside-zone)="onFocus($event)"
-      (blur.outside-zone)="onBlur($event)"
-      (mouseenter.outside-zone)="onMouseEnter($event)"
-      (mouseleave.outside-zone)="onMouseLeave($event)"
-      (mousemove.outside-zone)="onMouseMove($event)"
+      (click.outside-zone,keydown.outside-zone,focus.outside-zone,blur.outside-zone,mouseenter.outside-zone,mouseleave.outside-zone,mousemove.outside-zone)="
+        emit($event)
+      "
     >
       click
     </button>
+
     <button
       *ngIf="!outside && !ignoreMove"
       type="button"
-      (click)="onClick($event)"
-      (keydown)="onKeyDown($event)"
-      (focus)="onFocus($event)"
-      (blur)="onBlur($event)"
-      (mouseenter)="onMouseEnter($event)"
-      (mouseleave)="onMouseLeave($event)"
-      (mousemove)="onMouseMove($event)"
+      (click,keydown,focus,blur,mouseenter,mouseleave,mousemove)="emit($event)"
     >
       click
     </button>
 
     <button
       *ngIf="outside && ignoreMove"
+      class="outside-ignoreMove"
       type="button"
-      (click.outside-zone)="onClick($event)"
-      (keydown.outside-zone)="onKeyDown($event)"
-      (focus.outside-zone)="onFocus($event)"
-      (blur.outside-zone)="onBlur($event)"
-      (mouseenter.outside-zone)="onMouseEnter($event)"
-      (mouseleave.outside-zone)="onMouseLeave($event)"
+      (click.outside-zone,keydown.outside-zone,focus.outside-zone,blur.outside-zone,mouseenter.outside-zone,mouseleave.outside-zone)="
+        emit($event)
+      "
     >
       click
     </button>
+
     <button
       *ngIf="!outside && ignoreMove"
+      class="not-outside-ignoreMove"
       type="button"
-      (click)="onClick($event)"
-      (keydown)="onKeyDown($event)"
-      (focus)="onFocus($event)"
-      (blur)="onBlur($event)"
-      (mouseenter)="onMouseEnter($event)"
-      (mouseleave)="onMouseLeave($event)"
+      (click,keydown,focus,blur,mouseenter,mouseleave)="emit($event)"
     >
       click
     </button>
@@ -81,16 +71,18 @@ import { FormsModule } from '@angular/forms';
       ><input type="checkbox" [(ngModel)]="ignoreMove" /> ignore
       mousemove</label
     >
+    <span>{{ randID }}</span>
   `,
   styles: [
     'button {display: block; width: 100px; height: 50px; text-transform: uppercase; margin: 0 auto 15px;}',
-
-    'label {display:block;}'
+    'label, span {display:block;}'
   ]
 })
 export class MockButtonComponent {
+  constructor(private cd: ChangeDetectorRef, private zone: NgZone) {}
   outside = true;
   ignoreMove = true;
+  randID = simpleUID();
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
   @Output() keyed: EventEmitter<void> = new EventEmitter<void>();
@@ -100,26 +92,34 @@ export class MockButtonComponent {
   @Output() mouseOut: EventEmitter<void> = new EventEmitter<void>();
   @Output() mouseMove: EventEmitter<void> = new EventEmitter<void>();
 
-  onClick($event) {
-    this.clicked.emit($event);
-  }
-  onKeyDown($event) {
-    this.keyed.emit($event);
-  }
-  onFocus($event) {
-    this.focused.emit($event);
-  }
-  onBlur($event) {
-    this.blurred.emit($event);
-  }
-  onMouseEnter($event) {
-    this.mouseIn.emit($event);
-  }
-  onMouseLeave($event) {
-    this.mouseOut.emit($event);
-  }
-  onMouseMove($event) {
-    this.mouseMove.emit($event);
+  emit($event) {
+    switch ($event.type) {
+      case 'click':
+        this.clicked.emit($event);
+        break;
+      case 'keydown':
+        this.keyed.emit($event);
+        break;
+      case 'focus':
+        this.focused.emit($event);
+        break;
+      case 'blur':
+        this.blurred.emit($event);
+        break;
+      case 'mouseenter':
+        this.mouseIn.emit($event);
+        break;
+      case 'mouseleave':
+        this.mouseOut.emit($event);
+        break;
+      case 'mousemove':
+        this.mouseMove.emit($event);
+        break;
+      default:
+        return false;
+    }
+    this.randID = simpleUID();
+    // this.cd.detectChanges();
   }
 }
 
@@ -178,15 +178,6 @@ export class ClickForwarerComponent1 {
   selector: 'click-forwarder-2',
   template: `
     <b-component-renderer [render]="renderButton"></b-component-renderer>
-    <!-- <click-forwarder-1
-      (clicked)="onClick($event)"
-      (keyed)="onKeyDown($event)"
-      (focused)="onFocus($event)"
-      (blurred)="onBlur($event)"
-      (mouseIn)="onMouseEnter($event)"
-      (mouseOut)="onMouseLeave($event)"
-      (mouseMove)="onMouseMove($event)"
-    ></click-forwarder-1> -->
   `,
   styles: [':host {display: block; margin: 20px auto;}']
 })
@@ -260,6 +251,7 @@ export class ClickForwarerComponent2 {
        align-items: center; margin: 40px auto 0; text-align: center;"
     >
       <click-forwarder-2
+        *ngIf="show"
         (clicked)="onClick($event)"
         (keyed)="onKeyDown($event)"
         (focused)="onFocus($event)"
@@ -269,16 +261,24 @@ export class ClickForwarerComponent2 {
         (mouseMove)="onMouseMove($event)"
       >
       </click-forwarder-2>
+
       <div
         #logger
         style="text-align:left; width: 200px; border: 1px solid black; padding: 15px;"
       ></div>
+      <span>{{ randID }}</span>
+      <label><input type="checkbox" [(ngModel)]="show" /> show component</label>
     </div>
   `,
   styles: [':host {display: block; margin: 20px auto;}']
 })
 export class EventManagerTesterComponent {
+  constructor(private cd: ChangeDetectorRef, private zone: NgZone) {}
+
   @ViewChild('logger', { static: false }) private loggerDiv: ElementRef;
+
+  show = true;
+  randID = simpleUID();
 
   counter = {
     click: 0,
@@ -290,14 +290,19 @@ export class EventManagerTesterComponent {
     mousemove: 0
   };
 
-  @HostListener('click.outside-zone', ['$event'])
-  onHostClick($event) {
-    this.log($event.type, 'host');
-  }
-  // @HostListener('window:keydown.outside-zone', ['$event'])
-  // onHostKeydown($event) {
-  //   this.log($event.type, 'host window', $event.key);
+  // @HostListener(
+  //   'click.outside-zone,mouseenter.outside-zone,mouseleave.outside-zone',
+  //   ['$event']
+  // )
+  // onHostEvent($event) {
+  //   this.log($event.type, 'host');
   // }
+  // @HostListener('window:keydown.outside-zone,window:click.outside-zone', [
+  //   '$event'
+  // ])
+  onWindowEvent($event) {
+    this.log($event.type, 'window', $event.key || $event.clientX);
+  }
 
   onClick($event) {
     this.log($event.type);
@@ -321,6 +326,10 @@ export class EventManagerTesterComponent {
     this.log($event.type);
   }
   log(...event) {
+    // this.zone.runGuarded(() => {
+    this.randID = simpleUID();
+    // this.cd.detectChanges();
+    // });
     ++this.counter[event[0]];
     console.log(event.join(' '), this.counter[event[0]]);
     this.loggerDiv.nativeElement.innerHTML = stringify(this.counter)
