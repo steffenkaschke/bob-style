@@ -17,7 +17,7 @@ import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
         icon ? icon + ' b-icon-' + iconSize + ' b-icon-' + iconColor : ''
       }}"
       [ngClass]="{ disabled: disabled }"
-      (click.outside-zone)="onClick($event)"
+      (click)="onClick($event)"
     >
       {{ text }}
       <ng-content></ng-content>

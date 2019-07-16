@@ -20,3 +20,37 @@ export enum Keys {
   dollar = '$',
   at = '@'
 }
+
+export enum NativeEvents {
+  click = 'click',
+  dblclick = 'dblclick',
+  mousedown = 'mousedown',
+  mouseup = 'mouseup',
+  mouseover = 'mouseover',
+  mousemove = 'mousemove',
+  mouseout = 'mouseout',
+  dragstart = 'dragstart',
+  drag = 'drag',
+  dragenter = 'dragenter',
+  dragleave = 'dragleave',
+  dragover = 'dragover',
+  drop = 'drop',
+  dragend = 'dragend',
+  keydown = 'keydown',
+  keypress = 'keypress',
+  keyup = 'keyup',
+  resize = 'resize',
+  scroll = 'scroll',
+  select = 'select',
+  change = 'change',
+  submit = 'submit',
+  reset = 'reset',
+  focus = 'focus',
+  blur = 'blur',
+  touchstart = 'touchstart',
+  touchend = 'touchend',
+  touchmove = 'touchmove',
+  touchenter = 'touchenter',
+  touchleave = 'touchleave',
+  touchcancel = 'touchcancel'
+}
