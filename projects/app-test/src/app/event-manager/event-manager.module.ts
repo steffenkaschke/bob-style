@@ -76,6 +76,7 @@ import { FormsModule } from '@angular/forms';
       mousemove</label
     >
     <label><input type="checkbox" [(ngModel)]="detect" /> detect changes</label>
+    <label><input type="checkbox" [(ngModel)]="mark" /> mark for check</label>
     <span>{{ randID }}</span>
   `,
   styles: [
@@ -89,6 +90,7 @@ export class MockButtonComponent {
   ignoreMove = true;
   detect = false;
   emitInside = false;
+  mark = false;
   randID = simpleUID();
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
@@ -126,7 +128,9 @@ export class MockButtonComponent {
       default:
         return false;
     }
-
+    if (this.mark) {
+      this.cd.markForCheck();
+    }
     if (this.emitInside) {
       this.zone.run(() => {
         this[emitEvent].emit({
@@ -142,6 +146,9 @@ export class MockButtonComponent {
     this.randID = simpleUID();
     if (this.detect) {
       this.cd.detectChanges();
+    }
+    if (this.mark) {
+      this.cd.markForCheck();
     }
   }
 }
