@@ -40,7 +40,7 @@ export class TextColoredLinksComponent implements OnInit {
 
   onItemClick(infoGraphicItem: InfoGraphicItem): void {
     if (infoGraphicItem.action) {
-      infoGraphicItem.action();
+      infoGraphicItem.action(infoGraphicItem);
     }
   }
 
@@ -56,8 +56,8 @@ export class TextColoredLinksComponent implements OnInit {
     return textSizeClass;
   }
 
-  trackByText(idx, item): string {
-    return item.text;
+  trackByText(idx, item: InfoGraphicItem): string {
+    return item.label;
   }
 
   private randomizeList(list): string {
