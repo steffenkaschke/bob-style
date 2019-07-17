@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit } from '@angular/core';
 import {
   ColorTextItem,
   DEFAULT_COLORS,
@@ -29,9 +29,9 @@ export class TextColoredLinksComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.infoGraphicItems = this.colorTextItems.map((colorTextItem) => {
+    this.infoGraphicItems = this.colorTextItems.map((colorTextItem, idx) => {
       let infoGraphicItem: InfoGraphicItem = {
-        color: this.randomizeList(this.colors),
+        color: this.colors[idx % this.colors.length],
         size: this.getSizeRandomAccordingToLengthOfText(colorTextItem.label),
         font: this.randomizeList(this.fonts)
       };

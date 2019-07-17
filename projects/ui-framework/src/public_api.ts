@@ -22,7 +22,7 @@ export { TypographyModule } from './lib/typography/typography.module';
  */
 
 // text colored links
-export { TextColoredLinksModule } from './lib/text-colored-links/text-colored-links.module';
+export { TextColoredLinksModule } from './lib/eye-candy/text-colored-links/text-colored-links.module';
 
 
 /*

@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { withKnobs, boolean, object } from '@storybook/addon-knobs/angular';
-import { ComponentGroupType } from '../consts';
+import { ComponentGroupType } from '../../consts';
 import {TextColoredLinksModule} from './text-colored-links.module';
 
 const textColoredLinksStories = storiesOf(

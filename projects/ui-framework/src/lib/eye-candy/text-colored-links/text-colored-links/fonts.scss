@@ -1,5 +1,5 @@
 @mixin sentinel {
-  font-family: "Sentinel SSm A", "Sentinel SSm B", "Helvetica" !important;
+  font-family: "Sentinel SSm A", "Sentinel SSm B", "Helvetica", sans-serif !important;
 }
 
 @mixin fontDefaults($style,$weight) {
