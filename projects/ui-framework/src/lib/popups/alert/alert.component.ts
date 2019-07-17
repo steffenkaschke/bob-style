@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {Dictionary} from 'lodash';
 import {IconColor, Icons, IconSize} from '../../icons/icons.enum';
 import {InfoStripIcon} from '../../buttons-indicators/info-strip/info-strip.types';

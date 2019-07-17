@@ -8,7 +8,7 @@ const ALERT_DURATION = 7000;
 
 @Injectable()
 export class AlertService {
-  alertComponentRef: ComponentRef<AlertComponent>;
+  private alertComponentRef: ComponentRef<AlertComponent>;
   private overlayConfig: OverlayConfig;
   public overlayRef: OverlayRef;
   public isOpen: boolean;
@@ -16,7 +16,7 @@ export class AlertService {
 
   constructor(private overlay: Overlay) { }
 
-  public showAlert(config: AlertConfig): void {
+  public showAlert(config: AlertConfig): ComponentRef<AlertComponent> {
     if (!this.isOpen) {
       this.overlayConfig = this.getConfig();
       this.overlayRef = this.overlay.create(this.overlayConfig);
@@ -27,6 +27,7 @@ export class AlertService {
       this.isOpen = true;
       this.alertComponentRef.instance.animationState = 'enter';
       this.timeRef = setTimeout(() => this.alertComponentRef.instance.closeAlert(), ALERT_DURATION);
+      return this.alertComponentRef;
     }
   }
 
@@ -44,7 +45,7 @@ export class AlertService {
   }
 
   public closeAlert(): void {
-    this.alertComponentRef.instance.animationState = 'leave';
+    this.alertComponentRef.instance.closeAlert();
   }
 
   public closeAlertCallback(): void {
