@@ -7,8 +7,6 @@ import {
   InfoGraphicItem,
 } from '../text-colored-links.interface';
 
-
-
 @Component({
   selector: 'b-text-colored-links',
   templateUrl: './text-colored-links.component.html',
