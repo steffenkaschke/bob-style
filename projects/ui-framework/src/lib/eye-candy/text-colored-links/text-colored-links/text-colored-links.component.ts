@@ -1,4 +1,4 @@
-import {Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnChanges } from '@angular/core';
 import {
   ColorTextItem,
   DEFAULT_COLORS,
@@ -12,9 +12,9 @@ import {
   templateUrl: './text-colored-links.component.html',
   styleUrls: ['./text-colored-links.component.scss']
 })
-export class TextColoredLinksComponent implements OnInit {
+export class TextColoredLinksComponent implements OnChanges {
 
-  @Input() colorTextItems: ColorTextItem[];
+  @Input() colorTextItems: ColorTextItem[] = [];
   @Input() colors = DEFAULT_COLORS;
   @Input() isClickable = true;
 
@@ -26,7 +26,7 @@ export class TextColoredLinksComponent implements OnInit {
   constructor() {
   }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.infoGraphicItems = this.colorTextItems.map((colorTextItem, idx) => {
       let infoGraphicItem: InfoGraphicItem = {
         color: this.colors[idx % this.colors.length],
@@ -44,6 +44,11 @@ export class TextColoredLinksComponent implements OnInit {
     }
   }
 
+
+  trackByText(idx, item: InfoGraphicItem): string {
+    return item.label;
+  }
+
   private getSizeRandomAccordingToLengthOfText(text) {
     let textSizeClass: string;
     if (text.length > 25 && text.length < 35) {
@@ -54,10 +59,6 @@ export class TextColoredLinksComponent implements OnInit {
       textSizeClass = this.randomizeList(this.sizes);
     }
     return textSizeClass;
-  }
-
-  trackByText(idx, item: InfoGraphicItem): string {
-    return item.label;
   }
 
   private randomizeList(list): string {

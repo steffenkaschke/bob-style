@@ -8,8 +8,6 @@ describe('TextColoredLinksComponent', () => {
   let component: TextColoredLinksComponent;
   let fixture: ComponentFixture<TextColoredLinksComponent>;
 
-
-
   const infoGraphicItemsMock: InfoGraphicItem[] = [{
     'color': '#e52c51',
     'size': 'size-sm',
@@ -80,8 +78,14 @@ describe('TextColoredLinksComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('onInit', () => {
-    it('should run onInitFunction', () => {
+  describe('ngOnChanges', () => {
+    beforeEach(() => {
+      // component.colorTextItems = COLOR_TEXT_ITEMS;
+      component.ngOnChanges();
+      fixture.detectChanges();
+
+    });
+    it('should run onChanges function', () => {
       expect(component.infoGraphicItems).toBeTruthy();
     });
     it('should infoGraphicItems length be same as Color text items length', () => {
@@ -93,6 +97,8 @@ describe('TextColoredLinksComponent', () => {
   });
   describe('onItemClick', () => {
     beforeEach(() => {
+      component.ngOnChanges();
+      fixture.detectChanges();
       spyOn(infoGraphicItemsMock[0], 'action');
     });
     it('should onItemClick run action if has one', () => {
@@ -103,7 +109,7 @@ describe('TextColoredLinksComponent', () => {
       const mockClicked = infoGraphicItemsMock[1];
       delete mockClicked.action;
       component.onItemClick(mockClicked);
-      expect(infoGraphicItemsMock[0].action).toHaveBeenCalledTimes(0);
+      expect(infoGraphicItemsMock[0].action).not.toHaveBeenCalled();
     });
     it('should infoGraphicItems length be same as Color text items length', () => {
       expect(component.infoGraphicItems.length).toEqual(COLOR_TEXT_ITEMS.length);
