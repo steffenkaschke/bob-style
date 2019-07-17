@@ -68,9 +68,14 @@ import { FormsModule } from '@angular/forms';
       zone</label
     >
     <label
+      ><input type="checkbox" [(ngModel)]="emitInside" /> emit inside
+      zone</label
+    >
+    <label
       ><input type="checkbox" [(ngModel)]="ignoreMove" /> ignore
       mousemove</label
     >
+    <label><input type="checkbox" [(ngModel)]="detect" /> detect changes</label>
     <span>{{ randID }}</span>
   `,
   styles: [
@@ -82,6 +87,8 @@ export class MockButtonComponent {
   constructor(private cd: ChangeDetectorRef, private zone: NgZone) {}
   outside = true;
   ignoreMove = true;
+  detect = false;
+  emitInside = false;
   randID = simpleUID();
 
   @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
@@ -93,33 +100,49 @@ export class MockButtonComponent {
   @Output() mouseMove: EventEmitter<void> = new EventEmitter<void>();
 
   emit($event) {
+    let emitEvent = '';
     switch ($event.type) {
       case 'click':
-        this.clicked.emit($event);
+        emitEvent = 'clicked';
         break;
       case 'keydown':
-        this.keyed.emit($event);
+        emitEvent = 'keyed';
         break;
       case 'focus':
-        this.focused.emit($event);
+        emitEvent = 'focused';
         break;
       case 'blur':
-        this.blurred.emit($event);
+        emitEvent = 'blurred';
         break;
       case 'mouseenter':
-        this.mouseIn.emit($event);
+        emitEvent = 'mouseIn';
         break;
       case 'mouseleave':
-        this.mouseOut.emit($event);
+        emitEvent = 'mouseOut';
         break;
       case 'mousemove':
-        this.mouseMove.emit($event);
+        emitEvent = 'mouseMove';
         break;
       default:
         return false;
     }
+
+    if (this.emitInside) {
+      this.zone.run(() => {
+        this[emitEvent].emit({
+          type: $event.type,
+          key: $event.key,
+          clientX: $event.clientX
+        });
+      });
+    } else {
+      this[emitEvent].emit($event);
+    }
+
     this.randID = simpleUID();
-    // this.cd.detectChanges();
+    if (this.detect) {
+      this.cd.detectChanges();
+    }
   }
 }
 
@@ -177,7 +200,18 @@ export class ClickForwarerComponent1 {
   // tslint:disable-next-line: component-selector
   selector: 'click-forwarder-2',
   template: `
-    <b-component-renderer [render]="renderButton"></b-component-renderer>
+    <!-- <b-component-renderer [render]="renderButton"></b-component-renderer> -->
+
+    <click-forwarder-1
+      (clicked)="onClick($event)"
+      (keyed)="onKeyDown($event)"
+      (focused)="onFocus($event)"
+      (blurred)="onBlur($event)"
+      (mouseIn)="onMouseEnter($event)"
+      (mouseOut)="onMouseLeave($event)"
+      (mouseMove)="onMouseMove($event)"
+    >
+    </click-forwarder-1>
   `,
   styles: [':host {display: block; margin: 20px auto;}']
 })
@@ -265,9 +299,18 @@ export class ClickForwarerComponent2 {
       <div
         #logger
         style="text-align:left; width: 200px; border: 1px solid black; padding: 15px;"
-      ></div>
+      >
+        <span style="white-space:pre;">{{ loggerOutput }}</span>
+      </div>
       <span>{{ randID }}</span>
       <label><input type="checkbox" [(ngModel)]="show" /> show component</label>
+      <label
+        ><input type="checkbox" [(ngModel)]="detect" /> detect changes</label
+      >
+      <label
+        ><input type="checkbox" [(ngModel)]="listenInside" /> listen inside
+        zone</label
+      >
     </div>
   `,
   styles: [':host {display: block; margin: 20px auto;}']
@@ -279,6 +322,8 @@ export class EventManagerTesterComponent {
 
   show = true;
   randID = simpleUID();
+  detect = false;
+  listenInside = false;
 
   counter = {
     click: 0,
@@ -290,52 +335,68 @@ export class EventManagerTesterComponent {
     mousemove: 0
   };
 
-  // @HostListener(
-  //   'click.outside-zone,mouseenter.outside-zone,mouseleave.outside-zone',
-  //   ['$event']
-  // )
-  // onHostEvent($event) {
-  //   this.log($event.type, 'host');
-  // }
-  // @HostListener('window:keydown.outside-zone,window:click.outside-zone', [
-  //   '$event'
-  // ])
+  loggerOutput = '';
+
+  @HostListener(
+    'click.outside-zone,mouseenter.outside-zone,mouseleave.outside-zone',
+    ['$event']
+  )
+  onHostEvent($event) {
+    this.log($event.type, 'host');
+  }
+  @HostListener('window:keydown.outside-zone,window:click.outside-zone', [
+    '$event'
+  ])
   onWindowEvent($event) {
     this.log($event.type, 'window', $event.key || $event.clientX);
   }
 
   onClick($event) {
-    this.log($event.type);
+    this.log($event.type, 'button');
   }
   onKeyDown($event) {
-    this.log($event.type, $event.key);
+    this.log($event.type, 'button', $event.key);
   }
   onFocus($event) {
-    this.log($event.type);
+    this.log($event.type, 'button');
   }
   onBlur($event) {
-    this.log($event.type);
+    this.log($event.type, 'button');
   }
   onMouseEnter($event) {
-    this.log($event.type);
+    this.log($event.type, 'button');
   }
   onMouseLeave($event) {
-    this.log($event.type);
+    this.log($event.type, 'button');
   }
   onMouseMove($event) {
-    this.log($event.type);
+    this.log($event.type, 'button');
   }
   log(...event) {
-    // this.zone.runGuarded(() => {
-    this.randID = simpleUID();
-    // this.cd.detectChanges();
-    // });
     ++this.counter[event[0]];
     console.log(event.join(' '), this.counter[event[0]]);
-    this.loggerDiv.nativeElement.innerHTML = stringify(this.counter)
-      .replace(/"|{|}/g, '')
-      .replace(/:/g, ': ')
-      .replace(/,/g, '<br>');
+
+    if (this.listenInside) {
+      this.zone.run(() => {
+        this.loggerOutput = stringify(this.counter)
+          .replace(/"|{|}/g, '')
+          .replace(/:/g, ': ')
+          .replace(/,/g, '\n');
+
+        this.randID = simpleUID();
+      });
+    } else {
+      this.loggerOutput = stringify(this.counter)
+        .replace(/"|{|}/g, '')
+        .replace(/:/g, ': ')
+        .replace(/,/g, '\n');
+
+      this.randID = simpleUID();
+    }
+
+    if (this.detect) {
+      this.cd.detectChanges();
+    }
   }
 }
 
