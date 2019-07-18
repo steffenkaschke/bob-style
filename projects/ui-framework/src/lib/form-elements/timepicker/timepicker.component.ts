@@ -3,15 +3,14 @@ import {
   forwardRef,
   ViewChild,
   AfterViewInit,
-  ElementRef,
-  Input,
-  NgZone,
-  ChangeDetectorRef
+  ElementRef
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { BaseFormElement } from '../base-form-element';
-import { padWith0 } from '../../services/utils/functional-utils';
+import { padWith0, isString } from '../../services/utils/functional-utils';
+import { timeyOrFail } from '../../services/utils/transformers';
+import { InputEvent } from '../../../../../../dist/ui-framework/bob-style';
+import { InputEventType } from '../form-elements.enum';
 
 @Component({
   selector: 'b-timepicker',
@@ -32,12 +31,18 @@ import { padWith0 } from '../../services/utils/functional-utils';
 })
 export class TimePickerComponent extends BaseFormElement
   implements AfterViewInit {
-  constructor(
-    private DOM: DOMhelpers,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {
+  constructor() {
     super();
+    this.inputTransformers = [
+      timeyOrFail,
+      (value: string) => {
+        this.valueHours = this.splitValue(value, 0);
+        this.valueMinutes = this.splitValue(value, 1);
+        return value;
+      }
+    ];
+
+    this.baseValue = '';
   }
   @ViewChild('inputHours', { static: true }) inputHours: ElementRef;
   @ViewChild('inputMinutes', { static: true }) inputMinutes: ElementRef;
@@ -72,11 +77,12 @@ export class TimePickerComponent extends BaseFormElement
   onHoursBlur(event) {
     let value = this.getValue(event);
 
-    if (value > 24) {
-      value = 24;
+    if (value > 23) {
+      value = 23;
     }
 
-    this.valueHours = this.convertValue(value);
+    this.valueHours = padWith0(value);
+    this.transmit();
   }
 
   onMinutesBlur(event) {
@@ -86,15 +92,25 @@ export class TimePickerComponent extends BaseFormElement
       value = 59;
     }
 
-    this.valueMinutes = this.convertValue(value);
+    this.valueMinutes = padWith0(value);
+    this.transmit();
   }
 
-  private getValue(event) {
+  private transmit() {
+    this.value = this.combineValue(this.valueHours, this.valueMinutes);
+    this.transmitValue(this.value, { eventType: [InputEventType.onChange] });
+  }
+
+  private getValue(event: InputEvent): number {
     const value = parseInt(event.target.value, 10);
     return value !== value || value < 0 ? 0 : value;
   }
 
-  private convertValue(val: number): string {
-    return padWith0(val);
+  private splitValue(value: string, index = 0): string {
+    return isString(value) ? padWith0(value.split(':')[index]) : undefined;
+  }
+
+  private combineValue(valueHours: string, valueMinutes: string): string {
+    return `${valueHours || '00'}:${valueMinutes || '00'}`;
   }
 }

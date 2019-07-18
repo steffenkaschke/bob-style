@@ -14,19 +14,14 @@ const inputStories = storiesOf(
 
 const template = `
 <b-timepicker
-
         [value]="value"
         [label]="label"
-        [placeholder]="placeholder"
-        [hideLabelOnFocus]="hideLabelOnFocus"
         [disabled]="disabled"
         [required]="required"
-
         [hintMessage]="hintMessage"
         [warnMessage]="warnMessage"
         [errorMessage]="errorMessage"
-
-        (inputEvents)="inputEvents($event)">
+        (changed)="onChange($event)">
 </b-timepicker>
 `;
 
@@ -46,19 +41,14 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  InputType | InputTypes | type of input field
-  value | string/number | value of input field
+  value | string | value of input field ('HH:MM')
   label | string | label text (above input)
-  placeholder | string | placeholder text (inside input)
-  hideLabelOnFocus | boolean | if true: there will be no label above input, label text (if present) will be used as placeholder
-  maxChars | number | maximum length
   disabled | boolean | is field disabled
   required | boolean | is field required
   hintMessage | string | hint text
   warnMessage | string | warning text
   errorMessage | string | error text
-  enableBrowserAutoComplete | InputAutoCompleteOptions | shows browser autocomplete options
-  inputEvents | InputEvents | input events emitter
+  (changed) | InputEvent | change emitter
 
   ~~~
   ${template}
@@ -70,12 +60,11 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
-        inputEvents: action('Input event'),
+        onChange: action('Time changed'),
 
-        value: text('value', ''),
+        value: text('value', '11:15'),
         label: text('label', 'Input label'),
-        placeholder: text('placeholder', 'Input placeholder'),
-        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
+
         disabled: boolean('disabled', false),
         required: boolean('required', false),
 

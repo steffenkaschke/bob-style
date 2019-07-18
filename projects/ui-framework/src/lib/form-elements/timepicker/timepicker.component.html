@@ -6,7 +6,8 @@
      [ngClass]="{focused: inputFocused}">
 
   <span class="bfe-input"
-        [attr.id]="id">
+        [attr.id]="id"
+        (click.outside-zone)="inputHours.focus()">
 
     <input #inputHours
            class="bfe-input-hours"
@@ -20,7 +21,7 @@
            (blur)="onHoursBlur($event)"
            (keydown.outside-zone)="filterKeys($event)"
            (input.outside-zone)="onHoursChange($event)"
-           (click.outside-zone)="inputHours.select()">
+           (focus.outside-zone)="inputHours.select()">
 
     <span class="separator">:</span>
 
@@ -36,7 +37,7 @@
            (blur)="onMinutesBlur($event)"
            (keydown.outside-zone)="filterKeys($event)"
            (input.outside-zone)="onMinutesChange($event)"
-           (click.outside-zone)="inputMinutes.select()">
+           (focus.outside-zone)="inputMinutes.select()">
 
   </span>
 </div>
