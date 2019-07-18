@@ -30,11 +30,13 @@ export class TextColoredLinksComponent implements OnChanges {
       const infoGraphicItem: InfoGraphicItem = {
         styles: {
           color: this.colors[idx % this.colors.length],
-          fontSize: this.getSizeRandomAccordingToLengthOfText(colorTextItem.label),
+          fontSize: colorTextItem.label
+            ? this.getSizeRandomAccordingToLengthOfText(colorTextItem.label)
+            : this.sizes[0],
           fontStyle: this.randomizeList(this.fontStyle),
-          fontWeight: `${this.randomizeList(this.fontWeight)}`
+          fontWeight: `${this.randomizeList(this.fontWeight)}`,
         },
-        ...colorTextItem
+        ...colorTextItem,
       };
       return infoGraphicItem;
     });
