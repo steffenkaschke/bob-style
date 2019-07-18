@@ -1,0 +1,43 @@
+<label *ngIf="label && !hideLabelOnFocus"
+       class="bfe-label"
+       [attr.for]="id">{{label}}</label>
+
+<div class="bfe-wrap"
+     [ngClass]="{focused: inputFocused, 'has-prefix': hasPrefix || showPrefix, 'has-suffix': hasSuffix || showSuffix}">
+
+  <div *ngIf="hasPrefix || showPrefix"
+       class="bfe-prefix"
+       #prefix>
+    <ng-content select="[input-prefix]"></ng-content>
+  </div>
+
+  <input #input
+         class="bfe-input"
+         [attr.id]="id"
+         [attr.name]="id"
+         [type]="inputType"
+         [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
+         [value]="value"
+         [autocomplete]="enableBrowserAutoComplete"
+         [disabled]="disabled"
+         [required]="required"
+         [attr.maxlength]="maxChars"
+         (input)="onInputChange($event)"
+         (blur)="onInputBlur();"
+         (focus)="onInputFocus()"
+         (keyup)="onInputKey($event)">
+
+  <div *ngIf="hasSuffix || showSuffix"
+       class="bfe-suffix"
+       #suffix>
+    <ng-content select="[input-suffix]"></ng-content>
+  </div>
+
+</div>
+
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled"></p>
