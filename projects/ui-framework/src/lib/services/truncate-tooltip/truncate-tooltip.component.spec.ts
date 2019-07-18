@@ -1,4 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick
+} from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA, Component, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -145,16 +151,17 @@ describe('TruncateTooltipComponent', () => {
       ).toBeTruthy();
     });
 
-    it('should display tooltip with updated (changed) full text', () => {
+    it('should display tooltip with updated (changed) full text', fakeAsync(() => {
       testComponent.maxLines = 3;
       testComponent.testNum = 2;
       fixture.autoDetectChanges();
       const tooltipElem = document.querySelector(
         '#cdk-describedby-message-container'
       ) as HTMLElement;
+      tick();
       expect(tooltipElem.innerText).toContain('TEST2');
       expect(tooltipElem.innerText).toContain('TEXTEND1');
-    });
+    }));
   });
 
   describe('Structural directive', () => {
