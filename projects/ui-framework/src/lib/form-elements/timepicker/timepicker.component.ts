@@ -2,7 +2,6 @@ import {
   Component,
   forwardRef,
   ViewChild,
-  AfterViewInit,
   ElementRef,
   ChangeDetectorRef
 } from '@angular/core';
@@ -35,8 +34,7 @@ import { Keys } from '../../enums';
     }
   ]
 })
-export class TimePickerComponent extends BaseFormElement
-  implements AfterViewInit {
+export class TimePickerComponent extends BaseFormElement {
   constructor(private cd: ChangeDetectorRef) {
     super();
     this.inputTransformers = [
@@ -57,8 +55,6 @@ export class TimePickerComponent extends BaseFormElement
   valueMinutes: string;
   hoursFocused = false;
   minutesFocused = false;
-
-  ngAfterViewInit(): void {}
 
   onInputKeydown(event) {
     event.stopPropagation();
@@ -97,10 +93,6 @@ export class TimePickerComponent extends BaseFormElement
         }, 0);
       }
     }
-  }
-
-  detectChanges() {
-    this.cd.detectChanges();
   }
 
   onHoursChange(event) {
