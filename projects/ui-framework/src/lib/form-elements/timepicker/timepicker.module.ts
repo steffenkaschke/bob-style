@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InputComponent } from './timepicker.component';
+import { TimePickerComponent } from './timepicker.component';
 import { InputMessageModule } from '../input-message/input-message.module';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 @NgModule({
-  declarations: [InputComponent],
+  declarations: [TimePickerComponent],
   imports: [CommonModule, InputMessageModule],
-  exports: [InputComponent],
-  providers: [DOMhelpers]
+  exports: [TimePickerComponent],
+  providers: [EventManagerPlugins[0]]
 })
-export class InputModule {}
+export class TimePickerModule {}

@@ -1,15 +1,8 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  text,
-  select,
-  boolean,
-  withKnobs,
-  number
-} from '@storybook/addon-knobs/angular';
+import { text, boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { values } from 'lodash';
-import { InputModule } from './timepicker.module';
-import { InputAutoCompleteOptions, InputTypes } from './timepicker.enum';
+import { TimePickerModule } from './timepicker.module';
+
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -19,29 +12,26 @@ const inputStories = storiesOf(
   module
 ).addDecorator(withKnobs);
 
-const inputTypes = values(InputTypes);
-const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
-
 const template = `
-<b-input
-        [inputType]="inputType"
+<b-timepicker
+
         [value]="value"
         [label]="label"
         [placeholder]="placeholder"
         [hideLabelOnFocus]="hideLabelOnFocus"
         [disabled]="disabled"
         [required]="required"
-        [maxChars]="maxChars"
+
         [hintMessage]="hintMessage"
         [warnMessage]="warnMessage"
         [errorMessage]="errorMessage"
-        [enableBrowserAutoComplete]="enableBrowserAutoComplete"
+
         (inputEvents)="inputEvents($event)">
-</b-input>
+</b-timepicker>
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Input'">
+<b-story-book-layout [title]="'Timepicker'">
   <div style="flex:1; max-width: 300px;">
     ${template}
   </div>
@@ -75,33 +65,30 @@ const note = `
   ~~~
 `;
 inputStories.add(
-  'Input',
+  'Timepicker',
   () => {
     return {
       template: storyTemplate,
       props: {
         inputEvents: action('Input event'),
-        inputType: select('inputType', inputTypes, InputTypes.text),
+
         value: text('value', ''),
         label: text('label', 'Input label'),
         placeholder: text('placeholder', 'Input placeholder'),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
-        maxChars: number('maxChars', 30),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
 
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
-        errorMessage: text('errorMessage', ''),
-
-        enableBrowserAutoComplete: select(
-          'enableBrowserAutoComplete',
-          inputAutoCompleteOptions,
-          InputAutoCompleteOptions.off
-        )
+        errorMessage: text('errorMessage', '')
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, InputModule, StoryBookLayoutModule]
+        imports: [
+          BrowserAnimationsModule,
+          TimePickerModule,
+          StoryBookLayoutModule
+        ]
       }
     };
   },
