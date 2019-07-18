@@ -1,5 +1,5 @@
 export const DEFAULT_FONT_STYLES = ['italic', 'normal'];
-export const DEFAULT_FONT_WEIGHTS = [300, 400, 500, 600, 700, 800];
+export const DEFAULT_FONT_WEIGHTS = [400, 600, 800];
 export const DEFAULT_FONT_SIZES = ['30px', '35px', '38px'];
 export const DEFAULT_COLORS = [
   '#e52c51',
