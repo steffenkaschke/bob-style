@@ -3,14 +3,20 @@ import {
   forwardRef,
   ViewChild,
   AfterViewInit,
-  ElementRef
+  ElementRef,
+  ChangeDetectorRef
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
-import { padWith0, isString } from '../../services/utils/functional-utils';
+import {
+  padWith0,
+  isString,
+  isKey
+} from '../../services/utils/functional-utils';
 import { timeyOrFail } from '../../services/utils/transformers';
 import { InputEvent } from '../../../../../../dist/ui-framework/bob-style';
 import { InputEventType } from '../form-elements.enum';
+import { Keys } from '../../enums';
 
 @Component({
   selector: 'b-timepicker',
@@ -31,7 +37,7 @@ import { InputEventType } from '../form-elements.enum';
 })
 export class TimePickerComponent extends BaseFormElement
   implements AfterViewInit {
-  constructor() {
+  constructor(private cd: ChangeDetectorRef) {
     super();
     this.inputTransformers = [
       timeyOrFail,
@@ -49,13 +55,52 @@ export class TimePickerComponent extends BaseFormElement
 
   valueHours: string;
   valueMinutes: string;
+  hoursFocused = false;
+  minutesFocused = false;
 
   ngAfterViewInit(): void {}
 
-  filterKeys(event) {
-    if (/[^0-9]/.test(event.key)) {
+  onInputKeydown(event) {
+    event.stopPropagation();
+    const allowedKeys = [
+      Keys.enter,
+      Keys.escape,
+      Keys.tab,
+      Keys.delete,
+      Keys.backspace,
+      Keys.arrowleft,
+      Keys.arrowright
+    ];
+    if (/[^0-9]/.test(event.key) && !allowedKeys.includes(event.key)) {
       event.preventDefault();
     }
+    if (isKey(event.key, Keys.arrowright)) {
+      if (
+        this.hoursFocused &&
+        (!this.inputHours.nativeElement.value ||
+          this.inputHours.nativeElement.selectionStart >= 2)
+      ) {
+        this.inputMinutes.nativeElement.focus();
+        setTimeout(() => {
+          this.inputMinutes.nativeElement.setSelectionRange(0, 0);
+        }, 0);
+      }
+    }
+    if (isKey(event.key, Keys.arrowleft)) {
+      if (
+        this.minutesFocused &&
+        this.inputMinutes.nativeElement.selectionStart === 0
+      ) {
+        this.inputHours.nativeElement.focus();
+        setTimeout(() => {
+          this.inputHours.nativeElement.setSelectionRange(2, 2);
+        }, 0);
+      }
+    }
+  }
+
+  detectChanges() {
+    this.cd.detectChanges();
   }
 
   onHoursChange(event) {
@@ -74,7 +119,22 @@ export class TimePickerComponent extends BaseFormElement
     }
   }
 
+  onHoursFocus() {
+    this.hoursFocused = true;
+    this.minutesFocused = false;
+    this.inputHours.nativeElement.select();
+    this.cd.detectChanges();
+  }
+
+  onMinutesFocus() {
+    this.minutesFocused = true;
+    this.hoursFocused = false;
+    this.inputMinutes.nativeElement.select();
+    this.cd.detectChanges();
+  }
+
   onHoursBlur(event) {
+    this.hoursFocused = false;
     let value = this.getValue(event);
 
     if (value > 23) {
@@ -86,6 +146,7 @@ export class TimePickerComponent extends BaseFormElement
   }
 
   onMinutesBlur(event) {
+    this.minutesFocused = false;
     let value = this.getValue(event);
 
     if (value > 59) {
@@ -97,8 +158,12 @@ export class TimePickerComponent extends BaseFormElement
   }
 
   private transmit() {
-    this.value = this.combineValue(this.valueHours, this.valueMinutes);
-    this.transmitValue(this.value, { eventType: [InputEventType.onChange] });
+    const newValue = this.combineValue(this.valueHours, this.valueMinutes);
+
+    if (this.value !== newValue) {
+      this.value = newValue;
+      this.transmitValue(this.value, { eventType: [InputEventType.onChange] });
+    }
   }
 
   private getValue(event: InputEvent): number {

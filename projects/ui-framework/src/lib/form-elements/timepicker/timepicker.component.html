@@ -19,9 +19,9 @@
            [disabled]="disabled"
            [required]="required"
            (blur)="onHoursBlur($event)"
-           (keydown.outside-zone)="filterKeys($event)"
+           (keydown.outside-zone)="onInputKeydown($event)"
            (input.outside-zone)="onHoursChange($event)"
-           (focus.outside-zone)="inputHours.select()"
+           (focus.outside-zone)="onHoursFocus()"
            (click.outside-zone)="$event.stopPropagation(); inputHours.select();">
 
     <span class="separator">:</span>
@@ -35,10 +35,10 @@
            [value]="valueMinutes || null"
            [disabled]="disabled"
            [required]="required"
-           (blur)="onMinutesBlur($event)"
-           (keydown.outside-zone)="filterKeys($event)"
+           (blur)="onMinutesBlur($event);"
+           (keydown.outside-zone)="onInputKeydown($event)"
            (input.outside-zone)="onMinutesChange($event)"
-           (focus.outside-zone)="inputMinutes.select()"
+           (focus.outside-zone)="onMinutesFocus();"
            (click.outside-zone)="$event.stopPropagation(); inputMinutes.select();">
 
   </span>
