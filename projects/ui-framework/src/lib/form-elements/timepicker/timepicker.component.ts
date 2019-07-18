@@ -13,7 +13,6 @@ import {
   isKey
 } from '../../services/utils/functional-utils';
 import { timeyOrFail } from '../../services/utils/transformers';
-import { InputEvent } from '../../../../../../dist/ui-framework/bob-style';
 import { InputEventType } from '../form-elements.enum';
 import { Keys } from '../../enums';
 
@@ -158,7 +157,7 @@ export class TimePickerComponent extends BaseFormElement {
     }
   }
 
-  private getValue(event: InputEvent): number {
+  private getValue(event): number {
     const value = parseInt(event.target.value, 10);
     return value !== value || value < 0 ? 0 : value;
   }
