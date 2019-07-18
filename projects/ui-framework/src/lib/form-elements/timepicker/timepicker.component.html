@@ -21,7 +21,8 @@
            (blur)="onHoursBlur($event)"
            (keydown.outside-zone)="filterKeys($event)"
            (input.outside-zone)="onHoursChange($event)"
-           (focus.outside-zone)="inputHours.select()">
+           (focus.outside-zone)="inputHours.select()"
+           (click.outside-zone)="$event.stopPropagation(); inputHours.select();">
 
     <span class="separator">:</span>
 
@@ -37,7 +38,8 @@
            (blur)="onMinutesBlur($event)"
            (keydown.outside-zone)="filterKeys($event)"
            (input.outside-zone)="onMinutesChange($event)"
-           (focus.outside-zone)="inputMinutes.select()">
+           (focus.outside-zone)="inputMinutes.select()"
+           (click.outside-zone)="$event.stopPropagation(); inputMinutes.select();">
 
   </span>
 </div>
