@@ -258,6 +258,10 @@ export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { TabsComponent } from './lib/navigation/tabs/tabs.component';
 export { Tab } from './lib/navigation/tabs/tabs.interface';
 export { TabsType } from './lib/navigation/tabs/tabs.enum';
+// Single list menu
+export { SingleListMenuModule } from './lib/navigation/single-list-menu/single-list-menu.module';
+export { SingleListMenuComponent } from './lib/navigation/single-list-menu/single-list-menu.component';
+export { SingleListMenuItem } from './lib/navigation/single-list-menu/single-list-menu.interface';
 
 // Breadcrumbs Module
 export {
