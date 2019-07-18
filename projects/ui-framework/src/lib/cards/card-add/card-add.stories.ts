@@ -1,13 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  array,
-  boolean,
-  number,
-  object,
-  select,
-  text,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { object, select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
@@ -29,9 +21,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Add new Card'">
-  <div style="display: flex; width:280px; margin: 50px auto; justify-content: center;">
     ${template}
-  </div>
 </b-story-book-layout>
 `;
 
@@ -73,7 +63,13 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', values(CardType), CardType.regular),
+        type: select(
+          'type',
+          Object.values(CardType).filter(
+            t => t === CardType.regular || t === CardType.large
+          ),
+          CardType.regular
+        ),
         addCard: object('addCard', AddCardMockData),
         onClick: action('Card clicked')
       },

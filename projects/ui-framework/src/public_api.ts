@@ -17,6 +17,13 @@ export { Keys } from './lib/enums';
 // Typography Module
 export { TypographyModule } from './lib/typography/typography.module';
 
+/*
+ * text links
+ */
+
+// text colored links
+export { TextColoredLinksModule } from './lib/eye-candy/text-colored-links/text-colored-links.module';
+
 
 /*
  * Buttons & Indicators
@@ -385,6 +392,11 @@ export { TruncateTooltipModule } from './lib/services/truncate-tooltip/truncate-
 export { TruncateTooltipComponent } from './lib/services/truncate-tooltip/truncate-tooltip.component';
 export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/truncate-tooltip.directive';
 export { TruncateTooltipType, TruncateTooltipPosition } from './lib/services/truncate-tooltip/truncate-tooltip.enum';
+// RxJs operators
+export { outsideZone } from './lib/services/utils/rxjs.operators';
+// Eye Candy
+export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
+export { FloatingAvatarsComponent } from './lib/eye-candy/floating-avatars/floating-avatars.component';
 
 
 /*
