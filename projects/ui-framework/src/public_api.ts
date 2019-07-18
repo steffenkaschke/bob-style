@@ -18,14 +18,6 @@ export { Keys } from './lib/enums';
 export { TypographyModule } from './lib/typography/typography.module';
 
 /*
- * text links
- */
-
-// text colored links
-export { TextColoredLinksModule } from './lib/eye-candy/text-colored-links/text-colored-links.module';
-
-
-/*
  * Buttons & Indicators
  */
 
@@ -397,7 +389,11 @@ export { outsideZone } from './lib/services/utils/rxjs.operators';
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
 export { FloatingAvatarsComponent } from './lib/eye-candy/floating-avatars/floating-avatars.component';
-
+// text colored links
+export { TextColoredLinksModule } from './lib/eye-candy/text-colored-links/text-colored-links.module';
+export { TextColoredLinksComponent } from
+    './lib/eye-candy/text-colored-links/text-colored-links/text-colored-links.component';
+export { ColorTextItem } from './lib/eye-candy/text-colored-links/text-colored-links.interface';
 
 /*
 * Animation

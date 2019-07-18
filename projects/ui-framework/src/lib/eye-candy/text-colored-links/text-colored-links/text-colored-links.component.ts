@@ -1,10 +1,8 @@
 import {Component, Input, OnChanges } from '@angular/core';
 import {
   ColorTextItem,
-  DEFAULT_COLORS,
-  DEFAULT_FONTS,
-  DEFAULT_SIZES,
   InfoGraphicItem,
+  DEFAULT_COLORS, DEFAULT_FONT_SIZES, DEFAULT_FONT_STYLES, DEFAULT_FONT_WEIGHTS,
 } from '../text-colored-links.interface';
 
 @Component({
@@ -18,8 +16,9 @@ export class TextColoredLinksComponent implements OnChanges {
   @Input() colors = DEFAULT_COLORS;
   @Input() isClickable = true;
 
-  sizes = DEFAULT_SIZES;
-  fonts = DEFAULT_FONTS;
+  sizes = DEFAULT_FONT_SIZES;
+  fontWeight = DEFAULT_FONT_WEIGHTS;
+  fontStyle = DEFAULT_FONT_STYLES;
 
   infoGraphicItems: InfoGraphicItem[];
 
@@ -27,13 +26,16 @@ export class TextColoredLinksComponent implements OnChanges {
   }
 
   ngOnChanges(): void {
-    this.infoGraphicItems = this.colorTextItems.map((colorTextItem, idx) => {
-      let infoGraphicItem: InfoGraphicItem = {
-        color: this.colors[idx % this.colors.length],
-        size: this.getSizeRandomAccordingToLengthOfText(colorTextItem.label),
-        font: this.randomizeList(this.fonts)
+    this.infoGraphicItems = this.colorTextItems.map((colorTextItem: ColorTextItem, idx) => {
+      const infoGraphicItem: InfoGraphicItem = {
+        styles: {
+          color: this.colors[idx % this.colors.length],
+          fontSize: this.getSizeRandomAccordingToLengthOfText(colorTextItem.label),
+          fontStyle: this.randomizeList(this.fontStyle),
+          fontWeight: `${this.randomizeList(this.fontWeight)}`
+        },
+        ...colorTextItem
       };
-      infoGraphicItem = {...infoGraphicItem, ...colorTextItem};
       return infoGraphicItem;
     });
   }
@@ -43,7 +45,6 @@ export class TextColoredLinksComponent implements OnChanges {
       infoGraphicItem.action(infoGraphicItem);
     }
   }
-
 
   trackByText(idx, item: InfoGraphicItem): string {
     return item.label;

@@ -8,56 +8,88 @@ describe('TextColoredLinksComponent', () => {
   let component: TextColoredLinksComponent;
   let fixture: ComponentFixture<TextColoredLinksComponent>;
 
-  const infoGraphicItemsMock: InfoGraphicItem[] = [{
-    'color': '#e52c51',
-    'size': 'size-sm',
-    'font': 'sentinel-medium-italic',
-    'label': '45% of our people are female'
+  const infoGraphicItemsMock: InfoGraphicItem[] = [
+  {
+    styles: {
+      color: '#e52c51',
+      fontSize: '30px',
+      fontStyle: 'italic',
+      fontWeight: '800'
+    },
+    label: '45% of our people are female'
   }, {
-    'color': '#8f233d',
-    'size': 'size-lg',
-    'font': 'sentinel-regular-italic',
-    'label': '55% are male'
+    styles: {
+      color: '#8f233d',
+      fontSize: '38px',
+      fontStyle: 'italic',
+      fontWeight: '800'
+    },
+    label: '55% are male'
   }, {
-    'color': '#f38161',
-    'size': 'size-lg',
-    'font': 'sentinel-regular',
-    'label': '24% are parents'
+    styles: {
+      color: '#f38161',
+      fontSize: '38px',
+      fontStyle: 'italic',
+      fontWeight: '700'
+    },
+    label: '24% are parents'
   }, {
-    'color': '#f57738',
-    'size': 'size-md',
-    'font': 'sentinel-bold',
-    'label': '21% are in London'
+    styles: {
+      color: '#f57738',
+      fontSize: '35px',
+      fontStyle: 'italic',
+      fontWeight: '700'
+    },
+    label: '21% are in London'
   }, {
-    'color': '#535353',
-    'size': 'size-lg',
-    'font': 'sentinel-light',
-    'label': '26% play football'
+    styles: {
+      color: '#535353',
+      fontSize: '35px',
+      fontStyle: 'normal',
+      fontWeight: '400'
+    },
+    label: '26% play football'
   }, {
-    'color': '#9d9d9d',
-    'size': 'size-lg',
-    'font': 'sentinel-bold',
-    'label': '24% like film'
+    styles: {
+      color: '#9d9d9d',
+      fontSize: '35px',
+      fontStyle: 'normal',
+      fontWeight: '300'
+    },
+    label: '24% like film'
   }, {
-    'color': '#e52c51',
-    'size': 'size-lg',
-    'font': 'sentinel-bold-italic',
-    'label': '21% like cycling'
+    styles: {
+      color: '#e52c51',
+      fontSize: '38px',
+      fontStyle: 'italic',
+      fontWeight: '500'
+    },
+    label: '21% like cycling'
   }, {
-    'color': '#8f233d',
-    'size': 'size-md',
-    'font': 'sentinel-regular',
-    'label': '19% practice yoga'
+    styles: {
+      color: '#8f233d',
+      fontSize: '30px',
+      fontStyle: 'italic',
+      fontWeight: '500'
+    },
+    label: '19% practice yoga'
   }, {
-    'color': '#f38161',
-    'size': 'size-lg',
-    'font': 'sentinel-bold',
-    'label': '17% like cooking'
-  }, {'color': '#f57738',
-    'size': 'size-md',
-    'font': 'sentinel-regular-italic',
-    'label': '17% like pilates'}
-  ].map((item) => {
+    styles: {
+      color: '#f38161',
+      fontSize: '35px',
+      fontStyle: 'normal',
+      fontWeight: '700'
+    },
+    label: '17% like cooking'
+  }, {
+    styles: {
+      color: '#f57738',
+      fontSize: '30px',
+      fontStyle: 'italic',
+      fontWeight: '700'
+    },
+    label: '17% like pilates'
+  }].map((item) => {
     (item as InfoGraphicItem).action = actionMock;
     return item;
   });
