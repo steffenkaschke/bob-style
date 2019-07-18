@@ -1,4 +1,4 @@
-import { Component, NgModule, Input, OnDestroy } from '@angular/core';
+import { Component, NgModule, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlertService } from './alert-service/alert.service';
 import { AlertConfig } from './alert.interface';
@@ -16,7 +16,7 @@ import {
   `,
   providers: []
 })
-export class AlertExampleComponent implements OnDestroy {
+export class AlertExampleComponent {
   @Input() public alertType: AlertType;
   @Input() public text: string;
   @Input() public title: string;
@@ -30,10 +30,6 @@ export class AlertExampleComponent implements OnDestroy {
       text: this.text
     };
     this.alertService.showAlert(alertConfig);
-  }
-
-  ngOnDestroy(): void {
-    this.alertService.closeAlert();
   }
 }
 
