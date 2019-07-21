@@ -3,7 +3,8 @@ import {
   ComponentFixture,
   TestBed,
   fakeAsync,
-  tick
+  tick,
+  flush
 } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA, Component, Input } from '@angular/core';
@@ -125,12 +126,15 @@ describe('TruncateTooltipComponent', () => {
   }));
 
   describe('Text truncation (1 line)', () => {
-    it('should display a single truncated line of text', () => {
+    it('should display a single truncated line of text', fakeAsync(() => {
       const textContainerStyle = getComputedStyle(bttComp1textContainer);
+      tick();
+      fixture.detectChanges();
       expect(
         parseInt(textContainerStyle.height, 10) <= 20 * 1.5 * 1
       ).toBeTruthy();
-    });
+      flush();
+    }));
     it('should display tooltip with full text', () => {
       const tooltipElem = document.querySelector(
         '#cdk-describedby-message-container'
@@ -153,7 +157,6 @@ describe('TruncateTooltipComponent', () => {
 
     it('should display tooltip with updated (changed) full text', fakeAsync(() => {
       testComponent.maxLines = 3;
-      tick();
       testComponent.testNum = 2;
       tick();
       fixture.detectChanges();
@@ -163,6 +166,7 @@ describe('TruncateTooltipComponent', () => {
       tick();
       expect(tooltipElem.innerText).toContain('TEST2');
       expect(tooltipElem.innerText).toContain('TEXTEND1');
+      flush();
     }));
   });
 
@@ -175,6 +179,7 @@ describe('TruncateTooltipComponent', () => {
       expect(
         parseInt(textContainerStyle.height, 10) <= 20 * 1.5 * 1
       ).toBeTruthy();
+      flush();
     }));
 
     it('should also update on maxLines or text changes', fakeAsync(() => {
@@ -192,6 +197,7 @@ describe('TruncateTooltipComponent', () => {
       ).toBeTruthy();
       expect(tooltipElem.innerText).toContain('TEST4');
       expect(tooltipElem.innerText).toContain('TEXTEND2');
+      flush();
     }));
   });
 });

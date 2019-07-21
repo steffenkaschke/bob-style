@@ -113,12 +113,16 @@ export class TruncateTooltipComponent
           ) {
             this.tooltipText = this.textContainer.nativeElement.textContent.trim();
             this.checkTooltipNecessity();
-            this.cd.detectChanges();
+            if (!this.cd['destroyed']) {
+              this.cd.detectChanges();
+            }
           }
 
           if (this.initialized && this.maxLines !== this.maxLinesCache) {
             this.setMaxLines(this.maxLines);
-            this.cd.detectChanges();
+            if (!this.cd['destroyed']) {
+              this.cd.detectChanges();
+            }
           }
         }, 0);
       });
