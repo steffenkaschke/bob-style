@@ -9,6 +9,7 @@ describe('ListChange', () => {
     optionsMock = [
       {
         groupName: 'Basic Info',
+        key: 1,
         options: [
           { value: 'Basic Info 1', id: 1, selected: false, },
           { value: 'Basic Info 2', id: 2, selected: false, },
@@ -16,6 +17,7 @@ describe('ListChange', () => {
       },
       {
         groupName: 'Personal',
+        key: 2,
         options: [
           { value: 'Personal 1', id: 11, selected: false, },
           { value: 'Personal 2', id: 12, selected: false, },
@@ -54,9 +56,9 @@ describe('ListChange', () => {
       optionsMock[1].options[0].selected = true;
       listChange = new ListChange(optionsMock);
       expect(listChange.getSelected()).toEqual([{
-        id: 1, groupName: 'Basic Info',
+        id: 1, groupName: 'Basic Info', groupKey: 1
       }, {
-        id: 11, groupName: 'Personal',
+        id: 11, groupName: 'Personal', groupKey: 2
       }]);
     });
   });

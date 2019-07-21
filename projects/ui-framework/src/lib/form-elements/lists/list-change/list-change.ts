@@ -1,5 +1,5 @@
 import { chain, concat, map } from 'lodash';
-import { SelectGroupOption } from '../list.interface';
+import { GroupOption, SelectGroupOption } from '../list.interface';
 
 export class ListChange {
   private readonly selectGroupOptions: SelectGroupOption[];
@@ -22,18 +22,22 @@ export class ListChange {
       .value();
   }
 
-  getSelected(): { id: number | string; groupName: string }[] {
+  getSelected(): GroupOption[] {
     return chain(this.selectGroupOptions)
       .reduce(
         (selected, group) =>
           concat(
             selected,
-            map(group.options, option => ({ option,  groupName: group.groupName }))
+            map(group.options, option => ({ option,  groupName: group.groupName, key: group.key }))
           ),
         [],
       )
       .filter(groupOption => groupOption.option.selected)
-      .map(groupOption => ({ id: groupOption.option.id, groupName: groupOption.groupName }))
+      .map(groupOption => ({
+        id: groupOption.option.id,
+        groupName: groupOption.groupName,
+        groupKey: groupOption.key
+      }))
       .value();
   }
 }

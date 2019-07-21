@@ -18,7 +18,7 @@ export interface ListOption {
 
 export interface SelectGroupOption {
   groupName: string;
-  key?: string;
+  key?: string | number;
   options: SelectOption[];
 }
 
@@ -39,4 +39,10 @@ export interface ListFooterActions {
   clear?: boolean;
   cancel?: boolean;
   apply?: boolean;
+}
+
+export interface GroupOption {
+  id: number | string;
+  groupName: string;
+  groupKey?: string | number;
 }
