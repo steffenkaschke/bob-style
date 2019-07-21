@@ -40,6 +40,9 @@ export {
   BackButtonComponent
 } from './lib/buttons-indicators/buttons/back-button/back-button.component';
 export {
+  ChevronButtonComponent
+} from './lib/buttons-indicators/buttons/chevron-button/chevron-button.component';
+export {
   TextButtonComponent
 } from './lib/buttons-indicators/buttons/text-button/text-button.component';
 export {
@@ -289,6 +292,7 @@ export { ActionBarComponent } from './lib/navigation/action-bar/action-bar.compo
 // Panel Module
 export { PanelModule } from './lib/popups/panel/panel.module';
 export { PanelComponent } from './lib/popups/panel/panel.component';
+export { PanelSize, PanelDefaultPosVer } from './lib/popups/panel/panel.enum';
 // Dialog Module
 export { DialogModule } from './lib/popups/dialog/dialog.module';
 export { DialogComponent } from './lib/popups/dialog/dialog.component';
