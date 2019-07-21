@@ -1,10 +1,10 @@
 <ng-container *ngIf="!isMobile">
 
   <div class="steps">
-    <a *ngFor="let step of breadcrumbs; let i = index"
-       class="step"
-       [ngClass]="{ disabled: step.disabled }"
-       (click)="onStepClick($event, i)">
+    <span *ngFor="let step of breadcrumbs; let i = index"
+          class="step"
+          [ngClass]="{ disabled: step.disabled }"
+          (click)="onStepClick(i)">
 
       <span class="index"
             [matTooltip]="i !== activeIndex  ? step.title : null"
@@ -22,8 +22,7 @@
               [color]="iconColor.normal"
               [size]="iconSize.medium">
       </b-icon>
-
-    </a>
+    </span>
   </div>
 
   <div class="buttons">
@@ -52,7 +51,7 @@
           [ngClass]="{ active: i == activeIndex }"></span>
   </div>
 
-  <div class="buttons">
+  <div class="buttons buttons-mobile">
     <b-text-button *ngIf="buttons?.backBtn?.isVisible"
                    (clicked)="onPrevClick()"
                    [text]="buttons?.backBtn?.label">

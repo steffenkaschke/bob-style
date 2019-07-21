@@ -1,5 +1,6 @@
 @import '../../style/shapes';
 @import '../../style/variables';
+@import '../../style/mixins';
 
 :host {
   padding: 15px 0;
@@ -64,20 +65,26 @@ b-text-button {
   margin-left: 16px;
 }
 
+// Mobile
+
 .steps-mobile {
   .step {
+    @include size(6px);
     background-color: $grey-500;
-    width: 8px;
-    height: 8px;
     margin-right: 8px;
     display: inline-block;
     border-radius: 100%;
 
     &.active {
       background-color: var(--primary-500);
+      @include size(8px);
     }
     &:last-child {
       margin-right: 0;
     }
   }
+}
+
+b-text-button {
+  text-transform: uppercase;
 }

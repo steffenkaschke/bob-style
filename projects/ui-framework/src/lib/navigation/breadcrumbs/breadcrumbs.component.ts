@@ -1,10 +1,25 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  HostBinding
+} from '@angular/core';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
-import { ButtonSize, ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import {
+  ButtonSize,
+  ButtonType
+} from '../../buttons-indicators/buttons/buttons.enum';
 import { has } from 'lodash';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { MobileService } from '../../services/utils/mobile.service';
 import { LinkColor } from '../../buttons-indicators/link/link.enum';
+import { BreadcrumbsType } from './breadcrumbs.enum';
+import { Subscription } from 'rxjs';
+import { UtilsService } from '../../services/utils/utils.service';
 
 @Component({
   selector: 'b-breadcrumbs',
@@ -12,6 +27,9 @@ import { LinkColor } from '../../buttons-indicators/link/link.enum';
   styleUrls: ['./breadcrumbs.component.scss']
 })
 export class BreadcrumbsComponent implements OnInit, OnChanges {
+  @HostBinding('attr.type')
+  @Input()
+  type: BreadcrumbsType = BreadcrumbsType.primary;
 
   @Input() breadcrumbs: Breadcrumb[];
   @Input() buttons: BreadcrumbNavButtons;
@@ -29,14 +47,19 @@ export class BreadcrumbsComponent implements OnInit, OnChanges {
   readonly iconColor = IconColor;
   readonly iconSize = IconSize;
   readonly linkColor = LinkColor;
+  private resizeEventSubscriber: Subscription;
 
   constructor(
     private mobileService: MobileService,
-  ) {
-  }
+    private utilsService: UtilsService
+  ) {}
 
   ngOnInit(): void {
-    this.isMobile = this.mobileService.isMobileBrowser();
+    this.isMobile = this.mobileService.isMobileBreakpoint();
+
+    this.resizeEventSubscriber = this.utilsService
+      .getResizeEvent()
+      .subscribe(() => {});
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -45,7 +68,7 @@ export class BreadcrumbsComponent implements OnInit, OnChanges {
     }
   }
 
-  onStepClick($event, stepIndex): void {
+  onStepClick(stepIndex): void {
     this.stepClick.emit(stepIndex);
   }
 
