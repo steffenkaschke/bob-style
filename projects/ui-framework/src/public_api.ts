@@ -396,6 +396,8 @@ export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/trunca
 export { TruncateTooltipType, TruncateTooltipPosition } from './lib/services/truncate-tooltip/truncate-tooltip.enum';
 // RxJs operators
 export { outsideZone } from './lib/services/utils/rxjs.operators';
+// Event Manager Plugins
+export { EventManagerPlugins } from './lib/services/utils/eventManager.plugins';
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
 export { FloatingAvatarsComponent } from './lib/eye-candy/floating-avatars/floating-avatars.component';
