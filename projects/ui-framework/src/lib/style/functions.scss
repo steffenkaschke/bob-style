@@ -46,6 +46,6 @@
   @return $color;
 }
 
-@function base8(num: 0) {
-  @return round(num/8) * 8px;
+@function base8($num: 0) {
+  @return round($num/8) * 8px;
 }
