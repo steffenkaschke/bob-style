@@ -46,7 +46,7 @@
   @return $color;
 }
 
-@function 8x (times: 1) {
+@function times8(times: 1) {
   @return 8px * times;
 }
 
