@@ -1,18 +1,82 @@
-/* tslint:disable:max-line-length */
 import { Injectable } from '@angular/core';
 import { mobileBreakpoint } from '../../consts';
+<<<<<<< HEAD
+=======
+import { Observable } from 'rxjs';
+import { UtilsService } from './utils.service';
+import {
+  shareReplay,
+  map,
+  startWith,
+  distinctUntilChanged
+} from 'rxjs/operators';
+import { WindowRef } from './window-ref.service';
+import { isEqual } from 'lodash';
+
+export enum WidthMode {
+  min = 'min',
+  max = 'max'
+}
+
+export interface MediaEvent {
+  matchMobile: boolean;
+  matchDesktop: boolean;
+  isTouchDevice: boolean;
+  isMobileBrowser: boolean;
+}
+
+class DocumentTouch {}
+>>>>>>> origin/master
 
 @Injectable({
   providedIn: 'root'
 })
 export class MobileService {
+<<<<<<< HEAD
   constructor() {}
 
   public isMobileBreakpoint() {
     return window.matchMedia(`(max-width: ${mobileBreakpoint}px)`).matches;
+=======
+  mediaEvent$: Observable<MediaEvent>;
+  isMobBrowser: boolean;
+  isTouchDevice: boolean;
+
+  constructor(
+    private windowRef: WindowRef,
+    private utilsService: UtilsService
+  ) {
+    this.isMobBrowser = this.checkForMobileBrowser();
+    this.isTouchDevice = this.checkForTouchDevice();
+    this.mediaEvent$ = this.utilsService.getResizeEvent().pipe(
+      startWith(this.getMediaData()),
+      map((e: Event) => this.getMediaData()),
+      distinctUntilChanged(isEqual),
+      shareReplay()
+    );
   }
 
-  public isMobileBrowser() {
+  public matchMedia(query: string): boolean {
+    return this.windowRef.nativeWindow.matchMedia(query).matches;
+>>>>>>> origin/master
+  }
+
+  public matchBreakpoint(
+    point: number = mobileBreakpoint,
+    mode: WidthMode = WidthMode.max
+  ) {
+    return this.matchMedia(`(${mode}-width: ${point}px)`);
+  }
+
+  public getMediaEvent(): Observable<MediaEvent> {
+    return this.mediaEvent$;
+  }
+
+  public isMobileBrowser(): boolean {
+    return this.isMobBrowser;
+  }
+
+  private checkForMobileBrowser(): boolean {
     // @ts-ignore
     const a = navigator.userAgent || navigator.vendor || window.opera;
     return (
@@ -23,5 +87,33 @@ export class MobileService {
         a.substr(0, 4)
       )
     );
+<<<<<<< HEAD
+=======
+  }
+
+  private checkForTouchDevice(): boolean {
+    if (
+      this.matchMedia('(any-pointer: coarse)') ||
+      'ontouchstart' in this.windowRef.nativeWindow ||
+      (this.windowRef.nativeWindow.DocumentTouch &&
+        document instanceof DocumentTouch)
+    ) {
+      return true;
+    }
+    const prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
+    const query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join(
+      ''
+    );
+    return this.matchMedia(query);
+  }
+
+  private getMediaData(): MediaEvent {
+    return {
+      matchMobile: this.matchBreakpoint(mobileBreakpoint, WidthMode.max),
+      matchDesktop: this.matchBreakpoint(mobileBreakpoint + 1, WidthMode.min),
+      isTouchDevice: this.isTouchDevice,
+      isMobileBrowser: this.isMobBrowser
+    };
+>>>>>>> origin/master
   }
 }
