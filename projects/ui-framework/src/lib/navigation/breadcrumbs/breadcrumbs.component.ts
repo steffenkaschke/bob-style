@@ -6,7 +6,8 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  HostBinding
+  HostBinding,
+  OnDestroy
 } from '@angular/core';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import {
@@ -26,7 +27,7 @@ import { UtilsService } from '../../services/utils/utils.service';
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.scss']
 })
-export class BreadcrumbsComponent implements OnInit, OnChanges {
+export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   @HostBinding('attr.type')
   @Input()
   type: BreadcrumbsType = BreadcrumbsType.primary;
@@ -47,19 +48,21 @@ export class BreadcrumbsComponent implements OnInit, OnChanges {
   readonly iconColor = IconColor;
   readonly iconSize = IconSize;
   readonly linkColor = LinkColor;
-  private resizeEventSubscriber: Subscription;
+  readonly breadcrumbsType = BreadcrumbsType;
+  private mediaEventSubscriber: Subscription;
 
-  constructor(
-    private mobileService: MobileService,
-    private utilsService: UtilsService
-  ) {}
+  constructor(private mobileService: MobileService) {}
 
   ngOnInit(): void {
-    this.isMobile = this.mobileService.isMobileBreakpoint();
+    this.mediaEventSubscriber = this.mobileService
+      .getMediaEvent()
+      .subscribe(media => {
+        this.isMobile = media.matchMobile;
+      });
+  }
 
-    this.resizeEventSubscriber = this.utilsService
-      .getResizeEvent()
-      .subscribe(() => {});
+  ngOnDestroy(): void {
+    this.mediaEventSubscriber.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
