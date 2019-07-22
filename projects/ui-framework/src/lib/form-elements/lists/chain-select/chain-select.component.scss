@@ -1,0 +1,62 @@
+@import '../../../style/colors';
+
+:host {
+  .chain-link-container {
+    .select-component-container {
+      margin-left: 21px;
+    }
+
+    .delete-container {
+      position: absolute;
+      cursor: pointer;
+      b-icon {
+        margin-top: 12px;
+      }
+    }
+
+    .then {
+      margin: 10px 0 10px 21px;
+      b-icon {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  .add-chain-link {
+    height: 48px;
+    margin-left: 20px;
+    padding-top: 14px;
+    background-color: $white;
+    border: 1px dashed $grey-500;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.04);
+      border-color: $primary-500;
+    }
+
+    .add-icon-container {
+      padding-left: 12px;
+    }
+
+    .action-label {
+      color: $primary-500;
+      padding-left: 12px;
+    }
+
+    &.isDisabled {
+      pointer-events: none;
+      background-color: $white;
+
+      .action-label {
+        color: $grey-500;
+      }
+
+      &:hover {
+        border-color: $grey-500;
+        box-shadow: none;
+      }
+    }
+  }
+}
