@@ -36,7 +36,7 @@ export class ListChange {
       .map(groupOption => ({
         id: groupOption.option.id,
         groupName: groupOption.groupName,
-        groupKey: groupOption.key
+        groupKey: groupOption.key || null
       }))
       .value();
   }

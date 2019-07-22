@@ -17,7 +17,6 @@ describe('ListChange', () => {
       },
       {
         groupName: 'Personal',
-        key: 2,
         options: [
           { value: 'Personal 1', id: 11, selected: false, },
           { value: 'Personal 2', id: 12, selected: false, },
@@ -58,7 +57,7 @@ describe('ListChange', () => {
       expect(listChange.getSelected()).toEqual([{
         id: 1, groupName: 'Basic Info', groupKey: 1
       }, {
-        id: 11, groupName: 'Personal', groupKey: 2
+        id: 11, groupName: 'Personal', groupKey: null
       }]);
     });
   });
