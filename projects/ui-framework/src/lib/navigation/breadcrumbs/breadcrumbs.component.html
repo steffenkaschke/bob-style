@@ -25,7 +25,7 @@
 </div>
 
 <div *ngIf="isMobile || type === breadcrumbsType.secondary"
-     class="steps steps-mobile">
+     class="steps steps-circles">
   <span *ngFor="let step of breadcrumbs; let i = index"
         class="step"
         [ngClass]="{ active: i == activeIndex }"></span>
@@ -49,7 +49,7 @@
 </div>
 
 <div *ngIf="isMobile"
-     class="buttons buttons-mobile">
+     class="buttons">
   <b-text-button *ngIf="buttons?.backBtn?.isVisible"
                  (clicked)="onPrevClick()"
                  [text]="buttons?.backBtn?.label">

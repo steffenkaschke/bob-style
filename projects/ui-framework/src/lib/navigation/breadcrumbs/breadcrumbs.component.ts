@@ -7,7 +7,8 @@ import {
   Output,
   SimpleChanges,
   HostBinding,
-  OnDestroy
+  OnDestroy,
+  NgZone
 } from '@angular/core';
 import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import {
@@ -16,11 +17,11 @@ import {
 } from '../../buttons-indicators/buttons/buttons.enum';
 import { has } from 'lodash';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { MobileService } from '../../services/utils/mobile.service';
+import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
 import { LinkColor } from '../../buttons-indicators/link/link.enum';
 import { BreadcrumbsType } from './breadcrumbs.enum';
 import { Subscription } from 'rxjs';
-import { UtilsService } from '../../services/utils/utils.service';
+import { outsideZone } from '../../services/utils/rxjs.operators';
 
 @Component({
   selector: 'b-breadcrumbs',
@@ -28,7 +29,7 @@ import { UtilsService } from '../../services/utils/utils.service';
   styleUrls: ['./breadcrumbs.component.scss']
 })
 export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
-  @HostBinding('attr.type')
+  @HostBinding('attr.data-type')
   @Input()
   type: BreadcrumbsType = BreadcrumbsType.primary;
 
@@ -41,7 +42,6 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   @Output() prevClick: EventEmitter<number> = new EventEmitter<number>();
 
   isMobile: boolean;
-
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType;
   readonly icons = Icons;
@@ -51,13 +51,16 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   readonly breadcrumbsType = BreadcrumbsType;
   private mediaEventSubscriber: Subscription;
 
-  constructor(private mobileService: MobileService) {}
+  constructor(private mobileService: MobileService, private zone: NgZone) {}
 
   ngOnInit(): void {
     this.mediaEventSubscriber = this.mobileService
       .getMediaEvent()
-      .subscribe(media => {
-        this.isMobile = media.matchMobile;
+      .pipe(outsideZone(this.zone))
+      .subscribe((media: MediaEvent) => {
+        this.zone.run(() => {
+          this.isMobile = media.matchMobile;
+        });
       });
   }
 

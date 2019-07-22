@@ -3,7 +3,7 @@
 @import '../../style/mixins';
 
 :host {
-  padding: 15px 0;
+  padding: times(2) 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -65,9 +65,28 @@ b-text-button {
   margin-left: 16px;
 }
 
-// Mobile
+// Secondary Desktop
 
-.steps-mobile {
+@include desktop {
+  :host[data-type='secondary'] {
+    position: relative;
+    justify-content: flex-end;
+
+    .steps {
+      @include size(100%);
+      @include position;
+      justify-content: center;
+    }
+
+    .buttons {
+      margin-left: auto;
+    }
+  }
+}
+
+// Secondary & Mobile
+
+.steps-circles {
   .step {
     @include size(6px);
     background-color: $grey-500;
