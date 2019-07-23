@@ -52,24 +52,34 @@ export class ChipListComponent implements OnChanges {
     return this.config.align || ChipListAlign.left;
   }
 
-  @HostListener('click', ['$event'])
+  @HostListener('click.outside-zone', ['$event'])
   onHostClick($event: MouseEvent) {
     const target = $event.target as HTMLElement;
 
     if (target.nodeName.toUpperCase() === 'B-CHIP') {
       const index = parseInt(target.dataset.index, 10);
       const chip = this.chips[index];
-      this.onChipClick($event, chip, index);
+
+      if (!this.config.disabled && !chip.disabled) {
+        this.zone.run(() => {
+          this.onChipClick($event, chip, index);
+        });
+      }
     }
   }
 
-  @HostListener('keydown', ['$event'])
+  @HostListener('keydown.outside-zone', ['$event'])
   onHostKeydown($event: KeyboardEvent) {
     const target = $event.target as HTMLElement;
     if (target.nodeName.toUpperCase() === 'B-CHIP') {
       const index = parseInt(target.dataset.index, 10);
       const chip = this.chips[index];
-      this.onChipKeydown($event, chip, index);
+
+      if (!this.config.disabled && !chip.disabled) {
+        this.zone.run(() => {
+          this.onChipKeydown($event, chip, index);
+        });
+      }
     }
   }
 
@@ -81,7 +91,7 @@ export class ChipListComponent implements OnChanges {
     }
   }
 
-  checkSelected(chip, index) {
+  checkSelected(chip: Chip, index: number) {
     if (this.chipListSelectable === ChipListSelectable.single) {
       return this.activeIndex === index;
     } else {
@@ -90,9 +100,7 @@ export class ChipListComponent implements OnChanges {
   }
 
   onChipRemove(chip: Chip): void {
-    if (!chip.disabled) {
-      this.removed.emit(chip);
-    }
+    this.removed.emit(chip);
   }
 
   onChipClick(event: MouseEvent, chip: Chip, index: number): void {

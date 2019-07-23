@@ -110,6 +110,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       : chain(this.selectedIdsMap)
         .difference(groupOptionsIds)
         .concat(this.getSelectedDisabledMap())
+        .uniq()
         .value();
 
     this.emitChange();
