@@ -95,17 +95,13 @@ export class TimePickerComponent extends BaseFormElement {
   }
 
   onHoursChange(event) {
-    const value = String(this.getValue(event));
-
-    if (value.length >= 2) {
+    if (event.target.value.length >= 2) {
       this.inputMinutes.nativeElement.focus();
     }
   }
 
   onMinutesChange(event) {
-    const value = String(this.getValue(event));
-
-    if (value.length >= 2) {
+    if (event.target.value.length >= 2) {
       this.inputMinutes.nativeElement.blur();
     }
   }
@@ -127,30 +123,26 @@ export class TimePickerComponent extends BaseFormElement {
   onHoursBlur(event) {
     this.hoursFocused = false;
     let value = this.getValue(event);
-
     if (value > 23) {
       value = 23;
     }
-
-    this.valueHours = padWith0(value);
+    this.valueHours = (value as any) !== '' ? padWith0(value) : (value as any);
     this.transmit();
   }
 
   onMinutesBlur(event) {
     this.minutesFocused = false;
     let value = this.getValue(event);
-
     if (value > 59) {
       value = 59;
     }
-
-    this.valueMinutes = padWith0(value);
+    this.valueMinutes =
+      (value as any) !== '' ? padWith0(value) : (value as any);
     this.transmit();
   }
 
   private transmit() {
     const newValue = this.combineValue(this.valueHours, this.valueMinutes);
-
     if (this.value !== newValue) {
       this.value = newValue;
       this.transmitValue(this.value, { eventType: [InputEventType.onChange] });
@@ -158,6 +150,9 @@ export class TimePickerComponent extends BaseFormElement {
   }
 
   private getValue(event): number {
+    if (event.target.value.trim() === '') {
+      return '' as any;
+    }
     const value = parseInt(event.target.value, 10);
     return value !== value || value < 0 ? 0 : value;
   }
@@ -167,6 +162,8 @@ export class TimePickerComponent extends BaseFormElement {
   }
 
   private combineValue(valueHours: string, valueMinutes: string): string {
-    return `${valueHours || '00'}:${valueMinutes || '00'}`;
+    return valueHours === '' && valueMinutes === ''
+      ? null
+      : `${valueHours || '00'}:${valueMinutes || '00'}`;
   }
 }
