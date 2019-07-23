@@ -20,7 +20,7 @@ import { ChipComponent } from '../chip/chip.component';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { UtilsService } from '../../services/utils/utils.service';
 
-fdescribe('ChipInputComponent', () => {
+describe('ChipInputComponent', () => {
   let component: ChipInputComponent;
   let fixture: ComponentFixture<ChipInputComponent>;
   let chipInputElem: HTMLElement;

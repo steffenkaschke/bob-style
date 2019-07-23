@@ -7,6 +7,7 @@ import { By } from '@angular/platform-browser';
 import { Social } from './social.enum';
 import { SocialTypes } from './social.const';
 import { InputEventType } from '../form-elements.enum';
+import { URLutils } from '../../services/url/url-utils';
 
 describe('SocialComponent', () => {
   let component: SocialComponent;
@@ -19,19 +20,14 @@ describe('SocialComponent', () => {
       linkedin: 'www.linkedin.com/in/AlanTulin',
       twitter: 'www.twitter.com/AlanTulin'
     };
-    expect(`${ socialTypesRes[type].prefix }AlanTulin`).toEqual(res[type]);
+    expect(`${socialTypesRes[type].prefix}AlanTulin`).toEqual(res[type]);
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        SocialComponent,
-      ],
-      imports: [
-        NoopAnimationsModule,
-        InputModule,
-        IconsModule,
-      ],
+      declarations: [SocialComponent],
+      imports: [NoopAnimationsModule, InputModule, IconsModule],
+      providers: [URLutils]
     })
       .compileComponents()
       .then(() => {
