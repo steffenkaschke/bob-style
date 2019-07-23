@@ -6,7 +6,8 @@ import {
   forwardRef,
   ViewChild,
   OnInit,
-  NgZone
+  NgZone,
+  SimpleChanges
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { IconColor, IconSize } from '../../icons/icons.enum';
@@ -42,10 +43,21 @@ export class SocialComponent extends BaseFormElement implements OnInit {
     super();
     this.inputTransformers = [
       stringyOrFail,
-      value => (value ? this.URL.path(value) : '')
+      (value: string): string => {
+        if (!value) {
+          return '';
+        }
+        if (SocialTypes[this.type].parseReplace) {
+          SocialTypes[this.type].parseReplace.forEach(rplc => {
+            value = value.replace(rplc.a, rplc.b);
+          });
+        }
+        return this.URL.path(value);
+      }
     ];
     this.outputTransformers = [
-      value => (value ? `http://${SocialTypes[this.type].prefix}${value}` : '')
+      (value: string): string =>
+        value ? `http://${SocialTypes[this.type].prefix}${value}` : ''
     ];
     this.baseValue = '';
     this.wrapEvent = false;
@@ -72,6 +84,16 @@ export class SocialComponent extends BaseFormElement implements OnInit {
 
   ngOnInit(): void {
     this.inputId = this.bInput.id;
+  }
+
+  onNgChanges(changes: SimpleChanges): void {
+    if (changes.type && !changes.type.firstChange && this.value) {
+      this.type = changes.type.currentValue;
+      this.writeValue(this.value);
+      this.transmitValue(this.value, {
+        eventType: [InputEventType.onChange]
+      });
+    }
   }
 
   onInputEvents(event: InputEvent): void {

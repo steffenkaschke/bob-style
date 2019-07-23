@@ -4,7 +4,7 @@ import { Social } from './social.enum';
 export interface SocialInputConfig {
   icon: Icons;
   prefix: string;
-  parseSplit?: string;
+  parseReplace?: any[];
 }
 
 export const SocialTypes: { [key in Social]: SocialInputConfig } = {
@@ -15,7 +15,7 @@ export const SocialTypes: { [key in Social]: SocialInputConfig } = {
   [Social.linkedin]: {
     icon: Icons.linkedin,
     prefix: 'www.linkedin.com/in/',
-    parseSplit: '/in/'
+    parseReplace: [{ a: '/in/', b: '/' }]
   },
   [Social.twitter]: {
     icon: Icons.twitter,

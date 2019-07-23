@@ -19,7 +19,11 @@ export class URLutils {
 
   getData(url: string): URL {
     const rec = this.reconstruct(url);
-    return rec ? new URL(rec) : undefined;
+    let urlData: URL;
+    try {
+      urlData = new URL(rec);
+    } catch {}
+    return urlData;
   }
 
   domain(url: string) {
@@ -29,9 +33,9 @@ export class URLutils {
 
   path(url: string) {
     const data = this.getData(url);
-    return !data
+    return !url
       ? undefined
-      : !naiveLinkTest.test(url) ||
+      : !data ||
         url === data.hostname ||
         (data.pathname === '/' && !data.hash && !data.search)
       ? url
