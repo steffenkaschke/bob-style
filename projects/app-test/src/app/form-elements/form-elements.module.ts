@@ -6,6 +6,7 @@ import { FormElementsModule } from '../../../../ui-framework/src/lib/form-elemen
 import { IconsModule } from '../../../../ui-framework/src/lib/icons/icons.module';
 import { FormElementsTestComponent } from './form-elements.component';
 import { AvatarModule } from '../../../../ui-framework/src/lib/buttons-indicators/avatar/avatar.module';
+import { EventManagerPlugins } from '../../../../ui-framework/src/lib/services/utils/eventManager.plugins';
 
 @NgModule({
   declarations: [FormElementsTestComponent],
@@ -19,6 +20,6 @@ import { AvatarModule } from '../../../../ui-framework/src/lib/buttons-indicator
     FormElementsModule,
     AvatarModule
   ],
-  providers: []
+  providers: [EventManagerPlugins[0]]
 })
 export class FormElementsTestModule {}

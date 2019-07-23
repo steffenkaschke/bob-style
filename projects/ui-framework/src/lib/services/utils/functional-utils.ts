@@ -139,14 +139,6 @@ export const getType = smth =>
     ? 'date'
     : String(typeof smth);
 
-export const domainFromUrl = (url: string) => {
-  let a = document.createElement('a');
-  a.href = url;
-  const domain = a.hostname || '.com';
-  a = null;
-  return domain;
-};
-
 export const arrayDifference = (arrA: any[], arrB: any[]) => {
   return arrA
     .filter(x => !arrB.includes(x))

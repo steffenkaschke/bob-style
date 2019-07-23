@@ -27,6 +27,17 @@ export class URLutils {
     return data ? data.hostname : undefined;
   }
 
+  path(url: string) {
+    const data = this.getData(url);
+    return !data
+      ? undefined
+      : !naiveLinkTest.test(url) ||
+        url === data.hostname ||
+        (data.pathname === '/' && !data.hash && !data.search)
+      ? url
+      : data.pathname.substr(1) + data.search + data.hash;
+  }
+
   validateImg(url: string): string {
     if (imageLinkTest.test(url)) {
       return this.reconstruct(url);

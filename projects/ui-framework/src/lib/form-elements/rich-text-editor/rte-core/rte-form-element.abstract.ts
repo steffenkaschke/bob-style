@@ -279,13 +279,13 @@ export abstract class RTEformElement extends BaseFormElement
     range: RangeStatic,
     oldRange: RangeStatic
   ): void {
-    // if (range) {
-    //   const newSize = !!this.editor.getFormat(range).size;
-    //   if (this.hasSizeSet !== newSize) {
-    //     this.hasSizeSet = newSize;
-    //     this.changeDetector.detectChanges();
-    //   }
-    // }
+    if (range) {
+      const newSize = !!this.editor.getFormat(range).size;
+      if (this.hasSizeSet !== newSize) {
+        this.hasSizeSet = newSize;
+        this.changeDetector.detectChanges();
+      }
+    }
   }
 
   private onEditorFocus(): void {
