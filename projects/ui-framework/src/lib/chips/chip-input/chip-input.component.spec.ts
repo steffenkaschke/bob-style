@@ -17,8 +17,10 @@ import {
 import { ChipModule } from '../chip/chip.module';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 import { ChipComponent } from '../chip/chip.component';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { UtilsService } from '../../services/utils/utils.service';
 
-describe('ChipInputComponent', () => {
+fdescribe('ChipInputComponent', () => {
   let component: ChipInputComponent;
   let fixture: ComponentFixture<ChipInputComponent>;
   let chipInputElem: HTMLElement;
@@ -38,7 +40,7 @@ describe('ChipInputComponent', () => {
         MatAutocompleteModule,
         InputMessageModule
       ],
-      providers: [ColorService],
+      providers: [UtilsService, EventManagerPlugins[0]],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .overrideComponent(ChipInputComponent, {

@@ -11,7 +11,8 @@ import {
   EventEmitter,
   OnDestroy,
   ChangeDetectionStrategy,
-  NgZone
+  NgZone,
+  ChangeDetectorRef
 } from '@angular/core';
 import {
   MatAutocompleteSelectedEvent,
@@ -55,7 +56,11 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 })
 export class ChipInputComponent extends BaseFormElement
   implements OnChanges, OnInit, OnDestroy {
-  constructor(private utilsService: UtilsService, private zone: NgZone) {
+  constructor(
+    private utilsService: UtilsService,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {
     super();
     this.inputTransformers = [arrayOrFail];
     this.baseValue = [];
@@ -116,7 +121,7 @@ export class ChipInputComponent extends BaseFormElement
 
   private transmit(change: Partial<ChipInputChange>): void {
     this.transmitValue(this.value, {
-      eventType: [InputEventType.onChange, InputEventType.onBlur],
+      eventType: [InputEventType.onChange],
       addToEventObj: change
     });
   }
@@ -187,6 +192,7 @@ export class ChipInputComponent extends BaseFormElement
   public onInputChange(event: any): void {
     this.filteredChips =
       this.filterChips(event.target.value) || this.possibleChips;
+    this.cd.detectChanges();
   }
 
   public optionSelected(event: MatAutocompleteSelectedEvent): void {
@@ -245,25 +251,28 @@ export class ChipInputComponent extends BaseFormElement
           const lastChipName = this.value.slice(-1)[0];
           this.value = this.value.slice(0, -1);
           this.updatePossibleChips();
-          this.transmit({ removed: lastChipName });
+          this.zone.run(() => {
+            this.transmit({ removed: lastChipName });
+          });
         } else {
           this.chips.list.last.chip.nativeElement.classList.add('focused');
           this.chips.list.last.chip.nativeElement.dataset.aboutToDelete =
             'true';
         }
-        this.zone.runOutsideAngular(() => {
-          setTimeout(() => {
-            this.input.nativeElement.focus();
-            this.autocompleteTrigger.closePanel();
-          }, 0);
-        });
+        setTimeout(() => {
+          this.input.nativeElement.focus();
+          this.autocompleteTrigger.closePanel();
+        }, 0);
       }
     } else if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.comma)) {
-      this.addChipFromInput();
+      this.zone.run(() => {
+        this.addChipFromInput();
+      });
       this.autocompleteTrigger.closePanel();
     } else {
       this.unSelectLastChip();
     }
+    this.cd.detectChanges();
   }
 
   public onInputKeydown(event: KeyboardEvent): void {
