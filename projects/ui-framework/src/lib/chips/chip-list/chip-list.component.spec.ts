@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChipListComponent } from './chip-list.component';
-import {ChipType, ChipListAlign, ChipListSelectable} from '../chips.enum';
+import { ChipType, ChipListAlign, ChipListSelectable } from '../chips.enum';
 import { ChipModule } from '../chip/chip.module';
 import {
   elementsFromFixture,
@@ -10,6 +10,7 @@ import {
 import { ChipComponent } from '../chip/chip.component';
 import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 describe('ChipListComponent', () => {
   let component: ChipListComponent;
@@ -35,7 +36,7 @@ describe('ChipListComponent', () => {
     {
       text: 'C',
       id: 3,
-      disabled: true,
+      disabled: true
     }
   ];
 
@@ -61,7 +62,7 @@ describe('ChipListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ChipListComponent],
       imports: [ChipModule, AvatarModule],
-      providers: [],
+      providers: [EventManagerPlugins[0]],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .overrideComponent(ChipListComponent, {
@@ -137,13 +138,14 @@ describe('ChipListComponent', () => {
       });
       it('should chip list selectable single nothing if not passed active index.', () => {
         expect(
-          chipsElements.filter(elem => elem.getAttribute('data-selected') === 'true')
-            .length
+          chipsElements.filter(
+            elem => elem.getAttribute('data-selected') === 'true'
+          ).length
         ).toEqual(0);
       });
     });
     describe('should chip list selectable single few clicks and active', () => {
-      beforeEach( () => {
+      beforeEach(() => {
         component.chipListSelectable = ChipListSelectable.single;
         component.activeIndex = 2;
         chipsElements[0].click();
@@ -153,13 +155,16 @@ describe('ChipListComponent', () => {
       });
       it('should have one selected when radioSelect is true', () => {
         expect(
-          chipsElements.filter(elem => elem.getAttribute('data-selected') === 'true')
-            .length
+          chipsElements.filter(
+            elem => elem.getAttribute('data-selected') === 'true'
+          ).length
         ).toEqual(1);
       });
       it('should have 4th be selected when radioSelect is true', () => {
         expect(
-          chipsElements.findIndex(elem => elem.getAttribute('data-selected') === 'true')
+          chipsElements.findIndex(
+            elem => elem.getAttribute('data-selected') === 'true'
+          )
         ).toEqual(2);
       });
     });
@@ -174,7 +179,9 @@ describe('ChipListComponent', () => {
       ).toEqual(3);
       expect(
         chipsElements.filter(
-          elem => elem.children.length > 0 && elem.children[0].className === 'remove-button'
+          elem =>
+            elem.children.length > 0 &&
+            elem.children[0].className === 'remove-button'
         ).length
       ).toEqual(2);
     });
