@@ -56,11 +56,11 @@ export class ChipListComponent implements OnChanges {
   onHostClick($event: MouseEvent) {
     const target = $event.target as HTMLElement;
 
-    if (target.nodeName.toUpperCase() === 'B-CHIP') {
+    if (!this.config.disabled && target.nodeName.toUpperCase() === 'B-CHIP') {
       const index = parseInt(target.dataset.index, 10);
       const chip = this.chips[index];
 
-      if (!this.config.disabled && !chip.disabled) {
+      if (!chip.disabled) {
         this.zone.run(() => {
           this.onChipClick($event, chip, index);
         });
@@ -71,11 +71,11 @@ export class ChipListComponent implements OnChanges {
   @HostListener('keydown.outside-zone', ['$event'])
   onHostKeydown($event: KeyboardEvent) {
     const target = $event.target as HTMLElement;
-    if (target.nodeName.toUpperCase() === 'B-CHIP') {
+    if (!this.config.disabled && target.nodeName.toUpperCase() === 'B-CHIP') {
       const index = parseInt(target.dataset.index, 10);
       const chip = this.chips[index];
 
-      if (!this.config.disabled && !chip.disabled) {
+      if (!chip.disabled) {
         this.zone.run(() => {
           this.onChipKeydown($event, chip, index);
         });
