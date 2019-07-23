@@ -24,7 +24,8 @@
           <b-checkbox class="checkbox"
                       [value]="header.selected"
                       [indeterminate]="header.indeterminate"
-                      (checkboxChange)="headerSelect(header)">
+                      (checkboxChange)="headerSelect(header)"
+                      [doPropagate]="false">
           </b-checkbox>
           <span [innerHTML]="header.groupName | highlight: searchValue"></span>
         </div>
@@ -51,7 +52,8 @@
            class="option-select">
         <b-checkbox class="checkbox"
                     [value]="option.selected"
-                    (checkboxChange)="optionClick(option)">
+                    (checkboxChange)="optionClick(option)"
+                    [doPropagate]="false">
         </b-checkbox>
         <b-list-option [option]="option"
                        [searchValue]="searchValue">

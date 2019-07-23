@@ -17,7 +17,7 @@ import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { ChipComponent } from '../chip/chip.component';
 import { arrayOfValuesToArrayOfObjects } from '../../services/utils/transformers';
-import {ChipType, ChipListAlign, ChipListSelectable} from '../chips.enum';
+import { ChipType, ChipListAlign, ChipListSelectable } from '../chips.enum';
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 
 @Component({
@@ -90,7 +90,9 @@ export class ChipListComponent implements OnChanges {
   }
 
   onChipRemove(chip: Chip): void {
-    this.removed.emit(chip);
+    if (!chip.disabled) {
+      this.removed.emit(chip);
+    }
   }
 
   onChipClick(event: MouseEvent, chip: Chip, index: number): void {
