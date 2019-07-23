@@ -11,7 +11,14 @@
   .option {
     &.disabled {
       @include disabled-state;
-      > *, > *:before {
+    }
+
+    ::ng-deep {
+      b-checkbox {
+        cursor: pointer;
+      }
+      .bchk-label,
+      .bchk-label:before {
         pointer-events: none;
       }
     }
