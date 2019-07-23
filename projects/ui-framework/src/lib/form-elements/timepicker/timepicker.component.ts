@@ -15,6 +15,7 @@ import {
 import { timeyOrFail } from '../../services/utils/transformers';
 import { InputEventType } from '../form-elements.enum';
 import { Keys } from '../../enums';
+import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-timepicker',
@@ -54,6 +55,10 @@ export class TimePickerComponent extends BaseFormElement {
   valueMinutes: string;
   hoursFocused = false;
   minutesFocused = false;
+
+  readonly icons = Icons;
+  readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
 
   onInputKeydown(event) {
     event.stopPropagation();
