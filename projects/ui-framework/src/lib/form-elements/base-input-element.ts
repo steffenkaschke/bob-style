@@ -1,4 +1,4 @@
-import { EventEmitter, Input, Output } from '@angular/core';
+import { EventEmitter, Input, Output, NgZone } from '@angular/core';
 import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
 import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
@@ -8,7 +8,7 @@ import { Keys } from '../enums';
 import { asNumber, stringyOrFail } from '../services/utils/transformers';
 
 export abstract class BaseInputElement extends BaseFormElement {
-  protected constructor() {
+  protected constructor(protected zone: NgZone) {
     super();
     this.inputTransformers = [stringyOrFail];
     this.outputTransformers = [value => asNumber(this.inputType, value)];
@@ -46,12 +46,14 @@ export abstract class BaseInputElement extends BaseFormElement {
 
   onInputKey(event: KeyboardEvent) {
     if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) {
-      this.transmitValue(this.value, {
-        eventType: [InputEventType.onKey],
-        doPropagate: false,
-        addToEventObj: {
-          key: event.key
-        }
+      this.zone.run(() => {
+        this.transmitValue(this.value, {
+          eventType: [InputEventType.onKey],
+          doPropagate: false,
+          addToEventObj: {
+            key: event.key
+          }
+        });
       });
     }
   }

@@ -21,11 +21,12 @@
          [autocomplete]="enableBrowserAutoComplete"
          [disabled]="disabled"
          [required]="required"
+         [readonly]="readonly"
          [attr.maxlength]="maxChars"
          (input)="onInputChange($event)"
          (blur)="onInputBlur();"
          (focus)="onInputFocus()"
-         (keyup)="onInputKey($event)">
+         (keyup.outside-zone)="onInputKey($event)">
 
   <div *ngIf="hasSuffix || showSuffix"
        class="bfe-suffix"

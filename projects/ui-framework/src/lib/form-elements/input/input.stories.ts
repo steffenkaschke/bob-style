@@ -31,6 +31,7 @@ const template = `
         [hideLabelOnFocus]="hideLabelOnFocus"
         [disabled]="disabled"
         [required]="required"
+        [readonly]="readonly"
         [maxChars]="maxChars"
         [hintMessage]="hintMessage"
         [warnMessage]="warnMessage"
@@ -89,6 +90,7 @@ inputStories.add(
         maxChars: number('maxChars', 30),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
+        readonly: boolean('readonly', false),
 
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),

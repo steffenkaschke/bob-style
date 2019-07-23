@@ -24,8 +24,6 @@ export abstract class BaseFormElement
   @Input() placeholder: string;
   @Input() value: any;
   @Input() hideLabelOnFocus = false;
-  @Input() disabled = false;
-  @Input() required = false;
   @Input() hintMessage: string;
   @Input() errorMessage: string;
   @Input() warnMessage: string;
@@ -48,12 +46,10 @@ export abstract class BaseFormElement
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
 
-  @HostBinding('class.disabled') get isDisabled(): boolean {
-    return this.disabled;
-  }
-  @HostBinding('class.required') get isRequired(): boolean {
-    return this.required;
-  }
+  @HostBinding('class.disabled') @Input() disabled = false;
+  @HostBinding('class.required') @Input() required = false;
+  @HostBinding('class.readonly') @Input() readonly = false;
+
   @HostBinding('class.error') get hasError(): boolean {
     return this.errorMessage && !this.disabled;
   }
@@ -122,7 +118,7 @@ export abstract class BaseFormElement
     if (value !== undefined) {
       value = this.outputTransformers.reduce(
         (previousResult, fn) => fn(previousResult),
-        value,
+        value
       );
 
       if (
