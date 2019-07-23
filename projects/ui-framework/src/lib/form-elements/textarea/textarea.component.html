@@ -14,10 +14,10 @@
             [required]="required"
             [readonly]="readonly"
             [attr.maxlength]="maxChars"
-            (input)="onInputChange($event)"
+            (input.outside-zone)="onInputChange($event)"
             (blur)="onInputBlur()"
             (focus)="onInputFocus()"
-            (keyup)="onInputKey($event)"></textarea>
+            (keyup.outside-zone)="onInputKey($event)"></textarea>
 </div>
 <p b-input-message
    *ngIf="hintMessage || warnMessage || errorMessage"

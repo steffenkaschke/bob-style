@@ -23,7 +23,7 @@
          [required]="required"
          [readonly]="readonly"
          [attr.maxlength]="maxChars"
-         (input)="onInputChange($event)"
+         (input.outside-zone)="onInputChange($event)"
          (blur)="onInputBlur();"
          (focus)="onInputFocus()"
          (keyup.outside-zone)="onInputKey($event)">

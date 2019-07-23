@@ -28,9 +28,16 @@ export abstract class BaseInputElement extends BaseFormElement {
   > = new EventEmitter<InputEvent>();
 
   onInputChange(event) {
-    if (event.target.value !== this.value) {
-      this.writeValue(event.target.value);
-      this.transmitValue(this.value, { eventType: [InputEventType.onChange] });
+    if (
+      event.target.value !== this.value &&
+      this.changed.observers.length > 0
+    ) {
+      this.zone.run(() => {
+        this.writeValue(event.target.value);
+        this.transmitValue(this.value, {
+          eventType: [InputEventType.onChange]
+        });
+      });
     }
   }
 
@@ -45,7 +52,10 @@ export abstract class BaseInputElement extends BaseFormElement {
   }
 
   onInputKey(event: KeyboardEvent) {
-    if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) {
+    if (
+      (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) &&
+      this.changed.observers.length > 0
+    ) {
       this.zone.run(() => {
         this.transmitValue(this.value, {
           eventType: [InputEventType.onKey],
