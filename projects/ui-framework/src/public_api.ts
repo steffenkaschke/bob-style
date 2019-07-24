@@ -188,6 +188,12 @@ export {
   ListComponentPrefix
 } from './lib/form-elements/lists/list.interface';
 export { ListChange } from './lib/form-elements/lists/list-change/list-change';
+export {
+  ChainSelectModule
+} from './lib/form-elements/lists/chain-select/chain-select.module';
+export {
+  ChainListChange
+} from './lib/form-elements/lists/chain-select/chain-select.interface';
 // Rich Text Editor
 export {
   RichTextEditorModule
