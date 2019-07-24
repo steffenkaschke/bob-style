@@ -53,10 +53,10 @@
 
 .avatar-content {
   @include size(100%);
+  border-radius: 50%;
   @include flex-align;
   position: relative;
   border-radius: 50%;
-  overflow: hidden;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.2s;
