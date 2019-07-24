@@ -279,6 +279,7 @@ export {
   BreadcrumbNavButtons,
   BreadcrumbNavButton
 } from './lib/navigation/breadcrumbs/breadcrumbs.interface';
+export { BreadcrumbsType } from './lib/navigation/breadcrumbs/breadcrumbs.enum';
 export { BaseFormElement } from './lib/form-elements/base-form-element';
 export { ActionBarModule } from './lib/navigation/action-bar/action-bar.module';
 export { ActionBarComponent } from './lib/navigation/action-bar/action-bar.component';
