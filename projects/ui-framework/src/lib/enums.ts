@@ -31,24 +31,18 @@ export enum NativeEvents {
   mouseenter = 'mouseenter',
   mouseleave = 'mouseleave',
   mouseout = 'mouseout',
-
   keydown = 'keydown',
   keypress = 'keypress',
   keyup = 'keyup',
-
   focus = 'focus',
   blur = 'blur',
-
   change = 'change',
   input = 'input',
-
   submit = 'submit',
   reset = 'reset',
-
   resize = 'resize',
   scroll = 'scroll',
   select = 'select',
-
   dragstart = 'dragstart',
   drag = 'drag',
   dragenter = 'dragenter',
@@ -56,7 +50,6 @@ export enum NativeEvents {
   dragover = 'dragover',
   drop = 'drop',
   dragend = 'dragend',
-
   touchstart = 'touchstart',
   touchend = 'touchend',
   touchmove = 'touchmove',

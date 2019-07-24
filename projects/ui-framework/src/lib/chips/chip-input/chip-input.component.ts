@@ -206,6 +206,7 @@ export class ChipInputComponent extends BaseFormElement
     this.updatePossibleChips();
     this.transmit({ removed: name });
     this.autocompleteTrigger.closePanel();
+    this.cd.detectChanges();
   }
 
   private unSelectLastChip(): void {
@@ -251,6 +252,7 @@ export class ChipInputComponent extends BaseFormElement
           const lastChipName = this.value.slice(-1)[0];
           this.value = this.value.slice(0, -1);
           this.updatePossibleChips();
+          this.cd.detectChanges();
           this.zone.run(() => {
             this.transmit({ removed: lastChipName });
           });
@@ -272,7 +274,6 @@ export class ChipInputComponent extends BaseFormElement
     } else {
       this.unSelectLastChip();
     }
-    this.cd.detectChanges();
   }
 
   public onInputKeydown(event: KeyboardEvent): void {

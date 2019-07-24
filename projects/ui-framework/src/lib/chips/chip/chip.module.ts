@@ -8,6 +8,6 @@ import { IconsModule } from '../../icons/icons.module';
   declarations: [ChipComponent],
   imports: [CommonModule, IconsModule],
   exports: [ChipComponent],
-  providers: [ColorService]
+  providers: []
 })
 export class ChipModule {}
