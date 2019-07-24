@@ -127,6 +127,10 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
       'avatar' +
       (this.imageSource && this.imageSource.includes('emptyAvatar')
         ? ' emptyAvatar'
+        : this.imageSource && this.imageSource.includes('default-avatars')
+        ? ' defaultAvatar'
+        : !this.imageSource
+        ? ' noAvatar'
         : '');
   }
 
