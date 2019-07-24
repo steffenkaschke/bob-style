@@ -31,7 +31,6 @@ import { arrayOrFail } from '../../services/utils/transformers';
 import { ChipListComponent } from '../chip-list/chip-list.component';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
-import { outsideZone } from '../../services/utils/rxjs.operators';
 
 @Component({
   selector: 'b-chip-input',
@@ -110,7 +109,6 @@ export class ChipInputComponent extends BaseFormElement
 
     this.windowClickSubscriber = this.utilsService
       .getWindowClickEvent()
-      .pipe(outsideZone(this.zone))
       .subscribe(() => {
         this.unSelectLastChip();
       });
@@ -121,7 +119,7 @@ export class ChipInputComponent extends BaseFormElement
 
   private transmit(change: Partial<ChipInputChange>): void {
     this.transmitValue(this.value, {
-      eventType: [InputEventType.onChange],
+      eventType: [InputEventType.onChange, InputEventType.onBlur],
       addToEventObj: change
     });
   }
@@ -176,11 +174,9 @@ export class ChipInputComponent extends BaseFormElement
         ).chip.nativeElement;
       if (existingChipElemnent) {
         existingChipElemnent.classList.add('blink');
-        this.zone.runOutsideAngular(() => {
-          setTimeout(() => {
-            existingChipElemnent.classList.remove('blink');
-          }, 200);
-        });
+        setTimeout(() => {
+          existingChipElemnent.classList.remove('blink');
+        }, 200);
         this.input.nativeElement.value = this.input.nativeElement.value.replace(
           /,/g,
           ''
@@ -192,7 +188,7 @@ export class ChipInputComponent extends BaseFormElement
   public onInputChange(event: any): void {
     this.filteredChips =
       this.filterChips(event.target.value) || this.possibleChips;
-    this.cd.detectChanges();
+    // this.cd.detectChanges();
   }
 
   public optionSelected(event: MatAutocompleteSelectedEvent): void {
@@ -206,7 +202,7 @@ export class ChipInputComponent extends BaseFormElement
     this.updatePossibleChips();
     this.transmit({ removed: name });
     this.autocompleteTrigger.closePanel();
-    this.cd.detectChanges();
+    // this.cd.detectChanges();
   }
 
   private unSelectLastChip(): void {
@@ -242,6 +238,7 @@ export class ChipInputComponent extends BaseFormElement
     this.inputFocused = false;
     if (!this.autocompletePanel.isOpen) {
       this.addChipFromInput();
+      this.autocompleteTrigger.closePanel(); // new
     }
   }
 
@@ -252,28 +249,34 @@ export class ChipInputComponent extends BaseFormElement
           const lastChipName = this.value.slice(-1)[0];
           this.value = this.value.slice(0, -1);
           this.updatePossibleChips();
-          this.cd.detectChanges();
-          this.zone.run(() => {
-            this.transmit({ removed: lastChipName });
-          });
+          this.transmit({ removed: lastChipName });
+
+          // this.zone.run(() => {
+          //   this.transmit({ removed: lastChipName });
+          // });
         } else {
           this.chips.list.last.chip.nativeElement.classList.add('focused');
           this.chips.list.last.chip.nativeElement.dataset.aboutToDelete =
             'true';
         }
+
         setTimeout(() => {
           this.input.nativeElement.focus();
           this.autocompleteTrigger.closePanel();
         }, 0);
       }
     } else if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.comma)) {
-      this.zone.run(() => {
-        this.addChipFromInput();
-      });
+      this.addChipFromInput();
+
+      // this.zone.run(() => {
+      //   this.addChipFromInput();
+      // });
+
       this.autocompleteTrigger.closePanel();
     } else {
       this.unSelectLastChip();
     }
+    // this.cd.detectChanges();
   }
 
   public onInputKeydown(event: KeyboardEvent): void {

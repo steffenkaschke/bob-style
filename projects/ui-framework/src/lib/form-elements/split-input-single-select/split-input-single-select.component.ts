@@ -95,7 +95,7 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
     this.value.selectValue = listChange.getSelectedIds()[0];
 
     this.transmitValue(this.value, {
-      eventType: [InputEventType.onChange]
+      eventType: [InputEventType.onBlur]
     });
   }
 }
