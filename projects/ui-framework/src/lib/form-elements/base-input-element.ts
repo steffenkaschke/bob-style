@@ -56,6 +56,7 @@ export abstract class BaseInputElement extends BaseFormElement {
       (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) &&
       this.changed.observers.length > 0
     ) {
+      event.stopPropagation();
       this.zone.run(() => {
         this.transmitValue(this.value, {
           eventType: [InputEventType.onKey],

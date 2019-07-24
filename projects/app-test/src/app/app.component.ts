@@ -28,18 +28,18 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.scrollSubscription = this.utilsService
-      .getScrollEvent()
-      .pipe(outsideZone(this.zone))
-      .subscribe(scrollPos => {
-        console.log(scrollPos);
-      });
-    this.resizeSubscription = this.utilsService
-      .getResizeEvent()
-      .pipe(outsideZone(this.zone))
-      .subscribe(event => {
-        console.log('window resized', event);
-      });
+    // this.scrollSubscription = this.utilsService
+    //   .getScrollEvent()
+    //   .pipe(outsideZone(this.zone))
+    //   .subscribe(scrollPos => {
+    //     console.log(scrollPos);
+    //   });
+    // this.resizeSubscription = this.utilsService
+    //   .getResizeEvent()
+    //   .pipe(outsideZone(this.zone))
+    //   .subscribe(event => {
+    //     console.log('window resized', event);
+    //   });
 
     this.mediaSubscribtion = this.mobileService
       .getMediaEvent()
@@ -49,7 +49,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.scrollSubscription.unsubscribe();
-    this.resizeSubscription.unsubscribe();
+    // this.scrollSubscription.unsubscribe();
+    // this.resizeSubscription.unsubscribe();
+    this.mediaSubscribtion.unsubscribe();
   }
 }

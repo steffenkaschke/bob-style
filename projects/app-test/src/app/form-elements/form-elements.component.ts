@@ -12,7 +12,7 @@ import {
   isString,
   countChildren,
   flatten,
-  getType,
+  getType
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
 import { BlotType } from '../../../../ui-framework/src/lib/form-elements/rich-text-editor/rte-core/rte.enum';
 import { AvatarComponent } from '../../../../ui-framework/src/lib/buttons-indicators/avatar/avatar.component';
@@ -89,7 +89,8 @@ export class FormElementsTestComponent
   ///////////////////////////////////
 
   @ViewChild('bInput', { static: false }) private bInput_component;
-  @ViewChild('bInput', { read: ElementRef, static: false }) private bInput_element: ElementRef;
+  @ViewChild('bInput', { read: ElementRef, static: false })
+  private bInput_element: ElementRef;
   bInput_SubscrValue;
   bInput_EventValue;
   bInput_SubscrCounter = 0;
@@ -343,7 +344,8 @@ export class FormElementsTestComponent
   };
 
   @ViewChild('bRadio', { static: false }) private bRadio_component;
-  @ViewChild('bRadio', { read: ElementRef, static: false }) private bRadio_element: ElementRef;
+  @ViewChild('bRadio', { read: ElementRef, static: false })
+  private bRadio_element: ElementRef;
   bRadio_SubscrValue;
   bRadio_EventValue;
   bRadio_SubscrCounter = 0;
@@ -401,7 +403,8 @@ export class FormElementsTestComponent
     };
   });
 
-  @ViewChild('bSingleSelect', { static: false }) private bSingleSelect_component;
+  @ViewChild('bSingleSelect', { static: false })
+  private bSingleSelect_component;
   @ViewChild('bSingleSelect', { read: ElementRef, static: false })
   private bSingleSelect_element: ElementRef;
   bSingleSelect_SubscrValue;
@@ -659,7 +662,8 @@ export class FormElementsTestComponent
   );
 
   @ViewChild('bRTE', { static: false }) private bRTE_component;
-  @ViewChild('bRTE', { read: ElementRef, static: false }) private bRTE_element: ElementRef;
+  @ViewChild('bRTE', { read: ElementRef, static: false })
+  private bRTE_element: ElementRef;
   bRTE_SubscrValue;
   bRTE_EventValue;
   bRTE_SubscrCounter = 0;
@@ -669,7 +673,7 @@ export class FormElementsTestComponent
   bRTE_value = this.RTEvalueMock;
 
   bRTE_controls = this.bRTE_controlsDef;
-  bRTE_disableControls  = this.bRTE_disableControlsDef;
+  bRTE_disableControls = this.bRTE_disableControlsDef;
   bRTE_placeholderList = this.placeholderMock;
 
   bRTE_label = 'Rich text label';
@@ -748,7 +752,7 @@ export class FormElementsTestComponent
 
   getComponentProp(name, prop = 'value') {
     if (this[name + '_component']) {
-      return this[name + '_component'][prop]
+      return this[name + '_component'][prop];
     }
   }
 
@@ -911,6 +915,7 @@ export class FormElementsTestComponent
   showComponents(comps) {
     comps.forEach(comp => {
       this.global_visibleComponents[comp] = true;
+      this.countKids(comp);
     });
   }
 
@@ -994,10 +999,12 @@ export class FormElementsTestComponent
   type = smth => getType(smth);
 
   countKids(name) {
-    return (this[name + '_nodeCount'] = countChildren(
-      null,
-      this[name + '_element'] && this[name + '_element'].nativeElement
-    ));
+    setTimeout(() => {
+      this[name + '_nodeCount'] = countChildren(
+        null,
+        this[name + '_element'] && this[name + '_element'].nativeElement
+      );
+    }, 0);
   }
 
   ///////////////////////////////////
@@ -1005,8 +1012,8 @@ export class FormElementsTestComponent
   ngOnInit() {
     this.subscribeToAll(this.allFormElements);
 
-    this.hideComponents(this.allFormElements);
-    this.showComponents(['bRTE']);
+    // this.hideComponents(this.allFormElements);
+    // this.showComponents(['bRTE']);
 
     // 'bInput'
     // 'bTextarea'
