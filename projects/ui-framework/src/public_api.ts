@@ -419,6 +419,9 @@ export { TextColoredLinksModule } from './lib/eye-candy/text-colored-links/text-
 export { TextColoredLinksComponent } from
     './lib/eye-candy/text-colored-links/text-colored-links/text-colored-links.component';
 export { ColorTextItem } from './lib/eye-candy/text-colored-links/text-colored-links.interface';
+// Mocks
+export { mockText, mockDate, mockHobbies, mockJobs, mockNames, mockAvatar } from './lib/mock.const';
+
 
 /*
 * Animation

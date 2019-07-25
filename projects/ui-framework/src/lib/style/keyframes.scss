@@ -1,6 +1,6 @@
-@mixin keyframes($name) {
+@mixin keyframes($name, $id: '') {
   @if $name == slide-left {
-    @keyframes slide-left {
+    @keyframes slide-left#{$id} {
       0% {
         transform: translateX(15px);
         opacity: 0;
@@ -13,7 +13,7 @@
   }
 
   @if $name == slide-right {
-    @keyframes slide-right {
+    @keyframes slide-right#{$id} {
       0% {
         transform: translateX(-15px);
         opacity: 0;
@@ -26,7 +26,7 @@
   }
 
   @if $name == slide-down {
-    @keyframes slide-down {
+    @keyframes slide-down#{$id} {
       0% {
         transform: translateY(-15px);
         opacity: 0;
@@ -39,7 +39,7 @@
   }
 
   @if $name == slide-up {
-    @keyframes slide-up {
+    @keyframes slide-up#{$id} {
       0% {
         transform: translateY(15px);
         opacity: 0;
@@ -52,7 +52,7 @@
   }
 
   @if $name == zoom-in {
-    @keyframes zoom-in {
+    @keyframes zoom-in#{$id} {
       0% {
         transform: scale(0.9);
         opacity: 0;
@@ -65,7 +65,7 @@
   }
 
   @if $name == zoom-out {
-    @keyframes zoom-out {
+    @keyframes zoom-out#{$id} {
       0% {
         transform: scale(1.1);
         opacity: 0;
@@ -78,7 +78,7 @@
   }
 
   @if $name == fade-in {
-    @keyframes fade-in {
+    @keyframes fade-in#{$id} {
       0% {
         opacity: 0;
       }
