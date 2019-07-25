@@ -77,7 +77,10 @@ export class URLutils {
       return {
         type: URLtype.youtube,
         id,
-        url: 'https://www.youtube.com/embed/' + id + '?autoplay=1',
+        url:
+          'https://www.youtube.com/embed/' +
+          id +
+          '?autoplay=1&rel=0&color=white&iv_load_policy=3&modestbranding=1',
         thumb: 'https://img.youtube.com/vi/' + id + '/maxresdefault.jpg'
       };
     }
