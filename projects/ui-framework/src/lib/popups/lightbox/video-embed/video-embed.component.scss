@@ -7,8 +7,7 @@ $triangle-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
   display: block;
   background-color: black(0.5);
   width: 100%;
-  margin-bottom: base8(20);
-  padding-bottom: percentage(9/16);
+  @include ratioPad(16/9);
   background-position: center;
   background-size: cover;
   cursor: pointer;
