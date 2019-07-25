@@ -363,7 +363,9 @@ export * from './lib/table/card-table/card-table.interface';
 export { CollapsibleModule } from './lib/layout/collapsible/collapsible.module';
 export { CollapsibleComponent } from './lib/layout/collapsible/collapsible.component';
 export { CollapsibleType } from './lib/layout/collapsible/collapsible.enum';
-
+// Section Container
+export {SectionContainerModule} from './lib/layout/sectionContainer/sectionContainer.module';
+export { SectionContainerComponent } from './lib/layout/sectionContainer/sectionContainer.component';
 
 /*
  * Misc

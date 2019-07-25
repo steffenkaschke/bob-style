@@ -63,8 +63,12 @@
   z-index: 1;
 }
 
-.avatar.noAvatar .avatar-content {
-  opacity: 1;
+.avatar.noAvatar {
+  background-image: none !important;
+
+  .avatar-content {
+    opacity: 1;
+  }
 }
 
 .slot1-big,
