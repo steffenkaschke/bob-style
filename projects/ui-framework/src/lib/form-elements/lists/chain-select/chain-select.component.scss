@@ -1,62 +1,94 @@
 @import '../../../style/colors';
+@import '../../../style/typography';
 
 :host {
-  .chain-link-container {
-    .select-component-container {
-      margin-left: 21px;
-    }
+  text-align: left;
+}
 
-    .delete-container {
-      position: absolute;
-      cursor: pointer;
-      b-icon {
-        margin-top: 12px;
-      }
-    }
+.chain-link-row {
+  position: relative;
 
-    .then {
-      margin: 10px 0 10px 21px;
-      b-icon {
-        transform: rotate(90deg);
-      }
-    }
+  b-component-renderer {
+    display: block;
   }
 
-  .add-chain-link {
-    height: 48px;
-    margin-left: 20px;
-    padding-top: 14px;
-    background-color: $white;
-    border: 1px dashed $grey-500;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &:hover {
-      box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.04);
-      border-color: $primary-500;
-    }
-
-    .add-icon-container {
-      padding-left: 12px;
-    }
-
-    .action-label {
-      color: $primary-500;
-      padding-left: 12px;
-    }
-
-    &.isDisabled {
-      pointer-events: none;
-      background-color: $white;
-
-      .action-label {
-        color: $grey-500;
-      }
-
-      &:hover {
-        border-color: $grey-500;
-        box-shadow: none;
-      }
-    }
+  .delete-button {
+    position: absolute;
+    right: -44px;
+    bottom: 0;
   }
 }
+
+.then {
+  margin: 8px 0 8px 16px;
+
+  b-icon {
+    transform: rotate(90deg);
+  }
+}
+
+:host ::ng-deep {
+  .add-chain-link {
+    display: block;
+
+    button.large {
+      justify-content: flex-start;
+      text-transform: none;
+      font-size: $font-size-body;
+    }
+
+    //button.medium {
+    //  height: 48px;
+    //  background-color: $white;
+    //  border: 1px dashed $grey-500;
+    //  color: $primary-500;
+    //
+    //  &:before {
+    //    color: $primary-500;
+    //  }
+    //
+    //  &:hover {
+    //    background-color: $white;
+    //    border-color: $primary-500;
+    //  }
+    //}
+  }
+}
+
+//.add-chain-link {
+//  height: 48px;
+//  margin-left: 20px;
+//  padding-top: 14px;
+//  background-color: $white;
+//  border: 1px dashed $grey-500;
+//  border-radius: 4px;
+//  cursor: pointer;
+//
+//  &:hover {
+//    box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.04);
+//    border-color: $primary-500;
+//  }
+//
+//  .add-icon-container {
+//    padding-left: 12px;
+//  }
+//
+//  .action-label {
+//    color: $primary-500;
+//    padding-left: 12px;
+//  }
+//
+//  &.isDisabled {
+//    pointer-events: none;
+//    background-color: $white;
+//
+//    .action-label {
+//      color: $grey-500;
+//    }
+//
+//    &:hover {
+//      border-color: $grey-500;
+//      box-shadow: none;
+//    }
+//  }
+//}

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/c
 import { isEmpty } from 'lodash';
 import { ChainLink, ChainListChange } from './chain-select.interface';
 import { Icons, IconSize } from '../../../icons/icons.enum';
+import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
 
 @Component({
   selector: 'b-chain-select',
@@ -17,12 +18,11 @@ export class ChainSelectComponent implements OnInit {
   @Output() selectChange: EventEmitter<ChainListChange> =
     new EventEmitter<ChainListChange>();
 
-  readonly deleteIcon = Icons.delete;
-  readonly deleteIconSize = IconSize.small;
-  readonly addIcon = Icons.add;
-  readonly addIconSize = IconSize.small;
+  readonly icons = Icons;
+  readonly iconSize = IconSize;
+  readonly buttonType = ButtonType;
+  readonly buttonSize = ButtonSize;
   public chainLinkList: ChainLink[];
-  public arrowIcon = Icons.arrow_right;
 
   constructor() {}
 
