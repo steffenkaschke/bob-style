@@ -315,6 +315,7 @@ export { AlertType } from './lib/popups/alert/alert.enum';
 export { LightboxModule } from './lib/popups/lightbox/lightbox.module';
 export { LightboxService } from './lib/popups/lightbox/lightbox.service';
 export { LightboxComponent } from './lib/popups/lightbox/lightbox.component';
+export { VideoEmbedComponent } from './lib/popups/lightbox/video-embed/video-embed.component';
 export { LightboxConfig, LightboxData } from './lib/popups/lightbox/lightbox.interface';
 
 
