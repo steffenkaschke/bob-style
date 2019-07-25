@@ -51,10 +51,12 @@ export class VideoEmbedComponent implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.lightbox) {
+    if (this.lightbox && this.lightbox.lightboxComponentRef) {
       this.lightbox.lightboxComponentRef.destroy();
-      this.lightbox.overlayRef.dispose();
       this.lightbox.lightboxComponentRef = null;
+    }
+    if (this.lightbox && this.lightbox.overlayRef) {
+      this.lightbox.overlayRef.dispose();
       this.lightbox.overlayRef = null;
     }
   }

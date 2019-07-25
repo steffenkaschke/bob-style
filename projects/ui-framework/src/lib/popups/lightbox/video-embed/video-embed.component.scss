@@ -14,6 +14,18 @@ $triangle-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
   cursor: pointer;
   position: relative;
 
+  &:before,
+  &:after {
+    @include pseudo;
+  }
+
+  &:before {
+    @include size(100%);
+    @include position;
+    background-color: black(0.1);
+    transition: background-color 0.3s;
+  }
+
   &:after {
     @include pseudo;
     @include size(54px);
@@ -24,5 +36,15 @@ $triangle-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
     background-size: 18px auto;
     @include position(50% null null 50%);
     margin: (-54px/2) 0 0 (-54px/2);
+    transition: transform 0.3s;
+  }
+
+  &:hover {
+    &:before {
+      background-color: black(0.2);
+    }
+    &:after {
+      transform: scale(1.1);
+    }
   }
 }
