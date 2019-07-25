@@ -4,6 +4,7 @@ import { outsideZone } from '../../../ui-framework/src/lib/services/utils/rxjs.o
 
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MobileService } from '../../../ui-framework/src/lib/services/utils/mobile.service';
+import { URLutils } from '../../../ui-framework/src/lib/services/url/url-utils.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private utilsService: UtilsService,
     private zone: NgZone,
-    private mobileService: MobileService
+    private mobileService: MobileService,
+    private URL: URLutils
   ) {}
 
   editorValue = 'some text';
@@ -28,6 +30,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.URL.parseVideoURL('https://www.youtube.com/watch?v=BvQ571eAOZE');
+
     this.scrollSubscription = this.utilsService
       .getScrollEvent()
       .pipe(outsideZone(this.zone))
