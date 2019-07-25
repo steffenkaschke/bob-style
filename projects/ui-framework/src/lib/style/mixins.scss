@@ -217,7 +217,6 @@
   &:before {
     content: '';
     float: left;
-    padding-bottom: $padding;
     @include ratioPad($ratio-or-width, $height);
   }
   &:after {
