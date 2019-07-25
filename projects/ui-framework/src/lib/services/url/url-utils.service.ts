@@ -68,6 +68,10 @@ export class URLutils {
   parseVideoURL(url: string): VideoData {
     const urlData = this.getData(url);
 
+    if (!urlData) {
+      return undefined;
+    }
+
     if (urlData.hostname.includes('youtu')) {
       const id = this.getYoutubeVideoID(urlData.href);
       return {
