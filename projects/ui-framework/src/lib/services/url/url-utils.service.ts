@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { stringify } from '../utils/functional-utils';
 import { allowedDomainsTest, naiveLinkTest, imageLinkTest } from './url.const';
+import { VideoData } from './url.interface';
 
 @Injectable()
 export class URLutils {
@@ -51,5 +52,13 @@ export class URLutils {
         Object.keys(allowedDomainsTest)
       )}]`
     );
+  }
+
+  parseVideoURL(url: string): VideoData {
+    const rec = this.reconstruct(url);
+
+    console.log(rec);
+
+    return;
   }
 }

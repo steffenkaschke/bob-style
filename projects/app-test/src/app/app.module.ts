@@ -10,6 +10,7 @@ import { FormElementsModule } from '../../../ui-framework/src/public_api';
 import { FormsModule } from '@angular/forms';
 import { EventManagerModule } from './event-manager/event-manager.module';
 import { ClassBinderTesterModule } from './class-binder/class-binder.module';
+import { UrlUtilsModule } from '../../../ui-framework/src/lib/services/url/url-utils.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +24,8 @@ import { ClassBinderTesterModule } from './class-binder/class-binder.module';
     FormElementsModule,
     FormsModule,
     EventManagerModule,
-    ClassBinderTesterModule
+    ClassBinderTesterModule,
+    UrlUtilsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
