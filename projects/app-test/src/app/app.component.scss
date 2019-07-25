@@ -3,13 +3,16 @@
 @import '../../../ui-framework/src/lib/style/mixins';
 
 :host {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
   background-color: rgb(245, 245, 245);
-  padding: 30px;
   font-size: 14px;
-  height: 200vh;
 
-  @include animate('slide-up', 1s, $keyframes: true);
+  nav {
+    display: block;
+    border-bottom: 1px solid black;
+    margin-bottom: 20px;
+    a {
+      display: inline-block;
+      margin-right: 20px;
+    }
+  }
 }
