@@ -208,7 +208,7 @@ $icon-colors: (
   }
 
   @each $colorKey, $colors in $icon-colors {
-    &.b-icon-#{$colorKey} {
+    &.b-icon-#{'' + $colorKey} {
       @include icon-color($colorKey, true);
     }
   }
