@@ -58,7 +58,9 @@ export class CardsLayoutComponent
   }
 
   ngOnDestroy(): void {
-    this.resizeSubscription.unsubscribe();
+    if (this.resizeSubscription) {
+      this.resizeSubscription.unsubscribe();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
