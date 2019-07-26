@@ -7,7 +7,7 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { DatepickerModule } from './datepicker.module';
+import { PasswordInputModule } from './password-input.module';
 import { ComponentGroupType } from '../../consts';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,23 +18,25 @@ const datepickerStories = storiesOf(
   module
 ).addDecorator(withKnobs);
 const template = `
-<b-datepicker (dateChange)="dateChange($event)"
-              [dateFormat]="dateFormat"
-
-              [inputLabel]="label"
+<b-password-input
+              [value]="value"
+              [label]="label"
               [placeholder]="placeholder"
-
+              [minChars]="minChars"
+              [maxChars]="maxChars"
               [hintMessage]="hintMessage"
               [warnMessage]="warnMessage"
               [errorMessage]="errorMessage"
-
               [disabled]="disabled"
-              [required]="required">
-</b-datepicker>
+              [required]="required"
+              [hideLabelOnFocus]="hideLabelOnFocus"
+              [enableBrowserAutoComplete]="enableBrowserAutoComplete"
+              (changed)="onChange($event)">
+</b-password-input>
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Datepicker'">
+<b-story-book-layout [title]="'Password Input'">
   <div style="flex:1; max-width: 300px;">
     ${template}
   </div>
@@ -42,51 +44,57 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Datepicker
-
-  #### Module
-  *DatepickerModule*
+  ## Password Input
 
   #### Properties
 
-  Name | Type | Description | Default value
+  Name | Type | Description
   --- | --- | --- | ---
-  inputLabel | string | label text (above input) | none
-  placeholder | string | placeholder text (inside input) | none
-  dateFormat | string | Input date format | DD/MM/YYYY (optional) |
-  (dateChange) | EventEmitter | Date change callback |
-
+  value | string | value of input field
+  label | string | label text (above input)
+  placeholder | string | placeholder text (inside input)
+  minChars | number | min length
+  maxChars | number | max length
   disabled | boolean | is field disabled
   required | boolean | is field required
   hintMessage | string | hint text
   warnMessage | string | warning text
   errorMessage | string | error text
-
+  hideLabelOnFocus | boolean | if true: there will be no label above input, label text (if present) will be used as placeholder
+  enableBrowserAutoComplete | InputAutoCompleteOptions | shows browser autocomplete options
+  (changed) | InputEvent | input events emitter
   ~~~
   ${template}
   ~~~
 `;
 
 datepickerStories.add(
-  'Datepicker',
+  'Password Input',
   () => {
     return {
       template: storyTemplate,
       props: {
-        dateFormat: text('dateFormat', 'DD/MM/YYYY'),
-        label: text('label', 'Date picker'),
-        placeholder: text('placeholder', 'Input placeholder'),
+        value: text('value', ''),
+        label: text('label', 'Password input'),
+        placeholder: text('placeholder', 'Enter password'),
+        minChars: number('minChars', undefined),
+        maxChars: number('maxChars', undefined),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
-        hintMessage: text('hintMessage', 'This field should contain something'),
+        hintMessage: text(
+          'hintMessage',
+          'Should be at least 8 characters long'
+        ),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
-        dateChange: action('Date Changed')
+        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
+        enableBrowserAutoComplete: boolean('enableBrowserAutoComplete', false),
+        onChange: action('Input changed')
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
-          DatepickerModule,
+          PasswordInputModule,
           StoryBookLayoutModule
         ]
       }
