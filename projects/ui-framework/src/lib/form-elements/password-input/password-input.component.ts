@@ -45,7 +45,6 @@ export class PasswordInputComponent extends BaseInputElement {
 
   constructor() {
     super();
-    this.inputTransformers = [];
     this.outputTransformers = [];
   }
 
