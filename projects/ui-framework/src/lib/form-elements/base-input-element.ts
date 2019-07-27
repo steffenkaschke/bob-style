@@ -38,10 +38,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   > = new EventEmitter<InputEvent>();
 
   onInputChange(event) {
-    if (
-      event.target.value !== this.value &&
-      this.changed.observers.length > 0
-    ) {
+    if (event.target.value !== this.value) {
       this.zone.run(() => {
         this.writeValue(event.target.value);
         this.transmitValue(this.value, {
@@ -49,7 +46,6 @@ export abstract class BaseInputElement extends BaseFormElement {
         });
       });
     }
-    this.cd.detectChanges();
   }
 
   onInputFocus() {

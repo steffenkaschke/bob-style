@@ -7,7 +7,7 @@ import { By } from '@angular/platform-browser';
 import { Social } from './social.enum';
 import { SocialTypes } from './social.const';
 import { InputEventType } from '../form-elements.enum';
-import { URLutils } from '../../services/url/url-utils';
+import { URLutils } from '../../services/url/url-utils.service';
 
 describe('SocialComponent', () => {
   let component: SocialComponent;

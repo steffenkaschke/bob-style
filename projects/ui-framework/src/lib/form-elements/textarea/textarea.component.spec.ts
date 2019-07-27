@@ -51,13 +51,11 @@ describe('TextareaComponent', () => {
       });
     });
     it('should emit InputEvent on model change with input value, if there is a subscriber to the event', () => {
-      component.changed.subscribe(() => {});
       inputValue(textareaElement, 'change input value', false);
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
         value: 'change input value'
       });
-      component.changed.unsubscribe();
     });
   });
 });

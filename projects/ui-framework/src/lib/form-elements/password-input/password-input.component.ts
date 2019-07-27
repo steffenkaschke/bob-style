@@ -59,5 +59,6 @@ export class PasswordInputComponent extends BaseInputElement {
       this.inputType === InputTypes.password
         ? InputTypes.text
         : InputTypes.password;
+    this.cd.detectChanges();
   }
 }

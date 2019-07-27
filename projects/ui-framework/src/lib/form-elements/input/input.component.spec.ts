@@ -52,13 +52,7 @@ describe('InputComponent', () => {
         value: 'input value'
       });
     });
-    it('should NOT emit InputEvent on model change with input value, if there are no subscribers to the event', () => {
-      inputValue(inputElement, 'change input value', false);
-      expect(component.changed.emit).not.toHaveBeenCalled();
-      expect(component.propagateChange).not.toHaveBeenCalled();
-    });
-    it('should emit InputEvent on model change with input value, if there is a subscriber to the event', () => {
-      component.changed.subscribe(() => {});
+    it('should emit InputEvent on model change with input value', () => {
       inputValue(inputElement, 'change input value', false);
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
@@ -67,7 +61,6 @@ describe('InputComponent', () => {
       expect(component.propagateChange).toHaveBeenCalledWith(
         'change input value'
       );
-      component.changed.unsubscribe();
     });
 
     it('should NOT emit InputEvent on keyup, if there are no subscribers to the event', () => {
@@ -96,7 +89,6 @@ describe('InputComponent', () => {
   describe('transforms', () => {
     it('should return input value as number', () => {
       component.inputType = InputTypes.number;
-      component.changed.subscribe(() => {});
       fixture.detectChanges();
       inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
       inputValue(inputElement, 500, false);
@@ -105,7 +97,6 @@ describe('InputComponent', () => {
         value: 500
       });
       expect(component.propagateChange).toHaveBeenCalledWith(500);
-      component.changed.unsubscribe();
     });
   });
 });
