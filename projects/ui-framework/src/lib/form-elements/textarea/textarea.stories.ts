@@ -24,6 +24,7 @@ const template = `
             [placeholder]="placeholder"
             [maxChars]="maxChars"
             [minChars]="minChars"
+            [readonly]="readonly"
             [disabled]="disabled"
             [required]="required"
             [hintMessage]="hintMessage"
@@ -54,6 +55,7 @@ const note = `
   placeholder | string | placeholder text (inside input)
   minChars | number | minimum length
   maxChars | number | maximum characters
+  readonly | boolean | disables input
   disabled | boolean | is field disabled
   required | boolean | is field required
   hintMessage | text | hint text
@@ -79,6 +81,7 @@ textareaStories.add(
         minChars: number('minChars', ''),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
+        readonly: boolean('readonly', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', '')

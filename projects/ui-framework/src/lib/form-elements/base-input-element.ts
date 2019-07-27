@@ -1,4 +1,10 @@
-import { EventEmitter, Input, Output, NgZone } from '@angular/core';
+import {
+  EventEmitter,
+  Input,
+  Output,
+  NgZone,
+  ChangeDetectorRef
+} from '@angular/core';
 import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
 import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
@@ -8,7 +14,10 @@ import { Keys } from '../enums';
 import { asNumber, stringyOrFail } from '../services/utils/transformers';
 
 export abstract class BaseInputElement extends BaseFormElement {
-  protected constructor(protected zone: NgZone) {
+  protected constructor(
+    protected zone: NgZone,
+    protected cd: ChangeDetectorRef
+  ) {
     super();
     this.inputTransformers = [stringyOrFail];
     this.outputTransformers = [value => asNumber(this.inputType, value)];
@@ -40,6 +49,7 @@ export abstract class BaseInputElement extends BaseFormElement {
         });
       });
     }
+    this.cd.detectChanges();
   }
 
   onInputFocus() {

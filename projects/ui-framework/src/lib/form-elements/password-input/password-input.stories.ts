@@ -27,6 +27,7 @@ const template = `
               [hintMessage]="hintMessage"
               [warnMessage]="warnMessage"
               [errorMessage]="errorMessage"
+              [readonly]="readonly"
               [disabled]="disabled"
               [required]="required"
               [hideLabelOnFocus]="hideLabelOnFocus"
@@ -55,6 +56,7 @@ const note = `
   placeholder | string | placeholder text (inside input)
   minChars | number | min length
   maxChars | number | max length
+  readonly | boolean | disables input
   disabled | boolean | is field disabled
   required | boolean | is field required
   hintMessage | string | hint text
@@ -79,6 +81,7 @@ datepickerStories.add(
         placeholder: text('placeholder', 'Enter password'),
         minChars: number('minChars', undefined),
         maxChars: number('maxChars', undefined),
+        readonly: boolean('readonly', false),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text(

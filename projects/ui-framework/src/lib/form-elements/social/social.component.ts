@@ -19,7 +19,7 @@ import { BaseFormElement } from '../base-form-element';
 import { FormEvents, InputEventType } from '../form-elements.enum';
 import { InputComponent } from '../input/input.component';
 import { stringyOrFail } from '../../services/utils/transformers';
-import { URLutils } from '../../services/url/url-utils';
+import { URLutils } from '../../services/url/url-utils.service';
 
 @Component({
   selector: 'b-social',

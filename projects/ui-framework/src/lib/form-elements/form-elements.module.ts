@@ -22,6 +22,7 @@ import { SplitInputSingleSelectModule } from './split-input-single-select/split-
 import { SplitInputSingleSelectComponent } from './split-input-single-select/split-input-single-select.component';
 import { RichTextEditorModule } from './rich-text-editor/rte.module';
 import { RichTextEditorComponent } from './rich-text-editor/rte.component';
+import { EventManagerPlugins } from '../services/utils/eventManager.plugins';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { RichTextEditorComponent } from './rich-text-editor/rte.component';
     RichTextEditorComponent,
     ChipInputComponent,
     SocialComponent
-  ]
+  ],
+  providers: [EventManagerPlugins[0]]
 })
 export class FormElementsModule {}
