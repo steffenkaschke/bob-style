@@ -14,6 +14,7 @@ describe('InputComponent', () => {
   let fixture: ComponentFixture<PasswordInputComponent>;
   let inputElement: HTMLInputElement;
   let showButtonElement: ElementRef;
+  let showButtonIconElement: ElementRef;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -55,11 +56,15 @@ describe('InputComponent', () => {
       showButtonElement = fixture.debugElement.query(By.css('.bfe-suffix'));
       expect(showButtonElement).toBeFalsy();
     });
-    it('should show the button when input has text', () => {
+    it('should show the button when input has text; icon should have class .b-icon-visibility-on', () => {
       inputValue(inputElement, 'text');
       fixture.detectChanges();
       showButtonElement = fixture.debugElement.query(By.css('.bfe-suffix'));
+      showButtonIconElement = fixture.debugElement.query(By.css('.b-icon'));
       expect(showButtonElement).toBeTruthy();
+      expect(showButtonIconElement.nativeElement.classList).toContain(
+        'b-icon-visibility-on'
+      );
     });
   });
 
@@ -68,14 +73,18 @@ describe('InputComponent', () => {
       fixture.detectChanges();
       expect(inputElement.getAttribute('type')).toEqual('password');
     });
-    it('should switch to input type text, when input has text and show button is clicked', () => {
+    it('should switch to input type text, when input has text and show button is clicked; icon should change to class .b-icon-visibility-off', () => {
       inputValue(inputElement, 'text');
       fixture.detectChanges();
       expect(inputElement.getAttribute('type')).toEqual('password');
       showButtonElement = fixture.debugElement.query(By.css('.bfe-suffix'));
+      showButtonIconElement = fixture.debugElement.query(By.css('.b-icon'));
       showButtonElement.nativeElement.click();
       fixture.detectChanges();
       expect(inputElement.getAttribute('type')).toEqual('text');
+      expect(showButtonIconElement.nativeElement.classList).toContain(
+        'b-icon-visibility-off'
+      );
     });
   });
 });
