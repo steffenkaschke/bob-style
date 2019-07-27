@@ -1,7 +1,7 @@
 @import '../../style/variables';
 @import '../../style/keyframes';
 @import '../../style/mixins';
-@import '../../buttons-indicators/mini-preloader/mini-preloader-mixin';
+@import '../../style/preloader.mixin';
 
 $lighbox-padding: 50px;
 
@@ -113,12 +113,9 @@ $lighbox-padding: 50px;
 
 // animations
 
-@include keyframes(slide-up);
-@include keyframes(fade-in);
-
 ::ng-deep {
   .b-lightbox-panel {
-    @include animate(fade-in);
+    @include animate(fade-in, $keyframes: true);
   }
 }
 
@@ -136,5 +133,5 @@ $lighbox-padding: 50px;
 }
 
 .lightbox-container {
-  @include animate(slide-up);
+  @include animate(slide-up, $keyframes: true);
 }

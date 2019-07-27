@@ -29,10 +29,11 @@ const template = `
         [label]="label"
         [placeholder]="placeholder"
         [hideLabelOnFocus]="hideLabelOnFocus"
+        [minChars]="minChars"
+        [maxChars]="maxChars"
+        [readonly]="readonly"
         [disabled]="disabled"
         [required]="required"
-        [readonly]="readonly"
-        [maxChars]="maxChars"
         [hintMessage]="hintMessage"
         [warnMessage]="warnMessage"
         [errorMessage]="errorMessage"
@@ -62,6 +63,7 @@ const note = `
   label | string | label text (above input)
   placeholder | string | placeholder text (inside input)
   hideLabelOnFocus | boolean | if true: there will be no label above input, label text (if present) will be used as placeholder
+  minChars | number | minimum length
   maxChars | number | maximum length
   disabled | boolean | is field disabled
   required | boolean | is field required
@@ -69,7 +71,7 @@ const note = `
   warnMessage | string | warning text
   errorMessage | string | error text
   enableBrowserAutoComplete | InputAutoCompleteOptions | shows browser autocomplete options
-  inputEvents | InputEvent | input events emitter
+  (inputEvents) | InputEvent | input events emitter
 
   ~~~
   ${template}
@@ -86,7 +88,7 @@ inputStories.add(
         value: text('value', ''),
         label: text('label', 'Input label'),
         placeholder: text('placeholder', 'Input placeholder'),
-        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
+        minChars: number('minChars', ''),
         maxChars: number('maxChars', 30),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
@@ -96,6 +98,7 @@ inputStories.add(
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
 
+        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         enableBrowserAutoComplete: select(
           'enableBrowserAutoComplete',
           inputAutoCompleteOptions,

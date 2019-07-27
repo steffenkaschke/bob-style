@@ -13,6 +13,7 @@
             [disabled]="disabled"
             [required]="required"
             [readonly]="readonly"
+            [attr.minlength]="minChars"
             [attr.maxlength]="maxChars"
             (input.outside-zone)="onInputChange($event)"
             (blur)="onInputBlur()"

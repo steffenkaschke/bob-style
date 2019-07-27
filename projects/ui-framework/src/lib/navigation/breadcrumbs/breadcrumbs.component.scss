@@ -74,11 +74,13 @@ b-text-button {
     .steps {
       @include size(100%);
       @include position;
+      z-index: 0;
       justify-content: center;
     }
 
     .buttons {
       margin-left: auto;
+      position: relative;
     }
   }
 }
