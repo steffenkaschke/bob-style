@@ -63,10 +63,8 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
       .getMediaEvent()
       .pipe(outsideZone(this.zone))
       .subscribe((media: MediaEvent) => {
-        this.zone.run(() => {
-          this.isMobile = media.matchMobile;
-          this.cd.detectChanges();
-        });
+        this.isMobile = media.matchMobile;
+        this.cd.detectChanges();
       });
   }
 
