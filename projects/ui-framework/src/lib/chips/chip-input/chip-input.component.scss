@@ -31,6 +31,11 @@
       border-right: 0;
     }
 
+    .bfe-input {
+      transition: all 0s;
+      transition-delay: 0.05s;
+    }
+
     &:not(.focused):not(.empty) {
       .bfe-input.empty {
         max-height: 0px;

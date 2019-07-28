@@ -103,7 +103,7 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
       this.value = this.date = value;
 
       this.transmitValue(value, {
-        eventType: [InputEventType.onBlur],
+        eventType: [InputEventType.onChange],
         addToEventObj: { date: this.date }
       });
     }

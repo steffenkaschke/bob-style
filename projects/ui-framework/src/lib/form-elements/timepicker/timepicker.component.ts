@@ -152,7 +152,7 @@ export class TimePickerComponent extends BaseFormElement {
     const newValue = this.combineValue(this.valueHours, this.valueMinutes);
     if (this.value !== newValue) {
       this.value = newValue;
-      this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
+      this.transmitValue(this.value, { eventType: [InputEventType.onChange] });
     }
   }
 
