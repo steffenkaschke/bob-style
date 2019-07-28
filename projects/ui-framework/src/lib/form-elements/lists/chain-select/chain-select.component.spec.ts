@@ -6,6 +6,7 @@ import { IconsModule } from '../../../icons/icons.module';
 import { ComponentRendererModule } from '../../../services/component-renderer/component-renderer.module';
 import { By } from '@angular/platform-browser';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ListChange } from '../list-change/list-change';
 
 describe('EmployeeChainSelectComponent', () => {
   let component: ChainSelectComponent;
@@ -66,7 +67,7 @@ describe('EmployeeChainSelectComponent', () => {
     component = fixture.componentInstance;
     component.selectComponent = TestComponent;
     component.selectedIds = [];
-    component.selectedIdsKey = 'selectedIds';
+    component.selectedIdKey = 'selectedId';
     component.outputKey = 'selectChange';
     fixture.detectChanges();
   });
@@ -75,23 +76,32 @@ describe('EmployeeChainSelectComponent', () => {
     it('Should set one empty chain link if none are selected', () => {
       expect(component.chainLinkList).toEqual([emptyChainLink]);
     });
+
     it('Should set chain links according to selected ids', () => {
-      component.selectedIds = [
-        ['123']
-      ];
+      component.selectedIds = ['123'];
       component.ngOnInit();
       expect(component.chainLinkList).toEqual([{
         active: false,
         selectComponentConfig: {
           component: TestComponent,
           attributes: {
-            'selectedIds': ['123'],
+            'selectedId': '123',
           },
           handlers: {
             'selectChange': jasmine.any(Function)
           }
         }
       }]);
+    });
+
+    it('Should set empty state', () => {
+      expect(component.state[0].getSelectedIds()).toEqual([]);
+    });
+
+    it('Should set state from selected IDs', () => {
+      component.selectedIds = ['123'];
+      component.ngOnInit();
+      expect(component.state[0].getSelectedIds()).toEqual(['123']);
     });
   });
 
@@ -106,8 +116,11 @@ describe('EmployeeChainSelectComponent', () => {
       component.addChainLink();
       fixture.detectChanges();
       const selectElement = fixture.debugElement.queryAll(By.css('select'))[1];
-      selectElement.triggerEventHandler('click', { id: 'test-id'});
-      expect(component.selectChange.emit).toHaveBeenCalledWith({listChange: { id: 'test-id'}, index: 1});
+      selectElement.triggerEventHandler('click', new ListChange([]));
+      expect(component.selectChange.emit).toHaveBeenCalledWith([
+        jasmine.any(ListChange),
+        jasmine.any(ListChange),
+      ]);
     });
   });
 
@@ -119,6 +132,12 @@ describe('EmployeeChainSelectComponent', () => {
       fixture.detectChanges();
       const selectElements = fixture.debugElement.queryAll(By.css('select'));
       expect(selectElements.length).toEqual(1);
+    });
+
+    it('Should modify state', () => {
+      component.addChainLink();
+      component.removeChainLink(1);
+      expect(component.state[1]).toBeUndefined();
     });
   });
 

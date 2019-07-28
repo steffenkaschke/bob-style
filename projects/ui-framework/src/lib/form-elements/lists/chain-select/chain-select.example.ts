@@ -45,7 +45,7 @@ export class ChainSingleSelectExampleComponent implements OnInit {
   template: `
     <b-chain-select [selectComponent]="selectComponent"
                     [actionLabel]="actionLabel"
-                    [selectedIdsKey]="selectedIdsKey"
+                    [selectedIdKey]="selectedIdKey"
                     [selectedIds]="selectedIds"
                     [outputKey]="outputKey"
                     (selectChange)="change($event)">
@@ -54,7 +54,7 @@ export class ChainSingleSelectExampleComponent implements OnInit {
 })
 export class ChainSelectExampleComponent {
   public selectedIds = [1, 2, 3];
-  public selectedIdsKey = 'selectedId';
+  public selectedIdKey = 'selectedId';
   public outputKey = 'selectChange';
   public selectComponent = ChainSingleSelectExampleComponent;
   public actionLabel = 'Add another';
