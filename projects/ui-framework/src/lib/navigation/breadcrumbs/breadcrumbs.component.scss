@@ -1,9 +1,12 @@
+@import '../../style/typography';
 @import '../../style/shapes';
 @import '../../style/variables';
 @import '../../style/mixins';
 
+$breadcrumbs-height: base8(60);
+
 :host {
-  padding: times8(2) 0;
+  height: $breadcrumbs-height;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -107,4 +110,5 @@ b-text-button {
 
 b-text-button {
   text-transform: uppercase;
+  font-size: 16px;
 }
