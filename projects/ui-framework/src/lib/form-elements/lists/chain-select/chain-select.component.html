@@ -5,9 +5,11 @@
        (mouseleave)="deactivateChainLink($event, i)">
 
     <b-square-button class="delete-button"
+                     *ngIf="chainLink.active"
                      [type]="buttonType.tertiary"
                      [size]="buttonSize.large"
-                     [icon]="icons.delete">
+                     [icon]="icons.delete"
+                     (click)="removeChainLink(i)">
     </b-square-button>
 
     <b-component-renderer [render]="chainLink.selectComponentConfig">

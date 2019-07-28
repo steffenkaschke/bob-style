@@ -5,6 +5,7 @@ import { ChainSelectComponent } from './chain-select.component';
 import { IconsModule } from '../../../icons/icons.module';
 import { ComponentRendererModule } from '../../../services/component-renderer/component-renderer.module';
 import { By } from '@angular/platform-browser';
+import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 
 describe('EmployeeChainSelectComponent', () => {
   let component: ChainSelectComponent;
@@ -52,6 +53,7 @@ describe('EmployeeChainSelectComponent', () => {
       imports: [
         CommonModule,
         IconsModule,
+        ButtonsModule,
         ComponentRendererModule,
         TestSelectModule,
       ],
@@ -63,8 +65,8 @@ describe('EmployeeChainSelectComponent', () => {
     fixture = TestBed.createComponent(ChainSelectComponent);
     component = fixture.componentInstance;
     component.selectComponent = TestComponent;
-    component.selected = [];
-    component.selectedKey = 'selectedIds';
+    component.selectedIds = [];
+    component.selectedIdsKey = 'selectedIds';
     component.outputKey = 'selectChange';
     fixture.detectChanges();
   });
@@ -74,7 +76,7 @@ describe('EmployeeChainSelectComponent', () => {
       expect(component.chainLinkList).toEqual([emptyChainLink]);
     });
     it('Should set chain links according to selected ids', () => {
-      component.selected = [
+      component.selectedIds = [
         ['123']
       ];
       component.ngOnInit();
@@ -121,19 +123,19 @@ describe('EmployeeChainSelectComponent', () => {
   });
 
   describe('activateChainLink', () => {
-    it('Should show the delete icon', () => {
+    it('Should insert the delete icon', () => {
       component.addChainLink();
       fixture.detectChanges();
       const chainLinkRow = fixture.debugElement.queryAll(By.css('.chain-link-row'))[1];
       chainLinkRow.triggerEventHandler('mouseenter', {});
       fixture.detectChanges();
-      const deleteContainer = fixture.debugElement.query(By.css('.delete-container'));
-      expect(deleteContainer).not.toBeNull();
+      const deleteButton = fixture.debugElement.query(By.css('.delete-button'));
+      expect(deleteButton).not.toBeNull();
     });
   });
 
   describe('deactivateChainLink', () => {
-    it('Should show the delete icon', () => {
+    it('Should remove the delete icon', () => {
       component.addChainLink();
       fixture.detectChanges();
       const chainLinkRow = fixture.debugElement.queryAll(By.css('.chain-link-row'))[1];
@@ -141,8 +143,8 @@ describe('EmployeeChainSelectComponent', () => {
       fixture.detectChanges();
       chainLinkRow.triggerEventHandler('mouseleave', {});
       fixture.detectChanges();
-      const deleteContainer = fixture.debugElement.query(By.css('.delete-container'));
-      expect(deleteContainer).toBeNull();
+      const deleteButton = fixture.debugElement.query(By.css('.delete-button'));
+      expect(deleteButton).toBeNull();
     });
   });
 });

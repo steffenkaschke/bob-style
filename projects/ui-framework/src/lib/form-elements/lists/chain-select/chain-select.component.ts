@@ -12,9 +12,9 @@ import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/butt
 export class ChainSelectComponent implements OnInit {
   @Input() actionLabel: string;
   @Input() selectComponent: Type<any>;
-  @Input() selectedKey?: string;
+  @Input() selectedIdsKey?: string;
   @Input() outputKey: string;
-  @Input() selected?: (string[]| number[])[] = [];
+  @Input() selectedIds?: (string[]| number[])[] = [];
   @Output() selectChange: EventEmitter<ChainListChange> =
     new EventEmitter<ChainListChange>();
 
@@ -27,15 +27,15 @@ export class ChainSelectComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (isEmpty(this.selected) || !this.selectedKey) {
+    if (isEmpty(this.selectedIds) || !this.selectedIdsKey) {
       this.chainLinkList = [this.createEmptyChainLink(0)];
     } else {
-      this.chainLinkList = this.selected.map((sel, index) => ({
+      this.chainLinkList = this.selectedIds.map((sel, index) => ({
         active: false,
         selectComponentConfig: {
           component: this.selectComponent,
           attributes: {
-            [this.selectedKey]: sel,
+            [this.selectedIdsKey]: sel,
           },
           handlers: {
             [this.outputKey]: $event => this.selectChange.emit({ index, listChange: $event })
