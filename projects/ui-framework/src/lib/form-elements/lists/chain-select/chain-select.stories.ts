@@ -36,8 +36,8 @@ const note = `
   actionLabel | string | action label text | none
   outputKey | string | key of event emitter in selectComponent | none
   selectChange | action | returns object with listChange and index each time a select in the chain is changed | none
-  selected | (string[] or number[])[] | selected values for each selectComponent | none (Optional)
-  selectedKey | string | key of selected values input in selectComponent | none (Optional)
+  selectedIds | (string or number)[] | selected values for each selectComponent | none (Optional)
+  selectedIdKey | string | key of selected values input in selectComponent | none (Optional)
 
   ~~~
   ${template}
@@ -49,7 +49,7 @@ buttonStories.add(
   () => ({
     template: storyTemplate,
     props: {
-      selectChange: action('Chain select change'),
+      selectChange: action('Chain select state'),
     },
     moduleMetadata: {
       imports: [
