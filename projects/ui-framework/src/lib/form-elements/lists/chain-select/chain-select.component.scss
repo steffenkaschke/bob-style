@@ -36,59 +36,5 @@
       text-transform: none;
       font-size: $font-size-body;
     }
-
-    //button.medium {
-    //  height: 48px;
-    //  background-color: $white;
-    //  border: 1px dashed $grey-500;
-    //  color: $primary-500;
-    //
-    //  &:before {
-    //    color: $primary-500;
-    //  }
-    //
-    //  &:hover {
-    //    background-color: $white;
-    //    border-color: $primary-500;
-    //  }
-    //}
   }
 }
-
-//.add-chain-link {
-//  height: 48px;
-//  margin-left: 20px;
-//  padding-top: 14px;
-//  background-color: $white;
-//  border: 1px dashed $grey-500;
-//  border-radius: 4px;
-//  cursor: pointer;
-//
-//  &:hover {
-//    box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.04);
-//    border-color: $primary-500;
-//  }
-//
-//  .add-icon-container {
-//    padding-left: 12px;
-//  }
-//
-//  .action-label {
-//    color: $primary-500;
-//    padding-left: 12px;
-//  }
-//
-//  &.isDisabled {
-//    pointer-events: none;
-//    background-color: $white;
-//
-//    .action-label {
-//      color: $grey-500;
-//    }
-//
-//    &:hover {
-//      border-color: $grey-500;
-//      box-shadow: none;
-//    }
-//  }
-//}
