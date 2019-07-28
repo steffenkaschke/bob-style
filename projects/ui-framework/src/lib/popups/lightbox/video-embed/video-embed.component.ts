@@ -25,8 +25,8 @@ export class VideoEmbedComponent implements OnChanges, OnDestroy {
   ) {}
 
   @Input() url: string;
-  private videoData: VideoData;
-  private lightbox: LightboxData;
+  public videoData: VideoData;
+  public lightbox: LightboxData;
 
   @HostListener('click')
   onClick() {
