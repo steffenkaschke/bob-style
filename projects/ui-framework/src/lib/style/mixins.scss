@@ -248,14 +248,14 @@
   }
 }
 
-@mixin mobile {
-  @media (max-width: $breakpoint-device-sm) {
+@mixin mobile($break: $breakpoint-device-sm) {
+  @media (max-width: $break) {
     @content;
   }
 }
 
-@mixin desktop {
-  @media (min-width: ($breakpoint-device-sm + 1px)) {
+@mixin desktop($break: $breakpoint-device-sm) {
+  @media (min-width: ($break + 1px)) {
     @content;
   }
 }
