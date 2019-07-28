@@ -3,7 +3,7 @@
 @import '../../style/variables';
 @import '../../style/mixins';
 
-$breadcrumbs-height: base8(60);
+$breadcrumbs-height: base8(64);
 
 :host {
   height: $breadcrumbs-height;
