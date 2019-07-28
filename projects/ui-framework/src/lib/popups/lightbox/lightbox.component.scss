@@ -3,16 +3,21 @@
 @import '../../style/mixins';
 @import '../../style/preloader.mixin';
 
-$lighbox-padding: 50px;
+$lightbox-padding: base8(50);
+$lightbox-padding-mob: times8(3);
 
 ::ng-deep {
   .b-lightbox-panel {
     @include size(100%);
     @include flex-align;
-    padding: $lighbox-padding;
+    padding: $lightbox-padding;
     background-color: black(0.75);
     overflow: hidden;
     position: relative;
+
+    @include mobile {
+      padding: $lightbox-padding-mob;
+    }
   }
 }
 
@@ -61,9 +66,14 @@ $lighbox-padding: 50px;
 
 .lightbox-video {
   @include size(100%);
-  max-width: calc((100vh - #{$lighbox-padding * 2}) * 16 / 9);
-  max-height: calc((100vw - #{$lighbox-padding * 2}) * 9 / 16);
+  max-width: calc((100vh - #{$lightbox-padding * 2}) * 16 / 9);
+  max-height: calc((100vw - #{$lightbox-padding * 2}) * 9 / 16);
   position: relative;
+
+  @include mobile {
+    max-width: calc((100vh - #{$lightbox-padding-mob * 2}) * 16 / 9);
+    max-height: calc((100vw - #{$lightbox-padding-mob * 2}) * 9 / 16);
+  }
 }
 
 // component
