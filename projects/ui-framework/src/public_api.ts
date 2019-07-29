@@ -189,6 +189,9 @@ export {
 } from './lib/form-elements/lists/list.interface';
 export { ListChange } from './lib/form-elements/lists/list-change/list-change';
 export {
+  ChainSelectComponent
+} from './lib/form-elements/lists/chain-select/chain-select.component';
+export {
   ChainSelectModule
 } from './lib/form-elements/lists/chain-select/chain-select.module';
 // Rich Text Editor
