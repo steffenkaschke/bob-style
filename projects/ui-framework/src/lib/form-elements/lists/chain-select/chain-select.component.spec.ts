@@ -66,10 +66,10 @@ describe('EmployeeChainSelectComponent', () => {
     fixture = TestBed.createComponent(ChainSelectComponent);
     component = fixture.componentInstance;
     component.selectComponent = TestComponent;
-    component.selectedIds = [];
     component.selectComponentConfig = {
       selectedIdKey: 'selectedId',
       outputKey: 'selectChange',
+      selectedIds: [],
     };
     fixture.detectChanges();
   });
@@ -80,7 +80,7 @@ describe('EmployeeChainSelectComponent', () => {
     });
 
     it('Should set chain links according to selected ids', () => {
-      component.selectedIds = ['123'];
+      component.selectComponentConfig.selectedIds = ['123'];
       component.ngOnInit();
       expect(component.chainLinkList).toEqual([{
         active: false,
@@ -102,7 +102,7 @@ describe('EmployeeChainSelectComponent', () => {
     });
 
     it('Should create select element for each selected ID', () => {
-      component.selectedIds = ['123'];
+      component.selectComponentConfig.selectedIds = ['123'];
       component.ngOnInit();
       fixture.detectChanges();
       const selectElements = fixture.debugElement.queryAll(By.css('select'));
@@ -114,7 +114,7 @@ describe('EmployeeChainSelectComponent', () => {
     });
 
     it('Should set state from selected IDs', () => {
-      component.selectedIds = ['123'];
+      component.selectComponentConfig.selectedIds = ['123'];
       component.ngOnInit();
       expect(component.state[0].getSelectedIds()).toEqual(['123']);
     });

@@ -46,17 +46,16 @@ export class ChainSingleSelectExampleComponent implements OnInit {
     <b-chain-select [selectComponent]="selectComponent"
                     [selectComponentConfig]="selectComponentConfig"
                     [actionLabel]="actionLabel"
-                    [selectedIds]="selectedIds"
                     (selectChange)="change($event)">
     </b-chain-select>
   `
 })
 export class ChainSelectExampleComponent {
-  public selectedIds = [1, 2, 3];
   public selectComponent = ChainSingleSelectExampleComponent;
   public selectComponentConfig = {
     selectedIdKey: 'selectedId',
     outputKey: 'selectChange',
+    selectedIds: [1, 2, 3],
   };
   public actionLabel = 'Add another';
   @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();

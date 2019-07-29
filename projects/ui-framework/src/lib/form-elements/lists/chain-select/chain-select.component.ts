@@ -14,7 +14,6 @@ export class ChainSelectComponent implements OnInit {
   @Input() actionLabel: string;
   @Input() selectComponent: Type<any>;
   @Input() selectComponentConfig: SelectComponentConfig;
-  @Input() selectedIds?: (string | number)[] = [];
   @Output() selectChange: EventEmitter<ListChange[]> =
     new EventEmitter<ListChange[]>();
 
@@ -28,11 +27,11 @@ export class ChainSelectComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (isEmpty(this.selectedIds) || !this.selectComponentConfig.selectedIdKey) {
+    if (isEmpty(this.selectComponentConfig.selectedIds) || !this.selectComponentConfig.selectedIdKey) {
       this.chainLinkList = [this.createEmptyChainLink(0)];
       this.state = [new ListChange([])];
     } else {
-      this.chainLinkList = this.selectedIds.map((optionId, index) => ({
+      this.chainLinkList = this.selectComponentConfig.selectedIds.map((optionId, index) => ({
         active: false,
         selectComponentConfig: {
           component: this.selectComponent,
@@ -44,7 +43,7 @@ export class ChainSelectComponent implements OnInit {
           }
         }
       }));
-      this.state = this.selectedIds.map((optionId) => new ListChange([{
+      this.state = this.selectComponentConfig.selectedIds.map((optionId) => new ListChange([{
         groupName: '',
         options: [{
           id: optionId,
