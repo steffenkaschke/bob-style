@@ -94,6 +94,19 @@ describe('EmployeeChainSelectComponent', () => {
       }]);
     });
 
+    it('Should show one select by default', () => {
+      const selectElements = fixture.debugElement.queryAll(By.css('select'));
+      expect(selectElements.length).toBe(1);
+    });
+
+    it('Should create select element for each selected ID', () => {
+      component.selectedIds = ['123'];
+      component.ngOnInit();
+      fixture.detectChanges();
+      const selectElements = fixture.debugElement.queryAll(By.css('select'));
+      expect(selectElements.length).toBe(1);
+    });
+
     it('Should set empty state', () => {
       expect(component.state[0].getSelectedIds()).toEqual([]);
     });
@@ -138,6 +151,13 @@ describe('EmployeeChainSelectComponent', () => {
       component.addChainLink();
       component.removeChainLink(1);
       expect(component.state[1]).toBeUndefined();
+    });
+
+    it('Should emit change', () => {
+      spyOn(component.selectChange, 'emit');
+      component.addChainLink();
+      component.removeChainLink(1);
+      expect(component.selectChange.emit).toHaveBeenCalledWith(component.state);
     });
   });
 
