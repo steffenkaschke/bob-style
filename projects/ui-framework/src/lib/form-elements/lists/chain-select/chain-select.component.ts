@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/core';
 import { isEmpty, clone } from 'lodash';
-import { ChainLink } from './chain-select.interface';
+import { ChainLink, SelectComponentConfig } from './chain-select.interface';
 import { Icons, IconSize } from '../../../icons/icons.enum';
 import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
 import { ListChange } from '../list-change/list-change';
@@ -13,8 +13,7 @@ import { ListChange } from '../list-change/list-change';
 export class ChainSelectComponent implements OnInit {
   @Input() actionLabel: string;
   @Input() selectComponent: Type<any>;
-  @Input() selectedIdKey?: string;
-  @Input() outputKey: string;
+  @Input() selectComponentConfig: SelectComponentConfig;
   @Input() selectedIds?: (string | number)[] = [];
   @Output() selectChange: EventEmitter<ListChange[]> =
     new EventEmitter<ListChange[]>();
@@ -29,7 +28,7 @@ export class ChainSelectComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (isEmpty(this.selectedIds) || !this.selectedIdKey) {
+    if (isEmpty(this.selectedIds) || !this.selectComponentConfig.selectedIdKey) {
       this.chainLinkList = [this.createEmptyChainLink(0)];
       this.state = [new ListChange([])];
     } else {
@@ -38,10 +37,10 @@ export class ChainSelectComponent implements OnInit {
         selectComponentConfig: {
           component: this.selectComponent,
           attributes: {
-            [this.selectedIdKey]: optionId,
+            [this.selectComponentConfig.selectedIdKey]: optionId,
           },
           handlers: {
-            [this.outputKey]: $event => this.handleChange($event, index)
+            [this.selectComponentConfig.outputKey]: $event => this.handleChange($event, index)
           }
         }
       }));
@@ -80,7 +79,7 @@ export class ChainSelectComponent implements OnInit {
       selectComponentConfig: {
         component: this.selectComponent,
         handlers: {
-          [this.outputKey]: $event => this.handleChange($event, index)
+          [this.selectComponentConfig.outputKey]: $event => this.handleChange($event, index)
         }
       }
     };

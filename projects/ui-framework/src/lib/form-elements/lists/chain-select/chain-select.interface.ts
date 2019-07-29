@@ -6,3 +6,8 @@ export interface ChainLink {
   selectComponentConfig: RenderedComponent;
   active: boolean;
 }
+
+export interface SelectComponentConfig {
+  outputKey: string;
+  selectedIdKey?: string;
+}

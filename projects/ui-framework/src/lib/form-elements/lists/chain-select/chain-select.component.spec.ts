@@ -67,8 +67,10 @@ describe('EmployeeChainSelectComponent', () => {
     component = fixture.componentInstance;
     component.selectComponent = TestComponent;
     component.selectedIds = [];
-    component.selectedIdKey = 'selectedId';
-    component.outputKey = 'selectChange';
+    component.selectComponentConfig = {
+      selectedIdKey: 'selectedId',
+      outputKey: 'selectChange',
+    };
     fixture.detectChanges();
   });
 

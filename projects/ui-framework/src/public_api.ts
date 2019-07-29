@@ -188,6 +188,10 @@ export {
   ListComponentPrefix
 } from './lib/form-elements/lists/list.interface';
 export { ListChange } from './lib/form-elements/lists/list-change/list-change';
+// Chain select
+export {
+  SelectComponentConfig
+} from './lib/form-elements/lists/chain-select/chain-select.interface';
 export {
   ChainSelectComponent
 } from './lib/form-elements/lists/chain-select/chain-select.component';
