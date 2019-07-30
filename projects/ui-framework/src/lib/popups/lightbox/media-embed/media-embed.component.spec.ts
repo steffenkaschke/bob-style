@@ -1,12 +1,12 @@
 import { async, TestBed, ComponentFixture } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LightboxModule } from '../lightbox.module';
-import { VideoEmbedComponent } from './video-embed.component';
+import { MediaEmbedComponent } from './media-embed.component';
 import { simpleChange } from '../../../services/utils/test-helpers';
 
-describe('VideoEmbedComponent', () => {
-  let component: VideoEmbedComponent;
-  let fixture: ComponentFixture<VideoEmbedComponent>;
+describe('MediaEmbedComponent', () => {
+  let component: MediaEmbedComponent;
+  let fixture: ComponentFixture<MediaEmbedComponent>;
   let compElement: HTMLElement;
 
   beforeEach(async(() => {
@@ -18,13 +18,13 @@ describe('VideoEmbedComponent', () => {
     })
       .compileComponents()
       .then(() => {
-        fixture = TestBed.createComponent(VideoEmbedComponent);
+        fixture = TestBed.createComponent(MediaEmbedComponent);
         component = fixture.componentInstance;
         compElement = fixture.debugElement.nativeElement;
       });
   }));
 
-  describe('VideoEmbedComponent', () => {
+  describe('MediaEmbedComponent', () => {
     beforeEach(() => {
       component.ngOnChanges(
         simpleChange({
