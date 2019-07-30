@@ -132,10 +132,10 @@ export const objectOrFail = value => {
 };
 
 export const stringyOrFail = value => {
-  if (isNullOrUndefined(value)) {
+  if (!value) {
     return '';
   }
-  if (isArray(value) || isObject(value)) {
+  if (isArray(value) || isObject(value) || typeof value === 'boolean') {
     throw new Error(
       `Value (${stringify(value)}) should not be ${getType(
         value
@@ -150,11 +150,7 @@ export const dateyOrFail = value => {
     return value;
   }
   const converted = stringToDate(value);
-  if (
-    typeof value === 'boolean' ||
-    Date.parse(value) <= 0 ||
-    converted === undefined
-  ) {
+  if (converted === undefined || typeof Date.parse(value) !== 'number') {
     throw new Error(`Value (${stringify(value)}) could not be parsed to Date.`);
   }
   return converted;

@@ -20,7 +20,11 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
 import { BaseFormElement } from '../base-form-element';
 import { FormEvents } from '../form-elements.enum';
-import { dateyOrFail, dateToString } from '../../services/utils/transformers';
+import {
+  dateyOrFail,
+  dateToString,
+  stringyOrFail
+} from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-datepicker',
@@ -69,7 +73,7 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
 
   constructor() {
     super();
-    this.inputTransformers = [dateyOrFail];
+    this.inputTransformers = [stringyOrFail, dateyOrFail];
     this.outputTransformers = [
       date =>
         dateToString(
