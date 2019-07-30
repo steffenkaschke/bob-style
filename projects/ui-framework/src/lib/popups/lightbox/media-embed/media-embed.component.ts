@@ -13,7 +13,10 @@ import { VideoData } from '../../../services/url/url.interface';
 import { LightboxData } from '../lightbox.interface';
 import { LightboxService } from '../lightbox.service';
 import { MediaType } from './media-embed.enum';
-import { imageLinkTest } from '../../../services/url/url.const';
+import {
+  imageLinkTest,
+  base64imageTest
+} from '../../../services/url/url.const';
 
 @Component({
   selector: 'b-media-embed',
@@ -32,7 +35,7 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
 
   @Input() url: string;
 
-  @HostBinding('attr.data-type') private mediaType: MediaType;
+  @HostBinding('attr.data-type') public mediaType: MediaType;
 
   @HostListener('click')
   onClick() {
@@ -55,7 +58,9 @@ export class MediaEmbedComponent implements OnChanges, OnDestroy {
         : MediaType.video;
 
       if (this.mediaType === MediaType.image) {
-        this.url = this.URL.reconstruct(this.url);
+        this.url = !base64imageTest.test(this.url)
+          ? this.URL.reconstruct(this.url)
+          : this.url;
 
         this.host.nativeElement.style.backgroundImage = this.url
           ? `url(${this.url})`

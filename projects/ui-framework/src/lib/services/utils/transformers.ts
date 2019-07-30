@@ -132,8 +132,8 @@ export const objectOrFail = value => {
 };
 
 export const stringyOrFail = value => {
-  if (!value) {
-    return '';
+  if (isNullOrUndefined(value)) {
+    return value;
   }
   if (isArray(value) || isObject(value) || typeof value === 'boolean') {
     throw new Error(
@@ -149,6 +149,9 @@ export const dateyOrFail = value => {
   if (isNullOrUndefined(value)) {
     return value;
   }
+  if (!value) {
+    return undefined;
+  }
   const converted = stringToDate(value);
   if (converted === undefined || typeof Date.parse(value) !== 'number') {
     throw new Error(`Value (${stringify(value)}) could not be parsed to Date.`);
@@ -160,7 +163,9 @@ export const timeyOrFail = value => {
   if (isNullOrUndefined(value)) {
     return value;
   }
-
+  if (!value) {
+    return undefined;
+  }
   if (isString(value) && value.indexOf(':') === -1) {
     throw new Error(`Value (${stringify(value)}) could not be parsed to Time.`);
   }
