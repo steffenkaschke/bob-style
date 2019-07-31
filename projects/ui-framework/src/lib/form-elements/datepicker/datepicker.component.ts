@@ -7,7 +7,8 @@ import {
   OnInit,
   Output,
   ViewChild,
-  SimpleChanges
+  SimpleChanges,
+  ChangeDetectorRef
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -71,7 +72,9 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  constructor() {
+  constructor(
+    private cd: ChangeDetectorRef
+  ) {
     super();
     this.inputTransformers = [stringyOrFail, dateyOrFail];
     this.outputTransformers = [
@@ -110,6 +113,8 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
         eventType: [InputEventType.onChange, InputEventType.onBlur],
         addToEventObj: { date: this.date }
       });
+
+      this.cd.detectChanges();
     }
   }
 
