@@ -3,7 +3,7 @@ import {DonutChartTextComponent} from './donut-chart-text.component';
 import {PieChartComponent} from '../pie-chart/pie-chart.component';
 import {TypographyModule} from '../../typography/typography.module';
 
-fdescribe('DonutChartTextComponent', () => {
+describe('DonutChartTextComponent', () => {
   let component: DonutChartTextComponent;
   let fixture: ComponentFixture<DonutChartTextComponent>;
 
