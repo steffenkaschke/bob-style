@@ -37,7 +37,7 @@ export class PieChartComponent extends ChartCore implements OnInit, OnChanges {
   updatePieOptions() {
     this.extraOptions = {
       chart: {
-        height: this.height
+        height: Math.abs(this.height)
       },
       plotOptions: {
         pie: {
@@ -59,7 +59,7 @@ export class PieChartComponent extends ChartCore implements OnInit, OnChanges {
         this.setInnerSize(piePadding)
       );
     }
-    if (this.donutWidth) {
+    if (this.donut && this.donutWidth) {
       this.extraOptions.plotOptions.pie.innerSize = Math.max(
         0,
           this.setInnerSize(piePadding - minDonutWidth + Math.abs(this.donutWidth))
@@ -69,8 +69,8 @@ export class PieChartComponent extends ChartCore implements OnInit, OnChanges {
 
   private setInnerSize(offset: number) {
     return this.legend
-      ? this.height - pieLegendHeight - offset
-      : this.height - offset;
+      ? Math.abs(this.height) - pieLegendHeight - offset
+      : Math.abs(this.height) - offset;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

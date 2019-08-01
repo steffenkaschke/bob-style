@@ -17,8 +17,8 @@ More(Highcharts);
 noData(Highcharts);
 
 export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
-  highChartRef: any;
   abstract type: ChartTypesEnum;
+  highChartRef: any;
   containerId: string = simpleUID();
   options: Options;
   // @Input() chartOptions: ChartOptions = {

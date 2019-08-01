@@ -17,7 +17,7 @@ const template = `
     [donutInnerSize]="donutInnerSize"
   >
     <b-display-4>
-      365K
+      {{text}}
     </b-display-4>
   </b-donut-text-chart>
 `;
@@ -50,6 +50,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        text: text('text', '365K'),
         name: text('name', 'fruits'),
         pointFormat: text('pointFormat', '{point.percentage:.1f}% of {series.name}'),
         height: number('height', 200),

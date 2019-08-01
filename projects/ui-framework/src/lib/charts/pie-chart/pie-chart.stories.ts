@@ -66,7 +66,7 @@ story.add(
       template: storyTemplate,
       props: {
         showDataLabels: boolean('showDataLabels', false),
-        donut: boolean('donut', true),
+        donut: boolean('donut', false),
         legend: boolean('legend', true),
         name: text('name', 'fruits'),
         pointFormat: text('pointFormat', '{point.percentage:.1f}% of {series.name}'),

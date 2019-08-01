@@ -50,6 +50,6 @@ export class DonutChartTextComponent implements OnInit, OnChanges {
   }
 
   private maxDonutTextSize() {
-    return Math.min(Math.abs(this.donutInnerSize) + 1, this.height - 50);
+    return Math.min(Math.abs(this.donutInnerSize) + 1, Math.abs(this.height) - 50);
   }
 }
