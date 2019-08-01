@@ -18,6 +18,7 @@ export class PieChartComponent extends ChartCore implements OnInit, OnChanges {
   //   donutInnerSize: 60
   // };
 
+  @Input() innerText: string;
   @Input() name: string;
   @Input() donut = false;
   @Input() donutInnerSize = 60;

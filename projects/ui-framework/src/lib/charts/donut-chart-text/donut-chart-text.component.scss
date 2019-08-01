@@ -2,7 +2,6 @@
   position: relative;
   .text-container {
     position: absolute;
-    display: block;
     margin: auto;
     left: 0;
     right: 0;
@@ -12,8 +11,8 @@
     border-radius: 50%;
     box-shadow: 3px 3px 18px rgba(0,0,0,.4);
     transform: translateY(-3px);
-    *, ::ng-deep * {
-      line-height: inherit;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

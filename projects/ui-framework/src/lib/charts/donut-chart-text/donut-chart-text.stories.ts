@@ -16,9 +16,9 @@ const template = `
     [name]="name"
     [donutInnerSize]="donutInnerSize"
   >
-    <b-display-4>
+    <b-display-3 style="color: #9d9c9c;">
       {{text}}
-    </b-display-4>
+    </b-display-3>
   </b-donut-text-chart>
 `;
 
@@ -50,7 +50,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        text: text('text', '365K'),
+        text: text('text', '£135K'),
         name: text('name', 'fruits'),
         pointFormat: text('pointFormat', '{point.percentage:.1f}% of {series.name}'),
         height: number('height', 200),

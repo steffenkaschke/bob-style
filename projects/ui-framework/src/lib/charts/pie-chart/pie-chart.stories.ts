@@ -47,16 +47,17 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  // type | CardType | Card theme | primary (optional)
-  // card | CardData | card contents data | none
-  // clickable | boolean | is the card clickable? | false
-  // clicked | Function | handler of Card Clicked event | none
-  //
-  // #### card: CardData - single card data properties
-  // Name | Type | Description | Default value
-  // --- | --- | --- | ---
-  // data | CardDataType | card data | none
-  // menu | MenuItem[] | array of menu items | none (optional)
+  data | | series data array for chart | none
+  donut | boolean | make pie chart donut chart | false
+  showDataLabels | boolean | shows label in pie | false
+  legend | boolean | shows legend | false
+  colorPalette | string[] | color palette array | default array of colors
+  height | number | height of chart | 500
+  name | string | name of series | none
+  donutInnerSize | number | defining the inner white circle in a donut pie chart | 60
+  donutWidth | number | overrides donutInnerSize by applying width of donut instead inner circle width | none
+  title | string | title of chart | none
+  pointFormat | string | tooltip formatter | {series.name}: <b>{point.percentage:.1f}%</b>
 `;
 
 story.add(

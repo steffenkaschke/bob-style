@@ -4,7 +4,6 @@ import {Options} from 'highcharts';
 import {ChartTypesEnum} from './chart.enum';
 import {merge} from 'lodash';
 import {simpleUID} from '../../services/utils/functional-utils';
-import {ChartOptions} from './chart.interface';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -39,7 +38,7 @@ export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
     '#FF9655',
     '#FFF263',
     '#6AF9C4'];
-  @Input() height = 700;
+  @Input() height = 500;
   @Input() title: string = null;
   @Input() legend = false;
   @Input() showDataLabels = false;
@@ -63,7 +62,10 @@ export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
         type: this.type
       },
       title: {
-        text: this.title
+        text: this.title,
+      },
+      tooltip: {
+        outside: true
       },
       plotOptions: {
         [this.type]: {
