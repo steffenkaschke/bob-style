@@ -27,35 +27,6 @@ const template = `
   >
   </b-pie-chart>
 </div>
-<div>
-  <small>Only for donut, not supporting legend and dataLabels</small>
-  <div style="position:relative;">
-    <b-pie-chart
-      [data]="data"
-      [donut]="true"
-      [showDataLabels]="false"
-      [legend]="false"
-      [colorPalette]="colorPalette"
-      [height]="height"
-      [name]="name"
-      [donutWidth]="donutWidth"
-    >
-    </b-pie-chart>
-    <span style="
-    position: absolute;
-    display: block;
-    border-radius: 50%;
-    box-shadow: 3px 3px 18px rgba(0,0,0,.4);
-    text-align: center;
-    left: 50%;
-    width: 61px;
-    margin-left: -31px;
-    top: 50%;
-    height: 61px;
-    margin-top: -33px;
-    "><b-display-4 style="line-height: 61px;">365K</b-display-4></span>
-  </div>
-</div>
 `;
 
 const storyTemplate = `
