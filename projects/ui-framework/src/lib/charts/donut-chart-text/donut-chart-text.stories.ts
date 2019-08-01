@@ -1,10 +1,10 @@
 import {storiesOf} from '@storybook/angular';
 import {number, object, text, withKnobs} from '@storybook/addon-knobs/angular';
-import {ComponentGroupType} from '../../../consts';
-import {StoryBookLayoutModule} from '../../../story-book-layout/story-book-layout.module';
+import {ComponentGroupType} from '../../consts';
+import {StoryBookLayoutModule} from '../../story-book-layout/story-book-layout.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ChartsModule} from '../../charts.module';
-import {TypographyModule} from '../../../typography/typography.module';
+import {ChartsModule} from '../charts.module';
+import {TypographyModule} from '../../typography/typography.module';
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
@@ -23,7 +23,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Pie Chart'">
+<b-story-book-layout [title]="'Donut Chart With Text'">
     ${template}
 </b-story-book-layout>
 `;
