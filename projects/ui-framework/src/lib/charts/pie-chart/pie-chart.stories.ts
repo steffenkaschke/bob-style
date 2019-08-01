@@ -4,26 +4,23 @@ import {ComponentGroupType} from '../../consts';
 import {ChartsModule} from '../charts.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {StoryBookLayoutModule} from '../../story-book-layout/story-book-layout.module';
-import {mockAvatar} from '../../mock.const';
 import {TypographyModule} from '../../typography/typography.module';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
-
-const avatarMock = mockAvatar();
-
 const template = `
 <div>
   <small>Demo of all binding options</small>
   <b-pie-chart
-    [height]="height"
     [data]="data"
-    [name]="name"
     [donut]="donut"
-    [donutWidth]="donutWidth"
     [showDataLabels]="showDataLabels"
     [legend]="legend"
+    [colorPalette]="colorPalette"
+    [height]="height"
+    [name]="name"
+    [donutWidth]="donutWidth"
     [donutInnerSize]="donutInnerSize"
     [title]="title"
     [pointFormat]="pointFormat"
@@ -34,19 +31,29 @@ const template = `
   <small>Only for donut, not supporting legend and dataLabels</small>
   <div style="position:relative;">
     <b-pie-chart
-      [height]="height"
       [data]="data"
-      [name]="name"
       [donut]="true"
-      [donutWidth]="donutWidth"
       [showDataLabels]="false"
       [legend]="false"
+      [colorPalette]="colorPalette"
+      [height]="height"
+      [name]="name"
+      [donutWidth]="donutWidth"
     >
     </b-pie-chart>
-    <span style="position: absolute; display:block;
-    text-align:center;
-    left: 50%; width: 100px; margin-left: -50px; top:50%;
-    height: 50px; margin-top: -25px;"><b-display-4 style="line-height: 50px;">365K</b-display-4></span>
+    <span style="
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+    box-shadow: 3px 3px 18px rgba(0,0,0,.4);
+    text-align: center;
+    left: 50%;
+    width: 61px;
+    margin-left: -31px;
+    top: 50%;
+    height: 61px;
+    margin-top: -33px;
+    "><b-display-4 style="line-height: 61px;">365K</b-display-4></span>
   </div>
 </div>
 `;
@@ -94,10 +101,35 @@ story.add(
         name: text('name', 'fruits'),
         pointFormat: text('pointFormat', '{point.percentage:.1f}% of {series.name}'),
         title: text('title', null),
-        height: number('height', 400),
+        height: number('height', 200),
         donutInnerSize: number('donutInnerSize', 60),
         donutWidth: number('donutWidth', null),
-        data: object('data', [['bananas', 2], ['apples', 7]])
+        data: object('data', [['bananas', 15], ['apples', 24], ['avocado', 12], ['mango', 77]]),
+        colorPalette: object('colorPalette', [
+          '#CC2E4E',
+          '#87233D',
+          '#DB8962',
+          '#FEA54A',
+          '#FECC4A',
+          '#8F4A67',
+          '#D2728A',
+          '#D295A4',
+          '#E0ACAC',
+          '#BF8A78',
+          '#C0755A',
+          '#866161',
+          '#663E4E',
+          '#574285',
+          '#6969C6',
+          '#556E8A',
+          '#789BC2',
+          '#9BC7FA',
+          '#6DC3BC',
+          '#82D9B1',
+          '#959595',
+          '#616161',
+          '#313131',
+        ])
       },
       moduleMetadata: {
         imports: [

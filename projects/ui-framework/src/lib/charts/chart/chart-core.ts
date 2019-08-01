@@ -4,6 +4,7 @@ import {Options} from 'highcharts';
 import {ChartTypesEnum} from './chart.enum';
 import {merge} from 'lodash';
 import {simpleUID} from '../../services/utils/functional-utils';
+import {ChartOptions} from './chart.interface';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -20,6 +21,24 @@ export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
   abstract type: ChartTypesEnum;
   containerId: string = simpleUID();
   options: Options;
+  // @Input() chartOptions: ChartOptions = {
+  //   height: 700,
+  //   title: null,
+  //   legend: false,
+  //   showDataLabels: false,
+  //   pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+  //   extraOptions: {}
+  // };
+  @Input() colorPalette: string[] = [
+    '#058DC7',
+    '#50B432',
+    '#ED561B',
+    '#DDDF00',
+    '#24CBE5',
+    '#64E572',
+    '#FF9655',
+    '#FFF263',
+    '#6AF9C4'];
   @Input() height = 700;
   @Input() title: string = null;
   @Input() legend = false;
@@ -29,7 +48,7 @@ export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
 
   protected constructor(
     protected zone: NgZone,
-    protected cdr: ChangeDetectorRef
+    protected cdr: ChangeDetectorRef,
   ) {
   }
 
@@ -66,11 +85,15 @@ export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
 
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
+      Highcharts.setOptions({
+        colors: this.colorPalette
+      });
       this.highChartRef = Highcharts.chart(this.containerId, this.options);
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+
     if (this.highChartRef) {
       this.cdr.markForCheck();
       this.initialOptions();
