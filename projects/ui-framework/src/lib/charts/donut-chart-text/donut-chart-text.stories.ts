@@ -1,5 +1,5 @@
 import {storiesOf} from '@storybook/angular';
-import {number, object, text, withKnobs} from '@storybook/addon-knobs/angular';
+import {number, boolean, object, text, withKnobs} from '@storybook/addon-knobs/angular';
 import {ComponentGroupType} from '../../consts';
 import {StoryBookLayoutModule} from '../../story-book-layout/story-book-layout.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -12,6 +12,7 @@ const template = `
   <b-donut-text-chart
     [colorPalette]="colorPalette"
     [data]="data"
+    [legend]="legend"
     [height]="height"
     [name]="name"
     [donutInnerSize]="donutInnerSize"
@@ -53,6 +54,7 @@ story.add(
         text: text('text', '£135K'),
         name: text('name', 'fruits'),
         pointFormat: text('pointFormat', '{point.percentage:.1f}% of {series.name}'),
+        legend: boolean('legend', false),
         height: number('height', 200),
         donutInnerSize: number('donutInnerSize', 100),
         data: object('data', [['bananas', 15], ['apples', 24], ['avocado', 12], ['mango', 77]]),

@@ -1,4 +1,14 @@
-import {AfterViewInit, ChangeDetectorRef, Input, NgZone, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import * as Highcharts from 'highcharts';
 import {Options} from 'highcharts';
 import {ChartTypesEnum} from './chart.enum';
@@ -44,6 +54,7 @@ export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
   @Input() showDataLabels = false;
   @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
   @Input() extraOptions: Options = {};
+  @Output() legendChanged: EventEmitter<any> = new EventEmitter();
 
   protected constructor(
     protected zone: NgZone,
@@ -59,7 +70,11 @@ export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
     this.options = merge({
       chart: {
         height: this.height,
-        type: this.type
+        type: this.type,
+        animation: {
+          complete: () => {
+          }
+        }
       },
       title: {
         text: this.title,
@@ -69,6 +84,15 @@ export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
       },
       plotOptions: {
         [this.type]: {
+          animation: {
+          },
+          events: {
+            afterAnimate: (event) => {
+              if (this.legend && this.legendChanged) {
+                this.legendChanged.emit(this.highChartRef.legend.legendHeight);
+              }
+            }
+          },
           showInLegend: this.legend,
           dataLabels: {
             enabled: this.showDataLabels
@@ -95,7 +119,6 @@ export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
     if (this.highChartRef) {
       this.cdr.markForCheck();
       this.initialOptions();

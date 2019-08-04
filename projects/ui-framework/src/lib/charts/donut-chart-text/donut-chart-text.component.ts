@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnChanges} from '@angular/core';
 import {Options, SeriesPieDataOptions} from 'highcharts';
 
 @Component({
@@ -8,11 +8,16 @@ import {Options, SeriesPieDataOptions} from 'highcharts';
     './donut-chart-text.component.scss'
     ]
 })
-export class DonutChartTextComponent implements OnInit, OnChanges {
+export class DonutChartTextComponent implements OnChanges {
   textStyle: any;
   @Input() data: Array<(number|[string, (number|null)]|null|SeriesPieDataOptions)>;
   @Input() name: string;
   @Input() donutInnerSize = 80;
+  @Input() height = 250;
+  @Input() title: string = null;
+  @Input() legend = false;
+  @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
+  @Input() extraOptions: Options = {};
   @Input() colorPalette: string[] = [
     '#058DC7',
     '#50B432',
@@ -23,21 +28,15 @@ export class DonutChartTextComponent implements OnInit, OnChanges {
     '#FF9655',
     '#FFF263',
     '#6AF9C4'];
-  @Input() height = 250;
-  @Input() title: string = null;
-  @Input() legend = false;
-  @Input() showDataLabels = false;
-  @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
-  @Input() extraOptions: Options = {};
   constructor(
+    private cdr: ChangeDetectorRef
   ) {
-  }
-  ngOnInit(): void {
-    this.setTextStyle();
   }
 
   ngOnChanges(): void {
-    this.setTextStyle();
+      setTimeout(() => {
+        this.setTextStyle();
+      });
   }
 
   private setTextStyle () {
@@ -47,6 +46,23 @@ export class DonutChartTextComponent implements OnInit, OnChanges {
       width: `${donutSize}px`,
       height: `${donutSize}px`
     };
+    if (this.cdr && !this.cdr['destroyed']) {
+      this.cdr.detectChanges();
+    }
+  }
+
+  updatePosition($event) {
+    setTimeout(() => {
+      if (this.legend) {
+        this.textStyle = {
+          ...this.textStyle,
+          ...{transform: `translateY(-${($event / 2) + 9}px)`}
+        };
+        if (this.cdr && !this.cdr['destroyed']) {
+          this.cdr.detectChanges();
+        }
+      }
+    });
   }
 
   private maxDonutTextSize() {

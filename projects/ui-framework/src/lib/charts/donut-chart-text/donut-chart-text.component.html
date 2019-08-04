@@ -1,9 +1,12 @@
 <b-pie-chart
 [height]="height"
 [data]="data"
+[legend]="legend"
 [colorPalette]="colorPalette"
 [donutInnerSize]="donutInnerSize"
 [donut]="true"
+[extraOptions]="extraOptions"
+(legendChanged)="updatePosition($event)"
 >
 </b-pie-chart>
 <span class="text-container" [ngStyle]="textStyle">
