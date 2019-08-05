@@ -98,7 +98,7 @@ story.add(
       focusable: boolean('focusable', true),
       disabled: boolean('disabled', false),
       chipListSelectable: select('chipListSelectable', chipListSelectable, ChipListSelectable.multi),
-      activeIndex: number('activeIndex', null),
+      activeIndex: number('activeIndex', 0),
       chips: object('chips', chips),
       onChipRemove: action('Chip removed'),
       onChipClicked: action('Chip clicked'),
