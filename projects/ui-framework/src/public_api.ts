@@ -354,6 +354,11 @@ export { TableUtilsService } from './lib/table/table-utils-service/table-utils.s
 // Divider
 export { DividerModule } from './lib/layout/divider/divider.module';
 export { DividerComponent } from './lib/layout/divider/divider.component';
+// Charts
+export { ChartsModule } from './lib/charts/charts.module';
+export { HighChartOptions } from './lib/charts/chart/chart.interface';
+export { PieChartComponent } from './lib/charts/pie-chart/pie-chart.component';
+export { DonutChartTextComponent } from './lib/charts/donut-chart-text/donut-chart-text.component';
 // Cards
 export { CardsModule } from './lib/cards/cards.module';
 export { CardType } from './lib/cards/cards.enum';
