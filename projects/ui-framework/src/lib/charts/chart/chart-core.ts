@@ -25,19 +25,13 @@ noData(Highcharts);
 More(Highcharts);
 noData(Highcharts);
 
-export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
-  abstract type: ChartTypesEnum;
+export class ChartCore implements AfterViewInit, OnChanges {
+  type: ChartTypesEnum;
   highChartRef: any;
   containerId: string = simpleUID();
   options: Options;
-  // @Input() chartOptions: ChartOptions = {
-  //   height: 700,
-  //   title: null,
-  //   legend: false,
-  //   showDataLabels: false,
-  //   pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
-  //   extraOptions: {}
-  // };
+  firstTimeAfterAnimate = true;
+
   @Input() colorPalette: string[] = [
     '#058DC7',
     '#50B432',
@@ -54,26 +48,29 @@ export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
   @Input() showDataLabels = false;
   @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
   @Input() extraOptions: Options = {};
-  @Output() legendChanged: EventEmitter<any> = new EventEmitter();
+  @Output() legendChanged = new EventEmitter();
 
-  protected constructor(
-    protected zone: NgZone,
-    protected cdr: ChangeDetectorRef,
+  constructor(
+    public zone: NgZone,
+    public cdr: ChangeDetectorRef,
   ) {
   }
 
-  ngOnInit() {
-    this.initialOptions();
-  }
-
   initialOptions(): void {
+    if (this.options
+      && this.options.plotOptions
+      && this.options.plotOptions[this.type]
+      && this.options.plotOptions[this.type].events
+      && this.options.plotOptions[this.type].events.afterAnimate) {
+        delete this.options.plotOptions[this.type].events.afterAnimate
+    }
     this.options = merge({
       chart: {
         height: this.height,
         type: this.type,
         animation: {
-          complete: () => {
-          }
+          duration: 200,
+          // easing: function(t) { return t; }
         }
       },
       title: {
@@ -87,11 +84,7 @@ export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
           animation: {
           },
           events: {
-            afterAnimate: (event) => {
-              if (this.legend && this.legendChanged) {
-                this.legendChanged.emit(this.highChartRef.legend.legendHeight);
-              }
-            }
+            afterAnimate: undefined
           },
           showInLegend: this.legend,
           dataLabels: {
@@ -107,9 +100,16 @@ export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
       },
       series: [],
     }, this.extraOptions);
+    if (this.legend && this.legendChanged && this.firstTimeAfterAnimate) {
+      this.options.plotOptions[this.type].events.afterAnimate = (event) => {
+        this.firstTimeAfterAnimate = false;
+        this.legendChanged.emit(this.highChartRef.legend.legendHeight);
+      };
+    }
   }
 
   ngAfterViewInit(): void {
+    this.initialOptions();
     this.zone.runOutsideAngular(() => {
       Highcharts.setOptions({
         colors: this.colorPalette
@@ -119,10 +119,16 @@ export abstract class ChartCore implements AfterViewInit, OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.applyOnChange();
+  }
+
+  applyOnChange() {
     if (this.highChartRef) {
       this.cdr.markForCheck();
       this.initialOptions();
-      this.highChartRef.update(this.options);
+      // window.requestAnimationFrame(() => {
+        this.highChartRef.update(this.options);
+      // });
     }
   }
 }

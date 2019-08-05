@@ -12,27 +12,21 @@ export const minDonutWidth = 3, pieLegendHeight = 37, piePadding = 50;
     './pie-chart.component.scss']
 })
 export class PieChartComponent extends ChartCore implements OnInit, OnChanges {
+  type = ChartTypesEnum.Pie;
   @Input() data: Array<(number|[string, (number|null)]|null|SeriesPieDataOptions)>;
-  // @Input() pieOptions: PieOptions = {
-  //   donut: false,
-  //   donutInnerSize: 60
-  // };
-
-  @Input() innerText: string;
   @Input() name: string;
   @Input() donut = false;
   @Input() donutInnerSize = 60;
   @Input() donutWidth: number;
-  type = ChartTypesEnum.Pie;
   constructor(
-    protected zone: NgZone,
-    protected cdr: ChangeDetectorRef
+    public zone: NgZone,
+    public cdr: ChangeDetectorRef
   ) {
     super(zone, cdr);
+    this.height = 150;
   }
-  ngOnInit(): void {
+  ngOnInit() {
     this.updatePieOptions();
-    super.initialOptions();
   }
 
   updatePieOptions() {
@@ -76,6 +70,6 @@ export class PieChartComponent extends ChartCore implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.updatePieOptions();
-    super.ngOnChanges(changes);
+    this.applyOnChange();
   }
 }

@@ -14,8 +14,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    will-change: transform;
-    transition: transform .5s;
+    will-change: width, height, transform;
+    transition: width .2s cubic-bezier(.17,.13,.53,.52), height .2s cubic-bezier(.17,.13,.53,.52), transform .2s cubic-bezier(.17,.13,.53,.52);
     width: 1px;
     height: 1px;
   }
