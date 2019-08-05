@@ -66,6 +66,7 @@ export class ChartCore implements AfterViewInit, OnChanges {
       chart: {
         height: this.height,
         type: this.type,
+        backgroundColor: 'rgba(255, 255, 255, 0.0)',
         animation: {
           duration: 200,
           // easing: function(t) { return t; }
