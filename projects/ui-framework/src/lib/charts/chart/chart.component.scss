@@ -6,6 +6,7 @@
   display: none;
 }
 .highcharts-tooltip>span {
+  transform: translateY(16px);
   border: 1px solid #e5e5e5;
   background-color: #fff;
   border-radius: 5px;

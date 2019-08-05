@@ -58,7 +58,6 @@ describe('PieChartComponent', () => {
     it('should call updatePieOptions', (() => {
       updatePieOptionsSpy = spyOn(component, 'updatePieOptions').and.callThrough();
       component.ngOnInit.call(component);
-      console.log(component.ngOnInit);
       expect(updatePieOptionsSpy).toHaveBeenCalled();
     }));
     describe('ngOnChanges', () => {
