@@ -14,6 +14,8 @@ const template = `
   <small>Demo of all binding options</small>
   <b-pie-chart
     [data]="data"
+    [preTooltipValue]="preTooltipValue"
+    [postTooltipValue]="postTooltipValue"
     [donut]="donut"
     [showDataLabels]="showDataLabels"
     [legend]="legend"
@@ -72,10 +74,12 @@ story.add(
         legend: boolean('legend', true),
         name: text('name', 'fruits'),
         pointFormat: text('pointFormat', '{point.percentage:.1f}% of {series.name}'),
-        title: text('title', null),
+        preTooltipValue: text('preTooltipValue', ''),
+        postTooltipValue: text('postTooltipValue', ' Fruits'),
+        title: text('title', ''),
         height: number('height', 200),
         donutInnerSize: number('donutInnerSize', 60),
-        donutWidth: number('donutWidth', null),
+        donutWidth: number('donutWidth', 0),
         data: object('data', pieChartDataMock),
         colorPalette: object('colorPalette', [
           '#CC2E4E',

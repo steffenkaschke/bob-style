@@ -1,4 +1,13 @@
-import {ChangeDetectorRef, Component, Input, NgZone, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  NgZone,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 import {ChartCore} from '../chart/chart-core';
 import {ChartTypesEnum} from '../chart/chart.enum';
 import {SeriesPieDataOptions} from 'highcharts';
@@ -9,7 +18,8 @@ export const minDonutWidth = 3, pieLegendHeight = 37, piePadding = 50;
   templateUrl: '../chart/chart.component.html',
   styleUrls: [
     '../chart/chart.component.scss',
-    './pie-chart.component.scss']
+    './pie-chart.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class PieChartComponent extends ChartCore implements OnInit, OnChanges {
   type = ChartTypesEnum.Pie;

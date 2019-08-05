@@ -25,6 +25,8 @@ noData(Highcharts);
 More(Highcharts);
 noData(Highcharts);
 
+let component;
+
 export class ChartCore implements AfterViewInit, OnChanges {
   type: ChartTypesEnum;
   highChartRef: any;
@@ -32,6 +34,8 @@ export class ChartCore implements AfterViewInit, OnChanges {
   options: Options;
   firstTimeAfterAnimate = true;
 
+  @Input() preTooltipValue = '';
+  @Input() postTooltipValue = '';
   @Input() colorPalette: string[] = [
     '#058DC7',
     '#50B432',
@@ -54,16 +58,10 @@ export class ChartCore implements AfterViewInit, OnChanges {
     public zone: NgZone,
     public cdr: ChangeDetectorRef,
   ) {
+    component = this;
   }
 
   initialOptions(): void {
-    if (this.options
-      && this.options.plotOptions
-      && this.options.plotOptions[this.type]
-      && this.options.plotOptions[this.type].events
-      && this.options.plotOptions[this.type].events.afterAnimate) {
-        delete this.options.plotOptions[this.type].events.afterAnimate
-    }
     this.options = merge({
       chart: {
         height: this.height,
@@ -77,7 +75,21 @@ export class ChartCore implements AfterViewInit, OnChanges {
         text: this.title,
       },
       tooltip: {
-        outside: true
+        outside: true,
+        useHTML: true,
+        style: {
+          textAlign: 'center',
+          shadow: false,
+          opacity: 1
+        },
+        formatter: function (tooltip) {
+          return `<div class="chart-tooltip">
+                <div class="value" style="color:${this.color};">
+                    ${component.preTooltipValue}${this.y}${component.postTooltipValue}
+                </div>
+                <div class="key">${this.key}</div>
+                </div>`;
+        }
       },
       plotOptions: {
         [this.type]: {
@@ -90,9 +102,9 @@ export class ChartCore implements AfterViewInit, OnChanges {
           dataLabels: {
             enabled: this.showDataLabels
           },
-          tooltip: {
-            pointFormat: this.pointFormat
-          }
+          // tooltip: {
+          //   pointFormat: this.pointFormat,
+          // }
         }
       },
       credits: {

@@ -4,8 +4,6 @@ import { PieChartComponent } from './pie-chart.component';
 import {pieChartDataMock} from './pie-chart.mock';
 import {ChangeDetectorRef, NgZone} from '@angular/core';
 import {ChartCore} from '../chart/chart-core';
-import {getTestScheduler} from 'jasmine-marbles';
-import {By} from '@angular/platform-browser';
 import * as Highcharts from 'highcharts';
 
 export class MockNgZone extends NgZone {
@@ -14,8 +12,7 @@ export class MockNgZone extends NgZone {
   }
 }
 
-
-fdescribe('PieChartComponent', () => {
+describe('PieChartComponent', () => {
   let component: PieChartComponent;
   let fixture: ComponentFixture<PieChartComponent>;
   let updatePieOptionsSpy, applyOnChangeSpy, highchartRefSpy;
