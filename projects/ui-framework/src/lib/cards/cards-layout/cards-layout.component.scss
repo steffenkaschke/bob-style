@@ -49,6 +49,7 @@ $grid-gap: 16px;
         user-select: none;
         flex-shrink: 0;
         min-width: 0;
+        max-width: none;
         -webkit-touch-callout: none;
         -webkit-tap-highlight-color: transparent;
       }

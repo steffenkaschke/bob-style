@@ -227,16 +227,18 @@
   padding-bottom: $padding;
 }
 
-@mixin ratio($ratio-or-width, $height: null) {
+@mixin ratio($ratio-or-width, $height: null, $clear: true) {
   &:before {
     content: '';
     float: left;
     @include ratioPad($ratio-or-width, $height);
   }
-  &:after {
-    content: '';
-    display: table;
-    clear: both;
+  @if $clear {
+    &:after {
+      content: '';
+      display: table;
+      clear: both;
+    }
   }
 }
 

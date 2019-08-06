@@ -8,17 +8,20 @@
             (clicked)="clicked ? onClick($event) : null">
   </b-avatar>
 
-  <b-display-4 class="title"
-               *bTruncateTooltip="2">
+  <h4 class="card-title"
+      [b-truncate-tooltip]="2"
+      [trustCssVars]="true">
     {{card.title}}
-  </b-display-4>
+  </h4>
 
-  <b-caption class="subtitle"
-             *bTruncateTooltip="2">
+  <p class="card-subtitle"
+     *bTruncateTooltip="2"
+     [b-truncate-tooltip]="2"
+     [trustCssVars]="true">
     {{card.subtitle}}
-  </b-caption>
+  </p>
 
-  <div *ngIf="card.social"
+  <div *ngIf="card.social && type !== cardType.small"
        class="social">
     <a *ngIf="card.social.linkedin"
        class="b-icon-linkedin"

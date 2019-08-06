@@ -1,4 +1,9 @@
-@import '../../style/colors';
+@import '../../style/variables';
+@import '../../style/typography';
+@import '../../style/mixins';
+@import '../card/card.mixin';
+
+@include card-common($doHover: false);
 
 :host {
   justify-content: space-between;
@@ -8,25 +13,19 @@
 }
 
 .cover-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 80px;
-  background-image: linear-gradient(180deg, var(--background-color-1) 0%, var(--background-color-2) 100%);
+  @include position;
+  @include size(100%, 80px);
+
+  background-image: linear-gradient(
+    180deg,
+    var(--background-color-1) 0%,
+    var(--background-color-2) 100%
+  );
 }
 
 b-avatar {
-  display: inline-block;
-  margin: 0 auto 16px;
-}
-
-.title {
-  font-weight: 600;
-}
-
-.subtitle {
-  color: $grey-600;
+  display: inline-flex;
+  margin: 0 auto times8(2) auto;
 }
 
 .social {

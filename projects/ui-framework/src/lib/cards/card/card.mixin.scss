@@ -1,0 +1,99 @@
+$cardPadding: times8(3);
+
+@mixin card-common($doHover: true) {
+  :host {
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: $cardPadding;
+    border: 1px solid $grey-500;
+    border-radius: $border-radius;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: left;
+    background-color: white;
+    min-height: 300px;
+
+    &:focus {
+      outline: 0;
+    }
+
+    @if $doHover {
+      &:hover,
+      &:focus,
+      &[data-focus-inside='true'] {
+        box-shadow: 0 2px 12px 0 $grey-500;
+      }
+    }
+  }
+
+  // Parts
+
+  p,
+  h4,
+  h5 {
+    margin: 0;
+  }
+
+  .card-title,
+  .card-subtitle,
+  .card-top,
+  .card-content,
+  .card-bottom {
+    &:empty {
+      display: none;
+    }
+  }
+
+  .card-title {
+    @include DisplayFont(
+      $font-size-display-4,
+      600,
+      $transform: null,
+      $addCssVars: true
+    );
+  }
+
+  .card-subtitle {
+    color: $grey-600;
+  }
+
+  .card-content {
+    flex-grow: 1;
+  }
+
+  .card-bottom {
+    padding-top: times8(2);
+    display: flex;
+    margin-top: auto;
+  }
+
+  // Types
+
+  :host {
+    &[data-type='small'] {
+      min-width: 160px;
+      min-height: 0;
+
+      &:only-child {
+        max-width: 220px;
+      }
+    }
+
+    &[data-type='regular'] {
+      min-width: 190px;
+
+      &:only-child {
+        max-width: 250px;
+      }
+    }
+
+    &[data-type='large'] {
+      min-width: 260px;
+
+      &:only-child {
+        max-width: 320px;
+      }
+    }
+  }
+}
