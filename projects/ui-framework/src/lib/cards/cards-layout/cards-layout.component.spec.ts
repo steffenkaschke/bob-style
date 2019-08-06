@@ -18,7 +18,7 @@ describe('CardsLayoutComponent', () => {
   let cardsHostElement: HTMLElement;
 
   const getCardMaxWidth = () =>
-    getComputedStyle(cardsHostElement).getPropertyValue('--card-max-width');
+    getComputedStyle(cardsHostElement).getPropertyValue('--card-width');
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -14,4 +14,7 @@ export abstract class BaseCardElement {
   @Output() clicked: EventEmitter<any> = new EventEmitter<any>();
   readonly cardType = CardType;
   @HostBinding('attr.data-type') @Input() type: CardType = CardType.regular;
+  @HostBinding('class.single-card') isSingleCard() {
+    return true;
+  }
 }

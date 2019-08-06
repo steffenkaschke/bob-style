@@ -13,7 +13,8 @@ import {
   ChangeDetectorRef,
   OnInit,
   ContentChildren,
-  QueryList
+  QueryList,
+  HostBinding
 } from '@angular/core';
 import { CardType } from '../cards.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
@@ -24,6 +25,8 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
 import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
 import { BaseCardElement } from '../card/card.abstract';
+import { simpleUID } from '../../services/utils/functional-utils';
+import { Swiper } from 'swiper/dist/js/swiper.esm.js';
 
 @Component({
   selector: 'b-cards',
@@ -43,6 +46,8 @@ export class CardsLayoutComponent
   ) {}
 
   isMobile = false;
+  private swiper: Swiper;
+
   private resizeSubscription: Subscription;
   private cardsInRow$: BehaviorSubject<number>;
   private cardsInRow: number;
@@ -56,6 +61,9 @@ export class CardsLayoutComponent
     number
   >();
 
+  @HostBinding('attr.data-mobile-swiper') @Input() mobileSwiper = true;
+  @HostBinding('attr.id') private cardsListId = simpleUID('cards-list-');
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.type && !changes.type.firstChange) {
       this.type = changes.type.currentValue;
@@ -63,23 +71,25 @@ export class CardsLayoutComponent
     }
   }
 
-  ngOnInit(): void {
-    console.log(this);
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    this.setCssVars();
+    this.cardsInRow = this.calcCardsInRow();
+
     this.mediaEventSubscriber = this.mobileService
       .getMediaEvent()
       .pipe(outsideZone(this.zone))
       .subscribe((media: MediaEvent) => {
         this.isMobile = media.matchMobile;
-        this.cd.detectChanges();
-
-        if (this.isMobile) {
+        if (this.mobileSwiper && this.isMobile) {
+          this.initSwiper();
+        } else if (this.swiper) {
+          this.swiper.destroy();
+          this.setCssVars();
         }
+        this.cd.detectChanges();
       });
-  }
-
-  ngAfterViewInit(): void {
-    this.setCssVars();
-    this.cardsInRow = this.calcCardsInRow();
   }
 
   ngOnDestroy(): void {
@@ -117,9 +127,54 @@ export class CardsLayoutComponent
     return this.cardsInRow$ as Observable<number>;
   }
 
+  private initSwiper(): void {
+    this.swiper = new Swiper('#' + this.cardsListId, {
+      wrapperClass: 'cards-list',
+      slideClass: 'single-card',
+      spaceBetween: GAP_SIZE,
+      centeredSlides: true,
+      centerInsufficientSlides: true,
+      roundLengths: true,
+
+      breakpoints:
+        this.type === CardType.large
+          ? {
+              800: {
+                slidesPerView: 2
+              },
+              450: {
+                slidesPerView: 1
+              }
+            }
+          : this.type === CardType.regular
+          ? {
+              800: {
+                slidesPerView: 3
+              },
+              450: {
+                slidesPerView: 2
+              },
+              330: {
+                slidesPerView: 1
+              }
+            }
+          : {
+              800: {
+                slidesPerView: 4
+              },
+              530: {
+                slidesPerView: 3
+              },
+              360: {
+                slidesPerView: 1
+              }
+            }
+    });
+  }
+
   private setCssVars(): void {
     this.domUtils.setCssProps(this.hostRef.nativeElement, {
-      '--card-max-width': CARD_TYPE_WIDTH[this.type] + 'px',
+      '--card-width': CARD_TYPE_WIDTH[this.type] + 'px',
       '--card-grid-gap': GAP_SIZE + 'px'
     });
   }
