@@ -9,7 +9,11 @@ import {
   OnDestroy,
   SimpleChanges,
   OnChanges,
-  NgZone
+  NgZone,
+  ChangeDetectorRef,
+  OnInit,
+  ContentChildren,
+  QueryList
 } from '@angular/core';
 import { CardType } from '../cards.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
@@ -17,14 +21,9 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-
-export const CARD_TYPE_WIDTH = {
-  [CardType.small]: 160,
-  [CardType.regular]: 190,
-  [CardType.large]: 260,
-};
-
-export const GAP_SIZE = 16;
+import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
+import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
+import { BaseCardElement } from '../card/card.abstract';
 
 @Component({
   selector: 'b-cards',
@@ -33,22 +32,50 @@ export const GAP_SIZE = 16;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardsLayoutComponent
-  implements AfterViewInit, OnDestroy, OnChanges {
-  resizeSubscription: Subscription;
-
-  private cardsInRow$: BehaviorSubject<number>;
-  private cardsInRow: number;
-
+  implements AfterViewInit, OnDestroy, OnChanges, OnInit {
   constructor(
     private hostRef: ElementRef,
     private domUtils: DOMhelpers,
     private utilsService: UtilsService,
-    private zone: NgZone
+    private mobileService: MobileService,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
   ) {}
+
+  isMobile = false;
+  private resizeSubscription: Subscription;
+  private cardsInRow$: BehaviorSubject<number>;
+  private cardsInRow: number;
+  private mediaEventSubscriber: Subscription;
+
+  @ContentChildren(BaseCardElement) public cards: QueryList<BaseCardElement>;
 
   @Input() alignCenter = false;
   @Input() type: CardType = CardType.regular;
-  @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<number>();
+  @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<
+    number
+  >();
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.type && !changes.type.firstChange) {
+      this.type = changes.type.currentValue;
+      this.setCssVars();
+    }
+  }
+
+  ngOnInit(): void {
+    console.log(this);
+    this.mediaEventSubscriber = this.mobileService
+      .getMediaEvent()
+      .pipe(outsideZone(this.zone))
+      .subscribe((media: MediaEvent) => {
+        this.isMobile = media.matchMobile;
+        this.cd.detectChanges();
+
+        if (this.isMobile) {
+        }
+      });
+  }
 
   ngAfterViewInit(): void {
     this.setCssVars();
@@ -59,20 +86,9 @@ export class CardsLayoutComponent
     if (this.resizeSubscription) {
       this.resizeSubscription.unsubscribe();
     }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.type && !changes.type.firstChange) {
-      this.type = changes.type.currentValue;
-      this.setCssVars();
+    if (this.mediaEventSubscriber && this.mediaEventSubscriber.unsubscribe) {
+      this.mediaEventSubscriber.unsubscribe();
     }
-  }
-
-  private setCssVars(): void {
-    this.domUtils.setCssProps(this.hostRef.nativeElement, {
-      '--card-max-width': CARD_TYPE_WIDTH[this.type] + 'px',
-      '--card-grid-gap': GAP_SIZE + 'px'
-    });
   }
 
   getCardsInRow$(): Observable<number> {
@@ -99,6 +115,13 @@ export class CardsLayoutComponent
         });
     }
     return this.cardsInRow$ as Observable<number>;
+  }
+
+  private setCssVars(): void {
+    this.domUtils.setCssProps(this.hostRef.nativeElement, {
+      '--card-max-width': CARD_TYPE_WIDTH[this.type] + 'px',
+      '--card-grid-gap': GAP_SIZE + 'px'
+    });
   }
 
   private calcCardsInRow(): number {
