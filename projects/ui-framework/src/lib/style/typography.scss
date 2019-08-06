@@ -62,6 +62,7 @@ $font-size-subheading: $font-size-body;
   $weight: 600,
   $lineHeight: $line-height-heading,
   $style: normal,
+  $font-family: var(--heading-font-family),
   $addCssVars: false
 ) {
   @include FontDefault($style, $weight, $size, $lineHeight, $addCssVars);
@@ -224,7 +225,7 @@ $font-size-subheading: $font-size-body;
   @if $extended {
     @include HeadingFont($size: $font-size-heading, $addCssVars: $addCssVars);
   } @else {
-    @include DisplayFont(
+    @include HeadingFont(
       $size: $font-size-heading,
       $style: null,
       $addCssVars: $addCssVars
@@ -240,7 +241,7 @@ $font-size-subheading: $font-size-body;
       $addCssVars: $addCssVars
     );
   } @else {
-    @include DisplayFont(
+    @include HeadingFont(
       $size: $font-size-subheading,
       $style: null,
       $addCssVars: $addCssVars
