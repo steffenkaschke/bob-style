@@ -112,8 +112,7 @@ export class CardsLayoutComponent
         .pipe(
           outsideZone(this.zone),
           filter(() => {
-            const cardsInRow = this.calcCardsInRow();
-            return this.cardsInRow !== cardsInRow;
+            return this.cardsInRow !== this.calcCardsInRow();
           })
         )
         .subscribe(() => {
