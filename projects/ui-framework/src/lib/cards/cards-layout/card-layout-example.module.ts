@@ -236,19 +236,15 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
         align-items: center;
         color: white;
       }
-
       .top b-icon {
         margin-right: 4px;
       }
-
       .benefit-detail {
         margin-bottom: 8px;
       }
-
       .benefit-detail span {
         display: block;
       }
-
       .benefit-detail span:first-child {
         color: #9d9d9d;
       }
