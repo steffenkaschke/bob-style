@@ -18,18 +18,13 @@
     line-height: 1.35;
   }
   .slot1-big {
-    @include BodyFont(
-      $font-size-body,
-      $font-weight-bold-body,
-      null,
-      $addCssVars: true
-    );
+    @include b-bold-body($addCssVars: true);
   }
   .slot1-big:only-child {
     font-weight: 400;
   }
   .slot2-medium {
-    @include BodyFont($font-size-body, null, null, $addCssVars: true);
+    @include b-body($addCssVars: true);
   }
   &[data-orientation='horizontal'] {
     .avatar-text {
@@ -61,18 +56,13 @@
     line-height: 1.35;
   }
   .slot1-big {
-    @include BodyFont(
-      $font-size-body,
-      $font-weight-bold-body,
-      null,
-      $addCssVars: true
-    );
+    @include b-bold-body($addCssVars: true);
   }
   .slot1-big:only-child {
     font-weight: 400;
   }
   .slot2-medium {
-    @include BodyFont($font-size-body, null, null, $addCssVars: true);
+    @include b-body($addCssVars: true);
   }
   &[data-orientation='horizontal'] {
     .avatar-text {
@@ -113,7 +103,7 @@
     );
   }
   .slot2-medium {
-    @include BodyFont($font-size-big-body, null, null, $addCssVars: true);
+    @include b-big-body($addCssVars: true);
   }
   .slot3-small {
     margin-top: 5px;
@@ -130,14 +120,7 @@
       margin-top: 14px;
     }
     .slot2-medium {
-      @include BodyFont(
-        $font-size-body,
-        null,
-        null,
-        null,
-        null,
-        $addCssVars: true
-      );
+      @include b-body($addCssVars: true);
       margin-top: 3px;
     }
   }
@@ -203,14 +186,7 @@
       );
     }
     .slot3-small {
-      @include BodyFont(
-        $font-size-big-body,
-        null,
-        null,
-        null,
-        null,
-        $addCssVars: true
-      );
+      @include b-big-body($addCssVars: true);
       color: $grey-600;
       margin-top: 2px;
     }

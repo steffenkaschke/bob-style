@@ -35,7 +35,7 @@
 
 html,
 body {
-  @include b-body($color: $grey-800);
+  @include b-body($color: $body-text-color, $addCssVars: false);
 }
 
 .b-mobile {
@@ -69,7 +69,7 @@ body {
 }
 
 .b-caption {
-  @include b-caption($addCssVars: true) {
+  @include b-caption($color: $caption-text-color, $addCssVars: true) {
     margin: 0;
   }
 }
