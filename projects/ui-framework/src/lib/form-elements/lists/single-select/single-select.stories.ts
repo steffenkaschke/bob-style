@@ -1,5 +1,12 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
@@ -9,19 +16,18 @@ import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-lay
 import { SingleSelectModule } from './single-select.module';
 import { SelectGroupOption } from '../list.interface';
 
-const story = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
-const story2 = storiesOf(
-  ComponentGroupType.Lists,
-  module
-).addDecorator(withKnobs);
+const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-single-select [label]="label"
                  [placeholder]="placeholder"
+                 [value]="value"
                  [options]="options"
                  (selectChange)="selectChange($event)"
                  [disabled]="disabled"
@@ -84,11 +90,12 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
   };
 });
 
-optionsMock[0].options[1].selected = true;
+// optionsMock[0].options[1].selected = true;
 
 const toAdd = () => ({
   template: storyTemplate,
   props: {
+    value: number('value', 1),
     options: object<SelectGroupOption>('options', optionsMock),
     selectChange: action('Single select change'),
     label: text('label', 'label text'),
@@ -107,7 +114,7 @@ const toAdd = () => ({
       BrowserAnimationsModule,
       StoryBookLayoutModule
     ]
-  },
+  }
 });
 
 story.add('Single select', toAdd, { notes: { markdown: note } });

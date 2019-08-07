@@ -21,7 +21,7 @@
     {{card.subtitle}}
   </p>
 
-  <div *ngIf="card.social && type !== cardType.small"
+  <div *ngIf="type !== cardType.small && card.social && (card.social.linkedin || card.social.facebook  || card.social.twitter)"
        class="social">
     <a *ngIf="card.social.linkedin"
        class="b-icon-linkedin"
