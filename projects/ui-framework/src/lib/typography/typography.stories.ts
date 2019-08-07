@@ -150,8 +150,6 @@ Typography is arranged in multiple levels:<br>
 
 -------------
 
-#### Main syntax
-
 ~~~
 <b-display-1>Display XLarge</b-display-1>
 <b-display-2>Display Large</b-display-2>
@@ -164,37 +162,6 @@ Typography is arranged in multiple levels:<br>
 <b-body>Regular text</b-body>
 <b-caption>Caption</b-caption>
 ~~~
-
-#### Alternative syntax
-
-~~~
-<h1 b-display-1>Display XLarge</h1>
-<h2 b-display-2>Display Large</h2>
-<h3 b-display-3>Display Medium</h3>
-<h4 b-display-4>Display Small</h4>
-<h5 b-heading>Heading</h5>
-<h6 b-subheading>Sub heading</h6>
-<p b-big-body>Big Body</p>
-<p b-bold-body>Bold Body</p>
-<p b-body>Regular text</p>
-<p b-caption>Caption</p>
-~~~
-
-#### "Why not classes?" syntax
-
-~~~
-<h1 class="b-display-1">Display XLarge</h1>
-<h2 class="b-display-2">Display Large</h2>
-<h3 class="b-display-3">Display Medium</h3>
-<h4 class="b-display-4">Display Small</h4>
-<h5 class="b-heading">Heading</h5>
-<h6 class="b-subheading">Sub heading</h6>
-<p class="b-big-body">Big Body</p>
-<p class="b-bold-body">Bold Body</p>
-<p class="b-body">Regular text</p>
-<p class="b-caption">Caption</p>
-~~~
-
 
 `;
 typographyStories.add(
