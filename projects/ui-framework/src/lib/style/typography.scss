@@ -151,6 +151,8 @@ $font-size-subheading: $font-size-body;
 }
 
 @mixin b-display-1(
+  $lineHeight: $line-height-heading,
+  $weight: $font-weight-display-1,
   $color: $display-text-color,
   $style: null,
   $addCssVars: false,
@@ -159,7 +161,8 @@ $font-size-subheading: $font-size-body;
   @include DisplayFont(
     $color: $color,
     $size: $font-size-display-1,
-    $weight: $font-weight-display-1,
+    $lineHeight: $lineHeight,
+    $weight: $weight,
     $style: $style,
     $transform: $transform,
     $addCssVars: $addCssVars
@@ -172,6 +175,8 @@ $font-size-subheading: $font-size-body;
 }
 
 @mixin b-display-2(
+  $lineHeight: $line-height-heading,
+  $weight: $font-weight-display-2,
   $color: $display-text-color,
   $style: null,
   $addCssVars: false,
@@ -180,7 +185,8 @@ $font-size-subheading: $font-size-body;
   @include DisplayFont(
     $color: $color,
     $size: $font-size-display-2,
-    $weight: $font-weight-display-2,
+    $lineHeight: $lineHeight,
+    $weight: $weight,
     $style: $style,
     $transform: $transform,
     $addCssVars: $addCssVars
@@ -190,6 +196,8 @@ $font-size-subheading: $font-size-body;
 }
 
 @mixin b-display-3(
+  $lineHeight: $line-height-heading,
+  $weight: $font-weight-display-3,
   $color: $display-text-color,
   $style: null,
   $addCssVars: false,
@@ -198,7 +206,8 @@ $font-size-subheading: $font-size-body;
   @include DisplayFont(
     $color: $color,
     $size: $font-size-display-3,
-    $weight: $font-weight-display-3,
+    $lineHeight: $lineHeight,
+    $weight: $weight,
     $style: $style,
     $transform: $transform,
     $addCssVars: $addCssVars
@@ -207,6 +216,8 @@ $font-size-subheading: $font-size-body;
 }
 
 @mixin b-display-4(
+  $lineHeight: $line-height-heading,
+  $weight: $font-weight-display-4,
   $color: $display-text-color,
   $style: null,
   $addCssVars: false,
@@ -215,7 +226,8 @@ $font-size-subheading: $font-size-body;
   @include DisplayFont(
     $color: $color,
     $size: $font-size-display-4,
-    $weight: $font-weight-display-4,
+    $lineHeight: $lineHeight,
+    $weight: $weight,
     $style: $style,
     $transform: $transform,
     $addCssVars: $addCssVars
