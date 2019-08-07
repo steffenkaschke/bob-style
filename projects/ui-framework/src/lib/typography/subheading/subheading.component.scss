@@ -1,7 +1,7 @@
 @import '../../style/typography.scss';
 
 :host {
-  @include b-subheading($extended: true, $addCssVars: false) {
+  @include b-subheading($addCssVars: false) {
     display: block;
   }
 }

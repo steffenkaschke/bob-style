@@ -24,6 +24,7 @@ $font-size-display-4: 18px;
 $font-weight-display-4: 500;
 
 $font-size-heading: 14px;
+$font-weight-heading: 600;
 
 $font-size-subheading: $font-size-body;
 
@@ -45,8 +46,8 @@ $font-size-subheading: $font-size-body;
   $size,
   $weight,
   $lineHeight: $line-height-heading,
-  $transform: none,
-  $style: normal,
+  $transform: null,
+  $style: null,
   $font-family: var(--display-font-family),
   $addCssVars: false,
   $color: $display-text-color
@@ -59,12 +60,14 @@ $font-size-subheading: $font-size-body;
 
 @mixin HeadingFont(
   $size,
-  $weight: 600,
+  $weight: $font-weight-heading,
   $lineHeight: $line-height-heading,
-  $style: normal,
+  $style: null,
   $font-family: var(--heading-font-family),
-  $addCssVars: false
+  $addCssVars: false,
+  $color: $body-text-color
 ) {
+  color: $color;
   @include FontDefault($style, $weight, $size, $lineHeight, $addCssVars);
   font-family: var(--heading-font-family);
 }
@@ -73,84 +76,57 @@ $font-size-subheading: $font-size-body;
   $size: $font-size-body,
   $weight: $font-weight-body,
   $lineHeight: $line-height-body,
-  $style: normal,
+  $style: null,
   $font-family: var(--body-font-family),
-  $addCssVars: false
+  $addCssVars: false,
+  $color: $body-text-color
 ) {
+  color: $color;
   @include FontDefault($style, $weight, $size, $lineHeight, $addCssVars);
   font-family: $font-family;
 }
 
-@mixin b-big-body($extended: false, $addCssVars: true) {
-  @if $extended {
-    @include BodyFont($size: $font-size-big-body, $addCssVars: $addCssVars);
-  } @else {
-    @include BodyFont(
-      $size: $font-size-big-body,
-      $weight: null,
-      $lineHeight: null,
-      $style: null,
-      $font-family: null,
-      $addCssVars: $addCssVars
-    );
-  }
+@mixin b-body($color: null, $addCssVars: false) {
+  @include BodyFont($color: $color, $addCssVars: $addCssVars);
   @content;
 }
 
-@mixin b-bold-body($extended: false, $addCssVars: true) {
-  @if $extended {
-    @include BodyFont(
-      $size: $font-size-body,
-      $weight: $font-weight-bold-body,
-      $addCssVars: $addCssVars
-    );
-  } @else {
-    @include BodyFont(
-      $size: $font-size-body,
-      $weight: $font-weight-bold-body,
-      $lineHeight: null,
-      $style: null,
-      $font-family: null,
-      $addCssVars: $addCssVars
-    );
-  }
+@mixin b-big-body($color: null, $addCssVars: false) {
+  @include BodyFont(
+    $color: $color,
+    $size: $font-size-big-body,
+    $addCssVars: $addCssVars
+  );
   @content;
 }
 
-@mixin b-caption($extended: false, $addCssVars: true) {
-  @if $extended {
-    @include BodyFont($size: $font-size-caption, $addCssVars: $addCssVars);
-  } @else {
-    @include BodyFont(
-      $size: $font-size-caption,
-      $weight: null,
-      $lineHeight: null,
-      $style: null,
-      $font-family: null,
-      $addCssVars: $addCssVars
-    );
-  }
+@mixin b-bold-body($color: null, $addCssVars: false) {
+  @include BodyFont(
+    $color: $color,
+    $size: $font-size-body,
+    $weight: $font-weight-bold-body,
+    $addCssVars: $addCssVars
+  );
   @content;
 }
 
-@mixin b-display-1($extended: false, $addCssVars: true, $transform: null) {
-  @if $extended {
-    @include DisplayFont(
-      $size: $font-size-display-1,
-      $weight: $font-weight-display-1,
-      $transform: $transform,
-      $addCssVars: $addCssVars
-    );
-  } @else {
-    @include DisplayFont(
-      $size: $font-size-display-1,
-      $weight: $font-weight-display-1,
-      $style: null,
-      $color: null,
-      $transform: $transform,
-      $addCssVars: $addCssVars
-    );
-  }
+@mixin b-caption($color: null, $addCssVars: false) {
+  @include BodyFont(
+    $color: $color,
+    $size: $font-size-caption,
+    $addCssVars: $addCssVars
+  );
+  @content;
+}
+
+@mixin b-display-1($color: null, $addCssVars: false, $transform: null) {
+  @include DisplayFont(
+    $color: $color,
+    $size: $font-size-display-1,
+    $weight: $font-weight-display-1,
+    $transform: $transform,
+    $addCssVars: $addCssVars
+  );
 
   @include mobile {
     font-size: $font-size-display-2;
@@ -158,94 +134,54 @@ $font-size-subheading: $font-size-body;
   @content;
 }
 
-@mixin b-display-2($extended: false, $addCssVars: true, $transform: null) {
-  @if $extended {
-    @include DisplayFont(
-      $size: $font-size-display-2,
-      $weight: $font-weight-display-2,
-      $transform: $transform,
-      $addCssVars: $addCssVars
-    );
-  } @else {
-    @include DisplayFont(
-      $size: $font-size-display-2,
-      $weight: $font-weight-display-2,
-      $style: null,
-      $color: null,
-      $transform: $transform,
-      $addCssVars: $addCssVars
-    );
-  }
+@mixin b-display-2($color: null, $addCssVars: false, $transform: null) {
+  @include DisplayFont(
+    $color: $color,
+    $size: $font-size-display-2,
+    $weight: $font-weight-display-2,
+    $transform: $transform,
+    $addCssVars: $addCssVars
+  );
+
   @content;
 }
 
-@mixin b-display-3($extended: false, $addCssVars: true, $transform: null) {
-  @if $extended {
-    @include DisplayFont(
-      $size: $font-size-display-3,
-      $weight: $font-weight-display-3,
-      $transform: $transform,
-      $addCssVars: $addCssVars
-    );
-  } @else {
-    @include DisplayFont(
-      $size: $font-size-display-3,
-      $weight: $font-weight-display-3,
-      $style: null,
-      $color: null,
-      $transform: $transform,
-      $addCssVars: $addCssVars
-    );
-  }
+@mixin b-display-3($color: null, $addCssVars: false, $transform: null) {
+  @include DisplayFont(
+    $color: $color,
+    $size: $font-size-display-3,
+    $weight: $font-weight-display-3,
+    $transform: $transform,
+    $addCssVars: $addCssVars
+  );
   @content;
 }
 
-@mixin b-display-4($extended: false, $addCssVars: true, $transform: null) {
-  @if $extended {
-    @include DisplayFont(
-      $size: $font-size-display-4,
-      $weight: $font-weight-display-4,
-      $transform: $transform,
-      $addCssVars: $addCssVars
-    );
-  } @else {
-    @include DisplayFont(
-      $size: $font-size-display-4,
-      $weight: $font-weight-display-4,
-      $style: null,
-      $color: null,
-      $transform: $transform,
-      $addCssVars: $addCssVars
-    );
-  }
+@mixin b-display-4($color: null, $addCssVars: false, $transform: null) {
+  @include DisplayFont(
+    $color: $color,
+    $size: $font-size-display-4,
+    $weight: $font-weight-display-4,
+    $transform: $transform,
+    $addCssVars: $addCssVars
+  );
   @content;
 }
 
-@mixin b-heading($extended: false, $addCssVars: true) {
-  @if $extended {
-    @include HeadingFont($size: $font-size-heading, $addCssVars: $addCssVars);
-  } @else {
-    @include HeadingFont(
-      $size: $font-size-heading,
-      $style: null,
-      $addCssVars: $addCssVars
-    );
-  }
+@mixin b-heading($color: null, $addCssVars: false) {
+  @include HeadingFont(
+    $color: $color,
+    $size: $font-size-heading,
+    $addCssVars: $addCssVars
+  );
   @content;
 }
 
-@mixin b-subheading($extended: false, $addCssVars: true) {
-  @if $extended {
-    @include HeadingFont(
-      $size: $font-size-subheading,
-      $addCssVars: $addCssVars
-    );
-  } @else {
-    @include HeadingFont(
-      $size: $font-size-subheading,
-      $style: null,
-      $addCssVars: $addCssVars
-    );
-  }
+@mixin b-subheading($color: null, $addCssVars: false) {
+  @include HeadingFont(
+    $color: $color,
+    $size: $font-size-subheading,
+    $addCssVars: $addCssVars
+  );
   @content;
 }

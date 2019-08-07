@@ -1,5 +1,5 @@
 @import '../../style/typography.scss';
 
 :host {
-  @include b-big-body($extended: true, $addCssVars: false);
+  @include b-big-body($addCssVars: false);
 }

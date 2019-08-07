@@ -3,7 +3,7 @@
 @import '../../style/typography';
 
 :host {
-  @include b-display-1($extended: true, $addCssVars: false) {
+  @include b-display-1($addCssVars: false) {
     display: block;
   }
 }

@@ -1,7 +1,7 @@
 @import '../../style/typography.scss';
 
 :host {
-  @include b-display-2($extended: true, $addCssVars: false) {
+  @include b-display-2($addCssVars: false) {
     display: block;
   }
 }
