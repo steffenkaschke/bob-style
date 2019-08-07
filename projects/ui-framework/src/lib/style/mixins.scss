@@ -259,3 +259,49 @@
     @content;
   }
 }
+
+@mixin responsive(
+  $prop: null,
+  $min-width: 0,
+  $max-width: 2000px,
+  $min-val: 0px,
+  $max-val: 300px,
+  $unit: px,
+  $doEdges: true
+) {
+  $minWidth: strip-unit($min-width);
+  $maxWidth: strip-unit($max-width);
+
+  @if $prop {
+    @if $doEdges {
+      #{$prop}: #{strip-unit($min-val)}px;
+
+      @media (min-width: #{$maxWidth + 1}px) {
+        #{$prop}: #{strip-unit($max-val)}px;
+      }
+    }
+
+    @media (min-width: #{$minWidth}px) and (max-width: #{$maxWidth}px) {
+      #{$prop}: resp-val($min-width, $max-width, $min-val, $max-val, $unit);
+    }
+  }
+}
+
+@mixin responsive-font(
+  $min-val: 12,
+  $max-val: 24,
+  $min-width: $small-mobile-media-width,
+  $max-width: $mobile-media-width,
+  $unit: px,
+  $doEdges: true
+) {
+  @include responsive(
+    $prop: font-size,
+    $min-width: $min-width,
+    $max-width: $max-width,
+    $min-val: $min-val,
+    $max-val: $max-val,
+    $unit: $unit,
+    $doEdges: $doEdges
+  );
+}
