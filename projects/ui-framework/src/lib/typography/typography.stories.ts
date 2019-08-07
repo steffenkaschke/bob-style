@@ -159,7 +159,7 @@ Typography is arranged in multiple levels:<br>
 <b-subheading>Sub heading</b-subheading>
 <b-big-body>Big Body</b-big-body>
 <b-bold-body>Bold Body</b-bold-body>
-<b-body>Regular text</b-body>
+Regular Body text
 <b-caption>Caption</b-caption>
 ~~~
 
