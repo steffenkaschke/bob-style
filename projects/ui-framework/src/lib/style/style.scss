@@ -35,8 +35,7 @@
 
 html,
 body {
-  color: $grey-800;
-  @include BodyFont;
+  @include b-body($color: $grey-800);
 }
 
 .b-mobile {
@@ -48,6 +47,12 @@ body {
 .b-desktop {
   @include mobile {
     display: none !important;
+  }
+}
+
+.b-body {
+  @include b-body($addCssVars: true) {
+    margin: 0;
   }
 }
 

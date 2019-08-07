@@ -65,7 +65,7 @@ $font-size-subheading: $font-size-body;
   $style: null,
   $font-family: var(--heading-font-family),
   $addCssVars: false,
-  $color: $body-text-color
+  $color: $heading-text-color
 ) {
   color: $color;
   @include FontDefault($style, $weight, $size, $lineHeight, $addCssVars);
@@ -110,7 +110,7 @@ $font-size-subheading: $font-size-body;
   @content;
 }
 
-@mixin b-caption($color: null, $addCssVars: false) {
+@mixin b-caption($color: $caption-text-color, $addCssVars: false) {
   @include BodyFont(
     $color: $color,
     $size: $font-size-caption,
@@ -119,7 +119,7 @@ $font-size-subheading: $font-size-body;
   @content;
 }
 
-@mixin b-display-1($color: null, $addCssVars: false, $transform: null) {
+@mixin b-display-1($color: $display-text-color, $addCssVars: false, $transform: null) {
   @include DisplayFont(
     $color: $color,
     $size: $font-size-display-1,
@@ -134,7 +134,7 @@ $font-size-subheading: $font-size-body;
   @content;
 }
 
-@mixin b-display-2($color: null, $addCssVars: false, $transform: null) {
+@mixin b-display-2($color: $display-text-color, $addCssVars: false, $transform: null) {
   @include DisplayFont(
     $color: $color,
     $size: $font-size-display-2,
@@ -146,7 +146,7 @@ $font-size-subheading: $font-size-body;
   @content;
 }
 
-@mixin b-display-3($color: null, $addCssVars: false, $transform: null) {
+@mixin b-display-3($color: $display-text-color, $addCssVars: false, $transform: null) {
   @include DisplayFont(
     $color: $color,
     $size: $font-size-display-3,
@@ -157,7 +157,7 @@ $font-size-subheading: $font-size-body;
   @content;
 }
 
-@mixin b-display-4($color: null, $addCssVars: false, $transform: null) {
+@mixin b-display-4($color: $display-text-color, $addCssVars: false, $transform: null) {
   @include DisplayFont(
     $color: $color,
     $size: $font-size-display-4,
