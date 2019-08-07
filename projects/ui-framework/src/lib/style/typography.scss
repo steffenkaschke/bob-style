@@ -160,17 +160,16 @@ $font-size-subheading: $font-size-body;
 ) {
   @include DisplayFont(
     $color: $color,
-    $size: $font-size-display-1,
-    $lineHeight: $lineHeight,
+    $size: null,
+      $lineHeight: $lineHeight,
     $weight: $weight,
     $style: $style,
     $transform: $transform,
     $addCssVars: $addCssVars
   );
 
-  @include mobile {
-    font-size: $font-size-display-2;
-  }
+  @include responsive-font($font-size-display-2, $font-size-display-1);
+
   @content;
 }
 
