@@ -61,7 +61,7 @@ export class CardsLayoutComponent
   >();
 
   @HostBinding('attr.data-mobile-swiper') @Input() mobileSwiper = true;
-  @HostBinding('attr.id') private cardsListId = simpleUID('cards-list-');
+  @HostBinding('attr.id') public cardsListId = simpleUID('cards-list-');
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.type && !changes.type.firstChange) {
