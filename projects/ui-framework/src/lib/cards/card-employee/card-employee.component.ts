@@ -1,14 +1,7 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  ChangeDetectorRef,
-  DoCheck
-} from '@angular/core';
+import { Component, ElementRef, Input, DoCheck } from '@angular/core';
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 import { CardEmployee } from './card-employee.interface';
 import { BaseCardElement } from '../card/card.abstract';
-import { isEmptyObject, isObject } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-card-employee, [b-card-employee]',
@@ -17,7 +10,7 @@ import { isEmptyObject, isObject } from '../../services/utils/functional-utils';
   providers: [{ provide: BaseCardElement, useExisting: CardEmployeeComponent }]
 })
 export class CardEmployeeComponent extends BaseCardElement implements DoCheck {
-  constructor(public cardElRef: ElementRef, private cd: ChangeDetectorRef) {
+  constructor(public cardElRef: ElementRef) {
     super(cardElRef);
   }
 
@@ -30,23 +23,23 @@ export class CardEmployeeComponent extends BaseCardElement implements DoCheck {
   }
 
   ngDoCheck() {
-    this.setCssVars();
-  }
-
-  private setCssVars(): void {
     if (
       this.cardElRef &&
       this.card &&
       !this.cardElRef.nativeElement.hasAttribute('style')
     ) {
-      this.cardElRef.nativeElement.style.setProperty(
-        '--background-color-1',
-        `${this.card.coverColors.color1}`
-      );
-      this.cardElRef.nativeElement.style.setProperty(
-        '--background-color-2',
-        `${this.card.coverColors.color2}`
-      );
+      this.setCssVars();
     }
+  }
+
+  private setCssVars(): void {
+    this.cardElRef.nativeElement.style.setProperty(
+      '--background-color-1',
+      `${this.card.coverColors.color1}`
+    );
+    this.cardElRef.nativeElement.style.setProperty(
+      '--background-color-2',
+      `${this.card.coverColors.color2}`
+    );
   }
 }
