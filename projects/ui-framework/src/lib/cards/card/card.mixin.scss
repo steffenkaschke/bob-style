@@ -1,0 +1,120 @@
+$card-width-small: 160px;
+$card-width-regular: 190px;
+$card-width-large: 260px;
+
+$cardPadding: times8(3);
+$cardPadding-mobile: times8(2);
+
+@mixin card-common($doHover: true) {
+  :host {
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: $cardPadding;
+    border: 1px solid $grey-500;
+    border-radius: $border-radius;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: left;
+    background-color: white;
+    min-height: 300px;
+    @include b-body($addCssVars: true);
+
+    &:focus {
+      outline: 0;
+    }
+
+    @if $doHover {
+      &.clickable {
+        &:hover,
+        &:focus,
+        &[data-focus-inside='true'] {
+          box-shadow: 0 2px 12px 0 $grey-500;
+        }
+      }
+    }
+  }
+
+  // Parts
+
+  p,
+  h4,
+  h5 {
+    margin: 0;
+  }
+
+  .card-title,
+  .card-subtitle,
+  .card-top,
+  .card-content,
+  .card-bottom {
+    &:empty {
+      display: none;
+    }
+  }
+
+  .card-title {
+    @include b-display-4($weight: 600, $addCssVars: true);
+  }
+
+  .card-subtitle {
+    color: $grey-600;
+    line-height: 1.35;
+    --line-height: 1.35;
+    margin-top: times8(0.5);
+  }
+
+  .card-content {
+    flex-grow: 1;
+  }
+
+  .card-bottom {
+    padding-top: times8(2);
+    display: flex;
+    margin-top: auto;
+  }
+
+  .card-top-with-image {
+    margin: (-1 * $cardPadding) (-1 * $cardPadding) 0 (-1 * $cardPadding);
+    background-size: cover;
+    background-position: center;
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+    overflow: hidden;
+  }
+
+  // Types
+
+  :host {
+    &[data-type='small'] {
+      min-width: $card-width-small;
+      min-height: 0;
+      padding: $cardPadding-mobile;
+
+      &:only-child {
+        max-width: 220px;
+      }
+
+      .card-subtitle {
+        font-size: $font-size-caption;
+        --font-size: #{$font-size-caption};
+      }
+    }
+
+    &[data-type='regular'] {
+      min-width: $card-width-regular;
+
+      &:only-child {
+        max-width: 250px;
+      }
+    }
+
+    &[data-type='large'] {
+      min-width: $card-width-large;
+
+      &:only-child {
+        max-width: 320px;
+      }
+    }
+  }
+}

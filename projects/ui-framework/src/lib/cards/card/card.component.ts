@@ -2,13 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   HostBinding,
-  OnChanges,
-  SimpleChanges,
   ElementRef
 } from '@angular/core';
 import { IconColor, Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
-import { has } from 'lodash';
 import { LinkColor } from '../../buttons-indicators/link/link.enum';
 import { BaseCardElement } from './card.abstract';
 
@@ -19,7 +16,7 @@ import { BaseCardElement } from './card.abstract';
   providers: [{ provide: BaseCardElement, useExisting: CardComponent }],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CardComponent extends BaseCardElement implements OnChanges {
+export class CardComponent extends BaseCardElement {
   constructor(public cardElRef: ElementRef) {
     super(cardElRef);
   }
@@ -31,12 +28,6 @@ export class CardComponent extends BaseCardElement implements OnChanges {
 
   @HostBinding('attr.data-focus-inside') menuIsOpened: boolean;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (has(changes, 'card')) {
-      this.card = changes.card.currentValue;
-    }
-  }
-
   onMenuOpen(): void {
     this.menuIsOpened = true;
   }
@@ -47,7 +38,7 @@ export class CardComponent extends BaseCardElement implements OnChanges {
     }, 150);
   }
 
-  onCtaClick(event): void {
+  onCtaClick(event: MouseEvent): void {
     this.clicked.emit(event);
   }
 }

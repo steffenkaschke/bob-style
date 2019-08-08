@@ -11,7 +11,6 @@ import {
   OnChanges,
   NgZone,
   ChangeDetectorRef,
-  OnInit,
   ContentChildren,
   QueryList,
   HostBinding
@@ -35,7 +34,7 @@ import { Swiper } from 'swiper/dist/js/swiper.esm.js';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardsLayoutComponent
-  implements AfterViewInit, OnDestroy, OnChanges, OnInit {
+  implements AfterViewInit, OnDestroy, OnChanges {
   constructor(
     private hostRef: ElementRef,
     private domUtils: DOMhelpers,
@@ -68,10 +67,13 @@ export class CardsLayoutComponent
     if (changes.type && !changes.type.firstChange) {
       this.type = changes.type.currentValue;
       this.setCssVars();
+      if (this.swiper) {
+        this.swiper.destroy();
+        this.initSwiper();
+      }
+      this.cd.detectChanges();
     }
   }
-
-  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.setCssVars();
@@ -110,8 +112,7 @@ export class CardsLayoutComponent
         .pipe(
           outsideZone(this.zone),
           filter(() => {
-            const cardsInRow = this.calcCardsInRow();
-            return this.cardsInRow !== cardsInRow;
+            return this.cardsInRow !== this.calcCardsInRow();
           })
         )
         .subscribe(() => {
@@ -127,48 +128,58 @@ export class CardsLayoutComponent
     return this.cardsInRow$ as Observable<number>;
   }
 
+  private getSwiperBreakpoints() {
+    return this.type === CardType.large
+      ? {
+          800: {
+            slidesPerView: 2,
+            centeredSlides: this.cards && this.cards.length < 2
+          },
+          500: {
+            slidesPerView: 1,
+            centeredSlides: true
+          }
+        }
+      : this.type === CardType.regular
+      ? {
+          800: {
+            slidesPerView: 3,
+            centeredSlides: this.cards && this.cards.length < 2
+          },
+          450: {
+            slidesPerView: 2,
+            centeredSlides: this.cards && this.cards.length < 2
+          },
+          330: {
+            slidesPerView: 1,
+            centeredSlides: true
+          }
+        }
+      : {
+          800: {
+            slidesPerView: 3,
+            centeredSlides: this.cards && this.cards.length < 2
+          },
+          530: {
+            slidesPerView: 2,
+            centeredSlides: this.cards && this.cards.length < 2
+          },
+          360: {
+            slidesPerView: 1,
+            centeredSlides: true
+          }
+        };
+  }
+
   private initSwiper(): void {
     this.swiper = new Swiper('#' + this.cardsListId, {
       wrapperClass: 'cards-list',
       slideClass: 'single-card',
       spaceBetween: GAP_SIZE,
-      centeredSlides: true,
+      centeredSlides: false,
       centerInsufficientSlides: true,
       roundLengths: true,
-
-      breakpoints:
-        this.type === CardType.large
-          ? {
-              800: {
-                slidesPerView: 2
-              },
-              450: {
-                slidesPerView: 1
-              }
-            }
-          : this.type === CardType.regular
-          ? {
-              800: {
-                slidesPerView: 3
-              },
-              450: {
-                slidesPerView: 2
-              },
-              330: {
-                slidesPerView: 1
-              }
-            }
-          : {
-              800: {
-                slidesPerView: 4
-              },
-              530: {
-                slidesPerView: 3
-              },
-              360: {
-                slidesPerView: 1
-              }
-            }
+      breakpoints: this.getSwiperBreakpoints()
     });
   }
 
