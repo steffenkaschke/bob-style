@@ -11,10 +11,14 @@ import { CardType } from '../cards.enum';
 export abstract class BaseCardElement {
   constructor(public cardElRef: ElementRef) {}
   @Input() card: Card;
+  @Input() isClickable = false;
   @Output() clicked: EventEmitter<any> = new EventEmitter<any>();
   readonly cardType = CardType;
   @HostBinding('attr.data-type') @Input() type: CardType = CardType.regular;
   @HostBinding('class.single-card') isSingleCard() {
     return true;
+  }
+  @HostBinding('class.clickable') isClickableCard() {
+    return this.isClickable || this.clicked.observers.length > 0;
   }
 }

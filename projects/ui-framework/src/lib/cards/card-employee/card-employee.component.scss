@@ -3,7 +3,7 @@
 @import '../../style/mixins';
 @import '../card/card.mixin';
 
-@include card-common($doHover: false);
+@include card-common;
 
 :host {
   text-align: center;

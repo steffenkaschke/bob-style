@@ -25,10 +25,12 @@ $cardPadding-mobile: times8(2);
     }
 
     @if $doHover {
-      &:hover,
-      &:focus,
-      &[data-focus-inside='true'] {
-        box-shadow: 0 2px 12px 0 $grey-500;
+      &.clickable {
+        &:hover,
+        &:focus,
+        &[data-focus-inside='true'] {
+          box-shadow: 0 2px 12px 0 $grey-500;
+        }
       }
     }
   }
