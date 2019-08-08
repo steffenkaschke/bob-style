@@ -42,4 +42,5 @@ b-chip-list {
   border-radius: $border-radius;
   margin: 0;
   padding: ($gap - 4px);
+  max-height: 360px;
 }
