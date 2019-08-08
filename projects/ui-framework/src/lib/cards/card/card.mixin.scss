@@ -94,7 +94,8 @@ $cardPadding-mobile: times8(2);
       }
 
       .card-subtitle {
-        @include b-caption($lineHeight: null, $addCssVars: true);
+        font-size: $font-size-caption;
+        --font-size: $font-size-caption;
       }
     }
 
