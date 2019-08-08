@@ -58,8 +58,7 @@
     box-shadow: 0 2px 3px 0 $boxShadowColor;
   }
   .mat-option {
-    color: $body-text-color;
-    @include BodyFont();
+    @include b-body($color: $body-text-color, $addCssVars: false);
     height: 44px;
 
     &:hover:not(.mat-option-disabled) {

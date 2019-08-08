@@ -4,15 +4,6 @@
 @import '../../style/typography';
 @import './card.mixin';
 
-@keyframes enablePointer {
-  from {
-    pointer-events: none;
-  }
-  to {
-    pointer-events: all;
-  }
-}
-
 @include card-common;
 
 :host {
