@@ -94,7 +94,6 @@ export class CardLayoutExample1Component implements OnInit {
       <b-card-employee
         *ngFor="let card of cards; let i = index"
         [type]="type"
-        [avatarIsClickable]="true"
         (clicked)="onClick($event)"
         [card]="card"
       >
@@ -131,7 +130,6 @@ export class CardLayoutExample2Component implements OnInit {
       <b-card-employee
         *ngFor="let card of cards; let i = index"
         [type]="type"
-        [avatarIsClickable]="true"
         (clicked)="onClick($event)"
         [card]="card"
       >

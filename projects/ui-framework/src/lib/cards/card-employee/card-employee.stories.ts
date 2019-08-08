@@ -21,7 +21,6 @@ const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
 const template = `
 <b-card-employee [card]="card"
                  [type]="type"
-                 [avatarIsClickable]="avatarIsClickable"
                  (clicked)="clicked($event)">
   <div card-bottom data-min-lines="2"><b>Likes:</b> cycling, hiking, code, food & drinks, music, design</div>
 </b-card-employee>
@@ -50,7 +49,6 @@ const note = `
   --- | --- | --- | ---
   type | CardType | Card theme | primary (optional)
   card | EmployeeCard | card contents data | none
-  avatarIsClickable | boolean | avatar is clickable | false
   clicked | Function | handler of Card Clicked event | none
 
   #### interface
@@ -85,7 +83,6 @@ story.add(
       props: {
         type: select('type', values(CardType), CardType.large),
         card: object('card', EmployeeCardsMockData[0]),
-        avatarIsClickable: boolean('avatarIsClickable', true),
         clicked: action('Employee avatar clicked')
       },
       moduleMetadata: {
