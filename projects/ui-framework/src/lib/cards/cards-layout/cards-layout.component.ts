@@ -132,36 +132,41 @@ export class CardsLayoutComponent
     return this.type === CardType.large
       ? {
           800: {
-            slidesPerView: 2
+            slidesPerView: 2,
+            centeredSlides: this.cards && this.cards.length < 2
           },
           500: {
             slidesPerView: 1,
-            enteredSlides: true
+            centeredSlides: true
           }
         }
       : this.type === CardType.regular
       ? {
           800: {
-            slidesPerView: 3
+            slidesPerView: 3,
+            centeredSlides: this.cards && this.cards.length < 2
           },
           450: {
-            slidesPerView: 2
+            slidesPerView: 2,
+            centeredSlides: this.cards && this.cards.length < 2
           },
           330: {
             slidesPerView: 1,
-            enteredSlides: true
+            centeredSlides: true
           }
         }
       : {
           800: {
-            slidesPerView: 3
+            slidesPerView: 3,
+            centeredSlides: this.cards && this.cards.length < 2
           },
           530: {
-            slidesPerView: 2
+            slidesPerView: 2,
+            centeredSlides: this.cards && this.cards.length < 2
           },
           360: {
             slidesPerView: 1,
-            enteredSlides: true
+            centeredSlides: true
           }
         };
   }
@@ -171,7 +176,7 @@ export class CardsLayoutComponent
       wrapperClass: 'cards-list',
       slideClass: 'single-card',
       spaceBetween: GAP_SIZE,
-      centeredSlides: true,
+      centeredSlides: false,
       centerInsufficientSlides: true,
       roundLengths: true,
       breakpoints: this.getSwiperBreakpoints()

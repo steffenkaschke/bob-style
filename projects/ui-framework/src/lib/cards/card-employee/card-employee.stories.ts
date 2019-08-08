@@ -23,7 +23,7 @@ const template = `
                  [type]="type"
                  [avatarIsClickable]="avatarIsClickable"
                  (clicked)="clicked($event)">
-  <div card-bottom><b>Likes:</b> cycling, hiking, code, food & drinks, music, design</div>
+  <div card-bottom data-min-lines="2"><b>Likes:</b> cycling, hiking, code, food & drinks, music, design</div>
 </b-card-employee>
 `;
 

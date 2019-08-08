@@ -105,7 +105,7 @@ export class CardLayoutExample1Component implements OnInit {
         (click)="onClick($event)"
         [card]="card"
       >
-        <b-caption card-bottom><b>Likes:</b> {{ hobbies[i] }}</b-caption>
+        <div card-bottom data-min-lines="2"><b>Likes:</b> {{ hobbies[i] }}</div>
       </b-card-employee>
     </b-cards>
   `,
