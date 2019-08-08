@@ -27,7 +27,6 @@ const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 const template = `
 <b-single-select [label]="label"
                  [placeholder]="placeholder"
-                 [value]="value"
                  [options]="options"
                  (selectChange)="selectChange($event)"
                  [disabled]="disabled"
@@ -90,12 +89,11 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
   };
 });
 
-// optionsMock[0].options[1].selected = true;
+optionsMock[0].options[1].selected = true;
 
 const toAdd = () => ({
   template: storyTemplate,
   props: {
-    value: number('value', 1),
     options: object<SelectGroupOption>('options', optionsMock),
     selectChange: action('Single select change'),
     label: text('label', 'label text'),

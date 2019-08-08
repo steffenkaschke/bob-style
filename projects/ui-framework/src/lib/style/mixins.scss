@@ -199,23 +199,20 @@
   }
 }
 
-@mixin ratioPad($ratio-or-width, $height: null, $include: null) {
+@mixin ratioPad($ratio-or-width, $height: null) {
   $padding: if(
     $height,
     percentage($height/$ratio-or-width),
     percentage(1 / $ratio-or-width)
   );
-  @if $include {
-    $padding: calc(#{$padding} - #{$include});
-  }
   padding-bottom: $padding;
 }
 
-@mixin ratio($ratio-or-width, $height: null, $clear: true, $include: null) {
+@mixin ratio($ratio-or-width, $height: null, $clear: true) {
   &:before {
     content: '';
     float: left;
-    @include ratioPad($ratio-or-width, $height, $include);
+    @include ratioPad($ratio-or-width, $height);
   }
   @if $clear {
     &:after {
