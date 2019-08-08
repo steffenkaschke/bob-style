@@ -83,7 +83,7 @@ describe('CardEmployeeComponent', () => {
     });
     it('should set title', () => {
       fixture.detectChanges();
-      const title = fixture.debugElement.query(By.css('.title'));
+      const title = fixture.debugElement.query(By.css('.card-title'));
       expect(title.nativeElement.innerText).toContain('test');
     });
   });

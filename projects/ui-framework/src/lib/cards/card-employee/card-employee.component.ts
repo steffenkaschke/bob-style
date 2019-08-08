@@ -28,7 +28,7 @@ export class CardEmployeeComponent extends BaseCardElement
   @Input() card: CardEmployee;
   @Input() avatarIsClickable = false;
 
-  onClick($event) {
+  onClick($event: MouseEvent) {
     this.clicked.emit($event);
   }
 

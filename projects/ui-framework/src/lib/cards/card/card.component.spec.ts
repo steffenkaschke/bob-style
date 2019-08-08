@@ -232,19 +232,9 @@ describe('CardComponent', () => {
         imageUrl: 'some_image.png'
       };
       fixture.detectChanges();
-      const image = fixture.debugElement.query(By.css('.image-holder'));
-      expect(image).toBeTruthy();
-    });
-    it('should set background image', () => {
-      component.card = {
-        title: 'test',
-        imageUrl: 'some_image.png'
-      };
-      fixture.detectChanges();
-      const image = fixture.debugElement.query(By.css('.image-holder'));
-      expect(getComputedStyle(image.nativeElement).backgroundImage).toContain(
-        'some_image.png'
-      );
+      const image = fixture.debugElement.query(By.css('.card-top'))
+        .nativeElement;
+      expect(image.style.backgroundImage).toContain('some_image.png');
     });
     it('should change icon color to white when image is displayed', () => {
       component.card = {

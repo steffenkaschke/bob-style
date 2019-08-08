@@ -27,7 +27,7 @@ export class CardAddComponent extends BaseCardElement {
   @HostBinding('attr.tabindex') string = '0';
 
   @HostListener('click', ['$event'])
-  onClick($event) {
+  onClick($event: MouseEvent) {
     this.clicked.emit($event);
   }
 }

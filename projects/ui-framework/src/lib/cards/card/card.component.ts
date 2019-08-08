@@ -38,7 +38,7 @@ export class CardComponent extends BaseCardElement {
     }, 150);
   }
 
-  onCtaClick(event): void {
+  onCtaClick(event: MouseEvent): void {
     this.clicked.emit(event);
   }
 }
