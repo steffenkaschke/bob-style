@@ -3,11 +3,14 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  AfterViewInit,
+  SimpleChanges
 } from '@angular/core';
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 import { CardEmployee } from './card-employee.interface';
 import { BaseCardElement } from '../card/card.abstract';
+import { isEmptyObject } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-card-employee, [b-card-employee]',
@@ -16,7 +19,7 @@ import { BaseCardElement } from '../card/card.abstract';
   providers: [{ provide: BaseCardElement, useExisting: CardEmployeeComponent }]
 })
 export class CardEmployeeComponent extends BaseCardElement
-  implements OnChanges {
+  implements OnChanges, AfterViewInit {
   constructor(public cardElRef: ElementRef, private cd: ChangeDetectorRef) {
     super(cardElRef);
   }
@@ -29,18 +32,27 @@ export class CardEmployeeComponent extends BaseCardElement
     this.clicked.emit($event);
   }
 
-  ngOnChanges(): void {
+  ngAfterViewInit(): void {
     this.setCssVars();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.card && !changes.card.firstChange) {
+      this.card = changes.card.currentValue;
+      this.setCssVars();
+    }
+  }
+
   private setCssVars(): void {
-    this.cardElRef.nativeElement.style.setProperty(
-      '--background-color-1',
-      `${this.card.coverColors.color1}`
-    );
-    this.cardElRef.nativeElement.style.setProperty(
-      '--background-color-2',
-      `${this.card.coverColors.color2}`
-    );
+    if (this.card && !isEmptyObject(this.card.coverColors)) {
+      this.cardElRef.nativeElement.style.setProperty(
+        '--background-color-1',
+        `${this.card.coverColors.color1}`
+      );
+      this.cardElRef.nativeElement.style.setProperty(
+        '--background-color-2',
+        `${this.card.coverColors.color2}`
+      );
+    }
   }
 }
