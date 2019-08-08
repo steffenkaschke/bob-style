@@ -26,6 +26,7 @@ export class CardEmployeeComponent extends BaseCardElement
   readonly avatarSize = AvatarSize;
 
   @Input() card: CardEmployee;
+  @Input() avatarIsClickable = false;
 
   onClick($event) {
     this.clicked.emit($event);

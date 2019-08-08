@@ -24,25 +24,6 @@
   left: nth($pos, 4);
 }
 
-@function height-from-text(
-  $lines,
-  $font-size,
-  $line-height,
-  $add: 0,
-  $useCssVars: false
-) {
-  $return: null;
-  @if not $useCssVars {
-    $return: $font-size * $line-height * $lines + $add;
-  }
-  @if $useCssVars {
-    $return: unquote(
-      'calc(var(--font-size) * var(--line-height) * #{$lines} + #{add-unit($add)})'
-    );
-  }
-  @return $return;
-}
-
 @mixin line-clamp(
   $lines,
   $font-size: null,
@@ -218,20 +199,23 @@
   }
 }
 
-@mixin ratioPad($ratio-or-width, $height: null) {
+@mixin ratioPad($ratio-or-width, $height: null, $include: null) {
   $padding: if(
     $height,
     percentage($height/$ratio-or-width),
     percentage(1 / $ratio-or-width)
   );
+  @if $include {
+    $padding: calc(#{$padding} - #{$include});
+  }
   padding-bottom: $padding;
 }
 
-@mixin ratio($ratio-or-width, $height: null, $clear: true) {
+@mixin ratio($ratio-or-width, $height: null, $clear: true, $include: null) {
   &:before {
     content: '';
     float: left;
-    @include ratioPad($ratio-or-width, $height);
+    @include ratioPad($ratio-or-width, $height, $include);
   }
   @if $clear {
     &:after {

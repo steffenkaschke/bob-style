@@ -6,50 +6,63 @@
 @include card-common($doHover: false);
 
 :host {
-  justify-content: space-between;
   text-align: center;
   --background-color-1: #{$grey-200};
   --background-color-2: #{$grey-200};
-}
-
-.cover-container {
-  @include position;
-  @include size(100%, 80px);
 
   background-image: linear-gradient(
     180deg,
     var(--background-color-1) 0%,
     var(--background-color-2) 100%
   );
+  background-position: center top;
+  background-size: 100% 80px;
+
+  &[data-type='small'] {
+    min-height: 200px;
+    background-size: 100% 60px;
+  }
 }
 
-b-avatar {
-  display: inline-flex;
-  margin: 0 auto times8(2) auto;
+.card-subtitle {
+  margin-bottom: auto;
+}
+
+.card-top {
+  display: flex;
+  justify-content: center;
+  margin-bottom: times8(2);
+}
+
+.card-bottom {
+  min-height: height-from-text(2, $useCssVars: true);
+}
+
+.card-top-with-image {
+  padding: $cardPadding $cardPadding 0 $cardPadding;
 }
 
 .social {
-  margin: 16px auto;
+  margin: auto;
+  padding: times8(2) 0;
+  width: 100%;
   max-width: 140px;
   display: flex;
   justify-content: space-evenly;
-
-  a {
-    &:before {
-      color: $grey-700;
-    }
-    &:hover:before {
-      color: $grey-800;
-    }
-  }
 }
 
+.social ~ .card-bottom {
+  padding: 0;
+  margin-top: auto;
+}
+
+// Types
+
 :host[data-type='small'] {
-  min-height: 200px;
-  .cover-container {
-    height: 60px;
+  .card-top {
+    margin-bottom: times8(1);
   }
-  b-avatar {
-    margin-bottom: 8px;
+  .card-top-with-image {
+    padding: $cardPadding-mobile $cardPadding-mobile 0 $cardPadding-mobile;
   }
 }

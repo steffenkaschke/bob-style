@@ -1,4 +1,9 @@
+$card-width-small: 160px;
+$card-width-regular: 190px;
+$card-width-large: 260px;
+
 $cardPadding: times8(3);
+$cardPadding-mobile: times8(2);
 
 @mixin card-common($doHover: true) {
   :host {
@@ -13,6 +18,7 @@ $cardPadding: times8(3);
     text-align: left;
     background-color: white;
     min-height: 300px;
+    @include b-body($addCssVars: true);
 
     &:focus {
       outline: 0;
@@ -51,6 +57,9 @@ $cardPadding: times8(3);
 
   .card-subtitle {
     color: $grey-600;
+    line-height: 1.35;
+    --line-height: 1.35;
+    margin-top: times8(0.5);
   }
 
   .card-content {
@@ -63,20 +72,34 @@ $cardPadding: times8(3);
     margin-top: auto;
   }
 
+  .card-top-with-image {
+    margin: (-1 * $cardPadding) (-1 * $cardPadding) 0 (-1 * $cardPadding);
+    background-size: cover;
+    background-position: center;
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+    overflow: hidden;
+  }
+
   // Types
 
   :host {
     &[data-type='small'] {
-      min-width: 160px;
+      min-width: $card-width-small;
       min-height: 0;
+      padding: $cardPadding-mobile;
 
       &:only-child {
         max-width: 220px;
       }
+
+      .card-subtitle {
+        @include b-caption($lineHeight: null, $addCssVars: true);
+      }
     }
 
     &[data-type='regular'] {
-      min-width: 190px;
+      min-width: $card-width-regular;
 
       &:only-child {
         max-width: 250px;
@@ -84,7 +107,7 @@ $cardPadding: times8(3);
     }
 
     &[data-type='large'] {
-      min-width: 260px;
+      min-width: $card-width-large;
 
       &:only-child {
         max-width: 320px;
