@@ -151,7 +151,7 @@ describe('AvatarComponent', () => {
       component.disabled = true;
       fixture.detectChanges();
       expect(componentElem.dataset.disabled).toEqual('true');
-      component.onClick('click');
+      component.onClick('click' as any);
       expect(component.clicked.emit).not.toHaveBeenCalled();
     });
   });
