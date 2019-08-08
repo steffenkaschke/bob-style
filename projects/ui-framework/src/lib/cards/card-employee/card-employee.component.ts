@@ -10,7 +10,7 @@ import {
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 import { CardEmployee } from './card-employee.interface';
 import { BaseCardElement } from '../card/card.abstract';
-import { isEmptyObject } from '../../services/utils/functional-utils';
+import { isEmptyObject, isObject } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-card-employee, [b-card-employee]',
