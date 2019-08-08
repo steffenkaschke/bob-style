@@ -1,6 +1,5 @@
 import { storiesOf } from '@storybook/angular';
 import { boolean, select, withKnobs } from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardType } from '../cards.enum';

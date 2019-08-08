@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { CardsModule } from '../cards.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { action } from '@storybook/addon-actions';
 import { CardType } from '../cards.enum';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import {

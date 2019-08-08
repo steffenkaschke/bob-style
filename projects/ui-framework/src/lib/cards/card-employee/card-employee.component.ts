@@ -3,12 +3,10 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  SimpleChanges,
   ChangeDetectorRef
 } from '@angular/core';
 import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
 import { CardEmployee } from './card-employee.interface';
-import { has } from 'lodash';
 import { BaseCardElement } from '../card/card.abstract';
 
 @Component({
@@ -31,7 +29,7 @@ export class CardEmployeeComponent extends BaseCardElement
     this.clicked.emit($event);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.setCssVars();
   }
 
