@@ -25,7 +25,6 @@ import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
 import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
 import { BaseCardElement } from '../card/card.abstract';
 import { simpleUID } from '../../services/utils/functional-utils';
-import { Swiper } from 'swiper/dist/js/swiper.esm.js';
 
 @Component({
   selector: 'b-cards',
@@ -37,7 +36,7 @@ export class CardsLayoutComponent
   implements AfterViewInit, OnDestroy, OnChanges {
   constructor(
     private hostRef: ElementRef,
-    private domUtils: DOMhelpers,
+    private DOM: DOMhelpers,
     private utilsService: UtilsService,
     private mobileService: MobileService,
     private zone: NgZone,
@@ -45,7 +44,6 @@ export class CardsLayoutComponent
   ) {}
 
   public isMobile = false;
-  private swiper: Swiper;
 
   private resizeSubscription: Subscription;
   private cardsInRow$: BehaviorSubject<number>;
@@ -67,10 +65,6 @@ export class CardsLayoutComponent
     if (changes.type && !changes.type.firstChange) {
       this.type = changes.type.currentValue;
       this.setCssVars();
-      if (this.swiper) {
-        this.destroySwiper();
-        this.initSwiper();
-      }
       this.cd.detectChanges();
     }
   }
@@ -84,12 +78,6 @@ export class CardsLayoutComponent
       .pipe(outsideZone(this.zone))
       .subscribe((media: MediaEvent) => {
         this.isMobile = media.matchMobile;
-        if (this.mobileSwiper && this.isMobile && !this.swiper) {
-          this.initSwiper();
-        } else if (!this.isMobile && this.swiper) {
-          this.destroySwiper();
-          this.setCssVars();
-        }
         this.cd.detectChanges();
       });
   }
@@ -128,77 +116,15 @@ export class CardsLayoutComponent
     return this.cardsInRow$ as Observable<number>;
   }
 
-  private getSwiperBreakpoints() {
-    return this.type === CardType.large
-      ? {
-          800: {
-            slidesPerView: 2,
-            centeredSlides: this.cards && this.cards.length < 2
-          },
-          500: {
-            slidesPerView: 1,
-            centeredSlides: true
-          }
-        }
-      : this.type === CardType.regular
-      ? {
-          800: {
-            slidesPerView: 3,
-            centeredSlides: this.cards && this.cards.length < 2
-          },
-          450: {
-            slidesPerView: 2,
-            centeredSlides: this.cards && this.cards.length < 2
-          },
-          330: {
-            slidesPerView: 1,
-            centeredSlides: true
-          }
-        }
-      : {
-          800: {
-            slidesPerView: 3,
-            centeredSlides: this.cards && this.cards.length < 2
-          },
-          530: {
-            slidesPerView: 2,
-            centeredSlides: this.cards && this.cards.length < 2
-          },
-          360: {
-            slidesPerView: 1,
-            centeredSlides: true
-          }
-        };
-  }
-
-  private initSwiper(): void {
-    this.swiper = new Swiper('#' + this.cardsListId, {
-      wrapperClass: 'cards-list',
-      slideClass: 'single-card',
-      spaceBetween: GAP_SIZE,
-      breakpoints: this.getSwiperBreakpoints(),
-      centeredSlides: false,
-      centerInsufficientSlides: true,
-      roundLengths: true,
-      setWrapperSize: true,
-      watchOverflow: true
-    });
-  }
-
-  private destroySwiper(): void {
-    this.swiper.destroy();
-    this.swiper = null;
-  }
-
   private setCssVars(): void {
-    this.domUtils.setCssProps(this.hostRef.nativeElement, {
+    this.DOM.setCssProps(this.hostRef.nativeElement, {
       '--card-width': CARD_TYPE_WIDTH[this.type] + 'px',
       '--card-grid-gap': GAP_SIZE + 'px'
     });
   }
 
   private calcCardsInRow(): number {
-    const hostWidth = this.domUtils.getInnerWidth(this.hostRef.nativeElement);
+    const hostWidth = this.DOM.getInnerWidth(this.hostRef.nativeElement);
     const gaps =
       (Math.floor(hostWidth / CARD_TYPE_WIDTH[this.type]) - 1) * GAP_SIZE;
     return Math.floor((hostWidth - gaps) / CARD_TYPE_WIDTH[this.type]);
