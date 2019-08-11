@@ -20,6 +20,11 @@ $cardPadding-mobile: times8(2);
     min-height: 300px;
     @include b-body($addCssVars: true);
 
+    &:focus,
+    &:hover {
+      z-index: 5;
+    }
+
     &:focus {
       outline: 0;
     }
@@ -90,10 +95,7 @@ $cardPadding-mobile: times8(2);
       min-width: $card-width-small;
       min-height: 0;
       padding: $cardPadding-mobile;
-
-      &:only-child {
-        max-width: 220px;
-      }
+      max-width: 220px;
 
       .card-subtitle {
         font-size: $font-size-caption;
@@ -103,18 +105,12 @@ $cardPadding-mobile: times8(2);
 
     &[data-type='regular'] {
       min-width: $card-width-regular;
-
-      &:only-child {
-        max-width: 250px;
-      }
+      max-width: 250px;
     }
 
     &[data-type='large'] {
       min-width: $card-width-large;
-
-      &:only-child {
-        max-width: 320px;
-      }
+      max-width: 320px;
     }
   }
 }

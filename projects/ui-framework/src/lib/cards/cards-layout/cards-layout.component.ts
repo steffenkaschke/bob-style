@@ -44,7 +44,7 @@ export class CardsLayoutComponent
     private cd: ChangeDetectorRef
   ) {}
 
-  isMobile = false;
+  public isMobile = false;
   private swiper: Swiper;
 
   private resizeSubscription: Subscription;
@@ -84,9 +84,9 @@ export class CardsLayoutComponent
       .pipe(outsideZone(this.zone))
       .subscribe((media: MediaEvent) => {
         this.isMobile = media.matchMobile;
-        if (this.mobileSwiper && this.isMobile) {
+        if (this.mobileSwiper && this.isMobile && !this.swiper) {
           this.initSwiper();
-        } else if (this.swiper) {
+        } else if (!this.isMobile && this.swiper) {
           this.swiper.destroy();
           this.setCssVars();
         }
@@ -176,10 +176,12 @@ export class CardsLayoutComponent
       wrapperClass: 'cards-list',
       slideClass: 'single-card',
       spaceBetween: GAP_SIZE,
+      breakpoints: this.getSwiperBreakpoints(),
       centeredSlides: false,
       centerInsufficientSlides: true,
       roundLengths: true,
-      breakpoints: this.getSwiperBreakpoints()
+      setWrapperSize: true,
+      watchOverflow: true
     });
   }
 
