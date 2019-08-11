@@ -67,9 +67,11 @@ export class CardEmployeeComponent extends BaseCardElement
   }
 
   private setCssVars(): void {
-    this.DOM.setCssProps(this.cardElRef.nativeElement, {
-      '--background-color-1': this.card.coverColors.color1,
-      '--background-color-2': this.card.coverColors.color2
-    });
+    if (this.card.coverColors) {
+      this.DOM.setCssProps(this.cardElRef.nativeElement, {
+        '--background-color-1': this.card.coverColors.color1,
+        '--background-color-2': this.card.coverColors.color2
+      });
+    }
   }
 }
