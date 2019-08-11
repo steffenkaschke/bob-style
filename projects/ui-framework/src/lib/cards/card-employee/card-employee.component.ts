@@ -2,7 +2,6 @@ import {
   Component,
   ElementRef,
   Input,
-  DoCheck,
   NgZone,
   ViewChild,
   ChangeDetectorRef,

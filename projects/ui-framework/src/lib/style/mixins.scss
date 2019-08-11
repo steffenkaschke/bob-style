@@ -299,39 +299,41 @@
   }
 }
 
+@mixin scroll-snap-x-breakout($breakout: null) {
+  width: 100vw;
+  padding-right: 0;
+
+  @if (type-of($breakout) == number) or (contains($breakout, 'var(--')) {
+    padding-left: $breakout;
+    padding-right: 0;
+    margin-left: calc(-1 * #{$breakout});
+    margin-right: calc(-1 * $breakout);
+
+    &:after {
+      @include pseudo;
+      @include size($breakout, 1px);
+      flex-shrink: 0;
+    }
+  }
+  @elseif $breakout {
+    transform: translateX(-50%);
+    margin-left: 50%;
+    padding-left: 0;
+  }
+}
+
 @mixin scroll-snap-x(
   $item: '& > *',
   $snap-align: start,
   $breakout: null,
   $item-gap: null
 ) {
-  @include hide-scrollbar;
   overflow-x: auto;
   overflow-y: visible;
   scroll-snap-type: x mandatory;
   user-select: none;
-
-  @if $breakout {
-    width: 100vw;
-    padding-left: $breakout;
-    padding-right: 0;
-
-    @if (type-of($breakout) == number) or (contains($breakout, 'var(--')) {
-      margin-left: calc(-1 * #{$breakout});
-      margin-right: calc(-1 * $breakout);
-      &:after {
-        @include pseudo;
-        @include size($breakout, 1px);
-        flex-shrink: 0;
-      }
-    } @else {
-      transform: translateX(-50%);
-      margin-left: 50%;
-    }
-  } @else {
-    padding-left: 0;
-    padding-right: 0;
-  }
+  @include hide-scrollbar;
+  @include scroll-snap-x-breakout($breakout);
 
   #{$item} {
     scroll-snap-stop: always;
