@@ -25,8 +25,9 @@ export class CardEmployeeComponent extends BaseCardElement implements DoCheck {
   ngDoCheck() {
     if (
       this.cardElRef &&
+      !this.cardElRef.nativeElement.hasAttribute('style') &&
       this.card &&
-      !this.cardElRef.nativeElement.hasAttribute('style')
+      this.card.coverColors
     ) {
       this.setCssVars();
     }
