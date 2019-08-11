@@ -1,5 +1,6 @@
 @import '../../style/variables';
 @import '../../style/mixins';
+@import '../card/card.mixin';
 
 $fit-strategy: auto-fill;
 $grid-gap: 16px;
@@ -50,15 +51,12 @@ $grid-gap: 16px;
       @include scroll-snap-x(
         $item: '.single-card',
         $snap-align: center,
-        $breakout: true,
+        $breakout: var(--padding-x-mob),
         $item-gap: var(--card-grid-gap)
       );
-
-      .single-card {
-        width: var(--card-width);
-        min-width: 0;
-        max-width: none;
-      }
+    }
+    ::ng-deep .single-card {
+      width: var(--card-width);
     }
   }
 }

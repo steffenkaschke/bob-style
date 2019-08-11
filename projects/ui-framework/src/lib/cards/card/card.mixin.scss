@@ -5,6 +5,22 @@ $card-width-large: 260px;
 $cardPadding: times8(3);
 $cardPadding-mobile: times8(2);
 
+@mixin card-max-width($mod: '', $host: ':host') {
+  #{$host} {
+    &[data-type='small']#{$mod} {
+      max-width: 220px;
+    }
+
+    &[data-type='regular']#{$mod} {
+      max-width: 250px;
+    }
+
+    &[data-type='large']#{$mod} {
+      max-width: 320px;
+    }
+  }
+}
+
 @mixin card-common($doHover: true) {
   :host {
     box-sizing: border-box;
@@ -97,7 +113,6 @@ $cardPadding-mobile: times8(2);
       min-width: $card-width-small;
       min-height: 0;
       padding: $cardPadding-mobile;
-      max-width: 220px;
 
       .card-subtitle {
         font-size: $font-size-caption;
@@ -107,12 +122,12 @@ $cardPadding-mobile: times8(2);
 
     &[data-type='regular'] {
       min-width: $card-width-regular;
-      max-width: 250px;
     }
 
     &[data-type='large'] {
       min-width: $card-width-large;
-      max-width: 320px;
     }
   }
+
+  @include card-max-width($mod: ':only-child');
 }

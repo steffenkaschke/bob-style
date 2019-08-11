@@ -32,6 +32,8 @@
   --display-font-family: 'Sentinel SSm A', 'Sentinel SSm B', 'Helvetica';
   --heading-font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica';
   --body-font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica';
+
+  --padding-x-mob: #{$padding-x-mob};
 }
 
 html,

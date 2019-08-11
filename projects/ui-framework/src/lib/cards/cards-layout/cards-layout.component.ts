@@ -13,7 +13,8 @@ import {
   ChangeDetectorRef,
   ContentChildren,
   QueryList,
-  HostBinding
+  HostBinding,
+  OnInit
 } from '@angular/core';
 import { CardType } from '../cards.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
@@ -24,7 +25,6 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
 import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
 import { BaseCardElement } from '../card/card.abstract';
-import { simpleUID } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-cards',
@@ -33,7 +33,7 @@ import { simpleUID } from '../../services/utils/functional-utils';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardsLayoutComponent
-  implements AfterViewInit, OnDestroy, OnChanges {
+  implements AfterViewInit, OnDestroy, OnChanges, OnInit {
   constructor(
     private hostRef: ElementRef,
     private DOM: DOMhelpers,
@@ -47,7 +47,6 @@ export class CardsLayoutComponent
 
   private resizeSubscription: Subscription;
   private cardsInRow$: BehaviorSubject<number>;
-  private cardsInRow: number;
   private mediaEventSubscriber: Subscription;
 
   @ContentChildren(BaseCardElement) public cards: QueryList<BaseCardElement>;
@@ -59,7 +58,7 @@ export class CardsLayoutComponent
   >();
 
   @HostBinding('attr.data-mobile-swiper') @Input() mobileSwiper = true;
-  @HostBinding('attr.id') cardsListId = simpleUID('cards-list-');
+  @HostBinding('attr.data-cards-in-row') cardsInRow: number;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.type && !changes.type.firstChange) {
@@ -67,6 +66,29 @@ export class CardsLayoutComponent
       this.setCssVars();
       this.cd.detectChanges();
     }
+  }
+
+  ngOnInit(): void {
+    this.resizeSubscription = this.utilsService
+      .getResizeEvent()
+      .pipe(
+        outsideZone(this.zone),
+        filter(() => {
+          return this.cardsInRow !== this.calcCardsInRow();
+        })
+      )
+      .subscribe(() => {
+        this.zone.run(() => {
+          this.cardsInRow = this.calcCardsInRow();
+          if (this.cardsInRow$) {
+            this.cardsInRow$.next(this.cardsInRow);
+          }
+          if (this.cardsAmountChanged.observers.length > 0) {
+            this.cardsAmountChanged.emit(this.cardsInRow);
+          }
+          this.hostRef.nativeElement.dataset.cardsInRow = this.cardsInRow;
+        });
+      });
   }
 
   ngAfterViewInit(): void {
@@ -92,26 +114,8 @@ export class CardsLayoutComponent
   }
 
   getCardsInRow$(): Observable<number> {
-    this.cardsInRow = this.calcCardsInRow();
     if (!this.cardsInRow$) {
       this.cardsInRow$ = new BehaviorSubject<number>(this.cardsInRow);
-      this.resizeSubscription = this.utilsService
-        .getResizeEvent()
-        .pipe(
-          outsideZone(this.zone),
-          filter(() => {
-            return this.cardsInRow !== this.calcCardsInRow();
-          })
-        )
-        .subscribe(() => {
-          this.zone.run(() => {
-            this.cardsInRow = this.calcCardsInRow();
-            this.cardsInRow$.next(this.cardsInRow);
-            if (this.cardsAmountChanged.observers.length > 0) {
-              this.cardsAmountChanged.emit(this.cardsInRow);
-            }
-          });
-        });
     }
     return this.cardsInRow$ as Observable<number>;
   }
