@@ -31,10 +31,12 @@ $cardPadding-mobile: times8(2);
 
     @if $doHover {
       &.clickable {
-        &:hover,
-        &:focus,
-        &[data-focus-inside='true'] {
-          box-shadow: 0 2px 12px 0 $grey-500;
+        @include desktop {
+          &:hover,
+          &:focus,
+          &[data-focus-inside='true'] {
+            box-shadow: 0 2px 12px 0 $grey-500;
+          }
         }
       }
     }
@@ -50,7 +52,7 @@ $cardPadding-mobile: times8(2);
 
   .card-title,
   .card-subtitle,
-  .card-top,
+  .card-top:not(.card-top-with-image),
   .card-content,
   .card-bottom {
     &:empty {

@@ -16,6 +16,7 @@
   @if type-of($this) == 'list' {
     @return index($this, $that);
   }
+  @return false;
 }
 
 @function map-get-deep($map, $keys...) {

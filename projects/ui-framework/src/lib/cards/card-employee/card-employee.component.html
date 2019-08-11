@@ -38,10 +38,14 @@
   </a>
 </div>
 
-<div class="card-content">
+<div *ngIf="hasContent"
+     class="card-content"
+     #cardContent>
   <ng-content select="[card-content]"></ng-content>
 </div>
 
-<div class="card-bottom">
+<div *ngIf="hasBottom"
+     class="card-bottom"
+     #cardBottom>
   <ng-content select="[card-bottom]"></ng-content>
 </div>

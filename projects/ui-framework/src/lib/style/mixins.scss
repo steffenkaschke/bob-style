@@ -288,3 +288,73 @@
     $doEdges: $doEdges
   );
 }
+
+@mixin hide-scrollbar {
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+  &::-webkit-scrollbar {
+    background: transparent;
+    display: none;
+    width: 0;
+  }
+}
+
+@mixin scroll-snap-x(
+  $item: '& > *',
+  $snap-align: start,
+  $breakout: null,
+  $item-gap: null
+) {
+  @include hide-scrollbar;
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-snap-type: x mandatory;
+  user-select: none;
+
+  @if $breakout {
+    width: 100vw;
+    padding-left: $breakout;
+    padding-right: 0;
+
+    @if (type-of($breakout) == number) or (contains($breakout, 'var(--')) {
+      margin-left: calc(-1 * #{$breakout});
+      margin-right: calc(-1 * $breakout);
+      &:after {
+        @include pseudo;
+        @include size($breakout, 1px);
+        flex-shrink: 0;
+      }
+    } @else {
+      transform: translateX(-50%);
+      margin-left: 50%;
+    }
+  } @else {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #{$item} {
+    scroll-snap-stop: always;
+    scroll-snap-align: $snap-align;
+    margin-left: 0;
+    flex-shrink: 0;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+
+    @if $item-gap {
+      margin-right: $item-gap;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    } @else {
+      margin-right: 0;
+    }
+
+    a {
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+  }
+}

@@ -52,7 +52,6 @@
 :host ::ng-deep {
   [card-top] {
     max-width: calc(100% - 22px);
-
     position: relative;
     z-index: 1;
   }
@@ -65,6 +64,17 @@
 .card-title,
 .card-content {
   margin-top: times8(2);
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.card-menu:first-child {
+  & + .card-title,
+  & + .card-content {
+    margin-top: 0;
+  }
 }
 
 .cta-button {

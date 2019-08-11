@@ -6,6 +6,8 @@ $grid-gap: 16px;
 
 :host {
   display: block;
+  --card-grid-gap: times8(2);
+  --card-width: $card-width-regular;
 }
 
 .cards-list {
@@ -18,11 +20,11 @@ $grid-gap: 16px;
 
   &.align-center {
     @include desktop {
+      grid-template-columns: none;
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: center;
-      grid-template-columns: none;
       margin: calc(var(--card-grid-gap) / -2);
 
       ::ng-deep .single-card {
@@ -37,28 +39,25 @@ $grid-gap: 16px;
 
 :host[data-mobile-swiper='true'] {
   @include mobile {
-    cursor: grab;
-
-    .cards-list {
+    ::ng-deep .cards-list {
+      grid-template-columns: none;
       display: flex;
+      flex-direction: row;
       flex-wrap: nowrap;
-      will-change: transform;
-      user-select: none;
-    }
+      padding-bottom: 12px;
+      margin-bottom: -12px;
 
-    ::ng-deep {
+      @include scroll-snap-x(
+        $item: '.single-card',
+        $snap-align: center,
+        $breakout: true,
+        $item-gap: var(--card-grid-gap)
+      );
+
       .single-card {
-        user-select: none;
-        flex-shrink: 0;
+        width: var(--card-width);
         min-width: 0;
         max-width: none;
-        -webkit-touch-callout: none;
-        -webkit-tap-highlight-color: transparent;
-      }
-
-      a {
-        user-select: none;
-        -webkit-user-drag: none;
       }
     }
   }
