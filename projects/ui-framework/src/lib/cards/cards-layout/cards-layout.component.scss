@@ -17,16 +17,18 @@ $grid-gap: 16px;
   grid-template-columns: repeat($fit-strategy, minmax(var(--card-width), 1fr));
 
   &.align-center {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    grid-template-columns: none;
-    margin: calc(var(--card-grid-gap) / -2);
+    @include desktop {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      grid-template-columns: none;
+      margin: calc(var(--card-grid-gap) / -2);
 
-    ::ng-deep .single-card {
-      margin: calc(var(--card-grid-gap) / 2);
-      width: var(--card-width);
+      ::ng-deep .single-card {
+        margin: calc(var(--card-grid-gap) / 2);
+        width: var(--card-width);
+      }
     }
   }
 }

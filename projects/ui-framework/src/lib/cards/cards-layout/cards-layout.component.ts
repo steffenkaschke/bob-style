@@ -68,7 +68,7 @@ export class CardsLayoutComponent
       this.type = changes.type.currentValue;
       this.setCssVars();
       if (this.swiper) {
-        this.swiper.destroy();
+        this.destroySwiper();
         this.initSwiper();
       }
       this.cd.detectChanges();
@@ -87,7 +87,7 @@ export class CardsLayoutComponent
         if (this.mobileSwiper && this.isMobile && !this.swiper) {
           this.initSwiper();
         } else if (!this.isMobile && this.swiper) {
-          this.swiper.destroy();
+          this.destroySwiper();
           this.setCssVars();
         }
         this.cd.detectChanges();
@@ -183,6 +183,11 @@ export class CardsLayoutComponent
       setWrapperSize: true,
       watchOverflow: true
     });
+  }
+
+  private destroySwiper(): void {
+    this.swiper.destroy();
+    this.swiper = null;
   }
 
   private setCssVars(): void {
