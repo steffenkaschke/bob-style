@@ -18,8 +18,7 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
   selector: 'b-card, [b-card]',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
-  providers: [{ provide: BaseCardElement, useExisting: CardComponent }],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  providers: [{ provide: BaseCardElement, useExisting: CardComponent }]
 })
 export class CardComponent extends BaseCardElement implements AfterViewInit {
   constructor(

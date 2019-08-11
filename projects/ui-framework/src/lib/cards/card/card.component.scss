@@ -70,7 +70,8 @@
   }
 }
 
-.card-menu:first-child {
+.card-action,
+.card-menu {
   & + .card-title,
   & + .card-content {
     margin-top: 0;
