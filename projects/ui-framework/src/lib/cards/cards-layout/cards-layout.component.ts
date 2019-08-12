@@ -23,6 +23,7 @@ import { filter } from 'rxjs/operators';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
 import { BaseCardElement } from '../card/card.abstract';
+import { MediaEvent, MobileService } from '../../services/utils/mobile.service';
 
 @Component({
   selector: 'b-cards',
@@ -35,16 +36,19 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
     private hostRef: ElementRef,
     private DOM: DOMhelpers,
     private utilsService: UtilsService,
+    private mobileService: MobileService,
     private zone: NgZone,
     private cd: ChangeDetectorRef
   ) {}
 
   private resizeSubscription: Subscription;
+  private mediaEventSubscriber: Subscription;
   private cardsInRow$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+  public isMobile = false;
 
   @ContentChildren(BaseCardElement) public cards: QueryList<BaseCardElement>;
 
-  @Input() alignCenter = false;
+  @Input() alignCenter: boolean;
   @Input() mobileSwiper = true;
   @Input() type: CardType = CardType.regular;
   @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<
@@ -52,18 +56,26 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
   >();
 
   @HostBinding('attr.data-cards-in-row') cardsInRow: number;
-  @HostBinding('attr.data-mobile-swiper') get mobileSwiperEnabled() {
+  @HostBinding('attr.data-few-cards') get hasToofewCards() {
+    return (
+      (this.cards && this.cardsInRow > this.cards.length) ||
+      (this.cards && this.cards.length === 1)
+    );
+  }
+  @HostBinding('attr.data-swiper-mode') get isSwiperEnabled() {
     return (
       this.mobileSwiper &&
+      this.isMobile &&
       (this.cards && this.cardsInRow < this.cards.length) &&
       (this.cards && this.cards.length > 1)
     );
   }
   @HostBinding('attr.data-align-center') get isAlignedCenter() {
     return (
-      this.alignCenter ||
-      (this.cards && this.cardsInRow > this.cards.length) ||
-      (this.cards && this.cards.length === 1)
+      this.alignCenter !== false &&
+      (this.alignCenter ||
+        (this.cards && this.cardsInRow > this.cards.length) ||
+        (this.cards && this.cards.length === 1))
     );
   }
 
@@ -72,6 +84,10 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
       this.type = changes.type.currentValue;
       this.setCssVars();
       this.updateCardsInRow();
+    }
+    if (changes.cards && !changes.cards.firstChange) {
+      this.cards = changes.cards.currentValue;
+      this.cd.detectChanges();
     }
   }
 
@@ -92,11 +108,22 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
           this.updateCardsInRow();
         });
       });
+
+    this.mediaEventSubscriber = this.mobileService
+      .getMediaEvent()
+      .pipe(outsideZone(this.zone))
+      .subscribe((media: MediaEvent) => {
+        this.isMobile = media.matchMobile;
+        this.cd.detectChanges();
+      });
   }
 
   ngOnDestroy(): void {
     if (this.resizeSubscription) {
       this.resizeSubscription.unsubscribe();
+    }
+    if (this.mediaEventSubscriber && this.mediaEventSubscriber.unsubscribe) {
+      this.mediaEventSubscriber.unsubscribe();
     }
   }
 

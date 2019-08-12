@@ -3,7 +3,7 @@ $card-width-regular: 190px;
 $card-width-large: 260px;
 
 $cardPadding: times8(3);
-$cardPadding-mobile: times8(2);
+$cardPadding-small: times8(2);
 
 @mixin card-max-width($mod: '', $host: ':host') {
   #{$host} {
@@ -112,11 +112,16 @@ $cardPadding-mobile: times8(2);
     &[data-type='small'] {
       min-width: $card-width-small;
       min-height: 0;
-      padding: $cardPadding-mobile;
+      padding: $cardPadding-small;
 
       .card-subtitle {
         font-size: $font-size-caption;
         --font-size: #{$font-size-caption};
+      }
+
+      .card-top-with-image {
+        margin: (-1 * $cardPadding-small) (-1 * $cardPadding-small) 0
+          (-1 * $cardPadding-small);
       }
     }
 
