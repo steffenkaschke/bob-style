@@ -60,9 +60,9 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  type | CardType | Card theme | primary (optional)
-  alignCenter | boolean | put cards in the center | false
-  mobileSwiper | boolean | enable mobile swiper | true
+  type | CardType | Card theme | regular
+  [alignCenter] | boolean | put cards in the center. by default, if there is not enough cards to fill 1 row, the cards will be centered. to disable this behaviour, set [alignCenter] to **null**. set to **true** to force centering. | false
+  [mobileSwiper] | boolean | enable mobile swiper (1 row of scrollable cards) | true
   cardsInRow$ / getCardsInRow$() | Observable of number | observable that returns cards in row | initial cards in row
 
 #### Example
