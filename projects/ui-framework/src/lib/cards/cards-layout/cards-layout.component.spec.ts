@@ -8,7 +8,7 @@ import { MockComponent } from 'ng-mocks';
 import { simpleChange } from '../../services/utils/test-helpers';
 import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
 
-describe('CardsLayoutComponent', () => {
+fdescribe('CardsLayoutComponent', () => {
   let fixture: ComponentFixture<CardsLayoutComponent>;
   let component: CardsLayoutComponent;
   let cardsListElement: HTMLElement;
@@ -119,17 +119,17 @@ describe('CardsLayoutComponent', () => {
     });
   });
   describe('component init', () => {
-    it('should have align-center class if input align center is true', done => {
+    it('should have align-center attribute if input align center is true', done => {
       component.type = CardType.regular;
       component.alignCenter = true;
       fixture.detectChanges();
-      expect(cardsListElement.classList).toContain('align-center');
+      expect(cardsHostElement.dataset.alignCenter).toEqual('true');
       done();
     });
-    it('should have no align-center class by default', done => {
+    it('should not have align-center attribute by default', done => {
       component.type = CardType.regular;
       fixture.detectChanges();
-      expect(cardsListElement.classList).not.toContain('align-center');
+      expect(cardsHostElement.dataset.alignCenter).toEqual('false');
       done();
     });
     it('should have gap-size variable set', () => {

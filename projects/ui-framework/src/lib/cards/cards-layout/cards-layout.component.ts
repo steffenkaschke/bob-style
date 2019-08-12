@@ -40,31 +40,44 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
   ) {}
 
   private resizeSubscription: Subscription;
-  private cardsInRow$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  private cardsInRow$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
 
   @ContentChildren(BaseCardElement) public cards: QueryList<BaseCardElement>;
 
   @Input() alignCenter = false;
+  @Input() mobileSwiper = true;
   @Input() type: CardType = CardType.regular;
   @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<
     number
   >();
 
-  @HostBinding('attr.data-mobile-swiper') @Input() mobileSwiper = true;
   @HostBinding('attr.data-cards-in-row') cardsInRow: number;
+  @HostBinding('attr.data-mobile-swiper') get mobileSwiperEnabled() {
+    return (
+      this.mobileSwiper &&
+      (this.cards && this.cardsInRow < this.cards.length) &&
+      (this.cards && this.cards.length > 1)
+    );
+  }
+  @HostBinding('attr.data-align-center') get isAlignedCenter() {
+    return (
+      this.alignCenter ||
+      (this.cards && this.cardsInRow > this.cards.length) ||
+      (this.cards && this.cards.length === 1)
+    );
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.type && !changes.type.firstChange) {
       this.type = changes.type.currentValue;
       this.setCssVars();
-      this.cd.detectChanges();
+      this.updateCardsInRow();
     }
   }
 
   ngOnInit(): void {
-    this.cardsInRow = this.calcCardsInRow();
-    this.cardsInRow$.next(this.cardsInRow);
     this.setCssVars();
+    this.updateCardsInRow();
 
     this.resizeSubscription = this.utilsService
       .getResizeEvent()
@@ -76,12 +89,7 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
       )
       .subscribe(() => {
         this.zone.run(() => {
-          this.cardsInRow = this.calcCardsInRow();
-          this.cardsInRow$.next(this.cardsInRow);
-          if (this.cardsAmountChanged.observers.length > 0) {
-            this.cardsAmountChanged.emit(this.cardsInRow);
-          }
-          this.hostRef.nativeElement.dataset.cardsInRow = this.cardsInRow;
+          this.updateCardsInRow();
         });
       });
   }
@@ -94,6 +102,15 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
 
   getCardsInRow$(): Observable<number> {
     return this.cardsInRow$ as Observable<number>;
+  }
+
+  private updateCardsInRow(): void {
+    this.cardsInRow = this.calcCardsInRow();
+    this.cardsInRow$.next(this.cardsInRow);
+    if (this.cardsAmountChanged.observers.length > 0) {
+      this.cardsAmountChanged.emit(this.cardsInRow);
+    }
+    this.cd.detectChanges();
   }
 
   private setCssVars(): void {

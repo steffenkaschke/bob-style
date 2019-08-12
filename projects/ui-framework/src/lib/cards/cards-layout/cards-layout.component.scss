@@ -21,17 +21,35 @@ $grid-gap: 16px;
 
   &.align-center {
     @include desktop {
-      grid-template-columns: none;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin: calc(var(--card-grid-gap) / -2);
+      // grid-template-columns: none;
+      // display: flex;
+      // flex-direction: row;
+      // flex-wrap: wrap;
+      // justify-content: center;
+      // margin: calc(var(--card-grid-gap) / -2);
 
-      ::ng-deep .single-card {
-        margin: calc(var(--card-grid-gap) / 2);
-        width: var(--card-width);
-      }
+      // ::ng-deep .single-card {
+      //   margin: calc(var(--card-grid-gap) / 2);
+      //   width: var(--card-width);
+      // }
+    }
+  }
+}
+
+// Align center
+
+:host[data-align-center='true'] {
+  .cards-list {
+    grid-template-columns: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: calc(var(--card-grid-gap) / -2);
+
+    ::ng-deep .single-card {
+      margin: calc(var(--card-grid-gap) / 2);
+      width: var(--card-width);
     }
   }
 }
@@ -40,16 +58,17 @@ $grid-gap: 16px;
 
 :host[data-mobile-swiper='true'] {
   @include mobile {
-    ::ng-deep .cards-list {
+    .cards-list {
       grid-template-columns: none;
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
+      justify-content: flex-start;
       padding-bottom: 12px;
       margin-bottom: -12px;
 
       @include scroll-snap-x(
-        $item: '.single-card',
+        $item: '::ng-deep .single-card',
         $snap-align: center,
         $breakout: var(--padding-x-mob),
         $item-gap: var(--card-grid-gap)
