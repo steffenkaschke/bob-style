@@ -48,7 +48,7 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
 
   @ContentChildren(BaseCardElement) public cards: QueryList<BaseCardElement>;
 
-  @Input() alignCenter: boolean;
+  @Input() alignCenter = false;
   @Input() mobileSwiper = true;
   @Input() type: CardType = CardType.regular;
   @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<
@@ -72,7 +72,7 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
   }
   @HostBinding('attr.data-align-center') get isAlignedCenter() {
     return (
-      this.alignCenter !== false &&
+      this.alignCenter !== null &&
       (this.alignCenter ||
         (this.cards && this.cardsInRow > this.cards.length) ||
         (this.cards && this.cards.length === 1))

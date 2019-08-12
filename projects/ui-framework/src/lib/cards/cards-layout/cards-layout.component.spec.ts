@@ -11,7 +11,7 @@ import {
 } from '../../services/utils/test-helpers';
 import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
 
-fdescribe('CardsLayoutComponent', () => {
+describe('CardsLayoutComponent', () => {
   let fixture: ComponentFixture<CardsLayoutComponent>;
   let component: CardsLayoutComponent;
   let cardsListElement: HTMLElement;
@@ -158,12 +158,6 @@ fdescribe('CardsLayoutComponent', () => {
       fixture.detectChanges();
       expect(cardsHostElement.dataset.alignCenter).toEqual('true');
     });
-    // it('should not have align-center attribute by default', done => {
-    //   component.type = CardType.regular;
-    //   fixture.detectChanges();
-    //   expect(cardsHostElement.dataset.alignCenter).toEqual('false');
-    //   done();
-    // });
   });
 
   describe('Mobile swiper', () => {});

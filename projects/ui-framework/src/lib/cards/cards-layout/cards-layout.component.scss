@@ -5,6 +5,7 @@
 $fit-strategy: auto-fill;
 $grid-gap: 16px;
 $limit-card-width-on-mobile: false;
+$align-cards-on-mobile: start; // center
 
 :host {
   display: block;
@@ -96,7 +97,7 @@ $limit-card-width-on-mobile: false;
 
       @include scroll-snap-x(
         $item: '.single-card',
-        $snap-align: center,
+        $snap-align: $align-cards-on-mobile,
         $breakout: var(--padding-x-mob),
         $item-gap: var(--card-grid-gap)
       );
