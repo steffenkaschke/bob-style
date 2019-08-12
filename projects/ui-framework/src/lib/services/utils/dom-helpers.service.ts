@@ -77,7 +77,9 @@ export class DOMhelpers {
   // including css variables ('--color-red')
   public setCssProps(element: HTMLElement, props: Styles): void {
     for (const prop of Object.keys(props)) {
-      element.style.setProperty(prop, props[prop] as string);
+      if (props[prop]) {
+        element.style.setProperty(prop, props[prop] as string);
+      }
     }
   }
 
