@@ -33,16 +33,20 @@ export class ChartCore implements AfterViewInit, OnChanges {
 
   private formatter = (function (component) {
     return function () {
-      return `<div class="chart-tooltip">
-                <div class="value" style="color:${this.color};">
-                    ${component.preTooltipValue}${this.y}${component.postTooltipValue}
-                </div>
-                <div class="key">${this.key}</div>
-              </div>
-        `;
+      return this.tooltipFormatter(this, component);
     };
   })(this);
 
+  tooltipFormatter(chartThis, component) {
+    return `<div class="chart-tooltip">
+      <div class="value" style="color:${chartThis.color};">
+          ${component.preTooltipValue}${component.tooltipValueFormatter(chartThis.y)}${component.postTooltipValue}
+      </div>
+      <div class="key">${chartThis.key}</div>
+    </div>`;
+  }
+
+  @Input() tooltipValueFormatter: Function = (val) => val;
   @Input() preTooltipValue = '';
   @Input() postTooltipValue = '';
   @Input() colorPalette: string[] = [
