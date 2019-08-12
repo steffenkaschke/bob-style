@@ -307,7 +307,7 @@
     padding-left: $breakout;
     padding-right: 0;
     margin-left: calc(-1 * #{$breakout});
-    margin-right: calc(-1 * $breakout);
+    margin-right: calc(-1 * #{$breakout});
 
     &:after {
       @include pseudo;
@@ -330,10 +330,17 @@
 ) {
   overflow-x: auto;
   overflow-y: visible;
+  scroll-snap-type: mandatory;
   scroll-snap-type: x mandatory;
   user-select: none;
+  will-change: scroll-position;
+  transform: translateZ(0);
   @include hide-scrollbar;
   @include scroll-snap-x-breakout($breakout);
+
+  @if ($snap-align != center) and $breakout {
+    scroll-padding: $breakout;
+  }
 
   #{$item} {
     scroll-snap-stop: always;

@@ -102,7 +102,7 @@
 
   &[data-type='small'] ::ng-deep {
     .card-top-with-image [card-top] {
-      padding: $cardPadding-mobile $cardPadding-mobile 0 $cardPadding-mobile;
+      padding: $cardPadding-small $cardPadding-small 0 $cardPadding-small;
     }
   }
 }
