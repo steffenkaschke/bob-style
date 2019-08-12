@@ -33,7 +33,7 @@ export class ChartCore implements AfterViewInit, OnChanges {
 
   private formatter = (function (component) {
     return function () {
-      return this.tooltipFormatter(this, component);
+      return component.tooltipFormatter(this, component);
     };
   })(this);
 
