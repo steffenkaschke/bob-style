@@ -43,8 +43,8 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
 
   private resizeSubscription: Subscription;
   private mediaEventSubscriber: Subscription;
-  private cardsInRow$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-  public isMobile = false;
+  public cardsInRow$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+  private isMobile = false;
 
   @ContentChildren(BaseCardElement) public cards: QueryList<BaseCardElement>;
 

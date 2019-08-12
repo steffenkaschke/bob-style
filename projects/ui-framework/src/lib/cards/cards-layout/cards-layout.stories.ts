@@ -36,16 +36,16 @@ const storyTemplate = `
 <b-story-book-layout [title]="'Cards Layout'" style=" background: rgb(247,247,247);">
   <div style="max-width: none;">
     <h3>Text cards</h3>
-    ${ template1 }
+    ${template1}
     <br><br>
     <h3>Image cards</h3>
-    ${ template4 }
+    ${template4}
     <br><br>
     <h3>Employee cards</h3>
-    ${ template2 }
+    ${template2}
     <br><br>
     <h3>Mini employee cards</h3>
-    ${ template3 }
+    ${template3}
   </div>
 
 </b-story-book-layout>
@@ -62,7 +62,8 @@ const note = `
   --- | --- | --- | ---
   type | CardType | Card theme | primary (optional)
   alignCenter | boolean | put cards in the center | false
-  getCardsInRow$ | Observable of number | observable that returns cards in row | initial cards in row
+  mobileSwiper | boolean | enable mobile swiper | true
+  cardsInRow$ / getCardsInRow$() | Observable of number | observable that returns cards in row | initial cards in row
 
 #### Example
 ~~~
@@ -96,7 +97,7 @@ story.add(
       template: storyTemplate,
       props: {
         type: select('type', values(CardType), CardType.large),
-        alignCenter: boolean('alignCenter', false),
+        alignCenter: boolean('alignCenter', false)
       },
       moduleMetadata: {
         imports: [
