@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, select, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  select,
+  withKnobs,
+  number
+} from '@storybook/addon-knobs/angular';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CardType } from '../cards.enum';
@@ -14,21 +19,25 @@ const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
 
 const template1 = `
   <b-card-layout-example-1 [type]="type"
-                           [alignCenter]="alignCenter">
+                           [alignCenter]="alignCenter"
+                           [maxCards]="maxCards">
   </b-card-layout-example-1>
 `;
 const template2 = `
   <b-card-layout-example-2 [type]="type"
-                           [alignCenter]="alignCenter">
+                           [alignCenter]="alignCenter"
+                           [maxCards]="maxCards">
   </b-card-layout-example-2>
 `;
 const template3 = `
-  <b-card-layout-example-3 [alignCenter]="alignCenter">
+  <b-card-layout-example-3 [alignCenter]="alignCenter"
+                           [maxCards]="maxCards">
   </b-card-layout-example-3>
 `;
 const template4 = `
   <b-card-layout-example-4 [type]="type"
-                           [alignCenter]="alignCenter">
+                           [alignCenter]="alignCenter"
+                           [maxCards]="maxCards">
   </b-card-layout-example-4>
 `;
 
@@ -97,7 +106,8 @@ story.add(
       template: storyTemplate,
       props: {
         type: select('type', values(CardType), CardType.large),
-        alignCenter: boolean('alignCenter', false)
+        alignCenter: boolean('alignCenter', false),
+        maxCards: number('maxCards', 6)
       },
       moduleMetadata: {
         imports: [

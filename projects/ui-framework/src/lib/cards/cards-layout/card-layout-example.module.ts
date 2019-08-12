@@ -37,10 +37,15 @@ import { randomNumber } from '../../services/utils/functional-utils';
   selector: 'b-card-layout-example-1',
   template: `
     <b-cards [type]="type" [alignCenter]="alignCenter">
-      <b-card-add [type]="type" (clicked)="onAddCardClick()" [card]="addCard">
+      <b-card-add
+        *ngIf="addCard()"
+        [type]="type"
+        (clicked)="onAddCardClick()"
+        [card]="addCard()"
+      >
       </b-card-add>
       <b-card
-        *ngFor="let card of cards; let i = index"
+        *ngFor="let card of cards(); let i = index"
         [type]="type"
         (clicked)="onCardClick(card, i)"
         [card]="card"
@@ -62,15 +67,17 @@ import { randomNumber } from '../../services/utils/functional-utils';
 export class CardLayoutExample1Component implements OnInit {
   @Input() type: CardType = CardType.regular;
   @Input() alignCenter = false;
+  @Input() maxCards = 6;
 
-  addCard: AddCard = AddCardMockData;
+  addCard = () => (this.maxCards > 1 ? AddCardMockData : null);
 
-  cards: any[] = getCardsMockData(5).map(card => ({
-    ...card,
-    text: mockText(randomNumber(10, 25)) + '.',
-    avatarImgUrl: mockAvatar(),
-    avatarDisplayName: mockNames(1)
-  }));
+  cards = () =>
+    getCardsMockData(this.maxCards === 1 ? 1 : this.maxCards - 1).map(card => ({
+      ...card,
+      text: mockText(randomNumber(10, 25)) + '.',
+      avatarImgUrl: mockAvatar(),
+      avatarDisplayName: mockNames(1)
+    }))
 
   constructor() {}
 
@@ -91,7 +98,7 @@ export class CardLayoutExample1Component implements OnInit {
   template: `
     <b-cards [type]="type" [alignCenter]="alignCenter">
       <b-card-employee
-        *ngFor="let card of cards; let i = index"
+        *ngFor="let card of cards(); let i = index"
         [type]="type"
         (clicked)="onClick($event)"
         [card]="card"
@@ -107,11 +114,13 @@ export class CardLayoutExample1Component implements OnInit {
 export class CardLayoutExample2Component implements OnInit {
   @Input() alignCenter = false;
   @Input() type: CardType = CardType.large;
+  @Input() maxCards = 6;
 
-  cards: any[] = getEmployeeCardsMockData(6).map(card => ({
-    ...card,
-    hobbies: mockHobbies(4).join(', ')
-  }));
+  cards = () =>
+    getEmployeeCardsMockData(this.maxCards).map(card => ({
+      ...card,
+      hobbies: mockHobbies(4).join(', ')
+    }))
 
   constructor() {}
 
@@ -127,7 +136,7 @@ export class CardLayoutExample2Component implements OnInit {
   template: `
     <b-cards [type]="type" [alignCenter]="alignCenter">
       <b-card-employee
-        *ngFor="let card of cards; let i = index"
+        *ngFor="let card of cards(); let i = index"
         [type]="type"
         (clicked)="onClick($event)"
         [card]="card"
@@ -139,17 +148,6 @@ export class CardLayoutExample2Component implements OnInit {
   styles: [':host {display: block;}']
 })
 export class CardLayoutExample3Component implements OnInit, OnDestroy {
-  @Input() alignCenter = false;
-  @Input() type: CardType = CardType.small;
-
-  cards: any[] = getEmployeeCardsMockData(6).map(card => ({
-    ...card,
-    date: mockDate()
-  }));
-  dates: string[] = [];
-
-  private numberOfCardsSubscription: Subscription;
-
   @ViewChild(CardsLayoutComponent, { static: false })
   set amountOfCardsFn(bCardsComponent: CardsLayoutComponent) {
     this.numberOfCardsSubscription = bCardsComponent
@@ -160,6 +158,19 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
   }
 
   constructor() {}
+  @Input() alignCenter = false;
+  @Input() type: CardType = CardType.small;
+  @Input() maxCards = 6;
+
+  dates: string[] = [];
+
+  private numberOfCardsSubscription: Subscription;
+
+  cards = () =>
+    getEmployeeCardsMockData(this.maxCards).map(card => ({
+      ...card,
+      date: mockDate()
+    }))
 
   ngOnInit(): void {}
 
@@ -176,10 +187,15 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
   selector: 'b-card-layout-example-4',
   template: `
     <b-cards [type]="type" [alignCenter]="alignCenter">
-      <b-card-add [type]="type" (clicked)="onAddCardClick()" [card]="addCard">
+      <b-card-add
+        *ngIf="addCard()"
+        [type]="type"
+        (clicked)="onAddCardClick()"
+        [card]="addCard()"
+      >
       </b-card-add>
       <b-card
-        *ngFor="let card of cards; let i = index"
+        *ngFor="let card of cards(); let i = index"
         [type]="type"
         (clicked)="onCardClick(card, i)"
         [card]="card"
@@ -236,20 +252,22 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
 export class CardLayoutExample4Component implements OnInit {
   @Input() type: CardType = CardType.regular;
   @Input() alignCenter = false;
+  @Input() maxCards = 6;
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
 
-  addCard: AddCard = AddCardMockData;
+  addCard = () => (this.maxCards > 1 ? AddCardMockData : null);
 
-  cards: any[] = getCardsMockData(5).map(card => ({
-    ...card,
-    imageUrl: mockImage(400, 300),
-    provider: mockText(1),
-    date: mockDate(),
-    number: randomNumber(1, 1000)
-  }));
+  cards = () =>
+    getCardsMockData(this.maxCards === 1 ? 1 : this.maxCards - 1).map(card => ({
+      ...card,
+      imageUrl: mockImage(400, 300),
+      provider: mockText(1),
+      date: mockDate(),
+      number: randomNumber(1, 1000)
+    }))
 
   constructor() {}
 
