@@ -254,18 +254,16 @@ $border-color: $grey-500;
   margin-left: auto;
 }
 
-:host {
-  &.length-invalid {
-    .ql-container:after,
-    .length-indicator {
-      color: $color-error;
-    }
+.length-invalid {
+  .ql-container:after,
+  .length-indicator {
+    color: $color-error;
   }
-  &.length-warning {
-    .ql-container:after,
-    .length-indicator {
-      color: $color-warn;
-    }
+}
+.length-warning {
+  .ql-container:after,
+  .length-indicator {
+    color: $color-warn;
   }
 }
 
@@ -448,6 +446,14 @@ $border-color: $grey-500;
         @include BodyFont($size: 32px, $lineHeight: 1);
       }
     }
+  }
+}
+
+// Align panel
+
+.quill-toolbar[hide-align='true'] ::ng-deep {
+  .ql-align {
+    display: none;
   }
 }
 
