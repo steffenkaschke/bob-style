@@ -12,7 +12,8 @@ import {
   ChangeDetectorRef,
   ContentChildren,
   QueryList,
-  OnInit
+  OnInit,
+  AfterContentInit
 } from '@angular/core';
 import { CardType } from '../cards.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
@@ -30,7 +31,8 @@ import { MediaEvent, MobileService } from '../../services/utils/mobile.service';
   styleUrls: ['./cards-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
+export class CardsLayoutComponent
+  implements OnDestroy, OnChanges, OnInit, AfterContentInit {
   constructor(
     private hostRef: ElementRef,
     private DOM: DOMhelpers,
@@ -99,6 +101,10 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
           this.cd.detectChanges();
         }
       });
+  }
+
+  ngAfterContentInit(): void {
+    this.cd.detectChanges();
   }
 
   ngOnDestroy(): void {

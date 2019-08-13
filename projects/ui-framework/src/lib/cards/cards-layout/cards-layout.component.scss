@@ -72,13 +72,14 @@ $align-cards-on-mobile: start; // center
 // Swiper
 
 [data-swiper-mode='true'] {
-  &[data-align-center='false'] {
-    justify-content: flex-start;
-  }
-
   flex-wrap: nowrap;
   padding-bottom: 12px;
   margin-bottom: -12px;
+
+  &[data-align-center='false'],
+  &[data-few-cards='false'] {
+    justify-content: flex-start;
+  }
 
   @include scroll-snap-x(
     $item: '&::ng-deep .single-card',
@@ -87,21 +88,11 @@ $align-cards-on-mobile: start; // center
     $item-gap: var(--card-grid-gap)
   );
 
-  @if $limit-card-width-on-mobile {
-    &::ng-deep .single-card {
-      @include card-max-width($host: '&');
-    }
-  }
-
-  &[data-few-cards='false'] {
-    justify-content: flex-start;
-  }
-
   &[data-cards-in-row='1'] {
     padding-right: var(--padding-x-mob);
   }
 
-  @for $i from 2 through 10 {
+  @for $i from 2 through 5 {
     &[data-cards-in-row='#{$i}']::ng-deep {
       .single-card {
         width: calc(
@@ -116,6 +107,12 @@ $align-cards-on-mobile: start; // center
             #{$i}
         );
       }
+    }
+  }
+
+  @if $limit-card-width-on-mobile {
+    &::ng-deep .single-card {
+      @include card-max-width($host: '&');
     }
   }
 }
