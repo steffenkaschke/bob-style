@@ -21,7 +21,11 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { CARD_TYPE_WIDTH, GAP_SIZE } from './cards-layout.const';
+import {
+  CARD_TYPE_WIDTH,
+  GAP_SIZE,
+  CARD_TYPE_WIDTH_MOBILE
+} from './cards-layout.const';
 import { BaseCardElement } from '../card/card.abstract';
 import { MediaEvent, MobileService } from '../../services/utils/mobile.service';
 
@@ -98,9 +102,10 @@ export class CardsLayoutComponent
       .pipe(outsideZone(this.zone))
       .subscribe((media: MediaEvent) => {
         this.isMobile = media.matchMobile;
-        if (!this.cd['destroyed']) {
-          this.cd.detectChanges();
-        }
+        this.updateCardsInRow();
+        // if (!this.cd['destroyed']) {
+        //  this.cd.detectChanges();
+        // }
       });
   }
 
@@ -148,11 +153,14 @@ export class CardsLayoutComponent
 
   private calcCardsInRow(): number {
     const hostWidth = this.DOM.getInnerWidth(this.hostRef.nativeElement);
-    const gaps =
-      (Math.floor(hostWidth / CARD_TYPE_WIDTH[this.type]) - 1) * GAP_SIZE;
-    const fullCards = Math.floor(
-      (hostWidth - gaps) / CARD_TYPE_WIDTH[this.type]
-    );
+
+    const cardWidth = !this.isMobile
+      ? CARD_TYPE_WIDTH[this.type]
+      : CARD_TYPE_WIDTH_MOBILE[this.type];
+
+    const gaps = (Math.floor(hostWidth / cardWidth) - 1) * GAP_SIZE;
+    const fullCards = Math.floor((hostWidth - gaps) / cardWidth);
+
     return fullCards > 1 ? fullCards : 1;
   }
 

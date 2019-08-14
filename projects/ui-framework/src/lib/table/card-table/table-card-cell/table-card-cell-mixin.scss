@@ -1,5 +1,3 @@
-@import '../../../style/typography';
-
 @mixin cell-style {
   @include b-body($addCssVars: true);
   flex: 1;

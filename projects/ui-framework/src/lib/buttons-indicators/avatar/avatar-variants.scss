@@ -1,7 +1,3 @@
-@import '../../style/variables';
-@import '../../style/mixins';
-@import '../../style/typography';
-
 :host[data-size='mini'] {
   .avatar {
     box-shadow: 0 1px 2px 0 $boxShadowColor;

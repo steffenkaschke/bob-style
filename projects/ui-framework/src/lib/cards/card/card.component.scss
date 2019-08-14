@@ -1,7 +1,4 @@
-@import '../../style/colors';
-@import '../../style/variables';
-@import '../../style/mixins';
-@import '../../style/typography';
+@import '../../style/common-imports';
 @import './card.mixin';
 
 @include card-common;

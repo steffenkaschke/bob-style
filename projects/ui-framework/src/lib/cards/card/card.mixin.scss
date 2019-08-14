@@ -2,21 +2,25 @@ $card-width-small: 160px;
 $card-width-regular: 190px;
 $card-width-large: 260px;
 
+$card-max-width-small: 220px;
+$card-max-width-regular: 250px;
+$card-max-width-large: 320px;
+
 $cardPadding: times8(3);
 $cardPadding-small: times8(2);
 
 @mixin card-max-width($mod: '', $host: ':host') {
   #{$host} {
     &[data-type='small']#{$mod} {
-      max-width: 220px;
+      max-width: $card-max-width-small;
     }
 
     &[data-type='regular']#{$mod} {
-      max-width: 250px;
+      max-width: $card-max-width-regular;
     }
 
     &[data-type='large']#{$mod} {
-      max-width: 320px;
+      max-width: $card-max-width-large;
     }
   }
 }
