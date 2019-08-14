@@ -18,9 +18,8 @@ export abstract class BaseCardElement {
   readonly cardType = CardType;
 
   @HostBinding('attr.data-type') @Input() type: CardType = CardType.regular;
-  @HostBinding('class.single-card') isSingleCard() {
-    return true;
-  }
+  @HostBinding('attr.role') role = 'listitem';
+  @HostBinding('class.single-card') singleCard = true;
   @HostBinding('class.clickable') isClickableCard() {
     return this.isClickable || this.clicked.observers.length > 0;
   }

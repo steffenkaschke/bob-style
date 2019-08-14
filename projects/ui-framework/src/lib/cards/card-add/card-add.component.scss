@@ -1,7 +1,4 @@
-@import '../../style/variables';
-@import '../../style/typography';
-@import '../../style/shapes';
-@import '../../style/mixins';
+@import '../../style/common-imports';
 @import '../card/card.mixin';
 
 @include card-common($doHover: false);
