@@ -314,8 +314,7 @@
       @include size($breakout, 1px);
       flex-shrink: 0;
     }
-  }
-  @elseif $breakout {
+  } @else if $breakout {
     transform: translateX(-50%);
     margin-left: 50%;
     padding-left: 0;

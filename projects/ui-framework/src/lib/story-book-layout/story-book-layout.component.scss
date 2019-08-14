@@ -44,3 +44,15 @@ b-display-3 {
     }
   }
 }
+
+:host ::ng-deep {
+  .small {
+    font-size: 12px;
+    font-weight: normal;
+  }
+
+  h3 + p {
+    margin-top: -1em;
+    margin-bottom: 1em;
+  }
+}

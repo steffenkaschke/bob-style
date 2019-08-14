@@ -12,8 +12,8 @@ import {
   ChangeDetectorRef,
   ContentChildren,
   QueryList,
-  HostBinding,
-  OnInit
+  OnInit,
+  AfterContentInit
 } from '@angular/core';
 import { CardType } from '../cards.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
@@ -31,7 +31,8 @@ import { MediaEvent, MobileService } from '../../services/utils/mobile.service';
   styleUrls: ['./cards-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
+export class CardsLayoutComponent
+  implements OnDestroy, OnChanges, OnInit, AfterContentInit {
   constructor(
     private hostRef: ElementRef,
     private DOM: DOMhelpers,
@@ -43,50 +44,32 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
 
   private resizeSubscription: Subscription;
   private mediaEventSubscriber: Subscription;
+  public cardsInRow = 1;
   public cardsInRow$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-  private isMobile = false;
+  public isMobile = false;
 
   @ContentChildren(BaseCardElement) public cards: QueryList<BaseCardElement>;
 
-  @Input() alignCenter = false;
-  @Input() mobileSwiper = true;
+  @Input() alignCenter: boolean | 'auto' = false;
+  @Input() mobileSwiper = false;
   @Input() type: CardType = CardType.regular;
   @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<
     number
   >();
 
-  @HostBinding('attr.data-cards-in-row') cardsInRow: number;
-  @HostBinding('attr.data-few-cards') get hasToofewCards() {
-    return (
-      (this.cards && this.cardsInRow > this.cards.length) ||
-      (this.cards && this.cards.length === 1)
-    );
-  }
-  @HostBinding('attr.data-swiper-mode') get isSwiperEnabled() {
-    return (
-      this.mobileSwiper &&
-      this.isMobile &&
-      (this.cards && this.cardsInRow < this.cards.length) &&
-      (this.cards && this.cards.length > 1)
-    );
-  }
-  @HostBinding('attr.data-align-center') get isAlignedCenter() {
-    return (
-      this.alignCenter !== null &&
-      (this.alignCenter ||
-        (this.cards && this.cardsInRow > this.cards.length) ||
-        (this.cards && this.cards.length === 1))
-    );
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.type && !changes.type.firstChange) {
       this.type = changes.type.currentValue;
       this.setCssVars();
-      this.updateCardsInRow();
+      this.updateCardsInRow(false);
     }
-    if (changes.cards && !changes.cards.firstChange) {
-      this.cards = changes.cards.currentValue;
+    if (changes.mobileSwiper && !changes.mobileSwiper.firstChange) {
+      this.mobileSwiper = changes.mobileSwiper.currentValue;
+    }
+    if (changes.alignCenter && !changes.alignCenter.firstChange) {
+      this.alignCenter = changes.alignCenter.currentValue;
+    }
+    if (!this.cd['destroyed']) {
       this.cd.detectChanges();
     }
   }
@@ -114,8 +97,14 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
       .pipe(outsideZone(this.zone))
       .subscribe((media: MediaEvent) => {
         this.isMobile = media.matchMobile;
-        this.cd.detectChanges();
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
       });
+  }
+
+  ngAfterContentInit(): void {
+    this.cd.detectChanges();
   }
 
   ngOnDestroy(): void {
@@ -131,13 +120,15 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
     return this.cardsInRow$ as Observable<number>;
   }
 
-  private updateCardsInRow(): void {
+  private updateCardsInRow(doCheck = true): void {
     this.cardsInRow = this.calcCardsInRow();
     this.cardsInRow$.next(this.cardsInRow);
     if (this.cardsAmountChanged.observers.length > 0) {
       this.cardsAmountChanged.emit(this.cardsInRow);
     }
-    this.cd.detectChanges();
+    if (doCheck && !this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
   private setCssVars(): void {
@@ -155,5 +146,23 @@ export class CardsLayoutComponent implements OnDestroy, OnChanges, OnInit {
       (hostWidth - gaps) / CARD_TYPE_WIDTH[this.type]
     );
     return fullCards > 1 ? fullCards : 1;
+  }
+
+  public hasEnoughCards() {
+    return (
+      this.cards &&
+      (this.cardsInRow <= this.cards.length || this.cards.length > 1)
+    );
+  }
+
+  public isSwiperEnabled() {
+    return this.mobileSwiper && this.isMobile && this.hasEnoughCards();
+  }
+
+  public isAlignedCenter() {
+    return (
+      this.alignCenter === true ||
+      (this.alignCenter === 'auto' && !this.hasEnoughCards())
+    );
   }
 }
