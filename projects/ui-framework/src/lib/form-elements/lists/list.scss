@@ -1,8 +1,3 @@
-@import '../../style/typography';
-@import '../../style/shapes';
-@import '../../style/variables';
-@import '../form-element.mixin';
-
 @mixin listOption {
   @include b-body($color: $grey-700, $addCssVars: false);
   padding: 0 $input-padding;

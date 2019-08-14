@@ -1,7 +1,4 @@
-@import '../../style/colors';
-@import '../../style/variables';
-@import '../../style/mixins';
-@import '../../style/typography';
+@import '../../style/common-imports';
 @import './card.mixin';
 
 @include card-common;
@@ -97,6 +94,15 @@
     .card-top-with-image {
       @include ratio(304/160, $clear: false);
       max-height: 160px;
+    }
+  }
+
+  &[data-type='regular'] {
+    @include mobile {
+      .card-top-with-image {
+        @include ratio(304/160, $clear: false);
+        max-height: 160px;
+      }
     }
   }
 

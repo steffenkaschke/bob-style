@@ -1,5 +1,8 @@
 @import './functions';
 @import './keyframes';
+@import './shapes';
+@import './preloader.mixin';
+@import './scroll-snap.mixin';
 
 @mixin pseudo {
   content: '';
@@ -231,9 +234,15 @@
   }
 }
 
-@mixin mobile($break: $breakpoint-device-sm) {
-  @media (max-width: $break) {
-    @content;
+@mixin mobile($break: $breakpoint-device-sm, $min: null) {
+  @if $min {
+    @media (min-width: $min) and (max-width: $break) {
+      @content;
+    }
+  } @else {
+    @media (max-width: $break) {
+      @content;
+    }
   }
 }
 
@@ -296,73 +305,5 @@
     background: transparent;
     display: none;
     width: 0;
-  }
-}
-
-@mixin scroll-snap-x-breakout($breakout: null) {
-  width: 100vw;
-  padding-right: 0;
-
-  @if (type-of($breakout) == number) or (contains($breakout, 'var(--')) {
-    padding-left: $breakout;
-    padding-right: 0;
-    margin-left: calc(-1 * #{$breakout});
-    margin-right: calc(-1 * #{$breakout});
-
-    &:after {
-      @include pseudo;
-      @include size($breakout, 1px);
-      flex-shrink: 0;
-    }
-  } @else if $breakout {
-    transform: translateX(-50%);
-    margin-left: 50%;
-    padding-left: 0;
-  }
-}
-
-@mixin scroll-snap-x(
-  $item: '& > *',
-  $snap-align: start,
-  $breakout: null,
-  $item-gap: null
-) {
-  overflow-x: auto;
-  overflow-y: visible;
-  scroll-snap-type: mandatory;
-  scroll-snap-type: x mandatory;
-  user-select: none;
-  will-change: scroll-position;
-  transform: translateZ(0);
-  @include hide-scrollbar;
-  @include scroll-snap-x-breakout($breakout);
-
-  @if ($snap-align != center) and $breakout {
-    scroll-padding: $breakout;
-  }
-
-  #{$item} {
-    scroll-snap-stop: always;
-    scroll-snap-align: $snap-align;
-    margin-left: 0;
-    flex-shrink: 0;
-    user-select: none;
-    -webkit-touch-callout: none;
-    -webkit-tap-highlight-color: transparent;
-
-    @if $item-gap {
-      margin-right: $item-gap;
-
-      &:last-child {
-        margin-right: 0;
-      }
-    } @else {
-      margin-right: 0;
-    }
-
-    a {
-      user-select: none;
-      -webkit-user-drag: none;
-    }
   }
 }

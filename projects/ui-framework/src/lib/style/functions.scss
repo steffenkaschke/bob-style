@@ -91,3 +91,12 @@
           ) / (#{$max-width} - #{$min-width}))
   );
 }
+
+@function isCssVar($list) {
+  @each $itm in $list {
+    @if contains($itm, 'var(--') {
+      @return true;
+    }
+  }
+  @return false;
+}
