@@ -1,3 +1,7 @@
-  <div class="cards-list">
+  <div class="cards-list"
+       [attr.data-cards-in-row]="cardsInRow"
+       [attr.data-few-cards]="!hasEnoughCards()"
+       [attr.data-swiper-mode]="isSwiperEnabled()"
+       [attr.data-align-center]="isAlignedCenter()">
     <ng-content></ng-content>
   </div>

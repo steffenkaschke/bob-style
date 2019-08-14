@@ -156,7 +156,7 @@ describe('CardsLayoutComponent', () => {
       component.type = CardType.regular;
       component.alignCenter = true;
       fixture.detectChanges();
-      expect(cardsHostElement.dataset.alignCenter).toEqual('true');
+      expect(cardsListElement.dataset.alignCenter).toEqual('true');
     });
   });
 

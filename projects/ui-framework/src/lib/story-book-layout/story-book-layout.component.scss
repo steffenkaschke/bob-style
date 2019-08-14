@@ -39,8 +39,20 @@ b-display-3 {
     flex: 1;
     max-width: 600px;
 
-    @include mobile {
+    @include mobile(550px) {
       max-width: 100% !important;
     }
+  }
+}
+
+:host ::ng-deep {
+  .small {
+    font-size: 12px;
+    font-weight: normal;
+  }
+
+  h3 + p {
+    margin-top: -1em;
+    margin-bottom: 1em;
   }
 }

@@ -22,7 +22,7 @@ $align-cards-on-mobile: start; // center
   grid-template-columns: repeat($fit-strategy, minmax(var(--card-width), 1fr));
 }
 
-:host[data-align-center='false'][data-swiper-mode='false']::ng-deep {
+[data-align-center='false'][data-swiper-mode='false']::ng-deep {
   .single-card {
     max-width: none;
   }
@@ -30,43 +30,32 @@ $align-cards-on-mobile: start; // center
 
 // Flex layout
 
-:host[data-align-center='true'],
-:host[data-swiper-mode='true'] {
-  &::ng-deep {
-    .cards-list {
-      grid-template-columns: none;
-      display: flex;
-      flex-direction: row;
-    }
+[data-align-center='true'],
+[data-swiper-mode='true'] {
+  grid-template-columns: none;
+  display: flex;
+  flex-direction: row;
 
-    .single-card:only-child {
-      max-width: none;
-    }
+  &::ng-deep .single-card:only-child {
+    max-width: none;
   }
 
-  &[data-cards-in-row='1']::ng-deep {
-    .single-card {
-      width: 100%;
-    }
+  &[data-cards-in-row='1']::ng-deep .single-card {
+    width: 100%;
   }
 }
 
 // Align center
 
-:host[data-align-center='true'] {
-  &::ng-deep {
-    .cards-list {
-      justify-content: center;
-    }
-  }
+[data-align-center='true'] {
+  justify-content: center;
 
-  &[data-swiper-mode='false']::ng-deep {
-    .cards-list {
-      flex-wrap: wrap;
-      margin: calc(var(--card-grid-gap) / -2);
-      width: calc(100% + var(--card-grid-gap));
-    }
-    .single-card {
+  &[data-swiper-mode='false'] {
+    flex-wrap: wrap;
+    margin: calc(var(--card-grid-gap) / -2);
+    width: calc(100% + var(--card-grid-gap));
+
+    &::ng-deep .single-card {
       margin: calc(var(--card-grid-gap) / 2);
     }
   }
@@ -82,43 +71,28 @@ $align-cards-on-mobile: start; // center
 
 // Swiper
 
-:host[data-swiper-mode='true'] {
-  &[data-align-center='false']::ng-deep {
-    .cards-list {
-      justify-content: flex-start;
-    }
-  }
+[data-swiper-mode='true'] {
+  flex-wrap: nowrap;
+  padding-bottom: 12px;
+  margin-bottom: -12px;
 
-  &::ng-deep {
-    .cards-list {
-      flex-wrap: nowrap;
-      padding-bottom: 12px;
-      margin-bottom: -12px;
-
-      @include scroll-snap-x(
-        $item: '.single-card',
-        $snap-align: $align-cards-on-mobile,
-        $breakout: var(--padding-x-mob),
-        $item-gap: var(--card-grid-gap)
-      );
-    }
-
-    @if $limit-card-width-on-mobile {
-      .single-card {
-        @include card-max-width($host: '&');
-      }
-    }
-  }
-
-  &[data-few-cards='false']::ng-deep .cards-list {
+  &[data-align-center='false'],
+  &[data-few-cards='false'] {
     justify-content: flex-start;
   }
 
-  &[data-cards-in-row='1']::ng-deep .cards-list {
+  @include scroll-snap-x(
+    $item: '&::ng-deep .single-card',
+    $snap-align: $align-cards-on-mobile,
+    $breakout: var(--padding-x-mob),
+    $item-gap: var(--card-grid-gap)
+  );
+
+  &[data-cards-in-row='1'] {
     padding-right: var(--padding-x-mob);
   }
 
-  @for $i from 2 through 10 {
+  @for $i from 2 through 5 {
     &[data-cards-in-row='#{$i}']::ng-deep {
       .single-card {
         width: calc(
@@ -133,6 +107,12 @@ $align-cards-on-mobile: start; // center
             #{$i}
         );
       }
+    }
+  }
+
+  @if $limit-card-width-on-mobile {
+    &::ng-deep .single-card {
+      @include card-max-width($host: '&');
     }
   }
 }

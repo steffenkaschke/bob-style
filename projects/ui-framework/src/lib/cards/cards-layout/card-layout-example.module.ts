@@ -36,7 +36,11 @@ import { randomNumber } from '../../services/utils/functional-utils';
 @Component({
   selector: 'b-card-layout-example-1',
   template: `
-    <b-cards [type]="type" [alignCenter]="alignCenter">
+    <b-cards
+      [type]="type"
+      [alignCenter]="alignCenter"
+      [mobileSwiper]="mobileSwiper"
+    >
       <b-card-add
         *ngIf="addCard()"
         [type]="type"
@@ -67,6 +71,7 @@ import { randomNumber } from '../../services/utils/functional-utils';
 export class CardLayoutExample1Component implements OnInit {
   @Input() type: CardType = CardType.regular;
   @Input() alignCenter = false;
+  @Input() mobileSwiper = true;
   @Input() maxCards = 6;
 
   addCard = () => (this.maxCards > 1 ? AddCardMockData : null);
@@ -96,7 +101,11 @@ export class CardLayoutExample1Component implements OnInit {
 @Component({
   selector: 'b-card-layout-example-2',
   template: `
-    <b-cards [type]="type" [alignCenter]="alignCenter">
+    <b-cards
+      [type]="type"
+      [alignCenter]="alignCenter"
+      [mobileSwiper]="mobileSwiper"
+    >
       <b-card-employee
         *ngFor="let card of cards(); let i = index"
         [type]="type"
@@ -113,6 +122,7 @@ export class CardLayoutExample1Component implements OnInit {
 })
 export class CardLayoutExample2Component implements OnInit {
   @Input() alignCenter = false;
+  @Input() mobileSwiper = true;
   @Input() type: CardType = CardType.large;
   @Input() maxCards = 6;
 
@@ -134,7 +144,11 @@ export class CardLayoutExample2Component implements OnInit {
 @Component({
   selector: 'b-card-layout-example-3',
   template: `
-    <b-cards [type]="type" [alignCenter]="alignCenter">
+    <b-cards
+      [type]="type"
+      [alignCenter]="alignCenter"
+      [mobileSwiper]="mobileSwiper"
+    >
       <b-card-employee
         *ngFor="let card of cards(); let i = index"
         [type]="type"
@@ -161,6 +175,7 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
   @Input() alignCenter = false;
   @Input() type: CardType = CardType.small;
   @Input() maxCards = 6;
+  @Input() mobileSwiper = true;
 
   dates: string[] = [];
 
@@ -186,7 +201,11 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
 @Component({
   selector: 'b-card-layout-example-4',
   template: `
-    <b-cards [type]="type" [alignCenter]="alignCenter">
+    <b-cards
+      [type]="type"
+      [alignCenter]="alignCenter"
+      [mobileSwiper]="mobileSwiper"
+    >
       <b-card-add
         *ngIf="addCard()"
         [type]="type"
@@ -253,6 +272,7 @@ export class CardLayoutExample4Component implements OnInit {
   @Input() type: CardType = CardType.regular;
   @Input() alignCenter = false;
   @Input() maxCards = 6;
+  @Input() mobileSwiper = true;
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
