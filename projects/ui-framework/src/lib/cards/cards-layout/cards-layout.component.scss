@@ -88,12 +88,6 @@ $hover-shadow-offset: 12px;
     }
   }
 
-  //&[data-few-cards='true'] {
-  //    &:after {
-  //     display: none;
-  //  }
-  // }
-
   @for $i from 2 through 5 {
     &[data-cards-in-row='#{$i}']::ng-deep {
       .single-card {
@@ -125,17 +119,14 @@ $hover-shadow-offset: 12px;
         padding-right: calc((100vw - #{$card-max-width-large}) / 2);
         padding-left: calc((100vw - #{$card-max-width-large}) / 2);
 
-        &:before {
-          width: calc(
-            (100vw - #{$card-max-width-large}) / 2 - var(--card-grid-gap)
-          );
-        }
-
+        &:before,
         &:after {
           width: calc(
             (100vw - #{$card-max-width-large}) / 2 - var(--card-grid-gap)
           );
         }
+
+        @include scroll-snap-x-ghosts($opacity: 0.75);
 
         &::ng-deep .single-card {
           max-width: $card-max-width-large;

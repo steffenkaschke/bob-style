@@ -17,6 +17,10 @@ $cardPadding-small: times8(2);
 
     &[data-type='regular']#{$mod} {
       max-width: $card-max-width-regular;
+
+      @include mobile {
+        max-width: $card-max-width-large;
+      }
     }
 
     &[data-type='large']#{$mod} {
@@ -131,6 +135,10 @@ $cardPadding-small: times8(2);
 
     &[data-type='regular'] {
       min-width: $card-width-regular;
+
+      @include mobile {
+        min-width: $card-width-large;
+      }
     }
 
     &[data-type='large'] {

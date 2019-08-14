@@ -97,6 +97,15 @@
     }
   }
 
+  &[data-type='regular'] {
+    @include mobile {
+      .card-top-with-image {
+        @include ratio(304/160, $clear: false);
+        max-height: 160px;
+      }
+    }
+  }
+
   &[data-type='small'] ::ng-deep {
     .card-top-with-image [card-top] {
       padding: $cardPadding-small $cardPadding-small 0 $cardPadding-small;
