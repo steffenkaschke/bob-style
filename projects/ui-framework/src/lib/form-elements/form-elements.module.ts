@@ -26,6 +26,8 @@ import { PasswordInputModule } from './password-input/password-input.module';
 import { PasswordInputComponent } from './password-input/password-input.component';
 import { TimePickerModule } from './timepicker/timepicker.module';
 import { TimePickerComponent } from './timepicker/timepicker.component';
+import { EmojiModule } from './emoji/emoji.module';
+import { EmojiComponent } from './emoji/emoji.component';
 
 @NgModule({
   imports: [
@@ -38,6 +40,7 @@ import { TimePickerComponent } from './timepicker/timepicker.component';
     SingleSelectModule,
     ChipInputModule,
     SocialModule,
+    EmojiModule,
     SplitInputSingleSelectModule,
     RichTextEditorModule,
     InputMessageModule,
@@ -57,9 +60,10 @@ import { TimePickerComponent } from './timepicker/timepicker.component';
     RichTextEditorComponent,
     ChipInputComponent,
     SocialComponent,
+    EmojiComponent,
     PasswordInputComponent,
     TimePickerComponent,
     ChipInputComponent
-  ]
+  ],
 })
 export class FormElementsModule {}

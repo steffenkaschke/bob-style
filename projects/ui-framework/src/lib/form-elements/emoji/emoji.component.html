@@ -1,0 +1,25 @@
+<div class="emoji-panel" *ngIf="emojiMenuState" (click)="stopPropagationClick($event)">
+  <div class="emoji-header">
+    <b-display-3 class="emoji-title">Add reaction</b-display-3>
+  </div>
+  <div class="emoji-list">
+    <div class="emoji-cat-list" *ngFor="let emoji of emojis | keyvalue">
+      <h3>{{emoji.key}}</h3>
+      <div class="icon-wrapper">
+        <div class="icon"
+             *ngFor="let icon of emoji.value.emojis | keyvalue" title="{{icon.key}}"
+             (click)="selectEmoji(icon.value)">
+          {{icon.value}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="emoji-footer">
+    <div class="icon" *ngFor="let emoji of commonEmojis" (click)="selectEmoji(emoji)">
+      {{emoji}}
+    </div>
+  </div>
+</div>
+<div class="button-wrapper" (click)="stopPropagationClick($event); toggleMenu()">
+  <ng-content></ng-content>
+</div>

@@ -1,0 +1,127 @@
+@import "../../style/colors";
+$emoji-padding: 15px;
+:host {
+  position: relative;
+  display: inline-block;
+}
+.emoji-panel {
+  position: absolute;
+  right: 50%;
+  transform: translate(50%, -10px);
+  bottom: 100%;
+  background-color: #fff;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  width: 270px;
+  display: block;
+  padding: 0;
+  text-align: left;
+  border: 1px solid $grey-500;
+  box-sizing: content-box;
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 10px solid transparent;
+    margin: 0 auto;
+    width: 0;
+    height: 0;
+
+  }
+  &:before {
+    border-top-color: $grey-500;
+
+  }
+  &:after {
+    margin-top: -1px;
+    border-top-color: #fff;
+
+  }
+  .emoji-title {
+    line-height: 35px;
+    font-size: 18px;
+  }
+  .icon-wrapper {
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  .icon {
+    font-family: "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Segoe UI",
+    "Apple Color Emoji",
+    "Twemoji Mozilla",
+    "Noto Color Emoji",
+    "EmojiOne Color",
+    "Android Emoji";
+    user-select: none;
+    position: relative;
+    z-index: 3;
+    float: left;
+    display: block;
+    font-size: 21px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 32px;
+    transition: transform .1s;
+    transform: scale(1);
+    cursor: pointer;
+    will-change: transform;
+    &:hover {
+      transform: scale(1.25);
+    }
+  }
+
+  .emoji-header, .icon-wrapper {
+    padding: 0 $emoji-padding;
+  }
+  .emoji-header {
+    color: $grey-700;
+    border-bottom: 1px solid $grey-500;
+  }
+  .emoji-list {
+    height: 215px;
+    max-height: 40vh;
+    overflow-y: auto;
+    position: relative;
+    will-change: transform; // avoids glitches when scroll
+    h3 {
+      padding: 0 $emoji-padding;
+      clear: both;
+      background-color: #fff;
+      top: 0;
+      display: block;
+      position: sticky;
+      font-size: 14px;
+      margin: 0;
+      line-height: 35px;
+      z-index: 4;
+      border-bottom: 1px solid $grey-500;
+    }
+  }
+
+  .emoji-footer {
+    overflow: hidden;
+    height: 40px;
+    padding: 5px $emoji-padding;
+    display: block;
+    border-top: 1px solid $grey-500;
+
+  }
+}
+
+.button-wrapper {
+  display: inline-block;
+  cursor: pointer;
+  transform: scale(.9);
+  transition: transform .1s;
+  will-change: transform;
+  &:hover {
+    transform: scale(1);
+  }
+}
