@@ -43,7 +43,8 @@ export class CardsLayoutComponent
   ) {}
 
   private resizeSubscription: Subscription;
-  private mediaEventSubscriber: Subscription;
+  private mediaEventSubscription: Subscription;
+  private cardsChangeSubscription: Subscription;
   public cardsInRow = 1;
   public cardsInRow$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
   public isMobile = false;
@@ -63,14 +64,14 @@ export class CardsLayoutComponent
       this.setCssVars();
       this.updateCardsInRow(false);
     }
-    if (changes.mobileSwiper && !changes.mobileSwiper.firstChange) {
-      this.mobileSwiper = changes.mobileSwiper.currentValue;
-    }
-    if (changes.alignCenter && !changes.alignCenter.firstChange) {
-      this.alignCenter = changes.alignCenter.currentValue;
-    }
-    if (!this.cd['destroyed']) {
-      this.cd.detectChanges();
+    if (
+      (changes.type && !changes.type.firstChange) ||
+      (changes.mobileSwiper && !changes.mobileSwiper.firstChange) ||
+      (changes.alignCenter && !changes.alignCenter.firstChange)
+    ) {
+      if (!this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
     }
   }
 
@@ -92,7 +93,7 @@ export class CardsLayoutComponent
         });
       });
 
-    this.mediaEventSubscriber = this.mobileService
+    this.mediaEventSubscription = this.mobileService
       .getMediaEvent()
       .pipe(outsideZone(this.zone))
       .subscribe((media: MediaEvent) => {
@@ -104,15 +105,22 @@ export class CardsLayoutComponent
   }
 
   ngAfterContentInit(): void {
-    this.cd.detectChanges();
+    this.cardsChangeSubscription = this.cards.changes.subscribe(() => {
+      if (!this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
+    });
   }
 
   ngOnDestroy(): void {
     if (this.resizeSubscription) {
       this.resizeSubscription.unsubscribe();
     }
-    if (this.mediaEventSubscriber && this.mediaEventSubscriber.unsubscribe) {
-      this.mediaEventSubscriber.unsubscribe();
+    if (this.mediaEventSubscription) {
+      this.mediaEventSubscription.unsubscribe();
+    }
+    if (this.cardsChangeSubscription) {
+      this.cardsChangeSubscription.unsubscribe();
     }
   }
 
@@ -151,7 +159,7 @@ export class CardsLayoutComponent
   public hasEnoughCards() {
     return (
       this.cards &&
-      (this.cardsInRow <= this.cards.length || this.cards.length > 1)
+      (this.cardsInRow <= this.cards.length && this.cards.length > 1)
     );
   }
 
