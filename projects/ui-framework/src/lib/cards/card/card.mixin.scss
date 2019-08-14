@@ -41,7 +41,6 @@ $cardPadding-small: times8(2);
     transition: transform 0.2s, box-shadow 0.2s;
     text-align: left;
     background-color: white;
-    min-height: 300px;
     @include b-body($addCssVars: true);
 
     &:focus,
@@ -135,6 +134,7 @@ $cardPadding-small: times8(2);
 
     &[data-type='regular'] {
       min-width: $card-width-regular;
+      min-height: 280px;
 
       @include mobile {
         min-width: $card-width-large;
@@ -143,6 +143,7 @@ $cardPadding-small: times8(2);
 
     &[data-type='large'] {
       min-width: $card-width-large;
+      min-height: 300px;
     }
   }
 
