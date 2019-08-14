@@ -102,10 +102,8 @@ export class CardsLayoutComponent
       .pipe(outsideZone(this.zone))
       .subscribe((media: MediaEvent) => {
         this.isMobile = media.matchMobile;
+        this.setCssVars();
         this.updateCardsInRow();
-        // if (!this.cd['destroyed']) {
-        //  this.cd.detectChanges();
-        // }
       });
   }
 
@@ -146,7 +144,10 @@ export class CardsLayoutComponent
 
   private setCssVars(): void {
     this.DOM.setCssProps(this.hostRef.nativeElement, {
-      '--card-width': CARD_TYPE_WIDTH[this.type] + 'px',
+      '--card-width':
+        (!this.isMobile
+          ? CARD_TYPE_WIDTH[this.type]
+          : CARD_TYPE_WIDTH_MOBILE[this.type]) + 'px',
       '--card-grid-gap': GAP_SIZE + 'px'
     });
   }
