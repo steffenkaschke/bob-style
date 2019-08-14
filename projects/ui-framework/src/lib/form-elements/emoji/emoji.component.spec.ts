@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import { EmojiComponent } from './emoji.component';
 import {By} from '@angular/platform-browser';
@@ -49,13 +49,12 @@ describe('EmojiComponent', () => {
       expect(component.emojiMenuState).toBeFalsy();
     });
   });
-  describe('selectEmoji', function () {
-    it('should select emoji trigger output with input string / emoji', () => {
+  describe('selectEmoji', () => {
+    it('should select emoji trigger output with input string / emoji', fakeAsync(() => {
       component.selectEmoji('😀');
       fixture.detectChanges();
-      setTimeout(() => {
-        expect(emojiSelect).toHaveBeenCalledWith('😀');
-      });
-    });
+      tick();
+      expect(emojiSelect).toHaveBeenCalledWith('😀');
+    }));
   });
 });
