@@ -4,7 +4,7 @@ import { EmojiComponent } from './emoji.component';
 import {By} from '@angular/platform-browser';
 import {TypographyModule} from '../../typography/typography.module';
 
-fdescribe('EmojiComponent', () => {
+describe('EmojiComponent', () => {
   let component: EmojiComponent;
   let fixture: ComponentFixture<EmojiComponent>;
   let emojiSelect;
