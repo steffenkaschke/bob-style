@@ -1,4 +1,4 @@
-import { Component, EventEmitter, NgModule, Output } from '@angular/core';
+import { Component, EventEmitter, Input, NgModule, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChainSelectComponent } from './chain-select.component';
@@ -7,6 +7,8 @@ import { ComponentRendererModule } from '../../../services/component-renderer/co
 import { By } from '@angular/platform-browser';
 import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
 import { ListChange } from '../list-change/list-change';
+import createSpy = jasmine.createSpy;
+import any = jasmine.any;
 
 describe('EmployeeChainSelectComponent', () => {
   let component: ChainSelectComponent;
@@ -17,10 +19,17 @@ describe('EmployeeChainSelectComponent', () => {
   beforeEach(async(() => {
     @Component({
       selector: 'b-test-select',
-      template: '<select (click)="change($event)"></select>',
+      template: '<select (click)="change($event)"></select>'
     })
-    class TestSelectComponent {
+    class TestSelectComponent implements OnInit {
+      @Input() filterFn?: Function;
       @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
+
+      ngOnInit() {
+        if (this.filterFn) {
+          this.filterFn();
+        }
+      }
 
       public change($event) {
         this.selectChange.emit($event);
@@ -33,7 +42,7 @@ describe('EmployeeChainSelectComponent', () => {
       imports: [CommonModule],
       exports: [TestSelectComponent],
       declarations: [TestSelectComponent],
-      entryComponents: [TestSelectComponent],
+      entryComponents: [TestSelectComponent]
     })
     class TestSelectModule { }
 
@@ -41,8 +50,11 @@ describe('EmployeeChainSelectComponent', () => {
       active: false,
       selectComponentConfig: {
         component: TestComponent,
+        attributes: {
+          filterFn: any(Function),
+        },
         handlers: {
-          'selectChange': jasmine.any(Function)
+          'selectChange': any(Function)
         }
       }
     };
@@ -56,8 +68,8 @@ describe('EmployeeChainSelectComponent', () => {
         IconsModule,
         ButtonsModule,
         ComponentRendererModule,
-        TestSelectModule,
-      ],
+        TestSelectModule
+      ]
     })
       .compileComponents();
   }));
@@ -70,6 +82,7 @@ describe('EmployeeChainSelectComponent', () => {
       selectedIdKey: 'selectedId',
       outputKey: 'selectChange',
       selectedIds: [],
+      filterFn: createSpy('filterFn'),
     };
     fixture.detectChanges();
   });
@@ -88,9 +101,10 @@ describe('EmployeeChainSelectComponent', () => {
           component: TestComponent,
           attributes: {
             'selectedId': '123',
+            filterFn: any(Function),
           },
           handlers: {
-            'selectChange': jasmine.any(Function)
+            'selectChange': any(Function)
           }
         }
       }]);
@@ -118,6 +132,10 @@ describe('EmployeeChainSelectComponent', () => {
       component.ngOnInit();
       expect(component.state[0]).toBeNull();
     });
+
+    it('Should set a filter function on the select component', () => {
+      expect(component.selectComponentConfig.filterFn).toHaveBeenCalled();
+    });
   });
 
   describe('addChainLink', () => {
@@ -134,7 +152,7 @@ describe('EmployeeChainSelectComponent', () => {
       selectElement.triggerEventHandler('click', new ListChange([]));
       expect(component.selectChange.emit).toHaveBeenCalledWith([
         null,
-        jasmine.any(ListChange),
+        any(ListChange)
       ]);
     });
   });
