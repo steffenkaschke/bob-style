@@ -6,6 +6,7 @@ export interface EmojiMap {
   places?: EmojiCategory[];
   objects?: EmojiCategory[];
   symbols?: EmojiCategory[];
+  flags?: EmojiCategory[];
 }
 
 export interface EmojiCategory {

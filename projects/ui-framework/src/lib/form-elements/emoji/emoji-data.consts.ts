@@ -1,6 +1,7 @@
 import { find } from 'lodash';
 export const EMOJI_DATA = {
-  people: [{
+  people: [
+    {
     code: '1F600',
     shortname: 'grinning',
     category: 'people',
@@ -981,7 +982,8 @@ export const EMOJI_DATA = {
     tags: ['weather', 'rain'],
     icon: '🌂'
   }],
-  nature: [{
+  nature: [
+    {
     code: '1F436',
     shortname: 'dog',
     category: 'nature',
@@ -1773,7 +1775,8 @@ export const EMOJI_DATA = {
     tags: ['rain', 'weather'],
     icon: '☔'
   }],
-  foods: [{
+  foods: [
+    {
     code: '1F34F',
     shortname: 'green_apple',
     category: 'foods',
@@ -2166,7 +2169,8 @@ export const EMOJI_DATA = {
     tags: ['cutlery'],
     icon: '🍴'
   }],
-  activity: [{
+  activity: [
+    {
     code: '26BD',
     shortname: 'soccer',
     category: 'activity',
@@ -2391,7 +2395,8 @@ export const EMOJI_DATA = {
     tags: [],
     icon: '🎰'
   }],
-  places: [{
+  places: [
+    {
     code: '1F695',
     shortname: 'taxi',
     category: 'places',
@@ -2952,7 +2957,8 @@ export const EMOJI_DATA = {
     tags: [],
     icon: '🌉'
   }, {code: '1F301', shortname: 'foggy', category: 'places', description: 'foggy', tags: ['karl'], icon: '🌁'}],
-  objects: [{
+  objects: [
+    {
     code: '231A',
     shortname: 'watch',
     category: 'objects',
@@ -3737,7 +3743,8 @@ export const EMOJI_DATA = {
     tags: ['security'],
     icon: '🔓'
   }],
-  symbols: [{
+  symbols: [
+    {
     code: '2764',
     shortname: 'heart',
     category: 'symbols',
@@ -5348,7 +5355,8 @@ export const EMOJI_DATA = {
     tags: [],
     icon: '🕧'
   }],
-  flags: [{
+  flags: [
+    {
     code: '1F3C1',
     shortname: 'checkered_flag',
     category: 'flags',
