@@ -8,7 +8,7 @@ import {ButtonsModule} from '../../buttons-indicators/buttons/buttons.module';
 import {TruncateTooltipModule} from '../../services/truncate-tooltip/truncate-tooltip.module';
 
 const inputStories = storiesOf(
-  ComponentGroupType.FormElements,
+  ComponentGroupType.Popups,
   module
 ).addDecorator(withKnobs);
 
