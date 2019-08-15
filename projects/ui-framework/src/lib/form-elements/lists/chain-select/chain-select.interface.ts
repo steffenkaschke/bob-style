@@ -12,5 +12,5 @@ export interface SelectComponentConfig {
   outputKey: string;
   selectedIdKey?: string;
   selectedIds?: (string | number)[];
-  filterFn?: () => boolean;
+  filterFn?: (value: any) => boolean;
 }
