@@ -37,6 +37,7 @@ export class ChainSelectComponent implements OnInit {
           component: this.selectComponent,
           attributes: {
             [this.selectComponentConfig.selectedIdKey]: optionId,
+            ...this.selectComponentConfig.filterFn && { filterFn: this.selectComponentConfig.filterFn },
           },
           handlers: {
             [this.selectComponentConfig.outputKey]: $event => this.handleChange($event, index)
@@ -70,6 +71,9 @@ export class ChainSelectComponent implements OnInit {
       active: false,
       selectComponentConfig: {
         component: this.selectComponent,
+        attributes: {
+          ...this.selectComponentConfig.filterFn && { filterFn: this.selectComponentConfig.filterFn },
+        },
         handlers: {
           [this.selectComponentConfig.outputKey]: $event => this.handleChange($event, index)
         }
