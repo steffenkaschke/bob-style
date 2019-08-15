@@ -3,12 +3,12 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  HostListener,
+  HostListener, Input,
   OnInit,
   Output
 } from '@angular/core';
 import {COMMON_EMOJIS, EMOJI_DATA} from './emoji-data.consts';
-import {EmojiMap} from './emoji.interface';
+import {EmojiCategory, EmojiMap} from './emoji.interface';
 
 @Component({
   selector: 'b-emoji',
@@ -18,10 +18,11 @@ import {EmojiMap} from './emoji.interface';
 })
 export class EmojiComponent implements OnInit {
   emojis: EmojiMap;
-  commonEmojis: string[];
+  commonEmojis: any[];
   emojiMenuState = false;
+  @Input() title: string;
   @Output() toggleClick = new EventEmitter<boolean>();
-  @Output() emojiSelect = new EventEmitter<string>();
+  @Output() emojiSelect = new EventEmitter<EmojiCategory>();
   @HostListener('window:click.outside-zone', ['$event']) clickOut(event) {
     this.toggleMenu(false);
   }
@@ -29,10 +30,6 @@ export class EmojiComponent implements OnInit {
   constructor(
     private cdr: ChangeDetectorRef
   ) { }
-
-  stopPropagationClick(e) {
-    e.stopPropagation();
-  }
 
   ngOnInit() {
     this.emojis = {...EMOJI_DATA};
@@ -45,7 +42,7 @@ export class EmojiComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  selectEmoji(emoji: string) {
+  selectEmoji(emoji: EmojiCategory) {
     this.toggleMenu(false);
     setTimeout(() => {
       this.emojiSelect.emit(emoji);

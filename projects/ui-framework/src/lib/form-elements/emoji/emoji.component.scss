@@ -1,53 +1,30 @@
 @import "../../style/colors";
+@import '../../popups/overlay';
+@import '../../style/shapes';
+
 $emoji-padding: 15px;
 :host {
   position: relative;
   display: inline-block;
 }
+.panel-position {
+  @include OverlayPointerHolders();
+  @include OverlayPositionBounding('center');
+  @include OverlayPositionBounding('above');
+}
 .emoji-panel {
-  position: absolute;
-  right: 50%;
-  transform: translate(50%, -10px);
-  bottom: 100%;
-  background-color: #fff;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
   width: 270px;
-  display: block;
-  padding: 0;
-  text-align: left;
-  border: 1px solid $grey-500;
-  box-sizing: content-box;
-  &:before, &:after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    border: 10px solid transparent;
-    margin: 0 auto;
-    width: 0;
-    height: 0;
-
-  }
-  &:before {
-    border-top-color: $grey-500;
-
-  }
-  &:after {
-    margin-top: -1px;
-    border-top-color: #fff;
-
-  }
+  @include OverlayPanel();
   .emoji-title {
     line-height: 35px;
     font-size: 18px;
   }
   .icon-wrapper {
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: left;
     position: relative;
-    overflow: hidden;
   }
   .icon {
     font-family: "Segoe UI Emoji",
@@ -61,8 +38,8 @@ $emoji-padding: 15px;
     user-select: none;
     position: relative;
     z-index: 3;
-    float: left;
-    display: block;
+    display: inline-flex;
+    justify-content: center;
     font-size: 21px;
     width: 30px;
     height: 30px;

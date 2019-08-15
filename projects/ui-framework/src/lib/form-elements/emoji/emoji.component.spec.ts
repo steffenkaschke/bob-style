@@ -3,6 +3,9 @@ import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/t
 import { EmojiComponent } from './emoji.component';
 import {By} from '@angular/platform-browser';
 import {TypographyModule} from '../../typography/typography.module';
+import {EMOJI_DATA} from './emoji-data.consts';
+import {find} from 'lodash';
+import {TruncateTooltipModule} from '../../services/truncate-tooltip/truncate-tooltip.module';
 
 describe('EmojiComponent', () => {
   let component: EmojiComponent;
@@ -11,7 +14,7 @@ describe('EmojiComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TypographyModule],
+      imports: [TypographyModule, TruncateTooltipModule],
       declarations: [ EmojiComponent ]
     })
     .compileComponents().then(() => {
@@ -51,10 +54,11 @@ describe('EmojiComponent', () => {
   });
   describe('selectEmoji', () => {
     it('should select emoji trigger output with input string / emoji', fakeAsync(() => {
-      component.selectEmoji('😀');
+      const selectedEmoji = find(EMOJI_DATA.people, {shortname: 'grinning'});
+      component.selectEmoji(selectedEmoji);
       fixture.detectChanges();
       tick();
-      expect(emojiSelect).toHaveBeenCalledWith('😀');
+      expect(emojiSelect).toHaveBeenCalledWith(selectedEmoji);
     }));
   });
 });

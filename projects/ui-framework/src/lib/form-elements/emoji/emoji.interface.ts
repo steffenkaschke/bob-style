@@ -1,15 +1,18 @@
 export interface EmojiMap {
-  people?: EmojiCategory;
-  nature?: EmojiCategory;
-  foods?: EmojiCategory;
-  activity?: EmojiCategory;
-  places?: EmojiCategory;
-  objects?: EmojiCategory;
-  symbols?: EmojiCategory;
+  people?: EmojiCategory[];
+  nature?: EmojiCategory[];
+  foods?: EmojiCategory[];
+  activity?: EmojiCategory[];
+  places?: EmojiCategory[];
+  objects?: EmojiCategory[];
+  symbols?: EmojiCategory[];
 }
 
 export interface EmojiCategory {
-  emojis: any;
-  name: string;
+  code: string;
+  shortname: string;
+  category: string;
+  description: string;
+  tags: string[];
   icon: string;
 }

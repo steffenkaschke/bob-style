@@ -1,10 +1,11 @@
 import {storiesOf} from '@storybook/angular';
-import {withKnobs} from '@storybook/addon-knobs/angular';
+import {withKnobs, text} from '@storybook/addon-knobs/angular';
 import {ComponentGroupType} from '../../consts';
 import {StoryBookLayoutModule} from '../../story-book-layout/story-book-layout.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EmojiModule} from './emoji.module';
 import {ButtonsModule} from '../../buttons-indicators/buttons/buttons.module';
+import {TruncateTooltipModule} from '../../services/truncate-tooltip/truncate-tooltip.module';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -13,6 +14,7 @@ const inputStories = storiesOf(
 
 const template = `
     <b-emoji style="position:fixed; right: 50%; bottom: 0; transform: translateX(50%)"
+    [title]="title"
     (emojiSelect)="emojiSelect($event)"
     (toggleClick)="toggleClick($event)">
       <span
@@ -57,8 +59,9 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
+        title: text('title', 'Add Reaction'),
         emojiSelect: (emoji) => {
-          alert(emoji);
+          alert(JSON.stringify(emoji));
         },
         toggleClick: (bool) => {
           // console.log(bool);
@@ -66,6 +69,7 @@ inputStories.add(
       },
       moduleMetadata: {
         imports: [
+          TruncateTooltipModule,
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           EmojiModule,
