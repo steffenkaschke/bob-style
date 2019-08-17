@@ -2,8 +2,7 @@
 
   <div class="chain-link-row">
 
-    <b-component-renderer [render]="chainLink.selectComponentConfig">
-    </b-component-renderer>
+    <ng-container *ngTemplateOutlet="contentChild.tpl"></ng-container>
 
     <b-square-button class="delete-button"
                      *ngIf="chainLinkList.length > 1"

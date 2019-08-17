@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Type, ContentChild } from '@angular/core';
 import { isEmpty, clone } from 'lodash';
 import { ChainLink, SelectComponentConfig } from './chain-select.interface';
 import { Icons, IconSize } from '../../../icons/icons.enum';
 import { ButtonSize, ButtonType } from '../../../buttons/buttons.enum';
 import { ListChange } from '../list-change/list-change';
+import { ChainSelectDirective } from './chain-select.directive';
 
 @Component({
   selector: 'b-chain-select',
@@ -12,8 +13,6 @@ import { ListChange } from '../list-change/list-change';
 })
 export class ChainSelectComponent implements OnInit {
   @Input() actionLabel: string;
-  @Input() selectComponent: Type<any>;
-  @Input() selectComponentConfig: SelectComponentConfig;
   @Output() selectChange: EventEmitter<ListChange[]> =
     new EventEmitter<ListChange[]>();
 
@@ -24,27 +23,12 @@ export class ChainSelectComponent implements OnInit {
   public chainLinkList: ChainLink[];
   public state: ListChange[];
 
+  @ContentChild(ChainSelectDirective, { static: false }) contentChild !: ChainSelectDirective;
+
   constructor() {}
 
   ngOnInit() {
-    if (isEmpty(this.selectComponentConfig.selectedIds) || !this.selectComponentConfig.selectedIdKey) {
-      this.chainLinkList = [this.createEmptyChainLink(0)];
-      this.state = [null];
-    } else {
-      this.chainLinkList = this.selectComponentConfig.selectedIds.map((optionId, index) => ({
-        selectComponentConfig: {
-          component: this.selectComponent,
-          attributes: {
-            [this.selectComponentConfig.selectedIdKey]: optionId,
-            ...this.selectComponentConfig.filterFn && { filterFn: this.selectComponentConfig.filterFn },
-          },
-          handlers: {
-            [this.selectComponentConfig.outputKey]: $event => this.handleChange($event, index)
-          }
-        }
-      }));
-      this.state = this.selectComponentConfig.selectedIds.map(() => null);
-    }
+     this.chainLinkList = [];
   }
 
   public addChainLink() {
@@ -58,17 +42,7 @@ export class ChainSelectComponent implements OnInit {
   }
 
   private createEmptyChainLink(index: number): ChainLink {
-    return {
-      selectComponentConfig: {
-        component: this.selectComponent,
-        attributes: {
-          ...this.selectComponentConfig.filterFn && { filterFn: this.selectComponentConfig.filterFn },
-        },
-        handlers: {
-          [this.selectComponentConfig.outputKey]: $event => this.handleChange($event, index)
-        }
-      }
-    };
+    return null;
   }
 
   private handleChange($event, index) {

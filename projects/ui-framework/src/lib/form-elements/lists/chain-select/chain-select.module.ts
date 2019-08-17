@@ -6,6 +6,7 @@ import {
   ComponentRendererModule
 } from '../../../services/component-renderer/component-renderer.module';
 import { ButtonsModule } from '../../../buttons/buttons.module';
+import { ChainSelectDirective } from './chain-select.directive';
 
 @NgModule({
   imports: [
@@ -16,9 +17,11 @@ import { ButtonsModule } from '../../../buttons/buttons.module';
   ],
   declarations: [
     ChainSelectComponent,
+    ChainSelectDirective,
   ],
   exports: [
     ChainSelectComponent,
+    ChainSelectDirective,
   ],
 })
 export class ChainSelectModule { }

@@ -43,10 +43,9 @@ export class ChainSingleSelectExampleComponent implements OnInit {
 @Component({
   selector: 'b-chain-select-example',
   template: `
-    <b-chain-select [selectComponent]="selectComponent"
-                    [selectComponentConfig]="selectComponentConfig"
-                    [actionLabel]="actionLabel"
+    <b-chain-select [actionLabel]="actionLabel"
                     (selectChange)="change($event)">
+        <b-chain-single-select-example *bChainSelect></b-chain-single-select-example>
     </b-chain-select>
   `
 })
