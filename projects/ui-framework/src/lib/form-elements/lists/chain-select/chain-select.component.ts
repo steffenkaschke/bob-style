@@ -13,6 +13,7 @@ import { ChainSelectDirective } from './chain-select.directive';
 })
 export class ChainSelectComponent implements OnInit {
   @Input() actionLabel: string;
+  @Input() selectedItemList: [];
   @Output() selectChange: EventEmitter<ListChange[]> =
     new EventEmitter<ListChange[]>();
 
@@ -23,7 +24,7 @@ export class ChainSelectComponent implements OnInit {
   public chainLinkList: ChainLink[];
   public state: ListChange[];
 
-  @ContentChild(ChainSelectDirective, { static: false }) contentChild !: ChainSelectDirective;
+  @ContentChild(ChainSelectDirective, { static: true }) contentChild !: ChainSelectDirective;
 
   constructor() {}
 

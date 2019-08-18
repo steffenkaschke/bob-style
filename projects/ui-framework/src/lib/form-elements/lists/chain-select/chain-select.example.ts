@@ -7,6 +7,7 @@ import { SelectGroupOption } from '../list.interface';
 @Component({
   selector: 'b-chain-single-select-example',
   template: `
+  <ng-content></ng-content>
     <b-single-select [options]="options" (selectChange)="change($event)">
     </b-single-select>
   `,
@@ -44,18 +45,15 @@ export class ChainSingleSelectExampleComponent implements OnInit {
   selector: 'b-chain-select-example',
   template: `
     <b-chain-select [actionLabel]="actionLabel"
+                    [selectedItemList]="selectedIdList"
                     (selectChange)="change($event)">
-        <b-chain-single-select-example *bChainSelect></b-chain-single-select-example>
+        <b-chain-single-select-example *bChainSelect="let selected" [selectedId]="selected">
+        </b-chain-single-select-example>
     </b-chain-select>
   `
 })
 export class ChainSelectExampleComponent {
-  public selectComponent = ChainSingleSelectExampleComponent;
-  public selectComponentConfig = {
-    selectedIdKey: 'selectedId',
-    outputKey: 'selectChange',
-    selectedIds: [1, 2, 3],
-  };
+  public selectedIdList = [1, 2, 3];
   public actionLabel = 'Add another';
   @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
 
