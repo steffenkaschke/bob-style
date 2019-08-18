@@ -14,8 +14,8 @@ import { ChainSelectDirective } from './chain-select.directive';
 export class ChainSelectComponent implements OnInit {
   @Input() actionLabel: string;
   @Input() selectedItemList: [];
-  @Output() selectChange: EventEmitter<ListChange[]> =
-    new EventEmitter<ListChange[]>();
+  @Output() selectChange: EventEmitter<{ $event: any, index: number }> =
+    new EventEmitter<{ $event: any, index: number }>();
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
@@ -39,15 +39,14 @@ export class ChainSelectComponent implements OnInit {
   public removeChainLink(index: number) {
     this.chainLinkList.splice(index, 1);
     this.state.splice(index, 1);
-    this.selectChange.emit(this.state);
+    //this.selectChange.emit(this.state);
   }
 
   private createEmptyChainLink(index: number): ChainLink {
     return null;
   }
 
-  private handleChange($event, index) {
-    this.state.splice(index, 1, $event);
-    this.selectChange.emit(this.state);
+  public handleChange($event, index) {
+    this.selectChange.emit({ $event, index });
   }
 }
