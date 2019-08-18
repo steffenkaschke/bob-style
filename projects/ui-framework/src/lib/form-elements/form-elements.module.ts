@@ -60,6 +60,6 @@ import { TimePickerComponent } from './timepicker/timepicker.component';
     PasswordInputComponent,
     TimePickerComponent,
     ChipInputComponent
-  ]
+  ],
 })
 export class FormElementsModule {}

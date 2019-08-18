@@ -236,6 +236,11 @@ export {
 // Social Module
 export { SocialModule } from './lib/form-elements/social/social.module';
 export { Social } from './lib/form-elements/social/social.enum';
+
+// Emoji Module
+export {EmojiModule} from './lib/popups/emoji/emoji.module';
+export {EmojiComponent} from './lib/popups/emoji/emoji.component';
+
 // Timepicker
 export { TimePickerModule } from './lib/form-elements/timepicker/timepicker.module';
 export { TimePickerComponent } from './lib/form-elements/timepicker/timepicker.component';
