@@ -3,7 +3,6 @@ import {
   Input,
   HostBinding,
   ChangeDetectionStrategy,
-  ElementRef,
   Output,
   HostListener,
   EventEmitter,
@@ -19,7 +18,7 @@ import { Icons, IconSize } from '../../icons/icons.enum';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LabelValueComponent {
-  constructor(private host: ElementRef, private zone: NgZone) {}
+  constructor(private zone: NgZone) {}
 
   readonly iconPositions = IconPosition;
   readonly iconSizes = IconSize;
@@ -52,7 +51,7 @@ export class LabelValueComponent {
   }
 
   @HostBinding('attr.tabindex') get tabInd() {
-    return this.clicked.observers.length > 0 ? 0 : -1;
+    return this.clicked.observers.length > 0 ? 0 : null;
   }
 
   @HostListener('click.outside-zone', ['$event'])

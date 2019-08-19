@@ -98,13 +98,28 @@ $BLVTypeMap: (
     .blv-icon {
       grid-row-start: span 2;
       align-self: center;
+
+      &:nth-last-child(2) {
+        grid-row-start: 1;
+      }
     }
     .blv-label {
       grid-row-start: 1;
       align-self: flex-end;
+
+      &:nth-last-child(1) {
+        align-self: center;
+      }
     }
     .blv-value {
-      grid-row-start: 2;
+      &:nth-child(2) {
+        grid-row-start: 1;
+        align-self: center;
+      }
+      &:nth-child(3) {
+        grid-row-start: 2;
+        align-self: flex-start;
+      }
     }
   }
 
