@@ -10,6 +10,8 @@ import {
 } from '@angular/core';
 import { LabelValueType, TextAlign, IconPosition } from './label-value.enum';
 import { Icons, IconSize } from '../../icons/icons.enum';
+import { isKey } from '../../services/utils/functional-utils';
+import { Keys } from '../../enums';
 
 @Component({
   selector: 'b-label-value',
@@ -29,13 +31,15 @@ export class LabelValueComponent {
   @Input() iconPosition: IconPosition = IconPosition.left;
   @Input() iconSize: IconSize;
 
-  @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
-  @Output() valueClicked: EventEmitter<MouseEvent> = new EventEmitter<
-    MouseEvent
-  >();
-  @Output() labelClicked: EventEmitter<MouseEvent> = new EventEmitter<
-    MouseEvent
-  >();
+  @Output() clicked: EventEmitter<
+    MouseEvent | KeyboardEvent
+  > = new EventEmitter<MouseEvent | KeyboardEvent>();
+  @Output() valueClicked: EventEmitter<
+    MouseEvent | KeyboardEvent
+  > = new EventEmitter<MouseEvent | KeyboardEvent>();
+  @Output() labelClicked: EventEmitter<
+    MouseEvent | KeyboardEvent
+  > = new EventEmitter<MouseEvent | KeyboardEvent>();
 
   @HostBinding('attr.data-type') @Input() type: LabelValueType =
     LabelValueType.one;
@@ -56,6 +60,17 @@ export class LabelValueComponent {
 
   @HostListener('click.outside-zone', ['$event'])
   onClick($event: MouseEvent) {
+    this.emitEvents($event);
+  }
+
+  @HostListener('keydown.outside-zone', ['$event'])
+  onKey($event: KeyboardEvent) {
+    if (isKey($event.key, Keys.enter) || isKey($event.key, Keys.space)) {
+      this.emitEvents($event);
+    }
+  }
+
+  private emitEvents($event: MouseEvent | KeyboardEvent): void {
     if (
       ($event.target as HTMLElement).className.includes('blv-value') &&
       this.valueClicked.observers.length > 0

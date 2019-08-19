@@ -169,10 +169,6 @@ $BLVTypeMap: (
   &:focus,
   &:hover {
     filter: brightness(0.65);
-
-    .blv-icon:before {
-      color: $grey-800;
-    }
   }
 }
 
@@ -185,18 +181,23 @@ $BLVTypeMap: (
   align-items: center;
 
   &:before {
-    margin-right: times8(1);
+    margin-right: times8(0.6);
   }
 
   &[tabindex='0'] {
-    &:focus,
-    &:hover {
-      text-decoration: underline;
-    }
     &:before {
       overflow: hidden;
       height: 15px;
       margin-bottom: 1px;
+    }
+
+    &:focus,
+    &:hover {
+      text-decoration: underline;
+
+      &:before {
+        filter: brightness(0.65);
+      }
     }
   }
 }
@@ -208,6 +209,12 @@ $BLVTypeMap: (
         #{$elem} {
           @each $prop, $value in $props {
             #{$prop}: $value;
+
+            @if ($prop == 'color') {
+              &:before {
+                color: $value;
+              }
+            }
           }
         }
       }

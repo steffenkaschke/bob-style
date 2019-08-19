@@ -39,9 +39,9 @@ const template3 = `
         [icon]="icon"
         [iconPosition]="iconPosition"
         [iconSize]="iconSize"
-        (clicked)="OnClick()"
-        (labelClicked)="OnLabelClick()"
-        (valueClicked)="OnValueClick()"></b-label-value>
+        (clicked)="OnClick($event)"
+        (labelClicked)="OnLabelClick($event)"
+        (valueClicked)="OnValueClick($event)"></b-label-value>
 `;
 
 const template2 = `
@@ -90,7 +90,7 @@ const template2 = `
         [type]="'2'"
         [label]="'Reason'"
         [value]="'Im planning a trip to celebrate my birthday.'"
-        (valueClicked)="onValueClicked()"></b-label-value>
+        (valueClicked)="onValueClicked($event)"></b-label-value>
     </div>
 
     <div class="cell">
@@ -101,7 +101,7 @@ const template2 = `
         [type]="'3'"
         [label]="'Alan Tulins'"
         [value]="'Product designer'"
-        (labelClicked)="onLabelClicked()"></b-label-value>
+        (labelClicked)="onLabelClicked($event)"></b-label-value>
     </div>
 
     <div class="cell">
@@ -111,7 +111,7 @@ const template2 = `
       <b-label-value
         [type]="'4'"
         [label]="'Current balance'"
-        [value]="'4.25'" (clicked)="onClicked()"></b-label-value>
+        [value]="'4.25'" (clicked)="onClicked($event)"></b-label-value>
     </div>
 
     <div class="cell">
