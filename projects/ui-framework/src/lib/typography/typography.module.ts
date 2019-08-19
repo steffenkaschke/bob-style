@@ -11,6 +11,7 @@ import { BoldBodyComponent } from './bold-body/bold-body.component';
 import { BodyComponent } from './body/body.component';
 import { LabelValueComponent } from './label-value/label-value.component';
 import { CommonModule } from '@angular/common';
+import { EventManagerPlugins } from '../services/utils/eventManager.plugins';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { CommonModule } from '@angular/common';
     BoldBodyComponent,
     BodyComponent,
     LabelValueComponent
-  ]
+  ],
+  providers: [EventManagerPlugins[0]]
 })
 export class TypographyModule {}

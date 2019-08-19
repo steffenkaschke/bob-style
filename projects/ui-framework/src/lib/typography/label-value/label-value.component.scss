@@ -61,19 +61,6 @@ $BLVTypeMap: (
       font-size: $font-size-body,
       font-weight: $font-weight-body
     )
-  ),
-  '6': (
-    '.blv-label': (
-      color: $display-text-color,
-      font-size: $font-size-display-4,
-      font-weight: $font-weight-display-4,
-      font-family: var(--display-font-family)
-    ),
-    '.blv-value': (
-      color: $grey-600,
-      font-size: $font-size-caption,
-      font-weight: $font-weight-body
-    )
   )
 );
 
@@ -81,16 +68,95 @@ $BLVTypeMap: (
   display: flex;
   flex-direction: column;
   text-align: left;
+  align-items: flex-start;
   @include b-body;
 
   &[data-text-align='right'] {
     text-align: right;
     align-items: flex-end;
+
+    .blv-label,
+    .blv-value {
+      justify-content: flex-end;
+    }
   }
 
   &[data-text-align='center'] {
     text-align: center;
     align-items: center;
+
+    .blv-label,
+    .blv-value {
+      justify-content: center;
+    }
+  }
+
+  &[data-icon-position='left'],
+  &[data-icon-position='right'] {
+    display: grid;
+
+    .blv-icon {
+      grid-row-start: span 2;
+      align-self: center;
+    }
+    .blv-label {
+      grid-row-start: 1;
+    }
+    .blv-value {
+      grid-row-start: 2;
+    }
+  }
+
+  &[data-icon-position='left'] {
+    .blv-icon {
+      grid-column-start: 1;
+      margin-right: times8(1.5);
+    }
+    .blv-label {
+      grid-column-start: 2;
+    }
+    .blv-value {
+      grid-column-start: 2;
+    }
+  }
+
+  &[data-icon-position='right'] {
+    .blv-icon {
+      grid-column-start: 2;
+      margin-left: times8(1.5);
+    }
+    .blv-label {
+      grid-column-start: 1;
+    }
+    .blv-value {
+      grid-column-start: 1;
+    }
+  }
+
+  &[data-icon-position='top'] {
+    .blv-icon {
+      margin-bottom: times8(1);
+    }
+  }
+}
+
+:host,
+.blv-label,
+.blv-value {
+  &[tabindex='0'] {
+    cursor: pointer;
+    outline: 0;
+  }
+}
+
+:host[tabindex='0'] {
+  &:focus,
+  &:hover {
+    filter: brightness(0.65);
+
+    .blv-icon:before {
+      color: $grey-800;
+    }
   }
 }
 
@@ -99,6 +165,24 @@ $BLVTypeMap: (
   margin: 0;
   font-size: inherit;
   color: inherit;
+  display: flex;
+  align-items: center;
+
+  &:before {
+    margin-right: times8(1);
+  }
+
+  &[tabindex='0'] {
+    &:focus,
+    &:hover {
+      text-decoration: underline;
+    }
+    &:before {
+      overflow: hidden;
+      height: 15px;
+      margin-bottom: 1px;
+    }
+  }
 }
 
 :host {

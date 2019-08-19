@@ -3,8 +3,7 @@ export enum LabelValueType {
   two = '2',
   three = '3',
   four = '4',
-  five = '5',
-  six = '6'
+  five = '5'
 }
 
 export enum TextAlign {
@@ -15,5 +14,8 @@ export enum TextAlign {
 
 export enum IconPosition {
   left = 'left',
-  top = 'top'
+  right = 'right',
+  top = 'top',
+  label = 'label',
+  value = 'value'
 }

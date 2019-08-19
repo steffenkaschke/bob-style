@@ -1,5 +1,11 @@
 import { storiesOf } from '@storybook/angular';
-import { text, withKnobs, select } from '@storybook/addon-knobs/angular';
+import {
+  text,
+  withKnobs,
+  select,
+  boolean
+} from '@storybook/addon-knobs/angular';
+import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -21,6 +27,19 @@ const template = `
         [value]="value"
         [icon]="icon"
         [iconPosition]="iconPosition"></b-label-value>
+`;
+
+const template3 = `
+  <b-label-value
+        [type]="type"
+        [textAlign]="textAlign"
+        [label]="label"
+        [value]="value"
+        [icon]="icon"
+        [iconPosition]="iconPosition"
+        (clicked)="OnClick()"
+        (labelClicked)="OnLabelClick()"
+        (valueClicked)="OnValueClick()"></b-label-value>
 `;
 
 const template2 = `
@@ -63,32 +82,34 @@ const template2 = `
 
     <div class="cell">
       <p class="hdr">
-        <span class="bx">LabelValueType.two</span>
+        <span class="bx">LabelValueType.two, value clickable</span>
       </p>
       <b-label-value
         [type]="'2'"
         [label]="'Reason'"
-        [value]="'Im planning a trip to celebrate my birthday.'"></b-label-value>
+        [value]="'Im planning a trip to celebrate my birthday.'"
+        (valueClicked)="onValueClicked()"></b-label-value>
     </div>
 
     <div class="cell">
       <p class="hdr">
-        <span class="bx">LabelValueType.three</span>
+        <span class="bx">LabelValueType.three, label clickable</span>
       </p>
       <b-label-value
         [type]="'3'"
         [label]="'Alan Tulins'"
-        [value]="'Product designer'"></b-label-value>
+        [value]="'Product designer'"
+        (labelClicked)="onLabelClicked()"></b-label-value>
     </div>
 
     <div class="cell">
       <p class="hdr">
-        <span class="bx">LabelValueType.four</span>
+        <span class="bx">LabelValueType.four, clickable</span>
       </p>
       <b-label-value
         [type]="'4'"
         [label]="'Current balance'"
-        [value]="'4.25'"></b-label-value>
+        [value]="'4.25'" (clicked)="onClicked()"></b-label-value>
     </div>
 
     <div class="cell">
@@ -101,21 +122,7 @@ const template2 = `
         [value]="'11/03/2019'"></b-label-value>
     </div>
 
-    <div class="cell">
-      <p class="hdr">
-        <span class="bx">LabelValueType.five</span>
-        <span class="bx">TextAlign.center</span>
-      </p>
-      <b-label-value
-        [type]="'6'"
-        [textAlign]="'center'"
-        [label]="'Larry Murfiray'"
-        [value]="'Marketing & business operati…'"></b-label-value>
-    </div>
-
   </div>
-
-
 `;
 
 const storyTemplate = `
@@ -136,10 +143,17 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  label | string | label/title text | none
-  value | string | value text | none
+  [type] | LabelValueType | type/theme | LabelValueType.one
+  [label] | string | label/title text | none
+  [value] | string | value text | none
+  [icon] | Icons | icon, obviously | none
+  [iconPosition] | IconPosition | top, left, right, and also 'label' and 'value' which allow to put the icon inside label or value | left
+  (clicked) | EventEmitter&lt;MouseEvent&gt; | emits when component is clicked
+  (labelClicked) | EventEmitter&lt;MouseEvent&gt; | emits when label is clicked
+  (valueClicked) | EventEmitter&lt;MouseEvent&gt; | emits when value is clicked
+
   ~~~
-  ${template}
+  ${template3}
   ~~~
 `;
 
@@ -149,16 +163,18 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', [Object.values(LabelValueType)
-          , LabelValueType.one),
+        onClicked: action('component clicked'),
+        onLabelClicked: action('Label clicked'),
+        onValueClicked: action('Value clicked'),
+        type: select('type', Object.values(LabelValueType), LabelValueType.one),
         textAlign: select(
           'textAlign',
           Object.values(TextAlign),
           TextAlign.left
         ),
-        label: text('label', mockText(randomNumber(2, 3))),
-        value: text('value', mockText(randomNumber(3, 6))),
-        icon: select('icon', Object.values(Icons), null),
+        label: text('label', mockText(randomNumber(1, 2))),
+        value: text('value', mockText(randomNumber(4, 6))),
+        icon: select('icon', [null, ...Object.values(Icons)], null),
         iconPosition: select(
           'iconPosition',
           Object.values(IconPosition),
