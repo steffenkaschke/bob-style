@@ -4,7 +4,7 @@ import { IconColor, IconSize } from '../../../icons/icons.enum';
 import { BaseButtonElement } from '../button.abstract';
 
 @Component({
-  selector: 'b-square-button',
+  selector: 'b-round-button',
   template: `
     <button
       type="button"
@@ -13,9 +13,9 @@ import { BaseButtonElement } from '../button.abstract';
       (click)="onClick($event)"
     ></button>
   `,
-  styleUrls: ['./square.component.scss']
+  styleUrls: ['./round.component.scss']
 })
-export class SquareButtonComponent extends BaseButtonElement {
+export class RoundButtonComponent extends BaseButtonElement {
   constructor() {
     super();
   }

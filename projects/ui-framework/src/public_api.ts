@@ -35,6 +35,9 @@ export {
   SquareButtonComponent
 } from './lib/buttons-indicators/buttons/square/square.component';
 export {
+  RoundButtonComponent
+} from './lib/buttons-indicators/buttons/round/round.component';
+export {
   GroupComponent
 } from './lib/buttons-indicators/buttons/group/group.component';
 export {

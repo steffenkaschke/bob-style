@@ -1,26 +1,27 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SquareButtonComponent } from './square.component';
+import { RoundButtonComponent } from './round.component';
 import { MatButtonModule } from '@angular/material/button';
 import { ButtonSize, ButtonType } from '../buttons.enum';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { IconComponent } from '../../../icons/icon.component';
 import { Icons, IconSize } from '../../../icons/icons.enum';
+import { SimpleChanges } from '@angular/core';
 
-describe('SquareButtonComponent', () => {
-  let component: SquareButtonComponent;
-  let fixture: ComponentFixture<SquareButtonComponent>;
+describe('RoundButtonComponent', () => {
+  let component: RoundButtonComponent;
+  let fixture: ComponentFixture<RoundButtonComponent>;
   let buttonElement: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SquareButtonComponent, MockComponent(IconComponent)],
+      declarations: [RoundButtonComponent, MockComponent(IconComponent)],
       imports: [MatButtonModule]
     })
       .compileComponents()
       .then(() => {
-        fixture = TestBed.createComponent(SquareButtonComponent);
+        fixture = TestBed.createComponent(RoundButtonComponent);
         component = fixture.componentInstance;
         component.icon = Icons.file_copy;
         buttonElement = fixture.debugElement.query(By.css('button'))

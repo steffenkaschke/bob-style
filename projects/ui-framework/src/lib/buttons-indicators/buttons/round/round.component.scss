@@ -1,0 +1,26 @@
+@import '../buttons';
+
+:host {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+button {
+  text-align: center;
+  padding: 0;
+
+  @include button-basic-types;
+
+  &.small {
+    height: $sizeSmall;
+    width: $sizeSmall;
+  }
+  &.medium {
+    height: $sizeMedium;
+    width: $sizeMedium;
+  }
+  &.large {
+    height: $sizeLarge;
+    width: $sizeLarge;
+  }
+}

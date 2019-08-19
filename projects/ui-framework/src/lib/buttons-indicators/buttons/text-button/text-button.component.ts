@@ -38,14 +38,14 @@ export class TextButtonComponent {
   @Input() icon: Icons;
   @Input() color: LinkColor = LinkColor.none;
 
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
+  @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   readonly iconSize = IconSize;
   readonly linkColor = LinkColor;
   readonly iconColor = IconColor;
 
-  @HostListener('click')
-  onClick() {
-    this.clicked.emit();
+  @HostListener('click', ['$event'])
+  onClick($event: MouseEvent) {
+    this.clicked.emit($event);
   }
 }
