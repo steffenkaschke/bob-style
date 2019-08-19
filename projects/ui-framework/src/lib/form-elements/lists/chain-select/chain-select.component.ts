@@ -12,7 +12,7 @@ import { ChainSelectEventEnum } from './chain-select.enum';
 })
 export class ChainSelectComponent {
   @Input() actionLabel: string;
-  @Input() selectedItemList: any[] = [];
+  @Input() selectedItemList: any[] = [null];
   @Output() selectChange: EventEmitter<ChainSelectEvent> =
     new EventEmitter<ChainSelectEvent>();
 
@@ -22,8 +22,6 @@ export class ChainSelectComponent {
   readonly buttonSize = ButtonSize;
 
   @ContentChild(ChainSelectDirective, { static: true }) contentChild !: ChainSelectDirective;
-
-  constructor() {}
 
   public addChainLink() {
     this.selectedItemList.push(null);
