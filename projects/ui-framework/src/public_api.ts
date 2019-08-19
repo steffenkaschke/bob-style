@@ -15,6 +15,8 @@ export { Keys, NativeEvents } from './lib/enums';
 
 // Typography Module
 export { TypographyModule } from './lib/typography/typography.module';
+export { LabelValueComponent } from './lib/typography/label-value/label-value.component';
+export {LabelValueType, TextAlign, IconPosition} from './lib/typography/label-value/label-value.enum';
 
 /*
  * Buttons & Indicators
