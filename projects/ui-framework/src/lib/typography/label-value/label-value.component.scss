@@ -64,6 +64,16 @@ $BLVTypeMap: (
   )
 );
 
+.blv-icon {
+  order: 1;
+}
+.blv-label {
+  order: 2;
+}
+.blv-value {
+  order: 3;
+}
+
 :host {
   display: flex;
   flex-direction: column;
@@ -239,10 +249,6 @@ $BLVTypeMap: (
       }
     }
   }
-}
-
-.blv-icon {
-  order: 1;
 }
 
 :host {

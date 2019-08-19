@@ -68,6 +68,11 @@ const template2 = `
         width: 48%;
       }
     }
+    @media (min-width: 800px) {
+      .cell {
+        width: 31%;
+      }
+    }
     .hdr {
       margin: 0 0 10px 0;
     }
@@ -181,7 +186,6 @@ const template2 = `
         [iconPosition]="'top'"
         [iconSize]="'x-large'"
         [textAlign]="'center'"
-        [swap]="true"
         (clicked)="onClicked($event)"></b-label-value>
     </div>
 
@@ -190,7 +194,7 @@ const template2 = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Label-Value'" style="background-color: rgb(247,247,247);">
-    <div>
+    <div style="max-width: 90vw;">
       <div style="display: inline-block; margin: 0 auto;">${template}</div>
       ${template2}
     </div>
@@ -209,7 +213,6 @@ const note = `
   [type] | LabelValueType | type/theme | LabelValueType.one
   [label] | string | label/title text | none
   [value] | string | value text | none
-  [swap] | boolean | swap order of label/value | false
   [icon] | Icons | icon, obviously | none
   [iconPosition] | IconPosition | top, left, right, and also 'label' and 'value' which allow to put the icon inside label or value | left
   [iconSize] | IconSize | icon size | large (small if positioned inside label or value)
@@ -241,7 +244,6 @@ story.add(
         ),
         label: text('label', mockText(randomNumber(1, 2))),
         value: text('value', mockText(randomNumber(4, 6))),
-        swap: boolean('swap', false),
         icon: select('icon', [null, ...Object.values(Icons)], null),
         iconPosition: select(
           'iconPosition',

@@ -40,7 +40,8 @@ describe('LabelValueComponent', () => {
         valueElement = fixture.debugElement.query(By.css('.blv-value'))
           .nativeElement;
         iconElement = fixture.debugElement.query(By.css('.blv-icon'))
-          .nativeElement;
+          ? fixture.debugElement.query(By.css('.blv-icon')).nativeElement
+          : null;
       });
   }));
 
