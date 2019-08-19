@@ -141,17 +141,7 @@ const template2 = `
 
     <div class="cell">
       <p class="hdr">
-        <span class="bx">LabelValueType.five</span>
-      </p>
-      <b-label-value
-        [type]="'5'"
-        [label]="'Elsie Hunter'"
-        [value]="'11/03/2019'"></b-label-value>
-    </div>
-
-    <div class="cell">
-      <p class="hdr">
-        <span class="bx">icon example 1</span>
+        <span class="bx">icon example 1, icon clickable</span>
       </p>
       <b-label-value
         [type]="'1'"
@@ -163,7 +153,7 @@ const template2 = `
 
     <div class="cell">
       <p class="hdr">
-        <span class="bx">icon example 2</span>
+        <span class="bx">icon example 2, value clickable</span>
       </p>
       <b-label-value
         [type]="'1'"
@@ -176,7 +166,7 @@ const template2 = `
 
     <div class="cell">
       <p class="hdr">
-        <span class="bx">icon example 3</span>
+        <span class="bx">icon example 3, clickable</span>
       </p>
       <b-label-value
         [type]="'4'"
@@ -194,7 +184,7 @@ const template2 = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Label-Value'" style="background-color: rgb(247,247,247);">
-    <div style="max-width: 90vw;">
+    <div style="max-width: 1050px;">
       <div style="display: inline-block; margin: 0 auto;">${template}</div>
       ${template2}
     </div>
