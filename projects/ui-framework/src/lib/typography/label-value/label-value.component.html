@@ -1,15 +1,17 @@
 <i *ngIf="icon && iconPosition !== iconPositions.label && iconPosition !== iconPositions.value"
    class="blv-icon"
-   [ngClass]="icon"></i>
+   [ngClass]="icon + (iconSize ? ' b-icon-' + iconSize : ' b-icon-large')"></i>
 
 <h6 *ngIf="label"
     class="blv-label"
-    [ngClass]="icon && iconPosition === iconPositions.label ? icon + ' b-icon-small' + (labelClicked.observers.length >
+    [ngClass]="icon && iconPosition === iconPositions.label ? icon + (iconSize ? ' b-icon-' + iconSize : '
+    b-icon-small') + (labelClicked.observers.length >
     0? ' has-hover': '') : null"
     [attr.tabindex]="labelClicked.observers.length > 0 ? 0 : -1">{{label}}</h6>
 
 <p *ngIf="value"
    class="blv-value"
-   [ngClass]="icon && iconPosition === iconPositions.value ? icon + ' b-icon-small' + (valueClicked.observers.length >
+   [ngClass]="icon && iconPosition === iconPositions.value ? icon + (iconSize ? ' b-icon-' + iconSize : '
+   b-icon-small') + (valueClicked.observers.length >
    0? ' has-hover': '') : null"
    [attr.tabindex]="valueClicked.observers.length > 0 ? 0 : -1">{{value}}</p>

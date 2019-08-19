@@ -13,7 +13,7 @@ import { TypographyModule } from '../typography.module';
 import { LabelValueType, TextAlign, IconPosition } from './label-value.enum';
 import { randomNumber } from '../../services/utils/functional-utils';
 import { mockText } from '../../mock.const';
-import { Icons } from '../../icons/icons.enum';
+import { Icons, IconSize } from '../../icons/icons.enum';
 
 const story = storiesOf(ComponentGroupType.Typography, module).addDecorator(
   withKnobs
@@ -26,7 +26,8 @@ const template = `
         [label]="label"
         [value]="value"
         [icon]="icon"
-        [iconPosition]="iconPosition"></b-label-value>
+        [iconPosition]="iconPosition"
+        [iconSize]="iconSize"></b-label-value>
 `;
 
 const template3 = `
@@ -37,6 +38,7 @@ const template3 = `
         [value]="value"
         [icon]="icon"
         [iconPosition]="iconPosition"
+        [iconSize]="iconSize"
         (clicked)="OnClick()"
         (labelClicked)="OnLabelClick()"
         (valueClicked)="OnValueClick()"></b-label-value>
@@ -148,6 +150,7 @@ const note = `
   [value] | string | value text | none
   [icon] | Icons | icon, obviously | none
   [iconPosition] | IconPosition | top, left, right, and also 'label' and 'value' which allow to put the icon inside label or value | left
+  [iconSize] | IconSize | icon size | large (small if positioned inside label or value)
   (clicked) | EventEmitter&lt;MouseEvent&gt; | emits when component is clicked
   (labelClicked) | EventEmitter&lt;MouseEvent&gt; | emits when label is clicked
   (valueClicked) | EventEmitter&lt;MouseEvent&gt; | emits when value is clicked
@@ -179,7 +182,8 @@ story.add(
           'iconPosition',
           Object.values(IconPosition),
           IconPosition.left
-        )
+        ),
+        iconSize: select('iconSize', [null, ...Object.values(IconSize)], null)
       },
       moduleMetadata: {
         imports: [

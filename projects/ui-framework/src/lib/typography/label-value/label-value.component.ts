@@ -10,7 +10,7 @@ import {
   NgZone
 } from '@angular/core';
 import { LabelValueType, TextAlign, IconPosition } from './label-value.enum';
-import { Icons } from '../../icons/icons.enum';
+import { Icons, IconSize } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-label-value',
@@ -21,12 +21,14 @@ import { Icons } from '../../icons/icons.enum';
 export class LabelValueComponent {
   constructor(private host: ElementRef, private zone: NgZone) {}
 
-  public iconPositions = IconPosition;
+  readonly iconPositions = IconPosition;
+  readonly iconSizes = IconSize;
 
   @Input() label: string | number;
   @Input() value: string | number;
   @Input() icon: Icons;
   @Input() iconPosition: IconPosition = IconPosition.left;
+  @Input() iconSize: IconSize;
 
   @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
   @Output() valueClicked: EventEmitter<MouseEvent> = new EventEmitter<

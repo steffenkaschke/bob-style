@@ -101,6 +101,7 @@ $BLVTypeMap: (
     }
     .blv-label {
       grid-row-start: 1;
+      align-self: flex-end;
     }
     .blv-value {
       grid-row-start: 2;
