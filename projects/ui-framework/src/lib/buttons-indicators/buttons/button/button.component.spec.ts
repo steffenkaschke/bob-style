@@ -86,8 +86,7 @@ describe('ButtonComponent', () => {
       expect(buttonElement.className).toContain('b-icon-' + expectedSize);
     };
     it('should not set iconColor or iconSize if there is no icon', () => {
-      expect(component.iconColor).toBeFalsy();
-      expect(component.iconSize).toBeFalsy();
+      expect(buttonElement.className).not.toContain('b-icon-');
     });
     it('should set iconColor based on button type', () => {
       testColor(ButtonType.primary, IconColor.white);

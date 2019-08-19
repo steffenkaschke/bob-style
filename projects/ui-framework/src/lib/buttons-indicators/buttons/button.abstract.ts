@@ -15,8 +15,8 @@ export abstract class BaseButtonElement {
   @ViewChild('button', { static: true }) public button: ElementRef;
   @Input() text: string;
   @Input() disabled = false;
-  @Input() type?: ButtonType | BackButtonType = ButtonType.primary;
-  @Input() size?: ButtonSize = ButtonSize.medium;
+  @Input() type?: ButtonType | BackButtonType;
+  @Input() size?: ButtonSize;
   @Input() icon?: Icons;
   @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 

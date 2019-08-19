@@ -9,7 +9,9 @@ import { BaseButtonElement } from '../button.abstract';
     <button
       #button
       type="button"
-      class="{{ type }} {{ size }} {{ getIconClass() }}"
+      class="{{ type || buttonType.primary }} {{ size || buttonSize.medium }} {{
+        getIconClass()
+      }}"
       [attr.disabled]="disabled || null"
       (click)="onClick($event)"
     >

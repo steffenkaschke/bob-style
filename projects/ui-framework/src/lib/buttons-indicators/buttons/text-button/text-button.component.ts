@@ -12,17 +12,7 @@ import { LinkColor } from '../../link/link.enum';
 @Component({
   selector: 'b-text-button',
   template: `
-    <i
-      *ngIf="icon"
-      class="b-icon {{
-        icon +
-          ' b-icon-' +
-          iconSize.medium +
-          ' b-icon-' +
-          (color === linkColor.none ? iconColor.dark : iconColor.primary)
-      }}"
-    ></i>
-
+    <i *ngIf="icon" class="{{ getIconClass() }}"></i>
     {{ text }}
     <ng-content></ng-content>
   `,
@@ -40,12 +30,19 @@ export class TextButtonComponent {
 
   @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
-  readonly iconSize = IconSize;
-  readonly linkColor = LinkColor;
-  readonly iconColor = IconColor;
-
   @HostListener('click', ['$event'])
   onClick($event: MouseEvent) {
     this.clicked.emit($event);
+  }
+
+  getIconClass(): string {
+    return (
+      'b-icon ' +
+      this.icon +
+      ' b-icon-' +
+      IconSize.medium +
+      ' b-icon-' +
+      (this.color === LinkColor.none ? IconColor.dark : IconColor.primary)
+    );
   }
 }

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { BaseButtonElement } from '../button.abstract';
+import { Icons, IconSize, IconColor } from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-chevron-button',
@@ -7,13 +8,8 @@ import { BaseButtonElement } from '../button.abstract';
     <button
       #button
       type="button"
-      class="icon-after {{ buttonType.secondary }} {{ buttonSize.medium }}
-                   {{
-        (active ? icons.chevron_up : icons.chevron_down) +
-          ' b-icon-' +
-          iconSize.medium +
-          ' b-icon-' +
-          iconColor.dark
+      class="icon-after {{ buttonType.secondary }} {{ buttonSize.medium }} {{
+        getIconClass()
       }}"
       (click)="onClick($event)"
       [attr.disabled]="disabled || null"
@@ -30,4 +26,14 @@ export class ChevronButtonComponent extends BaseButtonElement {
   }
 
   @Input() active = false;
+
+  getIconClass(): string {
+    return (
+      (this.active ? Icons.chevron_up : Icons.chevron_down) +
+      ' b-icon-' +
+      IconSize.medium +
+      ' b-icon-' +
+      IconColor.dark
+    );
+  }
 }

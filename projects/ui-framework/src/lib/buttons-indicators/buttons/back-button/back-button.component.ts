@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { BaseButtonElement } from '../button.abstract';
+import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
 
 @Component({
   selector: 'b-back-button',
@@ -7,12 +8,8 @@ import { BaseButtonElement } from '../button.abstract';
     <button
       #button
       type="button"
-      class="{{ type }} {{ buttonSize.small }} {{
-        icons.back_arrow_link +
-          ' b-icon-' +
-          iconSize.medium +
-          ' b-icon-' +
-          iconColor.dark
+      class="{{ type || buttonType.secondary }} {{ buttonSize.small }} {{
+        getIconClass()
       }}"
       [attr.disabled]="disabled || null"
       (click)="onClick($event)"
@@ -26,5 +23,15 @@ import { BaseButtonElement } from '../button.abstract';
 export class BackButtonComponent extends BaseButtonElement {
   constructor() {
     super();
+  }
+
+  getIconClass(): string {
+    return (
+      Icons.back_arrow_link +
+      ' b-icon-' +
+      IconSize.medium +
+      ' b-icon-' +
+      IconColor.dark
+    );
   }
 }
