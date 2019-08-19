@@ -1,0 +1,146 @@
+@import '../../style/common-imports';
+
+$transition-length: 0.35s;
+$transition-easing: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+:host {
+  display: block;
+  text-align: left;
+}
+
+h4,
+p {
+  margin: 0;
+}
+
+.bcp-section {
+  background-color: white;
+  margin-bottom: times8(1);
+
+  @include desktop {
+    border-radius: $border-radius;
+    border: 1px solid $grey-500;
+  }
+
+  &[aria-disabled='true'] {
+    @include disabled-state;
+  }
+}
+
+// header
+
+.bcp-header,
+.bcp-title-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.bcp-title-wrap {
+  flex-wrap: wrap;
+  user-select: none;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.bcp-title-wrap-column {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.bcp-header {
+  padding: times8(2) base8(30);
+  justify-content: space-between;
+
+  &:before {
+    margin-left: -6px;
+    margin-right: times8(2);
+  }
+}
+
+.bcp-title-wrap,
+.bcp-header-content {
+  &:only-child {
+    width: 100%;
+    flex: 1;
+  }
+}
+
+.bcp-title-wrap:not(:only-child) {
+  margin-right: times8(2);
+}
+
+.bcp-title,
+.bcp-description {
+  max-width: 100%;
+  @include text-truncate;
+  line-height: inherit;
+}
+
+.bcp-title:not(:only-child) {
+  @include desktop {
+    margin-right: times8(2);
+  }
+}
+
+.bcp-description {
+  font-size: $font-size-body;
+  color: $grey-600;
+  letter-spacing: 0.2px;
+}
+
+.bcp-section:not(:hover),
+.bcp-section.bcp-section-expanded {
+  .bcp-description-hover {
+    display: none;
+  }
+}
+
+.bcp-header-content-clickable {
+  cursor: pointer;
+}
+
+// Panel
+
+.bcp-panel {
+  padding: times8(3) base8(30);
+  border-top: 1px solid $grey-500;
+
+  &::ng-deep {
+    p {
+      @include normalize-par;
+    }
+  }
+}
+
+.bcp-section-collapsible {
+  .bcp-header {
+    cursor: pointer;
+  }
+  .bcp-panel {
+    transition: padding $transition-length, border-width $transition-length;
+    will-change: padding, border-width;
+    transition-timing-function: $transition-easing;
+  }
+  .bcp-panel-content-wrap {
+    overflow: hidden;
+    transition: max-height $transition-length, opacity $transition-length;
+    will-change: max-height, opacity;
+    transition-timing-function: $transition-easing;
+    opacity: 1;
+    max-height: var(--panel-height, none);
+  }
+}
+
+.bcp-panel-collapsed {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-top-width: 0;
+
+  .bcp-panel-content-wrap {
+    max-height: 0;
+    opacity: 0;
+  }
+}

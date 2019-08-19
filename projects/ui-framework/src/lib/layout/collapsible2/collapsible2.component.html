@@ -1,0 +1,53 @@
+<section class="bcp-section"
+         [attr.aria-disabled]="disabled || null"
+         [ngClass]="{'bcp-section-collapsible': collapsible && hasPanelContent,
+        'bcp-section-expanded': collapsible && hasPanelContent && expanded}">
+
+  <header class="
+         bcp-header"
+          [attr.id]="panelID+'-header'"
+          [attr.aria-controls]="(collapsible && hasPanelContent && panelID) || null"
+          [attr.aria-expanded]="(collapsible && hasPanelContent && expanded) || null"
+          [ngClass]="{
+          'b-icon-chevron-right': collapsible && hasPanelContent && hasPanelContent && !expanded,
+          'b-icon-chevron-down': collapsible && hasPanelContent && hasPanelContent && expanded
+          }"
+          (click.outside-zone)="togglePanel()">
+
+    <div *ngIf="title"
+         class="bcp-title-wrap"
+         [ngClass]="{'bcp-title-wrap-column': options?.titlesAsColumn}">
+
+      <h4 class="bcp-title"
+          [ngClass]="{'b-display-3': !options?.smallTitle, 'b-bold-body': options?.smallTitle}">{{title}}</h4>
+
+      <p *ngIf="description"
+         class="bcp-description"
+         [ngClass]="{'bcp-description-hover': options.hideDescription}">{{description}}</p>
+    </div>
+
+    <div *ngIf="hasHeaderContent"
+         #headerContent
+         class="bcp-header-content"
+         [ngClass]="{'bcp-header-content-clickable': options?.headerContentClickable}"
+         (click.outside-zone)="!options?.headerContentClickable && $event.stopPropagation()">
+      <ng-content select="[header]"></ng-content>
+    </div>
+
+  </header>
+
+  <div class="bcp-panel"
+       *ngIf="(!collapsible || contentLoaded) && hasPanelContent"
+       [ngClass]="{
+         'bcp-panel-collapsed': collapsible && !expanded,
+         'bcp-panel-expanded': collapsible && expanded
+       }"
+       [attr.id]="panelID"
+       [attr.aria-labelledby]="panelID+'-header'">
+    <div class="bcp-panel-content-wrap"
+         #panelContent>
+      <ng-content></ng-content>
+    </div>
+  </div>
+
+</section>

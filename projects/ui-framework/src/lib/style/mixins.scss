@@ -307,3 +307,15 @@
     width: 0;
   }
 }
+
+@mixin normalize-par {
+  &:only-child {
+    margin: 0;
+  }
+  &:first-child {
+    margin-top: 0;
+  }
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
