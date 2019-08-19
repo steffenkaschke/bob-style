@@ -25,6 +25,7 @@ const template = `
         [textAlign]="textAlign"
         [label]="label"
         [value]="value"
+        [swap]="swap"
         [icon]="icon"
         [iconPosition]="iconPosition"
         [iconSize]="iconSize"></b-label-value>
@@ -36,6 +37,7 @@ const template3 = `
         [textAlign]="textAlign"
         [label]="label"
         [value]="value"
+        [swap]="swap"
         [icon]="icon"
         [iconPosition]="iconPosition"
         [iconSize]="iconSize"
@@ -48,15 +50,23 @@ const template2 = `
   <style>
     .cont {
       border-top: 1px solid #535353;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
       margin-top: 50px;
       text-align: left;
     }
+    @media (min-width: 450px) {
+      .cont {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+    }
     .cell {
-      width: 48%;
       margin-top: 40px;
+    }
+    @media (min-width: 450px) {
+      .cell {
+        width: 48%;
+      }
     }
     .hdr {
       margin: 0 0 10px 0;
@@ -124,6 +134,57 @@ const template2 = `
         [value]="'11/03/2019'"></b-label-value>
     </div>
 
+    <div class="cell">
+      <p class="hdr">
+        <span class="bx">LabelValueType.five</span>
+      </p>
+      <b-label-value
+        [type]="'5'"
+        [label]="'Elsie Hunter'"
+        [value]="'11/03/2019'"></b-label-value>
+    </div>
+
+    <div class="cell">
+      <p class="hdr">
+        <span class="bx">icon example 1</span>
+      </p>
+      <b-label-value
+        [type]="'1'"
+        [label]="'Restore'"
+        [value]="'Click icon to restore'"
+        [icon]="'b-icon-restore'"
+        (iconClicked)="onIconClicked($event)"></b-label-value>
+    </div>
+
+    <div class="cell">
+      <p class="hdr">
+        <span class="bx">icon example 2</span>
+      </p>
+      <b-label-value
+        [type]="'1'"
+        [label]="'Call me'"
+        [value]="'555 55 55'"
+        [icon]="'b-icon-phone-alt'"
+        [iconPosition]="'label'"
+        (valueClicked)="onValueClicked($event)"></b-label-value>
+    </div>
+
+    <div class="cell">
+      <p class="hdr">
+        <span class="bx">icon example 3</span>
+      </p>
+      <b-label-value
+        [type]="'4'"
+        [label]="'Deserves a quiet night'"
+        [value]="'Nightswimming'"
+        [icon]="'b-icon-timeoff'"
+        [iconPosition]="'top'"
+        [iconSize]="'x-large'"
+        [textAlign]="'center'"
+        [swap]="true"
+        (clicked)="onClicked($event)"></b-label-value>
+    </div>
+
   </div>
 `;
 
@@ -148,12 +209,14 @@ const note = `
   [type] | LabelValueType | type/theme | LabelValueType.one
   [label] | string | label/title text | none
   [value] | string | value text | none
+  [swap] | boolean | swap order of label/value | false
   [icon] | Icons | icon, obviously | none
   [iconPosition] | IconPosition | top, left, right, and also 'label' and 'value' which allow to put the icon inside label or value | left
   [iconSize] | IconSize | icon size | large (small if positioned inside label or value)
-  (clicked) | EventEmitter&lt;MouseEvent&gt; | emits when component is clicked
-  (labelClicked) | EventEmitter&lt;MouseEvent&gt; | emits when label is clicked
-  (valueClicked) | EventEmitter&lt;MouseEvent&gt; | emits when value is clicked
+  (clicked) | EventEmitter | emits when component is clicked
+  (labelClicked) | EventEmitter | emits when label is clicked
+  (valueClicked) | EventEmitter | emits when value is clicked
+  (iconClicked) | EventEmitter | emits when icon is clicked
 
   ~~~
   ${template3}
@@ -166,9 +229,10 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        onClicked: action('component clicked'),
+        onClicked: action('Component clicked'),
         onLabelClicked: action('Label clicked'),
         onValueClicked: action('Value clicked'),
+        onIconClicked: action('Icon clicked'),
         type: select('type', Object.values(LabelValueType), LabelValueType.one),
         textAlign: select(
           'textAlign',
@@ -177,6 +241,7 @@ story.add(
         ),
         label: text('label', mockText(randomNumber(1, 2))),
         value: text('value', mockText(randomNumber(4, 6))),
+        swap: boolean('swap', false),
         icon: select('icon', [null, ...Object.values(Icons)], null),
         iconPosition: select(
           'iconPosition',

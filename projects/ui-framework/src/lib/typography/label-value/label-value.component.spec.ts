@@ -44,11 +44,7 @@ describe('LabelValueComponent', () => {
       });
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LabelValueComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  beforeEach(() => {});
 
   it('should create', () => {
     expect(component).toBeTruthy();

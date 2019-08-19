@@ -27,6 +27,7 @@ export class LabelValueComponent {
 
   @Input() label: string | number;
   @Input() value: string | number;
+
   @Input() icon: Icons;
   @Input() iconPosition: IconPosition = IconPosition.left;
   @Input() iconSize: IconSize;
@@ -40,11 +41,15 @@ export class LabelValueComponent {
   @Output() labelClicked: EventEmitter<
     MouseEvent | KeyboardEvent
   > = new EventEmitter<MouseEvent | KeyboardEvent>();
+  @Output() iconClicked: EventEmitter<
+    MouseEvent | KeyboardEvent
+  > = new EventEmitter<MouseEvent | KeyboardEvent>();
 
   @HostBinding('attr.data-type') @Input() type: LabelValueType =
     LabelValueType.one;
   @HostBinding('attr.data-text-align') @Input() textAlign: TextAlign =
     TextAlign.left;
+  @HostBinding('attr.data-swap') @Input() swap: boolean;
 
   @HostBinding('attr.data-icon-position') get iconPos() {
     return this.icon &&
@@ -84,6 +89,13 @@ export class LabelValueComponent {
     ) {
       this.zone.run(() => {
         this.labelClicked.emit($event);
+      });
+    } else if (
+      ($event.target as HTMLElement).className.includes('blv-icon') &&
+      this.iconClicked.observers.length > 0
+    ) {
+      this.zone.run(() => {
+        this.iconClicked.emit($event);
       });
     }
     if (this.clicked.observers.length > 0) {

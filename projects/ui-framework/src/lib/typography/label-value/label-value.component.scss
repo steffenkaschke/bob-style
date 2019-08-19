@@ -71,6 +71,15 @@ $BLVTypeMap: (
   align-items: flex-start;
   @include b-body;
 
+  &[data-swap='true'] {
+    .blv-label {
+      order: 3;
+    }
+    .blv-value {
+      order: 2;
+    }
+  }
+
   &[data-text-align='right'] {
     text-align: right;
     align-items: flex-end;
@@ -112,21 +121,39 @@ $BLVTypeMap: (
       }
     }
     .blv-value {
+      grid-row-start: 2;
+      align-self: flex-start;
+
       &:nth-child(2) {
         grid-row-start: 1;
         align-self: center;
       }
-      &:nth-child(3) {
+    }
+
+    &[data-swap='true'] {
+      .blv-label {
         grid-row-start: 2;
-        align-self: flex-start;
+
+        &:nth-last-child(1) {
+          grid-row-start: 1;
+        }
+      }
+      .blv-value {
+        grid-row-start: 1;
+
+        &:nth-child(2) {
+          grid-row-start: 1;
+        }
       }
     }
   }
 
   &[data-icon-position='left'] {
+    grid-template-columns: auto 1fr;
+
     .blv-icon {
       grid-column-start: 1;
-      margin-right: times8(1.5);
+      margin-right: 10px;
     }
     .blv-label {
       grid-column-start: 2;
@@ -137,9 +164,11 @@ $BLVTypeMap: (
   }
 
   &[data-icon-position='right'] {
+    grid-template-columns: 1fr auto;
+
     .blv-icon {
       grid-column-start: 2;
-      margin-left: times8(1.5);
+      margin-left: 10px;
     }
     .blv-label {
       grid-column-start: 1;
@@ -158,7 +187,8 @@ $BLVTypeMap: (
 
 :host,
 .blv-label,
-.blv-value {
+.blv-value,
+.blv-icon {
   &[tabindex='0'] {
     cursor: pointer;
     outline: 0;
@@ -172,6 +202,15 @@ $BLVTypeMap: (
   }
 }
 
+.blv-icon[tabindex='0'] {
+  &:focus,
+  &:hover {
+    &:before {
+      filter: brightness(0.65);
+    }
+  }
+}
+
 .blv-label,
 .blv-value {
   margin: 0;
@@ -181,7 +220,7 @@ $BLVTypeMap: (
   align-items: center;
 
   &:before {
-    margin-right: times8(0.6);
+    margin-right: 5px;
   }
 
   &[tabindex='0'] {
@@ -200,6 +239,10 @@ $BLVTypeMap: (
       }
     }
   }
+}
+
+.blv-icon {
+  order: 1;
 }
 
 :host {
