@@ -6,7 +6,7 @@ import { BackButtonComponent } from './back-button/back-button.component';
 import { CommonModule } from '@angular/common';
 import { TextButtonComponent } from './text-button/text-button.component';
 import { ChevronButtonComponent } from './chevron-button/chevron-button.component';
-import { RoundButtonComponent } from './round/round.component';
+// import { RoundButtonComponent } from './round/round.component';
 
 @NgModule({
   declarations: [
@@ -15,8 +15,8 @@ import { RoundButtonComponent } from './round/round.component';
     GroupComponent,
     BackButtonComponent,
     TextButtonComponent,
-    ChevronButtonComponent,
-    RoundButtonComponent
+    ChevronButtonComponent
+    // RoundButtonComponent
   ],
   imports: [CommonModule],
   exports: [
@@ -25,8 +25,8 @@ import { RoundButtonComponent } from './round/round.component';
     GroupComponent,
     BackButtonComponent,
     TextButtonComponent,
-    ChevronButtonComponent,
-    RoundButtonComponent
+    ChevronButtonComponent
+    // RoundButtonComponent
   ]
 })
 export class ButtonsModule {}
