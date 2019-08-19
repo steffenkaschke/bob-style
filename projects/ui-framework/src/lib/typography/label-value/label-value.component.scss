@@ -1,0 +1,116 @@
+@import '../../style/common-imports';
+
+$BLVTypeMap: (
+  '1': (
+    '.blv-label': (
+      color: $heading-text-color,
+      font-size: $font-size-body,
+      font-weight: $font-weight-bold-body
+    ),
+    '.blv-value': (
+      color: $grey-600,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    )
+  ),
+  '2': (
+    '.blv-label': (
+      color: $grey-600,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    ),
+    '.blv-value': (
+      color: $heading-text-color,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    )
+  ),
+  '3': (
+    '.blv-label': (
+      color: $heading-text-color,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    ),
+    '.blv-value': (
+      color: $grey-600,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    )
+  ),
+  '4': (
+    '.blv-label': (
+      color: $grey-600,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    ),
+    '.blv-value': (
+      color: $display-text-color,
+      font-size: $font-size-display-3,
+      font-weight: $font-weight-display-3,
+      font-family: var(--display-font-family)
+    )
+  ),
+  '5': (
+    '.blv-label': (
+      color: $display-text-color,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    ),
+    '.blv-value': (
+      color: $display-text-color,
+      font-size: $font-size-body,
+      font-weight: $font-weight-body
+    )
+  ),
+  '6': (
+    '.blv-label': (
+      color: $display-text-color,
+      font-size: $font-size-display-4,
+      font-weight: $font-weight-display-4,
+      font-family: var(--display-font-family)
+    ),
+    '.blv-value': (
+      color: $grey-600,
+      font-size: $font-size-caption,
+      font-weight: $font-weight-body
+    )
+  )
+);
+
+:host {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  @include b-body;
+
+  &[data-text-align='right'] {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  &[data-text-align='center'] {
+    text-align: center;
+    align-items: center;
+  }
+}
+
+.blv-label,
+.blv-value {
+  margin: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+:host {
+  @each $type, $elems in $BLVTypeMap {
+    &[data-type='#{$type}'] {
+      @each $elem, $props in $elems {
+        #{$elem} {
+          @each $prop, $value in $props {
+            #{$prop}: $value;
+          }
+        }
+      }
+    }
+  }
+}

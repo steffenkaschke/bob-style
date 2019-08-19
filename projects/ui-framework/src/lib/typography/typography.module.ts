@@ -9,6 +9,8 @@ import { CaptionComponent } from './caption/caption.component';
 import { BigBodyComponent } from './big-body/big-body.component';
 import { BoldBodyComponent } from './bold-body/bold-body.component';
 import { BodyComponent } from './body/body.component';
+import { LabelValueComponent } from './label-value/label-value.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -21,9 +23,10 @@ import { BodyComponent } from './body/body.component';
     CaptionComponent,
     BigBodyComponent,
     BoldBodyComponent,
-    BodyComponent
+    BodyComponent,
+    LabelValueComponent
   ],
-  imports: [],
+  imports: [CommonModule],
   exports: [
     Display1Component,
     Display2Component,
@@ -34,7 +37,8 @@ import { BodyComponent } from './body/body.component';
     CaptionComponent,
     BigBodyComponent,
     BoldBodyComponent,
-    BodyComponent
+    BodyComponent,
+    LabelValueComponent
   ]
 })
 export class TypographyModule {}
