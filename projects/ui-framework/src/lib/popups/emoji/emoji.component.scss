@@ -24,6 +24,9 @@ li {
   @include OverlayPointerHolders();
   @include OverlayPositionBounding('center');
   @include OverlayPositionBounding('above');
+  @include keyframes('zoom-in', 0.5, '-emoji');
+  @include animate('zoom-in-emoji', 0.2s);
+  transform-origin: bottom center;
 }
 
 .emoji-header,
@@ -64,10 +67,16 @@ li {
 }
 
 .emoji-list {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: left;
+  // display: flex;
+  // flex-wrap: wrap;
+  // flex-direction: row;
+  // justify-content: left;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, $icon-width);
+  grid-gap: 0;
+  justify-content: space-between;
+
   position: relative;
   margin: times8(1) 0;
 }
