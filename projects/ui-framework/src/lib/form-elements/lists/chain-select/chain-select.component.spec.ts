@@ -9,7 +9,6 @@ import { ChainSelectDirective } from './chain-select.directive';
 describe('EmployeeChainSelectComponent', () => {
   let component: ChainSelectComponent;
   let fixture: ComponentFixture<ChainSelectComponent>;
-  let TestComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,7 +34,7 @@ describe('EmployeeChainSelectComponent', () => {
   describe('addChainLink', () => {
     it('Should add chain link to the list', () => {
       component.addChainLink();
-      expect(component.selectedItemList).toEqual([null, null]);
+      expect(component.chainLinkList).toEqual([null, null]);
       fixture.detectChanges();
       const rows = fixture.debugElement.queryAll(By.css('.chain-link-row'));
       expect(rows.length).toEqual(2);
