@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EmojiComponent } from './emoji.component';
 import { TypographyModule } from '../../typography/typography.module';
 import {EventManagerPlugins} from '../../services/utils/eventManager.plugins';
-import {TruncateTooltipModule} from '../../services/truncate-tooltip/truncate-tooltip.module';
+import {TruncateTooltipModule} from '../../popups/truncate-tooltip/truncate-tooltip.module';
 
 @NgModule({
   imports: [

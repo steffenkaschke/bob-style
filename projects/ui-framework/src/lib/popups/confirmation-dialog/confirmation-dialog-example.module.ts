@@ -5,7 +5,7 @@ import { DialogSize } from '../dialog/dialog.enum';
 import { ConfirmationDialogComponent } from './confirmation-dialog.component';
 import { ConfirmationDialogService } from './confirmation-dialog.service';
 import { ConfirmationDialogModule } from './confirmation-dialog.module';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
 import { ConfirmationDialogConfig } from './confirmation-dialog.interface';
 
 @Component({

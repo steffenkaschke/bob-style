@@ -108,6 +108,7 @@ $toolti-offset: 10px;
 
 [data-tooltip] {
   position: relative;
+  outline: 0;
 
   &:after {
     display: block;
@@ -124,6 +125,14 @@ $toolti-offset: 10px;
 
   &:before {
     @extend %tooltip-arrow-common;
+  }
+
+  &:not(:hover),
+  &[data-tooltip=''] {
+    &:before,
+    &:after {
+      display: none;
+    }
   }
 
   // position above (default)
@@ -158,11 +167,34 @@ $toolti-offset: 10px;
     }
   }
 
-  &:not(:hover),
-  &[data-tooltip=''] {
+  // prewrap
+
+  &[data-tooltip-prewrap='true'] {
+    &:after {
+      white-space: pre-line;
+    }
+  }
+
+  // on focus
+
+  &[data-tooltip-onfocus='true'] {
     &:before,
     &:after {
-      display: none;
+      animation-delay: 0s;
+    }
+
+    &:focus {
+      &:before,
+      &:after {
+        display: block;
+      }
+    }
+
+    &:hover:not(:focus) {
+      &:before,
+      &:after {
+        display: none;
+      }
     }
   }
 }

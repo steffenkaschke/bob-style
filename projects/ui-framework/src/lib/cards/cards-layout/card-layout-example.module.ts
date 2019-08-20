@@ -9,7 +9,7 @@ import {
 import { CardsModule } from '../cards.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { CardType } from '../cards.enum';
-import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import {
   mockAvatar,
   mockDate,

@@ -9,7 +9,7 @@ import {
   SimpleChanges,
   OnChanges
 } from '@angular/core';
-import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { CardEmployee } from './card-employee.interface';
 import { BaseCardElement } from '../card/card.abstract';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';

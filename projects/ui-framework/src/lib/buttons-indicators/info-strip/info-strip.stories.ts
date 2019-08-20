@@ -13,7 +13,7 @@ import { LinkColor, LinkTarget } from '../link/link.enum';
 import { InfoStripIconType } from './info-strip.enum';
 
 const infoStripStories = storiesOf(
-  ComponentGroupType.ButtonsAndIndicators,
+  ComponentGroupType.Indicators,
   module
 ).addDecorator(withKnobs);
 const iconTypes = values(InfoStripIconType);

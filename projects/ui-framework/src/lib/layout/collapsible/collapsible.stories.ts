@@ -10,7 +10,7 @@ import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { CollapsibleModule } from './collapsible.module';
 import { CollapsibleType } from './collapsible.enum';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';

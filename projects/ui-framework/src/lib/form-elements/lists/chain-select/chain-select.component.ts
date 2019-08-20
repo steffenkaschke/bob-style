@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/c
 import { isEmpty, clone } from 'lodash';
 import { ChainLink, SelectComponentConfig } from './chain-select.interface';
 import { Icons, IconSize } from '../../../icons/icons.enum';
-import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
+import { ButtonSize, ButtonType } from '../../../buttons/buttons.enum';
 import { ListChange } from '../list-change/list-change';
 
 @Component({

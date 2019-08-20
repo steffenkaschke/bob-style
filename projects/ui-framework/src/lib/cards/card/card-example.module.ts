@@ -6,7 +6,7 @@ import { IconsModule } from '../../icons/icons.module';
 import { SliderModule } from '../../buttons-indicators/slider/slider.module';
 import { Card } from './card.interface';
 import { CardType } from '../cards.enum';
-import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
 
 @Component({
   selector: 'b-card-example-1-component',

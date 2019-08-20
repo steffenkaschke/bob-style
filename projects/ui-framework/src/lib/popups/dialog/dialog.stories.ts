@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/angular';
 import { select, withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogModule } from './dialog.module';
 import { DialogExampleModule } from './dialog-example.module';

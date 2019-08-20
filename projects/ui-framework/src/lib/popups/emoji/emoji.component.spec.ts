@@ -11,7 +11,7 @@ import { By } from '@angular/platform-browser';
 import { TypographyModule } from '../../typography/typography.module';
 import { EMOJI_DATA } from './emoji-data.consts';
 import { find } from 'lodash';
-import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
+import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 
 describe('EmojiComponent', () => {
   let component: EmojiComponent;

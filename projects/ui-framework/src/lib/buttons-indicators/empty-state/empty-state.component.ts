@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IconColor, Icons, IconSize} from '../../icons/icons.enum';
-import {ButtonSize, ButtonType} from '../buttons/buttons.enum';
+import {ButtonSize, ButtonType} from '../../buttons/buttons.enum';
 import {EmptyStateConfig} from './empty-state.types';
 
 @Component({

@@ -7,11 +7,11 @@ import {
   NO_ERRORS_SCHEMA
 } from '@angular/core';
 import { Overlay, OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
 import { LightboxModule } from './lightbox.module';
-import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
-import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
-import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { AvatarComponent } from '../../avatar/avatar/avatar.component';
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
 
 describe('LightboxService', () => {
   let lightbox: LightboxData;

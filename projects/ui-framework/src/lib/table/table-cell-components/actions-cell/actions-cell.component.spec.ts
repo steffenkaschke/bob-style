@@ -2,12 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActionsCellComponent } from './actions-cell.component';
 import { By } from '@angular/platform-browser';
 import { IconColor, Icons } from '../../../icons/icons.enum';
-import { ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
+import { ButtonType } from '../../../buttons/buttons.enum';
 import { MockComponent } from 'ng-mocks';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MenuComponent } from '../../../navigation/menu/menu.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SquareButtonComponent } from '../../../buttons-indicators/buttons/square/square.component';
+import { SquareButtonComponent } from '../../../buttons/square/square.component';
 import { GridActions } from './actions-cell.interface';
 import { map } from 'lodash';
 

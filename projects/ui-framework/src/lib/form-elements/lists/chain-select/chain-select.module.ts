@@ -5,7 +5,7 @@ import { IconsModule } from '../../../icons/icons.module';
 import {
   ComponentRendererModule
 } from '../../../services/component-renderer/component-renderer.module';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 
 @NgModule({
   imports: [

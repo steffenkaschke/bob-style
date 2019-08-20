@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { ButtonSize, ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { Icons } from '../../icons/icons.enum';
 import { ConfirmationDialogConfig } from './confirmation-dialog.interface';
 

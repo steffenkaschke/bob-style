@@ -1,7 +1,7 @@
 import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { SingleSelectPanelComponent } from './single-select-panel.component';
 import { MockComponent } from 'ng-mocks';
-import { ChevronButtonComponent } from '../../../buttons-indicators/buttons/chevron-button/chevron-button.component';
+import { ChevronButtonComponent } from '../../../buttons/chevron-button/chevron-button.component';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { SingleListModule } from '../single-list/single-list.module';

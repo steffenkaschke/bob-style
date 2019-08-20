@@ -1,12 +1,12 @@
 import { CardTableCellMeta, CardTableCellData } from './card-table.interface';
 import { ChipComponent } from '../../chips/chip/chip.component';
-import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
-import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
+import { ButtonComponent } from '../../buttons/button/button.component';
+import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { action } from '@storybook/addon-actions';
-import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { mockAvatar, mockNames, mockJobs, mockDate } from '../../mock.const';
 import { ChipType } from '../../chips/chips.enum';
-import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { ButtonType } from '../../buttons/buttons.enum';
 import {
   randomFromArray,
   makeArray

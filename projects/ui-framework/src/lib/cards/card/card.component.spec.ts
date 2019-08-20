@@ -9,10 +9,10 @@ import {
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { MenuComponent } from '../../navigation/menu/menu.component';
-import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
+import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { CardType } from '../cards.enum';
-import { SquareButtonComponent } from '../../buttons-indicators/buttons/square/square.component';
-import { TextButtonComponent } from '../../buttons-indicators/buttons/text-button/text-button.component';
+import { SquareButtonComponent } from '../../buttons/square/square.component';
+import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
 import { TypographyModule } from '../../typography/typography.module';
 import { IconColor, Icons } from '../../icons/icons.enum';
 
