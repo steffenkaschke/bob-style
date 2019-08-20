@@ -7,7 +7,6 @@ $maxMaxLines: 5;
 
 [data-max-lines]:not(.btt) {
   --font-size: 1em;
-  --line-height: #{$line-height-body};
 }
 
 [data-max-lines='1'] {

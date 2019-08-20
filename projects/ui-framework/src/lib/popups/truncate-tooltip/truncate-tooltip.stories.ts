@@ -91,7 +91,9 @@ const note = `
 
   #### (example 1) Use as a component (b-truncate-tooltip):
   ~~~
-  ${template2}
+  <b-truncate-tooltip [maxLines]="maxLines">
+      {{ text }}
+  </b-truncate-tooltip>
   ~~~
 
   #### Properties
@@ -109,7 +111,9 @@ const note = `
 
   #### (example 2) Use as a component with an attrubute selector ([b-truncate-tooltip]):
   ~~~
-  ${template3}
+  <p [b-truncate-tooltip]="maxLines">
+    {{ text }}
+  </p>
   ~~~
 
   #### Properties
@@ -122,7 +126,9 @@ const note = `
 
   #### (example 3) Use as a (structural) directive (*bTruncateTooltip):
   ~~~
-  ${template1}
+  <b-big-body *bTruncateTooltip="maxLines">
+   {{ text }}
+  </b-big-body>
   ~~~
 
   #### Properties

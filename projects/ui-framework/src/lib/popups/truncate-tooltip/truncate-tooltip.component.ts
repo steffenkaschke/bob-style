@@ -191,7 +191,7 @@ export class TruncateTooltipComponent
         (this.textContainer.nativeElement.scrollHeight > compareHeight ||
           (this.textContainer.nativeElement.children[0] &&
             (this.textContainer.nativeElement.children[0] as HTMLElement)
-              .offsetHeight > compareHeight)))
+              .scrollHeight > compareHeight)))
         ? true
         : false;
   }
