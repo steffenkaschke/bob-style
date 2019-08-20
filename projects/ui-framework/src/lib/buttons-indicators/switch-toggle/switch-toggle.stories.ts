@@ -12,7 +12,7 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
 const buttonStories = storiesOf(
-  ComponentGroupType.ButtonsAndIndicators,
+  ComponentGroupType.Indicators,
   module
 ).addDecorator(withKnobs);
 

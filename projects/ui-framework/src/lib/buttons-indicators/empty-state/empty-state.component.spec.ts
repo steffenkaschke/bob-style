@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {EmptyStateComponent} from './empty-state.component';
 import {IconsModule} from '../../icons/icons.module';
-import {ButtonsModule} from '../buttons/buttons.module';
+import {ButtonsModule} from '../../buttons/buttons.module';
 import {Icons} from '../../icons/icons.enum';
 import {By} from '@angular/platform-browser';
 

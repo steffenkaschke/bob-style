@@ -9,7 +9,7 @@ import {
   arrayDifference
 } from '../../services/utils/functional-utils';
 import { mockHobbies, mockNames, mockAvatar } from '../../mock.const';
-import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
+import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 
 const maxOpts = 10;
 

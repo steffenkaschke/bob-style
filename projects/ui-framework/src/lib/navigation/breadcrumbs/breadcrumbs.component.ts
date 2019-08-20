@@ -15,7 +15,7 @@ import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import {
   ButtonSize,
   ButtonType
-} from '../../buttons-indicators/buttons/buttons.enum';
+} from '../../buttons/buttons.enum';
 import { has } from 'lodash';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';

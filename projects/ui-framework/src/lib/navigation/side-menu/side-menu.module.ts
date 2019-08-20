@@ -5,7 +5,7 @@ import { SideMenuOptionComponent } from './side-menu-option/side-menu-option.com
 import { MenuModule } from '../menu/menu.module';
 import { IconsModule } from '../../icons/icons.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
 
 @NgModule({
   declarations: [

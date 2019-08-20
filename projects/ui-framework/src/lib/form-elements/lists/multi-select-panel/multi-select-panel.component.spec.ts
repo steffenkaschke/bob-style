@@ -4,7 +4,7 @@ import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { SelectGroupOption } from '../list.interface';
 import { MockComponent } from 'ng-mocks';
-import { ChevronButtonComponent } from '../../../buttons-indicators/buttons/chevron-button/chevron-button.component';
+import { ChevronButtonComponent } from '../../../buttons/chevron-button/chevron-button.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';

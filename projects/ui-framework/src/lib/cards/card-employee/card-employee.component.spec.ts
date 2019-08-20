@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
+import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { CardEmployeeComponent } from './card-employee.component';
 import { TypographyModule } from '../../typography/typography.module';
 import { MockComponent } from 'ng-mocks';
-import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
+import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { CardType } from '../cards.enum';
 import { By } from '@angular/platform-browser';
-import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 
 describe('CardEmployeeComponent', () => {
   let fixture: ComponentFixture<CardEmployeeComponent>;

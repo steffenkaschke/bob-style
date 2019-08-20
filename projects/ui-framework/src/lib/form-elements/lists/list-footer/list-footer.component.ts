@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
+import { ButtonSize, ButtonType } from '../../../buttons/buttons.enum';
 import { Icons } from '../../../icons/icons.enum';
 import { ListFooterActions } from '../list.interface';
 

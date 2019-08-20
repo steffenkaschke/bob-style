@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ListFooterComponent } from './list-footer.component';
 import { MockComponent } from 'ng-mocks';
-import { ButtonComponent } from '../../../buttons-indicators/buttons/button/button.component';
+import { ButtonComponent } from '../../../buttons/button/button.component';
 import { IconComponent } from '../../../icons/icon.component';
 import { By } from '@angular/platform-browser';
-import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
-import { TextButtonComponent } from '../../../buttons-indicators/buttons/text-button/text-button.component';
+import { ButtonSize, ButtonType } from '../../../buttons/buttons.enum';
+import { TextButtonComponent } from '../../../buttons/text-button/text-button.component';
 
 describe('ListFooterComponent', () => {
   let component: ListFooterComponent;

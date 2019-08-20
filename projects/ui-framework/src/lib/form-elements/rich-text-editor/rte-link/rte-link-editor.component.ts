@@ -12,7 +12,7 @@ import { InputEventType } from '../../form-elements.enum';
 import {
   ButtonSize,
   ButtonType
-} from '../../../buttons-indicators/buttons/buttons.enum';
+} from '../../../buttons/buttons.enum';
 import { RteLink } from '../rte-core/rte.interface';
 import { InputEvent } from '../../input/input.interface';
 import { InputComponent } from '../../input/input.component';

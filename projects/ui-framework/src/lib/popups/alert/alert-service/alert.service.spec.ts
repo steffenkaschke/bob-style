@@ -5,7 +5,7 @@ import { AlertType } from '../alert.enum';
 import { ComponentRef, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MockComponent } from 'ng-mocks';
 import { Overlay, OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 import { TypographyModule } from '../../../typography/typography.module';
 import { IconComponent } from '../../../icons/icon.component';
 import { AlertComponent } from '../alert/alert.component';

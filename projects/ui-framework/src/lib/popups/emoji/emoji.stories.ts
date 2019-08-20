@@ -4,8 +4,8 @@ import {ComponentGroupType} from '../../consts';
 import {StoryBookLayoutModule} from '../../story-book-layout/story-book-layout.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EmojiModule} from './emoji.module';
-import {ButtonsModule} from '../../buttons-indicators/buttons/buttons.module';
-import {TruncateTooltipModule} from '../../services/truncate-tooltip/truncate-tooltip.module';
+import {ButtonsModule} from '../../buttons/buttons.module';
+import {TruncateTooltipModule} from '../../popups/truncate-tooltip/truncate-tooltip.module';
 
 const inputStories = storiesOf(
   ComponentGroupType.Popups,

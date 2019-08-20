@@ -10,9 +10,9 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
-import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { ButtonType } from '../../buttons/buttons.enum';
 import { MenuModule } from './menu.module';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
 import { IconsModule } from '../../icons/icons.module';
 import { Icons } from '../../icons/icons.enum';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

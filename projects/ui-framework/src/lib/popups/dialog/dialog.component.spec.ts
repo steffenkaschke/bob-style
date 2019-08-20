@@ -12,8 +12,8 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { DialogButtons } from './dialog.interface';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
-import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
-import { SquareButtonComponent } from '../../buttons-indicators/buttons/square/square.component';
+import { ButtonComponent } from '../../buttons/button/button.component';
+import { SquareButtonComponent } from '../../buttons/square/square.component';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 

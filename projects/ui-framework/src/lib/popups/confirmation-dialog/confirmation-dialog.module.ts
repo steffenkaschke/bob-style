@@ -5,7 +5,7 @@ import { ConfirmationDialogService } from './confirmation-dialog.service';
 import { DialogService } from '../dialog/dialog-service/dialog.service';
 import { DialogModule } from '../dialog/dialog.module';
 import { MatDialogModule } from '@angular/material';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
 import { TypographyModule } from '../../typography/typography.module';
 
 @NgModule({

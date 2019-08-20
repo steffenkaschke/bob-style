@@ -1,7 +1,7 @@
 import { CardAddComponent } from './card-add.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
+import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { CardType } from '../cards.enum';
 
 describe('CardAddComponent', () => {

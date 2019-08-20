@@ -14,7 +14,7 @@ import merge from 'lodash/merge';
 import isUndefined from 'lodash/isUndefined';
 import has from 'lodash/has';
 import { IconColor, Icons } from '../../../icons/icons.enum';
-import { ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
+import { ButtonType } from '../../../buttons/buttons.enum';
 
 @Component({
   selector: 'b-side-menu-option',

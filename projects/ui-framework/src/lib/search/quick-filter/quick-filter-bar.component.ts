@@ -20,7 +20,7 @@ import { chain, has } from 'lodash';
 import { ListChangeService } from '../../form-elements/lists/list-change/list-change.service';
 import { ListModelService } from '../../form-elements/lists/list-service/list-model.service';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { ButtonType } from '../../buttons/buttons.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 

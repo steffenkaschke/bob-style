@@ -3,7 +3,7 @@ import { Dictionary } from 'lodash';
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 import { InfoStripIcon } from '../../../buttons-indicators/info-strip/info-strip.types';
 import { AlertConfig } from '../alert.interface';
-import { ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
+import { ButtonType } from '../../../buttons/buttons.enum';
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 
 @Component({

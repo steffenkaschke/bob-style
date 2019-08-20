@@ -6,7 +6,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { LinkColor, LinkTarget } from './link.enum';
 
 const linkStories = storiesOf(
-  ComponentGroupType.ButtonsAndIndicators,
+  ComponentGroupType.Indicators,
   module
 ).addDecorator(withKnobs);
 const template = `<b-link [config]="config"></b-link>`;

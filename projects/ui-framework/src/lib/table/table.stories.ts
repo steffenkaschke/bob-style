@@ -6,7 +6,7 @@ import { ComponentGroupType } from '../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 import { TableModule } from './table.module';
-import { AvatarModule } from '../buttons-indicators/avatar/avatar.module';
+import { AvatarModule } from '../avatar/avatar/avatar.module';
 import { mockColumnsDefs, mockRowData } from './table-mocks/table-story.mock';
 import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
