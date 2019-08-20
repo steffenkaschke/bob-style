@@ -28,6 +28,10 @@ import {
 } from './cards-layout.const';
 import { BaseCardElement } from '../card/card.abstract';
 import { MediaEvent, MobileService } from '../../services/utils/mobile.service';
+import {
+  notFirstChanges,
+  applyChanges
+} from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-cards',
@@ -68,14 +72,8 @@ export class CardsLayoutComponent
       this.setCssVars();
       this.updateCardsInRow(false);
     }
-    if (
-      (changes.type && !changes.type.firstChange) ||
-      (changes.mobileSwiper && !changes.mobileSwiper.firstChange) ||
-      (changes.alignCenter && !changes.alignCenter.firstChange)
-    ) {
-      if (!this.cd['destroyed']) {
-        this.cd.detectChanges();
-      }
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 

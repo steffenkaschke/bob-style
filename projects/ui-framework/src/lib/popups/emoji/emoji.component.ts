@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { COMMON_EMOJIS, EMOJI_DATA } from './emoji-data.consts';
 import { Emoji } from './emoji.interface';
+import { TruncateTooltipType } from '../truncate-tooltip/truncate-tooltip.enum';
 
 @Component({
   selector: 'b-emoji',
@@ -21,6 +22,7 @@ export class EmojiComponent implements OnInit {
   emojis: { [key: string]: Emoji[] };
   commonEmojis: Emoji[];
   emojiMenuState = false;
+  readonly tooltipType = TruncateTooltipType;
 
   @Input() title: string;
   @Output() toggleClick = new EventEmitter<boolean>();

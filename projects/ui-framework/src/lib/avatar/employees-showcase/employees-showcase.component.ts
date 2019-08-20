@@ -8,7 +8,9 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges
+  SimpleChanges,
+  NgZone,
+  ChangeDetectorRef
 } from '@angular/core';
 import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
@@ -26,19 +28,22 @@ import cloneDeep from 'lodash/cloneDeep';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import { AvatarComponent } from '../avatar/avatar.component';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
+import { outsideZone } from '../../services/utils/rxjs.operators';
 
 const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
 
 @Component({
   selector: 'b-employees-showcase',
   templateUrl: './employees-showcase.component.html',
-  styleUrls: ['./employees-showcase.component.scss'],
+  styleUrls: ['./employees-showcase.component.scss']
 })
 export class EmployeesShowcaseComponent
   implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   @Input() employees: EmployeeShowcase[] = [];
   @Input() avatarSize: AvatarSize = AvatarSize.mini;
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
   @Output() clicked: EventEmitter<string> = new EventEmitter<string>();
 
   private avatarGap: number = AvatarGap[AvatarSize.mini];
@@ -53,17 +58,20 @@ export class EmployeesShowcaseComponent
   constructor(
     private utilsService: UtilsService,
     private host: ElementRef,
-    private DOM: DOMhelpers
-  ) {
-  }
+    private DOM: DOMhelpers,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.resizeEventSubscriber = this.utilsService
       .getResizeEvent()
+      .pipe(outsideZone(this.zone))
       .subscribe(() => {
         this.clientWidth = this.getClientWidth();
         this.calcAvatarsToFit();
         this.subscribeToShuffleEmployees();
+        this.cd.detectChanges();
       });
     this.buildShowMoreOptions();
   }
@@ -102,7 +110,7 @@ export class EmployeesShowcaseComponent
           prefixComponent: {
             component: AvatarComponent,
             attributes: {
-              imageSource: employee.imageSource,
+              imageSource: employee.imageSource
             }
           }
         }))
@@ -125,8 +133,8 @@ export class EmployeesShowcaseComponent
   private calcAvatarsToFit() {
     this.avatarsToFit = floor(
       (this.clientWidth - this.avatarSize) /
-      (this.avatarSize - this.avatarGap) +
-      1
+        (this.avatarSize - this.avatarGap) +
+        1
     );
   }
 
@@ -147,15 +155,22 @@ export class EmployeesShowcaseComponent
 
   private subscribeToShuffleEmployees() {
     invoke(this.intervalSubscriber, 'unsubscribe');
-    if (!this.showMore && (this.avatarsToFit < this.employees.length)) {
-      this.intervalSubscriber = interval(SHUFFLE_EMPLOYEES_INTERVAL)
-        .subscribe(() => this.shuffleEmployees());
+    if (!this.showMore && this.avatarsToFit < this.employees.length) {
+      this.intervalSubscriber = interval(SHUFFLE_EMPLOYEES_INTERVAL).subscribe(
+        () => this.shuffleEmployees()
+      );
     }
   }
 
   private shuffleEmployees() {
-    const firstIndex = random(0, this.avatarsToFit > 1 ? this.avatarsToFit - 1 : 0);
-    const secondIndex = random(this.avatarsToFit, this.employees.length > 1 ? this.employees.length - 1 : 0);
+    const firstIndex = random(
+      0,
+      this.avatarsToFit > 1 ? this.avatarsToFit - 1 : 0
+    );
+    const secondIndex = random(
+      this.avatarsToFit,
+      this.employees.length > 1 ? this.employees.length - 1 : 0
+    );
     this.switchEmployeesImage(firstIndex, secondIndex);
   }
 
