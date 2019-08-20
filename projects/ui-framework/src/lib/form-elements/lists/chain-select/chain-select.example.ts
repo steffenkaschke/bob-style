@@ -40,19 +40,21 @@ export class ChainSingleSelectExampleComponent implements OnInit {
   }
 }
 
+export const template = `
+  <b-chain-select [actionLabel]="actionLabel"
+                  [selectedItemList]="selectedIdList"
+                  (selectChange)="change($event)">
+      <b-chain-single-select-example
+        *bChainSelect="let selected=selected; let selectChange=selectChange; let index=index"
+        [selectedId]="selected"
+        (selectChange)="selectChange($event, index)">
+      </b-chain-single-select-example>
+  </b-chain-select>
+`;
+
 @Component({
+  template,
   selector: 'b-chain-select-example',
-  template: `
-    <b-chain-select [actionLabel]="actionLabel"
-                    [selectedItemList]="selectedIdList"
-                    (selectChange)="change($event)">
-        <b-chain-single-select-example
-          *bChainSelect="let selected=selected; let selectChange=selectChange; let index=index"
-          [selectedId]="selected"
-          (selectChange)="selectChange($event, index)">
-        </b-chain-single-select-example>
-    </b-chain-select>
-  `
 })
 export class ChainSelectExampleComponent {
   public selectedIdList = [1, 2, 3];
