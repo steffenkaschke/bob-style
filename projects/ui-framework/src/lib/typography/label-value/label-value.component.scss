@@ -73,13 +73,18 @@ $BLVTypeMap: (
 .blv-value {
   order: 3;
 }
+.blv-label,
+.blv-value {
+  max-width: 100%;
+}
 
 :host {
   display: flex;
   flex-direction: column;
   text-align: left;
   align-items: flex-start;
-  @include b-body;
+  @include b-body($addCssVars: true);
+  max-width: 100%;
 
   &[data-swap='true'] {
     .blv-label {
@@ -258,6 +263,10 @@ $BLVTypeMap: (
         #{$elem} {
           @each $prop, $value in $props {
             #{$prop}: $value;
+
+            @if ($prop == 'font-size' or $prop == 'line-height') {
+              --#{$prop}: #{$value};
+            }
 
             @if ($prop == 'color') {
               &:before {

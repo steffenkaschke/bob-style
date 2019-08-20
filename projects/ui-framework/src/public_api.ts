@@ -15,6 +15,8 @@ export { Keys, NativeEvents } from './lib/enums';
 
 // Typography Module
 export { TypographyModule } from './lib/typography/typography.module';
+// LabelValue Module
+export { LabelValueModule } from './lib/typography/label-value/label-value.module';
 export { LabelValueComponent } from './lib/typography/label-value/label-value.component';
 export {LabelValueType, TextAlign, IconPosition} from './lib/typography/label-value/label-value.enum';
 

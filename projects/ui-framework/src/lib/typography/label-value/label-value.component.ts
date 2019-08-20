@@ -12,6 +12,7 @@ import { LabelValueType, TextAlign, IconPosition } from './label-value.enum';
 import { Icons, IconSize } from '../../icons/icons.enum';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
 @Component({
   selector: 'b-label-value',
@@ -24,9 +25,13 @@ export class LabelValueComponent {
 
   readonly iconPositions = IconPosition;
   readonly iconSizes = IconSize;
+  readonly tooltipType = TruncateTooltipType;
 
   @Input() label: string | number;
   @Input() value: string | number;
+  @Input() labelMaxLines: number;
+  @Input() valueMaxLines: number;
+  @Input() expectChanges = false;
 
   @Input() icon: Icons;
   @Input() iconPosition: IconPosition = IconPosition.left;

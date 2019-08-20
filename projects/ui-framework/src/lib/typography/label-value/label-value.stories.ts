@@ -3,17 +3,18 @@ import {
   text,
   withKnobs,
   select,
-  boolean
+  boolean,
+  number
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TypographyModule } from '../typography.module';
 import { LabelValueType, TextAlign, IconPosition } from './label-value.enum';
 import { randomNumber } from '../../services/utils/functional-utils';
 import { mockText } from '../../mock.const';
 import { Icons, IconSize } from '../../icons/icons.enum';
+import { LabelValueModule } from './label-value.module';
 
 const story = storiesOf(ComponentGroupType.Typography, module).addDecorator(
   withKnobs
@@ -25,7 +26,9 @@ const template = `
         [textAlign]="textAlign"
         [label]="label"
         [value]="value"
-        [swap]="swap"
+        [labelMaxLines]="labelMaxLines"
+        [valueMaxLines]="valueMaxLines"
+        [expectChanges]="true"
         [icon]="icon"
         [iconPosition]="iconPosition"
         [iconSize]="iconSize"></b-label-value>
@@ -37,7 +40,8 @@ const template3 = `
         [textAlign]="textAlign"
         [label]="label"
         [value]="value"
-        [swap]="swap"
+        [labelMaxLines]="labelMaxLines"
+        [valueMaxLines]="valueMaxLines"
         [icon]="icon"
         [iconPosition]="iconPosition"
         [iconSize]="iconSize"
@@ -185,7 +189,7 @@ const template2 = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Label-Value'" style="background-color: rgb(247,247,247);">
     <div style="max-width: 1050px;">
-      <div style="display: inline-block; margin: 0 auto;">${template}</div>
+      <div style="display: inline-block; margin: 0 auto; max-width: 100%;">${template}</div>
       ${template2}
     </div>
 </b-story-book-layout>
@@ -203,6 +207,8 @@ const note = `
   [type] | LabelValueType | type/theme | LabelValueType.one
   [label] | string | label/title text | none
   [value] | string | value text | none
+  [labelMaxLines] | number | after maximum lines text will be truncated and tooltip shown | none
+  [valueMaxLines] | number | after maximum lines text will be truncated and tooltip shown | none
   [icon] | Icons | icon, obviously | none
   [iconPosition] | IconPosition | top, left, right, and also 'label' and 'value' which allow to put the icon inside label or value | left
   [iconSize] | IconSize | icon size | large (small if positioned inside label or value)
@@ -226,14 +232,19 @@ story.add(
         onLabelClicked: action('Label clicked'),
         onValueClicked: action('Value clicked'),
         onIconClicked: action('Icon clicked'),
+
         type: select('type', Object.values(LabelValueType), LabelValueType.one),
+        label: text('label', mockText(randomNumber(1, 3))),
+        value: text('value', mockText(randomNumber(4, 6))),
+
         textAlign: select(
           'textAlign',
           Object.values(TextAlign),
           TextAlign.left
         ),
-        label: text('label', mockText(randomNumber(1, 2))),
-        value: text('value', mockText(randomNumber(4, 6))),
+        labelMaxLines: number('labelMaxLines', null),
+        valueMaxLines: number('valueMaxLines', null),
+
         icon: select('icon', [null, ...Object.values(Icons)], null),
         iconPosition: select(
           'iconPosition',
@@ -246,7 +257,7 @@ story.add(
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
-          TypographyModule
+          LabelValueModule
         ]
       }
     };
