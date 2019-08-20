@@ -6,7 +6,10 @@ import {
   isEmptyObject,
   isEmptyString,
   isEmptyArray,
-  joinArrays
+  joinArrays,
+  isNotEmptyString,
+  isNotEmptyArray,
+  isNotEmptyObject
 } from './functional-utils';
 
 export interface Styles {
@@ -173,7 +176,7 @@ export class DOMhelpers {
 
     const classesAsArray = (cls: string | string[]): string[] => {
       return isString(cls)
-        ? (cls as string).split(' ').sort()
+        ? classStringToArray(cls as string)
         : isArray(cls)
         ? (cls as string[]).slice().sort()
         : [];
@@ -187,12 +190,12 @@ export class DOMhelpers {
 
     if (
       classes &&
-      (isEmptyString(classes) ||
-        isEmptyArray(classes) ||
-        isEmptyObject(classes))
+      (isNotEmptyString(classes) ||
+        isNotEmptyArray(classes) ||
+        isNotEmptyObject(classes))
     ) {
       const currentClassesAsArray = classStringToArray(element.className);
-      let addClassesString: string;
+      let newClassesString: string;
 
       if (isObject(classes)) {
         removeClasses = Object.keys(classes)
@@ -208,12 +211,12 @@ export class DOMhelpers {
           classesAsArray(classes as string | string[])
         ).sort();
       }
-      addClassesString = addClasses
+      newClassesString = addClasses
         .filter(c => !removeClasses.includes(c))
         .join(' ');
 
-      if (currentClassesAsArray.join(' ') !== addClassesString) {
-        element.className = addClassesString;
+      if (currentClassesAsArray.join(' ') !== newClassesString) {
+        element.className = newClassesString;
       }
     }
 
