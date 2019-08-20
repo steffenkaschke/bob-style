@@ -28,10 +28,7 @@ import {
 } from './cards-layout.const';
 import { BaseCardElement } from '../card/card.abstract';
 import { MediaEvent, MobileService } from '../../services/utils/mobile.service';
-import {
-  notFirstChanges,
-  applyChanges
-} from '../../services/utils/functional-utils';
+import { notFirstChanges } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-cards',

@@ -22,8 +22,7 @@ import { Chip } from '../../chips/chips.interface';
 import { BadgeConfig } from './avatar.interface';
 import {
   getKeyByValue,
-  notFirstChanges,
-  applyChanges
+  notFirstChanges
 } from '../../services/utils/functional-utils';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
@@ -100,12 +99,12 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   getBadgeConfig(): BadgeConfig {
-    const badge =
+    return (
       this.badge &&
       ((this.badge as BadgeConfig).icon
         ? (this.badge as BadgeConfig)
-        : AvatarBadges[this.badge as AvatarBadge]);
-    return badge;
+        : AvatarBadges[this.badge as AvatarBadge])
+    );
   }
 
   getAvatarClass(): string {
