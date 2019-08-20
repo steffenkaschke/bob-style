@@ -1,0 +1,74 @@
+@import '../../style/common-imports';
+
+:host {
+  display: block;
+  position: relative;
+  max-width: 100%;
+  min-width: 0;
+
+  ::ng-deep {
+    :only-child,
+    p,
+    div {
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
+
+.btt {
+  overflow: hidden;
+
+  &:not([data-max-lines]),
+  &[data-max-lines='1'] {
+    display: block;
+  }
+}
+
+[data-max-lines='1'] {
+  white-space: nowrap;
+
+  ::ng-deep {
+    * {
+      display: inline;
+    }
+  }
+}
+
+.tooltip-trigger {
+  display: flex;
+  justify-content: center;
+}
+
+[aria-describedby] {
+  @include size;
+  @include position(0 0 0 0);
+
+  & + .btt {
+    position: static;
+  }
+}
+
+[data-tooltip] {
+  @include size(350px, 100%);
+  @include position(0 calc((100% - 350px) / 2) 0 calc((100% - 350px) / 2));
+  pointer-events: none;
+
+  &:after {
+    animation-name: tooltip-apprnc-btt;
+    transform: none;
+    left: auto;
+  }
+
+  & + .btt {
+    position: relative;
+  }
+}
+
+:host:hover::ng-deep [data-tooltip]:not([data-tooltip='']) {
+  &:before,
+  &:after {
+    display: block;
+  }
+}

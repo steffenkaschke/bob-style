@@ -1,3 +1,5 @@
+import { SimpleChanges } from '@angular/core';
+
 export function MixIn(baseCtors: Function[]) {
   return function(derivedCtor: Function) {
     baseCtors.forEach(baseCtor => {
@@ -27,19 +29,25 @@ export const getKeyByValue = (object: object, value: any) =>
 
 export const isString = (val: any): boolean => val && typeof val === 'string';
 
-export const isEmptyString = (val: any): boolean =>
+export const isNotEmptyString = (val: any): boolean =>
   isString(val) && val.trim() !== '';
+
+export const isEmptyString = (val: any): boolean => !isNotEmptyString(val);
 
 export const isArray = (val: any): boolean => val && Array.isArray(val);
 
-export const isEmptyArray = (val: any): boolean =>
+export const isNotEmptyArray = (val: any): boolean =>
   isArray(val) && val.length > 0;
+
+export const isEmptyArray = (val: any): boolean => !isNotEmptyArray(val);
 
 export const isObject = (val: any): boolean =>
   val && !isArray(val) && val === Object(val);
 
-export const isEmptyObject = (val: any): boolean =>
+export const isNotEmptyObject = (val: any): boolean =>
   isObject(val) && Object.keys(val).length > 0;
+
+export const isEmptyObject = (val: any): boolean => !isNotEmptyObject(val);
 
 export const isNullOrUndefined = (val: any): boolean =>
   val === undefined || val === null;
@@ -155,3 +163,17 @@ export const makeArray = (length: number, fill: any = undefined): any[] =>
 
 export const padWith0 = (number: string | number, digits = 2): string =>
   String(number).padStart(digits, '0');
+
+export const firstChanges = (changes: SimpleChanges): boolean => {
+  return !!Object.keys(changes).find(i => changes[i].firstChange);
+};
+
+export const notFirstChanges = (changes: SimpleChanges): boolean => {
+  return !!Object.keys(changes).find(i => !changes[i].firstChange);
+};
+
+export const applyChanges = (target: any, changes: SimpleChanges): void => {
+  Object.keys(changes).forEach((change: string) => {
+    target[change] = changes[change].currentValue;
+  });
+};

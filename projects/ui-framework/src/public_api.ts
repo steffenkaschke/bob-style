@@ -15,50 +15,71 @@ export { Keys, NativeEvents } from './lib/enums';
 
 // Typography Module
 export { TypographyModule } from './lib/typography/typography.module';
+// LabelValue Module
+export { LabelValueModule } from './lib/typography/label-value/label-value.module';
+export { LabelValueComponent } from './lib/typography/label-value/label-value.component';
+export {LabelValueType, TextAlign, IconPosition} from './lib/typography/label-value/label-value.enum';
 
 /*
- * Buttons & Indicators
+ * Buttons
  */
 
-// Icons Module
-export { IconsModule } from './lib/icons/icons.module';
-export { IconComponent } from './lib/icons/icon.component';
-export { IconSize, IconColor, Icons } from './lib/icons/icons.enum';
-// Buttons Module
-export { ButtonsModule } from './lib/buttons-indicators/buttons/buttons.module';
+export { ButtonsModule } from './lib/buttons/buttons.module';
 export {
   ButtonComponent
-} from './lib/buttons-indicators/buttons/button/button.component';
+} from './lib/buttons/button/button.component';
 export {
   SquareButtonComponent
-} from './lib/buttons-indicators/buttons/square/square.component';
+} from './lib/buttons/square/square.component';
 export {
   GroupComponent
-} from './lib/buttons-indicators/buttons/group/group.component';
+} from './lib/buttons/group/group.component';
 export {
   BackButtonComponent
-} from './lib/buttons-indicators/buttons/back-button/back-button.component';
+} from './lib/buttons/back-button/back-button.component';
 export {
   ChevronButtonComponent
-} from './lib/buttons-indicators/buttons/chevron-button/chevron-button.component';
+} from './lib/buttons/chevron-button/chevron-button.component';
 export {
   TextButtonComponent
-} from './lib/buttons-indicators/buttons/text-button/text-button.component';
+} from './lib/buttons/text-button/text-button.component';
 export {
   ButtonType,
   ButtonSize,
   BackButtonType
-} from './lib/buttons-indicators/buttons/buttons.enum';
+} from './lib/buttons/buttons.enum';
+
+/*
+ * Avatar
+ */
+
+// Avatar Module
+export { AvatarModule } from './lib/avatar/avatar/avatar.module';
+export {
+  AvatarComponent
+} from './lib/avatar/avatar/avatar.component';
+export { AvatarSize, AvatarOrientation, AvatarBadge } from './lib/avatar/avatar/avatar.enum';
+export { BadgeConfig, Avatar } from './lib/avatar/avatar/avatar.interface';
+// Employees Showcase Module
+export { EmployeesShowcaseModule } from './lib/avatar/employees-showcase/employees-showcase.module';
+export { EmployeesShowcaseComponent } from './lib/avatar/employees-showcase/employees-showcase.component';
+export { EmployeeShowcase } from './lib/avatar/employees-showcase/employees-showcase.interface';
+
+
+/*
+ * Indicators
+ */
+
+// Preloader
+export {
+  MiniPreloaderModule
+} from './lib/buttons-indicators/mini-preloader/mini-preloader.module';
+export {
+  MiniPreloaderComponent
+} from './lib/buttons-indicators/mini-preloader/mini-preloader.component';
 // Add File Module
 export { AddFileModule } from './lib/buttons-indicators/add-file/add-file.module';
 export { AddFileComponent } from './lib/buttons-indicators/add-file/add-file.component';
-// Avatar Module
-export { AvatarModule } from './lib/buttons-indicators/avatar/avatar.module';
-export {
-  AvatarComponent
-} from './lib/buttons-indicators/avatar/avatar.component';
-export { AvatarSize, AvatarOrientation, AvatarBadge } from './lib/buttons-indicators/avatar/avatar.enum';
-export { BadgeConfig, Avatar } from './lib/buttons-indicators/avatar/avatar.interface';
 // Slider Module
 export { SliderModule } from './lib/buttons-indicators/slider/slider.module';
 export {
@@ -80,24 +101,19 @@ export { LinkModule } from './lib/buttons-indicators/link/link.module';
 export { LinkComponent } from './lib/buttons-indicators/link/link.component';
 export { Link } from './lib/buttons-indicators/link/link.types';
 export { LinkColor, LinkTarget } from './lib/buttons-indicators/link/link.enum';
-// InfoTooltip Module
-export { InfoTooltipModule } from './lib/popups/info-tooltip/info-tooltip.module';
-export { InfoTooltipComponent } from './lib/popups/info-tooltip/info-tooltip.component';
-// Employees Showcase Module
-export { EmployeesShowcaseModule } from './lib/buttons-indicators/employees-showcase/employees-showcase.module';
-export { EmployeesShowcaseComponent } from './lib/buttons-indicators/employees-showcase/employees-showcase.component';
-export { EmployeeShowcase } from './lib/buttons-indicators/employees-showcase/employees-showcase.interface';
 // Empty State Module
 export { EmptyStateModule } from './lib/buttons-indicators/empty-state/empty-state.module';
 export { EmptyStateComponent } from './lib/buttons-indicators/empty-state/empty-state.component';
 export { EmptyStateConfig } from './lib/buttons-indicators/empty-state/empty-state.types';
 
+
 /*
 * Chips
 */
+
 // Chip Module
 export { ChipsModule } from './lib/chips/chips.module';
-export { ChipType, ChipListAlign } from './lib/chips/chips.enum';
+export { ChipType, ChipListAlign, ChipListSelectable } from './lib/chips/chips.enum';
 export { Chip, ChipListConfig, ChipKeydownEvent, ChipInputChange } from './lib/chips/chips.interface';
 // Single Chip
 export { ChipModule } from './lib/chips/chip/chip.module';
@@ -113,6 +129,7 @@ export { ChipInputComponent } from './lib/chips/chip-input/chip-input.component'
 // Multi List and Chips
 export { MultiListAndChipsModule } from './lib/chips/multi-list-and-chips/multi-list-and-chips.module';
 export { MultiListAndChipsComponent } from './lib/chips/multi-list-and-chips/multi-list-and-chips.component';
+
 
 /*
  * Form Elements
@@ -188,6 +205,27 @@ export {
   ListComponentPrefix
 } from './lib/form-elements/lists/list.interface';
 export { ListChange } from './lib/form-elements/lists/list-change/list-change';
+// Single select panel
+export { SingleSelectPanelModule } from './lib/form-elements/lists/single-select-panel/single-select-panel.module';
+export {
+  SingleSelectPanelComponent,
+} from './lib/form-elements/lists/single-select-panel/single-select-panel.component';
+// Multi select panel
+export { MultiSelectPanelModule } from './lib/form-elements/lists/multi-select-panel/multi-select-panel.module';
+export {
+  MultiSelectPanelComponent,
+} from './lib/form-elements/lists/multi-select-panel/multi-select-panel.component';
+
+// Chain select
+export {
+  SelectComponentConfig
+} from './lib/form-elements/lists/chain-select/chain-select.interface';
+export {
+  ChainSelectComponent
+} from './lib/form-elements/lists/chain-select/chain-select.component';
+export {
+  ChainSelectModule
+} from './lib/form-elements/lists/chain-select/chain-select.module';
 // Rich Text Editor
 export {
   RichTextEditorModule
@@ -217,12 +255,15 @@ export { Social } from './lib/form-elements/social/social.enum';
 // Timepicker
 export { TimePickerModule } from './lib/form-elements/timepicker/timepicker.module';
 export { TimePickerComponent } from './lib/form-elements/timepicker/timepicker.component';
+// Password Input
+export { PasswordInputModule } from './lib/form-elements/password-input/password-input.module';
+export { PasswordInputComponent } from './lib/form-elements/password-input/password-input.component';
 
 /*
- * Navigation
+ * Search
  */
 
-// Search
+ // Search
 export { SearchModule } from './lib/search/search/search.module';
 export { SearchComponent } from './lib/search/search/search.component';
 // Auto complete Module
@@ -245,6 +286,11 @@ export {
   QuickFilterBarChangeEvent
 } from './lib/search/quick-filter/quick-filter.interface';
 export { QuickFilterSelectType } from './lib/search/quick-filter/quick-filter.enum';
+
+/*
+ * Navigation
+ */
+
 // Menu Module
 export { MenuModule } from './lib/navigation/menu/menu.module';
 export { MenuComponent } from './lib/navigation/menu/menu.component';
@@ -262,11 +308,6 @@ export { TabsModule } from './lib/navigation/tabs/tabs.module';
 export { TabsComponent } from './lib/navigation/tabs/tabs.component';
 export { Tab } from './lib/navigation/tabs/tabs.interface';
 export { TabsType } from './lib/navigation/tabs/tabs.enum';
-// Single list menu
-export { SingleListMenuModule } from './lib/navigation/single-list-menu/single-list-menu.module';
-export { SingleListMenuComponent } from './lib/navigation/single-list-menu/single-list-menu.component';
-export { SingleListMenuItem } from './lib/navigation/single-list-menu/single-list-menu.interface';
-
 // Breadcrumbs Module
 export {
   BreadcrumbsModule
@@ -286,7 +327,7 @@ export { ActionBarComponent } from './lib/navigation/action-bar/action-bar.compo
 
 
 /*
- * Overlays
+ * Overlays & Popups
  */
 
 // Panel Module
@@ -305,6 +346,11 @@ export {
 export {
   DialogService
 } from './lib/popups/dialog/dialog-service/dialog.service';
+// Confirmation dialog module
+export { ConfirmationDialogModule } from './lib/popups/confirmation-dialog/confirmation-dialog.module';
+export { ConfirmationDialogComponent } from './lib/popups/confirmation-dialog/confirmation-dialog.component';
+export { ConfirmationDialogConfig } from './lib/popups/confirmation-dialog/confirmation-dialog.interface';
+export { ConfirmationDialogService } from './lib/popups/confirmation-dialog/confirmation-dialog.service';
 // Alert Module
 export { AlertModule } from './lib/popups/alert/alert.module';
 export { AlertService } from './lib/popups/alert/alert-service/alert.service';
@@ -315,12 +361,23 @@ export { AlertType } from './lib/popups/alert/alert.enum';
 export { LightboxModule } from './lib/popups/lightbox/lightbox.module';
 export { LightboxService } from './lib/popups/lightbox/lightbox.service';
 export { LightboxComponent } from './lib/popups/lightbox/lightbox.component';
-export { VideoEmbedComponent } from './lib/popups/lightbox/video-embed/video-embed.component';
+export { MediaEmbedComponent } from './lib/popups/lightbox/media-embed/media-embed.component';
 export { LightboxConfig, LightboxData } from './lib/popups/lightbox/lightbox.interface';
-
+// InfoTooltip Module
+export { InfoTooltipModule } from './lib/popups/info-tooltip/info-tooltip.module';
+export { InfoTooltipComponent } from './lib/popups/info-tooltip/info-tooltip.component';
+// Emoji Module
+export { EmojiModule } from './lib/popups/emoji/emoji.module';
+export { EmojiComponent } from './lib/popups/emoji/emoji.component';
+export { Emoji } from './lib/popups/emoji/emoji.interface';
+// Truncate Tooltip
+export { TruncateTooltipModule } from './lib/popups/truncate-tooltip/truncate-tooltip.module';
+export { TruncateTooltipComponent } from './lib/popups/truncate-tooltip/truncate-tooltip.component';
+export { TruncateTooltipDirective } from './lib/popups/truncate-tooltip/truncate-tooltip.directive';
+export { TruncateTooltipType, TruncateTooltipPosition } from './lib/popups/truncate-tooltip/truncate-tooltip.enum';
 
 /*
- * Table
+ * Tables
  */
 
 // Table Module
@@ -332,52 +389,65 @@ export { AvatarCellComponent } from './lib/table/table-cell-components/avatar-ce
 export { ActionsCellComponent } from './lib/table/table-cell-components/actions-cell/actions-cell.component';
 export { GridActions } from './lib/table/table-cell-components/actions-cell/actions-cell.interface';
 export { TableUtilsService } from './lib/table/table-utils-service/table-utils.service';
-
-
-/*
- * Layout
- */
-// Divider
-export { DividerModule } from './lib/layout/divider/divider.module';
-export { DividerComponent } from './lib/layout/divider/divider.component';
-// Cards
-export { CardsModule } from './lib/cards/cards.module';
-export { CardType } from './lib/cards/cards.enum';
-export { CardContent, CardData, CardEmployee, AddCardData } from './lib/cards/cards.interface';
-// Single card
-export { CardComponent } from './lib/cards/card/card.component';
-// Add new Card
-export { CardAddComponent } from './lib/cards/card-add/card-add.component';
-// Employee Card
-export { EmployeeCardComponent } from './lib/cards/card-employee/card-employee.component';
-// Mini Employee Card
-export { MiniEmployeeCardComponent } from './lib/cards/mini-card-employee/mini-card-employee.component';
-export { MiniEmployeeCard } from './lib/cards/mini-card-employee/mini-card-employee.interface';
-// Cards Layout
-export { CardsLayoutComponent } from './lib/cards/cards-layout/cards-layout.component';
 // Card Table
 export { CardTableModule } from './lib/table/card-table/card-table.module';
 export { CardTableComponent } from './lib/table/card-table/card-table/card-table.component';
 export * from './lib/table/card-table/card-table.interface';
+
+/*
+ * Layout
+ */
+
+// Divider
+export { DividerModule } from './lib/layout/divider/divider.module';
+export { DividerComponent } from './lib/layout/divider/divider.component';
 // Collapsible
 export { CollapsibleModule } from './lib/layout/collapsible/collapsible.module';
 export { CollapsibleComponent } from './lib/layout/collapsible/collapsible.component';
 export { CollapsibleType } from './lib/layout/collapsible/collapsible.enum';
 // Section Container
-export {SectionContainerModule} from './lib/layout/sectionContainer/sectionContainer.module';
+export { SectionContainerModule } from './lib/layout/sectionContainer/sectionContainer.module';
 export { SectionContainerComponent } from './lib/layout/sectionContainer/sectionContainer.component';
+
+/*
+ * Chardts
+ */
+
+export { ChartsModule } from './lib/charts/charts.module';
+export { HighChartOptions } from './lib/charts/chart/chart.interface';
+export { PieChartComponent } from './lib/charts/pie-chart/pie-chart.component';
+export { DonutChartTextComponent } from './lib/charts/donut-chart-text/donut-chart-text.component';
+
+
+/*
+ * Cards
+ */
+
+// Cards
+export { CardsModule } from './lib/cards/cards.module';
+export { CardType } from './lib/cards/cards.enum';
+// Single card
+export { CardComponent } from './lib/cards/card/card.component';
+export { Card, CardActionButton } from './lib/cards/card/card.interface';
+// Add new Card
+export { CardAddComponent } from './lib/cards/card-add/card-add.component';
+export { AddCard } from './lib/cards/card-add/card-add.interface';
+// Employee Card
+export { CardEmployeeComponent } from './lib/cards/card-employee/card-employee.component';
+export {
+  CardEmployee, CardEmployeeSocial, CardEmployeeCoverColors,
+} from './lib/cards/card-employee/card-employee.interface';
+// Cards Layout
+export { CardsLayoutComponent } from './lib/cards/cards-layout/cards-layout.component';
 
 /*
  * Misc
  */
 
-// Preloader
-export {
-  MiniPreloaderModule
-} from './lib/buttons-indicators/mini-preloader/mini-preloader.module';
-export {
-  MiniPreloaderComponent
-} from './lib/buttons-indicators/mini-preloader/mini-preloader.component';
+// Icons Module
+export { IconsModule } from './lib/icons/icons.module';
+export { IconComponent } from './lib/icons/icon.component';
+export { IconSize, IconColor, Icons } from './lib/icons/icons.enum';
 // Filter Module
 export { FiltersModule } from './lib/services/filters/filters.module';
 // Utils Module
@@ -398,11 +468,6 @@ export { allowedDomainsTest, naiveLinkTest, imageLinkTest } from './lib/services
 export { ComponentRendererModule } from './lib/services/component-renderer/component-renderer.module';
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';
 export { RenderedComponent } from './lib/services/component-renderer/component-renderer.interface';
-// Truncate Tooltip
-export { TruncateTooltipModule } from './lib/services/truncate-tooltip/truncate-tooltip.module';
-export { TruncateTooltipComponent } from './lib/services/truncate-tooltip/truncate-tooltip.component';
-export { TruncateTooltipDirective } from './lib/services/truncate-tooltip/truncate-tooltip.directive';
-export { TruncateTooltipType, TruncateTooltipPosition } from './lib/services/truncate-tooltip/truncate-tooltip.enum';
 // RxJs operators
 export { outsideZone, insideZone } from './lib/services/utils/rxjs.operators';
 // Event Manager Plugins
@@ -416,7 +481,9 @@ export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
 export { FloatingAvatarsComponent } from './lib/eye-candy/floating-avatars/floating-avatars.component';
 // text colored links
 export { TextColoredLinksModule } from './lib/eye-candy/text-colored-links/text-colored-links.module';
-export { TextColoredLinksComponent } from
+export {
+  TextColoredLinksComponent
+} from
     './lib/eye-candy/text-colored-links/text-colored-links/text-colored-links.component';
 export { ColorTextItem } from './lib/eye-candy/text-colored-links/text-colored-links.interface';
 // Mocks
@@ -426,5 +493,4 @@ export { mockText, mockDate, mockHobbies, mockJobs, mockNames, mockAvatar } from
 /*
 * Animation
  */
-
 export { SLIDE_UP_DOWN } from './lib/style/animations';

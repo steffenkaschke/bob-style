@@ -1,10 +1,10 @@
-@import "../../style/colors.scss";
+@import "../../style/common-imports";
 
 :host {
   display: flex;
   width: 100%;
   align-items:center;
-  margin: 20px 0;
+  margin: 32px 0;
   &:before, &:after {
     flex: 1;
     content: '';

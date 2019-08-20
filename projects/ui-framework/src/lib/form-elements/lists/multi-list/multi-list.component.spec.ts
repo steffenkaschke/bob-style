@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 import { IconsModule } from '../../../icons/icons.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ListModelService } from '../list-service/list-model.service';

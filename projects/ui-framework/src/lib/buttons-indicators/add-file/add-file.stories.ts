@@ -12,10 +12,9 @@ import { Icons } from '../../icons/icons.enum';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 
-const stories = storiesOf(
-  ComponentGroupType.ButtonsAndIndicators,
-  module
-).addDecorator(withKnobs);
+const stories = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
+  withKnobs
+);
 
 const icons = values(Icons);
 

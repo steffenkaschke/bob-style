@@ -22,8 +22,11 @@ import { SplitInputSingleSelectModule } from './split-input-single-select/split-
 import { SplitInputSingleSelectComponent } from './split-input-single-select/split-input-single-select.component';
 import { RichTextEditorModule } from './rich-text-editor/rte.module';
 import { RichTextEditorComponent } from './rich-text-editor/rte.component';
+import { PasswordInputModule } from './password-input/password-input.module';
+import { PasswordInputComponent } from './password-input/password-input.component';
+import { TimePickerModule } from './timepicker/timepicker.module';
+import { TimePickerComponent } from './timepicker/timepicker.component';
 import { EventManagerPlugins } from '../services/utils/eventManager.plugins';
-
 @NgModule({
   imports: [
     InputModule,
@@ -37,7 +40,10 @@ import { EventManagerPlugins } from '../services/utils/eventManager.plugins';
     SocialModule,
     SplitInputSingleSelectModule,
     RichTextEditorModule,
-    InputMessageModule
+    InputMessageModule,
+    PasswordInputModule,
+    TimePickerModule,
+    ChipInputModule
   ],
   exports: [
     InputComponent,
@@ -50,7 +56,10 @@ import { EventManagerPlugins } from '../services/utils/eventManager.plugins';
     SplitInputSingleSelectComponent,
     RichTextEditorComponent,
     ChipInputComponent,
-    SocialComponent
+    SocialComponent,
+    PasswordInputComponent,
+    TimePickerComponent,
+    ChipInputComponent
   ],
   providers: [EventManagerPlugins[0]]
 })

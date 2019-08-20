@@ -4,10 +4,11 @@ import {
   Component,
   forwardRef,
   HostBinding,
-  Injector,
   Input,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  ChangeDetectionStrategy,
+  NgZone
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -15,7 +16,7 @@ import { merge } from 'lodash';
 
 import { PanelComponent } from '../../popups/panel/panel.component';
 import { SingleListComponent } from '../lists/single-list/single-list.component';
-import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { ButtonType } from '../../buttons/buttons.enum';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { PanelDefaultPosVer, PanelSize } from '../../popups/panel/panel.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
@@ -64,19 +65,20 @@ quillLib.register(Italic);
       useExisting: forwardRef(() => RichTextEditorComponent),
       multi: true
     }
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 @MixIn([RteLinkBlot, RtePlaceholderBlot, RteKeybindings])
 export class RichTextEditorComponent extends RTEformElement
   implements AfterViewInit, RteLinkBlot, RtePlaceholderBlot, RteKeybindings {
   constructor(
     private DOM: DOMhelpers,
+    public zone: NgZone,
     public rteUtils: RteUtilsService,
-    changeDetector: ChangeDetectorRef,
-    injector: Injector,
+    cd: ChangeDetectorRef,
     public placeholderRteConverterService: PlaceholderRteConverterService
   ) {
-    super(rteUtils, changeDetector, injector);
+    super(zone, rteUtils, cd);
   }
 
   public disableControlsDef = [BlotType.placeholder, BlotType.direction];
@@ -131,7 +133,11 @@ export class RichTextEditorComponent extends RTEformElement
     this.inputTransformers = [stringyOrFail];
     this.outputTransformers = [this.rteUtils.cleanupHtml];
 
-    if (this.placeholderList && this.controls.includes(BlotType.placeholder)) {
+    if (
+      this.placeholderList &&
+      this.controls.includes(BlotType.placeholder) &&
+      !this.disableControls.includes(BlotType.placeholder)
+    ) {
       this.inputTransformers.push(
         this.placeholderRteConverterService.toRtePartial(this.placeholderList[0]
           .options as RtePlaceholder[])
@@ -143,6 +149,9 @@ export class RichTextEditorComponent extends RTEformElement
 
   // this extends RTE Abstract's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
+    if (changes.placeholderList) {
+      this.placeholderList = changes.placeholderList.currentValue;
+    }
     if (
       changes.placeholderList ||
       changes.controls ||
@@ -151,6 +160,11 @@ export class RichTextEditorComponent extends RTEformElement
       this.initTransformers();
       this.writeValue(this.value);
     }
+  }
+
+  // this extends RTE Abstract's ngOnInit
+  onNgOnInit(): void {
+    this.initTransformers();
   }
 
   // this extends RTE Abstract's ngAfterViewInit
@@ -170,13 +184,18 @@ export class RichTextEditorComponent extends RTEformElement
           }
         }
       },
-      formats: Object.values(this.controls)
+      formats: Object.values(this.controlsDef)
     });
 
-    setTimeout(() => {
-      this.initEditor(this.editorOptions);
-      this.addKeyBindings();
-      this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
-    }, 0);
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.initEditor(this.editorOptions);
+        this.addKeyBindings();
+        this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, 0);
+    });
   }
 }

@@ -1,17 +1,12 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  number,
-  object,
-  select,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { number, object, select, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 import { TableModule } from './table.module';
-import { AvatarModule } from '../buttons-indicators/avatar/avatar.module';
+import { AvatarModule } from '../avatar/avatar/avatar.module';
 import { mockColumnsDefs, mockRowData } from './table-mocks/table-story.mock';
 import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
@@ -66,6 +61,8 @@ const note = `
   addRows | Function | add rows
   updateRows | Function | update rows
   removeRows | Function | remove rows
+  filterRows | Function | search rows
+  resetFilter | Function | reset filter
   ~~~
   ${template}
   ~~~

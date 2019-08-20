@@ -21,6 +21,7 @@ import { Subscription } from 'rxjs';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { BaseFormElement } from '../base-form-element';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements AfterViewInit {
@@ -43,6 +44,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   private templatePortal: TemplatePortal;
   private backdropClickSubscriber: Subscription;
   private positionChangeSubscriber: Subscription;
+  readonly tooltipType = TruncateTooltipType;
 
   protected constructor(
     private overlay: Overlay,
@@ -58,7 +60,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
-        this.showPrefix = this.prefix && !this.DOM.isEmpty(this.prefix.nativeElement);
+        this.showPrefix =
+          this.prefix && !this.DOM.isEmpty(this.prefix.nativeElement);
 
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
@@ -121,9 +124,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     const panelClass = [
       ...this.panelClassList,
       'b-select-panel',
-      this.isQuickFilter ? 'b-quick-filter-panel' : null,
-    ]
-      .filter(Boolean);
+      this.isQuickFilter ? 'b-quick-filter-panel' : null
+    ].filter(Boolean);
 
     return {
       disposeOnNavigation: true,

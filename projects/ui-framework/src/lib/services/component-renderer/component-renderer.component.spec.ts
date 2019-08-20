@@ -6,12 +6,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentRendererComponent } from './component-renderer.component';
 
 import { UtilComponentsModule } from '../util-components/utilComponents.module';
-import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { MockComponent } from '../util-components/mock.component';
-import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
+import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 
 describe('ComponentRendererComponent', () => {
   let fixture: ComponentFixture<ComponentRendererComponent>;

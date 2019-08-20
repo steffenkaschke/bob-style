@@ -1,0 +1,5 @@
+@import '../../style/common-imports';
+
+:host {
+  @include b-body($addCssVars: false);
+}

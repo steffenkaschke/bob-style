@@ -18,24 +18,22 @@ const datepickerStories = storiesOf(
   module
 ).addDecorator(withKnobs);
 const template = `
-<b-datepicker (dateChange)="dateChange($event)"
+<b-datepicker [value]="value"
               [dateFormat]="dateFormat"
-
               [inputLabel]="label"
               [placeholder]="placeholder"
-
               [hintMessage]="hintMessage"
               [warnMessage]="warnMessage"
               [errorMessage]="errorMessage"
-
               [disabled]="disabled"
-              [required]="required">
+              [required]="required"
+              (dateChange)="dateChange($event)">
 </b-datepicker>
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Datepicker'">
-  <div style="flex:1; max-width: 300px;">
+  <div style="max-width: 300px;">
     ${template}
   </div>
 </b-story-book-layout>
@@ -73,6 +71,7 @@ datepickerStories.add(
     return {
       template: storyTemplate,
       props: {
+        value: text('value', '1950-07-12'),
         dateFormat: text('dateFormat', 'DD/MM/YYYY'),
         label: text('label', 'Date picker'),
         placeholder: text('placeholder', 'Input placeholder'),

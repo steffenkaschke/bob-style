@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SingleSelectComponent } from './single-select.component';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -12,7 +12,7 @@ import { cloneDeep } from 'lodash';
 import { ListFooterModule } from '../list-footer/list-footer.module';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
 import { SingleListModule } from '../single-list/single-list.module';
-import { TruncateTooltipModule } from '../../../services/truncate-tooltip/truncate-tooltip.module';
+import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate-tooltip.module';
 
 describe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;

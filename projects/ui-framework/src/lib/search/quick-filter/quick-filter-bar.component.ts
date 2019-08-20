@@ -20,7 +20,7 @@ import { chain, has } from 'lodash';
 import { ListChangeService } from '../../form-elements/lists/list-change/list-change.service';
 import { ListModelService } from '../../form-elements/lists/list-service/list-model.service';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { ButtonType } from '../../buttons/buttons.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 
@@ -53,9 +53,7 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
 
   @Input() quickFilters: QuickFilterConfig[];
   @Input() showResetFilter = false;
-  @Output() filtersChange: EventEmitter<
-    QuickFilterBarChangeEvent
-  > = new EventEmitter<QuickFilterBarChangeEvent>();
+  @Output() filtersChange: EventEmitter<QuickFilterBarChangeEvent> = new EventEmitter<QuickFilterBarChangeEvent>();
   @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>();
 
   quickFiltersChanges: QuickFilterBarChangeEvent = {};
@@ -73,7 +71,8 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
     private DOM: DOMhelpers,
     private zone: NgZone,
     private cd: ChangeDetectorRef
-  ) {}
+  ) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'quickFilters')) {

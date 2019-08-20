@@ -181,7 +181,15 @@
        enable console.log
      </label>
    </p>
-
+   <p>
+     <label>
+       <input class="simple-checkbox"
+              [(ngModel)]="global_disco"
+              (change)="doDisco()"
+              type="checkbox">
+       DISCO!
+     </label>
+   </p>
  </div>
 
 
@@ -2734,6 +2742,7 @@
                          formControlName="bRTE"
                          [type]="bRTE_type"
                          [label]="bRTE_label"
+                         [placeholder]="bRTE_placeholder"
                          [value]="bRTE_directValueInput ? bRTE_value : undefined"
                          [controls]="bRTE_controls"
                          [disableControls]="bRTE_disableControls"
@@ -2753,6 +2762,7 @@
                          *ngIf="!bRTE_formControlEnabled"
                          [type]="bRTE_type"
                          [label]="bRTE_label"
+                         [placeholder]="bRTE_placeholder"
                          [value]="bRTE_directValueInput ? bRTE_value : undefined"
                          [controls]="bRTE_controls"
                          [disableControls]="bRTE_disableControls"

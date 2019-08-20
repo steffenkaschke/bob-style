@@ -43,8 +43,6 @@ export class PasswordInputComponent extends BaseInputElement {
 
   @ViewChild('input', { static: true }) input: ElementRef;
 
-  @Output() changed: EventEmitter<InputEvent> = new EventEmitter<InputEvent>();
-
   constructor(zone: NgZone, cd: ChangeDetectorRef) {
     super(zone, cd);
     this.outputTransformers = [];

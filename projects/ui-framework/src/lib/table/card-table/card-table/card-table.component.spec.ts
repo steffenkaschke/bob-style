@@ -9,11 +9,11 @@ import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
 
 import { ComponentRendererComponent } from '../../../services/component-renderer/component-renderer.component';
 
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
-import { ButtonComponent } from '../../../buttons-indicators/buttons/button/button.component';
+import { ButtonsModule } from '../../../buttons/buttons.module';
+import { ButtonComponent } from '../../../buttons/button/button.component';
 
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { TruncateTooltipModule } from '../../../services/truncate-tooltip/truncate-tooltip.module';
+import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate-tooltip.module';
 
 describe('CardTableComponent', () => {
   let fixture: ComponentFixture<CardTableComponent>;

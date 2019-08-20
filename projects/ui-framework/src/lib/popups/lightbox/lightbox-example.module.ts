@@ -1,14 +1,14 @@
 import { Component, NgModule, OnDestroy, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LightboxService } from './lightbox.service';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
 import {
   BrowserAnimationsModule,
   NoopAnimationsModule
 } from '@angular/platform-browser/animations';
-import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
-import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
-import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { AvatarComponent } from '../../avatar/avatar/avatar.component';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { LightboxConfig, LightboxData } from './lightbox.interface';
 
 @Component({

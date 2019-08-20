@@ -2,7 +2,7 @@
 
 $chevronWidth: 2px;
 
-@mixin diamond($size, $color: $white) {
+@mixin diamond($size, $color: white) {
   width: $size;
   height: $size;
   background-color: $color;

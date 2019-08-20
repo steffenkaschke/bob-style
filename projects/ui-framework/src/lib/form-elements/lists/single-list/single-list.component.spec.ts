@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchModule } from '../../../search/search/search.module';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 import { IconsModule } from '../../../icons/icons.module';
 
 import { ScrollingModule } from '@angular/cdk/scrolling';

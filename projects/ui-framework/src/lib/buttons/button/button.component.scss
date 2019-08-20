@@ -1,0 +1,59 @@
+@import '../buttons';
+
+$padding: 15px;
+$minWidthSmall: 80px;
+$minWidthMedium: 95px;
+$minWidthLarge: 110px;
+
+:host {
+  display: inline-flex;
+}
+
+button {
+  @include button-basic-types;
+
+  &.small {
+    padding: 0 $padding;
+    min-width: $minWidthSmall;
+    height: $sizeSmall;
+    font-weight: 500;
+  }
+
+  &.medium,
+  &.large {
+    @include b-heading($addCssVars: false);
+  }
+  &.medium {
+    padding: 0 $padding;
+    min-width: $minWidthMedium;
+    height: $sizeMedium;
+    font-weight: 500;
+  }
+  &.large {
+    padding: 0 $padding;
+    min-width: $minWidthLarge;
+    height: $sizeLarge;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  &[class*='b-icon'] {
+    padding-left: $padding - 3px;
+
+    &:before {
+      margin-right: 6px;
+      display: inline-block;
+      vertical-align: middle;
+      pointer-events: none;
+    }
+    &.icon-after {
+      flex-direction: row-reverse;
+      padding-left: $padding;
+      padding-right: $padding - 3px;
+      &:before {
+        margin-right: 0;
+        margin-left: 6px;
+      }
+    }
+  }
+}

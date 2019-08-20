@@ -11,13 +11,13 @@ import { CardTableMockMetaData, CardTableMockData } from './card-table.mock';
 import { ChipModule } from '../../chips/chip/chip.module';
 import { ChipComponent } from '../../chips/chip/chip.component';
 
-import { ButtonComponent } from '../../buttons-indicators/buttons/button/button.component';
+import { ButtonComponent } from '../../buttons/button/button.component';
 
-import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
-import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.component';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
 import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(

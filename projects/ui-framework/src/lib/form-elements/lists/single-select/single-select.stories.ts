@@ -1,25 +1,28 @@
 import { storiesOf } from '@storybook/angular';
 import {
-  select,
-  withKnobs,
-  object,
-  text,
   boolean,
-  number
+  number,
+  object,
+  select,
+  text,
+  withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 import { TypographyModule } from '../../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { SingleSelectModule } from './single-select.module';
 import { SelectGroupOption } from '../list.interface';
 
-const buttonStories = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
+
+const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-single-select [label]="label"
@@ -36,7 +39,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Single select'">
-  <div style="flex:1; max-width: 350px;">
+  <div style="max-width: 350px;">
     ${template}
   </div>
 </b-story-book-layout>
@@ -88,30 +91,29 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
 
 optionsMock[0].options[1].selected = true;
 
-buttonStories.add(
-  'Single select',
-  () => ({
-    template: storyTemplate,
-    props: {
-      options: object<SelectGroupOption>('options', optionsMock),
-      selectChange: action('Single select change'),
-      label: text('label', 'label text'),
-      placeholder: text('placeholder', 'placeholder text'),
-      disabled: boolean('disabled', false),
-      required: boolean('required', false),
-      hintMessage: text('hintMessage', 'This field should contain something'),
-      errorMessage: text('errorMessage', ''),
-      showSingleGroupHeader: boolean('showSingleGroupHeader', false)
-    },
-    moduleMetadata: {
-      imports: [
-        SingleSelectModule,
-        ButtonsModule,
-        TypographyModule,
-        BrowserAnimationsModule,
-        StoryBookLayoutModule
-      ]
-    }
-  }),
-  { notes: { markdown: note } }
-);
+const toAdd = () => ({
+  template: storyTemplate,
+  props: {
+    options: object<SelectGroupOption>('options', optionsMock),
+    selectChange: action('Single select change'),
+    label: text('label', 'label text'),
+    placeholder: text('placeholder', 'placeholder text'),
+    disabled: boolean('disabled', false),
+    required: boolean('required', false),
+    hintMessage: text('hintMessage', 'This field should contain something'),
+    errorMessage: text('errorMessage', ''),
+    showSingleGroupHeader: boolean('showSingleGroupHeader', false)
+  },
+  moduleMetadata: {
+    imports: [
+      SingleSelectModule,
+      ButtonsModule,
+      TypographyModule,
+      BrowserAnimationsModule,
+      StoryBookLayoutModule
+    ]
+  }
+});
+
+story.add('Single select', toAdd, { notes: { markdown: note } });
+story2.add('Single select', toAdd, { notes: { markdown: note } });

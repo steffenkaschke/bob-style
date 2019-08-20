@@ -3,18 +3,18 @@ import { TableComponent } from './table.component';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { TableModule } from '../table.module';
 import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';
-import { ColumnDef, RowNodeDef } from './table.interface';
+import { ColumnDef } from './table.interface';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { cloneDeep, keys, pick } from 'lodash';
 import { COLUMN_DEFS_MOCK, ROW_DATA_MOCK } from '../table-mocks/table-test.mock';
 import { RowSelection, TableType } from './table.enum';
+import { By } from '@angular/platform-browser';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
-import { By } from '@angular/platform-browser';
 
 describe('TableComponent', () => {
   let component: TableComponent;
@@ -288,12 +288,39 @@ describe('TableComponent', () => {
     });
   });
 
+  describe('filterRows', () => {
+    it('Should call grid api setQuickFilter', () => {
+      fixture.autoDetectChanges();
+      spyOn(component.agGrid.api, 'setQuickFilter');
+      component.filterRows('test');
+      expect(component.agGrid.api.setQuickFilter).toHaveBeenCalledWith('test');
+    });
+  });
+
+  describe('resetFilter', () => {
+    it('Should call grid api resetQuickFilter', () => {
+      fixture.autoDetectChanges();
+      spyOn(component.agGrid.api, 'resetQuickFilter');
+      component.resetFilter();
+      expect(component.agGrid.api.resetQuickFilter).toHaveBeenCalled();
+    });
+  });
+
   describe('deselectAll', () => {
     it('Should call grid api deselectAll', () => {
       fixture.autoDetectChanges();
       spyOn(component.agGrid.api, 'deselectAll');
       component.deselectAll();
       expect(component.agGrid.api.deselectAll).toHaveBeenCalled();
+    });
+  });
+
+  describe('getDisplayedRowCount', () => {
+    it('Should call grid api getDisplayedRowCount', () => {
+      fixture.autoDetectChanges();
+      spyOn(component.agGrid.api, 'getDisplayedRowCount');
+      component.getDisplayedRowCount();
+      expect(component.agGrid.api.getDisplayedRowCount).toHaveBeenCalled();
     });
   });
 });

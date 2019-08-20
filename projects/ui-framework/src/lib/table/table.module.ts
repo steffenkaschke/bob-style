@@ -7,8 +7,8 @@ import { AgGridModule } from 'ag-grid-angular';
 import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
 import { TableUtilsService } from './table-utils-service/table-utils.service';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
-import { AvatarModule } from '../buttons-indicators/avatar/avatar.module';
-import { ButtonsModule } from '../buttons-indicators/buttons/buttons.module';
+import { AvatarModule } from '../avatar/avatar/avatar.module';
+import { ButtonsModule } from '../buttons/buttons.module';
 import { MenuModule } from '../navigation/menu/menu.module';
 
 @NgModule({

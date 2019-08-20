@@ -32,13 +32,13 @@ const template = `
               [required]="required"
               [hideLabelOnFocus]="hideLabelOnFocus"
               [enableBrowserAutoComplete]="enableBrowserAutoComplete"
-              (changed)="onChange($event)">
+              (inputEvents)="onChange($event)">
 </b-password-input>
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Password Input'">
-  <div style="flex:1; max-width: 300px;">
+  <div style="max-width: 300px;">
     ${template}
   </div>
 </b-story-book-layout>
@@ -64,7 +64,7 @@ const note = `
   errorMessage | string | error text
   hideLabelOnFocus | boolean | if true: there will be no label above input, label text (if present) will be used as placeholder
   enableBrowserAutoComplete | InputAutoCompleteOptions | shows browser autocomplete options
-  (changed) | InputEvent | input events emitter
+  (inputEvents) | InputEvent | input events emitter
   ~~~
   ${template}
   ~~~

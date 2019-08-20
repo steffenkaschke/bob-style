@@ -9,14 +9,14 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 import { TypographyModule } from '../../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { SingleListModule } from './single-list.module';
 import { SelectGroupOption } from '../list.interface';
-import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.component';
-import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
+import { AvatarComponent } from '../../../avatar/avatar/avatar.component';
+import { AvatarModule } from '../../../avatar/avatar/avatar.module';
 
 const buttonStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -31,7 +31,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Single list'">
-  <div style="flex:1; max-width: 350px;">
+  <div style="max-width: 350px;">
     ${template}
   </div>
 </b-story-book-layout>
