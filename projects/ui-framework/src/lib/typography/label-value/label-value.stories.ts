@@ -245,13 +245,13 @@ story.add(
         labelMaxLines: number('labelMaxLines', null),
         valueMaxLines: number('valueMaxLines', null),
 
-        icon: select('icon', [null, ...Object.values(Icons)], null),
+        icon: select('icon', [0, ...Object.values(Icons)], 0),
         iconPosition: select(
           'iconPosition',
           Object.values(IconPosition),
           IconPosition.left
         ),
-        iconSize: select('iconSize', [null, ...Object.values(IconSize)], null)
+        iconSize: select('iconSize', [0, ...Object.values(IconSize)], 0)
       },
       moduleMetadata: {
         imports: [

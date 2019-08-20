@@ -91,7 +91,7 @@ const note = `
 
   #### (example 1) Use as a component (b-truncate-tooltip):
   ~~~
-  <b-truncate-tooltip [maxLines]="maxLines">
+  <b-truncate-tooltip [maxLines]="maxLines" [type]="TruncateTooltipType.css">
       {{ text }}
   </b-truncate-tooltip>
   ~~~
@@ -111,7 +111,7 @@ const note = `
 
   #### (example 2) Use as a component with an attrubute selector ([b-truncate-tooltip]):
   ~~~
-  <p [b-truncate-tooltip]="maxLines">
+  <p [b-truncate-tooltip]="maxLines" [type]="TruncateTooltipType.css">
     {{ text }}
   </p>
   ~~~

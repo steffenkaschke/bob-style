@@ -9,9 +9,9 @@ import {
   HostBinding,
   SimpleChanges,
   OnChanges,
-  OnInit,
   ChangeDetectorRef,
-  NgZone
+  NgZone,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { AvatarBadges, BadgeSize } from './avatar.consts';
@@ -19,15 +19,19 @@ import { DOMhelpers, Styles } from '../../services/utils/dom-helpers.service';
 import { ChipType } from '../../chips/chips.enum';
 import { Chip } from '../../chips/chips.interface';
 import { BadgeConfig } from './avatar.interface';
-import { getKeyByValue } from '../../services/utils/functional-utils';
+import {
+  getKeyByValue,
+  notFirstChanges
+} from '../../services/utils/functional-utils';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
 @Component({
   selector: 'b-avatar',
   templateUrl: './avatar.component.html',
-  styleUrls: ['./avatar.component.scss']
+  styleUrls: ['./avatar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
+export class AvatarComponent implements OnChanges, AfterViewInit {
   constructor(
     private host: ElementRef,
     private DOM: DOMhelpers,
@@ -43,9 +47,6 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   readonly chipType = ChipType;
   readonly orient = AvatarOrientation;
   readonly tooltipType = TruncateTooltipType;
-  public badgeConfig: BadgeConfig;
-  public avatarClass: string;
-  public avatarStyle: Styles;
 
   @Input() imageSource: string;
   @Input() backgroundColor?: string;
@@ -68,30 +69,14 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   @HostBinding('attr.data-clickable') @Input() isClickable = false;
   @HostBinding('attr.data-disabled') @Input() disabled = false;
 
-  ngOnInit(): void {
-    this.setAvatarClass();
-    this.setAvatarStyle();
-    this.setCssVars();
-    this.setBadgeConfig();
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.imageSource) {
-      this.imageSource = changes.imageSource.currentValue;
-      this.setAvatarClass();
-      this.setAvatarStyle();
-    }
-    if (changes.backgroundColor) {
-      this.backgroundColor = changes.backgroundColor.currentValue;
-      this.setAvatarStyle();
-    }
     if (changes.size) {
       this.size = changes.size.currentValue;
       this.setCssVars();
     }
-    if (changes.badge) {
-      this.badge = changes.badge.currentValue;
-      this.setBadgeConfig();
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 
@@ -108,34 +93,31 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
     });
   }
 
-  setCssVars(): void {
-    this.DOM.setCssProps(this.host.nativeElement, {
-      '--avatar-size': this.size + 'px'
-    });
-  }
-
-  setBadgeConfig(): void {
-    this.badgeConfig =
+  getBadgeConfig(): BadgeConfig {
+    return (
       this.badge &&
       ((this.badge as BadgeConfig).icon
         ? (this.badge as BadgeConfig)
-        : AvatarBadges[this.badge as AvatarBadge]);
+        : AvatarBadges[this.badge as AvatarBadge])
+    );
   }
 
-  setAvatarClass(): void {
-    this.avatarClass =
+  getAvatarClass(): string {
+    return (
+      this.imageSource &&
       'avatar' +
-      (this.imageSource && this.imageSource.includes('emptyAvatar')
-        ? ' emptyAvatar'
-        : this.imageSource && this.imageSource.includes('default-avatars')
-        ? ' defaultAvatar'
-        : !this.imageSource
-        ? ' noAvatar'
-        : '');
+        (this.imageSource && this.imageSource.includes('emptyAvatar')
+          ? ' emptyAvatar'
+          : this.imageSource && this.imageSource.includes('default-avatars')
+          ? ' defaultAvatar'
+          : !this.imageSource
+          ? ' noAvatar'
+          : '')
+    );
   }
 
-  setAvatarStyle(): void {
-    this.avatarStyle = {
+  getAvatarStyle(): Styles {
+    return {
       backgroundImage: this.imageSource
         ? 'url(' + this.imageSource + ')'
         : null,
@@ -144,10 +126,16 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   onClick(event: MouseEvent): void {
-    if (this.isClickable) {
+    if (this.isClickable && this.clicked.observers.length > 0) {
       this.zone.run(() => {
         this.clicked.emit(event);
       });
     }
+  }
+
+  private setCssVars(): void {
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--avatar-size': this.size + 'px'
+    });
   }
 }

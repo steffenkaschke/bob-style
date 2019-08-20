@@ -111,6 +111,7 @@ import {
   set as _set,
   toPairs as _toPairs
 } from 'lodash/fp';
+import { SimpleChanges, SimpleChange } from '@angular/core';
 
 export const flatten = (obj, path = []) => {
   return _isPlainObject(obj) || _isArray(obj)
@@ -169,3 +170,17 @@ export const makeArray = (length: number, fill: any = undefined): any[] =>
 
 export const padWith0 = (number: string | number, digits = 2): string =>
   String(number).padStart(digits, '0');
+
+export const firstChanges = (changes: SimpleChanges): boolean => {
+  return !!Object.keys(changes).find(i => changes[i].firstChange);
+};
+
+export const notFirstChanges = (changes: SimpleChanges): boolean => {
+  return !!Object.keys(changes).find(i => !changes[i].firstChange);
+};
+
+export const applyChanges = (target: any, changes: SimpleChanges): void => {
+  Object.keys(changes).forEach((change: string) => {
+    target[change] = changes[change].currentValue;
+  });
+};

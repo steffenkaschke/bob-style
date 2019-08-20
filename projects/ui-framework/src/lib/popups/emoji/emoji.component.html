@@ -5,6 +5,7 @@
   <h3 class="emoji-header b-display-4"
       *ngIf="title"
       [b-truncate-tooltip]="1"
+      [type]="tooltipType.css"
       [trustCssVars]="true">
     {{title}}
   </h3>

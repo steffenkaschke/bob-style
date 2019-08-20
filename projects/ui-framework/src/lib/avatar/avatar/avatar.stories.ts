@@ -30,7 +30,7 @@ const sizeOptionsValues = Object.values(AvatarSize).filter(
 const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 
 const orientationOptions = Object.keys(AvatarOrientation);
-const badges = Object.keys(AvatarBadge);
+const badges = [0, ...Object.keys(AvatarBadge)];
 const chips = Object.values(ChipType).filter(o => o !== ChipType.avatar);
 
 const template = `
@@ -46,6 +46,7 @@ const template = `
   [chip]="chip"
   [isClickable]="isClickable"
   [disabled]="disabled"
+  [expectChanges]="true"
   (clicked)="clickHandler($event)"
   >
 </b-avatar>
@@ -73,14 +74,26 @@ const note = `
   clicked | Function | callback for clicking on the avatar | none
 
   ~~~
-  ${template}
+  <b-avatar
+    [imageSource]="imageSource"
+    [backgroundColor]="backgroundColor"
+    [size]="size"
+    [orientation]="orientation"
+    [title]="title"
+    [subtitle]="subtitle"
+    [caption]="caption"
+    [badge]="badge"
+    [chip]="chip"
+    [isClickable]="isClickable"
+    [disabled]="disabled"
+    (clicked)="clickHandler($event)">
+  </b-avatar>
   ~~~
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Avatar'">
     ${template}
-
 </b-story-book-layout>
 `;
 
