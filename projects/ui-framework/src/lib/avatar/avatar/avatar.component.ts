@@ -9,7 +9,6 @@ import {
   HostBinding,
   SimpleChanges,
   OnChanges,
-  OnInit,
   ChangeDetectorRef,
   NgZone,
   ChangeDetectionStrategy
@@ -32,7 +31,7 @@ import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tool
   styleUrls: ['./avatar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
+export class AvatarComponent implements OnChanges, AfterViewInit {
   constructor(
     private host: ElementRef,
     private DOM: DOMhelpers,
@@ -70,12 +69,8 @@ export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   @HostBinding('attr.data-clickable') @Input() isClickable = false;
   @HostBinding('attr.data-disabled') @Input() disabled = false;
 
-  ngOnInit(): void {
-    this.setCssVars();
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.size && !changes.size.firstChange) {
+    if (changes.size) {
       this.size = changes.size.currentValue;
       this.setCssVars();
     }
