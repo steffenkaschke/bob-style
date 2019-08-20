@@ -17,7 +17,7 @@ import {
 } from './truncate-tooltip.enum';
 import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
-const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
 );
 
