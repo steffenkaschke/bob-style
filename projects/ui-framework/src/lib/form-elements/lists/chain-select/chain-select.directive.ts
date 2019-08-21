@@ -4,5 +4,5 @@ import { Directive, TemplateRef } from '@angular/core';
   selector: '[bChainSelect]'
 })
 export class ChainSelectDirective {
-  constructor(private tpl: TemplateRef<any>) { }
+  constructor(public tpl: TemplateRef<any>) { }
 }
