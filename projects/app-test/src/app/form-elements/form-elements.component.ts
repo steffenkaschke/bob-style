@@ -1019,11 +1019,13 @@ export class FormElementsTestComponent
   type = smth => getType(smth);
 
   countKids(name) {
-    this[name + '_nodeCount'] = countChildren(
-      null,
-      this[name + '_element'] && this[name + '_element'].nativeElement
-    );
-    return this[name + '_nodeCount'];
+    setTimeout(() => {
+      this[name + '_nodeCount'] = countChildren(
+        null,
+        this[name + '_element'] && this[name + '_element'].nativeElement
+      );
+      this.cd.detectChanges();
+    }, 0);
   }
 
   doDisco() {
