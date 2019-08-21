@@ -1,0 +1,30 @@
+@import '../../style/functions';
+:host {
+  //noinspection ALL
+  .emoji-chip-item {
+    position: relative;
+    z-index: 1;
+    margin: 0 2px;
+    display: inline-flex;
+    line-height: 15px;
+    height: times8(2);
+    padding: 0 4px 0 times8(1);
+    border-radius: times8(1);
+    border: 1px solid $grey-500;
+    background-color: #fff;
+    cursor: pointer;
+    transition: transform .1s;
+    &:hover {
+      transform: scale(1.1);
+      z-index: 2;
+    }
+    .reaction-number {
+      margin-right: 4px;
+      font-size: 10px;
+      font-weight: bold;
+    }
+    .reaction-emoji {
+      font-size: 13px;
+    }
+  }
+}
