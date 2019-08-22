@@ -3,12 +3,8 @@
        [attr.for]="id">{{label}}</label>
 
 <div class="quill-editor"
-     [attr.id]="id"
-     [ngClass]="{'length-invalid': length < minChars || (maxChars && length > maxChars),
-    'length-warning': maxChars && maxChars - length < 15}">
+     [attr.id]="id">
   <div #quillEditor
-       [attr.data-length]="hasSuffix && (minChars > 0 || maxChars) ? ( (length || 0) + (maxChars ? '/' + maxChars : '')) :
-       null"
        (keydown.outside-zone)="$event.stopPropagation()"
        [ngStyle]="{
          minHeight: minHeight ? (minHeight - 43) + 'px' : null,
@@ -131,11 +127,6 @@
       <ng-content></ng-content>
     </div>
 
-    <span class="length-indicator"
-          *ngIf="!hasSuffix && (minChars > 0 || maxChars)">
-      {{ (length || 0) + (maxChars ? '/' + maxChars : '') }}
-    </span>
-
   </div>
 
 </div>
@@ -145,4 +136,8 @@
    [hintMessage]="hintMessage"
    [warnMessage]="warnMessage"
    [errorMessage]="errorMessage"
-   [disabled]="disabled"></p>
+   [disabled]="disabled"
+   [minChars]="minChars"
+   [maxChars]="maxChars"
+   [length]="length">
+</p>
