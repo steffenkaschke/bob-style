@@ -11,11 +11,13 @@ $label-hint-margin: 6px;
   text-align: left;
   @include b-caption($color: $grey-600, $addCssVars: false);
 
-  &.warn {
+  &.warn,
+  &::ng-deep .warn {
     color: $color-warn;
   }
 
-  &.error {
+  &.error,
+  &::ng-deep .error {
     color: $color-error;
   }
 }

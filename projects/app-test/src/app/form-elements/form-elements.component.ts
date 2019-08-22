@@ -25,6 +25,8 @@ import {
   valueToObjectWithKeyOfValueFromArray
 } from '../../../../ui-framework/src/lib/services/utils/transformers';
 import { mockHobbies } from '../../../../ui-framework/src/lib/mock.const';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { isEqual } from 'lodash';
 
 @Component({
   selector: 'app-form-elements-test',
@@ -850,7 +852,11 @@ export class FormElementsTestComponent
   subscribeToValueChanges(name) {
     this[name + '_subscribtion'] =
       this[name] &&
-      this[name].valueChanges.subscribe(value => {
+    this[name].valueChanges
+      .pipe(
+        distinctUntilChanged(isEqual)
+      )
+      .subscribe(value => {
         value = this.asString(value);
         this[name + '_SubscrValue'] = value;
         this[name + '_SubscrCounter']++;
@@ -861,7 +867,7 @@ export class FormElementsTestComponent
           );
           console.log(this[name + '_SubscrValue']);
         }
-        // this.cd.detectChanges();
+        this.cd.detectChanges();
       });
   }
 
@@ -1066,8 +1072,8 @@ export class FormElementsTestComponent
   ngOnInit() {
     this.subscribeToAll(this.allFormElements);
 
-    this.hideComponents(this.allFormElements);
-    this.showComponents(['bInput']);
+    // this.hideComponents(this.allFormElements);
+    // this.showComponents(['bInput']);
 
     // 'bInput'
     // 'bTextarea'

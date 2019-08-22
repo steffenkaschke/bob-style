@@ -111,7 +111,7 @@ export abstract class BaseFormElement
       ...options
     };
     const { eventType, eventName, doPropagate, addToEventObj } = options;
-    console.log('transmitValue', value, eventName, options);
+
     // If value is undefined, it will not be transmitted.
     // Transformers may intentionally set value to undefined,
     // to prevent transmission
@@ -127,7 +127,6 @@ export abstract class BaseFormElement
           this.emitOnWrite)
       ) {
         asArray(eventType).forEach(event => {
-          console.log('will emit', event, value, addToEventObj);
           this[eventName].emit(
             this.wrapEvent
               ? {
@@ -146,7 +145,6 @@ export abstract class BaseFormElement
           this.emitOnWrite)
       ) {
         if (!eventType.includes(InputEventType.onFocus)) {
-          console.log('will propagate', value);
           this.propagateChange(value);
         }
 

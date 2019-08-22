@@ -27,8 +27,13 @@
    [errorMessage]="errorMessage"
    [disabled]="disabled">
 
-  <span class="length-indicator"
-        *ngIf="maxChars && value">
+  <span *ngIf="(minChars > 0 || maxChars) && value"
+        class="length-indicator"
+        [ngClass]="{'error': value.length < minChars
+          ||
+          (maxChars
+          &&
+          value.length > maxChars), 'warn': maxChars && maxChars - value.length < 15}">
     {{value && value.length || 0}}/{{maxChars}}
   </span>
 </p>
