@@ -40,7 +40,6 @@ export class TabsComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.matLabels.toArray().forEach(label => {
       const element = label.nativeElement;
-      element.style.cssText = '';
       element.style.minWidth = element.scrollWidth + 10 + 'px';
     });
   }
