@@ -1,10 +1,18 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 
 import { TabsComponent } from './tabs.component';
-import { MatTab, MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TabsType } from './tabs.enum';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 describe('TabsComponent', () => {
   let component: TabsComponent;
@@ -13,8 +21,13 @@ describe('TabsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MatTabsModule, BrowserAnimationsModule],
-      declarations: [TabsComponent]
-    }).compileComponents();
+      declarations: [TabsComponent],
+      providers: [EventManagerPlugins[0]]
+    })
+      .overrideComponent(TabsComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default }
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -23,13 +36,13 @@ describe('TabsComponent', () => {
     component.tabs = [
       {
         label: 'tab 1',
-        key: 'tab.one',
+        key: 'tab.one'
       },
       {
-        label: 'tab 2',
+        label: 'tab 2'
       },
       {
-        label: 'tab 3',
+        label: 'tab 3'
       }
     ];
     spyOn(component.selectChange, 'emit');
@@ -66,34 +79,39 @@ describe('TabsComponent', () => {
       expect(labelEl.classList).toContain('mat-tab-label-active');
     });
 
-    it('should output selectChange event',
-      fakeAsync(() => {
-        component.selectedIndex = 1;
-        fixture.detectChanges();
-        const matTabLabel = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[0];
-        matTabLabel.triggerEventHandler('click', null);
-        fixture.detectChanges();
-        tick(500);
-        expect(component.selectChange.emit).toHaveBeenCalledTimes(2);
-      }));
+    it('should output selectChange event', fakeAsync(() => {
+      component.selectedIndex = 1;
+      fixture.detectChanges();
+      const matTabLabel = fixture.debugElement.queryAll(
+        By.css('.mat-tab-label')
+      )[0];
+      matTabLabel.triggerEventHandler('click', null);
+      fixture.detectChanges();
+      tick(500);
+      expect(component.selectChange.emit).toHaveBeenCalledTimes(2);
+    }));
 
     it('should output select click event', () => {
       component.selectedIndex = 1;
+      component.selectClick.subscribe(() => {});
       fixture.detectChanges();
-      const label = fixture.debugElement.queryAll(By.css('.tab-label'))[1];
-      label.triggerEventHandler('click', null);
-      const matTab: MatTab = component.matTabs.toArray()[1];
+      const label = fixture.debugElement.queryAll(By.css('.tab-label'))[1]
+        .nativeElement;
+      label.click();
       expect(component.selectClick.emit).toHaveBeenCalledTimes(1);
       expect(component.selectClick.emit).toHaveBeenCalledWith({
         index: 1,
-        tab: matTab,
+        tab: {
+          label: 'tab 2'
+        }
       });
     });
 
     it('should add class from key param when exists in model', () => {
       fixture.detectChanges();
       const tabSpan = fixture.debugElement.queryAll(
-        By.css('.mat-tab-label span'));
+        By.css('.mat-tab-label span')
+      );
       expect(tabSpan[0].nativeElement.classList).toContain('tab.one');
     });
   });
