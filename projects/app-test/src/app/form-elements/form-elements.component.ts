@@ -861,7 +861,7 @@ export class FormElementsTestComponent
           );
           console.log(this[name + '_SubscrValue']);
         }
-        this.cd.detectChanges();
+        // this.cd.detectChanges();
       });
   }
 
@@ -1066,8 +1066,8 @@ export class FormElementsTestComponent
   ngOnInit() {
     this.subscribeToAll(this.allFormElements);
 
-    // this.hideComponents(this.allFormElements);
-    // this.showComponents(['bRTE']);
+    this.hideComponents(this.allFormElements);
+    this.showComponents(['bInput']);
 
     // 'bInput'
     // 'bTextarea'

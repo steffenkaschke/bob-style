@@ -11,8 +11,7 @@ import {
   EventEmitter,
   OnDestroy,
   ChangeDetectionStrategy,
-  NgZone,
-  ChangeDetectorRef
+  NgZone
 } from '@angular/core';
 import {
   MatAutocompleteSelectedEvent,
@@ -31,6 +30,7 @@ import { arrayOrFail } from '../../services/utils/transformers';
 import { ChipListComponent } from '../chip-list/chip-list.component';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
+import { outsideZone } from '../../services/utils/rxjs.operators';
 
 @Component({
   selector: 'b-chip-input',
@@ -55,11 +55,7 @@ import { Subscription } from 'rxjs';
 })
 export class ChipInputComponent extends BaseFormElement
   implements OnChanges, OnInit, OnDestroy {
-  constructor(
-    private utilsService: UtilsService,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {
+  constructor(private utilsService: UtilsService, private zone: NgZone) {
     super();
     this.inputTransformers = [arrayOrFail];
     this.baseValue = [];
@@ -109,6 +105,7 @@ export class ChipInputComponent extends BaseFormElement
 
     this.windowClickSubscriber = this.utilsService
       .getWindowClickEvent()
+      .pipe(outsideZone(this.zone))
       .subscribe(() => {
         this.unSelectLastChip();
       });
@@ -176,9 +173,11 @@ export class ChipInputComponent extends BaseFormElement
         ).chip.nativeElement;
       if (existingChipElemnent) {
         existingChipElemnent.classList.add('blink');
-        setTimeout(() => {
-          existingChipElemnent.classList.remove('blink');
-        }, 200);
+        this.zone.runOutsideAngular(() => {
+          setTimeout(() => {
+            existingChipElemnent.classList.remove('blink');
+          }, 200);
+        });
         this.input.nativeElement.value = this.input.nativeElement.value.replace(
           /,/g,
           ''
@@ -190,7 +189,6 @@ export class ChipInputComponent extends BaseFormElement
   public onInputChange(event: any): void {
     this.filteredChips =
       this.filterChips(event.target.value) || this.possibleChips;
-    // this.cd.detectChanges();
   }
 
   public optionSelected(event: MatAutocompleteSelectedEvent): void {
@@ -204,7 +202,6 @@ export class ChipInputComponent extends BaseFormElement
     this.updatePossibleChips();
     this.transmit({ removed: name });
     this.autocompleteTrigger.closePanel();
-    // this.cd.detectChanges();
   }
 
   private unSelectLastChip(): void {
@@ -240,7 +237,6 @@ export class ChipInputComponent extends BaseFormElement
     this.inputFocused = false;
     if (!this.autocompletePanel.isOpen) {
       this.addChipFromInput();
-      this.autocompleteTrigger.closePanel(); // new
     }
   }
 
@@ -252,33 +248,24 @@ export class ChipInputComponent extends BaseFormElement
           this.value = this.value.slice(0, -1);
           this.updatePossibleChips();
           this.transmit({ removed: lastChipName });
-
-          // this.zone.run(() => {
-          //   this.transmit({ removed: lastChipName });
-          // });
         } else {
           this.chips.list.last.chip.nativeElement.classList.add('focused');
           this.chips.list.last.chip.nativeElement.dataset.aboutToDelete =
             'true';
         }
-
-        setTimeout(() => {
-          this.input.nativeElement.focus();
-          this.autocompleteTrigger.closePanel();
-        }, 0);
+        this.zone.runOutsideAngular(() => {
+          setTimeout(() => {
+            this.input.nativeElement.focus();
+            this.autocompleteTrigger.closePanel();
+          }, 0);
+        });
       }
     } else if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.comma)) {
       this.addChipFromInput();
-
-      // this.zone.run(() => {
-      //   this.addChipFromInput();
-      // });
-
       this.autocompleteTrigger.closePanel();
     } else {
       this.unSelectLastChip();
     }
-    // this.cd.detectChanges();
   }
 
   public onInputKeydown(event: KeyboardEvent): void {
