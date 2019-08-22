@@ -1,4 +1,4 @@
-import { Component, Input, HostBinding } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'b-input-message, [b-input-message]',
@@ -39,7 +39,8 @@ import { Component, Input, HostBinding } from '@angular/core';
     </span>
     <ng-content></ng-content>
   `,
-  styleUrls: ['./input-message.component.scss']
+  styleUrls: ['./input-message.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputMessageComponent {
   constructor() {}
