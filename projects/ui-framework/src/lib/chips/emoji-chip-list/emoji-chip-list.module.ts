@@ -8,7 +8,6 @@ import { EmojiFromCodePipe } from './emoji-from-code.pipe';
   imports: [
     CommonModule
   ],
-  providers: [EmojiFromCodePipe],
-  exports: [EmojiChipListComponent]
+  exports: [EmojiChipListComponent, EmojiFromCodePipe]
 })
 export class EmojiChipListModule { }

@@ -1,8 +1,10 @@
 @import '../../style/functions';
+@import '../../style/colors';
 :host {
   //noinspection ALL
   .emoji-chip-item {
     position: relative;
+    cursor: pointer;
     z-index: 1;
     margin: 0 2px;
     display: inline-flex;
@@ -12,7 +14,6 @@
     border-radius: times8(1);
     border: 1px solid $grey-500;
     background-color: #fff;
-    cursor: pointer;
     transition: transform .1s;
     &:hover {
       transform: scale(1.1);

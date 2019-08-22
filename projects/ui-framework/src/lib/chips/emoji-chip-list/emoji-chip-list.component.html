@@ -1,8 +1,9 @@
-<div class="emoji-chip-item" *ngFor="let chip of chips">
+<div class="emoji-chip-item" *ngFor="let chip of chips"
+     (click)="chipClick(chip)">
   <span class="reaction-number" *ngIf="chip.number">
-    {{chip.number}}
+    {{valueFormatterFn(chip.number)}}
   </span>
   <span class="reaction-emoji">
-    {{chip.emoji}}
+    {{chip.emoji | emojiFromCode}}
   </span>
 </div>
