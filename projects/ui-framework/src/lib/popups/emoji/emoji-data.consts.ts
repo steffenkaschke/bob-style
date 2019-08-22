@@ -1,5 +1,6 @@
 import { find } from 'lodash';
-export const EMOJI_DATA = {
+import {EmojiCategories} from './emoji.interface';
+export const EMOJI_DATA: EmojiCategories = {
   people: [
     {
     code: '1F600',

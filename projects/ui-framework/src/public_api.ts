@@ -122,6 +122,8 @@ export {
 } from './lib/chips/chip/chip.component';
 // Chip List
 export { ChipListModule } from './lib/chips/chip-list/chip-list.module';
+export { EmojiChipListModule } from './lib/chips/emoji-chip-list/emoji-chip-list.module';
+export { EmojiChipListComponent } from './lib/chips/emoji-chip-list/emoji-chip-list.component';
 export { ChipListComponent } from './lib/chips/chip-list/chip-list.component';
 // Chip Input
 export { ChipInputModule } from './lib/chips/chip-input/chip-input.module';
