@@ -4,7 +4,7 @@ import { EmojiChipListComponent } from './emoji-chip-list.component';
 import {MockPipe} from 'ng-mocks';
 import {EmojiFromCodePipe} from './emoji-from-code.pipe';
 
-fdescribe('EmojiChipListComponent', () => {
+describe('EmojiChipListComponent', () => {
   let component: EmojiChipListComponent;
   let fixture: ComponentFixture<EmojiChipListComponent>;
 
