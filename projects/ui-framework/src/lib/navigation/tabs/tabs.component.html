@@ -1,14 +1,14 @@
-<mat-tab-group #tabgroup
-               [ngClass]="'tabs-'+type"
+<mat-tab-group [ngClass]="'tabs-'+type"
                (selectedTabChange)="onSelectChange($event)"
                [selectedIndex]="selectedIndex"
                [disableRipple]="true">
 
   <ng-container *ngFor="let tab of tabs; let i = index;">
-    <mat-tab #matTabs
-             [label]="tab.label">
+    <mat-tab [label]="tab.label">
       <ng-template mat-tab-label>
-        <span #matLabels (click)="tabClick(tab, i)" class="tab-label {{tab?.key}}">{{tab.label}}</span>
+        <span #matLabels
+              (click.outside-zone)="tabClick(tab, i)"
+              class="tab-label {{tab?.key}}">{{tab.label}}</span>
       </ng-template>
     </mat-tab>
   </ng-container>
