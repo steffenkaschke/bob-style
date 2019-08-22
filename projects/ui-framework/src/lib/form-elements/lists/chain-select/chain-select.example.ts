@@ -58,7 +58,7 @@ export const template = `
 })
 export class ChainSelectExampleComponent {
   public selectedIdList = [1, 2, 3];
-  public actionLabel = 'Add another';
+  @Input() actionLabel: string;
   @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
 
   public change($event) {

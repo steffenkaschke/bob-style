@@ -10,7 +10,12 @@ const buttonStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
-const template = `<b-chain-select-example (selectChange)="selectChange($event)"></b-chain-select-example>`;
+const template = `
+<b-chain-select-example
+  [actionLabel]="actionLabel"
+  (selectChange)="selectChange($event)">
+</b-chain-select-example>
+`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Chain select'">
@@ -43,7 +48,8 @@ buttonStories.add(
   () => ({
     template: storyTemplate,
     props: {
-      selectChange: action('Chain select event')
+      selectChange: action('Chain select event'),
+      actionLabel: text('action label', 'Add another'),
     },
     moduleMetadata: {
       imports: [StoryBookLayoutModule, ChainSelectExampleModule],
