@@ -11,6 +11,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TabsType } from './tabs.enum';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 describe('TabsComponent', () => {
   let component: TabsComponent;
@@ -19,8 +21,13 @@ describe('TabsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MatTabsModule, BrowserAnimationsModule],
-      declarations: [TabsComponent]
-    }).compileComponents();
+      declarations: [TabsComponent],
+      providers: [EventManagerPlugins[0]]
+    })
+      .overrideComponent(TabsComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default }
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -86,9 +93,11 @@ describe('TabsComponent', () => {
 
     it('should output select click event', () => {
       component.selectedIndex = 1;
+      component.selectClick.subscribe(() => {});
       fixture.detectChanges();
-      const label = fixture.debugElement.queryAll(By.css('.tab-label'))[1];
-      label.triggerEventHandler('click', null);
+      const label = fixture.debugElement.queryAll(By.css('.tab-label'))[1]
+        .nativeElement;
+      label.click();
       expect(component.selectClick.emit).toHaveBeenCalledTimes(1);
       expect(component.selectClick.emit).toHaveBeenCalledWith({
         index: 1,
