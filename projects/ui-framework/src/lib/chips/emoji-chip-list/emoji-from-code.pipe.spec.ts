@@ -5,6 +5,7 @@ describe('EmojiFromCodePipe', () => {
     const pipe = new EmojiFromCodePipe();
     expect(pipe).toBeTruthy();
   });
+
   it('should transform method convert emoji code to emoji UTF8 string', () => {
     const pipe = new EmojiFromCodePipe();
     expect(pipe.transform('1F45B')).toEqual('👛');
