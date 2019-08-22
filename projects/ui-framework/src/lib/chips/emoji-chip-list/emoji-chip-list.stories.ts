@@ -6,6 +6,17 @@ import * as readme from './README.md';
 import {EmojiChipListComponent} from './emoji-chip-list.component';
 import {ComponentGroupType} from '../../consts';
 import {EmojiFromCodePipe} from './emoji-from-code.pipe';
+import {StoryBookLayoutModule} from '../../story-book-layout/story-book-layout.module';
+
+const storyTemplate = `
+<b-story-book-layout [title]="'Emoji Chip List'">
+  <div>
+    <b-emoji-chip-list
+    [chips]="chips"
+    ></b-emoji-chip-list>
+  </div>
+</b-story-book-layout>
+`;
 
 storiesOf(ComponentGroupType.Chips, module)
   .addDecorator(moduleMetadata({
@@ -13,13 +24,15 @@ storiesOf(ComponentGroupType.Chips, module)
       EmojiChipListComponent,
       EmojiFromCodePipe
     ],
-    imports     : [],
+    imports     : [
+      StoryBookLayoutModule
+    ],
     providers   : [],
     schemas     : [],
   }))
   .add('Emoji chip list',
     () => ({
-      component: EmojiChipListComponent,
+      template: storyTemplate,
       props: {
         chips: object('chips', [
           '1F45F',
