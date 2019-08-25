@@ -1,16 +1,16 @@
 <section class="bcp-section"
          [attr.aria-disabled]="disabled || null"
-         [ngClass]="{'bcp-section-collapsible': collapsible && hasPanelContent,
-        'bcp-section-expanded': collapsible && hasPanelContent && expanded}">
+         [ngClass]="{'bcp-section-collapsible': collapsible ,
+        'bcp-section-expanded': collapsible && expanded}">
 
   <header class="
          bcp-header"
           [attr.id]="panelID+'-header'"
-          [attr.aria-controls]="(collapsible && hasPanelContent && panelID) || null"
-          [attr.aria-expanded]="(collapsible && hasPanelContent && expanded) || null"
+          [attr.aria-controls]="(collapsible && panelID) || null"
+          [attr.aria-expanded]="(collapsible && expanded) || null"
           [ngClass]="{
-          'b-icon-chevron-right': collapsible && hasPanelContent && hasPanelContent && !expanded,
-          'b-icon-chevron-down': collapsible && hasPanelContent && hasPanelContent && expanded
+          'b-icon-chevron-right': collapsible && !expanded,
+          'b-icon-chevron-down': collapsible && expanded
           }"
           (click.outside-zone)="togglePanel()">
 
@@ -37,7 +37,7 @@
   </header>
 
   <div class="bcp-panel"
-       *ngIf="(!collapsible || contentLoaded) && hasPanelContent"
+       *ngIf="(!collapsible && hasPanelContent) || (collapsible && contentLoaded)"
        [ngClass]="{
          'bcp-panel-collapsed': collapsible && !expanded,
          'bcp-panel-expanded': collapsible && expanded

@@ -402,9 +402,11 @@ export * from './lib/table/card-table/card-table.interface';
 export { CollapsibleModule } from './lib/layout/collapsible/collapsible.module';
 export { CollapsibleComponent } from './lib/layout/collapsible/collapsible.component';
 export { CollapsibleType } from './lib/layout/collapsible/collapsible.enum';
-// Section Container
-export { SectionContainerModule } from './lib/layout/sectionContainer/sectionContainer.module';
-export { SectionContainerComponent } from './lib/layout/sectionContainer/sectionContainer.component';
+// Collapsible Section
+export { CollapsibleSectionModule } from './lib/layout/collapsible-section/collapsible-section.module';
+export { CollapsibleSectionComponent } from './lib/layout/collapsible-section/collapsible-section.component';
+export { CollapsibleOptions } from './lib/layout/collapsible-section/collapsible-section.interface';
+export { collapsibleOptionsDef } from './lib/layout/collapsible-section/collapsible-section.const';
 
 /*
  * Misc

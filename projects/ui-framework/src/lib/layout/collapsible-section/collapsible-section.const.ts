@@ -1,4 +1,4 @@
-import { CollapsibleOptions } from './collapsible2.interface';
+import { CollapsibleOptions } from './collapsible-section.interface';
 
 export const collapsibleOptionsDef: CollapsibleOptions = {
   smallTitle: false,

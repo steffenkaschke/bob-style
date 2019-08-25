@@ -15,7 +15,6 @@ p {
 
 .bcp-section {
   background-color: white;
-  margin-bottom: times8(1);
 
   @include desktop {
     border-radius: $border-radius;
@@ -51,7 +50,7 @@ p {
 }
 
 .bcp-header {
-  padding: times8(2) base8(30);
+  padding: times8(2) times8(4);
   justify-content: space-between;
 
   &:before {
@@ -105,7 +104,7 @@ p {
 // Panel
 
 .bcp-panel {
-  padding: times8(3) base8(30);
+  padding: times8(3) times8(4);
   border-top: 1px solid $grey-500;
 
   &::ng-deep {

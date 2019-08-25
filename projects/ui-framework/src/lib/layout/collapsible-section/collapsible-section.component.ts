@@ -3,35 +3,32 @@ import {
   Input,
   Output,
   EventEmitter,
-  HostBinding,
   AfterViewInit,
   ViewChild,
   ElementRef,
   NgZone,
   ChangeDetectorRef,
   ChangeDetectionStrategy,
-  AfterContentInit,
   SimpleChanges,
   OnChanges,
   OnInit,
   OnDestroy
 } from '@angular/core';
-import { CollapsibleType } from './collapsible2.enum';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { collapsibleOptionsDef } from './collapsible2.const';
-import { CollapsibleOptions } from './collapsible2.interface';
+import { collapsibleOptionsDef } from './collapsible-section.const';
+import { CollapsibleOptions } from './collapsible-section.interface';
 
 @Component({
-  selector: 'b-collapsible2',
-  templateUrl: './collapsible2.component.html',
-  styleUrls: ['./collapsible2.component.scss'],
+  selector: 'b-collapsible-section',
+  templateUrl: './collapsible-section.component.html',
+  styleUrls: ['./collapsible-section.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Collapsible2Component
+export class CollapsibleSectionComponent
   implements OnChanges, OnInit, AfterViewInit, OnDestroy {
   constructor(
     private host: ElementRef,
@@ -93,9 +90,9 @@ export class Collapsible2Component
         this.hasHeaderContent = !this.DOM.isEmpty(
           this.headerContent.nativeElement
         );
-        this.hasPanelContent = !this.DOM.isEmpty(
-          this.panelContent.nativeElement
-        );
+        this.hasPanelContent =
+          this.panelContent &&
+          !this.DOM.isEmpty(this.panelContent.nativeElement);
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
         }
@@ -110,7 +107,7 @@ export class Collapsible2Component
   }
 
   togglePanel(state = null): void {
-    if (this.collapsible && this.hasPanelContent && !this.disabled) {
+    if (this.collapsible && !this.disabled) {
       this.contentLoaded = true;
       this.cd.detectChanges();
 

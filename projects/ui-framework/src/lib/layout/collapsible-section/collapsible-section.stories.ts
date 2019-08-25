@@ -8,10 +8,8 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
-import { CollapsibleModule } from './collapsible2.module';
-import { CollapsibleType } from './collapsible2.enum';
+import { CollapsibleSectionModule } from './collapsible-section.module';
 import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -27,13 +25,14 @@ import { AvatarComponent } from '../../buttons-indicators/avatar/avatar.componen
 import { ChipComponent } from '../../chips/chip/chip.component';
 import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
 import { ChipModule } from '../../chips/chip/chip.module';
+import { CollapsibleSectionExampleModule } from './collapsible-section-example.module';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
 const template = `
-  <b-collapsible2
+  <b-collapsible-section
     [collapsible]="collapsible"
     [expanded]="expanded"
     [disabled]="disabled"
@@ -49,69 +48,29 @@ const template = `
     <p>{{ content[2] }}</p>
     <p>{{ content[0] }}</p>
 
-  </b-collapsible2>
-`;
-
-const template2 = `
-  <b-collapsible2
-    [collapsible]="true"
-    [expanded]="expanded"
-    [disabled]="disabled"
-
-
-
-    (closed)="onPanelClosed($event)"
-    (opened)="onPanelOpened($event)">
-
-
-    <b-table-card header [meta]="tableCardMeta" [row]="tableCardRow">
-    </b-table-card>
-
-    <div content>
-      <p>{{ content[0] }}</p>
-      <p>{{ content[1] }}</p>
-      <p>{{ content[2] }}</p>
-    </div>
-
-  </b-collapsible2>
-`;
-
-const template3 = `
-  <b-collapsible2
-    [collapsible]="collapsible"
-    [expanded]="expanded"
-    [disabled]="disabled"
-
-    [title]="title[2]"
-    [description]="description[2]"
-
-
-    (closed)="onPanelClosed($event)"
-    (opened)="onPanelOpened($event)">
-
-    <p>{{ content[2] }}</p>
-    <p>{{ content[0] }}</p>
-    <p>{{ content[1] }}</p>
-
-  </b-collapsible2>
+  </b-collapsible-section>
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Collapsible'" style="background-color: rgb(245,245,245);">
   <div style="max-width: none; margin: 0 -30px; padding: 0 50px; overflow: hidden;">
-    ${template}
-    ${template2}
-    ${template3}
+
+   <b-collapsible-section-example-1
+      [collapsible]="collapsible"
+      [expanded]="expanded"
+      [disabled]="disabled">
+   </b-collapsible-section-example-1>
+
 </div>
 
 </b-story-book-layout>
 `;
 
 const note = `
-  ## Collapsible panel
+  ## Collapsible Section
 
   #### Module
-  *CollapsibleModule*
+  *CollapsibleSectionModule*
 
   #### Properties
   Name | Type | Description | Default value
@@ -136,42 +95,13 @@ const note = `
   ~~~
 `;
 
-const typeOptions = values(CollapsibleType);
-
-const tableCardMeta = [
-  {
-    id: 1,
-    name: 'Requested For',
-    width: 25
-  },
-  {
-    id: 2,
-    name: 'Subject',
-    textStyle: {
-      fontWeight: '500'
-    },
-    width: 18
-  },
-  {
-    id: 3,
-    name: 'Requested by'
-  },
-  {
-    id: 4,
-    name: 'Assignee'
-  }
-];
-
-const tableCardRow = CardTableMockData[1].slice(1);
-
 story.add(
-  'Collapsible2',
+  'Collapsible Section',
   () => {
     return {
       template: storyTemplate,
       props: {
-        collapsible: boolean('collapsible', false),
-        type: select('type', typeOptions, CollapsibleType.small),
+        collapsible: boolean('collapsible', true),
         expanded: boolean('expanded', false),
         disabled: boolean('disabled', false),
 
@@ -201,25 +131,17 @@ story.add(
         ]),
 
         onPanelOpened: action('Panel opened'),
-        onPanelClosed: action('Panel closed'),
-
-        tableCardMeta: object('tableCardMeta', tableCardMeta),
-        tableCardRow: object('tableCardRow', tableCardRow)
+        onPanelClosed: action('Panel closed')
       },
       moduleMetadata: {
-        declarations: [TableCardComponent, TableCardCellComponent],
+        declarations: [],
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          CollapsibleModule,
-          ButtonsModule,
-          UtilComponentsModule,
-          TruncateTooltipModule,
-          ComponentRendererModule,
-          AvatarModule,
-          ChipModule
+          CollapsibleSectionModule,
+          CollapsibleSectionExampleModule
         ],
-        entryComponents: [AvatarComponent, ChipComponent]
+        entryComponents: []
       }
     };
   },
