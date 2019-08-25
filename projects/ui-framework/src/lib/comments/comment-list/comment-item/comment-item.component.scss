@@ -1,0 +1,27 @@
+@import "../../../style/common-imports";
+:host {
+  .comment-menu {
+    display: block;
+    float: right;
+    margin: 3px 0;
+  }
+  .comment-content {
+    padding: 11px 15px;
+    flex-grow: 1;
+  }
+  .text-section {
+    display: block;
+    background-color: $grey-100;
+    min-height: 44px;
+    border: 1px solid $grey-500;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 12px;
+    &:after {
+      border-right-color: $grey-100;
+    }
+    &:before {
+      border-right-color: $grey-500;
+    }
+  }
+}

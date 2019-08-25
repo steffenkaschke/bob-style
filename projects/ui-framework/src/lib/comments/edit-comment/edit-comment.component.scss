@@ -1,0 +1,25 @@
+@import "../../popups/overlay";
+@import "../../style/common-imports";
+.text-section {
+  ::ng-deep b-textarea {
+    position: relative;
+    .bfe-wrap.focused[class] {
+      border-color: $grey-500;
+    }
+    textarea.bfe-input.bfe-textarea {
+      resize: none;
+      height: times8(5);
+      min-height: times8(5);
+      transition: height, min-height .3s;
+      will-change: height, min-height;
+      &:hover {
+        transition-duration: .3s;
+      }
+      &:focus {
+        height: times8(10);
+        min-height: times8(10);
+        max-height: times8(10);
+      }
+    }
+  }
+}
