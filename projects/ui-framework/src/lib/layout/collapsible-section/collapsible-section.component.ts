@@ -115,7 +115,10 @@ export class CollapsibleSectionComponent
       this.expanded = typeof state === 'boolean' ? state : !this.expanded;
       this.cd.detectChanges();
 
-      if (this.opened.observers.length > 0 || this.closed.observers.length > 0) {
+      if (
+        this.opened.observers.length > 0 ||
+        this.closed.observers.length > 0
+      ) {
         this.zone.run(() => {
           this.emitEvent();
         });

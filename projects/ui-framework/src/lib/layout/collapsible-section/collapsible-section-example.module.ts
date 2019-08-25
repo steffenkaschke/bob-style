@@ -29,6 +29,7 @@ import { IconColor, Icons } from '../../icons/icons.enum';
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { LabelValueModule } from '../../typography/label-value/label-value.module';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { InputModule } from '../../form-elements/input/input.module';
 
 @Component({
   selector: 'b-collapsible-section-example-1',
@@ -289,16 +290,99 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   }
 }
 
+@Component({
+  selector: 'b-collapsible-section-example-2',
+  template: `
+    <b-collapsible-section
+      [title]="title"
+      [description]="description"
+      [collapsible]="collapsible"
+      [expanded]="expanded"
+      [disabled]="disabled"
+      (opened)="onOpened()"
+      (closed)="onClosed()"
+    >
+      <div header class="row">
+        <b-button [type]="'secondary'" [text]="buttonText1"></b-button>
+        <b-button class="cell" [text]="buttonText2"></b-button>
+      </div>
+
+      <div class="row row-wrap">
+        <div class="cell" *ngFor="let cell of formCells">
+          <b-input
+            [label]="cell.label"
+            [placeholder]="cell.placeholder"
+            [hintMessage]="cell.hint"
+          ></b-input>
+        </div>
+      </div>
+    </b-collapsible-section>
+  `,
+  styles: [
+    ':host {display: block;}',
+    '.row { display: flex; justify-content: space-between; }',
+    '.row-wrap { flex-wrap: wrap; }',
+    '.cell { width: 48%; margin-bottom: 16px; }',
+    '.cell:nth-last-child(1), .cell:nth-last-child(2) { margin-bottom: 0; }',
+    'b-button {margin-right: 8px;}',
+    'b-button:last-child {margin-right: 0;}'
+  ]
+})
+export class CollapsibleSectionExample2Component implements OnChanges {
+  constructor() {}
+
+  @Input() collapsible = true;
+  @Input() expanded = false;
+  @Input() disabled = false;
+
+  @Input() title = mockText(randomNumber(2, 5));
+  @Input() description = mockText(randomNumber(3, 6));
+
+  @Output() opened: EventEmitter<void> = new EventEmitter<void>();
+  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
+
+  readonly labelValueType = LabelValueType;
+
+  public buttonText1 = mockText(1);
+  public buttonText2 = mockText(1);
+
+  public formCells = makeArray(6).map(i => ({
+    label: mockText(randomNumber(1, 2)),
+    placeholder: mockText(randomNumber(2, 4)),
+    hint: mockText(randomNumber(3, 6))
+  }));
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.collapsible && changes.collapsible.firstChange) {
+      this.collapsible = false;
+    }
+  }
+
+  onOpened(): void {
+    this.opened.emit();
+  }
+
+  onClosed(): void {
+    this.closed.emit();
+  }
+}
 @NgModule({
-  declarations: [CollapsibleSectionExample1Component],
+  declarations: [
+    CollapsibleSectionExample1Component,
+    CollapsibleSectionExample2Component
+  ],
   imports: [
     BrowserModule,
     CollapsibleSectionModule,
     LabelValueModule,
     AvatarModule,
     TypographyModule,
-    ButtonsModule
+    ButtonsModule,
+    InputModule
   ],
-  exports: [CollapsibleSectionExample1Component]
+  exports: [
+    CollapsibleSectionExample1Component,
+    CollapsibleSectionExample2Component
+  ]
 })
 export class CollapsibleSectionExampleModule {}

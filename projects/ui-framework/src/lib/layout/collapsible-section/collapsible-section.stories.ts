@@ -26,8 +26,8 @@ const template = `
     [expanded]="expanded"
     [disabled]="disabled"
 
-    [title]="title[0]"
-    [description]="description[0]"
+    [title]="title"
+    [description]="description"
 
 
     (closed)="onPanelClosed($event)"
@@ -42,7 +42,14 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Collapsible Section'" style="background-color: rgb(245,245,245);">
-  <div style="max-width: 1000px;">
+
+  <style>
+    .exmpls-wrap > * {
+      margin-bottom: 32px;
+    }
+  </style>
+
+  <div class="exmpls-wrap" style="max-width: 1000px;">
 
    <b-collapsible-section-example-1
       [collapsible]="collapsible"
@@ -51,6 +58,16 @@ const storyTemplate = `
       (closed)="onPanelClosed($event)"
       (opened)="onPanelOpened($event)">
    </b-collapsible-section-example-1>
+
+   <b-collapsible-section-example-2
+      [title]="title"
+      [description]="description"
+      [collapsible]="collapsible"
+      [expanded]="expanded"
+      [disabled]="disabled"
+      (closed)="onPanelClosed($event)"
+      (opened)="onPanelOpened($event)">
+   </b-collapsible-section-example-2>
 
 </div>
 
@@ -94,7 +111,8 @@ story.add(
         collapsible: boolean('collapsible', false),
         expanded: boolean('expanded', false),
         disabled: boolean('disabled', false),
-
+        title: text('title', mockText(randomNumber(2, 5))),
+        description: text('description', mockText(randomNumber(3, 6))),
         onPanelOpened: action('Panel opened'),
         onPanelClosed: action('Panel closed')
       },
