@@ -13,10 +13,6 @@
     }
   }
 
-  b-component-renderer {
-    display: block;
-  }
-
   .delete-button {
     display: none;
     position: absolute;
@@ -26,7 +22,7 @@
 }
 
 .then {
-  margin: 8px 0 8px 16px;
+  margin: times8(1) 0 times8(1) times8(2);
 
   b-icon {
     transform: rotate(90deg);
