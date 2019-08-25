@@ -4,6 +4,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   selector: 'b-input-message, [b-input-message]',
   template: `
     <span
+      *ngIf="hintMessage || warnMessage || errorMessage"
       [ngClass]="
         this.disabled
           ? 'disabled '

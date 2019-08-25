@@ -34,6 +34,7 @@ import { Platform } from '@angular/cdk/platform';
 import { simpleChange } from '../../services/utils/test-helpers';
 import { RichTextEditorModule } from './rte.module';
 import { placeholderMock } from './rte-placeholder/rte-placeholder.mock';
+import { InputMessageComponent } from '../input-message/input-message.component';
 
 @Component({
   template: `
@@ -106,6 +107,9 @@ describe('RichTextEditorComponent', () => {
       providers: []
     })
       .overrideComponent(RichTextEditorComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default }
+      })
+      .overrideComponent(InputMessageComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default }
       })
       .compileComponents()
@@ -537,9 +541,9 @@ describe('RichTextEditorComponent', () => {
       ).nativeElement;
 
       expect(counterElement.textContent).toContain('10/30');
-      expect(RTEnativeElement.classList).not.toContain('length-warning');
+      expect(RTEnativeElement.classList).not.toContain('warn');
     });
-    it('Should not display char counter if maxChars prop is undefined', () => {
+    it('Should not display char counter if maxChars and minChars prop are undefined', () => {
       const counterElement = fixture.debugElement.query(
         By.css('.length-indicator')
       );
@@ -553,7 +557,10 @@ describe('RichTextEditorComponent', () => {
         })
       );
       fixture.detectChanges();
-      expect(RTEeditorNativeElement.classList).toContain('length-warning');
+      const counterElement = fixture.debugElement.query(
+        By.css('.length-indicator')
+      ).nativeElement;
+      expect(counterElement.classList).toContain('warn');
     });
     it('Should not allow to enter more than maxChars characters', () => {
       RTEComponent.maxChars = 30;

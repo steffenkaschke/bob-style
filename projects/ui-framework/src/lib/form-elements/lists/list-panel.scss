@@ -12,12 +12,11 @@
     min-width: 280px;
 
     .b-select-panel {
-
       @include OverlayPointerHolders();
       @include OverlayPositionBounding('center');
 
       &:before {
-        border-color: transparent transparent $grey-500 $grey-500;
+        border-color: transparent transparent $grey-500 $grey-500 !important;
       }
 
       &.panel-below {
@@ -41,7 +40,6 @@
           bottom: $panel-arrow-size/-2 + 1px;
         }
       }
-
     }
   }
 }
