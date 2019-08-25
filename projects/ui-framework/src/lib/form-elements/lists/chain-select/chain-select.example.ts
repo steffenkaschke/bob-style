@@ -14,7 +14,7 @@ import { SelectGroupOption } from '../list.interface';
 export class ChainSingleSelectExampleComponent implements OnInit {
   @Input() selectedId: number;
   public options: SelectGroupOption[];
-  public selectChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
 
   ngOnInit(): void {
     this.options = [{
@@ -40,24 +40,25 @@ export class ChainSingleSelectExampleComponent implements OnInit {
   }
 }
 
+export const template = `
+  <b-chain-select [actionLabel]="actionLabel"
+                  [selectedItemList]="selectedIdList"
+                  (selectChange)="change($event)">
+      <b-chain-single-select-example
+        *bChainSelect="let selected=selected; let selectChange=selectChange; let index=index"
+        [selectedId]="selected"
+        (selectChange)="selectChange($event, index)">
+      </b-chain-single-select-example>
+  </b-chain-select>
+`;
+
 @Component({
+  template,
   selector: 'b-chain-select-example',
-  template: `
-    <b-chain-select [selectComponent]="selectComponent"
-                    [selectComponentConfig]="selectComponentConfig"
-                    [actionLabel]="actionLabel"
-                    (selectChange)="change($event)">
-    </b-chain-select>
-  `
 })
 export class ChainSelectExampleComponent {
-  public selectComponent = ChainSingleSelectExampleComponent;
-  public selectComponentConfig = {
-    selectedIdKey: 'selectedId',
-    outputKey: 'selectChange',
-    selectedIds: [1, 2, 3],
-  };
-  public actionLabel = 'Add another';
+  public selectedIdList = [1, 2, 3];
+  @Input() actionLabel: string;
   @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
 
   public change($event) {

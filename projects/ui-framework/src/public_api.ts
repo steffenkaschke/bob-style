@@ -220,7 +220,10 @@ export {
 
 // Chain select
 export {
-  SelectComponentConfig
+  ChainSelectEventEnum
+} from './lib/form-elements/lists/chain-select/chain-select.enum';
+export {
+  ChainSelectEvent
 } from './lib/form-elements/lists/chain-select/chain-select.interface';
 export {
   ChainSelectComponent
