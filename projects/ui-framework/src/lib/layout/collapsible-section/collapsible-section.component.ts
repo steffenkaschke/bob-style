@@ -90,9 +90,6 @@ export class CollapsibleSectionComponent
         this.hasHeaderContent = !this.DOM.isEmpty(
           this.headerContent.nativeElement
         );
-        this.hasPanelContent =
-          this.panelContent &&
-          !this.DOM.isEmpty(this.panelContent.nativeElement);
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
         }
@@ -108,17 +105,21 @@ export class CollapsibleSectionComponent
 
   togglePanel(state = null): void {
     if (this.collapsible && !this.disabled) {
-      this.contentLoaded = true;
-      this.cd.detectChanges();
-
+      if (!this.contentLoaded) {
+        this.contentLoaded = true;
+        this.cd.detectChanges();
+      }
       if (!this.contentHeight) {
         this.setCssVars();
       }
+      this.expanded = typeof state === 'boolean' ? state : !this.expanded;
+      this.cd.detectChanges();
 
-      this.zone.run(() => {
-        this.expanded = typeof state === 'boolean' ? state : !this.expanded;
-        this.emitEvent();
-      });
+      if (this.opened.observers.length > 0 || this.closed.observers.length > 0) {
+        this.zone.run(() => {
+          this.emitEvent();
+        });
+      }
     }
   }
 

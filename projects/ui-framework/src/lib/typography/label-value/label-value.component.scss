@@ -78,6 +78,10 @@ $BLVTypeMap: (
   max-width: 100%;
 }
 
+:host::ng-deep > :not(.blv-icon):not(.blv-label):not(.blv-value) {
+  order: 4;
+}
+
 :host {
   display: flex;
   flex-direction: column;
@@ -85,6 +89,7 @@ $BLVTypeMap: (
   align-items: flex-start;
   @include b-body($addCssVars: true);
   max-width: 100%;
+  min-width: 0;
 
   &[data-swap='true'] {
     .blv-label {

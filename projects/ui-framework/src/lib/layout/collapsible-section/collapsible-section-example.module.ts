@@ -1,18 +1,34 @@
-import { Component, Input, NgModule } from '@angular/core';
+import {
+  Component,
+  Input,
+  NgModule,
+  SimpleChanges,
+  OnChanges,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CollapsibleSectionModule } from './collapsible-section.module';
-import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { TypographyModule } from '../../typography/typography.module';
-import { mockAvatar, mockNames, mockJobs, mockDate } from '../../mock.const';
-import { LabelValueType } from '../../typography/label-value/label-value.enum';
-import { randomNumber } from '../../services/utils/functional-utils';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
-import { IconColor, Icons } from '../../icons/icons.enum';
 import {
-  ButtonSize,
-  ButtonType
-} from '../../buttons-indicators/buttons/buttons.enum';
-import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-tooltip.module';
+  mockAvatar,
+  mockNames,
+  mockJobs,
+  mockDate,
+  mockText,
+  mockDateRange
+} from '../../mock.const';
+import {
+  LabelValueType,
+  IconPosition
+} from '../../typography/label-value/label-value.enum';
+import { randomNumber, makeArray } from '../../services/utils/functional-utils';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { IconColor, Icons } from '../../icons/icons.enum';
+import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
+import { LabelValueModule } from '../../typography/label-value/label-value.module';
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 
 @Component({
   selector: 'b-collapsible-section-example-1',
@@ -21,26 +37,34 @@ import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-
       [collapsible]="collapsible"
       [expanded]="expanded"
       [disabled]="disabled"
+      (opened)="onOpened()"
+      (closed)="onClosed()"
     >
-      <div header>
-        <div class="cell">
+      <div header class="row row-spread">
+        <div class="cell cell-valign">
           <b-avatar [imageSource]="avatar.imageSource"></b-avatar>
           <b-label-value
             [type]="labelValueType.three"
             [label]="avatar.label"
             [value]="avatar.value"
+            [labelMaxLines]="1"
+            [valueMaxLines]="1"
           ></b-label-value>
         </div>
 
-        <div class="cell">
+        <div class="cell cell-valign">
           <b-label-value
             [type]="labelValueType.one"
             [label]="holiday.label"
             [value]="holiday.value"
+            [icon]="holiday.icon"
+            [iconPosition]="holiday.iconPosition"
+            [labelMaxLines]="1"
+            [valueMaxLines]="1"
           ></b-label-value>
         </div>
 
-        <div class="cell">
+        <div class="cell cell-valign">
           <b-label-value
             [type]="labelValueType.one"
             [label]="days.label"
@@ -48,7 +72,10 @@ import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-
           ></b-label-value>
         </div>
 
-        <div class="cell buttons">
+        <div
+          class="cell cell-valign buttons"
+          (click)="$event.stopPropagation()"
+        >
           <b-square-button
             [type]="cancelButton.type"
             [color]="cancelButton.color"
@@ -63,34 +90,134 @@ import { TruncateTooltipModule } from '../../services/truncate-tooltip/truncate-
           ></b-square-button>
         </div>
       </div>
+
+      <div class="panel">
+        <div class="row">
+          <div class="cell">
+            <b-label-value
+              [type]="labelValueType.four"
+              [label]="curBalance.label"
+              [value]="curBalance.value"
+            ></b-label-value>
+          </div>
+
+          <div class="cell">
+            <b-label-value
+              [type]="labelValueType.two"
+              [label]="docs.label"
+              [value]="docs.value"
+              [icon]="docs.icon"
+              [iconPosition]="docs.iconPosition"
+              [valueMaxLines]="1"
+              (valueClicked)="$event.stopPropagation()"
+            ></b-label-value>
+          </div>
+
+          <div class="cell">
+            <b-label-value
+              [type]="labelValueType.two"
+              [label]="reason.label"
+              [value]="reason.value"
+              [valueMaxLines]="1"
+            ></b-label-value>
+          </div>
+        </div>
+
+        <h5 class="b-bold-body">
+          Who's out
+        </h5>
+
+        <div class="row">
+          <div class="cell">
+            <b-label-value
+              [type]="labelValueType.two"
+              [label]="outHoliday.label"
+            >
+              <div class="row avatars">
+                <b-avatar
+                  *ngFor="let avatar of outHoliday.avatars"
+                  [imageSource]="avatar.imageSource"
+                  [attr.data-tooltip]="avatar.tooltip"
+                  data-tooltip-prewrap="true"
+                ></b-avatar>
+              </div>
+            </b-label-value>
+          </div>
+
+          <div class="cell">
+            <b-label-value [type]="labelValueType.two" [label]="outWork.label">
+              <div class="row avatars">
+                <b-avatar
+                  *ngFor="let avatar of outWork.avatars"
+                  [imageSource]="avatar.imageSource"
+                  [attr.data-tooltip]="avatar.tooltip"
+                  data-tooltip-prewrap="true"
+                ></b-avatar>
+              </div>
+            </b-label-value>
+          </div>
+
+          <div class="cell">
+            <b-label-value
+              [type]="labelValueType.two"
+              [label]="outMilitary.label"
+            >
+              <div class="row avatars">
+                <b-avatar
+                  *ngFor="let avatar of outMilitary.avatars"
+                  [imageSource]="avatar.imageSource"
+                  [attr.data-tooltip]="avatar.tooltip"
+                  data-tooltip-prewrap="true"
+                ></b-avatar>
+              </div>
+            </b-label-value>
+          </div>
+        </div>
+      </div>
     </b-collapsible-section>
   `,
   styles: [
     ':host {display: block;}',
-    ':host::ng-deep [header] { display: flex; jsutify-content: space-between; }',
-    ':host::ng-deep [header] .cell { display: flex; flex: 1; align-items: center; }',
-    ':host::ng-deep [header] .cell.buttons { flex-grow: 0; }',
-    ':host::ng-deep [header] b-avatar { margin-right: 8px; }'
+    ':host::ng-deep .row, :host::ng-deep .cell { display: flex; }',
+    ':host::ng-deep .row-spread { justify-content: space-between; }',
+    ':host::ng-deep .cell { margin-right: 16px; min-width: 0; }',
+    ':host::ng-deep .cell-valign { align-items: center; }',
+    ':host::ng-deep .cell:last-child { margin-right: 0; }',
+    ':host::ng-deep .cell.buttons { flex-grow: 0; min-width: 72px; margin-right: -16px; }',
+    ':host::ng-deep [header] b-avatar { margin-right: 8px; }',
+    ':host::ng-deep .panel h5 { margin-top: 32px; margin-bottom: 8px; }',
+    ':host::ng-deep .panel .cell { margin-right: 48px; }',
+    ':host::ng-deep .avatars { margin-top: 4px; }',
+    ':host::ng-deep .avatars b-avatar { margin-right: 16px; }',
+    ':host::ng-deep .avatars b-avatar:last-child { margin-right: 0; }',
+    ':host::ng-deep .avatars b-avatar:after {min-width: 200px; text-align: center; }'
   ]
 })
-export class CollapsibleSectionExample1Component {
+export class CollapsibleSectionExample1Component implements OnChanges {
+  constructor() {}
+
   @Input() collapsible = true;
   @Input() expanded = false;
   @Input() disabled = false;
+  @Output() opened: EventEmitter<void> = new EventEmitter<void>();
+  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
   readonly labelValueType = LabelValueType;
 
+  public daysNum = randomNumber(2, 10);
   public avatar = {
     imageSource: mockAvatar(),
     label: mockNames(1),
     value: mockJobs(1)
   };
   public holiday = {
-    label: mockDate(),
-    value: 'Holiday'
+    label: mockDateRange(this.daysNum),
+    value: 'Holiday',
+    icon: Icons.doc_icon,
+    iconPosition: IconPosition.left
   };
   public days = {
-    label: randomNumber(1, 15),
+    label: this.daysNum,
     value: 'Days'
   };
   public cancelButton = {
@@ -105,8 +232,61 @@ export class CollapsibleSectionExample1Component {
     size: ButtonSize.medium,
     icon: Icons.tick
   };
+  public curBalance = {
+    label: 'Current balance',
+    value: randomNumber(2, 8) + '.' + randomNumber(10, 90)
+  };
+  public docs = {
+    label: 'Docs',
+    value: mockText(1) + '.pdf',
+    icon: Icons.doc,
+    iconPosition: IconPosition.value
+  };
+  public reason = {
+    label: 'Reason',
+    value: '"I\'m planning a trip to celebrate my birthday."'
+  };
+  public outHolidayNum = 3;
+  public outHoliday = {
+    label: 'Holiday (' + this.outHolidayNum + ')',
+    avatars: makeArray(this.outHolidayNum).map(i => ({
+      imageSource: mockAvatar(),
+      size: AvatarSize.mini,
+      tooltip: mockNames(1) + '\n' + mockDateRange() + '\n' + 'Approved'
+    }))
+  };
+  public outWorkNum = 5;
+  public outWork = {
+    label: 'Work travel (' + this.outWorkNum + ')',
+    avatars: makeArray(this.outWorkNum).map(i => ({
+      imageSource: mockAvatar(),
+      size: AvatarSize.mini,
+      tooltip: mockNames(1) + '\n' + mockDateRange() + '\n' + 'Approved'
+    }))
+  };
+  public outMilitaryNum = 2;
+  public outMilitary = {
+    label: 'Military (' + this.outMilitaryNum + ')',
+    avatars: makeArray(this.outMilitaryNum).map(i => ({
+      imageSource: mockAvatar(),
+      size: AvatarSize.mini,
+      tooltip: mockNames(1) + '\n' + mockDateRange() + '\n' + 'Approved'
+    }))
+  };
 
-  constructor() {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.collapsible && changes.collapsible.firstChange) {
+      this.collapsible = true;
+    }
+  }
+
+  onOpened(): void {
+    this.opened.emit();
+  }
+
+  onClosed(): void {
+    this.closed.emit();
+  }
 }
 
 @NgModule({
@@ -114,10 +294,10 @@ export class CollapsibleSectionExample1Component {
   imports: [
     BrowserModule,
     CollapsibleSectionModule,
+    LabelValueModule,
     AvatarModule,
     TypographyModule,
-    ButtonsModule,
-    TruncateTooltipModule
+    ButtonsModule
   ],
   exports: [CollapsibleSectionExample1Component]
 })

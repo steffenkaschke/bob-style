@@ -143,3 +143,9 @@ p {
     opacity: 0;
   }
 }
+
+.bcp-panel-expanded {
+  .bcp-panel-content-wrap {
+    @include animate('enableOverflow', 0s, $transition-length);
+  }
+}

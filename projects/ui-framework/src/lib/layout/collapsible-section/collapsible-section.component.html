@@ -37,7 +37,7 @@
   </header>
 
   <div class="bcp-panel"
-       *ngIf="(!collapsible && hasPanelContent) || (collapsible && contentLoaded)"
+       *ngIf="!collapsible || (collapsible && contentLoaded)"
        [ngClass]="{
          'bcp-panel-collapsed': collapsible && !expanded,
          'bcp-panel-expanded': collapsible && expanded

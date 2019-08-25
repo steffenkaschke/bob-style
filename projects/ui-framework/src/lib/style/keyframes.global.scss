@@ -6,3 +6,39 @@
     pointer-events: all;
   }
 }
+
+@keyframes enableOverflow {
+  from {
+    overflow: hidden;
+  }
+  to {
+    overflow: visible;
+  }
+}
+
+@keyframes disableOverflow {
+  from {
+    overflow: visible;
+  }
+  to {
+    overflow: hidden;
+  }
+}
+
+@keyframes visibility {
+  from {
+    visibility: hidden;
+  }
+  to {
+    visibility: visible;
+  }
+}
+
+@keyframes invisibility {
+  from {
+    visibility: visible;
+  }
+  to {
+    visibility: hidden;
+  }
+}

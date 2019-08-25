@@ -6,23 +6,6 @@ $mat-header-not-hover-selector: '.mat-expansion-panel-header:not(.mat-expanded):
 
 $indicatorimg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 10' width='6px' height='10px'%3E%3Cpath fill='%23535353' d='M1.1 0L0 1.2 3.7 5 0 8.8 1.1 10 6 5z'/%3E%3C/svg%3E");
 
-@keyframes visibility {
-  0% {
-    visibility: hidden;
-  }
-  100% {
-    visibility: visible;
-  }
-}
-@keyframes invisibility {
-  0% {
-    visibility: visible;
-  }
-  100% {
-    visibility: hidden;
-  }
-}
-
 :host {
   text-align: left;
   display: block;
