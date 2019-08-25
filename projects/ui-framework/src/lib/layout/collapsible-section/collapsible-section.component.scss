@@ -146,6 +146,6 @@ p {
 
 .bcp-panel-expanded {
   .bcp-panel-content-wrap {
-    @include animate('enableOverflow', 0s, $transition-length);
+    @include animate(enableOverflow, 0s, $transition-length);
   }
 }

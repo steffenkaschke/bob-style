@@ -103,9 +103,9 @@
   $id: simpleUID();
   @if $keyframes {
     @include keyframes($name, $id: ('-' + $id));
-    animation-name: ($name + '-' + $id);
+    animation-name: (unquote($name) + '-' + $id);
   } @else {
-    animation-name: $name;
+    animation-name: unquote($name);
   }
   animation-duration: $time;
   animation-iteration-count: $iterate;
