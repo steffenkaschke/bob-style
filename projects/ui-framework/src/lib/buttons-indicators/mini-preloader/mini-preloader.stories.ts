@@ -13,7 +13,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { TypographyModule } from '../../typography/typography.module';
 
 const inputStories = storiesOf(
-  ComponentGroupType.ButtonsAndIndicators,
+  ComponentGroupType.Indicators,
   module
 ).addDecorator(withKnobs);
 

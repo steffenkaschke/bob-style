@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AlertService } from './alert-service/alert.service';
 import { AlertConfig } from './alert.interface';
 import { AlertType } from './alert.enum';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
 import {
   BrowserAnimationsModule,
   NoopAnimationsModule

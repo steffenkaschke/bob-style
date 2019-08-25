@@ -24,7 +24,7 @@ import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
 import { ListFooterActions } from '../list.interface';
-import { TruncateTooltipComponent } from '../../../services/truncate-tooltip/truncate-tooltip.component';
+import { TruncateTooltipComponent } from '../../../popups/truncate-tooltip/truncate-tooltip.component';
 import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
 
 @Component({

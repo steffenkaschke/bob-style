@@ -8,7 +8,7 @@ import {
   OnDestroy
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { ButtonType } from '../../buttons-indicators/buttons/buttons.enum';
+import { ButtonType } from '../../buttons/buttons.enum';
 import { LightboxConfig } from './lightbox.interface';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';

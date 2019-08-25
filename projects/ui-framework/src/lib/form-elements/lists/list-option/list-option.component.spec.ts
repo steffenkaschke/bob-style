@@ -2,9 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ListOptionComponent } from './list-option.component';
 import { FiltersModule } from '../../../services/filters/filters.module';
-import { AvatarComponent } from '../../../buttons-indicators/avatar/avatar.component';
+import { AvatarComponent } from '../../../avatar/avatar/avatar.component';
 import { NgModule } from '@angular/core';
-import { AvatarModule } from '../../../buttons-indicators/avatar/avatar.module';
+import { AvatarModule } from '../../../avatar/avatar/avatar.module';
 import { By } from '@angular/platform-browser';
 
 @NgModule({

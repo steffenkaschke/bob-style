@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TypographyModule } from '../../../typography/typography.module';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 import { SingleSelectPanelComponent } from './single-select-panel.component';
 import { SingleListModule } from '../single-list/single-list.module';
 import { OverlayModule } from '@angular/cdk/overlay';

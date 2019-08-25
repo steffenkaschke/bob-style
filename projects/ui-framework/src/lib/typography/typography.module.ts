@@ -9,9 +9,6 @@ import { CaptionComponent } from './caption/caption.component';
 import { BigBodyComponent } from './big-body/big-body.component';
 import { BoldBodyComponent } from './bold-body/bold-body.component';
 import { BodyComponent } from './body/body.component';
-import { LabelValueComponent } from './label-value/label-value.component';
-import { CommonModule } from '@angular/common';
-import { EventManagerPlugins } from '../services/utils/eventManager.plugins';
 
 @NgModule({
   declarations: [
@@ -24,10 +21,9 @@ import { EventManagerPlugins } from '../services/utils/eventManager.plugins';
     CaptionComponent,
     BigBodyComponent,
     BoldBodyComponent,
-    BodyComponent,
-    LabelValueComponent
+    BodyComponent
   ],
-  imports: [CommonModule],
+  imports: [],
   exports: [
     Display1Component,
     Display2Component,
@@ -38,9 +34,7 @@ import { EventManagerPlugins } from '../services/utils/eventManager.plugins';
     CaptionComponent,
     BigBodyComponent,
     BoldBodyComponent,
-    BodyComponent,
-    LabelValueComponent
-  ],
-  providers: [EventManagerPlugins[0]]
+    BodyComponent
+  ]
 })
 export class TypographyModule {}

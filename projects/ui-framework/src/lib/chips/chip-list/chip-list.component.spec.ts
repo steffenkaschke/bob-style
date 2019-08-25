@@ -9,7 +9,7 @@ import {
 } from '../../services/utils/test-helpers';
 import { ChipComponent } from '../chip/chip.component';
 import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
-import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 describe('ChipListComponent', () => {

@@ -18,7 +18,7 @@ import {
   getType
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
 import { BlotType } from '../../../../ui-framework/src/lib/form-elements/rich-text-editor/rte-core/rte.enum';
-import { AvatarComponent } from '../../../../ui-framework/src/lib/buttons-indicators/avatar/avatar.component';
+import { AvatarComponent } from '../../../../ui-framework/src/lib/avatar/avatar/avatar.component';
 import {
   truthyOrFalse,
   arrayOfStringsOrArrayFromString,

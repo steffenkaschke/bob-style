@@ -18,7 +18,7 @@ import { Keys } from '../../enums';
 import { ChipComponent } from '../chip/chip.component';
 import { arrayOfValuesToArrayOfObjects } from '../../services/utils/transformers';
 import { ChipType, ChipListAlign, ChipListSelectable } from '../chips.enum';
-import { AvatarSize } from '../../buttons-indicators/avatar/avatar.enum';
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 
 @Component({
   selector: 'b-chip-list',

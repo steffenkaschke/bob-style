@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output, Type } from '@angular/core';
-import { isEmpty, clone } from 'lodash';
-import { ChainLink, SelectComponentConfig } from './chain-select.interface';
+import { Component, EventEmitter, Input, OnInit, Output, ContentChild } from '@angular/core';
+import { cloneDeep } from 'lodash';
 import { Icons, IconSize } from '../../../icons/icons.enum';
-import { ButtonSize, ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
-import { ListChange } from '../list-change/list-change';
+import { ButtonSize, ButtonType } from '../../../buttons/buttons.enum';
+import { ChainSelectDirective } from './chain-select.directive';
+import { ChainSelectEvent } from './chain-select.interface';
+import { ChainSelectEventEnum } from './chain-select.enum';
 
 @Component({
   selector: 'b-chain-select',
@@ -12,67 +13,36 @@ import { ListChange } from '../list-change/list-change';
 })
 export class ChainSelectComponent implements OnInit {
   @Input() actionLabel: string;
-  @Input() selectComponent: Type<any>;
-  @Input() selectComponentConfig: SelectComponentConfig;
-  @Output() selectChange: EventEmitter<ListChange[]> =
-    new EventEmitter<ListChange[]>();
+  @Input() selectedItemList: any[] = [null];
+  @Output() selectChange: EventEmitter<ChainSelectEvent> =
+    new EventEmitter<ChainSelectEvent>();
+
+  public chainLinkList: any[];
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
-  public chainLinkList: ChainLink[];
-  public state: ListChange[];
 
-  constructor() {}
+  @ContentChild(ChainSelectDirective, { static: true }) contentChild !: ChainSelectDirective;
 
   ngOnInit() {
-    if (isEmpty(this.selectComponentConfig.selectedIds) || !this.selectComponentConfig.selectedIdKey) {
-      this.chainLinkList = [this.createEmptyChainLink(0)];
-      this.state = [null];
-    } else {
-      this.chainLinkList = this.selectComponentConfig.selectedIds.map((optionId, index) => ({
-        selectComponentConfig: {
-          component: this.selectComponent,
-          attributes: {
-            [this.selectComponentConfig.selectedIdKey]: optionId,
-            ...this.selectComponentConfig.filterFn && { filterFn: this.selectComponentConfig.filterFn },
-          },
-          handlers: {
-            [this.selectComponentConfig.outputKey]: $event => this.handleChange($event, index)
-          }
-        }
-      }));
-      this.state = this.selectComponentConfig.selectedIds.map(() => null);
-    }
+    this.chainLinkList = cloneDeep(this.selectedItemList);
   }
 
   public addChainLink() {
-    this.chainLinkList.push(this.createEmptyChainLink(this.chainLinkList.length));
+    this.chainLinkList.push(null);
   }
 
   public removeChainLink(index: number) {
     this.chainLinkList.splice(index, 1);
-    this.state.splice(index, 1);
-    this.selectChange.emit(this.state);
+    this.selectChange.emit({
+      index,
+      event: ChainSelectEventEnum.delete,
+    });
   }
 
-  private createEmptyChainLink(index: number): ChainLink {
-    return {
-      selectComponentConfig: {
-        component: this.selectComponent,
-        attributes: {
-          ...this.selectComponentConfig.filterFn && { filterFn: this.selectComponentConfig.filterFn },
-        },
-        handlers: {
-          [this.selectComponentConfig.outputKey]: $event => this.handleChange($event, index)
-        }
-      }
-    };
-  }
-
-  private handleChange($event, index) {
-    this.state.splice(index, 1, $event);
-    this.selectChange.emit(this.state);
+  public handleChange($event, index) {
+    this.selectChange.emit({ index, event: $event });
   }
 }

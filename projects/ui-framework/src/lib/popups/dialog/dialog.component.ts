@@ -5,7 +5,7 @@ import { DialogButton, DialogButtons } from './dialog.interface';
 import {
   ButtonSize,
   ButtonType
-} from '../../buttons-indicators/buttons/buttons.enum';
+} from '../../buttons/buttons.enum';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { SLIDE_UP_DOWN } from '../../style/animations';
 import { get, has, isFunction } from 'lodash';

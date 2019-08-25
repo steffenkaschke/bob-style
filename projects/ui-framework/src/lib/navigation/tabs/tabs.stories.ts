@@ -62,11 +62,11 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  tabs | Tabs[] | tabs metadata
-  type | TabsType | tabs style (defaults to 'primary')
-  selectedIndex | number | the selected tab index 0-n
-  selectClick | MatTabChangeEvent | event contains the index (number) and the matTab
-  selectChange | MatTabChangeEvent | event contains the index (number) and the matTab
+  [tabs] | Tabs[] | tabs metadata
+  [type] | TabsType | tabs style (defaults to 'primary')
+  [selectedIndex] | number | the selected tab index 0-n
+  (selectClick) | MatTabChangeEvent | event contains the index (number) and the matTab
+  (selectChange) | MatTabChangeEvent | event contains the index (number) and the matTab
 
   ~~~
   ${template}

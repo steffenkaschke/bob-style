@@ -1,5 +1,7 @@
 export enum ComponentGroupType {
-  ButtonsAndIndicators = 'Components|Buttons & Indicators',
+  Buttons = 'Components|Buttons',
+  Indicators = 'Components|Indicators',
+  Avatar = 'Components|Avatar',
   FormElements = 'Components|Form Elements',
   Cards = 'Components|Cards',
   Charts = 'Components|Charts',

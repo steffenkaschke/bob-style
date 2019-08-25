@@ -8,11 +8,29 @@
     [ngClass]="icon && iconPosition === iconPositions.label ? icon + (iconSize ? ' b-icon-' + iconSize : '
     b-icon-small') + (labelClicked.observers.length >
     0? ' has-hover': '') : null"
-    [attr.tabindex]="labelClicked.observers.length > 0 ? 0 : null">{{label}}</h6>
+    [attr.tabindex]="labelClicked.observers.length > 0 ? 0 : null">
+  <b-truncate-tooltip *ngIf="labelMaxLines"
+                      [maxLines]="labelMaxLines"
+                      [type]="tooltipType.css"
+                      [trustCssVars]="true"
+                      [expectChanges]="expectChanges">
+    {{label}}
+  </b-truncate-tooltip>
+  <ng-container *ngIf="!labelMaxLines">{{label}}</ng-container>
+</h6>
 
 <p *ngIf="value"
    class="blv-value"
    [ngClass]="icon && iconPosition === iconPositions.value ? icon + (iconSize ? ' b-icon-' + iconSize : '
    b-icon-small') + (valueClicked.observers.length >
    0? ' has-hover': '') : null"
-   [attr.tabindex]="valueClicked.observers.length > 0 ? 0 : null">{{value}}</p>
+   [attr.tabindex]="valueClicked.observers.length > 0 ? 0 : null">
+  <b-truncate-tooltip *ngIf="valueMaxLines"
+                      [maxLines]="valueMaxLines"
+                      [type]="tooltipType.css"
+                      [trustCssVars]="true"
+                      [expectChanges]="expectChanges">
+    {{value}}
+  </b-truncate-tooltip>
+  <ng-container *ngIf="!valueMaxLines">{{value}}</ng-container>
+</p>

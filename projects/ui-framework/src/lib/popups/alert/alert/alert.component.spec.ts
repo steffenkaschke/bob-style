@@ -3,7 +3,7 @@ import { AlertComponent } from './alert.component';
 import { AlertType } from '../alert.enum';
 import { MockComponent } from 'ng-mocks';
 import { IconComponent } from '../../../icons/icon.component';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 import { TypographyModule } from '../../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 

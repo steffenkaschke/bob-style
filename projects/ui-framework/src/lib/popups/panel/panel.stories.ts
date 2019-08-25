@@ -8,7 +8,7 @@ import {
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { PanelModule } from './panel.module';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -29,7 +29,9 @@ const template = `
          [showBackdrop]="showBackdrop"
          [defaultPosVer]="panelDefaultPosVer"
          [openOnHover]="openOnHover"
-         (closed)="onPanelDestroyed()">
+         (closed)="onPanelDestroyed()"
+         (opened)="onPanelOpened()"
+>
   <b-button panel-trigger>
     Time Off Policies info
   </b-button>
@@ -68,6 +70,7 @@ const note = `
   showBackdrop | boolean | show backdrop | true
   openOnHover | boolean | trigger panel open on hover (delay 300ms) | false
   closed | Function | Handler for panel Closed event | none
+  opened | Function | Handler for panel Opened event | none
 
   ~~~
   ${template}
@@ -87,7 +90,8 @@ buttonStories.add(
       ),
       showBackdrop: boolean('showBackdrop', true),
       openOnHover: boolean('openOnHover', false),
-      onPanelDestroyed: action('Panel destroyed')
+      onPanelDestroyed: action('Panel destroyed'),
+      onPanelOpened: action('Panel opened'),
     },
     moduleMetadata: {
       imports: [

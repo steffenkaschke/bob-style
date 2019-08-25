@@ -72,7 +72,7 @@
   }
   @if $useCssVars {
     $return: unquote(
-      'calc(var(--font-size) * var(--line-height) * #{$lines} + #{add-unit($add)})'
+      'calc(var(--font-size, 1em) * var(--line-height, 1.5) * #{$lines} + #{add-unit($add)})'
     );
   }
   @return $return;

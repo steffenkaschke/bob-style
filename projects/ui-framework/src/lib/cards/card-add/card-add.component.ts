@@ -5,7 +5,6 @@ import {
   Input,
   ElementRef
 } from '@angular/core';
-import { CardType } from '../cards.enum';
 import { AddCard } from './card-add.interface';
 import { BaseCardElement } from '../card/card.abstract';
 
@@ -20,11 +19,9 @@ export class CardAddComponent extends BaseCardElement {
     super(cardElRef);
   }
 
-  readonly cardType = CardType;
-
   @Input() card: AddCard;
 
-  @HostBinding('attr.tabindex') string = '0';
+  @HostBinding('attr.tabindex') tabindx = '0';
 
   @HostListener('click', ['$event'])
   onClick($event: MouseEvent) {

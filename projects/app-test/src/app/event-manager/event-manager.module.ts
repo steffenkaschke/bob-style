@@ -12,7 +12,7 @@ import {
 import { BrowserModule } from '@angular/platform-browser';
 // tslint:disable-next-line: max-line-length
 import { ComponentRendererModule } from '../../../../ui-framework/src/lib/services/component-renderer/component-renderer.module';
-import { ButtonsModule } from '../../../../ui-framework/src/lib/buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../../../ui-framework/src/lib/buttons/buttons.module';
 import { EventManagerPlugins } from '../../../../ui-framework/src/lib/services/utils/eventManager.plugins';
 import { UtilComponentsModule } from '../../../../ui-framework/src/lib/services/util-components/utilComponents.module';
 import {

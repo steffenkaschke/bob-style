@@ -3,11 +3,11 @@ import { text, object, withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 import { Icons } from '../../../icons/icons.enum';
 import { SelectGroupOption } from '../list.interface';
 import { MultiSelectPanelModule } from './multi-select-panel.module';
-import { ButtonType } from '../../../buttons-indicators/buttons/buttons.enum';
+import { ButtonType } from '../../../buttons/buttons.enum';
 import { action } from '@storybook/addon-actions';
 
 const inputStories = storiesOf(

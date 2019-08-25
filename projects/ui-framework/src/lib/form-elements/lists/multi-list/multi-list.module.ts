@@ -7,7 +7,7 @@ import { FiltersModule } from '../../../services/filters/filters.module';
 import { ListOptionModule } from '../list-option/list-option.module';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 import { ListFooterModule } from '../list-footer/list-footer.module';
 import { SearchModule } from '../../../search/search/search.module';
 import { CheckboxModule } from '../../checkbox/checkbox.module';

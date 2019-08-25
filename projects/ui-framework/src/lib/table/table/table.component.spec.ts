@@ -3,7 +3,7 @@ import { TableComponent } from './table.component';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { AvatarModule } from '../../buttons-indicators/avatar/avatar.module';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { TableModule } from '../table.module';
 import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar.component';
 import { AgGridModule } from 'ag-grid-angular';

@@ -9,12 +9,14 @@
 
 <h4 class="card-title"
     [b-truncate-tooltip]="2"
+    [type]="tooltipType.css"
     [trustCssVars]="true">
   {{card.title}}
 </h4>
 
 <p class="card-subtitle"
    [b-truncate-tooltip]="2"
+   [type]="tooltipType.css"
    [trustCssVars]="true">
   {{card.subtitle}}
 </p>

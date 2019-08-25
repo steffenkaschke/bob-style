@@ -5,7 +5,7 @@ import { cloneDeep } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { QuickFilterModule } from './quick-filter.module';
-import { ButtonsModule } from '../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuickFilterSelectType } from './quick-filter.enum';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';

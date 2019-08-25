@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { Card } from './card.interface';
 import { CardType } from '../cards.enum';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
 export abstract class BaseCardElement {
   constructor(public cardElRef: ElementRef) {}
@@ -16,6 +17,7 @@ export abstract class BaseCardElement {
   @Output() clicked: EventEmitter<any> = new EventEmitter<any>();
 
   readonly cardType = CardType;
+  readonly tooltipType = TruncateTooltipType;
 
   @HostBinding('attr.data-type') @Input() type: CardType = CardType.regular;
   @HostBinding('attr.role') role = 'listitem';

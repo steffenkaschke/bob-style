@@ -1,14 +1,8 @@
-import {
-  RenderedComponent
-} from '../../../services/component-renderer/component-renderer.interface';
+import { ChainSelectEventEnum } from './chain-select.enum';
 
-export interface ChainLink {
-  selectComponentConfig: RenderedComponent;
-}
+type ChainSelectEventType = ChainSelectEventEnum | Object;
 
-export interface SelectComponentConfig {
-  outputKey: string;
-  selectedIdKey?: string;
-  selectedIds?: (string | number)[];
-  filterFn?: (value: any) => boolean;
+export interface ChainSelectEvent {
+  event: ChainSelectEventType
+  index: number,
 }

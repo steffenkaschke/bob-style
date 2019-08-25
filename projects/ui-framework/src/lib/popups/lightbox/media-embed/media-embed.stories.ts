@@ -8,7 +8,7 @@ import {
 import { LightboxModule } from '../lightbox.module';
 import { ComponentGroupType } from '../../../consts';
 import { LightboxExampleModule } from '../lightbox-example.module';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 import { UtilComponentsModule } from '../../../services/util-components/utilComponents.module';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 

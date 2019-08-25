@@ -9,7 +9,7 @@ import {
 } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ButtonsModule } from '../../../buttons-indicators/buttons/buttons.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
@@ -21,7 +21,7 @@ import { SelectGroupOption } from '../list.interface';
 import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../list-change/list-change';
-import { TruncateTooltipModule } from '../../../services/truncate-tooltip/truncate-tooltip.module';
+import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate-tooltip.module';
 
 describe('MultiSelectComponent', () => {
   let component;

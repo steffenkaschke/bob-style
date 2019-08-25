@@ -11,6 +11,7 @@ import {
   isArray,
   isRenderedComponent
 } from '../../../services/utils/functional-utils';
+import { TruncateTooltipType } from '../../../popups/truncate-tooltip/truncate-tooltip.enum';
 
 @Component({
   selector: 'b-table-card-cell, [b-table-card-cell]',
@@ -26,6 +27,7 @@ export class TableCardCellComponent {
   ifString = isString;
   ifArray = isArray;
   ifComponent = isRenderedComponent;
+  readonly tooltipType = TruncateTooltipType;
 
   onComponentClick($event: any, cell: CardTableCellDataType): void {
     if ((cell as RenderedComponent).handlers) {
