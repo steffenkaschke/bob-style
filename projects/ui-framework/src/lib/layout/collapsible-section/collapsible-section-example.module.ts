@@ -301,6 +301,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
       [disabled]="disabled"
       (opened)="onOpened()"
       (closed)="onClosed()"
+      [options]="options"
     >
       <div header class="row">
         <b-button [type]="'secondary'" [text]="buttonText1"></b-button>
@@ -345,6 +346,9 @@ export class CollapsibleSectionExample2Component implements OnChanges {
 
   public buttonText1 = mockText(1);
   public buttonText2 = mockText(1);
+  public options = {
+    headerContentClickable: false
+  };
 
   public formCells = makeArray(6).map(i => ({
     label: mockText(randomNumber(1, 2)),

@@ -32,6 +32,11 @@ p {
 .bcp-title-wrap {
   display: flex;
   align-items: center;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .bcp-title-wrap {
@@ -68,13 +73,24 @@ p {
 }
 
 .bcp-title-wrap:not(:only-child) {
-  margin-right: times8(2);
+  @include desktop {
+    margin-right: times8(2);
+
+    & + * {
+      margin-left: auto;
+    }
+  }
+  @include mobile {
+    margin-bottom: times8(2);
+  }
 }
 
 .bcp-title,
 .bcp-description {
   max-width: 100%;
-  @include text-truncate;
+  @include desktop {
+    @include text-truncate;
+  }
   line-height: inherit;
 }
 
