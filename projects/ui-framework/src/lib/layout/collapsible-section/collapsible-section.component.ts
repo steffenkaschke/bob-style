@@ -69,7 +69,9 @@ export class CollapsibleSectionComponent
       };
     }
     if (changes.expanded && !changes.expanded.firstChange) {
-      this.togglePanel(changes.expanded.currentValue);
+      this.zone.runOutsideAngular(() => {
+        this.togglePanel(changes.expanded.currentValue);
+      });
     }
   }
 
@@ -111,6 +113,10 @@ export class CollapsibleSectionComponent
       }
       if (!this.contentHeight) {
         this.setCssVars();
+
+        setTimeout(() => {
+          this.setCssVars();
+        }, 2000);
       }
       this.expanded = typeof state === 'boolean' ? state : !this.expanded;
       this.cd.detectChanges();
@@ -128,7 +134,11 @@ export class CollapsibleSectionComponent
 
   setCssVars(): void {
     if (this.panelContent) {
-      this.contentHeight = this.panelContent.nativeElement.scrollHeight;
+      this.contentHeight =
+        this.panelContent.nativeElement.scrollHeight > 100
+          ? this.panelContent.nativeElement.scrollHeight
+          : 500;
+
       this.DOM.setCssProps(this.host.nativeElement, {
         '--panel-height': this.contentHeight + 'px'
       });

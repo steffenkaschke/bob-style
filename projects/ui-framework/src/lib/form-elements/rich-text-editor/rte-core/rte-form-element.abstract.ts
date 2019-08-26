@@ -17,7 +17,7 @@ import quillLib, {
   RangeStatic,
   DeltaStatic
 } from 'quill';
-import { RTEchangeEvent, BlotType, RTEFontSize } from './rte.enum';
+import { BlotType, RTEFontSize } from './rte.enum';
 import { RteUtilsService } from './rte-utils.service';
 import { BlotData, SpecialBlots, StoreCurrentResult } from './rte.interface';
 import { BaseFormElement } from '../../base-form-element';
