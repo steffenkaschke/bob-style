@@ -47,7 +47,9 @@ export class RteLinkBlot {
     this.linkEditor.url = this.currentBlot.link ? this.currentBlot.link : '';
     this.linkEditor.isEditing = !!this.currentBlot.link;
 
-    this.editor.blur();
+    if (this.editor) {
+      this.editor.blur();
+    }
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
         this.linkEditor.focusTextInput();
@@ -77,7 +79,9 @@ export class RteLinkBlot {
       noLinebreakAfter: this.specialBlots.noLinebreakAfter
     };
 
-    this.rteUtils.insertBlot(this.editor, updateConfig);
+    if (this.editor) {
+      this.rteUtils.insertBlot(this.editor, updateConfig);
+    }
     this.selection = null;
     this.linkPanel.closePanel();
   }
