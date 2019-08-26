@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, HostBinding, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {CommentItem} from '../../comments.interface';
 import {AvatarSize} from '../../../avatar/avatar/avatar.enum';
 import {ButtonSize, ButtonType} from '../../../buttons/buttons.enum';
@@ -19,18 +19,6 @@ export class CommentItemComponent {
   readonly icons = Icons;
   readonly iconColor = IconColor;
   readonly buttonSize = ButtonSize;
+
   @Input() comment: CommentItem;
-
-  @HostBinding('attr.data-focus-inside') menuIsOpened: boolean;
-
-  onMenuOpen(): void {
-    this.menuIsOpened = true;
-  }
-
-  onMenuClose(): void {
-    setTimeout(() => {
-      this.menuIsOpened = false;
-    }, 150);
-  }
-
 }

@@ -9,5 +9,8 @@ import {CommentItem} from '../comments.interface';
 })
 export class CommentListComponent {
   @Input() comments: CommentItem[];
-  constructor() { }
+
+  trackBy(idx) {
+    return idx;
+  }
 }

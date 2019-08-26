@@ -11,11 +11,11 @@ export const COMMENT_ITEM = {
   menuConfig: [
     {
       label: 'duplicate',
-      action: () => console.log('duplicate')
+      action: function(event) { console.log('duplicate', event); }
     },
     {
       label: 'delete',
-      action: () => console.log('delete')
+      action: function (event) { console.log('delete', event); }
     }
   ],
 };
@@ -34,9 +34,13 @@ export const LONG_COMMENT_ITEM = {
   actionConfig: {
     icon: Icons.delete,
     tooltip: 'Delete',
-    action: () => console.log('delete')
+    action: (event) => console.log('delete', event)
   }
 };
 export interface CommentItemDto {
   content: string;
 }
+
+export const eventEnterShiftKey = (shiftKey: boolean) => {
+  return {shiftKey: shiftKey, keyCode: '13', key: 'Enter', code: 'Enter'};
+};
