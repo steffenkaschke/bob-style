@@ -17,14 +17,10 @@ export class LinkBlot extends Inline {
   static tagName = 'a';
 
   static create(value: string) {
-    try {
-      const node: HTMLElement = super.create();
-      node.setAttribute('href', checkUrl(value));
-      node.setAttribute('target', '_blank');
-      return node;
-    } catch {
-      console.log('LinkBlot create failed');
-    }
+    const node: HTMLElement = super.create();
+    node.setAttribute('href', checkUrl(value));
+    node.setAttribute('target', '_blank');
+    return node;
   }
 
   static formats(node: HTMLElement): string {

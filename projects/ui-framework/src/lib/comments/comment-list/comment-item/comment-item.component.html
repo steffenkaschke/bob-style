@@ -1,0 +1,32 @@
+<b-avatar [size]="avatarSize.mini" [imageSource]="comment?.avatar" [matTooltip]="comment?.name"></b-avatar>
+<div class="text-section">
+  <div class="comment-menu" [class.focused]="menuOpen">
+    <b-menu class="card-menu"
+            *ngIf="comment?.menuConfig?.length > 0"
+            [menu]="comment.menuConfig"
+            (click.outside-zone)="$event.stopPropagation()"
+            (openMenu)="menuOpen = true"
+            (closeMenu)="closeMenu()"
+    >
+      <b-square-button menu-trigger
+                       [type]="buttonType.tertiary"
+                       [color]="iconColor.normal"
+                       [size]="buttonSize.medium"
+                       [icon]="icons.three_dots_vert">
+      </b-square-button>
+    </b-menu>
+
+    <b-square-button class="card-action"
+                     *ngIf="!(comment?.menuConfig?.length > 0) && comment.actionConfig"
+                     [type]="buttonType.tertiary"
+                     [size]="buttonSize.medium"
+                     [icon]="comment.actionConfig.icon"
+                     [color]="iconColor.normal"
+                     [toolTipSummary]="comment.actionConfig.tooltip"
+                     (click)="comment.actionConfig.action($event)">
+    </b-square-button>
+  </div>
+  <div class="comment-content">
+    {{comment.content}}
+  </div>
+</div>

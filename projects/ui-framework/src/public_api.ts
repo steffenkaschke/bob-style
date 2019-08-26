@@ -106,6 +106,13 @@ export { EmptyStateModule } from './lib/buttons-indicators/empty-state/empty-sta
 export { EmptyStateComponent } from './lib/buttons-indicators/empty-state/empty-state.component';
 export { EmptyStateConfig } from './lib/buttons-indicators/empty-state/empty-state.types';
 
+/*
+* Comments
+*/
+
+export { CommentsModule } from './lib/comments/comments.module';
+export { CommentListComponent } from './lib/comments/comment-list/comment-list.component';
+export { EditCommentComponent } from './lib/comments/edit-comment/edit-comment.component';
 
 /*
 * Chips
