@@ -3,6 +3,7 @@ export enum ComponentGroupType {
   Indicators = 'Components|Indicators',
   Avatar = 'Components|Avatar',
   FormElements = 'Components|Form Elements',
+  Comments = 'Components|Comments',
   Cards = 'Components|Cards',
   Charts = 'Components|Charts',
   Chips = 'Components|Chips',
