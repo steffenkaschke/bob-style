@@ -7,10 +7,8 @@
     opacity: 0;
     transition: opacity .3s;
   }
-  &:hover {
-    .comment-menu {
-      opacity: 1;
-    }
+  &:hover .comment-menu, .comment-menu.focused {
+    opacity: 1;
   }
   .comment-content {
     padding: 11px 15px;

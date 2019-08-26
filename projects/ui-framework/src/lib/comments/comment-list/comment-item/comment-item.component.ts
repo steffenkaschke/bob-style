@@ -14,6 +14,7 @@ import {IconColor, Icons} from '../../../icons/icons.enum';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommentItemComponent {
+  menuOpen = false;
   readonly avatarSize = AvatarSize;
   readonly buttonType = ButtonType;
   readonly icons = Icons;
@@ -21,4 +22,10 @@ export class CommentItemComponent {
   readonly buttonSize = ButtonSize;
 
   @Input() comment: CommentItem;
+
+  closeMenu() {
+    setTimeout(() => {
+      this.menuOpen = false;
+    });
+  }
 }

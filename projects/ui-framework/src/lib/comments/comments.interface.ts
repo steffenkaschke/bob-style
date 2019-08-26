@@ -1,19 +1,12 @@
-import {Icons} from '../icons/icons.enum';
-import {MenuItem} from '../navigation/menu/menu.interface';
-import {CardActionButton} from '../cards/card/card.interface';
+import {CommonActionButton, MenuItem} from '../navigation/menu/menu.interface';
 
 export interface CommentItem {
   avatar: string;
   name: string;
   content: string;
-  actionConfig?: CardActionButton;
+  actionConfig?: CommonActionButton;
   menuConfig?: MenuItem[];
 }
 export interface CommentItemDto {
   content: string;
-}
-export interface CommonActionButton {
-  icon: Icons;
-  tooltip?: string;
-  action?($event): void;
 }

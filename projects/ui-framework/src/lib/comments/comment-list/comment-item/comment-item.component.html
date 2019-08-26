@@ -1,10 +1,13 @@
 <b-avatar [size]="avatarSize.mini" [imageSource]="comment?.avatar" [matTooltip]="comment?.name"></b-avatar>
 <div class="text-section">
-  <div class="comment-menu">
+  <div class="comment-menu" [class.focused]="menuOpen">
     <b-menu class="card-menu"
             *ngIf="comment?.menuConfig?.length > 0"
             [menu]="comment.menuConfig"
-            (click.outside-zone)="$event.stopPropagation()">
+            (click.outside-zone)="$event.stopPropagation()"
+            (openMenu)="menuOpen = true"
+            (closeMenu)="closeMenu()"
+    >
       <b-square-button menu-trigger
                        [type]="buttonType.tertiary"
                        [color]="iconColor.normal"
