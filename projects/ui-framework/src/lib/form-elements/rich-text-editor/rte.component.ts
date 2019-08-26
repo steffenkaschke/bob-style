@@ -46,9 +46,9 @@ import { MixIn } from '../../services/utils/functional-utils';
 import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
 import { stringyOrFail } from '../../services/utils/transformers';
 
-quillLib.register(LinkBlot);
-quillLib.register(PlaceholderBlot);
-quillLib.register(Italic);
+// quillLib.register(LinkBlot);
+// quillLib.register(PlaceholderBlot);
+// quillLib.register(Italic);
 
 @Component({
   selector: 'b-rich-text-editor',
