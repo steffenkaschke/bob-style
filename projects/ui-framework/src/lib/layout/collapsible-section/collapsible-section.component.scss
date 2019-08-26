@@ -3,6 +3,28 @@
 $transition-length: 0.35s;
 $transition-easing: cubic-bezier(0.645, 0.045, 0.355, 1);
 
+@keyframes bcs-after-expand {
+  from {
+    // overflow: hidden;
+    // max-height: var(--panel-height, none);
+  }
+  to {
+    overflow: visible;
+    max-height: none;
+  }
+}
+
+@keyframes bcs-before-collapse {
+  from {
+    // overflow: visible;
+    // max-height: none;
+  }
+  to {
+    overflow: hidden;
+    // min-height: 0;
+  }
+}
+
 :host {
   display: block;
   text-align: left;
@@ -156,11 +178,13 @@ p {
   }
   .bcp-panel-content-wrap {
     overflow: hidden;
-    transition: max-height $transition-length, opacity $transition-length;
-    will-change: max-height, opacity;
+    transition: max-height $transition-length, opacity $transition-length,
+      min-height $transition-length;
+    will-change: max-height, opacity, min-height;
     transition-timing-function: $transition-easing;
     opacity: 1;
     max-height: var(--panel-height, none);
+    min-height: 0;
 
     &:empty {
       @include mini-preloader($base-selector: '&');
@@ -174,14 +198,27 @@ p {
     border-top-width: 0;
 
     .bcp-panel-content-wrap {
+      min-height: 0;
       max-height: 0;
       opacity: 0;
+
+      &:before {
+        display: none;
+      }
+
+      // animation-name: bcs-before-collapse;
+      // animation-duration: 0s;
+      // animation-delay: 0s;
+      // animation-fill-mode: forwards;
     }
   }
 
   .bcp-panel-expanded {
     .bcp-panel-content-wrap {
-      @include animate(enableOverflow, 0s, $transition-length);
+      animation-name: bcs-after-expand;
+      animation-duration: 0s;
+      animation-delay: $transition-length;
+      animation-fill-mode: forwards;
     }
   }
 }
