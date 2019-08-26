@@ -198,7 +198,11 @@ export class RichTextEditorComponent extends RTEformElement
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
         this.initEditor(this.editorOptions);
-        this.addKeyBindings();
+        if (this.editor) {
+          this.addKeyBindings();
+        } else {
+          console.log('onNgAfterViewInit: NO EDITOR!');
+        }
         this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
