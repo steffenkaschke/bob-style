@@ -387,6 +387,13 @@ export { TruncateTooltipModule } from './lib/popups/truncate-tooltip/truncate-to
 export { TruncateTooltipComponent } from './lib/popups/truncate-tooltip/truncate-tooltip.component';
 export { TruncateTooltipDirective } from './lib/popups/truncate-tooltip/truncate-tooltip.directive';
 export { TruncateTooltipType, TruncateTooltipPosition } from './lib/popups/truncate-tooltip/truncate-tooltip.enum';
+// CSS Tooltip
+export {
+  CSSTooltipWrap,
+  CSSTooltipPosition,
+  CSSTooltipShowOn,
+  CSSTooltipTextAlign
+} from './lib/popups/css-tooltip/css-tooltip.enum';
 
 /*
  * Tables
