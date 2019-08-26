@@ -25,17 +25,15 @@ const template = `
     [collapsible]="collapsible"
     [expanded]="expanded"
     [disabled]="disabled"
-
     [title]="title"
     [description]="description"
-
-
     (closed)="onPanelClosed($event)"
     (opened)="onPanelOpened($event)">
 
-    <p>{{ content[1] }}</p>
-    <p>{{ content[2] }}</p>
-    <p>{{ content[0] }}</p>
+      <b-button header [text]="buttonText" (clicked)="onClick()"></b-button>
+
+      <p>{{ content[1] }}</p>
+      <p>{{ content[2] }}</p>
 
   </b-collapsible-section>
 `;
@@ -49,7 +47,7 @@ const storyTemplate = `
     }
   </style>
 
-  <div class="exmpls-wrap" style="max-width: 1000px;">
+  <div class="exmpls-wrap" style="max-width: 1000px; width: 100%;">
 
    <b-collapsible-section-example-1
       [collapsible]="collapsible"
@@ -83,19 +81,17 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  expanded | boolean | if the panel is open | false
-  disabled | boolean | if the panel is disabled (can't be opened) | false
-  title | panel header title | title | ''
-  description | string | panel header description | none (optional)
+  [collapsible] | boolean | if the section is collapsible | false
+  [expanded] | boolean | if the panel is expanded (open) | false
+  [disabled] | boolean | if the panel is disabled (can't be opened) | false
+  [title] | section title | title | none
+  [description] | string | section description (subtitle) | none
+  (opened) |  EventEmitter | emits when collapsible panel was opened | none
+  (closed) |  EventEmitter | emits when collapsible panel was closed | none
 
-  Content marked with [suffix] will be projected into the right part of the panel header.
+  Content marked with [header] attribute will be projected into the  header (if Title text is present, the [header] content will be placed to the right of the Title, if no Title is present, [header] content will take the full width of header).
 
-
-  #### Events
-  Name | Description
-  --- | ---
-  opened | Emitted every time the panel is opened
-  closed | Emitted every time the panel is closed
+  Other content will be transcluded in the section body (panel).
 
   ~~~
   ${template}

@@ -77,6 +77,8 @@ p {
 }
 
 .bcp-title-wrap:not(:only-child) {
+  min-width: 0;
+
   @include desktop {
     margin-right: times8(2);
 
@@ -92,10 +94,6 @@ p {
 .bcp-title,
 .bcp-description {
   max-width: 100%;
-  @include desktop {
-    @include text-truncate;
-  }
-  line-height: inherit;
 }
 
 .bcp-title:not(:only-child) {
