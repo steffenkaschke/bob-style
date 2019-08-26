@@ -5,23 +5,23 @@ $transition-easing: cubic-bezier(0.645, 0.045, 0.355, 1);
 
 @keyframes bcs-after-expand {
   from {
-    // overflow: hidden;
-    // max-height: var(--panel-height, none);
+    overflow: hidden;
+    max-height: var(--panel-height, none);
   }
   to {
     overflow: visible;
-    max-height: none;
+    // max-height: none;
   }
 }
 
 @keyframes bcs-before-collapse {
   from {
-    // overflow: visible;
+    overflow: visible;
     // max-height: none;
   }
   to {
     overflow: hidden;
-    // min-height: 0;
+    // max-height: 0;
   }
 }
 
@@ -210,6 +210,9 @@ p {
       // animation-duration: 0s;
       // animation-delay: 0s;
       // animation-fill-mode: forwards;
+
+      animation-name: none;
+      animation-fill-mode: none;
     }
   }
 
