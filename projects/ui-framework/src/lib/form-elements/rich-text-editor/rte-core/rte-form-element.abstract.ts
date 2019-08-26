@@ -17,18 +17,18 @@ import quillLib, {
   RangeStatic,
   DeltaStatic
 } from 'quill';
-import { RTEchangeEvent, BlotType, RTEFontSize } from './rte.enum';
+import { BlotType, RTEFontSize } from './rte.enum';
 import { RteUtilsService } from './rte-utils.service';
 import { BlotData, SpecialBlots, StoreCurrentResult } from './rte.interface';
 import { BaseFormElement } from '../../base-form-element';
 import { PanelComponent } from '../../../popups/panel/panel.component';
 
-const Block = quillLib.import('blots/block');
-Block.tagName = 'DIV';
-quillLib.register(Block, true);
-quillLib.register(quillLib.import('attributors/style/direction'), true);
-quillLib.register(quillLib.import('attributors/style/align'), true);
-quillLib.register(quillLib.import('attributors/style/size'), true);
+// const Block = quillLib.import('blots/block');
+// Block.tagName = 'DIV';
+// quillLib.register(Block, true);
+// quillLib.register(quillLib.import('attributors/style/direction'), true);
+// quillLib.register(quillLib.import('attributors/style/align'), true);
+// quillLib.register(quillLib.import('attributors/style/size'), true);
 
 export abstract class RTEformElement extends BaseFormElement
   implements OnChanges, OnInit, AfterViewInit {
@@ -51,8 +51,9 @@ export abstract class RTEformElement extends BaseFormElement
   @Input() public disableControls: BlotType[] = this.disableControlsDef;
   @Input() public sendChangeOnWrite = false;
 
-  @ViewChild('quillEditor', { static: true }) protected quillEditor: ElementRef;
-  @ViewChild('toolbar', { static: true }) protected toolbar: ElementRef;
+  @ViewChild('quillEditor', { static: false })
+  protected quillEditor: ElementRef;
+  @ViewChild('toolbar', { static: false }) protected toolbar: ElementRef;
   @ViewChild('suffix', { static: false }) protected suffix: ElementRef;
   @ViewChild('sizePanel', { static: false })
   protected sizePanel: PanelComponent;
@@ -109,13 +110,15 @@ export abstract class RTEformElement extends BaseFormElement
       this.checkLength();
     } else if (this.editor) {
       this.editor.setText('\n');
+    } else {
+      console.log('applyValue: NO EDITOR!', newInputValue);
     }
     this.writingValue = false;
   }
 
   // outside zone
   protected transmitValue(): void {
-    if (!this.writingValue) {
+    if (!this.writingValue && this.editor) {
       let newOutputValue = this.rteUtils.getHtmlContent(this.editor).trim();
 
       newOutputValue =
@@ -223,11 +226,15 @@ export abstract class RTEformElement extends BaseFormElement
       this.required = changes.required.currentValue;
     }
     if (changes.placeholder || changes.label || changes.required) {
-      this.rteUtils.setEditorPlaceholder(
-        this.editor,
-        this.placeholder || this.label,
-        this.required && this.placeholder && this.label ? false : this.required
-      );
+      if (this.editor) {
+        this.rteUtils.setEditorPlaceholder(
+          this.editor,
+          this.placeholder || this.label,
+          this.required && this.placeholder && this.label
+            ? false
+            : this.required
+        );
+      }
     }
 
     this.onControlChanges(changes);
@@ -300,9 +307,11 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   public restoreSelection(): void {
-    this.editor.focus();
-    if (this.selection) {
-      this.editor.setSelection(this.selection);
+    if (this.editor) {
+      this.editor.focus();
+      if (this.selection) {
+        this.editor.setSelection(this.selection);
+      }
     }
   }
 
@@ -311,49 +320,53 @@ export abstract class RTEformElement extends BaseFormElement
     blot: Partial<BlotData> | boolean = true,
     text: string | boolean = false
   ): StoreCurrentResult {
-    const currentSelection = selection
-      ? (selection as RangeStatic).index
-        ? (selection as RangeStatic)
-        : this.rteUtils.getCurrentSelection(this.editor)
-      : this.selection;
-    let currentBlot: BlotData;
+    if (this.editor) {
+      const currentSelection = selection
+        ? (selection as RangeStatic).index
+          ? (selection as RangeStatic)
+          : this.rteUtils.getCurrentSelection(this.editor)
+        : this.selection;
+      let currentBlot: BlotData;
 
-    if (blot && (blot as BlotData).element) {
-      currentBlot = this.rteUtils.getBlotDataFromElement(
-        (blot as BlotData).element,
-        this.editor
-      );
-    } else if (blot) {
-      currentBlot = this.rteUtils.getCurrentBlotData(
-        this.editor,
-        false,
-        (blot as BlotData).index ||
-          ((blot as BlotData).offset &&
-            currentSelection.index + (blot as BlotData).offset)
-      );
-    }
-    const selectedText =
-      text && typeof text === 'string'
-        ? text
-        : this.rteUtils.getSelectionText(this.editor, currentSelection);
+      if (blot && (blot as BlotData).element) {
+        currentBlot = this.rteUtils.getBlotDataFromElement(
+          (blot as BlotData).element,
+          this.editor
+        );
+      } else if (blot) {
+        currentBlot = this.rteUtils.getCurrentBlotData(
+          this.editor,
+          false,
+          (blot as BlotData).index ||
+            ((blot as BlotData).offset &&
+              currentSelection.index + (blot as BlotData).offset)
+        );
+      }
+      const selectedText =
+        text && typeof text === 'string'
+          ? text
+          : this.rteUtils.getSelectionText(this.editor, currentSelection);
 
-    const result: StoreCurrentResult = {};
+      const result: StoreCurrentResult = {};
 
-    if (selection) {
-      result.selection = this.selection = currentSelection;
-    }
-    if (blot) {
-      result.currentBlot = this.currentBlot = currentBlot;
-    }
-    if (text) {
-      result.text = this.selectedText = selectedText;
-    }
+      if (selection) {
+        result.selection = this.selection = currentSelection;
+      }
+      if (blot) {
+        result.currentBlot = this.currentBlot = currentBlot;
+      }
+      if (text) {
+        result.text = this.selectedText = selectedText;
+      }
 
-    return result;
+      return result;
+    }
   }
 
   public changeFontSize(size: RTEFontSize) {
-    this.editor.format('size', size === RTEFontSize.normal ? false : size);
+    if (this.editor) {
+      this.editor.format('size', size === RTEFontSize.normal ? false : size);
+    }
     this.hasSizeSet = size !== RTEFontSize.normal;
     this.sizePanel.closePanel();
   }
@@ -376,37 +389,42 @@ export abstract class RTEformElement extends BaseFormElement
 
   protected initEditor(options: QuillOptionsStatic): void {
     this.editor = new quillLib(this.quillEditor.nativeElement, options);
-    this.editor.enable(!this.disabled);
 
-    // attaching events
+    if (this.editor) {
+      this.editor.enable(!this.disabled);
 
-    this.editor.on('editor-change', (eventName: string, ...args: any[]) => {
-      if (eventName === 'text-change') {
-        this.onEditorTextChange(
-          args[0] as DeltaStatic, // current Delta
-          args[1] as DeltaStatic, // previous Delta
-          args[3] as string // user, api or silent
-        );
-      } else if (eventName === 'selection-change') {
-        this.onEditorSelectionChange(
-          args[0] as RangeStatic, // current range
-          args[1] as RangeStatic // previous range
-        );
+      // attaching events
+
+      this.editor.on('editor-change', (eventName: string, ...args: any[]) => {
+        if (eventName === 'text-change') {
+          this.onEditorTextChange(
+            args[0] as DeltaStatic, // current Delta
+            args[1] as DeltaStatic, // previous Delta
+            args[3] as string // user, api or silent
+          );
+        } else if (eventName === 'selection-change') {
+          this.onEditorSelectionChange(
+            args[0] as RangeStatic, // current range
+            args[1] as RangeStatic // previous range
+          );
+        }
+      });
+
+      this.editor.root.addEventListener('focus', () => {
+        this.onEditorFocus();
+      });
+
+      this.editor.root.addEventListener('blur', () => {
+        this.onEditorBlur();
+      });
+
+      // write init value
+
+      if (!!this.value) {
+        this.applyValue(this.value);
       }
-    });
-
-    this.editor.root.addEventListener('focus', () => {
-      this.onEditorFocus();
-    });
-
-    this.editor.root.addEventListener('blur', () => {
-      this.onEditorBlur();
-    });
-
-    // write init value
-
-    if (!!this.value) {
-      this.applyValue(this.value);
+    } else {
+      console.log('initEditor: NO EDITOR!');
     }
   }
 }

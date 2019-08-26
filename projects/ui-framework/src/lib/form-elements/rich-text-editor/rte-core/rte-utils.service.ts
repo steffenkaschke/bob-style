@@ -37,12 +37,12 @@ export class RteUtilsService {
   }
 
   getCurrentSelection(editor: Quill): RangeStatic {
-    return editor.getSelection() || { index: 0, length: 0 };
+    return (editor && editor.getSelection()) || { index: 0, length: 0 };
   }
 
   getSelectionText(editor: Quill, selection: RangeStatic): string {
     return selection.length > 0
-      ? editor.getText(selection.index, selection.length)
+      ? editor && editor.getText(selection.index, selection.length)
       : '';
   }
 
@@ -113,7 +113,7 @@ export class RteUtilsService {
       node = editor.getLeaf(index)[0] && editor.getLeaf(index)[0].domNode;
     } else {
       const nativeRange = this.getNativeRange();
-      node = nativeRange && nativeRange.endContainer; // startContainer
+      node = nativeRange && nativeRange.endContainer;
     }
     if (!node) {
       return;

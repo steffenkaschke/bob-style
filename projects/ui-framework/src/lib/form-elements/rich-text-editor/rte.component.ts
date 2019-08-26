@@ -46,9 +46,9 @@ import { MixIn } from '../../services/utils/functional-utils';
 import { PlaceholderRteConverterService } from './rte-placeholder/placeholder-rte-converter.service';
 import { stringyOrFail } from '../../services/utils/transformers';
 
-quillLib.register(LinkBlot);
-quillLib.register(PlaceholderBlot);
-quillLib.register(Italic);
+// quillLib.register(LinkBlot);
+// quillLib.register(PlaceholderBlot);
+// quillLib.register(Italic);
 
 @Component({
   selector: 'b-rich-text-editor',
@@ -198,7 +198,11 @@ export class RichTextEditorComponent extends RTEformElement
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
         this.initEditor(this.editorOptions);
-        this.addKeyBindings();
+        if (this.editor) {
+          this.addKeyBindings();
+        } else {
+          console.log('onNgAfterViewInit: NO EDITOR!');
+        }
         this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
