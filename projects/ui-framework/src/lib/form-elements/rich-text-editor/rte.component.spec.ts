@@ -463,7 +463,7 @@ describe('RichTextEditorComponent', () => {
         })
       );
       tick(50);
-      expect(testComponent.rtrValue).toEqual('<div>test text 1 </div>');
+      expect(testComponent.rtrValue).toEqual('<p>test text 1 </p>');
       flush();
     }));
   });
@@ -477,7 +477,7 @@ describe('RichTextEditorComponent', () => {
         })
       );
       expect(RTEComponent.changed.emit).toHaveBeenCalledWith(
-        '<div>test text 8 </div>'
+        '<p>test text 8 </p>'
       );
     });
     it('should output focused event when editor is focused', () => {
@@ -489,7 +489,7 @@ describe('RichTextEditorComponent', () => {
       spyOn(RTEComponent.focused, 'emit');
       RTEqlEditorNativeElement.dispatchEvent(new Event('focus'));
       expect(RTEComponent.focused.emit).toHaveBeenCalledWith(
-        '<div>test text 10 </div>'
+        '<p>test text 10 </p>'
       );
     });
     it('should output blurred event when editor is blurred', () => {
@@ -501,7 +501,7 @@ describe('RichTextEditorComponent', () => {
       spyOn(RTEComponent.blurred, 'emit');
       RTEqlEditorNativeElement.dispatchEvent(new Event('blur'));
       expect(RTEComponent.blurred.emit).toHaveBeenCalledWith(
-        '<div>test text 11 </div>'
+        '<p>test text 11 </p>'
       );
     });
   });
@@ -512,7 +512,7 @@ describe('RichTextEditorComponent', () => {
         simpleChange({
           placeholderList: placeholderMock,
           value:
-            '<div>Hi, <strong>My</strong> name is {{/root/firstName}} my job title</div>',
+            '<p>Hi, <strong>My</strong> name is {{/root/firstName}} my job title</p>',
           controls: [BlotType.placeholder],
           disableControls: []
         })

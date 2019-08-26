@@ -23,9 +23,6 @@ import { BlotData, SpecialBlots, StoreCurrentResult } from './rte.interface';
 import { BaseFormElement } from '../../base-form-element';
 import { PanelComponent } from '../../../popups/panel/panel.component';
 
-const Block = quillLib.import('blots/block');
-Block.tagName = 'DIV';
-quillLib.register(Block, true);
 quillLib.register(quillLib.import('attributors/style/direction'), true);
 quillLib.register(quillLib.import('attributors/style/align'), true);
 quillLib.register(quillLib.import('attributors/style/size'), true);
