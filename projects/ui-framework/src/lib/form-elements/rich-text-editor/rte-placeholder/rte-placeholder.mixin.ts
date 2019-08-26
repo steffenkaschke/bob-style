@@ -66,9 +66,7 @@ export class RtePlaceholderBlot {
       noLinebreakAfter: this.specialBlots.noLinebreakAfter
     };
 
-    if (this.editor) {
-      this.rteUtils.insertBlot(this.editor, updateConfig);
-    }
+    this.rteUtils.insertBlot(this.editor, updateConfig);
     this.selection = null;
     this.placeholderPanel.closePanel();
   }

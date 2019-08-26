@@ -9,22 +9,18 @@ export class PlaceholderBlot extends Inline {
   static tagName = 'span';
 
   static create(focusOption: RtePlaceholderUpdate): HTMLElement {
-    try {
-      const node: HTMLElement = super.create();
-      node.setAttribute('data-placeholder-id', focusOption.id);
-      if (focusOption.category && focusOption.category !== 'undefined') {
-        node.setAttribute('data-placeholder-category', focusOption.category);
-      }
-      if (focusOption.text) {
-        node.setAttribute('data-text', focusOption.text);
-      }
-      node.setAttribute('contenteditable', 'false');
-      node.setAttribute('data-tag', simpleUID());
-
-      return node;
-    } catch {
-      console.log('LinkBlot create failed');
+    const node: HTMLElement = super.create();
+    node.setAttribute('data-placeholder-id', focusOption.id);
+    if (focusOption.category && focusOption.category !== 'undefined') {
+      node.setAttribute('data-placeholder-category', focusOption.category);
     }
+    if (focusOption.text) {
+      node.setAttribute('data-text', focusOption.text);
+    }
+    node.setAttribute('contenteditable', 'false');
+    node.setAttribute('data-tag', simpleUID());
+
+    return node;
   }
 
   static formats(node: HTMLElement): RtePlaceholderUpdate {
