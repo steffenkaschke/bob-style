@@ -406,10 +406,6 @@ export * from './lib/table/card-table/card-table.interface';
 // Divider
 export { DividerModule } from './lib/layout/divider/divider.module';
 export { DividerComponent } from './lib/layout/divider/divider.component';
-// Collapsible
-export { CollapsibleModule } from './lib/layout/collapsible/collapsible.module';
-export { CollapsibleComponent } from './lib/layout/collapsible/collapsible.component';
-export { CollapsibleType } from './lib/layout/collapsible/collapsible.enum';
 // Collapsible Section
 export { CollapsibleSectionModule } from './lib/layout/collapsible-section/collapsible-section.module';
 export { CollapsibleSectionComponent } from './lib/layout/collapsible-section/collapsible-section.component';

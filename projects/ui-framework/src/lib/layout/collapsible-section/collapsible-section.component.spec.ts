@@ -1,5 +1,9 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
+import {
+  NO_ERRORS_SCHEMA,
+  Component,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { By, EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
 
 import { CollapsibleSectionComponent } from './collapsible-section.component';
@@ -12,8 +16,8 @@ import { OutsideZonePlugin } from '../../services/utils/eventManager.plugins';
 
 @Component({
   template: `
-    <b-collapsible-section [@.disabled]="true">
-      <span suffix>suffix</span>
+    <b-collapsible-section>
+      <span header>suffix</span>
       <span class="test-content" style="height: 300px;">content</span>
     </b-collapsible-section>
   `,
@@ -23,7 +27,7 @@ class TestComponent {
   constructor() {}
 }
 
-describe('CollapsibleComponent', () => {
+describe('CollapsibleSectionComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let component: TestComponent;
   let collapsibleComponent: CollapsibleSectionComponent;
@@ -43,6 +47,9 @@ describe('CollapsibleComponent', () => {
         }
       ]
     })
+      .overrideComponent(CollapsibleSectionComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default }
+      })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(TestComponent);
@@ -50,10 +57,10 @@ describe('CollapsibleComponent', () => {
         fixture.detectChanges();
 
         collapsibleComponent = fixture.debugElement.query(
-          By.css('b-collapsible')
+          By.css('b-collapsible-section')
         ).componentInstance;
         collapsibleNativeElement = fixture.debugElement.query(
-          By.css('b-collapsible')
+          By.css('b-collapsible-section')
         ).nativeElement;
 
         spyOn(collapsibleComponent.opened, 'emit');
