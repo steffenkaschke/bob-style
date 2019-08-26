@@ -105,14 +105,6 @@ p {
 .bcp-description {
   font-size: $font-size-body;
   color: $grey-600;
-  letter-spacing: 0.2px;
-}
-
-.bcp-section:not(:hover),
-.bcp-section.bcp-section-expanded {
-  .bcp-description-hover {
-    display: none;
-  }
 }
 
 .bcp-header-content-clickable {
@@ -146,12 +138,14 @@ p {
   .bcp-header {
     cursor: pointer;
   }
+
   .bcp-panel {
     padding: times8(3) times8(4);
     transition: padding $transition-length, border-width $transition-length;
     will-change: padding, border-width;
     transition-timing-function: $transition-easing;
   }
+
   .bcp-panel-content-wrap {
     overflow: hidden;
     transition: max-height $transition-length, opacity $transition-length,
