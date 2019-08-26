@@ -23,12 +23,12 @@ import { BlotData, SpecialBlots, StoreCurrentResult } from './rte.interface';
 import { BaseFormElement } from '../../base-form-element';
 import { PanelComponent } from '../../../popups/panel/panel.component';
 
-const Block = quillLib.import('blots/block');
-Block.tagName = 'DIV';
-quillLib.register(Block, true);
-quillLib.register(quillLib.import('attributors/style/direction'), true);
-quillLib.register(quillLib.import('attributors/style/align'), true);
-quillLib.register(quillLib.import('attributors/style/size'), true);
+// const Block = quillLib.import('blots/block');
+// Block.tagName = 'DIV';
+// quillLib.register(Block, true);
+// quillLib.register(quillLib.import('attributors/style/direction'), true);
+// quillLib.register(quillLib.import('attributors/style/align'), true);
+// quillLib.register(quillLib.import('attributors/style/size'), true);
 
 export abstract class RTEformElement extends BaseFormElement
   implements OnChanges, OnInit, AfterViewInit {
@@ -51,8 +51,9 @@ export abstract class RTEformElement extends BaseFormElement
   @Input() public disableControls: BlotType[] = this.disableControlsDef;
   @Input() public sendChangeOnWrite = false;
 
-  @ViewChild('quillEditor', { static: true }) protected quillEditor: ElementRef;
-  @ViewChild('toolbar', { static: true }) protected toolbar: ElementRef;
+  @ViewChild('quillEditor', { static: false })
+  protected quillEditor: ElementRef;
+  @ViewChild('toolbar', { static: false }) protected toolbar: ElementRef;
   @ViewChild('suffix', { static: false }) protected suffix: ElementRef;
   @ViewChild('sizePanel', { static: false })
   protected sizePanel: PanelComponent;
@@ -117,7 +118,7 @@ export abstract class RTEformElement extends BaseFormElement
 
   // outside zone
   protected transmitValue(): void {
-    if (!this.writingValue) {
+    if (!this.writingValue && this.editor) {
       let newOutputValue = this.rteUtils.getHtmlContent(this.editor).trim();
 
       newOutputValue =
@@ -319,45 +320,47 @@ export abstract class RTEformElement extends BaseFormElement
     blot: Partial<BlotData> | boolean = true,
     text: string | boolean = false
   ): StoreCurrentResult {
-    const currentSelection = selection
-      ? (selection as RangeStatic).index
-        ? (selection as RangeStatic)
-        : this.rteUtils.getCurrentSelection(this.editor)
-      : this.selection;
-    let currentBlot: BlotData;
+    if (this.editor) {
+      const currentSelection = selection
+        ? (selection as RangeStatic).index
+          ? (selection as RangeStatic)
+          : this.rteUtils.getCurrentSelection(this.editor)
+        : this.selection;
+      let currentBlot: BlotData;
 
-    if (blot && (blot as BlotData).element) {
-      currentBlot = this.rteUtils.getBlotDataFromElement(
-        (blot as BlotData).element,
-        this.editor
-      );
-    } else if (blot) {
-      currentBlot = this.rteUtils.getCurrentBlotData(
-        this.editor,
-        false,
-        (blot as BlotData).index ||
-          ((blot as BlotData).offset &&
-            currentSelection.index + (blot as BlotData).offset)
-      );
-    }
-    const selectedText =
-      text && typeof text === 'string'
-        ? text
-        : this.rteUtils.getSelectionText(this.editor, currentSelection);
+      if (blot && (blot as BlotData).element) {
+        currentBlot = this.rteUtils.getBlotDataFromElement(
+          (blot as BlotData).element,
+          this.editor
+        );
+      } else if (blot) {
+        currentBlot = this.rteUtils.getCurrentBlotData(
+          this.editor,
+          false,
+          (blot as BlotData).index ||
+            ((blot as BlotData).offset &&
+              currentSelection.index + (blot as BlotData).offset)
+        );
+      }
+      const selectedText =
+        text && typeof text === 'string'
+          ? text
+          : this.rteUtils.getSelectionText(this.editor, currentSelection);
 
-    const result: StoreCurrentResult = {};
+      const result: StoreCurrentResult = {};
 
-    if (selection) {
-      result.selection = this.selection = currentSelection;
-    }
-    if (blot) {
-      result.currentBlot = this.currentBlot = currentBlot;
-    }
-    if (text) {
-      result.text = this.selectedText = selectedText;
-    }
+      if (selection) {
+        result.selection = this.selection = currentSelection;
+      }
+      if (blot) {
+        result.currentBlot = this.currentBlot = currentBlot;
+      }
+      if (text) {
+        result.text = this.selectedText = selectedText;
+      }
 
-    return result;
+      return result;
+    }
   }
 
   public changeFontSize(size: RTEFontSize) {

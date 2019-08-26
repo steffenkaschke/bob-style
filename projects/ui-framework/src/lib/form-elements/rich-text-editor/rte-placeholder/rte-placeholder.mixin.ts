@@ -5,7 +5,11 @@ import { RteUtilsService } from '../rte-core/rte-utils.service';
 import Quill, { RangeStatic } from 'quill';
 import { SingleListComponent } from '../../lists/single-list/single-list.component';
 import { PlaceholderRteConverterService } from './placeholder-rte-converter.service';
-import { RtePlaceholder, RtePlaceholderList, RtePlaceholderUpdate } from './placeholder-rte-converter.interface';
+import {
+  RtePlaceholder,
+  RtePlaceholderList,
+  RtePlaceholderUpdate
+} from './placeholder-rte-converter.interface';
 
 export class RtePlaceholderBlot {
   constructor() {}
@@ -62,7 +66,9 @@ export class RtePlaceholderBlot {
       noLinebreakAfter: this.specialBlots.noLinebreakAfter
     };
 
-    this.rteUtils.insertBlot(this.editor, updateConfig);
+    if (this.editor) {
+      this.rteUtils.insertBlot(this.editor, updateConfig);
+    }
     this.selection = null;
     this.placeholderPanel.closePanel();
   }
