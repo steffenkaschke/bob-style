@@ -11,6 +11,8 @@ $toolti-offset: 10px;
   margin: $toolti-offset 0;
   border-radius: $border-radius;
   @include b-body($color: white, $style: normal, $addCssVars: false);
+  text-align: center;
+  white-space: normal;
 
   @media (max-width: 400px) {
     max-width: 80vw;
@@ -136,8 +138,7 @@ $toolti-offset: 10px;
   }
 
   // position above (default)
-  &,
-  &[data-tooltip-position='above'] {
+  & {
     &:after {
       bottom: 100%;
       transform-origin: center bottom;
@@ -167,17 +168,38 @@ $toolti-offset: 10px;
     }
   }
 
-  // prewrap
+  // text align
 
-  &[data-tooltip-prewrap='true'] {
+  &[data-tooltip-align='left'] {
+    &:after {
+      text-align: left;
+    }
+  }
+
+  &[data-tooltip-align='right'] {
+    &:after {
+      text-align: right;
+    }
+  }
+
+  // wrap
+
+  &[data-tooltip-wrap='nowrap'] {
+    &:after {
+      white-space: nowrap;
+      max-width: 65vw;
+    }
+  }
+
+  &[data-tooltip-wrap='pre'] {
     &:after {
       white-space: pre-line;
     }
   }
 
-  // on focus
+  // show on
 
-  &[data-tooltip-onfocus='true'] {
+  &[data-tooltip-show='focus'] {
     &:before,
     &:after {
       animation-delay: 0s;
