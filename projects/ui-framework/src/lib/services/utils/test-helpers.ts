@@ -7,7 +7,7 @@ export const elementsFromFixture = (
   selector: string
 ): HTMLElement[] => {
   const debugElems = fixtr.debugElement.queryAll(By.css(selector));
-  return debugElems.map(de => de.nativeElement);
+  return debugElems.map(de => (de ? de.nativeElement : null));
 };
 
 export const elementFromFixture = (

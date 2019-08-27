@@ -183,6 +183,7 @@ $icon-colors: (
     -moz-osx-font-smoothing: grayscale;
     transition: color 0.1s ease;
     overflow: hidden;
+    flex-shrink: 0;
   }
 
   @include icon-size($size, $elem);

@@ -11,7 +11,8 @@ import {
   OnChanges,
   ChangeDetectorRef,
   NgZone,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  OnInit
 } from '@angular/core';
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { AvatarBadges, BadgeSize } from './avatar.consts';
@@ -31,7 +32,7 @@ import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tool
   styleUrls: ['./avatar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AvatarComponent implements OnChanges, AfterViewInit {
+export class AvatarComponent implements OnChanges, OnInit, AfterViewInit {
   constructor(
     private host: ElementRef,
     private DOM: DOMhelpers,
@@ -70,7 +71,7 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
   @HostBinding('attr.data-disabled') @Input() disabled = false;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.size) {
+    if (changes.size && !changes.size.firstChange) {
       this.size = changes.size.currentValue;
       this.setCssVars();
     }
@@ -78,6 +79,10 @@ export class AvatarComponent implements OnChanges, AfterViewInit {
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
     }
+  }
+
+  ngOnInit(): void {
+    this.setCssVars();
   }
 
   ngAfterViewInit(): void {

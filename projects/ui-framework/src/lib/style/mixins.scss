@@ -103,9 +103,9 @@
   $id: simpleUID();
   @if $keyframes {
     @include keyframes($name, $id: ('-' + $id));
-    animation-name: ($name + '-' + $id);
+    animation-name: (unquote($name) + '-' + $id);
   } @else {
-    animation-name: $name;
+    animation-name: unquote($name);
   }
   animation-duration: $time;
   animation-iteration-count: $iterate;
@@ -305,5 +305,17 @@
     background: transparent;
     display: none;
     width: 0;
+  }
+}
+
+@mixin normalize-par {
+  &:only-child {
+    margin: 0;
+  }
+  &:first-child {
+    margin-top: 0;
+  }
+  &:last-child {
+    margin-bottom: 0;
   }
 }

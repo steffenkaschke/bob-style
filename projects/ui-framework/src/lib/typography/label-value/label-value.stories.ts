@@ -242,8 +242,8 @@ story.add(
           Object.values(TextAlign),
           TextAlign.left
         ),
-        labelMaxLines: number('labelMaxLines', null),
-        valueMaxLines: number('valueMaxLines', null),
+        labelMaxLines: number('labelMaxLines', 0),
+        valueMaxLines: number('valueMaxLines', 0),
 
         icon: select('icon', [0, ...Object.values(Icons)], 0),
         iconPosition: select(
