@@ -27,6 +27,7 @@ const template = `
     [disabled]="disabled"
     [title]="title"
     [description]="description"
+    [options]="options"
     (closed)="onPanelClosed($event)"
     (opened)="onPanelOpened($event)">
 
@@ -86,6 +87,7 @@ const note = `
   [disabled] | boolean | if the panel is disabled (can't be opened) | false
   [title] | section title | title | none
   [description] | string | section description (subtitle) | none
+  [options] | CollapsibleOptions | additional options, among which: <br> **options.headerTranscludeStopPropagation** - set to true to prevent click event propagation from content transcluded in header (for example, to prevent buttons opening/closing the panel) | false
   (opened) |  EventEmitter | emits when collapsible panel was opened | none
   (closed) |  EventEmitter | emits when collapsible panel was closed | none
 
