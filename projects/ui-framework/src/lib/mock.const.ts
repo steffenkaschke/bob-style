@@ -461,7 +461,21 @@ export const mockHobbies = (num = null) =>
 export const mockDate = () =>
   `${padWith0(randomNumber(1, 31))}/${padWith0(
     randomNumber(1, 12)
-  )}/${randomNumber(2018, 2020)}`;
+  )}/${new Date().getFullYear()}`;
+
+export const mockDateRange = (length = 0) => {
+  const year = new Date().getFullYear();
+  const month = randomNumber(1, 12);
+  const day1 = randomNumber(1, 15);
+  if (!length) {
+    length = randomNumber(2, 14);
+  }
+  const day2 = day1 + length;
+
+  return `${padWith0(day1)}/${padWith0(month)}/${year} - ${padWith0(
+    day2
+  )}/${padWith0(month)}/${year}`;
+};
 
 export const loremText = (words = null) => {
   if (typeof words === 'number') {

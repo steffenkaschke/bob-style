@@ -24,8 +24,7 @@ li {
   @include OverlayPointerHolders();
   @include OverlayPositionBounding('center');
   @include OverlayPositionBounding('above');
-  @include keyframes('zoom-in', 0.5, '-emoji');
-  @include animate('zoom-in-emoji', 0.2s);
+  @include animate(zoom-in, 0.2s, $keyframes: true);
   transform-origin: bottom center;
 }
 
