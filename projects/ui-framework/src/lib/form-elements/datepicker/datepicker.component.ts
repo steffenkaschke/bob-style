@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild,
   SimpleChanges,
-  ChangeDetectorRef,
+  ChangeDetectorRef
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -52,8 +52,7 @@ import {
     }
   ]
 })
-export class DatepickerComponent extends BaseFormElement
-  implements OnInit {
+export class DatepickerComponent extends BaseFormElement implements OnInit {
   // tslint:disable-next-line: no-input-rename
   @Input('inputLabel') label: string;
   @Input() dateFormat?: string;
@@ -109,7 +108,7 @@ export class DatepickerComponent extends BaseFormElement
       this.value = this.date = value;
 
       this.transmitValue(value, {
-        eventType: [InputEventType.onChange],
+        eventType: [InputEventType.onBlur],
         addToEventObj: { date: this.date }
       });
 
