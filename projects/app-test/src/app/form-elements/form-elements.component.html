@@ -147,6 +147,7 @@
      <div>
        <label *ngFor="let comp of allFormElements">
          <input class="simple-checkbox"
+                (change)="global_visibleComponents[comp] && countKids(comp)"
                 [(ngModel)]="global_visibleComponents[comp]"
                 type="checkbox">
          {{comp}}
@@ -190,7 +191,6 @@
      </label>
    </p>
  </div>
-
 
  <section class="bInput status-done"
           *ngIf="global_visibleComponents['bInput']">

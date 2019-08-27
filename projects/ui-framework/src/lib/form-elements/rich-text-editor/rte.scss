@@ -246,25 +246,6 @@ $border-color: $grey-500;
   }
 }
 
-.length-indicator {
-  font-size: $font-size-caption;
-  color: $grey-600;
-  margin-left: auto;
-}
-
-.length-invalid {
-  .ql-container:after,
-  .length-indicator {
-    color: $color-error;
-  }
-}
-.length-warning {
-  .ql-container:after,
-  .length-indicator {
-    color: $color-warn;
-  }
-}
-
 // Disabled
 
 :host {
@@ -275,7 +256,7 @@ $border-color: $grey-500;
 
 // Primary
 
-:host.rte-primary {
+:host[data-type='primary'] {
   .quill-editor {
     box-shadow: 2px 2px 3px 0 black(0.04);
     background-color: white;
@@ -312,8 +293,8 @@ $border-color: $grey-500;
 
 // Secondary & Tertiary common
 
-:host.rte-secondary,
-:host.rte-tertiary {
+:host[data-type='secondary'],
+:host[data-type='tertiary'] {
   & ::ng-deep {
     .ql-toolbar {
       padding-left: 0;
@@ -334,7 +315,7 @@ $border-color: $grey-500;
 
 // Secondary
 
-:host.rte-secondary {
+:host[data-type='secondary'] {
   & ::ng-deep {
     .ql-editor {
       padding-left: 0;
@@ -359,7 +340,7 @@ $border-color: $grey-500;
 
 // Tertiary
 
-:host.rte-tertiary {
+:host[data-type='tertiary'] {
   & ::ng-deep {
     .ql-editor {
       background-color: $grey-100;

@@ -1,3 +1,5 @@
+import { SimpleChanges } from '@angular/core';
+
 export function MixIn(baseCtors: Function[]) {
   return function(derivedCtor: Function) {
     baseCtors.forEach(baseCtor => {
@@ -111,7 +113,6 @@ import {
   set as _set,
   toPairs as _toPairs
 } from 'lodash/fp';
-import { SimpleChanges, SimpleChange } from '@angular/core';
 
 export const flatten = (obj, path = []) => {
   return _isPlainObject(obj) || _isArray(obj)
@@ -145,14 +146,6 @@ export const getType = smth =>
     : smth instanceof Date
     ? 'date'
     : String(typeof smth);
-
-export const domainFromUrl = (url: string) => {
-  let a = document.createElement('a');
-  a.href = url;
-  const domain = a.hostname || '.com';
-  a = null;
-  return domain;
-};
 
 export const arrayDifference = (arrA: any[], arrB: any[]) => {
   return arrA

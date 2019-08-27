@@ -21,12 +21,13 @@
          [autocomplete]="enableBrowserAutoComplete"
          [disabled]="disabled"
          [required]="required"
-         [attr.minlength]="minChars"
-         [attr.maxlength]="maxChars"
+         [readonly]="readonly"
+         [attr.minlength]="minChars || null"
+         [attr.maxlength]="maxChars || null"
          (input)="onInputChange($event)"
          (blur)="onInputBlur();"
          (focus)="onInputFocus()"
-         (keyup)="onInputKey($event)">
+         (keyup.outside-zone)="onInputKey($event)">
 
   <div *ngIf="hasSuffix || showSuffix"
        class="bfe-suffix"
@@ -37,8 +38,12 @@
 </div>
 
 <p b-input-message
-   *ngIf="hintMessage || warnMessage || errorMessage"
+   *ngIf="hintMessage || warnMessage || errorMessage || minChars || maxChars"
    [hintMessage]="hintMessage"
    [warnMessage]="warnMessage"
    [errorMessage]="errorMessage"
-   [disabled]="disabled"></p>
+   [disabled]="disabled"
+   [minChars]="minChars"
+   [maxChars]="maxChars"
+   [length]="value?.length">
+</p>

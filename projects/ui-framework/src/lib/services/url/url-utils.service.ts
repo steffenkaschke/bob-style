@@ -27,12 +27,27 @@ export class URLutils {
 
   getData(url: string): URL {
     const rec = this.reconstruct(url);
-    return rec ? new URL(rec) : undefined;
+    let urlData: URL;
+    try {
+      urlData = new URL(rec);
+    } catch {}
+    return urlData;
   }
 
   domain(url: string) {
     const data = this.getData(url);
     return data ? data.hostname : undefined;
+  }
+
+  path(url: string) {
+    const data = this.getData(url);
+    return !url
+      ? undefined
+      : !data ||
+        url === data.hostname ||
+        (data.pathname === '/' && !data.hash && !data.search)
+      ? url
+      : data.pathname.substr(1) + data.search + data.hash;
   }
 
   validateImg(url: string): string {

@@ -132,6 +132,7 @@ export class TimePickerComponent extends BaseFormElement {
       value = 23;
     }
     this.valueHours = (value as any) !== '' ? padWith0(value) : (value as any);
+    this.inputHours.nativeElement.value = this.valueHours;
     this.transmit();
   }
 
@@ -143,6 +144,7 @@ export class TimePickerComponent extends BaseFormElement {
     }
     this.valueMinutes =
       (value as any) !== '' ? padWith0(value) : (value as any);
+    this.inputMinutes.nativeElement.value = this.valueMinutes;
     this.transmit();
   }
 
@@ -150,7 +152,7 @@ export class TimePickerComponent extends BaseFormElement {
     const newValue = this.combineValue(this.valueHours, this.valueMinutes);
     if (this.value !== newValue) {
       this.value = newValue;
-      this.transmitValue(this.value, { eventType: [InputEventType.onChange] });
+      this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
     }
   }
 

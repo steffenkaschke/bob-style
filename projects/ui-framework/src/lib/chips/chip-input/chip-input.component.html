@@ -6,7 +6,7 @@
      matAutocompleteOrigin
      #wrapper="matAutocompleteOrigin"
      [ngClass]="{focused: inputFocused, 'autocomplete-open': auto.isOpen,'empty': !value || value.length === 0}"
-     (click.outside-zone)="input.focus();">
+     (click.outside-zone)="input.focus()">
 
   <b-chip-list #chips
                class="chips-wrap"
@@ -30,7 +30,6 @@
            (input)="onInputChange($event)"
            (keydown)="onInputKeydown($event)"
            (keyup)="onInputKeyup($event)">
-
   </b-chip-list>
 
 </div>

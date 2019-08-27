@@ -71,10 +71,10 @@ datepickerStories.add(
     return {
       template: storyTemplate,
       props: {
-        value: text('value', '1950-07-12'),
+        value: text('value', ''),
         dateFormat: text('dateFormat', 'DD/MM/YYYY'),
         label: text('label', 'Date picker'),
-        placeholder: text('placeholder', 'Input placeholder'),
+        placeholder: text('placeholder', ''),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),

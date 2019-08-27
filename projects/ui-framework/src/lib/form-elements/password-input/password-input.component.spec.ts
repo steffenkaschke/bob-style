@@ -8,8 +8,9 @@ import { IconsModule } from '../../icons/icons.module';
 import { inputValue } from '../../services/utils/test-helpers';
 import { ElementRef } from '@angular/core';
 import { InputEventType } from '../form-elements.enum';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
-describe('InputComponent', () => {
+describe('PasswordInputComponent', () => {
   let component: PasswordInputComponent;
   let fixture: ComponentFixture<PasswordInputComponent>;
   let inputElement: HTMLInputElement;
@@ -25,7 +26,7 @@ describe('InputComponent', () => {
         InputMessageModule,
         IconsModule
       ],
-      providers: []
+      providers: [EventManagerPlugins[0]]
     })
       .compileComponents()
       .then(() => {
@@ -42,7 +43,7 @@ describe('InputComponent', () => {
 
   describe('emit InputEvent', () => {
     it('should emitInputEvent on model change with input value', () => {
-      inputValue(inputElement, 'text');
+      inputValue(inputElement, 'text', false);
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
         value: 'text'
@@ -57,7 +58,7 @@ describe('InputComponent', () => {
       expect(showButtonElement).toBeFalsy();
     });
     it('should show the button when input has text; icon should have class .b-icon-visibility-on', () => {
-      inputValue(inputElement, 'text');
+      inputValue(inputElement, 'text', false);
       fixture.detectChanges();
       showButtonElement = fixture.debugElement.query(By.css('.bfe-suffix'));
       showButtonIconElement = fixture.debugElement.query(By.css('.b-icon'));
@@ -74,7 +75,7 @@ describe('InputComponent', () => {
       expect(inputElement.getAttribute('type')).toEqual('password');
     });
     it('should switch to input type text, when input has text and show button is clicked; icon should change to class .b-icon-visibility-off', () => {
-      inputValue(inputElement, 'text');
+      inputValue(inputElement, 'text', false);
       fixture.detectChanges();
       expect(inputElement.getAttribute('type')).toEqual('password');
       showButtonElement = fixture.debugElement.query(By.css('.bfe-suffix'));

@@ -93,6 +93,7 @@ $input-focus-border-color: $grey-700;
   flex-direction: column;
   box-sizing: border-box;
   text-align: left;
+  max-width: 100%;
   @include form-element-margins;
 
   // wrap

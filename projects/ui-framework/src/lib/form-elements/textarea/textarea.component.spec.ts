@@ -4,6 +4,9 @@ import { TextareaComponent } from './textarea.component';
 import { InputEventType } from '../form-elements.enum';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMessageModule } from '../input-message/input-message.module';
+import { inputValue } from '../../services/utils/test-helpers';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 describe('TextareaComponent', () => {
   let component: TextareaComponent;
@@ -13,7 +16,8 @@ describe('TextareaComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TextareaComponent],
-      imports: [NoopAnimationsModule, InputMessageModule]
+      imports: [NoopAnimationsModule, InputMessageModule],
+      providers: [DOMhelpers, EventManagerPlugins[0]]
     })
       .compileComponents()
       .then(() => {
@@ -24,13 +28,13 @@ describe('TextareaComponent', () => {
       });
   }));
 
-  describe('emitInputEvent', () => {
+  describe('emit InputEvent', () => {
     beforeEach(() => {
       textareaElement = fixture.debugElement.query(By.css('textarea'))
         .nativeElement;
     });
 
-    it('should emitInputEvent on input focus with input value', () => {
+    it('should emit InputEvent on input focus with input value', () => {
       component.value = 'input value';
       textareaElement.dispatchEvent(new Event('focus'));
       expect(component.changed.emit).toHaveBeenCalledWith({
@@ -38,7 +42,7 @@ describe('TextareaComponent', () => {
         value: 'input value'
       });
     });
-    it('should emitInputEvent on input blur with input value', () => {
+    it('should emit InputEvent on input blur with input value', () => {
       component.value = 'input value';
       textareaElement.dispatchEvent(new Event('blur'));
       expect(component.changed.emit).toHaveBeenCalledWith({
@@ -46,9 +50,8 @@ describe('TextareaComponent', () => {
         value: 'input value'
       });
     });
-    it('should emitInputEvent on model change with input value', () => {
-      textareaElement.value = 'change input value';
-      textareaElement.dispatchEvent(new Event('input'));
+    it('should emit InputEvent on model change with input value, if there is a subscriber to the event', () => {
+      inputValue(textareaElement, 'change input value', false);
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
         value: 'change input value'

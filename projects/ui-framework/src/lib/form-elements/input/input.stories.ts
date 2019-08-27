@@ -31,6 +31,7 @@ const template = `
         [hideLabelOnFocus]="hideLabelOnFocus"
         [minChars]="minChars"
         [maxChars]="maxChars"
+        [readonly]="readonly"
         [disabled]="disabled"
         [required]="required"
         [hintMessage]="hintMessage"
@@ -64,6 +65,7 @@ const note = `
   hideLabelOnFocus | boolean | if true: there will be no label above input, label text (if present) will be used as placeholder
   minChars | number | minimum length
   maxChars | number | maximum length
+  readonly | boolean | disables input
   disabled | boolean | is field disabled
   required | boolean | is field required
   hintMessage | string | hint text
@@ -91,11 +93,10 @@ inputStories.add(
         maxChars: number('maxChars', 30),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
-
+        readonly: boolean('readonly', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
-
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         enableBrowserAutoComplete: select(
           'enableBrowserAutoComplete',

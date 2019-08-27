@@ -87,7 +87,9 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
       event.event === InputEventType.onBlur
     ) {
       this.value.inputValue = event.value;
-      this.transmitValue(this.value, { eventType: [event.event] });
+      this.transmitValue(this.value, {
+        eventType: [event.event]
+      });
     }
   }
 
@@ -95,7 +97,7 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
     this.value.selectValue = listChange.getSelectedIds()[0];
 
     this.transmitValue(this.value, {
-      eventType: [InputEventType.onChange, InputEventType.onBlur]
+      eventType: [InputEventType.onBlur]
     });
   }
 }

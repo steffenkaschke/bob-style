@@ -4,7 +4,9 @@ import {
   EventEmitter,
   forwardRef,
   Output,
-  ViewChild
+  ViewChild,
+  NgZone,
+  ChangeDetectorRef
 } from '@angular/core';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { InputTypes } from '../input/input.enum';
@@ -41,13 +43,13 @@ export class PasswordInputComponent extends BaseInputElement {
 
   @ViewChild('input', { static: true }) input: ElementRef;
 
-  constructor() {
-    super();
+  constructor(zone: NgZone, cd: ChangeDetectorRef) {
+    super(zone, cd);
     this.outputTransformers = [];
   }
 
   isInputEmpty(): boolean {
-    return !this.value || this.value.length === 0;
+    return !this.value || this.value.trim() === '';
   }
 
   switchInputType(): void {
@@ -55,5 +57,6 @@ export class PasswordInputComponent extends BaseInputElement {
       this.inputType === InputTypes.password
         ? InputTypes.text
         : InputTypes.password;
+    this.cd.detectChanges();
   }
 }

@@ -26,7 +26,7 @@ import { PasswordInputModule } from './password-input/password-input.module';
 import { PasswordInputComponent } from './password-input/password-input.component';
 import { TimePickerModule } from './timepicker/timepicker.module';
 import { TimePickerComponent } from './timepicker/timepicker.component';
-
+import { EventManagerPlugins } from '../services/utils/eventManager.plugins';
 @NgModule({
   imports: [
     InputModule,
@@ -61,5 +61,6 @@ import { TimePickerComponent } from './timepicker/timepicker.component';
     TimePickerComponent,
     ChipInputComponent
   ],
+  providers: [EventManagerPlugins[0]]
 })
 export class FormElementsModule {}

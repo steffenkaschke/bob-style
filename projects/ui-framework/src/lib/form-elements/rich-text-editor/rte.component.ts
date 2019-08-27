@@ -83,19 +83,11 @@ export class RichTextEditorComponent extends RTEformElement
 
   public disableControlsDef = [BlotType.placeholder, BlotType.direction];
 
-  @Input() public type: RTEType = RTEType.primary;
   @Input() public minHeight = 185;
   @Input() public maxHeight = 295;
 
-  @HostBinding('class.rte-primary') get isOfTypePrimary(): boolean {
-    return !this.type || this.type === RTEType.primary;
-  }
-  @HostBinding('class.rte-secondary') get isOfTypeSecondary(): boolean {
-    return this.type === RTEType.secondary;
-  }
-  @HostBinding('class.rte-tertiary') get isOfTypeTertiary(): boolean {
-    return this.type === RTEType.tertiary;
-  }
+  @HostBinding('attr.data-type') @Input() public type: RTEType =
+    RTEType.primary;
 
   public hasSuffix = true;
   readonly buttonType = ButtonType;

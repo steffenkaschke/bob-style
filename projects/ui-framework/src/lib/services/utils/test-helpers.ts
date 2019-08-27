@@ -1,6 +1,11 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SimpleChange } from '@angular/core';
+import {
+  NativeMouseEvents,
+  NativeKeyboardEvents,
+  NativeEvents
+} from '../../enums';
 
 export const elementsFromFixture = (
   fixtr: ComponentFixture<any>,
@@ -23,7 +28,11 @@ export const simpleChange = changes => {
   return simpleChanges;
 };
 
-export const inputValue = (inputElem: any, value: string | number): void => {
+export const inputValue = (
+  inputElem: any,
+  value: string | number,
+  doBlur = true
+): void => {
   (inputElem as HTMLInputElement).value = value as string;
   (inputElem as HTMLElement).dispatchEvent(
     new Event('input', {
@@ -31,17 +40,19 @@ export const inputValue = (inputElem: any, value: string | number): void => {
       type: 'input'
     } as EventInit)
   );
-  (inputElem as HTMLElement).dispatchEvent(
-    new Event('blur', {
-      target: inputElem,
-      type: 'blur'
-    } as EventInit)
-  );
+  if (doBlur) {
+    (inputElem as HTMLElement).dispatchEvent(
+      new Event('blur', {
+        target: inputElem,
+        type: 'blur'
+      } as EventInit)
+    );
+  }
 };
 
 export const emitNativeEvent = (
   element: any,
-  type = 'click',
+  type: string | NativeEvents = NativeEvents.click,
   props = null
 ): void => {
   if (!props) {
@@ -50,15 +61,20 @@ export const emitNativeEvent = (
   if (!props.target) {
     props.target = element;
   }
-  console.log('>>dispatch', type);
+  const eventData = {
+    isTrusted: true,
+    type: type,
+    bubbles: true,
+    currentTarget: props.target,
+    srcElement: props.target,
+    ...props
+  } as EventInit;
 
-  (element as HTMLElement).dispatchEvent(
-    new Event(type, {
-      type: type,
-      bubbles: true,
-      currentTarget: props.target,
-      srcElement: props.target,
-      ...props
-    } as EventInit)
-  );
+  if (NativeMouseEvents.includes(type as any)) {
+    (element as HTMLElement).dispatchEvent(new MouseEvent(type, eventData));
+  } else if (NativeKeyboardEvents.includes(type as any)) {
+    (element as HTMLElement).dispatchEvent(new KeyboardEvent(type, eventData));
+  } else {
+    (element as HTMLElement).dispatchEvent(new Event(type, eventData));
+  }
 };

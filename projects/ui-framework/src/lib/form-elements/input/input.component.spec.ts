@@ -7,6 +7,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { InputTypes } from './input.enum';
+import { inputValue, emitNativeEvent } from '../../services/utils/test-helpers';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { Keys, NativeEvents } from '../../enums';
 
 describe('InputComponent', () => {
   let component: InputComponent;
@@ -17,7 +20,7 @@ describe('InputComponent', () => {
     TestBed.configureTestingModule({
       declarations: [InputComponent],
       imports: [NoopAnimationsModule, CommonModule, InputMessageModule],
-      providers: [DOMhelpers]
+      providers: [DOMhelpers, EventManagerPlugins[0]]
     })
       .compileComponents()
       .then(() => {
@@ -28,12 +31,11 @@ describe('InputComponent', () => {
       });
   }));
 
-  describe('emitInputEvent', () => {
+  describe('emit InputEvent', () => {
     beforeEach(() => {
       fixture.detectChanges();
       inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
     });
-
     it('should emitInputEvent on input focus with input value', () => {
       component.value = 'input value';
       inputElement.dispatchEvent(new Event('focus'));
@@ -50,9 +52,8 @@ describe('InputComponent', () => {
         value: 'input value'
       });
     });
-    it('should emitInputEvent on model change with input value', () => {
-      inputElement.value = 'change input value';
-      inputElement.dispatchEvent(new Event('input'));
+    it('should emit InputEvent on model change with input value', () => {
+      inputValue(inputElement, 'change input value', false);
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
         value: 'change input value'
@@ -61,6 +62,28 @@ describe('InputComponent', () => {
         'change input value'
       );
     });
+
+    it('should NOT emit InputEvent on keyup, if there are no subscribers to the event', () => {
+      emitNativeEvent(inputElement, NativeEvents.keyup, {
+        key: Keys.enter
+      });
+      expect(component.changed.emit).not.toHaveBeenCalled();
+      expect(component.propagateChange).not.toHaveBeenCalled();
+    });
+    it('should emit InputEvent on keyup, if there is a subscriber to the event; Should not propagateChange.', () => {
+      component.changed.subscribe(() => {});
+      component.value = 'change input value';
+      emitNativeEvent(inputElement, NativeEvents.keyup, {
+        key: Keys.enter
+      });
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: InputEventType.onKey,
+        value: 'change input value',
+        key: Keys.enter
+      });
+      expect(component.propagateChange).not.toHaveBeenCalled();
+      component.changed.unsubscribe();
+    });
   });
 
   describe('transforms', () => {
@@ -68,11 +91,10 @@ describe('InputComponent', () => {
       component.inputType = InputTypes.number;
       fixture.detectChanges();
       inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
-      inputElement.value = 500;
-      inputElement.dispatchEvent(new Event('input'));
+      inputValue(inputElement, 500, false);
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: InputEventType.onChange,
-        value: 500,
+        value: 500
       });
       expect(component.propagateChange).toHaveBeenCalledWith(500);
     });

@@ -25,6 +25,8 @@ import {
   valueToObjectWithKeyOfValueFromArray
 } from '../../../../ui-framework/src/lib/services/utils/transformers';
 import { mockHobbies } from '../../../../ui-framework/src/lib/mock.const';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { isEqual } from 'lodash';
 
 @Component({
   selector: 'app-form-elements-test',
@@ -844,13 +846,20 @@ export class FormElementsTestComponent
       );
       console.log($event);
     }
-    this.cd.detectChanges();
+
+    setTimeout(() => {
+      this.cd.detectChanges();
+    }, 0);
   }
 
   subscribeToValueChanges(name) {
     this[name + '_subscribtion'] =
       this[name] &&
-      this[name].valueChanges.subscribe(value => {
+    this[name].valueChanges
+      .pipe(
+        distinctUntilChanged(isEqual)
+      )
+      .subscribe(value => {
         value = this.asString(value);
         this[name + '_SubscrValue'] = value;
         this[name + '_SubscrCounter']++;
@@ -935,6 +944,7 @@ export class FormElementsTestComponent
   showComponents(comps) {
     comps.forEach(comp => {
       this.global_visibleComponents[comp] = true;
+      this.countKids(comp);
     });
   }
 
@@ -1018,11 +1028,13 @@ export class FormElementsTestComponent
   type = smth => getType(smth);
 
   countKids(name) {
-    this[name + '_nodeCount'] = countChildren(
-      null,
-      this[name + '_element'] && this[name + '_element'].nativeElement
-    );
-    return this[name + '_nodeCount'];
+    setTimeout(() => {
+      this[name + '_nodeCount'] = countChildren(
+        null,
+        this[name + '_element'] && this[name + '_element'].nativeElement
+      );
+      this.cd.detectChanges();
+    }, 0);
   }
 
   doDisco() {
@@ -1063,8 +1075,8 @@ export class FormElementsTestComponent
   ngOnInit() {
     this.subscribeToAll(this.allFormElements);
 
-    this.hideComponents(this.allFormElements);
-    this.showComponents(['bRTE']);
+    // this.hideComponents(this.allFormElements);
+    // this.showComponents(['bInput']);
 
     // 'bInput'
     // 'bTextarea'

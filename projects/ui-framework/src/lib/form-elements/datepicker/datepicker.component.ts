@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild,
   SimpleChanges,
-  ChangeDetectorRef,
+  ChangeDetectorRef
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -52,8 +52,7 @@ import {
     }
   ]
 })
-export class DatepickerComponent extends BaseFormElement
-  implements OnInit {
+export class DatepickerComponent extends BaseFormElement implements OnInit {
   // tslint:disable-next-line: no-input-rename
   @Input('inputLabel') label: string;
   @Input() dateFormat?: string;
@@ -102,6 +101,10 @@ export class DatepickerComponent extends BaseFormElement
         this.onDateChange(this.date);
       }
     }
+
+    if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
+      this.placeholder = BDateAdapter.bFormat.toLowerCase();
+    }
   }
 
   public onDateChange(value: Date) {
@@ -109,18 +112,11 @@ export class DatepickerComponent extends BaseFormElement
       this.value = this.date = value;
 
       this.transmitValue(value, {
-        eventType: [InputEventType.onChange, InputEventType.onBlur],
+        eventType: [InputEventType.onBlur],
         addToEventObj: { date: this.date }
       });
 
       this.cd.detectChanges();
     }
   }
-
-  // public dateClass(date: Date): string {
-  //   const today = new Date();
-  //   const diff = differenceInDays(date, today);
-  //   const same = isSameDay(today, date);
-  //   return same ? 'today' : diff < 0 ? 'past' : 'future';
-  // }
 }

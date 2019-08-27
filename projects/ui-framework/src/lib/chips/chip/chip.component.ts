@@ -26,7 +26,7 @@ export class ChipComponent implements OnChanges {
   @HostBinding('attr.data-disabled') @Input() disabled = false;
   @HostBinding('attr.data-selected') @Input() selected = false;
 
-  @Output() removed: EventEmitter<void> = new EventEmitter<void>();
+  @Output() removed: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   readonly chipType = ChipType;
   readonly icon = Icons.reset_x;
@@ -41,6 +41,6 @@ export class ChipComponent implements OnChanges {
 
   onRemoveClick(event: MouseEvent) {
     event.stopPropagation();
-    this.removed.emit();
+    this.removed.emit(event);
   }
 }

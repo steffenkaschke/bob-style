@@ -6,7 +6,8 @@ import {
   forwardRef,
   ViewChild,
   OnInit,
-  NgZone
+  NgZone,
+  SimpleChanges
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { IconColor, IconSize } from '../../icons/icons.enum';
@@ -16,9 +17,9 @@ import { SocialTypes } from './social.const';
 import { Social } from './social.enum';
 import { BaseFormElement } from '../base-form-element';
 import { FormEvents, InputEventType } from '../form-elements.enum';
-import { domainFromUrl } from '../../services/utils/functional-utils';
 import { InputComponent } from '../input/input.component';
 import { stringyOrFail } from '../../services/utils/transformers';
+import { URLutils } from '../../services/url/url-utils.service';
 
 @Component({
   selector: 'b-social',
@@ -38,31 +39,27 @@ import { stringyOrFail } from '../../services/utils/transformers';
   ]
 })
 export class SocialComponent extends BaseFormElement implements OnInit {
-  constructor(private zone: NgZone) {
+  constructor(private URL: URLutils, private zone: NgZone) {
     super();
     this.inputTransformers = [
       stringyOrFail,
-      value => {
-        if (value) {
-          const origLength = value.length;
-          const domain = domainFromUrl(value);
-          value = value.split(domain)[value.split(domain).length - 1];
-          if (origLength !== value.length) {
-            if (this.type && SocialTypes[this.type].parseSplit) {
-              value = value.split(SocialTypes[this.type].parseSplit)[1];
-            } else {
-              value = value.split('/');
-              value.shift();
-              value = value.join('/');
-            }
-          }
+      (value: string): string => {
+        if (!value) {
+          return '';
         }
-        return value || '';
+        if (SocialTypes[this.type].parseReplace) {
+          SocialTypes[this.type].parseReplace.forEach(rplc => {
+            value = value.replace(rplc.a, rplc.b);
+          });
+        }
+        return this.URL.path(value);
       }
     ];
     this.outputTransformers = [
-      value => (value ? `http://${SocialTypes[this.type].prefix}${value}` : '')
+      (value: string): string =>
+        value ? `http://${SocialTypes[this.type].prefix}${value}` : ''
     ];
+    this.baseValue = '';
     this.wrapEvent = false;
   }
 
@@ -87,6 +84,16 @@ export class SocialComponent extends BaseFormElement implements OnInit {
 
   ngOnInit(): void {
     this.inputId = this.bInput.id;
+  }
+
+  onNgChanges(changes: SimpleChanges): void {
+    if (changes.type && !changes.type.firstChange && this.value) {
+      this.type = changes.type.currentValue;
+      this.writeValue(this.value);
+      this.transmitValue(this.value, {
+        eventType: [InputEventType.onBlur]
+      });
+    }
   }
 
   onInputEvents(event: InputEvent): void {

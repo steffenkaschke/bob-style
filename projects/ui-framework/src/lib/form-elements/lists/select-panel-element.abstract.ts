@@ -22,6 +22,8 @@ import { PanelPositionService } from '../../popups/panel/panel-position-service/
 import { BaseFormElement } from '../base-form-element';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { isEqual } from 'lodash';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements AfterViewInit {
@@ -110,6 +112,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     invoke(this.positionChangeSubscriber, 'unsubscribe');
     this.panelConfig = {};
     this.templatePortal = null;
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
   private getDefaultConfig(): OverlayConfig {
@@ -140,12 +145,19 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   private subscribeToPositions(
     positionStrategy: FlexibleConnectedPositionStrategy
   ): void {
-    this.positionChangeSubscriber = positionStrategy.positionChanges.subscribe(
-      change => {
+    this.positionChangeSubscriber = positionStrategy.positionChanges
+      .pipe(distinctUntilChanged(isEqual))
+      .subscribe(change => {
         this.positionClassList = this.panelPositionService.getPositionClassList(
           change
         );
-      }
-    );
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+          this.overlayRef.overlayElement.children[0].className = this
+            .positionClassList['panel-above']
+            ? 'b-select-panel panel-above'
+            : 'b-select-panel panel-below';
+        }
+      });
   }
 }

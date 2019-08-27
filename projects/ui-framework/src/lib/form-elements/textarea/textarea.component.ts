@@ -1,4 +1,9 @@
-import { Component, forwardRef } from '@angular/core';
+import {
+  Component,
+  forwardRef,
+  NgZone,
+  ChangeDetectorRef
+} from '@angular/core';
 import { BaseInputElement } from '../base-input-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -20,7 +25,7 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class TextareaComponent extends BaseInputElement {
-  constructor() {
-    super();
+  constructor(zone: NgZone, cd: ChangeDetectorRef) {
+    super(zone, cd);
   }
 }

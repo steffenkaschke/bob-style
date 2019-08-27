@@ -31,6 +31,18 @@ export enum NativeEvents {
   mouseenter = 'mouseenter',
   mouseleave = 'mouseleave',
   mouseout = 'mouseout',
+  keydown = 'keydown',
+  keypress = 'keypress',
+  keyup = 'keyup',
+  focus = 'focus',
+  blur = 'blur',
+  change = 'change',
+  input = 'input',
+  submit = 'submit',
+  reset = 'reset',
+  resize = 'resize',
+  scroll = 'scroll',
+  select = 'select',
   dragstart = 'dragstart',
   drag = 'drag',
   dragenter = 'dragenter',
@@ -38,18 +50,6 @@ export enum NativeEvents {
   dragover = 'dragover',
   drop = 'drop',
   dragend = 'dragend',
-  keydown = 'keydown',
-  keypress = 'keypress',
-  keyup = 'keyup',
-  resize = 'resize',
-  scroll = 'scroll',
-  select = 'select',
-  change = 'change',
-  input = 'input',
-  submit = 'submit',
-  reset = 'reset',
-  focus = 'focus',
-  blur = 'blur',
   touchstart = 'touchstart',
   touchend = 'touchend',
   touchmove = 'touchmove',
@@ -57,3 +57,21 @@ export enum NativeEvents {
   touchleave = 'touchleave',
   touchcancel = 'touchcancel'
 }
+
+export const NativeMouseEvents = [
+  NativeEvents.click,
+  NativeEvents.dblclick,
+  NativeEvents.mousedown,
+  NativeEvents.mouseup,
+  NativeEvents.mouseover,
+  NativeEvents.mousemove,
+  NativeEvents.mouseenter,
+  NativeEvents.mouseleave,
+  NativeEvents.mouseout
+];
+
+export const NativeKeyboardEvents = [
+  NativeEvents.keydown,
+  NativeEvents.keypress,
+  NativeEvents.keyup
+];

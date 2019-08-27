@@ -30,12 +30,8 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
   ]
 })
 export class InputComponent extends BaseInputElement implements AfterViewInit {
-  constructor(
-    private DOM: DOMhelpers,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {
-    super();
+  constructor(private DOM: DOMhelpers, zone: NgZone, cd: ChangeDetectorRef) {
+    super(zone, cd);
   }
   @ViewChild('input', { static: true }) input: ElementRef;
   @ViewChild('prefix', { static: false }) prefix: ElementRef;
