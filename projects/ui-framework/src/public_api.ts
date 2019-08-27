@@ -424,7 +424,6 @@ export { DividerComponent } from './lib/layout/divider/divider.component';
 export { CollapsibleSectionModule } from './lib/layout/collapsible-section/collapsible-section.module';
 export { CollapsibleSectionComponent } from './lib/layout/collapsible-section/collapsible-section.component';
 export { CollapsibleOptions } from './lib/layout/collapsible-section/collapsible-section.interface';
-export { collapsibleOptionsDef } from './lib/layout/collapsible-section/collapsible-section.const';
 
 /*
  * Chardts

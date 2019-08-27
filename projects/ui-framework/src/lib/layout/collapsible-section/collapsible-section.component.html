@@ -28,8 +28,8 @@
     <div *ngIf="hasHeaderContent"
          #headerContent
          class="bcp-header-content"
-         [ngClass]="{'bcp-header-content-clickable': options?.headerContentClickable}"
-         (click.outside-zone)="!options?.headerContentClickable && $event.stopPropagation()">
+         [ngClass]="{'bcp-header-content-clickable': !options.headerTranscludeStopPropagation}"
+         (click.outside-zone)="options.headerTranscludeStopPropagation && $event.stopPropagation()">
       <ng-content select="[header]"></ng-content>
     </div>
 

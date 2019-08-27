@@ -19,8 +19,13 @@ import { simpleUID } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { collapsibleOptionsDef } from './collapsible-section.const';
 import { CollapsibleOptions } from './collapsible-section.interface';
+
+const collapsibleOptionsDef: CollapsibleOptions = {
+  smallTitle: false,
+  titlesAsColumn: true,
+  headerTranscludeStopPropagation: false
+};
 
 @Component({
   selector: 'b-collapsible-section',
@@ -73,6 +78,10 @@ export class CollapsibleSectionComponent
         this.togglePanel(changes.expanded.currentValue);
       });
     }
+    if (changes.disabled && !changes.disabled.firstChange) {
+      this.disabled = changes.disabled.currentValue;
+      this.cd.detectChanges();
+    }
   }
 
   ngOnInit(): void {
@@ -114,9 +123,10 @@ export class CollapsibleSectionComponent
       if (!this.contentHeight) {
         this.setCssVars();
 
+        // to allow for transcluded component(s) to render
         setTimeout(() => {
           this.setCssVars();
-        }, 2000);
+        }, 3000);
       }
       this.expanded = typeof state === 'boolean' ? state : !this.expanded;
       this.cd.detectChanges();
