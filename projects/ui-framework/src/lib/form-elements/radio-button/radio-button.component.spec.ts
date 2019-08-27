@@ -53,7 +53,7 @@ describe('RadioButtonComponent', () => {
       radioButtonLabel.nativeElement.click();
       fixture.detectChanges();
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: InputEventType.onChange,
+        event: InputEventType.onBlur,
         value: 13
       });
     });

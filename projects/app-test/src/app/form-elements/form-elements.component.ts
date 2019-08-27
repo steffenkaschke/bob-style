@@ -846,7 +846,10 @@ export class FormElementsTestComponent
       );
       console.log($event);
     }
-    this.cd.detectChanges();
+
+    setTimeout(() => {
+      this.cd.detectChanges();
+    }, 0);
   }
 
   subscribeToValueChanges(name) {

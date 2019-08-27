@@ -145,7 +145,7 @@ describe('SplitInputSingleSelectComponent', () => {
       selectEl.context.selectChange.emit(listChange);
       fixture.detectChanges();
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: InputEventType.onChange,
+        event: InputEventType.onBlur,
         value: { inputValue: 200, selectValue: 'GBP' }
       });
     });

@@ -36,7 +36,7 @@ describe('CheckboxComponent', () => {
       fixture.detectChanges();
       expect(component.value).toBe(true);
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: InputEventType.onChange,
+        event: InputEventType.onBlur,
         value: true,
         indeterminate: false
       });
@@ -52,7 +52,7 @@ describe('CheckboxComponent', () => {
       fixture.detectChanges();
       expect(component.value).toBe(false);
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: InputEventType.onChange,
+        event: InputEventType.onBlur,
         value: false,
         indeterminate: false
       });

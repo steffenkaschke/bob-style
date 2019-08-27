@@ -84,6 +84,6 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
 
   public onRadioChange(key): void {
     this.writeValue(this.options.find(o => o[this.key] === key));
-    this.transmit(InputEventType.onChange);
+    this.transmit(InputEventType.onBlur);
   }
 }

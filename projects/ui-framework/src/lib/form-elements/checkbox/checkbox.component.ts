@@ -74,6 +74,6 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
   public toggleCheckbox(): void {
     this.value = this.input.nativeElement.checked;
     this.indeterminate = false;
-    this.transmit(InputEventType.onChange);
+    this.transmit(InputEventType.onBlur);
   }
 }
