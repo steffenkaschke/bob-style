@@ -101,6 +101,10 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
         this.onDateChange(this.date);
       }
     }
+
+    if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
+      this.placeholder = BDateAdapter.bFormat.toLowerCase();
+    }
   }
 
   public onDateChange(value: Date) {
@@ -115,11 +119,4 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
       this.cd.detectChanges();
     }
   }
-
-  // public dateClass(date: Date): string {
-  //   const today = new Date();
-  //   const diff = differenceInDays(date, today);
-  //   const same = isSameDay(today, date);
-  //   return same ? 'today' : diff < 0 ? 'past' : 'future';
-  // }
 }

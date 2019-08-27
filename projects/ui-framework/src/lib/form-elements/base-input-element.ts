@@ -39,11 +39,9 @@ export abstract class BaseInputElement extends BaseFormElement {
 
   onInputChange(event) {
     if (event.target.value !== this.value) {
-      this.zone.run(() => {
-        this.writeValue(event.target.value);
-        this.transmitValue(this.value, {
-          eventType: [InputEventType.onChange]
-        });
+      this.writeValue(event.target.value);
+      this.transmitValue(this.value, {
+        eventType: [InputEventType.onChange]
       });
     }
   }

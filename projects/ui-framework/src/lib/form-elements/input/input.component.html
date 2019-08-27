@@ -24,7 +24,7 @@
          [readonly]="readonly"
          [attr.minlength]="minChars || null"
          [attr.maxlength]="maxChars || null"
-         (input.outside-zone)="onInputChange($event)"
+         (input)="onInputChange($event)"
          (blur)="onInputBlur();"
          (focus)="onInputFocus()"
          (keyup.outside-zone)="onInputKey($event)">
