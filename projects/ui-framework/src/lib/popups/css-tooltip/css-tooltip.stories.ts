@@ -7,19 +7,26 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import {
+  CSSTooltipWrap,
+  CSSTooltipPosition,
+  CSSTooltipShowOn,
+  CSSTooltipTextAlign
+} from './css-tooltip.enum';
 
 const stories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<p [attr.data-tooltip]="tooltipText"
-   [attr.data-tooltip-position]="tooltipPosition"
-   [attr.data-tooltip-prewrap]="tooltipPrewrap"
-   [attr.data-tooltip-onfocus]="tooltipOnFocus"
-   tabindex="0">
-  Hover over this text to see tooltip.
-</p>
+  <p [attr.data-tooltip]="tooltipText"
+     [attr.data-tooltip-position]="tooltipPosition"
+     [attr.data-tooltip-align]="tooltipTextAlign"
+     [attr.data-tooltip-wrap]="tooltipWrap"
+     [attr.data-tooltip-show]="tooltipShowOn"
+     tabindex="0">
+       Hover over this text to see tooltip.
+  </p>
 `;
 
 const note = `
@@ -30,26 +37,33 @@ const note = `
 
   #### How-to
 
-  By adding \`\`\`data-tooltip="text"\`\`\` atrribute to any element you will get a simple tooiltip with text - on hover.
+  By adding \`\`\`data-tooltip="text"\`\`\` atrribute to any element you will get a simple tooltip with text - on hover or on focus (click).
 
- #### Notation
 
-  \`\`\`[attr.data-tooltip]="textProperty" \`\`\`
-
-   \`\`\`[attr.data-tooltip]="'Text string'" \`\`\`
-
-  #### Additional attributes
-
-  You may add \`\`\`data-tooltip-position\`\`\` attribute that should equal to 'above' (default) or 'below'.
-
-  If you add \`\`\`data-tooltip-prewrap="true"\`\`\` attribute, the tooltip will respect line-break symbols \`\`\`\\n\`\`\` in text.
-
-  If you add \`\`\`data-tooltip-onfocus="true"\`\`\` attribute, the tooltip will open when you focus (click) the element. And close when element loses focus (user clicked somewhere else). Element must be focusable (add \`\`\`tabindex="0"\`\`\` attribute if needed).
-
+  #### HTML Attributes
+  Name | Type | Description | default
+  --- | --- | --- | ---
+  [attr.data-tooltip] | string | tooltip text | none
+  [attr.data-tooltip-position] | CSSTooltipPosition | above or below | 'above'
+  [attr.data-tooltip-align] | CSSTooltipTextAlign | text alignment | 'center'
+  [attr.data-tooltip-show] | CSSTooltipShowOn | show on hover or on focus (click) - if using on focus, be sure to add tabindex="0" attribute to non-focusable elements | 'hover'
+  [attr.data-tooltip-wrap] | CSSTooltipWrap | white-space CSS property - 'normal', 'nowrap' (single line, only use for predictably short tooltips) or 'pre' (will respect line-break symbols \`\`\`\\n\`\`\` in text!) | 'normal'
 
   ~~~
   ${template}
   ~~~
+
+  #### Notation
+  you can use plain HTML attributes, or Angular [attr.xxx] notation (preferred):
+
+  \`\`\`[attr.data-tooltip]="textProperty" \`\`\`
+
+  \`\`\`[attr.data-tooltip]="'Text string'" \`\`\`
+
+  \`\`\`data-tooltip="Some text" \`\`\`
+
+  \`\`\`data-tooltip="{{ textProperty }}" \`\`\`
+
 `;
 
 const storyTemplate = `<b-story-book-layout [title]="'Info Tooltip'">
@@ -67,9 +81,26 @@ stories.add(
         'tooltipText',
         'Lorem ipsum  \ndolor sit amet, \nconsectetur adipiscing elit, \nsed do eiusmod tempor \nincididunt ut'
       ),
-      tooltipPosition: select('tooltipPosition', ['above', 'below'], 'above'),
-      tooltipPrewrap: boolean('tooltipPrewrap', false),
-      tooltipOnFocus: boolean('tooltipOnFocus', false)
+      tooltipPosition: select(
+        'tooltipPosition',
+        Object.values(CSSTooltipPosition),
+        CSSTooltipPosition.above
+      ),
+      tooltipTextAlign: select(
+        'tooltipTextAlign',
+        Object.values(CSSTooltipTextAlign),
+        CSSTooltipTextAlign.center
+      ),
+      tooltipWrap: select(
+        'tooltipWrap',
+        Object.values(CSSTooltipWrap),
+        CSSTooltipWrap.normal
+      ),
+      tooltipShowOn: select(
+        'tooltipShowOn',
+        Object.values(CSSTooltipShowOn),
+        CSSTooltipShowOn.hover
+      )
     },
     moduleMetadata: {
       imports: [StoryBookLayoutModule]
