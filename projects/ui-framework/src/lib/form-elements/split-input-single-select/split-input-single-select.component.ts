@@ -82,15 +82,13 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
   }
 
   onInputChange(event: InputEvent): void {
-    if (event.event === InputEventType.onChange) {
+    if (
+      event.event === InputEventType.onChange ||
+      event.event === InputEventType.onBlur
+    ) {
       this.value.inputValue = event.value;
       this.transmitValue(this.value, {
-        eventType: [InputEventType.onChange]
-      });
-    }
-    if (event.event === InputEventType.onBlur) {
-      this.transmitValue(this.value, {
-        eventType: [InputEventType.onBlur]
+        eventType: [event.event]
       });
     }
   }

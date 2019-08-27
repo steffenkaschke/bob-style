@@ -91,7 +91,7 @@ export class SocialComponent extends BaseFormElement implements OnInit {
       this.type = changes.type.currentValue;
       this.writeValue(this.value);
       this.transmitValue(this.value, {
-        eventType: [InputEventType.onChange]
+        eventType: [InputEventType.onBlur]
       });
     }
   }
