@@ -10,7 +10,8 @@ import { BaseFormElement } from '../base-form-element';
 import {
   padWith0,
   isString,
-  isKey
+  isKey,
+  isNumber
 } from '../../services/utils/functional-utils';
 import { timeyOrFail } from '../../services/utils/transformers';
 import { InputEventType } from '../form-elements.enum';
@@ -60,7 +61,7 @@ export class TimePickerComponent extends BaseFormElement {
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
 
-  onInputKeydown(event) {
+  onInputKeydown(event: KeyboardEvent) {
     event.stopPropagation();
     const allowedKeys = [
       Keys.enter,
@@ -69,21 +70,22 @@ export class TimePickerComponent extends BaseFormElement {
       Keys.delete,
       Keys.backspace,
       Keys.arrowleft,
-      Keys.arrowright
+      Keys.arrowright,
+      Keys.arrowup,
+      Keys.arrowdown
     ];
-    if (/[^0-9]/.test(event.key) && !allowedKeys.includes(event.key)) {
+    if (/[^0-9]/.test(event.key) && !allowedKeys.includes(event.key as Keys)) {
       event.preventDefault();
+      return;
     }
     if (isKey(event.key, Keys.arrowright)) {
       if (
         this.hoursFocused &&
-        (!this.inputHours.nativeElement.value ||
-          this.inputHours.nativeElement.selectionStart >= 2)
+        this.inputHours.nativeElement.selectionStart >=
+          this.inputHours.nativeElement.value.length
       ) {
-        this.inputMinutes.nativeElement.focus();
-        setTimeout(() => {
-          this.inputMinutes.nativeElement.setSelectionRange(0, 0);
-        }, 0);
+        event.preventDefault();
+        this.switchInputs();
       }
     }
     if (isKey(event.key, Keys.arrowleft)) {
@@ -91,22 +93,74 @@ export class TimePickerComponent extends BaseFormElement {
         this.minutesFocused &&
         this.inputMinutes.nativeElement.selectionStart === 0
       ) {
-        this.inputHours.nativeElement.focus();
-        setTimeout(() => {
+        event.preventDefault();
+        this.switchInputs();
+      }
+    }
+    if (isKey(event.key, Keys.arrowup)) {
+      event.preventDefault();
+      if (this.hoursFocused) {
+        this.inputHours.nativeElement.value = this.parseValue(
+          this.inputHours.nativeElement.value,
+          1,
+          0,
+          23,
+          '00'
+        );
+        if (this.inputHours.nativeElement.value === '23') {
+          this.switchInputs();
+        } else {
           this.inputHours.nativeElement.setSelectionRange(2, 2);
-        }, 0);
+        }
+      }
+      if (this.minutesFocused) {
+        this.inputMinutes.nativeElement.value = this.parseValue(
+          this.inputMinutes.nativeElement.value,
+          1,
+          0,
+          59,
+          '00'
+        );
+        this.inputMinutes.nativeElement.setSelectionRange(2, 2);
+      }
+    }
+    if (isKey(event.key, Keys.arrowdown)) {
+      event.preventDefault();
+      if (this.hoursFocused) {
+        this.inputHours.nativeElement.value = this.parseValue(
+          this.inputHours.nativeElement.value,
+          -1,
+          0,
+          23,
+          '00'
+        );
+        this.inputHours.nativeElement.setSelectionRange(2, 2);
+      }
+      if (this.minutesFocused) {
+        this.inputMinutes.nativeElement.value = this.parseValue(
+          this.inputMinutes.nativeElement.value,
+          -1,
+          0,
+          59,
+          '00'
+        );
+        if (this.inputMinutes.nativeElement.value === '00') {
+          this.switchInputs();
+        } else {
+          this.inputMinutes.nativeElement.setSelectionRange(2, 2);
+        }
       }
     }
   }
 
   onHoursChange(event) {
-    if (event.target.value.length >= 2) {
+    if (event.target.value.length > 1) {
       this.inputMinutes.nativeElement.focus();
     }
   }
 
   onMinutesChange(event) {
-    if (event.target.value.length >= 2) {
+    if (event.target.value.length > 1) {
       this.inputMinutes.nativeElement.blur();
     }
   }
@@ -125,26 +179,27 @@ export class TimePickerComponent extends BaseFormElement {
     this.cd.detectChanges();
   }
 
-  onHoursBlur(event) {
+  onHoursBlur(event: FocusEvent) {
     this.hoursFocused = false;
-    let value = this.getValue(event);
-    if (value > 23) {
-      value = 23;
-    }
-    this.valueHours = (value as any) !== '' ? padWith0(value) : (value as any);
-    this.inputHours.nativeElement.value = this.valueHours;
+    this.inputHours.nativeElement.value = this.valueHours = this.parseValue(
+      (event.target as HTMLInputElement).value,
+      0,
+      0,
+      23,
+      ''
+    );
     this.transmit();
   }
 
-  onMinutesBlur(event) {
+  onMinutesBlur(event: FocusEvent) {
     this.minutesFocused = false;
-    let value = this.getValue(event);
-    if (value > 59) {
-      value = 59;
-    }
-    this.valueMinutes =
-      (value as any) !== '' ? padWith0(value) : (value as any);
-    this.inputMinutes.nativeElement.value = this.valueMinutes;
+    this.inputMinutes.nativeElement.value = this.valueMinutes = this.parseValue(
+      (event.target as HTMLInputElement).value,
+      0,
+      0,
+      59,
+      ''
+    );
     this.transmit();
   }
 
@@ -156,21 +211,41 @@ export class TimePickerComponent extends BaseFormElement {
     }
   }
 
-  private getValue(event): number {
-    if (event.target.value.trim() === '') {
-      return '' as any;
+  private parseValue(
+    value: string,
+    mod: number,
+    minValue: number,
+    maxValue: number,
+    def: any = ''
+  ): string {
+    const parsed = parseInt(value, 10);
+    if (parsed !== parsed) {
+      return def;
     }
-    const value = parseInt(event.target.value, 10);
-    return value !== value || value < 0 ? 0 : value;
+    return mod > -1
+      ? padWith0(Math.min(Math.max(parsed + mod, minValue), maxValue))
+      : padWith0(Math.max(Math.min(parsed - 1, maxValue), minValue));
   }
 
-  private splitValue(value: string, index = 0): string {
-    return isString(value) ? padWith0(value.split(':')[index]) : undefined;
+  private splitValue(value: string, index = 0): any {
+    return isString(value) || isNumber(value)
+      ? this.parseValue(value.split(':')[index], 0, 0, index === 0 ? 23 : 59, 0)
+      : undefined;
   }
 
   private combineValue(valueHours: string, valueMinutes: string): string {
     return valueHours === '' && valueMinutes === ''
       ? null
       : `${valueHours || '00'}:${valueMinutes || '00'}`;
+  }
+
+  private switchInputs() {
+    if (this.hoursFocused) {
+      this.inputMinutes.nativeElement.focus();
+      this.inputMinutes.nativeElement.setSelectionRange(0, 0);
+    } else if (this.minutesFocused) {
+      this.inputHours.nativeElement.focus();
+      this.inputHours.nativeElement.setSelectionRange(2, 2);
+    }
   }
 }

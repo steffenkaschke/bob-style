@@ -166,7 +166,7 @@ export const timeyOrFail = value => {
   if (!value) {
     return undefined;
   }
-  if (isString(value) && value.indexOf(':') === -1) {
+  if (!isString(value) || value.indexOf(':') === -1) {
     throw new Error(`Value (${stringify(value)}) could not be parsed to Time.`);
   }
   return value;
