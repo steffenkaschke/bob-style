@@ -19,6 +19,7 @@ li {
 }
 
 .emoji-panel {
+  margin: 0 auto;
   width: $icon-width * $icons-in-row + $emoji-padding * 2;
   @include OverlayPanel();
   @include OverlayPointerHolders();
