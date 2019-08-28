@@ -186,5 +186,16 @@ export const isDateISO8601 = (date: string): boolean =>
   date.split('-')[0].length === 4 &&
   parseInt(date.split('-')[1], 10) < 13;
 
-export const isDateFormat = (frmt: string): boolean =>
-  isString(frmt) && frmt.split(/[.|\-|/|:]/).length > 1;
+export const isDateFormat = (frmt: string): boolean => {
+  if (!isString(frmt)) {
+    return false;
+  }
+  const split = frmt.toUpperCase().split(/[.|\-|/|:| ]+/);
+
+  return (
+    split.length > 1 &&
+    (!!split.find(i => i === 'DD') ||
+      !!split.find(i => i === 'MM') ||
+      !!split.find(i => i === 'YYYY'))
+  );
+};

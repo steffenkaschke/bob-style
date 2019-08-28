@@ -7,7 +7,8 @@ import {
   asArray,
   stringify,
   getType,
-  isDateISO8601
+  isDateISO8601,
+  isDateFormat
 } from './functional-utils';
 
 import { parse, format, isDate } from 'date-fns';
@@ -57,15 +58,6 @@ export const valueToObjectWithKeyOfValueFromArray = (
 export const stringToDate = date => {
   if (isDate(date) || isNullOrUndefined(date)) {
     return date;
-  }
-  if (!date) {
-    return undefined;
-  }
-
-  if (!isDateISO8601(date)) {
-    throw new Error(
-      `Date string (${stringify(date)}) must be in ISO8601 format to parse.`
-    );
   }
   const converted = parse(date);
   return String(converted) !== 'Invalid Date' ? converted : undefined;
@@ -149,6 +141,36 @@ export const stringyOrFail = value => {
     );
   }
   return String(value);
+};
+
+export const dateOrFail = value => {
+  if (isDate(value) || isNullOrUndefined(value)) {
+    return value;
+  }
+  if (!value) {
+    return undefined;
+  }
+  if (!isDateISO8601(value)) {
+    throw new Error(
+      `Date string (${stringify(value)}) must be in ISO8601 format to parse.`
+    );
+  }
+  return stringToDate(value);
+};
+
+export const dateFormatOrFail = value => {
+  if (isNullOrUndefined(value)) {
+    return value;
+  }
+  if (!value) {
+    return undefined;
+  }
+  if (!isDateFormat(value)) {
+    throw new Error(
+      `Provided string (${stringify(value)}) does not describe Date format.`
+    );
+  }
+  return value;
 };
 
 export const timeyOrFail = value => {

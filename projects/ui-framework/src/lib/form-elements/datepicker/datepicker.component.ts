@@ -24,14 +24,11 @@ import { FormEvents } from '../form-elements.enum';
 import {
   dateToString,
   stringyOrFail,
-  stringToDate
+  dateOrFail,
+  dateFormatOrFail
 } from '../../services/utils/transformers';
 import { DateValue } from './datepicker.interface';
-import {
-  isDateISO8601,
-  simpleUID,
-  isDateFormat
-} from '../../services/utils/functional-utils';
+import { simpleUID } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-datepicker',
@@ -60,6 +57,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatepickerComponent extends BaseFormElement implements OnInit {
+  @Input() value: string | Date;
   @Input() displayFormat?: string;
   @Input() minDate?: Date | string;
   @Input() maxDate?: Date | string;
@@ -82,7 +80,7 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
   constructor(private cd: ChangeDetectorRef) {
     super();
 
-    this.inputTransformers = [stringyOrFail, stringToDate];
+    this.inputTransformers = [stringyOrFail, dateOrFail];
 
     this.outputTransformers = [
       (date: Date): DateValue => ({
@@ -98,23 +96,20 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
 
   // this extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    if (
-      changes.displayFormat &&
-      isDateFormat(changes.displayFormat.currentValue)
-    ) {
-      this.displayFormat = changes.displayFormat.currentValue;
+    if (changes.displayFormat) {
+      this.displayFormat = dateFormatOrFail(changes.displayFormat.currentValue);
 
       if (!changes.displayFormat.firstChange && this.date) {
         this.onDateChange(this.date);
       }
     }
 
-    if (changes.minDate && isDateISO8601(changes.minDate.currentValue)) {
-      this.minDate = stringToDate(changes.minDate.currentValue);
+    if (changes.minDate) {
+      this.minDate = dateOrFail(changes.minDate.currentValue);
     }
 
-    if (changes.maxDate && isDateISO8601(changes.maxDate.currentValue)) {
-      this.maxDate = stringToDate(changes.maxDate.currentValue);
+    if (changes.maxDate) {
+      this.maxDate = dateOrFail(changes.maxDate.currentValue);
     }
 
     if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
