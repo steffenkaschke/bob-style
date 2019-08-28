@@ -4,6 +4,7 @@ import {
   EventEmitter,
   forwardRef,
   Input,
+  OnInit,
   Output,
   ViewChild,
   SimpleChanges,
@@ -15,7 +16,7 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { InputTypes } from '../input/input.enum';
 import { InputEventType } from '../form-elements.enum';
-import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
+import { B_DATE_FORMATS, BDateAdapter } from '../datepicker/date.adapter';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
 import { BaseFormElement } from '../base-form-element';
@@ -29,9 +30,13 @@ import { simpleUID } from '../../services/utils/functional-utils';
 import { InputEvent } from '../input/input.interface';
 
 @Component({
-  selector: 'b-datepicker',
-  templateUrl: './datepicker.component.html',
-  styleUrls: ['../input/input.component.scss', './datepicker.component.scss'],
+  selector: 'b-date-range-picker',
+  templateUrl: './date-range-picker.component.html',
+  styleUrls: [
+    '../input/input.component.scss',
+    '../datepicker/datepicker.component.scss',
+    './date-range-picker.component.scss'
+  ],
   providers: [
     {
       provide: DateAdapter,
@@ -43,18 +48,19 @@ import { InputEvent } from '../input/input.interface';
     },
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DatepickerComponent),
+      useExisting: forwardRef(() => DateRangePickerComponent),
       multi: true
     },
     {
       provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => DatepickerComponent),
+      useExisting: forwardRef(() => DateRangePickerComponent),
       multi: true
     }
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatepickerComponent extends BaseFormElement {
+export class DateRangePickerComponent extends BaseFormElement
+  implements OnInit {
   @Input() value: Date | string;
   @Input() minDate?: Date | string;
   @Input() maxDate?: Date | string;
@@ -76,17 +82,18 @@ export class DatepickerComponent extends BaseFormElement {
 
   constructor(private cd: ChangeDetectorRef) {
     super();
+
     this.inputTransformers = [stringyOrFail, dateOrFail];
     this.outputTransformers = [
       (value: Date): string => dateToString(value, serverDateFormat)
     ];
   }
 
+  ngOnInit(): void {}
+
   // this extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    if (this.picker) {
-      this.picker.close();
-    }
+    this.picker.close();
 
     if (changes.minDate) {
       this.minDate = dateOrFail(changes.minDate.currentValue);
@@ -109,6 +116,8 @@ export class DatepickerComponent extends BaseFormElement {
         eventType: [InputEventType.onBlur],
         addToEventObj: { date: value }
       });
+
+      this.cd.detectChanges();
     }
   }
 }
