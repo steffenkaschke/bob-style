@@ -34,7 +34,7 @@ describe('EmployeeChainSelectComponent', () => {
   describe('addChainLink', () => {
     it('Should add chain link to the list', () => {
       component.addChainLink();
-      expect(component.chainLinkList).toEqual([null, null]);
+      expect(component.chainLinkList).toEqual([{}, {}]);
       fixture.detectChanges();
       const rows = fixture.debugElement.queryAll(By.css('.chain-link-row'));
       expect(rows.length).toEqual(2);
@@ -64,6 +64,6 @@ describe('EmployeeChainSelectComponent', () => {
       spyOn(component.selectChange, 'emit');
       component.handleChange({}, 0);
       expect(component.selectChange.emit).toHaveBeenCalledWith({ event: {}, index: 0 });
-    })
+    });
   });
 });
