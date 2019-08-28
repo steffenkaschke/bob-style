@@ -23,6 +23,7 @@ const template = `
               [maxDate]="maxDate"
               [label]="label"
               [placeholder]="placeholder"
+              [hideLabelOnFocus]="hideLabelOnFocus"
               [hintMessage]="hintMessage"
               [warnMessage]="warnMessage"
               [errorMessage]="errorMessage"
@@ -55,6 +56,7 @@ const note = `
   [maxDate] | Date / string (YYYY-MM-DD) | maximum date | none
   [label] | string | label text (above input) | none
   [placeholder] | string | placeholder text (inside input) | none
+  [hideLabelOnFocus] | boolean | places label in placeholder position | false
   [disabled] | boolean | is field disabled | false
   [required] | boolean | is field required | false
   [hintMessage] | string | hint text | none
@@ -78,6 +80,7 @@ datepickerStories.add(
         maxDate: select('maxDate', ['', '2019-08-25'], ''),
         label: text('label', 'Date picker'),
         placeholder: text('placeholder', ''),
+        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),

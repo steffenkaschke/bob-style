@@ -1,56 +1,63 @@
 <div class="bfe-label-wrap">
-  <label *ngIf="label && !hideLabelOnFocus"
-         class="bfe-label"
-         [attr.for]="id">{{label}}</label>
+  <label *ngIf="(label || startDateLabel) && !hideLabelOnFocus"
+         class="bfe-label start-date-label"
+         [attr.for]="idSD">{{startDateLabel || label}}</label>
 
-  <label *ngIf="label && !hideLabelOnFocus"
-         class="bfe-label"
-         [attr.for]="id">{{label}}</label>
+  <label *ngIf="!label && endDateLabel && !hideLabelOnFocus"
+         class="bfe-label end-date-label"
+         [attr.for]="idED">{{endDateLabel}}</label>
 </div>
 
 <div class="bfe-wrap"
      [ngClass]="{focused: inputFocused}">
 
   <input #startDateInput
-         class="bfe-input"
-         [attr.id]="id"
-         [attr.name]="id"
+         class="bfe-input start-date-input"
+         [attr.id]="idSD"
+         [attr.name]="idSD"
          [type]="inputTypes.text"
-         [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
-         [value]="value"
+         [attr.placeholder]="hideLabelOnFocus && (startDateLabel || label) ? (!required ? (startDateLabel || label) :
+         (startDateLabel || label) + '*') :
+         placeholder"
+         [value]="startDate"
          [disabled]="disabled"
          [required]="required"
-         (focus)="startDateInput.select();picker.open();inputFocused = true"
-         (blur)="picker.opened ? startDateInput.focus() : inputFocused = false"
-         (dateChange)="onDateChange($event.value)"
-         [matDatepicker]="picker"
+         (focus)="startDateInput.select();startDatePicker.open();inputFocused = true"
+         (blur)="startDatePicker.opened ? startDateInput.focus() : inputFocused = false"
+         (dateChange)="onStartDateChange($event.value)"
+         [matDatepicker]="startDatePicker"
          [min]="minDate || null"
-         [max]="maxDate || null">
+         [max]="endDate || maxDate || null">
 
   <input #endDateInput
-         class="bfe-input"
-         [attr.id]="id"
-         [attr.name]="id"
+         class="bfe-input end-date-input"
+         [attr.id]="idED"
+         [attr.name]="idED"
          [type]="inputTypes.text"
-         [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
-         [value]="value"
+         [attr.placeholder]="hideLabelOnFocus && (endDateLabel || label) ? (!required ? ((label && null) ||
+         endDateLabel) : ((label && ' ') || endDateLabel + '*')) :
+         placeholder"
+         [value]="endDate"
          [disabled]="disabled"
          [required]="required"
-         (focus)="endDateInput.select();picker.open();inputFocused = true"
-         (blur)="picker.opened ? endDateInput.focus() : inputFocused = false"
-         (dateChange)="onDateChange($event.value)"
-         [matDatepicker]="picker"
-         [min]="minDate || null"
+         (focus)="endDateInput.select();endDatePicker.open();inputFocused = true"
+         (blur)="endDatePicker.opened ? endDateInput.focus() : inputFocused = false"
+         (dateChange)="onEndDateChange($event.value)"
+         [matDatepicker]="endDatePicker"
+         [min]="startDate || minDate || null"
          [max]="maxDate || null">
 
 
 </div>
 
-<!-- <mat-datepicker #picker
+<mat-datepicker #startDatePicker
                 [disabled]="disabled"
-                (opened)="input.focus();inputFocused = true;"
-                (closed)="input.blur();inputFocused = false;">
-</mat-datepicker> -->
+                [touchUi]="isMobile">
+</mat-datepicker>
+<mat-datepicker #endDatePicker
+                [disabled]="disabled"
+                [touchUi]="isMobile">
+</mat-datepicker>
 
 <p b-input-message
    *ngIf="hintMessage || warnMessage || errorMessage"

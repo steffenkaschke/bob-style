@@ -1,1 +1,39 @@
 @import '../../style/common-imports';
+@import '../form-element.mixin';
+
+:host {
+  .bfe-label-wrap {
+    display: flex;
+  }
+
+  .bfe-input,
+  .bfe-label {
+    width: 50%;
+  }
+
+  .start-date-input {
+    border-right: 1px solid $input-border-color;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .end-date-input {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .end-date-label {
+    padding-left: $input-padding;
+  }
+
+  &.warn {
+    .start-date-input {
+      border-right-color: $color-warn;
+    }
+  }
+  &.error {
+    .start-date-input {
+      border-right-color: $color-error;
+    }
+  }
+}

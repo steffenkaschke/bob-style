@@ -66,7 +66,16 @@ export class DateRangePickerComponent extends BaseFormElement
   @Input() maxDate?: Date | string;
   @Input() dateFormat?: string;
 
-  public id = simpleUID('bdp-');
+  @Input() startDateLabel: string;
+  @Input() endDateLabel: string;
+
+  public idSD = simpleUID('bdp-sd-');
+  public idED = simpleUID('bdp-ed-');
+
+  public startDate: Date | string;
+  public endDate: Date | string;
+
+  public isMobile = false;
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
@@ -93,31 +102,43 @@ export class DateRangePickerComponent extends BaseFormElement
 
   // this extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    this.picker.close();
-
-    if (changes.minDate) {
-      this.minDate = dateOrFail(changes.minDate.currentValue);
+    if (this.picker) {
+      this.picker.close();
     }
 
-    if (changes.maxDate) {
-      this.maxDate = dateOrFail(changes.maxDate.currentValue);
-    }
+    // if (changes.minDate) {
+    //   this.minDate = dateOrFail(changes.minDate.currentValue);
+    // }
 
-    if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
+    // if (changes.maxDate) {
+    //   this.maxDate = dateOrFail(changes.maxDate.currentValue);
+    // }
+
+    if (!this.placeholder && !this.hideLabelOnFocus) {
       this.placeholder = BDateAdapter.bFormat.toLowerCase();
     }
   }
 
   public onDateChange(value: Date) {
+    // if (value) {
+    //   this.value = value;
+    //   this.transmitValue(value, {
+    //     eventType: [InputEventType.onBlur],
+    //     addToEventObj: { date: value }
+    //   });
+    //   this.cd.detectChanges();
+    // }
+  }
+
+  public onStartDateChange(value: Date) {
     if (value) {
-      this.value = value;
+      this.startDate = value;
+    }
+  }
 
-      this.transmitValue(value, {
-        eventType: [InputEventType.onBlur],
-        addToEventObj: { date: value }
-      });
-
-      this.cd.detectChanges();
+  public onEndDateChange(value: Date) {
+    if (value) {
+      this.endDate = value;
     }
   }
 }
