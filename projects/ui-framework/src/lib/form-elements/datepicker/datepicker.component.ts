@@ -4,7 +4,6 @@ import {
   EventEmitter,
   forwardRef,
   Input,
-  OnInit,
   Output,
   ViewChild,
   SimpleChanges,
@@ -55,7 +54,7 @@ import { InputEvent } from '../input/input.interface';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatepickerComponent extends BaseFormElement implements OnInit {
+export class DatepickerComponent extends BaseFormElement {
   @Input() value: Date | string;
   @Input() minDate?: Date | string;
   @Input() maxDate?: Date | string;
@@ -77,14 +76,11 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
 
   constructor(private cd: ChangeDetectorRef) {
     super();
-
     this.inputTransformers = [stringyOrFail, dateOrFail];
     this.outputTransformers = [
       (value: Date): string => dateToString(value, serverDateFormat)
     ];
   }
-
-  ngOnInit(): void {}
 
   // this extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
@@ -111,8 +107,6 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
         eventType: [InputEventType.onBlur],
         addToEventObj: { date: value }
       });
-
-      this.cd.detectChanges();
     }
   }
 }
