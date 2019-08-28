@@ -20,19 +20,4 @@ describe('DatePickerModule', () => {
     spyOn(component.changed, 'emit');
     fixture.detectChanges();
   });
-  xdescribe('dateClass', () => {
-    // it('today', () => {
-    //   expect(component.dateClass(new Date())).toEqual('today');
-    // });
-    // it('past', () => {
-    //   const date = new Date();
-    //   date.setDate(date.getDate() - 1);
-    //   expect(component.dateClass(date)).toEqual('past');
-    // });
-    // it('future', () => {
-    //   const date = new Date();
-    //   date.setDate(date.getDate() + 1);
-    //   expect(component.dateClass(date)).toEqual('future');
-    // });
-  });
 });
