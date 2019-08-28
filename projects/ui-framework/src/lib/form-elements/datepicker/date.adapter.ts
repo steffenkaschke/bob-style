@@ -4,9 +4,10 @@ import { format } from 'date-fns';
 export class BDateAdapter extends NativeDateAdapter {
   public static bFormat = 'DD/MM/YYYY';
   public static readonly monthFormat = 'MMM';
+  public static readonly monthYearFormat = 'MMM YYYY';
 
   parse(value: any): Date | null {
-    if ((typeof value === 'string') && (value.indexOf('/') > -1)) {
+    if (typeof value === 'string' && value.indexOf('/') > -1) {
       const str = value.split('/');
       const year = Number(str[2]);
       const month = Number(str[1]) - 1;
@@ -22,6 +23,8 @@ export class BDateAdapter extends NativeDateAdapter {
         return format(date, BDateAdapter.bFormat);
       case 'inputMonth':
         return format(date, BDateAdapter.monthFormat);
+      case 'monthYearFormat':
+        return format(date, BDateAdapter.monthYearFormat);
       default:
         return date.toDateString();
     }
@@ -29,13 +32,13 @@ export class BDateAdapter extends NativeDateAdapter {
 }
 
 export const B_DATE_FORMATS = {
-    parse: {
-      dateInput: {month: 'short', year: 'numeric', day: 'numeric'}
-    },
-    display: {
-      dateInput: 'input',
-      monthYearLabel: 'inputMonth',
-      dateA11yLabel: {year: 'numeric', month: 'long', day: 'numeric'},
-      monthYearA11yLabel: {year: 'numeric', month: 'long'},
-    }
-  };
+  parse: {
+    dateInput: { day: 'numeric', month: 'short', year: 'numeric' }
+  },
+  display: {
+    dateInput: 'input',
+    monthYearLabel: 'monthYearFormat',
+    dateA11yLabel: { day: 'numeric', month: 'long', year: 'numeric' },
+    monthYearA11yLabel: { month: 'short', year: 'numeric' }
+  }
+};

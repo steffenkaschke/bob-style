@@ -179,3 +179,12 @@ export const applyChanges = (target: any, changes: SimpleChanges): void => {
     target[change] = changes[change].currentValue;
   });
 };
+
+export const isDateISO8601 = (date: string): boolean =>
+  isString(date) &&
+  date.split('-').length === 3 &&
+  date.split('-')[0].length === 4 &&
+  parseInt(date.split('-')[1], 10) < 13;
+
+export const isDateFormat = (frmt: string): boolean =>
+  isString(frmt) && frmt.split(/[.|\-|/|:]/).length > 1;

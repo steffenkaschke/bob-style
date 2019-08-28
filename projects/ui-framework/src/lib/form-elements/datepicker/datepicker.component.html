@@ -12,13 +12,14 @@
          [type]="inputTypes.text"
          [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
          [value]="value"
-         [autocomplete]="enableBrowserAutoComplete"
          [disabled]="disabled"
          [required]="required"
          (focus)="input.select();picker.open();inputFocused = true"
          (blur)="picker.opened ? input.focus() : inputFocused = false"
          (dateChange)="onDateChange($event.value)"
-         [matDatepicker]="picker">
+         [matDatepicker]="picker"
+         [min]="minDate || null"
+         [max]="maxDate || null">
 
   <b-icon class="bfe-suffix"
           (click)="picker.open()"

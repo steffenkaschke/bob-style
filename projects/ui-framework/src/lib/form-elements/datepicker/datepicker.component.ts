@@ -8,24 +8,30 @@ import {
   Output,
   ViewChild,
   SimpleChanges,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { InputTypes, InputAutoCompleteOptions } from '../input/input.enum';
+import { InputTypes } from '../input/input.enum';
 import { InputEventType } from '../form-elements.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
-import { InputEvent } from '../input/input.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
 import { BaseFormElement } from '../base-form-element';
 import { FormEvents } from '../form-elements.enum';
 import {
-  dateyOrFail,
   dateToString,
-  stringyOrFail
+  stringyOrFail,
+  stringToDate
 } from '../../services/utils/transformers';
+import { DateValue } from './datepicker.interface';
+import {
+  isDateISO8601,
+  simpleUID,
+  isDateFormat
+} from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-datepicker',
@@ -50,14 +56,15 @@ import {
       useExisting: forwardRef(() => DatepickerComponent),
       multi: true
     }
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatepickerComponent extends BaseFormElement implements OnInit {
-  // tslint:disable-next-line: no-input-rename
-  @Input('inputLabel') label: string;
-  @Input() dateFormat?: string;
-  @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
-    InputAutoCompleteOptions.off;
+  @Input() displayFormat?: string;
+  @Input() minDate?: Date | string;
+  @Input() maxDate?: Date | string;
+
+  public id = simpleUID('bdp-');
   public date: Date;
 
   readonly icons = Icons;
@@ -69,41 +76,49 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
   @ViewChild('picker', { static: true }) picker: MatDatepicker<any>;
 
   @Output(FormEvents.dateChange) changed: EventEmitter<
-    InputEvent
-  > = new EventEmitter<InputEvent>();
+    DateValue
+  > = new EventEmitter<DateValue>();
 
   constructor(private cd: ChangeDetectorRef) {
     super();
-    this.inputTransformers = [stringyOrFail, dateyOrFail];
+
+    this.inputTransformers = [stringyOrFail, stringToDate];
+
     this.outputTransformers = [
-      date =>
-        dateToString(
-          date,
-          (!!this.dateFormat && this.dateFormat) || serverDateFormat
-        )
+      (date: Date): DateValue => ({
+        date,
+        value: dateToString(date, serverDateFormat),
+        displayDate: dateToString(date, this.getDisplayFormat())
+      })
     ];
+    this.wrapEvent = false;
   }
 
-  ngOnInit(): void {
-    if (this.dateFormat) {
-      BDateAdapter.bFormat = this.dateFormat.toUpperCase();
-    }
-  }
+  ngOnInit(): void {}
 
   // this extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    if (changes.dateFormat && !changes.dateFormat.firstChange) {
-      this.dateFormat = changes.dateFormat.currentValue.toUpperCase();
-      BDateAdapter.bFormat =
-        (!!this.dateFormat && this.dateFormat) || 'DD/MM/YYYY';
+    if (
+      changes.displayFormat &&
+      isDateFormat(changes.displayFormat.currentValue)
+    ) {
+      this.displayFormat = changes.displayFormat.currentValue;
 
-      if (this.date) {
+      if (!changes.displayFormat.firstChange && this.date) {
         this.onDateChange(this.date);
       }
     }
 
+    if (changes.minDate && isDateISO8601(changes.minDate.currentValue)) {
+      this.minDate = stringToDate(changes.minDate.currentValue);
+    }
+
+    if (changes.maxDate && isDateISO8601(changes.maxDate.currentValue)) {
+      this.maxDate = stringToDate(changes.maxDate.currentValue);
+    }
+
     if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
-      this.placeholder = BDateAdapter.bFormat.toLowerCase();
+      this.placeholder = this.getDisplayFormat().toLowerCase();
     }
   }
 
@@ -112,11 +127,14 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
       this.value = this.date = value;
 
       this.transmitValue(value, {
-        eventType: [InputEventType.onBlur],
-        addToEventObj: { date: this.date }
+        eventType: [InputEventType.onBlur]
       });
 
       this.cd.detectChanges();
     }
+  }
+
+  private getDisplayFormat(): string {
+    return this.displayFormat || BDateAdapter.bFormat || 'DD/MM/YYYY';
   }
 }
