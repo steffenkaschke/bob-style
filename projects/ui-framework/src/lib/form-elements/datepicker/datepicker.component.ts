@@ -88,6 +88,8 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
 
   // this extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
+    this.picker.close();
+
     if (changes.minDate) {
       this.minDate = dateOrFail(changes.minDate.currentValue);
     }

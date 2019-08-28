@@ -166,12 +166,34 @@ export const makeArray = (length: number, fill: any = undefined): any[] =>
 export const padWith0 = (number: string | number, digits = 2): string =>
   String(number).padStart(digits, '0');
 
-export const firstChanges = (changes: SimpleChanges): boolean => {
-  return !!Object.keys(changes).find(i => changes[i].firstChange);
+export const hasChanges = (
+  changes: SimpleChanges,
+  keys: string[] = null
+): boolean => {
+  if (!keys) {
+    keys = Object.keys(changes);
+  }
+  return !!keys.find(i => !!changes[i]);
 };
 
-export const notFirstChanges = (changes: SimpleChanges): boolean => {
-  return !!Object.keys(changes).find(i => !changes[i].firstChange);
+export const firstChanges = (
+  changes: SimpleChanges,
+  keys: string[] = null
+): boolean => {
+  if (!keys) {
+    keys = Object.keys(changes);
+  }
+  return !!keys.find(i => changes[i] && changes[i].firstChange);
+};
+
+export const notFirstChanges = (
+  changes: SimpleChanges,
+  keys: string[] = null
+): boolean => {
+  if (!keys) {
+    keys = Object.keys(changes);
+  }
+  return !!keys.find(i => changes[i] && !changes[i].firstChange);
 };
 
 export const applyChanges = (target: any, changes: SimpleChanges): void => {
