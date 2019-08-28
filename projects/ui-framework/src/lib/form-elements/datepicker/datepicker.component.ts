@@ -8,25 +8,24 @@ import {
   ViewChild,
   SimpleChanges,
   ChangeDetectorRef,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  NgZone
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { InputTypes } from '../input/input.enum';
 import { InputEventType } from '../form-elements.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
-import { BaseFormElement } from '../base-form-element';
 import { FormEvents } from '../form-elements.enum';
 import {
   dateToString,
   stringyOrFail,
   dateOrFail
 } from '../../services/utils/transformers';
-import { simpleUID } from '../../services/utils/functional-utils';
 import { InputEvent } from '../input/input.interface';
+import { MobileService } from '../../services/utils/mobile.service';
+import { BaseDatepickerElement } from './datepicker.abstract';
 
 @Component({
   selector: 'b-datepicker',
@@ -54,18 +53,22 @@ import { InputEvent } from '../input/input.interface';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatepickerComponent extends BaseFormElement {
+export class DatepickerComponent extends BaseDatepickerElement {
+  constructor(
+    mobileService: MobileService,
+    cd: ChangeDetectorRef,
+    zone: NgZone
+  ) {
+    super(mobileService, cd, zone);
+
+    this.inputTransformers = [stringyOrFail, dateOrFail];
+
+    this.outputTransformers = [
+      (value: Date): string => dateToString(value, serverDateFormat)
+    ];
+  }
+
   @Input() value: Date | string;
-  @Input() minDate?: Date | string;
-  @Input() maxDate?: Date | string;
-  @Input() dateFormat?: string;
-
-  public id = simpleUID('bdp-');
-
-  readonly icons = Icons;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
-  readonly inputTypes = InputTypes;
 
   @ViewChild('input', { static: true }) input: ElementRef;
   @ViewChild('picker', { static: true }) picker: MatDatepicker<any>;
@@ -74,30 +77,10 @@ export class DatepickerComponent extends BaseFormElement {
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  constructor(private cd: ChangeDetectorRef) {
-    super();
-    this.inputTransformers = [stringyOrFail, dateOrFail];
-    this.outputTransformers = [
-      (value: Date): string => dateToString(value, serverDateFormat)
-    ];
-  }
-
-  // this extends BaseFormElement's ngOnChanges
-  onNgChanges(changes: SimpleChanges): void {
+  // this extends BaseDatepickerElement's onNgChanges
+  onDatepickerChanges(changes: SimpleChanges): void {
     if (this.picker) {
       this.picker.close();
-    }
-
-    if (changes.minDate) {
-      this.minDate = dateOrFail(changes.minDate.currentValue);
-    }
-
-    if (changes.maxDate) {
-      this.maxDate = dateOrFail(changes.maxDate.currentValue);
-    }
-
-    if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
-      this.placeholder = BDateAdapter.bFormat.toLowerCase();
     }
   }
 

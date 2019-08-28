@@ -1,25 +1,19 @@
 import {
   Component,
-  ElementRef,
   EventEmitter,
   forwardRef,
   Input,
   OnInit,
   Output,
-  ViewChild,
   SimpleChanges,
   ChangeDetectorRef,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  NgZone
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { MatDatepicker } from '@angular/material/datepicker';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { InputTypes } from '../input/input.enum';
-import { InputEventType } from '../form-elements.enum';
 import { B_DATE_FORMATS, BDateAdapter } from '../datepicker/date.adapter';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
-import { BaseFormElement } from '../base-form-element';
 import { FormEvents } from '../form-elements.enum';
 import {
   dateToString,
@@ -28,6 +22,8 @@ import {
 } from '../../services/utils/transformers';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { InputEvent } from '../input/input.interface';
+import { BaseDatepickerElement } from '../datepicker/datepicker.abstract';
+import { MobileService } from '../../services/utils/mobile.service';
 
 @Component({
   selector: 'b-date-range-picker',
@@ -59,12 +55,9 @@ import { InputEvent } from '../input/input.interface';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateRangePickerComponent extends BaseFormElement
+export class DateRangePickerComponent extends BaseDatepickerElement
   implements OnInit {
   @Input() value: Date | string;
-  @Input() minDate?: Date | string;
-  @Input() maxDate?: Date | string;
-  @Input() dateFormat?: string;
 
   @Input() startDateLabel: string;
   @Input() endDateLabel: string;
@@ -75,22 +68,19 @@ export class DateRangePickerComponent extends BaseFormElement
   public startDate: Date | string;
   public endDate: Date | string;
 
-  public isMobile = false;
-
-  readonly icons = Icons;
-  readonly iconSize = IconSize;
-  readonly iconColor = IconColor;
-  readonly inputTypes = InputTypes;
-
-  @ViewChild('input', { static: true }) input: ElementRef;
-  @ViewChild('picker', { static: true }) picker: MatDatepicker<any>;
+  // @ViewChild('input', { static: true }) input: ElementRef;
+  // @ViewChild('picker', { static: true }) picker: MatDatepicker<any>;
 
   @Output(FormEvents.dateChange) changed: EventEmitter<
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  constructor(private cd: ChangeDetectorRef) {
-    super();
+  constructor(
+    mobileService: MobileService,
+    cd: ChangeDetectorRef,
+    zone: NgZone
+  ) {
+    super(mobileService, cd, zone);
 
     this.inputTransformers = [stringyOrFail, dateOrFail];
     this.outputTransformers = [
@@ -98,37 +88,8 @@ export class DateRangePickerComponent extends BaseFormElement
     ];
   }
 
-  ngOnInit(): void {}
-
-  // this extends BaseFormElement's ngOnChanges
-  onNgChanges(changes: SimpleChanges): void {
-    if (this.picker) {
-      this.picker.close();
-    }
-
-    // if (changes.minDate) {
-    //   this.minDate = dateOrFail(changes.minDate.currentValue);
-    // }
-
-    // if (changes.maxDate) {
-    //   this.maxDate = dateOrFail(changes.maxDate.currentValue);
-    // }
-
-    if (!this.placeholder && !this.hideLabelOnFocus) {
-      this.placeholder = BDateAdapter.bFormat.toLowerCase();
-    }
-  }
-
-  public onDateChange(value: Date) {
-    // if (value) {
-    //   this.value = value;
-    //   this.transmitValue(value, {
-    //     eventType: [InputEventType.onBlur],
-    //     addToEventObj: { date: value }
-    //   });
-    //   this.cd.detectChanges();
-    // }
-  }
+  // this extends BaseDatepickerElement's onNgChanges
+  onDatepickerChanges(changes: SimpleChanges): void {}
 
   public onStartDateChange(value: Date) {
     if (value) {

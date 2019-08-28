@@ -33,6 +33,7 @@
 
 <mat-datepicker #picker
                 [disabled]="disabled"
+                [touchUi]="isMobile"
                 (opened)="input.focus();inputFocused = true;"
                 (closed)="input.blur();inputFocused = false;">
 </mat-datepicker>
