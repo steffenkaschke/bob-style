@@ -195,7 +195,7 @@ export const isDateFormat = (frmt: string): boolean => {
   return (
     split.length > 1 &&
     (!!split.find(i => i === 'DD') ||
-      !!split.find(i => i === 'MM') ||
-      !!split.find(i => i === 'YYYY'))
+      !!split.find(i => i === 'YYYY') ||
+      !!split.find(i => i.includes('MM')))
   );
 };

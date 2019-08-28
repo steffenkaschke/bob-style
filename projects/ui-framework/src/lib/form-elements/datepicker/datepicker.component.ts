@@ -24,11 +24,10 @@ import { FormEvents } from '../form-elements.enum';
 import {
   dateToString,
   stringyOrFail,
-  dateOrFail,
-  dateFormatOrFail
+  dateOrFail
 } from '../../services/utils/transformers';
-import { DateValue } from './datepicker.interface';
 import { simpleUID } from '../../services/utils/functional-utils';
+import { InputEvent } from '../input/input.interface';
 
 @Component({
   selector: 'b-datepicker',
@@ -57,13 +56,12 @@ import { simpleUID } from '../../services/utils/functional-utils';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatepickerComponent extends BaseFormElement implements OnInit {
-  @Input() value: string | Date;
-  @Input() displayFormat?: string;
+  @Input() value: Date | string;
   @Input() minDate?: Date | string;
   @Input() maxDate?: Date | string;
+  @Input() dateFormat?: string;
 
   public id = simpleUID('bdp-');
-  public date: Date;
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
@@ -74,36 +72,22 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
   @ViewChild('picker', { static: true }) picker: MatDatepicker<any>;
 
   @Output(FormEvents.dateChange) changed: EventEmitter<
-    DateValue
-  > = new EventEmitter<DateValue>();
+    InputEvent
+  > = new EventEmitter<InputEvent>();
 
   constructor(private cd: ChangeDetectorRef) {
     super();
 
     this.inputTransformers = [stringyOrFail, dateOrFail];
-
     this.outputTransformers = [
-      (date: Date): DateValue => ({
-        date,
-        value: dateToString(date, serverDateFormat),
-        displayDate: dateToString(date, this.getDisplayFormat())
-      })
+      (value: Date): string => dateToString(value, serverDateFormat)
     ];
-    this.wrapEvent = false;
   }
 
   ngOnInit(): void {}
 
   // this extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    if (changes.displayFormat) {
-      this.displayFormat = dateFormatOrFail(changes.displayFormat.currentValue);
-
-      if (!changes.displayFormat.firstChange && this.date) {
-        this.onDateChange(this.date);
-      }
-    }
-
     if (changes.minDate) {
       this.minDate = dateOrFail(changes.minDate.currentValue);
     }
@@ -113,23 +97,20 @@ export class DatepickerComponent extends BaseFormElement implements OnInit {
     }
 
     if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
-      this.placeholder = this.getDisplayFormat().toLowerCase();
+      this.placeholder = BDateAdapter.bFormat.toLowerCase();
     }
   }
 
   public onDateChange(value: Date) {
     if (value) {
-      this.value = this.date = value;
+      this.value = value;
 
       this.transmitValue(value, {
-        eventType: [InputEventType.onBlur]
+        eventType: [InputEventType.onBlur],
+        addToEventObj: { date: value }
       });
 
       this.cd.detectChanges();
     }
-  }
-
-  private getDisplayFormat(): string {
-    return this.displayFormat || BDateAdapter.bFormat || 'DD/MM/YYYY';
   }
 }

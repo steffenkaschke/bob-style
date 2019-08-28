@@ -19,7 +19,6 @@ const datepickerStories = storiesOf(
 ).addDecorator(withKnobs);
 const template = `
 <b-datepicker [value]="value"
-              [displayFormat]="displayFormat"
               [minDate]="minDate"
               [maxDate]="maxDate"
               [label]="label"
@@ -52,7 +51,6 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [value] | Date / string (YYYY-MM-DD) | date | none
-  [displayFormat] | string | Input/display date format | 'DD/MM/YYYY'
   [minDate] | Date / string (YYYY-MM-DD) | minimum date | none
   [maxDate] | Date / string (YYYY-MM-DD) | maximum date | none
   [label] | string | label text (above input) | none
@@ -76,11 +74,6 @@ datepickerStories.add(
       template: storyTemplate,
       props: {
         value: select('value', ['', '2019-12-31', '2015-05-25'], ''),
-        displayFormat: select(
-          'displayFormat',
-          ['', 'DD/MM/YYYY', 'DD.MM.YYYY', 'DD.MM YYYY', 'MM YYYY'],
-          ''
-        ),
         minDate: select('minDate', ['', '2019-08-10'], ''),
         maxDate: select('maxDate', ['', '2019-08-25'], ''),
         label: text('label', 'Date picker'),
