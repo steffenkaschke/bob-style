@@ -18,6 +18,22 @@ import { InputEventType } from '../form-elements.enum';
 import { Keys } from '../../enums';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 
+interface ParseConfig {
+  minValue?: number;
+  maxValue: number;
+  mod?: number;
+  def?: any;
+  round?: number;
+}
+
+const ParseConfigDef: ParseConfig = {
+  mod: 0,
+  minValue: 0,
+  maxValue: undefined,
+  def: '',
+  round: 1
+};
+
 @Component({
   selector: 'b-timepicker',
   templateUrl: './timepicker.component.html',
@@ -102,10 +118,7 @@ export class TimePickerComponent extends BaseFormElement {
       if (this.hoursFocused) {
         this.inputHours.nativeElement.value = this.parseValue(
           this.inputHours.nativeElement.value,
-          1,
-          0,
-          23,
-          '00'
+          { maxValue: 23, mod: 1, def: '00' }
         );
         if (this.inputHours.nativeElement.value === '23') {
           this.switchInputs();
@@ -116,10 +129,7 @@ export class TimePickerComponent extends BaseFormElement {
       if (this.minutesFocused) {
         this.inputMinutes.nativeElement.value = this.parseValue(
           this.inputMinutes.nativeElement.value,
-          1,
-          0,
-          59,
-          '00'
+          { maxValue: 59, mod: 5, def: '00', round: 5 }
         );
         this.inputMinutes.nativeElement.setSelectionRange(2, 2);
       }
@@ -129,20 +139,14 @@ export class TimePickerComponent extends BaseFormElement {
       if (this.hoursFocused) {
         this.inputHours.nativeElement.value = this.parseValue(
           this.inputHours.nativeElement.value,
-          -1,
-          0,
-          23,
-          '00'
+          { maxValue: 23, mod: -1, def: '00' }
         );
         this.inputHours.nativeElement.setSelectionRange(2, 2);
       }
       if (this.minutesFocused) {
         this.inputMinutes.nativeElement.value = this.parseValue(
           this.inputMinutes.nativeElement.value,
-          -1,
-          0,
-          59,
-          '00'
+          { maxValue: 59, mod: -5, def: '00', round: 5 }
         );
         if (this.inputMinutes.nativeElement.value === '00') {
           this.switchInputs();
@@ -183,10 +187,7 @@ export class TimePickerComponent extends BaseFormElement {
     this.hoursFocused = false;
     this.inputHours.nativeElement.value = this.valueHours = this.parseValue(
       (event.target as HTMLInputElement).value,
-      0,
-      0,
-      23,
-      ''
+      { maxValue: 23 }
     );
     this.transmit();
   }
@@ -195,10 +196,7 @@ export class TimePickerComponent extends BaseFormElement {
     this.minutesFocused = false;
     this.inputMinutes.nativeElement.value = this.valueMinutes = this.parseValue(
       (event.target as HTMLInputElement).value,
-      0,
-      0,
-      59,
-      ''
+      { maxValue: 59 }
     );
     this.transmit();
   }
@@ -213,23 +211,41 @@ export class TimePickerComponent extends BaseFormElement {
 
   private parseValue(
     value: string,
-    mod: number,
-    minValue: number,
-    maxValue: number,
-    def: any = ''
+    config: ParseConfig = ParseConfigDef
   ): string {
+    config = { ...ParseConfigDef, ...config };
+
     const parsed = parseInt(value, 10);
     if (parsed !== parsed) {
-      return def;
+      return config.def;
     }
-    return mod > -1
-      ? padWith0(Math.min(Math.max(parsed + mod, minValue), maxValue))
-      : padWith0(Math.max(Math.min(parsed - 1, maxValue), minValue));
+    return config.mod > -1
+      ? padWith0(
+          Math.min(
+            Math.max(
+              Math.floor((parsed + config.mod) / config.round) * config.round,
+              config.minValue
+            ),
+            config.maxValue
+          )
+        )
+      : padWith0(
+          Math.max(
+            Math.min(
+              Math.ceil((parsed + config.mod) / config.round) * config.round,
+              config.maxValue
+            ),
+            config.minValue
+          )
+        );
   }
 
   private splitValue(value: string, index = 0): any {
     return isString(value) || isNumber(value)
-      ? this.parseValue(value.split(':')[index], 0, 0, index === 0 ? 23 : 59, 0)
+      ? this.parseValue(
+          value.split(':')[index],
+          index === 0 ? { maxValue: 23 } : { maxValue: 59 }
+        )
       : undefined;
   }
 
