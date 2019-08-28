@@ -22,16 +22,18 @@ interface ParseConfig {
   minValue?: number;
   maxValue: number;
   mod?: number;
-  def?: any;
   round?: number;
+  pad?: number;
+  def?: any;
 }
 
 const ParseConfigDef: ParseConfig = {
-  mod: 0,
   minValue: 0,
   maxValue: undefined,
-  def: '',
-  round: 1
+  mod: 0,
+  round: 1,
+  pad: 2,
+  def: ''
 };
 
 @Component({
@@ -219,6 +221,7 @@ export class TimePickerComponent extends BaseFormElement {
     if (parsed !== parsed) {
       return config.def;
     }
+
     return config.mod > -1
       ? padWith0(
           Math.min(
@@ -227,7 +230,8 @@ export class TimePickerComponent extends BaseFormElement {
               config.minValue
             ),
             config.maxValue
-          )
+          ),
+          config.pad
         )
       : padWith0(
           Math.max(
@@ -236,7 +240,8 @@ export class TimePickerComponent extends BaseFormElement {
               config.maxValue
             ),
             config.minValue
-          )
+          ),
+          config.pad
         );
   }
 
