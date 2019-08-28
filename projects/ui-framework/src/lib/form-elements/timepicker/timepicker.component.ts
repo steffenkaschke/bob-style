@@ -3,7 +3,8 @@ import {
   forwardRef,
   ViewChild,
   ElementRef,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  NgZone
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
@@ -54,7 +55,7 @@ const ParseConfigDef: ParseConfig = {
   ]
 })
 export class TimePickerComponent extends BaseFormElement {
-  constructor(private cd: ChangeDetectorRef) {
+  constructor(private cd: ChangeDetectorRef, private zone: NgZone) {
     super();
     this.inputTransformers = [
       timeyOrFail,
@@ -118,7 +119,7 @@ export class TimePickerComponent extends BaseFormElement {
     if (isKey(event.key, Keys.arrowup)) {
       event.preventDefault();
       if (this.hoursFocused) {
-        this.inputHours.nativeElement.value = this.parseValue(
+        this.inputHours.nativeElement.value = this.valueHours = this.parseValue(
           this.inputHours.nativeElement.value,
           { maxValue: 23, mod: 1, def: '00' }
         );
@@ -126,27 +127,36 @@ export class TimePickerComponent extends BaseFormElement {
           this.switchInputs();
         } else {
           this.inputHours.nativeElement.setSelectionRange(2, 2);
+          this.zone.run(() => {
+            this.transmit(InputEventType.onChange);
+          });
         }
       }
       if (this.minutesFocused) {
-        this.inputMinutes.nativeElement.value = this.parseValue(
+        this.inputMinutes.nativeElement.value = this.valueMinutes = this.parseValue(
           this.inputMinutes.nativeElement.value,
           { maxValue: 59, mod: 5, def: '00', round: 5 }
         );
         this.inputMinutes.nativeElement.setSelectionRange(2, 2);
+        this.zone.run(() => {
+          this.transmit(InputEventType.onChange);
+        });
       }
     }
     if (isKey(event.key, Keys.arrowdown)) {
       event.preventDefault();
       if (this.hoursFocused) {
-        this.inputHours.nativeElement.value = this.parseValue(
+        this.inputHours.nativeElement.value = this.valueHours = this.parseValue(
           this.inputHours.nativeElement.value,
           { maxValue: 23, mod: -1, def: '00' }
         );
         this.inputHours.nativeElement.setSelectionRange(2, 2);
+        this.zone.run(() => {
+          this.transmit(InputEventType.onChange);
+        });
       }
       if (this.minutesFocused) {
-        this.inputMinutes.nativeElement.value = this.parseValue(
+        this.inputMinutes.nativeElement.value = this.valueMinutes = this.parseValue(
           this.inputMinutes.nativeElement.value,
           { maxValue: 59, mod: -5, def: '00', round: 5 }
         );
@@ -154,6 +164,9 @@ export class TimePickerComponent extends BaseFormElement {
           this.switchInputs();
         } else {
           this.inputMinutes.nativeElement.setSelectionRange(2, 2);
+          this.zone.run(() => {
+            this.transmit(InputEventType.onChange);
+          });
         }
       }
     }
@@ -191,7 +204,7 @@ export class TimePickerComponent extends BaseFormElement {
       (event.target as HTMLInputElement).value,
       { maxValue: 23 }
     );
-    this.transmit();
+    this.transmit(InputEventType.onBlur);
   }
 
   onMinutesBlur(event: FocusEvent) {
@@ -200,14 +213,14 @@ export class TimePickerComponent extends BaseFormElement {
       (event.target as HTMLInputElement).value,
       { maxValue: 59 }
     );
-    this.transmit();
+    this.transmit(InputEventType.onBlur);
   }
 
-  private transmit() {
+  private transmit(eventType = InputEventType.onBlur) {
     const newValue = this.combineValue(this.valueHours, this.valueMinutes);
     if (this.value !== newValue) {
       this.value = newValue;
-      this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
+      this.transmitValue(this.value, { eventType: [eventType] });
     }
   }
 
