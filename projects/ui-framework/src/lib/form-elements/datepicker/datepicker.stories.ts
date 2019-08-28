@@ -19,8 +19,9 @@ const datepickerStories = storiesOf(
 ).addDecorator(withKnobs);
 const template = `
 <b-datepicker [value]="value"
-              [dateFormat]="dateFormat"
-              [inputLabel]="label"
+              [minDate]="minDate"
+              [maxDate]="maxDate"
+              [label]="label"
               [placeholder]="placeholder"
               [hintMessage]="hintMessage"
               [warnMessage]="warnMessage"
@@ -49,16 +50,17 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  inputLabel | string | label text (above input) | none
-  placeholder | string | placeholder text (inside input) | none
-  dateFormat | string | Input date format | DD/MM/YYYY (optional) |
-  (dateChange) | EventEmitter | Date change callback |
-
-  disabled | boolean | is field disabled
-  required | boolean | is field required
-  hintMessage | string | hint text
-  warnMessage | string | warning text
-  errorMessage | string | error text
+  [value] | Date / string (YYYY-MM-DD) | date | none
+  [minDate] | Date / string (YYYY-MM-DD) | minimum date | none
+  [maxDate] | Date / string (YYYY-MM-DD) | maximum date | none
+  [label] | string | label text (above input) | none
+  [placeholder] | string | placeholder text (inside input) | none
+  [disabled] | boolean | is field disabled | false
+  [required] | boolean | is field required | false
+  [hintMessage] | string | hint text | none
+  [warnMessage] | string | warning text | none
+  [errorMessage] | string | error text | none
+  (dateChange) | EventEmitter | Date change callback | none
 
   ~~~
   ${template}
@@ -71,8 +73,9 @@ datepickerStories.add(
     return {
       template: storyTemplate,
       props: {
-        value: text('value', ''),
-        dateFormat: text('dateFormat', 'DD/MM/YYYY'),
+        value: select('value', ['', '2019-12-31', '2015-05-25'], ''),
+        minDate: select('minDate', ['', '2019-08-10'], ''),
+        maxDate: select('maxDate', ['', '2019-08-25'], ''),
         label: text('label', 'Date picker'),
         placeholder: text('placeholder', ''),
         disabled: boolean('disabled', false),

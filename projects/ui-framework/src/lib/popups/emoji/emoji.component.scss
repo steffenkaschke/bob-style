@@ -67,11 +67,6 @@ li {
 }
 
 .emoji-list {
-  // display: flex;
-  // flex-wrap: wrap;
-  // flex-direction: row;
-  // justify-content: left;
-
   display: grid;
   grid-template-columns: repeat(auto-fill, $icon-width);
   grid-gap: 0;

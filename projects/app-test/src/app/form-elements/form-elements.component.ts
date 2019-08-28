@@ -25,7 +25,7 @@ import {
   valueToObjectWithKeyOfValueFromArray
 } from '../../../../ui-framework/src/lib/services/utils/transformers';
 import { mockHobbies } from '../../../../ui-framework/src/lib/mock.const';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { isEqual } from 'lodash';
 
 @Component({
