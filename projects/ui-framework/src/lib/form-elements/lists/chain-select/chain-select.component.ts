@@ -13,7 +13,7 @@ import { ChainSelectEventEnum } from './chain-select.enum';
 })
 export class ChainSelectComponent implements OnInit {
   @Input() actionLabel: string;
-  @Input() selectedItemList: any[] = [null];
+  @Input() selectedItemList: any[];
   @Output() selectChange: EventEmitter<ChainSelectEvent> =
     new EventEmitter<ChainSelectEvent>();
 
@@ -27,11 +27,15 @@ export class ChainSelectComponent implements OnInit {
   @ContentChild(ChainSelectDirective, { static: true }) contentChild !: ChainSelectDirective;
 
   ngOnInit() {
-    this.chainLinkList = cloneDeep(this.selectedItemList);
+    if (this.selectedItemList && this.selectedItemList.length) {
+      this.chainLinkList = cloneDeep(this.selectedItemList);
+    } else {
+      this.chainLinkList = [{}];
+    }
   }
 
   public addChainLink() {
-    this.chainLinkList.push(null);
+    this.chainLinkList.push({});
   }
 
   public removeChainLink(index: number) {
