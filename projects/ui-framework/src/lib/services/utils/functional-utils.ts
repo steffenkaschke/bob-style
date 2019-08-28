@@ -29,6 +29,8 @@ export const getKeyByValue = (object: object, value: any) =>
 
 export const isString = (val: any): boolean => val && typeof val === 'string';
 
+export const isNumber = (val: any): boolean => val && typeof val === 'number';
+
 export const isNotEmptyString = (val: any): boolean =>
   isString(val) && val.trim() !== '';
 
