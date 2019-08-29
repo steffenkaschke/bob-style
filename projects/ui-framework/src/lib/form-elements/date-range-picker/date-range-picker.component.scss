@@ -15,6 +15,7 @@
     border-right: 1px solid $input-border-color;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    transition: border-color 0.2s;
   }
 
   .end-date-input {
@@ -26,6 +27,12 @@
     padding-left: $input-padding;
   }
 
+  .bfe-wrap.focused {
+    .start-date-input {
+      border-right-color: $input-focus-border-color;
+    }
+  }
+
   &.warn {
     .start-date-input {
       border-right-color: $color-warn;
@@ -35,5 +42,54 @@
     .start-date-input {
       border-right-color: $color-error;
     }
+  }
+}
+
+::ng-deep .b-datepicker-panel {
+  .mat-calendar-body-cell {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .in-range {
+    .mat-calendar-body-cell-content {
+      background-color: var(--primary-500);
+      color: white;
+      border-radius: 0;
+      width: 100%;
+      left: 0;
+      right: 0;
+      font-weight: 500;
+    }
+    &.mat-calendar-body-active,
+    &:hover,
+    &:focus {
+      .mat-calendar-body-cell-content {
+        background-color: var(--primary-500) !important;
+
+        &:before {
+          @include pseudo;
+          @include size(30px);
+          @include position(50% null null 50%);
+          transform: translate(-50%, -50%);
+          border-radius: 100%;
+          border: 1px solid white;
+        }
+      }
+    }
+  }
+
+  .first-in-range .mat-calendar-body-cell-content {
+    border-top-left-radius: 100%;
+    border-bottom-left-radius: 100%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .last-in-range .mat-calendar-body-cell-content {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 100%;
+    border-bottom-right-radius: 100%;
   }
 }

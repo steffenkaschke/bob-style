@@ -81,8 +81,8 @@ export class DateRangePickerComponent extends BaseDatepickerElement
   public idSD = simpleUID('bdp-sd-');
   public idED = simpleUID('bdp-ed-');
 
-  public startDate: Date | string;
-  public endDate: Date | string;
+  public startDate: Date;
+  public endDate: Date;
 
   @Output(FormEvents.dateChange) changed: EventEmitter<
     InputEvent
@@ -92,11 +92,29 @@ export class DateRangePickerComponent extends BaseDatepickerElement
     if (value) {
       this.startDate = value;
     }
+    console.log('startDate', this.startDate);
   }
 
   public onEndDateChange(value: Date) {
     if (value) {
       this.endDate = value;
+    }
+    console.log('endDate', this.endDate);
+  }
+
+  public getDateClass = (date: Date): string => {
+    if (date && this.startDate && this.endDate) {
+      const d = date.getTime();
+      const ds = this.startDate.getTime();
+      const de = this.endDate.getTime();
+
+      return d > ds && d < de
+        ? 'in-range'
+        : d === ds
+        ? 'in-range first-in-range'
+        : d === de
+        ? 'in-range last-in-range'
+        : undefined;
     }
   }
 }

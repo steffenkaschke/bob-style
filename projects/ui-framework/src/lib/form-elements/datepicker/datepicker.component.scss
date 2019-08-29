@@ -23,7 +23,8 @@ b-icon,
   .mat-calendar-body-cell-content {
     &.mat-calendar-body-selected {
       background-color: var(--primary-500);
-      color: $white;
+      color: white;
+      font-weight: 500;
     }
   }
 

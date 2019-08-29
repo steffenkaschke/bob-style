@@ -63,6 +63,7 @@
                 [disabled]="disabled"
                 [touchUi]="isMobile"
                 [panelClass]="'b-datepicker-panel start-date-picker'"
+                [dateClass]="getDateClass"
                 (opened)="onPickerOpen(0)"
                 (closed)="onPickerClose(0)">
 </mat-datepicker>
@@ -70,6 +71,7 @@
                 [disabled]="disabled"
                 [touchUi]="isMobile"
                 [panelClass]="'b-datepicker-panel end-date-picker'"
+                [dateClass]="getDateClass"
                 (opened)="onPickerOpen(1)"
                 (closed)="onPickerClose(1)">
 </mat-datepicker>
