@@ -1,7 +1,7 @@
 @import '../../style/common-imports';
 
 b-icon,
-:host .bfe-input[readonly='true'] {
+:host .bfe-input[readonly] {
   cursor: pointer;
 }
 

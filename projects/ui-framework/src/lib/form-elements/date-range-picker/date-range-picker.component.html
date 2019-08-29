@@ -11,9 +11,10 @@
 <div class="bfe-wrap"
      [ngClass]="{focused: inputFocused}">
 
-  <input #startDateInput
-         data-index="0"
-         class="bfe-input start-date-input"
+  <input class="bfe-input start-date-input"
+         [readonly]="!allowKeyInput"
+         maxlength="10"
+         autocomplete="off"
          [attr.id]="idSD"
          [attr.name]="idSD"
          [type]="inputTypes.text"
@@ -23,16 +24,20 @@
          [value]="startDate"
          [disabled]="disabled"
          [required]="required"
-         (focus)="startDateInput.select();startDatePicker.open();inputFocused = true"
-         (blur)="startDatePicker.opened ? startDateInput.focus() : inputFocused = false"
+         (click)="openPicker(0)"
+         (focus)="onInputFocus(0)"
+         (blur)="onInputBlur(0)"
+         (keydown.outside-zone)="onInputKeydown(0, $event)"
+         (input.outside-zone)="onInputChange(0, $event)"
          (dateChange)="onStartDateChange($event.value)"
          [matDatepicker]="startDatePicker"
          [min]="minDate || null"
          [max]="endDate || maxDate || null">
 
-  <input #endDateInput
-         data-index="1"
-         class="bfe-input end-date-input"
+  <input class="bfe-input end-date-input"
+         [readonly]="!allowKeyInput"
+         maxlength="10"
+         autocomplete="off"
          [attr.id]="idED"
          [attr.name]="idED"
          [type]="inputTypes.text"
@@ -42,25 +47,30 @@
          [value]="endDate"
          [disabled]="disabled"
          [required]="required"
-         (focus)="endDateInput.select();endDatePicker.open();inputFocused = true"
-         (blur)="endDatePicker.opened ? endDateInput.focus() : inputFocused = false"
+         (click)="openPicker(1)"
+         (focus)="onInputFocus(1)"
+         (blur)="onInputBlur(1)"
+         (keydown.outside-zone)="onInputKeydown(1, $event)"
+         (input.outside-zone)="onInputChange(1, $event)"
          (dateChange)="onEndDateChange($event.value)"
          [matDatepicker]="endDatePicker"
          [min]="startDate || minDate || null"
          [max]="maxDate || null">
-
-
 </div>
 
 <mat-datepicker #startDatePicker
                 [disabled]="disabled"
                 [touchUi]="isMobile"
-                [panelClass]="'b-datepicker-panel start-date-picker'">
+                [panelClass]="'b-datepicker-panel start-date-picker'"
+                (opened)="onPickerOpen(0)"
+                (closed)="onPickerClose(0)">
 </mat-datepicker>
 <mat-datepicker #endDatePicker
                 [disabled]="disabled"
                 [touchUi]="isMobile"
-                [panelClass]="'b-datepicker-panel end-date-picker'">
+                [panelClass]="'b-datepicker-panel end-date-picker'"
+                (opened)="onPickerOpen(1)"
+                (closed)="onPickerClose(1)">
 </mat-datepicker>
 
 <p b-input-message

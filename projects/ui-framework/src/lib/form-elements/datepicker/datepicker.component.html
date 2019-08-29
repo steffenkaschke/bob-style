@@ -7,7 +7,7 @@
      (click)="openPicker(0)">
 
   <input class="bfe-input"
-         readonly="true"
+         [readonly]="!allowKeyInput"
          maxlength="10"
          autocomplete="off"
          [attr.id]="id"

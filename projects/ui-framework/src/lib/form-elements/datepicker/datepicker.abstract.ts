@@ -8,8 +8,7 @@ import {
   SimpleChanges,
   ViewChildren,
   QueryList,
-  ElementRef,
-  AfterViewInit
+  ElementRef
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
@@ -41,9 +40,10 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   @ViewChildren(MatDatepickerInput, { read: ElementRef })
   public inputs: QueryList<ElementRef>;
 
-  @Input() minDate?: Date | string;
-  @Input() maxDate?: Date | string;
-  @Input() dateFormat?: string;
+  @Input() minDate: Date | string;
+  @Input() maxDate: Date | string;
+  @Input() allowKeyInput = false;
+  @Input() dateFormat: string;
 
   public id = simpleUID('bdp-');
   public isMobile = false;

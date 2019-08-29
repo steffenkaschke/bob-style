@@ -5,7 +5,6 @@ import {
   Input,
   OnInit,
   Output,
-  SimpleChanges,
   ChangeDetectorRef,
   ChangeDetectionStrategy,
   NgZone
@@ -58,6 +57,18 @@ import { DateTimeInputService } from '../datepicker/date-time-input.service';
 })
 export class DateRangePickerComponent extends BaseDatepickerElement
   implements OnInit {
+  constructor(
+    mobileService: MobileService,
+    cd: ChangeDetectorRef,
+    zone: NgZone,
+    dtInputSrvc: DateTimeInputService
+  ) {
+    super(mobileService, cd, zone, dtInputSrvc);
+
+    this.inputTransformers = [];
+    this.outputTransformers = [];
+  }
+
   @Input() value: Date | string;
 
   @Input() startDateLabel: string;
@@ -69,29 +80,9 @@ export class DateRangePickerComponent extends BaseDatepickerElement
   public startDate: Date | string;
   public endDate: Date | string;
 
-  // @ViewChild('input', { static: true }) input: ElementRef;
-  // @ViewChild('picker', { static: true }) picker: MatDatepicker<any>;
-
   @Output(FormEvents.dateChange) changed: EventEmitter<
     InputEvent
   > = new EventEmitter<InputEvent>();
-
-  constructor(
-    mobileService: MobileService,
-    cd: ChangeDetectorRef,
-    zone: NgZone,
-    dtInputSrvc: DateTimeInputService
-  ) {
-    super(mobileService, cd, zone, dtInputSrvc);
-
-    this.inputTransformers = [stringyOrFail, dateOrFail];
-    this.outputTransformers = [
-      (value: Date): string => dateToString(value, serverDateFormat)
-    ];
-  }
-
-  // this extends BaseDatepickerElement's onNgChanges
-  onDatepickerChanges(changes: SimpleChanges): void {}
 
   public onStartDateChange(value: Date) {
     if (value) {
