@@ -12,6 +12,7 @@ import { TypographyModule } from '../../typography/typography.module';
 import { EMOJI_DATA } from './emoji-data.consts';
 import { find } from 'lodash';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
+import { PanelModule } from '../panel/panel.module';
 
 describe('EmojiComponent', () => {
   let component: EmojiComponent;
@@ -20,7 +21,7 @@ describe('EmojiComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TypographyModule, TruncateTooltipModule],
+      imports: [TypographyModule, TruncateTooltipModule, PanelModule],
       declarations: [EmojiComponent]
     })
       .compileComponents()
@@ -37,7 +38,7 @@ describe('EmojiComponent', () => {
   });
   describe('ngOnInit', function() {
     it('should render emojis', () => {
-      component.toggleMenu();
+      component.panelElement.onTriggerClick();
       const catListObj = fixture.debugElement.query(By.css('.emojis'));
       expect(catListObj).toBeTruthy();
     });
@@ -47,19 +48,19 @@ describe('EmojiComponent', () => {
       'should update menu state when using toggle menu,' +
         'and toggle menu function with force state',
       () => {
-        expect(component.emojiMenuState).toBeFalsy();
+        expect(component.panelActive).toBeFalsy();
         component.toggleMenu();
         fixture.detectChanges();
-        expect(component.emojiMenuState).toBeTruthy();
+        expect(component.panelActive).toBeTruthy();
         component.toggleMenu(true);
         fixture.detectChanges();
-        expect(component.emojiMenuState).toBeTruthy();
+        expect(component.panelActive).toBeTruthy();
       }
     );
     it('should update menu state remain false when toggleWith force false', () => {
       component.toggleMenu(false);
       fixture.detectChanges();
-      expect(component.emojiMenuState).toBeFalsy();
+      expect(component.panelActive).toBeFalsy();
     });
   });
   describe('selectEmoji', () => {
