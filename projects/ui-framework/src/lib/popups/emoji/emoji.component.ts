@@ -3,14 +3,14 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  HostListener,
   Input,
   OnInit,
-  Output
+  Output,
+  ViewChild
 } from '@angular/core';
-import { COMMON_EMOJIS, EMOJI_DATA } from './emoji-data.consts';
-import { Emoji } from './emoji.interface';
-import { TruncateTooltipType } from '../truncate-tooltip/truncate-tooltip.enum';
+import {COMMON_EMOJIS, EMOJI_DATA} from './emoji-data.consts';
+import {Emoji} from './emoji.interface';
+import {TruncateTooltipType} from '../truncate-tooltip/truncate-tooltip.enum';
 
 @Component({
   selector: 'b-emoji',
@@ -21,18 +21,20 @@ import { TruncateTooltipType } from '../truncate-tooltip/truncate-tooltip.enum';
 export class EmojiComponent implements OnInit {
   emojis: { [key: string]: Emoji[] };
   commonEmojis: Emoji[];
-  emojiMenuState = false;
+  panelActive = false;
   readonly tooltipType = TruncateTooltipType;
 
   @Input() title: string;
   @Output() toggleClick = new EventEmitter<boolean>();
   @Output() emojiSelect = new EventEmitter<Emoji>();
-
-  @HostListener('window:click.outside-zone') clickOut() {
-    this.toggleMenu(false);
+  @ViewChild('overlayRef', {static: false}) panelElement: any;
+  //
+  // @HostListener('window:click.outside-zone') clickOut() {
+  //   this.toggleMenu(false);
+  // }
+  constructor(
+    private cdr: ChangeDetectorRef) {
   }
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.emojis = { ...EMOJI_DATA };
@@ -40,9 +42,12 @@ export class EmojiComponent implements OnInit {
   }
 
   toggleMenu(forceState?: boolean) {
-    this.emojiMenuState =
-      typeof forceState === 'boolean' ? forceState : !this.emojiMenuState;
-    this.toggleClick.emit(this.emojiMenuState);
+    this.panelActive =
+      typeof forceState === 'boolean' ? forceState : !this.panelActive;
+    if (!this.panelActive && this.panelElement && this.panelElement.overlayRef) {
+      this.panelElement.overlayRef.detach();
+    }
+    this.toggleClick.emit(this.panelActive);
     this.cdr.detectChanges();
   }
 

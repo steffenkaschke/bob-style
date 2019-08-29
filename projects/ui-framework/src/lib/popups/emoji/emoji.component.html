@@ -1,43 +1,53 @@
-<div class="emoji-panel"
-     *ngIf="emojiMenuState"
-     (click.outside-zone)="$event.stopPropagation()">
-
-  <h3 class="emoji-header b-display-4"
-      *ngIf="title"
-      [b-truncate-tooltip]="1"
-      [type]="tooltipType.css"
-      [trustCssVars]="true">
-    {{title}}
-  </h3>
-
-  <div class="emojis">
-
-    <ng-container *ngFor="let category of emojis | keyvalue">
-      <h4 class="emoji-cat-title b-big-body">{{category.key}}</h4>
-
-      <ul class="emoji-list">
-        <li class="icon"
-            *ngFor="let emoji of category?.value"
-            title="{{emoji?.shortname}}"
-            (click)="selectEmoji(emoji)">
-          {{emoji?.icon}}
-        </li>
-      </ul>
-    </ng-container>
-
+<b-panel [size]="" panelClass="emoji-panel"
+         #overlayRef
+         [showBackdrop]="false"
+         (opened)="toggleMenu(true)"
+         (closed)="toggleMenu(false)"
+         >
+  <div class="button-wrapper"
+       [class.active]="panelActive"
+       panel-trigger>
+    <ng-content></ng-content>
   </div>
+  <div panel-content>
+    <h3 class="emoji-header b-display-4"
+        *ngIf="title"
+        [b-truncate-tooltip]="1"
+        [type]="tooltipType.css"
+        [trustCssVars]="true">
+      {{title}}
+    </h3>
 
-  <ul class="emoji-footer">
-    <li class="icon"
-        *ngFor="let emoji of commonEmojis"
-        (click)="selectEmoji(emoji)">
-      {{emoji?.icon}}
-    </li>
-  </ul>
+    <div class="emojis">
 
-</div>
+      <div class="emoji-category" *ngFor="let category of emojis | keyvalue">
+        <h4 class="emoji-cat-title b-big-body">{{category.key}}</h4>
 
-<div class="button-wrapper"
-     (click.outside-zone)="$event.stopPropagation(); toggleMenu()">
-  <ng-content></ng-content>
-</div>
+        <ul class="emoji-list">
+          <li class="icon"
+              *ngFor="let emoji of category?.value"
+              title="{{emoji?.shortname}}"
+              (click)="selectEmoji(emoji)">
+            {{emoji?.icon}}
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <ul class="emoji-footer">
+      <li class="icon"
+          *ngFor="let emoji of commonEmojis"
+          (click)="selectEmoji(emoji)">
+        {{emoji?.icon}}
+      </li>
+    </ul>
+  </div>
+</b-panel>
+<!--<div class="emoji-panel"-->
+<!--     *ngIf="emojiMenuState"-->
+<!--     >-->
+
+
+
+<!--</div>-->
