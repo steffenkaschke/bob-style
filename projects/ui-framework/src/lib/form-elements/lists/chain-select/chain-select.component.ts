@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ContentChild } from '@angular/core';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isNull } from 'lodash';
 import { Icons, IconSize } from '../../../icons/icons.enum';
 import { ButtonSize, ButtonType } from '../../../buttons/buttons.enum';
 import { ChainSelectDirective } from './chain-select.directive';
@@ -13,7 +13,7 @@ import { ChainSelectEventEnum } from './chain-select.enum';
 })
 export class ChainSelectComponent implements OnInit {
   @Input() actionLabel: string;
-  @Input() selectedItemList: any[] = [null];
+  @Input() selectedItemList: any[];
   @Output() selectChange: EventEmitter<ChainSelectEvent> =
     new EventEmitter<ChainSelectEvent>();
 
@@ -27,11 +27,16 @@ export class ChainSelectComponent implements OnInit {
   @ContentChild(ChainSelectDirective, { static: true }) contentChild !: ChainSelectDirective;
 
   ngOnInit() {
-    this.chainLinkList = cloneDeep(this.selectedItemList);
+    if (this.selectedItemList && this.selectedItemList.length) {
+      this.chainLinkList = cloneDeep(this.selectedItemList)
+        .map(item => isNull(item) ? {} : item);
+    } else {
+      this.chainLinkList = [{}];
+    }
   }
 
   public addChainLink() {
-    this.chainLinkList.push(null);
+    this.chainLinkList.push({});
   }
 
   public removeChainLink(index: number) {
