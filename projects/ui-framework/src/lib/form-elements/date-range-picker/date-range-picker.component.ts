@@ -24,6 +24,8 @@ import { InputEvent } from '../input/input.interface';
 import { BaseDatepickerElement } from '../datepicker/datepicker.abstract';
 import { MobileService } from '../../services/utils/mobile.service';
 import { DateTimeInputService } from '../datepicker/date-time-input.service';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { WindowRef } from '../../services/utils/window-ref.service';
 
 @Component({
   selector: 'b-date-range-picker',
@@ -58,12 +60,14 @@ import { DateTimeInputService } from '../datepicker/date-time-input.service';
 export class DateRangePickerComponent extends BaseDatepickerElement
   implements OnInit {
   constructor(
+    windowRef: WindowRef,
     mobileService: MobileService,
+    DOM: DOMhelpers,
     cd: ChangeDetectorRef,
     zone: NgZone,
     dtInputSrvc: DateTimeInputService
   ) {
-    super(mobileService, cd, zone, dtInputSrvc);
+    super(windowRef, mobileService, DOM, cd, zone, dtInputSrvc);
 
     this.inputTransformers = [];
     this.outputTransformers = [];

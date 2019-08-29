@@ -23,6 +23,8 @@ import { InputEvent } from '../input/input.interface';
 import { MobileService } from '../../services/utils/mobile.service';
 import { BaseDatepickerElement } from './datepicker.abstract';
 import { DateTimeInputService } from './date-time-input.service';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { WindowRef } from '../../services/utils/window-ref.service';
 
 @Component({
   selector: 'b-datepicker',
@@ -52,12 +54,14 @@ import { DateTimeInputService } from './date-time-input.service';
 })
 export class DatepickerComponent extends BaseDatepickerElement {
   constructor(
+    windowRef: WindowRef,
     mobileService: MobileService,
+    DOM: DOMhelpers,
     cd: ChangeDetectorRef,
     zone: NgZone,
     dtInputSrvc: DateTimeInputService
   ) {
-    super(mobileService, cd, zone, dtInputSrvc);
+    super(windowRef, mobileService, DOM, cd, zone, dtInputSrvc);
 
     this.inputTransformers = [stringyOrFail, dateOrFail];
 

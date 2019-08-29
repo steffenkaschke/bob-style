@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
-import { Subscription } from 'rxjs';
+import { Subscription, fromEvent, interval } from 'rxjs';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { InputTypes } from '../input/input.enum';
 import { outsideZone } from '../../services/utils/rxjs.operators';
@@ -22,20 +22,24 @@ import { BDateAdapter } from './date.adapter';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material';
 import { DateTimeInputService } from './date-time-input.service';
 import { Keys } from '../../enums';
+import { DOMhelpers, Styles } from '../../services/utils/dom-helpers.service';
+import { throttle } from 'rxjs/operators';
+import { WindowRef } from '../../services/utils/window-ref.service';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, OnDestroy {
   constructor(
+    protected windowRef: WindowRef,
     protected mobileService: MobileService,
+    protected DOM: DOMhelpers,
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
     protected dtInputSrvc: DateTimeInputService
   ) {
     super();
   }
-  // @ViewChild(CdkOverlayOrigin, { static: true })
-  // overlayOrigin: CdkOverlayOrigin;
 
+  @ViewChild('inputWrap', { static: true }) inputWrap: ElementRef;
   @ViewChildren(MatDatepicker) public pickers: QueryList<MatDatepicker<any>>;
   @ViewChildren(MatDatepickerInput, { read: ElementRef })
   public inputs: QueryList<ElementRef>;
@@ -48,15 +52,22 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   public id = simpleUID('bdp-');
   public isMobile = false;
 
+  private resizeSubscription: Subscription;
   private mediaEventSubscription: Subscription;
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
   readonly inputTypes = InputTypes;
 
-  protected onDatepickerChanges(changes: SimpleChanges): void {}
-
   ngOnInit(): void {
+    this.resizeSubscription = fromEvent(this.windowRef.nativeWindow, 'resize')
+      .pipe(throttle(val => interval(1000)))
+      .subscribe(() => {
+        this.allPickers(picker => {
+          picker.close();
+        });
+      });
+
     this.mediaEventSubscription = this.mobileService
       .getMediaEvent()
       .pipe(outsideZone(this.zone))
@@ -65,11 +76,13 @@ export abstract class BaseDatepickerElement extends BaseFormElement
           picker.close();
         });
         this.isMobile = media.matchMobile;
-        this.cd.detectChanges();
       });
   }
 
   ngOnDestroy(): void {
+    if (this.resizeSubscription) {
+      this.resizeSubscription.unsubscribe();
+    }
     if (this.mediaEventSubscription) {
       this.mediaEventSubscription.unsubscribe();
     }
@@ -124,6 +137,20 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
+  protected getOverlayStyles() {
+    if (this.inputWrap) {
+      const overlayBox = this.inputWrap.nativeElement.getBoundingClientRect();
+
+      return {
+        'pointer-events': 'none',
+        left: overlayBox.left + 'px',
+        right: overlayBox.right - overlayBox.width + 'px',
+        'min-width': overlayBox.width + 'px'
+      };
+    }
+    return {};
+  }
+
   public onInputFocus(index: number): void {
     this.inputFocused = true;
     this.openPicker(index);
@@ -149,10 +176,25 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   public onPickerOpen(index: number): void {
     this.inputFocused = true;
+    const picker = this.getPicker(index);
+
+    if (!this.isMobile && picker._popupRef) {
+      this.zone.runOutsideAngular(() => {
+        this.windowRef.nativeWindow.requestAnimationFrame(() => {
+          this.DOM.setCssProps(
+            picker._popupRef.overlayElement,
+            this.getOverlayStyles()
+          );
+        });
+      });
+    }
   }
 
   public onPickerClose(index: number): void {
     this.inputFocused = false;
+    if (!this.getInput(index).value) {
+      this.getInput(index).blur();
+    }
   }
 
   public onInputKeydown(index: number, event: KeyboardEvent): void {

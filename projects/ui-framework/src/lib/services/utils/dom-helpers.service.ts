@@ -26,7 +26,7 @@ export interface NgClass {
   [key: string]: boolean;
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class DOMhelpers {
   constructor() {}
 

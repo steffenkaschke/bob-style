@@ -16,7 +16,7 @@ import {
 } from '../../services/utils/functional-utils';
 import { timeyOrFail } from '../../services/utils/transformers';
 import { InputEventType } from '../form-elements.enum';
-import { Keys, controlKeys } from '../../enums';
+import { Keys } from '../../enums';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { DateTimeInputService } from '../datepicker/date-time-input.service';
 

@@ -3,6 +3,7 @@
        [attr.for]="id">{{label}}</label>
 
 <div class="bfe-wrap has-suffix"
+     #inputWrap
      [ngClass]="{focused: inputFocused}"
      (click)="openPicker(0)">
 
@@ -29,7 +30,7 @@
   <b-icon class="bfe-suffix"
           [hasHoverState]="true"
           [icon]="icons.calendar"
-          [color]="iconColor.dark"
+          [color]="inputFocused ? iconColor.dark : iconColor.normal"
           [size]="iconSize.medium">
   </b-icon>
 
