@@ -3,10 +3,13 @@
        [attr.for]="id">{{label}}</label>
 
 <div class="bfe-wrap has-suffix"
-     [ngClass]="{focused: inputFocused}">
+     [ngClass]="{focused: inputFocused}"
+     (click)="openPicker(0)">
 
-  <input #input
-         class="bfe-input"
+  <input class="bfe-input"
+         readonly="true"
+         maxlength="10"
+         autocomplete="off"
          [attr.id]="id"
          [attr.name]="id"
          [type]="inputTypes.text"
@@ -14,15 +17,16 @@
          [value]="value"
          [disabled]="disabled"
          [required]="required"
-         (focus)="input.select();picker.open();inputFocused = true"
-         (blur)="picker.opened ? input.focus() : inputFocused = false"
+         (focus)="onInputFocus(0)"
+         (blur)="onInputBlur(0)"
+         (keydown.outside-zone)="onInputKeydown(0, $event)"
+         (input.outside-zone)="onInputChange(0, $event)"
          (dateChange)="onDateChange($event.value)"
          [matDatepicker]="picker"
          [min]="minDate || null"
          [max]="maxDate || null">
 
   <b-icon class="bfe-suffix"
-          (click)="picker.open()"
           [hasHoverState]="true"
           [icon]="icons.calendar"
           [color]="iconColor.dark"
@@ -34,8 +38,9 @@
 <mat-datepicker #picker
                 [disabled]="disabled"
                 [touchUi]="isMobile"
-                (opened)="input.focus();inputFocused = true;"
-                (closed)="input.blur();inputFocused = false;">
+                [panelClass]="'b-datepicker-panel ' + id"
+                (opened)="onPickerOpen(0)"
+                (closed)="onPickerClose(0)">
 </mat-datepicker>
 
 <p b-input-message

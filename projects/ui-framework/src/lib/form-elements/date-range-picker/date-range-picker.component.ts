@@ -24,6 +24,7 @@ import { simpleUID } from '../../services/utils/functional-utils';
 import { InputEvent } from '../input/input.interface';
 import { BaseDatepickerElement } from '../datepicker/datepicker.abstract';
 import { MobileService } from '../../services/utils/mobile.service';
+import { DateTimeInputService } from '../datepicker/date-time-input.service';
 
 @Component({
   selector: 'b-date-range-picker',
@@ -78,9 +79,10 @@ export class DateRangePickerComponent extends BaseDatepickerElement
   constructor(
     mobileService: MobileService,
     cd: ChangeDetectorRef,
-    zone: NgZone
+    zone: NgZone,
+    dtInputSrvc: DateTimeInputService
   ) {
-    super(mobileService, cd, zone);
+    super(mobileService, cd, zone, dtInputSrvc);
 
     this.inputTransformers = [stringyOrFail, dateOrFail];
     this.outputTransformers = [

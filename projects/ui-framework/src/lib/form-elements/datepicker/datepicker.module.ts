@@ -5,6 +5,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { IconsModule } from '../../icons/icons.module';
 import { CommonModule } from '@angular/common';
 import { InputMessageModule } from '../input-message/input-message.module';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { DateTimeInputService } from './date-time-input.service';
 
 @NgModule({
   declarations: [DatepickerComponent],
@@ -17,6 +19,6 @@ import { InputMessageModule } from '../input-message/input-message.module';
   ],
   exports: [DatepickerComponent],
   entryComponents: [],
-  providers: []
+  providers: [DateTimeInputService, EventManagerPlugins[0]]
 })
 export class DatepickerModule {}

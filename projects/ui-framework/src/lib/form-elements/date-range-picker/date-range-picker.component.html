@@ -12,6 +12,7 @@
      [ngClass]="{focused: inputFocused}">
 
   <input #startDateInput
+         data-index="0"
          class="bfe-input start-date-input"
          [attr.id]="idSD"
          [attr.name]="idSD"
@@ -30,6 +31,7 @@
          [max]="endDate || maxDate || null">
 
   <input #endDateInput
+         data-index="1"
          class="bfe-input end-date-input"
          [attr.id]="idED"
          [attr.name]="idED"
@@ -52,11 +54,13 @@
 
 <mat-datepicker #startDatePicker
                 [disabled]="disabled"
-                [touchUi]="isMobile">
+                [touchUi]="isMobile"
+                [panelClass]="'b-datepicker-panel start-date-picker'">
 </mat-datepicker>
 <mat-datepicker #endDatePicker
                 [disabled]="disabled"
-                [touchUi]="isMobile">
+                [touchUi]="isMobile"
+                [panelClass]="'b-datepicker-panel end-date-picker'">
 </mat-datepicker>
 
 <p b-input-message

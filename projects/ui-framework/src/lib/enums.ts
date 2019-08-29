@@ -1,4 +1,5 @@
 export enum Keys {
+  meta = 'Meta',
   alt = 'Alt',
   control = 'Control',
   shift = 'Shift',
@@ -20,6 +21,28 @@ export enum Keys {
   dollar = '$',
   at = '@'
 }
+
+export const metaKeys = [Keys.meta, Keys.alt, Keys.control, Keys.shift];
+
+export const controlKeys = [
+  Keys.meta,
+  Keys.alt,
+  Keys.control,
+  Keys.shift,
+  Keys.enter,
+  Keys.escape,
+  Keys.tab,
+  Keys.arrowdown,
+  Keys.arrowleft,
+  Keys.arrowright,
+  Keys.arrowup,
+  Keys.end,
+  Keys.home,
+  Keys.pagedown,
+  Keys.pageup,
+  Keys.backspace,
+  Keys.delete
+];
 
 export enum NativeEvents {
   click = 'click',

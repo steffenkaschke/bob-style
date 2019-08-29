@@ -1,18 +1,14 @@
 import {
   Component,
-  ElementRef,
   EventEmitter,
   forwardRef,
   Input,
   Output,
-  ViewChild,
-  SimpleChanges,
   ChangeDetectorRef,
   ChangeDetectionStrategy,
   NgZone
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { MatDatepicker } from '@angular/material/datepicker';
 import { InputEventType } from '../form-elements.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -26,6 +22,7 @@ import {
 import { InputEvent } from '../input/input.interface';
 import { MobileService } from '../../services/utils/mobile.service';
 import { BaseDatepickerElement } from './datepicker.abstract';
+import { DateTimeInputService } from './date-time-input.service';
 
 @Component({
   selector: 'b-datepicker',
@@ -57,9 +54,10 @@ export class DatepickerComponent extends BaseDatepickerElement {
   constructor(
     mobileService: MobileService,
     cd: ChangeDetectorRef,
-    zone: NgZone
+    zone: NgZone,
+    dtInputSrvc: DateTimeInputService
   ) {
-    super(mobileService, cd, zone);
+    super(mobileService, cd, zone, dtInputSrvc);
 
     this.inputTransformers = [stringyOrFail, dateOrFail];
 
@@ -70,19 +68,9 @@ export class DatepickerComponent extends BaseDatepickerElement {
 
   @Input() value: Date | string;
 
-  @ViewChild('input', { static: true }) input: ElementRef;
-  @ViewChild('picker', { static: true }) picker: MatDatepicker<any>;
-
   @Output(FormEvents.dateChange) changed: EventEmitter<
     InputEvent
   > = new EventEmitter<InputEvent>();
-
-  // this extends BaseDatepickerElement's onNgChanges
-  onDatepickerChanges(changes: SimpleChanges): void {
-    if (this.picker) {
-      this.picker.close();
-    }
-  }
 
   public onDateChange(value: Date) {
     if (value) {

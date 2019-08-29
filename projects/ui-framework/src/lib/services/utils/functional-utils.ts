@@ -1,4 +1,5 @@
 import { SimpleChanges } from '@angular/core';
+import { metaKeys } from '../../enums';
 
 export function MixIn(baseCtors: Function[]) {
   return function(derivedCtor: Function) {
@@ -75,6 +76,9 @@ export const pass = (a: any): any => a;
 
 export const isKey = (key: string, expected: string): boolean =>
   key.toUpperCase() === expected.toUpperCase();
+
+export const isMetaKey = (key: string): boolean =>
+  metaKeys.includes(key as any);
 
 export const asArray = (smth: any): any[] =>
   !isNullOrUndefined(smth) ? (isArray(smth) ? smth : [smth]) : [];
