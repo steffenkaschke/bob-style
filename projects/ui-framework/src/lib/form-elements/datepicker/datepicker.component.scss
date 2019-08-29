@@ -10,10 +10,13 @@ b-icon,
     margin-top: 1px;
     display: flex;
     justify-content: center;
-    pointer-events: none;
 
     .mat-datepicker-content {
       pointer-events: auto;
+      width: 100%;
+      max-width: 350px;
+      display: flex;
+      justify-content: center;
     }
   }
 
@@ -29,7 +32,8 @@ b-icon,
     min-height: 0;
 
     @include desktop {
-      padding-bottom: times8(1);
+      width: 100%;
+      padding: 0 times8(1) times8(1);
     }
     @include mobile {
       padding-bottom: times8(2);

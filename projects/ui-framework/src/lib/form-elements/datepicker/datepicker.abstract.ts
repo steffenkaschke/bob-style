@@ -22,7 +22,7 @@ import { BDateAdapter } from './date.adapter';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material';
 import { DateTimeInputService } from './date-time-input.service';
 import { Keys } from '../../enums';
-import { DOMhelpers, Styles } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { throttle } from 'rxjs/operators';
 import { WindowRef } from '../../services/utils/window-ref.service';
 
