@@ -6,24 +6,8 @@ b-icon,
 }
 
 ::ng-deep {
-  .mat-datepicker-popup {
-    margin-top: 1px;
-    display: flex;
-    justify-content: center;
-
-    .mat-datepicker-content {
-      pointer-events: auto;
-      width: 100%;
-      max-width: 350px;
-      display: flex;
-      justify-content: center;
-    }
-  }
-
-  .mat-datepicker-dialog .mat-dialog-container {
-    overflow: visible;
-    box-shadow: none;
-    background: transparent;
+  .b-datepicker-panel .mat-ripple {
+    display: none !important;
   }
 
   .mat-datepicker-content {
@@ -44,21 +28,41 @@ b-icon,
   }
 
   // desktop
-  .mat-datepicker-popup .mat-calendar.b-datepicker-panel {
-    width: 100%;
-    padding: 0 times8(1) times8(1);
+
+  .mat-datepicker-popup {
+    margin-top: 1px;
+    display: flex;
+    justify-content: center;
+
+    .mat-datepicker-content {
+      pointer-events: auto;
+      width: 100%;
+      max-width: 350px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .mat-calendar.b-datepicker-panel {
+      width: 100%;
+      padding: 0 times8(1) times8(1);
+    }
   }
 
   // mobile
-  .mat-dialog-container .mat-calendar.b-datepicker-panel {
-    padding-bottom: times8(2);
+
+  .mat-datepicker-dialog {
+    .mat-dialog-container {
+      overflow: visible;
+      box-shadow: none;
+      background: transparent;
+    }
+
+    .mat-calendar.b-datepicker-panel {
+      padding-bottom: times8(2);
+    }
   }
 
   .mat-datepicker-content-touch .mat-calendar.b-datepicker-panel {
     max-width: 400px;
-  }
-
-  .b-datepicker-panel .mat-ripple {
-    display: none !important;
   }
 }
