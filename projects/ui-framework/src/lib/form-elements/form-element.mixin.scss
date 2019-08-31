@@ -159,16 +159,14 @@ $input-focus-border-color: $grey-700;
 
   // prefix-suffix
 
-  .bfe-wrap {
-    &.has-prefix {
-      .bfe-input {
-        padding-left: 0;
-      }
+  .has-prefix {
+    .bfe-input {
+      padding-left: 0;
     }
-    &.has-suffix {
-      .bfe-input {
-        padding-right: 0;
-      }
+  }
+  .has-suffix {
+    .bfe-input {
+      padding-right: 0;
     }
   }
 

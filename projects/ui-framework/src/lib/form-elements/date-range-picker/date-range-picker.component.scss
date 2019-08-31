@@ -6,21 +6,21 @@
     display: flex;
   }
 
-  .bfe-input,
-  .bfe-label {
+  .bfe-label,
+  .start-date-wrap,
+  .end-date-wrap {
     width: 50%;
   }
 
-  .start-date-input {
-    border-right: 1px solid $input-border-color;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    transition: border-color 0.2s;
+  .start-date-wrap,
+  .end-date-wrap {
+    display: flex;
+    align-items: center;
   }
 
-  .end-date-input {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+  .start-date-wrap {
+    border-right: 1px solid $input-border-color;
+    transition: border-color 0.2s;
   }
 
   .end-date-label {
@@ -28,18 +28,18 @@
   }
 
   .bfe-wrap.focused {
-    .start-date-input {
+    .start-date-wrap {
       border-right-color: $input-focus-border-color;
     }
   }
 
   &.warn {
-    .start-date-input {
+    .start-date-wrap {
       border-right-color: $color-warn;
     }
   }
   &.error {
-    .start-date-input {
+    .start-date-wrap {
       border-right-color: $color-error;
     }
   }

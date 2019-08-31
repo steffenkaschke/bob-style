@@ -4,8 +4,7 @@
 
 <div class="bfe-wrap has-suffix"
      #inputWrap
-     [ngClass]="{focused: inputFocused}"
-     (click)="openPicker(0)">
+     [ngClass]="{focused: inputFocused}">
 
   <input class="bfe-input"
          [readonly]="!allowKeyInput"
@@ -18,20 +17,22 @@
          [value]="value"
          [disabled]="disabled"
          [required]="required"
-         (focus)="onInputFocus(0)"
-         (blur)="onInputBlur(0)"
-         (keydown.outside-zone)="onInputKeydown(0, $event)"
-         (input.outside-zone)="onInputChange(0, $event)"
-         (dateChange)="onDateChange($event.value)"
+         (click)="openPicker()"
+         (focus)="onInputFocus()"
+         (blur)="onInputBlur()"
+         (keydown.outside-zone)="onInputKeydown($event)"
+         (input.outside-zone)="onInputChange($event)"
+         (dateChange)="transmit($event.value)"
          [matDatepicker]="picker"
          [min]="minDate || null"
          [max]="maxDate || null">
 
   <b-icon class="bfe-suffix"
           [hasHoverState]="true"
-          [icon]="icons.calendar"
+          [icon]="isInputEmpty() ? icons.calendar : icons.reset_x"
           [color]="inputFocused ? iconColor.dark : iconColor.normal"
-          [size]="iconSize.medium">
+          [size]="iconSize.medium"
+          (click)="isInputEmpty() ? openPicker() : clearInput()">
   </b-icon>
 
 </div>
@@ -40,8 +41,8 @@
                 [disabled]="disabled"
                 [touchUi]="isMobile"
                 [panelClass]="'b-datepicker-panel ' + id"
-                (opened)="onPickerOpen(0)"
-                (closed)="onPickerClose(0)">
+                (opened)="onPickerOpen()"
+                (closed)="onPickerClose()">
 </mat-datepicker>
 
 <p b-input-message

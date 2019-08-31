@@ -12,51 +12,77 @@
      #inputWrap
      [ngClass]="{focused: inputFocused}">
 
-  <input class="bfe-input start-date-input"
-         [readonly]="!allowKeyInput"
-         maxlength="10"
-         autocomplete="off"
-         [attr.id]="idSD"
-         [attr.name]="idSD"
-         [type]="inputTypes.text"
-         [attr.placeholder]="hideLabelOnFocus && (startDateLabel || label) ? (!required ? (startDateLabel || label) :
-         (startDateLabel || label) + '*') :
-         placeholder"
-         [value]="startDate"
-         [disabled]="disabled"
-         [required]="required"
-         (click)="openPicker(0)"
-         (focus)="onInputFocus(0)"
-         (blur)="onInputBlur(0)"
-         (keydown.outside-zone)="onInputKeydown(0, $event)"
-         (input.outside-zone)="onInputChange(0, $event)"
-         (dateChange)="onStartDateChange($event.value)"
-         [matDatepicker]="startDatePicker"
-         [min]="minDate || null"
-         [max]="endDate || maxDate || null">
+  <div class="start-date-wrap"
+       [ngClass]="{'has-suffix':
+       !isInputEmpty(0)}">
+    <input class="bfe-input start-date-input"
+           [readonly]="!allowKeyInput"
+           maxlength="10"
+           autocomplete="off"
+           [attr.id]="idSD"
+           [attr.name]="idSD"
+           [type]="inputTypes.text"
+           [attr.placeholder]="hideLabelOnFocus && (startDateLabel || label) ? (!required ? (startDateLabel || label) :
+           (startDateLabel || label) + '*') :
+           placeholder"
+           [value]="startDate"
+           [disabled]="disabled"
+           [required]="required"
+           (click)="openPicker(0)"
+           (focus)="onInputFocus(0)"
+           (blur)="onInputBlur(0)"
+           (keydown.outside-zone)="onInputKeydown($event,0)"
+           (input.outside-zone)="onInputChange($event,0)"
+           (dateChange)="onStartDateChange($event.value)"
+           [matDatepicker]="startDatePicker"
+           [min]="minDate || null"
+           [max]="endDate || maxDate || null">
 
-  <input class="bfe-input end-date-input"
-         [readonly]="!allowKeyInput"
-         maxlength="10"
-         autocomplete="off"
-         [attr.id]="idED"
-         [attr.name]="idED"
-         [type]="inputTypes.text"
-         [attr.placeholder]="hideLabelOnFocus && (endDateLabel || label) ? (!required ? ((label && null) ||
-         endDateLabel) : ((label && ' ') || endDateLabel + '*')) :
-         placeholder"
-         [value]="endDate"
-         [disabled]="disabled"
-         [required]="required"
-         (click)="openPicker(1)"
-         (focus)="onInputFocus(1)"
-         (blur)="onInputBlur(1)"
-         (keydown.outside-zone)="onInputKeydown(1, $event)"
-         (input.outside-zone)="onInputChange(1, $event)"
-         (dateChange)="onEndDateChange($event.value)"
-         [matDatepicker]="endDatePicker"
-         [min]="startDate || minDate || null"
-         [max]="maxDate || null">
+    <b-icon *ngIf="!isInputEmpty(0)"
+            class="bfe-suffix"
+            [hasHoverState]="true"
+            [icon]="icons.reset_x"
+            [color]="inputFocused ? iconColor.dark : iconColor.normal"
+            [size]="iconSize.small"
+            (click)="clearInput(0, 'startDate')">
+    </b-icon>
+  </div>
+
+  <div class="end-date-wrap"
+       [ngClass]="{'has-suffix':
+       !isInputEmpty(1)}">
+    <input class="bfe-input end-date-input"
+           [readonly]="!allowKeyInput"
+           maxlength="10"
+           autocomplete="off"
+           [attr.id]="idED"
+           [attr.name]="idED"
+           [type]="inputTypes.text"
+           [attr.placeholder]="hideLabelOnFocus && (endDateLabel || label) ? (!required ? ((label && null) ||
+           endDateLabel) : ((label && ' ') || endDateLabel + '*')) :
+           placeholder"
+           [value]="endDate"
+           [disabled]="disabled"
+           [required]="required"
+           (click)="openPicker(1)"
+           (focus)="onInputFocus(1)"
+           (blur)="onInputBlur(1)"
+           (keydown.outside-zone)="onInputKeydown($event,1)"
+           (input.outside-zone)="onInputChange($event,1)"
+           (dateChange)="onEndDateChange($event.value)"
+           [matDatepicker]="endDatePicker"
+           [min]="startDate || minDate || null"
+           [max]="maxDate || null">
+
+    <b-icon *ngIf="!isInputEmpty(1)"
+            class="bfe-suffix"
+            [hasHoverState]="true"
+            [icon]="icons.reset_x"
+            [color]="inputFocused ? iconColor.dark : iconColor.normal"
+            [size]="iconSize.small"
+            (click)="clearInput(1, 'endDate')">
+    </b-icon>
+  </div>
 </div>
 
 <mat-datepicker #startDatePicker

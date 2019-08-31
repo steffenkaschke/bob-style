@@ -20,6 +20,16 @@ b-icon,
     }
   }
 
+  .mat-datepicker-dialog .mat-dialog-container {
+    overflow: visible;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .mat-datepicker-content {
+    box-shadow: 0 0 10px 0 $boxShadowColor;
+  }
+
   .mat-calendar-body-cell-content {
     &.mat-calendar-body-selected {
       background-color: var(--primary-500);
@@ -31,17 +41,24 @@ b-icon,
   .mat-datepicker-content .mat-calendar.b-datepicker-panel {
     height: auto;
     min-height: 0;
+  }
 
-    @include desktop {
-      width: 100%;
-      padding: 0 times8(1) times8(1);
-    }
-    @include mobile {
-      padding-bottom: times8(2);
-    }
+  // desktop
+  .mat-datepicker-popup .mat-calendar.b-datepicker-panel {
+    width: 100%;
+    padding: 0 times8(1) times8(1);
+  }
+
+  // mobile
+  .mat-dialog-container .mat-calendar.b-datepicker-panel {
+    padding-bottom: times8(2);
   }
 
   .mat-datepicker-content-touch .mat-calendar.b-datepicker-panel {
     max-width: 400px;
+  }
+
+  .b-datepicker-panel .mat-ripple {
+    display: none !important;
   }
 }

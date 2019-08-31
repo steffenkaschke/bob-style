@@ -76,14 +76,13 @@ export class DatepickerComponent extends BaseDatepickerElement {
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  public onDateChange(value: Date) {
-    if (value) {
-      this.value = value;
-
-      this.transmitValue(value, {
-        eventType: [InputEventType.onBlur],
-        addToEventObj: { date: value }
-      });
+  transmit(value = NaN) {
+    if (value === value) {
+      this.value = value as any;
     }
+    this.transmitValue(this.value, {
+      eventType: [InputEventType.onBlur],
+      addToEventObj: { date: this.value }
+    });
   }
 }

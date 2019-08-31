@@ -22,9 +22,10 @@ import { BDateAdapter } from './date.adapter';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material';
 import { DateTimeInputService } from './date-time-input.service';
 import { Keys } from '../../enums';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers, Styles } from '../../services/utils/dom-helpers.service';
 import { throttle } from 'rxjs/operators';
 import { WindowRef } from '../../services/utils/window-ref.service';
+import { InputEventType } from '../form-elements.enum';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, OnDestroy {
@@ -46,12 +47,13 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   @Input() minDate: Date | string;
   @Input() maxDate: Date | string;
-  @Input() allowKeyInput = false;
+  @Input() allowKeyInput = true;
   @Input() dateFormat: string;
 
   public id = simpleUID('bdp-');
   public isMobile = false;
 
+  private allowInputBlur = !this.allowKeyInput;
   private resizeSubscription: Subscription;
   private mediaEventSubscription: Subscription;
   readonly icons = Icons;
@@ -59,13 +61,21 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   readonly iconColor = IconColor;
   readonly inputTypes = InputTypes;
 
+  protected transmit(): void {}
+
   ngOnInit(): void {
     this.resizeSubscription = fromEvent(this.windowRef.nativeWindow, 'resize')
-      .pipe(throttle(val => interval(1000)))
+      .pipe(
+        outsideZone(this.zone),
+        throttle(val => interval(1000))
+      )
       .subscribe(() => {
-        this.allPickers(picker => {
-          picker.close();
-        });
+        if (!this.isMobile) {
+          this.allPickers(picker => {
+            this.closePicker(picker);
+          });
+          this.cd.detectChanges();
+        }
       });
 
     this.mediaEventSubscription = this.mobileService
@@ -73,9 +83,10 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       .pipe(outsideZone(this.zone))
       .subscribe((media: MediaEvent) => {
         this.allPickers(picker => {
-          picker.close();
+          this.closePicker(picker);
         });
         this.isMobile = media.matchMobile;
+        this.cd.detectChanges();
       });
   }
 
@@ -137,7 +148,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
-  protected getOverlayStyles() {
+  protected getOverlayStyles(): Styles {
     if (this.inputWrap) {
       const overlayBox = this.inputWrap.nativeElement.getBoundingClientRect();
 
@@ -151,31 +162,29 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     return {};
   }
 
-  public onInputFocus(index: number): void {
+  public openPicker(picker: MatDatepicker<any> | number = 0): void {
+    if (typeof picker === 'number') {
+      picker = this.getPicker(picker);
+    }
+    if (!picker.opened) {
+      picker.open();
+    }
+  }
+
+  public closePicker(picker: MatDatepicker<any> | number = 0): void {
+    if (typeof picker === 'number') {
+      picker = this.getPicker(picker);
+    }
+    if (picker.opened) {
+      picker.close();
+    }
+  }
+
+  public onPickerOpen(index: number = 0): void {
     this.inputFocused = true;
-    this.openPicker(index);
-  }
-
-  public onInputBlur(index: number): void {
-    if (!this.getPicker(index).opened) {
-      this.inputFocused = false;
+    if (this.allowKeyInput) {
+      this.getInput(index).focus();
     }
-  }
-
-  public openPicker(index: number) {
-    if (!this.getPicker(index).opened) {
-      this.getPicker(index).open();
-    }
-  }
-
-  public closePicker(index: number) {
-    if (this.getPicker(index).opened) {
-      this.getPicker(index).close();
-    }
-  }
-
-  public onPickerOpen(index: number): void {
-    this.inputFocused = true;
     const picker = this.getPicker(index);
 
     if (!this.isMobile && picker._popupRef) {
@@ -190,22 +199,71 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
-  public onPickerClose(index: number): void {
+  public onPickerClose(index: number = 0): void {
     this.inputFocused = false;
-    if (!this.getInput(index).value) {
-      this.getInput(index).blur();
-    }
+    this.getInput(index).setSelectionRange(11, 11);
   }
 
-  public onInputKeydown(index: number, event: KeyboardEvent): void {
+  public isInputEmpty(index: number = 0): boolean {
+    const input = this.getInput(index);
+    if (!input) {
+      return true;
+    }
+    return !input.value.trim();
+  }
+
+  public onInputFocus(index: number = 0): void {
+    this.inputFocused = true;
+    if (this.allowKeyInput) {
+      this.getInput(index).select();
+    }
+    this.openPicker(index);
+  }
+
+  public clearInput(index: number = 0, valueKey = 'value'): void {
+    this.getInput(index).value = '';
+    this[valueKey] = null;
+    // this.getInput(index).select();
+    this.cd.detectChanges();
+
+    this.transmit();
+  }
+
+  public onInputBlur(index: number = 0): void {
+    if (!this.getPicker(index).opened) {
+      this.inputFocused = false;
+    } else if (this.allowKeyInput && !this.allowInputBlur) {
+      this.getInput(index).focus();
+    }
+    this.allowInputBlur = false;
+  }
+
+  public onInputKeydown(event: KeyboardEvent, index: number = 0): void {
     this.dtInputSrvc.filterAllowedKeys(event);
 
     if (isKey(event.key, Keys.enter)) {
       this.closePicker(index);
     }
+
+    if (isKey(event.key, Keys.escape)) {
+      this.closePicker(index);
+    }
+
+    if (isKey(event.key, Keys.tab)) {
+      const picker = this.getPicker(index);
+
+      if (picker.opened && picker._popupRef) {
+        event.preventDefault();
+        this.allowInputBlur = true;
+
+        (picker._popupRef.overlayElement.querySelector(
+          '.mat-calendar-content td[tabindex="0"]'
+        ) as HTMLElement).focus();
+      }
+    }
   }
 
-  public onInputChange(index: number, event): void {
+  public onInputChange(event, index: number = 0): void {
     (event.target as HTMLInputElement).value = this.dtInputSrvc.convertSeparators(
       (event.target as HTMLInputElement).value
     );
