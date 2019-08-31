@@ -8,7 +8,9 @@ import {
   SimpleChanges,
   ViewChildren,
   QueryList,
-  ElementRef
+  ElementRef,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
@@ -25,7 +27,9 @@ import { Keys } from '../../enums';
 import { DOMhelpers, Styles } from '../../services/utils/dom-helpers.service';
 import { throttle } from 'rxjs/operators';
 import { WindowRef } from '../../services/utils/window-ref.service';
-import { InputEventType } from '../form-elements.enum';
+import { InputEventType, FormEvents } from '../form-elements.enum';
+import { InputEvent } from '../input/input.interface';
+import { set } from 'lodash';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, OnDestroy {
@@ -50,6 +54,10 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   @Input() allowKeyInput = true;
   @Input() dateFormat: string;
 
+  @Output(FormEvents.dateChange) changed: EventEmitter<
+    InputEvent
+  > = new EventEmitter<InputEvent>();
+
   public id = simpleUID('bdp-');
   public isMobile = false;
 
@@ -60,8 +68,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
   readonly inputTypes = InputTypes;
-
-  protected transmit(): void {}
 
   ngOnInit(): void {
     this.resizeSubscription = fromEvent(this.windowRef.nativeWindow, 'resize')
@@ -220,10 +226,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     this.openPicker(index);
   }
 
-  public clearInput(index: number = 0, valueKey = 'value'): void {
+  public clearInput(index: number = 0, path = 'value'): void {
     this.getInput(index).value = '';
-    this[valueKey] = null;
-    // this.getInput(index).select();
+    set(this, path, null);
     this.cd.detectChanges();
 
     this.transmit();
@@ -267,5 +272,20 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     (event.target as HTMLInputElement).value = this.dtInputSrvc.convertSeparators(
       (event.target as HTMLInputElement).value
     );
+  }
+
+  public transmit(
+    value = NaN,
+    path = 'value',
+    event = [InputEventType.onBlur]
+  ) {
+    if (value === value) {
+      set(this, path, value);
+    }
+
+    this.transmitValue(this.value, {
+      eventType: event,
+      addToEventObj: { date: this.value }
+    });
   }
 }

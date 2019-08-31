@@ -25,7 +25,7 @@
            [attr.placeholder]="hideLabelOnFocus && (startDateLabel || label) ? (!required ? (startDateLabel || label) :
            (startDateLabel || label) + '*') :
            placeholder"
-           [value]="startDate"
+           [value]="value.startDate"
            [disabled]="disabled"
            [required]="required"
            (click)="openPicker(0)"
@@ -33,10 +33,10 @@
            (blur)="onInputBlur(0)"
            (keydown.outside-zone)="onInputKeydown($event,0)"
            (input.outside-zone)="onInputChange($event,0)"
-           (dateChange)="onStartDateChange($event.value)"
+           (dateChange)="transmit($event.value, 'value.startDate')"
            [matDatepicker]="startDatePicker"
            [min]="minDate || null"
-           [max]="endDate || maxDate || null">
+           [max]="value.endDate || maxDate || null">
 
     <b-icon *ngIf="!isInputEmpty(0)"
             class="bfe-suffix"
@@ -44,7 +44,7 @@
             [icon]="icons.reset_x"
             [color]="inputFocused ? iconColor.dark : iconColor.normal"
             [size]="iconSize.small"
-            (click)="clearInput(0, 'startDate')">
+            (click)="clearInput(0, 'value.startDate')">
     </b-icon>
   </div>
 
@@ -61,7 +61,7 @@
            [attr.placeholder]="hideLabelOnFocus && (endDateLabel || label) ? (!required ? ((label && null) ||
            endDateLabel) : ((label && ' ') || endDateLabel + '*')) :
            placeholder"
-           [value]="endDate"
+           [value]="value.endDate"
            [disabled]="disabled"
            [required]="required"
            (click)="openPicker(1)"
@@ -69,9 +69,9 @@
            (blur)="onInputBlur(1)"
            (keydown.outside-zone)="onInputKeydown($event,1)"
            (input.outside-zone)="onInputChange($event,1)"
-           (dateChange)="onEndDateChange($event.value)"
+           (dateChange)="transmit($event.value, 'value.endDate')"
            [matDatepicker]="endDatePicker"
-           [min]="startDate || minDate || null"
+           [min]="value.startDate || minDate || null"
            [max]="maxDate || null">
 
     <b-icon *ngIf="!isInputEmpty(1)"
@@ -80,7 +80,7 @@
             [icon]="icons.reset_x"
             [color]="inputFocused ? iconColor.dark : iconColor.normal"
             [size]="iconSize.small"
-            (click)="clearInput(1, 'endDate')">
+            (click)="clearInput(1, 'value.endDate')">
     </b-icon>
   </div>
 </div>

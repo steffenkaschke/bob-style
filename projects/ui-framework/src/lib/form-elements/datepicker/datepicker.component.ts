@@ -1,25 +1,16 @@
 import {
   Component,
-  EventEmitter,
   forwardRef,
   Input,
-  Output,
   ChangeDetectorRef,
   ChangeDetectionStrategy,
   NgZone
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { InputEventType } from '../form-elements.enum';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
-import { FormEvents } from '../form-elements.enum';
-import {
-  dateToString,
-  stringyOrFail,
-  dateOrFail
-} from '../../services/utils/transformers';
-import { InputEvent } from '../input/input.interface';
+import { dateToString, dateOrFail } from '../../services/utils/transformers';
 import { MobileService } from '../../services/utils/mobile.service';
 import { BaseDatepickerElement } from './datepicker.abstract';
 import { DateTimeInputService } from './date-time-input.service';
@@ -63,26 +54,14 @@ export class DatepickerComponent extends BaseDatepickerElement {
   ) {
     super(windowRef, mobileService, DOM, cd, zone, dtInputSrvc);
 
-    this.inputTransformers = [stringyOrFail, dateOrFail];
+    this.inputTransformers = [dateOrFail];
 
     this.outputTransformers = [
       (value: Date): string => dateToString(value, serverDateFormat)
     ];
+
+    this.baseValue = '';
   }
 
-  @Input() value: Date | string;
-
-  @Output(FormEvents.dateChange) changed: EventEmitter<
-    InputEvent
-  > = new EventEmitter<InputEvent>();
-
-  transmit(value = NaN) {
-    if (value === value) {
-      this.value = value as any;
-    }
-    this.transmitValue(this.value, {
-      eventType: [InputEventType.onBlur],
-      addToEventObj: { date: this.value }
-    });
-  }
+  @Input() value: Date | string = '';
 }
