@@ -206,10 +206,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   public isInputEmpty(index: number = 0): boolean {
     const input = this.getInput(index);
-    if (!input) {
-      return true;
-    }
-    return !input.value.trim();
+    return !input || !input.value.trim();
   }
 
   public onInputFocus(index: number = 0): void {
@@ -224,7 +221,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     this.getInput(index).value = '';
     set(this, path, null);
     this.cd.detectChanges();
-
     this.transmit();
   }
 
