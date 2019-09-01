@@ -28,10 +28,7 @@ export class EmojiComponent implements OnInit {
   @Output() toggleClick = new EventEmitter<boolean>();
   @Output() emojiSelect = new EventEmitter<Emoji>();
   @ViewChild('overlayRef', {static: false}) panelElement: any;
-  //
-  // @HostListener('window:click.outside-zone') clickOut() {
-  //   this.toggleMenu(false);
-  // }
+
   constructor(
     private cdr: ChangeDetectorRef) {
   }
