@@ -11,7 +11,7 @@ import { By } from '@angular/platform-browser';
 import { TypographyModule } from '../../typography/typography.module';
 import { EMOJI_DATA } from './emoji-data.consts';
 import { find } from 'lodash';
-import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
+import { TruncateTooltipModule } from '../truncate-tooltip/truncate-tooltip.module';
 import { PanelModule } from '../panel/panel.module';
 
 describe('EmojiComponent', () => {
@@ -61,6 +61,22 @@ describe('EmojiComponent', () => {
       component.toggleMenu(false);
       fixture.detectChanges();
       expect(component.panelActive).toBeFalsy();
+    });
+    describe('panel trigger', () => {
+      let panelTrigger;
+      beforeEach(() => {
+        panelTrigger = fixture.debugElement.query(By.css('[panel-trigger]'));
+      });
+      it('should have panel trigger, overlayRef should be defined after click', () => {
+        expect(panelTrigger).toBeTruthy();
+      });
+      it('should overlayRef be undefined before click on trigger', () => {
+        expect(component.panelElement.overlayRef).toBeFalsy();
+      });
+      it(' overlayRef should be defined after click', () => {
+        panelTrigger.nativeElement.click();
+        expect(component.panelElement.overlayRef).toBeTruthy();
+      });
     });
   });
   describe('selectEmoji', () => {
