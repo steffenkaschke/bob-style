@@ -18,15 +18,14 @@ li {
   padding: 0;
 }
 
-.emoji-panel {
+::ng-deep .b-panel.emoji-panel {
+  @include animate(zoom-in, 0.2s, $keyframes: true);
   margin: 0 auto;
   width: $icon-width * $icons-in-row + $emoji-padding * 2;
-  @include OverlayPanel();
-  @include OverlayPointerHolders();
-  @include OverlayPositionBounding('center');
-  @include OverlayPositionBounding('above');
-  @include animate(zoom-in, 0.2s, $keyframes: true);
   transform-origin: bottom center;
+  .panel-wrapper {
+    padding: 0;
+  }
 }
 
 .emoji-header,
@@ -56,6 +55,9 @@ li {
   overflow-y: auto;
   position: relative;
   will-change: transform; // avoids glitches when scroll
+  .emoji-category {
+    position: relative;
+  }
 }
 
 .emoji-cat-title {
@@ -71,9 +73,8 @@ li {
   grid-template-columns: repeat(auto-fill, $icon-width);
   grid-gap: 0;
   justify-content: space-between;
-
   position: relative;
-  margin: times8(1) 0;
+  padding: times8(1);
 }
 
 .icon {
@@ -117,8 +118,8 @@ li {
   transform: scale(0.9);
   transition: transform 0.1s;
   will-change: transform;
-
-  &:hover {
+  user-select: none;
+  &:hover, &.active {
     transform: scale(1);
   }
 }
