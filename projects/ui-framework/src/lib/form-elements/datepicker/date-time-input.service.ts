@@ -29,9 +29,18 @@ export class DateTimeInputService {
     if (valueSplit.length > 3) {
       valueSplit = valueSplit.slice(0, 3);
     }
+
+    if (valueSplit.length === 1 && valueSplit[0].length > 2) {
+      valueSplit = (
+        valueSplit[0].slice(0, 4).replace(/(.{2})/g, '$1/') +
+        valueSplit[0].slice(4)
+      ).split('/');
+    }
+
     if (valueSplit.length > 0 && parseInt(valueSplit[0], 10) > 31) {
       valueSplit[0] = '31';
     }
+
     if (valueSplit.length > 1 && parseInt(valueSplit[1], 10) > 12) {
       valueSplit[1] = '12';
     }
