@@ -5,7 +5,8 @@ import {
   OnInit,
   ChangeDetectorRef,
   ChangeDetectionStrategy,
-  NgZone
+  NgZone,
+  AfterViewInit
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { B_DATE_FORMATS, BDateAdapter } from '../datepicker/date.adapter';
@@ -65,7 +66,7 @@ const valueDef: DateRangePickerValueLocal = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DateRangePickerComponent extends BaseDatepickerElement
-  implements OnInit {
+  implements AfterViewInit {
   constructor(
     windowRef: WindowRef,
     mobileService: MobileService,
@@ -107,6 +108,14 @@ export class DateRangePickerComponent extends BaseDatepickerElement
 
   public idSD = simpleUID('bdp-sd-');
   public idED = simpleUID('bdp-ed-');
+
+  ngAfterViewInit(): void {
+    this.overlayStylesDef = {
+      '--start-date-label': '"' + this.startDateLabel || this.label + '\'',
+      '--end-date-label':
+        '"' + this.endDateLabel || this.startDateLabel || this.label + '\''
+    };
+  }
 
   public getDateClass = (date: Date): string => {
     if (date) {

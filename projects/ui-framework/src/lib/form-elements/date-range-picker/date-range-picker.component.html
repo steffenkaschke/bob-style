@@ -84,6 +84,7 @@
 </div>
 
 <mat-datepicker #startDatePicker
+                [attr.data-tooltip]="startDateLabel"
                 [disabled]="disabled"
                 [touchUi]="isMobile"
                 [panelClass]="'b-datepicker-panel start-date-picker'"

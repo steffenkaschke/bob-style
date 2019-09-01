@@ -48,12 +48,14 @@
   .in-range {
     .mat-calendar-body-cell-content {
       background-color: var(--primary-500);
+      border-color: var(--primary-500);
       color: white;
       border-radius: 0;
       width: 100%;
       left: 0;
       right: 0;
       font-weight: 500;
+      box-shadow: none;
     }
     &.mat-calendar-body-active,
     &:hover,
@@ -85,5 +87,36 @@
     border-bottom-left-radius: 0;
     border-top-right-radius: 100%;
     border-bottom-right-radius: 100%;
+  }
+}
+
+// Mobile title
+
+::ng-deep {
+  .mat-datepicker-dialog {
+    .mat-calendar-header {
+      &:before {
+        display: block;
+        @include b-display-4;
+        padding: 8px 16px 0;
+        margin-bottom: -10px;
+      }
+    }
+
+    .start-date-picker {
+      .mat-calendar-header {
+        &:before {
+          content: var(--start-date-label);
+        }
+      }
+    }
+
+    .end-date-picker {
+      .mat-calendar-header {
+        &:before {
+          content: var(--end-date-label);
+        }
+      }
+    }
   }
 }
