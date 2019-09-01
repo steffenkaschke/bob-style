@@ -127,9 +127,13 @@ export class DateRangePickerComponent extends BaseDatepickerElement
       return d > ds && d < de
         ? 'in-range'
         : d === ds
-        ? 'in-range first-in-range'
+        ? de
+          ? 'in-range first-in-range'
+          : 'in-range first-in-range only-in-range'
         : d === de
-        ? 'in-range last-in-range'
+        ? ds
+          ? 'in-range last-in-range'
+          : 'in-range last-in-range only-in-range'
         : undefined;
     }
   }

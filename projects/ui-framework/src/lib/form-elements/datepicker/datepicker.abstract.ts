@@ -212,6 +212,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
     if (
       (picker as any)._dialogRef &&
+      (picker as any)._dialogRef._overlayRef &&
       (picker as any)._dialogRef._overlayRef.overlayElement
     ) {
       this.zone.runOutsideAngular(() => {
