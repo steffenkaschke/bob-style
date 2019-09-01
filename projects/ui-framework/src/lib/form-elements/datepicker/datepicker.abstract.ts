@@ -288,7 +288,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public onInputChange(event, index: number = 0): void {
-    (event.target as HTMLInputElement).value = this.dtInputSrvc.convertSeparators(
+    (event.target as HTMLInputElement).value = this.dtInputSrvc.parseDateInput(
       (event.target as HTMLInputElement).value
     );
   }
