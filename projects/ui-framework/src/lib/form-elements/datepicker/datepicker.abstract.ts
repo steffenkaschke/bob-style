@@ -18,7 +18,11 @@ import { Subscription, fromEvent, interval } from 'rxjs';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { InputTypes } from '../input/input.enum';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { simpleUID, isKey } from '../../services/utils/functional-utils';
+import {
+  simpleUID,
+  isKey,
+  notFirstChanges
+} from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
 import { BDateAdapter } from './date.adapter';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material';
@@ -116,6 +120,10 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
     if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
       this.placeholder = BDateAdapter.bFormat.toLowerCase();
+    }
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 

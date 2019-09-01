@@ -12,7 +12,6 @@ import {
   simpleChange,
   inputValue
 } from '../../services/utils/test-helpers';
-import { By } from '@angular/platform-browser';
 import { UtilsService } from '../../services/utils/utils.service';
 import createSpyObj = jasmine.createSpyObj;
 import { of } from 'rxjs';
@@ -21,11 +20,10 @@ import { MobileService } from '../../services/utils/mobile.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { IconsModule } from '../../icons/icons.module';
 import { InputMessageModule } from '../input-message/input-message.module';
-import { CommonModule } from '@angular/common';
-import { dateToString, stringToDate } from '../../services/utils/transformers';
+import { dateToString } from '../../services/utils/transformers';
 import { isDate } from 'date-fns';
 
-fdescribe('DatepickerComponent', () => {
+describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
   let component: DatepickerComponent;
   let componentElem: HTMLElement;
@@ -47,7 +45,6 @@ fdescribe('DatepickerComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CommonModule,
         MatDatepickerModule,
         MatNativeDateModule,
         IconsModule,
@@ -119,33 +116,6 @@ fdescribe('DatepickerComponent', () => {
     });
   });
 
-  describe('Clear button', () => {
-    beforeEach(() => {
-      component.ngOnChanges(
-        simpleChange({
-          value: '2019-09-15'
-        })
-      );
-      fixture.detectChanges();
-    });
-
-    it('should display clear icon, when component has value', () => {
-      expect(iconElem.classList).not.toContain('b-icon-calendar');
-      expect(iconElem.classList).toContain('b-icon-circle-cancel');
-    });
-
-    it('should clear value when clear button is clicked', () => {
-      expect(component.value).not.toBeNull();
-      iconElem.click();
-      expect(component.value).toBeNull();
-      expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'onBlur',
-        value: null,
-        date: null
-      });
-    });
-  });
-
   describe('Min/Max date', () => {
     beforeEach(() => {
       component.ngOnChanges(
@@ -160,6 +130,7 @@ fdescribe('DatepickerComponent', () => {
     it('should set min date for MatDatepicker', () => {
       expect(dateToString(picker._minDate)).toEqual('2019-09-10');
     });
+
     it('should set max date for MatDatepicker', () => {
       expect(dateToString(picker._maxDate)).toEqual('2019-09-25');
     });
@@ -202,6 +173,33 @@ fdescribe('DatepickerComponent', () => {
     it('should pass properly entered date to MatDatepicker', () => {
       expect(isDate(picker._selected)).toBeTruthy();
       expect(dateToString(picker._selected)).toEqual('2012-12-24');
+    });
+  });
+
+  describe('Clear button', () => {
+    beforeEach(() => {
+      component.ngOnChanges(
+        simpleChange({
+          value: '2019-09-15'
+        })
+      );
+      fixture.detectChanges();
+    });
+
+    it('should display clear icon, when component has value', () => {
+      expect(iconElem.classList).not.toContain('b-icon-calendar');
+      expect(iconElem.classList).toContain('b-icon-circle-cancel');
+    });
+
+    it('should clear value when clear button is clicked', () => {
+      expect(component.value).not.toBeNull();
+      iconElem.click();
+      expect(component.value).toBeNull();
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: 'onBlur',
+        value: null,
+        date: null
+      });
     });
   });
 });
