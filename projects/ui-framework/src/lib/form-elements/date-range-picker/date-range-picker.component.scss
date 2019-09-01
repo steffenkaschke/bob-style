@@ -13,6 +13,17 @@
     width: 50%;
   }
 
+  .bfe-wrap {
+    &:not(:hover):not(.focused) {
+      .bfe-suffix {
+        display: none;
+      }
+      .bfe-input {
+        padding-right: $input-padding;
+      }
+    }
+  }
+
   .start-date-wrap {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
