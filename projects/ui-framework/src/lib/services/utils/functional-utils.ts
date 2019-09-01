@@ -225,3 +225,13 @@ export const isDateFormat = (frmt: string): boolean => {
       !!split.find(i => i.includes('MM')))
   );
 };
+
+export const thisYear = () => new Date().getFullYear();
+export const thisMonth = (pad = true) => {
+  const month = new Date().getMonth() + 1;
+  return pad ? padWith0(month, 2) : month;
+};
+export const thisDay = (pad = true) => {
+  const day = new Date().getDate();
+  return pad ? padWith0(day, 2) : day;
+};

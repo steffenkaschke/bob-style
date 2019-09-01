@@ -12,6 +12,7 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { DateRangePickerModule } from './date-range-picker.module';
+import { thisYear, thisMonth } from '../../services/utils/functional-utils';
 
 const datepickerStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -53,7 +54,7 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [value] | Date / string (YYYY-MM-DD) | date | none
+  [value] | DateRangePickerValue <br> ({from: Date / string (YYYY-MM-DD), <br>to: Date / string (YYYY-MM-DD)} | start and end dates | none
   [minDate] | Date / string (YYYY-MM-DD) | minimum date | none
   [maxDate] | Date / string (YYYY-MM-DD) | maximum date | none
   [label] | string | label text (above input) | none
@@ -66,12 +67,20 @@ const note = `
   [hintMessage] | string | hint text | none
   [warnMessage] | string | warning text | none
   [errorMessage] | string | error text | none
-  (dateChange) | EventEmitter | Date change callback | none
+  (dateChange) | EventEmitter | Emited on date change | none
 
   ~~~
   ${template}
   ~~~
 `;
+
+const mockValues = [
+  '',
+  {
+    from: `${thisYear()}-${thisMonth()}-12`,
+    to: `${thisYear()}-${thisMonth()}-21`
+  }
+];
 
 datepickerStories.add(
   'Date Range Picker',
@@ -79,9 +88,9 @@ datepickerStories.add(
     return {
       template: storyTemplate,
       props: {
-        value: select('value', ['', '2019-12-31', '2015-05-25'], ''),
-        minDate: select('minDate', ['', '2019-08-10'], ''),
-        maxDate: select('maxDate', ['', '2019-08-25'], ''),
+        value: select('value', mockValues, ''),
+        minDate: select('minDate', ['', `${thisYear()}-${thisMonth()}-7`], ''),
+        maxDate: select('maxDate', ['', `${thisYear()}-${thisMonth()}-25`], ''),
         label: text('label', ''),
         startDateLabel: text('startDateLabel', 'Start date'),
         endDateLabel: text('endDateLabel', 'End date'),

@@ -12,6 +12,7 @@ import { ComponentGroupType } from '../../consts';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { thisYear, thisMonth } from '../../services/utils/functional-utils';
 
 const datepickerStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -62,7 +63,7 @@ const note = `
   [hintMessage] | string | hint text | none
   [warnMessage] | string | warning text | none
   [errorMessage] | string | error text | none
-  (dateChange) | EventEmitter | Date change callback | none
+  (dateChange) | EventEmitter |  Emited on date change | none
 
   ~~~
   ${template}
@@ -75,9 +76,17 @@ datepickerStories.add(
     return {
       template: storyTemplate,
       props: {
-        value: select('value', ['', '2019-12-31', '2015-05-25'], ''),
-        minDate: select('minDate', ['', '2019-08-10'], ''),
-        maxDate: select('maxDate', ['', '2019-08-25'], ''),
+        value: select(
+          'value',
+          [
+            '',
+            `${thisYear()}-${thisMonth()}-12`,
+            `${thisYear()}-${thisMonth()}-23`
+          ],
+          ''
+        ),
+        minDate: select('minDate', ['', `${thisYear()}-${thisMonth()}-10`], ''),
+        maxDate: select('maxDate', ['', `${thisYear()}-${thisMonth()}-25`], ''),
         label: text('label', 'Date picker'),
         placeholder: text('placeholder', ''),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
