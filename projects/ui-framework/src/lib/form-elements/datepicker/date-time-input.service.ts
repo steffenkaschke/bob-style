@@ -23,7 +23,10 @@ export class DateTimeInputService {
   }
 
   public parseDateInput(value: string, useChar = '/') {
-    value = value.replace(/\W+/g, useChar).replace(/(^\W+)/g, '');
+    value = value
+      .replace(/[a-zA-Z]+/g, '')
+      .replace(/\W+/g, useChar)
+      .replace(/(^\W+)/g, '');
     let valueSplit = value.split('/');
 
     if (valueSplit.length > 3) {
@@ -52,6 +55,9 @@ export class DateTimeInputService {
         parseInt(v, 10) === 0
       ) {
         valueSplit[i] = '01';
+      }
+      if (i < valueSplit.length - 1 && v.length < 2) {
+        valueSplit[i] = '0' + v;
       }
       if (
         i > 1 &&
