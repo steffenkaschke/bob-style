@@ -1,4 +1,4 @@
 export interface DateRangePickerValue {
-  startDate: Date | string;
-  endDate: Date | string;
+  from: Date | string;
+  to: Date | string;
 }

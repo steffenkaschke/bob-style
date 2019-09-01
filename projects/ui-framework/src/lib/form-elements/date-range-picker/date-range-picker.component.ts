@@ -11,7 +11,11 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { B_DATE_FORMATS, BDateAdapter } from '../datepicker/date.adapter';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
-import { dateToString, dateOrFail } from '../../services/utils/transformers';
+import {
+  dateToString,
+  dateOrFail,
+  objectHasKeyOrFail
+} from '../../services/utils/transformers';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { BaseDatepickerElement } from '../datepicker/datepicker.abstract';
 import { MobileService } from '../../services/utils/mobile.service';
@@ -20,7 +24,12 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { DateRangePickerValue } from './date-range-picker.interface';
 
-const valueDef: DateRangePickerValue = {
+interface DateRangePickerValueLocal {
+  startDate: Date | string;
+  endDate: Date | string;
+}
+
+const valueDef: DateRangePickerValueLocal = {
   startDate: undefined,
   endDate: undefined
 };
@@ -68,19 +77,22 @@ export class DateRangePickerComponent extends BaseDatepickerElement
     super(windowRef, mobileService, DOM, cd, zone, dtInputSrvc);
 
     this.inputTransformers = [
-      (value: DateRangePickerValue): DateRangePickerValue => {
-        return {
-          startDate: dateOrFail(value.startDate),
-          endDate: dateOrFail(value.endDate)
-        };
+      objectHasKeyOrFail(['from', 'to'], true),
+      (value: DateRangePickerValue): DateRangePickerValueLocal => {
+        return value
+          ? {
+              startDate: dateOrFail(value.from),
+              endDate: dateOrFail(value.to)
+            }
+          : valueDef;
       }
     ];
 
     this.outputTransformers = [
-      (value: any): DateRangePickerValue => {
+      (value: DateRangePickerValueLocal): DateRangePickerValue => {
         return {
-          startDate: dateToString(value.startDate, serverDateFormat),
-          endDate: dateToString(value.endDate, serverDateFormat)
+          from: dateToString(value.startDate, serverDateFormat),
+          to: dateToString(value.endDate, serverDateFormat)
         };
       }
     ];
@@ -88,7 +100,7 @@ export class DateRangePickerComponent extends BaseDatepickerElement
     this.baseValue = valueDef;
   }
 
-  @Input() value: DateRangePickerValue = valueDef;
+  @Input() value: DateRangePickerValueLocal = valueDef;
 
   @Input() startDateLabel: string;
   @Input() endDateLabel: string;

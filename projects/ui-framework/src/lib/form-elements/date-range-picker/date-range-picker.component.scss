@@ -2,7 +2,8 @@
 @import '../form-element.mixin';
 
 :host {
-  .bfe-label-wrap {
+  .bdrp-label-wrap,
+  .bdrp-inputs-wrap {
     display: flex;
   }
 
@@ -12,36 +13,24 @@
     width: 50%;
   }
 
-  .start-date-wrap,
-  .end-date-wrap {
-    display: flex;
-    align-items: center;
+  .start-date-wrap {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right-width: 0;
+
+    &.focused {
+      box-shadow: 1px 0 0 $input-focus-border-color;
+      position: relative;
+    }
   }
 
-  .start-date-wrap {
-    border-right: 1px solid $input-border-color;
-    transition: border-color 0.2s;
+  .end-date-wrap {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 
   .end-date-label {
     padding-left: $input-padding;
-  }
-
-  .bfe-wrap.focused {
-    .start-date-wrap {
-      border-right-color: $input-focus-border-color;
-    }
-  }
-
-  &.warn {
-    .start-date-wrap {
-      border-right-color: $color-warn;
-    }
-  }
-  &.error {
-    .start-date-wrap {
-      border-right-color: $color-error;
-    }
   }
 }
 

@@ -4,7 +4,7 @@
 
 <div class="bfe-wrap has-suffix"
      #inputWrap
-     [ngClass]="{focused: inputFocused}">
+     [ngClass]="{focused: inputFocused[0]}">
 
   <input class="bfe-input"
          [readonly]="!allowKeyInput"
@@ -30,7 +30,7 @@
   <b-icon class="bfe-suffix"
           [hasHoverState]="true"
           [icon]="isInputEmpty() ? icons.calendar : icons.reset_x"
-          [color]="inputFocused ? iconColor.dark : iconColor.normal"
+          [color]="inputFocused[0] ? iconColor.dark : iconColor.normal"
           [size]="iconSize.medium"
           (click)="isInputEmpty() ? openPicker() : clearInput()">
   </b-icon>

@@ -60,6 +60,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   public id = simpleUID('bdp-');
   public isMobile = false;
+  public inputFocused: boolean[] = [];
 
   private allowInputBlur = !this.allowKeyInput;
   private resizeSubscription: Subscription;
@@ -181,7 +182,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public onPickerOpen(index: number = 0): void {
-    this.inputFocused = true;
+    this.inputFocused[index] = true;
     if (this.allowKeyInput) {
       this.getInput(index).focus();
     }
@@ -200,7 +201,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public onPickerClose(index: number = 0): void {
-    this.inputFocused = false;
+    this.inputFocused[index] = false;
     this.getInput(index).setSelectionRange(11, 11);
   }
 
@@ -210,7 +211,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public onInputFocus(index: number = 0): void {
-    this.inputFocused = true;
+    this.inputFocused[index] = true;
     if (this.allowKeyInput) {
       this.getInput(index).select();
     }
@@ -226,7 +227,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   public onInputBlur(index: number = 0): void {
     if (!this.getPicker(index).opened) {
-      this.inputFocused = false;
+      this.inputFocused[index] = false;
     } else if (this.allowKeyInput && !this.allowInputBlur) {
       this.getInput(index).focus();
     }
@@ -236,11 +237,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   public onInputKeydown(event: KeyboardEvent, index: number = 0): void {
     this.dtInputSrvc.filterAllowedKeys(event);
 
-    if (isKey(event.key, Keys.enter)) {
-      this.closePicker(index);
-    }
-
-    if (isKey(event.key, Keys.escape)) {
+    if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) {
       this.closePicker(index);
     }
 

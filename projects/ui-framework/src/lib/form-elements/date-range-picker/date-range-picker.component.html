@@ -1,4 +1,4 @@
-<div class="bfe-label-wrap">
+<div class="bdrp-label-wrap">
   <label *ngIf="(label || startDateLabel) && !hideLabelOnFocus"
          class="bfe-label start-date-label"
          [attr.for]="idSD">{{startDateLabel || label}}</label>
@@ -8,13 +8,11 @@
          [attr.for]="idED">{{endDateLabel}}</label>
 </div>
 
-<div class="bfe-wrap"
-     #inputWrap
-     [ngClass]="{focused: inputFocused}">
+<div class="bdrp-inputs-wrap"
+     #inputWrap>
 
-  <div class="start-date-wrap"
-       [ngClass]="{'has-suffix':
-       !isInputEmpty(0)}">
+  <div class="bfe-wrap start-date-wrap"
+       [ngClass]="{focused: inputFocused[0], 'has-suffix': !isInputEmpty(0)}">
     <input class="bfe-input start-date-input"
            [readonly]="!allowKeyInput"
            maxlength="10"
@@ -42,15 +40,14 @@
             class="bfe-suffix"
             [hasHoverState]="true"
             [icon]="icons.reset_x"
-            [color]="inputFocused ? iconColor.dark : iconColor.normal"
+            [color]="inputFocused[0] ? iconColor.dark : iconColor.normal"
             [size]="iconSize.small"
             (click)="clearInput(0, 'value.startDate')">
     </b-icon>
   </div>
 
-  <div class="end-date-wrap"
-       [ngClass]="{'has-suffix':
-       !isInputEmpty(1)}">
+  <div class="bfe-wrap end-date-wrap"
+       [ngClass]="{focused: inputFocused[1], 'has-suffix': !isInputEmpty(1)}">
     <input class="bfe-input end-date-input"
            [readonly]="!allowKeyInput"
            maxlength="10"
@@ -78,7 +75,7 @@
             class="bfe-suffix"
             [hasHoverState]="true"
             [icon]="icons.reset_x"
-            [color]="inputFocused ? iconColor.dark : iconColor.normal"
+            [color]="inputFocused[1] ? iconColor.dark : iconColor.normal"
             [size]="iconSize.small"
             (click)="clearInput(1, 'value.endDate')">
     </b-icon>

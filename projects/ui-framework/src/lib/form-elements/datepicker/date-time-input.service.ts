@@ -17,12 +17,11 @@ export class DateTimeInputService {
         event.preventDefault();
         return null;
       }
-
-      return event;
     }
+    return event;
   }
 
   public convertSeparators(value: string, useChar = '/') {
-    return value.replace(/\W+/g, useChar);
+    return value.replace(/\W+/g, useChar).replace(/(^\W+)/g, '');
   }
 }
