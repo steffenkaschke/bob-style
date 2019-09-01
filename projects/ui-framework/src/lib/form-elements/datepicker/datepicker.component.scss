@@ -12,6 +12,7 @@ b-icon,
 
   .mat-datepicker-content {
     box-shadow: 0 0 10px 0 $boxShadowColor;
+    overflow: auto;
   }
 
   .mat-calendar-body-cell-content {

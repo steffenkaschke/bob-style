@@ -39,9 +39,7 @@
   }
 }
 
-// Selected range
-
-$triangle-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Cpath d='M0 0l100 50L0 100z'/%3E%3C/svg%3E");
+// Datepicker: Selected range
 
 $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23fff' d='M0 0l100 50L0 100h100V0z'/%3E%3C/svg%3E");
 
@@ -62,8 +60,14 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
       right: 0;
       font-weight: 500;
       box-shadow: none;
+
+      &:after {
+        @include pseudo;
+        @include position(-1px null -1px null);
+        background-color: inherit;
+      }
     }
-    &.mat-calendar-body-active,
+
     &:hover,
     &:focus {
       .mat-calendar-body-cell-content {
@@ -79,15 +83,24 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
         }
       }
     }
+
+    &:first-child:not(.first-in-range):not(.only-in-range) {
+      .mat-calendar-body-cell-content:after {
+        width: 100vw;
+        right: 100%;
+      }
+    }
+
+    &:last-child:not(.last-in-range):not(.only-in-range) {
+      .mat-calendar-body-cell-content:after {
+        width: 100vw;
+        left: 100%;
+      }
+    }
   }
 
-  .first-in-range,
-  .last-in-range {
-    .mat-calendar-body-cell-content:after {
-      @include pseudo;
-      @include position(-1px null -1px null);
-      background-color: inherit;
-
+  %ragged-edge-commmon {
+    &:after {
       background-image: $trngl-bg;
       background-repeat: repeat-y;
       background-size: 100% auto;
@@ -102,12 +115,7 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
     }
   }
 
-  .first-in-range .mat-calendar-body-cell-content {
-    border-top-left-radius: 100%;
-    border-bottom-left-radius: 100%;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-
+  %ragged-edge-right {
     &:after {
       background-position: right top;
 
@@ -121,12 +129,7 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
     }
   }
 
-  .last-in-range .mat-calendar-body-cell-content {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-top-right-radius: 100%;
-    border-bottom-right-radius: 100%;
-
+  %ragged-edge-left {
     &:after {
       background-position: left top;
       transform: rotate(180deg);
@@ -140,9 +143,69 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
       }
     }
   }
+
+  [aria-hidden='true']:first-child
+    + tr
+    .in-range:first-child:not(.first-in-range):not(.only-in-range)
+    .mat-calendar-body-cell-content,
+  .mat-calendar-body-label:first-child
+    + .in-range:not(.first-in-range):not(.only-in-range)
+    .mat-calendar-body-cell-content {
+    @extend %ragged-edge-commmon;
+    @extend %ragged-edge-left;
+  }
+
+  tr:last-child
+    .in-range:last-child:not(.first-in-range):not(.only-in-range)
+    .mat-calendar-body-cell-content {
+    @extend %ragged-edge-commmon;
+    @extend %ragged-edge-right;
+  }
+
+  .only-in-range {
+    .mat-calendar-body-cell-content {
+      @extend %ragged-edge-commmon;
+    }
+
+    &:not(.first-in-range):not(.last-in-range) {
+      .mat-calendar-body-cell-content {
+        border-radius: 100%;
+
+        &:after {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .first-in-range {
+    .mat-calendar-body-cell-content {
+      border-top-left-radius: 100%;
+      border-bottom-left-radius: 100%;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &.only-in-range .mat-calendar-body-cell-content {
+      @extend %ragged-edge-right;
+    }
+  }
+
+  .last-in-range {
+    .mat-calendar-body-cell-content {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-top-right-radius: 100%;
+      border-bottom-right-radius: 100%;
+    }
+
+    &.only-in-range .mat-calendar-body-cell-content {
+      @extend %ragged-edge-left;
+    }
+  }
 }
 
-// Mobile title
+// Datepicker: Mobile title
 
 ::ng-deep {
   .mat-datepicker-dialog {

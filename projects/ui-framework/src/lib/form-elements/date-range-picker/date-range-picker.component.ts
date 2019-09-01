@@ -117,24 +117,26 @@ export class DateRangePickerComponent extends BaseDatepickerElement
     };
   }
 
-  public getDateClass = (date: Date): string => {
+  public getDateClass = (date: Date): string[] => {
     if (date) {
       const d = date.getTime();
       const ds =
         this.value.startDate && (this.value.startDate as Date).getTime();
       const de = this.value.endDate && (this.value.endDate as Date).getTime();
 
-      return d > ds && d < de
-        ? 'in-range'
+      return ds && de && d > ds && d < de
+        ? ['in-range']
+        : d === ds && d === de
+        ? ['in-range', 'only-in-range']
         : d === ds
         ? de
-          ? 'in-range first-in-range'
-          : 'in-range first-in-range only-in-range'
+          ? ['in-range', 'first-in-range']
+          : ['in-range', 'first-in-range', 'only-in-range']
         : d === de
         ? ds
-          ? 'in-range last-in-range'
-          : 'in-range last-in-range only-in-range'
-        : undefined;
+          ? ['in-range', 'last-in-range']
+          : ['in-range', 'last-in-range', 'only-in-range']
+        : [];
     }
   }
 }
