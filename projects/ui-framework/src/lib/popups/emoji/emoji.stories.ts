@@ -5,7 +5,7 @@ import {StoryBookLayoutModule} from '../../story-book-layout/story-book-layout.m
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EmojiModule} from './emoji.module';
 import {ButtonsModule} from '../../buttons/buttons.module';
-import {TruncateTooltipModule} from '../../popups/truncate-tooltip/truncate-tooltip.module';
+import {TruncateTooltipModule} from '../truncate-tooltip/truncate-tooltip.module';
 
 const inputStories = storiesOf(
   ComponentGroupType.Popups,
@@ -13,7 +13,7 @@ const inputStories = storiesOf(
 ).addDecorator(withKnobs);
 
 const template = `
-    <b-emoji style="position:fixed; right: 50%; bottom: 0; transform: translateX(50%)"
+    <b-emoji style="position:absolute; right: 50%; bottom: 0; transform: translateX(50%)"
     [title]="title"
     (emojiSelect)="emojiSelect($event)"
     (toggleClick)="toggleClick($event)">
@@ -63,8 +63,7 @@ inputStories.add(
         emojiSelect: (emoji) => {
           alert(JSON.stringify(emoji));
         },
-        toggleClick: (bool) => {
-          // console.log(bool);
+        toggleClick: () => {
         }
       },
       moduleMetadata: {
