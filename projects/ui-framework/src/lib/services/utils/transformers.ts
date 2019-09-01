@@ -193,12 +193,15 @@ export const timeyOrFail = value => {
 export const defaultValue = def => value =>
   isNullOrUndefined(value) ? def : value;
 
-export const objectHasKeyOrFail = (key: string | string[]) => (
-  value: object
-) => {
-  const c = 0;
+export const objectHasKeyOrFail = (
+  key: string | string[],
+  fuzzyFalsey = false
+) => (value: object) => {
   if (isNullOrUndefined(value)) {
     return value;
+  }
+  if (fuzzyFalsey && !value) {
+    return undefined;
   }
   if (isNullOrUndefined(key) || !isObject(value)) {
     throw new Error(

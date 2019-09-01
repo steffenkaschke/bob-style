@@ -1,4 +1,5 @@
 import { SimpleChanges } from '@angular/core';
+import { metaKeys } from '../../enums';
 
 export function MixIn(baseCtors: Function[]) {
   return function(derivedCtor: Function) {
@@ -75,6 +76,9 @@ export const pass = (a: any): any => a;
 
 export const isKey = (key: string, expected: string): boolean =>
   key.toUpperCase() === expected.toUpperCase();
+
+export const isMetaKey = (key: string): boolean =>
+  metaKeys.includes(key as any);
 
 export const asArray = (smth: any): any[] =>
   !isNullOrUndefined(smth) ? (isArray(smth) ? smth : [smth]) : [];
@@ -220,4 +224,14 @@ export const isDateFormat = (frmt: string): boolean => {
       !!split.find(i => i === 'YYYY') ||
       !!split.find(i => i.includes('MM')))
   );
+};
+
+export const thisYear = () => new Date().getFullYear();
+export const thisMonth = (pad = true) => {
+  const month = new Date().getMonth() + 1;
+  return pad ? padWith0(month, 2) : month;
+};
+export const thisDay = (pad = true) => {
+  const day = new Date().getDate();
+  return pad ? padWith0(day, 2) : day;
 };

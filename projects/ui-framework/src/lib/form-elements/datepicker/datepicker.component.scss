@@ -1,35 +1,68 @@
 @import '../../style/common-imports';
 
-b-icon {
+b-icon,
+:host .bfe-input[readonly] {
   cursor: pointer;
 }
 
 ::ng-deep {
-  .mat-datepicker-popup {
-    margin-top: 1px;
+  .b-datepicker-panel .mat-ripple {
+    display: none !important;
   }
-  .past {
-    .mat-calendar-body-cell-content {
-      color: $grey-500;
-      background-color: $grey-100;
-    }
+
+  .mat-datepicker-content {
+    box-shadow: 0 0 10px 0 $boxShadowColor;
   }
-  .today {
-    .mat-calendar-body-cell-content {
-      color: $grey-700;
-      background-color: $grey-100;
-    }
-  }
-  .future {
-    .mat-calendar-body-cell-content {
-      color: $grey-600;
-      background-color: $grey-100;
-    }
-  }
+
   .mat-calendar-body-cell-content {
     &.mat-calendar-body-selected {
       background-color: var(--primary-500);
-      color: $white;
+      color: white;
+      font-weight: 500;
     }
+  }
+
+  .mat-datepicker-content .mat-calendar.b-datepicker-panel {
+    height: auto;
+    min-height: 0;
+  }
+
+  // desktop
+
+  .mat-datepicker-popup {
+    margin-top: 1px;
+    display: flex;
+    justify-content: center;
+
+    .mat-datepicker-content {
+      pointer-events: auto;
+      width: 100%;
+      max-width: 350px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .mat-calendar.b-datepicker-panel {
+      width: 100%;
+      padding: 0 times8(1) times8(1);
+    }
+  }
+
+  // mobile
+
+  .mat-datepicker-dialog {
+    .mat-dialog-container {
+      overflow: visible;
+      box-shadow: none;
+      background: transparent;
+    }
+
+    .mat-calendar.b-datepicker-panel {
+      padding-bottom: times8(2);
+    }
+  }
+
+  .mat-datepicker-content-touch .mat-calendar.b-datepicker-panel {
+    max-width: 400px;
   }
 }

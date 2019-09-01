@@ -70,7 +70,11 @@ $input-focus-border-color: $grey-700;
   border-radius: inherit;
   margin: 0;
   outline: 0;
-  @include b-body($lineHeight: null, $color: $body-text-color, $addCssVars: false);
+  @include b-body(
+    $lineHeight: null,
+    $color: $body-text-color,
+    $addCssVars: false
+  );
   background: transparent;
   height: $input-height;
   line-height: $input-height;
@@ -141,6 +145,10 @@ $input-focus-border-color: $grey-700;
       padding: inherit;
       content: attr(data-placeholder);
     }
+
+    &[readonly] {
+      cursor: default;
+    }
   }
 
   // label
@@ -151,16 +159,14 @@ $input-focus-border-color: $grey-700;
 
   // prefix-suffix
 
-  .bfe-wrap {
-    &.has-prefix {
-      .bfe-input {
-        padding-left: 0;
-      }
+  .has-prefix {
+    .bfe-input {
+      padding-left: 0;
     }
-    &.has-suffix {
-      .bfe-input {
-        padding-right: 0;
-      }
+  }
+  .has-suffix {
+    .bfe-input {
+      padding-right: 0;
     }
   }
 
@@ -190,7 +196,7 @@ $input-focus-border-color: $grey-700;
 
   .bfe-wrap.focused,
   .focused .bfe-wrap {
-    border: 1px solid $input-focus-border-color;
+    border-color: $input-focus-border-color;
     box-shadow: none;
   }
 
@@ -202,6 +208,10 @@ $input-focus-border-color: $grey-700;
     .bfe-label {
       @include input-required;
     }
+  }
+
+  &.readonly {
+    cursor: default;
   }
 
   @include input-border-colors($add: ' .bfe-wrap');

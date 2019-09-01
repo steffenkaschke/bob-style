@@ -7,11 +7,11 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { DatepickerModule } from './datepicker.module';
 import { ComponentGroupType } from '../../consts';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { DateRangePickerModule } from './date-range-picker.module';
 import { thisYear, thisMonth } from '../../services/utils/functional-utils';
 
 const datepickerStories = storiesOf(
@@ -19,10 +19,12 @@ const datepickerStories = storiesOf(
   module
 ).addDecorator(withKnobs);
 const template = `
-<b-datepicker [value]="value"
+<b-date-range-picker [value]="value"
               [minDate]="minDate"
               [maxDate]="maxDate"
               [label]="label"
+              [startDateLabel]="startDateLabel"
+              [endDateLabel]="endDateLabel"
               [placeholder]="placeholder"
               [hideLabelOnFocus]="hideLabelOnFocus"
               [hintMessage]="hintMessage"
@@ -31,11 +33,11 @@ const template = `
               [disabled]="disabled"
               [required]="required"
               (dateChange)="dateChange($event)">
-</b-datepicker>
+</b-date-range-picker>
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Datepicker'">
+<b-story-book-layout [title]="'Date Range Picker'">
   <div style="max-width: 300px;">
     ${template}
   </div>
@@ -43,19 +45,21 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Datepicker
+  ## Date Range Picker
 
   #### Module
-  *DatepickerModule*
+  *DateRangePickerModule*
 
   #### Properties
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [value] | Date / string (YYYY-MM-DD) | date | none
+  [value] | DateRangePickerValue <br> ({from: Date / string (YYYY-MM-DD), <br>to: Date / string (YYYY-MM-DD)} | start and end dates | none
   [minDate] | Date / string (YYYY-MM-DD) | minimum date | none
   [maxDate] | Date / string (YYYY-MM-DD) | maximum date | none
   [label] | string | label text (above input) | none
+  [startDateLabel] | string | first datepicker label | none
+  [endDateLabel] | string | second datepicker label | none
   [placeholder] | string | placeholder text (inside input) | none
   [hideLabelOnFocus] | boolean | places label in placeholder position | false
   [disabled] | boolean | is field disabled | false
@@ -63,31 +67,33 @@ const note = `
   [hintMessage] | string | hint text | none
   [warnMessage] | string | warning text | none
   [errorMessage] | string | error text | none
-  (dateChange) | EventEmitter |  Emited on date change | none
+  (dateChange) | EventEmitter | Emited on date change | none
 
   ~~~
   ${template}
   ~~~
 `;
 
+const mockValues = [
+  '',
+  {
+    from: `${thisYear()}-${thisMonth()}-12`,
+    to: `${thisYear()}-${thisMonth()}-21`
+  }
+];
+
 datepickerStories.add(
-  'Datepicker',
+  'Date Range Picker',
   () => {
     return {
       template: storyTemplate,
       props: {
-        value: select(
-          'value',
-          [
-            '',
-            `${thisYear()}-${thisMonth()}-12`,
-            `${thisYear()}-${thisMonth()}-23`
-          ],
-          ''
-        ),
-        minDate: select('minDate', ['', `${thisYear()}-${thisMonth()}-10`], ''),
+        value: select('value', mockValues, ''),
+        minDate: select('minDate', ['', `${thisYear()}-${thisMonth()}-7`], ''),
         maxDate: select('maxDate', ['', `${thisYear()}-${thisMonth()}-25`], ''),
-        label: text('label', 'Date picker'),
+        label: text('label', ''),
+        startDateLabel: text('startDateLabel', 'Start date'),
+        endDateLabel: text('endDateLabel', 'End date'),
         placeholder: text('placeholder', ''),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         disabled: boolean('disabled', false),
@@ -100,7 +106,7 @@ datepickerStories.add(
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
-          DatepickerModule,
+          DateRangePickerModule,
           StoryBookLayoutModule
         ]
       }

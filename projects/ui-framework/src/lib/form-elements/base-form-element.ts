@@ -30,7 +30,7 @@ export abstract class BaseFormElement
   @Input() doPropagate = true;
   @Input() emitOnWrite = false;
 
-  public inputFocused = false;
+  public inputFocused: boolean | boolean[] = false;
   public id = simpleUID('bfe-');
   public inputTransformers: Function[] = [];
   public outputTransformers: Function[] = [];
