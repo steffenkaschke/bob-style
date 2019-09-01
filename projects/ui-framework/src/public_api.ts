@@ -166,6 +166,12 @@ export {
 export {
   DatepickerComponent
 } from './lib/form-elements/datepicker/datepicker.component';
+// DateRangePickerModule
+export { DateRangePickerModule } from './lib/form-elements/date-range-picker/date-range-picker.module';
+export { DateRangePickerComponent } from './lib/form-elements/date-range-picker/date-range-picker.component';
+export { DateRangePickerValue } from './lib/form-elements/date-range-picker/date-range-picker.interface';
+
+
 // Input Module
 export { InputModule } from './lib/form-elements/input/input.module';
 export { InputComponent } from './lib/form-elements/input/input.component';
