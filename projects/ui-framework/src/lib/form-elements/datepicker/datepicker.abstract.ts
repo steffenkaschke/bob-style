@@ -120,13 +120,13 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   protected getPicker(index: string | number): MatDatepicker<any> {
-    return this.pickers
+    return this.pickers && this.pickers.length > 0
       ? this.pickers.toArray()[parseInt(index as string, 10)]
       : null;
   }
 
   protected allPickers(func: (p: MatDatepicker<any>) => any): void {
-    if (this.pickers) {
+    if (this.pickers && this.pickers.length > 0) {
       this.pickers
         .toArray()
         .forEach((picker: MatDatepicker<any>) => func(picker));
@@ -134,13 +134,13 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   protected getInput(index: string | number): HTMLInputElement {
-    return this.inputs
+    return this.inputs && this.inputs.length > 0
       ? this.inputs.toArray()[parseInt(index as string, 10)].nativeElement
       : null;
   }
 
   protected allInputs(func: (p: HTMLInputElement) => any): void {
-    if (this.inputs) {
+    if (this.inputs && this.inputs.length > 0) {
       this.inputs
         .toArray()
         .forEach((input: ElementRef) =>
