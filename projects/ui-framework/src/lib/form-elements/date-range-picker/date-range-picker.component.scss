@@ -32,6 +32,11 @@
   .end-date-label {
     padding-left: $input-padding;
   }
+
+  .bfe-label:only-child {
+    width: 100%;
+    padding-left: 0;
+  }
 }
 
 ::ng-deep .b-datepicker-panel {

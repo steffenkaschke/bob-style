@@ -18,7 +18,11 @@ import { Subscription, fromEvent, interval } from 'rxjs';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { InputTypes } from '../input/input.enum';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { simpleUID, isKey } from '../../services/utils/functional-utils';
+import {
+  simpleUID,
+  isKey,
+  notFirstChanges
+} from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
 import { BDateAdapter } from './date.adapter';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material';
@@ -117,16 +121,20 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
       this.placeholder = BDateAdapter.bFormat.toLowerCase();
     }
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
   protected getPicker(index: string | number): MatDatepicker<any> {
-    return this.pickers
+    return this.pickers && this.pickers.length > 0
       ? this.pickers.toArray()[parseInt(index as string, 10)]
       : null;
   }
 
   protected allPickers(func: (p: MatDatepicker<any>) => any): void {
-    if (this.pickers) {
+    if (this.pickers && this.pickers.length > 0) {
       this.pickers
         .toArray()
         .forEach((picker: MatDatepicker<any>) => func(picker));
@@ -134,13 +142,13 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   protected getInput(index: string | number): HTMLInputElement {
-    return this.inputs
+    return this.inputs && this.inputs.length > 0
       ? this.inputs.toArray()[parseInt(index as string, 10)].nativeElement
       : null;
   }
 
   protected allInputs(func: (p: HTMLInputElement) => any): void {
-    if (this.inputs) {
+    if (this.inputs && this.inputs.length > 0) {
       this.inputs
         .toArray()
         .forEach((input: ElementRef) =>

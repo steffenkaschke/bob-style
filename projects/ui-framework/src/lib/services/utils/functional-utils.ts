@@ -206,6 +206,9 @@ export const applyChanges = (target: any, changes: SimpleChanges): void => {
   });
 };
 
+export const isDate = (value): boolean =>
+  value instanceof Date && typeof value.getMonth === 'function';
+
 export const isDateISO8601 = (date: string): boolean =>
   isString(date) &&
   date.split('-').length === 3 &&

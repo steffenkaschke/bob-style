@@ -1,14 +1,15 @@
 <div class="bdrp-label-wrap">
   <label *ngIf="(label || startDateLabel) && !hideLabelOnFocus"
          class="bfe-label start-date-label"
-         [attr.for]="idSD">{{startDateLabel || label}}</label>
+         [attr.for]="!startDateLabel || !endDateLabel ? id : idSD">{{startDateLabel || label}}</label>
 
   <label *ngIf="!label && endDateLabel && !hideLabelOnFocus"
          class="bfe-label end-date-label"
-         [attr.for]="idED">{{endDateLabel}}</label>
+         [attr.for]="!startDateLabel ? id : idED">{{endDateLabel}}</label>
 </div>
 
 <div class="bdrp-inputs-wrap"
+     [attr.id]="id"
      #inputWrap>
 
   <div class="bfe-wrap start-date-wrap"

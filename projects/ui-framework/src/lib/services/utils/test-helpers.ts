@@ -78,3 +78,7 @@ export const emitNativeEvent = (
     (element as HTMLElement).dispatchEvent(new Event(type, eventData));
   }
 };
+
+export const getPseudoContent = (elem: HTMLElement, pseudo = 'before') => {
+  return getComputedStyle(elem, ':' + pseudo).getPropertyValue('content');
+};
