@@ -48,13 +48,23 @@
 
 :host ::ng-deep {
   [card-top] {
-    max-width: calc(100% - 22px);
     position: relative;
     z-index: 1;
   }
   .card-top-with-image [card-top] {
     padding: $cardPadding $cardPadding 0 $cardPadding;
     color: white;
+  }
+
+  .card-action,
+  .card-menu {
+    + .card-top [card-top] {
+      max-width: calc(100% - 22px);
+    }
+    + .card-top-with-image [card-top] {
+      max-width: calc(100% - #{$cardPadding + 22px});
+      padding-right: 0;
+    }
   }
 }
 
@@ -72,6 +82,11 @@
   & + .card-title,
   & + .card-content {
     margin-top: 0;
+  }
+
+  & + .card-title,
+  & + .card-content {
+    max-width: calc(100% - 22px);
   }
 }
 
