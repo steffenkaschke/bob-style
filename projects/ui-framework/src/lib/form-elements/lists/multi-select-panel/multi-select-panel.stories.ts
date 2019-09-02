@@ -10,10 +10,9 @@ import { MultiSelectPanelModule } from './multi-select-panel.module';
 import { ButtonType } from '../../../buttons/buttons.enum';
 import { action } from '@storybook/addon-actions';
 
-const inputStories = storiesOf(
-  ComponentGroupType.Lists,
-  module
-).addDecorator(withKnobs);
+const inputStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+  withKnobs
+);
 
 const componentTemplate1 = `
 <b-multi-select-panel [chevronButtonText]="chevronButtonText"
@@ -23,8 +22,8 @@ const componentTemplate1 = `
 
 const componentTemplate2 = `
 <b-multi-select-panel [options]="options">
-  <b-square-button type="${ ButtonType.secondary }"
-                   icon="${ Icons.table }">
+  <b-square-button type="${ButtonType.secondary}"
+                   icon="${Icons.table}">
   </b-square-button>
 </b-multi-select-panel>
 `;
@@ -32,9 +31,9 @@ const componentTemplate2 = `
 const template = `
 <b-story-book-layout [title]="'Multi select panel'">
   <div style="max-width: 400px;">
-  ${ componentTemplate1 }
+  ${componentTemplate1}
   &nbsp;&nbsp;
-  ${ componentTemplate2 }
+  ${componentTemplate2}
   </div>
 </b-story-book-layout>
 `;
@@ -53,11 +52,11 @@ const note = `
   selectChange | ListChange | output on select change
 
   ~~~
-  ${ componentTemplate1 }
+  ${componentTemplate1}
   ~~~
 
   ~~~
-  ${ componentTemplate2 }
+  ${componentTemplate2}
   ~~~
 `;
 
@@ -68,19 +67,19 @@ const optionsMock: SelectGroupOption[] = [
       {
         value: 'First name',
         id: '/root/firstName',
-        selected: false,
+        selected: false
       },
       {
         value: 'Last name',
         id: '/root/latName',
-        selected: false,
+        selected: false
       },
       {
         value: 'Display name',
         id: '/root/displayName',
-        selected: false,
-      },
-    ],
+        selected: false
+      }
+    ]
   },
   {
     groupName: 'Personal',
@@ -88,19 +87,19 @@ const optionsMock: SelectGroupOption[] = [
       {
         value: 'Personal email',
         id: '/personal/personalEmail',
-        selected: false,
+        selected: false
       },
       {
         value: 'personal phone',
         id: '/personal/personalPhone',
-        selected: false,
+        selected: false
       },
       {
         value: 'Personal mobile',
         id: '/personal/personalMobile',
-        selected: false,
-      },
-    ],
+        selected: false
+      }
+    ]
   },
   {
     groupName: 'Work',
@@ -108,19 +107,19 @@ const optionsMock: SelectGroupOption[] = [
       {
         value: 'Reports to',
         id: '/work/reportsTo',
-        selected: false,
+        selected: false
       },
       {
         value: 'Start date',
         id: '/work/startDate',
-        selected: false,
+        selected: false
       },
       {
         value: 'Site',
         id: '/work/siteId',
-        selected: false,
-      },
-    ],
+        selected: false
+      }
+    ]
   },
   {
     groupName: 'Address',
@@ -128,22 +127,22 @@ const optionsMock: SelectGroupOption[] = [
       {
         value: 'City',
         id: '/address/city',
-        selected: false,
+        selected: false
       },
       {
         value: 'Country',
         id: '/address/country',
-        selected: false,
+        selected: false
       },
       {
         value: 'State',
         id: '/address/state',
-        selected: false,
-      },
-    ],
-  },
+        selected: false
+      }
+    ]
+  }
 ];
-console.log('optionsMock', optionsMock);
+// console.log('optionsMock', optionsMock);
 optionsMock[0].options[1].selected = true;
 
 inputStories.add(
@@ -154,14 +153,14 @@ inputStories.add(
       props: {
         chevronButtonText: text('chevronButtonText', 'Select field'),
         options: object('options', optionsMock),
-        selectChange: action('Multi select panel change'),
+        selectChange: action('Multi select panel change')
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           ButtonsModule,
-          MultiSelectPanelModule,
+          MultiSelectPanelModule
         ]
       }
     };

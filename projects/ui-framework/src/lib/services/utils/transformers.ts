@@ -12,6 +12,7 @@ import {
 } from './functional-utils';
 
 import { parse, format, isDate } from 'date-fns';
+import parseISO from 'date-fns/parseISO';
 import { InputTypes } from '../../form-elements/input/input.enum';
 import { serverDateFormat } from '../../consts';
 
@@ -60,7 +61,7 @@ export const stringToDate = date => {
   if (isDate(date) || isNullOrUndefined(date)) {
     return date;
   }
-  const converted = parse(date);
+  const converted = parseISO(date);
   return String(converted) !== 'Invalid Date' ? converted : undefined;
 };
 
