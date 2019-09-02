@@ -9,13 +9,16 @@
   @include bFormElement-label;
   display: flex;
   align-items: center;
+
   .social-icon {
     margin-right: 4px;
     height: 0;
   }
+
   &.disabled {
     @include disabled-state;
   }
+
   &.required {
     @include input-required;
   }
@@ -25,6 +28,8 @@
   b-input {
     .bfe-wrap .bfe-prefix {
       padding-right: 0;
+      user-select: none;
+      cursor: text;
     }
   }
 }

@@ -168,7 +168,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
         'pointer-events': 'none',
         left: overlayBox.left + 'px',
         right: overlayBox.right - overlayBox.width + 'px',
-        'min-width': overlayBox.width + 'px'
+        width: overlayBox.width + 'px'
       };
     }
     return {};
