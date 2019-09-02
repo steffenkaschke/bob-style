@@ -96,6 +96,10 @@ export class SocialComponent extends BaseFormElement implements OnInit {
     }
   }
 
+  focusInput(): void {
+    this.bInput.input.nativeElement.focus();
+  }
+
   onInputEvents(event: InputEvent): void {
     if (event.event === InputEventType.onChange) {
       this.writeValue(event.value);

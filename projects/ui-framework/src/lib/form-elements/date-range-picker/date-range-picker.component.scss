@@ -227,8 +227,12 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
       &:before {
         display: block;
         @include b-display-3;
-        padding: 8px 16px 0;
+        padding: times8(2) times8(2) 0;
         margin-bottom: -10px;
+
+        @include mobile(400px) {
+          padding: times8(1) 11px 0;
+        }
       }
     }
 
