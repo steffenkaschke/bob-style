@@ -4,7 +4,9 @@ import {
   NgModule,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { CardsModule } from '../cards.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -42,14 +44,14 @@ import { randomNumber } from '../../services/utils/functional-utils';
       [mobileSwiper]="mobileSwiper"
     >
       <b-card-add
-        *ngIf="addCard()"
+        *ngIf="addCard"
         [type]="type"
         (clicked)="onAddCardClick()"
-        [card]="addCard()"
+        [card]="addCard"
       >
       </b-card-add>
       <b-card
-        *ngFor="let card of cards(); let i = index"
+        *ngFor="let card of cards; let i = index"
         [type]="type"
         (clicked)="onCardClick(card, i)"
         [card]="card"
@@ -68,25 +70,30 @@ import { randomNumber } from '../../services/utils/functional-utils';
   `,
   styles: [':host {display: block;}']
 })
-export class CardLayoutExample1Component implements OnInit {
+export class CardLayoutExample1Component implements OnChanges {
+  constructor() {}
   @Input() type: CardType = CardType.regular;
   @Input() alignCenter = false;
   @Input() mobileSwiper = true;
   @Input() maxCards = 6;
 
-  addCard = () => (this.maxCards > 1 ? AddCardMockData : null);
+  addCard: AddCard;
+  cards: any[];
 
-  cards = () =>
-    getCardsMockData(this.maxCards === 1 ? 1 : this.maxCards - 1).map(card => ({
-      ...card,
-      text: mockText(randomNumber(10, 25)) + '.',
-      avatarImgUrl: mockAvatar(),
-      avatarDisplayName: mockNames(1)
-    }))
-
-  constructor() {}
-
-  ngOnInit(): void {}
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.maxCards) {
+      this.maxCards = changes.maxCards.currentValue;
+      this.addCard = this.maxCards > 1 ? AddCardMockData : null;
+      this.cards = getCardsMockData(
+        this.maxCards === 1 ? 1 : this.maxCards - 1
+      ).map(card => ({
+        ...card,
+        text: mockText(randomNumber(10, 25)) + '.',
+        avatarImgUrl: mockAvatar(),
+        avatarDisplayName: mockNames(1)
+      }));
+    }
+  }
 
   onAddCardClick(): void {
     console.log('on add card click');
@@ -107,7 +114,7 @@ export class CardLayoutExample1Component implements OnInit {
       [mobileSwiper]="mobileSwiper"
     >
       <b-card-employee
-        *ngFor="let card of cards(); let i = index"
+        *ngFor="let card of cards; let i = index"
         [type]="type"
         (clicked)="onClick($event)"
         [card]="card"
@@ -120,21 +127,25 @@ export class CardLayoutExample1Component implements OnInit {
   `,
   styles: [':host {display: block;}']
 })
-export class CardLayoutExample2Component implements OnInit {
+export class CardLayoutExample2Component implements OnChanges {
+  constructor() {}
   @Input() alignCenter = false;
   @Input() mobileSwiper = true;
   @Input() type: CardType = CardType.large;
   @Input() maxCards = 6;
 
-  cards = () =>
-    getEmployeeCardsMockData(this.maxCards).map(card => ({
-      ...card,
-      hobbies: mockHobbies(4).join(', ')
-    }))
+  cards: any[];
 
-  constructor() {}
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.maxCards) {
+      this.maxCards = changes.maxCards.currentValue;
 
-  ngOnInit(): void {}
+      this.cards = getEmployeeCardsMockData(this.maxCards).map(card => ({
+        ...card,
+        hobbies: mockHobbies(4).join(', ')
+      }));
+    }
+  }
 
   onClick($event): void {
     console.log('navigate to employee');
@@ -150,7 +161,7 @@ export class CardLayoutExample2Component implements OnInit {
       [mobileSwiper]="mobileSwiper"
     >
       <b-card-employee
-        *ngFor="let card of cards(); let i = index"
+        *ngFor="let card of cards; let i = index"
         [type]="type"
         (clicked)="onClick($event)"
         [card]="card"
@@ -161,7 +172,7 @@ export class CardLayoutExample2Component implements OnInit {
   `,
   styles: [':host {display: block;}']
 })
-export class CardLayoutExample3Component implements OnInit, OnDestroy {
+export class CardLayoutExample3Component implements OnChanges, OnDestroy {
   @ViewChild(CardsLayoutComponent, { static: false })
   set amountOfCardsFn(bCardsComponent: CardsLayoutComponent) {
     this.numberOfCardsSubscription = bCardsComponent
@@ -181,20 +192,27 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
 
   private numberOfCardsSubscription: Subscription;
 
-  cards = () =>
-    getEmployeeCardsMockData(this.maxCards).map(card => ({
-      ...card,
-      date: mockDate()
-    }))
+  cards: any[];
 
-  ngOnInit(): void {}
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.maxCards) {
+      this.maxCards = changes.maxCards.currentValue;
+
+      this.cards = getEmployeeCardsMockData(this.maxCards).map(card => ({
+        ...card,
+        date: mockDate()
+      }));
+    }
+  }
 
   onClick($event): void {
     console.log('navigate to employee');
   }
 
   ngOnDestroy(): void {
-    this.numberOfCardsSubscription.unsubscribe();
+    if (this.numberOfCardsSubscription) {
+      this.numberOfCardsSubscription.unsubscribe();
+    }
   }
 }
 
@@ -207,14 +225,14 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
       [mobileSwiper]="mobileSwiper"
     >
       <b-card-add
-        *ngIf="addCard()"
+        *ngIf="addCard"
         [type]="type"
         (clicked)="onAddCardClick()"
-        [card]="addCard()"
+        [card]="addCard"
       >
       </b-card-add>
       <b-card
-        *ngFor="let card of cards(); let i = index"
+        *ngFor="let card of cards; let i = index"
         [type]="type"
         (clicked)="onCardClick(card, i)"
         [card]="card"
@@ -268,7 +286,8 @@ export class CardLayoutExample3Component implements OnInit, OnDestroy {
   ],
   providers: []
 })
-export class CardLayoutExample4Component implements OnInit {
+export class CardLayoutExample4Component implements OnChanges {
+  constructor() {}
   @Input() type: CardType = CardType.regular;
   @Input() alignCenter = false;
   @Input() maxCards = 6;
@@ -278,20 +297,24 @@ export class CardLayoutExample4Component implements OnInit {
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
 
-  addCard = () => (this.maxCards > 1 ? AddCardMockData : null);
+  addCard: AddCard;
+  cards: any[];
 
-  cards = () =>
-    getCardsMockData(this.maxCards === 1 ? 1 : this.maxCards - 1).map(card => ({
-      ...card,
-      imageUrl: mockImage(400, 300),
-      provider: mockText(1),
-      date: mockDate(),
-      number: randomNumber(1, 1000)
-    }))
-
-  constructor() {}
-
-  ngOnInit(): void {}
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.maxCards) {
+      this.maxCards = changes.maxCards.currentValue;
+      this.addCard = this.maxCards > 1 ? AddCardMockData : null;
+      this.cards = getCardsMockData(
+        this.maxCards === 1 ? 1 : this.maxCards - 1
+      ).map(card => ({
+        ...card,
+        imageUrl: mockImage(400, 300),
+        provider: mockText(1),
+        date: mockDate(),
+        number: randomNumber(1, 1000)
+      }));
+    }
+  }
 
   onAddCardClick(): void {
     console.log('on add card click');
