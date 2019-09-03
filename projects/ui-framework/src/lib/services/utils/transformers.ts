@@ -8,11 +8,13 @@ import {
   stringify,
   getType,
   isDateISO8601,
-  isDateFormat
+  isDateFormat,
+  hasProp
 } from './functional-utils';
 
 import { parse, format, isDate } from 'date-fns';
 import { InputTypes } from '../../form-elements/input/input.enum';
+import { serverDateFormat } from '../../consts';
 
 // -------------------------------
 // Transformers
@@ -63,11 +65,11 @@ export const stringToDate = date => {
   return String(converted) !== 'Invalid Date' ? converted : undefined;
 };
 
-export const dateToString = (date, frmt = undefined) =>
+export const dateToString = (date, frmt = serverDateFormat) =>
   isDate(date) ? format(date, frmt) : date;
 
 export const valueToObjectKey = (key: string) => (value: any) => {
-  return isObject(value) && value[key] ? value : { [key]: value };
+  return hasProp(value, key) ? value : { [key]: value };
 };
 
 export const arrayOfValuesToArrayOfObjects = (key: string) => (
@@ -211,7 +213,7 @@ export const objectHasKeyOrFail = (
     );
   }
   for (const k of asArray(key)) {
-    if (!value.hasOwnProperty(k)) {
+    if (!hasProp(value, k)) {
       throw new Error(
         `Value object (${stringify(value)}) has no key (${key}).`
       );

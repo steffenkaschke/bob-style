@@ -47,6 +47,9 @@ export const isEmptyArray = (val: any): boolean => !isNotEmptyArray(val);
 export const isObject = (val: any): boolean =>
   val && !isArray(val) && val === Object(val);
 
+export const hasProp = (obj: object, key: string): boolean =>
+  isObject(obj) && obj.hasOwnProperty(key);
+
 export const isNotEmptyObject = (val: any): boolean =>
   isObject(val) && Object.keys(val).length > 0;
 
@@ -205,6 +208,9 @@ export const applyChanges = (target: any, changes: SimpleChanges): void => {
     target[change] = changes[change].currentValue;
   });
 };
+
+export const isDate = (value): boolean =>
+  value instanceof Date && typeof value.getMonth === 'function';
 
 export const isDateISO8601 = (date: string): boolean =>
   isString(date) &&

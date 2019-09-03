@@ -18,7 +18,11 @@ import { Subscription, fromEvent, interval } from 'rxjs';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { InputTypes } from '../input/input.enum';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { simpleUID, isKey } from '../../services/utils/functional-utils';
+import {
+  simpleUID,
+  isKey,
+  notFirstChanges
+} from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
 import { BDateAdapter } from './date.adapter';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material';
@@ -61,6 +65,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   public id = simpleUID('bdp-');
   public isMobile = false;
   public inputFocused: boolean[] = [];
+
+  protected overlayStylesDef: Styles = {};
 
   private allowInputBlur = !this.allowKeyInput;
   private resizeSubscription: Subscription;
@@ -117,16 +123,20 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
       this.placeholder = BDateAdapter.bFormat.toLowerCase();
     }
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
   protected getPicker(index: string | number): MatDatepicker<any> {
-    return this.pickers
+    return this.pickers && this.pickers.length > 0
       ? this.pickers.toArray()[parseInt(index as string, 10)]
       : null;
   }
 
   protected allPickers(func: (p: MatDatepicker<any>) => any): void {
-    if (this.pickers) {
+    if (this.pickers && this.pickers.length > 0) {
       this.pickers
         .toArray()
         .forEach((picker: MatDatepicker<any>) => func(picker));
@@ -134,13 +144,13 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   protected getInput(index: string | number): HTMLInputElement {
-    return this.inputs
+    return this.inputs && this.inputs.length > 0
       ? this.inputs.toArray()[parseInt(index as string, 10)].nativeElement
       : null;
   }
 
   protected allInputs(func: (p: HTMLInputElement) => any): void {
-    if (this.inputs) {
+    if (this.inputs && this.inputs.length > 0) {
       this.inputs
         .toArray()
         .forEach((input: ElementRef) =>
@@ -154,10 +164,11 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       const overlayBox = this.inputWrap.nativeElement.getBoundingClientRect();
 
       return {
+        ...this.overlayStylesDef,
         'pointer-events': 'none',
         left: overlayBox.left + 'px',
         right: overlayBox.right - overlayBox.width + 'px',
-        'min-width': overlayBox.width + 'px'
+        width: overlayBox.width + 'px'
       };
     }
     return {};
@@ -183,12 +194,12 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   public onPickerOpen(index: number = 0): void {
     this.inputFocused[index] = true;
-    if (this.allowKeyInput) {
+    if (this.allowKeyInput && !this.isMobile) {
       this.getInput(index).focus();
     }
     const picker = this.getPicker(index);
 
-    if (!this.isMobile && picker._popupRef) {
+    if (picker._popupRef) {
       this.zone.runOutsideAngular(() => {
         this.windowRef.nativeWindow.requestAnimationFrame(() => {
           this.DOM.setCssProps(
@@ -198,24 +209,32 @@ export abstract class BaseDatepickerElement extends BaseFormElement
         });
       });
     }
+
+    if (
+      (picker as any)._dialogRef &&
+      (picker as any)._dialogRef._overlayRef &&
+      (picker as any)._dialogRef._overlayRef.overlayElement
+    ) {
+      this.zone.runOutsideAngular(() => {
+        this.windowRef.nativeWindow.requestAnimationFrame(() => {
+          this.DOM.setCssProps(
+            (picker as any)._dialogRef._overlayRef.overlayElement,
+            this.overlayStylesDef
+          );
+        });
+      });
+    }
   }
 
   public onPickerClose(index: number = 0): void {
-    this.inputFocused[index] = false;
-    this.getInput(index).setSelectionRange(11, 11);
+    if (this.allowKeyInput && !this.isMobile) {
+      this.getInput(index).setSelectionRange(11, 11);
+    }
   }
 
   public isInputEmpty(index: number = 0): boolean {
     const input = this.getInput(index);
     return !input || !input.value.trim();
-  }
-
-  public onInputFocus(index: number = 0): void {
-    this.inputFocused[index] = true;
-    if (this.allowKeyInput) {
-      this.getInput(index).select();
-    }
-    this.openPicker(index);
   }
 
   public clearInput(index: number = 0, path = 'value'): void {
@@ -225,11 +244,24 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     this.transmit();
   }
 
+  public onInputFocus(index: number = 0): void {
+    this.inputFocused[index] = true;
+    if (this.allowKeyInput && !this.isMobile) {
+      this.getInput(index).select();
+    }
+    this.openPicker(index);
+  }
+
   public onInputBlur(index: number = 0): void {
-    if (!this.getPicker(index).opened) {
-      this.inputFocused[index] = false;
-    } else if (this.allowKeyInput && !this.allowInputBlur) {
+    if (
+      this.allowKeyInput &&
+      !this.allowInputBlur &&
+      !this.isMobile &&
+      this.getPicker(index).opened
+    ) {
       this.getInput(index).focus();
+    } else {
+      this.inputFocused[index] = false;
     }
     this.allowInputBlur = false;
   }
@@ -256,7 +288,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public onInputChange(event, index: number = 0): void {
-    (event.target as HTMLInputElement).value = this.dtInputSrvc.convertSeparators(
+    (event.target as HTMLInputElement).value = this.dtInputSrvc.parseDateInput(
       (event.target as HTMLInputElement).value
     );
   }

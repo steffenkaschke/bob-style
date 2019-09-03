@@ -117,4 +117,6 @@ export enum Icons {
   note_edit = 'b-icon-note-edit',
   note = 'b-icon-note',
   lock = 'b-icon-lock',
+  print = 'b-icon-print',
+  attachment = 'b-icon-attachment'
 }
