@@ -71,12 +71,12 @@ radioStories.add(
     return {
       template: stroyTemplate,
       props: {
-        value: object('value', { id: 11 }),
+        value: object('value', { id: 0 }),
 
         options: object('radioConfig', [
-          { id: 11, label: 'Option one' },
-          { id: 12, label: 'Option two' },
-          { id: 13, label: 'Option three' }
+          { id: 0, label: 'Option one' },
+          { id: 1, label: 'Option two' },
+          { id: 2, label: 'Option three' }
         ]),
         direction: select('direction', direction, direction.row),
 
