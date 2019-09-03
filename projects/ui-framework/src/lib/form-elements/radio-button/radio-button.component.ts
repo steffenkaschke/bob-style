@@ -19,6 +19,10 @@ import {
   objectHasKeyOrFail,
   valueToObjectKey
 } from '../../services/utils/transformers';
+import {
+  isNullOrUndefined,
+  hasProp
+} from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-radio-button',
@@ -46,7 +50,8 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
       value => valueInArrayOrFail(value, this.options, this.key)
     ];
     this.outputTransformers = [
-      value => (value && value.id ? value.id : undefined)
+      value =>
+        !isNullOrUndefined(value) && hasProp(value, 'id') ? value.id : undefined
     ];
     this.baseValue = {};
     this.wrapEvent = false;
