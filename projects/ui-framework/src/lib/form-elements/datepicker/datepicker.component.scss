@@ -24,7 +24,12 @@ b-icon,
 
   .mat-datepicker-content {
     box-shadow: 0 0 10px 0 $boxShadowColor;
-    overflow: auto;
+  }
+
+  .mat-datepicker-dialog .mat-datepicker-content-touch,
+  .mat-datepicker-popup .mat-datepicker-content {
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .mat-calendar-body-cell-content {
