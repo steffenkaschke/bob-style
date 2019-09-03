@@ -282,7 +282,7 @@ export { PasswordInputComponent } from './lib/form-elements/password-input/passw
  * Search
  */
 
- // Search
+// Search
 export { SearchModule } from './lib/search/search/search.module';
 export { SearchComponent } from './lib/search/search/search.component';
 // Auto complete Module
@@ -406,19 +406,19 @@ export {
  * Tables
  */
 
-// Table Module
-export { TableModule } from './lib/table/table.module';
-export * from './lib/table/table/table.interface';
-export * from './lib/table/table/table.enum';
-export { TableComponent } from './lib/table/table/table.component';
-export { AvatarCellComponent } from './lib/table/table-cell-components/avatar-cell/avatar.component';
-export { ActionsCellComponent } from './lib/table/table-cell-components/actions-cell/actions-cell.component';
-export { GridActions } from './lib/table/table-cell-components/actions-cell/actions-cell.interface';
-export { TableUtilsService } from './lib/table/table-utils-service/table-utils.service';
-// Card Table
-export { CardTableModule } from './lib/table/card-table/card-table.module';
-export { CardTableComponent } from './lib/table/card-table/card-table/card-table.component';
-export * from './lib/table/card-table/card-table.interface';
+// // Table Module
+// export { TableModule } from './lib/table/table.module';
+// export * from './lib/table/table/table.interface';
+// export * from './lib/table/table/table.enum';
+// export { TableComponent } from './lib/table/table/table.component';
+// export { AvatarCellComponent } from './lib/table/table-cell-components/avatar-cell/avatar.component';
+// export { ActionsCellComponent } from './lib/table/table-cell-components/actions-cell/actions-cell.component';
+// export { GridActions } from './lib/table/table-cell-components/actions-cell/actions-cell.interface';
+// export { TableUtilsService } from './lib/table/table-utils-service/table-utils.service';
+// // Card Table
+// export { CardTableModule } from './lib/table/card-table/card-table.module';
+// export { CardTableComponent } from './lib/table/card-table/card-table/card-table.component';
+// export * from './lib/table/card-table/card-table.interface';
 
 /*
  * Layout
@@ -476,7 +476,7 @@ export { FiltersModule } from './lib/services/filters/filters.module';
 export { UtilsModule } from './lib/services/utils/utils.module';
 export { UtilsService } from './lib/services/utils/utils.service';
 export { DOMhelpers } from './lib/services/utils/dom-helpers.service';
-export { ScrollEvent }  from './lib/services/utils/utils.interface';
+export { ScrollEvent } from './lib/services/utils/utils.interface';
 export { WindowRef } from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
 export { MobileService, WidthMode, MediaEvent } from './lib/services/utils/mobile.service';
@@ -506,7 +506,7 @@ export { TextColoredLinksModule } from './lib/eye-candy/text-colored-links/text-
 export {
   TextColoredLinksComponent
 } from
-    './lib/eye-candy/text-colored-links/text-colored-links/text-colored-links.component';
+  './lib/eye-candy/text-colored-links/text-colored-links/text-colored-links.component';
 export { ColorTextItem } from './lib/eye-candy/text-colored-links/text-colored-links.interface';
 // Mocks
 export { mockText, mockDate, mockHobbies, mockJobs, mockNames, mockAvatar } from './lib/mock.const';
@@ -516,3 +516,9 @@ export { mockText, mockDate, mockHobbies, mockJobs, mockNames, mockAvatar } from
 * Animation
  */
 export { SLIDE_UP_DOWN } from './lib/style/animations';
+
+export {
+  isString,
+  isArray,
+  isRenderedComponent
+} from './lib/services/utils/functional-utils';
