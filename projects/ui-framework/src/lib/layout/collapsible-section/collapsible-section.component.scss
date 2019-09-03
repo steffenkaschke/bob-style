@@ -187,3 +187,10 @@ p {
     }
   }
 }
+
+.bcp-section:not(.bcp-section-collapsible),
+.bcp-section.bcp-section-expanded {
+  .bcp-header {
+    box-shadow: 0 1px 0 0 $grey-500;
+  }
+}

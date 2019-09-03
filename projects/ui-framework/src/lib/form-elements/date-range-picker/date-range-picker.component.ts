@@ -2,7 +2,6 @@ import {
   Component,
   forwardRef,
   Input,
-  OnInit,
   ChangeDetectorRef,
   ChangeDetectionStrategy,
   NgZone,
@@ -111,9 +110,14 @@ export class DateRangePickerComponent extends BaseDatepickerElement
 
   ngAfterViewInit(): void {
     this.overlayStylesDef = {
-      '--start-date-label': '"' + this.startDateLabel || this.label + '\'',
+      '--start-date-label':
+        this.startDateLabel || this.label
+          ? '"' + this.startDateLabel || this.label + '"'
+          : null,
       '--end-date-label':
-        '"' + this.endDateLabel || this.startDateLabel || this.label + '\''
+        this.endDateLabel || this.label
+          ? '"' + this.endDateLabel || this.startDateLabel || this.label + '"'
+          : null
     };
   }
 
