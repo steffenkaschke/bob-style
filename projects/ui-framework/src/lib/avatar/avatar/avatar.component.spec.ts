@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { ChipType } from '../../chips/chips.enum';
 import { ChipModule } from '../../chips/chip/chip.module';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
-import { BadgeSize, AvatarBadges } from './avatar.consts';
+import { BadgeSize } from './avatar.consts';
 import { simpleChange } from '../../services/utils/test-helpers';
 
 describe('AvatarComponent', () => {
@@ -125,9 +125,9 @@ describe('AvatarComponent', () => {
       expect(department).toBeTruthy();
       expect(department.nativeElement.innerText).toEqual('department');
     });
-    it('Should not put caption text on avatar, if size is not large', () => {
+    it('Should not put caption text on avatar, if size is small', () => {
       component.caption = 'department';
-      component.size = AvatarSize.medium;
+      component.size = AvatarSize.small;
       fixture.detectChanges();
       const department = fixture.debugElement.query(By.css('.slot3-small'));
       expect(department).toBeFalsy();
