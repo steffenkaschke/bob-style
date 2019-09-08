@@ -5,7 +5,7 @@ import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { cloneDeep, bind, invoke } from 'lodash';
 
-const ALERT_DURATION = 3000;
+const ALERT_DURATION = 7000;
 
 @Injectable()
 export class AlertService {
