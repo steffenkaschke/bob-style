@@ -1,5 +1,5 @@
 <div class="emoji-chip-item" *ngFor="let chip of chips"
-     (click)="chipClick(chip)">
+     (click)="chipClick(chip)" [matTooltip]="chip.tooltip" matTooltipPosition="above">
   <span class="reaction-number" *ngIf="chip.number">
     {{valueFormatterFn(chip.number)}}
   </span>
