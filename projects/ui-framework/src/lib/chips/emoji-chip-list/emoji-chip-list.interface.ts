@@ -1,6 +1,5 @@
-import {Emoji} from '../../popups/emoji/emoji.interface';
-
 export interface EmojiChip {
   emoji?: string;
+  tooltip?: string;
   number?: number;
 }
