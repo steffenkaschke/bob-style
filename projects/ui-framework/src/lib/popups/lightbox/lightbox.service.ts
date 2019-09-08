@@ -7,6 +7,7 @@ import { URLutils } from '../../services/url/url-utils.service';
 
 @Injectable()
 export class LightboxService {
+  lightbox: LightboxData;
   constructor(private overlay: Overlay, private url: URLutils) {}
 
   private overlayConfig: OverlayConfig = {
@@ -18,51 +19,49 @@ export class LightboxService {
   };
 
   public showLightbox(config: LightboxConfig): LightboxData {
-    const lightbox: Partial<LightboxData> = {};
+    this.lightbox = {
+      overlayRef: null,
+      lightboxComponentRef: null
+    };
     let lightboxPortal: ComponentPortal<LightboxComponent>;
 
     try {
-      lightbox.config = {
+      this.lightbox.config = {
         image: config.image && this.url.validateImg(config.image),
         video: config.video && this.url.domainAllowed(config.video as string),
         component: config.component,
         fillScreen: config.fillScreen
       };
 
-      lightbox.overlayRef = this.overlay.create(this.overlayConfig);
+      this.lightbox.overlayRef = this.overlay.create(this.overlayConfig);
       lightboxPortal = new ComponentPortal(LightboxComponent);
-      lightbox.lightboxComponentRef = lightbox.overlayRef.attach(
-        lightboxPortal
-      );
+      this.lightbox.lightboxComponentRef = this.lightbox.overlayRef.attach(lightboxPortal);
 
-      lightbox.lightboxComponentRef.instance.ngOnChanges({
-        config: new SimpleChange(null, lightbox.config, true)
+      this.lightbox.lightboxComponentRef.instance.ngOnChanges({
+        config: new SimpleChange(null, this.lightbox.config, true)
       });
 
-      lightbox.lightboxComponentRef.instance.closeLightboxCallback = () =>
-        this.closeLightbox(lightbox as LightboxData);
+      this.lightbox.lightboxComponentRef.instance.closeLightboxCallback = () => this.closeLightbox();
 
-      lightbox.overlayRef.overlayElement.addEventListener('click', () =>
-        this.closeLightbox(lightbox as LightboxData)
-      );
+      this.lightbox.overlayRef.overlayElement.addEventListener('click', () => this.closeLightbox());
 
-      lightbox.close = () => this.closeLightbox(lightbox as LightboxData);
-      return lightbox as LightboxData;
+      this.lightbox.close = () => this.closeLightbox();
+      return this.lightbox as LightboxData;
     } catch (e) {
-      this.closeLightbox(lightbox as LightboxData);
+      this.closeLightbox();
       throw new Error(e.message);
     }
   }
 
-  public closeLightbox(lightbox: LightboxData): void {
-    if (lightbox && lightbox.lightboxComponentRef) {
-      lightbox.lightboxComponentRef.destroy();
-      lightbox.lightboxComponentRef = null;
+  public closeLightbox(): void {
+    if (this.lightbox && this.lightbox.lightboxComponentRef) {
+      this.lightbox.lightboxComponentRef.destroy();
+      this.lightbox.lightboxComponentRef = null;
     }
-    if (lightbox && lightbox.overlayRef) {
-      lightbox.overlayRef.dispose();
-      lightbox.overlayRef = null;
+    if (this.lightbox && this.lightbox.overlayRef) {
+      this.lightbox.overlayRef.dispose();
+      this.lightbox.overlayRef = null;
     }
-    lightbox = null;
+    this.lightbox = null;
   }
 }
