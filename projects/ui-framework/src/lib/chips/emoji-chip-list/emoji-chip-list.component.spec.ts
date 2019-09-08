@@ -1,8 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EmojiChipListComponent } from './emoji-chip-list.component';
-import {MockPipe} from 'ng-mocks';
-import {EmojiFromCodePipe} from './emoji-from-code.pipe';
+import { MockPipe } from 'ng-mocks';
+import { EmojiFromCodePipe } from './emoji-from-code.pipe';
+import { MatTooltipModule } from '@angular/material';
 
 describe('EmojiChipListComponent', () => {
   let component: EmojiChipListComponent;
@@ -10,6 +11,7 @@ describe('EmojiChipListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ MatTooltipModule ],
       declarations: [ EmojiChipListComponent,
         MockPipe(EmojiFromCodePipe, (val) => `${val}`)
       ]
