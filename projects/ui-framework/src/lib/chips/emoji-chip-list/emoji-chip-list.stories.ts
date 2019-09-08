@@ -44,6 +44,7 @@ storiesOf(ComponentGroupType.Chips, module)
       props: {
         chipClicked: action('chip clicked'),
         chips: object('chips', [
+          '1F600',
           '1F45F',
           '1F452',
           '1F3A9',
