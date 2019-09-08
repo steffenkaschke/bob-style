@@ -2,10 +2,7 @@ import { Component, NgModule, OnDestroy, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LightboxService } from './lightbox.service';
 import { ButtonsModule } from '../../buttons/buttons.module';
-import {
-  BrowserAnimationsModule,
-  NoopAnimationsModule
-} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
@@ -60,19 +57,13 @@ export class LightboxExampleComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.lightboxService.closeLightbox(this.lightbox);
+    this.lightboxService.closeLightbox();
   }
 }
 
 @NgModule({
   declarations: [LightboxExampleComponent],
-  imports: [
-    CommonModule,
-    ButtonsModule,
-    NoopAnimationsModule,
-    BrowserAnimationsModule,
-    AvatarModule
-  ],
+  imports: [CommonModule, ButtonsModule, NoopAnimationsModule, BrowserAnimationsModule, AvatarModule],
   exports: [LightboxExampleComponent],
   providers: [LightboxService],
   entryComponents: [AvatarComponent]
