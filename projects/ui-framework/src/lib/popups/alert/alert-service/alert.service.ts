@@ -15,10 +15,7 @@ export class AlertService {
   public isOpen: boolean;
   private timeRef: NodeJS.Timer;
 
-  constructor(
-    private overlay: Overlay,
-  ) {
-  }
+  constructor(private overlay: Overlay) {}
 
   public showAlert(config: AlertConfig): ComponentRef<AlertComponent> {
     this.closeAlertCallback();
@@ -37,14 +34,17 @@ export class AlertService {
   }
 
   private getConfig(): OverlayConfig {
-    const positionStrategy = this.overlay.position().global()
-      .centerHorizontally().top('20px');
+    const positionStrategy = this.overlay
+      .position()
+      .global()
+      .centerHorizontally()
+      .top('20px');
     const panelClass = '';
     return {
       disposeOnNavigation: true,
       hasBackdrop: false,
       panelClass,
-      positionStrategy,
+      positionStrategy
     };
   }
 
