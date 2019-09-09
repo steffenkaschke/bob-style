@@ -122,6 +122,10 @@ p {
       @include normalize-par;
     }
   }
+
+  &.no-top-border {
+    border-top: none;
+  }
 }
 
 [class='bcp-section'] {
@@ -193,5 +197,8 @@ p {
 .bcp-section.bcp-section-expanded {
   .bcp-header {
     box-shadow: 0 1px 0 0 $border-color;
+  }
+  .no-shadow {
+    box-shadow: none;
   }
 }
