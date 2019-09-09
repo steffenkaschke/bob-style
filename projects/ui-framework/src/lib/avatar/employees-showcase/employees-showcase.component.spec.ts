@@ -309,12 +309,12 @@ describe('EmployeesShowcaseComponent', () => {
       expect(showcaseAvatars.length).toBe(9);
       expect(moreIndicator).toBeFalsy();
     });
-    it('should display 1 medium avatars and show-more-indicator', () => {
+    it('should display 2 medium avatars and hide show-more-indicator', () => {
       createComponent(EMPLOYEE_SHOWCASE_MOCK, AvatarSize.medium, 180);
       showcaseAvatars = fixture.debugElement.queryAll(By.css('.showcase-avatar'));
       moreIndicator = fixture.debugElement.query(By.css('.show-more-indicator'));
-      expect(showcaseAvatars.length).toBe(1);
-      expect(moreIndicator).toBeTruthy();
+      expect(showcaseAvatars.length).toBe(2);
+      expect(moreIndicator).toBeFalsy();
     });
     it('should display 9 medium avatars and correct gap', () => {
       createComponent(EMPLOYEE_SHOWCASE_MOCK, AvatarSize.medium, 1000);

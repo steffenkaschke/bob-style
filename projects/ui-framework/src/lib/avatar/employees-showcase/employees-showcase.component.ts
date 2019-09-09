@@ -114,7 +114,7 @@ export class EmployeesShowcaseComponent extends BaseSelectPanelElement
     this.avatarGap = this.getAvatarGap();
     this.setAvatarGapCss();
     this.avatarsToFit = this.getAvatarsToFit(this.clientWidth, this.avatarGap);
-    this.shuffleEmployeesMode = this.avatarSize > AvatarSize.medium;
+    this.shuffleEmployeesMode = this.avatarSize >= AvatarSize.medium;
     this.showThreeDotsButton = this.shouldShowThreeDotsButton();
     this.subscribeToShuffleEmployees();
   }
