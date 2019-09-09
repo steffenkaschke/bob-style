@@ -54,8 +54,10 @@ export class CollapsibleSectionComponent
 
   @Input() expanded = false;
   @Input() disabled = false;
+  @Input() divided = true;
 
   @Input() title: string;
+  @Input() titleColor?: string;
   @Input() description?: string;
 
   @Input() options: CollapsibleOptions = collapsibleOptionsDef;

@@ -38,6 +38,7 @@ import { InputModule } from '../../form-elements/input/input.module';
       [collapsible]="collapsible"
       [expanded]="expanded"
       [disabled]="disabled"
+      [divided]="divided"
       (opened)="onOpened()"
       (closed)="onClosed()"
     >
@@ -200,6 +201,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   @Input() collapsible = true;
   @Input() expanded = false;
   @Input() disabled = false;
+  @Input() divided = true;
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
@@ -295,6 +297,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   template: `
     <b-collapsible-section
       [title]="title"
+      [titleColor]="titleColor"
       [description]="description"
       [collapsible]="collapsible"
       [expanded]="expanded"
@@ -337,6 +340,7 @@ export class CollapsibleSectionExample2Component implements OnChanges {
   @Input() disabled = false;
 
   @Input() title = mockText(randomNumber(2, 5));
+  @Input() titleColor = '#5555ff';
   @Input() description = mockText(randomNumber(3, 6));
 
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
