@@ -163,6 +163,6 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   public getColumnNames(): string[] {
-    return map(this.gridOptions.columnDefs, col => col.field);
+    return map(this.gridOptions.columnApi.getAllGridColumns(), col => col.colDef.field);
   }
 }
