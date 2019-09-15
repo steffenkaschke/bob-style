@@ -10,6 +10,7 @@ import { CommentItemComponent } from './comment-list/comment-item/comment-item.c
 import { ButtonsModule } from '../buttons/buttons.module';
 import { MenuModule } from '../navigation/menu/menu.module';
 import { TypographyModule } from '../typography/typography.module';
+import { FiltersModule } from '../services/filters/filters.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { TypographyModule } from '../typography/typography.module';
     CommentItemComponent
   ],
   imports: [
+    FiltersModule,
     TypographyModule,
     CommonModule,
     InputModule,
