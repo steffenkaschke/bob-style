@@ -98,6 +98,9 @@ export class CollapsibleSectionComponent
   }
 
   ngAfterViewInit(): void {
+    if (this.expanded) {
+      this.setCssVars(true);
+    }
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
         this.hasHeaderContent = !this.DOM.isEmpty(
@@ -123,12 +126,7 @@ export class CollapsibleSectionComponent
         this.cd.detectChanges();
       }
       if (!this.contentHeight) {
-        this.setCssVars();
-
-        // to allow for transcluded component(s) to render
-        setTimeout(() => {
-          this.setCssVars();
-        }, 3000);
+        this.setCssVars(true);
       }
       this.expanded = typeof state === 'boolean' ? state : !this.expanded;
       this.cd.detectChanges();
@@ -144,7 +142,7 @@ export class CollapsibleSectionComponent
     }
   }
 
-  setCssVars(): void {
+  setCssVars(repeat = false): void {
     if (this.panelContent) {
       this.contentHeight =
         this.panelContent.nativeElement.scrollHeight > 100
@@ -154,6 +152,13 @@ export class CollapsibleSectionComponent
       this.DOM.setCssProps(this.host.nativeElement, {
         '--panel-height': this.contentHeight + 'px'
       });
+    }
+
+    if (repeat) {
+      // to allow for transcluded component(s) to render
+      setTimeout(() => {
+        this.setCssVars();
+      }, 3000);
     }
   }
 
