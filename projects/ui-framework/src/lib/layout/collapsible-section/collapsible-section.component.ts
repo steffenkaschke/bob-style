@@ -74,7 +74,6 @@ export class CollapsibleSectionComponent
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.options) {
-      console.log('sdfsdfsd');
       this.options = {
         ...collapsibleOptionsDef,
         ...changes.options.currentValue
