@@ -191,6 +191,13 @@ p {
       animation-name: bcs-expand;
     }
   }
+
+  .bcp-panel-starts-expanded {
+    .bcp-panel-content-wrap {
+      animation: none;
+      transition: none;
+    }
+  }
 }
 
 .bcp-section:not(.bcp-section-collapsible),
