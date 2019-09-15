@@ -1,8 +1,4 @@
-import {
-  ComponentFixture,
-  async,
-  TestBed
-} from '@angular/core/testing';
+import { ComponentFixture, async, TestBed } from '@angular/core/testing';
 import {
   NO_ERRORS_SCHEMA,
   Component,
@@ -194,14 +190,12 @@ describe('CollapsibleSectionComponent', () => {
     });
 
     it('should not show divider when divided = false', () => {
+      expect(collapsibleSection.classList).not.toContain(
+        'bcp-section-not-divided'
+      );
       collapsibleComponent.divided = false;
       fixture.detectChanges();
-      emitNativeEvent(collapsibleHeader, 'click');
-      collapsibleHeader = elementFromFixture(fixture, '.bcp-header');
-      collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
-
-      expect(collapsibleHeader.classList).toContain('no-shadow');
-      expect(collapsiblePanel.classList).toContain('no-top-border');
+      expect(collapsibleSection.classList).toContain('bcp-section-not-divided');
     });
 
     it('should put CSS variable with content height on component host element', () => {
