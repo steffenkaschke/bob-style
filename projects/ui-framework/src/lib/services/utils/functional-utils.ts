@@ -47,6 +47,9 @@ export const isEmptyArray = (val: any): boolean => !isNotEmptyArray(val);
 export const isObject = (val: any): boolean =>
   val && !isArray(val) && val === Object(val);
 
+export const hasProp = (obj: object, key: string): boolean =>
+  isObject(obj) && obj.hasOwnProperty(key);
+
 export const isNotEmptyObject = (val: any): boolean =>
   isObject(val) && Object.keys(val).length > 0;
 

@@ -25,7 +25,9 @@ const template = `
     [collapsible]="collapsible"
     [expanded]="expanded"
     [disabled]="disabled"
+    [divided]="divided"
     [title]="title"
+    [titleColor]="titleColor"
     [description]="description"
     [options]="options"
     (closed)="onPanelClosed($event)"
@@ -54,12 +56,14 @@ const storyTemplate = `
       [collapsible]="collapsible"
       [expanded]="expanded"
       [disabled]="disabled"
+      [divided]="divided"
       (closed)="onPanelClosed($event)"
       (opened)="onPanelOpened($event)">
    </b-collapsible-section-example-1>
 
    <b-collapsible-section-example-2
       [title]="title"
+      [titleColor]="titleColor"
       [description]="description"
       [collapsible]="collapsible"
       [expanded]="expanded"
@@ -85,7 +89,9 @@ const note = `
   [collapsible] | boolean | if the section is collapsible | false
   [expanded] | boolean | if the panel is expanded (open) | false
   [disabled] | boolean | if the panel is disabled (can't be opened) | false
-  [title] | section title | title | none
+  [divided] | boolean | if the panel has a divider between the header and the content | true
+  [title] | string | section title | none
+  [titleColor] | string | color for the title | none
   [description] | string | section description (subtitle) | none
   [options] | CollapsibleOptions | additional options, among which: <br> **options.headerTranscludeStopPropagation** - set to true to prevent click event propagation from content transcluded in header (for example, to prevent buttons opening/closing the panel) | false
   (opened) |  EventEmitter | emits when collapsible panel was opened | none
@@ -109,7 +115,9 @@ story.add(
         collapsible: boolean('collapsible', false),
         expanded: boolean('expanded', false),
         disabled: boolean('disabled', false),
+        divided: boolean('divided', true),
         title: text('title', mockText(randomNumber(2, 5))),
+        titleColor: text('titleColor', '#5555ff'),
         description: text('description', mockText(randomNumber(3, 6))),
         onPanelOpened: action('Panel opened'),
         onPanelClosed: action('Panel closed')

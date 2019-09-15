@@ -88,7 +88,6 @@ const optionsMock: SelectGroupOption[] = [
     })
   }
 ];
-// console.log('optionsMock', optionsMock);
 optionsMock[0].options[1].selected = true;
 
 inputStories.add(

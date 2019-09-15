@@ -10,9 +10,26 @@ b-icon,
     display: none !important;
   }
 
+  tr:first-child[aria-hidden='true'] .mat-calendar-body-label:only-child {
+    display: none;
+  }
+
+  .mat-calendar-body-label {
+    @include text-hide;
+  }
+
+  .mat-calendar-table-header .mat-calendar-table-header-divider {
+    padding-bottom: times8(2);
+  }
+
   .mat-datepicker-content {
     box-shadow: 0 0 10px 0 $boxShadowColor;
-    overflow: auto;
+  }
+
+  .mat-datepicker-dialog .mat-datepicker-content-touch,
+  .mat-datepicker-popup .mat-datepicker-content {
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .mat-calendar-body-cell-content {
@@ -47,6 +64,15 @@ b-icon,
       width: 100%;
       padding: 0 times8(1) times8(1);
     }
+
+    .mat-datepicker-content[style*='bottom'] {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .mat-datepicker-content[style*='top'] {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
   }
 
   // mobile
@@ -59,7 +85,19 @@ b-icon,
     }
 
     .mat-calendar.b-datepicker-panel {
-      padding-bottom: times8(2);
+      padding-bottom: times8(1);
+    }
+
+    @include mobile($min: 480px) {
+      .mat-calendar-header,
+      .mat-calendar-content {
+        padding-left: times8(2);
+        padding-right: times8(2);
+      }
+
+      .mat-calendar-table-header .mat-calendar-table-header-divider {
+        padding-bottom: times8(3);
+      }
     }
   }
 

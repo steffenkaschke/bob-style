@@ -55,6 +55,17 @@
 
 // Datepicker: Selected range
 
+%hover-state {
+  &:before {
+    @include pseudo;
+    @include size(30px);
+    @include position(50% null null 50%);
+    transform: translate(-50%, -50%);
+    border-radius: 100%;
+    border: 1px solid white;
+  }
+}
+
 $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23fff' d='M0 0l100 50L0 100h100V0z'/%3E%3C/svg%3E");
 
 ::ng-deep .b-datepicker-panel {
@@ -86,15 +97,15 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
     &:focus {
       .mat-calendar-body-cell-content {
         background-color: var(--primary-500) !important;
+        @extend %hover-state;
+      }
+    }
 
-        &:before {
-          @include pseudo;
-          @include size(30px);
-          @include position(50% null null 50%);
-          transform: translate(-50%, -50%);
-          border-radius: 100%;
-          border: 1px solid white;
-        }
+    .mat-calendar-body-today {
+      @extend %hover-state;
+
+      &:before {
+        border-color: white(0.5);
       }
     }
 
@@ -227,8 +238,12 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
       &:before {
         display: block;
         @include b-display-3;
-        padding: 8px 16px 0;
+        padding: times8(2) times8(2) 0;
         margin-bottom: -10px;
+
+        @include mobile(400px) {
+          padding: times8(1) 11px 0;
+        }
       }
     }
 
