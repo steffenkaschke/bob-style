@@ -22,6 +22,12 @@ const note = `
   ~~~
   <span [innerHTML]="string | highlight: chars"></span>
   ~~~
+  ##### LinkifyPipe
+  wraps links with a tag with href, target blank if a link and mailto: prefix if email.
+
+  ~~~
+  <span [innerHTML]="string | linkify"></span>
+  ~~~
 
 `;
 
