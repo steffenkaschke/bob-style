@@ -31,6 +31,6 @@
       <b-bold-body class="name">{{comment?.name}}</b-bold-body>
       <b-caption class="date">{{comment?.date}}</b-caption>
     </div>
-    <div *ngIf="comment?.content" class="comment-body" [innerHtml]="comment?.content"></div>
+    <div *ngIf="comment?.content" class="comment-body" [innerHtml]="comment?.content | linkify"></div>
   </div>
 </div>

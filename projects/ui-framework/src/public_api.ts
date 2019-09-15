@@ -7,6 +7,8 @@
 * Global
 */
 
+import {LinkifyPipe} from './lib/services/filters/linkify.pipe';
+
 export { Keys, NativeEvents } from './lib/enums';
 export { GenericObject } from './lib/types';
 
@@ -472,6 +474,8 @@ export { IconComponent } from './lib/icons/icon.component';
 export { IconSize, IconColor, Icons } from './lib/icons/icons.enum';
 // Filter Module
 export { FiltersModule } from './lib/services/filters/filters.module';
+export { LinkifyPipe } from './lib/services/filters/linkify.pipe';
+export { HighlightPipe } from './lib/services/filters/highlight.pipe';
 // Utils Module
 export { UtilsModule } from './lib/services/utils/utils.module';
 export { UtilsService } from './lib/services/utils/utils.service';

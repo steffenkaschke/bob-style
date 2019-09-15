@@ -25,6 +25,9 @@
     }
     .comment-body {
       line-height: 20px;
+      ::ng-deep a {
+        color: $primary-500 !important;
+      }
     }
   }
   .text-section {
