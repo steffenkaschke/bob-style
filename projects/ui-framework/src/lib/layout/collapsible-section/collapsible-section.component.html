@@ -1,7 +1,10 @@
 <section class="bcp-section"
          [attr.aria-disabled]="disabled || null"
-         [ngClass]="{'bcp-section-collapsible': collapsible ,
-        'bcp-section-expanded': collapsible && expanded}">
+         [ngClass]="{
+          'bcp-section-collapsible': collapsible,
+          'bcp-section-expanded': collapsible && expanded,
+          'bcp-section-not-divided': !divided
+         }">
 
   <header class="
          bcp-header"
@@ -9,9 +12,8 @@
           [attr.aria-controls]="(collapsible && panelID) || null"
           [attr.aria-expanded]="(collapsible && expanded) || null"
           [ngClass]="{
-          'b-icon-chevron-right': collapsible && !expanded,
-          'b-icon-chevron-down': collapsible && expanded,
-          'no-shadow': collapsible && expanded && !divided
+            'b-icon-chevron-right': collapsible && !expanded,
+            'b-icon-chevron-down': collapsible && expanded
           }"
           (click.outside-zone)="togglePanel()">
 
@@ -42,8 +44,7 @@
        [ngClass]="{
          'bcp-panel-collapsed': collapsible && !expanded,
          'bcp-panel-expanded': collapsible && expanded,
-         'bcp-panel-starts-expanded': startsExpanded,
-         'no-top-border': !divided
+         'bcp-panel-starts-expanded': startsExpanded
        }"
        [attr.id]="panelID"
        [attr.aria-labelledby]="panelID+'-header'">
