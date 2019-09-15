@@ -43,6 +43,7 @@ export class ChainSingleSelectExampleComponent implements OnInit {
 export const template = `
   <b-chain-select [actionLabel]="actionLabel"
                   [selectedItemList]="selectedIdList"
+                  [staticMode]="staticMode"
                   (selectChange)="change($event)">
       <b-chain-single-select-example
         *bChainSelect="let selected=selected; let selectChange=selectChange; let index=index"
@@ -57,10 +58,10 @@ export const template = `
   selector: 'b-chain-select-example',
 })
 export class ChainSelectExampleComponent {
-  public selectedIdList = [1, 2, 3];
   @Input() actionLabel: string;
+  @Input() staticMode: boolean;
   @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
-
+  public selectedIdList = [1, 2, 3];
   public change($event) {
     this.selectChange.emit($event);
   }

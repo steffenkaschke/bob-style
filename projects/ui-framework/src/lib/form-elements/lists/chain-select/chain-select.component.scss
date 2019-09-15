@@ -27,6 +27,12 @@
   b-icon {
     transform: rotate(90deg);
   }
+
+  &--static {
+    &:last-child {
+      display: none;
+    }
+  }
 }
 
 :host ::ng-deep {

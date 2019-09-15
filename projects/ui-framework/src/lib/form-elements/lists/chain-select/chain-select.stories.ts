@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { withKnobs, text } from '@storybook/addon-knobs/angular';
+import { withKnobs, text, boolean } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
@@ -13,6 +13,7 @@ const buttonStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 const template = `
 <b-chain-select-example
   [actionLabel]="actionLabel"
+  [staticMode]="staticMode"
   (selectChange)="selectChange($event)">
 </b-chain-select-example>
 `;
@@ -34,9 +35,11 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  actionLabel | string | action label text | none
-  selectChange | action | EventEmitter - emits ChainSelectEvent | none
   selectedItemList | (any)[] | selected values for each select | none (Optional)
+  actionLabel | string | action label text | none
+  staticMode | boolean | when in static mode, the number of select elements is determined by the selectedItemList input\
+  and cannot be changed (Add and Delete buttons are hidden) | false
+  selectChange | action | EventEmitter - emits ChainSelectEvent | none
 
   ~~~
   ${exampleTemplate}
@@ -50,6 +53,7 @@ buttonStories.add(
     props: {
       selectChange: action('Chain select event'),
       actionLabel: text('action label', 'Add another'),
+      staticMode: boolean('static mode', false),
     },
     moduleMetadata: {
       imports: [StoryBookLayoutModule, ChainSelectExampleModule],

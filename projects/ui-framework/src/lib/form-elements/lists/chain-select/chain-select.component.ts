@@ -14,6 +14,7 @@ import { ChainSelectEventEnum } from './chain-select.enum';
 export class ChainSelectComponent implements OnInit {
   @Input() actionLabel: string;
   @Input() selectedItemList: any[];
+  @Input() staticMode = false;
   @Output() selectChange: EventEmitter<ChainSelectEvent> =
     new EventEmitter<ChainSelectEvent>();
 
