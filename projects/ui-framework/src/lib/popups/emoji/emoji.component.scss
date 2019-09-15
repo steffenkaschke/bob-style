@@ -23,6 +23,9 @@ li {
   margin: 0 auto;
   width: $icon-width * $icons-in-row + $emoji-padding * 2;
   transform-origin: bottom center;
+  .panel-position {
+    max-width: 100%;
+  }
   .panel-wrapper {
     padding: 0;
   }
@@ -79,8 +82,8 @@ li {
 
 .icon {
   font-family: 'Segoe UI Emoji', 'Segoe UI Symbol', 'Segoe UI',
-    'Apple Color Emoji', 'Twemoji Mozilla', 'Noto Color Emoji', 'EmojiOne Color',
-    'Android Emoji';
+  'Apple Color Emoji', 'Twemoji Mozilla', 'Noto Color Emoji', 'EmojiOne Color',
+  'Android Emoji';
   user-select: none;
   position: relative;
   z-index: 3;

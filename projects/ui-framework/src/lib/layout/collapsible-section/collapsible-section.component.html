@@ -10,7 +10,8 @@
           [attr.aria-expanded]="(collapsible && expanded) || null"
           [ngClass]="{
           'b-icon-chevron-right': collapsible && !expanded,
-          'b-icon-chevron-down': collapsible && expanded
+          'b-icon-chevron-down': collapsible && expanded,
+          'no-shadow': collapsible && expanded && !divided
           }"
           (click.outside-zone)="togglePanel()">
 
@@ -19,7 +20,8 @@
          [ngClass]="{'bcp-title-wrap-column': options?.titlesAsColumn}">
 
       <h4 class="bcp-title"
-          [ngClass]="{'b-display-3': !options?.smallTitle, 'b-bold-body': options?.smallTitle}">{{title}}</h4>
+          [ngClass]="{'b-display-3': !options?.smallTitle, 'b-bold-body': options?.smallTitle}"
+          [ngStyle]="{'color': titleColor}">{{title}}</h4>
 
       <p *ngIf="description"
          class="bcp-description">{{description}}</p>
@@ -39,7 +41,8 @@
        *ngIf="!collapsible || (collapsible && contentLoaded)"
        [ngClass]="{
          'bcp-panel-collapsed': collapsible && !expanded,
-         'bcp-panel-expanded': collapsible && expanded
+         'bcp-panel-expanded': collapsible && expanded,
+         'no-top-border': !divided
        }"
        [attr.id]="panelID"
        [attr.aria-labelledby]="panelID+'-header'">

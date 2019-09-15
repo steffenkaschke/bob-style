@@ -1,11 +1,7 @@
 import { async, inject, TestBed, tick } from '@angular/core/testing';
 import { LightboxService } from './lightbox.service';
 import { LightboxData } from './lightbox.interface';
-import {
-  ComponentFactoryResolver,
-  CUSTOM_ELEMENTS_SCHEMA,
-  NO_ERRORS_SCHEMA
-} from '@angular/core';
+import { ComponentFactoryResolver, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Overlay, OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { LightboxModule } from './lightbox.module';
@@ -50,12 +46,9 @@ describe('LightboxService', () => {
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     });
 
-    inject(
-      [OverlayContainer, ComponentFactoryResolver, Overlay],
-      (oc: OverlayContainer) => {
-        overlayElement = oc.getContainerElement();
-      }
-    )();
+    inject([OverlayContainer, ComponentFactoryResolver, Overlay], (oc: OverlayContainer) => {
+      overlayElement = oc.getContainerElement();
+    })();
 
     lightboxService = TestBed.get(LightboxService);
   }));
@@ -65,90 +58,62 @@ describe('LightboxService', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
       lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
 
-      const lightContainerEl = overlayElement.querySelector(
-        '.lightbox-container'
-      ) as HTMLElement;
-      const imageEl = overlayElement.querySelector(
-        '.lightbox-image'
-      ) as HTMLElement;
+      const lightContainerEl = overlayElement.querySelector('.lightbox-container') as HTMLElement;
+      const imageEl = overlayElement.querySelector('.lightbox-image') as HTMLElement;
 
       expect(lightContainerEl.children.length).toEqual(1);
       expect(imageEl).toBeTruthy();
-      expect(imageEl.getAttribute('src')).toContain(
-        'iVBORw0KGgoAAAANSUhEUgAAAA'
-      );
-      lightboxService.closeLightbox(lightbox);
+      expect(imageEl.getAttribute('src')).toContain('iVBORw0KGgoAAAANSUhEUgAAAA');
+      lightboxService.closeLightbox();
     });
 
     it('should open Lightbox with video', () => {
       lightbox = lightboxService.showLightbox(testConfigVideo);
       lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
 
-      const lightContainerEl = overlayElement.querySelector(
-        '.lightbox-container'
-      ) as HTMLElement;
-      const videoEl = overlayElement.querySelector(
-        '.lightbox-video'
-      ) as HTMLElement;
+      const lightContainerEl = overlayElement.querySelector('.lightbox-container') as HTMLElement;
+      const videoEl = overlayElement.querySelector('.lightbox-video') as HTMLElement;
 
       expect(lightContainerEl.children.length).toEqual(1);
       expect(videoEl).toBeTruthy();
-      expect(videoEl.getAttribute('src')).toEqual(
-        'http://youtube.com/imagination/123'
-      );
-      lightboxService.closeLightbox(lightbox);
+      expect(videoEl.getAttribute('src')).toEqual('http://youtube.com/imagination/123');
+      lightboxService.closeLightbox();
     });
 
     it('should open Lightbox with Avatar component', () => {
       lightbox = lightboxService.showLightbox(testConfigComponent);
       lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
 
-      const lightContainerEl = overlayElement.querySelector(
-        '.lightbox-container'
-      ) as HTMLElement;
+      const lightContainerEl = overlayElement.querySelector('.lightbox-container') as HTMLElement;
 
-      const avatarEl = overlayElement.querySelector(
-        '.lightbox-component b-avatar'
-      ) as HTMLElement;
-      const avatarElImg = overlayElement.querySelector(
-        '.lightbox-component b-avatar .avatar'
-      ) as HTMLElement;
-      const avatarElTitle = overlayElement.querySelector(
-        '.lightbox-component b-avatar .title'
-      ) as HTMLElement;
+      const avatarEl = overlayElement.querySelector('.lightbox-component b-avatar') as HTMLElement;
+      const avatarElImg = overlayElement.querySelector('.lightbox-component b-avatar .avatar') as HTMLElement;
+      const avatarElTitle = overlayElement.querySelector('.lightbox-component b-avatar .title') as HTMLElement;
 
       expect(lightContainerEl.children.length).toEqual(1);
       expect(avatarEl).toBeTruthy();
-      expect(avatarElImg.getAttribute('style')).toContain(
-        'iVBORw0KGgoAAAANSUhEUgAAAA'
-      );
+      expect(avatarElImg.getAttribute('style')).toContain('iVBORw0KGgoAAAANSUhEUgAAAA');
       expect(avatarElTitle.textContent).toContain('John Malkovich');
-      lightboxService.closeLightbox(lightbox);
+      lightboxService.closeLightbox();
     });
 
     it('should add the right classnames and respect fillScreen property', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
       lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
-      const lightContainerEl = overlayElement.querySelector(
-        'b-lightbox'
-      ) as HTMLElement;
+      const lightContainerEl = overlayElement.querySelector('b-lightbox') as HTMLElement;
       expect(lightContainerEl.className).toEqual('type-image fill-cover');
-      lightboxService.closeLightbox(lightbox);
+      lightboxService.closeLightbox();
     });
 
     it('should close Lightbox with Close button', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
       lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
 
-      const closeButEl = overlayElement.querySelector(
-        '.close-button'
-      ) as HTMLElement;
+      const closeButEl = overlayElement.querySelector('.close-button') as HTMLElement;
 
       closeButEl.click();
 
-      const lightContainerEl = overlayElement.querySelector(
-        '.lightbox-container'
-      ) as HTMLElement;
+      const lightContainerEl = overlayElement.querySelector('.lightbox-container') as HTMLElement;
 
       expect(lightContainerEl).toBeFalsy();
       expect(lightbox.lightboxComponentRef).toBeNull();
@@ -165,7 +130,7 @@ describe('LightboxService', () => {
       } catch (e) {
         expect(e).toBeTruthy();
       }
-      lightboxService.closeLightbox(lightbox);
+      lightboxService.closeLightbox();
     });
 
     it('should not accept random links for image link', () => {
@@ -178,7 +143,7 @@ describe('LightboxService', () => {
       } catch (e) {
         expect(e).toBeTruthy();
       }
-      lightboxService.closeLightbox(lightbox);
+      lightboxService.closeLightbox();
     });
   });
 
@@ -186,14 +151,10 @@ describe('LightboxService', () => {
     it('should unsubscribe windowKeydownSubscriber', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
       lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
-      expect(
-        lightbox.lightboxComponentRef.instance['windowKeydownSubscriber'].closed
-      ).toBe(false);
+      expect(lightbox.lightboxComponentRef.instance['windowKeydownSubscriber'].closed).toBe(false);
       lightbox.lightboxComponentRef.instance.ngOnDestroy();
-      expect(
-        lightbox.lightboxComponentRef.instance['windowKeydownSubscriber'].closed
-      ).toBe(true);
-      lightboxService.closeLightbox(lightbox);
+      expect(lightbox.lightboxComponentRef.instance['windowKeydownSubscriber'].closed).toBe(true);
+      lightboxService.closeLightbox();
     });
   });
 });

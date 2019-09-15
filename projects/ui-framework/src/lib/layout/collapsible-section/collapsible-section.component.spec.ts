@@ -1,9 +1,7 @@
 import {
   ComponentFixture,
   async,
-  TestBed,
-  fakeAsync,
-  tick
+  TestBed
 } from '@angular/core/testing';
 import {
   NO_ERRORS_SCHEMA,
@@ -156,7 +154,7 @@ describe('CollapsibleSectionComponent', () => {
       expect(collapsiblePanel).toBeFalsy();
     });
 
-    it('should expand panel with expaned property and emit Opened event', () => {
+    it('should expand panel with expand property and emit Opened event', () => {
       collapsibleComponent.ngOnChanges(
         simpleChange({
           expanded: true
@@ -190,7 +188,20 @@ describe('CollapsibleSectionComponent', () => {
       expect(collapsibleSection.classList).not.toContain(
         'bcp-section-expanded'
       );
+      expect(collapsibleHeader.classList).not.toContain('no-shadow');
+      expect(collapsiblePanel.classList).not.toContain('no-top-border');
       expect(collapsibleComponent.closed.emit).toHaveBeenCalled();
+    });
+
+    it('should not show divider when divided = false', () => {
+      collapsibleComponent.divided = false;
+      fixture.detectChanges();
+      emitNativeEvent(collapsibleHeader, 'click');
+      collapsibleHeader = elementFromFixture(fixture, '.bcp-header');
+      collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
+
+      expect(collapsibleHeader.classList).toContain('no-shadow');
+      expect(collapsiblePanel.classList).toContain('no-top-border');
     });
 
     it('should put CSS variable with content height on component host element', () => {
