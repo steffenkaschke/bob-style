@@ -3,6 +3,7 @@ import format from 'date-fns/format';
 
 export class BDateAdapter extends NativeDateAdapter {
   public static bFormat = 'dd/MM/yyyy';
+  public static bFormatMonth = 'MM/yyyy';
   public static readonly monthFormat = 'MMM';
   public static readonly monthYearFormat = 'MMM yyyy';
 

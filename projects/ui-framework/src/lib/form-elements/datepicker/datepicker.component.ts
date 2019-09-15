@@ -9,13 +9,14 @@ import {
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { serverDateFormat } from '../../consts';
+import { serverDateFormat, serverDateFormatMonth } from '../../consts';
 import { dateToString, dateOrFail } from '../../services/utils/transformers';
 import { MobileService } from '../../services/utils/mobile.service';
 import { BaseDatepickerElement } from './datepicker.abstract';
 import { DateTimeInputService } from './date-time-input.service';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
+import { DatepickerType } from './datepicker.enum';
 
 @Component({
   selector: 'b-datepicker',
@@ -57,7 +58,13 @@ export class DatepickerComponent extends BaseDatepickerElement {
     this.inputTransformers = [dateOrFail];
 
     this.outputTransformers = [
-      (value: Date): string => dateToString(value, serverDateFormat)
+      (value: Date): string =>
+        dateToString(
+          value,
+          this.type === DatepickerType.month
+            ? serverDateFormatMonth
+            : serverDateFormat
+        )
     ];
 
     this.baseValue = '';

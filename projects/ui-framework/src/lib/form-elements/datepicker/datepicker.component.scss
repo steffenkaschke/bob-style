@@ -105,3 +105,23 @@ b-icon,
     max-width: 400px;
   }
 }
+
+// Type Month
+
+:host[data-type='month']::ng-deep {
+  .bfe-input.not-empty {
+    text-indent: -20px;
+  }
+}
+
+::ng-deep {
+  .b-datepicker-panel.type-month {
+    .mat-calendar-period-button {
+      pointer-events: none;
+
+      .mat-calendar-arrow {
+        display: none;
+      }
+    }
+  }
+}

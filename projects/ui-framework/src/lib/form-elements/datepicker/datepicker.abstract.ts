@@ -10,7 +10,8 @@ import {
   QueryList,
   ElementRef,
   Output,
-  EventEmitter
+  EventEmitter,
+  HostBinding
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
@@ -21,7 +22,9 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 import {
   simpleUID,
   isKey,
-  notFirstChanges
+  notFirstChanges,
+  hasChanges,
+  isDateFormat
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
 import { BDateAdapter } from './date.adapter';
@@ -34,6 +37,7 @@ import { WindowRef } from '../../services/utils/window-ref.service';
 import { InputEventType, FormEvents } from '../form-elements.enum';
 import { InputEvent } from '../input/input.interface';
 import { set } from 'lodash';
+import { DatepickerType } from './datepicker.enum';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, OnDestroy {
@@ -55,6 +59,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   @Input() minDate: Date | string;
   @Input() maxDate: Date | string;
+  @HostBinding('attr.data-type') @Input() type: DatepickerType =
+    DatepickerType.date;
+
   @Input() allowKeyInput = true;
   @Input() dateFormat: string;
 
@@ -75,6 +82,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
   readonly inputTypes = InputTypes;
+  readonly types = DatepickerType;
 
   ngOnInit(): void {
     this.resizeSubscription = fromEvent(this.windowRef.nativeWindow, 'resize')
@@ -120,8 +128,18 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       this.maxDate = dateOrFail(changes.maxDate.currentValue);
     }
 
-    if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
-      this.placeholder = BDateAdapter.bFormat.toLowerCase();
+    if (
+      hasChanges(changes, ['type', 'placeholder', 'label', 'hideLabelOnFocus'])
+    ) {
+      if (
+        (!this.placeholder || isDateFormat(this.placeholder)) &&
+        !(this.hideLabelOnFocus && this.label)
+      ) {
+        this.placeholder =
+          this.type === DatepickerType.month
+            ? BDateAdapter.bFormatMonth.toLowerCase()
+            : BDateAdapter.bFormat.toLowerCase();
+      }
     }
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
@@ -210,25 +228,34 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       });
     }
 
-    if (
-      (picker as any)._dialogRef &&
-      (picker as any)._dialogRef._overlayRef &&
-      (picker as any)._dialogRef._overlayRef.overlayElement
-    ) {
-      this.zone.runOutsideAngular(() => {
-        this.windowRef.nativeWindow.requestAnimationFrame(() => {
+    this.zone.runOutsideAngular(() => {
+      this.windowRef.nativeWindow.requestAnimationFrame(() => {
+        if (
+          (picker as any)._dialogRef &&
+          (picker as any)._dialogRef._overlayRef &&
+          (picker as any)._dialogRef._overlayRef.overlayElement
+        ) {
           this.DOM.setCssProps(
             (picker as any)._dialogRef._overlayRef.overlayElement,
             this.overlayStylesDef
           );
-        });
+        }
       });
-    }
+    });
   }
 
   public onPickerClose(index: number = 0): void {
     if (this.allowKeyInput && !this.isMobile) {
       this.getInput(index).setSelectionRange(11, 11);
+    }
+  }
+
+  public onPickerMonthSelect(date: Date, index: number = 0): void {
+    if (this.type === DatepickerType.month) {
+      const picker = this.getPicker(index);
+      this.allowInputBlur = true;
+      picker.select(date);
+      this.closePicker(picker);
     }
   }
 
@@ -267,6 +294,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public onInputKeydown(event: KeyboardEvent, index: number = 0): void {
+    console.log('onInputChange');
+
     this.dtInputSrvc.filterAllowedKeys(event);
 
     if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) {
@@ -288,6 +317,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public onInputChange(event, index: number = 0): void {
+    console.log('onInputChange');
     (event.target as HTMLInputElement).value = this.dtInputSrvc.parseDateInput(
       (event.target as HTMLInputElement).value
     );
