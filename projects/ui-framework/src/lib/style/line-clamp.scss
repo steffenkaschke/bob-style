@@ -34,6 +34,10 @@ $selector: '';
   mask-position: center bottom, center top;
   mask-repeat: no-repeat;
 
+  @supports (hyphens: auto) or (-webkit-hyphens: auto) {
+    @include text-hyphenate;
+  }
+
   @supports (-webkit-line-clamp: 2) {
     display: -webkit-box !important;
     -webkit-box-orient: vertical;
