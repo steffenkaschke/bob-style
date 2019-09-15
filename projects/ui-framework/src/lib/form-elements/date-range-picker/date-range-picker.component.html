@@ -84,20 +84,24 @@
 </div>
 
 <mat-datepicker #startDatePicker
+                [startView]="type === types.month ? 'year' : 'month'"
                 [disabled]="disabled"
                 [touchUi]="isMobile"
-                [panelClass]="'b-datepicker-panel start-date-picker'"
+                [panelClass]="'b-datepicker-panel start-date-picker' + ' type-' + type"
                 [dateClass]="getDateClass"
                 (opened)="onPickerOpen(0)"
-                (closed)="onPickerClose(0)">
+                (closed)="onPickerClose(0)"
+                (monthSelected)="onPickerMonthSelect($event, 0)">
 </mat-datepicker>
 <mat-datepicker #endDatePicker
+                [startView]="type === types.month ? 'year' : 'month'"
                 [disabled]="disabled"
                 [touchUi]="isMobile"
-                [panelClass]="'b-datepicker-panel end-date-picker'"
+                [panelClass]="'b-datepicker-panel end-date-picker' + ' type-' + type"
                 [dateClass]="getDateClass"
                 (opened)="onPickerOpen(1)"
-                (closed)="onPickerClose(1)">
+                (closed)="onPickerClose(1)"
+                (monthSelected)="onPickerMonthSelect($event, 1)">
 </mat-datepicker>
 
 <p b-input-message

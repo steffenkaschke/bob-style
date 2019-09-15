@@ -14,7 +14,6 @@
          [attr.name]="id"
          [type]="inputTypes.text"
          [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
-         [ngClass]="{'not-empty': !isInputEmpty()}"
          [value]="value"
          [disabled]="disabled"
          [required]="required"
@@ -42,7 +41,7 @@
                 [startView]="type === types.month ? 'year' : 'month'"
                 [disabled]="disabled"
                 [touchUi]="isMobile"
-                [panelClass]="'b-datepicker-panel ' + id + ' type-' + type"
+                [panelClass]="'b-datepicker-panel ' + ' type-' + type"
                 (opened)="onPickerOpen()"
                 (closed)="onPickerClose()"
                 (monthSelected)="onPickerMonthSelect($event)">

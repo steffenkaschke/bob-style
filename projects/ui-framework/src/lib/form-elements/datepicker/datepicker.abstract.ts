@@ -22,9 +22,7 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 import {
   simpleUID,
   isKey,
-  notFirstChanges,
-  hasChanges,
-  isDateFormat
+  notFirstChanges
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
 import { BDateAdapter } from './date.adapter';
@@ -130,18 +128,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       this.maxDate = dateOrFail(changes.maxDate.currentValue);
     }
 
-    if (
-      hasChanges(changes, ['type', 'placeholder', 'label', 'hideLabelOnFocus'])
-    ) {
-      if (
-        (!this.placeholder || isDateFormat(this.placeholder)) &&
-        !(this.hideLabelOnFocus && this.label)
-      ) {
-        this.placeholder =
-          this.type === DatepickerType.month
-            ? BDateAdapter.bFormat.toLowerCase().replace('dd/', '')
-            : BDateAdapter.bFormat.toLowerCase();
-      }
+    if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
+      this.placeholder = BDateAdapter.bFormat.toLowerCase();
     }
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
@@ -194,6 +182,30 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     return {};
   }
 
+  public getPickerPanelElem(
+    picker: MatDatepicker<any>
+  ): { dialog: HTMLElement; popup: HTMLElement } {
+    const panel = {
+      dialog: null,
+      popup: null
+    };
+
+    // desktop
+    if (picker._popupRef) {
+      panel.popup = picker._popupRef.overlayElement;
+    }
+    // mobile
+    if (
+      (picker as any)._dialogRef &&
+      (picker as any)._dialogRef._overlayRef &&
+      (picker as any)._dialogRef._overlayRef.overlayElement
+    ) {
+      panel.dialog = (picker as any)._dialogRef._overlayRef.overlayElement;
+    }
+
+    return panel;
+  }
+
   public openPicker(picker: MatDatepicker<any> | number = 0): void {
     if (typeof picker === 'number') {
       picker = this.getPicker(picker);
@@ -219,28 +231,16 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
     const picker = this.getPicker(index);
 
-    if (picker._popupRef) {
-      this.zone.runOutsideAngular(() => {
-        this.windowRef.nativeWindow.requestAnimationFrame(() => {
-          this.DOM.setCssProps(
-            picker._popupRef.overlayElement,
-            this.getOverlayStyles()
-          );
-        });
-      });
-    }
-
     this.zone.runOutsideAngular(() => {
       this.windowRef.nativeWindow.requestAnimationFrame(() => {
-        if (
-          (picker as any)._dialogRef &&
-          (picker as any)._dialogRef._overlayRef &&
-          (picker as any)._dialogRef._overlayRef.overlayElement
-        ) {
-          this.DOM.setCssProps(
-            (picker as any)._dialogRef._overlayRef.overlayElement,
-            this.overlayStylesDef
-          );
+        const panel = this.getPickerPanelElem(picker);
+
+        if (panel.popup) {
+          this.DOM.setCssProps(panel.popup, this.getOverlayStyles());
+        }
+
+        if (panel.dialog) {
+          this.DOM.setCssProps(panel.dialog, this.overlayStylesDef);
         }
       });
     });
@@ -249,6 +249,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   public onPickerClose(index: number = 0): void {
     if (this.allowKeyInput && !this.isMobile) {
       this.getInput(index).setSelectionRange(11, 11);
+    } else {
+      this.getInput(index).blur();
     }
   }
 
@@ -278,7 +280,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     if (this.allowKeyInput && !this.isMobile) {
       this.getInput(index).select();
     }
-    this.openPicker(index);
+    if (!this.isMobile) {
+      this.openPicker(index);
+    }
   }
 
   public onInputBlur(index: number = 0): void {

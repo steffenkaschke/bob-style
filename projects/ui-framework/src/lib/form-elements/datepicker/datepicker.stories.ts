@@ -13,6 +13,7 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { thisYear, thisMonth } from '../../services/utils/functional-utils';
+import { DatepickerType } from './datepicker.enum';
 
 const datepickerStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -87,7 +88,11 @@ datepickerStories.add(
           ],
           ''
         ),
-        pickerType: select('pickerType', ['date', 'month'], 'date'),
+        pickerType: select(
+          'pickerType',
+          Object.values(DatepickerType),
+          DatepickerType.date
+        ),
         minDate: select('minDate', ['', `${thisYear()}-${thisMonth()}-10`], ''),
         maxDate: select('maxDate', ['', `${thisYear()}-${thisMonth()}-25`], ''),
         label: text('label', 'Date picker'),

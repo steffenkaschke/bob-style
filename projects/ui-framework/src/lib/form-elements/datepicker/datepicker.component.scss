@@ -108,17 +108,6 @@ b-icon,
 
 // Type Month
 
-:host[data-type='month']::ng-deep {
-  // this hides the date ('01/')
-  .bfe-input.not-empty:not(:focus) {
-    text-indent: -3.3ch;
-
-    @include ie-only {
-      text-indent: -20px;
-    }
-  }
-}
-
 ::ng-deep {
   .b-datepicker-panel.type-month {
     .mat-calendar-period-button {
