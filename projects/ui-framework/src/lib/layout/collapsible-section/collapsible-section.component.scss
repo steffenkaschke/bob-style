@@ -122,10 +122,6 @@ p {
       @include normalize-par;
     }
   }
-
-  &.no-top-border {
-    border-top: none;
-  }
 }
 
 [class='bcp-section'] {
@@ -191,6 +187,13 @@ p {
       animation-name: bcs-expand;
     }
   }
+
+  .bcp-panel-starts-expanded {
+    .bcp-panel-content-wrap {
+      animation: none;
+      transition: none;
+    }
+  }
 }
 
 .bcp-section:not(.bcp-section-collapsible),
@@ -198,7 +201,15 @@ p {
   .bcp-header {
     box-shadow: 0 1px 0 0 $border-color;
   }
-  .no-shadow {
+}
+
+// Options
+
+.bcp-section.bcp-section-not-divided {
+  .bcp-header {
     box-shadow: none;
+  }
+  .bcp-panel {
+    border-top: 0;
   }
 }

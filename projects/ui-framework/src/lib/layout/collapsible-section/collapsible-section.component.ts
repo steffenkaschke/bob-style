@@ -47,6 +47,7 @@ export class CollapsibleSectionComponent
   public hasHeaderContent = true;
   public hasPanelContent = true;
   public contentLoaded = false;
+  public startsExpanded = false;
   private contentHeight = 0;
   private resizeSubscription: Subscription;
 
@@ -75,10 +76,14 @@ export class CollapsibleSectionComponent
         ...changes.options.currentValue
       };
     }
-    if (changes.expanded && !changes.expanded.firstChange) {
-      this.zone.runOutsideAngular(() => {
-        this.togglePanel(changes.expanded.currentValue);
-      });
+    if (changes.expanded) {
+      if (!changes.expanded.firstChange) {
+        this.zone.runOutsideAngular(() => {
+          this.togglePanel(changes.expanded.currentValue);
+        });
+      } else {
+        this.startsExpanded = changes.expanded.currentValue;
+      }
     }
     if (changes.disabled && !changes.disabled.firstChange) {
       this.disabled = changes.disabled.currentValue;
@@ -121,6 +126,7 @@ export class CollapsibleSectionComponent
 
   togglePanel(state = null): void {
     if (this.collapsible && !this.disabled) {
+      this.startsExpanded = false;
       if (!this.contentLoaded) {
         this.contentLoaded = true;
         this.cd.detectChanges();
