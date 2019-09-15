@@ -302,6 +302,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
       [collapsible]="collapsible"
       [expanded]="expanded"
       [disabled]="disabled"
+      [divided]="divided"
       (opened)="onOpened()"
       (closed)="onClosed()"
       [options]="options"
@@ -338,6 +339,7 @@ export class CollapsibleSectionExample2Component implements OnChanges {
   @Input() collapsible = true;
   @Input() expanded = false;
   @Input() disabled = false;
+  @Input() divided = true;
 
   @Input() title = mockText(randomNumber(2, 5));
   @Input() titleColor = '#5555ff';
