@@ -1,5 +1,5 @@
 import { NativeDateAdapter } from '@angular/material/core';
-import { format } from 'date-fns';
+import format from 'date-fns/format';
 
 export class BDateAdapter extends NativeDateAdapter {
   public static bFormat = 'dd/MM/yyyy';

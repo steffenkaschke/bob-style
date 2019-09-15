@@ -11,9 +11,9 @@ import {
   isDateFormat,
   hasProp
 } from './functional-utils';
-
-import { parse, format, isDate } from 'date-fns';
 import parseISO from 'date-fns/parseISO';
+import isDate from 'date-fns/isDate';
+import format from 'date-fns/format';
 import { InputTypes } from '../../form-elements/input/input.enum';
 import { serverDateFormat } from '../../consts';
 
