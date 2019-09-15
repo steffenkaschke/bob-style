@@ -5,7 +5,7 @@ export const COMMENT_ITEM = {
   avatar: mockAvatar(),
   name: mockNames(1),
   date: mockDate(),
-  content: mockText(5),
+  content: mockText(5) + ' www.a-link.com ' + mockText(5),
   menuConfig: [
     {
       label: 'duplicate',
@@ -21,7 +21,7 @@ export const LONG_COMMENT_ITEM = {
   avatar: mockAvatar(),
   name: mockNames(1),
   date: mockDate(),
-  content: mockText(20),
+  content: mockText(10) + ' email@gmail.com ' + mockText(5),
   actionConfig: {
     icon: Icons.delete,
     tooltip: 'Delete',
