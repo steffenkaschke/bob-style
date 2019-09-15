@@ -16,7 +16,7 @@
             'b-icon-chevron-right': collapsible && !expanded,
             'b-icon-chevron-down': collapsible && expanded
           }"
-          (click.outside-zone)="togglePanel()">
+          (click)="togglePanel()">
 
     <div *ngIf="title"
          class="bcp-title-wrap"
@@ -33,7 +33,7 @@
     <div *ngIf="hasHeaderContent"
          #headerContent
          class="bcp-header-content"
-         [ngClass]="{'bcp-header-content-clickable': !options.headerTranscludeStopPropagation}"
+         [ngClass]="{'bcp-header-content-clickable': collapsible && !options.headerTranscludeStopPropagation}"
          (click.outside-zone)="options.headerTranscludeStopPropagation && $event.stopPropagation()">
       <ng-content select="[header]"></ng-content>
     </div>
