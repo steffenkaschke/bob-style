@@ -78,6 +78,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   private allowInputBlur = !this.allowKeyInput;
   private resizeSubscription: Subscription;
   private mediaEventSubscription: Subscription;
+  private skipParse = false;
+
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
@@ -137,7 +139,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       ) {
         this.placeholder =
           this.type === DatepickerType.month
-            ? BDateAdapter.bFormatMonth.toLowerCase()
+            ? BDateAdapter.bFormat.toLowerCase().replace('dd/', '')
             : BDateAdapter.bFormat.toLowerCase();
       }
     }
@@ -294,9 +296,11 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public onInputKeydown(event: KeyboardEvent, index: number = 0): void {
-    console.log('onInputChange');
-
     this.dtInputSrvc.filterAllowedKeys(event);
+
+    if (isKey(event.key, Keys.backspace) || isKey(event.key, Keys.delete)) {
+      this.skipParse = true;
+    }
 
     if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) {
       this.closePicker(index);
@@ -317,10 +321,12 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public onInputChange(event, index: number = 0): void {
-    console.log('onInputChange');
-    (event.target as HTMLInputElement).value = this.dtInputSrvc.parseDateInput(
-      (event.target as HTMLInputElement).value
-    );
+    if (!this.skipParse) {
+      (event.target as HTMLInputElement).value = this.dtInputSrvc.parseDateInput(
+        (event.target as HTMLInputElement).value
+      );
+    }
+    this.skipParse = false;
   }
 
   public transmit(

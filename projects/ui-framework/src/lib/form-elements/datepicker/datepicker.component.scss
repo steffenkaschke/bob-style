@@ -109,8 +109,13 @@ b-icon,
 // Type Month
 
 :host[data-type='month']::ng-deep {
-  .bfe-input.not-empty {
-    text-indent: -20px;
+  // this hides the date ('01/')
+  .bfe-input.not-empty:not(:focus) {
+    text-indent: -3.3ch;
+
+    @include ie-only {
+      text-indent: -20px;
+    }
   }
 }
 

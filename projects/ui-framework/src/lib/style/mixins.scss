@@ -319,3 +319,10 @@
     margin-bottom: 0;
   }
 }
+
+@mixin ie-only {
+  /* autoprefixer: off */
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    @content;
+  }
+}
