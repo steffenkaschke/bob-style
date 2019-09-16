@@ -42,7 +42,7 @@
     <div *ngIf="dialogButtons.confirmation.subTitle">{{dialogButtons.confirmation.subTitle}}</div>
   </div>
 
-  <div mat-dialog-actions
+  <div mat-dialog-actions *ngIf="dialogButtons"
        [ngClass]="{'single-button': !dialogButtons.cancel}">
     <b-button *ngIf="dialogButtons.cancel"
               (clicked)="onCancel()"
