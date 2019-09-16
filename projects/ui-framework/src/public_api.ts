@@ -169,7 +169,7 @@ export {
 export {
   DatepickerComponent
 } from './lib/form-elements/datepicker/datepicker.component';
-export {DatepickerType} from './lib/form-elements/datepicker/datepicker.enum';
+export { DatepickerType } from './lib/form-elements/datepicker/datepicker.enum';
 // DateRangePickerModule
 export { DateRangePickerModule } from './lib/form-elements/date-range-picker/date-range-picker.module';
 export { DateRangePickerComponent } from './lib/form-elements/date-range-picker/date-range-picker.component';
