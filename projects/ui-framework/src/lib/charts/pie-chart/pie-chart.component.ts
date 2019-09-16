@@ -8,30 +8,29 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import {ChartCore} from '../chart/chart-core';
-import {ChartTypesEnum} from '../chart/chart.enum';
-import {SeriesPieDataOptions} from 'highcharts';
+import { ChartCore } from '../chart/chart-core';
+import { ChartTypesEnum } from '../chart/chart.enum';
+import { SeriesPieDataOptions } from 'highcharts';
 
-export const minDonutWidth = 3, pieLegendHeight = 37, piePadding = 50;
+export const minDonutWidth = 3,
+  pieLegendHeight = 37,
+  piePadding = 50;
 @Component({
   selector: 'b-pie-chart',
   templateUrl: '../chart/chart.component.html',
-  styleUrls: [
-    '../chart/chart.component.scss',
-    './pie-chart.component.scss'],
+  styleUrls: ['../chart/chart.component.scss', './pie-chart.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class PieChartComponent extends ChartCore implements OnInit, OnChanges {
   type = ChartTypesEnum.Pie;
-  @Input() data: Array<(number|[string, (number|null)]|null|SeriesPieDataOptions)>;
+  @Input() data: Array<
+    number | [string, (number | null)] | null | SeriesPieDataOptions
+  >;
   @Input() name: string;
   @Input() donut = false;
   @Input() donutInnerSize = 60;
   @Input() donutWidth: number;
-  constructor(
-    public zone: NgZone,
-    public cdr: ChangeDetectorRef
-  ) {
+  constructor(public zone: NgZone, public cdr: ChangeDetectorRef) {
     super(zone, cdr);
     this.height = 150;
   }
@@ -67,7 +66,9 @@ export class PieChartComponent extends ChartCore implements OnInit, OnChanges {
     if (this.donut && this.donutWidth) {
       this.extraOptions.plotOptions.pie.innerSize = Math.max(
         0,
-          this.setInnerSize(piePadding - minDonutWidth + Math.abs(this.donutWidth))
+        this.setInnerSize(
+          piePadding - minDonutWidth + Math.abs(this.donutWidth)
+        )
       );
     }
   }
