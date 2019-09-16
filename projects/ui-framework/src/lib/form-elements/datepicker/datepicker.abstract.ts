@@ -182,7 +182,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     return {};
   }
 
-  public getPickerPanelElem(
+  protected getPickerPanel(
     picker: MatDatepicker<any>
   ): { dialog: HTMLElement; popup: HTMLElement } {
     const panel = {
@@ -204,6 +204,18 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
 
     return panel;
+  }
+
+  protected getPickerPanelElements(
+    picker: MatDatepicker<any>,
+    selector: string
+  ): HTMLElement[] {
+    const panel = this.getPickerPanel(picker);
+    if (!panel.popup && !panel.dialog) {
+      return [];
+    }
+    const elements = (panel.popup || panel.dialog).querySelectorAll(selector);
+    return Array.from(elements) as HTMLElement[];
   }
 
   public openPicker(picker: MatDatepicker<any> | number = 0): void {
@@ -233,7 +245,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
     this.zone.runOutsideAngular(() => {
       this.windowRef.nativeWindow.requestAnimationFrame(() => {
-        const panel = this.getPickerPanelElem(picker);
+        const panel = this.getPickerPanel(picker);
 
         if (panel.popup) {
           this.DOM.setCssProps(panel.popup, this.getOverlayStyles());
