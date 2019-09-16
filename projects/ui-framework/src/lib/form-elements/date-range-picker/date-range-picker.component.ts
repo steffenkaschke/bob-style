@@ -5,7 +5,8 @@ import {
   ChangeDetectorRef,
   ChangeDetectionStrategy,
   NgZone,
-  AfterViewInit
+  AfterViewInit,
+  DoCheck
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { B_DATE_FORMATS, BDateAdapter } from '../datepicker/date.adapter';
@@ -23,8 +24,13 @@ import { DateTimeInputService } from '../datepicker/date-time-input.service';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { DateRangePickerValue } from './date-range-picker.interface';
-import { MAT_DATEPICKER_SCROLL_STRATEGY } from '@angular/material';
+import {
+  MAT_DATEPICKER_SCROLL_STRATEGY,
+  MatDatepicker
+} from '@angular/material';
 import { Overlay, ScrollStrategy } from '@angular/cdk/overlay';
+import { DatepickerType } from '../datepicker/datepicker.enum';
+import { parse } from 'date-fns';
 
 interface DateRangePickerValueLocal {
   startDate: Date | string;
@@ -78,7 +84,7 @@ export function CLOSE_SCROLL_STRATEGY_FACTORY(
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DateRangePickerComponent extends BaseDatepickerElement
-  implements AfterViewInit {
+  implements AfterViewInit, DoCheck {
   constructor(
     windowRef: WindowRef,
     mobileService: MobileService,
@@ -121,6 +127,14 @@ export class DateRangePickerComponent extends BaseDatepickerElement
   public idSD = simpleUID('bdp-sd-');
   public idED = simpleUID('bdp-ed-');
 
+  ngDoCheck() {
+    this.zone.runOutsideAngular(() => {
+      this.windowRef.nativeWindow.requestAnimationFrame(() => {
+        this.markPickerCells();
+      });
+    });
+  }
+
   ngAfterViewInit(): void {
     this.overlayStylesDef = {
       '--start-date-label':
@@ -155,5 +169,45 @@ export class DateRangePickerComponent extends BaseDatepickerElement
           : ['in-range', 'last-in-range', 'only-in-range']
         : [];
     }
+  }
+
+  private markPickerCells(): void {
+    if (this.type === DatepickerType.month) {
+      const sdPicker = this.getPicker(0);
+      const edPicker = this.getPicker(1);
+      let pickerCells: HTMLElement[] = [];
+
+      if (sdPicker.open) {
+        pickerCells = pickerCells.concat(
+          this.getPickerCellElements(sdPicker, '.mat-calendar-body-cell')
+        );
+      }
+
+      if (edPicker.open) {
+        pickerCells = pickerCells.concat(
+          this.getPickerCellElements(edPicker, '.mat-calendar-body-cell')
+        );
+      }
+
+      if (pickerCells.length > 0) {
+        pickerCells.forEach((cell: HTMLElement) => {
+          cell.classList.add(
+            ...this.getDateClass(parse(cell.getAttribute('aria-label')))
+          );
+        });
+      }
+    }
+  }
+
+  private getPickerCellElements(
+    picker: MatDatepicker<any>,
+    selector: string
+  ): HTMLElement[] {
+    const panel = this.getPickerPanelElem(picker);
+    if (!panel.popup && !panel.dialog) {
+      return [];
+    }
+    const elements = (panel.popup || panel.dialog).querySelectorAll(selector);
+    return Array.from(elements) as HTMLElement[];
   }
 }

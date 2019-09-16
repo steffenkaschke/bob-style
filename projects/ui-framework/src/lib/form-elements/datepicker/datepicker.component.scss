@@ -24,6 +24,7 @@ b-icon,
 
   .mat-datepicker-content {
     box-shadow: 0 0 10px 0 $boxShadowColor;
+    user-select: none;
   }
 
   .mat-datepicker-dialog .mat-datepicker-content-touch,
@@ -62,6 +63,11 @@ b-icon,
     .mat-calendar.b-datepicker-panel {
       width: 100%;
       padding: 0 times8(1) times8(1);
+    }
+
+    .mat-calendar-table-header-divider::after {
+      left: times8(-2);
+      right: times8(-2);
     }
 
     &[style*='top'] {
@@ -124,6 +130,10 @@ b-icon,
       .mat-calendar-arrow {
         display: none;
       }
+    }
+
+    mat-month-view {
+      display: none;
     }
   }
 }

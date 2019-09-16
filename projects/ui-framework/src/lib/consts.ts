@@ -21,6 +21,5 @@ export enum ComponentGroupType {
 }
 
 export const serverDateFormat = 'YYYY-MM-DD'; // ISO 8601
-export const serverDateFormatMonth = 'YYYY-MM'; // ISO 8601
 
 export const mobileBreakpoint = 768;
