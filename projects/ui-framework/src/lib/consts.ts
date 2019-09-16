@@ -20,7 +20,7 @@ export enum ComponentGroupType {
   EyeCandy = 'Eye Candy'
 }
 
-export const serverDateFormat = 'yyyy-MM-dd'; // ISO 8601
-export const serverDateFormatMonth = 'yyyy-MM'; // ISO 8601
+export const serverDateFormat = 'YYYY-MM-DD'; // ISO 8601
+export const serverDateFormatMonth = 'YYYY-MM'; // ISO 8601
 
 export const mobileBreakpoint = 768;

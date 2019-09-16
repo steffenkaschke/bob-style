@@ -2,9 +2,9 @@ import { NativeDateAdapter } from '@angular/material/core';
 import { format } from 'date-fns';
 
 export class BDateAdapter extends NativeDateAdapter {
-  public static bFormat = 'dd/MM/yyyy';
+  public static bFormat = 'DD/MM/YYYY';
   public static readonly monthFormat = 'MMM';
-  public static readonly monthYearFormat = 'MMM yyyy';
+  public static readonly monthYearFormat = 'MMM YYYY';
 
   parse(value: any): Date | null {
     if (typeof value === 'string' && value.indexOf('/') > -1) {
