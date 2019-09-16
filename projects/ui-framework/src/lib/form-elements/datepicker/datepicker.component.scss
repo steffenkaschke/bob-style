@@ -48,7 +48,6 @@ b-icon,
   // desktop
 
   .mat-datepicker-popup {
-    margin-top: 1px;
     display: flex;
     justify-content: center;
 
@@ -65,10 +64,19 @@ b-icon,
       padding: 0 times8(1) times8(1);
     }
 
+    &[style*='top'] {
+      margin-top: 1px;
+    }
+
+    &[style*='bottom'] {
+      margin-bottom: 1px;
+    }
+
     .mat-datepicker-content[style*='bottom'] {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
+
     .mat-datepicker-content[style*='top'] {
       border-top-left-radius: 0;
       border-top-right-radius: 0;

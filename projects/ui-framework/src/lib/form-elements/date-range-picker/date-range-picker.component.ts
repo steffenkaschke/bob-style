@@ -23,6 +23,8 @@ import { DateTimeInputService } from '../datepicker/date-time-input.service';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { DateRangePickerValue } from './date-range-picker.interface';
+import { MAT_DATEPICKER_SCROLL_STRATEGY } from '@angular/material';
+import { Overlay, ScrollStrategy } from '@angular/cdk/overlay';
 
 interface DateRangePickerValueLocal {
   startDate: Date | string;
@@ -33,6 +35,12 @@ const valueDef: DateRangePickerValueLocal = {
   startDate: undefined,
   endDate: undefined
 };
+
+export function CLOSE_SCROLL_STRATEGY_FACTORY(
+  overlay: Overlay
+): () => ScrollStrategy {
+  return () => overlay.scrollStrategies.close();
+}
 
 @Component({
   selector: 'b-date-range-picker',
@@ -60,6 +68,11 @@ const valueDef: DateRangePickerValueLocal = {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => DateRangePickerComponent),
       multi: true
+    },
+    {
+      provide: MAT_DATEPICKER_SCROLL_STRATEGY,
+      deps: [Overlay],
+      useFactory: CLOSE_SCROLL_STRATEGY_FACTORY
     }
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
