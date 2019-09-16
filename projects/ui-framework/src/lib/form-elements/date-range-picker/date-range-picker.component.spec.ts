@@ -22,7 +22,7 @@ import {
   inputValue
 } from '../../services/utils/test-helpers';
 import { dateToString, stringToDate } from '../../services/utils/transformers';
-import isDate from 'date-fns/isDate';
+import { isDate } from 'date-fns';
 
 describe('DateRangePickerComponent', () => {
   let fixture: ComponentFixture<DateRangePickerComponent>;

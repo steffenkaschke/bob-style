@@ -21,7 +21,7 @@ import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { IconsModule } from '../../icons/icons.module';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { dateToString } from '../../services/utils/transformers';
-import isDate from 'date-fns/isDate';
+import { isDate } from 'date-fns';
 
 describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
