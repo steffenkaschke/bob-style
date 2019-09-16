@@ -96,8 +96,7 @@ describe('EmployeeChainSelectComponent', () => {
       component.addChainLink();
       fixture.detectChanges();
       const arrow = fixture.debugElement.queryAll(By.css('.then'));
-      expect(arrow[0].nativeElement.offsetParent).not.toBeNull();
-      expect(arrow[1].nativeElement.offsetParent).toBeNull();
+      expect(arrow.length).toEqual(1);
     });
   });
 });
