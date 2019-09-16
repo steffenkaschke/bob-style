@@ -1,8 +1,4 @@
-import {
-  ComponentFixture,
-  async,
-  TestBed
-} from '@angular/core/testing';
+import { ComponentFixture, async, TestBed } from '@angular/core/testing';
 import {
   NO_ERRORS_SCHEMA,
   Component,
@@ -155,12 +151,12 @@ describe('CollapsibleSectionComponent', () => {
     });
 
     it('should expand panel with expand property and emit Opened event', () => {
+      collapsibleComponent.expanded = true;
       collapsibleComponent.ngOnChanges(
         simpleChange({
           expanded: true
         })
       );
-      fixture.detectChanges();
       collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
 
       expect(collapsiblePanel).toBeTruthy();
@@ -171,6 +167,7 @@ describe('CollapsibleSectionComponent', () => {
 
     it('should expand panel on header click and emit Opened event', () => {
       emitNativeEvent(collapsibleHeader, 'click');
+      fixture.detectChanges();
       collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
 
       expect(collapsiblePanel).toBeTruthy();
@@ -181,10 +178,13 @@ describe('CollapsibleSectionComponent', () => {
 
     it('should collapse panel on header click and emit Closed event', () => {
       emitNativeEvent(collapsibleHeader, 'click');
+      fixture.detectChanges();
 
       expect(collapsibleSection.classList).toContain('bcp-section-expanded');
 
       emitNativeEvent(collapsibleHeader, 'click');
+      fixture.detectChanges();
+
       expect(collapsibleSection.classList).not.toContain(
         'bcp-section-expanded'
       );
@@ -194,18 +194,18 @@ describe('CollapsibleSectionComponent', () => {
     });
 
     it('should not show divider when divided = false', () => {
+      expect(collapsibleSection.classList).not.toContain(
+        'bcp-section-not-divided'
+      );
       collapsibleComponent.divided = false;
       fixture.detectChanges();
-      emitNativeEvent(collapsibleHeader, 'click');
-      collapsibleHeader = elementFromFixture(fixture, '.bcp-header');
-      collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
-
-      expect(collapsibleHeader.classList).toContain('no-shadow');
-      expect(collapsiblePanel.classList).toContain('no-top-border');
+      expect(collapsibleSection.classList).toContain('bcp-section-not-divided');
     });
 
     it('should put CSS variable with content height on component host element', () => {
       emitNativeEvent(collapsibleHeader, 'click');
+      fixture.detectChanges();
+
       expect(collapsibleHost.getAttribute('style')).toContain(
         '--panel-height:300px;'
       );
@@ -213,12 +213,13 @@ describe('CollapsibleSectionComponent', () => {
 
     it('should disable the component with disabled property', () => {
       expect(collapsibleSection.getAttribute('aria-disabled')).toBeFalsy();
+      collapsibleComponent.disabled = true;
       collapsibleComponent.ngOnChanges(
         simpleChange({
           disabled: true
         })
       );
-      fixture.detectChanges();
+
       expect(collapsibleSection.getAttribute('aria-disabled')).toEqual('true');
     });
   });
@@ -228,7 +229,6 @@ describe('CollapsibleSectionComponent', () => {
 
     beforeEach(() => {
       collapsibleComponent.collapsible = true;
-
       collapsibleComponent.ngOnChanges(
         simpleChange({
           options: {
@@ -236,7 +236,7 @@ describe('CollapsibleSectionComponent', () => {
           }
         })
       );
-      fixture.detectChanges();
+
       headerContentElement = elementFromFixture(fixture, '.bcp-header-content');
     });
 
