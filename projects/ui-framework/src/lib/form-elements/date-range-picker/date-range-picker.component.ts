@@ -39,10 +39,9 @@ const valueDef: DateRangePickerValueLocal = {
   endDate: undefined
 };
 
-export function CLOSE_SCROLL_STRATEGY_FACTORY(
-  overlay: Overlay
-): () => ScrollStrategy {
-  return () => overlay.scrollStrategies.close();
+export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
+  const strategy = () => overlay.scrollStrategies.close();
+  return strategy;
 }
 
 @Component({
