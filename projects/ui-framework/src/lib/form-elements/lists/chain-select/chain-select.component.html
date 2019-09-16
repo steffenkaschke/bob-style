@@ -1,4 +1,4 @@
-<ng-container *ngFor="let chainLink of chainLinkList; index as i;">
+<ng-container *ngFor="let chainLink of chainLinkList; index as i; last as last">
 
   <div class="chain-link-row">
 
@@ -15,7 +15,7 @@
 
   </div>
 
-  <div class="then" [ngClass]="{ 'then--static': staticMode }">
+  <div class="then" *ngIf="!(staticMode && last)">
     <b-icon [icon]="icons.arrow_right"></b-icon>
   </div>
 
