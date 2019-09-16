@@ -68,6 +68,7 @@ const storyTemplate = `
       [collapsible]="collapsible"
       [expanded]="expanded"
       [disabled]="disabled"
+      [divided]="divided"
       (closed)="onPanelClosed($event)"
       (opened)="onPanelOpened($event)">
    </b-collapsible-section-example-2>

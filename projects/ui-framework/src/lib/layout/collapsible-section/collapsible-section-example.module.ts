@@ -140,7 +140,7 @@ import { InputModule } from '../../form-elements/input/input.module';
                   *ngFor="let avatar of outHoliday.avatars"
                   [imageSource]="avatar.imageSource"
                   [attr.data-tooltip]="avatar.tooltip"
-                  data-tooltip-prewrap="true"
+                  data-tooltip-wrap="pre"
                 ></b-avatar>
               </div>
             </b-label-value>
@@ -153,7 +153,7 @@ import { InputModule } from '../../form-elements/input/input.module';
                   *ngFor="let avatar of outWork.avatars"
                   [imageSource]="avatar.imageSource"
                   [attr.data-tooltip]="avatar.tooltip"
-                  data-tooltip-prewrap="true"
+                  data-tooltip-wrap="pre"
                 ></b-avatar>
               </div>
             </b-label-value>
@@ -169,7 +169,7 @@ import { InputModule } from '../../form-elements/input/input.module';
                   *ngFor="let avatar of outMilitary.avatars"
                   [imageSource]="avatar.imageSource"
                   [attr.data-tooltip]="avatar.tooltip"
-                  data-tooltip-prewrap="true"
+                  data-tooltip-wrap="pre"
                 ></b-avatar>
               </div>
             </b-label-value>
@@ -302,6 +302,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
       [collapsible]="collapsible"
       [expanded]="expanded"
       [disabled]="disabled"
+      [divided]="divided"
       (opened)="onOpened()"
       (closed)="onClosed()"
       [options]="options"
@@ -338,6 +339,7 @@ export class CollapsibleSectionExample2Component implements OnChanges {
   @Input() collapsible = true;
   @Input() expanded = false;
   @Input() disabled = false;
+  @Input() divided = true;
 
   @Input() title = mockText(randomNumber(2, 5));
   @Input() titleColor = '#5555ff';

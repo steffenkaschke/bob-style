@@ -15,7 +15,10 @@ import {
   OnDestroy
 } from '@angular/core';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
-import { simpleUID } from '../../services/utils/functional-utils';
+import {
+  simpleUID,
+  notFirstChanges
+} from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
@@ -47,6 +50,7 @@ export class CollapsibleSectionComponent
   public hasHeaderContent = true;
   public hasPanelContent = true;
   public contentLoaded = false;
+  public startsExpanded = false;
   private contentHeight = 0;
   private resizeSubscription: Subscription;
 
@@ -75,13 +79,16 @@ export class CollapsibleSectionComponent
         ...changes.options.currentValue
       };
     }
-    if (changes.expanded && !changes.expanded.firstChange) {
-      this.zone.runOutsideAngular(() => {
+
+    if (changes.expanded) {
+      if (!changes.expanded.firstChange) {
         this.togglePanel(changes.expanded.currentValue);
-      });
+      } else {
+        this.startsExpanded = changes.expanded.currentValue;
+      }
     }
-    if (changes.disabled && !changes.disabled.firstChange) {
-      this.disabled = changes.disabled.currentValue;
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
     }
   }
@@ -99,6 +106,9 @@ export class CollapsibleSectionComponent
 
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
+      if (this.expanded) {
+        this.setCssVars(true);
+      }
       setTimeout(() => {
         this.hasHeaderContent = !this.DOM.isEmpty(
           this.headerContent.nativeElement
@@ -118,33 +128,31 @@ export class CollapsibleSectionComponent
 
   togglePanel(state = null): void {
     if (this.collapsible && !this.disabled) {
+      this.startsExpanded = false;
+
       if (!this.contentLoaded) {
         this.contentLoaded = true;
         this.cd.detectChanges();
       }
-      if (!this.contentHeight) {
-        this.setCssVars();
 
-        // to allow for transcluded component(s) to render
-        setTimeout(() => {
-          this.setCssVars();
-        }, 3000);
+      if (!this.contentHeight) {
+        this.zone.runOutsideAngular(() => {
+          this.setCssVars(true);
+        });
       }
+
       this.expanded = typeof state === 'boolean' ? state : !this.expanded;
-      this.cd.detectChanges();
 
       if (
         this.opened.observers.length > 0 ||
         this.closed.observers.length > 0
       ) {
-        this.zone.run(() => {
-          this.emitEvent();
-        });
+        this.emitEvent();
       }
     }
   }
 
-  setCssVars(): void {
+  setCssVars(repeat = false): void {
     if (this.panelContent) {
       this.contentHeight =
         this.panelContent.nativeElement.scrollHeight > 100
@@ -154,6 +162,13 @@ export class CollapsibleSectionComponent
       this.DOM.setCssProps(this.host.nativeElement, {
         '--panel-height': this.contentHeight + 'px'
       });
+    }
+
+    if (repeat) {
+      // to allow for transcluded component(s) to render
+      setTimeout(() => {
+        this.setCssVars();
+      }, 3000);
     }
   }
 

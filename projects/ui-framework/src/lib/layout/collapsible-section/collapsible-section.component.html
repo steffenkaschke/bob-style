@@ -1,7 +1,11 @@
 <section class="bcp-section"
          [attr.aria-disabled]="disabled || null"
-         [ngClass]="{'bcp-section-collapsible': collapsible ,
-        'bcp-section-expanded': collapsible && expanded}">
+         [ngClass]="{
+          'bcp-section-collapsible': collapsible,
+          'bcp-section-not-collapsible': !collapsible,
+          'bcp-section-expanded': collapsible && expanded,
+          'bcp-section-not-divided': !divided
+         }">
 
   <header class="
          bcp-header"
@@ -9,11 +13,10 @@
           [attr.aria-controls]="(collapsible && panelID) || null"
           [attr.aria-expanded]="(collapsible && expanded) || null"
           [ngClass]="{
-          'b-icon-chevron-right': collapsible && !expanded,
-          'b-icon-chevron-down': collapsible && expanded,
-          'no-shadow': collapsible && expanded && !divided
+            'b-icon-chevron-right': collapsible && !expanded,
+            'b-icon-chevron-down': collapsible && expanded
           }"
-          (click.outside-zone)="togglePanel()">
+          (click)="togglePanel()">
 
     <div *ngIf="title"
          class="bcp-title-wrap"
@@ -30,7 +33,7 @@
     <div *ngIf="hasHeaderContent"
          #headerContent
          class="bcp-header-content"
-         [ngClass]="{'bcp-header-content-clickable': !options.headerTranscludeStopPropagation}"
+         [ngClass]="{'bcp-header-content-clickable': collapsible && !options.headerTranscludeStopPropagation}"
          (click.outside-zone)="options.headerTranscludeStopPropagation && $event.stopPropagation()">
       <ng-content select="[header]"></ng-content>
     </div>
@@ -38,11 +41,11 @@
   </header>
 
   <div class="bcp-panel"
-       *ngIf="!collapsible || (collapsible && contentLoaded)"
+       *ngIf="!collapsible || expanded || contentLoaded"
        [ngClass]="{
          'bcp-panel-collapsed': collapsible && !expanded,
          'bcp-panel-expanded': collapsible && expanded,
-         'no-top-border': !divided
+         'bcp-panel-starts-expanded': startsExpanded
        }"
        [attr.id]="panelID"
        [attr.aria-labelledby]="panelID+'-header'">
