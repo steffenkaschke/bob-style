@@ -109,6 +109,11 @@ b-icon,
         padding-right: times8(2);
       }
 
+      .mat-calendar-table-header-divider::after {
+        left: times8(-2);
+        right: times8(-2);
+      }
+
       .mat-calendar-table-header .mat-calendar-table-header-divider {
         padding-bottom: times8(3);
       }
