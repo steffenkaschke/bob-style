@@ -10,9 +10,10 @@ import { SingleSelectPanelModule } from './single-select-panel.module';
 import { ButtonType } from '../../../buttons/buttons.enum';
 import { action } from '@storybook/addon-actions';
 
-const inputStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
-  withKnobs
-);
+const inputStories = storiesOf(
+  ComponentGroupType.Lists,
+  module
+).addDecorator(withKnobs);
 
 const componentTemplate1 = `
 <b-single-select-panel [chevronButtonText]="chevronButtonText"
@@ -24,8 +25,8 @@ const componentTemplate1 = `
 const componentTemplate2 = `
 <b-single-select-panel [options]="options"
                        (selectChange)="selectChange($event)">
-  <b-square-button type="${ButtonType.secondary}"
-                   icon="${Icons.table}">
+  <b-square-button type="${ ButtonType.secondary }"
+                   icon="${ Icons.table }">
   </b-square-button>
 </b-single-select-panel>
 `;
@@ -33,9 +34,9 @@ const componentTemplate2 = `
 const template = `
 <b-story-book-layout [title]="'Single select panel'">
   <div style="max-width: 400px;">
-  ${componentTemplate1}
+  ${ componentTemplate1 }
   &nbsp;&nbsp;
-  ${componentTemplate2}
+  ${ componentTemplate2 }
   </div>
 </b-story-book-layout>
 `;
@@ -54,11 +55,11 @@ const note = `
   selectChange | ListChange | output on select change
 
   ~~~
-  ${componentTemplate1}
+  ${ componentTemplate1 }
   ~~~
 
   ~~~
-  ${componentTemplate2}
+  ${ componentTemplate2 }
   ~~~
 `;
 
@@ -73,7 +74,7 @@ const categories = [
   'Financial',
   'Payroll',
   'Employment',
-  'Equity'
+  'Equity',
 ];
 
 const optionsMock: SelectGroupOption[] = [
@@ -83,11 +84,12 @@ const optionsMock: SelectGroupOption[] = [
       return {
         value: category,
         id: category,
-        selected: false
+        selected: false,
       };
-    })
+    }),
   }
 ];
+
 optionsMock[0].options[1].selected = true;
 
 inputStories.add(
@@ -98,14 +100,14 @@ inputStories.add(
       props: {
         chevronButtonText: text('chevronButtonText', 'Jump to section'),
         options: object('options', optionsMock),
-        selectChange: action('Single select panel change')
+        selectChange: action('Single select panel change'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           ButtonsModule,
-          SingleSelectPanelModule
+          SingleSelectPanelModule,
         ]
       }
     };
