@@ -140,7 +140,7 @@ import { InputModule } from '../../form-elements/input/input.module';
                   *ngFor="let avatar of outHoliday.avatars"
                   [imageSource]="avatar.imageSource"
                   [attr.data-tooltip]="avatar.tooltip"
-                  data-tooltip-prewrap="true"
+                  data-tooltip-wrap="pre"
                 ></b-avatar>
               </div>
             </b-label-value>
@@ -153,7 +153,7 @@ import { InputModule } from '../../form-elements/input/input.module';
                   *ngFor="let avatar of outWork.avatars"
                   [imageSource]="avatar.imageSource"
                   [attr.data-tooltip]="avatar.tooltip"
-                  data-tooltip-prewrap="true"
+                  data-tooltip-wrap="pre"
                 ></b-avatar>
               </div>
             </b-label-value>
@@ -169,7 +169,7 @@ import { InputModule } from '../../form-elements/input/input.module';
                   *ngFor="let avatar of outMilitary.avatars"
                   [imageSource]="avatar.imageSource"
                   [attr.data-tooltip]="avatar.tooltip"
-                  data-tooltip-prewrap="true"
+                  data-tooltip-wrap="pre"
                 ></b-avatar>
               </div>
             </b-label-value>
