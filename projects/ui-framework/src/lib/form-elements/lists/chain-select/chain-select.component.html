@@ -1,4 +1,4 @@
-<ng-container *ngFor="let chainLink of chainLinkList; index as i;">
+<ng-container *ngFor="let chainLink of chainLinkList; index as i; last as last">
 
   <div class="chain-link-row">
 
@@ -6,7 +6,7 @@
     </ng-container>
 
     <b-square-button class="delete-button"
-                     *ngIf="chainLinkList.length > 1"
+                     *ngIf="chainLinkList.length > 1 && !staticMode"
                      [type]="buttonType.tertiary"
                      [size]="buttonSize.large"
                      [icon]="icons.delete"
@@ -15,13 +15,14 @@
 
   </div>
 
-  <div class="then">
+  <div class="then" *ngIf="!(staticMode && last)">
     <b-icon [icon]="icons.arrow_right"></b-icon>
   </div>
 
 </ng-container>
 
 <b-button class="add-chain-link"
+          *ngIf="!staticMode"
           [size]="buttonSize.large"
           [type]="buttonType.secondary"
           [icon]="icons.person_add"

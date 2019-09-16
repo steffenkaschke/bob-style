@@ -74,4 +74,29 @@ describe('EmployeeChainSelectComponent', () => {
       expect(component.selectChange.emit).toHaveBeenCalledWith({ event: {}, index: 0 });
     });
   });
+
+  describe('static mode', () => {
+    it('Should hide add button', () => {
+      component.staticMode = true;
+      fixture.detectChanges();
+      const addButton = fixture.debugElement.query(By.css('.add-chain-link'));
+      expect(addButton).toBeNull();
+    });
+
+    it('Should hide delete button', () => {
+      component.staticMode = true;
+      component.addChainLink();
+      fixture.detectChanges();
+      const deleteButton = fixture.debugElement.queryAll(By.css('.delete-button'));
+      expect(deleteButton.length).toEqual(0);
+    });
+
+    it('Should hide last arrow', () => {
+      component.staticMode = true;
+      component.addChainLink();
+      fixture.detectChanges();
+      const arrow = fixture.debugElement.queryAll(By.css('.then'));
+      expect(arrow.length).toEqual(1);
+    });
+  });
 });
