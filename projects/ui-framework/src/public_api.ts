@@ -7,8 +7,8 @@
 * Global
 */
 
-export { Keys, NativeEvents } from './lib/enums';
-export { GenericObject } from './lib/types';
+export * from './lib/enums';
+export * from './lib/types';
 
 /*
  * Typography
@@ -512,9 +512,11 @@ export {
     './lib/eye-candy/text-colored-links/text-colored-links/text-colored-links.component';
 export { ColorTextItem } from './lib/eye-candy/text-colored-links/text-colored-links.interface';
 // Mocks
-export { mockText, mockDate, mockHobbies, mockJobs, mockNames, mockAvatar } from './lib/mock.const';
+export * from './lib/mock.const';
 // Misc helper methods
 export * from './lib/services/utils/functional-utils';
+// Test helpers
+export * from './lib/services/utils/test-helpers';
 
 /*
 * Animation
