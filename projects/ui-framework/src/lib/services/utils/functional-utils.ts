@@ -58,6 +58,15 @@ export const isEmptyObject = (val: any): boolean => !isNotEmptyObject(val);
 export const isNullOrUndefined = (val: any): boolean =>
   val === undefined || val === null;
 
+export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
+  smth === null ||
+  smth === undefined ||
+  smth === false ||
+  (fuzzy && smth === '') ||
+  (fuzzy && smth === 0) ||
+  (isArray(smth) && smth.length === 0) ||
+  (isObject(smth) && Object.keys(smth).length === 0);
+
 export const isRenderedComponent = (obj: any): boolean =>
   obj && !!obj.component;
 

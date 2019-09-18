@@ -7,8 +7,6 @@
 * Global
 */
 
-import {LinkifyPipe} from './lib/services/filters/linkify.pipe';
-
 export { Keys, NativeEvents } from './lib/enums';
 export { GenericObject } from './lib/types';
 
@@ -515,7 +513,8 @@ export {
 export { ColorTextItem } from './lib/eye-candy/text-colored-links/text-colored-links.interface';
 // Mocks
 export { mockText, mockDate, mockHobbies, mockJobs, mockNames, mockAvatar } from './lib/mock.const';
-
+// Misc helper methods
+export * from './lib/services/utils/functional-utils';
 
 /*
 * Animation
