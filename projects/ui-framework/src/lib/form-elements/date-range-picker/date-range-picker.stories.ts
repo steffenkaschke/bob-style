@@ -34,6 +34,7 @@ const template = `
               [errorMessage]="errorMessage"
               [disabled]="disabled"
               [required]="required"
+              [panelClass]="panelClass"
               (dateChange)="dateChange($event)">
 </b-date-range-picker>
 `;
@@ -70,6 +71,7 @@ const note = `
   [hintMessage] | string | hint text | none
   [warnMessage] | string | warning text | none
   [errorMessage] | string | error text | none
+  [panelClass] | string | class to add to datepicker panel | none
   (dateChange) | EventEmitter | Emited on date change | none
 
   ~~~
@@ -109,6 +111,7 @@ datepickerStories.add(
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
+        panelClass: text('panelClass', ''),
         dateChange: action('Date Changed')
       },
       moduleMetadata: {
