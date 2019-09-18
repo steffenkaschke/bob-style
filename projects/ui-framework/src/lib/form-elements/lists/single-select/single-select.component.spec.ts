@@ -1,4 +1,12 @@
-import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  inject,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SingleSelectComponent } from './single-select.component';
@@ -23,7 +31,6 @@ describe('SingleSelectComponent', () => {
   let platform: Platform;
 
   beforeEach(async(() => {
-
     optionsMock = [
       {
         groupName: 'Basic Info',
@@ -43,9 +50,7 @@ describe('SingleSelectComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [SingleSelectComponent],
-      providers: [
-        PanelPositionService
-      ],
+      providers: [PanelPositionService],
       imports: [
         SingleListModule,
         OverlayModule,
@@ -136,7 +141,9 @@ describe('SingleSelectComponent', () => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
-      const clearSelection = overlayContainerElement.querySelector('.clear-selection');
+      const clearSelection = overlayContainerElement.querySelector(
+        '.clear-selection'
+      );
       expect(clearSelection).toBeTruthy();
     }));
     it('should clear the selection', fakeAsync(() => {
@@ -181,7 +188,7 @@ describe('SingleSelectComponent', () => {
     beforeEach(async(() => {
       const testOptionsMock = cloneDeep(optionsMock);
       testOptionsMock[1].options[1].value =
-        'a very long text that has a tooltip';
+        'a very very very long text that should have a tooltip';
       fixture = TestBed.createComponent(SingleSelectComponent);
       component = fixture.componentInstance;
       spyOn(component.selectChange, 'emit');
@@ -215,7 +222,7 @@ describe('SingleSelectComponent', () => {
         By.css('.btt.tooltip-enabled')
       );
       expect(tooltipEl.nativeElement.innerText).toEqual(
-        'a very long text that has a tooltip'
+        'a very very very long text that should have a tooltip'
       );
       flush();
     }));
