@@ -87,7 +87,8 @@
                 [startView]="type === types.month ? 'year' : 'month'"
                 [disabled]="disabled"
                 [touchUi]="isMobile"
-                [panelClass]="'b-datepicker-panel start-date-picker type-' + type"
+                [panelClass]="'b-datepicker-panel start-date-picker type-' + type + (panelClass ? ' ' + panelClass :
+                '')"
                 [dateClass]="getDateClass"
                 (opened)="onPickerOpen(0)"
                 (closed)="onPickerClose(0)"
@@ -97,7 +98,7 @@
                 [startView]="type === types.month ? 'year' : 'month'"
                 [disabled]="disabled"
                 [touchUi]="isMobile"
-                [panelClass]="'b-datepicker-panel end-date-picker type-' + type"
+                [panelClass]="'b-datepicker-panel end-date-picker type-' + type + (panelClass ? ' ' + panelClass : '')"
                 [dateClass]="getDateClass"
                 (opened)="onPickerOpen(1)"
                 (closed)="onPickerClose(1)"

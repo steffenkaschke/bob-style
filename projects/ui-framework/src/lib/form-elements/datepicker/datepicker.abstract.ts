@@ -62,6 +62,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   @Input() allowKeyInput = true;
   @Input() dateFormat: string;
+  @Input() panelClass: string;
 
   @Output(FormEvents.dateChange) changed: EventEmitter<
     InputEvent
