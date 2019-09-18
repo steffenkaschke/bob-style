@@ -170,6 +170,16 @@ export const joinArrays = (arr1: any[], ...rest): any[] =>
 export const makeArray = (length: number, fill: any = undefined): any[] =>
   Array(length).fill(fill);
 
+export const arrayOfNumbers = (
+  length: number,
+  start: 0,
+  asStrings: false
+): (number | string)[] =>
+  Array.from(
+    Array(length),
+    (e, i) => i + start + ((asStrings ? '' : 0) as any)
+  );
+
 export const padWith0 = (number: string | number, digits = 2): string =>
   String(number).padStart(digits, '0');
 
