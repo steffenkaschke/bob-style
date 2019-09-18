@@ -1,10 +1,9 @@
 @mixin listOption {
-  @include b-body($color: $grey-700, $addCssVars: false);
+  @include b-body($color: $grey-700, $addCssVars: false, $lineHeight: 1.2);
   padding: 0 $input-padding;
   box-sizing: border-box;
   position: relative;
   height: $wrap-height;
-  line-height: 1.2;
 
   &.mat-selected {
     background-color: initial;
@@ -50,13 +49,16 @@
         height: 100%;
         z-index: 1;
       }
+
       .chevron {
-        @include chevron-down($grey-700);
-        margin-right: 8px;
+        &:before {
+          display: flex;
+          justify-content: center;
+          width: 12px;
+          margin-right: 5px;
+        }
       }
-      &.collapsed .chevron {
-        @include chevron-right($grey-700);
-      }
+
       &:hover,
       &.focus {
         background-color: $grey-100;
