@@ -56,6 +56,7 @@ export enum Icons {
   employee_ref = 'b-icon-employee-ref',
   docs_empty = 'b-icon-doc-no',
   baseline_info_icon = 'b-icon-info',
+  info_outline = 'b-icon-info-outline',
   doc_icon = 'b-icon-doc-outline',
   arrow_forward = 'b-icon-arrow-right-alt',
   success = 'b-icon-success',
@@ -67,6 +68,7 @@ export enum Icons {
   linkedin = 'b-icon-linkedin',
   twitter = 'b-icon-twitter',
   download = 'b-icon-file-download',
+  upload = 'b-icon-file-upload',
   add_folder = 'b-icon-folder-add',
   add_photo_camera_icon = 'b-icon-photo-add',
   folder_shared = 'b-icon-folder-shared',
@@ -119,5 +121,6 @@ export enum Icons {
   lock = 'b-icon-lock',
   print = 'b-icon-print',
   attachment = 'b-icon-attachment',
-  infinite = 'b-icon-infinite'
+  infinite = 'b-icon-infinite',
+  megaphone = 'b-icon-megaphone'
 }
