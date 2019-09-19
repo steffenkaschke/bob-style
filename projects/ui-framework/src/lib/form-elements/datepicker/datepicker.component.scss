@@ -19,11 +19,38 @@ b-icon,
   }
 
   .b-datepicker-panel {
-    font-family: var(--body-font-family);
+    &,
+    & .mat-button,
+    & .mat-datepicker-content {
+      font-family: var(--body-font-family);
+      color: $body-text-color;
+    }
+
+    table,
+    thead,
+    tbody {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    tr {
+      display: flex;
+    }
+
+    td,
+    th {
+      display: block;
+    }
+
+    th {
+      width: (100% / 7);
+    }
   }
 
   .mat-calendar-table-header .mat-calendar-table-header-divider {
     padding-bottom: times8(2);
+    width: 100%;
   }
 
   .mat-datepicker-content {
@@ -61,6 +88,7 @@ b-icon,
     .mat-datepicker-content {
       pointer-events: auto;
       width: 100%;
+      min-width: 270px;
       max-width: 350px;
       display: flex;
       justify-content: center;
