@@ -18,6 +18,10 @@ b-icon,
     @include text-hide;
   }
 
+  .b-datepicker-panel {
+    font-family: var(--body-font-family);
+  }
+
   .mat-calendar-table-header .mat-calendar-table-header-divider {
     padding-bottom: times8(2);
   }
@@ -34,6 +38,8 @@ b-icon,
   }
 
   .mat-calendar-body-cell-content {
+    color: $color-body;
+
     &.mat-calendar-body-selected {
       background-color: var(--primary-500);
       color: white;
