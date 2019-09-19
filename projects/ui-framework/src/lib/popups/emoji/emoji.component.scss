@@ -1,5 +1,4 @@
 @import '../../style/common-imports';
-@import '../overlay';
 
 $emoji-padding: times8(2);
 $icon-width: 30px;
@@ -82,8 +81,8 @@ li {
 
 .icon {
   font-family: 'Segoe UI Emoji', 'Segoe UI Symbol', 'Segoe UI',
-  'Apple Color Emoji', 'Twemoji Mozilla', 'Noto Color Emoji', 'EmojiOne Color',
-  'Android Emoji';
+    'Apple Color Emoji', 'Twemoji Mozilla', 'Noto Color Emoji', 'EmojiOne Color',
+    'Android Emoji';
   user-select: none;
   position: relative;
   z-index: 3;
@@ -122,7 +121,8 @@ li {
   transition: transform 0.1s;
   will-change: transform;
   user-select: none;
-  &:hover, &.active {
+  &:hover,
+  &.active {
     transform: scale(1);
   }
 }

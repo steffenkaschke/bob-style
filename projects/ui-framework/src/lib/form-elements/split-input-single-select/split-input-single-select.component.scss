@@ -1,7 +1,6 @@
-$selectFieldWidth: 140px;
-
 @import '../../style/common-imports';
-@import '../form-element.mixin';
+
+$selectFieldWidth: 140px;
 
 :host {
   display: flex;
