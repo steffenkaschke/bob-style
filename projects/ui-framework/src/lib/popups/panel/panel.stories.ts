@@ -64,13 +64,13 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  panelClass | string | panel class | none
-  size | PanelSize | panel size | "medium"
-  defaultPosVer | PanelDefaultPosVer | default vertical position | PanelDefaultPosVer.above
-  showBackdrop | boolean | show backdrop | true
-  openOnHover | boolean | trigger panel open on hover (delay 300ms) | false
-  closed | Function | Handler for panel Closed event | none
-  opened | Function | Handler for panel Opened event | none
+  [panelClass] | string | panel class | none
+  [size] | PanelSize | panel size | "medium"
+  [defaultPosVer] | PanelDefaultPosVer | default vertical position | PanelDefaultPosVer.above
+  [showBackdrop] | boolean | show backdrop | true
+  [openOnHover] | boolean | trigger panel open on hover (delay 300ms) | false
+  (opened) | EventEmitter&lt;OverlayRef&gt; | Emits panel Opened event | none
+  (closed) | EventEmitter&lt;void&gt; | Emits panel Closed event | none
 
   ~~~
   ${template}
@@ -91,7 +91,7 @@ buttonStories.add(
       showBackdrop: boolean('showBackdrop', true),
       openOnHover: boolean('openOnHover', false),
       onPanelDestroyed: action('Panel destroyed'),
-      onPanelOpened: action('Panel opened'),
+      onPanelOpened: action('Panel opened')
     },
     moduleMetadata: {
       imports: [

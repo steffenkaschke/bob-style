@@ -47,10 +47,10 @@ export class PanelComponent implements OnInit, OnDestroy {
   @Input() openOnHover = false;
 
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
-  @Output() opened: EventEmitter<void> = new EventEmitter<void>();
+  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
 
   private panelConfig: OverlayConfig;
-  private overlayRef: OverlayRef;
+  public overlayRef: OverlayRef;
   private templatePortal: TemplatePortal;
   private backdropClickSubscriber: Subscription;
   private positionChangeSubscriber: Subscription;
@@ -118,7 +118,7 @@ export class PanelComponent implements OnInit, OnDestroy {
     this.overlayRef.attach(this.templatePortal);
     this.overlayRef.updatePosition();
 
-    this.opened.emit();
+    this.opened.emit(this.overlayRef);
 
     this.backdropClickSubscriber = this.overlayRef
       .backdropClick()
