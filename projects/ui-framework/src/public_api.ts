@@ -9,6 +9,7 @@
 
 export * from './lib/enums';
 export * from './lib/types';
+export { serverDateFormat, mobileBreakpoint } from './lib/consts';
 
 /*
  * Typography

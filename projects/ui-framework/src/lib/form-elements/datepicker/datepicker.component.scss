@@ -46,6 +46,26 @@ b-icon,
     th {
       width: (100% / 7);
     }
+
+    .mat-calendar-controls {
+      justify-content: space-between;
+
+      .mat-calendar-spacer {
+        display: none;
+      }
+
+      .mat-calendar-previous-button {
+        order: 1;
+      }
+
+      .mat-calendar-period-button {
+        order: 2;
+      }
+
+      .mat-calendar-next-button {
+        order: 3;
+      }
+    }
   }
 
   .mat-calendar-table-header .mat-calendar-table-header-divider {
