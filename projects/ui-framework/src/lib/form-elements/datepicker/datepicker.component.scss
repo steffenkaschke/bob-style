@@ -9,10 +9,6 @@ b-icon {
   outline: 0;
 }
 
-.bfe-wrap {
-  position: relative;
-}
-
 .clear-input {
   @include position(50% 0 null null);
   margin-top: -10px;
@@ -30,6 +26,8 @@ b-icon {
 
   .bfe-wrap:hover,
   .bfe-wrap.focused {
+    position: relative;
+
     .bfe-suffix.clear-input {
       display: block;
       opacity: 1;
