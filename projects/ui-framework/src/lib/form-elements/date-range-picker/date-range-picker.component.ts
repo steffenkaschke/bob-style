@@ -25,9 +25,9 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { DateRangePickerValue } from './date-range-picker.interface';
 import { MAT_DATEPICKER_SCROLL_STRATEGY } from '@angular/material';
-import { Overlay, ScrollStrategy } from '@angular/cdk/overlay';
+import { Overlay } from '@angular/cdk/overlay';
 import { DatepickerType } from '../datepicker/datepicker.enum';
-import { parse } from 'date-fns';
+import { parse, startOfMonth, lastDayOfMonth } from 'date-fns';
 
 interface DateRangePickerValueLocal {
   startDate: Date | string;
@@ -105,9 +105,19 @@ export class DateRangePickerComponent extends BaseDatepickerElement
 
     this.outputTransformers = [
       (value: DateRangePickerValueLocal): DateRangePickerValue => {
+        const from =
+          this.type === DatepickerType.month
+            ? dateToString(startOfMonth(value.startDate), serverDateFormat)
+            : dateToString(value.startDate, serverDateFormat);
+
+        const to =
+          this.type === DatepickerType.month
+            ? dateToString(lastDayOfMonth(value.endDate), serverDateFormat)
+            : dateToString(value.endDate, serverDateFormat);
+
         return {
-          from: dateToString(value.startDate, serverDateFormat),
-          to: dateToString(value.endDate, serverDateFormat)
+          from,
+          to
         };
       }
     ];
@@ -148,10 +158,21 @@ export class DateRangePickerComponent extends BaseDatepickerElement
 
   public getDateClass = (date: Date): string[] => {
     if (date) {
-      const d = date.getTime();
-      const ds =
-        this.value.startDate && (this.value.startDate as Date).getTime();
-      const de = this.value.endDate && (this.value.endDate as Date).getTime();
+      let d: number, ds: number, de: number;
+
+      if (this.type === DatepickerType.month) {
+        d = startOfMonth(date).getTime();
+        ds =
+          this.value.startDate &&
+          startOfMonth(this.value.startDate as Date).getTime();
+        de =
+          this.value.endDate &&
+          startOfMonth(this.value.endDate as Date).getTime();
+      } else {
+        d = date.getTime();
+        ds = this.value.startDate && (this.value.startDate as Date).getTime();
+        de = this.value.endDate && (this.value.endDate as Date).getTime();
+      }
 
       return ds && de && d > ds && d < de
         ? ['in-range']
@@ -167,6 +188,7 @@ export class DateRangePickerComponent extends BaseDatepickerElement
           : ['in-range', 'last-in-range', 'only-in-range']
         : [];
     }
+    return [];
   }
 
   private markPickerCells(): void {
