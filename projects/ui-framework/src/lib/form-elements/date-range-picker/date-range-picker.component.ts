@@ -25,9 +25,9 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { DateRangePickerValue } from './date-range-picker.interface';
 import { MAT_DATEPICKER_SCROLL_STRATEGY } from '@angular/material';
-import { Overlay, ScrollStrategy } from '@angular/cdk/overlay';
+import { Overlay } from '@angular/cdk/overlay';
 import { DatepickerType } from '../datepicker/datepicker.enum';
-import { parse } from 'date-fns';
+import { parse, startOfMonth } from 'date-fns';
 
 interface DateRangePickerValueLocal {
   startDate: Date | string;
@@ -148,10 +148,21 @@ export class DateRangePickerComponent extends BaseDatepickerElement
 
   public getDateClass = (date: Date): string[] => {
     if (date) {
-      const d = date.getTime();
-      const ds =
-        this.value.startDate && (this.value.startDate as Date).getTime();
-      const de = this.value.endDate && (this.value.endDate as Date).getTime();
+      let d: number, ds: number, de: number;
+
+      if (this.type === DatepickerType.month) {
+        d = startOfMonth(date).getTime();
+        ds =
+          this.value.startDate &&
+          startOfMonth(this.value.startDate as Date).getTime();
+        de =
+          this.value.endDate &&
+          startOfMonth(this.value.endDate as Date).getTime();
+      } else {
+        d = date.getTime();
+        ds = this.value.startDate && (this.value.startDate as Date).getTime();
+        de = this.value.endDate && (this.value.endDate as Date).getTime();
+      }
 
       return ds && de && d > ds && d < de
         ? ['in-range']
