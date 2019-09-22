@@ -106,6 +106,10 @@ export abstract class BaseDatepickerElement extends BaseFormElement
         this.isMobile = media.matchMobile;
         this.cd.detectChanges();
       });
+
+    if (this.value) {
+      this.cd.detectChanges();
+    }
   }
 
   ngOnDestroy(): void {
@@ -299,14 +303,15 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public onInputBlur(index: number = 0): void {
+    const picker = this.getPicker(index);
     if (
       this.allowKeyInput &&
       !this.allowInputBlur &&
       !this.isMobile &&
-      this.getPicker(index).opened
+      picker.opened
     ) {
       this.getInput(index).focus();
-    } else {
+    } else if (!this.allowInputBlur || !picker.opened) {
       this.inputFocused[index] = false;
     }
     this.allowInputBlur = false;

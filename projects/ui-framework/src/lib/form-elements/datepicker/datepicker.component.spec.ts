@@ -80,7 +80,7 @@ describe('DatepickerComponent', () => {
           fixture,
           '.bfe-input'
         ) as HTMLInputElement;
-        iconElem = elementFromFixture(fixture, '.bfe-suffix .b-icon');
+
         messageElem = elementFromFixture(fixture, '[b-input-message]');
 
         spyOn(component.changed, 'emit');
@@ -111,6 +111,7 @@ describe('DatepickerComponent', () => {
 
   describe('Icon', () => {
     it('should display calendar icon', () => {
+      iconElem = elementFromFixture(fixture, '.open-picker .b-icon');
       expect(iconElem).toBeTruthy();
       expect(iconElem.classList).toContain('b-icon-calendar');
     });
@@ -184,10 +185,10 @@ describe('DatepickerComponent', () => {
         })
       );
       fixture.detectChanges();
+      iconElem = elementFromFixture(fixture, '.clear-input .b-icon');
     });
 
     it('should display clear icon, when component has value', () => {
-      expect(iconElem.classList).not.toContain('b-icon-calendar');
       expect(iconElem.classList).toContain('b-icon-circle-cancel');
     });
 
