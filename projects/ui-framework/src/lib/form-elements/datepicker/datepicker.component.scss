@@ -24,6 +24,7 @@ b-icon,
 
   .mat-datepicker-content {
     box-shadow: 0 0 10px 0 $boxShadowColor;
+    user-select: none;
   }
 
   .mat-datepicker-dialog .mat-datepicker-content-touch,
@@ -48,7 +49,6 @@ b-icon,
   // desktop
 
   .mat-datepicker-popup {
-    margin-top: 1px;
     display: flex;
     justify-content: center;
 
@@ -65,10 +65,24 @@ b-icon,
       padding: 0 times8(1) times8(1);
     }
 
+    .mat-calendar-table-header-divider::after {
+      left: times8(-2);
+      right: times8(-2);
+    }
+
+    &[style*='top'] {
+      margin-top: 1px;
+    }
+
+    &[style*='bottom'] {
+      margin-bottom: 1px;
+    }
+
     .mat-datepicker-content[style*='bottom'] {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
+
     .mat-datepicker-content[style*='top'] {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
@@ -95,6 +109,11 @@ b-icon,
         padding-right: times8(2);
       }
 
+      .mat-calendar-table-header-divider::after {
+        left: times8(-2);
+        right: times8(-2);
+      }
+
       .mat-calendar-table-header .mat-calendar-table-header-divider {
         padding-bottom: times8(3);
       }
@@ -103,5 +122,23 @@ b-icon,
 
   .mat-datepicker-content-touch .mat-calendar.b-datepicker-panel {
     max-width: 400px;
+  }
+}
+
+// Type Month
+
+::ng-deep {
+  .b-datepicker-panel.type-month {
+    .mat-calendar-period-button {
+      pointer-events: none;
+
+      .mat-calendar-arrow {
+        display: none;
+      }
+    }
+
+    mat-month-view {
+      display: none;
+    }
   }
 }

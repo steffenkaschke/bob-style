@@ -38,11 +38,13 @@
 </div>
 
 <mat-datepicker #picker
+                [startView]="type === types.month ? 'year' : 'month'"
                 [disabled]="disabled"
                 [touchUi]="isMobile"
-                [panelClass]="'b-datepicker-panel ' + id"
+                [panelClass]="'b-datepicker-panel ' + ' type-' + type + (panelClass ? ' ' + panelClass : '')"
                 (opened)="onPickerOpen()"
-                (closed)="onPickerClose()">
+                (closed)="onPickerClose()"
+                (monthSelected)="onPickerMonthSelect($event)">
 </mat-datepicker>
 
 <p b-input-message

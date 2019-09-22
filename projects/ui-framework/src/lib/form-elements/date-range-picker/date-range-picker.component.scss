@@ -61,8 +61,13 @@
     @include size(30px);
     @include position(50% null null 50%);
     transform: translate(-50%, -50%);
-    border-radius: 100%;
+    border-radius: 48%;
     border: 1px solid white;
+    z-index: 1;
+
+    @include mobile(400px) {
+      @include size(27px);
+    }
   }
 }
 
@@ -85,11 +90,33 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
       right: 0;
       font-weight: 500;
       box-shadow: none;
+    }
 
+    &:after {
+      @include pseudo;
+      @include position(5% null 5% null);
+      background-color: var(--primary-500);
+    }
+
+    &:first-child:not(.first-in-range):not(.only-in-range) {
       &:after {
-        @include pseudo;
-        @include position(-1px null -1px null);
-        background-color: inherit;
+        width: 100vw;
+        right: 100%;
+      }
+      &:last-child:after {
+        right: auto;
+        left: 100%;
+      }
+    }
+
+    &:last-child:not(.last-in-range):not(.only-in-range) {
+      &:after {
+        width: 100vw;
+        left: 100%;
+      }
+      &:first-child:after {
+        left: auto;
+        right: 100%;
       }
     }
 
@@ -108,34 +135,22 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
         border-color: white(0.5);
       }
     }
-
-    &:first-child:not(.first-in-range):not(.only-in-range) {
-      .mat-calendar-body-cell-content:after {
-        width: 100vw;
-        right: 100%;
-      }
-    }
-
-    &:last-child:not(.last-in-range):not(.only-in-range) {
-      .mat-calendar-body-cell-content:after {
-        width: 100vw;
-        left: 100%;
-      }
-    }
   }
 
   %ragged-edge-commmon {
     &:after {
+      @include pseudo;
+      @include position(-1px null -1px null);
+      background-color: var(--primary-500);
       background-image: $trngl-bg;
       background-repeat: repeat-y;
-      background-size: 100% auto;
 
-      @include desktop {
-        width: 5px;
-      }
+      width: 5px;
+      background-size: 5px auto;
 
-      @include mobile {
+      @include mobile($min: 360px) {
         width: 6px;
+        background-size: 6px auto;
       }
     }
   }
@@ -171,20 +186,27 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
 
   [aria-hidden='true']:first-child
     + tr
-    .in-range:first-child:not(.first-in-range):not(.only-in-range)
-    .mat-calendar-body-cell-content,
+    .in-range:first-child:not(.first-in-range):not(.only-in-range),
   .mat-calendar-body-label:first-child
-    + .in-range:not(.first-in-range):not(.only-in-range)
+    + .in-range:not(.first-in-range):not(.only-in-range) {
+    &:not(:last-child):after {
+      display: none;
+    }
     .mat-calendar-body-cell-content {
-    @extend %ragged-edge-commmon;
-    @extend %ragged-edge-left;
+      @extend %ragged-edge-commmon;
+      @extend %ragged-edge-left;
+    }
   }
 
   tr:last-child
-    .in-range:last-child:not(.first-in-range):not(.last-in-range):not(.only-in-range)
+    .in-range:last-child:not(.first-in-range):not(.last-in-range):not(.only-in-range) {
+    &:not(:first-child):after {
+      display: none;
+    }
     .mat-calendar-body-cell-content {
-    @extend %ragged-edge-commmon;
-    @extend %ragged-edge-right;
+      @extend %ragged-edge-commmon;
+      @extend %ragged-edge-right;
+    }
   }
 
   .only-in-range {
@@ -261,6 +283,48 @@ $trngl-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vie
           content: var(--end-date-label);
         }
       }
+    }
+  }
+}
+
+// Type Month
+
+::ng-deep {
+  .b-datepicker-panel.type-month {
+    .first-in-range .mat-calendar-body-cell-content {
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+
+      @include mobile($min: 360px) {
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+      }
+    }
+
+    .last-in-range .mat-calendar-body-cell-content {
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+
+      @include mobile($min: 360px) {
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+      }
+    }
+
+    .in-range {
+      &:hover .mat-calendar-body-cell-content,
+      &:focus .mat-calendar-body-cell-content,
+      .mat-calendar-body-today {
+        &:before {
+          width: 60%;
+          height: 80%;
+        }
+      }
+    }
+
+    .in-range:hover .mat-calendar-body-cell-content:before,
+    .in-range:focus .mat-calendar-body-cell-content:before,
+    .in-range .mat-calendar-body-today:before {
     }
   }
 }

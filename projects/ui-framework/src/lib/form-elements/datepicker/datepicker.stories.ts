@@ -13,6 +13,7 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { thisYear, thisMonth } from '../../services/utils/functional-utils';
+import { DatepickerType } from './datepicker.enum';
 
 const datepickerStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -20,6 +21,7 @@ const datepickerStories = storiesOf(
 ).addDecorator(withKnobs);
 const template = `
 <b-datepicker [value]="value"
+              [type]="pickerType"
               [minDate]="minDate"
               [maxDate]="maxDate"
               [label]="label"
@@ -30,6 +32,7 @@ const template = `
               [errorMessage]="errorMessage"
               [disabled]="disabled"
               [required]="required"
+              [panelClass]="panelClass"
               (dateChange)="dateChange($event)">
 </b-datepicker>
 `;
@@ -52,6 +55,7 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
+  [type] | DatepickerType | date or month picker | date
   [value] | Date / string (YYYY-MM-DD) | date | none
   [minDate] | Date / string (YYYY-MM-DD) | minimum date | none
   [maxDate] | Date / string (YYYY-MM-DD) | maximum date | none
@@ -63,6 +67,7 @@ const note = `
   [hintMessage] | string | hint text | none
   [warnMessage] | string | warning text | none
   [errorMessage] | string | error text | none
+  [panelClass] | string | class to add to datepicker panel | none
   (dateChange) | EventEmitter |  Emited on date change | none
 
   ~~~
@@ -85,6 +90,11 @@ datepickerStories.add(
           ],
           ''
         ),
+        pickerType: select(
+          'pickerType',
+          Object.values(DatepickerType),
+          DatepickerType.date
+        ),
         minDate: select('minDate', ['', `${thisYear()}-${thisMonth()}-10`], ''),
         maxDate: select('maxDate', ['', `${thisYear()}-${thisMonth()}-25`], ''),
         label: text('label', 'Date picker'),
@@ -95,6 +105,7 @@ datepickerStories.add(
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
+        panelClass: text('panelClass', ''),
         dateChange: action('Date Changed')
       },
       moduleMetadata: {

@@ -5,7 +5,8 @@ import {
   ChangeDetectorRef,
   ChangeDetectionStrategy,
   NgZone,
-  AfterViewInit
+  AfterViewInit,
+  DoCheck
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { B_DATE_FORMATS, BDateAdapter } from '../datepicker/date.adapter';
@@ -23,6 +24,10 @@ import { DateTimeInputService } from '../datepicker/date-time-input.service';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { DateRangePickerValue } from './date-range-picker.interface';
+import { MAT_DATEPICKER_SCROLL_STRATEGY } from '@angular/material';
+import { Overlay, ScrollStrategy } from '@angular/cdk/overlay';
+import { DatepickerType } from '../datepicker/datepicker.enum';
+import { parse } from 'date-fns';
 
 interface DateRangePickerValueLocal {
   startDate: Date | string;
@@ -33,6 +38,11 @@ const valueDef: DateRangePickerValueLocal = {
   startDate: undefined,
   endDate: undefined
 };
+
+export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
+  const strategy = () => overlay.scrollStrategies.close();
+  return strategy;
+}
 
 @Component({
   selector: 'b-date-range-picker',
@@ -60,12 +70,17 @@ const valueDef: DateRangePickerValueLocal = {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => DateRangePickerComponent),
       multi: true
+    },
+    {
+      provide: MAT_DATEPICKER_SCROLL_STRATEGY,
+      deps: [Overlay],
+      useFactory: CLOSE_SCROLL_STRATEGY_FACTORY
     }
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DateRangePickerComponent extends BaseDatepickerElement
-  implements AfterViewInit {
+  implements AfterViewInit, DoCheck {
   constructor(
     windowRef: WindowRef,
     mobileService: MobileService,
@@ -108,6 +123,16 @@ export class DateRangePickerComponent extends BaseDatepickerElement
   public idSD = simpleUID('bdp-sd-');
   public idED = simpleUID('bdp-ed-');
 
+  ngDoCheck() {
+    if (this.type === DatepickerType.month) {
+      this.zone.runOutsideAngular(() => {
+        this.windowRef.nativeWindow.requestAnimationFrame(() => {
+          this.markPickerCells();
+        });
+      });
+    }
+  }
+
   ngAfterViewInit(): void {
     this.overlayStylesDef = {
       '--start-date-label':
@@ -141,6 +166,26 @@ export class DateRangePickerComponent extends BaseDatepickerElement
           ? ['in-range', 'last-in-range']
           : ['in-range', 'last-in-range', 'only-in-range']
         : [];
+    }
+  }
+
+  private markPickerCells(): void {
+    let pickerCells: HTMLElement[] = [];
+
+    this.allPickers(picker => {
+      if (picker.open) {
+        pickerCells = pickerCells.concat(
+          this.getPickerPanelElements(picker, '.mat-calendar-body-cell')
+        );
+      }
+    });
+
+    if (pickerCells.length > 0) {
+      pickerCells.forEach((cell: HTMLElement) => {
+        cell.classList.add(
+          ...this.getDateClass(parse(cell.getAttribute('aria-label')))
+        );
+      });
     }
   }
 }

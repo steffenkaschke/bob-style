@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { DateRangePickerModule } from './date-range-picker.module';
 import { thisYear, thisMonth } from '../../services/utils/functional-utils';
+import { DatepickerType } from '../datepicker/datepicker.enum';
 
 const datepickerStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -20,6 +21,7 @@ const datepickerStories = storiesOf(
 ).addDecorator(withKnobs);
 const template = `
 <b-date-range-picker [value]="value"
+              [type]="pickerType"
               [minDate]="minDate"
               [maxDate]="maxDate"
               [label]="label"
@@ -32,6 +34,7 @@ const template = `
               [errorMessage]="errorMessage"
               [disabled]="disabled"
               [required]="required"
+              [panelClass]="panelClass"
               (dateChange)="dateChange($event)">
 </b-date-range-picker>
 `;
@@ -54,6 +57,7 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
+  [type] | DatepickerType | date or month picker | date
   [value] | DateRangePickerValue <br> ({from: Date / string (YYYY-MM-DD), <br>to: Date / string (YYYY-MM-DD)} | start and end dates | none
   [minDate] | Date / string (YYYY-MM-DD) | minimum date | none
   [maxDate] | Date / string (YYYY-MM-DD) | maximum date | none
@@ -67,6 +71,7 @@ const note = `
   [hintMessage] | string | hint text | none
   [warnMessage] | string | warning text | none
   [errorMessage] | string | error text | none
+  [panelClass] | string | class to add to datepicker panel | none
   (dateChange) | EventEmitter | Emited on date change | none
 
   ~~~
@@ -89,6 +94,11 @@ datepickerStories.add(
       template: storyTemplate,
       props: {
         value: select('value', mockValues, ''),
+        pickerType: select(
+          'pickerType',
+          Object.values(DatepickerType),
+          DatepickerType.date
+        ),
         minDate: select('minDate', ['', `${thisYear()}-${thisMonth()}-7`], ''),
         maxDate: select('maxDate', ['', `${thisYear()}-${thisMonth()}-25`], ''),
         label: text('label', ''),
@@ -101,6 +111,7 @@ datepickerStories.add(
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
+        panelClass: text('panelClass', ''),
         dateChange: action('Date Changed')
       },
       moduleMetadata: {

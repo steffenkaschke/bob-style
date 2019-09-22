@@ -62,7 +62,7 @@ export class DateTimeInputService {
       if (
         i > 1 &&
         v.length > 3 &&
-        (parseInt(v, 10) < 1900 ||
+        (parseInt(v, 10) <= 1900 ||
           parseInt(v, 10) > thisYear() + 10 ||
           parseInt(v, 10) === 0)
       ) {
