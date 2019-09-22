@@ -26,6 +26,9 @@ $alert_width: 400px;
 }
 
 .content {
+  flex-grow: 1;
+  max-width: calc(100% - 70px);
+
   b-bold-body {
     text-transform: uppercase;
   }
