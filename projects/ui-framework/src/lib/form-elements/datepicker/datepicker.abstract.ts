@@ -310,7 +310,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       this.getPicker(index).opened
     ) {
       this.getInput(index).focus();
-    } else {
+    } else if (!this.allowInputBlur && !this.getPicker(index).opened) {
       this.inputFocused[index] = false;
     }
     this.allowInputBlur = false;

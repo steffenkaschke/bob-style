@@ -5,6 +5,38 @@ b-icon,
   cursor: pointer;
 }
 
+b-icon {
+  outline: 0;
+}
+
+.bfe-wrap {
+  position: relative;
+}
+
+.clear-input {
+  @include position(50% 0 null null);
+  margin-top: -10px;
+  background-color: white;
+  opacity: 0;
+  z-index: 2;
+  transition: opacity 0.1s;
+  transition-delay: 0.1s;
+}
+
+:host {
+  .bfe-suffix.clear-input {
+    display: none;
+  }
+
+  .bfe-wrap:hover,
+  .bfe-wrap.focused {
+    .bfe-suffix.clear-input {
+      display: block;
+      opacity: 1;
+    }
+  }
+}
+
 ::ng-deep {
   .b-datepicker-panel .mat-ripple {
     display: none !important;

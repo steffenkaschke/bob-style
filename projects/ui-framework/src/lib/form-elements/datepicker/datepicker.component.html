@@ -27,12 +27,24 @@
          [min]="minDate || null"
          [max]="maxDate || null">
 
-  <b-icon class="bfe-suffix"
+  <b-icon *ngIf="!isInputEmpty()"
+          class="bfe-suffix clear-input"
+          role="button"
+          tabindex="0"
           [hasHoverState]="true"
-          [icon]="isInputEmpty() ? icons.calendar : icons.reset_x"
+          [icon]="icons.reset_x"
           [color]="inputFocused[0] ? iconColor.dark : iconColor.normal"
           [size]="iconSize.medium"
-          (click)="isInputEmpty() ? openPicker() : clearInput()">
+          (click)="clearInput()">
+  </b-icon>
+
+  <b-icon class="bfe-suffix open-picker"
+          role="button"
+          [hasHoverState]="true"
+          [icon]="icons.calendar"
+          [color]="inputFocused[0] ? iconColor.dark : iconColor.normal"
+          [size]="iconSize.medium"
+          (click)="openPicker()">
   </b-icon>
 
 </div>

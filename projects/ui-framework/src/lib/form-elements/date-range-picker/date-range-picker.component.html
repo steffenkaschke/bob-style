@@ -39,6 +39,8 @@
 
     <b-icon *ngIf="!isInputEmpty(0)"
             class="bfe-suffix"
+            role="button"
+            tabindex="0"
             [hasHoverState]="true"
             [icon]="icons.reset_x"
             [color]="inputFocused[0] ? iconColor.dark : iconColor.normal"
@@ -74,6 +76,8 @@
 
     <b-icon *ngIf="!isInputEmpty(1)"
             class="bfe-suffix"
+            role="button"
+            tabindex="0"
             [hasHoverState]="true"
             [icon]="icons.reset_x"
             [color]="inputFocused[1] ? iconColor.dark : iconColor.normal"
