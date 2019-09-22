@@ -94,6 +94,7 @@ export class DateRangePickerComponent extends BaseDatepickerElement
     this.inputTransformers = [
       objectHasKeyOrFail(['from', 'to'], true),
       (value: DateRangePickerValue): DateRangePickerValueLocal => {
+        console.log('inputTransformers', value);
         return value
           ? {
               startDate: dateOrFail(value.from),
@@ -124,6 +125,7 @@ export class DateRangePickerComponent extends BaseDatepickerElement
   public idED = simpleUID('bdp-ed-');
 
   ngDoCheck() {
+    console.log('date range ngDoCheck baseValue', this.baseValue);
     if (this.type === DatepickerType.month) {
       this.zone.runOutsideAngular(() => {
         this.windowRef.nativeWindow.requestAnimationFrame(() => {

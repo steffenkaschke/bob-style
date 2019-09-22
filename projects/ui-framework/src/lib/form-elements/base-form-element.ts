@@ -93,6 +93,7 @@ export abstract class BaseFormElement
 
   writeValue(value: any): void {
     if (isNullOrUndefined(value) && this.baseValue !== undefined) {
+      console.log('should set baseValue', this.baseValue);
       this.value = this.baseValue;
     } else if (value !== undefined) {
       this.value = this.inputTransformers.reduce(
@@ -100,6 +101,7 @@ export abstract class BaseFormElement
         value
       );
     }
+    console.log('writeValue', this.value);
   }
 
   protected transmitValue(
