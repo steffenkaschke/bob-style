@@ -17,7 +17,9 @@
            'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName
            }"
            class="option-select header">
-        <span class="chevron"></span>
+        <span class="chevron b-icon-medium"
+              [ngClass]="{'b-icon-chevron-down': !header.isCollapsed, 'b-icon-chevron-right':
+              header.isCollapsed}"></span>
         <span [innerHTML]="header.groupName | highlight: searchValue"></span>
       </div>
       <div [ngStyle]="{height: header.isCollapsed ? 0 : header.placeHolderSize + 'px'}"

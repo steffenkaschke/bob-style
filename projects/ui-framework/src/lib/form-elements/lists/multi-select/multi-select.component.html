@@ -30,8 +30,8 @@
           class="total-values">
       ({{selectedValuesMap.length}})
     </span>
-    <span class="select-chevron"
-          [ngClass]="{up: panelOpen, down: !panelOpen}"></span>
+    <span class="select-chevron b-icon-medium"
+          [ngClass]="{'b-icon-chevron-down': !panelOpen, 'b-icon-chevron-up': panelOpen}"></span>
   </div>
 </div>
 
