@@ -17,7 +17,7 @@ import {
   dateOrFail,
   objectHasKeyOrFail
 } from '../../services/utils/transformers';
-import { simpleUID } from '../../services/utils/functional-utils';
+import { simpleUID, cloneValue } from '../../services/utils/functional-utils';
 import { BaseDatepickerElement } from '../datepicker/datepicker.abstract';
 import { MobileService } from '../../services/utils/mobile.service';
 import { DateTimeInputService } from '../datepicker/date-time-input.service';
@@ -99,7 +99,7 @@ export class DateRangePickerComponent extends BaseDatepickerElement
               startDate: dateOrFail(value.from),
               endDate: dateOrFail(value.to)
             }
-          : null;
+          : cloneValue(valueDef);
       }
     ];
 
