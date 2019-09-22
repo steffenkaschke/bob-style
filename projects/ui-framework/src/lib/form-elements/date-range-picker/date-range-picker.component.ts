@@ -178,6 +178,7 @@ export class DateRangePickerComponent extends BaseDatepickerElement
           : ['in-range', 'last-in-range', 'only-in-range']
         : [];
     }
+    return [];
   }
 
   private markPickerCells(): void {
