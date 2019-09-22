@@ -3,6 +3,13 @@
 :host {
   position: relative;
   width: 100%;
+  display: flex;
+
+  b-single-select-panel {
+    &.disabled {
+      pointer-events: none;
+    }
+  }
 
   b-avatar,
   .employees-showcase-panel-wrapper {

@@ -1,20 +1,22 @@
-<div class="avatar-showcase"
-     [ngClass]="{'expand-on-click': expandOnClick}"
-     (click)="openPanel()"
-     cdkOverlayOrigin>
+<b-single-select-panel [options]="panelListOptions"
+                       [ngClass]="{'disabled': !expandOnClick}"
+                       (selectChange)="onSelectChange($event)">
 
-  <ng-container *ngFor="let employee of employees; let i = index; let last = last">
+  <div class="avatar-showcase"
+       [ngClass]="{'expand-on-click': expandOnClick}">
 
-    <b-avatar class="showcase-avatar"
-              *ngIf="i < avatarsToFit - 1 || (i < avatarsToFit && !showThreeDotsButton)"
-              [imageSource]="employee.imageSource"
-              [size]="avatarSize"
-              [isClickable]="clicked.observers.length > 0"
-              (clicked)="onAvatarClick(employee.id)">
-    </b-avatar>
+    <ng-container *ngFor="let employee of employees; let i = index; let last = last">
+
+      <b-avatar class="showcase-avatar"
+                *ngIf="i < avatarsToFit - 1 || (i < avatarsToFit && !showThreeDotsButton)"
+                [imageSource]="employee.imageSource"
+                [size]="avatarSize"
+                [isClickable]="clicked.observers.length > 0"
+                (clicked)="onAvatarClick(employee.id)">
+      </b-avatar>
 
 
-  </ng-container>
+    </ng-container>
 
     <b-avatar class="show-more-indicator"
               *ngIf="showThreeDotsButton"
@@ -22,13 +24,6 @@
       <b-icon [icon]="icon.three_dots"></b-icon>
     </b-avatar>
 
-</div>
-
-<ng-template #templateRef>
-  <div class="b-select-panel"
-       [ngClass]="positionClassList">
-    <b-single-list [options]="panelListOptions"
-                   (selectChange)="onSelectChange($event)">
-    </b-single-list>
   </div>
-</ng-template>
+
+</b-single-select-panel>
