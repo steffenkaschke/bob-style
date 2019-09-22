@@ -27,7 +27,7 @@ import { DateRangePickerValue } from './date-range-picker.interface';
 import { MAT_DATEPICKER_SCROLL_STRATEGY } from '@angular/material';
 import { Overlay } from '@angular/cdk/overlay';
 import { DatepickerType } from '../datepicker/datepicker.enum';
-import { parse, startOfMonth } from 'date-fns';
+import { parse, startOfMonth, lastDayOfMonth } from 'date-fns';
 
 interface DateRangePickerValueLocal {
   startDate: Date | string;
@@ -105,9 +105,25 @@ export class DateRangePickerComponent extends BaseDatepickerElement
 
     this.outputTransformers = [
       (value: DateRangePickerValueLocal): DateRangePickerValue => {
+        const from =
+          this.type === DatepickerType.month
+            ? dateToString(
+                startOfMonth(parse(value.startDate)),
+                serverDateFormat
+              )
+            : dateToString(value.startDate, serverDateFormat);
+
+        const to =
+          this.type === DatepickerType.month
+            ? dateToString(
+                lastDayOfMonth(parse(value.endDate)),
+                serverDateFormat
+              )
+            : dateToString(value.endDate, serverDateFormat);
+
         return {
-          from: dateToString(value.startDate, serverDateFormat),
-          to: dateToString(value.endDate, serverDateFormat)
+          from,
+          to
         };
       }
     ];
