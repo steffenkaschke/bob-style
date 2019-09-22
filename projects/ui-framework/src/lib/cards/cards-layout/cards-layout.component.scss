@@ -26,6 +26,7 @@ $grid-gap: 16px;
 [data-align-center='true'],
 [data-swiper-mode='true'] {
   grid-template-columns: none;
+  grid-gap: 0;
   display: flex;
   flex-direction: row;
 
