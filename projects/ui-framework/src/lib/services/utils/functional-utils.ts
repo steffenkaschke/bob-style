@@ -260,3 +260,16 @@ export const thisDay = (pad = true) => {
   const day = new Date().getDate();
   return pad ? padWith0(day, 2) : day;
 };
+
+export const cloneObject = (value: any) =>
+  isObject(value) ? Object.assign({}, value) : value;
+
+export const cloneArray = (value: any) =>
+  isArray(value) ? value.slice(0) : value;
+
+export const cloneValue = (value: any) =>
+  isObject(value)
+    ? Object.assign({}, value)
+    : isArray(value)
+    ? value.slice(0)
+    : value;

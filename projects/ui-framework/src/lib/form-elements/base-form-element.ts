@@ -10,7 +10,8 @@ import { ControlValueAccessor, FormControl } from '@angular/forms';
 import {
   simpleUID,
   asArray,
-  isNullOrUndefined
+  isNullOrUndefined,
+  cloneValue
 } from '../services/utils/functional-utils';
 import { InputEventType } from './form-elements.enum';
 import { FormEvents } from './form-elements.enum';
@@ -93,15 +94,13 @@ export abstract class BaseFormElement
 
   writeValue(value: any): void {
     if (isNullOrUndefined(value) && this.baseValue !== undefined) {
-      console.log('should set baseValue', this.baseValue);
-      this.value = this.baseValue;
+      this.value = cloneValue(this.baseValue);
     } else if (value !== undefined) {
       this.value = this.inputTransformers.reduce(
         (previousResult, fn) => fn(previousResult),
         value
       );
     }
-    console.log('writeValue', this.value);
   }
 
   protected transmitValue(

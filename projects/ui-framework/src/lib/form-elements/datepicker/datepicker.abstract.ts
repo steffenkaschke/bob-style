@@ -121,8 +121,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   onNgChanges(changes: SimpleChanges): void {
     this.allPickers(picker => this.closePicker(picker));
 
-    console.log('onNgChanges', changes);
-
     if (changes.minDate) {
       this.minDate = dateOrFail(changes.minDate.currentValue);
     }
@@ -136,10 +134,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
-      console.log('detecting changes');
       this.cd.detectChanges();
-    } else {
-      console.log('NOT detecting changes');
     }
   }
 
