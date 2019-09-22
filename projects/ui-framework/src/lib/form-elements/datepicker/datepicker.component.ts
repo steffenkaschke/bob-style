@@ -16,6 +16,8 @@ import { BaseDatepickerElement } from './datepicker.abstract';
 import { DateTimeInputService } from './date-time-input.service';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
+import { startOfMonth, parse } from 'date-fns';
+import { DatepickerType } from './datepicker.enum';
 
 @Component({
   selector: 'b-datepicker',
@@ -57,7 +59,10 @@ export class DatepickerComponent extends BaseDatepickerElement {
     this.inputTransformers = [dateOrFail];
 
     this.outputTransformers = [
-      (value: Date): string => dateToString(value, serverDateFormat)
+      (value: Date): string =>
+        this.type === DatepickerType.month
+          ? dateToString(startOfMonth(value), serverDateFormat)
+          : dateToString(value, serverDateFormat)
     ];
 
     this.baseValue = '';
