@@ -106,6 +106,10 @@ export abstract class BaseDatepickerElement extends BaseFormElement
         this.isMobile = media.matchMobile;
         this.cd.detectChanges();
       });
+
+    if (this.value) {
+      this.cd.detectChanges();
+    }
   }
 
   ngOnDestroy(): void {
