@@ -16,7 +16,7 @@ import { BaseDatepickerElement } from './datepicker.abstract';
 import { DateTimeInputService } from './date-time-input.service';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
-import { startOfMonth, parse } from 'date-fns';
+import { startOfMonth } from 'date-fns';
 import { DatepickerType } from './datepicker.enum';
 
 @Component({
