@@ -67,6 +67,7 @@ $input-focus-border-color: $grey-700;
   flex-grow: 1;
   padding: 0 $input-padding;
   border: 0;
+  border-color: inherit;
   border-radius: inherit;
   margin: 0;
   outline: 0;

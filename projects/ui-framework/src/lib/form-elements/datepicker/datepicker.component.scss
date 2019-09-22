@@ -18,8 +18,39 @@ b-icon,
     @include text-hide;
   }
 
+  .b-datepicker-panel {
+    &,
+    & .mat-button,
+    & .mat-datepicker-content {
+      font-family: var(--body-font-family);
+      color: $body-text-color;
+    }
+
+    table,
+    thead,
+    tbody {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    tr {
+      display: flex;
+    }
+
+    td,
+    th {
+      display: block;
+    }
+
+    th {
+      width: (100% / 7);
+    }
+  }
+
   .mat-calendar-table-header .mat-calendar-table-header-divider {
     padding-bottom: times8(2);
+    width: 100%;
   }
 
   .mat-datepicker-content {
@@ -34,6 +65,8 @@ b-icon,
   }
 
   .mat-calendar-body-cell-content {
+    color: $body-text-color;
+
     &.mat-calendar-body-selected {
       background-color: var(--primary-500);
       color: white;
@@ -55,6 +88,7 @@ b-icon,
     .mat-datepicker-content {
       pointer-events: auto;
       width: 100%;
+      min-width: 270px;
       max-width: 350px;
       display: flex;
       justify-content: center;
@@ -86,6 +120,11 @@ b-icon,
     .mat-datepicker-content[style*='top'] {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
+    }
+
+    .mat-calendar-controls {
+      margin-top: 8px;
+      margin-bottom: 8px;
     }
   }
 

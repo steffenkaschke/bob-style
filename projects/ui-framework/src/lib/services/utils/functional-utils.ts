@@ -58,6 +58,15 @@ export const isEmptyObject = (val: any): boolean => !isNotEmptyObject(val);
 export const isNullOrUndefined = (val: any): boolean =>
   val === undefined || val === null;
 
+export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
+  smth === null ||
+  smth === undefined ||
+  smth === false ||
+  (fuzzy && smth === '') ||
+  (fuzzy && smth === 0) ||
+  (isArray(smth) && smth.length === 0) ||
+  (isObject(smth) && Object.keys(smth).length === 0);
+
 export const isRenderedComponent = (obj: any): boolean =>
   obj && !!obj.component;
 
@@ -251,3 +260,16 @@ export const thisDay = (pad = true) => {
   const day = new Date().getDate();
   return pad ? padWith0(day, 2) : day;
 };
+
+export const cloneObject = (value: any) =>
+  isObject(value) ? Object.assign({}, value) : value;
+
+export const cloneArray = (value: any) =>
+  isArray(value) ? value.slice(0) : value;
+
+export const cloneValue = (value: any) =>
+  isObject(value)
+    ? Object.assign({}, value)
+    : isArray(value)
+    ? value.slice(0)
+    : value;
