@@ -26,11 +26,10 @@
 }
 
 .select-chevron {
-  &.down {
-    @include chevron-down($grey-600);
-  }
-  &.up {
-    @include chevron-up($grey-600);
+  &:before {
+    width: 12px;
+    display: flex;
+    justify-content: center;
   }
 }
 

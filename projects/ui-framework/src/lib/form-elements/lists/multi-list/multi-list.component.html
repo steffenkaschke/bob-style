@@ -19,7 +19,9 @@
         <span (click)="toggleGroupCollapse(header)"
               class="header-collapse-trigger">
         </span>
-        <span class="chevron"></span>
+        <span class="chevron b-icon-medium"
+              [ngClass]="{'b-icon-chevron-down': !header.isCollapsed, 'b-icon-chevron-right':
+              header.isCollapsed}"></span>
         <div class="header-option">
           <b-checkbox class="checkbox"
                       [value]="header.selected"
