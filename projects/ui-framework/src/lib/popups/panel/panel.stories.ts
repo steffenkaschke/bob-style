@@ -71,6 +71,8 @@ const note = `
   [openOnHover] | boolean | trigger panel open on hover (delay 300ms) | false
   (opened) | EventEmitter&lt;OverlayRef&gt; | Emits panel Opened event | none
   (closed) | EventEmitter&lt;void&gt; | Emits panel Closed event | none
+  (positionChanged) | EventEmitter&lt;OverlayPositionClasses&gt; | Emits when panel changes position during scrolling (above/below trigger) | none
+
 
   ~~~
   ${template}
