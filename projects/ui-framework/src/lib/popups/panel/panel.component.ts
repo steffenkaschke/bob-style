@@ -28,6 +28,7 @@ import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { filter, distinctUntilChanged } from 'rxjs/operators';
 import { outsideZone } from '../../services/utils/rxjs.operators';
+import { OverlayPositionClasses } from '../../types';
 
 const HOVER_DELAY_DURATION = 300;
 
@@ -49,6 +50,9 @@ export class PanelComponent implements OnInit, OnDestroy {
 
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
+  @Output() positionChanged: EventEmitter<
+    OverlayPositionClasses
+  > = new EventEmitter<OverlayPositionClasses>();
 
   private panelConfig: OverlayConfig;
   public overlayRef: OverlayRef;
@@ -57,7 +61,7 @@ export class PanelComponent implements OnInit, OnDestroy {
   private positionChangeSubscriber: Subscription;
   readonly mouseEnterDebounce: any;
   readonly mouseLeaveDebounce: any;
-  positionClassList: { [key: string]: boolean } = {};
+  public positionClassList: OverlayPositionClasses = {};
   private windowKeydownSubscriber: Subscription;
 
   constructor(
@@ -180,7 +184,7 @@ export class PanelComponent implements OnInit, OnDestroy {
       .subscribe(change => {
         this.positionClassList = this.panelPositionService.getPositionClassList(
           change
-        );
+        ) as OverlayPositionClasses;
 
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
@@ -193,6 +197,8 @@ export class PanelComponent implements OnInit, OnDestroy {
             elem.classList.add('panel-below');
           }
         }
+
+        this.positionChanged.emit(this.positionClassList);
       });
   }
 }
