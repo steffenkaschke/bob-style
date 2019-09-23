@@ -24,27 +24,29 @@ const panelSize = values(PanelSize);
 const panelDefaultPosVer = values(PanelDefaultPosVer);
 
 const template = `
-<b-panel [panelClass]="panelClass"
-         [size]="panelSize"
-         [showBackdrop]="showBackdrop"
-         [defaultPosVer]="panelDefaultPosVer"
-         [openOnHover]="openOnHover"
-         (closed)="onPanelDestroyed()"
-         (opened)="onPanelOpened()"
->
-  <b-button panel-trigger>
-    Time Off Policies info
-  </b-button>
-  <div panel-content>
-    <b-display-3>Time Off Policies info</b-display-3>
-    <p>A ‘policy’ is the a collection of rules which govern a type of leave.
-    With bob you can add as many holiday policies as you need for your organisation.
-    Before we create a policy, a note on what types are.
-    <img style="display: block; width: 100%; margin-top: 20px;"
-    src="https://downloads.intercomcdn.com/i/o/86579629/3d3ae5d60c93aed41996abed/Screen+Shot+2018-11-20+at+11.19.09.png" />
-    </p>
-  </div>
-</b-panel>
+  <b-panel [panelClass]="panelClass"
+          [size]="panelSize"
+          [showBackdrop]="showBackdrop"
+          [defaultPosVer]="panelDefaultPosVer"
+          [openOnHover]="openOnHover"
+          (closed)="onPanelDestroyed()"
+          (opened)="onPanelOpened()">
+
+    <b-button panel-trigger>
+      Time Off Policies info
+    </b-button>
+
+    <div panel-content>
+      <b-display-3>Time Off Policies info</b-display-3>
+      <p>A ‘policy’ is the a collection of rules which govern a type of leave.
+      With bob you can add as many holiday policies as you need for your organisation.
+      Before we create a policy, a note on what types are.
+      <img style="display: block; width: 100%; margin-top: 20px;"
+      src="https://downloads.intercomcdn.com/i/o/86579629/3d3ae5d60c93aed41996abed/Screen+Shot+2018-11-20+at+11.19.09.png" />
+      </p>
+    </div>
+
+  </b-panel>
 `;
 
 const storyTemplate = `
