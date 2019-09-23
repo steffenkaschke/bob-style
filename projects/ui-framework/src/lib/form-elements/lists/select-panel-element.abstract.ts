@@ -24,6 +24,7 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { isEqual } from 'lodash';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { OverlayPositionClasses } from '../../types';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements AfterViewInit {
@@ -36,7 +37,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @Input() hasPrefix = false;
 
   showPrefix = true;
-  positionClassList: { [key: string]: boolean } = {};
+  positionClassList: OverlayPositionClasses = {};
   panelOpen = false;
   triggerValue: any;
   panelClassList: string[] = [];
@@ -150,7 +151,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       .subscribe(change => {
         this.positionClassList = this.panelPositionService.getPositionClassList(
           change
-        );
+        ) as OverlayPositionClasses;
+
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
           this.overlayRef.overlayElement.children[0].className = this

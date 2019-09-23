@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { toUpper } from 'lodash';
 import { PanelComponent } from './panel.component';
 import { CdkOverlayOrigin, Overlay, OverlayModule } from '@angular/cdk/overlay';
 import { PanelPositionService } from './panel-position-service/panel-position.service';

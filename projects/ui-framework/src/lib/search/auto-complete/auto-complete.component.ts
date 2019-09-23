@@ -23,6 +23,7 @@ import {
 } from '@angular/cdk/overlay';
 import { AutoCompleteOption } from './auto-complete.interface';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
+import { OverlayPositionClasses } from '../../types';
 
 @Component({
   selector: 'b-auto-complete',
@@ -30,7 +31,8 @@ import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
   styleUrls: ['./auto-complete.component.scss']
 })
 export class AutoCompleteComponent implements OnChanges, OnDestroy {
-  @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
+  @ViewChild(CdkOverlayOrigin, { static: true })
+  overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
 
   @Input() label: string;
@@ -44,7 +46,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     AutoCompleteOption
   >();
 
-  positionClassList: { [key: string]: boolean } = {};
+  positionClassList: OverlayPositionClasses = {};
   searchValue = '';
   panelOpen = false;
 
@@ -164,7 +166,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
       change => {
         this.positionClassList = this.panelPositionService.getPositionClassList(
           change
-        );
+        ) as OverlayPositionClasses;
       }
     );
   }
