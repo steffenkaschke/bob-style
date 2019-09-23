@@ -114,23 +114,25 @@ export class PanelComponent implements OnInit, OnDestroy {
   }
 
   openPanel(): void {
-    this.panelConfig = this.getConfig();
-    this.overlayRef = this.overlay.create(this.panelConfig);
-    this.templatePortal = new TemplatePortal(
-      this.templateRef,
-      this.viewContainerRef
-    );
+    if (!this.overlayRef) {
+      this.panelConfig = this.getConfig();
+      this.overlayRef = this.overlay.create(this.panelConfig);
+      this.templatePortal = new TemplatePortal(
+        this.templateRef,
+        this.viewContainerRef
+      );
 
-    this.overlayRef.attach(this.templatePortal);
-    this.overlayRef.updatePosition();
+      this.overlayRef.attach(this.templatePortal);
+      this.overlayRef.updatePosition();
 
-    this.opened.emit(this.overlayRef);
+      this.opened.emit(this.overlayRef);
 
-    this.backdropClickSubscriber = this.overlayRef
-      .backdropClick()
-      .subscribe(() => {
-        this.destroyPanel();
-      });
+      this.backdropClickSubscriber = this.overlayRef
+        .backdropClick()
+        .subscribe(() => {
+          this.destroyPanel();
+        });
+    }
   }
 
   closePanel(): void {
