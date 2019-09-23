@@ -106,12 +106,12 @@ export class DateRangePickerComponent extends BaseDatepickerElement
     this.outputTransformers = [
       (value: DateRangePickerValueLocal): DateRangePickerValue => {
         const from =
-          this.type === DatepickerType.month
+          value.startDate && this.type === DatepickerType.month
             ? dateToString(startOfMonth(value.startDate), serverDateFormat)
             : dateToString(value.startDate, serverDateFormat);
 
         const to =
-          this.type === DatepickerType.month
+          value.endDate && this.type === DatepickerType.month
             ? dateToString(lastDayOfMonth(value.endDate), serverDateFormat)
             : dateToString(value.endDate, serverDateFormat);
 
