@@ -55,4 +55,10 @@
       }
     }
   }
+
+  .cdk-overlay-connected-position-bounding-box {
+    @include desktop {
+      height: 100% !important;
+    }
+  }
 }

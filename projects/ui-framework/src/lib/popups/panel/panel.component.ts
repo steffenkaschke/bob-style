@@ -43,6 +43,7 @@ export class PanelComponent implements OnInit, OnDestroy {
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
 
   @Input() panelClass: string;
+  @Input() backdropClass: string;
   @Input() size = PanelSize.medium;
   @Input() showBackdrop = true;
   @Input() defaultPosVer = PanelDefaultPosVer.above;
@@ -162,11 +163,13 @@ export class PanelComponent implements OnInit, OnDestroy {
     const panelClass = compact(
       concat(['b-panel'], [get(this, 'panelClass', null)])
     );
-    const backdropClass = this.openOnHover
-      ? 'b-panel-backdrop-disabled'
-      : this.showBackdrop
-      ? 'b-panel-backdrop'
-      : 'b-panel-backdrop-invisible';
+    const backdropClass =
+      this.backdropClass ||
+      (this.openOnHover
+        ? 'b-panel-backdrop-disabled'
+        : this.showBackdrop
+        ? 'b-panel-backdrop'
+        : 'b-panel-backdrop-invisible');
 
     return {
       disposeOnNavigation: true,
