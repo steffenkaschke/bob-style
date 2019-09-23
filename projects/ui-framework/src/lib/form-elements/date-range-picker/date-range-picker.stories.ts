@@ -70,7 +70,12 @@ const note = `
   [hintMessage] | string | hint text | none
   [warnMessage] | string | warning text | none
   [errorMessage] | string | error text | none
-  (dateChange) | EventEmitter | Emited on date change | none
+  (dateChange) | EventEmitter&lt;InputEvent&gt; | Emited on date change | none
+
+  #### Notes
+
+  - In \`[type]="'month'"\` mode, the output start date \`.from\` will be 1st of month, and the end date \`.to\` will be the last day of month (28-31).
+  - the output event object also contains \`.date\` property that contains \`.startDate\` and \`.endDate\` as Date objects.
 
   ~~~
   ${template}

@@ -66,7 +66,12 @@ const note = `
   [hintMessage] | string | hint text | none
   [warnMessage] | string | warning text | none
   [errorMessage] | string | error text | none
-  (dateChange) | EventEmitter |  Emited on date change | none
+  (dateChange) | EventEmitter&lt;InputEvent&gt; |  Emited on date change | none
+
+  #### Notes
+
+  - In \`[type]="'month'"\` mode, the output date will be 1st of month.
+  - the output event object also contains \`.date\` property that contains value as Date object.
 
   ~~~
   ${template}
