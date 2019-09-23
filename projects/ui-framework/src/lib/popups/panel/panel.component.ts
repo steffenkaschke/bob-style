@@ -186,7 +186,7 @@ export class PanelComponent implements OnInit, OnDestroy {
           change
         ) as OverlayPositionClasses;
 
-        if (!this.cd['destroyed']) {
+        if (!this.cd['destroyed'] && this.overlayRef) {
           this.cd.detectChanges();
           const elem = this.overlayRef.overlayElement.children[0];
           elem.classList.remove('panel-above', 'panel-below');
