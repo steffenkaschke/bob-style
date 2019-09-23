@@ -27,7 +27,6 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { filter, distinctUntilChanged } from 'rxjs/operators';
-import { outsideZone } from '../../services/utils/rxjs.operators';
 import { OverlayPositionClasses } from '../../types';
 
 const HOVER_DELAY_DURATION = 300;
@@ -80,10 +79,7 @@ export class PanelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.windowKeydownSubscriber = this.utilsService
       .getWindowKeydownEvent()
-      .pipe(
-        outsideZone(this.zone),
-        filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
-      )
+      .pipe(filter((event: KeyboardEvent) => isKey(event.key, Keys.escape)))
       .subscribe(() => {
         this.closePanel();
       });
