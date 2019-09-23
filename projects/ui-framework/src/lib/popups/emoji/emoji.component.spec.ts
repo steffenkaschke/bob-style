@@ -81,7 +81,7 @@ describe('EmojiComponent', () => {
   });
   describe('selectEmoji', () => {
     it('should select emoji trigger output with input string / emoji', fakeAsync(() => {
-      const selectedEmoji = find(EMOJI_DATA.people, { shortname: 'grinning' });
+      const selectedEmoji = find(EMOJI_DATA.find(cat => cat.name === 'people').data, { shortname: 'grinning' });
       component.selectEmoji(selectedEmoji);
       fixture.detectChanges();
       tick();

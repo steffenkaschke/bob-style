@@ -9,7 +9,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {COMMON_EMOJIS, EMOJI_DATA} from './emoji-data.consts';
-import {Emoji} from './emoji.interface';
+import {Emoji, EmojiCategory} from './emoji.interface';
 import {TruncateTooltipType} from '../truncate-tooltip/truncate-tooltip.enum';
 
 @Component({
@@ -19,7 +19,7 @@ import {TruncateTooltipType} from '../truncate-tooltip/truncate-tooltip.enum';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmojiComponent implements OnInit {
-  emojis: { [key: string]: Emoji[] };
+  emojis: EmojiCategory[];
   commonEmojis: Emoji[];
   panelActive = false;
   readonly tooltipType = TruncateTooltipType;
@@ -34,7 +34,7 @@ export class EmojiComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.emojis = { ...EMOJI_DATA };
+    this.emojis = [ ...EMOJI_DATA ];
     this.commonEmojis = [...COMMON_EMOJIS];
   }
 
