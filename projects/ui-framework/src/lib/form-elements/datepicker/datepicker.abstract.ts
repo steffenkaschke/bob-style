@@ -218,7 +218,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     selector: string
   ): HTMLElement[] {
     const panel = this.getPickerPanel(picker);
-    console.log('panel', panel);
     if (!panel.popup && !panel.dialog) {
       return [];
     }
@@ -258,11 +257,11 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       this.windowRef.nativeWindow.requestAnimationFrame(() => {
         const panel = this.getPickerPanel(picker);
 
-        if (panel.popup) {
+        if (!this.isMobile && panel.popup) {
           this.DOM.setCssProps(panel.popup, this.getOverlayStyles());
         }
 
-        if (panel.dialog) {
+        if (this.isMobile && panel.dialog) {
           this.DOM.setCssProps(panel.dialog, this.overlayStylesDef);
         }
       });
