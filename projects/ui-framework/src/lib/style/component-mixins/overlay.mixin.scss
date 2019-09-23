@@ -87,3 +87,20 @@ $panel-arrow-size: 16px;
     }
   }
 }
+
+@mixin overlayDropdown() {
+  .panel-position {
+    &.panel-below {
+      .panel-wrapper {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+    }
+    &.panel-above {
+      .panel-wrapper {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+  }
+}
