@@ -85,6 +85,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   readonly inputTypes = InputTypes;
   readonly types = DatepickerType;
 
+  protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
+
   ngOnInit(): void {
     this.resizeSubscription = fromEvent(this.windowRef.nativeWindow, 'resize')
       .pipe(
@@ -219,7 +221,10 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     if (!panel.popup && !panel.dialog) {
       return [];
     }
-    const elements = (panel.popup || panel.dialog).querySelectorAll(selector);
+    const elements = (
+      (!this.isMobile && panel.popup) ||
+      (this.isMobile && panel.dialog)
+    ).querySelectorAll(selector);
     return Array.from(elements) as HTMLElement[];
   }
 
@@ -252,15 +257,17 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       this.windowRef.nativeWindow.requestAnimationFrame(() => {
         const panel = this.getPickerPanel(picker);
 
-        if (panel.popup) {
+        if (!this.isMobile && panel.popup) {
           this.DOM.setCssProps(panel.popup, this.getOverlayStyles());
         }
 
-        if (panel.dialog) {
+        if (this.isMobile && panel.dialog) {
           this.DOM.setCssProps(panel.dialog, this.overlayStylesDef);
         }
       });
     });
+
+    this.doOnPickerOpen(picker);
   }
 
   public onPickerClose(index: number = 0): void {

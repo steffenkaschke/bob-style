@@ -151,6 +151,7 @@ export { FormElementsModule } from './lib/form-elements/form-elements.module';
 export {
   FormEvents, InputEventType,
 } from './lib/form-elements/form-elements.enum';
+export { BaseFormElement } from './lib/form-elements/base-form-element';
 // Textarea Module
 export { TextareaModule } from './lib/form-elements/textarea/textarea.module';
 export {
@@ -173,8 +174,6 @@ export { DatepickerType } from './lib/form-elements/datepicker/datepicker.enum';
 export { DateRangePickerModule } from './lib/form-elements/date-range-picker/date-range-picker.module';
 export { DateRangePickerComponent } from './lib/form-elements/date-range-picker/date-range-picker.component';
 export { DateRangePickerValue } from './lib/form-elements/date-range-picker/date-range-picker.interface';
-
-
 // Input Module
 export { InputModule } from './lib/form-elements/input/input.module';
 export { InputComponent } from './lib/form-elements/input/input.component';
@@ -233,7 +232,6 @@ export { MultiSelectPanelModule } from './lib/form-elements/lists/multi-select-p
 export {
   MultiSelectPanelComponent,
 } from './lib/form-elements/lists/multi-select-panel/multi-select-panel.component';
-
 // Chain select
 export {
   ChainSelectEventEnum
@@ -342,7 +340,7 @@ export {
   BreadcrumbNavButton
 } from './lib/navigation/breadcrumbs/breadcrumbs.interface';
 export { BreadcrumbsType } from './lib/navigation/breadcrumbs/breadcrumbs.enum';
-export { BaseFormElement } from './lib/form-elements/base-form-element';
+// Action Bar
 export { ActionBarModule } from './lib/navigation/action-bar/action-bar.module';
 export { ActionBarComponent } from './lib/navigation/action-bar/action-bar.component';
 

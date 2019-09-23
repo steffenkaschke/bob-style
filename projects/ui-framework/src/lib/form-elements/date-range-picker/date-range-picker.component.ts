@@ -5,8 +5,7 @@ import {
   ChangeDetectorRef,
   ChangeDetectionStrategy,
   NgZone,
-  AfterViewInit,
-  DoCheck
+  AfterViewInit
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { B_DATE_FORMATS, BDateAdapter } from '../datepicker/date.adapter';
@@ -24,7 +23,10 @@ import { DateTimeInputService } from '../datepicker/date-time-input.service';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { DateRangePickerValue } from './date-range-picker.interface';
-import { MAT_DATEPICKER_SCROLL_STRATEGY } from '@angular/material';
+import {
+  MAT_DATEPICKER_SCROLL_STRATEGY,
+  MatDatepicker
+} from '@angular/material';
 import { Overlay } from '@angular/cdk/overlay';
 import { DatepickerType } from '../datepicker/datepicker.enum';
 import { parse, startOfMonth, lastDayOfMonth } from 'date-fns';
@@ -80,7 +82,7 @@ export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DateRangePickerComponent extends BaseDatepickerElement
-  implements AfterViewInit, DoCheck {
+  implements AfterViewInit {
   constructor(
     windowRef: WindowRef,
     mobileService: MobileService,
@@ -133,16 +135,6 @@ export class DateRangePickerComponent extends BaseDatepickerElement
   public idSD = simpleUID('bdp-sd-');
   public idED = simpleUID('bdp-ed-');
 
-  ngDoCheck() {
-    if (this.type === DatepickerType.month) {
-      this.zone.runOutsideAngular(() => {
-        this.windowRef.nativeWindow.requestAnimationFrame(() => {
-          this.markPickerCells();
-        });
-      });
-    }
-  }
-
   ngAfterViewInit(): void {
     this.overlayStylesDef = {
       '--start-date-label':
@@ -191,22 +183,21 @@ export class DateRangePickerComponent extends BaseDatepickerElement
     return [];
   }
 
-  private markPickerCells(): void {
-    let pickerCells: HTMLElement[] = [];
+  protected doOnPickerOpen(picker: MatDatepicker<any>): void {
+    if (this.type === DatepickerType.month) {
+      this.zone.runOutsideAngular(() => {
+        this.windowRef.nativeWindow.requestAnimationFrame(() => {
+          const pickerCells = this.getPickerPanelElements(
+            picker,
+            '.mat-calendar-body-cell'
+          );
 
-    this.allPickers(picker => {
-      if (picker.open) {
-        pickerCells = pickerCells.concat(
-          this.getPickerPanelElements(picker, '.mat-calendar-body-cell')
-        );
-      }
-    });
-
-    if (pickerCells.length > 0) {
-      pickerCells.forEach((cell: HTMLElement) => {
-        cell.classList.add(
-          ...this.getDateClass(parse(cell.getAttribute('aria-label')))
-        );
+          pickerCells.forEach((cell: HTMLElement) => {
+            cell.classList.add(
+              ...this.getDateClass(parse(cell.getAttribute('aria-label')))
+            );
+          });
+        });
       });
     }
   }
