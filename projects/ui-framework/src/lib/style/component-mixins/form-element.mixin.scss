@@ -195,6 +195,7 @@ $input-focus-border-color: $grey-700;
 
   // states
 
+  .bfe-wrap:focus,
   .bfe-wrap.focused,
   .focused .bfe-wrap {
     border-color: $input-focus-border-color;

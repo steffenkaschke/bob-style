@@ -21,13 +21,15 @@
     .bfe-suffix {
       padding-right: 11px;
     }
-    &:not(:hover):not(.focused) {
-      .bfe-suffix {
-        display: none;
-        opacity: 0;
-      }
-      .bfe-input {
-        padding-right: $input-padding;
+    @include desktop {
+      &:not(:hover):not(.focused) {
+        .bfe-suffix {
+          display: none;
+          opacity: 0;
+        }
+        .bfe-input {
+          padding-right: $input-padding;
+        }
       }
     }
   }
@@ -40,17 +42,13 @@
     &.focused {
       box-shadow: 1px 0 0 $input-focus-border-color;
       position: relative;
+      z-index: 1;
     }
   }
 
   .end-date-wrap {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-
-    &.focused,
-    &:hover {
-      position: static;
-    }
   }
 
   .end-date-label {
