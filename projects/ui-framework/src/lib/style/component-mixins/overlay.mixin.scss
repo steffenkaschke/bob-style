@@ -71,3 +71,19 @@ $panel-arrow-size: 16px;
     }
   }
 }
+
+@mixin overlayHideArrow() {
+  .panel-position {
+    &:before,
+    &:after {
+      display: none !important;
+    }
+
+    &.panel-below {
+      top: 0;
+    }
+    &.panel-above {
+      bottom: 0;
+    }
+  }
+}

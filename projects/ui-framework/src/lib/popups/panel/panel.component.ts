@@ -8,7 +8,8 @@ import {
   ViewContainerRef,
   EventEmitter,
   Output,
-  NgZone
+  NgZone,
+  ChangeDetectorRef
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -21,11 +22,11 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { PanelPositionService } from './panel-position-service/panel-position.service';
 import { Subscription } from 'rxjs';
 import { PanelDefaultPosVer, PanelSize } from './panel.enum';
-import { concat, compact, get, invoke, debounce } from 'lodash';
+import { concat, compact, get, invoke, debounce, isEqual } from 'lodash';
 import { UtilsService } from '../../services/utils/utils.service';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
-import { filter } from 'rxjs/operators';
+import { filter, distinctUntilChanged } from 'rxjs/operators';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 
 const HOVER_DELAY_DURATION = 300;
@@ -64,7 +65,8 @@ export class PanelComponent implements OnInit, OnDestroy {
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService,
     private utilsService: UtilsService,
-    private zone: NgZone
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
   ) {
     this.mouseEnterDebounce = debounce(this.openPanel, HOVER_DELAY_DURATION);
     this.mouseLeaveDebounce = debounce(this.closePanel, HOVER_DELAY_DURATION);
@@ -173,12 +175,24 @@ export class PanelComponent implements OnInit, OnDestroy {
   private subscribeToPositions(
     positionStrategy: FlexibleConnectedPositionStrategy
   ): void {
-    this.positionChangeSubscriber = positionStrategy.positionChanges.subscribe(
-      change => {
+    this.positionChangeSubscriber = positionStrategy.positionChanges
+      .pipe(distinctUntilChanged(isEqual))
+      .subscribe(change => {
         this.positionClassList = this.panelPositionService.getPositionClassList(
           change
         );
-      }
-    );
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+          const elem = this.overlayRef.overlayElement.children[0];
+          elem.classList.remove('panel-above', 'panel-below');
+
+          if (this.positionClassList['panel-above']) {
+            elem.classList.add('panel-above');
+          } else {
+            elem.classList.add('panel-below');
+          }
+        }
+      });
   }
 }
