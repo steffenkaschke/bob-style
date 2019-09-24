@@ -1,4 +1,11 @@
-import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  inject,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 import { MultiSelectPanelComponent } from './multi-select-panel.component';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
@@ -10,16 +17,29 @@ import { CommonModule } from '@angular/common';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
 import { MultiListModule } from '../multi-list/multi-list.module';
 import { ListChange } from '../list-change/list-change';
+import { cold } from 'jasmine-marbles';
+import { UtilsService } from '../../../services/utils/utils.service';
+import createSpyObj = jasmine.createSpyObj;
 
 describe('MultiSelectPanelComponent', () => {
   let component: MultiSelectPanelComponent;
   let fixture: ComponentFixture<MultiSelectPanelComponent>;
+  let utilsServiceStub: jasmine.SpyObj<UtilsService>;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   let platform: Platform;
   let optionsMock: SelectGroupOption[];
 
   beforeEach(async(() => {
+    utilsServiceStub = createSpyObj('UtilsService', [
+      'getResizeEvent',
+      'getWindowKeydownEvent'
+    ]);
+    utilsServiceStub.getResizeEvent.and.returnValue(cold('-x-', { x: {} }));
+    utilsServiceStub.getWindowKeydownEvent.and.returnValue(
+      cold('-x-', { x: {} })
+    );
+
     optionsMock = [
       {
         groupName: '',
@@ -27,31 +47,32 @@ describe('MultiSelectPanelComponent', () => {
           {
             value: 'Basic info',
             id: '1',
-            selected: false,
+            selected: false
           },
           {
             value: 'Personal',
             id: '2',
-            selected: false,
-          },
-        ],
-      },
+            selected: false
+          }
+        ]
+      }
     ];
 
     TestBed.configureTestingModule({
       declarations: [
         MultiSelectPanelComponent,
-        MockComponent(ChevronButtonComponent),
+        MockComponent(ChevronButtonComponent)
       ],
       imports: [
         MultiListModule,
         OverlayModule,
         NoopAnimationsModule,
-        CommonModule,
+        CommonModule
       ],
       providers: [
-        PanelPositionService
-      ],
+        PanelPositionService,
+        { provide: UtilsService, useValue: utilsServiceStub }
+      ]
     })
       .compileComponents()
       .then(() => {
@@ -81,9 +102,9 @@ describe('MultiSelectPanelComponent', () => {
 
   describe('panel', () => {
     it('should have 2 options', () => {
-      const listOptions = (overlayContainerElement.querySelectorAll(
+      const listOptions = overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
-      ));
+      );
       expect(listOptions.length).toEqual(2);
       expect((listOptions[0] as HTMLElement).innerText).toContain('Basic info');
       expect((listOptions[1] as HTMLElement).innerText).toContain('Personal');
@@ -120,9 +141,9 @@ describe('MultiSelectPanelComponent', () => {
       ) as HTMLElement).click();
     });
     it('should indicate selected option', () => {
-      const listOptionsCb = (overlayContainerElement.querySelectorAll(
+      const listOptionsCb = overlayContainerElement.querySelectorAll(
         'b-multi-list .option .bchk-input'
-      ));
+      );
       expect((listOptionsCb[0] as HTMLInputElement).checked).toEqual(false);
       expect((listOptionsCb[1] as HTMLInputElement).checked).toEqual(true);
     });
