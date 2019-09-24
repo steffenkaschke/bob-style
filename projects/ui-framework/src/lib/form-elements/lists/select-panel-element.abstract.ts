@@ -60,9 +60,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService,
     protected utilsService: UtilsService,
-    protected DOM: DOMhelpers,
+    public DOM: DOMhelpers,
     protected zone: NgZone,
-    protected cd: ChangeDetectorRef
+    public cd: ChangeDetectorRef
   ) {
     super();
   }
