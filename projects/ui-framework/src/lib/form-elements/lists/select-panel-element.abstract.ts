@@ -6,7 +6,8 @@ import {
   ElementRef,
   AfterViewInit,
   NgZone,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnDestroy
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -23,11 +24,15 @@ import { BaseFormElement } from '../base-form-element';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { isEqual } from 'lodash';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { OverlayPositionClasses } from '../../types';
+import { UtilsService } from '../../services/utils/utils.service';
+import { outsideZone } from '../../services/utils/rxjs.operators';
+import { isKey } from '../../services/utils/functional-utils';
+import { Keys } from '../../enums';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
-  implements AfterViewInit {
+  implements AfterViewInit, OnDestroy {
   @ViewChild(CdkOverlayOrigin, { static: true })
   overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
@@ -47,15 +52,17 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   private templatePortal: TemplatePortal;
   private backdropClickSubscriber: Subscription;
   private positionChangeSubscriber: Subscription;
+  private windowKeydownSubscriber: Subscription;
   readonly tooltipType = TruncateTooltipType;
 
   protected constructor(
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService,
-    public DOM: DOMhelpers,
-    public zone: NgZone,
-    public cd: ChangeDetectorRef
+    protected utilsService: UtilsService,
+    protected DOM: DOMhelpers,
+    protected zone: NgZone,
+    protected cd: ChangeDetectorRef
   ) {
     super();
   }
@@ -71,6 +78,10 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
         }
       }, 0);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyPanel();
   }
 
   openPanel(): void {
@@ -100,6 +111,16 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       .subscribe(() => {
         this.onCancel();
       });
+
+    this.windowKeydownSubscriber = this.utilsService
+      .getWindowKeydownEvent()
+      .pipe(
+        outsideZone(this.zone),
+        filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
+      )
+      .subscribe(() => {
+        this.destroyPanel();
+      });
   }
 
   onCancel(): void {
@@ -111,6 +132,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     invoke(this.overlayRef, 'dispose');
     invoke(this.backdropClickSubscriber, 'unsubscribe');
     invoke(this.positionChangeSubscriber, 'unsubscribe');
+    invoke(this.windowKeydownSubscriber, 'unsubscribe');
     this.panelConfig = {};
     this.templatePortal = null;
     if (!this.cd['destroyed']) {

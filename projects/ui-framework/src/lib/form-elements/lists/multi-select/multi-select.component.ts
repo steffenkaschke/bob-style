@@ -4,7 +4,6 @@ import {
   forwardRef,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -26,6 +25,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { ListFooterActions } from '../list.interface';
 import { TruncateTooltipComponent } from '../../../popups/truncate-tooltip/truncate-tooltip.component';
 import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
+import { UtilsService } from '../../../services/utils/utils.service';
 
 @Component({
   selector: 'b-multi-select',
@@ -49,7 +49,7 @@ import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
   ]
 })
 export class MultiSelectComponent extends BaseSelectPanelElement
-  implements OnInit, OnChanges, OnDestroy {
+  implements OnInit, OnChanges {
   @ViewChild('triggerInput', { static: true })
   truncate: TruncateTooltipComponent;
 
@@ -82,13 +82,22 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
+    utilsService: UtilsService,
     DOM: DOMhelpers,
     zone: NgZone,
     cd: ChangeDetectorRef,
     private listChangeService: ListChangeService,
     private listModelService: ListModelService
   ) {
-    super(overlay, viewContainerRef, panelPositionService, DOM, zone, cd);
+    super(
+      overlay,
+      viewContainerRef,
+      panelPositionService,
+      utilsService,
+      DOM,
+      zone,
+      cd
+    );
   }
 
   ngOnInit(): void {
@@ -104,10 +113,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement
       this.selectedValuesMap = this.getSelectedValuesMap(this.options);
       this.setTriggerValue();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroyPanel();
   }
 
   onSelect(listChange: ListChange): void {

@@ -1,6 +1,17 @@
 import {
-  AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges,
-  OnDestroy, OnInit, Output, SimpleChanges, NgZone, ChangeDetectorRef, ViewContainerRef,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  NgZone,
+  ChangeDetectorRef,
+  ViewContainerRef
 } from '@angular/core';
 import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
@@ -25,17 +36,18 @@ const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
   templateUrl: './employees-showcase.component.html',
   styleUrls: [
     './employees-showcase.component.scss',
-    '../../form-elements/lists/list-panel.scss',
-  ],
+    '../../form-elements/lists/list-panel.scss'
+  ]
 })
 export class EmployeesShowcaseComponent extends BaseSelectPanelElement
   implements OnInit, OnChanges, OnDestroy, AfterViewInit {
-
   @Input() employees: EmployeeShowcase[] = [];
   @Input() avatarSize: AvatarSize = AvatarSize.mini;
   @Input() expandOnClick = true;
 
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
   @Output() clicked: EventEmitter<string> = new EventEmitter<string>();
 
   panelListOptions: SelectGroupOption[];
@@ -53,16 +65,24 @@ export class EmployeesShowcaseComponent extends BaseSelectPanelElement
   private openPanelRef = this.openPanel;
 
   constructor(
-    private utilsService: UtilsService,
     private host: ElementRef,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
+    utilsService: UtilsService,
     DOM: DOMhelpers,
     zone: NgZone,
-    cd: ChangeDetectorRef,
+    cd: ChangeDetectorRef
   ) {
-    super(overlay, viewContainerRef, panelPositionService, DOM, zone, cd);
+    super(
+      overlay,
+      viewContainerRef,
+      panelPositionService,
+      utilsService,
+      DOM,
+      zone,
+      cd
+    );
   }
 
   ngOnInit(): void {
@@ -85,9 +105,7 @@ export class EmployeesShowcaseComponent extends BaseSelectPanelElement
     /*
     overrides the open panel method to disable default open list on click option
     */
-    this.openPanel = this.expandOnClick
-      ? this.openPanelRef
-      : () => null;
+    this.openPanel = this.expandOnClick ? this.openPanelRef : () => null;
   }
 
   ngAfterViewInit(): void {
@@ -120,7 +138,9 @@ export class EmployeesShowcaseComponent extends BaseSelectPanelElement
   }
 
   private shouldShowThreeDotsButton(): boolean {
-    return !this.shuffleEmployeesMode && this.avatarsToFit < this.employees.length;
+    return (
+      !this.shuffleEmployeesMode && this.avatarsToFit < this.employees.length
+    );
   }
 
   private getPanelListOptions(): SelectGroupOption[] {
@@ -156,9 +176,7 @@ export class EmployeesShowcaseComponent extends BaseSelectPanelElement
   */
   private getAvatarsToFit(clientWidth: number, avatarGap: number): number {
     return floor(
-      (clientWidth - this.avatarSize) /
-      (this.avatarSize - avatarGap) +
-      1
+      (clientWidth - this.avatarSize) / (this.avatarSize - avatarGap) + 1
     );
   }
 
@@ -174,9 +192,13 @@ export class EmployeesShowcaseComponent extends BaseSelectPanelElement
 
   private subscribeToShuffleEmployees() {
     invoke(this.intervalSubscriber, 'unsubscribe');
-    if (this.shuffleEmployeesMode && this.avatarsToFit < this.employees.length) {
-      this.intervalSubscriber = interval(SHUFFLE_EMPLOYEES_INTERVAL)
-        .subscribe(() => this.shuffleEmployees());
+    if (
+      this.shuffleEmployeesMode &&
+      this.avatarsToFit < this.employees.length
+    ) {
+      this.intervalSubscriber = interval(SHUFFLE_EMPLOYEES_INTERVAL).subscribe(
+        () => this.shuffleEmployees()
+      );
     }
   }
 
