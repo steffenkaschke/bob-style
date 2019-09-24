@@ -105,11 +105,4 @@ describe('PanelComponent', () => {
       });
     });
   });
-  describe('windowKeydownSubscriber', () => {
-    it('should unsubscribe windowKeydownSubscriber', () => {
-      expect(component['windowKeydownSubscriber'].closed).toBe(false);
-      component.ngOnDestroy();
-      expect(component['windowKeydownSubscriber'].closed).toBe(true);
-    });
-  });
 });

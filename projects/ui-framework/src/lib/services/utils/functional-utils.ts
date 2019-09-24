@@ -87,7 +87,7 @@ export const simpleUID = (
 export const pass = (a: any): any => a;
 
 export const isKey = (key: string, expected: string): boolean =>
-  key.toUpperCase() === expected.toUpperCase();
+  key && expected && key.toUpperCase() === expected.toUpperCase();
 
 export const isMetaKey = (key: string): boolean =>
   metaKeys.includes(key as any);
