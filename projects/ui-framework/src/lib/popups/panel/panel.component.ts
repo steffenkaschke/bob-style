@@ -60,10 +60,10 @@ export class PanelComponent implements OnInit, OnDestroy {
   private templatePortal: TemplatePortal;
   private backdropClickSubscriber: Subscription;
   private positionChangeSubscriber: Subscription;
+  private windowKeydownSubscriber: Subscription;
+  public positionClassList: OverlayPositionClasses = {};
   readonly mouseEnterDebounce: any;
   readonly mouseLeaveDebounce: any;
-  public positionClassList: OverlayPositionClasses = {};
-  private windowKeydownSubscriber: Subscription;
 
   constructor(
     private overlay: Overlay,

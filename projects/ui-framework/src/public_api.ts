@@ -353,6 +353,8 @@ export { ActionBarComponent } from './lib/navigation/action-bar/action-bar.compo
 export { PanelModule } from './lib/popups/panel/panel.module';
 export { PanelComponent } from './lib/popups/panel/panel.component';
 export { PanelSize, PanelDefaultPosVer } from './lib/popups/panel/panel.enum';
+export { PanelPositionService } from './lib/popups/panel/panel-position-service/panel-position.service';
+export * from './lib/popups/panel/panel-position-service/panel-position.const';
 // Dialog Module
 export { DialogModule } from './lib/popups/dialog/dialog.module';
 export { DialogComponent } from './lib/popups/dialog/dialog.component';
