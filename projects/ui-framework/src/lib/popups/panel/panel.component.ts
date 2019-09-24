@@ -2,7 +2,6 @@ import {
   Component,
   Input,
   OnDestroy,
-  OnInit,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
@@ -37,7 +36,7 @@ const HOVER_DELAY_DURATION = 300;
   templateUrl: 'panel.component.html',
   styleUrls: ['panel.component.scss']
 })
-export class PanelComponent implements OnInit, OnDestroy {
+export class PanelComponent implements OnDestroy {
   @ViewChild(CdkOverlayOrigin, { static: true })
   overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
@@ -77,24 +76,7 @@ export class PanelComponent implements OnInit, OnDestroy {
     this.mouseLeaveDebounce = debounce(this.closePanel, HOVER_DELAY_DURATION);
   }
 
-  ngOnInit(): void {
-    this.windowKeydownSubscriber = this.utilsService
-      .getWindowKeydownEvent()
-      .pipe(
-        outsideZone(this.zone),
-        filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
-      )
-      .subscribe(() => {
-        this.zone.run(() => {
-          this.closePanel();
-        });
-      });
-  }
-
   ngOnDestroy(): void {
-    if (this.windowKeydownSubscriber) {
-      this.windowKeydownSubscriber.unsubscribe();
-    }
     this.destroyPanel();
   }
 
@@ -135,6 +117,18 @@ export class PanelComponent implements OnInit, OnDestroy {
         .subscribe(() => {
           this.destroyPanel();
         });
+
+      this.windowKeydownSubscriber = this.utilsService
+        .getWindowKeydownEvent()
+        .pipe(
+          outsideZone(this.zone),
+          filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
+        )
+        .subscribe(() => {
+          this.zone.run(() => {
+            this.closePanel();
+          });
+        });
     }
   }
 
@@ -147,6 +141,7 @@ export class PanelComponent implements OnInit, OnDestroy {
       invoke(this.overlayRef, 'dispose');
       invoke(this.backdropClickSubscriber, 'unsubscribe');
       invoke(this.positionChangeSubscriber, 'unsubscribe');
+      invoke(this.windowKeydownSubscriber, 'unsubscribe');
       this.panelConfig = {};
       this.templatePortal = null;
       this.overlayRef = null;
