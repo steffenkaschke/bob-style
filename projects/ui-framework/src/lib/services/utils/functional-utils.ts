@@ -282,8 +282,4 @@ export const isIterable = (smth: any): boolean => {
 };
 
 export const lastItem = (arr: any[]): any =>
-  !isIterable(arr)
-    ? arr
-    : isArray(arr)
-    ? arr[arr.length - 1]
-    : Array.from(arr)[arr.length - 1];
+  !isIterable(arr) ? arr : arr[arr.length - 1];
