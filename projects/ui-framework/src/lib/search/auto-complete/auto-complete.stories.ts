@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
-import { object, text, withKnobs } from '@storybook/addon-knobs/angular';
+import { object, text, withKnobs, boolean } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,6 +17,7 @@ const template = `
 <b-auto-complete [options]="options"
                  [label]="label"
                  [placeholder]="placeholder"
+                 [displayOptionsOnFocus]="displayOptionsOnFocus"
                  (searchChange)="searchChange($event)"
                  (optionSelect)="optionSelect($event)">
 </b-auto-complete>
@@ -43,6 +44,7 @@ const note = `
   options | AutoCompleteOption[] | options for the select list | none
   searchChange | action | search value string | none
   optionSelect | action | AutoCompleteOption | none
+  displayOptionsOnFocus | boolean | opens list on focus | false
 
   ~~~
   ${template}
@@ -65,6 +67,7 @@ inputStories.add(
       props: {
         label: text('label', ''),
         placeholder: text('placeholder', 'Search auto-complete'),
+        displayOptionsOnFocus: boolean('displayOptionsOnFocus', false),
         options: object('options', optionsMock),
         searchChange: action('searchChange'),
         optionSelect: action('optionSelect')

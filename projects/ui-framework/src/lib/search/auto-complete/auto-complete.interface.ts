@@ -1,5 +1,5 @@
 export interface AutoCompleteOption {
   value: string;
-  subText: string;
+  subText?: string;
   id: string | number;
 }

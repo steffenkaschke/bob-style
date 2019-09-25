@@ -41,10 +41,10 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
   @Input() options: AutoCompleteOption[];
+  @Input() displayOptionsOnFocus = false;
+
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
-  @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<
-    AutoCompleteOption
-  >();
+  @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<AutoCompleteOption>();
 
   positionClassList: OverlayPositionClasses = {};
   searchValue = '';
@@ -62,7 +62,8 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService
-  ) {}
+  ) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'options')) {
@@ -73,7 +74,9 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
 
   onSearchChange(searchVal: string): void {
     this.searchValue = searchVal;
-    if (this.searchValue.length > 0) {
+    if (this.displayOptionsOnFocus) {
+      this.invokePanelOpen();
+    } else if (this.searchValue.length > 0) {
       this.invokePanelOpen();
     } else {
       this.invokePanelDestroy();
@@ -83,6 +86,12 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
       this.invokePanelDestroy();
     }
     this.searchChange.emit(this.searchValue);
+  }
+
+  onSearchFocus(): void {
+    if (this.displayOptionsOnFocus) {
+      this.invokePanelOpen();
+    }
   }
 
   onOptionSelect(option: AutoCompleteOption): void {
@@ -175,7 +184,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     const matcher = new RegExp(escapeRegExp(this.searchValue), 'i');
     return filter(
       this.options,
-      option => option.value.match(matcher) || option.subText.match(matcher)
+      option => option.value.match(matcher) || (option.subText && option.subText.match(matcher))
     );
   }
 }
