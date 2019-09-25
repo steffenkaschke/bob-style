@@ -36,6 +36,10 @@
 ::ng-deep {
   .b-select-backdrop {
     opacity: 0;
+
+    & + .cdk-overlay-connected-position-bounding-box {
+      height: 100% !important;
+    }
   }
 
   .b-select-panel {
@@ -56,11 +60,21 @@
       border-top-width: 0;
       border-top-right-radius: 0;
       border-top-left-radius: 0;
+
+      b-search .bfe-wrap {
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+      }
     }
     .panel-above {
       border-bottom-width: 0;
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
+
+      b-list-footer {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
     }
   }
 }
