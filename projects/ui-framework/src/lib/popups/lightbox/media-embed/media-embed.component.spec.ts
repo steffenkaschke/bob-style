@@ -4,6 +4,7 @@ import { LightboxModule } from '../lightbox.module';
 import { MediaEmbedComponent } from './media-embed.component';
 import { simpleChange } from '../../../services/utils/test-helpers';
 import { MediaType } from './media-embed.enum';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 describe('MediaEmbedComponent', () => {
   let component: MediaEmbedComponent;
@@ -12,7 +13,7 @@ describe('MediaEmbedComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [LightboxModule],
+      imports: [LightboxModule, OverlayModule],
       declarations: [],
       providers: [],
       schemas: [NO_ERRORS_SCHEMA]

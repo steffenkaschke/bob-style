@@ -45,7 +45,7 @@ export const isNotEmptyArray = (val: any): boolean =>
 export const isEmptyArray = (val: any): boolean => !isNotEmptyArray(val);
 
 export const isObject = (val: any): boolean =>
-  val && !isArray(val) && val === Object(val);
+  val && !isArray(val) && typeof val !== 'function' && val === Object(val);
 
 export const hasProp = (obj: object, key: string): boolean =>
   isObject(obj) && obj.hasOwnProperty(key);
@@ -273,3 +273,13 @@ export const cloneValue = (value: any) =>
     : isArray(value)
     ? value.slice(0)
     : value;
+
+export const isIterable = (smth: any): boolean => {
+  if (!smth || isNumber(smth) || isString(smth)) {
+    return false;
+  }
+  return typeof smth[Symbol.iterator] === 'function';
+};
+
+export const lastItem = (arr: any[]): any =>
+  !isIterable(arr) ? arr : arr[arr.length - 1];

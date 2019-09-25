@@ -6,15 +6,12 @@ $sizeLarge: 44px;
 
 @mixin Button($type: null, $basics: true) {
   @if $basics {
+    @include button-reset();
     @include b-body($addCssVars: false);
     @include flex-align;
     box-sizing: border-box;
-    width: 100%;
-    outline: none;
-    border: none;
     border-radius: $border-radius;
-    user-select: none;
-    white-space: nowrap;
+    width: 100%;
 
     &,
     &[disabled] {
