@@ -40,6 +40,7 @@ export class SearchComponent implements OnChanges {
   public readonly inputTypes = InputTypes;
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() searchFocus: EventEmitter<string> = new EventEmitter<string>();
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value) {
@@ -50,6 +51,7 @@ export class SearchComponent implements OnChanges {
   onFocus(): void {
     this.inputFocused = true;
     this.searchIconColor = IconColor.dark;
+    this.searchFocus.emit();
   }
 
   onBlur(): void {
