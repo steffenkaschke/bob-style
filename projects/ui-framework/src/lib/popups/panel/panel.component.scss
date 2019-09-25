@@ -56,7 +56,8 @@
     }
   }
 
-  .cdk-overlay-connected-position-bounding-box {
+  html:not(.cdk-global-scrollblock)
+    .cdk-overlay-connected-position-bounding-box {
     @include desktop {
       height: 100% !important;
     }
