@@ -1,0 +1,16 @@
+@import '~bob-style/style/common-imports';
+@import '~bob-style/style/form-elements/checkbox.mixin';
+
+:host ::ng-deep {
+  @include checkbox(
+    $input-selector: null,
+    $checkbox-selector:
+      '.ag-icon-checkbox-checked,.ag-icon-checkbox-unchecked,.ag-icon-checkbox-indeterminate',
+    $checked-selector: '.ag-icon-checkbox-checked',
+    $disabled-selector: null,
+    $required-selector: null,
+    $indeterminate-selector: '.ag-icon-checkbox-indeterminate',
+    $hover-selector:
+      '.ag-icon-checkbox-checked:hover,.ag-icon-checkbox-unchecked:hover,.ag-icon-checkbox-indeterminate:hover'
+  );
+}

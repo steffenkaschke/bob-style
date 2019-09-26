@@ -1,0 +1,10 @@
+<p *ngFor="let cell of row; index as index;"
+   b-table-card-cell
+   [index]="index"
+   [cell]="cell"
+   [attr.aria-label]="meta[index]?.name"
+   [ngClass]="cell.class"
+   [ngStyle]="style ? style[index] : null"
+   (click)="onCellClicked(cell, index)"
+   role="cell">
+</p>

@@ -1,0 +1,17 @@
+<span *ngIf="ifString(cell.data) || !cell.data"
+      [b-truncate-tooltip]="2"
+      [type]="tooltipType.css"
+      [trustCssVars]="true"
+      class="text">{{ cell.data || '—' }}</span>
+
+<ng-container *ngIf="ifArray(cell.data)">
+  <span *ngFor="let line of cell.data"
+        [b-truncate-tooltip]="1"
+        [type]="tooltipType.css"
+        [trustCssVars]="true"
+        class="text">{{ line }}</span>
+</ng-container>
+
+<b-component-renderer *ngIf="ifComponent(cell.data)"
+                      [render]="cell.data"
+                      (click)="onComponentClick($event, cell.data)"></b-component-renderer>
