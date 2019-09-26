@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { BaseInputElement } from '../base-input-element';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 
 @Component({
   selector: 'b-textarea',
@@ -25,7 +26,11 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class TextareaComponent extends BaseInputElement {
-  constructor(zone: NgZone, cd: ChangeDetectorRef) {
-    super(zone, cd);
+  constructor(
+    zone: NgZone,
+    cd: ChangeDetectorRef,
+    kbrdCntrlSrvc: FormElementKeyboardCntrlService
+  ) {
+    super(zone, cd, kbrdCntrlSrvc);
   }
 }

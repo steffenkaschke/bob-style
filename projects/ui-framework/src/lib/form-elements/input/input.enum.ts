@@ -1,6 +1,6 @@
 export enum InputTypes {
   text = 'text',
-  number = 'tel',
+  number = 'number',
   email = 'email',
   password = 'password',
   search = 'search',

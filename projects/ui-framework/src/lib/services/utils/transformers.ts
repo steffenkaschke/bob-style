@@ -9,7 +9,9 @@ import {
   getType,
   isDateISO8601,
   isDateFormat,
-  hasProp
+  hasProp,
+  isNumber,
+  parseToNumber
 } from './functional-utils';
 
 import { parse, format, isDate } from 'date-fns';
@@ -82,8 +84,16 @@ export const arrayOfValuesToArrayOfObjects = (key: string) => (
   return value.map(valueToObjectKey(key));
 };
 
-export const asNumber = (inputType: InputTypes, value: any) =>
-  inputType === InputTypes.number ? parseFloat(value) : value;
+export const asNumber = (inputType: InputTypes, value: any) => {
+  if (inputType !== InputTypes.number || isNullOrUndefined(value)) {
+    return value;
+  }
+  const parsed = parseToNumber(value);
+  if (isNaN(parsed)) {
+    console.warn(`Value (${stringify(value)}) is not parseable to number.`);
+  }
+  return parsed === parsed ? parsed : undefined;
+};
 
 // -------------------------------
 // Typecheckers
@@ -135,7 +145,7 @@ export const stringyOrFail = value => {
   if (isNullOrUndefined(value)) {
     return value;
   }
-  if (isArray(value) || isObject(value) || typeof value === 'boolean') {
+  if (!(isString(value) || isNumber(value))) {
     throw new Error(
       `Value (${stringify(value)}) should not be ${getType(
         value

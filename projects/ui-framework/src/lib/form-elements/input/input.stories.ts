@@ -31,6 +31,8 @@ const template = `
         [hideLabelOnFocus]="hideLabelOnFocus"
         [minChars]="minChars"
         [maxChars]="maxChars"
+        [min]="min"
+        [max]="max"
         [readonly]="readonly"
         [disabled]="disabled"
         [required]="required"
@@ -65,6 +67,8 @@ const note = `
   hideLabelOnFocus | boolean | if true: there will be no label above input, label text (if present) will be used as placeholder
   minChars | number | minimum length
   maxChars | number | maximum length
+  min | number | (only relevent for number inputs) minimum value (value will be corrected on blur)
+  max | number | (only relevent for number inputs) maximum value (value will be corrected on blur)
   readonly | boolean | disables input
   disabled | boolean | is field disabled
   required | boolean | is field required
@@ -91,6 +95,8 @@ inputStories.add(
         placeholder: text('placeholder', 'Input placeholder'),
         minChars: number('minChars', ''),
         maxChars: number('maxChars', 30),
+        min: number('min', 5),
+        max: number('max', 30),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         readonly: boolean('readonly', false),

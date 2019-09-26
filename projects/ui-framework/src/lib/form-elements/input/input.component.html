@@ -15,9 +15,9 @@
          class="bfe-input"
          [attr.id]="id"
          [attr.name]="id"
-         [type]="inputType"
+         [type]="inputType === inputTypes.number ? inputTypes.tel : inputType"
          [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
-         [value]="value"
+         [value]="value ? value : ''"
          [autocomplete]="enableBrowserAutoComplete"
          [disabled]="disabled"
          [required]="required"
@@ -25,9 +25,10 @@
          [attr.minlength]="minChars || null"
          [attr.maxlength]="maxChars || null"
          (input)="onInputChange($event)"
-         (blur)="onInputBlur();"
+         (blur)="onInputBlur($event);"
          (focus)="onInputFocus()"
-         (keyup.outside-zone)="onInputKey($event)">
+         (keydown.outside-zone)="onInputKeydown($event)"
+         (keyup.outside-zone)="onInputKeyUp($event)">
 
   <div *ngIf="hasSuffix || showSuffix"
        class="bfe-suffix"

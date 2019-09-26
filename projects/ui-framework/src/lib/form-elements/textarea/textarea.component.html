@@ -16,9 +16,9 @@
             [attr.minlength]="minChars || null"
             [attr.maxlength]="maxChars || null"
             (input)="onInputChange($event)"
-            (blur)="onInputBlur()"
+            (blur)="onInputBlur($event)"
             (focus)="onInputFocus()"
-            (keyup.outside-zone)="onInputKey($event)"></textarea>
+            (keyup.outside-zone)="onInputKeyUp($event)"></textarea>
 </div>
 <p b-input-message
    *ngIf="hintMessage || warnMessage || errorMessage || minChars || maxChars"

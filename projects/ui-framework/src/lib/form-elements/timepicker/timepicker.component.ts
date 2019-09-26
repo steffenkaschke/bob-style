@@ -18,7 +18,7 @@ import { timeyOrFail } from '../../services/utils/transformers';
 import { InputEventType } from '../form-elements.enum';
 import { Keys } from '../../enums';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
-import { DateTimeInputService } from '../datepicker/date-time-input.service';
+import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 
 interface ParseConfig {
   minValue?: number;
@@ -59,7 +59,7 @@ export class TimePickerComponent extends BaseFormElement {
   constructor(
     private cd: ChangeDetectorRef,
     private zone: NgZone,
-    private dtInputSrvc: DateTimeInputService
+    private kbrdCntrlSrvc: FormElementKeyboardCntrlService
   ) {
     super();
     this.inputTransformers = [
@@ -86,7 +86,7 @@ export class TimePickerComponent extends BaseFormElement {
   readonly iconColor = IconColor;
 
   onInputKeydown(event: KeyboardEvent) {
-    if (!this.dtInputSrvc.filterAllowedKeys(event, /[0-9]/)) {
+    if (!this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9]/)) {
       return;
     }
 

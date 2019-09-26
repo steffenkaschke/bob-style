@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { DateTimeInputService } from './date-time-input.service';
+import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 
 @NgModule({
   declarations: [DatepickerComponent],
@@ -19,6 +20,10 @@ import { DateTimeInputService } from './date-time-input.service';
   ],
   exports: [DatepickerComponent],
   entryComponents: [],
-  providers: [DateTimeInputService, EventManagerPlugins[0]]
+  providers: [
+    FormElementKeyboardCntrlService,
+    DateTimeInputService,
+    EventManagerPlugins[0]
+  ]
 })
 export class DatepickerModule {}
