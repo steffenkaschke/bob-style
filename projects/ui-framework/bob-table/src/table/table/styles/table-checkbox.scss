@@ -1,5 +1,5 @@
-@import '~bob-style/style/common-imports';
-@import '~bob-style/style/form-elements/checkbox.mixin';
+@import '../../../../../src/lib/style/common-imports';
+@import '../../../../../src/lib/style/form-elements/checkbox.mixin';
 
 :host ::ng-deep {
   @include checkbox(
