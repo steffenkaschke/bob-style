@@ -20,11 +20,13 @@ const splitToArray = (name: string, test = /[^\w-]+/): string[] => {
 
 const getEventsArray = (eventName: string): string[] =>
   splitToArray(eventName, /[^\w-.]+/).filter(
-    name => !globalElems.includes(name)
+    name => !globalElems.includes(name as GlobalEventModifiers)
   );
 
 const getNativeEventsArray = (eventName: string): string[] =>
-  splitToArray(eventName).filter(name => allowedNativeEvents.includes(name));
+  splitToArray(eventName).filter(name =>
+    allowedNativeEvents.includes(name as NativeEvents)
+  );
 
 const getNativeEventName = (eventName: string): string => {
   return getNativeEventsArray(eventName)[0];
@@ -55,7 +57,9 @@ export class OutsideZonePlugin {
     return (
       splitName.length === 2 &&
       splitName[1] === EventModifiers.outsideZone &&
-      allowedNativeEvents.includes(getNativeEventName(splitName[0]))
+      allowedNativeEvents.includes(getNativeEventName(
+        splitName[0]
+      ) as NativeEvents)
     );
   }
 

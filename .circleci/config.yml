@@ -11,7 +11,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           key: bob-style-{{ .Branch }}-{{ checksum "package-lock.json" }}
-      - run: npm install
+      - run: npm ci
       - run: npm install bob-style --no-save
       - save_cache:
           key: bob-style-{{ .Branch }}-{{ checksum "package-lock.json" }}

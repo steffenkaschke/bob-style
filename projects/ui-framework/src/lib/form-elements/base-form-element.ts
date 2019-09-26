@@ -93,13 +93,14 @@ export abstract class BaseFormElement
   }
 
   writeValue(value: any): void {
-    if (isNullOrUndefined(value) && this.baseValue !== undefined) {
-      this.value = cloneValue(this.baseValue);
-    } else if (value !== undefined) {
+    if (value !== undefined) {
       this.value = this.inputTransformers.reduce(
         (previousResult, fn) => fn(previousResult),
         value
       );
+    }
+    if (isNullOrUndefined(this.value) && this.baseValue !== undefined) {
+      this.value = cloneValue(this.baseValue);
     }
   }
 
@@ -121,6 +122,9 @@ export abstract class BaseFormElement
         (previousResult, fn) => fn(previousResult),
         value
       );
+      if (value === undefined && this.baseValue !== undefined) {
+        value = cloneValue(this.baseValue);
+      }
 
       if (
         eventName &&

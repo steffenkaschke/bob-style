@@ -1,8 +1,6 @@
 @import '../../style/common-imports';
 @import '../card/card.mixin';
 
-$grid-gap: 16px;
-
 :host {
   display: block;
   --card-grid-gap: times8(2);
@@ -11,7 +9,7 @@ $grid-gap: 16px;
 
 .cards-list {
   display: grid;
-  grid-gap: $grid-gap;
+  grid-gap: --card-grid-gap;
   grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
 }
 

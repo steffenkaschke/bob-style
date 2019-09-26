@@ -28,9 +28,11 @@ export const keysFromArrayOrObject = (smth: string[] | {}): string[] =>
 export const getKeyByValue = (object: object, value: any) =>
   Object.keys(object).find(key => object[key] === value);
 
-export const isString = (val: any): boolean => val && typeof val === 'string';
+export const isString = (val: any): boolean =>
+  val === '' || (val && typeof val === 'string');
 
-export const isNumber = (val: any): boolean => val && typeof val === 'number';
+export const isNumber = (val: any): boolean =>
+  val === 0 || (val && typeof val === 'number');
 
 export const isNotEmptyString = (val: any): boolean =>
   isString(val) && val.trim() !== '';
@@ -95,7 +97,9 @@ export const isMetaKey = (key: string): boolean =>
 export const asArray = (smth: any): any[] =>
   !isNullOrUndefined(smth) ? (isArray(smth) ? smth : [smth]) : [];
 
-export const asNumber = (smth: any): number => parseInt(smth, 10);
+export const asNumber = (smth: any): number => (smth ? parseFloat(smth) : 0);
+
+export const parseToNumber = asNumber;
 
 export const compareAsNumbers = (
   a: string | number,

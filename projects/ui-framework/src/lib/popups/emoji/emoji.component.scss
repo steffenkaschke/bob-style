@@ -19,9 +19,9 @@ li {
 
 ::ng-deep .b-panel.emoji-panel {
   @include animate(zoom-in, 0.2s, $keyframes: true);
-  margin: 0 auto;
   width: $icon-width * $icons-in-row + $emoji-padding * 2;
   transform-origin: bottom center;
+
   .panel-position {
     max-width: 100%;
   }

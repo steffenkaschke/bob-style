@@ -11,6 +11,8 @@ import {
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
+import { InputTypes } from './input.enum';
 
 @Component({
   selector: 'b-input',
@@ -30,8 +32,13 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
   ]
 })
 export class InputComponent extends BaseInputElement implements AfterViewInit {
-  constructor(private DOM: DOMhelpers, zone: NgZone, cd: ChangeDetectorRef) {
-    super(zone, cd);
+  constructor(
+    private DOM: DOMhelpers,
+    zone: NgZone,
+    cd: ChangeDetectorRef,
+    kbrdCntrlSrvc: FormElementKeyboardCntrlService
+  ) {
+    super(zone, cd, kbrdCntrlSrvc);
   }
   @ViewChild('input', { static: true }) input: ElementRef;
   @ViewChild('prefix', { static: false }) prefix: ElementRef;
@@ -53,5 +60,11 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
         }
       }, 0);
     });
+  }
+
+  public onInputKeydown(event: KeyboardEvent) {
+    if (this.inputType === InputTypes.number) {
+      this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9.]/);
+    }
   }
 }

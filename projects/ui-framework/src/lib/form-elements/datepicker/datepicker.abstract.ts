@@ -36,6 +36,7 @@ import { InputEventType, FormEvents } from '../form-elements.enum';
 import { InputEvent } from '../input/input.interface';
 import { set } from 'lodash';
 import { DatepickerType } from './datepicker.enum';
+import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, OnDestroy {
@@ -45,6 +46,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     protected DOM: DOMhelpers,
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
+    protected kbrdCntrlSrvc: FormElementKeyboardCntrlService,
     protected dtInputSrvc: DateTimeInputService
   ) {
     super();
@@ -325,7 +327,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public onInputKeydown(event: KeyboardEvent, index: number = 0): void {
-    this.dtInputSrvc.filterAllowedKeys(event);
+    this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9,\W]/i);
 
     if (isKey(event.key, Keys.backspace) || isKey(event.key, Keys.delete)) {
       this.skipParse = true;

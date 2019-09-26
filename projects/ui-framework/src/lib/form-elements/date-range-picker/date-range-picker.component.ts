@@ -30,6 +30,7 @@ import {
 import { Overlay } from '@angular/cdk/overlay';
 import { DatepickerType } from '../datepicker/datepicker.enum';
 import { parse, startOfMonth, lastDayOfMonth } from 'date-fns';
+import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 
 interface DateRangePickerValueLocal {
   startDate: Date | string;
@@ -89,9 +90,10 @@ export class DateRangePickerComponent extends BaseDatepickerElement
     DOM: DOMhelpers,
     cd: ChangeDetectorRef,
     zone: NgZone,
+    kbrdCntrlSrvc: FormElementKeyboardCntrlService,
     dtInputSrvc: DateTimeInputService
   ) {
-    super(windowRef, mobileService, DOM, cd, zone, dtInputSrvc);
+    super(windowRef, mobileService, DOM, cd, zone, kbrdCntrlSrvc, dtInputSrvc);
 
     this.inputTransformers = [
       objectHasKeyOrFail(['from', 'to'], true),

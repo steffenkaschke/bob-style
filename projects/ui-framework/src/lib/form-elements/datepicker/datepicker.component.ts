@@ -18,6 +18,7 @@ import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { startOfMonth } from 'date-fns';
 import { DatepickerType } from './datepicker.enum';
+import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 
 @Component({
   selector: 'b-datepicker',
@@ -52,9 +53,10 @@ export class DatepickerComponent extends BaseDatepickerElement {
     DOM: DOMhelpers,
     cd: ChangeDetectorRef,
     zone: NgZone,
+    kbrdCntrlSrvc: FormElementKeyboardCntrlService,
     dtInputSrvc: DateTimeInputService
   ) {
-    super(windowRef, mobileService, DOM, cd, zone, dtInputSrvc);
+    super(windowRef, mobileService, DOM, cd, zone, kbrdCntrlSrvc, dtInputSrvc);
 
     this.inputTransformers = [dateOrFail];
 
