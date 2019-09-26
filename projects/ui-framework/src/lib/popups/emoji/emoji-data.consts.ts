@@ -1,7 +1,8 @@
 import { find } from 'lodash';
-import {EmojiCategories} from './emoji.interface';
-export const EMOJI_DATA: EmojiCategories = {
-  people: [
+import {EmojiCategory} from './emoji.interface';
+
+export const EMOJI_DATA: EmojiCategory[] = [
+  {name: 'people', data: [
     {
     code: '1F600',
     shortname: 'grinning',
@@ -982,8 +983,8 @@ export const EMOJI_DATA: EmojiCategories = {
     description: 'closed umbrella',
     tags: ['weather', 'rain'],
     icon: '🌂'
-  }],
-  nature: [
+  }]},
+  {name: 'nature', data: [
     {
     code: '1F436',
     shortname: 'dog',
@@ -1775,8 +1776,8 @@ export const EMOJI_DATA: EmojiCategories = {
     description: 'umbrella with rain drops',
     tags: ['rain', 'weather'],
     icon: '☔'
-  }],
-  foods: [
+  }]},
+  {name: 'foods', data: [
     {
     code: '1F34F',
     shortname: 'green_apple',
@@ -2169,8 +2170,8 @@ export const EMOJI_DATA: EmojiCategories = {
     description: 'fork and knife',
     tags: ['cutlery'],
     icon: '🍴'
-  }],
-  activity: [
+  }]},
+  {name: 'activity', data: [
     {
     code: '26BD',
     shortname: 'soccer',
@@ -2395,8 +2396,8 @@ export const EMOJI_DATA: EmojiCategories = {
     description: 'slot machine',
     tags: [],
     icon: '🎰'
-  }],
-  places: [
+  }]},
+  {name: 'places', data: [
     {
     code: '1F695',
     shortname: 'taxi',
@@ -2957,8 +2958,8 @@ export const EMOJI_DATA: EmojiCategories = {
     description: 'bridge at night',
     tags: [],
     icon: '🌉'
-  }, {code: '1F301', shortname: 'foggy', category: 'places', description: 'foggy', tags: ['karl'], icon: '🌁'}],
-  objects: [
+  }, {code: '1F301', shortname: 'foggy', category: 'places', description: 'foggy', tags: ['karl'], icon: '🌁'}]},
+  {name: 'objects', data: [
     {
     code: '231A',
     shortname: 'watch',
@@ -3743,8 +3744,8 @@ export const EMOJI_DATA: EmojiCategories = {
     description: 'unlocked',
     tags: ['security'],
     icon: '🔓'
-  }],
-  symbols: [
+  }]},
+  {name: 'symbols', data: [
     {
     code: '2764',
     shortname: 'heart',
@@ -5355,8 +5356,8 @@ export const EMOJI_DATA: EmojiCategories = {
     description: 'twelve-thirty',
     tags: [],
     icon: '🕧'
-  }],
-  flags: [
+  }]},
+  {name: 'flags', data: [
     {
     code: '1F3C1',
     shortname: 'checkered_flag',
@@ -5379,16 +5380,20 @@ export const EMOJI_DATA: EmojiCategories = {
     tags: [],
     icon: '🎌'
   }]
-};
+}];
+
+const peopleCat = EMOJI_DATA.find(cat => cat.name === 'people');
+console.log('abc' + JSON.stringify(peopleCat));
 
 export const COMMON_EMOJIS =
   [
-    find(EMOJI_DATA.people, {shortname: 'grinning'}),
-    find(EMOJI_DATA.people, {shortname: 'joy'}),
-    find(EMOJI_DATA.people, {shortname: 'scream'}),
-    find(EMOJI_DATA.people, {shortname: 'thumbs_up' }),
-    find(EMOJI_DATA.people, {shortname: 'thumbs_down' }),
-    find(EMOJI_DATA.people, {shortname: 'clap' }),
-    find(EMOJI_DATA.foods, {shortname: 'beers' }),
-    find(EMOJI_DATA.symbols, {shortname: 'heart' })
+    find(peopleCat.data, {shortname: 'grinning'}),
+    find(peopleCat.data, {shortname: 'joy'}),
+    find(peopleCat.data, {shortname: 'scream'}),
+    find(peopleCat.data, {shortname: 'thumbs_up' }),
+    find(peopleCat.data, {shortname: 'thumbs_down' }),
+    find(peopleCat.data, {shortname: 'clap' }),
+    find(EMOJI_DATA.find(cat => cat.name === 'foods').data, {shortname: 'beers' }),
+    find(EMOJI_DATA.find(cat => cat.name === 'symbols').data, {shortname: 'heart' })
   ];
+console.log(COMMON_EMOJIS);

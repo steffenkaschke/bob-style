@@ -1,12 +1,6 @@
-export interface EmojiCategories {
-  people?: Emoji[];
-  nature?: Emoji[];
-  foods?: Emoji[];
-  activity?: Emoji[];
-  places?: Emoji[];
-  objects?: Emoji[];
-  symbols?: Emoji[];
-  flags?: Emoji[];
+export interface EmojiCategory {
+  name: string;
+  data: Emoji[];
 }
 
 export interface Emoji {
