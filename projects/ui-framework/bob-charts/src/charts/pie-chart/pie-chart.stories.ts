@@ -1,9 +1,9 @@
 import {storiesOf} from '@storybook/angular';
 import {boolean, number, object, text, withKnobs} from '@storybook/addon-knobs/angular';
-import {ComponentGroupType} from '../../consts';
+import {ComponentGroupType} from '../../../../src/lib/consts';
 import {ChartsModule} from '../charts.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {StoryBookLayoutModule} from '../../story-book-layout/story-book-layout.module';
+import {StoryBookLayoutModule} from '../../../../src/lib/story-book-layout/story-book-layout.module';
 import {PIE_CHART_DATA_MOCK} from './pie-chart.mock';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(

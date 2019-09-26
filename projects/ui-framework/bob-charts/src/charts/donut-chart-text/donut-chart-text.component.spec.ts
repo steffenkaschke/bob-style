@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {DonutChartTextComponent} from './donut-chart-text.component';
 import {PieChartComponent} from '../pie-chart/pie-chart.component';
-import {TypographyModule} from '../../typography/typography.module';
+import {TypographyModule} from 'bob-style';
 
 describe('DonutChartTextComponent', () => {
   let component: DonutChartTextComponent;
