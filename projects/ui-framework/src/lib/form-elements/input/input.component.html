@@ -17,7 +17,7 @@
          [attr.name]="id"
          [type]="inputType === inputTypes.number ? inputTypes.tel : inputType"
          [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
-         [value]="value ? value : ''"
+         [value]="value"
          [autocomplete]="enableBrowserAutoComplete"
          [disabled]="disabled"
          [required]="required"
