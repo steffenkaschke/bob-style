@@ -5383,7 +5383,6 @@ export const EMOJI_DATA: EmojiCategory[] = [
 }];
 
 const peopleCat = EMOJI_DATA.find(cat => cat.name === 'people');
-console.log('abc' + JSON.stringify(peopleCat));
 
 export const COMMON_EMOJIS =
   [
@@ -5396,4 +5395,3 @@ export const COMMON_EMOJIS =
     find(EMOJI_DATA.find(cat => cat.name === 'foods').data, {shortname: 'beers' }),
     find(EMOJI_DATA.find(cat => cat.name === 'symbols').data, {shortname: 'heart' })
   ];
-console.log(COMMON_EMOJIS);
