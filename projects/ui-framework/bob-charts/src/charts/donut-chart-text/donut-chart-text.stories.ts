@@ -1,10 +1,10 @@
 import {storiesOf} from '@storybook/angular';
 import {number, boolean, object, text, withKnobs} from '@storybook/addon-knobs/angular';
-import {ComponentGroupType} from '../../consts';
-import {StoryBookLayoutModule} from '../../story-book-layout/story-book-layout.module';
+import {ComponentGroupType} from '../../../../src/lib/consts';
+import {StoryBookLayoutModule} from '../../../../src/lib/story-book-layout/story-book-layout.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ChartsModule} from '../charts.module';
-import {TypographyModule} from '../../typography/typography.module';
+import {TypographyModule} from '../../../../../ui-framework/src/lib/typography/typography.module';
 import {NUMBER_OF_EMPLOYEES, PIE_CHART_DATA_MOCK} from '../pie-chart/pie-chart.mock';
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
