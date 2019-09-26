@@ -85,11 +85,8 @@ export const arrayOfValuesToArrayOfObjects = (key: string) => (
 };
 
 export const asNumber = (inputType: InputTypes, value: any) => {
-  if (inputType !== InputTypes.number || isNullOrUndefined(value)) {
+  if (inputType !== InputTypes.number || !value) {
     return value;
-  }
-  if (value === '') {
-    return undefined;
   }
   const parsed = parseToNumber(value);
   if (parsed !== parsed) {
