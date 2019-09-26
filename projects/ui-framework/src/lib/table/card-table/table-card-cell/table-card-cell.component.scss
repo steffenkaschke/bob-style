@@ -1,6 +1,0 @@
-@import '../../../style/common-imports';
-@import './table-card-cell-mixin';
-
-:host {
-  @include cell-style;
-}

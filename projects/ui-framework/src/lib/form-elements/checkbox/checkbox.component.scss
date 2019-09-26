@@ -1,5 +1,5 @@
 @import '../../style/common-imports';
-@import './checkbox.mixin';
+@import '../../../lib/style/form-elements/checkbox.mixin.scss';
 
 :host {
   display: flex;

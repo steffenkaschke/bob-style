@@ -407,24 +407,6 @@ export {
 } from './lib/popups/css-tooltip/css-tooltip.enum';
 
 /*
- * Tables
- */
-
-// Table Module
-export { TableModule } from './lib/table/table.module';
-export * from './lib/table/table/table.interface';
-export * from './lib/table/table/table.enum';
-export { TableComponent } from './lib/table/table/table.component';
-export { AvatarCellComponent } from './lib/table/table-cell-components/avatar-cell/avatar.component';
-export { ActionsCellComponent } from './lib/table/table-cell-components/actions-cell/actions-cell.component';
-export { GridActions } from './lib/table/table-cell-components/actions-cell/actions-cell.interface';
-export { TableUtilsService } from './lib/table/table-utils-service/table-utils.service';
-// Card Table
-export { CardTableModule } from './lib/table/card-table/card-table.module';
-export { CardTableComponent } from './lib/table/card-table/card-table/card-table.component';
-export * from './lib/table/card-table/card-table.interface';
-
-/*
  * Layout
  */
 
@@ -477,7 +459,7 @@ export { ScrollEvent } from './lib/services/utils/utils.interface';
 export { WindowRef } from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
 export { MobileService, WidthMode, MediaEvent } from './lib/services/utils/mobile.service';
-export { simpleUID } from './lib/services/utils/functional-utils';
+export { simpleUID, isString, isArray, isRenderedComponent } from './lib/services/utils/functional-utils';
 // URL utils
 export { UrlUtilsModule } from './lib/services/url/url-utils.module';
 export { URLutils } from './lib/services/url/url-utils.service';
