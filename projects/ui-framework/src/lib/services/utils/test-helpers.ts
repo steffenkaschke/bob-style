@@ -1,6 +1,6 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SimpleChange } from '@angular/core';
+import { SimpleChange, Type } from '@angular/core';
 import {
   NativeMouseEvents,
   NativeKeyboardEvents,
@@ -19,6 +19,14 @@ export const elementFromFixture = (
   fixtr: ComponentFixture<any>,
   selector: string
 ): HTMLElement => elementsFromFixture(fixtr, selector)[0];
+
+export const componentFromFixture = (
+  fixtr: ComponentFixture<any>,
+  selector: string
+): Type<any> => {
+  const comp = fixtr.debugElement.query(By.css(selector));
+  return comp && comp.componentInstance ? comp.componentInstance : null;
+};
 
 export const simpleChange = changes => {
   const simpleChanges = {};

@@ -4,7 +4,6 @@ import {
   forwardRef,
   Input,
   OnChanges,
-  OnDestroy,
   Output,
   SimpleChanges,
   ViewContainerRef,
@@ -22,6 +21,7 @@ import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListFooterActions } from '../list.interface';
 import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
+import { UtilsService } from '../../../services/utils/utils.service';
 
 @Component({
   selector: 'b-single-select',
@@ -44,10 +44,12 @@ import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
   ]
 })
 export class SingleSelectComponent extends BaseSelectPanelElement
-  implements OnChanges, OnDestroy {
+  implements OnChanges {
   @Input() options: SelectGroupOption[];
   @Input() showSingleGroupHeader = false;
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
 
   triggerValue: string;
   singleSelectOptions: SelectGroupOption[];
@@ -62,12 +64,21 @@ export class SingleSelectComponent extends BaseSelectPanelElement
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
+    utilsService: UtilsService,
     DOM: DOMhelpers,
     zone: NgZone,
     cd: ChangeDetectorRef,
     private listChangeService: ListChangeService
   ) {
-    super(overlay, viewContainerRef, panelPositionService, DOM, zone, cd);
+    super(
+      overlay,
+      viewContainerRef,
+      panelPositionService,
+      utilsService,
+      DOM,
+      zone,
+      cd
+    );
     this.value = null;
   }
 
@@ -98,10 +109,6 @@ export class SingleSelectComponent extends BaseSelectPanelElement
       []
     );
     this.emitChange(listChange);
-    this.destroyPanel();
-  }
-
-  ngOnDestroy(): void {
     this.destroyPanel();
   }
 

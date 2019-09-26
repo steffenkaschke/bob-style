@@ -23,6 +23,7 @@ import {
 } from '@angular/cdk/overlay';
 import { AutoCompleteOption } from './auto-complete.interface';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
+import { OverlayPositionClasses } from '../../types';
 
 @Component({
   selector: 'b-auto-complete',
@@ -30,7 +31,8 @@ import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
   styleUrls: ['./auto-complete.component.scss']
 })
 export class AutoCompleteComponent implements OnChanges, OnDestroy {
-  @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
+  @ViewChild(CdkOverlayOrigin, { static: true })
+  overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
 
   @Input() label: string;
@@ -39,12 +41,12 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
   @Input() options: AutoCompleteOption[];
-  @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
-  @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<
-    AutoCompleteOption
-  >();
+  @Input() displayOptionsOnFocus = false;
 
-  positionClassList: { [key: string]: boolean } = {};
+  @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<AutoCompleteOption>();
+
+  positionClassList: OverlayPositionClasses = {};
   searchValue = '';
   panelOpen = false;
 
@@ -60,7 +62,8 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService
-  ) {}
+  ) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'options')) {
@@ -71,7 +74,9 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
 
   onSearchChange(searchVal: string): void {
     this.searchValue = searchVal;
-    if (this.searchValue.length > 0) {
+    if (this.displayOptionsOnFocus) {
+      this.invokePanelOpen();
+    } else if (this.searchValue.length > 0) {
       this.invokePanelOpen();
     } else {
       this.invokePanelDestroy();
@@ -81,6 +86,12 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
       this.invokePanelDestroy();
     }
     this.searchChange.emit(this.searchValue);
+  }
+
+  onSearchFocus(): void {
+    if (this.displayOptionsOnFocus) {
+      this.invokePanelOpen();
+    }
   }
 
   onOptionSelect(option: AutoCompleteOption): void {
@@ -164,7 +175,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
       change => {
         this.positionClassList = this.panelPositionService.getPositionClassList(
           change
-        );
+        ) as OverlayPositionClasses;
       }
     );
   }
@@ -173,7 +184,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     const matcher = new RegExp(escapeRegExp(this.searchValue), 'i');
     return filter(
       this.options,
-      option => option.value.match(matcher) || option.subText.match(matcher)
+      option => option.value.match(matcher) || (option.subText && option.subText.match(matcher))
     );
   }
 }

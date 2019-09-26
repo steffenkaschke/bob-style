@@ -1,5 +1,12 @@
 import {
-  ChangeDetectorRef, Component, EventEmitter, Input, NgZone, OnChanges, OnDestroy, Output, ViewContainerRef,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnChanges,
+  Output,
+  ViewContainerRef
 } from '@angular/core';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { ListFooterActions, SelectGroupOption } from '../list.interface';
@@ -8,21 +15,23 @@ import { LIST_EL_HEIGHT } from '../list.consts';
 import { Overlay } from '@angular/cdk/overlay';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
 import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
+import { UtilsService } from '../../../services/utils/utils.service';
 
 @Component({
   selector: 'b-multi-select-panel',
   templateUrl: './multi-select-panel.component.html',
   styleUrls: [
     '../list-panel.scss',
-    '../multi-select/multi-select.component.scss',
+    '../multi-select/multi-select.component.scss'
   ]
 })
 export class MultiSelectPanelComponent extends BaseSelectPanelElement
-  implements OnChanges, OnDestroy {
-
+  implements OnChanges {
   @Input() chevronButtonText: string;
   @Input() options: SelectGroupOption[];
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
 
   listChange: ListChange;
 
@@ -38,11 +47,20 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
+    utilsService: UtilsService,
     DOM: DOMhelpers,
     zone: NgZone,
-    cd: ChangeDetectorRef,
+    cd: ChangeDetectorRef
   ) {
-    super(overlay, viewContainerRef, panelPositionService, DOM, zone, cd);
+    super(
+      overlay,
+      viewContainerRef,
+      panelPositionService,
+      utilsService,
+      DOM,
+      zone,
+      cd
+    );
   }
 
   onSelect(listChange: ListChange): void {
@@ -56,10 +74,6 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement
   onApply(): void {
     this.options = this.listChange.getSelectGroupOptions();
     this.selectChange.emit(this.listChange);
-    this.destroyPanel();
-  }
-
-  ngOnDestroy(): void {
     this.destroyPanel();
   }
 }

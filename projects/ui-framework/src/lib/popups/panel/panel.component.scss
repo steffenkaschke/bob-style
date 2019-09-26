@@ -19,6 +19,8 @@
     .panel-wrapper {
       @include OverlayPanel();
       padding: 24px;
+      max-height: 100%;
+
       &.small {
         max-width: 300px;
       }
@@ -51,6 +53,13 @@
       &.panel-before {
         @include OverlayPositionBounding('before');
       }
+    }
+  }
+
+  html:not(.cdk-global-scrollblock)
+    .cdk-overlay-connected-position-bounding-box {
+    @include desktop {
+      height: 100% !important;
     }
   }
 }

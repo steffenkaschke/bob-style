@@ -1,11 +1,19 @@
+body .cdk-overlay-container {
+  bottom: 0;
+  overflow: hidden;
+}
+
 html.cdk-global-scrollblock {
   overflow: unset;
   position: unset;
+
   body {
     position: absolute;
     width: 100%;
     overflow: hidden;
+
     .cdk-overlay-container {
+      overflow-x: hidden;
       overflow-y: scroll;
     }
   }
