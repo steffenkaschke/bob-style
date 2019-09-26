@@ -20,7 +20,8 @@
     ],
     "paths": {
       "bob-style": [
-        "projects/ui-framework/src/public_api.ts"
+        "projects/ui-framework/src/public_api.ts",
+        "dist/ui-framework"
       ],
       "bob-style/bob-charts": [
         "projects/ui-framework/bob-charts/public_api.ts"
