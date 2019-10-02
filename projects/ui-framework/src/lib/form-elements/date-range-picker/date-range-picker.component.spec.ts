@@ -510,7 +510,6 @@ describe('DateRangePickerComponent', () => {
 
     it('should set value in right format', () => {
       component.openPicker(0);
-      component.openPicker(1);
       fixture.detectChanges();
       pickerDateCellElems = component.getPickerPanelElements(
         pickers[0],
@@ -518,12 +517,16 @@ describe('DateRangePickerComponent', () => {
       );
       expect(pickerDateCellElems[0]).toBeTruthy();
       pickerDateCellElems[0].click();
+      fixture.detectChanges();
+
+      component.openPicker(1);
+      fixture.detectChanges();
       pickerDateCellElems = component.getPickerPanelElements(
         pickers[1],
         '.mat-calendar-body td[aria-label*=" Feb "]'
       );
       expect(pickerDateCellElems[0]).toBeTruthy();
-      pickerDateCellElems[1].click();
+      pickerDateCellElems[0].click();
       fixture.detectChanges();
 
       expect(component.value).toEqual({
@@ -541,6 +544,7 @@ describe('DateRangePickerComponent', () => {
           to: '2019-02-28'
         }
       });
+
       component.closePicker(0);
       component.closePicker(1);
     });
