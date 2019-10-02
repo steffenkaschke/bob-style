@@ -410,7 +410,7 @@ describe('DateRangePickerComponent', () => {
       });
     });
 
-    fdescribe('Partial value input', () => {
+    describe('Partial value input', () => {
       describe('Start date', () => {
         beforeEach(() => {
           component.ngOnChanges(
