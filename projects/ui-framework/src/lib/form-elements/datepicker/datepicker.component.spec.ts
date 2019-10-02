@@ -27,7 +27,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { OverlayModule } from '@angular/cdk/overlay';
 
-describe('DatepickerComponent', () => {
+fdescribe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
   let component: DatepickerComponent;
   let componentElem: HTMLElement;
@@ -290,7 +290,12 @@ describe('DatepickerComponent', () => {
       pickerDateCellElem.click();
       fixture.detectChanges();
       expect((component.value as Date).getMonth()).toEqual(10);
-      expect(component.changed.emit).toHaveBeenCalled();
+      expect((component.value as Date).getDate()).toEqual(1);
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: 'onBlur',
+        date: component.value,
+        value: '2019-11-01'
+      });
       component.closePicker();
     });
   });
