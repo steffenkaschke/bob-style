@@ -26,6 +26,8 @@
     }
     .comment-body {
       line-height: 20px;
+      @include text-hyphenate;
+
       ::ng-deep a {
         color: $primary-500;
       }
