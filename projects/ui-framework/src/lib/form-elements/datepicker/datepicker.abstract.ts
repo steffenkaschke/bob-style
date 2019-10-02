@@ -215,7 +215,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     return panel;
   }
 
-  protected getPickerPanelElements(
+  public getPickerPanelElements(
     picker: MatDatepicker<any>,
     selector: string
   ): HTMLElement[] {
@@ -340,13 +340,17 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     if (isKey(event.key, Keys.tab)) {
       const picker = this.getPicker(index);
 
-      if (picker.opened && picker._popupRef) {
+      if (picker.opened && !this.isMobile) {
         event.preventDefault();
         this.allowInputBlur = true;
 
-        (picker._popupRef.overlayElement.querySelector(
-          '.mat-calendar-content td[tabindex="0"]'
-        ) as HTMLElement).focus();
+        const elToFocus = this.getPickerPanelElements(
+          picker,
+          '.mat-calendar-body td[tabindex="0"]'
+        )[0];
+        if (elToFocus) {
+          elToFocus.focus();
+        }
       }
     }
   }

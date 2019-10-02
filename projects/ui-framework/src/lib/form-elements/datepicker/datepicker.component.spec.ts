@@ -21,7 +21,11 @@ import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { IconsModule } from '../../icons/icons.module';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { dateToString } from '../../services/utils/transformers';
-import { isDate } from 'date-fns';
+import { isDate, parse } from 'date-fns';
+import { DatepickerType } from './datepicker.enum';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
@@ -32,6 +36,7 @@ describe('DatepickerComponent', () => {
   let iconElem: HTMLElement;
   let messageElem: HTMLElement;
   let picker: MatDatepicker<any>;
+  let pickerDateCellElem: HTMLElement;
 
   let utilsServiceStub: jasmine.SpyObj<UtilsService>;
   let mobileServiceStub: jasmine.SpyObj<MobileService>;
@@ -48,12 +53,15 @@ describe('DatepickerComponent', () => {
         MatDatepickerModule,
         MatNativeDateModule,
         IconsModule,
-        InputMessageModule
+        InputMessageModule,
+        NoopAnimationsModule,
+        OverlayModule
       ],
       declarations: [DatepickerComponent],
       providers: [
         { provide: UtilsService, useValue: utilsServiceStub },
         { provide: MobileService, useValue: mobileServiceStub },
+        FormElementKeyboardCntrlService,
         DateTimeInputService,
         EventManagerPlugins[0]
       ],
@@ -89,13 +97,23 @@ describe('DatepickerComponent', () => {
       });
   }));
 
-  describe('Basic inputs', () => {
+  describe('Init & Basic inputs', () => {
     it('should display label', () => {
       expect(labelElem.innerText).toContain('Label');
       expect(getPseudoContent(labelElem, 'after')).toContain('*');
     });
     it('should display hint message', () => {
       expect(messageElem.innerText).toContain('Hint');
+    });
+    it('should start in date-picker mode', () => {
+      expect(picker.panelClass).not.toContain('type-month');
+      expect(picker.panelClass).toContain('type-date');
+      expect(picker.startView).toEqual('month');
+    });
+    it('should display calendar icon', () => {
+      iconElem = elementFromFixture(fixture, '.open-picker .b-icon');
+      expect(iconElem).toBeTruthy();
+      expect(iconElem.classList).toContain('b-icon-calendar');
     });
   });
 
@@ -106,14 +124,6 @@ describe('DatepickerComponent', () => {
 
       expect(componentElem.classList).toContain('error');
       expect(messageElem.innerText).toContain('Error');
-    });
-  });
-
-  describe('Icon', () => {
-    it('should display calendar icon', () => {
-      iconElem = elementFromFixture(fixture, '.open-picker .b-icon');
-      expect(iconElem).toBeTruthy();
-      expect(iconElem.classList).toContain('b-icon-calendar');
     });
   });
 
@@ -157,6 +167,21 @@ describe('DatepickerComponent', () => {
       expect(dateToString(picker._selected)).toEqual('2019-09-15');
     });
 
+    it('should select date in MatDatepicker panel', () => {
+      component.openPicker();
+      fixture.detectChanges();
+      pickerDateCellElem = component.getPickerPanelElements(
+        picker,
+        '.mat-calendar-body .mat-calendar-body-active'
+      )[0];
+      expect(pickerDateCellElem).toBeTruthy();
+      const selectedDate = dateToString(
+        parse(pickerDateCellElem.getAttribute('aria-label'))
+      );
+      expect(selectedDate).toEqual('2019-09-15');
+      component.closePicker();
+    });
+
     it('should emit changed event', () => {
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onWrite',
@@ -174,6 +199,24 @@ describe('DatepickerComponent', () => {
     it('should pass properly entered date to MatDatepicker', () => {
       expect(isDate(picker._selected)).toBeTruthy();
       expect(dateToString(picker._selected)).toEqual('2012-12-24');
+    });
+  });
+
+  describe('Panel click input', () => {
+    it('should select day 27', () => {
+      component.openPicker();
+      fixture.detectChanges();
+      pickerDateCellElem = component.getPickerPanelElements(
+        picker,
+        '.mat-calendar-body td[aria-label*=" 27 "]'
+      )[0];
+      fixture.detectChanges();
+      expect(component.value).toBeFalsy();
+      pickerDateCellElem.click();
+      fixture.detectChanges();
+      expect((component.value as Date).getDate()).toEqual(27);
+      expect(component.changed.emit).toHaveBeenCalled();
+      component.closePicker();
     });
   });
 
@@ -205,8 +248,50 @@ describe('DatepickerComponent', () => {
   });
 
   describe('Month picker', () => {
-    beforeEach(() => {});
+    beforeEach(() => {
+      component.type = DatepickerType.month;
+      component.ngOnChanges(
+        simpleChange({
+          value: '2019-09-15'
+        })
+      );
+      fixture.detectChanges();
+    });
 
-    it('should ', () => {});
+    it('should switch to month-picker mode', () => {
+      expect(picker.panelClass).not.toContain('type-date');
+      expect(picker.panelClass).toContain('type-month');
+      expect(picker.startView).toEqual('year');
+    });
+
+    it('should select month in MatDatepicker panel', () => {
+      component.openPicker();
+      fixture.detectChanges();
+      pickerDateCellElem = component.getPickerPanelElements(
+        picker,
+        '.mat-calendar-body .mat-calendar-body-active'
+      )[0];
+      expect(pickerDateCellElem).toBeTruthy();
+      const selectedDate = dateToString(
+        parse(pickerDateCellElem.getAttribute('aria-label'))
+      );
+      expect(selectedDate).toEqual('2019-09-01');
+      component.closePicker();
+    });
+
+    it('should set value in right format', () => {
+      component.openPicker();
+      fixture.detectChanges();
+      pickerDateCellElem = component.getPickerPanelElements(
+        picker,
+        '.mat-calendar-body td[aria-label*=" Nov "]'
+      )[0];
+      expect(pickerDateCellElem).toBeTruthy();
+      pickerDateCellElem.click();
+      fixture.detectChanges();
+      expect((component.value as Date).getMonth()).toEqual(10);
+      expect(component.changed.emit).toHaveBeenCalled();
+      component.closePicker();
+    });
   });
 });

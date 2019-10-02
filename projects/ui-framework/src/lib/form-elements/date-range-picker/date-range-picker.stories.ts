@@ -98,7 +98,7 @@ datepickerStories.add(
       props: {
         value: select('value', mockValues, ''),
         pickerType: select(
-          'pickerType',
+          'type',
           Object.values(DatepickerType),
           DatepickerType.date
         ),

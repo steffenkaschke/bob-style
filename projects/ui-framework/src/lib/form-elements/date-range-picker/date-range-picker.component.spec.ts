@@ -23,8 +23,10 @@ import {
 } from '../../services/utils/test-helpers';
 import { dateToString, stringToDate } from '../../services/utils/transformers';
 import { isDate } from 'date-fns';
+import { DatepickerType } from '../datepicker/datepicker.enum';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('DateRangePickerComponent', () => {
+fdescribe('DateRangePickerComponent', () => {
   let fixture: ComponentFixture<DateRangePickerComponent>;
   let component: DateRangePickerComponent;
   let componentElem: HTMLElement;
@@ -34,6 +36,7 @@ describe('DateRangePickerComponent', () => {
   let labelElems: HTMLElement[];
   let iconElems: HTMLElement[];
   let messageElem: HTMLElement;
+  let pickerDateCellElems: HTMLElement[];
 
   let utilsServiceStub: jasmine.SpyObj<UtilsService>;
   let mobileServiceStub: jasmine.SpyObj<MobileService>;
@@ -50,7 +53,8 @@ describe('DateRangePickerComponent', () => {
         MatDatepickerModule,
         MatNativeDateModule,
         IconsModule,
-        InputMessageModule
+        InputMessageModule,
+        NoopAnimationsModule
       ],
       declarations: [DateRangePickerComponent],
       providers: [
@@ -140,6 +144,40 @@ describe('DateRangePickerComponent', () => {
       expect(dateToString(pickers[1]._maxDate)).toEqual('2019-09-25');
       expect(dateToString(pickers[0]._maxDate)).toEqual('2019-09-25');
     });
+
+    it('should disable non-selectable dates in start date picker', () => {
+      component.openPicker(0);
+      fixture.detectChanges();
+      pickerDateCellElems = component.getPickerPanelElements(
+        pickers[0],
+        '.mat-calendar-body .mat-calendar-body-cell'
+      );
+
+      expect(pickerDateCellElems[8].classList).toContain(
+        'mat-calendar-body-disabled'
+      );
+      expect(pickerDateCellElems[9].classList).not.toContain(
+        'mat-calendar-body-disabled'
+      );
+      component.closePicker(0);
+    });
+
+    it('should disable non-selectable dates in end date picker', () => {
+      component.openPicker(1);
+      fixture.detectChanges();
+      pickerDateCellElems = component.getPickerPanelElements(
+        pickers[1],
+        '.mat-calendar-body .mat-calendar-body-cell'
+      );
+
+      expect(pickerDateCellElems[25].classList).toContain(
+        'mat-calendar-body-disabled'
+      );
+      expect(pickerDateCellElems[24].classList).not.toContain(
+        'mat-calendar-body-disabled'
+      );
+      component.closePicker(1);
+    });
   });
 
   describe('Value input', () => {
@@ -183,6 +221,80 @@ describe('DateRangePickerComponent', () => {
     it('should set min date of End date MatDatepicker to "from" date', () => {
       expect(dateToString(pickers[1]._minDate)).toEqual('2019-09-15');
       expect(dateToString(pickers[0]._minDate)).not.toEqual('2019-09-15');
+    });
+
+    it('should disable non-selectable dates in start date picker', () => {
+      component.openPicker(0);
+      fixture.detectChanges();
+      pickerDateCellElems = component.getPickerPanelElements(
+        pickers[0],
+        '.mat-calendar-body .mat-calendar-body-cell'
+      );
+
+      expect(pickerDateCellElems[27].classList).toContain(
+        'mat-calendar-body-disabled'
+      );
+      expect(pickerDateCellElems[26].classList).not.toContain(
+        'mat-calendar-body-disabled'
+      );
+      component.closePicker(0);
+    });
+
+    it('should disable non-selectable dates in end date picker', () => {
+      component.openPicker(1);
+      fixture.detectChanges();
+      pickerDateCellElems = component.getPickerPanelElements(
+        pickers[1],
+        '.mat-calendar-body .mat-calendar-body-cell'
+      );
+
+      expect(pickerDateCellElems[13].classList).toContain(
+        'mat-calendar-body-disabled'
+      );
+      expect(pickerDateCellElems[14].classList).not.toContain(
+        'mat-calendar-body-disabled'
+      );
+      component.closePicker(1);
+    });
+
+    it('should mark the range in the start date picker', () => {
+      component.openPicker(0);
+      fixture.detectChanges();
+      pickerDateCellElems = component.getPickerPanelElements(
+        pickers[0],
+        '.mat-calendar-body .in-range'
+      );
+
+      expect(pickerDateCellElems.length).toEqual(13);
+      expect(pickerDateCellElems[0].classList).toContain('first-in-range');
+      expect(pickerDateCellElems[0].innerHTML).toContain('15');
+      expect(
+        pickerDateCellElems[pickerDateCellElems.length - 1].classList
+      ).toContain('last-in-range');
+      expect(
+        pickerDateCellElems[pickerDateCellElems.length - 1].innerHTML
+      ).toContain('27');
+      component.closePicker(0);
+    });
+
+    it('should mark the range in the end date picker', () => {
+      component.openPicker(1);
+      fixture.detectChanges();
+      pickerDateCellElems = component.getPickerPanelElements(
+        pickers[1],
+        '.mat-calendar-body .in-range'
+      );
+
+      expect(pickerDateCellElems.length).toEqual(13);
+      expect(pickerDateCellElems[0].classList).toContain('first-in-range');
+      expect(pickerDateCellElems[0].innerHTML).toContain('15');
+      expect(
+        pickerDateCellElems[pickerDateCellElems.length - 1].classList
+      ).toContain('last-in-range');
+      expect(
+        pickerDateCellElems[pickerDateCellElems.length - 1].innerHTML
+      ).toContain('27');
+      component.closePicker(1);
     });
 
     it('should emit changed event', () => {
@@ -265,6 +377,13 @@ describe('DateRangePickerComponent', () => {
           endDate: null
         }
       });
+    });
+  });
+
+  fdescribe('Month range', () => {
+    beforeEach(() => {
+      component.type = DatepickerType.month;
+      fixture.detectChanges();
     });
   });
 });

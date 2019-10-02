@@ -49,6 +49,10 @@ b-icon {
 
   .mat-calendar-body-label {
     @include text-hide;
+
+    &[colspan] {
+      flex-grow: 1;
+    }
   }
 
   .b-datepicker-panel {
