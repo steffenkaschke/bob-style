@@ -10,7 +10,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
+  SimpleChanges
 } from '@angular/core';
 import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
@@ -30,17 +30,17 @@ const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
 @Component({
   selector: 'b-employees-showcase',
   templateUrl: './employees-showcase.component.html',
-  styleUrls: [
-    './employees-showcase.component.scss',
-  ],
+  styleUrls: ['./employees-showcase.component.scss']
 })
-export class EmployeesShowcaseComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
-
+export class EmployeesShowcaseComponent
+  implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   @Input() employees: EmployeeShowcase[] = [];
   @Input() avatarSize: AvatarSize = AvatarSize.mini;
   @Input() expandOnClick = true;
 
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
   @Output() clicked: EventEmitter<string> = new EventEmitter<string>();
 
   panelListOptions: SelectGroupOption[];
@@ -48,6 +48,7 @@ export class EmployeesShowcaseComponent implements OnInit, OnChanges, OnDestroy,
   showThreeDotsButton = false;
 
   readonly icon = Icons;
+  readonly panelClass = 'ee-showcase-panel';
 
   private shuffleEmployeesMode: boolean;
   private avatarGap: number = AvatarGap[AvatarSize.mini];
@@ -60,9 +61,8 @@ export class EmployeesShowcaseComponent implements OnInit, OnChanges, OnDestroy,
     private host: ElementRef,
     private DOM: DOMhelpers,
     private zone: NgZone,
-    private cd: ChangeDetectorRef,
-  ) {
-  }
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.resizeEventSubscriber = this.utilsService
@@ -111,7 +111,9 @@ export class EmployeesShowcaseComponent implements OnInit, OnChanges, OnDestroy,
   }
 
   private shouldShowThreeDotsButton(): boolean {
-    return !this.shuffleEmployeesMode && this.avatarsToFit < this.employees.length;
+    return (
+      !this.shuffleEmployeesMode && this.avatarsToFit < this.employees.length
+    );
   }
 
   private getPanelListOptions(): SelectGroupOption[] {
@@ -147,9 +149,7 @@ export class EmployeesShowcaseComponent implements OnInit, OnChanges, OnDestroy,
   */
   private getAvatarsToFit(clientWidth: number, avatarGap: number): number {
     return floor(
-      (clientWidth - this.avatarSize) /
-      (this.avatarSize - avatarGap) +
-      1
+      (clientWidth - this.avatarSize) / (this.avatarSize - avatarGap) + 1
     );
   }
 
@@ -165,9 +165,13 @@ export class EmployeesShowcaseComponent implements OnInit, OnChanges, OnDestroy,
 
   private subscribeToShuffleEmployees() {
     invoke(this.intervalSubscriber, 'unsubscribe');
-    if (this.shuffleEmployeesMode && this.avatarsToFit < this.employees.length) {
-      this.intervalSubscriber = interval(SHUFFLE_EMPLOYEES_INTERVAL)
-        .subscribe(() => this.shuffleEmployees());
+    if (
+      this.shuffleEmployeesMode &&
+      this.avatarsToFit < this.employees.length
+    ) {
+      this.intervalSubscriber = interval(SHUFFLE_EMPLOYEES_INTERVAL).subscribe(
+        () => this.shuffleEmployees()
+      );
     }
   }
 

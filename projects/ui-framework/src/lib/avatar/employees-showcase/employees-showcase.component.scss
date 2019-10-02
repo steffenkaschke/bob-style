@@ -5,12 +5,6 @@
   width: 100%;
   display: flex;
 
-  b-single-select-panel {
-    &.disabled {
-      pointer-events: none;
-    }
-  }
-
   b-avatar,
   .employees-showcase-panel-wrapper {
     margin-left: var(--avatar-gap);
@@ -22,6 +16,7 @@
 
   .avatar-showcase {
     display: inline-flex;
+
     &.expand-on-click {
       cursor: pointer;
     }
@@ -35,4 +30,8 @@
       }
     }
   }
+}
+
+::ng-deep .ee-showcase-panel {
+  max-width: 350px;
 }

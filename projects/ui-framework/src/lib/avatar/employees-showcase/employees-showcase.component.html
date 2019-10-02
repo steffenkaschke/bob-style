@@ -1,5 +1,6 @@
 <b-single-select-panel [options]="panelListOptions"
-                       [ngClass]="{'disabled': !expandOnClick}"
+                       [disabled]="!expandOnClick"
+                       [panelClass]="panelClass"
                        (selectChange)="onSelectChange($event)">
 
   <div class="avatar-showcase"
@@ -14,7 +15,6 @@
                 [isClickable]="clicked.observers.length > 0"
                 (clicked)="onAvatarClick(employee.id)">
       </b-avatar>
-
 
     </ng-container>
 
