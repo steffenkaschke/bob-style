@@ -203,4 +203,10 @@ describe('DatepickerComponent', () => {
       });
     });
   });
+
+  describe('Month picker', () => {
+    beforeEach(() => {});
+
+    it('should ', () => {});
+  });
 });

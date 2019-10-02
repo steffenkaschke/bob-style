@@ -1,10 +1,8 @@
 import {
   Component,
-  EventEmitter,
   forwardRef,
   Input,
   OnChanges,
-  Output,
   SimpleChanges,
   ViewContainerRef,
   NgZone,
@@ -45,11 +43,7 @@ import { UtilsService } from '../../../services/utils/utils.service';
 })
 export class SingleSelectComponent extends BaseSelectPanelElement
   implements OnChanges {
-  @Input() options: SelectGroupOption[];
   @Input() showSingleGroupHeader = false;
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
 
   triggerValue: string;
   singleSelectOptions: SelectGroupOption[];

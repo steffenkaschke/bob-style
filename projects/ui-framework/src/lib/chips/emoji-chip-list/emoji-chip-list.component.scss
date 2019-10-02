@@ -12,9 +12,9 @@
     padding: 0 5px;
     border-radius: 13px;
     background-color: $grey-200;
-    transition: transform .1s;
+    transition: transform 0.1s;
     &:hover {
-    background-color: $grey-400;
+      background-color: $grey-400;
       z-index: 2;
     }
     .reaction-number {
@@ -22,13 +22,13 @@
       font-size: 11px;
       font-weight: bold;
     }
+
     .reaction-emoji {
       font-size: 18px;
       display: inline-flex;
-      font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+      font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
       line-height: inherit;
-
-
     }
   }
 }

@@ -1,11 +1,9 @@
 import {
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
   NgZone,
   OnChanges,
-  Output,
   ViewContainerRef
 } from '@angular/core';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
@@ -14,7 +12,6 @@ import { PanelPositionService } from '../../../popups/panel/panel-position-servi
 import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { ListChange } from '../list-change/list-change';
-import { SelectGroupOption } from '../list.interface';
 import { UtilsService } from '../../../services/utils/utils.service';
 
 @Component({
@@ -28,10 +25,6 @@ import { UtilsService } from '../../../services/utils/utils.service';
 export class SingleSelectPanelComponent extends BaseSelectPanelElement
   implements OnChanges {
   @Input() chevronButtonText: string;
-  @Input() options: SelectGroupOption[];
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
 
   readonly listElHeight = LIST_EL_HEIGHT;
   panelClassList: string[] = ['b-select-panel-with-arrow'];
@@ -54,6 +47,8 @@ export class SingleSelectPanelComponent extends BaseSelectPanelElement
       zone,
       cd
     );
+    this.wrapEvent = false;
+    this.doPropagate = false;
   }
 
   onSelect(listChange: ListChange): void {

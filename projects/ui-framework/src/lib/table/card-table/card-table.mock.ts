@@ -1,16 +1,16 @@
-import { CardTableCellMeta, CardTableCellData } from './card-table.interface';
-import { ChipComponent } from 'bob-style';
-import { ButtonComponent } from 'bob-style';
-import { AvatarComponent } from 'bob-style';
 import { action } from '@storybook/addon-actions';
-import { AvatarSize } from '../../../../src/lib/avatar/avatar/avatar.enum';
-import { mockAvatar, mockNames, mockJobs, mockDate } from '../../../../src/lib/mock.const';
-import { ChipType } from 'bob-style';
-import { ButtonType } from 'bob-style';
+import { CardTableCellMeta, CardTableCellData } from './card-table.interface';
+import { AvatarComponent } from '../../avatar/avatar/avatar.component';
+import { mockAvatar, mockNames, mockJobs, mockDate } from '../../mock.const';
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { ChipComponent } from '../../chips/chip/chip.component';
+import { ChipType } from '../../chips/chips.enum';
 import {
   randomFromArray,
   makeArray
-} from '../../../../src/lib/services/utils/functional-utils';
+} from '../../services/utils/functional-utils';
+import { ButtonComponent } from '../../buttons/button/button.component';
+import { ButtonType } from '../../buttons/buttons.enum';
 
 const numberOfLines = 5;
 

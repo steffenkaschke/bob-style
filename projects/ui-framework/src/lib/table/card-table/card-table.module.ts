@@ -5,7 +5,9 @@ import { TableCardCellComponent } from './table-card-cell/table-card-cell.compon
 import { TableCardComponent } from './table-card/table-card.component';
 import { CardTableComponent } from './card-table/card-table.component';
 import { CellWidthsService } from './cell-widths-service/cell-widths.service';
-import { ComponentRendererModule, TruncateTooltipModule, TypographyModule } from 'bob-style';
+import { TypographyModule } from '../../typography/typography.module';
+import { ComponentRendererModule } from '../../services/component-renderer/component-renderer.module';
+import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 
 @NgModule({
   declarations: [

@@ -72,12 +72,6 @@ radioStories.add(
       template: stroyTemplate,
       props: {
         value: object('value', { id: 0 }),
-
-        options: object('radioConfig', [
-          { id: 0, label: 'Option one' },
-          { id: 1, label: 'Option two' },
-          { id: 2, label: 'Option three' }
-        ]),
         direction: select('direction', direction, direction.row),
 
         label: text('label', 'Radio label'),
@@ -88,7 +82,13 @@ radioStories.add(
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
 
-        radioChange: action('radioChange')
+        radioChange: action('radioChange'),
+
+        options: object('radioConfig', [
+          { id: 0, label: 'Option one' },
+          { id: 1, label: 'Option two' },
+          { id: 2, label: 'Option three' }
+        ])
       },
       moduleMetadata: {
         imports: [

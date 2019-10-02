@@ -1,13 +1,14 @@
-@import "../../../style/common-imports";
+@import '../../../style/common-imports';
 :host {
   .comment-menu {
     display: block;
     float: right;
     margin: 3px 0;
     opacity: 0;
-    transition: opacity .3s;
+    transition: opacity 0.3s;
   }
-  &:hover .comment-menu, .comment-menu.focused {
+  &:hover .comment-menu,
+  .comment-menu.focused {
     opacity: 1;
   }
   .comment-content {
@@ -25,6 +26,8 @@
     }
     .comment-body {
       line-height: 20px;
+      @include text-hyphenate;
+
       ::ng-deep a {
         color: $primary-500;
       }
@@ -34,10 +37,12 @@
     display: block;
     background-color: $grey-100;
     min-height: 44px;
+    min-width: 0;
     border: 1px solid $grey-500;
     border-radius: 4px;
     font-weight: 400;
     font-size: 12px;
+
     &:after {
       border-right-color: $grey-100;
     }

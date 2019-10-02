@@ -103,7 +103,6 @@ optionsMock[1].options[2].selected = true;
 const toAdd = () => ({
   template: storyTemplate,
   props: {
-    options: object<SelectGroupOption>('options', optionsMock),
     selectChange: action('Multi select change'),
     selectModified: action('Multi select modified'),
     selectCancelled: action('Multi select cancelled'),
@@ -113,7 +112,8 @@ const toAdd = () => ({
     required: boolean('required', false),
     hintMessage: text('hintMessage', 'This field should contain something'),
     errorMessage: text('errorMessage', ''),
-    showSingleGroupHeader: boolean('showSingleGroupHeader', false)
+    showSingleGroupHeader: boolean('showSingleGroupHeader', false),
+    options: object<SelectGroupOption>('options', optionsMock)
   },
   moduleMetadata: {
     imports: [

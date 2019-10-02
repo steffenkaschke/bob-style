@@ -93,8 +93,8 @@ buttonStories.add(
     template: storyTemplate,
     props: {
       selectChange: action('Multi list change'),
-      options: object<SelectGroupOption>('options', optionsMock),
-      showSingleGroupHeader: boolean('showSingleGroupHeader', true)
+      showSingleGroupHeader: boolean('showSingleGroupHeader', true),
+      options: object<SelectGroupOption>('options', optionsMock)
     },
     moduleMetadata: {
       imports: [
