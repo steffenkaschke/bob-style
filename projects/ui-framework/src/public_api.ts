@@ -439,6 +439,14 @@ export {
 // Cards Layout
 export { CardsLayoutComponent } from './lib/cards/cards-layout/cards-layout.component';
 
+// Card Table
+export { CardTableModule } from './lib/table/card-table/card-table.module';
+export { CardTableComponent } from './lib/table/card-table/card-table/card-table.component';
+export { CellWidthsService } from './lib/table/card-table/cell-widths-service/cell-widths.service';
+export { TableCardCellComponent } from './lib/table/card-table/table-card-cell/table-card-cell.component';
+export { TableCardComponent } from './lib/table/card-table/table-card/table-card.component';
+export * from './lib/table/card-table/card-table.interface';
+
 /*
  * Misc
  */
