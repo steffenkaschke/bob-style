@@ -42,7 +42,7 @@ export class EmojiComponent implements OnInit {
     this.panelActive =
       typeof forceState === 'boolean' ? forceState : !this.panelActive;
     if (!this.panelActive && this.panelElement && this.panelElement.overlayRef) {
-      this.panelElement.overlayRef.detach();
+      this.panelElement.closePanel();
     }
     this.toggleClick.emit(this.panelActive);
     this.cdr.detectChanges();
