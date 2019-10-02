@@ -5,13 +5,12 @@ import {
   CardTableCellDataType
 } from '../card-table.interface';
 import {
-  RenderedComponent,
   isString,
   isArray,
-  isRenderedComponent,
-  TruncateTooltipType
-} from 'bob-style';
-
+  isRenderedComponent
+} from '../../../services/utils/functional-utils';
+import { TruncateTooltipType } from '../../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { RenderedComponent } from '../../../services/component-renderer/component-renderer.interface';
 
 @Component({
   selector: 'b-table-card-cell, [b-table-card-cell]',
@@ -19,7 +18,7 @@ import {
   styleUrls: ['./table-card-cell.component.scss']
 })
 export class TableCardCellComponent {
-  constructor() { }
+  constructor() {}
 
   @Input() cell: CardTableCellData;
   @Input() index: number;

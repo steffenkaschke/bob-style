@@ -1,24 +1,19 @@
 import { storiesOf } from '@storybook/angular';
 import { object, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../../../src/lib/consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../../../src/lib/story-book-layout/story-book-layout.module';
-
 import { CardTableModule } from './card-table.module';
 import { CardTableMockMetaData, CardTableMockData } from './card-table.mock';
-
-import { ChipModule } from '../../../../src/lib/chips/chip/chip.module';
-import { ChipComponent } from '../../../../src/lib/chips/chip/chip.component';
-
-import { ButtonComponent } from '../../../../src/lib/buttons/button/button.component';
-
-import { AvatarModule } from '../../../../src/lib/avatar/avatar/avatar.module';
-import { AvatarComponent } from '../../../../src/lib/avatar/avatar/avatar.component';
-
-import { RadioButtonModule } from '../../../../src/lib/form-elements/radio-button/radio-button.module';
-import { ButtonsModule } from '../../../../src/lib/buttons/buttons.module';
-import { UtilComponentsModule } from '../../../../src/lib/services/util-components/utilComponents.module';
+import { ComponentGroupType } from '../../consts';
+import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { ChipModule } from '../../chips/chip/chip.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
+import { ChipComponent } from '../../chips/chip/chip.component';
+import { ButtonComponent } from '../../buttons/button/button.component';
+import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 
 const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
   withKnobs

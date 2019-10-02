@@ -1,5 +1,5 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, Component, ChangeDetectionStrategy } from '@angular/core';
+import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -7,10 +7,11 @@ import { CardTableComponent } from './card-table.component';
 import { CardTableModule } from '../card-table.module';
 import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
 
-import { ButtonsModule, ButtonComponent, ComponentRendererComponent, TruncateTooltipModule } from 'bob-style';
-
-
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { ComponentRendererComponent } from '../../../services/component-renderer/component-renderer.component';
+import { ButtonComponent } from '../../../buttons/button/button.component';
+import { ButtonsModule } from '../../../buttons/buttons.module';
+import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate-tooltip.module';
 
 describe('CardTableComponent', () => {
   let fixture: ComponentFixture<CardTableComponent>;
@@ -109,9 +110,8 @@ describe('CardTableComponent', () => {
           By.css('b-component-renderer')
         ).componentInstance;
 
-        buttonElement = fixture.debugElement.query(
-          By.css('b-button button')
-        ).nativeElement;
+        buttonElement = fixture.debugElement.query(By.css('b-button button'))
+          .nativeElement;
 
         spyOn(component.rowClicked, 'emit');
         spyOn(component.cellClicked, 'emit');

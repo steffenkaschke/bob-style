@@ -1,4 +1,4 @@
-import { RenderedComponent } from 'bob-style';
+import { RenderedComponent } from '../../services/component-renderer/component-renderer.interface';
 
 type cardTableAllowedTextCssProps = 'color' | 'fontSize' | 'fontWeight';
 
