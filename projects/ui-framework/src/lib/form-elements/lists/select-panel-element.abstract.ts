@@ -7,7 +7,9 @@ import {
   AfterViewInit,
   NgZone,
   ChangeDetectorRef,
-  OnDestroy
+  OnDestroy,
+  EventEmitter,
+  Output
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -30,6 +32,8 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
+import { SelectGroupOption } from './list.interface';
+import { ListChange } from './list-change/list-change';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements AfterViewInit, OnDestroy {
@@ -38,8 +42,14 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
   @ViewChild('prefix', { static: false }) prefix: ElementRef;
 
+  @Input() options: SelectGroupOption[];
+  @Input() panelClass: string;
   @Input() isQuickFilter = false;
   @Input() hasPrefix = false;
+
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
 
   showPrefix = true;
   positionClassList: OverlayPositionClasses = {};
@@ -85,42 +95,44 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   }
 
   openPanel(): void {
-    this.panelOpen = true;
-    this.panelConfig = this.getDefaultConfig();
-    this.overlayRef = this.overlay.create(this.panelConfig);
-    this.templatePortal = new TemplatePortal(
-      this.templateRef,
-      this.viewContainerRef
-    );
-    this.overlayRef.attach(this.templatePortal);
+    if (!this.overlayRef && !this.disabled) {
+      this.panelOpen = true;
+      this.panelConfig = this.getDefaultConfig();
+      this.overlayRef = this.overlay.create(this.panelConfig);
+      this.templatePortal = new TemplatePortal(
+        this.templateRef,
+        this.viewContainerRef
+      );
+      this.overlayRef.attach(this.templatePortal);
 
-    this.overlayRef.updatePosition();
-    this.overlayRef.updateSize({
-      width: this.overlayOrigin.elementRef.nativeElement.offsetWidth
-    });
+      this.overlayRef.updatePosition();
+      this.overlayRef.updateSize({
+        width: this.overlayOrigin.elementRef.nativeElement.offsetWidth
+      });
 
-    const searchInput = this.overlayRef.overlayElement.querySelector(
-      'b-search .bfe-input'
-    ) as HTMLElement;
-    if (searchInput) {
-      searchInput.focus();
+      const searchInput = this.overlayRef.overlayElement.querySelector(
+        'b-search .bfe-input'
+      ) as HTMLElement;
+      if (searchInput) {
+        searchInput.focus();
+      }
+
+      this.backdropClickSubscriber = this.overlayRef
+        .backdropClick()
+        .subscribe(() => {
+          this.onCancel();
+        });
+
+      this.windowKeydownSubscriber = this.utilsService
+        .getWindowKeydownEvent()
+        .pipe(
+          outsideZone(this.zone),
+          filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
+        )
+        .subscribe(() => {
+          this.destroyPanel();
+        });
     }
-
-    this.backdropClickSubscriber = this.overlayRef
-      .backdropClick()
-      .subscribe(() => {
-        this.onCancel();
-      });
-
-    this.windowKeydownSubscriber = this.utilsService
-      .getWindowKeydownEvent()
-      .pipe(
-        outsideZone(this.zone),
-        filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
-      )
-      .subscribe(() => {
-        this.destroyPanel();
-      });
   }
 
   onCancel(): void {
@@ -129,12 +141,15 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
   destroyPanel(): void {
     this.panelOpen = false;
-    invoke(this.overlayRef, 'dispose');
-    invoke(this.backdropClickSubscriber, 'unsubscribe');
-    invoke(this.positionChangeSubscriber, 'unsubscribe');
-    invoke(this.windowKeydownSubscriber, 'unsubscribe');
-    this.panelConfig = {};
-    this.templatePortal = null;
+    if (this.overlayRef) {
+      invoke(this.overlayRef, 'dispose');
+      invoke(this.backdropClickSubscriber, 'unsubscribe');
+      invoke(this.positionChangeSubscriber, 'unsubscribe');
+      invoke(this.windowKeydownSubscriber, 'unsubscribe');
+      this.panelConfig = {};
+      this.templatePortal = null;
+      this.overlayRef = null;
+    }
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
     }
@@ -152,6 +167,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     const panelClass = [
       ...this.panelClassList,
       'b-select-panel',
+      this.panelClass,
       this.isQuickFilter ? 'b-quick-filter-panel' : null
     ].filter(Boolean);
 

@@ -6,7 +6,8 @@
 
   <b-chevron-button *ngIf="chevronButtonText"
                     [text]="chevronButtonText"
-                    [active]="panelOpen">
+                    [active]="panelOpen"
+                    [disabled]="disabled">
   </b-chevron-button>
 
   <ng-content *ngIf="!chevronButtonText"></ng-content>

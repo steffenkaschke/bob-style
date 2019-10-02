@@ -144,13 +144,13 @@ textareaStories.add(
       props: {
         value: object('value', value),
         inputType: select('type', InputTypes, InputTypes.number),
-        selectOptions: object('selectOptions', optionsMock),
         label: text('label', 'Base salary'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),
         errorMessage: text('errorMessage', ''),
-        elementChange: action('Split input single select change')
+        elementChange: action('Split input single select change'),
+        selectOptions: object('selectOptions', optionsMock)
       },
       moduleMetadata: {
         imports: [

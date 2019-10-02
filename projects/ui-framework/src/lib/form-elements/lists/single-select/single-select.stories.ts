@@ -94,7 +94,6 @@ optionsMock[0].options[1].selected = true;
 const toAdd = () => ({
   template: storyTemplate,
   props: {
-    options: object<SelectGroupOption>('options', optionsMock),
     selectChange: action('Single select change'),
     label: text('label', 'label text'),
     placeholder: text('placeholder', 'placeholder text'),
@@ -102,7 +101,8 @@ const toAdd = () => ({
     required: boolean('required', false),
     hintMessage: text('hintMessage', 'This field should contain something'),
     errorMessage: text('errorMessage', ''),
-    showSingleGroupHeader: boolean('showSingleGroupHeader', false)
+    showSingleGroupHeader: boolean('showSingleGroupHeader', false),
+    options: object<SelectGroupOption>('options', optionsMock)
   },
   moduleMetadata: {
     imports: [

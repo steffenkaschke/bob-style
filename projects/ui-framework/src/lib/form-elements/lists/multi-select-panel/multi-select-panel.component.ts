@@ -1,15 +1,13 @@
 import {
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
   NgZone,
   OnChanges,
-  Output,
   ViewContainerRef
 } from '@angular/core';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
-import { ListFooterActions, SelectGroupOption } from '../list.interface';
+import { ListFooterActions } from '../list.interface';
 import { ListChange } from '../list-change/list-change';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { Overlay } from '@angular/cdk/overlay';
@@ -28,10 +26,6 @@ import { UtilsService } from '../../../services/utils/utils.service';
 export class MultiSelectPanelComponent extends BaseSelectPanelElement
   implements OnChanges {
   @Input() chevronButtonText: string;
-  @Input() options: SelectGroupOption[];
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
 
   listChange: ListChange;
 
@@ -61,6 +55,8 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement
       zone,
       cd
     );
+    this.wrapEvent = false;
+    this.doPropagate = false;
   }
 
   onSelect(listChange: ListChange): void {
