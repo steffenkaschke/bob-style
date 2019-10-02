@@ -1,13 +1,11 @@
 import { ComponentGroupType } from '../../consts';
 import { storiesOf } from '@storybook/angular';
-import {
-  withKnobs, object, text
-} from '@storybook/addon-knobs/angular';
+import { withKnobs, object, text } from '@storybook/addon-knobs/angular';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { action } from '@storybook/addon-actions';
 import { CommentsModule } from '../comments.module';
-import {mockAvatar, mockNames} from '../../mock.const';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { mockAvatar, mockNames } from '../../mock.const';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const stories = storiesOf(ComponentGroupType.Comments, module).addDecorator(
   withKnobs
@@ -44,13 +42,13 @@ stories.add(
     return {
       template: storyTemplate,
       props: {
+        sendComment: action('Send comment click'),
+        placeholder: text('placeholder', 'Write your comment here.'),
         comment: object('comment', {
           content: 'input value',
           avatar: mockAvatar(),
-          name: mockNames(1),
-        }),
-        placeholder: text('placeholder', 'Write your comment here.'),
-        sendComment: action('Send comment click')
+          name: mockNames(1)
+        })
       },
       moduleMetadata: {
         imports: [

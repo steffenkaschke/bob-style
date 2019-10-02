@@ -41,7 +41,9 @@ export class EmployeesShowcaseComponent
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
-  @Output() clicked: EventEmitter<string> = new EventEmitter<string>();
+  @Output() clicked: EventEmitter<EmployeeShowcase> = new EventEmitter<
+    EmployeeShowcase
+  >();
 
   panelListOptions: SelectGroupOption[];
   avatarsToFit = 0;
@@ -96,8 +98,8 @@ export class EmployeesShowcaseComponent
     this.selectChange.emit(listChange);
   }
 
-  onAvatarClick(id: string) {
-    this.clicked.emit(id);
+  onAvatarClick(ee: EmployeeShowcase) {
+    this.clicked.emit(ee);
   }
 
   private initShowcase() {

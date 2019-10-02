@@ -4,31 +4,30 @@
   position: relative;
   width: 100%;
   display: flex;
+}
 
-  b-avatar,
-  .employees-showcase-panel-wrapper {
-    margin-left: var(--avatar-gap);
-  }
+.avatar-showcase {
+  display: inline-flex;
+}
 
-  b-avatar:first-child {
+.clickable {
+  cursor: pointer;
+}
+
+b-avatar {
+  margin-left: var(--avatar-gap);
+
+  &:first-child {
     margin-left: 0;
   }
+}
 
-  .avatar-showcase {
-    display: inline-flex;
+:host ::ng-deep .avatar {
+  transition: background-image 0.5s ease-in-out !important;
 
-    &.expand-on-click {
-      cursor: pointer;
-    }
-
-    ::ng-deep .avatar {
-      transition: background-image 0.5s ease-in-out !important;
-
-      .avatar-content {
-        @include flex-align;
-        opacity: 1;
-      }
-    }
+  .avatar-content {
+    @include flex-align;
+    opacity: 1;
   }
 }
 

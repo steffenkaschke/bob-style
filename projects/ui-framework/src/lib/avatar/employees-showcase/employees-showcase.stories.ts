@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { object, select, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  object,
+  select,
+  boolean,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -30,7 +35,8 @@ const template = `
             [employees]="employees"
             [avatarSize]="avatarSize"
             [expandOnClick]="expandOnClick"
-            (selectChange)="selectChange($event)">
+            (selectChange)="selectChange($event)"
+            (clicked)="onAvatarClick($event)">
   </b-employees-showcase>
 `;
 
@@ -42,10 +48,11 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  employees | EmployeeShowcase[] | employees list | []
-  avatarSize | AvatarSize | avatar size | 'mini'
-  expandOnClick | boolean | expands panel on click | true
-  selectChange | ListChange | list select change |
+  [employees] | EmployeeShowcase[] | employees list | []
+  [avatarSize] | AvatarSize | avatar size | 'mini'
+  [expandOnClick] | boolean | expands panel on click | true
+  (selectChange) | EventEmitter&lt;ListChange&gt; | list select change |
+  (clicked) | EventEmitter&lt;EmployeeShowcase&gt; | emits when avatar is clicked |
 
   ~~~
   ${template}
@@ -70,13 +77,14 @@ avatarStories.add(
         expandOnClick: boolean('expandOnClick', true),
         employees: object<EmployeeShowcase>('employees', employeesMock),
         selectChange: action('Showcase list change'),
+        onAvatarClick: action('Avatar clicked')
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           EmployeesShowcaseModule,
-          UtilComponentsModule,
+          UtilComponentsModule
         ]
       }
     };

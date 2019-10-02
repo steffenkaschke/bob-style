@@ -4,7 +4,7 @@
                        (selectChange)="onSelectChange($event)">
 
   <div class="avatar-showcase"
-       [ngClass]="{'expand-on-click': expandOnClick}">
+       [ngClass]="{'clickable': expandOnClick}">
 
     <ng-container *ngFor="let employee of employees; let i = index; let last = last">
 
@@ -13,7 +13,7 @@
                 [imageSource]="employee.imageSource"
                 [size]="avatarSize"
                 [isClickable]="clicked.observers.length > 0"
-                (clicked)="onAvatarClick(employee.id)">
+                (clicked)="onAvatarClick(employee)">
       </b-avatar>
 
     </ng-container>
