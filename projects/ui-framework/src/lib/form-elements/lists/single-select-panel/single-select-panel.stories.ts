@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { text, object, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  text,
+  object,
+  withKnobs,
+  boolean
+} from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
@@ -10,23 +15,26 @@ import { SingleSelectPanelModule } from './single-select-panel.module';
 import { ButtonType } from '../../../buttons/buttons.enum';
 import { action } from '@storybook/addon-actions';
 
-const inputStories = storiesOf(
-  ComponentGroupType.Lists,
-  module
-).addDecorator(withKnobs);
+const inputStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+  withKnobs
+);
 
 const componentTemplate1 = `
 <b-single-select-panel [chevronButtonText]="chevronButtonText"
                        [options]="options"
+                       [disabled]="disabled"
+                       [panelClass]="panelClass"
                        (selectChange)="selectChange($event)">
 </b-single-select-panel>
 `;
 
 const componentTemplate2 = `
 <b-single-select-panel [options]="options"
+                       [disabled]="disabled"
+                       [panelClass]="panelClass"
                        (selectChange)="selectChange($event)">
-  <b-square-button type="${ ButtonType.secondary }"
-                   icon="${ Icons.table }">
+  <b-square-button type="${ButtonType.secondary}"
+                   icon="${Icons.table}">
   </b-square-button>
 </b-single-select-panel>
 `;
@@ -34,9 +42,9 @@ const componentTemplate2 = `
 const template = `
 <b-story-book-layout [title]="'Single select panel'">
   <div style="max-width: 400px;">
-  ${ componentTemplate1 }
+  ${componentTemplate1}
   &nbsp;&nbsp;
-  ${ componentTemplate2 }
+  ${componentTemplate2}
   </div>
 </b-story-book-layout>
 `;
@@ -50,16 +58,17 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | ---
-  chevronButtonText | string | text to be displayed in chevron-button | null - can use transclude instead
-  options | SelectGroupOptions[] | select option | null
-  selectChange | ListChange | output on select change
+  [chevronButtonText] | string | text to be displayed in chevron-button | null - can use transclude instead
+  [options] | SelectGroupOptions[] | select option | null
+  [disabled] | boolean | if panel is disabled | false
+  (selectChange) | ListChange | output on select change
 
   ~~~
-  ${ componentTemplate1 }
+  ${componentTemplate1}
   ~~~
 
   ~~~
-  ${ componentTemplate2 }
+  ${componentTemplate2}
   ~~~
 `;
 
@@ -74,7 +83,7 @@ const categories = [
   'Financial',
   'Payroll',
   'Employment',
-  'Equity',
+  'Equity'
 ];
 
 const optionsMock: SelectGroupOption[] = [
@@ -84,9 +93,9 @@ const optionsMock: SelectGroupOption[] = [
       return {
         value: category,
         id: category,
-        selected: false,
+        selected: false
       };
-    }),
+    })
   }
 ];
 
@@ -99,15 +108,17 @@ inputStories.add(
       template,
       props: {
         chevronButtonText: text('chevronButtonText', 'Jump to section'),
+        disabled: boolean('disabled', false),
+        panelClass: text('panelClass', 'some-class'),
         options: object('options', optionsMock),
-        selectChange: action('Single select panel change'),
+        selectChange: action('Single select panel change')
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           ButtonsModule,
-          SingleSelectPanelModule,
+          SingleSelectPanelModule
         ]
       }
     };
