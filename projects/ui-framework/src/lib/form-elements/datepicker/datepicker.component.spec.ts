@@ -94,6 +94,7 @@ describe('DatepickerComponent', () => {
         spyOn(component.changed, 'emit');
 
         picker = component.pickers.toArray()[0];
+        picker.startAt = parse('2019-09-01');
       });
   }));
 
