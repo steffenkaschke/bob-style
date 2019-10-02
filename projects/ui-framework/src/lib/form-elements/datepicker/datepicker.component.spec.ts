@@ -27,7 +27,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { OverlayModule } from '@angular/cdk/overlay';
 
-fdescribe('DatepickerComponent', () => {
+describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
   let component: DatepickerComponent;
   let componentElem: HTMLElement;

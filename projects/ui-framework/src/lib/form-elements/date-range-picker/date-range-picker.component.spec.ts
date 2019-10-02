@@ -26,7 +26,7 @@ import { isDate, parse } from 'date-fns';
 import { DatepickerType } from '../datepicker/datepicker.enum';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('DateRangePickerComponent', () => {
+describe('DateRangePickerComponent', () => {
   let fixture: ComponentFixture<DateRangePickerComponent>;
   let component: DateRangePickerComponent;
   let componentElem: HTMLElement;
