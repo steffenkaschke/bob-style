@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EmployeesShowcaseComponent } from './employees-showcase.component';
 import { AvatarModule } from '../avatar/avatar.module';
 import { IconsModule } from '../../icons/icons.module';
-import { PanelModule } from '../../popups/panel/panel.module';
-import { SingleListModule } from '../../form-elements/lists/single-list/single-list.module';
-import { OverlayModule } from '@angular/cdk/overlay';
+import { SingleSelectPanelModule } from '../../form-elements/lists/single-select-panel/single-select-panel.module';
 
 @NgModule({
   declarations: [
@@ -15,9 +13,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
     CommonModule,
     AvatarModule,
     IconsModule,
-    PanelModule,
-    SingleListModule,
-    OverlayModule,
+    SingleSelectPanelModule,
   ],
   exports: [
     EmployeesShowcaseComponent,

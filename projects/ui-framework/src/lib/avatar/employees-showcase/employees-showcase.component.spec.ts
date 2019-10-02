@@ -2,7 +2,6 @@ import {
   async,
   ComponentFixture,
   fakeAsync,
-  inject,
   TestBed,
   tick
 } from '@angular/core/testing';
@@ -14,18 +13,17 @@ import { EMPLOYEE_SHOWCASE_MOCK } from './employees-showcase.mock';
 import { AvatarSize } from '../avatar/avatar.enum';
 import { MockComponent } from 'ng-mocks';
 import { AvatarComponent } from '../avatar/avatar.component';
-import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Platform } from '@angular/cdk/platform';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { cold, getTestScheduler } from 'jasmine-marbles';
 import { IconComponent } from '../../icons/icon.component';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { By } from '@angular/platform-browser';
-import { SingleListModule } from '../../form-elements/lists/single-list/single-list.module';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
 import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarGap } from './employees-showcase.const';
+// tslint:disable-next-line: max-line-length
+import { SingleSelectPanelComponent } from '../../form-elements/lists/single-select-panel/single-select-panel.component';
 import createSpyObj = jasmine.createSpyObj;
 
 describe('EmployeesShowcaseComponent', () => {
@@ -33,32 +31,18 @@ describe('EmployeesShowcaseComponent', () => {
   let fixture: ComponentFixture<EmployeesShowcaseComponent>;
   let utilsServiceStub: jasmine.SpyObj<UtilsService>;
 
-  let overlayContainer: OverlayContainer;
-  let overlayContainerElement: HTMLElement;
-  let platform: Platform;
-
   beforeEach(async(() => {
-    utilsServiceStub = createSpyObj('UtilsService', [
-      'getResizeEvent',
-      'getWindowKeydownEvent'
-    ]);
+    utilsServiceStub = createSpyObj('UtilsService', ['getResizeEvent']);
     utilsServiceStub.getResizeEvent.and.returnValue(cold('-x-', { x: {} }));
-    utilsServiceStub.getWindowKeydownEvent.and.returnValue(
-      cold('-x-', { x: {} })
-    );
 
     TestBed.configureTestingModule({
       declarations: [
         EmployeesShowcaseComponent,
         MockComponent(AvatarComponent),
-        MockComponent(IconComponent)
+        MockComponent(IconComponent),
+        MockComponent(SingleSelectPanelComponent)
       ],
-      imports: [
-        OverlayModule,
-        NoopAnimationsModule,
-        CommonModule,
-        SingleListModule
-      ],
+      imports: [NoopAnimationsModule, CommonModule],
       providers: [
         DOMhelpers,
         { provide: UtilsService, useValue: utilsServiceStub },
@@ -70,17 +54,8 @@ describe('EmployeesShowcaseComponent', () => {
         fixture = TestBed.createComponent(EmployeesShowcaseComponent);
         component = fixture.componentInstance;
         fixture.nativeElement.style.width = '800px';
-        spyOn(component.cd, 'detectChanges');
+        spyOn(component['cd'], 'detectChanges');
       });
-
-    inject(
-      [OverlayContainer, Platform],
-      (oc: OverlayContainer, p: Platform) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-        platform = p;
-      }
-    )();
   }));
 
   describe('ngOnInit', () => {
@@ -91,17 +66,17 @@ describe('EmployeesShowcaseComponent', () => {
       component.employees = EMPLOYEE_SHOWCASE_MOCK;
       fixture.detectChanges();
       getTestScheduler().flush();
-      expect(component.cd.detectChanges).toHaveBeenCalledTimes(2);
+      expect(component['cd'].detectChanges).toHaveBeenCalledTimes(2);
     });
     it('should invoke detect changes on every rezise event', () => {
       utilsServiceStub.getResizeEvent.and.returnValue(
         cold('-x-y-', { x: {}, y: {} })
       );
-      spyOn(component.DOM, 'getClosest');
+      spyOn(component['DOM'], 'getClosest');
       component.employees = EMPLOYEE_SHOWCASE_MOCK;
       fixture.detectChanges();
       getTestScheduler().flush();
-      expect(component.DOM.getClosest).toHaveBeenCalledTimes(2);
+      expect(component['DOM'].getClosest).toHaveBeenCalledTimes(2);
     });
     it('should set panelListOptions', () => {
       component.employees = [
@@ -165,40 +140,6 @@ describe('EmployeesShowcaseComponent', () => {
       component.ngOnChanges(changes);
       fixture.detectChanges();
     };
-    it('should open panel on showcase click', fakeAsync(() => {
-      createComponent(AvatarSize.medium, true);
-      // remove avatar from list for testing purposes
-      component.panelListOptions[0].options = component.panelListOptions[0].options.map(
-        o => {
-          return {
-            value: o.value,
-            id: o.id,
-            selected: false
-          };
-        }
-      );
-
-      component.openPanel();
-      fixture.autoDetectChanges();
-      tick();
-      const listOptions = overlayContainerElement.querySelectorAll(
-        'b-single-list .option'
-      );
-      expect(listOptions.length).toEqual(3);
-      expect(listOptions[0].innerHTML).toContain('Ben Baler');
-      expect(listOptions[1].innerHTML).toContain('Omri Hecht');
-      expect(listOptions[2].innerHTML).toContain('Guy Katz');
-    }));
-    it('should not open panel if expandOnClick input is false (hijack openPanel method)', fakeAsync(() => {
-      createComponent(AvatarSize.medium, false);
-      component.openPanel();
-      fixture.autoDetectChanges();
-      tick();
-      const listOptions = overlayContainerElement.querySelector(
-        'b-single-list'
-      );
-      expect(listOptions).toBeFalsy();
-    }));
     it('should shuffle avatars if avatarSize > medium and width cannot contain all', fakeAsync(() => {
       const startAvatarOrder = [
         EMPLOYEE_SHOWCASE_MOCK[0],
@@ -246,14 +187,6 @@ describe('EmployeesShowcaseComponent', () => {
       const selectChange = spyOn(component.selectChange, 'emit');
       component.onSelectChange(listChange);
       expect(selectChange).toHaveBeenCalledWith(listChange);
-    });
-    it('should destroyPanel on select', () => {
-      spyOn(component, 'destroyPanel');
-      component.employees = EMPLOYEE_SHOWCASE_MOCK;
-      fixture.detectChanges();
-      const listChange = new ListChange(component.panelListOptions);
-      component.onSelectChange(listChange);
-      expect(component.destroyPanel).toHaveBeenCalled();
     });
   });
 
@@ -375,8 +308,7 @@ describe('EmployeesShowcaseComponent', () => {
   });
 
   describe('OnDestroy', () => {
-    it('should unsubscribe from resize and interval subscribers and destroyPanel', fakeAsync(() => {
-      spyOn(component, 'destroyPanel');
+    it('should unsubscribe from resize and interval subscribers', fakeAsync(() => {
       fixture.nativeElement.style.width = '260px';
       component.avatarSize = AvatarSize.large;
       component.employees = [
@@ -394,7 +326,6 @@ describe('EmployeesShowcaseComponent', () => {
 
       expect(component['resizeEventSubscriber'].closed).toBe(true);
       expect(component['intervalSubscriber'].closed).toBe(true);
-      expect(component.destroyPanel).toHaveBeenCalled();
     }));
   });
 });
