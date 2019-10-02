@@ -1,13 +1,15 @@
-<b-avatar [size]="avatarSize.mini" [imageSource]="comment?.avatar" [matTooltip]="comment?.name"></b-avatar>
+<b-avatar [size]="avatarSize.mini"
+          [imageSource]="comment?.avatar"
+          [matTooltip]="comment?.name"></b-avatar>
 <div class="text-section">
-  <div class="comment-menu" [class.focused]="menuOpen">
+  <div class="comment-menu"
+       [class.focused]="menuOpen">
     <b-menu class="card-menu"
             *ngIf="comment?.menuConfig?.length > 0"
             [menu]="comment.menuConfig"
             (click.outside-zone)="$event.stopPropagation()"
             (openMenu)="menuOpen = true"
-            (closeMenu)="closeMenu()"
-    >
+            (closeMenu)="closeMenu()">
       <b-square-button menu-trigger
                        [type]="buttonType.tertiary"
                        [color]="iconColor.normal"
@@ -22,7 +24,7 @@
                      [size]="buttonSize.medium"
                      [icon]="comment.actionConfig.icon"
                      [color]="iconColor.normal"
-                     [toolTipSummary]="comment.actionConfig.tooltip"
+                     [matTooltip]="comment.actionConfig.tooltip"
                      (click)="comment.actionConfig.action($event)">
     </b-square-button>
   </div>
@@ -31,6 +33,8 @@
       <b-bold-body class="name">{{comment?.name}}</b-bold-body>
       <b-caption class="date">{{comment?.date}}</b-caption>
     </div>
-    <div *ngIf="comment?.content" class="comment-body" [innerHtml]="comment?.content | linkify"></div>
+    <div *ngIf="comment?.content"
+         class="comment-body"
+         [innerHtml]="comment?.content | linkify"></div>
   </div>
 </div>
