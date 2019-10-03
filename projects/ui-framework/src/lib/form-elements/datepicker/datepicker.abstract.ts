@@ -135,11 +135,11 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     this.allPickers(picker => this.closePicker(picker));
 
     if (changes.minDate) {
-      this.minDate = dateOrFail(changes.minDate.currentValue);
+      this.minDate = dateOrFail(new Date(changes.minDate.currentValue));
     }
 
     if (changes.maxDate) {
-      this.maxDate = dateOrFail(changes.maxDate.currentValue);
+      this.maxDate = dateOrFail(new Date(changes.maxDate.currentValue));
     }
 
     if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
