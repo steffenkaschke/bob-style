@@ -17,7 +17,8 @@ import {
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import {
   simpleUID,
-  notFirstChanges
+  notFirstChanges,
+  cloneObject
 } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
@@ -64,7 +65,7 @@ export class CollapsibleSectionComponent
   @Input() titleColor?: string;
   @Input() description?: string;
 
-  @Input() options: CollapsibleOptions = collapsibleOptionsDef;
+  @Input() options: CollapsibleOptions = cloneObject(collapsibleOptionsDef);
 
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();

@@ -4,7 +4,7 @@ import { DateRangePickerComponent } from './date-range-picker.component';
 import { UtilsService } from '../../services/utils/utils.service';
 import { MobileService } from '../../services/utils/mobile.service';
 import createSpyObj = jasmine.createSpyObj;
-import { DateTimeInputService } from '../datepicker/date-time-input.service';
+import { DateParseService } from '../datepicker/date-parse.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { of } from 'rxjs';
 import {
@@ -60,7 +60,7 @@ describe('DateRangePickerComponent', () => {
       providers: [
         { provide: UtilsService, useValue: utilsServiceStub },
         { provide: MobileService, useValue: mobileServiceStub },
-        DateTimeInputService,
+        DateParseService,
         EventManagerPlugins[0]
       ],
       schemas: [NO_ERRORS_SCHEMA]

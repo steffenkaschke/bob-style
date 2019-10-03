@@ -41,13 +41,13 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  value | string | value of input field ('HH:MM')
-  label | string | label text (above input)
-  disabled | boolean | is field disabled
-  required | boolean | is field required
-  hintMessage | string | hint text
-  warnMessage | string | warning text
-  errorMessage | string | error text
+  [value] | string | value of input field ('HH:MM')
+  [label] | string | label text (above input)
+  [disabled] | boolean | is field disabled
+  [required] | boolean | is field required
+  [hintMessage] | string | hint text
+  [warnMessage] | string | warning text
+  [errorMessage] | string | error text
   (changed) | InputEvent | change emitter
 
   ~~~

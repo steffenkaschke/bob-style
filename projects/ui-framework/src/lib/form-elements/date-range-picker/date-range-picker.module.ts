@@ -5,7 +5,7 @@ import { IconsModule } from '../../icons/icons.module';
 import { CommonModule } from '@angular/common';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { DateRangePickerComponent } from './date-range-picker.component';
-import { DateTimeInputService } from '../datepicker/date-time-input.service';
+import { DateParseService } from '../datepicker/date-parse.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 @NgModule({
@@ -19,6 +19,6 @@ import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
   ],
   exports: [DateRangePickerComponent],
   entryComponents: [],
-  providers: [DateTimeInputService, EventManagerPlugins[0]]
+  providers: [DateParseService, EventManagerPlugins[0]]
 })
 export class DateRangePickerModule {}

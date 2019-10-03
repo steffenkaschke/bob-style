@@ -16,10 +16,10 @@ import {
   dateOrFail,
   objectHasKeyOrFail
 } from '../../services/utils/transformers';
-import { simpleUID, cloneValue } from '../../services/utils/functional-utils';
+import { simpleUID, cloneObject } from '../../services/utils/functional-utils';
 import { BaseDatepickerElement } from '../datepicker/datepicker.abstract';
 import { MobileService } from '../../services/utils/mobile.service';
-import { DateTimeInputService } from '../datepicker/date-time-input.service';
+import { DateParseService } from '../datepicker/date-parse.service';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { DateRangePickerValue } from './date-range-picker.interface';
@@ -91,9 +91,17 @@ export class DateRangePickerComponent extends BaseDatepickerElement
     cd: ChangeDetectorRef,
     zone: NgZone,
     kbrdCntrlSrvc: FormElementKeyboardCntrlService,
-    dtInputSrvc: DateTimeInputService
+    dateParseSrvc: DateParseService
   ) {
-    super(windowRef, mobileService, DOM, cd, zone, kbrdCntrlSrvc, dtInputSrvc);
+    super(
+      windowRef,
+      mobileService,
+      DOM,
+      cd,
+      zone,
+      kbrdCntrlSrvc,
+      dateParseSrvc
+    );
 
     this.inputTransformers = [
       objectHasKeyOrFail(['from', 'to'], true),
@@ -103,7 +111,7 @@ export class DateRangePickerComponent extends BaseDatepickerElement
               startDate: dateOrFail(value.from),
               endDate: dateOrFail(value.to)
             }
-          : cloneValue(valueDef);
+          : cloneObject(valueDef);
       }
     ];
 
@@ -129,7 +137,7 @@ export class DateRangePickerComponent extends BaseDatepickerElement
     this.baseValue = valueDef;
   }
 
-  @Input() value: DateRangePickerValueLocal = valueDef;
+  @Input() value: DateRangePickerValueLocal;
 
   @Input() startDateLabel: string;
   @Input() endDateLabel: string;
@@ -148,6 +156,7 @@ export class DateRangePickerComponent extends BaseDatepickerElement
           ? '"' + this.endDateLabel || this.startDateLabel || this.label + '"'
           : null
     };
+    console.log(this.value);
   }
 
   public getDateClass = (date: Date): string[] => {

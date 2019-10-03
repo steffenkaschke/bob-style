@@ -6,7 +6,7 @@ import { IconsModule } from '../../icons/icons.module';
 import { CommonModule } from '@angular/common';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { DateTimeInputService } from './date-time-input.service';
+import { DateParseService } from './date-parse.service';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 
 @NgModule({
@@ -22,7 +22,7 @@ import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.serv
   entryComponents: [],
   providers: [
     FormElementKeyboardCntrlService,
-    DateTimeInputService,
+    DateParseService,
     EventManagerPlugins[0]
   ]
 })

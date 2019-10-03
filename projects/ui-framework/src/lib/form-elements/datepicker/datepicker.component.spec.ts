@@ -15,7 +15,7 @@ import {
 import { UtilsService } from '../../services/utils/utils.service';
 import createSpyObj = jasmine.createSpyObj;
 import { of } from 'rxjs';
-import { DateTimeInputService } from './date-time-input.service';
+import { DateParseService } from './date-parse.service';
 import { MobileService } from '../../services/utils/mobile.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { IconsModule } from '../../icons/icons.module';
@@ -62,7 +62,7 @@ describe('DatepickerComponent', () => {
         { provide: UtilsService, useValue: utilsServiceStub },
         { provide: MobileService, useValue: mobileServiceStub },
         FormElementKeyboardCntrlService,
-        DateTimeInputService,
+        DateParseService,
         EventManagerPlugins[0]
       ],
       schemas: [NO_ERRORS_SCHEMA]

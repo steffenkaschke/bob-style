@@ -269,7 +269,7 @@ export const cloneObject = (value: any) =>
   isObject(value) ? Object.assign({}, value) : value;
 
 export const cloneArray = (value: any) =>
-  isArray(value) ? value.slice(0) : value;
+  isArray(value) ? value.slice() : value;
 
 export const cloneValue = (value: any) =>
   isObject(value)

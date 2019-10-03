@@ -13,7 +13,7 @@ import { serverDateFormat } from '../../consts';
 import { dateToString, dateOrFail } from '../../services/utils/transformers';
 import { MobileService } from '../../services/utils/mobile.service';
 import { BaseDatepickerElement } from './datepicker.abstract';
-import { DateTimeInputService } from './date-time-input.service';
+import { DateParseService } from './date-parse.service';
 import { DOMhelpers } from '../../services/utils/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { startOfMonth } from 'date-fns';
@@ -54,9 +54,17 @@ export class DatepickerComponent extends BaseDatepickerElement {
     cd: ChangeDetectorRef,
     zone: NgZone,
     kbrdCntrlSrvc: FormElementKeyboardCntrlService,
-    dtInputSrvc: DateTimeInputService
+    dateParseSrvc: DateParseService
   ) {
-    super(windowRef, mobileService, DOM, cd, zone, kbrdCntrlSrvc, dtInputSrvc);
+    super(
+      windowRef,
+      mobileService,
+      DOM,
+      cd,
+      zone,
+      kbrdCntrlSrvc,
+      dateParseSrvc
+    );
 
     this.inputTransformers = [dateOrFail];
 

@@ -12,7 +12,8 @@ import {
   padWith0,
   isString,
   isKey,
-  isNumber
+  isNumber,
+  cloneObject
 } from '../../services/utils/functional-utils';
 import { timeyOrFail } from '../../services/utils/transformers';
 import { InputEventType } from '../form-elements.enum';
@@ -219,7 +220,7 @@ export class TimePickerComponent extends BaseFormElement {
 
   private parseValue(
     value: string,
-    config: ParseConfig = ParseConfigDef
+    config: ParseConfig = cloneObject(ParseConfigDef)
   ): string {
     config = { ...ParseConfigDef, ...config };
 

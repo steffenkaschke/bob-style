@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { controlKeys, Keys } from '../../enums';
 import { thisYear } from '../../services/utils/functional-utils';
 
 @Injectable()
-export class DateTimeInputService {
+export class DateParseService {
   public parseDateInput(value: string, useChar = '/') {
     value = value
       .replace(/[a-zA-Z]+/g, '')

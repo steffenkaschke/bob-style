@@ -24,7 +24,7 @@
            [attr.placeholder]="hideLabelOnFocus && (startDateLabel || label) ? (!required ? (startDateLabel || label) :
            (startDateLabel || label) + '*') :
            placeholder"
-           [value]="value.startDate"
+           [value]="value?.startDate"
            [disabled]="disabled"
            [required]="required"
            (click)="openPicker(0)"
@@ -35,7 +35,7 @@
            (dateChange)="transmit($event.value, 'value.startDate')"
            [matDatepicker]="startDatePicker"
            [min]="minDate || null"
-           [max]="value.endDate || maxDate || null">
+           [max]="value?.endDate || maxDate || null">
 
     <b-icon *ngIf="!isInputEmpty(0)"
             class="bfe-suffix"
@@ -60,7 +60,7 @@
            [attr.placeholder]="hideLabelOnFocus && (endDateLabel || label) ? (!required ? ((label && null) ||
            endDateLabel) : ((label && ' ') || endDateLabel + '*')) :
            placeholder"
-           [value]="value.endDate"
+           [value]="value?.endDate"
            [disabled]="disabled"
            [required]="required"
            (click)="openPicker(1)"
@@ -70,7 +70,7 @@
            (input.outside-zone)="onInputChange($event,1)"
            (dateChange)="transmit($event.value, 'value.endDate')"
            [matDatepicker]="endDatePicker"
-           [min]="value.startDate || minDate || null"
+           [min]="value?.startDate || minDate || null"
            [max]="maxDate || null">
 
     <b-icon *ngIf="!isInputEmpty(1)"
