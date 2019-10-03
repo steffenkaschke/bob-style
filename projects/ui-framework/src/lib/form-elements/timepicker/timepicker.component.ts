@@ -211,7 +211,21 @@ export class TimePickerComponent extends BaseFormElement {
     this.transmit(InputEventType.onBlur);
   }
 
-  private transmit(eventType = InputEventType.onBlur) {
+  isInputEmpty() {
+    return (
+      (this.valueHours && this.valueHours !== '00') ||
+      (this.valueMinutes && this.valueMinutes !== '00')
+    );
+  }
+
+  clearInput() {
+    this.value = this.valueMinutes = this.valueHours = null;
+    this.transmitValue(this.value, {
+      eventType: [InputEventType.onChange]
+    });
+  }
+
+  private transmit(eventType = InputEventType.onChange) {
     const newValue = this.combineValue(this.valueHours, this.valueMinutes);
     if (this.value !== newValue) {
       this.value = newValue;

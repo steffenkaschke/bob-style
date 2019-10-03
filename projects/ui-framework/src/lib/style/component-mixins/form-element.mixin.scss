@@ -218,3 +218,42 @@ $input-focus-border-color: $grey-700;
 
   @include input-border-colors($add: ' .bfe-wrap');
 }
+
+@mixin clear-input-suffix {
+  .input-icon {
+    pointer-events: none;
+  }
+
+  .clear-input {
+    @include position(50% 0 null null);
+    margin-top: -10px;
+    background-color: white;
+  }
+
+  .bfe-wrap {
+    position: relative;
+  }
+
+  :host {
+    .bfe-suffix.clear-input {
+      cursor: pointer;
+      outline: 0;
+
+      @include desktop {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.1s;
+        transition-delay: 0.1s;
+      }
+    }
+
+    .bfe-wrap:hover,
+    .bfe-wrap.focused {
+      .bfe-suffix.clear-input {
+        display: block;
+        opacity: 1;
+      }
+    }
+  }
+  //
+}

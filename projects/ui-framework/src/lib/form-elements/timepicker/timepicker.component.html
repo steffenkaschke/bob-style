@@ -43,10 +43,20 @@
 
   </span>
 
-  <b-icon class="bfe-suffix"
+  <b-icon class="bfe-suffix input-icon"
           [icon]="icons.timeline"
           [color]="(hoursFocused || minutesFocused) ? iconColor.dark : iconColor.normal"
           [size]="iconSize.medium">
+  </b-icon>
+
+  <b-icon *ngIf="isInputEmpty()"
+          class="bfe-suffix clear-input"
+          role="button"
+          [hasHoverState]="true"
+          [icon]="icons.reset_x"
+          [color]="inputFocused[0] ? iconColor.dark : iconColor.normal"
+          [size]="iconSize.medium"
+          (click)="$event.stopPropagation(); clearInput()">
   </b-icon>
 </div>
 
