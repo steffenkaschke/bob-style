@@ -173,7 +173,7 @@ describe('DatepickerComponent', () => {
       fixture.detectChanges();
       pickerDateCellElem = component.getPickerPanelElements(
         picker,
-        '.mat-calendar-body .mat-calendar-body-active'
+        '.mat-calendar-body [aria-selected="true"]'
       )[0];
       expect(pickerDateCellElem).toBeTruthy();
       const selectedDate = dateToString(
@@ -270,7 +270,7 @@ describe('DatepickerComponent', () => {
       fixture.detectChanges();
       pickerDateCellElem = component.getPickerPanelElements(
         picker,
-        '.mat-calendar-body .mat-calendar-body-active'
+        '.mat-calendar-body [aria-selected="true"]'
       )[0];
       expect(pickerDateCellElem).toBeTruthy();
       const selectedDate = dateToString(
