@@ -156,7 +156,6 @@ export class DateRangePickerComponent extends BaseDatepickerElement
           ? '"' + this.endDateLabel || this.startDateLabel || this.label + '"'
           : null
     };
-    console.log(this.value);
   }
 
   public getDateClass = (date: Date): string[] => {

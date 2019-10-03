@@ -13,7 +13,8 @@ import {
   isString,
   isKey,
   isNumber,
-  cloneObject
+  cloneObject,
+  isNullOrUndefined
 } from '../../services/utils/functional-utils';
 import { timeyOrFail } from '../../services/utils/transformers';
 import { InputEventType } from '../form-elements.enum';
@@ -68,7 +69,7 @@ export class TimePickerComponent extends BaseFormElement {
       (value: string) => {
         this.valueHours = this.splitValue(value, 0);
         this.valueMinutes = this.splitValue(value, 1);
-        return value;
+        return this.combineValue(this.valueHours, this.valueMinutes);
       }
     ];
 
@@ -77,10 +78,10 @@ export class TimePickerComponent extends BaseFormElement {
   @ViewChild('inputHours', { static: true }) inputHours: ElementRef;
   @ViewChild('inputMinutes', { static: true }) inputMinutes: ElementRef;
 
-  valueHours: string;
-  valueMinutes: string;
-  hoursFocused = false;
-  minutesFocused = false;
+  public valueHours: string;
+  public valueMinutes: string;
+  public hoursFocused = false;
+  public minutesFocused = false;
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
@@ -262,7 +263,8 @@ export class TimePickerComponent extends BaseFormElement {
   }
 
   private combineValue(valueHours: string, valueMinutes: string): string {
-    return valueHours === '' && valueMinutes === ''
+    return (valueHours === '' || isNullOrUndefined(valueHours)) &&
+      (valueMinutes === '' || isNullOrUndefined(valueMinutes))
       ? null
       : `${valueHours || '00'}:${valueMinutes || '00'}`;
   }

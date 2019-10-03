@@ -14,11 +14,14 @@ export function MixIn(baseCtors: Function[]) {
 export const randomNumber = (min = 0, max = 100): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
-export const randomFromArray = (array: any[], num: number = 1) => {
+export const randomFromArray = (array: any[] = [], num: number = 1) => {
   if (!num) {
     num = array.length;
   }
-  const random = array.sort(() => 0.5 - Math.random()).slice(0, num);
+  const random = array
+    .slice()
+    .sort(() => 0.5 - Math.random())
+    .slice(0, num);
   return num === 1 ? random[0] : random;
 };
 
@@ -28,11 +31,10 @@ export const keysFromArrayOrObject = (smth: string[] | {}): string[] =>
 export const getKeyByValue = (object: object, value: any) =>
   Object.keys(object).find(key => object[key] === value);
 
-export const isString = (val: any): boolean =>
-  val === '' || (val && typeof val === 'string');
+export const isString = (val: any): boolean => typeof val === 'string';
 
 export const isNumber = (val: any): boolean =>
-  val === 0 || (val && typeof val === 'number');
+  typeof val === 'number' && val === val;
 
 export const isNotEmptyString = (val: any): boolean =>
   isString(val) && val.trim() !== '';
@@ -61,16 +63,15 @@ export const isNullOrUndefined = (val: any): boolean =>
   val === undefined || val === null;
 
 export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
-  smth === null ||
-  smth === undefined ||
+  isNullOrUndefined(smth) ||
   smth === false ||
   (fuzzy && smth === '') ||
   (fuzzy && smth === 0) ||
-  (isArray(smth) && smth.length === 0) ||
-  (isObject(smth) && Object.keys(smth).length === 0);
+  isEmptyArray(smth) ||
+  isEmptyObject(smth);
 
 export const isRenderedComponent = (obj: any): boolean =>
-  obj && !!obj.component;
+  hasProp(obj, 'component');
 
 export const simpleUID = (
   prefix: string = '',
@@ -273,9 +274,9 @@ export const cloneArray = (value: any) =>
 
 export const cloneValue = (value: any) =>
   isObject(value)
-    ? Object.assign({}, value)
+    ? cloneObject(value)
     : isArray(value)
-    ? value.slice(0)
+    ? cloneArray(value)
     : value;
 
 export const isIterable = (smth: any): boolean => {

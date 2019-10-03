@@ -70,7 +70,7 @@ export class SocialComponent extends BaseFormElement implements OnInit {
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  inputId: string;
+  public inputId: string;
 
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
