@@ -94,7 +94,7 @@ datepickerStories.add(
           ''
         ),
         pickerType: select(
-          'pickerType',
+          'type',
           Object.values(DatepickerType),
           DatepickerType.date
         ),

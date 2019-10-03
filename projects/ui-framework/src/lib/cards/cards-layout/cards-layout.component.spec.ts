@@ -55,6 +55,11 @@ describe('CardsLayoutComponent', () => {
   }));
 
   describe('Oninit', () => {
+    describe('Start date', () => {
+      if (fixture) {
+        fixture.detectChanges();
+      }
+    });
     it('should be of type primary by default', () => {
       expect(getCardMaxWidth()).toEqual(
         CARD_TYPE_WIDTH[CardType.regular] + 'px'
