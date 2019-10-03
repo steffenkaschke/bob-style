@@ -67,13 +67,20 @@ describe('InputComponent', () => {
       expect(labelElem.innerText).toContain('Label');
       expect(getPseudoContent(labelElem, 'after')).toContain('*');
     });
+
     it('should display hint message', () => {
       expect(messageElem.innerText).toContain('Hint');
     });
+
     it('should display time icon', () => {
       iconElem = elementFromFixture(fixture, '.bfe-suffix .b-icon');
       expect(iconElem).toBeTruthy();
       expect(iconElem.classList).toContain('b-icon-watch');
+    });
+
+    it('should not display clear icon, when component has no value', () => {
+      iconElem = elementFromFixture(fixture, '.clear-input .b-icon');
+      expect(iconElem).toBeFalsy();
     });
   });
 
@@ -100,6 +107,7 @@ describe('InputComponent', () => {
     it('should correctly parse value', () => {
       expect(component.valueHours).toEqual('06');
       expect(component.valueMinutes).toEqual('05');
+      expect(component.value).toEqual('06:05');
     });
 
     it('should emit changed event', () => {
@@ -121,6 +129,7 @@ describe('InputComponent', () => {
     it('should correctly parse value', () => {
       expect(component.valueHours).toEqual('07');
       expect(component.valueMinutes).toEqual('08');
+      expect(component.value).toEqual('07:08');
     });
 
     it('should emit changed event', () => {
@@ -153,6 +162,7 @@ describe('InputComponent', () => {
       inputValue(mmInputElem, '33');
       fixture.detectChanges();
 
+      expect(component.value).toEqual('00:33');
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onBlur',
         value: '00:33'
@@ -163,7 +173,37 @@ describe('InputComponent', () => {
       inputValue(hhInputElem, '15');
       fixture.detectChanges();
 
+      expect(component.value).toEqual('15:00');
       expect(component.propagateChange).toHaveBeenCalledWith('15:00');
+    });
+  });
+
+  describe('Clear button', () => {
+    beforeEach(() => {
+      component.ngOnChanges(
+        simpleChange({
+          value: '15:30'
+        })
+      );
+      fixture.detectChanges();
+      iconElem = elementFromFixture(fixture, '.clear-input .b-icon');
+    });
+
+    it('should display clear icon, when component has value', () => {
+      expect(iconElem.classList).toContain('b-icon-circle-cancel');
+    });
+
+    it('should clear value when clear button is clicked', () => {
+      expect(component.value).not.toBeNull();
+      iconElem.click();
+      fixture.detectChanges();
+
+      expect(component.value).toBeNull();
+      expect(component.changed.emit).toHaveBeenCalledWith({
+        event: 'onChange',
+        value: null
+      });
+      expect(component.propagateChange).toHaveBeenCalledWith(null);
     });
   });
 });

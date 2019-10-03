@@ -20,7 +20,7 @@ const datepickerStories = storiesOf(
   module
 ).addDecorator(withKnobs);
 const template = `
-<b-date-range-picker
+<b-date-range-picker [value]="value"
               [type]="pickerType"
               [minDate]="minDate"
               [maxDate]="maxDate"

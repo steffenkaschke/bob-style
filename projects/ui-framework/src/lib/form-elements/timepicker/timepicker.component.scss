@@ -24,6 +24,4 @@
   user-select: none;
 }
 
-.bfe-suffix {
-  pointer-events: none;
-}
+@include clear-input-suffix;

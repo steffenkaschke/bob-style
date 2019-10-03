@@ -9,34 +9,7 @@ b-icon {
   outline: 0;
 }
 
-.clear-input {
-  @include position(50% 0 null null);
-  margin-top: -10px;
-  background-color: white;
-}
-
-.bfe-wrap {
-  position: relative;
-}
-
-:host {
-  .bfe-suffix.clear-input {
-    @include desktop {
-      display: none;
-      opacity: 0;
-      transition: opacity 0.1s;
-      transition-delay: 0.1s;
-    }
-  }
-
-  .bfe-wrap:hover,
-  .bfe-wrap.focused {
-    .bfe-suffix.clear-input {
-      display: block;
-      opacity: 1;
-    }
-  }
-}
+@include clear-input-suffix;
 
 ::ng-deep {
   .b-datepicker-panel .mat-ripple {
