@@ -1,5 +1,27 @@
+@import '../../style/common-imports';
+
 :host {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: relative;
+  &:after {
+    content: none !important;
+  }
+}
+
+:host-context(.has-label.required) ::ng-deep {
+  .btt {
+    @include input-required;
+    &:after {
+      margin-left: -3px;
+    }
+  }
+}
+
+label.has-description {
+  max-width: calc(100% - 26px);
+}
+
+b-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
