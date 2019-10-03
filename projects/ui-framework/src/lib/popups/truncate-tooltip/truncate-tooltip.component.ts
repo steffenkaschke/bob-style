@@ -69,25 +69,6 @@ export class TruncateTooltipComponent
   readonly types = TruncateTooltipType;
   private resizeSubscription: Subscription;
 
-  @HostListener('mouseover.outside-zone', ['$event'])
-  startHoverTimer() {
-    if (!this.hoverTimer && !this.tooltipAllowed) {
-      this.hoverTimer = setTimeout(() => {
-        this.zone.run(() => {
-          this.tooltipAllowed = true;
-        });
-      }, this.lazyness);
-    }
-  }
-
-  @HostListener('mouseout.outside-zone', ['$event'])
-  stopHoverTimer() {
-    if (this.hoverTimer) {
-      clearTimeout(this.hoverTimer);
-      this.hoverTimer = null;
-    }
-  }
-
   @HostListener('click.outside-zone', ['$event'])
   onClick() {
     if (this.type === TruncateTooltipType.css && !this.tooltipEnabled) {
@@ -97,6 +78,17 @@ export class TruncateTooltipComponent
   }
 
   ngOnInit(): void {
+    if (this.lazyness !== 0 && this.type !== TruncateTooltipType.css) {
+      this.textContainer.nativeElement.addEventListener(
+        'mouseenter',
+        this.startHoverTimer
+      );
+      this.textContainer.nativeElement.addEventListener(
+        'mouseleave',
+        this.stopHoverTimer
+      );
+    }
+
     this.resizeSubscription = this.utilsService
       .getResizeEvent()
       .pipe(outsideZone(this.zone))
@@ -123,6 +115,7 @@ export class TruncateTooltipComponent
         if (this.type === TruncateTooltipType.css || this.lazyness === 0) {
           this.tooltipAllowed = true;
           this.stopHoverTimer();
+          this.removeMouseListeners();
         }
 
         if (!this.cd['destroyed']) {
@@ -244,5 +237,35 @@ export class TruncateTooltipComponent
       this.checkTooltipNecessity();
     }
     this.maxLinesCache = this.maxLines;
+  }
+
+  private startHoverTimer = () => {
+    if (!this.hoverTimer) {
+      this.hoverTimer = setTimeout(() => {
+        this.removeMouseListeners();
+        this.tooltipAllowed = true;
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, this.lazyness);
+    }
+  }
+
+  private stopHoverTimer = () => {
+    if (this.hoverTimer) {
+      clearTimeout(this.hoverTimer);
+      this.hoverTimer = null;
+    }
+  }
+
+  private removeMouseListeners() {
+    this.textContainer.nativeElement.removeEventListener(
+      'mouseenter',
+      this.startHoverTimer
+    );
+    this.textContainer.nativeElement.removeEventListener(
+      'mouseleave',
+      this.stopHoverTimer
+    );
   }
 }
