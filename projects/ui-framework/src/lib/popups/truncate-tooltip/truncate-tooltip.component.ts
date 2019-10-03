@@ -16,7 +16,6 @@ import {
   TruncateTooltipType,
   TruncateTooltipPosition
 } from './truncate-tooltip.enum';
-import { debounce } from 'lodash';
 import {
   DOMhelpers,
   TextProps
