@@ -105,9 +105,9 @@ export const booleanOrFail = value => {
   }
   if (typeof value !== 'boolean') {
     throw new Error(
-      `Value (${stringify(value)}) must be of type boolean, instead ${
-        value === null ? 'null' : getType(value)
-      } was provided.`
+      `Value (${stringify(value)}) must be of type boolean, instead ${getType(
+        value
+      )} was provided.`
     );
   }
   return value;
@@ -152,7 +152,7 @@ export const stringyOrFail = value => {
       ).toUpperCase()}.`
     );
   }
-  return String(value);
+  return value + '';
 };
 
 export const dateOrFail = value => {

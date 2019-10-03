@@ -62,8 +62,8 @@ export class RadioButtonComponent extends BaseFormElement implements OnChanges {
   @Input('radioConfig') options: RadioConfig[];
   @Input() direction: RadioDirection = RadioDirection.row;
 
-  public dir = RadioDirection;
-  public key = 'id';
+  readonly dir = RadioDirection;
+  readonly key = 'id';
 
   @Output(FormEvents.radioChange) changed: EventEmitter<
     InputEvent

@@ -33,10 +33,10 @@ export class CardTableComponent implements OnInit {
 
   @HostBinding('attr.role') string = 'table';
 
-  @Output() rowClicked?: EventEmitter<
+  @Output() rowClicked: EventEmitter<CardTableRowClickEvent> = new EventEmitter<
     CardTableRowClickEvent
-  > = new EventEmitter<CardTableRowClickEvent>();
-  @Output() cellClicked?: EventEmitter<
+  >();
+  @Output() cellClicked: EventEmitter<
     CardTableCellClickEvent
   > = new EventEmitter<CardTableCellClickEvent>();
 

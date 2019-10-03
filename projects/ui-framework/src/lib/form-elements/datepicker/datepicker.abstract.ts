@@ -22,12 +22,14 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 import {
   simpleUID,
   isKey,
-  notFirstChanges
+  notFirstChanges,
+  cloneValue,
+  isFalsyOrEmpty
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
 import { BDateAdapter } from './date.adapter';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material';
-import { DateTimeInputService } from './date-time-input.service';
+import { DateParseService } from './date-parse.service';
 import { Keys } from '../../enums';
 import { DOMhelpers, Styles } from '../../services/utils/dom-helpers.service';
 import { throttle } from 'rxjs/operators';
@@ -47,7 +49,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
     protected kbrdCntrlSrvc: FormElementKeyboardCntrlService,
-    protected dtInputSrvc: DateTimeInputService
+    protected dateParseSrvc: DateParseService
   ) {
     super();
   }
@@ -113,6 +115,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
     if (this.value) {
       this.cd.detectChanges();
+    }
+    if (isFalsyOrEmpty(this.value, true)) {
+      this.value = cloneValue(this.baseValue);
     }
   }
 
@@ -357,7 +362,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   public onInputChange(event, index: number = 0): void {
     if (!this.skipParse) {
-      (event.target as HTMLInputElement).value = this.dtInputSrvc.parseDateInput(
+      (event.target as HTMLInputElement).value = this.dateParseSrvc.parseDateInput(
         (event.target as HTMLInputElement).value
       );
     }

@@ -4,7 +4,7 @@ import { DateRangePickerComponent } from './date-range-picker.component';
 import { UtilsService } from '../../services/utils/utils.service';
 import { MobileService } from '../../services/utils/mobile.service';
 import createSpyObj = jasmine.createSpyObj;
-import { DateTimeInputService } from '../datepicker/date-time-input.service';
+import { DateParseService } from '../datepicker/date-parse.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { of } from 'rxjs';
 import {
@@ -60,7 +60,7 @@ describe('DateRangePickerComponent', () => {
       providers: [
         { provide: UtilsService, useValue: utilsServiceStub },
         { provide: MobileService, useValue: mobileServiceStub },
-        DateTimeInputService,
+        DateParseService,
         EventManagerPlugins[0]
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -92,6 +92,7 @@ describe('DateRangePickerComponent', () => {
         pickers[1].startAt = parse('2019-09-01');
 
         spyOn(component.changed, 'emit');
+        spyOn(component, 'propagateChange');
       });
   }));
 
@@ -200,6 +201,10 @@ describe('DateRangePickerComponent', () => {
           to: '2019-09-27'
         }
       });
+      expect(component.propagateChange).toHaveBeenCalledWith({
+        from: '2019-09-15',
+        to: '2019-09-27'
+      });
     });
   });
 
@@ -255,6 +260,10 @@ describe('DateRangePickerComponent', () => {
           endDate: stringToDate('2019-09-27')
         }
       });
+      expect(component.propagateChange).toHaveBeenCalledWith({
+        from: null,
+        to: '2019-09-27'
+      });
     });
 
     it('should clear End date value when clear button is clicked', () => {
@@ -271,6 +280,10 @@ describe('DateRangePickerComponent', () => {
           startDate: stringToDate('2019-09-15'),
           endDate: null
         }
+      });
+      expect(component.propagateChange).toHaveBeenCalledWith({
+        from: '2019-09-15',
+        to: null
       });
     });
   });
@@ -544,7 +557,10 @@ describe('DateRangePickerComponent', () => {
           to: '2019-02-28'
         }
       });
-
+      expect(component.propagateChange).toHaveBeenCalledWith({
+        from: '2019-01-01',
+        to: '2019-02-28'
+      });
       component.closePicker(0);
       component.closePicker(1);
     });

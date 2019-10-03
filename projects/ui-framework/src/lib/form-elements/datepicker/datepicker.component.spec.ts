@@ -15,7 +15,7 @@ import {
 import { UtilsService } from '../../services/utils/utils.service';
 import createSpyObj = jasmine.createSpyObj;
 import { of } from 'rxjs';
-import { DateTimeInputService } from './date-time-input.service';
+import { DateParseService } from './date-parse.service';
 import { MobileService } from '../../services/utils/mobile.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { IconsModule } from '../../icons/icons.module';
@@ -62,7 +62,7 @@ describe('DatepickerComponent', () => {
         { provide: UtilsService, useValue: utilsServiceStub },
         { provide: MobileService, useValue: mobileServiceStub },
         FormElementKeyboardCntrlService,
-        DateTimeInputService,
+        DateParseService,
         EventManagerPlugins[0]
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -92,6 +92,7 @@ describe('DatepickerComponent', () => {
         messageElem = elementFromFixture(fixture, '[b-input-message]');
 
         spyOn(component.changed, 'emit');
+        spyOn(component, 'propagateChange');
 
         picker = component.pickers.toArray()[0];
         picker.startAt = parse('2019-09-01');
@@ -188,6 +189,7 @@ describe('DatepickerComponent', () => {
         event: 'onWrite',
         value: '2019-09-15'
       });
+      expect(component.propagateChange).toHaveBeenCalledWith('2019-09-15');
     });
   });
 
@@ -217,6 +219,7 @@ describe('DatepickerComponent', () => {
       fixture.detectChanges();
       expect((component.value as Date).getDate()).toEqual(27);
       expect(component.changed.emit).toHaveBeenCalled();
+      expect(component.propagateChange).toHaveBeenCalled();
       component.closePicker();
     });
   });
@@ -245,6 +248,7 @@ describe('DatepickerComponent', () => {
         value: null,
         date: null
       });
+      expect(component.propagateChange).toHaveBeenCalledWith(null);
     });
   });
 
@@ -297,6 +301,7 @@ describe('DatepickerComponent', () => {
         date: component.value,
         value: '2019-11-01'
       });
+      expect(component.propagateChange).toHaveBeenCalledWith('2019-11-01');
       component.closePicker();
     });
   });

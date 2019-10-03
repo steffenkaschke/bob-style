@@ -15,7 +15,7 @@ import {
 import { ChipListConfig, Chip } from '../chips.interface';
 import { ChipType } from '../chips.enum';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
-import { simpleUID } from '../../services/utils/functional-utils';
+import { simpleUID, cloneArray } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-multi-list-and-chips',
@@ -96,7 +96,7 @@ export class MultiListAndChipsComponent implements OnChanges {
   }
 
   private removeChipAndOption(chip: Chip) {
-    const options: SelectGroupOption[] = this.options.slice();
+    const options: SelectGroupOption[] = cloneArray(this.options);
 
     if ((chip as any).group) {
       const group = options.find(
