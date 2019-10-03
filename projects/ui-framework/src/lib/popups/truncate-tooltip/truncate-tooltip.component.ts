@@ -70,14 +70,11 @@ export class TruncateTooltipComponent
   private resizeSubscription: Subscription;
 
   @HostListener('mouseover.outside-zone', ['$event'])
-  startHoverTimer = () => {
+  startHoverTimer() {
     if (!this.hoverTimer && !this.tooltipAllowed) {
       this.hoverTimer = setTimeout(() => {
         this.zone.run(() => {
           this.tooltipAllowed = true;
-          if (!this.cd['destroyed']) {
-            this.cd.detectChanges();
-          }
         });
       }, this.lazyness);
     }
@@ -88,6 +85,14 @@ export class TruncateTooltipComponent
     if (this.hoverTimer) {
       clearTimeout(this.hoverTimer);
       this.hoverTimer = null;
+    }
+  }
+
+  @HostListener('click.outside-zone', ['$event'])
+  onClick() {
+    if (this.type === TruncateTooltipType.css && !this.tooltipEnabled) {
+      this.checkTooltipNecessity();
+      this.cd.detectChanges();
     }
   }
 
