@@ -502,6 +502,8 @@ export * from './lib/mock.const';
 export * from './lib/services/utils/functional-utils';
 // Test helpers
 export * from './lib/services/utils/test-helpers';
+// Util components
+export {StatsComponent} from './lib/services/util-components/stats.component';
 
 /*
 * Animation
