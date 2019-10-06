@@ -17,6 +17,7 @@ import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListChange } from '../list-change/list-change';
 import { ListFooterActions } from '../list.interface';
+import { hasChanges } from '../../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-multi-list',
@@ -57,9 +58,6 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.noGroupHeaders =
-      !this.options || (this.options.length < 2 && !this.showSingleGroupHeader);
-
     if (this.shouldResetModel(changes)) {
       this.options = changes.options.currentValue;
       this.optionsDraft = this.options;
@@ -68,12 +66,17 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.shouldDisplaySearch =
         this.options &&
         flatMap(this.options, 'options').length > DISPLAY_SEARCH_OPTION_NUM;
+
+      this.noGroupHeaders =
+        !this.options ||
+        (this.options.length < 2 && !this.showSingleGroupHeader);
+
       this.updateLists();
     }
   }
 
   private shouldResetModel(changes: SimpleChanges): boolean {
-    return has(changes, 'options');
+    return hasChanges(changes, ['options', 'showSingleGroupHeader']);
   }
 
   headerClick(header: ListHeader): void {
