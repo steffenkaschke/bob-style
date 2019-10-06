@@ -16,12 +16,15 @@
   }
 }
 
-label.has-description {
-  max-width: calc(100% - 26px);
+label {
+  display: inline-block;
+  vertical-align: middle;
+  &.has-description {
+    max-width: calc(100% - 24px);
+  }
 }
 
 b-icon {
-  position: absolute;
-  bottom: 0;
-  right: 0;
+  display: inline-block;
+  margin-left: times8(1);
 }
