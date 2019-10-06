@@ -36,7 +36,6 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   >();
   @Output() clear: EventEmitter<void> = new EventEmitter<void>();
 
-  noGroupHeaders: boolean;
   searchValue: string;
   shouldDisplaySearch = false;
 
@@ -53,12 +52,11 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.noGroupHeaders =
+      !this.options || (this.options.length < 2 && !this.showSingleGroupHeader);
+
     if (this.shouldResetModel(changes)) {
       this.options = changes.options.currentValue;
-      this.noGroupHeaders =
-        this.options &&
-        this.options.length === 1 &&
-        !this.showSingleGroupHeader;
       this.filteredOptions = this.options;
       this.shouldDisplaySearch =
         this.options &&

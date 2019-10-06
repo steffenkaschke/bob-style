@@ -39,7 +39,6 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     ListChange
   >();
 
-  noGroupHeaders: boolean;
   displayHeaderChevron = true;
   shouldDisplaySearch = false;
   searchValue: string;
@@ -58,14 +57,13 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.noGroupHeaders =
+      !this.options || (this.options.length < 2 && !this.showSingleGroupHeader);
+
     if (this.shouldResetModel(changes)) {
       this.options = changes.options.currentValue;
       this.optionsDraft = this.options;
       this.selectedIdsMap = this.getSelectedIdsMap();
-      this.noGroupHeaders =
-        this.options &&
-        this.options.length === 1 &&
-        !this.showSingleGroupHeader;
       this.filteredOptions = cloneDeep(this.options);
       this.shouldDisplaySearch =
         this.options &&
