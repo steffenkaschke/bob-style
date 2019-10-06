@@ -15,7 +15,6 @@ import {
   TruncateTooltipType,
   TruncateTooltipPosition
 } from './truncate-tooltip.enum';
-import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
@@ -97,13 +96,13 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  maxLines | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0 or null. | 1 (optional)
-  type | TruncateTooltipType | Use Material tooltip or CSS tooltip. Defaut 'auto' type will use Material for text longer than 130 chars, otherwise CSS | auto
-  position | TruncateTooltipPosition | above or below | above
-  trustCssVars | boolean | performance can be optimised, if --line-height and --font-size CSS variables exist on the element | false
-  expectChanges | boolean | if text inside truncate-tooltip component will be changing, set to true | false
-  delay | number | time in ms before tooltip shows | 300
-  lazyness | number | if type is Material, it will be initialized lazyly after this many ms of hover | 200
+  [maxLines] | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0 or null. | 1 (optional)
+  [type] | TruncateTooltipType | Use Material tooltip or CSS tooltip. Defaut 'auto' type will use Material for text longer than 130 chars, otherwise CSS | auto
+  [position] | TruncateTooltipPosition | above or below | above
+  [trustCssVars] | boolean | performance can be optimised, if --line-height and --font-size CSS variables exist on the element | false
+  [expectChanges] | boolean | if text inside truncate-tooltip component will be changing, set to true | false
+  [delay] | number | time in ms before tooltip shows | 300
+  [lazyness] | number | if type is Material, it will be initialized lazyly after this many ms of hover | 200
 
    --------
 
@@ -187,8 +186,7 @@ story.add(
           TypographyModule,
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          TruncateTooltipModule,
-          UtilComponentsModule
+          TruncateTooltipModule
         ],
         entryComponents: []
       }

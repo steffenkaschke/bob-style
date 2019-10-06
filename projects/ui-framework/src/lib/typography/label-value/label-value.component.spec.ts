@@ -1,11 +1,6 @@
-/* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import {
-  DebugElement,
-  ChangeDetectionStrategy,
-  NO_ERRORS_SCHEMA
-} from '@angular/core';
+import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { LabelValueComponent } from './label-value.component';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';

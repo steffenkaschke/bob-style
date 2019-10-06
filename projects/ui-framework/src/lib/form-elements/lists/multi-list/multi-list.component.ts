@@ -9,12 +9,7 @@ import {
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep, flatMap, chain } from 'lodash';
-import {
-  ListHeader,
-  ListOption,
-  SelectGroupOption,
-  SelectOption
-} from '../list.interface';
+import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
 import has from 'lodash/has';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';

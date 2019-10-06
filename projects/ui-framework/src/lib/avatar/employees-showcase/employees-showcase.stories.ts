@@ -14,7 +14,6 @@ import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
 import zipObject from 'lodash/zipObject';
 import { EMPLOYEE_SHOWCASE_MOCK } from './employees-showcase.mock';
-import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const avatarStories = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
@@ -83,8 +82,7 @@ avatarStories.add(
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
-          EmployeesShowcaseModule,
-          UtilComponentsModule
+          EmployeesShowcaseModule
         ]
       }
     };

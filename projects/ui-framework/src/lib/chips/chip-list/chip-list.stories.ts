@@ -12,9 +12,8 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { simpleUID } from '../../services/utils/functional-utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipListModule } from './chip-list.module';
-import {ChipType, ChipListAlign, ChipListSelectable} from '../chips.enum';
+import { ChipType, ChipListAlign, ChipListSelectable } from '../chips.enum';
 import { mockAvatar, mockNames } from '../../mock.const';
-import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -54,15 +53,15 @@ let note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  chips | Chip[] / string[] | Array of Chip objects (will also accept an array of strings) | none
-  chipListSelectable | chipListSelectable (single, multi) | single select (like radio buttons) or multi select | multi
-  activeIndex | number | active index initializer | none\n`;
-  // tslint:disable-next-line:max-line-length
-  note += `config | ChipListConfig | list configuration (options common to all chips, including: type, removable, selectable, focusable, disabled, align) | none
-  removed | &lt;Chip&gt; | handler for chip removed event | none
-  clicked | &lt;Chip&gt; | handler for chip clicked event | none
-  selected | &lt;Chip&gt; | handler for chip selected event (fired only if chip is selectable) | none
-  keyPressed | &lt;Chip&gt; | handler for chip KeyDown event | none
+  [chips] | Chip[] / string[] | Array of Chip objects (will also accept an array of strings) | none
+  [chipListSelectable] | chipListSelectable (single, multi) | single select (like radio buttons) or multi select | multi
+  [activeIndex] | number | active index initializer | none\n`;
+// tslint:disable-next-line:max-line-length
+note += `[config] | ChipListConfig | list configuration (options common to all chips, including: type, removable, selectable, focusable, disabled, align) | none
+  (removed) | EventEmitter&lt;Chip&gt; | emited on chip removed event | none
+  (clicked) | EventEmitter&lt;Chip&gt; | emited on chip clicked event | none
+  (selected) | EventEmitter&lt;Chip&gt; | emited on chip selected event (fired only if chip is selectable) | none
+  (keyPressed) | EventEmitter&lt;Chip&gt; | emited on chip KeyDown event | none
 
   ~~~
   ${template}
@@ -97,7 +96,11 @@ story.add(
       selectable: boolean('selectable', true),
       focusable: boolean('focusable', true),
       disabled: boolean('disabled', false),
-      chipListSelectable: select('chipListSelectable', chipListSelectable, ChipListSelectable.multi),
+      chipListSelectable: select(
+        'chipListSelectable',
+        chipListSelectable,
+        ChipListSelectable.multi
+      ),
       activeIndex: number('activeIndex', 0),
       chips: object('chips', chips),
       onChipRemove: action('Chip removed'),
@@ -106,12 +109,7 @@ story.add(
       onChipKeydown: action('Chip key pressed')
     },
     moduleMetadata: {
-      imports: [
-        ChipListModule,
-        StoryBookLayoutModule,
-        BrowserAnimationsModule,
-        UtilComponentsModule
-      ]
+      imports: [ChipListModule, StoryBookLayoutModule, BrowserAnimationsModule]
     }
   }),
   { notes: { markdown: note } }

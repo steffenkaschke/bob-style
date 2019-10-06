@@ -10,7 +10,6 @@ import { CardType } from '../cards.enum';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { CardLayoutExampleModule } from './card-layout-example.module';
-import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
   withKnobs
@@ -132,8 +131,7 @@ story.add(
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          CardLayoutExampleModule,
-          UtilComponentsModule
+          CardLayoutExampleModule
         ]
       }
     };

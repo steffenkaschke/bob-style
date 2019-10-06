@@ -1,15 +1,8 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  object,
-  select,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
-import { Card } from './card.interface';
 import { CardExampleModule } from './card-example.module';
 
 const story = storiesOf(ComponentGroupType.Cards, module).addDecorator(
@@ -57,8 +50,8 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  type | CardType | Card theme | primary (optional)
-  card | Card | card contents data | none
+  [type] | CardType | Card theme | primary (optional)
+  [card] | Card | card contents data | none
 
   #### Card interface
   ~~~
@@ -90,8 +83,7 @@ story.add(
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          CardExampleModule,
-          UtilComponentsModule
+          CardExampleModule
         ]
       }
     };

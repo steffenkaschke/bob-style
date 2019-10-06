@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { object, withKnobs, text } from '@storybook/addon-knobs/angular';
+import {
+  object,
+  withKnobs,
+  text,
+  boolean
+} from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -11,7 +16,6 @@ import {
 import { MultiListAndChipsModule } from './multi-list-and-chips.module';
 import { action } from '@storybook/addon-actions';
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
-import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -29,6 +33,7 @@ const template = `
         [options]="options || listOpts"
         [listLabel]="listLabel"
         [chipsLabel]="chipsLabel"
+        [showSingleGroupHeader]="showSingleGroupHeader"
         (selectChange)="onSelectChange($event)">
   </b-multi-list-and-chips>
 
@@ -52,11 +57,11 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  options | SelectGroupOption[] | model of selection group | none
-  listLabel | string | label text for the Multi List component | none
-  chipsLabel | string | label text for the Chips List component | none
-  showSingleGroupHeader | boolean | displays single group with group header | false
-  selectChange | &lt;ListChange&gt; | returns ListChange | none
+  [options] | SelectGroupOption[] | model of selection group | none
+  [listLabel] | string | label text for the Multi List component | none
+  [chipsLabel] | string | label text for the Chips List component | none
+  [showSingleGroupHeader] | boolean | displays single group with group header | false
+  (selectChange) | EventEmitter&lt;ListChange&gt; | emits on list change | none
 
   ~~~
   ${template}
@@ -97,6 +102,7 @@ const toAdd = () => ({
     listLabel: text('chipsLabel', 'Select fields:'),
     chipsLabel: text('listLabel', 'Selected fields:'),
     onSelectChange: action('ListChange'),
+    showSingleGroupHeader: boolean('showSingleGroupHeader', false),
     listOpts: object('listOpts', listOpts),
     avatarListOpts: object('avatarListOpts', avatarListOpts)
   },
@@ -105,8 +111,7 @@ const toAdd = () => ({
       MultiListAndChipsModule,
       StoryBookLayoutModule,
       BrowserAnimationsModule,
-      RadioButtonModule,
-      UtilComponentsModule
+      RadioButtonModule
     ]
   }
 });
