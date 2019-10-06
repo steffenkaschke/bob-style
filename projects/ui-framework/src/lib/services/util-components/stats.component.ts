@@ -34,7 +34,7 @@ import { countChildren } from '../utils/functional-utils';
   providers: []
 })
 export class StatsComponent implements DoCheck {
-  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
+  constructor(private cd: ChangeDetectorRef) {}
   public changesCount = 0;
   public elementsCount = 0;
 

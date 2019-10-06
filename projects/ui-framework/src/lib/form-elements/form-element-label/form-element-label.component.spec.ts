@@ -59,9 +59,9 @@ describe('FormElementLabelComponent', () => {
       component.description = 'Hello';
       fixture.detectChanges();
       const icon = fixture.debugElement.query(By.css('b-icon'));
-      expect(icon.componentInstance.size).toEqual(IconSize.medium);
+      expect(icon.componentInstance.size).toEqual(IconSize.small);
       expect(icon.componentInstance.color).toEqual(IconColor.normal);
-      expect(icon.componentInstance.icon).toEqual(Icons.baseline_info_icon);
+      expect(icon.componentInstance.icon).toEqual(Icons.info_outline);
     });
   });
 });

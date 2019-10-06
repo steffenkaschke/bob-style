@@ -54,14 +54,12 @@ const template3 = `
 `;
 
 const template4 = `
-  <div [b-truncate-tooltip]="maxLines" [type]="'css'"
+  <h3 [b-truncate-tooltip]="maxLines" [type]="'css'"
                               [position]="position"
                               [expectChanges]="true">
-    <h3>
       This is a pure CSS tooltip! Looks and feels the same as matTooltip-based ones.
       Can't be used inside overflow hidden containers.
-    </h3>
-  </div>
+  </h3>
 `;
 
 const storyTemplate = `
