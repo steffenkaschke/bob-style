@@ -6,13 +6,11 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipInputModule } from './chip-input.module';
 import { mockHobbies } from '../../mock.const';
-import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -48,17 +46,17 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  value | string[] | array of selected chips | none
-  options | string[] | array of all possible chips | none
-  acceptNew | boolean | if the input accepts new entries | true
-  label | string | label (on top of input) | none
-  placeholder | string | placeholder (inide input) | none
-  hintMessage | string | text below input | none
-  warnMessage | string | warning text
-  errorMessage | string | error text | none
-  required | boolean | if input is required | false
-  disabled | boolean | if input is disabled | false
-  changed | &lt;ChipInputChange&gt; | handler for event of type ChipInputChange ({value, added, removed}) | none
+  [value] | string[] | array of selected chips | none
+  [options] | string[] | array of all possible chips | none
+  [acceptNew] | boolean | if the input accepts new entries | true
+  [label] | string | label (on top of input) | none
+  [placeholder] | string | placeholder (inide input) | none
+  [hintMessage] | string | text below input | none
+  [warnMessage] | string | warning text
+  [errorMessage] | string | error text | none
+  [required] | boolean | if input is required | false
+  [disabled] | boolean | if input is disabled | false
+  (changed) | EventEmitter&lt;ChipInputChange&gt; | emits on change: {value, added, removed} | none
 
 
   ~~~
@@ -91,12 +89,7 @@ const toAdd = () => ({
     chipInputChangeHandler: action('Chip input changed')
   },
   moduleMetadata: {
-    imports: [
-      ChipInputModule,
-      StoryBookLayoutModule,
-      BrowserAnimationsModule,
-      UtilComponentsModule
-    ]
+    imports: [ChipInputModule, StoryBookLayoutModule, BrowserAnimationsModule]
   }
 });
 

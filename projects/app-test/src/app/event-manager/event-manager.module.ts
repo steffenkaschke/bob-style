@@ -14,7 +14,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ComponentRendererModule } from '../../../../ui-framework/src/lib/services/component-renderer/component-renderer.module';
 import { ButtonsModule } from '../../../../ui-framework/src/lib/buttons/buttons.module';
 import { EventManagerPlugins } from '../../../../ui-framework/src/lib/services/utils/eventManager.plugins';
-import { UtilComponentsModule } from '../../../../ui-framework/src/lib/services/util-components/utilComponents.module';
 import {
   stringify,
   simpleUID
@@ -420,13 +419,7 @@ export class EventManagerTesterComponent {
     ClickForwarerComponent2,
     EventManagerTesterComponent
   ],
-  imports: [
-    BrowserModule,
-    ComponentRendererModule,
-    ButtonsModule,
-    UtilComponentsModule,
-    FormsModule
-  ],
+  imports: [BrowserModule, ComponentRendererModule, ButtonsModule, FormsModule],
   providers: [...EventManagerPlugins],
   entryComponents: [MockButtonComponent, ClickForwarerComponent1]
 })

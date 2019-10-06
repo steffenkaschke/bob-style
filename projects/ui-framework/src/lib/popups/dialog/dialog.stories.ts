@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogModule } from './dialog.module';
 import { DialogExampleModule } from './dialog-example.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const buttonStories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
@@ -124,8 +123,7 @@ buttonStories.add(
         ButtonsModule,
         BrowserAnimationsModule,
         DialogExampleModule,
-        StoryBookLayoutModule,
-        UtilComponentsModule
+        StoryBookLayoutModule
       ]
     }
   }),
