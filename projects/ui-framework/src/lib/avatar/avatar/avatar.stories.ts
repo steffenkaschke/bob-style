@@ -15,7 +15,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsModule } from '../../icons/icons.module';
 import { ChipType } from '../../chips/chips.enum';
 import { mockNames, mockJobs, mockAvatar } from '../../mock.const';
-import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const avatarStories = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
@@ -60,18 +59,18 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  imageSource | string | URL of the avatar image | none
-  backgroundColor | string | background color | none
-  size | AvatarSize | enum for setting the avatar size | mini
-  orientation | AvatarOrientation | vertical or horizontal | horizontal
-  title | string | main title of the avatar | none
-  subtitle | string | subtitle of the avatar | none
-  caption | string | caption & site | none
-  badge | AvatarBadge / BadgeConfig | AvatarBadge enum of approved, pending or rejected / or BadgeConfig {icon, color} object  | none
-  chip | Chip | object describing the chip chip (should have type & text properties) | none
-  disabled | boolean | disabled avatar | false
-  isClickable | boolean | flag for indicating if the avatar is clickable or not | false
-  clicked | Function | callback for clicking on the avatar | none
+  [imageSource] | string | URL of the avatar image | none
+  [backgroundColor] | string | background color | none
+  [size] | AvatarSize | enum for setting the avatar size | mini
+  [orientation] | AvatarOrientation | vertical or horizontal | horizontal
+  [title] | string | main title of the avatar | none
+  [subtitle] | string | subtitle of the avatar | none
+  [caption] | string | caption & site | none
+  [badge] | AvatarBadge / BadgeConfig | AvatarBadge enum of approved, pending or rejected / or BadgeConfig {icon, color} object  | none
+  [chip] | Chip | object describing the chip chip (should have type & text properties) | none
+  [disabled] | boolean | disabled avatar | false
+  [isClickable] | boolean | flag for indicating if the avatar is clickable or not | false
+  (clicked) | EventEmitter&lt;MouseEvent&gt; | emitted on avatar click | none
 
   ~~~
   <b-avatar
@@ -128,8 +127,7 @@ avatarStories.add(
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           AvatarModule,
-          IconsModule,
-          UtilComponentsModule
+          IconsModule
         ]
       }
     };

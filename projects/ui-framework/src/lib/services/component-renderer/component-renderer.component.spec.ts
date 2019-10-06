@@ -1,15 +1,12 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, Component, SimpleChange } from '@angular/core';
+import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { ComponentRendererComponent } from './component-renderer.component';
-
-import { UtilComponentsModule } from '../util-components/utilComponents.module';
+import { MockComponentModule } from '../util-components/mock-component.module';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { MockComponent } from '../util-components/mock.component';
 import { AvatarComponent } from '../../avatar/avatar/avatar.component';
-
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 
@@ -46,7 +43,7 @@ describe('ComponentRendererComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ComponentRendererComponent],
-      imports: [BrowserAnimationsModule, UtilComponentsModule, AvatarModule],
+      imports: [BrowserAnimationsModule, MockComponentModule, AvatarModule],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .overrideModule(BrowserDynamicTestingModule, {

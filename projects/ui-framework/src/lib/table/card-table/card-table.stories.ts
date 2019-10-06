@@ -10,7 +10,6 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { ChipModule } from '../../chips/chip/chip.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 import { ChipComponent } from '../../chips/chip/chip.component';
 import { ButtonComponent } from '../../buttons/button/button.component';
 import { AvatarComponent } from '../../avatar/avatar/avatar.component';
@@ -90,12 +89,12 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  meta | CardTableCellMeta[] | array of objects, describing table meta-data per column | none
-  table | CardTableCellData[][] | 2-dimentional array (array of arrays) of objects, providing table cell data per row | none
-  minCellWidth | number | number representing minimal cell width in percents | 5
-  default | string | text to display if table is empty | 'No data to display'
-  rowClicked | Function | row click handler (event transmits: {row: CardTableCellData[], rowIndex: number}) | none
-  cellClicked | Function | cell click handler (event transmits: {cell: CardTableCellData, cellIndex: number, rowIndex: number}) | none
+  [meta] | CardTableCellMeta[] | array of objects, describing table meta-data per column | none
+  [table] | CardTableCellData[][] | 2-dimentional array (array of arrays) of objects, providing table cell data per row | none
+  [minCellWidth] | number | number representing minimal cell width in percents | 5
+  [default] | string | text to display if table is empty | 'No data to display'
+  (rowClicked) | EventEmitter&lt;CardTableRowClickEvent&gt; | row click event transmits: {row: CardTableCellData[], rowIndex: number} | none
+  (cellClicked) | EventEmitter&lt;CardTableCellClickEvent&gt; | cell click event transmits: {cell: CardTableCellData, cellIndex: number, rowIndex: number} | none
 
   #### \`meta[0]\`: CardTableCellMeta - single column meta-data object properties
   Name | Type | Description | Default value
@@ -222,8 +221,7 @@ story.add(
           CardTableModule,
           ChipModule,
           ButtonsModule,
-          AvatarModule,
-          UtilComponentsModule
+          AvatarModule
         ],
         entryComponents: [ChipComponent, ButtonComponent, AvatarComponent]
       }

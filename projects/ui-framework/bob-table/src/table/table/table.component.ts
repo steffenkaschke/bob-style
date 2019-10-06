@@ -10,30 +10,41 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 // tslint:disable-next-line:max-line-length
-import { Column, DragStoppedEvent, GridColumnsChangedEvent, GridOptions, GridReadyEvent, RowNode } from 'ag-grid-community';
+import {
+  Column,
+  DragStoppedEvent,
+  GridColumnsChangedEvent,
+  GridOptions,
+  GridReadyEvent,
+  RowNode
+} from 'ag-grid-community';
 import { get, has, map, once } from 'lodash';
-import { ColumnDef, RowClickedEvent, SortChangedEvent } from './table.interface';
+import {
+  ColumnDef,
+  RowClickedEvent,
+  SortChangedEvent
+} from './table.interface';
 import { AgGridNg2 } from 'ag-grid-angular';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { RowSelection, TableType } from './table.enum';
 
-const LICENSE_KEY = 'hibob_Bob_1Devs_1Deployment_23_April_2020__MTU4NzU5NjQwMDAwMA==5b77134bf43e27e7f8ccb20bdfa3c155';
+const LICENSE_KEY =
+  'hibob_Bob_1Devs_1Deployment_23_April_2020__MTU4NzU5NjQwMDAwMA==5b77134bf43e27e7f8ccb20bdfa3c155';
 
 @Component({
   selector: 'b-table',
   templateUrl: './table.component.html',
   styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TableComponent implements OnInit, OnChanges {
-
   constructor(
     private tableUtilsService: TableUtilsService,
     private elRef: ElementRef,
-    private cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef
   ) {
     this.tableLicense();
   }
@@ -50,10 +61,14 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() tableGridOptions: Partial<GridOptions> = {};
   @Input() suppressDragLeaveHidesColumns = false;
 
-  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
-  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
+  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
+    SortChangedEvent
+  >();
+  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<
+    RowClickedEvent
+  >();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
-  @Output() gridInit: EventEmitter<null> = new EventEmitter<null>();
+  @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
 
   readonly rowHeight: number = 56;
   readonly autoSizePadding: number = 30;
@@ -67,13 +82,12 @@ export class TableComponent implements OnInit, OnChanges {
 
   readonly tableLicense = once(() =>
     // @ts-ignore
-    import('ag-grid-enterprise')
-      .then((agGrig) => {
-        if (!TableComponent.isLicenseSet) {
-          TableComponent.isLicenseSet = true;
-          agGrig.LicenseManager.setLicenseKey(LICENSE_KEY);
-        }
-      })
+    import('ag-grid-enterprise').then(agGrig => {
+      if (!TableComponent.isLicenseSet) {
+        TableComponent.isLicenseSet = true;
+        agGrig.LicenseManager.setLicenseKey(LICENSE_KEY);
+      }
+    })
   );
 
   ngOnInit() {
@@ -89,7 +103,8 @@ export class TableComponent implements OnInit, OnChanges {
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
       suppressContextMenu: true,
-      getRowClass: (params) => get(params.data, 'isClickable', false) ? 'row-clickable' : '',
+      getRowClass: params =>
+        get(params.data, 'isClickable', false) ? 'row-clickable' : '',
       onGridReady: (event: GridReadyEvent) => {
         this.gridReady = true;
         event.columnApi.autoSizeAllColumns();
@@ -105,12 +120,12 @@ export class TableComponent implements OnInit, OnChanges {
 
       onDragStopped(event: DragStoppedEvent): void {
         that.setOrderedColumns(event.columnApi.getAllGridColumns());
-      },
+      }
     };
 
     this.gridOptions = {
       ...gridOptions,
-      ...this.tableGridOptions,
+      ...this.tableGridOptions
     };
   }
 
@@ -151,7 +166,7 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   private setGridHeight(height: number): void {
-    this.elRef.nativeElement.style.setProperty('--max-height', `${ height }px`);
+    this.elRef.nativeElement.style.setProperty('--max-height', `${height}px`);
   }
 
   public getDisplayedRowCount(): number {

@@ -69,7 +69,7 @@ export class TruncateTooltipComponent
   readonly types = TruncateTooltipType;
   private resizeSubscription: Subscription;
 
-  @HostListener('click.outside-zone', ['$event'])
+  @HostListener('click.outside-zone')
   onClick() {
     if (this.type === TruncateTooltipType.css && !this.tooltipEnabled) {
       this.checkTooltipNecessity();
