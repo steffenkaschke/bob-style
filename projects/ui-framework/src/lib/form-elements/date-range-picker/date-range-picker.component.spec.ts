@@ -1,14 +1,18 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {ChangeDetectionStrategy, NO_ERRORS_SCHEMA} from '@angular/core';
-import {DateRangePickerComponent} from './date-range-picker.component';
-import {UtilsService} from '../../services/utils/utils.service';
-import {MobileService} from '../../services/utils/mobile.service';
-import {DateParseService} from '../datepicker/date-parse.service';
-import {EventManagerPlugins} from '../../services/utils/eventManager.plugins';
-import {of} from 'rxjs';
-import {MatDatepicker, MatDatepickerModule, MatNativeDateModule} from '@angular/material';
-import {IconsModule} from '../../icons/icons.module';
-import {InputMessageModule} from '../input-message/input-message.module';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
+import { DateRangePickerComponent } from './date-range-picker.component';
+import { UtilsService } from '../../services/utils/utils.service';
+import { MobileService } from '../../services/utils/mobile.service';
+import { DateParseService } from '../datepicker/date-parse.service';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { of } from 'rxjs';
+import {
+  MatDatepicker,
+  MatDatepickerModule,
+  MatNativeDateModule
+} from '@angular/material';
+import { IconsModule } from '../../icons/icons.module';
+import { InputMessageModule } from '../input-message/input-message.module';
 import {
   elementFromFixture,
   elementsFromFixture,
@@ -16,13 +20,13 @@ import {
   inputValue,
   simpleChange
 } from '../../services/utils/test-helpers';
-import {dateToString, stringToDate} from '../../services/utils/transformers';
-import {isDate, parseISO} from 'date-fns';
-import {DatepickerType} from '../datepicker/datepicker.enum';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import { dateToString, stringToDate } from '../../services/utils/transformers';
+import { isDate, parseISO } from 'date-fns';
+import { DatepickerType } from '../datepicker/datepicker.enum';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import createSpyObj = jasmine.createSpyObj;
 
-fdescribe('DateRangePickerComponent', () => {
+describe('DateRangePickerComponent', () => {
   let fixture: ComponentFixture<DateRangePickerComponent>;
   let component: DateRangePickerComponent;
   let componentElem: HTMLElement;
@@ -136,8 +140,6 @@ fdescribe('DateRangePickerComponent', () => {
     });
 
     it('should set min date for MatDatepickers', () => {
-      console.log(pickers[0]._minDate);
-      console.log(pickers[1]._minDate);
       expect(dateToString(pickers[0]._minDate)).toEqual('2019-09-10');
       expect(dateToString(pickers[1]._minDate)).toEqual('2019-09-10');
     });

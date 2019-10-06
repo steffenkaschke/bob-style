@@ -4,6 +4,7 @@ import {
   getType,
   hasProp,
   isArray,
+  isDate,
   isDateFormat,
   isDateISO8601,
   isNullOrUndefined,
@@ -14,9 +15,9 @@ import {
   stringify
 } from './functional-utils';
 
-import {format, isDate, parseISO} from 'date-fns';
-import {InputTypes} from '../../form-elements/input/input.enum';
-import {serverDateFormat} from '../../consts';
+import { format, parseISO } from 'date-fns';
+import { InputTypes } from '../../form-elements/input/input.enum';
+import { serverDateFormat } from '../../consts';
 
 // -------------------------------
 // Transformers
@@ -63,7 +64,10 @@ export const stringToDate = date => {
   if (isDate(date) || isNullOrUndefined(date)) {
     return date;
   }
-  const converted = parseISO(date);
+  let converted = parseISO(date);
+  if (String(converted) === 'Invalid Date') {
+    converted = new Date(date);
+  }
   return String(converted) !== 'Invalid Date' ? converted : undefined;
 };
 
