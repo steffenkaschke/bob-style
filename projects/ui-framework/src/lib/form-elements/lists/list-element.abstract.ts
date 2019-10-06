@@ -18,7 +18,7 @@ export abstract class BaseListElement
   @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
   @ViewChild('headers', { static: false }) headers;
 
-  noGroupHeaders;
+  noGroupHeaders: boolean;
   focusOption: ListOption;
   listOptions: ListOption[];
   listHeaders: ListHeader[];

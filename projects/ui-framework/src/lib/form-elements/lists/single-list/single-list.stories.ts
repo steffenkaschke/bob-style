@@ -46,10 +46,10 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  options | SelectGroupOption[] | model of selection group | none
-  selectChange | action | returns ListChange | none
-  showSingleGroupHeader | boolean | displays single group with group header | false
-  maxHeight | number | component max height | 352 (8 rows)
+  [options] | SelectGroupOption[] | model of selection group | none
+  [showSingleGroupHeader] | boolean | displays single group with group header | false
+  [maxHeight] | number | component max height | 352 (8 rows)
+  (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | none
 
   ~~~
   ${template}
@@ -87,7 +87,7 @@ buttonStories.add(
     template: storyTemplate,
     props: {
       selectChange: action('Single list change'),
-      showSingleGroupHeader: boolean('showSingleGroupHeader', false),
+      showSingleGroupHeader: boolean('showSingleGroupHeader', true),
       options: object<SelectGroupOption>('options', optionsMock)
     },
     moduleMetadata: {

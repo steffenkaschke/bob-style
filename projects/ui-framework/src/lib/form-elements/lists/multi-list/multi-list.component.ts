@@ -17,6 +17,7 @@ import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListChange } from '../list-change/list-change';
 import { ListFooterActions } from '../list.interface';
+import { hasChanges } from '../../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-multi-list',
@@ -39,7 +40,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     ListChange
   >();
 
-  noGroupHeaders: boolean;
+  displayHeaderChevron = true;
   shouldDisplaySearch = false;
   searchValue: string;
   filteredOptions: SelectGroupOption[];
@@ -61,24 +62,29 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.options = changes.options.currentValue;
       this.optionsDraft = this.options;
       this.selectedIdsMap = this.getSelectedIdsMap();
-      this.noGroupHeaders =
-        this.options &&
-        this.options.length === 1 &&
-        !this.showSingleGroupHeader;
       this.filteredOptions = cloneDeep(this.options);
       this.shouldDisplaySearch =
         this.options &&
         flatMap(this.options, 'options').length > DISPLAY_SEARCH_OPTION_NUM;
+
+      this.noGroupHeaders =
+        !this.options ||
+        (this.options.length < 2 && !this.showSingleGroupHeader);
+
       this.updateLists();
     }
   }
 
   private shouldResetModel(changes: SimpleChanges): boolean {
-    return has(changes, 'options');
+    return hasChanges(changes, ['options', 'showSingleGroupHeader']);
   }
 
   headerClick(header: ListHeader): void {
-    this.toggleGroupCollapse(header);
+    if (this.options.length > 1) {
+      this.toggleGroupCollapse(header);
+    } else {
+      this.headerSelect(header);
+    }
   }
 
   toggleGroupCollapse(header: ListHeader): void {
