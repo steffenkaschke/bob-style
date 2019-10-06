@@ -48,6 +48,25 @@ export class MultiListAndChipsComponent implements OnChanges {
   readonly listID: string = simpleUID('mlacl-');
   readonly chipListID: string = simpleUID('mlacc-');
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.options) {
+      this.options = this.listOptions = changes.options.currentValue;
+
+      this.chipListConfig.type = this.detectChipType(this.options);
+      this.optionsToChips(this.options);
+    }
+  }
+
+  public detectChipType(options: SelectGroupOption[] = this.options): ChipType {
+    return options &&
+      options[0].options &&
+      options[0].options[0].prefixComponent &&
+      options[0].options[0].prefixComponent.attributes &&
+      options[0].options[0].prefixComponent.attributes.imageSource
+      ? ChipType.avatar
+      : ChipType.tag;
+  }
+
   public onListChange(listChange: ListChange): void {
     this.options = listChange.getSelectGroupOptions();
     this.optionsToChips(this.options);
@@ -126,24 +145,5 @@ export class MultiListAndChipsComponent implements OnChanges {
     }
 
     return (this.options = options);
-  }
-
-  detectChipType(options: SelectGroupOption[] = this.options): ChipType {
-    return options &&
-      options[0].options &&
-      options[0].options[0].prefixComponent &&
-      options[0].options[0].prefixComponent.attributes &&
-      options[0].options[0].prefixComponent.attributes.imageSource
-      ? ChipType.avatar
-      : ChipType.tag;
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.options) {
-      this.options = this.listOptions = changes.options.currentValue;
-
-      this.chipListConfig.type = this.detectChipType(this.options);
-      this.optionsToChips(this.options);
-    }
   }
 }

@@ -4,9 +4,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormElementsTestModule } from './form-elements/form-elements.module';
 import { UrlTesterModule } from './url-tester/url-tester.module';
-import { UtilComponentsModule } from '../../../ui-framework/src/lib/services/util-components/utilComponents.module';
 import { TooltipTesterModule } from './truncate-tooltip/truncate-tooltip.module';
-import { FormElementsModule } from '../../../ui-framework/src/public_api';
 import { FormsModule } from '@angular/forms';
 import { EventManagerModule } from './event-manager/event-manager.module';
 import { ClassBinderTesterModule } from './class-binder/class-binder.module';
@@ -14,17 +12,16 @@ import { UrlUtilsModule } from '../../../ui-framework/src/lib/services/url/url-u
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { UtilsModule } from './utils/utils.module';
+import { FormElementsModule } from '../../../ui-framework/src/lib/form-elements/form-elements.module';
+import { StatsModule } from '../../../ui-framework/src/lib/services/util-components/stats.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormElementsTestModule,
     UrlTesterModule,
-    UtilComponentsModule,
     TooltipTesterModule,
     FormElementsModule,
     FormsModule,
@@ -34,11 +31,10 @@ import { UtilsModule } from './utils/utils.module';
     RouterModule,
     AppRoutingModule,
     UtilsModule,
+    StatsModule
   ],
   providers: [],
-  bootstrap: [
-    AppComponent,
-  ],
+  bootstrap: [AppComponent],
   entryComponents: []
 })
 export class AppModule {}

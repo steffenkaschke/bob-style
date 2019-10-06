@@ -2,7 +2,6 @@ import {
   Component,
   DoCheck,
   Input,
-  NgZone,
   ChangeDetectorRef,
   HostListener
 } from '@angular/core';
@@ -41,7 +40,7 @@ export class StatsComponent implements DoCheck {
   @Input() rootElem = 'body';
   @Input() countChildren = false;
 
-  @HostListener('click.outside-zone', ['$event'])
+  @HostListener('click.outside-zone')
   onClick() {
     this.countKids();
     this.cd.detectChanges();

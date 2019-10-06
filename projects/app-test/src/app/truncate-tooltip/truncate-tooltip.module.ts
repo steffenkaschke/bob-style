@@ -1,12 +1,10 @@
 import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { URLutils } from '../../../../ui-framework/src/lib/services/url/url-utils.service';
-import {
-  TruncateTooltipModule,
-  TypographyModule
-} from '../../../../ui-framework/src/public_api';
 import { FormsModule } from '@angular/forms';
 import { mockText } from '../../../../ui-framework/src/lib/mock.const';
+import { TruncateTooltipModule } from '../../../../ui-framework/src/lib/popups/truncate-tooltip/truncate-tooltip.module';
+import { TypographyModule } from '../../../../ui-framework/src/lib/typography/typography.module';
 
 @Component({
   selector: 'tooltip-tester',

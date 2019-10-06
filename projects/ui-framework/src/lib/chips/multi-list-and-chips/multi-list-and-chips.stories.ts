@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { object, withKnobs, text } from '@storybook/addon-knobs/angular';
+import {
+  object,
+  withKnobs,
+  text,
+  boolean
+} from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,6 +34,7 @@ const template = `
         [options]="options || listOpts"
         [listLabel]="listLabel"
         [chipsLabel]="chipsLabel"
+        [showSingleGroupHeader]="showSingleGroupHeader"
         (selectChange)="onSelectChange($event)">
   </b-multi-list-and-chips>
 
@@ -52,11 +58,11 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  options | SelectGroupOption[] | model of selection group | none
-  listLabel | string | label text for the Multi List component | none
-  chipsLabel | string | label text for the Chips List component | none
-  showSingleGroupHeader | boolean | displays single group with group header | false
-  selectChange | &lt;ListChange&gt; | returns ListChange | none
+  [options] | SelectGroupOption[] | model of selection group | none
+  [listLabel] | string | label text for the Multi List component | none
+  [chipsLabel] | string | label text for the Chips List component | none
+  [showSingleGroupHeader] | boolean | displays single group with group header | false
+  (selectChange) | &lt;ListChange&gt; | returns ListChange | none
 
   ~~~
   ${template}
@@ -97,6 +103,7 @@ const toAdd = () => ({
     listLabel: text('chipsLabel', 'Select fields:'),
     chipsLabel: text('listLabel', 'Selected fields:'),
     onSelectChange: action('ListChange'),
+    showSingleGroupHeader: boolean('showSingleGroupHeader', false),
     listOpts: object('listOpts', listOpts),
     avatarListOpts: object('avatarListOpts', avatarListOpts)
   },
