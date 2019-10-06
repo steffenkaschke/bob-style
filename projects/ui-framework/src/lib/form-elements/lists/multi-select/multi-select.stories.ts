@@ -69,7 +69,7 @@ const note = `
   [showSingleGroupHeader] | boolean | displays single group with group header | false
   (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | none
   (selectModified) | EventEmitter&lt;ListChange&gt; | emits ListChange | none
-  (selectCancelled) | EventEmitter&lt;ListChange&gt;| emits ListChange | none
+  (selectCancelled) | EventEmitter&lt;ListChange&gt; | emits ListChange | none
   ~~~
   ${template}
   ~~~
@@ -114,7 +114,7 @@ const toAdd = () => ({
     required: boolean('required', false),
     hintMessage: text('hintMessage', 'This field should contain something'),
     errorMessage: text('errorMessage', ''),
-    showSingleGroupHeader: boolean('showSingleGroupHeader', false),
+    showSingleGroupHeader: boolean('showSingleGroupHeader', true),
     options: object<SelectGroupOption>('options', optionsMock)
   },
   moduleMetadata: {

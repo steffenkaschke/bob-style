@@ -1,11 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  select,
-  withKnobs,
-  object,
-  array,
-  boolean
-} from '@storybook/addon-knobs/angular';
+import { withKnobs, object, boolean } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 import { ButtonsModule } from '../../../buttons/buttons.module';
@@ -45,17 +39,17 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  options | SelectGroupOption[] | model of selection group | none
-  selectChange | action | returns ListChange | none
-  showSingleGroupHeader | boolean | displays single group with group header | false
-  maxHeight | number | component max height | 352 (8 rows)
+  [options] | SelectGroupOption[] | model of selection group | none
+  [showSingleGroupHeader] | boolean | displays single group with group header | false
+  [maxHeight] | number | component max height | 352 (8 rows)
+  (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | none
 
   ~~~
   ${template}
   ~~~
 `;
 
-const groupNum = 1;
+const groupNum = 6;
 const optionsNum = 3;
 
 const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
@@ -77,15 +71,14 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
     })
   };
 });
-// optionsMock[1].options[0].disabled = true;
-// optionsMock[1].options[2].selected = true;
 
-// optionsMock[2].options[0].selected = true;
-// optionsMock[2].options[1].selected = true;
-// optionsMock[2].options[2].selected = true;
-// optionsMock[2].options[0].disabled = true;
-// optionsMock[2].options[1].disabled = true;
-// optionsMock[2].options[2].disabled = true;
+optionsMock[1].options[0].disabled = true;
+optionsMock[1].options[2].selected = true;
+optionsMock[2].options[0].selected = true;
+optionsMock[2].options[1].selected = true;
+optionsMock[2].options[2].selected = true;
+optionsMock[2].options[0].disabled = true;
+optionsMock[2].options[1].disabled = true;
 
 buttonStories.add(
   'Multi list',

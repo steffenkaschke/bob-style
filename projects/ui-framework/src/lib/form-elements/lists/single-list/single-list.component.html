@@ -7,12 +7,13 @@
      class="v-scroll-wrapper">
 
   <div #headers
-       class="headers">
+       class="headers"
+       *ngIf="!noGroupHeaders">
     <div *ngFor="let header of listHeaders"
          class="headers-group">
       <div (click)="headerClick(header)"
            [ngClass]="{
-            'clickable': options.length > 1,
+           'clickable': options.length > 1,
            'collapsed': header.isCollapsed,
            'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName
            }"
@@ -48,7 +49,8 @@
            'header-placeholder': option.isPlaceHolder,
            'option': !option.isPlaceHolder,
            'selected': option.selected,
-           'focus': option.id===focusOption?.id
+           'focus': option.id===focusOption?.id,
+           'single-group-option': options.length === 1
            }"
            class="option-select">
         <b-list-option [option]="option"

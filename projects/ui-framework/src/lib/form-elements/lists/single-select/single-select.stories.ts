@@ -105,7 +105,7 @@ const toAdd = () => ({
     required: boolean('required', false),
     hintMessage: text('hintMessage', 'This field should contain something'),
     errorMessage: text('errorMessage', ''),
-    showSingleGroupHeader: boolean('showSingleGroupHeader', false),
+    showSingleGroupHeader: boolean('showSingleGroupHeader', true),
     options: object<SelectGroupOption>('options', optionsMock)
   },
   moduleMetadata: {
