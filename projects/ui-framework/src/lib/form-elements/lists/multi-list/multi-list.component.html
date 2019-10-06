@@ -16,10 +16,11 @@
            'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName
            }"
            class="option-select header">
-        <span (click)="toggleGroupCollapse(header)"
+        <span (click)="headerClick(header)"
               class="header-collapse-trigger">
         </span>
-        <span class="chevron b-icon-medium"
+        <span *ngIf="options.length > 1"
+              class="chevron b-icon-medium"
               [ngClass]="{'b-icon-chevron-down': !header.isCollapsed, 'b-icon-chevron-right':
               header.isCollapsed}"></span>
         <div class="header-option">

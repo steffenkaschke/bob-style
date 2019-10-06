@@ -56,8 +56,8 @@ const note = `
   ~~~
 `;
 
-const groupNum = 3;
-const optionsNum = 4;
+const groupNum = 1;
+const optionsNum = 14;
 
 const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
   return {

@@ -55,7 +55,7 @@ const note = `
   ~~~
 `;
 
-const groupNum = 6;
+const groupNum = 1;
 const optionsNum = 3;
 
 const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
@@ -77,14 +77,14 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
     })
   };
 });
-optionsMock[1].options[0].disabled = true;
-optionsMock[1].options[2].selected = true;
+// optionsMock[1].options[0].disabled = true;
+// optionsMock[1].options[2].selected = true;
 
-optionsMock[2].options[0].selected = true;
-optionsMock[2].options[1].selected = true;
-optionsMock[2].options[2].selected = true;
-optionsMock[2].options[0].disabled = true;
-optionsMock[2].options[1].disabled = true;
+// optionsMock[2].options[0].selected = true;
+// optionsMock[2].options[1].selected = true;
+// optionsMock[2].options[2].selected = true;
+// optionsMock[2].options[0].disabled = true;
+// optionsMock[2].options[1].disabled = true;
 // optionsMock[2].options[2].disabled = true;
 
 buttonStories.add(

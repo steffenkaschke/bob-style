@@ -7,17 +7,18 @@
      class="v-scroll-wrapper">
 
   <div #headers
-       class="headers"
-       *ngIf="!noGroupHeaders">
+       class="headers">
     <div *ngFor="let header of listHeaders"
          class="headers-group">
       <div (click)="headerClick(header)"
            [ngClass]="{
+            'clickable': options.length > 1,
            'collapsed': header.isCollapsed,
            'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName
            }"
            class="option-select header">
-        <span class="chevron b-icon-medium"
+        <span *ngIf="options.length > 1"
+              class="chevron b-icon-medium"
               [ngClass]="{'b-icon-chevron-down': !header.isCollapsed, 'b-icon-chevron-right':
               header.isCollapsed}"></span>
         <span [innerHTML]="header.groupName | highlight: searchValue"></span>
