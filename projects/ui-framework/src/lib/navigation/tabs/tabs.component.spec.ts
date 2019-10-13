@@ -88,7 +88,20 @@ describe('TabsComponent', () => {
       matTabLabel.triggerEventHandler('click', null);
       fixture.detectChanges();
       tick(500);
-      expect(component.selectChange.emit).toHaveBeenCalledTimes(2);
+      expect(component.selectChange.emit).toHaveBeenCalledTimes(1);
+    }));
+
+    it('should not change the selected index if the tab is controlled', fakeAsync(() => {
+      component.controlled = true;
+      component.selectedIndex = 1;
+      fixture.detectChanges();
+      const matTabLabel = fixture.debugElement.queryAll(
+        By.css('.mat-tab-label')
+      )[0];
+      matTabLabel.triggerEventHandler('click', null);
+      fixture.detectChanges();
+      tick(500);
+      expect(component.selectedIndex).toEqual(1);
     }));
 
     it('should output select click event', () => {
