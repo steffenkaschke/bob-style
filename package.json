@@ -36,6 +36,7 @@
     "ag-grid-angular": "^20.0.0",
     "ag-grid-community": "^20.0.0",
     "ag-grid-enterprise": "^20.0.0",
+    "angular-froala-wysiwyg": "^3.0.6",
     "bob-schematics": "file:bob-schematics",
     "core-js": "^2.6.1",
     "date-fns": "^1.30.1",
