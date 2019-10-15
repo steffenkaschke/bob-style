@@ -27,7 +27,24 @@ const value = `<div> <span style="color: red;">Hello</span> <a href="http://www.
 <div>Some <em>initial</em> <strong>bold</strong> text</div> {{/work/title}}`;
 
 const template = `
-  <b-rte>
+  <b-rte
+      [type]="type"
+      [label]="label"
+      [placeholder]="placeholder"
+      [value]="value"
+      [controls]="controls"
+      [disableControls]="disableControls"
+
+      [minChars]="minChars"
+      [maxChars]="maxChars"
+      [minHeight]="minHeight"
+      [maxHeight]="maxHeight"
+      [disabled]="disabled"
+      [required]="required"
+      [hintMessage]="hintMessage"
+      [warnMessage]="warnMessage"
+      [errorMessage]="errorMessage"
+      (changed)="change($event)">
   </b-rte>
 `;
 
