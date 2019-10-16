@@ -37,9 +37,11 @@ const template = `
                  [hintMessage]="hintMessage"
                  [showSingleGroupHeader]="showSingleGroupHeader"
                  [showNoneOption]="showNoneOption">
-                 <div footer style="display: flex; justify-content: flex-end; height: 100%">
-                    <b-text-button [text]="'Click Me!'" [color]="'primary'"> </b-text-button>
-                 </div>
+                 <b-text-button footer
+                    [text]="'Click Me!'"
+                    [color]="'primary'"
+                    style="margin-left: auto">
+                  </b-text-button>
 </b-single-select>
 `;
 
