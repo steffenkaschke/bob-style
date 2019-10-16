@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { IconColor, Icons, ButtonType, MenuItem } from 'bob-style';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 import { assign, map } from 'lodash';
+
+import { Icons, IconColor } from '../../../../../src/lib/icons/icons.enum';
+import { ButtonType } from '../../../../../src/lib/buttons/buttons.enum';
+import { MenuItem } from '../../../../../src/lib/navigation/menu/menu.interface';
 
 @Component({
   selector: 'b-actions-cell',

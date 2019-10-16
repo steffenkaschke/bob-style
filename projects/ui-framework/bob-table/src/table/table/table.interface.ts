@@ -1,5 +1,5 @@
 import { PinDirection, SortDirections } from './table.enum';
-import { IconColor, Icons } from 'bob-style';
+import { IconColor, Icons } from '../../../../src/lib/icons/icons.enum';
 
 export interface ColumnDef {
   headerName: string;
