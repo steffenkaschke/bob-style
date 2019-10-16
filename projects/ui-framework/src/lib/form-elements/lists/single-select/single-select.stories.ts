@@ -35,7 +35,8 @@ const template = `
                  [required]="required"
                  [errorMessage]="errorMessage"
                  [hintMessage]="hintMessage"
-                 [showSingleGroupHeader]="showSingleGroupHeader">
+                 [showSingleGroupHeader]="showSingleGroupHeader"
+                 [showNoneOption]="showNoneOption">
 </b-single-select>
 `;
 
@@ -67,6 +68,7 @@ const note = `
   hintMessage | text | hint text | none
   errorMessage | text | error text | none
   showSingleGroupHeader | boolean | displays single group with group header | false
+  showNoneOption | boolean | displays the no-selection option | true
 
   ~~~
   ${template}
@@ -106,6 +108,7 @@ const toAdd = () => ({
     hintMessage: text('hintMessage', 'This field should contain something'),
     errorMessage: text('errorMessage', ''),
     showSingleGroupHeader: boolean('showSingleGroupHeader', true),
+    showNoneOption: boolean('showNoneOption', true),
     options: object<SelectGroupOption>('options', optionsMock)
   },
   moduleMetadata: {
