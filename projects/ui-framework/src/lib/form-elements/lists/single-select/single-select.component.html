@@ -50,6 +50,7 @@
                    [maxHeight]="listElHeight*6"
                    [showSingleGroupHeader]="showSingleGroupHeader"
                    [showNoneOption]="showNoneOption">
+      <ng-content single-list-footer select="[single-select-footer]"></ng-content>
     </b-single-list>
   </div>
 </ng-template>

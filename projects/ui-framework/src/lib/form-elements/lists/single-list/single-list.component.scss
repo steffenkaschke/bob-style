@@ -109,3 +109,13 @@
     }
   }
 }
+
+:host {
+  .footer {
+    border-top: 1px solid $grey-500;
+    &:empty {
+      display: none;
+    }
+  }
+
+}

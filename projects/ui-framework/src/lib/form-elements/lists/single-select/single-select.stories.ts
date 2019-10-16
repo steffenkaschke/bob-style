@@ -37,6 +37,9 @@ const template = `
                  [hintMessage]="hintMessage"
                  [showSingleGroupHeader]="showSingleGroupHeader"
                  [showNoneOption]="showNoneOption">
+                 <div single-select-footer style="display: flex; justify-content: flex-end; padding: 15px 15px;">
+                    <b-text-button [text]="'Click Me!'" [color]="'primary'"> </b-text-button>
+                 </div>
 </b-single-select>
 `;
 
