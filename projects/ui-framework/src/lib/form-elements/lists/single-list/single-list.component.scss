@@ -116,6 +116,9 @@
     background-color: white;
     border-bottom-left-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
+    align-items: center;
+    padding: 0 15px;
+    height: 50px;
     &:empty {
       display: none;
     }

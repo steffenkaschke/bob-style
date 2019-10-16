@@ -26,7 +26,7 @@ const template = `
 <b-single-list [options]="options"
                (selectChange)="selectChange($event)"
                [showSingleGroupHeader]="showSingleGroupHeader">
-               <div footer style="display: flex; justify-content: flex-end; padding: 15px">
+               <div footer style="display: flex; justify-content: flex-end; height: 100%">
                  <b-text-button [text]="'Click Me!'" [color]="'primary'"> </b-text-button>
                </div>
 </b-single-list>
