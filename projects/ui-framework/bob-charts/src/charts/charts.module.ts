@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UtilsModule } from 'bob-style';
+
+import { UtilsModule } from '../../../src/lib/services/utils/utils.module';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { DonutChartTextComponent } from './donut-chart-text/donut-chart-text.component';
 
