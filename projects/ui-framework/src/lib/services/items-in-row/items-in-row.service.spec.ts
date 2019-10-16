@@ -1,7 +1,7 @@
-import {ItemsInRowService} from './items-in-row.service';
-import {UtilsService} from '../utils/utils.service';
-import {DOMhelpers} from 'bob-style';
-import {interval} from 'rxjs';
+import { ItemsInRowService } from './items-in-row.service';
+import { UtilsService } from '../utils/utils.service';
+import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { interval } from 'rxjs';
 
 
 describe('ItemsInRowService', () => {
