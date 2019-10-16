@@ -1,4 +1,4 @@
-import { MenuItem } from '../../../../../src/lib/navigation/menu/menu.interface';
+import { MenuItem } from 'bob-style';
 
 export interface GridActions {
   menuItems: MenuItem[];

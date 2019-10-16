@@ -3,7 +3,7 @@ import { TableUtilsService } from './table-utils.service';
 import { ColumnDef } from '../table/table.interface';
 import { concat } from 'lodash';
 import { PinDirection, RowSelection, SortDirections } from '../table/table.enum';
-import { IconColor, Icons } from '../../../../src/lib/icons/icons.enum';
+import { IconColor, Icons } from 'bob-style';
 
 describe('TableUtilsService', () => {
   let tableUtilsService: TableUtilsService;
