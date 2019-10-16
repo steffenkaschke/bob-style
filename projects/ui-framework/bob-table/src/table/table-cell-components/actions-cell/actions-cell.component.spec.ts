@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActionsCellComponent } from './actions-cell.component';
 import { By } from '@angular/platform-browser';
-import { IconColor, Icons } from 'bob-style';
-import { ButtonType } from 'bob-style';
+import { IconColor, Icons } from '../../../../../src/lib/icons/icons.enum';
+import { ButtonType } from '../../../../../src/lib/buttons/buttons.enum';
 import { MockComponent } from 'ng-mocks';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MenuComponent } from 'bob-style';
+import { MenuComponent } from '../../../../../src/lib/navigation/menu/menu.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SquareButtonComponent } from 'bob-style';
+import { SquareButtonComponent } from '../../../../../src/lib/buttons/square/square.component';
 import { GridActions } from './actions-cell.interface';
 import { map } from 'lodash';
 
