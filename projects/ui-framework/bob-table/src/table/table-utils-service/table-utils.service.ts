@@ -5,9 +5,9 @@ import { SELECTION_COLUMN_DEF } from '../table/table.consts';
 import { GridOptions } from 'ag-grid-community';
 import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
 import { PinDirection, RowSelection } from '../table/table.enum';
-import { IconSize } from '../../../../src/lib/icons/icons.enum';
+import { IconSize } from 'bob-style';
 
-const ICON_CELL_STYLE = { padding: '0 15px 0 43px' };
+const ICON_CELL_STYLE = { 'padding': '0 15px 0 43px' };
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class TableUtilsService {
     return compact(
       concat(
         this.getRowSelectionColumnDef(rowSelection),
-        this.getEnrichColumnDef(columnDefs)
+        this.getEnrichColumnDef(columnDefs),
       )
     );
   }
@@ -36,7 +36,7 @@ export class TableUtilsService {
       resizable: false,
       sortable: false,
       width: 40,
-      cellRendererFramework: ActionsCellComponent
+      cellRendererFramework: ActionsCellComponent,
     };
   }
 
@@ -47,7 +47,7 @@ export class TableUtilsService {
         sortable: get(colDef, 'sortable', true),
         menuTabs: [],
         cellClass: this.getCellClass(colDef),
-        cellStyle: this.getCellStyle(colDef)
+        cellStyle: this.getCellStyle(colDef),
       }));
   }
 
@@ -69,9 +69,9 @@ export class TableUtilsService {
 
   private getIconClass(colDef: ColumnDef): string[] {
     const iconColorClass = has(colDef, 'iconColor')
-      ? `b-icon-${colDef.iconColor}`
+      ? `b-icon-${ colDef.iconColor }`
       : 'b-icon-normal';
-    return [colDef.icon, iconColorClass, `b-icon-${IconSize.medium}`];
+    return [colDef.icon, iconColorClass, `b-icon-${ IconSize.medium }`];
   }
 
   private getRowSelectionColumnDef(rowSelection: RowSelection): ColumnDef {

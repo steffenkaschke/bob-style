@@ -3,7 +3,7 @@ import { AvatarCellComponent } from '../table-cell-components/avatar-cell/avatar
 import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
 import { GridActions } from '../table-cell-components/actions-cell/actions-cell.interface';
 import { PinDirection, SortDirections } from '../table/table.enum';
-import { Icons } from '../../../../src/lib/icons/icons.enum';
+import { Icons } from 'bob-style';
 
 export const mockColumnsDefs: ColumnDef[] = [
   {

@@ -9,10 +9,10 @@ import {
   SimpleChanges
 } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import { Options } from 'highcharts';
-import { ChartTypesEnum } from './chart.enum';
-import { merge } from 'lodash';
-import { simpleUID } from '../../../../src/lib/services/utils/functional-utils';
+import {Options} from 'highcharts';
+import {ChartTypesEnum} from './chart.enum';
+import {merge} from 'lodash';
+import {simpleUID} from 'bob-style';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -31,8 +31,8 @@ export class ChartCore implements AfterViewInit, OnChanges {
   options: Options;
   firstTimeAfterAnimate = true;
 
-  private formatter = (function(component) {
-    return function() {
+  private formatter = (function (component) {
+    return function () {
       return component.tooltipFormatter(this, component);
     };
   })(this);
@@ -81,12 +81,12 @@ export class ChartCore implements AfterViewInit, OnChanges {
         type: this.type,
         backgroundColor: 'rgba(255, 255, 255, 0.0)',
         animation: {
-          duration: 200
+          duration: 200,
           // easing: function(t) { return t; }
         }
       },
       title: {
-        text: this.title
+        text: this.title,
       },
       tooltip: {
         outside: true,
@@ -107,13 +107,13 @@ export class ChartCore implements AfterViewInit, OnChanges {
           showInLegend: this.legend,
           dataLabels: {
             enabled: this.showDataLabels
-          }
+          },
         }
       },
       credits: {
         enabled: false
       },
-      series: []
+      series: [],
     }, this.extraOptions);
     if (this.legend && this.legendChanged && this.firstTimeAfterAnimate) {
       this.options.plotOptions[this.type].events.afterAnimate = (event) => {
