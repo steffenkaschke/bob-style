@@ -113,6 +113,9 @@
 :host {
   .footer {
     border-top: 1px solid $grey-500;
+    background-color: white;
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
     &:empty {
       display: none;
     }
