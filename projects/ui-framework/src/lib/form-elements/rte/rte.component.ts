@@ -4,7 +4,6 @@ import {
   ChangeDetectionStrategy,
   forwardRef,
   SimpleChanges,
-  OnChanges,
   Input,
   HostBinding,
   Output,
@@ -14,7 +13,6 @@ import {
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
-import { RTEType, BlotType } from '../rich-text-editor/rte-core/rte.enum';
 import { GenericObject } from '../../types';
 import {
   cloneArray,
@@ -23,6 +21,7 @@ import {
   applyChanges
 } from '../../services/utils/functional-utils';
 import { FroalaEditorDirective } from 'angular-froala-wysiwyg';
+import { BlotType, RTEType } from './rte.enum';
 
 const optionsDef: GenericObject = {
   heightMin: 185 - 40,
@@ -32,6 +31,26 @@ const optionsDef: GenericObject = {
   toolbarBottom: true,
   tooltips: false,
   listAdvancedTypes: false,
+  htmlAllowComments: false,
+  htmlAllowedAttrs: [
+    'align',
+    'alt',
+    'border',
+    'cellpadding',
+    'cellspacing',
+    'colspan',
+    'data-.*',
+    'dir',
+    'href',
+    'id',
+    'lang',
+    'rel',
+    'rowspan',
+    'src',
+    'target',
+    'title',
+    'valign'
+  ],
 
   linkAlwaysBlank: true,
   linkEditButtons: ['linkOpen', 'linkEdit', 'linkRemove'],
