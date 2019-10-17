@@ -1,25 +1,34 @@
-import {DatepickerComponent} from './datepicker.component';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {ChangeDetectionStrategy, NO_ERRORS_SCHEMA} from '@angular/core';
-import {MatDatepicker, MatDatepickerModule, MatNativeDateModule} from '@angular/material';
-import {elementFromFixture, getPseudoContent, inputValue, simpleChange} from '../../services/utils/test-helpers';
-import {UtilsService} from '../../services/utils/utils.service';
-import {of} from 'rxjs';
-import {DateParseService} from './date-parse.service';
-import {MobileService} from '../../services/utils/mobile.service';
-import {EventManagerPlugins} from '../../services/utils/eventManager.plugins';
-import {IconsModule} from '../../icons/icons.module';
-import {InputMessageModule} from '../input-message/input-message.module';
-import {dateToString} from '../../services/utils/transformers';
-import {isDate, parseISO} from 'date-fns';
-import {DatepickerType} from './datepicker.enum';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {FormElementKeyboardCntrlService} from '../services/keyboard-cntrl.service';
-import {OverlayModule} from '@angular/cdk/overlay';
-import {FormElementLabelModule} from '../form-element-label/form-element-label.module';
+import { DatepickerComponent } from './datepicker.component';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  MatDatepicker,
+  MatDatepickerModule,
+  MatNativeDateModule
+} from '@angular/material';
+import {
+  elementFromFixture,
+  getPseudoContent,
+  inputValue,
+  simpleChange
+} from '../../services/utils/test-helpers';
+import { UtilsService } from '../../services/utils/utils.service';
+import { of } from 'rxjs';
+import { DateParseService } from './date-parse.service';
+import { MobileService } from '../../services/utils/mobile.service';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { IconsModule } from '../../icons/icons.module';
+import { InputMessageModule } from '../input-message/input-message.module';
+import { dateToString } from '../../services/utils/transformers';
+import { isDate, parseISO } from 'date-fns';
+import { DatepickerType } from './datepicker.enum';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
 import createSpyObj = jasmine.createSpyObj;
 
-fdescribe('DatepickerComponent', () => {
+describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
   let component: DatepickerComponent;
   let componentElem: HTMLElement;
@@ -48,7 +57,7 @@ fdescribe('DatepickerComponent', () => {
         InputMessageModule,
         NoopAnimationsModule,
         OverlayModule,
-        FormElementLabelModule,
+        FormElementLabelModule
       ],
       declarations: [DatepickerComponent],
       providers: [
@@ -197,8 +206,8 @@ fdescribe('DatepickerComponent', () => {
     });
 
     it('should pass properly entered date to MatDatepicker', () => {
-      expect(isDate(new Date(picker._selected))).toBeTruthy();
-      expect(dateToString(new Date(picker._selected))).toEqual('2012-12-24');
+      expect(isDate(picker._selected)).toBeTruthy();
+      expect(dateToString(picker._selected)).toEqual('2012-12-24');
     });
   });
 
