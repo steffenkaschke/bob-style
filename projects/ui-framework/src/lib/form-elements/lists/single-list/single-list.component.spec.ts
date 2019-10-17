@@ -87,14 +87,14 @@ describe('SingleListComponent', () => {
           isCollapsed: false,
           placeHolderSize: 88,
           selected: null,
-          indeterminate: true,
+          indeterminate: true
         },
         {
           groupName: 'Personal Header',
           isCollapsed: false,
           placeHolderSize: 88,
           selected: null,
-          indeterminate: false,
+          indeterminate: false
         }
       ]);
     });
@@ -448,7 +448,9 @@ describe('SingleListComponent', () => {
 
   describe('-None-', () => {
     it('should not show -None- button by default', () => {
-      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+      const clearSelection = fixture.debugElement.query(
+        By.css('.clear-selection')
+      );
       expect(clearSelection).toBeFalsy();
     });
     it('should show -None- button if showNoneOption is true', () => {
@@ -457,18 +459,20 @@ describe('SingleListComponent', () => {
         {
           groupName: 'Basic Info Header',
           options: [{ value: 'Basic Info 1', id: 1 }]
-        },
+        }
       ];
       component.ngOnChanges({
         options: {
           previousValue: undefined,
           currentValue: testOptionsMock,
           firstChange: false,
-          isFirstChange: () => false,
+          isFirstChange: () => false
         }
       });
       fixture.autoDetectChanges();
-      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+      const clearSelection = fixture.debugElement.query(
+        By.css('.clear-selection')
+      );
       expect(clearSelection).toBeTruthy();
       expect(clearSelection.nativeElement.innerText).toEqual('— None —');
     });
@@ -478,18 +482,20 @@ describe('SingleListComponent', () => {
         {
           groupName: 'Basic Info Header',
           options: [{ value: 'Basic Info 1', id: 1 }]
-        },
+        }
       ];
       component.ngOnChanges({
         options: {
           previousValue: undefined,
           currentValue: testOptionsMock,
           firstChange: false,
-          isFirstChange: () => false,
+          isFirstChange: () => false
         }
       });
       fixture.autoDetectChanges();
-      const clearSelection = fixture.debugElement.query(By.css('.clear-selection'));
+      const clearSelection = fixture.debugElement.query(
+        By.css('.clear-selection')
+      );
       clearSelection.triggerEventHandler('click', null);
       expect(component.clear.emit).toHaveBeenCalled();
     });
@@ -502,16 +508,16 @@ describe('SingleListComponent', () => {
           groupName: 'Basic Info Header',
           options: [
             { value: 'Basic Info 1', id: 1 },
-            { value: 'Basic Info 2', id: 2 },
-          ],
-        },
+            { value: 'Basic Info 2', id: 2 }
+          ]
+        }
       ];
       component.ngOnChanges({
         options: {
           previousValue: undefined,
           currentValue: testOptionsMock,
           firstChange: false,
-          isFirstChange: () => false,
+          isFirstChange: () => false
         }
       });
       fixture.autoDetectChanges();
@@ -521,7 +527,9 @@ describe('SingleListComponent', () => {
 
       const listHeight = component.getListHeight();
       expect(listHeight).toEqual(88);
-      const vScrollWrapper = fixture.debugElement.query(By.css('.v-scroll-wrapper'));
+      const vScrollWrapper = fixture.debugElement.query(
+        By.css('.v-scroll-wrapper')
+      );
       const styles = getComputedStyle(vScrollWrapper.nativeElement);
       expect(styles.height).toEqual('88px');
     });
@@ -531,10 +539,11 @@ describe('SingleListComponent', () => {
 
       const listHeight = component.getListHeight();
       expect(listHeight).toEqual(132);
-      const vScrollWrapper = fixture.debugElement.query(By.css('.v-scroll-wrapper'));
+      const vScrollWrapper = fixture.debugElement.query(
+        By.css('.v-scroll-wrapper')
+      );
       const styles = getComputedStyle(vScrollWrapper.nativeElement);
       expect(styles.height).toEqual('132px');
     });
   });
-
 });

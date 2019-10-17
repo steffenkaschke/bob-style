@@ -15,7 +15,6 @@ import { MultiSelectModule } from './multi-select.module';
 import { SelectGroupOption } from '../list.interface';
 import { AvatarComponent } from '../../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../../avatar/avatar/avatar.module';
-import { UtilComponentsModule } from '../../../services/util-components/utilComponents.module';
 import { mockText } from '../../../mock.const';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
@@ -59,19 +58,18 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  options | SelectGroupOption[] | model of selection group | none
-  selectChange | action | returns ListChange | none
-  selectModified | action | returns ListChange | none
-  selectCancelled | action | returns ListChange | none
-  label | string | label text | none
-  description | string | description text (above icon)
-  placeholder | string | placeholder text | none
-  disabled | boolean | is field disabled | none
-  required | boolean | is field required | none
-  hintMessage | text | hint text | none
-  errorMessage | text | error text | none
-  showSingleGroupHeader | boolean | displays single group with group header | false
-
+  [options] | SelectGroupOption[] | model of selection group | none
+  [label] | string | label text | none
+  [description] | string | description text (above icon)
+  [placeholder] | string | placeholder text | none
+  [disabled] | boolean | is field disabled | none
+  [required] | boolean | is field required | none
+  [hintMessage] | text | hint text | none
+  [errorMessage] | text | error text | none
+  [showSingleGroupHeader] | boolean | displays single group with group header | false
+  (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | none
+  (selectModified) | EventEmitter&lt;ListChange&gt; | emits ListChange | none
+  (selectCancelled) | EventEmitter&lt;ListChange&gt; | emits ListChange | none
   ~~~
   ${template}
   ~~~
@@ -116,7 +114,7 @@ const toAdd = () => ({
     required: boolean('required', false),
     hintMessage: text('hintMessage', 'This field should contain something'),
     errorMessage: text('errorMessage', ''),
-    showSingleGroupHeader: boolean('showSingleGroupHeader', false),
+    showSingleGroupHeader: boolean('showSingleGroupHeader', true),
     options: object<SelectGroupOption>('options', optionsMock)
   },
   moduleMetadata: {
@@ -126,8 +124,7 @@ const toAdd = () => ({
       TypographyModule,
       BrowserAnimationsModule,
       StoryBookLayoutModule,
-      AvatarModule,
-      UtilComponentsModule
+      AvatarModule
     ],
     entryComponents: [AvatarComponent]
   }

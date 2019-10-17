@@ -4,7 +4,6 @@ import { ComponentGroupType } from '../../consts';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 import { ConfirmationDialogModule } from './confirmation-dialog.module';
 import { ConfirmationDialogExampleModule } from './confirmation-dialog-example.module';
 
@@ -18,7 +17,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Confirmation dialog'">
-    ${ template }
+    ${template}
 </b-story-book-layout>
 `;
 
@@ -67,9 +66,8 @@ buttonStories.add(
         ButtonsModule,
         BrowserAnimationsModule,
         StoryBookLayoutModule,
-        UtilComponentsModule,
         ConfirmationDialogModule,
-        ConfirmationDialogExampleModule,
+        ConfirmationDialogExampleModule
       ]
     }
   }),

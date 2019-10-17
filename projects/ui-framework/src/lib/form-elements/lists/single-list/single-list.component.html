@@ -13,11 +13,13 @@
          class="headers-group">
       <div (click)="headerClick(header)"
            [ngClass]="{
+           'clickable': options.length > 1,
            'collapsed': header.isCollapsed,
            'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName
            }"
            class="option-select header">
-        <span class="chevron b-icon-medium"
+        <span *ngIf="options.length > 1"
+              class="chevron b-icon-medium"
               [ngClass]="{'b-icon-chevron-down': !header.isCollapsed, 'b-icon-chevron-right':
               header.isCollapsed}"></span>
         <span [innerHTML]="header.groupName | highlight: searchValue"></span>
@@ -47,7 +49,8 @@
            'header-placeholder': option.isPlaceHolder,
            'option': !option.isPlaceHolder,
            'selected': option.selected,
-           'focus': option.id===focusOption?.id
+           'focus': option.id===focusOption?.id,
+           'single-group-option': options.length === 1
            }"
            class="option-select">
         <b-list-option [option]="option"
@@ -57,4 +60,8 @@
     </div>
   </cdk-virtual-scroll-viewport>
 
+</div>
+
+<div class="footer">
+  <ng-content select="[footer]"></ng-content>
 </div>

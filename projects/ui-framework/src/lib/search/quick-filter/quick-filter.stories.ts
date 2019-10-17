@@ -10,7 +10,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuickFilterSelectType } from './quick-filter.enum';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import { QuickFilterConfig } from './quick-filter.interface';
-import { UtilComponentsModule } from '../../services/util-components/utilComponents.module';
 
 const textareaStories = storiesOf(
   ComponentGroupType.Search,
@@ -45,10 +44,10 @@ const note = `
   #### Properties
   Name | Type | Description | Default Value
   --- | --- | --- | ---
-  quickFilters | QuickFilterConfig[] | array of quick filters | none
-  filtersChange | QuickFilterBarChangeEvent | Output of quick filter bar change | none
-  showResetFilter | boolean | displays reset button | false
-  resetFilters | void | event of reset click | none
+  [quickFilters] | QuickFilterConfig[] | array of quick filters | none
+  [showResetFilter] | boolean | displays reset button | false
+  (filtersChange) | EventEmitter&lt;QuickFilterChangeEvent&gt; | emits on quick filter bar change | none
+  (resetFilters) | EventEmitter&lt;void&gt; |emits on reset click | none
 
   ~~~
   ${template}
@@ -93,7 +92,7 @@ const quickFilters: QuickFilterConfig[] = [
     key: 'employment',
     showSingleGroupHeader: true,
     options: [cloneDeep(optionsMock[0])]
-  },
+  }
 ];
 
 quickFilters[0].options[0].options[1].selected = true;
@@ -116,8 +115,7 @@ textareaStories.add(
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           QuickFilterModule,
-          ButtonsModule,
-          UtilComponentsModule
+          ButtonsModule
         ]
       }
     };

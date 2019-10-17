@@ -20,6 +20,7 @@ import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListChange } from '../list-change/list-change';
+import { hasChanges } from '../../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-single-list',
@@ -31,10 +32,11 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   @Input() maxHeight = this.listElHeight * 8;
   @Input() showSingleGroupHeader = false;
   @Input() showNoneOption = false;
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
   @Output() clear: EventEmitter<void> = new EventEmitter<void>();
 
-  noGroupHeaders: boolean;
   searchValue: string;
   shouldDisplaySearch = false;
 
@@ -53,29 +55,32 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (this.shouldResetModel(changes)) {
       this.options = changes.options.currentValue;
-      this.noGroupHeaders =
-        this.options &&
-        this.options.length === 1 &&
-        !this.showSingleGroupHeader;
       this.filteredOptions = this.options;
       this.shouldDisplaySearch =
         this.options &&
         flatMap(this.options, 'options').length > DISPLAY_SEARCH_OPTION_NUM;
+
+      this.noGroupHeaders =
+        !this.options ||
+        (this.options.length < 2 && !this.showSingleGroupHeader);
+
       this.updateLists();
     }
   }
 
   private shouldResetModel(changes: SimpleChanges): boolean {
-    return has(changes, 'options');
+    return hasChanges(changes, ['options', 'showSingleGroupHeader']);
   }
 
   headerClick(header: ListHeader): void {
-    header.isCollapsed = !header.isCollapsed;
-    this.listOptions = this.listModelService.getOptionsModel(
-      this.filteredOptions,
-      this.listHeaders,
-      this.noGroupHeaders
-    );
+    if (this.options.length > 1) {
+      header.isCollapsed = !header.isCollapsed;
+      this.listOptions = this.listModelService.getOptionsModel(
+        this.filteredOptions,
+        this.listHeaders,
+        this.noGroupHeaders
+      );
+    }
   }
 
   optionClick(option: ListOption): void {
@@ -100,7 +105,10 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   }
 
   getListHeight(): number {
-    return (this.listOptions.length + (this.showNoneOption ? 1 : 0)) * this.listElHeight;
+    return (
+      (this.listOptions.length + (this.showNoneOption ? 1 : 0)) *
+      this.listElHeight
+    );
   }
 
   private updateLists(): void {

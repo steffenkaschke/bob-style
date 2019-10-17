@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { number, object, select, withKnobs } from '@storybook/addon-knobs/angular';
+import {
+  number,
+  object,
+  select,
+  withKnobs
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 import { ComponentGroupType } from '../../../src/lib/consts';
@@ -12,7 +17,6 @@ import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.
 import { AgGridModule } from 'ag-grid-angular';
 import { RowSelection, TableType } from './table/table.enum';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
-import { UtilComponentsModule } from '../../../src/lib/services/util-components/utilComponents.module';
 
 const tableStories = storiesOf(ComponentGroupType.Tables, module).addDecorator(
   withKnobs
@@ -32,7 +36,7 @@ const template = `
 const storyTemplate = `
 <b-story-book-layout [title]="'Data Table'">
   <div style="max-width: calc(100% - 60px);">
-    ${ template }
+    ${template}
   </div>
 
 </b-story-book-layout>
@@ -66,7 +70,7 @@ const note = `
   filterRows | Function | search rows
   resetFilter | Function | reset filter
   ~~~
-  ${ template }
+  ${template}
   ~~~
 `;
 tableStories.add(
@@ -86,7 +90,7 @@ tableStories.add(
         columnDefs: object('columnDefs', mockColumnsDefs),
         rowClicked: action('Row clicked'),
         selectionChanged: action('Selection changed'),
-        sortChanged: action('sort changed'),
+        sortChanged: action('sort changed')
       },
       moduleMetadata: {
         entryComponents: [AvatarCellComponent, ActionsCellComponent],
@@ -96,8 +100,7 @@ tableStories.add(
           TableModule,
           AgGridModule,
           AvatarModule,
-          AgGridModule.withComponents([AvatarCellComponent]),
-          UtilComponentsModule
+          AgGridModule.withComponents([AvatarCellComponent])
         ]
       }
     };
