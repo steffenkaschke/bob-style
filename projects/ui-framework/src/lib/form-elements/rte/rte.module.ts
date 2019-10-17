@@ -7,6 +7,7 @@ import 'froala-editor/js/plugins/link.min.js';
 import 'froala-editor/js/plugins/align.min.js';
 import 'froala-editor/js/plugins/lists.min.js';
 import 'froala-editor/js/plugins/char_counter.min.js';
+import 'froala-editor/js/plugins/url.min.js';
 
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { InputMessageModule } from '../input-message/input-message.module';

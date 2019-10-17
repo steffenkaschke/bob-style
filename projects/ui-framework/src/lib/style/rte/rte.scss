@@ -1,0 +1,410 @@
+// @import '~/node_modules/froala-editor/css/froala_editor.pkgd.min.css';
+
+$toolbar-height: 40px;
+
+$icon-size: 17px;
+$icon-color: $grey-600;
+$icon-color-hover: $grey-700;
+$placeholder-color: $icon-color;
+
+$border-color: $grey-500;
+
+.fr-box.fr-basic .fr-element,
+.fr-view {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+
+  p {
+    margin: 0;
+  }
+
+  [style*='color'] {
+    color: inherit !important;
+  }
+
+  a {
+    color: $color-error;
+    text-decoration: underline;
+  }
+}
+
+.fr-toolbar,
+.fr-wrapper,
+.fr-element,
+.fr-view {
+  @include b-body($color: $display-text-color);
+}
+
+.fr-box.fr-basic {
+  border-radius: $border-radius;
+  display: flex;
+  flex-direction: column;
+
+  .fr-wrapper {
+    order: 1;
+  }
+  .fr-toolbar {
+    order: 2;
+    position: static !important;
+  }
+}
+
+.fr-box.fr-basic.fr-top,
+.fr-box.fr-basic.fr-bottom {
+  .fr-wrapper {
+    border-radius: $border-radius $border-radius 0 0;
+    border-top: 1px solid $border-color;
+    border-bottom: 0;
+  }
+}
+
+.fr-box.fr-basic .fr-element {
+  padding: 12px 15px;
+}
+
+// toolbar
+
+.fr-toolbar {
+  .fr-command.fr-btn svg path,
+  .fr-command.fr-btn
+    + .fr-dropdown-menu
+    .fr-dropdown-wrapper
+    .fr-dropdown-content
+    ul.fr-dropdown-list
+    li
+    a
+    svg
+    path {
+    fill: inherit !important;
+    transition: none;
+  }
+}
+
+.fr-command,
+.fr-command.fr-btn
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a {
+  font-size: $font-size-body;
+  color: $icon-color;
+
+  &:hover,
+  &:focus,
+  &[aria-selected='true'] {
+    color: $icon-color-hover;
+    font-weight: $font-weight-bold-body;
+  }
+}
+
+.fr-toolbar .fr-btn-grp {
+  float: none;
+  height: $toolbar-height - 1px;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0 8px;
+}
+
+.fr-toolbar.fr-bottom,
+.fr-toolbar.fr-top {
+  border-radius: 0 0 $border-radius $border-radius;
+  border-top: 1px solid $border-color;
+  border-bottom: 1px solid $border-color;
+
+  .fr-newline {
+    display: none;
+  }
+}
+
+.fr-toolbar .fr-command.fr-btn svg,
+.fr-toolbar .fr-command.fr-btn.fr-dropdown svg,
+.fr-toolbar .fr-command.fr-btn svg.fr-svg,
+.fr-command.fr-btn
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a
+  svg {
+  transition: none;
+  fill: $icon-color;
+  @include size($icon-size);
+  margin: 0;
+}
+
+.fr-toolbar .fr-command.fr-btn {
+  height: auto;
+  margin: 0;
+  padding: 4px;
+  transition: none;
+  width: $icon-size + 8px;
+
+  &:before {
+    color: $icon-color !important;
+  }
+
+  &.fr-btn-active-popup {
+    background: transparent;
+  }
+
+  &:after {
+    display: none;
+  }
+
+  &:hover,
+  &:focus,
+  &.fr-active {
+    background-color: transparent !important;
+
+    &:before {
+      color: $icon-color-hover !important;
+    }
+
+    & > svg {
+      fill: $icon-color-hover;
+    }
+  }
+}
+
+.fr-command
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a:hover
+  svg,
+.fr-command
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a:focus
+  svg {
+  fill: $icon-color-hover;
+}
+
+.fr-command.fr-btn
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a.fr-active {
+  background-color: transparent;
+
+  & > svg {
+    fill: $icon-color-hover;
+  }
+}
+
+.fr-toolbar .fr-command.fr-btn[data-cmd='italic'] {
+  width: auto;
+  svg {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.fr-command.fr-btn
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a {
+  padding: 0 10px;
+}
+
+.fr-desktop .fr-command:hover:not(.fr-table-cell),
+.fr-desktop .fr-command:focus:not(.fr-table-cell) {
+  background-color: transparent;
+}
+
+.fr-command.fr-btn + .fr-dropdown-menu .fr-dropdown-wrapper {
+  transition: none;
+}
+
+.fr-command.fr-btn
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list {
+  min-width: 0;
+}
+
+// button mods
+
+.fr-toolbar .fr-command.fr-btn {
+  &[data-cmd='italic'] {
+    padding: 4px 0;
+    stroke: currentColor;
+    stroke-width: 0.15;
+  }
+}
+
+// popups
+
+.fr-toolbar .fr-popup {
+  margin-top: -5px;
+  top: auto !important;
+}
+
+.fr-command.fr-btn + .fr-dropdown-menu {
+  top: 100%;
+  bottom: auto !important;
+  margin-top: -5px;
+}
+
+// popup buttons
+
+.fr-popup .fr-buttons .fr-btn {
+  margin: 0;
+}
+
+// popup form
+
+.fr-popup {
+  .fr-input-line {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 0;
+    margin-bottom: times8(2);
+
+    &[style*='block'] {
+      display: flex !important;
+    }
+
+    input[type='text'] {
+      @include input-basics;
+      background-color: $white;
+      min-height: $wrap-height;
+      border: 1px solid $input-border-color;
+      border-radius: $border-radius;
+      transition: box-shadow 0.2s, border-color 0.2s;
+
+      &:focus {
+        border: 1px solid $input-focus-border-color;
+        box-shadow: none;
+        padding: 0 $input-padding;
+      }
+    }
+
+    // input + label,
+    // input.fr-not-empty + label {
+    //   position: static;
+    //   transition: none;
+    //   padding: 0;
+    //   @include bFormElement-label;
+    // }
+
+    // label placeholder
+    input + label,
+    input.fr-not-empty + label {
+      @include b-body($lineHeight: $input-height, $color: $grey-600);
+      @include size;
+      @include position(0 0 0 0);
+      padding: 0 $input-padding;
+      background: none;
+      margin: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+
+    input.fr-not-empty + label,
+    input:focus + label {
+      opacity: 0;
+    }
+  }
+
+  .fr-action-buttons button.fr-command {
+    @include Button($type: primary);
+
+    &:hover,
+    &:focus {
+      color: white;
+    }
+  }
+}
+
+// font-size popup
+
+.fr-command.fr-btn
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a {
+  font-size: 0px;
+
+  &:before {
+    display: block;
+    line-height: $line-height-body;
+    font-weight: normal;
+  }
+
+  &[title='10']:before {
+    content: 'Small';
+    font-size: 10px;
+  }
+  &[title='12']:before {
+    content: 'Normal';
+    font-size: $font-size-body;
+  }
+  &[title='18']:before {
+    content: 'Large';
+    font-size: 18px;
+    line-height: 1;
+  }
+  &[title='30']:before {
+    content: 'Huge';
+    font-size: 30px;
+    line-height: 1;
+  }
+}
+
+// lists
+
+.fr-element,
+.fr-view {
+  ul,
+  ol {
+    padding-left: 25px;
+    margin: 0;
+  }
+}
+
+// states
+
+b-rte.warn {
+  .fr-box.fr-basic .fr-wrapper,
+  .fr-toolbar.fr-bottom,
+  .fr-toolbar.fr-top {
+    border-color: $color-warn;
+  }
+}
+
+b-rte.error {
+  .fr-box.fr-basic .fr-wrapper,
+  .fr-toolbar.fr-bottom,
+  .fr-toolbar.fr-top {
+    border-color: $color-error;
+  }
+}
+
+// direction
+
+.fr-toolbar .fr-command.fr-btn[data-cmd='direction'] {
+  @include b-icon('dir-ltr', small, null);
+
+  svg {
+    display: none;
+  }
+}

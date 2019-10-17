@@ -1,5 +1,4 @@
 @import '../../../../../src/lib/style/common-imports';
-@import '../../../../../src/lib/style/form-elements/checkbox.mixin';
 
 :host ::ng-deep {
   @include checkbox(

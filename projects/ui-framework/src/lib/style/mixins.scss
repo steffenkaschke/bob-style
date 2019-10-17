@@ -6,6 +6,8 @@
 
 @import './component-mixins/overlay.mixin';
 @import './component-mixins/form-element.mixin';
+@import './component-mixins/button.mixin';
+@import './component-mixins/checkbox.mixin';
 
 @mixin pseudo {
   content: '';

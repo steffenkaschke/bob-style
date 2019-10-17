@@ -8,20 +8,27 @@ import {
   text,
   withKnobs
 } from '@storybook/addon-knobs/angular';
+import { optionsKnob as options } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { values } from 'lodash';
-import { BlotType, RTEType } from '../rich-text-editor/rte-core/rte.enum';
 import { SelectGroupOption } from '../lists/list.interface';
 import { placeholderMock } from '../rich-text-editor/rte-placeholder/rte-placeholder.mock';
 import { RteModule } from './rte.module';
+import { BlotType, RTEType } from './rte.enum';
+import { dedupeArray } from '../../services/utils/functional-utils';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
   module
 ).addDecorator(withKnobs);
+
+const disableControlsDef = [BlotType.placeholder];
+const controlsDef = dedupeArray(Object.values(BlotType)).filter(
+  cntrl => !disableControlsDef.includes(cntrl)
+);
 
 const value = `<div> <span style="color: red;">Hello</span> <a href="http://www.google.com">World</a>!</div>
 <div>Some <em>initial</em> <strong>bold</strong> text</div> {{/work/title}}`;
@@ -91,11 +98,6 @@ const note = `
 
 `;
 
-const disableControlsDef = [];
-const controlsDef = values(BlotType).filter(
-  cntrl => !disableControlsDef.includes(cntrl)
-);
-
 inputStories.add(
   'Rich text editor 2',
   () => {
@@ -109,10 +111,10 @@ inputStories.add(
         controls: array('controls', controlsDef, '\n'),
         disableControls: array('disableControls', disableControlsDef, '\n'),
         placeholderList: object<SelectGroupOption>('options', placeholderMock),
-        minChars: number('minChars', 0),
+        minChars: number('minChars', 20),
         maxChars: number('maxChars', 100),
-        minHeight: number('minHeight', 200),
-        maxHeight: number('maxHeight', 400),
+        minHeight: number('minHeight'),
+        maxHeight: number('maxHeight'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
         hintMessage: text('hintMessage', 'This field should contain something'),

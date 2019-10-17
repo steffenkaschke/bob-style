@@ -197,7 +197,7 @@ export class TruncateTooltipComponent
   private checkTooltipNecessity(): void {
     if (this.type === TruncateTooltipType.auto) {
       this.type =
-        this.tooltipText.length > 130
+        this.tooltipText && this.tooltipText.length > 130
           ? TruncateTooltipType.material
           : TruncateTooltipType.css;
     }
