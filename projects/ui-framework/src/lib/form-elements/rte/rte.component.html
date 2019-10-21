@@ -5,10 +5,9 @@
                       [fieldId]="id">
 </b-form-element-label>
 
-<!-- (froalaInit)="initialize($event)" -->
 <div #editor
      [froalaEditor]="options"
-     [(froalaModel)]="value">Hello, Froala!</div>
+     [(froalaModel)]="editorValue"></div>
 
 <p b-input-message
    *ngIf="hintMessage || warnMessage || errorMessage || minChars || maxChars"

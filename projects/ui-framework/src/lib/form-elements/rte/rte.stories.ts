@@ -41,7 +41,7 @@ const template = `
       [value]="value"
       [controls]="controls"
       [disableControls]="disableControls"
-
+      [placeholderList]="placeholderList"
       [minChars]="minChars"
       [maxChars]="maxChars"
       [minHeight]="minHeight"
@@ -51,7 +51,9 @@ const template = `
       [hintMessage]="hintMessage"
       [warnMessage]="warnMessage"
       [errorMessage]="errorMessage"
-      (changed)="change($event)">
+      (changed)="change($event)"
+      (focused)="focus($event)"
+      (blurred)="blur($event)">
   </b-rte>
 `;
 
@@ -120,7 +122,7 @@ inputStories.add(
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
-        change: action('Something has changed'),
+        change: action('Value changed'),
         focus: action('Editor focused'),
         blur: action('Editor blurred')
       },

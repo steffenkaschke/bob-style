@@ -19,6 +19,7 @@ export enum BlotType {
   formatOL = 'formatOL',
   align = 'align',
   direction = 'direction',
-  placeholder = 'placeholder',
-  alert = 'alert'
+  rightToLeft = 'rightToLeft',
+  leftToRight = 'leftToRight',
+  placeholder = 'placeholder'
 }

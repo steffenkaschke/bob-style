@@ -6,6 +6,19 @@ export interface RteMentionsOption {
   id: string;
 }
 
+export interface RtePlaceholder {
+  id: string;
+  displayName: string;
+  sample?: string;
+  value?: string;
+}
+
+export interface RtePlaceholderList {
+  groupName: string;
+  key?: string;
+  options: RtePlaceholder[];
+}
+
 // docs: https://www.froala.com/wysiwyg-editor/docs/options
 export interface FroalaOptions {
   aviaryKey?: string;
