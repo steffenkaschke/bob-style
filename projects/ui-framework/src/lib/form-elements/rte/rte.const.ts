@@ -1,6 +1,6 @@
 import { BlotType } from './rte.enum';
 import { FroalaOptions } from './rte.interface';
-import { dedupeArray } from '../../services/utils/functional-utils';
+import { dedupeArray, joinArrays } from '../../services/utils/functional-utils';
 
 export const RTE_CONTROLS_DEF: BlotType[] = dedupeArray(
   Object.values(BlotType)
@@ -10,18 +10,22 @@ export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [];
 export const RTE_MINHEIGHT_DEF = 185;
 export const RTE_MAXHEIGHT_DEF = 295;
 
-export const RTE_CONTROLS_ORDER = [
-  BlotType.size,
-  BlotType.bold,
-  BlotType.italic,
-  BlotType.underline,
-  BlotType.insertLink,
-  BlotType.formatUL,
-  BlotType.formatOL,
-  BlotType.align,
-  BlotType.direction,
-  BlotType.placeholder
-];
+export const RTE_CONTROLS_ORDER = joinArrays(
+  [
+    BlotType.size,
+    BlotType.bold,
+    BlotType.italic,
+    BlotType.underline,
+    BlotType.insertLink,
+    BlotType.formatUL,
+    BlotType.formatOL,
+    BlotType.align,
+    BlotType.rightToLeft,
+    BlotType.leftToRight,
+    BlotType.placeholder
+  ],
+  Object.values(BlotType)
+);
 
 export const RTE_OPTIONS_DEF: FroalaOptions = {
   heightMin: 185 - 40,
@@ -140,14 +144,5 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     '\'Sentinel SSm A\', \'Sentinel SSm B\', \'Helvetica\'': 'Heading font'
   },
 
-  toolbarButtons: [
-    'fontSize',
-    'bold',
-    'italic',
-    'underline',
-    'insertLink',
-    'formatOL',
-    'formatUL',
-    'align'
-  ]
+  toolbarButtons: RTE_CONTROLS_DEF
 };
