@@ -18,7 +18,7 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListFooterActions } from '../list.interface';
-import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { UtilsService } from '../../../services/utils/utils.service';
 
 @Component({

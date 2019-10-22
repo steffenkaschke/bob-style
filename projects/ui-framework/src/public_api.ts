@@ -466,7 +466,7 @@ export { HighlightPipe } from './lib/services/filters/highlight.pipe';
 // Utils Module
 export { UtilsModule } from './lib/services/utils/utils.module';
 export { UtilsService } from './lib/services/utils/utils.service';
-export { DOMhelpers } from './lib/services/utils/dom-helpers.service';
+export { DOMhelpers } from './lib/services/html/dom-helpers.service';
 export { ScrollEvent } from './lib/services/utils/utils.interface';
 export { WindowRef } from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';

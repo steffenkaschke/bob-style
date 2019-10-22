@@ -8,24 +8,13 @@ import {
   isNotEmptyArray,
   isNotEmptyObject,
   isNullOrUndefined
-} from './functional-utils';
-
-export interface Styles {
-  [key: string]: string | number;
-}
-
-export interface TextProps {
-  [key: string]: number;
-}
-
-export interface NotEmptyChildren {
-  total: number;
-  firstIndex: number | null;
-}
-
-export interface NgClass {
-  [key: string]: boolean;
-}
+} from '../utils/functional-utils';
+import {
+  Styles,
+  TextProps,
+  NotEmptyChildren,
+  NgClass
+} from './html-helpers.interface';
 
 @Injectable({ providedIn: 'root' })
 export class DOMhelpers {

@@ -15,6 +15,7 @@ import { FormElementLabelModule } from '../form-element-label/form-element-label
 import { PlaceholdersConverterService } from './placeholders.service';
 import { RteService } from './rte.service';
 import { LinkifyPipe } from '../../services/filters/linkify.pipe';
+import { HtmlParserHelpers } from '../../services/html/html-parser.service';
 
 @NgModule({
   declarations: [RteComponent],
@@ -26,6 +27,6 @@ import { LinkifyPipe } from '../../services/filters/linkify.pipe';
     FroalaViewModule.forRoot()
   ],
   exports: [RteComponent],
-  providers: [RteService, PlaceholdersConverterService, LinkifyPipe]
+  providers: [RteService, PlaceholdersConverterService, HtmlParserHelpers]
 })
 export class RteModule {}

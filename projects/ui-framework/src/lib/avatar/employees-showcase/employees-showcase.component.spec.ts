@@ -8,7 +8,7 @@ import {
 import { EmployeesShowcaseComponent } from './employees-showcase.component';
 import { DebugElement, SimpleChanges } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { EMPLOYEE_SHOWCASE_MOCK } from './employees-showcase.mock';
 import { AvatarSize } from '../avatar/avatar.enum';
 import { MockComponent } from 'ng-mocks';

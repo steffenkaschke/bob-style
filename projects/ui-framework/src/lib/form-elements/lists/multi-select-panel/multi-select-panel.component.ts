@@ -12,7 +12,7 @@ import { ListChange } from '../list-change/list-change';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { Overlay } from '@angular/cdk/overlay';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
-import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { UtilsService } from '../../../services/utils/utils.service';
 
 @Component({

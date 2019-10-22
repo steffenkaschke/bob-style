@@ -75,7 +75,8 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'valign',
     'style',
     'class',
-    'contenteditable'
+    // 'contenteditable',
+    'spellcheck'
   ],
   htmlAllowedEmptyTags: ['.fa', '.fr-emoticon', '.fr-inner'],
   htmlAllowedStyleProps: ['font-family', 'font-size', 'text-align'],

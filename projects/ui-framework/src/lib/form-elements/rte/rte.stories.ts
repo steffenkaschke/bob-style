@@ -33,7 +33,9 @@ const controlsDef = dedupeArray(Object.values(BlotType)).filter(
 
 const value = `<div> <span style="color: red;">Hello</span> <a href="http://www.google.com">World</a>!</div>
 <div>Some <em>initial</em> <strong>bold</strong> text</div> {{/work/title}}
-<p>www.google.com</p>
+<p>
+https://stackoverflow.com/questions/579335/javascript-regexp-to-wrap-urls-and-emails-in-anchors
+</p>
 `;
 
 const template = `

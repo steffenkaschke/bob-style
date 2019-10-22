@@ -16,13 +16,11 @@ import {
   TruncateTooltipType,
   TruncateTooltipPosition
 } from './truncate-tooltip.enum';
-import {
-  DOMhelpers,
-  TextProps
-} from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
+import { TextProps } from '../../services/html/html-helpers.interface';
 
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',

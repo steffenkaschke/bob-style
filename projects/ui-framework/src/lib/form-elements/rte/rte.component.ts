@@ -10,6 +10,8 @@ import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
 import { stringyOrFail } from '../../services/utils/transformers';
 import { RteService } from './rte.service';
+import { InputEventType, FormEvents } from '../form-elements.enum';
+import { HtmlParserHelpers } from '../../services/html/html-parser.service';
 
 @Component({
   selector: 'b-rte',
@@ -33,15 +35,10 @@ export class RteComponent extends RTEbaseElement implements OnInit {
   constructor(
     public cd: ChangeDetectorRef,
     public placeholdersConverter: PlaceholdersConverterService,
-    public rteService: RteService
+    public rteService: RteService,
+    public parserService: HtmlParserHelpers
   ) {
-    super(cd, placeholdersConverter, rteService);
-    this.inputTransformers = [
-      stringyOrFail,
-      this.rteService.cleanupHtml,
-      this.rteService.linkify
-    ];
-    this.outputTransformers = [this.rteService.cleanupHtml];
+    super(cd, placeholdersConverter, rteService, parserService);
   }
 
   ngOnInit(): void {
@@ -58,24 +55,28 @@ export class RteComponent extends RTEbaseElement implements OnInit {
       },
 
       contentChanged: () => {
-        const newValue = this.getEditor().html.get();
-        super.writeValue(newValue);
-        this.transmitValue(newValue);
+        this.transmitValue(this.getEditor().html.get(), {
+          eventType: [InputEventType.onChange],
+          saveValue: true
+        });
       },
 
       focus: () => {
-        if (this.focused.observers.length > 0) {
-          this.focused.emit(this.value);
-        }
+        this.transmitValue(this.value, {
+          eventType: [InputEventType.onFocus],
+          eventName: FormEvents.focused,
+          saveValue: true
+        });
         this.inputFocused = true;
         this.getEditorElement().classList.add('focused');
       },
 
       blur: () => {
-        if (this.blurred.observers.length > 0) {
-          this.blurred.emit(this.value);
-        }
-        this.onTouched();
+        this.transmitValue(this.value, {
+          eventType: [InputEventType.onBlur],
+          eventName: FormEvents.blurred,
+          saveValue: true
+        });
         this.inputFocused = false;
         this.getEditorElement().classList.remove('focused');
       },
@@ -87,8 +88,8 @@ export class RteComponent extends RTEbaseElement implements OnInit {
 
       'commands.after': cmd => {
         if (cmd === 'linkInsert') {
-          // const link = this.getEditor().link.get() as HTMLElement;
-          // link.setAttribute('contenteditable', 'false');
+          const link = this.getEditor().link.get() as HTMLElement;
+          link.setAttribute('spellcheck', 'false');
           // link.classList.add('fr-deletable');
           this.getEditor().link.applyStyle('fr-deletable');
         }

@@ -22,7 +22,10 @@ import {
   hasChanges,
   notFirstChanges,
   applyChanges,
-  joinArrays
+  joinArrays,
+  isNullOrUndefined,
+  cloneValue,
+  firstChanges
 } from '../../services/utils/functional-utils';
 import { FroalaEditorDirective } from 'angular-froala-wysiwyg';
 import { BlotType, RTEType } from './rte.enum';
@@ -37,6 +40,8 @@ import { FroalaEdtr, FroalaOptions } from './froala.interface';
 import { stringyOrFail } from '../../services/utils/transformers';
 import { PlaceholdersConverterService } from './placeholders.service';
 import { RteService } from './rte.service';
+import { InputEventType } from '../form-elements.enum';
+import { HtmlParserHelpers } from '../../services/html/html-parser.service';
 
 // https://www.froala.com/wysiwyg-editor/examples/rtl-ltr-custom-button
 const changeDirection = function(dir: string) {
@@ -116,7 +121,8 @@ export abstract class RTEbaseElement extends BaseFormElement
   constructor(
     public cd: ChangeDetectorRef,
     public placeholdersConverter: PlaceholdersConverterService,
-    public rteService: RteService
+    public rteService: RteService,
+    public parserService: HtmlParserHelpers
   ) {
     super();
     this.baseValue = '';
@@ -152,9 +158,19 @@ export abstract class RTEbaseElement extends BaseFormElement
   @HostBinding('attr.data-type') @Input() public type: RTEType =
     RTEType.primary;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    super.ngOnChanges(changes);
+  writeValue(value: any): void {
+    if (value !== undefined) {
+      this.editorValue = this.inputTransformers.reduce(
+        (previousResult, fn) => fn(previousResult),
+        value
+      );
+    }
+    if (isNullOrUndefined(this.editorValue) && this.baseValue !== undefined) {
+      this.editorValue = cloneValue(this.baseValue);
+    }
+  }
 
+  ngOnChanges(changes: SimpleChanges): void {
     if (hasChanges(changes)) {
       applyChanges(
         this,
@@ -163,7 +179,7 @@ export abstract class RTEbaseElement extends BaseFormElement
           minHeight: RTE_MINHEIGHT_DEF,
           maxHeight: RTE_MAXHEIGHT_DEF
         },
-        ['options']
+        ['options', 'value']
       );
     }
 
@@ -214,10 +230,16 @@ export abstract class RTEbaseElement extends BaseFormElement
       );
     }
 
-    if (changes.placeholderList) {
+    if (firstChanges(changes) || changes.placeholderList) {
       this.initTransformers();
-      this.writeValue(this.value);
-      this.editorValue = this.value;
+    }
+
+    if (changes.value || changes.placeholderList) {
+      this.writeValue(changes.value.currentValue);
+      this.transmitValue(this.editorValue, {
+        eventType: [InputEventType.onWrite],
+        saveValue: true
+      });
     }
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
@@ -228,10 +250,14 @@ export abstract class RTEbaseElement extends BaseFormElement
   protected initTransformers(): void {
     this.inputTransformers = [
       stringyOrFail,
-      this.rteService.cleanupHtml,
-      this.rteService.linkify
+      this.parserService.cleanupHtml,
+      (value: string) =>
+        this.parserService.linkify(
+          value,
+          'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
+        )
     ];
-    this.outputTransformers = [this.rteService.cleanupHtml];
+    this.outputTransformers = [this.parserService.cleanupHtml];
 
     if (
       this.placeholderList &&

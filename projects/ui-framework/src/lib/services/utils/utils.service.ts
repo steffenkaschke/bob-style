@@ -4,7 +4,9 @@ import { debounceTime, map, share, shareReplay } from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
 import { ScrollEvent } from './utils.interface';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UtilsService {
   winResize$: Observable<any>;
   winScroll$: Observable<ScrollEvent>;

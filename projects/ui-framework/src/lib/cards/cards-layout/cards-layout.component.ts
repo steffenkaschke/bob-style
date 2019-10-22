@@ -16,7 +16,7 @@ import {
   AfterContentInit
 } from '@angular/core';
 import { CardType } from '../cards.enum';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';

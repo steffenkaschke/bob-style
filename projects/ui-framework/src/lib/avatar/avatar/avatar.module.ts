@@ -4,7 +4,7 @@ import { AvatarComponent } from './avatar.component';
 import { IconsModule } from '../../icons/icons.module';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { ChipModule } from '../../chips/chip/chip.module';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 @NgModule({

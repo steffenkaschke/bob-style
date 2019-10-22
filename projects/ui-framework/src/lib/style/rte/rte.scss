@@ -63,9 +63,10 @@ $border-color: $grey-500;
   padding: 12px 15px;
 }
 
-// toolbar
+// svg colors
 
 .fr-toolbar {
+  .fr-popup .fr-command.fr-btn svg path,
   .fr-command.fr-btn svg path,
   .fr-command.fr-btn
     + .fr-dropdown-menu
@@ -80,6 +81,26 @@ $border-color: $grey-500;
     transition: none;
   }
 }
+
+.fr-popup .fr-command.fr-btn svg.fr-svg,
+.fr-toolbar .fr-command.fr-btn svg,
+.fr-toolbar .fr-command.fr-btn.fr-dropdown svg,
+.fr-toolbar .fr-command.fr-btn svg.fr-svg,
+.fr-command.fr-btn
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a
+  svg {
+  transition: none;
+  fill: $icon-color;
+  @include size($icon-size);
+  margin: 0;
+}
+
+// toolbar
 
 .fr-command,
 .fr-command.fr-btn
@@ -118,23 +139,6 @@ $border-color: $grey-500;
   .fr-newline {
     display: none;
   }
-}
-
-.fr-toolbar .fr-command.fr-btn svg,
-.fr-toolbar .fr-command.fr-btn.fr-dropdown svg,
-.fr-toolbar .fr-command.fr-btn svg.fr-svg,
-.fr-command.fr-btn
-  + .fr-dropdown-menu
-  .fr-dropdown-wrapper
-  .fr-dropdown-content
-  ul.fr-dropdown-list
-  li
-  a
-  svg {
-  transition: none;
-  fill: $icon-color;
-  @include size($icon-size);
-  margin: 0;
 }
 
 .fr-toolbar .fr-command.fr-btn {
@@ -266,6 +270,25 @@ $border-color: $grey-500;
 
 .fr-popup .fr-buttons .fr-btn {
   margin: 0;
+  height: auto;
+  transition: none;
+}
+
+.fr-popup .fr-command.fr-btn svg.fr-svg {
+  @include size($icon-size + 3px);
+  margin: 3px;
+}
+
+.fr-popup .fr-action-buttons button.fr-command {
+  @include Button($type: primary);
+  margin: 0 0 0 auto;
+  width: auto;
+  padding: 0 24px;
+
+  &:hover,
+  &:focus {
+    color: white;
+  }
 }
 
 // popup form
@@ -323,14 +346,13 @@ $border-color: $grey-500;
       opacity: 0;
     }
   }
+}
 
-  .fr-action-buttons button.fr-command {
-    @include Button($type: primary);
+// link popup
 
-    &:hover,
-    &:focus {
-      color: white;
-    }
+.fr-popup .fr-link-insert-layer.fr-layer {
+  @include desktop {
+    width: 260px;
   }
 }
 

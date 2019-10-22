@@ -7,7 +7,7 @@ import {
   Input,
   Output
 } from '@angular/core';
-import {DOMhelpers} from '../../services/utils/dom-helpers.service';
+import {DOMhelpers} from '../../services/html/dom-helpers.service';
 import {ItemsInRowService} from '../../services/items-in-row/items-in-row.service';
 
 @Component({
