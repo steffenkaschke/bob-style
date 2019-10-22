@@ -73,6 +73,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
+// tslint:disable-block
 const note = `
   ## Rich text editor
 

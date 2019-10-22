@@ -262,6 +262,7 @@ export abstract class RTEbaseElement extends BaseFormElement
           ? value
           : this.parserService.enforceAttributes(value, 'a', {
               class: 'fr-deletable',
+              target: '_blank',
               spellcheck: 'false',
               rel: 'noopener noreferrer'
             }),
