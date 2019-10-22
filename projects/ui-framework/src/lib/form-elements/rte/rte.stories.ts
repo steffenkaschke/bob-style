@@ -1,3 +1,5 @@
+// tslint:disable
+
 import { storiesOf } from '@storybook/angular';
 import {
   array,
@@ -73,7 +75,6 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-// tslint:disable-block
 const note = `
   ## Rich text editor
 
@@ -105,8 +106,6 @@ const note = `
   (focused) | EventEmitter&lt;string&gt; | emits latest value on editor focus |
   (blurred) | EventEmitter&lt;string&gt; | emits latest value on editor blut |
   /content/ | any | pass content to transclude any custom controls/etc to toolbar |
-
-
 `;
 
 inputStories.add(
