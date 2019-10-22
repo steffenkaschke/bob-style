@@ -19,19 +19,22 @@ import { placeholderMock } from '../rich-text-editor/rte-placeholder/rte-placeho
 import { RteModule } from './rte.module';
 import { BlotType, RTEType } from './rte.enum';
 import { dedupeArray } from '../../services/utils/functional-utils';
+import { mentionsOptions } from './rte.mocks';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
   module
 ).addDecorator(withKnobs);
 
-const disableControlsDef = [BlotType.placeholder];
+const disableControlsDef = [];
 const controlsDef = dedupeArray(Object.values(BlotType)).filter(
   cntrl => !disableControlsDef.includes(cntrl)
 );
 
 const value = `<div> <span style="color: red;">Hello</span> <a href="http://www.google.com">World</a>!</div>
-<div>Some <em>initial</em> <strong>bold</strong> text</div> {{/work/title}}`;
+<div>Some <em>initial</em> <strong>bold</strong> text</div> {{/work/title}}
+<p>www.google.com</p>
+`;
 
 const template = `
   <b-rte
@@ -41,6 +44,7 @@ const template = `
       [value]="value"
       [controls]="controls"
       [disableControls]="disableControls"
+      [mentionsList]="mentionsOptions"
       [placeholderList]="placeholderList"
       [minChars]="minChars"
       [maxChars]="maxChars"
@@ -124,7 +128,8 @@ inputStories.add(
         errorMessage: text('errorMessage', ''),
         change: action('Value changed'),
         focus: action('Editor focused'),
-        blur: action('Editor blurred')
+        blur: action('Editor blurred'),
+        mentionsOptions: object('mentionsOptions', mentionsOptions)
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, StoryBookLayoutModule, RteModule]

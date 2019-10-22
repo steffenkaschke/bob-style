@@ -7,6 +7,9 @@ import {
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { RTEbaseElement } from './rte.abstract';
+import { PlaceholdersConverterService } from './placeholders.service';
+import { stringyOrFail } from '../../services/utils/transformers';
+import { RteService } from './rte.service';
 
 @Component({
   selector: 'b-rte',
@@ -27,8 +30,18 @@ import { RTEbaseElement } from './rte.abstract';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RteComponent extends RTEbaseElement implements OnInit {
-  constructor(public cd: ChangeDetectorRef) {
-    super(cd);
+  constructor(
+    public cd: ChangeDetectorRef,
+    public placeholdersConverter: PlaceholdersConverterService,
+    public rteService: RteService
+  ) {
+    super(cd, placeholdersConverter, rteService);
+    this.inputTransformers = [
+      stringyOrFail,
+      this.rteService.cleanupHtml,
+      this.rteService.linkify
+    ];
+    this.outputTransformers = [this.rteService.cleanupHtml];
   }
 
   ngOnInit(): void {
@@ -43,11 +56,13 @@ export class RteComponent extends RTEbaseElement implements OnInit {
             });
         }
       },
+
       contentChanged: () => {
         const newValue = this.getEditor().html.get();
         super.writeValue(newValue);
         this.transmitValue(newValue);
       },
+
       focus: () => {
         if (this.focused.observers.length > 0) {
           this.focused.emit(this.value);
@@ -55,6 +70,7 @@ export class RteComponent extends RTEbaseElement implements OnInit {
         this.inputFocused = true;
         this.getEditorElement().classList.add('focused');
       },
+
       blur: () => {
         if (this.blurred.observers.length > 0) {
           this.blurred.emit(this.value);
@@ -63,15 +79,20 @@ export class RteComponent extends RTEbaseElement implements OnInit {
         this.inputFocused = false;
         this.getEditorElement().classList.remove('focused');
       },
+
       'charCounter.update': () => {
         this.length = this.getEditor().charCounter.count();
         this.cd.detectChanges();
+      },
+
+      'commands.after': cmd => {
+        if (cmd === 'linkInsert') {
+          // const link = this.getEditor().link.get() as HTMLElement;
+          // link.setAttribute('contenteditable', 'false');
+          // link.classList.add('fr-deletable');
+          this.getEditor().link.applyStyle('fr-deletable');
+        }
       }
     };
-  }
-
-  writeValue(value: string): void {
-    super.writeValue(value);
-    this.editorValue = this.value;
   }
 }

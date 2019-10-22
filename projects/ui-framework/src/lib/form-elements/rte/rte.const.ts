@@ -1,6 +1,6 @@
 import { BlotType } from './rte.enum';
-import { FroalaOptions } from './rte.interface';
 import { dedupeArray, joinArrays } from '../../services/utils/functional-utils';
+import { FroalaOptions } from './froala.interface';
 
 export const RTE_CONTROLS_DEF: BlotType[] = dedupeArray(
   Object.values(BlotType)
@@ -73,7 +73,9 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'target',
     'title',
     'valign',
-    'style'
+    'style',
+    'class',
+    'contenteditable'
   ],
   htmlAllowedEmptyTags: ['.fa', '.fr-emoticon', '.fr-inner'],
   htmlAllowedStyleProps: ['font-family', 'font-size', 'text-align'],
@@ -117,6 +119,8 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   htmlExecuteScripts: false,
   htmlIgnoreCSSProperties: [],
   htmlRemoveTags: ['script', 'style'],
+  htmlUntouched: true,
+
   pasteAllowedStyleProps: [],
   pasteDeniedAttrs: [],
   pasteDeniedTags: ['script', 'style'],
@@ -131,7 +135,6 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   linkAlwaysBlank: true,
   linkEditButtons: ['linkOpen', 'linkEdit', 'linkRemove'],
   linkInsertButtons: [],
-  linkMultipleStyles: false,
 
   fontSizeSelection: false,
   fontSize: ['10', '12', '18', '30'],

@@ -1,3 +1,5 @@
+@import './rte-placeholders';
+
 $toolbar-height: 40px;
 $icon-size: 17px;
 $icon-color: $grey-600;
@@ -7,10 +9,6 @@ $border-color: $grey-500;
 
 .fr-box.fr-basic .fr-element,
 .fr-view {
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
-
   p {
     margin: 0;
   }
@@ -33,7 +31,7 @@ $border-color: $grey-500;
 
 .fr-toolbar,
 .fr-wrapper,
-.fr-element,
+.fr-box.fr-basic .fr-element,
 .fr-view {
   @include b-body($color: $display-text-color);
 }

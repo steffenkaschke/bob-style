@@ -27,12 +27,16 @@ import {
 import { FroalaEditorDirective } from 'angular-froala-wysiwyg';
 import { BlotType, RTEType } from './rte.enum';
 import {
-  FroalaOptions,
   RteMentionsOption,
-  RtePlaceholderList
+  RtePlaceholderList,
+  RtePlaceholder
 } from './rte.interface';
 import { merge } from 'lodash';
 import FroalaEditor from 'froala-editor';
+import { FroalaEdtr, FroalaOptions } from './froala.interface';
+import { stringyOrFail } from '../../services/utils/transformers';
+import { PlaceholdersConverterService } from './placeholders.service';
+import { RteService } from './rte.service';
 
 // https://www.froala.com/wysiwyg-editor/examples/rtl-ltr-custom-button
 const changeDirection = function(dir: string) {
@@ -109,7 +113,11 @@ FroalaEditor.RegisterCommand('leftToRight', {
 
 export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges {
-  constructor(public cd: ChangeDetectorRef) {
+  constructor(
+    public cd: ChangeDetectorRef,
+    public placeholdersConverter: PlaceholdersConverterService,
+    public rteService: RteService
+  ) {
     super();
     this.baseValue = '';
     this.wrapEvent = false;
@@ -119,7 +127,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   public editorValue: string;
 
   @ViewChild('editor', { read: FroalaEditorDirective, static: true })
-  protected editor: FroalaEditorDirective;
+  protected editorDirective: FroalaEditorDirective;
 
   @Input() public value: string;
   @Input() public minChars = 0;
@@ -134,7 +142,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   @Input() public options: FroalaOptions = cloneArray(RTE_OPTIONS_DEF);
 
-  @Input() public mentions: RteMentionsOption;
+  @Input() public mentionsList: RteMentionsOption;
   @Input() public placeholderList: RtePlaceholderList[];
 
   @Output() blurred: EventEmitter<string> = new EventEmitter<string>();
@@ -206,16 +214,44 @@ export abstract class RTEbaseElement extends BaseFormElement
       );
     }
 
+    if (changes.placeholderList) {
+      this.initTransformers();
+      this.writeValue(this.value);
+      this.editorValue = this.value;
+    }
+
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
     }
   }
 
-  protected getEditor(): FroalaEditor {
-    return (this.editor as any)._editor;
+  protected initTransformers(): void {
+    this.inputTransformers = [
+      stringyOrFail,
+      this.rteService.cleanupHtml,
+      this.rteService.linkify
+    ];
+    this.outputTransformers = [this.rteService.cleanupHtml];
+
+    if (
+      this.placeholderList &&
+      this.controls.includes(BlotType.placeholder) &&
+      !this.disableControls.includes(BlotType.placeholder)
+    ) {
+      this.inputTransformers.push(
+        this.placeholdersConverter.toRtePartial(this.placeholderList[0]
+          .options as RtePlaceholder[])
+      );
+
+      this.outputTransformers.push(this.placeholdersConverter.fromRte);
+    }
+  }
+
+  protected getEditor(): FroalaEdtr {
+    return (this.editorDirective as any)._editor as FroalaEdtr;
   }
 
   protected getEditorElement(): HTMLElement {
-    return (this.editor as any)._element;
+    return (this.editorDirective as any)._element as HTMLElement;
   }
 }

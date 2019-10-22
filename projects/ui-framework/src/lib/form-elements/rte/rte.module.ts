@@ -12,6 +12,9 @@ import 'froala-editor/js/plugins/url.min.js';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
+import { PlaceholdersConverterService } from './placeholders.service';
+import { RteService } from './rte.service';
+import { LinkifyPipe } from '../../services/filters/linkify.pipe';
 
 @NgModule({
   declarations: [RteComponent],
@@ -23,6 +26,6 @@ import { FormElementLabelModule } from '../form-element-label/form-element-label
     FroalaViewModule.forRoot()
   ],
   exports: [RteComponent],
-  providers: []
+  providers: [RteService, PlaceholdersConverterService, LinkifyPipe]
 })
 export class RteModule {}
