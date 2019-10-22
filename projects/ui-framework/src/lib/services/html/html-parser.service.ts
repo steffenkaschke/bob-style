@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LinkifyPipe } from '../filters/linkify.pipe';
+import { GenericObject } from '../../types';
+import { isString } from '../utils/functional-utils';
 
 @Injectable({ providedIn: 'root' })
 export class HtmlParserHelpers {
@@ -30,5 +32,32 @@ export class HtmlParserHelpers {
         .replace(/&nbsp;/gi, ' ')
         .replace(/\s\s+/g, ' ')
     );
+  }
+
+  enforceAttributes(
+    value: string,
+    selector: string,
+    attributes: GenericObject = {}
+  ): string {
+    const elm: HTMLElement = document.createElement('div');
+    elm.innerHTML = value;
+
+    Array.from(elm.querySelectorAll(selector)).forEach(
+      (elem: HTMLElement): void => {
+        Object.keys(attributes).forEach(attr => {
+          if (attr === 'class') {
+            let classes = attributes[attr];
+            if (isString(classes)) {
+              classes = classes.split(' ').filter(c => !!c);
+            }
+            elem.classList.add(...classes);
+          } else {
+            elem.setAttribute(attr, attributes[attr]);
+          }
+        });
+      }
+    );
+
+    return elm.innerHTML;
   }
 }

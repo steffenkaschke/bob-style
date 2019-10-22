@@ -83,13 +83,15 @@ FroalaEditor.RegisterCommand('rightToLeft', {
   },
 
   refresh: function(btns: HTMLElement[]) {
-    if (
-      (this.selection.blocks()[0] as HTMLElement).style.cssText.includes('rtl')
-    ) {
-      btns[0].classList.add('fr-active');
-    } else {
-      btns[0].classList.remove('fr-active');
-    }
+    console.log('rightToLeft refresh', this.selection.blocks());
+
+    // if (
+    //   (this.selection.blocks()[0] as HTMLElement).style.cssText.includes('rtl')
+    // ) {
+    //   btns[0].classList.add('fr-active');
+    // } else {
+    //   btns[0].classList.remove('fr-active');
+    // }
   }
 });
 
@@ -106,13 +108,15 @@ FroalaEditor.RegisterCommand('leftToRight', {
   },
 
   refresh: function(btns: HTMLElement[]) {
-    if (
-      (this.selection.blocks()[0] as HTMLElement).style.cssText.includes('ltr')
-    ) {
-      btns[0].classList.add('fr-active');
-    } else {
-      btns[0].classList.remove('fr-active');
-    }
+    console.log('leftToRight refresh', this.selection.blocks());
+
+    // if (
+    //   (this.selection.blocks()[0] as HTMLElement).style.cssText.includes('ltr')
+    // ) {
+    //   btns[0].classList.add('fr-active');
+    // } else {
+    //   btns[0].classList.remove('fr-active');
+    // }
   }
 });
 
@@ -250,7 +254,18 @@ export abstract class RTEbaseElement extends BaseFormElement
   protected initTransformers(): void {
     this.inputTransformers = [
       stringyOrFail,
+
       this.parserService.cleanupHtml,
+
+      (value: string) =>
+        !value.includes('href')
+          ? value
+          : this.parserService.enforceAttributes(value, 'a', {
+              class: 'fr-deletable',
+              spellcheck: 'false',
+              rel: 'noopener noreferrer'
+            }),
+
       (value: string) =>
         this.parserService.linkify(
           value,

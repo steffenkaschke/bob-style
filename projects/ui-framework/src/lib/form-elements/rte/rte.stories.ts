@@ -36,6 +36,8 @@ const value = `<div> <span style="color: red;">Hello</span> <a href="http://www.
 <p>
 https://stackoverflow.com/questions/579335/javascript-regexp-to-wrap-urls-and-emails-in-anchors
 </p>
+www.foogle.moc
+http://boogle.ru
 `;
 
 const template = `
@@ -120,7 +122,7 @@ inputStories.add(
         disableControls: array('disableControls', disableControlsDef, '\n'),
         placeholderList: object<SelectGroupOption>('options', placeholderMock),
         minChars: number('minChars', 20),
-        maxChars: number('maxChars', 100),
+        maxChars: number('maxChars', 300),
         minHeight: number('minHeight'),
         maxHeight: number('maxHeight'),
         disabled: boolean('disabled', false),

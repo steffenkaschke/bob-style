@@ -2,10 +2,14 @@
 
 $toolbar-height: 40px;
 $icon-size: 17px;
-$icon-color: $grey-600;
-$icon-color-hover: $grey-700;
+
+$icon-color: darken($grey-600, 5%);
+$icon-color-hover: darken($grey-700, 5%);
+
 $placeholder-color: $icon-color;
 $border-color: $grey-500;
+
+$label-to-placeholder: false;
 
 .fr-box.fr-basic .fr-element,
 .fr-view {
@@ -65,21 +69,20 @@ $border-color: $grey-500;
 
 // svg colors
 
-.fr-toolbar {
-  .fr-popup .fr-command.fr-btn svg path,
-  .fr-command.fr-btn svg path,
+.fr-popup .fr-command.fr-btn svg path,
+.fr-toolbar .fr-command.fr-btn svg path,
+.fr-toolbar
   .fr-command.fr-btn
-    + .fr-dropdown-menu
-    .fr-dropdown-wrapper
-    .fr-dropdown-content
-    ul.fr-dropdown-list
-    li
-    a
-    svg
-    path {
-    fill: inherit !important;
-    transition: none;
-  }
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a
+  svg
+  path {
+  fill: inherit !important;
+  transition: none;
 }
 
 .fr-popup .fr-command.fr-btn svg.fr-svg,
@@ -98,6 +101,10 @@ $border-color: $grey-500;
   fill: $icon-color;
   @include size($icon-size);
   margin: 0;
+
+  &:hover {
+    fill: $icon-color-hover;
+  }
 }
 
 // toolbar
@@ -319,31 +326,37 @@ $border-color: $grey-500;
       }
     }
 
-    // input + label,
-    // input.fr-not-empty + label {
-    //   position: static;
-    //   transition: none;
-    //   padding: 0;
-    //   @include bFormElement-label;
-    // }
+    // label
+
+    @if not $label-to-placeholder {
+      input + label,
+      input.fr-not-empty + label {
+        position: static;
+        transition: none;
+        padding: 0;
+        @include bFormElement-label;
+      }
+    }
 
     // label placeholder
 
-    input + label,
-    input.fr-not-empty + label {
-      @include b-body($lineHeight: $input-height, $color: $grey-600);
-      @include size;
-      @include position(0 0 0 0);
-      padding: 0 $input-padding;
-      background: none;
-      margin: 0;
-      transition: opacity 0.2s;
-      pointer-events: none;
-    }
+    @if $label-to-placeholder {
+      input + label,
+      input.fr-not-empty + label {
+        @include b-body($lineHeight: $input-height, $color: $grey-600);
+        @include size;
+        @include position(0 0 0 0);
+        padding: 0 $input-padding;
+        background: none;
+        margin: 0;
+        transition: opacity 0.2s;
+        pointer-events: none;
+      }
 
-    input.fr-not-empty + label,
-    input:focus + label {
-      opacity: 0;
+      input.fr-not-empty + label,
+      input:focus + label {
+        opacity: 0;
+      }
     }
   }
 }

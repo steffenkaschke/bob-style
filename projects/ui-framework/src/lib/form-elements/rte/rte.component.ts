@@ -8,7 +8,6 @@ import {
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
-import { stringyOrFail } from '../../services/utils/transformers';
 import { RteService } from './rte.service';
 import { InputEventType, FormEvents } from '../form-elements.enum';
 import { HtmlParserHelpers } from '../../services/html/html-parser.service';
@@ -86,12 +85,12 @@ export class RteComponent extends RTEbaseElement implements OnInit {
         this.cd.detectChanges();
       },
 
-      'commands.after': cmd => {
+      'commands.after': (cmd: string) => {
         if (cmd === 'linkInsert') {
           const link = this.getEditor().link.get() as HTMLElement;
           link.setAttribute('spellcheck', 'false');
-          // link.classList.add('fr-deletable');
-          this.getEditor().link.applyStyle('fr-deletable');
+          link.classList.add('fr-deletable');
+          // this.getEditor().link.applyStyle('fr-deletable');
         }
       }
     };
