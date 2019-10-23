@@ -92,12 +92,6 @@ export class RteComponent extends RTEbaseElement implements OnInit {
           link.classList.add('fr-deletable');
           // this.getEditor().link.applyStyle('fr-deletable');
         }
-      },
-
-      'window.copy': function(sss) {
-        // Do something here.
-        // this is the editor instance.
-        console.log(sss, this);
       }
     };
   }

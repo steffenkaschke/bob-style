@@ -33,27 +33,26 @@ const controlsDef = dedupeArray(Object.values(BlotType)).filter(
   cntrl => !disableControlsDef.includes(cntrl)
 );
 
-const value = `
-<div>
+const value = `<div>
   <span style="color: red;">Hello</span> http://Google.com!
-</div>
-<div>
   Some <em>funky</em> <strong>bold</strong> text
   of <span style="font-size: 18px;">large</span> size.
 </div>
-<p>Hooray! {{/root/firstName}} is employee of the month!</p>
+<div><br></div>
+<div><br></div>
+<p><strong><em><span style="font-size: 18px;">Hooray!</span></em></strong> {{/root/firstName}} is {{/work/title}} of the month!</p>
 <p>More details at: https://longlink.com/gohere/thenthere/onemore/page#hash?query=bigBen</p>
+<div><br></div>
 Here's an important list of things to remember:
-<div>
-{{/work/title}}
-</div>
 <ul>
   <li>stay calm</li>
   <li>don't eat the <u>yellow</u> snow</li>
-  <li>sleep at least 6 hours a day</li>
+  <li>танцуй пока молодой</li>
+  <li>אמור לא לסמים</li>
   <li>don't trust grown-ups</li>
   <li style="direction: rtl; text-align: right;">beware of the <a href="https://youtu.be/hOHvMqAgcmc?t=11">Right Hook</a></li>
 </ul>
+<div><br></div><div><br></div><div><br></div><div><br></div><div><br></div>
 `;
 
 const template = `
@@ -109,8 +108,8 @@ const note = `
   [controls] | BlotType[] | array of toolbar controls (check BlotType enum for all possible controls). Defaults to all controls. Pass empty array to disable all controls | all
   [minChars] | number | minimum (plain) text length | 0
   [maxChars] | number | maximum (plain) text length | none (optional)
-  [minHeight] | number | minimum height of editor (including toolbar). Set to null or 0 to disable min-height | 185 (optional)
-  [maxHeight] | number | maximum height of editor (including toolbar). Set to null to disable max-height | 295 (optional)
+  [minHeight] | number | minimum height of editor (including toolbar). Set to **0** to disable min-height | 185 (optional)
+  [maxHeight] | number | maximum height of editor (including toolbar). Set to **0** to disable max-height | 350 (optional)
   [disabled] | boolean | disables editor | false (optional)
   [required] | boolean | adds * to placeholder | false (optional)
   [hintMessage] | string | adds a hint message below editor | none (optional)

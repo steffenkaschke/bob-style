@@ -8,7 +8,8 @@ export const RTE_CONTROLS_DEF: BlotType[] = dedupeArray(
 export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [];
 
 export const RTE_MINHEIGHT_DEF = 185;
-export const RTE_MAXHEIGHT_DEF = 295;
+export const RTE_MAXHEIGHT_DEF = 350;
+export const RTE_TOOLBAR_HEIGHT = 41;
 
 export const RTE_CONTROLS_ORDER = joinArrays(
   [
@@ -28,8 +29,8 @@ export const RTE_CONTROLS_ORDER = joinArrays(
 );
 
 export const RTE_OPTIONS_DEF: FroalaOptions = {
-  heightMin: 185 - 40,
-  heightMax: 295 - 40,
+  heightMin: RTE_MINHEIGHT_DEF - RTE_TOOLBAR_HEIGHT,
+  heightMax: RTE_MAXHEIGHT_DEF - RTE_TOOLBAR_HEIGHT,
 
   enter: 1,
   initOnClick: false,
@@ -126,7 +127,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   htmlExecuteScripts: false,
   htmlIgnoreCSSProperties: [],
   htmlRemoveTags: ['script', 'style'],
-  // htmlUntouched: true,
+  htmlUntouched: true,
 
   pasteAllowedStyleProps: [],
   pasteDeniedAttrs: [],

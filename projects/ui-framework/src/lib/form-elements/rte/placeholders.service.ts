@@ -46,7 +46,7 @@ export class PlaceholdersConverterService {
             return (
               // prettier-ignore
               // tslint:disable-next-line: max-line-length
-              `<span class="fr-deletable"><span contenteditable="false" class="fr-deletable" data-placeholder-id="${innerContent}"><i>{{&nbsp;</i>${(category ? '<b>' + category + '&nbsp;&nbsp;</b><i>:&nbsp;&nbsp;</i>' : '') + name}<i>&nbsp;}}</i></span>&nbsp;</span>`
+              `<span class="brte-plchldr fr-deletable"><span contenteditable="false" class="fr-deletable" data-placeholder-id="${innerContent}"><i>{{&nbsp;</i>${(category ? '<b>' + category + '&nbsp;&nbsp;</b><i>:&nbsp;&nbsp;</i>' : '') + name}<i>&nbsp;}}</i></span>&nbsp;</span>`
             );
           }
         )

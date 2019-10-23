@@ -15,7 +15,8 @@ import {
   RTE_DISABLE_CONTROLS_DEF,
   RTE_MINHEIGHT_DEF,
   RTE_MAXHEIGHT_DEF,
-  RTE_CONTROLS_ORDER
+  RTE_CONTROLS_ORDER,
+  RTE_TOOLBAR_HEIGHT
 } from './rte.const';
 import {
   cloneArray,
@@ -201,8 +202,12 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
 
     if (hasChanges(changes, ['minHeight', 'maxHeight'])) {
-      this.options.heightMin = this.minHeight - 40;
-      this.options.heightMax = this.maxHeight - 40;
+      this.options.heightMin = this.minHeight
+        ? this.minHeight - RTE_TOOLBAR_HEIGHT
+        : null;
+      this.options.heightMax = this.maxHeight
+        ? this.maxHeight - RTE_TOOLBAR_HEIGHT
+        : null;
     }
 
     if (hasChanges(changes, ['controls', 'disableControls'])) {

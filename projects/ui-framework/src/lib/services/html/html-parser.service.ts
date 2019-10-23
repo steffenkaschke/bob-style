@@ -21,19 +21,19 @@ export class HtmlParserHelpers {
         // replace P with DIV
         .replace(/(<p)/gim, '<div')
         .replace(/<\/p>/gim, '</div>')
-        // replace EM with I
-        .replace(/(<em)/gim, '<i')
-        .replace(/<\/em>/gim, '</i>')
-        // replace STRONG with B
-        .replace(/(<strong)/gim, '<b')
-        .replace(/<\/strong>/gim, '</b>')
-        // empty lines in the end
+        // // replace EM with I
+        // .replace(/(<em)/gim, '<i')
+        // .replace(/<\/em>/gim, '</i>')
+        // // replace STRONG with B
+        // .replace(/(<strong)/gim, '<b')
+        // .replace(/<\/strong>/gim, '</b>')
+        // too many empty lines
         .replace(
-          /(<p([^\n\r\/<>]+)?><br><\/p>|<div([^\n\r\/<>]+)?><br><\/div>)+$/gi,
-          ''
+          /(<p([^\n\r\/<>]+)?>\s?<br>\s?<\/p>|<div([^\n\r\/<>]+)?>\s?<br>\s?<\/div>\s?){2,100}/gim,
+          '$1'
         )
         // empty tags
-        .replace(/<[^\/>][^>]+>(\s+)?<\/[^>]+>/gi, '')
+        // .replace(/<[^\/>][^>]+>(\s+)?<\/[^>]+>/gi, '')
         // spaces
         .replace(/&nbsp;/gi, ' ')
         .replace(/\s\s+/g, ' ')

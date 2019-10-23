@@ -1,4 +1,4 @@
-@import './rte-placeholders';
+$rte-lineheight: 1.7;
 
 $toolbar-height: 40px;
 $icon-size: 17px;
@@ -11,8 +11,24 @@ $border-color: $grey-500;
 
 $label-to-placeholder: false;
 
+$link-color: var(--primary-700);
+
+.fr-toolbar,
+.fr-wrapper,
 .fr-box.fr-basic .fr-element,
 .fr-view {
+  @include b-body($color: $display-text-color, $lineHeight: null);
+}
+
+.fr-toolbar,
+.fr-wrapper {
+  line-height: $line-height-body;
+}
+
+.fr-box.fr-basic .fr-element,
+.fr-view {
+  line-height: $rte-lineheight;
+
   p {
     margin: 0;
   }
@@ -22,7 +38,7 @@ $label-to-placeholder: false;
   }
 
   a {
-    color: $color-error;
+    color: $link-color;
     text-decoration: underline;
   }
 }
@@ -31,13 +47,6 @@ $label-to-placeholder: false;
   font-family: inherit;
   font-size: inherit;
   color: $grey-600;
-}
-
-.fr-toolbar,
-.fr-wrapper,
-.fr-box.fr-basic .fr-element,
-.fr-view {
-  @include b-body($color: $display-text-color);
 }
 
 .fr-box.fr-basic {
@@ -411,7 +420,7 @@ $label-to-placeholder: false;
 .fr-box .fr-element,
 .fr-view {
   span[style*='10px'] {
-    line-height: $font-size-body * $line-height-body;
+    line-height: $font-size-body * $rte-lineheight;
   }
   span[style*='18px'] {
     line-height: 1;
@@ -427,8 +436,9 @@ $label-to-placeholder: false;
 .fr-view {
   ul,
   ol {
-    margin: 0;
+    margin: 5px 0;
     padding-left: 25px;
+    line-height: $line-height-body;
 
     li {
       width: 100%;
@@ -500,3 +510,5 @@ b-rte.error {
     }
   }
 }
+
+@import './rte-placeholders';
