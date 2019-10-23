@@ -36,7 +36,6 @@
     "ag-grid-angular": "^20.0.0",
     "ag-grid-community": "^20.0.0",
     "ag-grid-enterprise": "^20.0.0",
-    "angular-froala-wysiwyg": "^3.0.6",
     "bob-schematics": "file:bob-schematics",
     "core-js": "^2.6.1",
     "date-fns": "^2.4.1",
@@ -46,6 +45,7 @@
     "ng-mocks": "^8.0.0",
     "quill": "^1.3.6",
     "rxjs": "~6.5.2",
+    "angular-froala-wysiwyg": "^3.0.6",
     "tributejs": "^4.0.0",
     "zone.js": "~0.9.1"
   },
