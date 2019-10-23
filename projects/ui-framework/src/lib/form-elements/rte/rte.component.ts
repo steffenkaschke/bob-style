@@ -11,6 +11,9 @@ import { PlaceholdersConverterService } from './placeholders.service';
 import { RteService } from './rte.service';
 import { InputEventType, FormEvents } from '../form-elements.enum';
 import { HtmlParserHelpers } from '../../services/html/html-parser.service';
+import Tribute, { TributeOptions, TributeItem } from 'tributejs';
+import { isNotEmptyArray, isKey } from '../../services/utils/functional-utils';
+import { Keys } from '../../enums';
 
 @Component({
   selector: 'b-rte',
@@ -41,6 +44,33 @@ export class RteComponent extends RTEbaseElement implements OnInit {
   }
 
   ngOnInit(): void {
+    if (isNotEmptyArray(this.mentionsList)) {
+      this.tribute = new Tribute({
+        values: this.mentionsList as any,
+        lookup: 'displayName',
+        fillAttr: 'displayName',
+        requireLeadingSpace: true,
+        allowSpaces: true,
+
+        menuItemTemplate: function(item: TributeItem<any>) {
+          return `<span class="brte-mention-avatar" aria-hidden="true" style="background-image:url(${
+            item.original.avatar
+          })"></span><span>${item.string}</span>`;
+        },
+
+        selectTemplate: function(item: TributeItem<any>) {
+          // prettier-ignore
+          // tslint:disable-next-line: max-line-length
+          return `<a href="${item.original.link}" class="brte-mention fr-deletable" spellcheck="false" rel="noopener noreferrer" contenteditable="false">@${item.original.displayName}</a>`;
+        },
+
+        searchOpts: {
+          pre: '<em class="match">',
+          post: '</em>'
+        }
+      } as TributeOptions<any>);
+    }
+
     this.options.events = {
       initialized: () => {
         if (this.options.tooltips === false) {
@@ -50,6 +80,20 @@ export class RteComponent extends RTEbaseElement implements OnInit {
               b.setAttribute('aria-label', b.getAttribute('title'));
               b.removeAttribute('title');
             });
+        }
+
+        if (isNotEmptyArray(this.mentionsList)) {
+          this.tribute.attach(this.getEditorTextbox());
+
+          this.getEditor().events.on(
+            'keydown',
+            (event: KeyboardEvent) => {
+              if (isKey(event.key, Keys.enter) && this.tribute.isActive) {
+                return false;
+              }
+            },
+            true
+          );
         }
       },
 
@@ -90,9 +134,15 @@ export class RteComponent extends RTEbaseElement implements OnInit {
           const link = this.getEditor().link.get() as HTMLElement;
           link.setAttribute('spellcheck', 'false');
           link.classList.add('fr-deletable');
-          // this.getEditor().link.applyStyle('fr-deletable');
         }
-      }
+      },
+
+      keydown: (event: KeyboardEvent) => {
+        if (isKey(event.key, Keys.enter)) {
+        }
+      },
+
+      click: (event: MouseEvent) => {}
     };
   }
 }

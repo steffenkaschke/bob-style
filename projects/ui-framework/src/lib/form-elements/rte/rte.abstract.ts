@@ -26,7 +26,8 @@ import {
   joinArrays,
   isNullOrUndefined,
   cloneValue,
-  firstChanges
+  firstChanges,
+  isNotEmptyArray
 } from '../../services/utils/functional-utils';
 import { FroalaEditorDirective } from 'angular-froala-wysiwyg';
 import { BlotType, RTEType } from './rte.enum';
@@ -43,6 +44,7 @@ import { PlaceholdersConverterService } from './placeholders.service';
 import { RteService } from './rte.service';
 import { InputEventType } from '../form-elements.enum';
 import { HtmlParserHelpers } from '../../services/html/html-parser.service';
+import Tribute from 'tributejs';
 
 // https://www.froala.com/wysiwyg-editor/examples/rtl-ltr-custom-button
 const changeDirection = function(dir: string) {
@@ -84,8 +86,6 @@ FroalaEditor.RegisterCommand('rightToLeft', {
   },
 
   refresh: function(btns: HTMLElement[]) {
-    console.log('rightToLeft refresh', this.selection.blocks());
-
     if (
       (this.selection.blocks()[0] as HTMLElement).style.cssText.includes('rtl')
     ) {
@@ -109,8 +109,6 @@ FroalaEditor.RegisterCommand('leftToRight', {
   },
 
   refresh: function(btns: HTMLElement[]) {
-    console.log('leftToRight refresh', this.selection.blocks());
-
     if (
       (this.selection.blocks()[0] as HTMLElement).style.cssText.includes('ltr')
     ) {
@@ -137,6 +135,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   public length = 0;
   public editorValue: string;
+  public tribute: Tribute<any>;
 
   @ViewChild('editor', { read: FroalaEditorDirective, static: true })
   protected editorDirective: FroalaEditorDirective;
@@ -240,6 +239,15 @@ export abstract class RTEbaseElement extends BaseFormElement
       );
     }
 
+    if (
+      changes.mentionsList &&
+      this.tribute &&
+      this.tribute.isActive &&
+      isNotEmptyArray(this.mentionsList)
+    ) {
+      this.tribute.appendCurrent(this.mentionsList as any);
+    }
+
     if (firstChanges(changes) || changes.placeholderList) {
       this.initTransformers();
     }
@@ -274,6 +282,17 @@ export abstract class RTEbaseElement extends BaseFormElement
             }),
 
       (value: string) =>
+        !value.includes('brte-mention')
+          ? value
+          : this.parserService.enforceAttributes(value, '.brte-mention', {
+              class: 'fr-deletable',
+              target: null,
+              spellcheck: 'false',
+              rel: 'noopener noreferrer',
+              contenteditable: false
+            }),
+
+      (value: string) =>
         this.parserService.linkify(
           value,
           'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
@@ -301,5 +320,9 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   protected getEditorElement(): HTMLElement {
     return (this.editorDirective as any)._element as HTMLElement;
+  }
+
+  protected getEditorTextbox(): HTMLElement {
+    return this.getEditor().el as HTMLElement;
   }
 }

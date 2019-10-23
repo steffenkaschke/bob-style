@@ -1,11 +1,10 @@
-import { mockNames, mockAvatar } from '../../mock.const';
-import { simpleUID } from '../../services/utils/functional-utils';
+import { mockNames, mockAvatar, mockText } from '../../mock.const';
 import { RteMentionsOption } from './rte.interface';
 
 export const mentionsOptions = mockNames(200).map(
   (name: string): RteMentionsOption => ({
     displayName: name,
-    id: simpleUID(),
+    link: 'https://www.google.com/search?q=' + mockText(1),
     avatar: mockAvatar()
   })
 );

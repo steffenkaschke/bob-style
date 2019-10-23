@@ -21,19 +21,26 @@ export class HtmlParserHelpers {
         // replace P with DIV
         .replace(/(<p)/gim, '<div')
         .replace(/<\/p>/gim, '</div>')
+
         // // replace EM with I
         // .replace(/(<em)/gim, '<i')
         // .replace(/<\/em>/gim, '</i>')
         // // replace STRONG with B
         // .replace(/(<strong)/gim, '<b')
         // .replace(/<\/strong>/gim, '</b>')
+
         // too many empty lines
         .replace(
-          /(<p([^\n\r\/<>]+)?>\s?<br>\s?<\/p>|<div([^\n\r\/<>]+)?>\s?<br>\s?<\/div>\s?){2,100}/gim,
+          /(<p([^\n\r\/<>]+)?>\s*<br>\s*<\/p>\s*|<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*){2,100}/gim,
           '$1'
         )
+        // empty lines in the end
+        .replace(
+          /(<p([^\n\r\/<>]+)?>\s*<br>\s*<\/p>\s*|<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*)+$/gi,
+          ''
+        )
         // empty tags
-        // .replace(/<[^\/>][^>]+>(\s+)?<\/[^>]+>/gi, '')
+        .replace(/<([^\/>\s]+)[^>]*>\s*<\/\1>/gim, '')
         // spaces
         .replace(/&nbsp;/gi, ' ')
         .replace(/\s\s+/g, ' ')
@@ -58,7 +65,11 @@ export class HtmlParserHelpers {
             }
             elem.classList.add(...classes);
           } else {
-            elem.setAttribute(attr, attributes[attr]);
+            if (attributes[attr] !== null) {
+              elem.setAttribute(attr, attributes[attr]);
+            } else {
+              elem.removeAttribute(attr);
+            }
           }
         });
       }

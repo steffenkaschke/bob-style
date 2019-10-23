@@ -45,12 +45,11 @@ const value = `<div>
 <div><br></div>
 Here's an important list of things to remember:
 <ul>
-  <li>stay calm</li>
+  <li>don't trust <a href="https://www.youtube.com/watch?v=h3SD_oBOx7g" target="_blank" class="brte-mention">@the bitch in apartment 23</a></li>
   <li>don't eat the <u>yellow</u> snow</li>
   <li>танцуй пока молодой</li>
   <li>אמור לא לסמים</li>
-  <li>don't trust grown-ups</li>
-  <li style="direction: rtl; text-align: right;">beware of the <a href="https://youtu.be/hOHvMqAgcmc?t=11">Right Hook</a></li>
+  <li style="direction: rtl; text-align: right;">beware the <a href="https://youtu.be/hOHvMqAgcmc?t=11">Right Hook</a></li>
 </ul>
 <div><br></div><div><br></div><div><br></div><div><br></div><div><br></div>
 `;

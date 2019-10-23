@@ -1,9 +1,7 @@
-import { GenericObject } from '../../types';
-
 export interface RteMentionsOption {
-  avatar: string;
+  avatar?: string;
   displayName: string;
-  id: string;
+  link: string;
 }
 
 export interface RtePlaceholder {

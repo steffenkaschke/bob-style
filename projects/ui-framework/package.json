@@ -15,7 +15,9 @@
     "ag-grid-community": "^20.0.0",
     "ag-grid-enterprise": "^20.0.0",
     "highcharts": "^7.1.2",
-    "date-fns": "^2.4.1"
+    "date-fns": "^2.4.1",
+    "angular-froala-wysiwyg": "^3.0.6",
+    "tributejs": "^4.0.0"
   },
   "browserslist": [
     "> 1%",
