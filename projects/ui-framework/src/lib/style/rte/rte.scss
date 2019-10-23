@@ -406,6 +406,21 @@ $label-to-placeholder: false;
   }
 }
 
+// font-sizes
+
+.fr-box .fr-element,
+.fr-view {
+  span[style*='10px'] {
+    line-height: $font-size-body * $line-height-body;
+  }
+  span[style*='18px'] {
+    line-height: 1;
+  }
+  span[style*='30px'] {
+    line-height: 0.8;
+  }
+}
+
 // lists
 
 .fr-element,
@@ -485,5 +500,3 @@ b-rte.error {
     }
   }
 }
-
-// (c) psg

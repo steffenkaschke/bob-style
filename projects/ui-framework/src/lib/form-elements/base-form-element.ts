@@ -30,7 +30,7 @@ export abstract class BaseFormElement
   @Input() errorMessage: string;
   @Input() warnMessage: string;
   @Input() doPropagate = true;
-  @Input() emitOnWrite = true; // false;
+  @Input() emitOnWrite = false;
 
   public inputFocused: boolean | boolean[] = false;
   public id = simpleUID('bfe-');

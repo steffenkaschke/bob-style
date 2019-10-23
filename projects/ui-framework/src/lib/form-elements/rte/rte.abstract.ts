@@ -85,13 +85,13 @@ FroalaEditor.RegisterCommand('rightToLeft', {
   refresh: function(btns: HTMLElement[]) {
     console.log('rightToLeft refresh', this.selection.blocks());
 
-    // if (
-    //   (this.selection.blocks()[0] as HTMLElement).style.cssText.includes('rtl')
-    // ) {
-    //   btns[0].classList.add('fr-active');
-    // } else {
-    //   btns[0].classList.remove('fr-active');
-    // }
+    if (
+      (this.selection.blocks()[0] as HTMLElement).style.cssText.includes('rtl')
+    ) {
+      btns[0].classList.add('fr-active');
+    } else {
+      btns[0].classList.remove('fr-active');
+    }
   }
 });
 
@@ -110,13 +110,13 @@ FroalaEditor.RegisterCommand('leftToRight', {
   refresh: function(btns: HTMLElement[]) {
     console.log('leftToRight refresh', this.selection.blocks());
 
-    // if (
-    //   (this.selection.blocks()[0] as HTMLElement).style.cssText.includes('ltr')
-    // ) {
-    //   btns[0].classList.add('fr-active');
-    // } else {
-    //   btns[0].classList.remove('fr-active');
-    // }
+    if (
+      (this.selection.blocks()[0] as HTMLElement).style.cssText.includes('ltr')
+    ) {
+      btns[0].classList.add('fr-active');
+    } else {
+      btns[0].classList.remove('fr-active');
+    }
   }
 });
 
@@ -131,6 +131,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     super();
     this.baseValue = '';
     this.wrapEvent = false;
+    this.emitOnWrite = true;
   }
 
   public length = 0;

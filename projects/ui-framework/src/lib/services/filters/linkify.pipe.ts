@@ -20,9 +20,12 @@ export class LinkifyPipe implements PipeTransform {
     return value
       .replace(
         urlRegex,
-        `<a href="$1" target="_blank"${add ? ' ' + add : ''}>$2$3$4</a>`
+        '<a href="$1" target="_blank"' + (add ? ' ' + add : '') + '>$2$3$4</a>'
       )
-      .replace(mailRegex, `<a href="mailto:$1"${add ? ' ' + add : ''}>$1</a>`)
+      .replace(
+        mailRegex,
+        '<a href="mailto:$1"' + (add ? ' ' + add : '') + '>$1</a>'
+      )
       .replace(linksWithoutProtocolRegex, 'href="http://')
       .replace(linkWithTooLongTextRegex, '$1$2$3$4…$6');
   }

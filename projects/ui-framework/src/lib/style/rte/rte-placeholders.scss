@@ -4,46 +4,67 @@ $border-color: var(--negative-700);
 .fr-box,
 .fr-view {
   [data-placeholder-id] {
-    display: inline-block;
     box-sizing: border-box;
+    display: inline-block;
+    vertical-align: bottom;
+    align-items: center;
     border-radius: 13px;
-    white-space: nowrap;
     font-size: $font-size-body;
+    white-space: nowrap;
     box-shadow: inset 0 0 0 2px $border-color;
-    position: relative;
-    z-index: 0;
+    overflow: hidden;
     cursor: default;
-    margin-top: 1px;
 
-    &::selection {
-      background: transparent;
+    i,
+    em,
+    b,
+    strong {
+      display: inline-block;
+      vertical-align: bottom;
     }
-  }
 
-  [data-placeholder-category] {
-    &:before {
-      content: '\00a0\00a0'attr(data-placeholder-category) '\00a0\00a0';
-      display: inline-flex;
-      align-items: center;
-      pointer-events: none;
-      user-select: none;
-      border-top-left-radius: 13px;
-      border-bottom-left-radius: 13px;
-      box-shadow: inset 0 0 0 2px $border-color;
-      background-color: $bg-color;
+    i,
+    em {
+      letter-spacing: -1.5px;
+
+      &:first-child,
+      &:last-child {
+        letter-spacing: -2px;
+      }
+
+      &,
+      &::selection {
+        color: transparent;
+      }
+    }
+
+    b,
+    strong {
       font-size: 90%;
-      color: $white;
-      @include position(0 null 0 0);
+      font-weight: 400;
+      color: white;
+      line-height: $font-size-body * $line-height-body;
+      position: relative;
+
+      &:before {
+        @include pseudo;
+        @include position(-5px 0 -5px -15px);
+        z-index: -1;
+        background-color: $bg-color;
+      }
     }
   }
 }
 
 b-rte.disabled {
-  [data-placeholder-id],
-  [data-placeholder-category]:before {
-    box-shadow: inset 0 0 0 2px $grey-300;
-  }
-  [data-placeholder-category]:before {
-    background-color: $grey-300;
+  [data-placeholder-id] {
+    box-shadow: inset 0 0 0 2px $grey-500;
+
+    strong,
+    b {
+      &:before {
+        background-color: darken($grey-500, 5%);
+      }
+    }
   }
 }

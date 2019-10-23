@@ -42,9 +42,12 @@ export class PlaceholdersConverterService {
               innerContent
             );
             const name = this.getDisplayNameById(placeholders, innerContent);
-            const text = this.getPlaceholderText(name, category);
-            // tslint:disable-next-line: max-line-length
-            return `<span contenteditable="false" class="fr-deletable" data-placeholder-id="${innerContent}" data-placeholder-category="${category}">${text}</span>`;
+
+            return (
+              // prettier-ignore
+              // tslint:disable-next-line: max-line-length
+              `<span class="fr-deletable"><span contenteditable="false" class="fr-deletable" data-placeholder-id="${innerContent}"><i>{{&nbsp;</i>${(category ? '<b>' + category + '&nbsp;&nbsp;</b><i>:&nbsp;&nbsp;</i>' : '') + name}<i>&nbsp;}}</i></span>&nbsp;</span>`
+            );
           }
         )
       : contentToConvert
@@ -77,8 +80,5 @@ export class PlaceholdersConverterService {
   }
 
   public getPlaceholderText = (name: string, category: string): string =>
-    this.padChar.repeat(2) +
-    (category ? category + this.padChar.repeat(2) : '') +
-    name +
-    this.padChar.repeat(2)
+    '{{' + +'}}'
 }

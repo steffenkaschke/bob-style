@@ -33,13 +33,27 @@ const controlsDef = dedupeArray(Object.values(BlotType)).filter(
   cntrl => !disableControlsDef.includes(cntrl)
 );
 
-const value = `<div> <span style="color: red;">Hello</span> <a href="http://www.google.com">World</a>!</div>
-<div>Some <em>initial</em> <strong>bold</strong> text</div> {{/work/title}}
-<p>
-https://stackoverflow.com/questions/579335/javascript-regexp-to-wrap-urls-and-emails-in-anchors
-</p>
-www.foogle.moc
-http://boogle.ru
+const value = `
+<div>
+  <span style="color: red;">Hello</span> http://Google.com!
+</div>
+<div>
+  Some <em>funky</em> <strong>bold</strong> text
+  of <span style="font-size: 18px;">large</span> size.
+</div>
+<p>Hooray! {{/root/firstName}} is employee of the month!</p>
+<p>More details at: https://longlink.com/gohere/thenthere/onemore/page#hash?query=bigBen</p>
+Here's an important list of things to remember:
+<div>
+{{/work/title}}
+</div>
+<ul>
+  <li>stay calm</li>
+  <li>don't eat the <u>yellow</u> snow</li>
+  <li>sleep at least 6 hours a day</li>
+  <li>don't trust grown-ups</li>
+  <li style="direction: rtl; text-align: right;">beware of the <a href="https://youtu.be/hOHvMqAgcmc?t=11">Right Hook</a></li>
+</ul>
 `;
 
 const template = `
@@ -122,7 +136,7 @@ inputStories.add(
         disableControls: array('disableControls', disableControlsDef, '\n'),
         placeholderList: object<SelectGroupOption>('options', placeholderMock),
         minChars: number('minChars', 20),
-        maxChars: number('maxChars', 300),
+        maxChars: number('maxChars', 350),
         minHeight: number('minHeight'),
         maxHeight: number('maxHeight'),
         disabled: boolean('disabled', false),

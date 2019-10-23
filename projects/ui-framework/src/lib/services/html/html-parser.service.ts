@@ -21,6 +21,12 @@ export class HtmlParserHelpers {
         // replace P with DIV
         .replace(/(<p)/gim, '<div')
         .replace(/<\/p>/gim, '</div>')
+        // replace EM with I
+        .replace(/(<em)/gim, '<i')
+        .replace(/<\/em>/gim, '</i>')
+        // replace STRONG with B
+        .replace(/(<strong)/gim, '<b')
+        .replace(/<\/strong>/gim, '</b>')
         // empty lines in the end
         .replace(
           /(<p([^\n\r\/<>]+)?><br><\/p>|<div([^\n\r\/<>]+)?><br><\/div>)+$/gi,
