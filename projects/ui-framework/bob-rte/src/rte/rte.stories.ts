@@ -43,7 +43,7 @@ const value = `<div>
 <div><br></div>
 Here's an important list of things to remember:
 <ul>
-  <li>don't trust <a href="https://www.youtube.com/watch?v=h3SD_oBOx7g" target="_blank" class="brte-mention">@the bitch in apartment 23</a></li>
+  <li>don't trust the <a href="https://www.youtube.com/watch?v=h3SD_oBOx7g" target="_blank" class="brte-mention">@Bitch</a> in apartment 23</li>
   <li>don't eat the <u>yellow</u> snow</li>
   <li>танцуй пока молодой</li>
   <li>אמור לא לסמים</li>
