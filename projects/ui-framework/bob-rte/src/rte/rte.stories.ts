@@ -47,7 +47,7 @@ Here's an important list of things to remember:
   <li>don't eat the <u>yellow</u> snow</li>
   <li>танцуй пока молодой</li>
   <li>אמור לא לסמים</li>
-  <li style="direction: rtl; text-align: right;">beware the <a href="https://youtu.be/hOHvMqAgcmc?t=11">Right Hook</a></li>
+  <li style="direction: rtl; text-align: right;">beware the <a class="brte-mention" href="https://youtu.be/hOHvMqAgcmc?t=11">@Right Hook</a></li>
 </ul>
 <div><br></div><div><br></div><div><br></div><div><br></div><div><br></div>
 `;
@@ -90,6 +90,7 @@ const note = `
 
   #### Module
   *RichTextEditorModule*
+  from <u>'bob-rte'</u>
 
   ~~~
   ${template}
@@ -119,7 +120,7 @@ const note = `
 `;
 
 inputStories.add(
-  'Rich text editor 2',
+  'Rich text editor',
   () => {
     return {
       template: storyTemplate,

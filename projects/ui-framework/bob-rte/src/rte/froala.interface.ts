@@ -1,5 +1,9 @@
 import { GenericObject } from 'bob-style';
 
+interface JQuery {
+  [key: string]: any;
+}
+
 // docs: https://www.froala.com/wysiwyg-editor/docs/options
 export interface FroalaOptions {
   aviaryKey?: string;
