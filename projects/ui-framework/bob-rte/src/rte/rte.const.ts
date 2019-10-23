@@ -1,5 +1,5 @@
 import { BlotType } from './rte.enum';
-import { dedupeArray, joinArrays } from '../../services/utils/functional-utils';
+import { dedupeArray, joinArrays } from 'bob-style';
 import { FroalaOptions } from './froala.interface';
 
 export const RTE_CONTROLS_DEF: BlotType[] = dedupeArray(

@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RteComponent } from './rte.component';
 
-import { InputMessageModule } from '../input-message/input-message.module';
-import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
+import {
+  InputMessageModule,
+  FormElementLabelModule,
+  HtmlParserHelpers
+} from 'bob-style';
+
+import { RichTextEditorComponent } from './rte.component';
 import { PlaceholdersConverterService } from './placeholders.service';
 import { RteService } from './rte.service';
-import { HtmlParserHelpers } from '../../services/html/html-parser.service';
 
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import 'froala-editor/js/plugins/font_size.min.js';
@@ -17,7 +20,7 @@ import 'froala-editor/js/plugins/char_counter.min.js';
 import 'froala-editor/js/plugins/url.min.js';
 
 @NgModule({
-  declarations: [RteComponent],
+  declarations: [RichTextEditorComponent],
   imports: [
     CommonModule,
     FormElementLabelModule,
@@ -25,7 +28,7 @@ import 'froala-editor/js/plugins/url.min.js';
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot()
   ],
-  exports: [RteComponent],
+  exports: [RichTextEditorComponent],
   providers: [RteService, PlaceholdersConverterService, HtmlParserHelpers]
 })
-export class RteModule {}
+export class RichTextEditorModule {}

@@ -88,7 +88,7 @@ export const arrayOfValuesToArrayOfObjects = (key: string) => (
   return value.map(valueToObjectKey(key));
 };
 
-export const asNumber = (inputType: InputTypes, value: any) => {
+export const valueAsNumber = (inputType: InputTypes, value: any) => {
   if (inputType !== InputTypes.number || !value) {
     return value;
   }

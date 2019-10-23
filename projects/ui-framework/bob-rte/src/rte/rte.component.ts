@@ -6,14 +6,21 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
+
+import {
+  InputEventType,
+  FormEvents,
+  HtmlParserHelpers,
+  isNotEmptyArray,
+  isKey,
+  Keys
+} from 'bob-style';
+
 import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
 import { RteService } from './rte.service';
-import { InputEventType, FormEvents } from '../form-elements.enum';
-import { HtmlParserHelpers } from '../../services/html/html-parser.service';
+
 import Tribute, { TributeOptions, TributeItem } from 'tributejs';
-import { isNotEmptyArray, isKey } from '../../services/utils/functional-utils';
-import { Keys } from '../../enums';
 
 @Component({
   selector: 'b-rte',
@@ -22,18 +29,18 @@ import { Keys } from '../../enums';
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => RteComponent),
+      useExisting: forwardRef(() => RichTextEditorComponent),
       multi: true
     },
     {
       provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => RteComponent),
+      useExisting: forwardRef(() => RichTextEditorComponent),
       multi: true
     }
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RteComponent extends RTEbaseElement implements OnInit {
+export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
   constructor(
     public cd: ChangeDetectorRef,
     public placeholdersConverter: PlaceholdersConverterService,

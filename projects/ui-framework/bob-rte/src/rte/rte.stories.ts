@@ -10,18 +10,16 @@ import {
   text,
   withKnobs
 } from '@storybook/addon-knobs/angular';
-import { optionsKnob as options } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { values } from 'lodash';
-import { SelectGroupOption } from '../lists/list.interface';
-import { placeholderMock } from '../rich-text-editor/rte-placeholder/rte-placeholder.mock';
-import { RteModule } from './rte.module';
 import { BlotType, RTEType } from './rte.enum';
-import { dedupeArray } from '../../services/utils/functional-utils';
-import { mentionsOptions } from './rte.mocks';
+import { mentionsOptions, placeholderMock } from './rte.mocks';
+import { ComponentGroupType } from '../../../src/lib/consts';
+import { dedupeArray } from '../../../src/lib/services/utils/functional-utils';
+import { SelectGroupOption } from '../../../src/lib/form-elements/lists/list.interface';
+import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
+import { RichTextEditorModule } from './rte.module';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -148,7 +146,11 @@ inputStories.add(
         mentionsOptions: object('mentionsOptions', mentionsOptions)
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, StoryBookLayoutModule, RteModule]
+        imports: [
+          BrowserAnimationsModule,
+          StoryBookLayoutModule,
+          RichTextEditorModule
+        ]
       }
     };
   },

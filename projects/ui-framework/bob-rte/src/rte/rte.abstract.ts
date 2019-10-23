@@ -8,7 +8,24 @@ import {
   ViewChild,
   OnChanges
 } from '@angular/core';
-import { BaseFormElement } from '../base-form-element';
+import { merge } from 'lodash';
+
+import {
+  BaseFormElement,
+  cloneArray,
+  hasChanges,
+  notFirstChanges,
+  applyChanges,
+  joinArrays,
+  isNullOrUndefined,
+  cloneValue,
+  firstChanges,
+  isNotEmptyArray,
+  stringyOrFail,
+  InputEventType,
+  HtmlParserHelpers
+} from 'bob-style';
+
 import {
   RTE_OPTIONS_DEF,
   RTE_CONTROLS_DEF,
@@ -18,32 +35,18 @@ import {
   RTE_CONTROLS_ORDER,
   RTE_TOOLBAR_HEIGHT
 } from './rte.const';
-import {
-  cloneArray,
-  hasChanges,
-  notFirstChanges,
-  applyChanges,
-  joinArrays,
-  isNullOrUndefined,
-  cloneValue,
-  firstChanges,
-  isNotEmptyArray
-} from '../../services/utils/functional-utils';
-import { FroalaEditorDirective } from 'angular-froala-wysiwyg';
 import { BlotType, RTEType } from './rte.enum';
 import {
   RteMentionsOption,
   RtePlaceholderList,
   RtePlaceholder
 } from './rte.interface';
-import { merge } from 'lodash';
-import FroalaEditor from 'froala-editor';
-import { FroalaEdtr, FroalaOptions } from './froala.interface';
-import { stringyOrFail } from '../../services/utils/transformers';
 import { PlaceholdersConverterService } from './placeholders.service';
 import { RteService } from './rte.service';
-import { InputEventType } from '../form-elements.enum';
-import { HtmlParserHelpers } from '../../services/html/html-parser.service';
+
+import FroalaEditor from 'froala-editor';
+import { FroalaEditorDirective } from 'angular-froala-wysiwyg';
+import { FroalaEdtr, FroalaOptions } from './froala.interface';
 import Tribute from 'tributejs';
 
 // https://www.froala.com/wysiwyg-editor/examples/rtl-ltr-custom-button

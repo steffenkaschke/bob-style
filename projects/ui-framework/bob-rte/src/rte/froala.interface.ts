@@ -1,4 +1,4 @@
-import { GenericObject } from '../../types';
+import { GenericObject } from 'bob-style';
 
 // docs: https://www.froala.com/wysiwyg-editor/docs/options
 export interface FroalaOptions {
