@@ -60,7 +60,7 @@ describe('SingleSelectComponent', () => {
         ButtonsModule,
         ListFooterModule,
         TruncateTooltipModule,
-        FormElementLabelModule,
+        FormElementLabelModule
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -190,9 +190,9 @@ describe('SingleSelectComponent', () => {
 
   describe('OnDestroy', () => {
     it('should invoke panel close', () => {
-      spyOn(component, 'destroyPanel');
+      spyOn(component as any, 'destroyPanel');
       component.ngOnDestroy();
-      expect(component.destroyPanel).toHaveBeenCalled();
+      expect((component as any).destroyPanel).toHaveBeenCalled();
     });
   });
 
