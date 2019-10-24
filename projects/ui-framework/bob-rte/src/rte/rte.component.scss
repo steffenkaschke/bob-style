@@ -54,21 +54,25 @@
   border-top-width: 0;
   border-right-width: 0;
   border-top-right-radius: $border-radius;
-  background-color: white(0.75);
+  background-color: white;
 
   &::ng-deep button {
-    transition: width 0.2s, height 0.2s;
+    transition: width 0.2s, height 0.2s, opacity 0.2s;
 
     &:before {
       transition: color 0.2s, font-size 0.2s;
     }
   }
 
-  &:not(:hover):not(.focused)::ng-deep button {
-    @include size($sizeSmall);
+  &:not(:hover):not(.focused) {
+    background-color: white(0.7);
 
-    &:before {
-      font-size: 20px;
+    &::ng-deep button {
+      @include size($sizeSmall);
+
+      &:before {
+        font-size: 20px;
+      }
     }
   }
 }
