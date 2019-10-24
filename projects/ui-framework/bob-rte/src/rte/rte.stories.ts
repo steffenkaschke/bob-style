@@ -37,7 +37,6 @@ const value = `<div>
   of <span style="font-size: 18px;">large</span> size.
 </div>
 <div><br></div>
-<div><br></div>
 <p><strong><em><span style="font-size: 18px;">Hooray!</span></em></strong> {{/root/firstName}} is {{/work/title}} of the month!</p>
 <p>More details at: https://longlink.com/gohere/thenthere/onemore/page#hash?query=bigBen</p>
 <div><br></div>
@@ -49,7 +48,6 @@ Here's an important list of things to remember:
   <li>אמור לא לסמים</li>
   <li style="direction: rtl; text-align: right;">beware the <a class="brte-mention" href="https://youtu.be/hOHvMqAgcmc?t=11">@Right Hook</a></li>
 </ul>
-<div><br></div><div><br></div><div><br></div><div><br></div><div><br></div>
 `;
 
 const template = `
@@ -133,7 +131,7 @@ inputStories.add(
         disableControls: array('disableControls', disableControlsDef, '\n'),
         placeholderList: object<SelectGroupOption>('options', placeholderMock),
         minChars: number('minChars', 20),
-        maxChars: number('maxChars', 350),
+        maxChars: number('maxChars', 400),
         minHeight: number('minHeight'),
         maxHeight: number('maxHeight'),
         disabled: boolean('disabled', false),

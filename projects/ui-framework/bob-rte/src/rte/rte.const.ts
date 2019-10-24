@@ -71,7 +71,8 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'style',
     'class',
     'contenteditable',
-    'spellcheck'
+    'spellcheck',
+    'tabindex'
 
     // 'align',
     // 'border',

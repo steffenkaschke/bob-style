@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LinkifyPipe } from '../filters/linkify.pipe';
 import { GenericObject } from '../../types';
-import { isString } from '../utils/functional-utils';
+import { isString, isObject } from '../utils/functional-utils';
 
 @Injectable({ providedIn: 'root' })
 export class HtmlParserHelpers {
@@ -14,33 +14,27 @@ export class HtmlParserHelpers {
   cleanupHtml(value: string): string {
     return (
       value
-        // misc stuff
-        .replace(/spellcheck="false"/gim, '')
+        // removing misc froala stuff
         .replace(/(noopener noreferrer\s?){2,100}/gim, '$1')
-        .replace(/class="fr-deletable"/gim, '')
+        .replace(/\s?spellcheck="false"/gim, '')
+        .replace(/\s?tabindex="-1"/gim, '')
+        .replace(/contenteditable="false"/gim, '')
+        .replace(/\s?fr-deletable/gi, '')
+        .replace(/\s?class="\s*"/gim, '')
+
         // replace P with DIV
         .replace(/(<p)/gim, '<div')
         .replace(/<\/p>/gim, '</div>')
 
-        // // replace EM with I
-        // .replace(/(<em)/gim, '<i')
-        // .replace(/<\/em>/gim, '</i>')
-        // // replace STRONG with B
-        // .replace(/(<strong)/gim, '<b')
-        // .replace(/<\/strong>/gim, '</b>')
-
         // too many empty lines
-        .replace(
-          /(<p([^\n\r\/<>]+)?>\s*<br>\s*<\/p>\s*|<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*){2,100}/gim,
-          '$1'
-        )
+        .replace(/(<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*){2,100}/gim, '$1')
+
         // empty lines in the end
-        .replace(
-          /(<p([^\n\r\/<>]+)?>\s*<br>\s*<\/p>\s*|<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*)+$/gi,
-          ''
-        )
+        .replace(/(<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*)+$/gi, '')
+
         // empty tags
         .replace(/<([^\/>\s]+)[^>]*>\s*<\/\1>/gim, '')
+
         // spaces
         .replace(/&nbsp;/gi, ' ')
         .replace(/\s\s+/g, ' ')
@@ -60,6 +54,16 @@ export class HtmlParserHelpers {
         Object.keys(attributes).forEach(attr => {
           if (attr === 'class') {
             let classes = attributes[attr];
+            if (isObject(classes)) {
+              Object.keys(classes).forEach(c => {
+                if (classes[c]) {
+                  elem.classList.add(c);
+                } else {
+                  elem.classList.remove(c);
+                }
+              });
+              return;
+            }
             if (isString(classes)) {
               classes = classes.split(' ').filter(c => !!c);
             }

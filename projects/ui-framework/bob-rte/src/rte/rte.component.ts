@@ -51,6 +51,9 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
   }
 
   ngOnInit(): void {
+    //
+    // mentions
+
     if (isNotEmptyArray(this.mentionsList)) {
       this.tribute = new Tribute({
         values: this.mentionsList as any,
@@ -60,15 +63,19 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         allowSpaces: true,
 
         menuItemTemplate: function(item: TributeItem<any>) {
-          return `<span class="brte-mention-avatar" aria-hidden="true" style="background-image:url(${
-            item.original.avatar
-          })"></span><span>${item.string}</span>`;
+          return item.original.avatar
+            ? `<span class="brte-mention-avatar" aria-hidden="true" style="background-image:url(${
+                item.original.avatar
+              })"></span><span>${item.string}</span>`
+            : item.string;
         },
 
         selectTemplate: function(item: TributeItem<any>) {
-          // prettier-ignore
-          // tslint:disable-next-line: max-line-length
-          return `<a href="${item.original.link}" class="brte-mention fr-deletable" spellcheck="false" rel="noopener noreferrer" contenteditable="false">@${item.original.displayName}</a>`;
+          return `<a href="${
+            item.original.link
+          }" class="brte-mention fr-deletable" spellcheck="false" rel="noopener noreferrer" contenteditable="false">@${
+            item.original.displayName
+          }</a>`;
         },
 
         searchOpts: {
@@ -77,6 +84,8 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         }
       } as TributeOptions<any>);
     }
+
+    // froala events
 
     this.options.events = {
       initialized: () => {
@@ -89,9 +98,9 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
             });
         }
 
+        // init mentions
         if (isNotEmptyArray(this.mentionsList)) {
           this.tribute.attach(this.getEditorTextbox());
-
           this.getEditor().events.on(
             'keydown',
             (event: KeyboardEvent) => {
@@ -112,7 +121,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       },
 
       focus: () => {
-        this.transmitValue(this.value, {
+        this.transmitValue(this.getEditor().html.get(), {
           eventType: [InputEventType.onFocus],
           eventName: FormEvents.focused,
           saveValue: true
@@ -122,7 +131,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       },
 
       blur: () => {
-        this.transmitValue(this.value, {
+        this.transmitValue(this.getEditor().html.get(), {
           eventType: [InputEventType.onBlur],
           eventName: FormEvents.blurred,
           saveValue: true
@@ -142,14 +151,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
           link.setAttribute('spellcheck', 'false');
           link.classList.add('fr-deletable');
         }
-      },
-
-      keydown: (event: KeyboardEvent) => {
-        if (isKey(event.key, Keys.enter)) {
-        }
-      },
-
-      click: (event: MouseEvent) => {}
+      }
     };
   }
 }

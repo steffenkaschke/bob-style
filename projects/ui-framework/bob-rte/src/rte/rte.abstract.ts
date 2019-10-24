@@ -272,8 +272,6 @@ export abstract class RTEbaseElement extends BaseFormElement
     this.inputTransformers = [
       stringyOrFail,
 
-      this.parserService.cleanupHtml,
-
       (value: string) =>
         !value.includes('href')
           ? value
@@ -281,7 +279,8 @@ export abstract class RTEbaseElement extends BaseFormElement
               class: 'fr-deletable',
               target: '_blank',
               spellcheck: 'false',
-              rel: 'noopener noreferrer'
+              rel: 'noopener noreferrer',
+              tabindex: '-1'
             }),
 
       (value: string) =>
@@ -292,7 +291,8 @@ export abstract class RTEbaseElement extends BaseFormElement
               target: null,
               spellcheck: 'false',
               rel: 'noopener noreferrer',
-              contenteditable: false
+              contenteditable: false,
+              tabindex: '-1'
             }),
 
       (value: string) =>
@@ -301,7 +301,18 @@ export abstract class RTEbaseElement extends BaseFormElement
           'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
         )
     ];
-    this.outputTransformers = [this.parserService.cleanupHtml];
+    this.outputTransformers = [
+      // (value: string) =>
+      //   !value.includes('href') && !value.includes('span')
+      //     ? value
+      //     : this.parserService.enforceAttributes(value, 'a, span', {
+      //         class: { 'fr-deletable': false },
+      //         contenteditable: null,
+      //         spellcheck: null,
+      //         tabindex: null
+      //       }),
+      this.parserService.cleanupHtml
+    ];
 
     if (
       this.placeholderList &&
