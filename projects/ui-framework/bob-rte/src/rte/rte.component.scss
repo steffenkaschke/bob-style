@@ -56,7 +56,19 @@
   border-top-right-radius: $border-radius;
   background-color: white(0.75);
 
-  &:hover::ng-deep button:before {
-    color: $grey-800;
+  &::ng-deep button {
+    transition: width 0.2s, height 0.2s;
+
+    &:before {
+      transition: color 0.2s, font-size 0.2s;
+    }
+  }
+
+  &:not(:hover):not(.focused)::ng-deep button {
+    @include size($sizeSmall);
+
+    &:before {
+      font-size: 20px;
+    }
   }
 }

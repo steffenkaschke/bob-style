@@ -18,12 +18,15 @@
                          [panelClass]="'placeholder-panel'"
                          [hasArrow]="false"
                          [panelPosition]="placeholderPanelPosition"
-                         (selectChange)="addPlaceholder($event)">
+                         (selectChange)="addPlaceholder($event)"
+                         (closed)="onPlaceholderPanelClose()">
     <b-square-button class="placeholder-panel-trigger"
+                     [ngClass]="{ focused: plchldrPnlTrgrFocused }"
                      [type]="buttonType.tertiary"
                      [size]="buttonSize.large"
                      [icon]="icons.field_add"
-                     (click)="onPlaceholderOpen()">
+                     [color]="iconColor.normal"
+                     (click)="onPlaceholderPanelOpen()">
     </b-square-button>
   </b-single-select-panel>
 </div>

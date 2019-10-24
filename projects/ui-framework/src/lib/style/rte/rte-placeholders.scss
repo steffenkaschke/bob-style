@@ -10,6 +10,7 @@
     cursor: default;
     letter-spacing: normal;
     background-color: $grey-300;
+    box-shadow: inset 0 0 0 1px white;
 
     em {
       &:first-child,

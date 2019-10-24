@@ -128,7 +128,7 @@ inputStories.add(
         label: text('label', 'Edit rich textor'),
         value: text('value', value),
         minChars: number('minChars', 20),
-        maxChars: number('maxChars', 400),
+        maxChars: number('maxChars', 500),
         minHeight: number('minHeight'),
         maxHeight: number('maxHeight'),
         disabled: boolean('disabled', false),

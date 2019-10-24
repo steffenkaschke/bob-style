@@ -13,14 +13,19 @@ export class HtmlParserHelpers {
 
   cleanupHtml(value: string): string {
     return (
-      value
+      this.enforceAttributes(value, 'span,p,div,a', {
+        contenteditable: null,
+        tabindex: null,
+        spellcheck: null
+      })
+
         // removing misc froala stuff
-        .replace(/(noopener noreferrer\s?){2,100}/gim, '$1')
-        .replace(/\s?spellcheck="false"/gim, '')
-        .replace(/\s?tabindex="-1"/gim, '')
-        .replace(/contenteditable="false"/gim, '')
-        .replace(/\s?fr-deletable/gi, '')
-        .replace(/\s?class="\s*"/gim, '')
+        // .replace(/(noopener noreferrer\s?){2,100}/gim, '$1')
+        // .replace(/\s?spellcheck="false"/gim, '')
+        // .replace(/\s?tabindex="-1"/gim, '')
+        // .replace(/contenteditable="false"/gim, '')
+        // .replace(/\s?fr-deletable/gi, '')
+        // .replace(/\s?class="\s*"/gim, '')
 
         // replace P with DIV
         .replace(/(<p)/gim, '<div')
@@ -38,6 +43,7 @@ export class HtmlParserHelpers {
         // spaces
         .replace(/&nbsp;/gi, ' ')
         .replace(/\s\s+/g, ' ')
+        .trim()
     );
   }
 

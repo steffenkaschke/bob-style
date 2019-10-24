@@ -23,7 +23,6 @@ import { PlaceholdersConverterService } from './placeholders.service';
 import { RteService } from './rte.service';
 
 import Tribute, { TributeOptions, TributeItem } from 'tributejs';
-import { BlotType } from './rte.enum';
 
 @Component({
   selector: 'b-rte',
@@ -165,15 +164,27 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
     };
   }
 
-  public onPlaceholderOpen() {}
+  public onPlaceholderPanelOpen() {
+    this.inputFocused = true;
+    this.plchldrPnlTrgrFocused = true;
+    this.getEditor().selection.save();
+  }
+
+  public onPlaceholderPanelClose() {
+    this.plchldrPnlTrgrFocused = false;
+  }
 
   public addPlaceholder(event: ListChange) {
-    const placeholder = this.placeholdersConverter.toRte(
-      `{{${event.getSelectedIds()[0]}}}`,
-      this.placeholderList
+    const placeholder = this.placeholdersConverter.getPlaceholderHtml(
+      this.placeholderList,
+      event.getSelectedIds()[0] as string
     );
 
-    console.log(placeholder);
+    const editor = this.getEditor();
+
+    editor.selection.restore();
+    editor.html.insert(placeholder);
+    editor.undo.saveStep();
 
     this.placeholderList = cloneArray(this.placeholderList);
   }

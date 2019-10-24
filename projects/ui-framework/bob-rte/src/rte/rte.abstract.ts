@@ -30,7 +30,8 @@ import {
   ButtonSize,
   SingleSelectPanelComponent,
   BELOW_END,
-  ABOVE_END
+  ABOVE_END,
+  IconColor
 } from 'bob-style';
 
 import {
@@ -47,83 +48,11 @@ import { RteMentionsOption } from './rte.interface';
 import { PlaceholdersConverterService } from './placeholders.service';
 import { RteService } from './rte.service';
 
-import FroalaEditor from 'froala-editor';
 import { FroalaEditorDirective } from 'angular-froala-wysiwyg';
 import { FroalaEdtr, FroalaOptions } from './froala.interface';
 import Tribute from 'tributejs';
 
-// https://www.froala.com/wysiwyg-editor/examples/rtl-ltr-custom-button
-const changeDirection = function(dir: string) {
-  this.selection.save();
-  this.html.wrap(true, true, true, true);
-  this.selection.restore();
-  const elements = this.selection.blocks();
-  this.selection.save();
-
-  for (let i = 0; i < elements.length; i++) {
-    const element = elements[i];
-    if (element !== this.el) {
-      const curEl = this.$(element);
-      curEl
-        .css('direction', dir === 'rtl' ? dir : null)
-        .css('text-align', dir === 'rtl' ? 'right' : null)
-        .removeClass('fr-temp-div');
-
-      if (curEl.attr('style') === '') {
-        curEl.removeAttr('style');
-      }
-    }
-  }
-
-  this.html.unwrap();
-  this.selection.restore();
-};
-
-FroalaEditor.DefineIcon('rightToLeft');
-FroalaEditor.RegisterCommand('rightToLeft', {
-  icon: 'right to left',
-  title: 'Direction',
-  focus: true,
-  undo: true,
-  refreshAfterCallback: true,
-
-  callback: function() {
-    changeDirection.apply(this, ['rtl']);
-  },
-
-  refresh: function(btns: HTMLElement[]) {
-    if (
-      (this.selection.blocks()[0] as HTMLElement).style.cssText.includes('rtl')
-    ) {
-      btns[0].classList.add('fr-active');
-    } else {
-      btns[0].classList.remove('fr-active');
-    }
-  }
-});
-
-FroalaEditor.DefineIcon('leftToRight');
-FroalaEditor.RegisterCommand('leftToRight', {
-  icon: 'left to right',
-  title: 'Direction',
-  focus: true,
-  undo: true,
-  refreshAfterCallback: true,
-
-  callback: function() {
-    changeDirection.apply(this, ['ltr']);
-  },
-
-  refresh: function(btns: HTMLElement[]) {
-    if (
-      (this.selection.blocks()[0] as HTMLElement).style.cssText.includes('ltr')
-    ) {
-      btns[0].classList.add('fr-active');
-    } else {
-      btns[0].classList.remove('fr-active');
-    }
-  }
-});
+import './rte.direction';
 
 export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges {
@@ -142,10 +71,12 @@ export abstract class RTEbaseElement extends BaseFormElement
   public length = 0;
   public editorValue: string;
   public tribute: Tribute<any>;
+  public plchldrPnlTrgrFocused = false;
 
   readonly icons = Icons;
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
+  readonly iconColor = IconColor;
   readonly placeholderPanelPosition = [BELOW_END, ABOVE_END];
 
   @ViewChild('editor', { read: FroalaEditorDirective, static: true })
@@ -315,18 +246,7 @@ export abstract class RTEbaseElement extends BaseFormElement
           'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
         )
     ];
-    this.outputTransformers = [
-      // (value: string) =>
-      //   !value.includes('href') && !value.includes('span')
-      //     ? value
-      //     : this.parserService.enforceAttributes(value, 'a, span', {
-      //         class: { 'fr-deletable': false },
-      //         contenteditable: null,
-      //         spellcheck: null,
-      //         tabindex: null
-      //       }),
-      this.parserService.cleanupHtml
-    ];
+    this.outputTransformers = [this.parserService.cleanupHtml];
 
     if (this.placeholdersEnabled()) {
       this.inputTransformers.push(
@@ -340,6 +260,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   public placeholdersEnabled(): boolean {
     return (
+      !this.disabled &&
       isNotEmptyArray(this.placeholderList) &&
       this.controls.includes(BlotType.placeholder)
     );

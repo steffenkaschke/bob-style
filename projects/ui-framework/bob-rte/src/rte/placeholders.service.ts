@@ -30,17 +30,28 @@ export class PlaceholdersConverterService {
   public toRte(value: string, placeholders: SelectGroupOption[]): string {
     const regex: RegExp = /{{(.*?)}}/gm;
     return value && isNotEmptyArray(placeholders)
-      ? value.replace(regex, (field: string, id: string) => {
-          const group = this.getGroupName(placeholders, id);
-          const name = this.getOptionName(placeholders, id);
-
-          return (
-            // prettier-ignore
-            // tslint:disable-next-line: max-line-length
-            `<span contenteditable="false" class="brte-plchldr fr-deletable" data-placeholder-id="${id}"><em>{{&nbsp;</em>${(group ? '<strong>' + group + '</strong><em>&nbsp;-&nbsp;</em>' : '') + name}<em>&nbsp;}}</em></span>`
-          );
-        })
+      ? value.replace(regex, (field: string, id: string) =>
+          this.getPlaceholderHtml(placeholders, id)
+        )
       : value || '';
+  }
+
+  public getPlaceholderHtml(
+    placeholders: SelectGroupOption[],
+    id: string
+  ): string {
+    id = id && id.trim();
+    if (!id || !placeholders) {
+      return id;
+    }
+    const group = this.getGroupName(placeholders, id);
+    const name = this.getOptionName(placeholders, id);
+
+    return name
+      ? // prettier-ignore
+        // tslint:disable-next-line: max-line-length
+        ` <span contenteditable="false" class="brte-plchldr fr-deletable" data-placeholder-id="${id}"><em>{{&nbsp;</em>${(group ? '<strong>' + group + '</strong><em>&nbsp;-&nbsp;</em>' : '') + name}<em>&nbsp;}}</em></span> `
+      : id;
   }
 
   public getGroupName(placeholders: SelectGroupOption[], id: string): string {
