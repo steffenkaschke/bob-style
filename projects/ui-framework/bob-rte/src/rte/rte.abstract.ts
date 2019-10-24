@@ -78,7 +78,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
   readonly iconColor = IconColor;
-  readonly placeholderPanelPosition = [BELOW_END, ABOVE_END];
+  readonly plchldrPanelPosition = [BELOW_END, ABOVE_END];
 
   private cntrlsInited = false;
 
@@ -110,7 +110,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   @HostBinding('attr.data-type') @Input() public type: RTEType =
     RTEType.primary;
 
-  writeValue(value: any): void {
+  public writeValue(value: any): void {
     if (value !== undefined) {
       this.editorValue = this.inputTransformers.reduce(
         (previousResult, fn) => fn(previousResult),
@@ -122,7 +122,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (hasChanges(changes)) {
       applyChanges(
         this,
@@ -187,12 +187,32 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     if (!this.cntrlsInited) {
       this.initControls();
       this.initTransformers();
       this.cntrlsInited = true;
     }
+  }
+
+  public placeholdersEnabled(): boolean {
+    return (
+      !this.disabled &&
+      isNotEmptyArray(this.placeholderList) &&
+      this.controls.includes(BlotType.placeholder)
+    );
+  }
+
+  protected getEditor(): FroalaEdtr {
+    return (this.editorDirective as any)._editor as FroalaEdtr;
+  }
+
+  protected getEditorElement(): HTMLElement {
+    return (this.editorDirective as any)._element as HTMLElement;
+  }
+
+  protected getEditorTextbox(): HTMLElement {
+    return this.getEditor().el as HTMLElement;
   }
 
   private initControls(): void {
@@ -268,25 +288,5 @@ export abstract class RTEbaseElement extends BaseFormElement
 
       this.outputTransformers.push(this.placeholdersConverter.fromRte);
     }
-  }
-
-  public placeholdersEnabled(): boolean {
-    return (
-      !this.disabled &&
-      isNotEmptyArray(this.placeholderList) &&
-      this.controls.includes(BlotType.placeholder)
-    );
-  }
-
-  protected getEditor(): FroalaEdtr {
-    return (this.editorDirective as any)._editor as FroalaEdtr;
-  }
-
-  protected getEditorElement(): HTMLElement {
-    return (this.editorDirective as any)._element as HTMLElement;
-  }
-
-  protected getEditorTextbox(): HTMLElement {
-    return this.getEditor().el as HTMLElement;
   }
 }

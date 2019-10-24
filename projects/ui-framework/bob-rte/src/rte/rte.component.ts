@@ -143,6 +143,18 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         this.cd.detectChanges();
       },
 
+      click: (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+
+        // prevent mentions link clicks
+        if (target.classList.contains('brte-mention')) {
+          this.getEditor().selection.save();
+          event.preventDefault();
+          this.getEditor().toolbar.enable();
+          this.getEditor().selection.restore();
+        }
+      },
+
       'charCounter.update': () => {
         this.length = this.getEditor().charCounter.count();
         this.cd.detectChanges();
@@ -174,11 +186,9 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       event.getSelectedIds()[0] as string
     );
 
-    const editor = this.getEditor();
-
-    editor.selection.restore();
-    editor.html.insert(placeholder);
-    editor.undo.saveStep();
+    this.getEditor().selection.restore();
+    this.getEditor().html.insert(placeholder);
+    this.getEditor().undo.saveStep();
 
     this.placeholderList = cloneArray(this.placeholderList);
   }
