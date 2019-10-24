@@ -510,6 +510,8 @@ export { DOMhelpers } from './lib/services/html/dom-helpers.service';
 export { HtmlParserHelpers } from './lib/services/html/html-parser.service';
 // Transformers
 export * from './lib/services/utils/transformers';
+// Mocks
+export { selectOptionsMock } from './lib/form-elements/lists/multi-select-panel/multi-select-panel.mock';
 
 /*
 * Animation

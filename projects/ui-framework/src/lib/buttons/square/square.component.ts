@@ -15,7 +15,10 @@ import { BaseButtonElement } from '../button.abstract';
       (click)="onClick($event)"
     ></button>
   `,
-  styleUrls: ['./square.component.scss']
+  styleUrls: ['./square.component.scss'],
+  providers: [
+    { provide: BaseButtonElement, useExisting: SquareButtonComponent }
+  ]
 })
 export class SquareButtonComponent extends BaseButtonElement {
   constructor() {

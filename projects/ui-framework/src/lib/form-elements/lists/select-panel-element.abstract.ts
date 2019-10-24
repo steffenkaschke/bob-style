@@ -9,7 +9,11 @@ import {
   ChangeDetectorRef,
   OnDestroy,
   EventEmitter,
-  Output
+  Output,
+  OnChanges,
+  SimpleChanges,
+  ContentChild,
+  AfterContentInit
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -36,13 +40,17 @@ import { Keys } from '../../enums';
 import { SelectGroupOption } from './list.interface';
 import { ListChange } from './list-change/list-change';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
+import { BaseButtonElement } from '../../buttons/button.abstract';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
-  implements AfterViewInit, OnDestroy {
+  implements OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
   @ViewChild(CdkOverlayOrigin, { static: true })
   overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
   @ViewChild('prefix', { static: false }) prefix: ElementRef;
+
+  @ContentChild(BaseButtonElement, { static: false })
+  public triggerButton: BaseButtonElement;
 
   @Input() options: SelectGroupOption[];
   @Input() panelClass: string;
@@ -57,6 +65,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
+  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
+  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
   showPrefix = true;
   positionClassList: OverlayPositionClasses = {};
@@ -65,7 +75,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   panelClassList: string[] = [];
 
   private panelConfig: OverlayConfig;
-  private overlayRef: OverlayRef;
+  public overlayRef: OverlayRef;
   private templatePortal: TemplatePortal;
   private backdropClickSubscriber: Subscription;
   private positionChangeSubscriber: Subscription;
@@ -84,6 +94,12 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     super();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.disabled && this.triggerButton) {
+      this.triggerButton.disabled = changes.disabled.currentValue;
+    }
+  }
+
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
@@ -95,6 +111,12 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
         }
       }, 0);
     });
+  }
+
+  ngAfterContentInit(): void {
+    if (this.triggerButton) {
+      this.triggerButton.disabled = this.disabled;
+    }
   }
 
   ngOnDestroy(): void {
@@ -124,6 +146,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
         searchInput.focus();
       }
 
+      this.opened.emit(this.overlayRef);
+
       this.backdropClickSubscriber = this.overlayRef
         .backdropClick()
         .subscribe(() => {
@@ -142,11 +166,15 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     }
   }
 
-  onCancel(): void {
+  closePanel(): void {
     this.destroyPanel();
   }
 
-  destroyPanel(): void {
+  protected onCancel(): void {
+    this.destroyPanel();
+  }
+
+  protected destroyPanel(): void {
     this.panelOpen = false;
     if (this.overlayRef) {
       invoke(this.overlayRef, 'dispose');
@@ -156,6 +184,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       this.panelConfig = {};
       this.templatePortal = null;
       this.overlayRef = null;
+      this.closed.emit();
     }
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();

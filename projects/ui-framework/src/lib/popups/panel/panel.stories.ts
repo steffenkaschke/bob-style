@@ -21,13 +21,12 @@ const buttonStories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
 );
 
 const panelSize = values(PanelSize);
-const panelDefaultPosVer = values(PanelDefaultPosVer);
 
 const template = `
   <b-panel [panelClass]="panelClass"
           [size]="panelSize"
+          [defaultPosVer]="defaultPosVer"
           [showBackdrop]="showBackdrop"
-          [defaultPosVer]="panelDefaultPosVer"
           [openOnHover]="openOnHover"
           (closed)="onPanelDestroyed()"
           (opened)="onPanelOpened()">
@@ -89,7 +88,7 @@ buttonStories.add(
       panelSize: select('size', panelSize, PanelSize.medium),
       defaultPosVer: select(
         'defaultPosVer',
-        panelDefaultPosVer,
+        Object.values(PanelDefaultPosVer),
         PanelDefaultPosVer.above
       ),
       showBackdrop: boolean('showBackdrop', true),

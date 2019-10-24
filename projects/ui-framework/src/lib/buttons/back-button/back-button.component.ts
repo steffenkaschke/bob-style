@@ -18,7 +18,8 @@ import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
       <ng-content></ng-content>
     </button>
   `,
-  styleUrls: ['../button/button.component.scss']
+  styleUrls: ['../button/button.component.scss'],
+  providers: [{ provide: BaseButtonElement, useExisting: BackButtonComponent }]
 })
 export class BackButtonComponent extends BaseButtonElement {
   constructor() {

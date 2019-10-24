@@ -33,10 +33,9 @@ const componentTemplate2 = `
                        [disabled]="disabled"
                        [panelClass]="panelClass"
                        (selectChange)="selectChange($event)">
-  <b-square-button [disabled]="disabled"
-                    type="${ButtonType.secondary}"
-                   icon="${Icons.table}">
-  </b-square-button>
+    <b-square-button type="${ButtonType.secondary}"
+                    icon="${Icons.table}">
+    </b-square-button>
 </b-single-select-panel>
 `;
 
@@ -63,6 +62,8 @@ const note = `
   [options] | SelectGroupOptions[] | select option | null
   [disabled] | boolean | if panel is disabled | false
   (selectChange) | ListChange | output on select change
+  (opened) | EventEmitter&lt;OverlayRef&gt; | Emits panel Opened event | none
+  (closed) | EventEmitter&lt;void&gt; | Emits panel Closed event | none
 
   ~~~
   ${componentTemplate1}
