@@ -57,6 +57,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
+  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
+  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
   showPrefix = true;
   positionClassList: OverlayPositionClasses = {};
@@ -65,7 +67,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   panelClassList: string[] = [];
 
   private panelConfig: OverlayConfig;
-  private overlayRef: OverlayRef;
+  public overlayRef: OverlayRef;
   private templatePortal: TemplatePortal;
   private backdropClickSubscriber: Subscription;
   private positionChangeSubscriber: Subscription;
@@ -124,6 +126,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
         searchInput.focus();
       }
 
+      this.opened.emit(this.overlayRef);
+
       this.backdropClickSubscriber = this.overlayRef
         .backdropClick()
         .subscribe(() => {
@@ -156,6 +160,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       this.panelConfig = {};
       this.templatePortal = null;
       this.overlayRef = null;
+      this.closed.emit();
     }
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
