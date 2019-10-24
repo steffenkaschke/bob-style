@@ -23,7 +23,9 @@ import {
   isNotEmptyArray,
   stringyOrFail,
   InputEventType,
-  HtmlParserHelpers
+  HtmlParserHelpers,
+  SelectGroupOption,
+  SelectOption
 } from 'bob-style';
 
 import {
@@ -36,11 +38,7 @@ import {
   RTE_TOOLBAR_HEIGHT
 } from './rte.const';
 import { BlotType, RTEType } from './rte.enum';
-import {
-  RteMentionsOption,
-  RtePlaceholderList,
-  RtePlaceholder
-} from './rte.interface';
+import { RteMentionsOption } from './rte.interface';
 import { PlaceholdersConverterService } from './placeholders.service';
 import { RteService } from './rte.service';
 
@@ -157,7 +155,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   @Input() public options: FroalaOptions = cloneArray(RTE_OPTIONS_DEF);
 
   @Input() public mentionsList: RteMentionsOption;
-  @Input() public placeholderList: RtePlaceholderList[];
+  @Input() public placeholderList: SelectGroupOption[];
 
   @Output() blurred: EventEmitter<string> = new EventEmitter<string>();
   @Output() focused: EventEmitter<string> = new EventEmitter<string>();
@@ -272,7 +270,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     this.inputTransformers = [
       stringyOrFail,
 
-      (value: string) =>
+      (value: string): string =>
         !value.includes('href')
           ? value
           : this.parserService.enforceAttributes(value, 'a', {
@@ -283,7 +281,7 @@ export abstract class RTEbaseElement extends BaseFormElement
               tabindex: '-1'
             }),
 
-      (value: string) =>
+      (value: string): string =>
         !value.includes('brte-mention')
           ? value
           : this.parserService.enforceAttributes(value, '.brte-mention', {
@@ -295,7 +293,7 @@ export abstract class RTEbaseElement extends BaseFormElement
               tabindex: '-1'
             }),
 
-      (value: string) =>
+      (value: string): string =>
         this.parserService.linkify(
           value,
           'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
@@ -320,8 +318,8 @@ export abstract class RTEbaseElement extends BaseFormElement
       !this.disableControls.includes(BlotType.placeholder)
     ) {
       this.inputTransformers.push(
-        this.placeholdersConverter.toRtePartial(this.placeholderList[0]
-          .options as RtePlaceholder[])
+        (value: string): string =>
+          this.placeholdersConverter.toRte(value, this.placeholderList)
       );
 
       this.outputTransformers.push(this.placeholdersConverter.fromRte);

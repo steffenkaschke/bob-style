@@ -1,4 +1,12 @@
-import { mockNames, mockAvatar, mockText } from 'bob-style';
+import {
+  mockNames,
+  mockAvatar,
+  mockText,
+  makeArray,
+  randomNumber,
+  simpleUID,
+  SelectGroupOption
+} from 'bob-style';
 import { RteMentionsOption } from './rte.interface';
 
 export const mentionsOptions = mockNames(200).map(
@@ -9,21 +17,58 @@ export const mentionsOptions = mockNames(200).map(
   })
 );
 
-export const placeholderMock = [
+export const placeholderMock: SelectGroupOption[] = [
   {
-    groupName: 'Basic Info - header',
+    groupName: 'Basic Info',
+    key: 'basic',
     options: [
       {
-        displayName: 'First name',
-        id: '/root/firstName',
+        id: 'basic/firstName',
         value: 'First name'
       },
       {
-        displayName: 'title',
+        id: 'basic/lastName',
+        value: 'Last name'
+      },
+      {
+        id: 'basic/fullName',
+        value: 'Full name'
+      },
+      {
+        id: 'basic/email',
+        value: 'E-mail'
+      }
+    ]
+  },
+  {
+    groupName: 'Work',
+    key: '/work',
+    options: [
+      {
         id: '/work/title',
-        category: 'Work',
-        value: 'title'
+        value: 'Title'
+      },
+      {
+        id: '/work/team',
+        value: 'Team'
+      },
+      {
+        id: '/work/site',
+        value: 'Site'
       }
     ]
   }
-];
+].concat(
+  makeArray(15).map(i => {
+    const groupId = simpleUID('/', 4);
+
+    return {
+      groupName: mockText(randomNumber(1, 3)),
+      key: groupId,
+      options: makeArray(randomNumber(10, 25)).map(i => ({
+        id: groupId + '/' + simpleUID(),
+        value: mockText(randomNumber(1, 3))
+      }))
+    };
+  })
+);

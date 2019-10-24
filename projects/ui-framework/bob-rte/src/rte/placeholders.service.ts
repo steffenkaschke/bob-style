@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { RtePlaceholder } from './rte.interface';
 import { find } from 'lodash';
+import { SelectGroupOption, isNotEmptyArray, SelectOption } from 'bob-style';
 
 @Injectable()
 export class PlaceholdersConverterService {
@@ -28,57 +28,34 @@ export class PlaceholdersConverterService {
     return elm.innerHTML;
   }
 
-  public toRte(
-    contentToConvert: string,
-    placeholders: RtePlaceholder[]
-  ): string {
+  public toRte(value: string, placeholders: SelectGroupOption[]): string {
     const regex: RegExp = /{{(.*?)}}/gm;
-    return contentToConvert && placeholders
-      ? contentToConvert.replace(
-          regex,
-          (field: string, innerContent: string) => {
-            const category = this.getGroupDisplayName(
-              placeholders,
-              innerContent
-            );
-            const name = this.getDisplayNameById(placeholders, innerContent);
+    return value && isNotEmptyArray(placeholders)
+      ? value.replace(regex, (field: string, id: string) => {
+          const group = this.getGroupName(placeholders, id);
+          const name = this.getOptionName(placeholders, id);
 
-            return (
-              // prettier-ignore
-              // tslint:disable-next-line: max-line-length
-              `<span contenteditable="false" class="brte-plchldr fr-deletable" data-placeholder-id="${innerContent}"><em>{{&nbsp;</em>${(category ? '<strong>' + category + '</strong><em>&nbsp;-&nbsp;</em>' : '') + name}<em>&nbsp;}}</em></span>`
-            );
-          }
-        )
-      : contentToConvert
-      ? contentToConvert
+          return (
+            // prettier-ignore
+            // tslint:disable-next-line: max-line-length
+            `<span contenteditable="false" class="brte-plchldr fr-deletable" data-placeholder-id="${id}"><em>{{&nbsp;</em>${(group ? '<strong>' + group + '</strong><em>&nbsp;-&nbsp;</em>' : '') + name}<em>&nbsp;}}</em></span>`
+          );
+        })
+      : value
+      ? value
       : '';
   }
 
-  public toRtePartial = (placeholders: RtePlaceholder[]) => (
-    contentToConvert: string
-  ) => this.toRte(contentToConvert, placeholders)
-
-  public getDisplayNameById(
-    placeholders: RtePlaceholder[],
-    id: string
-  ): string {
-    const placeholder = find(placeholders, p => p.id === id);
-    return placeholder ? placeholder.displayName : id;
+  public getGroupName(placeholders: SelectGroupOption[], id: string): string {
+    const groupId = id.split('/').filter(i => !!i)[0];
+    const group = placeholders.find(g => g.key === groupId);
+    return group.groupName;
   }
 
-  public getGroupDisplayName(
-    placeholders: RtePlaceholder[],
-    id: string
-  ): string {
-    const placeholder = find(placeholders, p => p.id === id);
-    return placeholder &&
-      placeholder.category &&
-      placeholder.category !== 'undefined'
-      ? placeholder.category
-      : '';
+  public getOptionName(placeholders: SelectGroupOption[], id: string): string {
+    let allOptions: SelectOption[] = placeholders.map(g => g.options) as any;
+    allOptions = allOptions.concat(...allOptions);
+    const option = allOptions.find(o => o.id === id);
+    return option.value;
   }
-
-  public getPlaceholderText = (name: string, category: string): string =>
-    '{{' + +'}}'
 }

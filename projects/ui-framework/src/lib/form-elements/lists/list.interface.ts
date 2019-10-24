@@ -25,7 +25,7 @@ export interface SelectGroupOption {
 export interface SelectOption {
   value: string;
   id: number | string;
-  selected: boolean;
+  selected?: boolean;
   prefixComponent?: ListComponentPrefix;
   disabled?: boolean;
 }
