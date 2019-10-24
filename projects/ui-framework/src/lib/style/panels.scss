@@ -139,6 +139,8 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 .b-select-panel-with-arrow {
   position: relative !important;
 
+  @include overlayTopBottomBorders;
+
   .b-select-panel {
     @include OverlayPointerHolders();
     @include OverlayPositionBounding('center');
@@ -146,27 +148,21 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
     &:before {
       border-color: transparent transparent $grey-500 $grey-500 !important;
     }
+  }
 
-    &.panel-below {
-      @include OverlayPositionBounding('below');
-      border-top-width: 1px;
-      border-top-right-radius: $border-radius;
-      border-top-left-radius: $border-radius;
+  .panel-below {
+    @include OverlayPositionBounding('below');
 
-      &:after {
-        top: $panel-arrow-size/-2 + 1px;
-      }
+    &:after {
+      top: $panel-arrow-size/-2 + 1px;
     }
+  }
 
-    &.panel-above {
-      @include OverlayPositionBounding('above');
-      border-bottom-width: 1px;
-      border-bottom-right-radius: $border-radius;
-      border-bottom-left-radius: $border-radius;
+  .panel-above {
+    @include OverlayPositionBounding('above');
 
-      &:after {
-        bottom: $panel-arrow-size/-2 + 1px;
-      }
+    &:after {
+      bottom: $panel-arrow-size/-2 + 1px;
     }
   }
 }

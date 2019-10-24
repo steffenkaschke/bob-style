@@ -31,7 +31,7 @@ const componentTemplate1 = `
 const componentTemplate2 = `
 <b-single-select-panel [options]="options"
                        [disabled]="disabled"
-                       [panelClass]="hasArrow"
+                       [panelClass]="panelClass"
                        (selectChange)="selectChange($event)">
   <b-square-button [disabled]="disabled"
                     type="${ButtonType.secondary}"
@@ -109,7 +109,6 @@ inputStories.add(
       template,
       props: {
         chevronButtonText: text('chevronButtonText', 'Jump to section'),
-        hasArrow: boolean('hasArrow', true),
         disabled: boolean('disabled', false),
         panelClass: text('panelClass', 'some-class'),
         options: object('options', optionsMock),
