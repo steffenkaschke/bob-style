@@ -108,3 +108,16 @@ $panel-arrow-size: 16px;
     }
   }
 }
+
+@mixin overlayTopBottomBorders() {
+  .panel-below {
+    border-top-width: 1px;
+    border-top-right-radius: $border-radius;
+    border-top-left-radius: $border-radius;
+  }
+  .panel-above {
+    border-bottom-width: 1px;
+    border-bottom-right-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+  }
+}

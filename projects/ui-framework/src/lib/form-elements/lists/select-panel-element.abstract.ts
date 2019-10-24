@@ -162,7 +162,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     }
   }
 
-  private getPanelClass() {
+  private getPanelClass(): string[] {
     return [
       ...this.panelClassList,
       'b-select-panel',
@@ -181,13 +181,11 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       positionStrategy as FlexibleConnectedPositionStrategy
     );
 
-    const panelClass = this.getPanelClass();
-
     return {
       disposeOnNavigation: true,
       hasBackdrop: true,
       backdropClass: 'b-select-backdrop',
-      panelClass,
+      panelClass: this.getPanelClass(),
       positionStrategy,
       scrollStrategy: this.panelPositionService.getScrollStrategy()
     };
