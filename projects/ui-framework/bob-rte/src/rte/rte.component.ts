@@ -85,6 +85,13 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       } as TributeOptions<any>);
     }
 
+    // placeholders
+
+    if (this.placeholderList && this.placeholderPanel) {
+      this.placeholderPanel.panelClassList = [];
+      this.cd.detectChanges();
+    }
+
     // froala events
 
     this.options.events = {
@@ -154,4 +161,6 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       }
     };
   }
+
+  public addPlaceholder(event) {}
 }

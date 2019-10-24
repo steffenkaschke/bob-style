@@ -25,7 +25,10 @@ import {
   InputEventType,
   HtmlParserHelpers,
   SelectGroupOption,
-  SelectOption
+  Icons,
+  ButtonType,
+  ButtonSize,
+  SingleSelectPanelComponent
 } from 'bob-style';
 
 import {
@@ -138,8 +141,14 @@ export abstract class RTEbaseElement extends BaseFormElement
   public editorValue: string;
   public tribute: Tribute<any>;
 
+  readonly icons = Icons;
+  readonly buttonType = ButtonType;
+  readonly buttonSize = ButtonSize;
+
   @ViewChild('editor', { read: FroalaEditorDirective, static: true })
   protected editorDirective: FroalaEditorDirective;
+  @ViewChild('placeholderPanel', { static: false })
+  protected placeholderPanel: SingleSelectPanelComponent;
 
   @Input() public value: string;
   @Input() public minChars = 0;
@@ -247,6 +256,10 @@ export abstract class RTEbaseElement extends BaseFormElement
       isNotEmptyArray(this.mentionsList)
     ) {
       this.tribute.appendCurrent(this.mentionsList as any);
+    }
+
+    if (changes.placeholderList && this.placeholderPanel) {
+      this.placeholderPanel.panelClassList = [];
     }
 
     if (firstChanges(changes) || changes.placeholderList) {

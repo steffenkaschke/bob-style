@@ -31,3 +31,19 @@ $bg-color: var(--inform-700);
     }
   }
 }
+
+.b-select-panel.placeholder-panel {
+  .b-select-panel {
+    &:before,
+    &:after {
+      display: none !important;
+    }
+
+    &.panel-below {
+      top: 0;
+    }
+    &.panel-above {
+      bottom: 0;
+    }
+  }
+}

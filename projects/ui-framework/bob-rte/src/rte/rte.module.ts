@@ -4,7 +4,9 @@ import { CommonModule } from '@angular/common';
 import {
   InputMessageModule,
   FormElementLabelModule,
-  HtmlParserHelpers
+  HtmlParserHelpers,
+  SingleSelectPanelModule,
+  ButtonsModule
 } from 'bob-style';
 
 import { RichTextEditorComponent } from './rte.component';
@@ -25,6 +27,8 @@ import 'froala-editor/js/plugins/url.min.js';
     CommonModule,
     FormElementLabelModule,
     InputMessageModule,
+    SingleSelectPanelModule,
+    ButtonsModule,
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot()
   ],

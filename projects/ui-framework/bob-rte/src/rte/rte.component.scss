@@ -22,3 +22,14 @@
 :host.disabled {
   @include disabled-state;
 }
+
+.editor-wrap {
+  position: relative;
+}
+
+.placeholder-select {
+  position: absolute;
+  top: 0px;
+  right: 0;
+  z-index: 5;
+}

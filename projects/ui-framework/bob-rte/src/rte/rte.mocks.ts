@@ -42,32 +42,32 @@ export const placeholderMock: SelectGroupOption[] = [
   },
   {
     groupName: 'Work',
-    key: '/work',
+    key: 'work',
     options: [
       {
-        id: '/work/title',
+        id: 'work/title',
         value: 'Title'
       },
       {
-        id: '/work/team',
+        id: 'work/team',
         value: 'Team'
       },
       {
-        id: '/work/site',
+        id: 'work/site',
         value: 'Site'
       }
     ]
   }
 ].concat(
   makeArray(15).map(i => {
-    const groupId = simpleUID('/', 4);
+    const groupId = simpleUID();
 
     return {
-      groupName: mockText(randomNumber(1, 3)),
+      groupName: mockText(randomNumber(1, 2)),
       key: groupId,
       options: makeArray(randomNumber(10, 25)).map(i => ({
         id: groupId + '/' + simpleUID(),
-        value: mockText(randomNumber(1, 3))
+        value: mockText(randomNumber(1, 2))
       }))
     };
   })

@@ -5,9 +5,24 @@
                       [fieldId]="id">
 </b-form-element-label>
 
-<div #editor
-     [froalaEditor]="options"
-     [(froalaModel)]="editorValue"></div>
+<div class="editor-wrap">
+  <div #editor
+       [froalaEditor]="options"
+       [(froalaModel)]="editorValue"></div>
+
+  <b-single-select-panel *ngIf="placeholderList"
+                         #placeholderPanel
+                         class="placeholder-select"
+                         [options]="placeholderList"
+                         [panelClass]="'placeholder-panel'"
+                         (selectChange)="addPlaceholder($event)">
+    <b-square-button class="placeholder-menu-trigger"
+                     [type]="buttonType.tertiary"
+                     [size]="buttonSize.large"
+                     [icon]="icons.field_add">
+    </b-square-button>
+  </b-single-select-panel>
+</div>
 
 <p b-input-message
    *ngIf="hintMessage || warnMessage || errorMessage || minChars || maxChars"

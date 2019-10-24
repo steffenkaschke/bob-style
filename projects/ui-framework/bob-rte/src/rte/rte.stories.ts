@@ -37,7 +37,7 @@ const value = `<div>
   of <span style="font-size: 18px;">large</span> size.
 </div>
 <div><br></div>
-<p><strong><em><span style="font-size: 18px;">Hooray!</span></em></strong> {{/root/firstName}} is {{/work/title}} of the month!</p>
+<p><strong><em><span style="font-size: 18px;">Hooray!</span></em></strong> {{basic/firstName}} is {{work/title}} of the month!</p>
 <p>More details at: https://longlink.com/gohere/thenthere/onemore/page#hash?query=bigBen</p>
 <div><br></div>
 Here's an important list of things to remember:
