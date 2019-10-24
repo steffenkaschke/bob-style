@@ -16,9 +16,12 @@ export const selectOptionsMock: SelectGroupOption[] = [
         selected: false
       },
       {
-        value: 'Display name',
-        id: '/root/displayName',
-        selected: false
+        id: 'basic/fullName',
+        value: 'Full name'
+      },
+      {
+        id: 'basic/email',
+        value: 'E-mail'
       }
     ]
   },
@@ -51,6 +54,10 @@ export const selectOptionsMock: SelectGroupOption[] = [
         value: 'Title',
         id: '/work/title',
         selected: false
+      },
+      {
+        id: 'work/team',
+        value: 'Team'
       },
       {
         value: 'Reports to',
