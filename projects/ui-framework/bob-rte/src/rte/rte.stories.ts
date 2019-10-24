@@ -127,9 +127,6 @@ inputStories.add(
         placeholder: text('placeholder', 'Compose an epic...'),
         label: text('label', 'Edit rich textor'),
         value: text('value', value),
-        controls: array('controls', controlsDef, '\n'),
-        disableControls: array('disableControls', disableControlsDef, '\n'),
-        placeholderList: object<SelectGroupOption>('options', placeholderMock),
         minChars: number('minChars', 20),
         maxChars: number('maxChars', 400),
         minHeight: number('minHeight'),
@@ -142,6 +139,9 @@ inputStories.add(
         change: action('Value changed'),
         focus: action('Editor focused'),
         blur: action('Editor blurred'),
+        controls: array('controls', controlsDef, '\n'),
+        disableControls: array('disableControls', disableControlsDef, '\n'),
+        placeholderList: object<SelectGroupOption>('options', placeholderMock),
         mentionsOptions: object('mentionsOptions', mentionsOptions)
       },
       moduleMetadata: {

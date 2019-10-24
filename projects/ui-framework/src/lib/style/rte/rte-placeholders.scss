@@ -1,6 +1,3 @@
-$border-color: var(--inform-700);
-$bg-color: var(--inform-700);
-
 .fr-box,
 .fr-view {
   .brte-plchldr {
@@ -33,17 +30,11 @@ $bg-color: var(--inform-700);
 }
 
 .b-select-panel.placeholder-panel {
-  .b-select-panel {
-    &:before,
-    &:after {
-      display: none !important;
-    }
+  @include overlayTopBottomBorders;
+  margin-top: -1px;
+  margin-right: -1px;
 
-    &.panel-below {
-      top: 0;
-    }
-    &.panel-above {
-      bottom: 0;
-    }
+  .panel-below {
+    border-top-right-radius: 0;
   }
 }

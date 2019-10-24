@@ -13,6 +13,25 @@
   @include bFormElement-label;
 }
 
+.bfe-wrap {
+  position: relative;
+  background-color: white;
+  border: 1px solid $input-border-color;
+  border-radius: $border-radius;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.bfe-wrap:focus,
+.bfe-wrap.focused,
+.focused .bfe-wrap {
+  border-color: $input-focus-border-color;
+  box-shadow: none;
+}
+
+:host {
+  @include input-border-colors($add: ' .bfe-wrap');
+}
+
 :host.required {
   .bfe-label {
     @include input-required;
@@ -23,13 +42,21 @@
   @include disabled-state;
 }
 
-.editor-wrap {
-  position: relative;
-}
-
 .placeholder-select {
   position: absolute;
   top: 0px;
   right: 0;
   z-index: 5;
+}
+
+.placeholder-panel-trigger {
+  border: 1px solid $grey-500;
+  border-top-width: 0;
+  border-right-width: 0;
+  border-top-right-radius: $border-radius;
+  background-color: white(0.75);
+
+  &:hover::ng-deep button:before {
+    color: $grey-800;
+  }
 }

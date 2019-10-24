@@ -28,7 +28,9 @@ import {
   Icons,
   ButtonType,
   ButtonSize,
-  SingleSelectPanelComponent
+  SingleSelectPanelComponent,
+  BELOW_END,
+  ABOVE_END
 } from 'bob-style';
 
 import {
@@ -144,6 +146,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   readonly icons = Icons;
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
+  readonly placeholderPanelPosition = [BELOW_END, ABOVE_END];
 
   @ViewChild('editor', { read: FroalaEditorDirective, static: true })
   protected editorDirective: FroalaEditorDirective;
@@ -325,11 +328,7 @@ export abstract class RTEbaseElement extends BaseFormElement
       this.parserService.cleanupHtml
     ];
 
-    if (
-      this.placeholderList &&
-      this.controls.includes(BlotType.placeholder) &&
-      !this.disableControls.includes(BlotType.placeholder)
-    ) {
+    if (this.placeholdersEnabled()) {
       this.inputTransformers.push(
         (value: string): string =>
           this.placeholdersConverter.toRte(value, this.placeholderList)
@@ -337,6 +336,13 @@ export abstract class RTEbaseElement extends BaseFormElement
 
       this.outputTransformers.push(this.placeholdersConverter.fromRte);
     }
+  }
+
+  public placeholdersEnabled(): boolean {
+    return (
+      isNotEmptyArray(this.placeholderList) &&
+      this.controls.includes(BlotType.placeholder)
+    );
   }
 
   protected getEditor(): FroalaEdtr {

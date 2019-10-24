@@ -13,7 +13,9 @@ import {
   HtmlParserHelpers,
   isNotEmptyArray,
   isKey,
-  Keys
+  Keys,
+  ListChange,
+  cloneArray
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
@@ -21,6 +23,7 @@ import { PlaceholdersConverterService } from './placeholders.service';
 import { RteService } from './rte.service';
 
 import Tribute, { TributeOptions, TributeItem } from 'tributejs';
+import { BlotType } from './rte.enum';
 
 @Component({
   selector: 'b-rte',
@@ -71,11 +74,11 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         },
 
         selectTemplate: function(item: TributeItem<any>) {
-          return `<a href="${
-            item.original.link
-          }" class="brte-mention fr-deletable" spellcheck="false" rel="noopener noreferrer" contenteditable="false">@${
-            item.original.displayName
-          }</a>`;
+          return (
+            // prettier-ignore
+            // tslint:disable-next-line: max-line-length
+            `<a href="${item.original.link}" class="brte-mention fr-deletable" spellcheck="false" rel="noopener noreferrer" contenteditable="false" tabindex="-1">@${item.original.displayName}</a>`
+          );
         },
 
         searchOpts: {
@@ -87,10 +90,10 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
     // placeholders
 
-    if (this.placeholderList && this.placeholderPanel) {
-      this.placeholderPanel.panelClassList = [];
-      this.cd.detectChanges();
-    }
+    // if (this.placeholderList && this.placeholderPanel) {
+    //   this.placeholderPanel.panelClassList = [];
+    //   this.cd.detectChanges();
+    // }
 
     // froala events
 
@@ -134,7 +137,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
           saveValue: true
         });
         this.inputFocused = true;
-        this.getEditorElement().classList.add('focused');
+        this.cd.detectChanges();
       },
 
       blur: () => {
@@ -144,7 +147,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
           saveValue: true
         });
         this.inputFocused = false;
-        this.getEditorElement().classList.remove('focused');
+        this.cd.detectChanges();
       },
 
       'charCounter.update': () => {
@@ -162,5 +165,16 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
     };
   }
 
-  public addPlaceholder(event) {}
+  public onPlaceholderOpen() {}
+
+  public addPlaceholder(event: ListChange) {
+    const placeholder = this.placeholdersConverter.toRte(
+      `{{${event.getSelectedIds()[0]}}}`,
+      this.placeholderList
+    );
+
+    console.log(placeholder);
+
+    this.placeholderList = cloneArray(this.placeholderList);
+  }
 }
