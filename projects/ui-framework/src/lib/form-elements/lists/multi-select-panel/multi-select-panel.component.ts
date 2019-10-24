@@ -3,7 +3,6 @@ import {
   Component,
   Input,
   NgZone,
-  OnChanges,
   ViewContainerRef
 } from '@angular/core';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
@@ -23,8 +22,7 @@ import { UtilsService } from '../../../services/utils/utils.service';
     '../multi-select/multi-select.component.scss'
   ]
 })
-export class MultiSelectPanelComponent extends BaseSelectPanelElement
-  implements OnChanges {
+export class MultiSelectPanelComponent extends BaseSelectPanelElement {
   @Input() chevronButtonText: string;
 
   listChange: ListChange;
