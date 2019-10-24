@@ -146,11 +146,15 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     }
   }
 
-  onCancel(): void {
+  closePanel(): void {
     this.destroyPanel();
   }
 
-  destroyPanel(): void {
+  protected onCancel(): void {
+    this.destroyPanel();
+  }
+
+  protected destroyPanel(): void {
     this.panelOpen = false;
     if (this.overlayRef) {
       invoke(this.overlayRef, 'dispose');
