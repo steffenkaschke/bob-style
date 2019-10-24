@@ -16,7 +16,8 @@ import {
   FlexibleConnectedPositionStrategy,
   Overlay,
   OverlayConfig,
-  OverlayRef
+  OverlayRef,
+  ConnectedPosition
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import invoke from 'lodash/invoke';
@@ -34,6 +35,7 @@ import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { SelectGroupOption } from './list.interface';
 import { ListChange } from './list-change/list-change';
+import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements AfterViewInit, OnDestroy {
@@ -46,6 +48,11 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @Input() panelClass: string;
   @Input() isQuickFilter = false;
   @Input() hasPrefix = false;
+  @Input() panelPosition: PanelDefaultPosVer | ConnectedPosition[];
+  @Input('hasArrow') set setDefPanelClasses(hasArrow: boolean) {
+    this.panelClassList =
+      hasArrow === false ? [] : ['b-select-panel-with-arrow'];
+  }
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
@@ -155,21 +162,26 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     }
   }
 
+  private getPanelClass() {
+    return [
+      ...this.panelClassList,
+      'b-select-panel',
+      this.panelClass,
+      this.isQuickFilter ? 'b-quick-filter-panel' : null
+    ].filter(Boolean);
+  }
+
   private getDefaultConfig(): OverlayConfig {
-    const positionStrategy = this.panelPositionService.getCenterPanelPositionStrategy(
-      this.overlayOrigin
+    const positionStrategy = this.panelPositionService.getPanelPositionStrategy(
+      this.overlayOrigin,
+      this.panelPosition
     );
 
     this.subscribeToPositions(
       positionStrategy as FlexibleConnectedPositionStrategy
     );
 
-    const panelClass = [
-      ...this.panelClassList,
-      'b-select-panel',
-      this.panelClass,
-      this.isQuickFilter ? 'b-quick-filter-panel' : null
-    ].filter(Boolean);
+    const panelClass = this.getPanelClass();
 
     return {
       disposeOnNavigation: true,
