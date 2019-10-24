@@ -128,12 +128,18 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 
 // list panels
 
-.b-select-panel-with-arrow {
-  position: relative !important;
+.cdk-overlay-pane.b-select-panel {
   min-width: 280px;
 
   .b-select-panel {
     width: 100%;
+  }
+}
+
+.b-select-panel-with-arrow {
+  position: relative !important;
+
+  .b-select-panel {
     @include OverlayPointerHolders();
     @include OverlayPositionBounding('center');
 

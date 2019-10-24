@@ -31,7 +31,8 @@ const componentTemplate2 = `
 <b-multi-select-panel [options]="options"
                       [disabled]="disabled"
                       (selectChange)="selectChange($event)">
-  <b-square-button type="${ButtonType.secondary}"
+  <b-square-button [disabled]="disabled"
+                    type="${ButtonType.secondary}"
                    icon="${Icons.table}">
   </b-square-button>
 </b-multi-select-panel>
