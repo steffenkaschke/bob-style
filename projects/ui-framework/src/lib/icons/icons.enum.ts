@@ -123,6 +123,8 @@ export enum Icons {
   attachment = 'b-icon-attachment',
   infinite = 'b-icon-infinite',
   megaphone = 'b-icon-megaphone',
+  dir_ltr = 'b-icon-dir-ltr',
+  dir_rtl = 'b-icon-dir-rtl',
   field_add = 'b-icon-field-add',
   chat = 'b-icon-chat'
 }
