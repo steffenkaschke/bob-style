@@ -109,7 +109,6 @@ inputStories.add(
       template,
       props: {
         chevronButtonText: text('chevronButtonText', 'Jump to section'),
-        hasArrow: boolean('hasArrow', true),
         disabled: boolean('disabled', false),
         panelClass: text('panelClass', 'some-class'),
         options: object('options', optionsMock),
