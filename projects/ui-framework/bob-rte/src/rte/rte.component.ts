@@ -53,7 +53,8 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
   }
 
   ngOnInit(): void {
-    //
+    super.ngOnInit();
+
     // mentions
 
     if (isNotEmptyArray(this.mentionsList)) {
@@ -86,13 +87,6 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         }
       } as TributeOptions<any>);
     }
-
-    // placeholders
-
-    // if (this.placeholderList && this.placeholderPanel) {
-    //   this.placeholderPanel.panelClassList = [];
-    //   this.cd.detectChanges();
-    // }
 
     // froala events
 

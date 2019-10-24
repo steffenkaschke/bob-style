@@ -6,7 +6,8 @@ import {
   EventEmitter,
   ChangeDetectorRef,
   ViewChild,
-  OnChanges
+  OnChanges,
+  OnInit
 } from '@angular/core';
 import { merge } from 'lodash';
 
@@ -55,7 +56,7 @@ import Tribute from 'tributejs';
 import './rte.direction';
 
 export abstract class RTEbaseElement extends BaseFormElement
-  implements OnChanges {
+  implements OnChanges, OnInit {
   constructor(
     public cd: ChangeDetectorRef,
     public placeholdersConverter: PlaceholdersConverterService,
@@ -78,6 +79,8 @@ export abstract class RTEbaseElement extends BaseFormElement
   readonly buttonSize = ButtonSize;
   readonly iconColor = IconColor;
   readonly placeholderPanelPosition = [BELOW_END, ABOVE_END];
+
+  private cntrlsInited = false;
 
   @ViewChild('editor', { read: FroalaEditorDirective, static: true })
   protected editorDirective: FroalaEditorDirective;
@@ -153,34 +156,13 @@ export abstract class RTEbaseElement extends BaseFormElement
         : null;
     }
 
-    if (hasChanges(changes, ['controls', 'disableControls'])) {
-      if (this.controls.includes(BlotType.list)) {
-        this.controls = joinArrays(this.controls, [BlotType.ul, BlotType.ol]);
-      }
-      if (this.controls.includes(BlotType.direction)) {
-        this.controls = joinArrays(this.controls, [
-          BlotType.rightToLeft,
-          BlotType.leftToRight
-        ]);
-      }
-      if (this.disableControls.includes(BlotType.list)) {
-        this.disableControls = joinArrays(this.disableControls, [
-          BlotType.ul,
-          BlotType.ol
-        ]);
-      }
-      if (this.disableControls.includes(BlotType.direction)) {
-        this.disableControls = joinArrays(this.disableControls, [
-          BlotType.rightToLeft,
-          BlotType.leftToRight
-        ]);
-      }
-
-      this.options.toolbarButtons = this.controls = RTE_CONTROLS_ORDER.filter(
-        (cntrl: BlotType) =>
-          (this.controls || RTE_CONTROLS_DEF).includes(cntrl) &&
-          !(this.disableControls || RTE_DISABLE_CONTROLS_DEF).includes(cntrl)
-      );
+    if (
+      !this.cntrlsInited ||
+      hasChanges(changes, ['controls', 'disableControls', 'placeholderList'])
+    ) {
+      this.initControls();
+      this.initTransformers();
+      this.cntrlsInited = true;
     }
 
     if (
@@ -190,14 +172,6 @@ export abstract class RTEbaseElement extends BaseFormElement
       isNotEmptyArray(this.mentionsList)
     ) {
       this.tribute.appendCurrent(this.mentionsList as any);
-    }
-
-    if (changes.placeholderList && this.placeholderPanel) {
-      this.placeholderPanel.panelClassList = [];
-    }
-
-    if (firstChanges(changes) || changes.placeholderList) {
-      this.initTransformers();
     }
 
     if (changes.value || changes.placeholderList) {
@@ -213,7 +187,45 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
   }
 
-  protected initTransformers(): void {
+  ngOnInit(): void {
+    if (!this.cntrlsInited) {
+      this.initControls();
+      this.initTransformers();
+      this.cntrlsInited = true;
+    }
+  }
+
+  private initControls(): void {
+    if (this.controls.includes(BlotType.list)) {
+      this.controls = joinArrays(this.controls, [BlotType.ul, BlotType.ol]);
+    }
+    if (this.controls.includes(BlotType.direction)) {
+      this.controls = joinArrays(this.controls, [
+        BlotType.rightToLeft,
+        BlotType.leftToRight
+      ]);
+    }
+    if (this.disableControls.includes(BlotType.list)) {
+      this.disableControls = joinArrays(this.disableControls, [
+        BlotType.ul,
+        BlotType.ol
+      ]);
+    }
+    if (this.disableControls.includes(BlotType.direction)) {
+      this.disableControls = joinArrays(this.disableControls, [
+        BlotType.rightToLeft,
+        BlotType.leftToRight
+      ]);
+    }
+
+    this.options.toolbarButtons = this.controls = RTE_CONTROLS_ORDER.filter(
+      (cntrl: BlotType) =>
+        (this.controls || RTE_CONTROLS_DEF).includes(cntrl) &&
+        !(this.disableControls || RTE_DISABLE_CONTROLS_DEF).includes(cntrl)
+    );
+  }
+
+  private initTransformers(): void {
     this.inputTransformers = [
       stringyOrFail,
 

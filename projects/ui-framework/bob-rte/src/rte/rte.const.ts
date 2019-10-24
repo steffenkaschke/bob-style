@@ -5,7 +5,7 @@ import { FroalaOptions } from './froala.interface';
 export const RTE_CONTROLS_DEF: BlotType[] = dedupeArray(
   Object.values(BlotType)
 );
-export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [];
+export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [BlotType.placeholder];
 
 export const RTE_MINHEIGHT_DEF = 185;
 export const RTE_MAXHEIGHT_DEF = 350;
