@@ -19,7 +19,8 @@ import { BaseButtonElement } from '../button.abstract';
       <ng-content></ng-content>
     </button>
   `,
-  styleUrls: ['./button.component.scss']
+  styleUrls: ['./button.component.scss'],
+  providers: [{ provide: BaseButtonElement, useExisting: ButtonComponent }]
 })
 export class ButtonComponent extends BaseButtonElement {
   constructor() {
