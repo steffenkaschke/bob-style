@@ -37,9 +37,14 @@ describe('PasswordInputComponent', () => {
           .nativeElement;
 
         spyOn(component.changed, 'emit');
+        component.changed.subscribe(() => { });
         spyOn(component, 'propagateChange');
       });
   }));
+
+  afterEach(() => {
+    component.changed.complete();
+  });
 
   describe('emit InputEvent', () => {
     it('should emitInputEvent on model change with input value', () => {

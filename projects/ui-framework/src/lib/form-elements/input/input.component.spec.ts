@@ -24,7 +24,7 @@ describe('InputComponent', () => {
         NoopAnimationsModule,
         CommonModule,
         InputMessageModule,
-        FormElementLabelModule,
+        FormElementLabelModule
       ],
       providers: [DOMhelpers, EventManagerPlugins[0]]
     })
@@ -33,9 +33,14 @@ describe('InputComponent', () => {
         fixture = TestBed.createComponent(InputComponent);
         component = fixture.componentInstance;
         spyOn(component.changed, 'emit');
+        component.changed.subscribe(() => {});
         spyOn(component, 'propagateChange');
       });
   }));
+
+  afterEach(() => {
+    component.changed.complete();
+  });
 
   describe('emit InputEvent', () => {
     beforeEach(() => {
@@ -69,15 +74,7 @@ describe('InputComponent', () => {
       );
     });
 
-    it('should NOT emit InputEvent on keyup, if there are no subscribers to the event', () => {
-      emitNativeEvent(inputElement, NativeEvents.keyup, {
-        key: Keys.enter
-      });
-      expect(component.changed.emit).not.toHaveBeenCalled();
-      expect(component.propagateChange).not.toHaveBeenCalled();
-    });
     it('should emit InputEvent on keyup, if there is a subscriber to the event; Should not propagateChange.', () => {
-      component.changed.subscribe(() => {});
       component.value = 'change input value';
       emitNativeEvent(inputElement, NativeEvents.keyup, {
         key: Keys.enter
@@ -88,7 +85,15 @@ describe('InputComponent', () => {
         key: Keys.enter
       });
       expect(component.propagateChange).not.toHaveBeenCalled();
-      component.changed.unsubscribe();
+    });
+
+    it('should NOT emit InputEvent on keyup, if there are no subscribers to the event', () => {
+      component.changed.complete();
+      emitNativeEvent(inputElement, NativeEvents.keyup, {
+        key: Keys.enter
+      });
+      expect(component.changed.emit).not.toHaveBeenCalled();
+      expect(component.propagateChange).not.toHaveBeenCalled();
     });
   });
 

@@ -29,9 +29,14 @@ describe('TextareaComponent', () => {
         fixture = TestBed.createComponent(TextareaComponent);
         component = fixture.componentInstance;
         spyOn(component.changed, 'emit');
+        component.changed.subscribe(() => { });
         fixture.detectChanges();
       });
   }));
+
+  afterEach(() => {
+    component.changed.complete();
+  });
 
   describe('emit InputEvent', () => {
     beforeEach(() => {
