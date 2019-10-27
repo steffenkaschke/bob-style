@@ -509,6 +509,8 @@ export * from './lib/services/utils/test-helpers';
 // Util components
 export { StatsComponent } from './lib/services/util-components/stats.component';
 export { StatsModule } from './lib/services/util-components/stats.module';
+// Mocks
+export { selectOptionsMock } from './lib/form-elements/lists/multi-select-panel/multi-select-panel.mock';
 
 /*
 * Animation

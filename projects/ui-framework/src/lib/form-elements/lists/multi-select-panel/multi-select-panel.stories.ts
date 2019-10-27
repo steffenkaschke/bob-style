@@ -10,10 +10,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { ButtonsModule } from '../../../buttons/buttons.module';
 import { Icons } from '../../../icons/icons.enum';
-import { SelectGroupOption } from '../list.interface';
 import { MultiSelectPanelModule } from './multi-select-panel.module';
 import { ButtonType } from '../../../buttons/buttons.enum';
 import { action } from '@storybook/addon-actions';
+import { selectOptionsMock } from './multi-select-panel.mock';
 
 const inputStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -70,88 +70,7 @@ const note = `
   ~~~
 `;
 
-const optionsMock: SelectGroupOption[] = [
-  {
-    groupName: 'Basic info',
-    options: [
-      {
-        value: 'First name',
-        id: '/root/firstName',
-        selected: false
-      },
-      {
-        value: 'Last name',
-        id: '/root/latName',
-        selected: false
-      },
-      {
-        value: 'Display name',
-        id: '/root/displayName',
-        selected: false
-      }
-    ]
-  },
-  {
-    groupName: 'Personal',
-    options: [
-      {
-        value: 'Personal email',
-        id: '/personal/personalEmail',
-        selected: false
-      },
-      {
-        value: 'personal phone',
-        id: '/personal/personalPhone',
-        selected: false
-      },
-      {
-        value: 'Personal mobile',
-        id: '/personal/personalMobile',
-        selected: false
-      }
-    ]
-  },
-  {
-    groupName: 'Work',
-    options: [
-      {
-        value: 'Reports to',
-        id: '/work/reportsTo',
-        selected: false
-      },
-      {
-        value: 'Start date',
-        id: '/work/startDate',
-        selected: false
-      },
-      {
-        value: 'Site',
-        id: '/work/siteId',
-        selected: false
-      }
-    ]
-  },
-  {
-    groupName: 'Address',
-    options: [
-      {
-        value: 'City',
-        id: '/address/city',
-        selected: false
-      },
-      {
-        value: 'Country',
-        id: '/address/country',
-        selected: false
-      },
-      {
-        value: 'State',
-        id: '/address/state',
-        selected: false
-      }
-    ]
-  }
-];
+const optionsMock = selectOptionsMock;
 
 optionsMock[0].options[1].selected = true;
 
