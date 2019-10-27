@@ -7,7 +7,7 @@ import {
   ChangeDetectorRef,
   NgZone
 } from '@angular/core';
-import { DOMhelpers } from '../utils/dom-helpers.service';
+import { DOMhelpers } from '../html/dom-helpers.service';
 
 @Component({
   selector: 'b-mock',

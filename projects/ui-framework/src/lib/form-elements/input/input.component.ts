@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { InputTypes } from './input.enum';
 

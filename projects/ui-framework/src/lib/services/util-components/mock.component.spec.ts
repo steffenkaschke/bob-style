@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MockComponent } from './mock.component';
-import { DOMhelpers } from '../utils/dom-helpers.service';
+import { DOMhelpers } from '../html/dom-helpers.service';
 
 @Component({
   template: `

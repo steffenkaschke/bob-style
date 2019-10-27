@@ -43,7 +43,8 @@ export abstract class BaseFormElement
     eventType: [InputEventType.onChange],
     eventName: FormEvents.changed,
     doPropagate: this.doPropagate,
-    addToEventObj: {}
+    addToEventObj: {},
+    saveValue: false
   };
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
@@ -113,12 +114,21 @@ export abstract class BaseFormElement
       ...this.transmitValueDefOptions,
       ...options
     };
-    const { eventType, eventName, doPropagate, addToEventObj } = options;
+    const {
+      eventType,
+      eventName,
+      doPropagate,
+      addToEventObj,
+      saveValue
+    } = options;
 
     // If value is undefined, it will not be transmitted.
     // Transformers may intentionally set value to undefined,
     // to prevent transmission
-    if (value !== undefined) {
+    if (
+      value !== undefined &&
+      (doPropagate || saveValue || this[eventName].observers.length > 0)
+    ) {
       value = this.outputTransformers.reduce(
         (previousResult, fn) => fn(previousResult),
         value
@@ -126,9 +136,13 @@ export abstract class BaseFormElement
       if (value === undefined && this.baseValue !== undefined) {
         value = cloneValue(this.baseValue);
       }
+      if (saveValue) {
+        this.value = value;
+      }
 
       if (
         eventName &&
+        this[eventName].observers.length > 0 &&
         ((!this.emitOnWrite && !eventType.includes(InputEventType.onWrite)) ||
           this.emitOnWrite)
       ) {

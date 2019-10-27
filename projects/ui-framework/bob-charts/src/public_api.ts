@@ -1,5 +1,5 @@
 /*
- * Chardts
+ * Charts
  */
 
 export { ChartsModule } from './charts/charts.module';

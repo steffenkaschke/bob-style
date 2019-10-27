@@ -17,7 +17,7 @@ import { AvatarSize } from '../avatar/avatar.enum';
 import { UtilsService } from '../../services/utils/utils.service';
 import { AvatarGap } from './employees-showcase.const';
 import { Icons } from '../../icons/icons.enum';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { interval, Subscription } from 'rxjs';
 import { assign, cloneDeep, floor, invoke, random } from 'lodash';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';

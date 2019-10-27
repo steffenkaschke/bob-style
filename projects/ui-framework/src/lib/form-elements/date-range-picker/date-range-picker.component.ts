@@ -20,7 +20,7 @@ import { cloneObject, simpleUID } from '../../services/utils/functional-utils';
 import { BaseDatepickerElement } from '../datepicker/datepicker.abstract';
 import { MobileService } from '../../services/utils/mobile.service';
 import { DateParseService } from '../datepicker/date-parse.service';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { DateRangePickerValue } from './date-range-picker.interface';
 import {

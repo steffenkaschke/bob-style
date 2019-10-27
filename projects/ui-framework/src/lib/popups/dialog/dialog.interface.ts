@@ -15,8 +15,8 @@ export interface DialogButtons {
 
 export interface DialogButton {
   label: string;
-  action?(): any;
   disabled?: boolean;
+  action?(): any;
 }
 
 export interface DialogConfirmation {

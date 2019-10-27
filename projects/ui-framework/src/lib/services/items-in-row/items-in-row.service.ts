@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {DOMhelpers} from '../utils/dom-helpers.service';
+import {DOMhelpers} from '../html/dom-helpers.service';
 import {Observable} from 'rxjs';
 import {UtilsService} from '../utils/utils.service';
 import {distinctUntilChanged, map, startWith} from 'rxjs/operators';

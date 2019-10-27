@@ -12,7 +12,7 @@ import { IconColor, Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { LinkColor } from '../../buttons-indicators/link/link.enum';
 import { BaseCardElement } from './card.abstract';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 @Component({
   selector: 'b-card, [b-card]',

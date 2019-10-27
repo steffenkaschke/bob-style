@@ -4,7 +4,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { TypographyModule } from '../../typography/typography.module';
 import { CollapsibleSectionComponent } from './collapsible-section.component';
 import { UtilsModule } from '../../services/utils/utils.module';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 @NgModule({

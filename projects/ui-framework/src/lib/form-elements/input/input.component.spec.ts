@@ -5,7 +5,7 @@ import { InputEventType } from '../form-elements.enum';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMessageModule } from '../input-message/input-message.module';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { InputTypes } from './input.enum';
 import { inputValue, emitNativeEvent } from '../../services/utils/test-helpers';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
