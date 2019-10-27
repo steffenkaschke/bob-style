@@ -18,7 +18,10 @@ import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
       <ng-content></ng-content>
     </button>
   `,
-  styleUrls: ['../button/button.component.scss']
+  styleUrls: ['../button/button.component.scss'],
+  providers: [
+    { provide: BaseButtonElement, useExisting: ChevronButtonComponent }
+  ]
 })
 export class ChevronButtonComponent extends BaseButtonElement {
   constructor() {
