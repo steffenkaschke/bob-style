@@ -100,6 +100,7 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
 
 optionsMock[0].options[1].selected = true;
 optionsMock[1].options[2].selected = true;
+optionsMock[2].options[0].disabled = true;
 
 const toAdd = () => ({
   template: storyTemplate,

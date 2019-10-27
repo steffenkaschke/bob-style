@@ -33,8 +33,9 @@ const componentTemplate2 = `
                        [disabled]="disabled"
                        [panelClass]="panelClass"
                        (selectChange)="selectChange($event)">
-    <b-square-button type="${ButtonType.secondary}"
-                    icon="${Icons.table}">
+    <b-square-button [disabled]="disabled"
+                     type="${ButtonType.secondary}"
+                     icon="${Icons.table}">
     </b-square-button>
 </b-single-select-panel>
 `;
