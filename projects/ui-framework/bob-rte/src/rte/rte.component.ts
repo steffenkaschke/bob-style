@@ -3,7 +3,8 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   forwardRef,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ElementRef
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 
@@ -47,12 +48,13 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
     public cd: ChangeDetectorRef,
     public placeholdersConverter: PlaceholdersConverterService,
     public rteService: RteService,
-    public parserService: HtmlParserHelpers
+    public parserService: HtmlParserHelpers,
+    private host: ElementRef
   ) {
     super(cd, placeholdersConverter, rteService, parserService);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     super.ngOnInit();
 
     // mentions
@@ -114,6 +116,16 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
             true
           );
         }
+
+        // placeholders related
+        this.getEditor().events.bindClick(
+          this.getEditor().$(this.host.nativeElement),
+          '.placeholder-panel-trigger',
+          () => {
+            this.getEditor().undo.saveStep();
+            this.getEditor().events.disableBlur();
+          }
+        );
       },
 
       contentChanged: () => {
@@ -127,7 +139,8 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         this.transmitValue(this.getEditor().html.get(), {
           eventType: [InputEventType.onFocus],
           eventName: FormEvents.focused,
-          saveValue: true
+          saveValue: true,
+          doPropagate: false
         });
         this.inputFocused = true;
         this.cd.detectChanges();
@@ -178,6 +191,8 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
   public onPlaceholderPanelClose() {
     this.plchldrPnlTrgrFocused = false;
+    this.getEditor().selection.restore();
+    this.getEditor().events.enableBlur();
   }
 
   public addPlaceholder(event: ListChange) {

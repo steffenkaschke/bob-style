@@ -20,7 +20,6 @@ import {
   joinArrays,
   isNullOrUndefined,
   cloneValue,
-  firstChanges,
   isNotEmptyArray,
   stringyOrFail,
   InputEventType,
@@ -203,7 +202,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     );
   }
 
-  protected getEditor(): FroalaEdtr {
+  public getEditor(): FroalaEdtr {
     return (this.editorDirective as any)._editor as FroalaEdtr;
   }
 

@@ -12,7 +12,7 @@ export const selectOptionsMock: SelectGroupOption[] = [
       },
       {
         value: 'Last name',
-        id: '/root/latName',
+        id: '/root/lastName',
         selected: false
       },
       {
