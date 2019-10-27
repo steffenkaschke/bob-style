@@ -503,7 +503,6 @@ export * from './lib/services/utils/test-helpers';
 // Util components
 export { StatsComponent } from './lib/services/util-components/stats.component';
 export { StatsModule } from './lib/services/util-components/stats.module';
-<<<<<<< HEAD
 // DOM & HTML helpers
 export { HtmlHelpersModule } from './lib/services/html/html-helpers.module';
 export  *  from './lib/services/html/html-helpers.interface';
@@ -511,8 +510,6 @@ export { DOMhelpers } from './lib/services/html/dom-helpers.service';
 export { HtmlParserHelpers } from './lib/services/html/html-parser.service';
 // Transformers
 export * from './lib/services/utils/transformers';
-=======
->>>>>>> origin/master
 // Mocks
 export { selectOptionsMock } from './lib/form-elements/lists/multi-select-panel/multi-select-panel.mock';
 
