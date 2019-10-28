@@ -3,10 +3,6 @@ import { DOMhelpers } from './dom-helpers.service';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UtilsModule } from '../utils/utils.module';
-<<<<<<< HEAD
-import { By } from '@angular/platform-browser';
-=======
->>>>>>> origin/master
 import { elementFromFixture } from '../utils/test-helpers';
 
 @Component({
