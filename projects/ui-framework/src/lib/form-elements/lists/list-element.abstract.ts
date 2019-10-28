@@ -3,7 +3,8 @@ import {
   OnDestroy,
   OnInit,
   Renderer2,
-  ViewChild
+  ViewChild,
+  ChangeDetectorRef
 } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription } from 'rxjs';
@@ -31,7 +32,8 @@ export abstract class BaseListElement
 
   protected constructor(
     private renderer: Renderer2,
-    private listKeyboardService: ListKeyboardService
+    private listKeyboardService: ListKeyboardService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +55,9 @@ export abstract class BaseListElement
                 this.maxHeight
               )
             );
+            if (!this.cd['destroyed']) {
+              this.cd.detectChanges();
+            }
             break;
           case Keys.arrowup:
             this.focusIndex = this.listKeyboardService.getNextFocusIndex(
@@ -67,8 +72,12 @@ export abstract class BaseListElement
                 this.maxHeight
               )
             );
+            if (!this.cd['destroyed']) {
+              this.cd.detectChanges();
+            }
             break;
           case Keys.enter:
+            e.preventDefault();
             this.focusOption.isPlaceHolder
               ? this.headerClick(
                   find(this.listHeaders, {

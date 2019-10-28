@@ -5,7 +5,8 @@ import {
   OnChanges,
   Output,
   Renderer2,
-  SimpleChanges
+  SimpleChanges,
+  ChangeDetectorRef
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import {
@@ -15,7 +16,7 @@ import {
   SelectOption
 } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
-import { findIndex, has, flatMap, find } from 'lodash';
+import { findIndex, flatMap, find } from 'lodash';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
@@ -47,9 +48,10 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
     private listModelService: ListModelService,
     private listChangeService: ListChangeService,
     renderer: Renderer2,
-    listKeyboardService: ListKeyboardService
+    listKeyboardService: ListKeyboardService,
+    cd: ChangeDetectorRef
   ) {
-    super(renderer, listKeyboardService);
+    super(renderer, listKeyboardService, cd);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -84,15 +86,17 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   }
 
   optionClick(option: ListOption): void {
-    if (this.selectedOption) {
-      this.selectedOption.selected = false;
-    }
-    this.selectedOption = option;
-    this.selectedOption.selected = true;
-    this.focusIndex = findIndex(this.listOptions, o => o.selected);
-    this.focusOption = option;
+    if (!option.disabled) {
+      if (this.selectedOption) {
+        this.selectedOption.selected = false;
+      }
+      this.selectedOption = option;
+      this.selectedOption.selected = true;
+      this.focusIndex = findIndex(this.listOptions, o => o.selected);
+      this.focusOption = option;
 
-    this.emitChange();
+      this.emitChange();
+    }
   }
 
   searchChange(s: string): void {

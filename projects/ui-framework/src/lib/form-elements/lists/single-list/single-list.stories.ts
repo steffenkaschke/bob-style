@@ -1,12 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  select,
-  withKnobs,
-  object,
-  text,
-  number,
-  boolean
-} from '@storybook/addon-knobs/angular';
+import { withKnobs, object, boolean } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 import { ButtonsModule } from '../../../buttons/buttons.module';
@@ -85,6 +78,7 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
 });
 
 optionsMock[0].options[1].selected = true;
+optionsMock[0].options[3].disabled = true;
 
 buttonStories.add(
   'Single list',

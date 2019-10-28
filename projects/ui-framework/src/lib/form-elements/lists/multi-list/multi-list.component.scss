@@ -8,10 +8,6 @@
 
 .options {
   .option {
-    &.disabled {
-      @include disabled-state;
-    }
-
     ::ng-deep {
       b-checkbox {
         cursor: pointer;

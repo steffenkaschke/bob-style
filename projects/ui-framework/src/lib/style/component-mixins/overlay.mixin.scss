@@ -72,8 +72,8 @@ $panel-arrow-size: 16px;
   }
 }
 
-@mixin overlayHideArrow() {
-  .panel-position {
+@mixin overlayHideArrow($elem: '.panel-position') {
+  #{$elem} {
     &:before,
     &:after {
       display: none !important;
@@ -88,8 +88,8 @@ $panel-arrow-size: 16px;
   }
 }
 
-@mixin overlayDropdown() {
-  .panel-position {
+@mixin overlayDropdown($elem: '.panel-position') {
+  #{$elem} {
     &.panel-below {
       transform-origin: center top;
 
@@ -106,5 +106,18 @@ $panel-arrow-size: 16px;
         border-bottom-right-radius: 0;
       }
     }
+  }
+}
+
+@mixin overlayTopBottomBorders() {
+  .panel-below {
+    border-top-width: 1px;
+    border-top-right-radius: $border-radius;
+    border-top-left-radius: $border-radius;
+  }
+  .panel-above {
+    border-bottom-width: 1px;
+    border-bottom-right-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
   }
 }
