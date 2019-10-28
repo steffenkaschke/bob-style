@@ -30,11 +30,11 @@ export class PanelPositionService {
 
   getPanelPositionStrategy(
     overlayOrigin: CdkOverlayOrigin,
-    panelDefaultPosVer: PanelDefaultPosVer | ConnectedPosition[]
+    position: PanelDefaultPosVer | ConnectedPosition[] = null
   ): FlexibleConnectedPositionStrategy {
-    const panelPosition: ConnectedPosition[] = isArray(panelDefaultPosVer)
-      ? (panelDefaultPosVer as ConnectedPosition[])
-      : panelDefaultPosVer === PanelDefaultPosVer.below
+    const panelPosition: ConnectedPosition[] = isArray(position)
+      ? (position as ConnectedPosition[])
+      : position === PanelDefaultPosVer.below
       ? [
           BELOW_CENTER,
           BELOW_START,
@@ -43,7 +43,7 @@ export class PanelPositionService {
           ABOVE_START,
           ABOVE_END
         ]
-      : panelDefaultPosVer === PanelDefaultPosVer.above
+      : position === PanelDefaultPosVer.above
       ? [
           ABOVE_CENTER,
           ABOVE_START,

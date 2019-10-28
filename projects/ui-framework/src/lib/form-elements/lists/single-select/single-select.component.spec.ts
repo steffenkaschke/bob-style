@@ -192,7 +192,7 @@ describe('SingleSelectComponent', () => {
     it('should invoke panel close', () => {
       spyOn(component as any, 'destroyPanel');
       component.ngOnDestroy();
-      expect((component as any).destroyPanel).toHaveBeenCalled();
+      expect(component['destroyPanel']).toHaveBeenCalled();
     });
   });
 

@@ -9,10 +9,7 @@ import {
   ChangeDetectorRef,
   OnDestroy,
   EventEmitter,
-  Output,
-  OnChanges,
-  SimpleChanges,
-  AfterContentInit
+  Output
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
