@@ -136,6 +136,7 @@ import {
   set as _set,
   toPairs as _toPairs
 } from 'lodash/fp';
+import { GenericObject } from '../../types';
 
 export const flatten = (obj, path = []) => {
   return _isPlainObject(obj) || _isArray(obj)
@@ -227,9 +228,19 @@ export const notFirstChanges = (
   return !!keys.find(i => changes[i] && !changes[i].firstChange);
 };
 
-export const applyChanges = (target: any, changes: SimpleChanges): void => {
+export const applyChanges = (
+  target: any,
+  changes: SimpleChanges,
+  defaults: GenericObject = {},
+  skip: string[] = []
+): void => {
   Object.keys(changes).forEach((change: string) => {
-    target[change] = changes[change].currentValue;
+    if (!skip.includes(change)) {
+      target[change] =
+        isNullOrUndefined(changes[change].currentValue) && defaults[change]
+          ? defaults[change]
+          : changes[change].currentValue;
+    }
   });
 };
 

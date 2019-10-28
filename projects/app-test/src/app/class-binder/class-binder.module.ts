@@ -6,7 +6,7 @@ import {
   NgModule
 } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { DOMhelpers } from '../../../../ui-framework/src/lib/services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../../../ui-framework/src/lib/services/html/dom-helpers.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({

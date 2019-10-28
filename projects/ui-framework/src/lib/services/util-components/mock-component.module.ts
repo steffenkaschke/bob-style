@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MockComponent } from './mock.component';
-import { DOMhelpers } from '../utils/dom-helpers.service';
+import { DOMhelpers } from '../html/dom-helpers.service';
 
 @NgModule({
   imports: [CommonModule],

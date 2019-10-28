@@ -50,9 +50,14 @@ describe('SplitInputSingleSelectComponent', () => {
         component = fixture.componentInstance;
         component.wrapEvent = true;
         spyOn(component.changed, 'emit');
+        component.changed.subscribe(() => { });
         fixture.detectChanges();
       });
   }));
+
+  afterEach(() => {
+    component.changed.complete();
+  });
 
   describe('OnChanges', () => {
     it('should set default value object with null values if no value is provided', () => {

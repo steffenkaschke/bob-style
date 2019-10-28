@@ -5,7 +5,7 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TruncateTooltipComponent } from './truncate-tooltip.component';
 import { TruncateTooltipDirective } from './truncate-tooltip.directive';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 
 @NgModule({

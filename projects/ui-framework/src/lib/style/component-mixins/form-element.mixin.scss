@@ -94,129 +94,137 @@ $input-focus-border-color: $grey-700;
 }
 
 @mixin bFormElement {
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  text-align: left;
-  max-width: 100%;
-  @include form-element-margins;
-
-  // wrap
-
-  .bfe-wrap {
+  :host {
+    display: flex;
+    flex-direction: column;
     box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    background-color: $white;
-    min-height: $wrap-height;
-    border: 1px solid $input-border-color;
-    border-radius: $border-radius;
-    transition: box-shadow 0.2s, border-color 0.2s;
-    @include b-body($addCssVars: true);
-
-    &:only-child {
-      width: 100%;
-    }
+    text-align: left;
+    max-width: 100%;
+    @include form-element-margins;
   }
 
-  // input
+  :host ::ng-deep {
+    //
+    // wrap
 
-  .bfe-input {
-    @include input-basics;
+    .bfe-wrap {
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      background-color: $white;
+      min-height: $wrap-height;
+      border: 1px solid $input-border-color;
+      border-radius: $border-radius;
+      transition: box-shadow 0.2s, border-color 0.2s;
+      @include b-body($addCssVars: true);
 
-    &[data-placeholder] {
-      position: relative;
+      &:only-child {
+        width: 100%;
+      }
     }
 
-    &::placeholder,
-    &[data-placeholder]:before {
-      color: $grey-600;
-      transition: opacity 0.2s;
-      @include text-truncate;
-    }
+    // input
 
-    &:focus::placeholder,
-    &[data-placeholder]:focus:before {
-      opacity: 0;
-    }
-
-    &[data-placeholder]:before {
-      @include size;
-      @include position(0 0 0 0);
-      padding: inherit;
-      content: attr(data-placeholder);
-    }
-
-    &[readonly] {
-      cursor: default;
-    }
-  }
-
-  // label
-
-  .bfe-label {
-    @include bFormElement-label;
-  }
-
-  // prefix-suffix
-
-  .has-prefix {
     .bfe-input {
-      padding-left: 0;
+      @include input-basics;
+
+      &[data-placeholder] {
+        position: relative;
+      }
+
+      &::placeholder,
+      &[data-placeholder]:before {
+        color: $grey-600;
+        transition: opacity 0.2s;
+        @include text-truncate;
+      }
+
+      &:focus::placeholder,
+      &[data-placeholder]:focus:before {
+        opacity: 0;
+      }
+
+      &[data-placeholder]:before {
+        @include size;
+        @include position(0 0 0 0);
+        padding: inherit;
+        content: attr(data-placeholder);
+      }
+
+      &[readonly] {
+        cursor: default;
+      }
+    }
+
+    // label
+
+    .bfe-label {
+      @include bFormElement-label;
+    }
+
+    // prefix-suffix
+
+    .has-prefix {
+      .bfe-input {
+        padding-left: 0;
+      }
+    }
+
+    .has-suffix {
+      .bfe-input {
+        padding-right: 0;
+      }
+    }
+
+    .bfe-prefix,
+    .bfe-suffix {
+      display: flex;
+      align-items: center;
+
+      &:empty:not([class*='b-icon']) {
+        display: none;
+      }
+    }
+
+    .bfe-prefix {
+      padding: 0 10px 0 16px;
+
+      &:empty + .bfe-input {
+        padding-left: $input-padding;
+      }
+    }
+
+    .bfe-suffix {
+      padding: 0 16px 0 10px;
+    }
+
+    // states
+
+    .bfe-wrap:focus,
+    .bfe-wrap.focused,
+    .focused .bfe-wrap {
+      border-color: $input-focus-border-color;
+      box-shadow: none;
     }
   }
-  .has-suffix {
-    .bfe-input {
-      padding-right: 0;
-    }
-  }
 
-  .bfe-prefix,
-  .bfe-suffix {
-    display: flex;
-    align-items: center;
-
-    &:empty:not([class*='b-icon']) {
-      display: none;
-    }
-  }
-
-  .bfe-prefix {
-    padding: 0 10px 0 16px;
-
-    &:empty + .bfe-input {
-      padding-left: $input-padding;
-    }
-  }
-
-  .bfe-suffix {
-    padding: 0 16px 0 10px;
-  }
-
-  // states
-
-  .bfe-wrap:focus,
-  .bfe-wrap.focused,
-  .focused .bfe-wrap {
-    border-color: $input-focus-border-color;
-    box-shadow: none;
-  }
-
-  &.disabled {
+  :host.disabled {
     @include disabled-state;
   }
 
-  &.required {
+  :host.required ::ng-deep {
     .bfe-label {
       @include input-required;
     }
   }
 
-  &.readonly {
+  :host.readonly {
     cursor: default;
   }
 
-  @include input-border-colors($add: ' .bfe-wrap');
+  :host {
+    @include input-border-colors($add: '::ng-deep .bfe-wrap');
+  }
 }
 
 @mixin clear-input-suffix {
@@ -255,5 +263,4 @@ $input-focus-border-color: $grey-700;
       }
     }
   }
-  //
 }

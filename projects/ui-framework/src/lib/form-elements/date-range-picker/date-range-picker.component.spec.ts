@@ -92,9 +92,14 @@ describe('DateRangePickerComponent', () => {
         pickers[1].startAt = parseISO('2019-09-01');
 
         spyOn(component.changed, 'emit');
+        component.changed.subscribe(() => { });
         spyOn(component, 'propagateChange');
       });
   }));
+
+  afterEach(() => {
+    component.changed.complete();
+  });
 
   describe('OnInit', () => {
     it('should not display clear buttons when inputs are empty', () => {

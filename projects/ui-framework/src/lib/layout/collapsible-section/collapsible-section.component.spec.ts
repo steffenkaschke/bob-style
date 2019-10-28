@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CollapsibleSectionComponent } from './collapsible-section.component';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { UtilsService } from '../../services/utils/utils.service';
 import { of } from 'rxjs';

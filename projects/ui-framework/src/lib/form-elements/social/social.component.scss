@@ -13,13 +13,19 @@
     margin-right: 4px;
     height: 0;
   }
+}
 
+:host {
   &.disabled {
-    @include disabled-state;
+    .bfe-label {
+      @include disabled-state;
+    }
   }
 
   &.required {
-    @include input-required;
+    .bfe-label {
+      @include input-required;
+    }
   }
 }
 

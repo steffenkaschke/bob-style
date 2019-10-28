@@ -5,7 +5,7 @@ import { InputEventType } from '../form-elements.enum';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { inputValue } from '../../services/utils/test-helpers';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
 
@@ -29,9 +29,14 @@ describe('TextareaComponent', () => {
         fixture = TestBed.createComponent(TextareaComponent);
         component = fixture.componentInstance;
         spyOn(component.changed, 'emit');
+        component.changed.subscribe(() => { });
         fixture.detectChanges();
       });
   }));
+
+  afterEach(() => {
+    component.changed.complete();
+  });
 
   describe('emit InputEvent', () => {
     beforeEach(() => {
