@@ -44,7 +44,7 @@ export abstract class BaseFormElement
     eventName: FormEvents.changed,
     doPropagate: this.doPropagate,
     addToEventObj: {},
-    saveValue: false
+    updateValue: false
   };
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
@@ -119,7 +119,7 @@ export abstract class BaseFormElement
       eventName,
       doPropagate,
       addToEventObj,
-      saveValue
+      updateValue
     } = options;
 
     // If value is undefined, it will not be transmitted.
@@ -127,7 +127,7 @@ export abstract class BaseFormElement
     // to prevent transmission
     if (
       value !== undefined &&
-      (doPropagate || saveValue || this[eventName].observers.length > 0)
+      (doPropagate || updateValue || this[eventName].observers.length > 0)
     ) {
       value = this.outputTransformers.reduce(
         (previousResult, fn) => fn(previousResult),
@@ -136,7 +136,7 @@ export abstract class BaseFormElement
       if (value === undefined && this.baseValue !== undefined) {
         value = cloneValue(this.baseValue);
       }
-      if (saveValue) {
+      if (updateValue) {
         this.value = value;
       }
 
