@@ -13,7 +13,7 @@ import {
 } from '../../services/utils/test-helpers';
 import { IconsModule } from '../../icons/icons.module';
 
-describe('InputComponent', () => {
+describe('TimePickerComponent', () => {
   let component: TimePickerComponent;
   let fixture: ComponentFixture<TimePickerComponent>;
   let componentElem: HTMLElement;
@@ -58,9 +58,14 @@ describe('InputComponent', () => {
         messageElem = elementFromFixture(fixture, '[b-input-message]');
 
         spyOn(component.changed, 'emit');
+        component.changed.subscribe(() => { });
         spyOn(component, 'propagateChange');
       });
   }));
+
+  afterEach(() => {
+    component.changed.complete();
+  });
 
   describe('Init & Basic inputs', () => {
     it('should display label', () => {

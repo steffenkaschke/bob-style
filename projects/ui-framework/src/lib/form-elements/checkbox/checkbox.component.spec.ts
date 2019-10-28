@@ -22,11 +22,16 @@ describe('CheckboxComponent', () => {
         component = fixture.componentInstance;
         component.wrapEvent = true;
         spyOn(component.changed, 'emit');
+        component.changed.subscribe(() => { });
         fixture.detectChanges();
         checkboxLabel = fixture.debugElement.query(By.css('.bchk-label'))
           .nativeElement;
       });
   }));
+
+  afterEach(() => {
+    component.changed.complete();
+  });
 
   describe('check / uncheck', () => {
     it('should turn checkbox on and trigger changed event with true', () => {

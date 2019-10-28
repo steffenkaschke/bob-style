@@ -5,5 +5,5 @@ export interface TransmitOptions {
   eventName?: FormEvents;
   doPropagate?: boolean;
   addToEventObj?: { [key: string]: any };
-  saveValue?: boolean;
+  updateValue?: boolean;
 }

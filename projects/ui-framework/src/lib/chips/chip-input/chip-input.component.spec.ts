@@ -2,8 +2,6 @@ import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChipInputComponent } from './chip-input.component';
 
-import { ColorService } from '../../services/color-service/color.service';
-
 import {
   elementsFromFixture,
   elementFromFixture,
@@ -60,6 +58,7 @@ describe('ChipInputComponent', () => {
         fixture.detectChanges();
 
         spyOn(component.changed, 'emit');
+        component.changed.subscribe(() => { });
 
         chipsComponents = () => component.chips.list.toArray();
         inputElement = elementFromFixture(
@@ -73,6 +72,10 @@ describe('ChipInputComponent', () => {
         messageElement = elementFromFixture(fixture, '[b-input-message]');
       });
   }));
+
+  afterEach(() => {
+    component.changed.complete();
+  });
 
   describe('Component', () => {
     it('should create component with right label, placeholder etc', () => {

@@ -94,12 +94,17 @@ describe('DatepickerComponent', () => {
         messageElem = elementFromFixture(fixture, '[b-input-message]');
 
         spyOn(component.changed, 'emit');
+        component.changed.subscribe(() => { });
         spyOn(component, 'propagateChange');
 
         picker = component.pickers.toArray()[0];
         picker.startAt = parseISO('2019-09-01');
       });
   }));
+
+  afterEach(() => {
+    component.changed.complete();
+  });
 
   describe('Init & Basic inputs', () => {
     it('should display label', () => {

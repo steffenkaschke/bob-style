@@ -33,10 +33,15 @@ describe('RadioButtonComponent', () => {
           radioConfig: new SimpleChange(null, radioConfigMock, true)
         });
         spyOn(component.changed, 'emit');
+        component.changed.subscribe(() => { });
         spyOn(component, 'propagateChange');
         fixture.detectChanges();
       });
   }));
+
+  afterEach(() => {
+    component.changed.complete();
+  });
 
   describe('init', () => {
     it('should render three options', () => {
