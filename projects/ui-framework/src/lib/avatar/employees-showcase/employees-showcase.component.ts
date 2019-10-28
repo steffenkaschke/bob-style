@@ -20,7 +20,6 @@ import { AvatarGap } from './employees-showcase.const';
 import { Icons } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { interval, Subscription } from 'rxjs';
-import { floor, invoke, random } from 'lodash';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import { AvatarComponent } from '../avatar/avatar.component';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
@@ -28,7 +27,9 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 import {
   applyChanges,
   notFirstChanges,
-  cloneObject
+  cloneObject,
+  randomNumber,
+  dedupeArray
 } from '../../services/utils/functional-utils';
 
 const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
@@ -100,14 +101,20 @@ export class EmployeesShowcaseComponent
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.initShowcase();
-    }, 1000);
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.initShowcase();
+      }, 1000);
+    });
   }
 
   ngOnDestroy(): void {
-    invoke(this.resizeEventSubscriber, 'unsubscribe');
-    invoke(this.intervalSubscriber, 'unsubscribe');
+    if (this.resizeEventSubscriber) {
+      this.resizeEventSubscriber.unsubscribe();
+    }
+    if (this.intervalSubscriber) {
+      this.intervalSubscriber.unsubscribe();
+    }
   }
 
   trackBy(index: number, item: EmployeeShowcase): string {
@@ -133,7 +140,7 @@ export class EmployeesShowcaseComponent
       'result'
     );
 
-    this.avatarsToFit = floor(
+    this.avatarsToFit = Math.floor(
       (this.clientWidth - this.avatarSize) /
         (this.avatarSize - AvatarGap[this.avatarSize]) +
         1
@@ -157,7 +164,9 @@ export class EmployeesShowcaseComponent
         });
       }
     } else {
-      invoke(this.intervalSubscriber, 'unsubscribe');
+      if (this.intervalSubscriber) {
+        this.intervalSubscriber.unsubscribe();
+      }
       this.intervalSubscriber = null;
     }
 
@@ -193,11 +202,11 @@ export class EmployeesShowcaseComponent
   }
 
   private shuffleAvatars() {
-    const firstIndex = random(
+    const firstIndex = randomNumber(
       0,
       this.avatarsToFit > 1 ? this.avatarsToFit - 1 : 0
     );
-    const secondIndex = random(
+    const secondIndex = randomNumber(
       this.avatarsToFit,
       this.employees.length > 1 ? this.employees.length - 1 : 0
     );
