@@ -10,7 +10,8 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges
+  SimpleChanges,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
@@ -19,14 +20,15 @@ import { AvatarGap } from './employees-showcase.const';
 import { Icons } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { interval, Subscription } from 'rxjs';
-import { assign, cloneDeep, floor, invoke, random } from 'lodash';
+import { floor, invoke, random } from 'lodash';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import { AvatarComponent } from '../avatar/avatar.component';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import {
   applyChanges,
-  notFirstChanges
+  notFirstChanges,
+  cloneObject
 } from '../../services/utils/functional-utils';
 
 const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
@@ -34,7 +36,8 @@ const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
 @Component({
   selector: 'b-employees-showcase',
   templateUrl: './employees-showcase.component.html',
-  styleUrls: ['./employees-showcase.component.scss']
+  styleUrls: ['./employees-showcase.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmployeesShowcaseComponent
   implements OnInit, OnChanges, OnDestroy, AfterViewInit {
@@ -82,7 +85,6 @@ export class EmployeesShowcaseComponent
   }
 
   ngOnInit(): void {
-    this.setAvatarGapCss();
     this.initShowcase();
 
     this.resizeEventSubscriber = this.utilsService
@@ -135,11 +137,11 @@ export class EmployeesShowcaseComponent
         1
     );
 
-    this.avatarsToShow = this.employees.slice(0, this.avatarsToFit);
-
     this.showThreeDotsButton =
       this.avatarSize < AvatarSize.medium &&
       this.avatarsToFit < this.employees.length;
+
+    this.avatarsToShow = this.getAvatarsToShow();
 
     if (
       this.avatarSize >= AvatarSize.medium &&
@@ -148,14 +150,23 @@ export class EmployeesShowcaseComponent
       if (!this.intervalSubscriber) {
         this.intervalSubscriber = interval(
           SHUFFLE_EMPLOYEES_INTERVAL
-        ).subscribe(() => this.shuffleEmployees());
+        ).subscribe(() => this.shuffleAvatars());
       }
     } else {
       invoke(this.intervalSubscriber, 'unsubscribe');
       this.intervalSubscriber = null;
     }
 
-    this.cd.detectChanges();
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
+  }
+
+  private getAvatarsToShow() {
+    return this.employees.slice(
+      0,
+      !this.showThreeDotsButton ? this.avatarsToFit : this.avatarsToFit - 1
+    );
   }
 
   private setAvatarGapCss() {
@@ -183,7 +194,7 @@ export class EmployeesShowcaseComponent
     ];
   }
 
-  private shuffleEmployees() {
+  private shuffleAvatars() {
     const firstIndex = random(
       0,
       this.avatarsToFit > 1 ? this.avatarsToFit - 1 : 0
@@ -193,13 +204,19 @@ export class EmployeesShowcaseComponent
       this.employees.length > 1 ? this.employees.length - 1 : 0
     );
 
-    this.switchEmployeesImage(firstIndex, secondIndex);
-    this.cd.detectChanges();
+    this.switchAvatar(firstIndex, secondIndex);
+
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
-  private switchEmployeesImage(firstIndex, secondIndex) {
-    const firstEmployee = cloneDeep(this.employees[firstIndex]);
-    assign(this.employees[firstIndex], this.employees[secondIndex]);
-    this.employees[secondIndex] = firstEmployee;
+  private switchAvatar(firstIndex, secondIndex) {
+    if (firstIndex !== secondIndex) {
+      const firstEmployee = cloneObject(this.employees[firstIndex]);
+      this.employees[firstIndex] = this.employees[secondIndex];
+      this.employees[secondIndex] = firstEmployee;
+      this.avatarsToShow = this.getAvatarsToShow();
+    }
   }
 }

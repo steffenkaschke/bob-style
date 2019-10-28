@@ -26,7 +26,7 @@ import { AvatarGap } from './employees-showcase.const';
 import { SingleSelectPanelComponent } from '../../form-elements/lists/single-select-panel/single-select-panel.component';
 import createSpyObj = jasmine.createSpyObj;
 
-describe('EmployeesShowcaseComponent', () => {
+fdescribe('EmployeesShowcaseComponent', () => {
   let component: EmployeesShowcaseComponent;
   let fixture: ComponentFixture<EmployeesShowcaseComponent>;
   let utilsServiceStub: jasmine.SpyObj<UtilsService>;

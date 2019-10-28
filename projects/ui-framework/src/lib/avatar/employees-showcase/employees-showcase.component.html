@@ -9,7 +9,6 @@
     <ng-container *ngFor="let avatar of avatarsToShow; let i = index; trackBy: trackBy">
 
       <b-avatar class="showcase-avatar"
-                *ngIf="i < avatarsToFit - 1 || (i < avatarsToFit && !showThreeDotsButton)"
                 [imageSource]="avatar.imageSource"
                 [size]="avatarSize"
                 [isClickable]="false"
@@ -18,7 +17,7 @@
 
     </ng-container>
 
-    <b-avatar class="show-more-indicator"
+    <b-avatar class="showcase-avatar"
               *ngIf="showThreeDotsButton"
               [size]="avatarSize"
               [isClickable]="false">

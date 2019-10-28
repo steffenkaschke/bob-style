@@ -3,11 +3,12 @@
 :host {
   position: relative;
   width: 100%;
-  display: flex;
+  display: block;
+  --avatar-gap: -22px;
 }
 
 .avatar-showcase {
-  display: inline-flex;
+  display: flex;
 }
 
 .showcase-avatar {
@@ -25,11 +26,17 @@
   cursor: pointer;
 }
 
-:host ::ng-deep .avatar {
-  @include animate(fade-in, 0.7s, $keyframes: true);
+:host ::ng-deep {
+  b-single-select-panel {
+    display: block;
+  }
 
-  .avatar-content {
-    @include flex-align;
-    opacity: 1;
+  .avatar {
+    @include animate(fade-in, 1s, $keyframes: true);
+
+    .avatar-content {
+      @include flex-align;
+      opacity: 1;
+    }
   }
 }
