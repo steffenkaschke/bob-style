@@ -76,7 +76,9 @@ export class EmployeesShowcaseComponent
     applyChanges(this, changes);
 
     if (changes.avatarSize) {
-      this.setAvatarGapCss();
+      this.DOM.setCssProps(this.host.nativeElement, {
+        '--avatar-gap': '-' + AvatarGap[this.avatarSize] + 'px'
+      });
     }
 
     if (notFirstChanges(changes)) {
@@ -148,9 +150,11 @@ export class EmployeesShowcaseComponent
       this.avatarsToFit < this.employees.length
     ) {
       if (!this.intervalSubscriber) {
-        this.intervalSubscriber = interval(
-          SHUFFLE_EMPLOYEES_INTERVAL
-        ).subscribe(() => this.shuffleAvatars());
+        this.zone.runOutsideAngular(() => {
+          this.intervalSubscriber = interval(
+            SHUFFLE_EMPLOYEES_INTERVAL
+          ).subscribe(() => this.shuffleAvatars());
+        });
       }
     } else {
       invoke(this.intervalSubscriber, 'unsubscribe');
@@ -167,12 +171,6 @@ export class EmployeesShowcaseComponent
       0,
       !this.showThreeDotsButton ? this.avatarsToFit : this.avatarsToFit - 1
     );
-  }
-
-  private setAvatarGapCss() {
-    this.DOM.setCssProps(this.host.nativeElement, {
-      '--avatar-gap': '-' + AvatarGap[this.avatarSize] + 'px'
-    });
   }
 
   private getPanelListOptions(): SelectGroupOption[] {
@@ -204,19 +202,15 @@ export class EmployeesShowcaseComponent
       this.employees.length > 1 ? this.employees.length - 1 : 0
     );
 
-    this.switchAvatar(firstIndex, secondIndex);
-
-    if (!this.cd['destroyed']) {
-      this.cd.detectChanges();
-    }
-  }
-
-  private switchAvatar(firstIndex, secondIndex) {
     if (firstIndex !== secondIndex) {
       const firstEmployee = cloneObject(this.employees[firstIndex]);
       this.employees[firstIndex] = this.employees[secondIndex];
       this.employees[secondIndex] = firstEmployee;
       this.avatarsToShow = this.getAvatarsToShow();
+    }
+
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 }
