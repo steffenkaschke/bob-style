@@ -72,7 +72,6 @@ export class EmployeesShowcaseComponent
       .pipe(outsideZone(this.zone))
       .subscribe(() => {
         this.initShowcase();
-        this.cd.detectChanges();
       });
 
     this.panelListOptions = this.getPanelListOptions();
@@ -110,6 +109,7 @@ export class EmployeesShowcaseComponent
     this.shuffleEmployeesMode = this.avatarSize >= AvatarSize.medium;
     this.showThreeDotsButton = this.shouldShowThreeDotsButton();
     this.subscribeToShuffleEmployees();
+    this.cd.detectChanges();
   }
 
   private shouldShowThreeDotsButton(): boolean {

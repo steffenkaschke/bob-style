@@ -111,7 +111,9 @@ export class DOMhelpers {
   public getInnerWidth(element: HTMLElement) {
     const computedStyle = getComputedStyle(element);
     const width =
-      element.offsetWidth -
+      (element.offsetWidth ||
+        parseFloat(computedStyle.width) ||
+        element.getBoundingClientRect().width) -
       parseFloat(computedStyle.paddingLeft) -
       parseFloat(computedStyle.paddingRight) -
       parseFloat(computedStyle.borderLeftWidth) -
