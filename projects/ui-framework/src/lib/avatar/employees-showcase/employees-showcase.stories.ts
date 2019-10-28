@@ -60,7 +60,7 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Employees Showcase'">
-<div style="text-align: left; max-width: 100%;">
+<div style="max-width: 500px">
     ${template}
 </div>
 </b-story-book-layout>
@@ -72,7 +72,7 @@ avatarStories.add(
     return {
       template: storyTemplate,
       props: {
-        avatarSize: select('avatarSize', sizeOptions, AvatarSize.mini),
+        avatarSize: select('avatarSize', sizeOptions, AvatarSize.medium),
         expandOnClick: boolean('expandOnClick', true),
         employees: object<EmployeeShowcase>('employees', employeesMock),
         selectChange: action('Showcase list change'),

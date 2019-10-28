@@ -24,6 +24,10 @@ import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import { AvatarComponent } from '../avatar/avatar.component';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
 import { outsideZone } from '../../services/utils/rxjs.operators';
+import {
+  applyChanges,
+  notFirstChanges
+} from '../../services/utils/functional-utils';
 
 const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
 
@@ -45,15 +49,14 @@ export class EmployeesShowcaseComponent
     EmployeeShowcase
   >();
 
-  panelListOptions: SelectGroupOption[];
-  avatarsToFit = 0;
-  showThreeDotsButton = false;
+  public panelListOptions: SelectGroupOption[];
+  public avatarsToFit = 0;
+  public avatarsToShow: EmployeeShowcase[] = [];
+  public showThreeDotsButton = false;
 
   readonly icon = Icons;
   readonly panelClass = 'ee-showcase-panel';
 
-  private shuffleEmployeesMode: boolean;
-  private avatarGap: number = AvatarGap[AvatarSize.mini];
   private clientWidth = 0;
   private resizeEventSubscriber: Subscription;
   private intervalSubscriber: Subscription;
@@ -66,7 +69,22 @@ export class EmployeesShowcaseComponent
     private cd: ChangeDetectorRef
   ) {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes);
+
+    if (changes.avatarSize) {
+      this.setAvatarGapCss();
+    }
+
+    if (notFirstChanges(changes)) {
+      this.initShowcase();
+    }
+  }
+
   ngOnInit(): void {
+    this.setAvatarGapCss();
+    this.initShowcase();
+
     this.resizeEventSubscriber = this.utilsService
       .getResizeEvent()
       .pipe(outsideZone(this.zone))
@@ -77,15 +95,10 @@ export class EmployeesShowcaseComponent
     this.panelListOptions = this.getPanelListOptions();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.avatarSize) {
-      this.avatarSize = changes.avatarSize.currentValue;
-      this.initShowcase();
-    }
-  }
-
   ngAfterViewInit(): void {
-    setTimeout(() => this.initShowcase());
+    setTimeout(() => {
+      this.initShowcase();
+    }, 1000);
   }
 
   ngOnDestroy(): void {
@@ -93,29 +106,62 @@ export class EmployeesShowcaseComponent
     invoke(this.intervalSubscriber, 'unsubscribe');
   }
 
+  trackBy(index: number, item: EmployeeShowcase): string {
+    return item.id;
+  }
+
   onSelectChange(listChange: ListChange): void {
     this.selectChange.emit(listChange);
   }
 
   onAvatarClick(ee: EmployeeShowcase) {
-    this.clicked.emit(ee);
+    if (this.clicked.observers.length > 0) {
+      this.zone.run(() => {
+        this.clicked.emit(ee);
+      });
+    }
   }
 
-  private initShowcase() {
-    this.clientWidth = this.getClientWidth();
-    this.avatarGap = this.getAvatarGap();
-    this.setAvatarGapCss();
-    this.avatarsToFit = this.getAvatarsToFit(this.clientWidth, this.avatarGap);
-    this.shuffleEmployeesMode = this.avatarSize >= AvatarSize.medium;
-    this.showThreeDotsButton = this.shouldShowThreeDotsButton();
-    this.subscribeToShuffleEmployees();
+  public initShowcase() {
+    this.clientWidth = this.DOM.getClosest(
+      this.host.nativeElement,
+      this.DOM.getInnerWidth,
+      'result'
+    );
+
+    this.avatarsToFit = floor(
+      (this.clientWidth - this.avatarSize) /
+        (this.avatarSize - AvatarGap[this.avatarSize]) +
+        1
+    );
+
+    this.avatarsToShow = this.employees.slice(0, this.avatarsToFit);
+
+    this.showThreeDotsButton =
+      this.avatarSize < AvatarSize.medium &&
+      this.avatarsToFit < this.employees.length;
+
+    if (
+      this.avatarSize >= AvatarSize.medium &&
+      this.avatarsToFit < this.employees.length
+    ) {
+      if (!this.intervalSubscriber) {
+        this.intervalSubscriber = interval(
+          SHUFFLE_EMPLOYEES_INTERVAL
+        ).subscribe(() => this.shuffleEmployees());
+      }
+    } else {
+      invoke(this.intervalSubscriber, 'unsubscribe');
+      this.intervalSubscriber = null;
+    }
+
     this.cd.detectChanges();
   }
 
-  private shouldShowThreeDotsButton(): boolean {
-    return (
-      !this.shuffleEmployeesMode && this.avatarsToFit < this.employees.length
-    );
+  private setAvatarGapCss() {
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--avatar-gap': '-' + AvatarGap[this.avatarSize] + 'px'
+    });
   }
 
   private getPanelListOptions(): SelectGroupOption[] {
@@ -137,46 +183,6 @@ export class EmployeesShowcaseComponent
     ];
   }
 
-  private getClientWidth() {
-    return this.DOM.getClosest(
-      this.host.nativeElement,
-      this.DOM.getInnerWidth,
-      'result'
-    );
-  }
-
-  /*
-  Calculates the total number of avatars that can fit in a certain width.
-  floor((width - size) / (size - gap) + 1)
-  */
-  private getAvatarsToFit(clientWidth: number, avatarGap: number): number {
-    return floor(
-      (clientWidth - this.avatarSize) / (this.avatarSize - avatarGap) + 1
-    );
-  }
-
-  private getAvatarGap(): number {
-    return AvatarGap[this.avatarSize];
-  }
-
-  private setAvatarGapCss() {
-    this.DOM.setCssProps(this.host.nativeElement, {
-      '--avatar-gap': '-' + this.avatarGap + 'px'
-    });
-  }
-
-  private subscribeToShuffleEmployees() {
-    invoke(this.intervalSubscriber, 'unsubscribe');
-    if (
-      this.shuffleEmployeesMode &&
-      this.avatarsToFit < this.employees.length
-    ) {
-      this.intervalSubscriber = interval(SHUFFLE_EMPLOYEES_INTERVAL).subscribe(
-        () => this.shuffleEmployees()
-      );
-    }
-  }
-
   private shuffleEmployees() {
     const firstIndex = random(
       0,
@@ -186,6 +192,7 @@ export class EmployeesShowcaseComponent
       this.avatarsToFit,
       this.employees.length > 1 ? this.employees.length - 1 : 0
     );
+
     this.switchEmployeesImage(firstIndex, secondIndex);
     this.cd.detectChanges();
   }

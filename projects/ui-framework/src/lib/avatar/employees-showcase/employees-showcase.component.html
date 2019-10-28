@@ -6,21 +6,22 @@
   <div class="avatar-showcase"
        [ngClass]="{'clickable': expandOnClick}">
 
-    <ng-container *ngFor="let employee of employees; let i = index; let last = last">
+    <ng-container *ngFor="let avatar of avatarsToShow; let i = index; trackBy: trackBy">
 
       <b-avatar class="showcase-avatar"
                 *ngIf="i < avatarsToFit - 1 || (i < avatarsToFit && !showThreeDotsButton)"
-                [imageSource]="employee.imageSource"
+                [imageSource]="avatar.imageSource"
                 [size]="avatarSize"
-                [isClickable]="clicked.observers.length > 0"
-                (clicked)="onAvatarClick(employee)">
+                [isClickable]="false"
+                (click.outside-zone)="onAvatarClick(avatar)">
       </b-avatar>
 
     </ng-container>
 
     <b-avatar class="show-more-indicator"
               *ngIf="showThreeDotsButton"
-              [size]="avatarSize">
+              [size]="avatarSize"
+              [isClickable]="false">
       <b-icon [icon]="icon.three_dots"></b-icon>
     </b-avatar>
 

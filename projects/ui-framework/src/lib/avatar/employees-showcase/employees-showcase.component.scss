@@ -10,20 +10,23 @@
   display: inline-flex;
 }
 
-.clickable {
-  cursor: pointer;
-}
-
-b-avatar {
+.showcase-avatar {
   margin-left: var(--avatar-gap);
+  background-color: white;
+  border-radius: 50%;
+  position: relative;
 
   &:first-child {
     margin-left: 0;
   }
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 :host ::ng-deep .avatar {
-  transition: background-image 0.5s ease-in-out !important;
+  @include animate(fade-in, 0.7s, $keyframes: true);
 
   .avatar-content {
     @include flex-align;
