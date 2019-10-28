@@ -16,6 +16,8 @@ import { FiltersModule } from '../../../services/filters/filters.module';
 import { ListOptionModule } from '../list-option/list-option.module';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
+import { emitNativeEvent } from '../../../services/utils/test-helpers';
+import { Keys, NativeEvents } from '../../../enums';
 
 describe('SingleListComponent', () => {
   let component: SingleListComponent;
@@ -34,7 +36,7 @@ describe('SingleListComponent', () => {
       {
         groupName: 'Personal Header',
         options: [
-          { value: 'Personal 1', id: 11, selected: false },
+          { value: 'Personal 1', id: 11, selected: false, disabled: true },
           { value: 'Personal 2', id: 12, selected: false }
         ]
       }
@@ -133,7 +135,8 @@ describe('SingleListComponent', () => {
           id: 11,
           groupName: 'Personal Header',
           isPlaceHolder: false,
-          selected: false
+          selected: false,
+          disabled: true
         },
         {
           value: 'Personal 2',
@@ -376,7 +379,10 @@ describe('SingleListComponent', () => {
     it('should update value when option is clicked with the option id', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
+      fixture.detectChanges();
+      expect(component['selectedOption'].id).toEqual(12);
     });
+
     it('should emit event when selecting an option', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
@@ -385,6 +391,14 @@ describe('SingleListComponent', () => {
         [12]
       );
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
+    });
+
+    it('should not do anything when clicked on disabled option', () => {
+      const options = fixture.debugElement.queryAll(By.css('.option'));
+      options[2].triggerEventHandler('click', null);
+      fixture.detectChanges();
+      expect(component['selectedOption'].id).not.toEqual(11);
+      expect(component.selectChange.emit).not.toHaveBeenCalled();
     });
   });
 
@@ -409,7 +423,7 @@ describe('SingleListComponent', () => {
         {
           groupName: 'Personal Header',
           options: [
-            { value: 'Personal 1', id: 11, selected: false },
+            { value: 'Personal 1', id: 11, selected: false, disabled: true },
             { value: 'Personal 2', id: 12, selected: true }
           ]
         }

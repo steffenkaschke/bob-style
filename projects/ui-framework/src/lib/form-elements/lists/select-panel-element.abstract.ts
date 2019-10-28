@@ -16,7 +16,8 @@ import {
   FlexibleConnectedPositionStrategy,
   Overlay,
   OverlayConfig,
-  OverlayRef
+  OverlayRef,
+  ConnectedPosition
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import invoke from 'lodash/invoke';
@@ -34,6 +35,7 @@ import { isKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { SelectGroupOption } from './list.interface';
 import { ListChange } from './list-change/list-change';
+import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements AfterViewInit, OnDestroy {
@@ -46,10 +48,25 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @Input() panelClass: string;
   @Input() isQuickFilter = false;
   @Input() hasPrefix = false;
+  @Input() panelPosition: PanelDefaultPosVer | ConnectedPosition[];
+  @Input('hasArrow') set setPanelArrowClass(hasArrow: boolean) {
+    if (hasArrow === false) {
+      this.panelClassList =
+        hasArrow === false
+          ? (this.panelClassList = this.panelClassList.filter(
+              c => c !== 'b-select-panel-with-arrow'
+            ))
+          : hasArrow === true
+          ? [...(this.panelClassList || []), 'b-select-panel-with-arrow']
+          : this.panelClassList || [];
+    }
+  }
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
+  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
+  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
   showPrefix = true;
   positionClassList: OverlayPositionClasses = {};
@@ -58,7 +75,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   panelClassList: string[] = [];
 
   private panelConfig: OverlayConfig;
-  private overlayRef: OverlayRef;
+  public overlayRef: OverlayRef;
   private templatePortal: TemplatePortal;
   private backdropClickSubscriber: Subscription;
   private positionChangeSubscriber: Subscription;
@@ -117,6 +134,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
         searchInput.focus();
       }
 
+      this.opened.emit(this.overlayRef);
+
       this.backdropClickSubscriber = this.overlayRef
         .backdropClick()
         .subscribe(() => {
@@ -135,11 +154,15 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     }
   }
 
-  onCancel(): void {
+  closePanel(): void {
     this.destroyPanel();
   }
 
-  destroyPanel(): void {
+  protected onCancel(): void {
+    this.destroyPanel();
+  }
+
+  protected destroyPanel(): void {
     this.panelOpen = false;
     if (this.overlayRef) {
       invoke(this.overlayRef, 'dispose');
@@ -149,33 +172,37 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       this.panelConfig = {};
       this.templatePortal = null;
       this.overlayRef = null;
+      this.closed.emit();
     }
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
     }
   }
 
+  private getPanelClass(): string[] {
+    return [
+      ...this.panelClassList,
+      'b-select-panel',
+      this.panelClass,
+      this.isQuickFilter ? 'b-quick-filter-panel' : null
+    ].filter(Boolean);
+  }
+
   private getDefaultConfig(): OverlayConfig {
-    const positionStrategy = this.panelPositionService.getCenterPanelPositionStrategy(
-      this.overlayOrigin
+    const positionStrategy = this.panelPositionService.getPanelPositionStrategy(
+      this.overlayOrigin,
+      this.panelPosition
     );
 
     this.subscribeToPositions(
       positionStrategy as FlexibleConnectedPositionStrategy
     );
 
-    const panelClass = [
-      ...this.panelClassList,
-      'b-select-panel',
-      this.panelClass,
-      this.isQuickFilter ? 'b-quick-filter-panel' : null
-    ].filter(Boolean);
-
     return {
       disposeOnNavigation: true,
       hasBackdrop: true,
       backdropClass: 'b-select-backdrop',
-      panelClass,
+      panelClass: this.getPanelClass(),
       positionStrategy,
       scrollStrategy: this.panelPositionService.getScrollStrategy()
     };

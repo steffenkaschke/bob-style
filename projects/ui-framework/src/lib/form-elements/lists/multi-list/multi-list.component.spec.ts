@@ -33,7 +33,7 @@ describe('MultiListComponent', () => {
       {
         groupName: 'Personal Header',
         options: [
-          { value: 'Personal 1', id: 11, selected: false },
+          { value: 'Personal 1', id: 11, selected: false, disabled: true },
           { value: 'Personal 2', id: 12, selected: false }
         ]
       }
@@ -141,7 +141,8 @@ describe('MultiListComponent', () => {
           id: 11,
           groupName: 'Personal Header',
           isPlaceHolder: false,
-          selected: false
+          selected: false,
+          disabled: true
         },
         {
           value: 'Personal 2',
@@ -406,6 +407,14 @@ describe('MultiListComponent', () => {
       );
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
     });
+
+    it('should not do anything when clicked on disabled option', () => {
+      const options = fixture.debugElement.queryAll(By.css('.option'));
+      options[2].triggerEventHandler('click', null);
+      fixture.detectChanges();
+      expect(component.selectedIdsMap).not.toContain(11);
+      expect(component.selectChange.emit).not.toHaveBeenCalled();
+    });
   });
 
   describe('header checkbox click', () => {
@@ -503,7 +512,8 @@ describe('MultiListComponent', () => {
           id: 11,
           groupName: 'Personal Header',
           isPlaceHolder: false,
-          selected: false
+          selected: false,
+          disabled: true
         },
         {
           value: 'Personal 2',
@@ -560,7 +570,7 @@ describe('MultiListComponent', () => {
         {
           groupName: 'Personal Header',
           options: [
-            { value: 'Personal 1', id: 11, selected: false },
+            { value: 'Personal 1', id: 11, selected: false, disabled: true },
             { value: 'Personal 2', id: 12, selected: true }
           ]
         }
