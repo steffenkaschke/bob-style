@@ -8,7 +8,6 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-  ChangeDetectionStrategy,
   ChangeDetectorRef
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../../form-elements/lists/list.consts';
@@ -22,8 +21,7 @@ import { Keys } from '../../../enums';
 @Component({
   selector: 'b-auto-complete-panel',
   templateUrl: './auto-complete-panel.component.html',
-  styleUrls: ['./auto-complete-panel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./auto-complete-panel.component.scss']
 })
 export class AutoCompletePanelComponent
   implements OnChanges, OnInit, OnDestroy {
@@ -72,7 +70,9 @@ export class AutoCompletePanelComponent
                 this.maxHeight
               )
             );
-            this.cd.detectChanges();
+            if (!this.cd['destroyed']) {
+              this.cd.detectChanges();
+            }
             break;
           case Keys.arrowup:
             this.focusIndex = this.listKeyboardService.getNextFocusIndex(
@@ -87,7 +87,9 @@ export class AutoCompletePanelComponent
                 this.maxHeight
               )
             );
-            this.cd.detectChanges();
+            if (!this.cd['destroyed']) {
+              this.cd.detectChanges();
+            }
             break;
           case Keys.enter:
             this.optionClick(this.focusOption);

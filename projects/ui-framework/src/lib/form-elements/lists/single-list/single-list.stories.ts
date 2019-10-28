@@ -78,6 +78,7 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
 });
 
 optionsMock[0].options[1].selected = true;
+optionsMock[0].options[3].disabled = true;
 
 buttonStories.add(
   'Single list',

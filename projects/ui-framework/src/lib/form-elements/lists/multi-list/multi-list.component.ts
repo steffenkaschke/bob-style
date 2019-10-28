@@ -5,13 +5,13 @@ import {
   OnChanges,
   Output,
   Renderer2,
-  SimpleChanges
+  SimpleChanges,
+  ChangeDetectorRef
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep, flatMap, chain } from 'lodash';
 import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
-import has from 'lodash/has';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
@@ -52,9 +52,10 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     private listModelService: ListModelService,
     private listChangeService: ListChangeService,
     renderer: Renderer2,
-    listKeyboardService: ListKeyboardService
+    listKeyboardService: ListKeyboardService,
+    cd: ChangeDetectorRef
   ) {
-    super(renderer, listKeyboardService);
+    super(renderer, listKeyboardService, cd);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -130,24 +131,26 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     );
   }
 
-  optionClick(selectedOption: ListOption): void {
-    selectedOption.selected = !selectedOption.selected;
-    this.selectedIdsMap = selectedOption.selected
-      ? chain(this.selectedIdsMap)
-          .concat(selectedOption.id)
-          .uniq()
-          .value()
-      : chain(this.selectedIdsMap)
-          .difference([selectedOption.id])
-          .value();
+  optionClick(option: ListOption): void {
+    if (!option.disabled) {
+      option.selected = !option.selected;
+      this.selectedIdsMap = option.selected
+        ? chain(this.selectedIdsMap)
+            .concat(option.id)
+            .uniq()
+            .value()
+        : chain(this.selectedIdsMap)
+            .difference([option.id])
+            .value();
 
-    this.emitChange();
+      this.emitChange();
 
-    this.listModelService.setSelectedOptions(
-      this.listHeaders,
-      this.listOptions,
-      this.optionsDraft
-    );
+      this.listModelService.setSelectedOptions(
+        this.listHeaders,
+        this.listOptions,
+        this.optionsDraft
+      );
+    }
   }
 
   onClear(): void {

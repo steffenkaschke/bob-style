@@ -136,14 +136,14 @@ describe('SingleSelectPanelComponent', () => {
       (overlayContainerElement.querySelectorAll(
         'b-single-list .option'
       )[1] as HTMLElement).click();
-      expect((component as any).destroyPanel).toHaveBeenCalled();
+      expect(component['destroyPanel']).toHaveBeenCalled();
     });
   });
 
   describe('onDestroy', () => {
     it('should invoke panel close', () => {
       component.ngOnDestroy();
-      expect((component as any).destroyPanel).toHaveBeenCalled();
+      expect(component['destroyPanel']).toHaveBeenCalled();
     });
   });
 });

@@ -17,6 +17,9 @@
     color: white;
     font-weight: bold;
   }
+  &.disabled {
+    @include disabled-state;
+  }
 }
 
 @mixin headers {

@@ -9,11 +9,7 @@ import {
   ChangeDetectorRef,
   OnDestroy,
   EventEmitter,
-  Output,
-  OnChanges,
-  SimpleChanges,
-  ContentChild,
-  AfterContentInit
+  Output
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -40,26 +36,30 @@ import { Keys } from '../../enums';
 import { SelectGroupOption } from './list.interface';
 import { ListChange } from './list-change/list-change';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
-import { BaseButtonElement } from '../../buttons/button.abstract';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
-  implements OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
+  implements AfterViewInit, OnDestroy {
   @ViewChild(CdkOverlayOrigin, { static: true })
   overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
   @ViewChild('prefix', { static: false }) prefix: ElementRef;
-
-  @ContentChild(BaseButtonElement, { static: false })
-  public triggerButton: BaseButtonElement;
 
   @Input() options: SelectGroupOption[];
   @Input() panelClass: string;
   @Input() isQuickFilter = false;
   @Input() hasPrefix = false;
   @Input() panelPosition: PanelDefaultPosVer | ConnectedPosition[];
-  @Input('hasArrow') set setDefPanelClasses(hasArrow: boolean) {
-    this.panelClassList =
-      hasArrow === false ? [] : ['b-select-panel-with-arrow'];
+  @Input('hasArrow') set setPanelArrowClass(hasArrow: boolean) {
+    if (hasArrow === false) {
+      this.panelClassList =
+        hasArrow === false
+          ? (this.panelClassList = this.panelClassList.filter(
+              c => c !== 'b-select-panel-with-arrow'
+            ))
+          : hasArrow === true
+          ? [...(this.panelClassList || []), 'b-select-panel-with-arrow']
+          : this.panelClassList || [];
+    }
   }
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
@@ -94,12 +94,6 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     super();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.disabled && this.triggerButton) {
-      this.triggerButton.disabled = changes.disabled.currentValue;
-    }
-  }
-
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
@@ -111,12 +105,6 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
         }
       }, 0);
     });
-  }
-
-  ngAfterContentInit(): void {
-    if (this.triggerButton) {
-      this.triggerButton.disabled = this.disabled;
-    }
   }
 
   ngOnDestroy(): void {
