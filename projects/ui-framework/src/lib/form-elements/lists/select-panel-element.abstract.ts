@@ -24,7 +24,7 @@ import invoke from 'lodash/invoke';
 import { Subscription } from 'rxjs';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { BaseFormElement } from '../base-form-element';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { isEqual } from 'lodash';
 import { distinctUntilChanged, filter } from 'rxjs/operators';

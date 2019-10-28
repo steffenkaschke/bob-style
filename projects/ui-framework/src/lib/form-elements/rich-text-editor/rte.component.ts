@@ -19,7 +19,7 @@ import { SingleListComponent } from '../lists/single-list/single-list.component'
 import { ButtonType } from '../../buttons/buttons.enum';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { PanelDefaultPosVer, PanelSize } from '../../popups/panel/panel.enum';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 import quillLib, { RangeStatic } from 'quill';
 

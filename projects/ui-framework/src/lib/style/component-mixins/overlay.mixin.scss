@@ -1,7 +1,7 @@
 $panel-arrow-size: 16px;
 
-@mixin OverlayPanel($overflow: visible) {
-  position: relative;
+@mixin OverlayPanel($overflow: visible, $position: relative) {
+  position: $position;
   overflow: $overflow;
   box-shadow: 0 0 10px 0 $boxShadowColor;
   border-radius: $border-radius;
