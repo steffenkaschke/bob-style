@@ -7,24 +7,21 @@ import { isString, isObject } from '../utils/functional-utils';
 export class HtmlParserHelpers {
   constructor() {}
 
-  linkify(value: string, add = ''): string {
+  public linkify(value: string, add = ''): string {
     return LinkifyPipe.prototype.transform(value, add);
   }
 
-  cleanupHtml(value: string): string {
+  public cleanupHtml(value: string): string {
     return (
       this.enforceAttributes(value, 'span,p,div,a', {
         contenteditable: null,
         tabindex: null,
-        spellcheck: null
+        spellcheck: null,
+        class: null
       })
 
         // removing misc froala stuff
-        // .replace(/(noopener noreferrer\s?){2,100}/gim, '$1')
-        // .replace(/\s?spellcheck="false"/gim, '')
-        // .replace(/\s?tabindex="-1"/gim, '')
-        // .replace(/contenteditable="false"/gim, '')
-        // .replace(/\s?fr-deletable/gi, '')
+        .replace(/(noopener noreferrer\s?){2,100}/gim, '$1')
         // .replace(/\s?class="\s*"/gim, '')
 
         // replace P with DIV
@@ -47,7 +44,7 @@ export class HtmlParserHelpers {
     );
   }
 
-  enforceAttributes(
+  public enforceAttributes(
     value: string,
     selector: string,
     attributes: GenericObject = {}

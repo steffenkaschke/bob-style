@@ -277,7 +277,9 @@ export abstract class RTEbaseElement extends BaseFormElement
           'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
         )
     ];
-    this.outputTransformers = [this.parserService.cleanupHtml];
+    this.outputTransformers = [
+      value => HtmlParserHelpers.prototype.cleanupHtml(value)
+    ];
 
     if (this.placeholdersEnabled()) {
       this.inputTransformers.push(
