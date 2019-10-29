@@ -124,14 +124,15 @@
   padding: 0 15px;
   height: 50px;
   display: flex;
+  background-color: white;
 
   &:empty {
     display: none;
   }
 
-  & > b-button,
-  & > b-square-button,
-  & > b-text-button {
+  &::ng-deep > b-button,
+  &::ng-deep > b-square-button,
+  &::ng-deep > b-text-button {
     &:only-child {
       margin-left: auto;
     }
