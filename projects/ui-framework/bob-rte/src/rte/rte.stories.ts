@@ -118,7 +118,7 @@ const note = `
 `;
 
 inputStories.add(
-  'Rich text editor',
+  'Rich text editor (NEW!)',
   () => {
     return {
       template: storyTemplate,
