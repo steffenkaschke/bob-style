@@ -233,16 +233,6 @@ export { MultiSelectPanelModule } from './lib/form-elements/lists/multi-select-p
 export {
   MultiSelectPanelComponent,
 } from './lib/form-elements/lists/multi-select-panel/multi-select-panel.component';
-// Rich Text Editor
-export {
-  RichTextEditorModule
-} from './lib/form-elements/rich-text-editor/rte.module';
-export {
-  RTEType, BlotType, RTEchangeEvent
-} from './lib/form-elements/rich-text-editor/rte-core/rte.enum';
-export {
-  RichTextEditorComponent
-} from './lib/form-elements/rich-text-editor/rte.component';
 // Chain select
 export {
   ChainSelectEventEnum
@@ -256,6 +246,16 @@ export {
 export {
   ChainSelectModule
 } from './lib/form-elements/lists/chain-select/chain-select.module';
+// Rich Text Editor
+export {
+  RichTextEditorModule
+} from './lib/form-elements/rich-text-editor/rte.module';
+export {
+  RTEType, BlotType, RTEchangeEvent
+} from './lib/form-elements/rich-text-editor/rte-core/rte.enum';
+export {
+  RichTextEditorComponent
+} from './lib/form-elements/rich-text-editor/rte.component';
 // Radio Buttons
 export {
   RadioButtonModule
@@ -514,7 +514,7 @@ export { StatsComponent } from './lib/services/util-components/stats.component';
 export { StatsModule } from './lib/services/util-components/stats.module';
 // DOM & HTML helpers
 export { HtmlHelpersModule } from './lib/services/html/html-helpers.module';
-export  *  from './lib/services/html/html-helpers.interface';
+export * from './lib/services/html/html-helpers.interface';
 export { DOMhelpers } from './lib/services/html/dom-helpers.service';
 export { HtmlParserHelpers } from './lib/services/html/html-parser.service';
 // Transformers
