@@ -233,6 +233,16 @@ export { MultiSelectPanelModule } from './lib/form-elements/lists/multi-select-p
 export {
   MultiSelectPanelComponent,
 } from './lib/form-elements/lists/multi-select-panel/multi-select-panel.component';
+// Rich Text Editor
+export {
+  RichTextEditorModule
+} from './lib/form-elements/rich-text-editor/rte.module';
+export {
+  RTEType, BlotType, RTEchangeEvent
+} from './lib/form-elements/rich-text-editor/rte-core/rte.enum';
+export {
+  RichTextEditorComponent
+} from './lib/form-elements/rich-text-editor/rte.component';
 // Chain select
 export {
   ChainSelectEventEnum

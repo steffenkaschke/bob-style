@@ -20,6 +20,8 @@ import { RadioButtonModule } from './radio-button/radio-button.module';
 import { RadioButtonComponent } from './radio-button/radio-button.component';
 import { SplitInputSingleSelectModule } from './split-input-single-select/split-input-single-select.module';
 import { SplitInputSingleSelectComponent } from './split-input-single-select/split-input-single-select.component';
+import { RichTextEditorModule } from './rich-text-editor/rte.module';
+import { RichTextEditorComponent } from './rich-text-editor/rte.component';
 import { PasswordInputModule } from './password-input/password-input.module';
 import { PasswordInputComponent } from './password-input/password-input.component';
 import { TimePickerModule } from './timepicker/timepicker.module';
@@ -39,11 +41,12 @@ import { FormElementLabelModule } from './form-element-label/form-element-label.
     ChipInputModule,
     SocialModule,
     SplitInputSingleSelectModule,
+    RichTextEditorModule,
     InputMessageModule,
     PasswordInputModule,
     TimePickerModule,
     ChipInputModule,
-    FormElementLabelModule
+    FormElementLabelModule,
   ],
   exports: [
     InputComponent,
@@ -54,6 +57,7 @@ import { FormElementLabelModule } from './form-element-label/form-element-label.
     MultiSelectComponent,
     SingleSelectComponent,
     SplitInputSingleSelectComponent,
+    RichTextEditorComponent,
     ChipInputComponent,
     SocialComponent,
     PasswordInputComponent,
@@ -62,4 +66,5 @@ import { FormElementLabelModule } from './form-element-label/form-element-label.
   ],
   providers: [EventManagerPlugins[0]]
 })
-export class FormElementsModule {}
+export class FormElementsModule {
+}
