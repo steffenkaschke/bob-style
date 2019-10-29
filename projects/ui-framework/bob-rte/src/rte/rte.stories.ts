@@ -129,7 +129,7 @@ inputStories.add(
         value: text('value', value),
         minChars: number('minChars', 20),
         maxChars: number('maxChars', 500),
-        minHeight: number('minHeight'),
+        minHeight: number('minHeight', 185),
         maxHeight: number('maxHeight'),
         disabled: boolean('disabled', false),
         required: boolean('required', false),

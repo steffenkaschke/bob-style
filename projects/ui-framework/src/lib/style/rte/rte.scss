@@ -150,6 +150,10 @@ $link-color: var(--primary-700);
 
 // toolbar
 
+.fr-toolbar {
+  background: transparent;
+}
+
 .fr-command,
 .fr-command.fr-btn
   + .fr-dropdown-menu
