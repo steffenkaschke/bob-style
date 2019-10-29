@@ -11,7 +11,6 @@ import {
 
 import { RichTextEditorComponent } from './rte.component';
 import { PlaceholdersConverterService } from './placeholders.service';
-import { RteService } from './rte.service';
 
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import 'froala-editor/js/plugins/font_size.min.js';
@@ -33,6 +32,6 @@ import 'froala-editor/js/plugins/url.min.js';
     FroalaViewModule.forRoot()
   ],
   exports: [RichTextEditorComponent],
-  providers: [RteService, PlaceholdersConverterService, HtmlParserHelpers]
+  providers: [PlaceholdersConverterService, HtmlParserHelpers]
 })
 export class RichTextEditorModule {}
