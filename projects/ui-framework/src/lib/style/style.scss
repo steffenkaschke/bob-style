@@ -119,19 +119,29 @@ body {
   }
 }
 
-.preloading {
+.preloading,
+.preloading-collapsed {
   @include mini-preloader(
     $base-selector: '&',
     $full-size-selector: null,
     $abs-pos-center: true
   );
-  position: relative;
-  max-height: 70vh;
-  overflow: hidden;
+  display: block !important;
+  position: relative !important;
+  min-height: 30px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
 
   * {
     opacity: 0;
+    visibility: hidden !important;
     transition: none;
     animation: none;
   }
+}
+.preloading {
+  max-height: 70vh !important;
+}
+.preloading-collapsed {
+  max-height: 30px !important;
 }

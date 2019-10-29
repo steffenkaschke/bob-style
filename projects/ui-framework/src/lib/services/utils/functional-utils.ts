@@ -301,3 +301,14 @@ export const isIterable = (smth: any): boolean => {
 
 export const lastItem = (arr: any[]): any =>
   !isIterable(arr) ? arr : arr[arr.length - 1];
+
+export const arrayInsertAt = (
+  arr: any[],
+  val: any | any[],
+  index = 0,
+  overwrite = false
+) => {
+  return arr
+    .slice(0, index)
+    .concat(val, arr.slice(!overwrite ? index : index + 1));
+};

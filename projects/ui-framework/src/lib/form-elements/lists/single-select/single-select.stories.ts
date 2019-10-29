@@ -38,8 +38,7 @@ const template = `
                  [showSingleGroupHeader]="showSingleGroupHeader">
                  <b-text-button footer
                     [text]="'Click Me!'"
-                    [color]="'primary'"
-                    style="margin-left: auto">
+                    [color]="'primary'">
                   </b-text-button>
 </b-single-select>
 `;

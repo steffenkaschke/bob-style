@@ -10,17 +10,19 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { values } from 'lodash';
 import { LinkColor, LinkTarget } from '../link/link.enum';
-import { InfoStripIconType } from './info-strip.enum';
+import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
 
 const infoStripStories = storiesOf(
   ComponentGroupType.Indicators,
   module
 ).addDecorator(withKnobs);
 const iconTypes = values(InfoStripIconType);
+const iconSizes = values(InfoStripIconSize);
 
 const template = `
 <b-info-strip
   [iconType]="iconType"
+  [iconSize]="iconSize"
   [link]="link"
   [text]="text"></b-info-strip>
 `;
@@ -40,6 +42,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   iconType | InfoStripIconType | icon type - information, error, warning, success
+  iconSize | InfoStripIconSize | icon size - normal, large
   text | string | The text inside the strip
   link | Link | link definition - text, url, color, target
   ~~~
@@ -54,6 +57,7 @@ infoStripStories.add(
       template: storyTemplate,
       props: {
         iconType: select('iconType', iconTypes, InfoStripIconType.information),
+        iconSize: select('iconSize', iconSizes, InfoStripIconSize.large),
         text: text('text', 'Place your info text here'),
         link: object('link', {
           text: 'Click here',
