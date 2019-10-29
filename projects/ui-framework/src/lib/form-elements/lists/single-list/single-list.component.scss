@@ -50,6 +50,11 @@
     }
   }
 
+  .cdk-virtual-scroll-viewport,
+  .cdk-virtual-scroll-content-wrapper {
+    max-width: 100%;
+  }
+
   .v-scroll {
     height: 100%;
   }
@@ -110,18 +115,25 @@
   }
 }
 
-:host {
-  .footer {
-    border-top: 1px solid $grey-500;
-    background-color: white;
-    border-bottom-left-radius: $border-radius;
-    border-bottom-right-radius: $border-radius;
-    align-items: center;
-    padding: 0 15px;
-    height: 50px;
-    display: flex;
-    &:empty {
-      display: none;
+.footer {
+  border-top: 1px solid $grey-500;
+  background-color: white;
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+  align-items: center;
+  padding: 0 15px;
+  height: 50px;
+  display: flex;
+
+  &:empty {
+    display: none;
+  }
+
+  & > b-button,
+  & > b-square-button,
+  & > b-text-button {
+    &:only-child {
+      margin-left: auto;
     }
   }
 }
