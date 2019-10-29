@@ -21,7 +21,6 @@ import {
 
 import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
-import { RteService } from './rte.service';
 
 import Tribute, { TributeOptions, TributeItem } from 'tributejs';
 
@@ -47,11 +46,10 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
   constructor(
     public cd: ChangeDetectorRef,
     public placeholdersConverter: PlaceholdersConverterService,
-    public rteService: RteService,
     public parserService: HtmlParserHelpers,
     private host: ElementRef
   ) {
-    super(cd, placeholdersConverter, rteService, parserService);
+    super(cd, placeholdersConverter, parserService);
   }
 
   public ngOnInit(): void {

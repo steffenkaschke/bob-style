@@ -46,7 +46,6 @@ import {
 import { BlotType, RTEType } from './rte.enum';
 import { RteMentionsOption } from './rte.interface';
 import { PlaceholdersConverterService } from './placeholders.service';
-import { RteService } from './rte.service';
 
 import { FroalaEditorDirective } from 'angular-froala-wysiwyg';
 import { FroalaEdtr, FroalaOptions } from './froala.interface';
@@ -59,7 +58,6 @@ export abstract class RTEbaseElement extends BaseFormElement
   constructor(
     public cd: ChangeDetectorRef,
     public placeholdersConverter: PlaceholdersConverterService,
-    public rteService: RteService,
     public parserService: HtmlParserHelpers
   ) {
     super();

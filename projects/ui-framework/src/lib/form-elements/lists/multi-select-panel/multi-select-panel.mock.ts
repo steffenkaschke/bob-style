@@ -24,11 +24,6 @@ export const selectOptionsMock: SelectGroupOption[] = [
         value: 'Display name',
         id: '/root/displayName',
         selected: false
-      },
-      {
-        value: 'E-mail',
-        id: 'basic/email',
-        selected: false
       }
     ]
   },
