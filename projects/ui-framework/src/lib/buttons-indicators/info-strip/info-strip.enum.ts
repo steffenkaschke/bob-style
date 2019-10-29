@@ -5,3 +5,8 @@ export enum InfoStripIconType {
   success = 'success'
 }
 
+export enum InfoStripIconSize {
+  normal = 'large',
+  large = 'x-large',
+}
+

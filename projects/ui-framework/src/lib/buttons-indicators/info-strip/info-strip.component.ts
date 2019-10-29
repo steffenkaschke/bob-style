@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { IconColor, Icons } from '../../icons/icons.enum';
 import { Link } from './../link/link.types';
-import { InfoStripIconType } from './info-strip.enum';
+import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
 import { Dictionary } from 'lodash';
 import { InfoStripIcon } from './info-strip.types';
 
@@ -14,7 +14,7 @@ export class InfoStripComponent {
   @Input() iconType: InfoStripIconType;
   @Input() link: Link;
   @Input() text = '';
-  @Input() iconSize = IconSize.xLarge;
+  @Input() iconSize = InfoStripIconSize.large;
 
   readonly iconsDic: Dictionary<InfoStripIcon> = {
     warning: { color: IconColor.primary, icon: Icons.warning },
