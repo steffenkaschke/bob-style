@@ -76,7 +76,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Rich text editor'" style="background-color: rgb(247,247,247);">
+<b-story-book-layout [title]="'Rich text editor'" style="background-color: rgb(237,237,237);">
   <div>
     ${template}
   </div>

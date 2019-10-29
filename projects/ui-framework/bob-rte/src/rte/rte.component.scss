@@ -32,7 +32,7 @@
   @include input-border-colors($add: ' .bfe-wrap');
 }
 
-:host.required {
+:host.required::ng-deep {
   .bfe-label {
     @include input-required;
   }
@@ -78,5 +78,90 @@
 
   &.focused::ng-deep button:before {
     color: $grey-700;
+  }
+}
+
+// Theme - Primary
+
+:host[data-type='primary']::ng-deep {
+}
+
+// Theme - Secondary & Tertiary common
+
+:host[data-type='secondary']::ng-deep,
+:host[data-type='tertiary']::ng-deep {
+  .fr-box.fr-basic.fr-top .fr-wrapper,
+  .fr-box.fr-basic.fr-bottom .fr-wrapper,
+  .bfe-wrap,
+  .fr-box.fr-basic .fr-element,
+  .fr-toolbar.fr-bottom,
+  .fr-toolbar.fr-top,
+  .fr-toolbar .fr-btn-grp {
+    border-radius: 0;
+  }
+
+  .bfe-wrap {
+    background-color: transparent;
+    border-width: 0;
+  }
+
+  .fr-toolbar .fr-btn-grp {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .placeholder-panel-trigger {
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-top-right-radius: 0;
+  }
+}
+
+// Theme - Secondary
+
+:host[data-type='secondary']::ng-deep {
+  .fr-box.fr-basic .fr-element {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+  }
+  .fr-toolbar.fr-bottom,
+  .fr-toolbar.fr-top {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+}
+:host[data-type='secondary'].warn::ng-deep,
+:host[data-type='secondary'].error::ng-deep {
+  .fr-toolbar.fr-bottom,
+  .fr-toolbar.fr-top {
+    border-top-color: $input-border-color;
+  }
+
+  .focused {
+    .fr-toolbar.fr-bottom,
+    .fr-toolbar.fr-top {
+      border-top-color: $input-focus-border-color;
+    }
+  }
+}
+
+// Theme - Tertiary
+
+:host[data-type='tertiary']::ng-deep {
+  .fr-box.fr-basic .fr-element {
+    background-color: $grey-100;
+    padding: 20px;
+  }
+  .fr-toolbar.fr-bottom,
+  .fr-toolbar.fr-top {
+    border-width: 0;
+  }
+}
+:host[data-type='secondary'].warn::ng-deep,
+:host[data-type='secondary'].error::ng-deep {
+  .fr-toolbar.fr-bottom,
+  .fr-toolbar.fr-top {
+    border-bottom-width: 1px;
   }
 }
