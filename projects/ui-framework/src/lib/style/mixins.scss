@@ -332,6 +332,13 @@
   }
 }
 
+@mixin not-ie {
+  /* autoprefixer: off */
+  @supports (not (-ms-ime-align: auto)) {
+    @content;
+  }
+}
+
 @mixin button-reset() {
   min-width: 0;
   flex-shrink: 0;
