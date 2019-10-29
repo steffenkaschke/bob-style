@@ -177,7 +177,7 @@ export abstract class RTEbaseElement extends BaseFormElement
       this.writeValue(changes.value.currentValue);
       this.transmitValue(this.editorValue, {
         eventType: [InputEventType.onWrite],
-        saveValue: true
+        updateValue: true
       });
     }
 

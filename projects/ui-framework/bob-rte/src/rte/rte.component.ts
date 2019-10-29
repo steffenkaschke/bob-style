@@ -131,7 +131,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       contentChanged: () => {
         this.transmitValue(this.getEditor().html.get(), {
           eventType: [InputEventType.onChange],
-          saveValue: true
+          updateValue: true
         });
       },
 
@@ -139,7 +139,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         this.transmitValue(this.getEditor().html.get(), {
           eventType: [InputEventType.onFocus],
           eventName: FormEvents.focused,
-          saveValue: true,
+          updateValue: true,
           doPropagate: false
         });
         this.inputFocused = true;
@@ -150,7 +150,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         this.transmitValue(this.getEditor().html.get(), {
           eventType: [InputEventType.onBlur],
           eventName: FormEvents.blurred,
-          saveValue: true
+          updateValue: true
         });
         this.inputFocused = false;
         this.cd.detectChanges();
