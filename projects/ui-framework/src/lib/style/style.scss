@@ -118,3 +118,20 @@ body {
     margin: 0;
   }
 }
+
+.preloading {
+  @include mini-preloader(
+    $base-selector: '&',
+    $full-size-selector: null,
+    $abs-pos-center: true
+  );
+  position: relative;
+  max-height: 70vh;
+  overflow: hidden;
+
+  * {
+    opacity: 0;
+    transition: none;
+    animation: none;
+  }
+}
