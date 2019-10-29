@@ -31,7 +31,8 @@ import {
   SingleSelectPanelComponent,
   BELOW_END,
   ABOVE_END,
-  IconColor
+  IconColor,
+  isNotEmptyObject
 } from 'bob-style';
 
 import {
@@ -134,23 +135,43 @@ export abstract class RTEbaseElement extends BaseFormElement
 
     if (changes.options) {
       merge(this.options, RTE_OPTIONS_DEF, changes.options.currentValue);
+
+      this.updateEditorOptions(this.options, true);
     }
 
     if (changes.placeholder) {
-      this.options.placeholderText = this.placeholder;
+      this.updateEditorOptions(
+        { placeholderText: this.placeholder },
+        false,
+        () => {
+          this.getEditor().placeholder.refresh();
+        }
+      );
     }
 
     if (changes.maxChars) {
-      this.options.charCounterMax = this.maxChars || -1;
+      this.updateEditorOptions(
+        { charCounterMax: this.maxChars || -1 },
+        false,
+        () => {
+          this.getEditor().charCounter['_init']();
+        }
+      );
     }
 
     if (hasChanges(changes, ['minHeight', 'maxHeight'])) {
-      this.options.heightMin = this.minHeight
-        ? this.minHeight - RTE_TOOLBAR_HEIGHT
-        : null;
-      this.options.heightMax = this.maxHeight
-        ? this.maxHeight - RTE_TOOLBAR_HEIGHT
-        : null;
+      this.updateEditorOptions(
+        {
+          heightMin: this.minHeight
+            ? this.minHeight - RTE_TOOLBAR_HEIGHT
+            : null,
+          heightMax: this.maxHeight ? this.maxHeight - RTE_TOOLBAR_HEIGHT : null
+        },
+        false,
+        () => {
+          this.getEditor().size.refresh();
+        }
+      );
     }
 
     if (
@@ -162,13 +183,20 @@ export abstract class RTEbaseElement extends BaseFormElement
       this.cntrlsInited = true;
     }
 
+    // if (hasChanges(changes, ['controls', 'disableControls'])) {
+    //   if (this.getEditor()) {
+    //     console.log(this.getEditor().opts);
+    //     this.getEditor().opts.toolbarButtons = this.controls;
+    //     this.getEditor().toolbar['_init']();
+    //   }
+    // }
+
     if (
       changes.mentionsList &&
       this.tribute &&
-      this.tribute.isActive &&
       isNotEmptyArray(this.mentionsList)
     ) {
-      this.tribute.appendCurrent(this.mentionsList as any);
+      this.tribute.append(0, this.mentionsList as any);
     }
 
     if (changes.value || changes.placeholderList) {
@@ -198,18 +226,6 @@ export abstract class RTEbaseElement extends BaseFormElement
       isNotEmptyArray(this.placeholderList) &&
       this.controls.includes(BlotType.placeholder)
     );
-  }
-
-  public getEditor(): FroalaEdtr {
-    return (this.editorDirective as any)._editor as FroalaEdtr;
-  }
-
-  protected getEditorElement(): HTMLElement {
-    return (this.editorDirective as any)._element as HTMLElement;
-  }
-
-  protected getEditorTextbox(): HTMLElement {
-    return this.getEditor().el as HTMLElement;
   }
 
   private initControls(): void {
@@ -286,6 +302,40 @@ export abstract class RTEbaseElement extends BaseFormElement
       );
 
       this.outputTransformers.push(this.placeholdersConverter.fromRte);
+    }
+  }
+
+  public getEditor(): FroalaEdtr {
+    return (this.editorDirective as any)._editor as FroalaEdtr;
+  }
+
+  protected getEditorElement(selector = null): HTMLElement {
+    const editorHostElem = (this.editorDirective as any)
+      ._element as HTMLElement;
+    return !selector ? editorHostElem : editorHostElem.querySelector(selector);
+  }
+
+  protected getEditorTextbox(): HTMLElement {
+    return this.getEditor().el as HTMLElement;
+  }
+
+  protected updateEditorOptions(
+    options: Partial<FroalaOptions>,
+    skipState = false,
+    callback: Function = null
+  ): void {
+    if (isNotEmptyObject(options)) {
+      if (!skipState) {
+        Object.assign(this.options, options);
+      }
+
+      if (this.getEditor()) {
+        Object.assign(this.getEditor().opts, options);
+
+        if (callback) {
+          callback();
+        }
+      }
     }
   }
 }

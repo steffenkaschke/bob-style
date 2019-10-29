@@ -125,12 +125,14 @@
     padding-right: 0;
     padding-top: 0;
   }
+
   .fr-toolbar.fr-bottom,
   .fr-toolbar.fr-top {
     border-bottom-width: 1px;
     border-bottom-style: solid;
   }
 }
+
 :host[data-type='secondary'].warn::ng-deep,
 :host[data-type='secondary'].error::ng-deep {
   .fr-toolbar.fr-bottom,
@@ -153,11 +155,17 @@
     background-color: $grey-100;
     padding: 20px;
   }
+
   .fr-toolbar.fr-bottom,
   .fr-toolbar.fr-top {
     border-width: 0;
   }
+
+  .brte-plchldr {
+    box-shadow: inset 0 0 0 1px $grey-100;
+  }
 }
+
 :host[data-type='secondary'].warn::ng-deep,
 :host[data-type='secondary'].error::ng-deep {
   .fr-toolbar.fr-bottom,

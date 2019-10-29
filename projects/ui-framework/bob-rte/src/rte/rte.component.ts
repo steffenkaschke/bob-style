@@ -92,6 +92,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
     this.options.events = {
       initialized: () => {
+        console.log(this.getEditor());
         if (this.options.tooltips === false) {
           this.getEditorElement()
             .querySelectorAll('button[title]')
@@ -141,7 +142,10 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
           doPropagate: false
         });
         this.inputFocused = true;
-        this.cd.detectChanges();
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
       },
 
       blur: () => {
@@ -151,7 +155,10 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
           updateValue: true
         });
         this.inputFocused = false;
-        this.cd.detectChanges();
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
       },
 
       click: (event: MouseEvent) => {
@@ -168,7 +175,10 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
       'charCounter.update': () => {
         this.length = this.getEditor().charCounter.count();
-        this.cd.detectChanges();
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
       },
 
       'commands.after': (cmd: string) => {
