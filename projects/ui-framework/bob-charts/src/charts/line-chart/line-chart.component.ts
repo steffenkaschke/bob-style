@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, Input, NgZone, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ChartCore} from '../chart/chart-core';
-import {ChartTypesEnum} from '../chart/chart.enum';
+import {ChartTypesEnum, LineChartTypes} from '../chart/chart.enum';
 import {SeriesPieDataOptions} from 'highcharts';
 
 @Component({
@@ -11,7 +11,7 @@ import {SeriesPieDataOptions} from 'highcharts';
   ]
 })
 export class LineChartComponent extends ChartCore implements OnInit, OnChanges  {
-  @Input() type: ChartTypesEnum.Area | ChartTypesEnum.Line | ChartTypesEnum.Spline = ChartTypesEnum.Line;
+  @Input() type: LineChartTypes = ChartTypesEnum.Line;
   @Input() data: Array<(number|[string, (number|null)]|null|SeriesPieDataOptions)>;
   @Input() name: string;
   constructor(

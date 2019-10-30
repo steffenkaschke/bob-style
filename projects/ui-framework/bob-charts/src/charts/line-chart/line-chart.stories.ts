@@ -1,5 +1,5 @@
 import {storiesOf} from '@storybook/angular';
-import {boolean, number, object, text, withKnobs, select} from '@storybook/addon-knobs/angular';
+import {boolean, number, object, select, text, withKnobs} from '@storybook/addon-knobs/angular';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ComponentGroupType} from '../../../../src/lib/consts';
 import {StoryBookLayoutModule} from '../../../../src/lib/story-book-layout/story-book-layout.module';
@@ -64,7 +64,12 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', [ChartTypesEnum.Area , ChartTypesEnum.Line , ChartTypesEnum.Spline], ChartTypesEnum.Line),
+        type: select('type', [
+          ChartTypesEnum.Line,
+          ChartTypesEnum.Spline,
+          ChartTypesEnum.Area,
+          ChartTypesEnum.Areaspline
+        ], ChartTypesEnum.Line),
         legend: boolean('legend', true),
         name: text('name', 'employees'),
         preTooltipValue: text('preTooltipValue', ''),
