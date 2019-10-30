@@ -100,7 +100,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   @Input() public options: FroalaOptions = cloneArray(RTE_OPTIONS_DEF);
 
-  @Input() public mentionsList: RteMentionsOption;
+  @Input() public mentionsList: RteMentionsOption[];
   @Input() public placeholderList: SelectGroupOption[];
 
   @Output() blurred: EventEmitter<string> = new EventEmitter<string>();
@@ -141,10 +141,13 @@ export abstract class RTEbaseElement extends BaseFormElement
       );
     }
 
-    if (changes.placeholder) {
-      this.updateEditorOptions({ placeholderText: this.placeholder }, () => {
-        this.getEditor().placeholder.refresh();
-      });
+    if (changes.placeholder || (changes.label && !this.placeholder)) {
+      this.updateEditorOptions(
+        { placeholderText: this.placeholder || this.label || ' ' },
+        () => {
+          this.getEditor().placeholder.refresh();
+        }
+      );
     }
 
     if (changes.maxChars) {

@@ -1,5 +1,8 @@
-import { Component, Input } from '@angular/core';
-import { TruncateTooltipPosition, TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { Component, Input, HostBinding } from '@angular/core';
+import {
+  TruncateTooltipPosition,
+  TruncateTooltipType
+} from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { TooltipClass } from '../../enums';
 
@@ -9,10 +12,11 @@ import { TooltipClass } from '../../enums';
   styleUrls: ['./form-element-label.component.scss']
 })
 export class FormElementLabelComponent {
-
   @Input() label: string;
   @Input() description: string;
   @Input() fieldId: string | number;
+
+  @HostBinding('class.bfe-label') classname = true;
 
   readonly truncateTooltipType = TruncateTooltipType;
   readonly icons = Icons;
@@ -22,7 +26,6 @@ export class FormElementLabelComponent {
   readonly truncateTooltipPosition = TruncateTooltipPosition;
   readonly tooltipClass: TooltipClass[] = [
     TooltipClass.TextLeft,
-    TooltipClass.PreWrap,
+    TooltipClass.PreWrap
   ];
-
 }

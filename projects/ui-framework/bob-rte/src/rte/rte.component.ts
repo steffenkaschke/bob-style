@@ -25,7 +25,7 @@ import { PlaceholdersConverterService } from './placeholders.service';
 import Tribute, { TributeOptions, TributeItem } from 'tributejs';
 
 @Component({
-  selector: 'b-rte',
+  selector: 'b-rich-text-editor',
   templateUrl: './rte.component.html',
   styleUrls: ['./rte.component.scss'],
   providers: [
