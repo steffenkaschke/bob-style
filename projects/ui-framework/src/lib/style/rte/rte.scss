@@ -68,7 +68,6 @@ $link-color: var(--primary-700);
   }
   .fr-toolbar {
     order: 2;
-    position: static !important;
   }
 }
 
@@ -321,17 +320,6 @@ $link-color: var(--primary-700);
 .fr-popup {
   @include OverlayPanel(null, null);
   border: 1px solid $grey-500;
-}
-
-.fr-toolbar .fr-popup {
-  margin-top: -5px;
-  top: auto !important;
-}
-
-.fr-command.fr-btn + .fr-dropdown-menu {
-  top: 100%;
-  bottom: auto !important;
-  margin-top: -5px;
 }
 
 // popup buttons

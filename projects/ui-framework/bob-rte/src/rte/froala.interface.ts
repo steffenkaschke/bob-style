@@ -729,7 +729,7 @@ export interface Popups {
   onHide(id: string, callback: () => void): object;
   onRefresh(id: string, callback: () => void): object;
   refresh(id: string): object;
-  setContainer(id: string): void;
+  setContainer(id: string, element: any): void;
   show(
     id: string,
     leftOffset: number,
