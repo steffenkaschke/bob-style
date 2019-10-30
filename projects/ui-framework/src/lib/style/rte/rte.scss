@@ -319,6 +319,10 @@ $link-color: var(--primary-700);
 .fr-command.fr-btn.fr-active + .fr-dropdown-menu,
 .fr-popup {
   @include OverlayPanel(null, null);
+}
+.fr-command.fr-btn.fr-active + .fr-dropdown-menu,
+.fr-popup,
+.fr-popup.fr-above {
   border: 1px solid $grey-500;
 }
 
