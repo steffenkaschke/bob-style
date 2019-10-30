@@ -51,7 +51,7 @@ Here's an important list of things to remember:
 `;
 
 const template = `
-  <b-rte
+  <b-rich-text-editor
       [type]="type"
       [label]="label"
       [placeholder]="placeholder"
@@ -71,7 +71,7 @@ const template = `
       (changed)="change($event)"
       (focused)="focus($event)"
       (blurred)="blur($event)">
-  </b-rte>
+  </b-rich-text-editor>
 `;
 
 const storyTemplate = `
@@ -87,7 +87,12 @@ const note = `
 
   #### Module
   *RichTextEditorModule*
-  from <u>'bob-rte'</u>
+  from <u>'bob-style/bob-rte'</u>
+
+  \`\`\`
+  import { RichTextEditorModule, RTEType, BlotType, RteMentionsOption } from 'bob-style/bob-rte';
+  \`\`\`
+
 
   ~~~
   ${template}
@@ -96,24 +101,51 @@ const note = `
   #### Properties
   Name | Type | Description | default
   --- | --- | --- | ---
-  [type] | RTEType | primary (white bg, border) or secondary (transparent bg, no borders) | primary
-  [label] | string | label text (above editor) | none (optional)
-  [placeholder] | string | placeholder text (inside editor. if only label is present, it will be treated as placeholder) | none (optional)
-  [value] | string | html content to be placed inside editor | none (optional)
+  [type] | RTEType | theme: primary (white bg, border), secondary (transparent bg, no borders), tertiary (grey bg, no borders) | primary
+  [label] | string | label text (above editor) | &nbsp;
+  [placeholder] | string | placeholder text (inside editor. if only label is present, it will be treated as placeholder) | &nbsp;
+  [value] | string | html content to be placed inside editor | &nbsp;
   [controls] | BlotType[] | array of toolbar controls (check BlotType enum for all possible controls). Defaults to all controls. Pass empty array to disable all controls | all
   [minChars] | number | minimum (plain) text length | 0
-  [maxChars] | number | maximum (plain) text length | none (optional)
-  [minHeight] | number | minimum height of editor (including toolbar). Set to **0** to disable min-height | 185 (optional)
-  [maxHeight] | number | maximum height of editor (including toolbar). Set to **0** to disable max-height | 350 (optional)
-  [disabled] | boolean | disables editor | false (optional)
-  [required] | boolean | adds * to placeholder | false (optional)
-  [hintMessage] | string | adds a hint message below editor | none (optional)
-  [warnMessage] | string | adds a warning message below editor | none (optional)
-  [errorMessage] | string | adds 'invalid' style, hides hint/warn message and displays error message below editor | none (optional)
-  (changed) | EventEmitter&lt;string&gt; | emits in text change |
-  (focused) | EventEmitter&lt;string&gt; | emits latest value on editor focus |
-  (blurred) | EventEmitter&lt;string&gt; | emits latest value on editor blut |
-  /content/ | any | pass content to transclude any custom controls/etc to toolbar |
+  [maxChars] | number | maximum (plain) text length | &nbsp;
+  [minHeight] | number | minimum height of editor (including toolbar). Set to **0** to disable min-height | 185
+  [maxHeight] | number | maximum height of editor (including toolbar). Set to **0** to disable max-height | 350
+  [disabled] | boolean | disables editor | false
+  [required] | boolean | adds * to placeholder | false
+  [hintMessage] | string | adds a hint message below editor | &nbsp;
+  [warnMessage] | string | adds a warning message below editor | &nbsp;
+  [errorMessage] | string | adds 'invalid' style, hides hint/warn message and displays error message below editor | &nbsp;
+  (changed) | EventEmitter&lt;string&gt; | emits in text change | &nbsp;
+  (focused) | EventEmitter&lt;string&gt; | emits latest value on editor focus | &nbsp;
+  (blurred) | EventEmitter&lt;string&gt; | emits latest value on editor blur | &nbsp;
+
+
+  #### Mentions properties
+  Name | Type | Description | default
+  --- | --- | --- | ---
+  [mentionsList] | RteMentionsOption[] | pass an array of { avatar, displayName, link } objects for mentions functionality | &nbsp;
+
+  #### Placeholders properties
+  Name | Type | Description | default
+  --- | --- | --- | ---
+  [placeholderList] | SelectGroupOption[] | Single-List-compatible options model. <br> <strong>Important!</strong> Each group must have a key, and each options id must be in format /GroupKey/OptionId.
+
+  Example of placeholderList data:
+
+  \`\`\`
+  [{
+    "groupName": "Basic info",
+    "key": "root",
+    "options": [
+      {
+        "id": "/root/firstName",
+        "value": "First name"
+      }
+    ]
+  }]
+  \`\`\`
+
+
 `;
 
 inputStories.add(
