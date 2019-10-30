@@ -80,6 +80,8 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   private cntrlsInited = false;
 
+  protected toolbarButtons: HTMLElement[];
+
   @ViewChild('editor', { read: FroalaEditorDirective, static: true })
   protected editorDirective: FroalaEditorDirective;
   @ViewChild('placeholderPanel', { static: false })
@@ -165,21 +167,19 @@ export abstract class RTEbaseElement extends BaseFormElement
       );
     }
 
+    // if (
+    //   !this.cntrlsInited ||
+    //   hasChanges(changes, ['controls', 'disableControls', 'placeholderList'])
+    // ) {
+    //   this.initControls();
+    //   this.initTransformers();
+    //   this.cntrlsInited = true;
+    // }
+
     if (hasChanges(changes, ['controls', 'disableControls'])) {
       this.initControls();
-
-      this.updateEditorOptions({ toolbarButtons: this.controls }, () => {
-        this.getEditorElement('.fr-toolbar')
-          .querySelectorAll('[data-cmd]')
-          .forEach(el => {
-            const cmd = el.getAttribute('data-cmd') as BlotType;
-            if (!this.controls.includes(cmd)) {
-              el.setAttribute('hidden', 'true');
-            } else {
-              el.removeAttribute('hidden');
-            }
-          });
-      });
+      this.updateToolbar();
+      this.cntrlsInited = true;
     }
 
     if (changes.placeholderList) {
@@ -214,10 +214,14 @@ export abstract class RTEbaseElement extends BaseFormElement
   }
 
   public ngOnInit(): void {
+    console.log('ngOnInit');
     if (!this.cntrlsInited) {
       this.initControls();
-      this.initTransformers();
+      this.updateToolbar();
       this.cntrlsInited = true;
+    }
+    if (this.inputTransformers.length === 0) {
+      this.initTransformers();
     }
   }
 
@@ -291,6 +295,7 @@ export abstract class RTEbaseElement extends BaseFormElement
           'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
         )
     ];
+
     this.outputTransformers = [
       value => HtmlParserHelpers.prototype.cleanupHtml(value)
     ];
@@ -309,13 +314,35 @@ export abstract class RTEbaseElement extends BaseFormElement
     return this.editorDirective['_editor'] as FroalaEdtr;
   }
 
-  public getEditorElement(selector = null): HTMLElement {
+  public getEditorElement(selector = null): HTMLElement | HTMLElement[] {
     const editorHostElem = this.editorDirective['_element'] as HTMLElement;
-    return !selector ? editorHostElem : editorHostElem.querySelector(selector);
+    if (!selector) {
+      return editorHostElem;
+    }
+
+    const requestedElements = editorHostElem.querySelectorAll(selector);
+    return requestedElements.length < 2
+      ? requestedElements[0]
+      : requestedElements;
   }
 
   protected getEditorTextbox(): HTMLElement {
     return this.getEditor().el as HTMLElement;
+  }
+
+  protected updateToolbar(): void {
+    console.log('updateToolbar', this.toolbarButtons);
+
+    if (this.toolbarButtons) {
+      this.toolbarButtons.forEach(b => {
+        const cmd = b.getAttribute('data-cmd') as BlotType;
+        if (!this.controls.includes(cmd)) {
+          b.setAttribute('hidden', 'true');
+        } else {
+          b.removeAttribute('hidden');
+        }
+      });
+    }
   }
 
   public updateEditorOptions(

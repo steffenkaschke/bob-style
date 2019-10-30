@@ -92,14 +92,20 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
     this.options.events = {
       initialized: () => {
+        console.log('initialized');
+
+        this.toolbarButtons = this.getEditorElement(
+          'button[title]'
+        ) as HTMLElement[];
+
         if (this.options.tooltips === false) {
-          this.getEditorElement()
-            .querySelectorAll('button[title]')
-            .forEach(b => {
-              b.setAttribute('aria-label', b.getAttribute('title'));
-              b.removeAttribute('title');
-            });
+          this.toolbarButtons.forEach(b => {
+            b.setAttribute('aria-label', b.getAttribute('title'));
+            b.removeAttribute('title');
+          });
         }
+
+        this.updateToolbar();
 
         // init mentions
         if (isNotEmptyArray(this.mentionsList)) {

@@ -154,6 +154,10 @@ $link-color: var(--primary-700);
   background: transparent;
 }
 
+.fr-btn[hidden] {
+  display: none;
+}
+
 .fr-command,
 .fr-command.fr-btn
   + .fr-dropdown-menu
