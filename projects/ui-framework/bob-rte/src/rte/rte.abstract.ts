@@ -134,29 +134,21 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
 
     if (changes.options) {
-      merge(this.options, RTE_OPTIONS_DEF, changes.options.currentValue);
-
-      this.updateEditorOptions(this.options, true);
+      this.updateEditorOptions(
+        merge(RTE_OPTIONS_DEF, this.options, changes.options.currentValue)
+      );
     }
 
     if (changes.placeholder) {
-      this.updateEditorOptions(
-        { placeholderText: this.placeholder },
-        false,
-        () => {
-          this.getEditor().placeholder.refresh();
-        }
-      );
+      this.updateEditorOptions({ placeholderText: this.placeholder }, () => {
+        this.getEditor().placeholder.refresh();
+      });
     }
 
     if (changes.maxChars) {
-      this.updateEditorOptions(
-        { charCounterMax: this.maxChars || -1 },
-        false,
-        () => {
-          this.getEditor().charCounter['_init']();
-        }
-      );
+      this.updateEditorOptions({ charCounterMax: this.maxChars || -1 }, () => {
+        this.getEditor().charCounter['_init']();
+      });
     }
 
     if (hasChanges(changes, ['minHeight', 'maxHeight'])) {
@@ -167,40 +159,49 @@ export abstract class RTEbaseElement extends BaseFormElement
             : null,
           heightMax: this.maxHeight ? this.maxHeight - RTE_TOOLBAR_HEIGHT : null
         },
-        false,
         () => {
           this.getEditor().size.refresh();
         }
       );
     }
 
-    if (
-      !this.cntrlsInited ||
-      hasChanges(changes, ['controls', 'disableControls', 'placeholderList'])
-    ) {
+    if (hasChanges(changes, ['controls', 'disableControls'])) {
       this.initControls();
-      this.initTransformers();
-      this.cntrlsInited = true;
+
+      this.updateEditorOptions({ toolbarButtons: this.controls }, () => {
+        this.getEditorElement('.fr-toolbar')
+          .querySelectorAll('[data-cmd]')
+          .forEach(el => {
+            const cmd = el.getAttribute('data-cmd') as BlotType;
+            if (!this.controls.includes(cmd)) {
+              el.setAttribute('hidden', 'true');
+            } else {
+              el.removeAttribute('hidden');
+            }
+          });
+      });
     }
 
-    // if (hasChanges(changes, ['controls', 'disableControls'])) {
-    //   if (this.getEditor()) {
-    //     console.log(this.getEditor().opts);
-    //     this.getEditor().opts.toolbarButtons = this.controls;
-    //     this.getEditor().toolbar['_init']();
-    //   }
-    // }
+    if (changes.placeholderList) {
+      this.initTransformers();
+    }
 
     if (
       changes.mentionsList &&
       this.tribute &&
-      isNotEmptyArray(this.mentionsList)
+      isNotEmptyArray(changes.mentionsList.currentValue)
     ) {
-      this.tribute.append(0, this.mentionsList as any);
+      this.tribute['hideMenu']();
+      this.tribute['collection'][0].values = this.mentionsList;
     }
 
-    if (changes.value || changes.placeholderList) {
-      this.writeValue(changes.value.currentValue);
+    if (
+      changes.value ||
+      (changes.placeholderList && this.editorValue !== undefined)
+    ) {
+      this.writeValue(
+        (changes.value && changes.value.currentValue) || this.editorValue
+      );
       this.transmitValue(this.editorValue, {
         eventType: [InputEventType.onWrite],
         updateValue: true
@@ -222,7 +223,6 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   public placeholdersEnabled(): boolean {
     return (
-      !this.disabled &&
       isNotEmptyArray(this.placeholderList) &&
       this.controls.includes(BlotType.placeholder)
     );
@@ -251,7 +251,7 @@ export abstract class RTEbaseElement extends BaseFormElement
       ]);
     }
 
-    this.options.toolbarButtons = this.controls = RTE_CONTROLS_ORDER.filter(
+    this.controls = RTE_CONTROLS_ORDER.filter(
       (cntrl: BlotType) =>
         (this.controls || RTE_CONTROLS_DEF).includes(cntrl) &&
         !(this.disableControls || RTE_DISABLE_CONTROLS_DEF).includes(cntrl)
@@ -306,12 +306,11 @@ export abstract class RTEbaseElement extends BaseFormElement
   }
 
   public getEditor(): FroalaEdtr {
-    return (this.editorDirective as any)._editor as FroalaEdtr;
+    return this.editorDirective['_editor'] as FroalaEdtr;
   }
 
-  protected getEditorElement(selector = null): HTMLElement {
-    const editorHostElem = (this.editorDirective as any)
-      ._element as HTMLElement;
+  public getEditorElement(selector = null): HTMLElement {
+    const editorHostElem = this.editorDirective['_element'] as HTMLElement;
     return !selector ? editorHostElem : editorHostElem.querySelector(selector);
   }
 
@@ -319,15 +318,12 @@ export abstract class RTEbaseElement extends BaseFormElement
     return this.getEditor().el as HTMLElement;
   }
 
-  protected updateEditorOptions(
+  public updateEditorOptions(
     options: Partial<FroalaOptions>,
-    skipState = false,
     callback: Function = null
   ): void {
     if (isNotEmptyObject(options)) {
-      if (!skipState) {
-        Object.assign(this.options, options);
-      }
+      Object.assign(this.options, options);
 
       if (this.getEditor()) {
         Object.assign(this.getEditor().opts, options);

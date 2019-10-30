@@ -6,12 +6,15 @@
 </b-form-element-label>
 
 <div class="bfe-wrap"
-     [ngClass]="{focused: inputFocused}">
+     [id]="id"
+     [ngClass]="{focused: inputFocused}"
+     [ngStyle]="{'min-height': minHeight + 'px'}">
   <div #editor
+       console="brte-wrap"
        [froalaEditor]="options"
        [(froalaModel)]="editorValue"></div>
 
-  <b-single-select-panel *ngIf="placeholdersEnabled()"
+  <b-single-select-panel *ngIf="!disabled && placeholdersEnabled()"
                          #placeholderPanel
                          class="placeholder-select"
                          [options]="placeholderList"

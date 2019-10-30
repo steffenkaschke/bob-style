@@ -92,7 +92,6 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
     this.options.events = {
       initialized: () => {
-        console.log(this.getEditor());
         if (this.options.tooltips === false) {
           this.getEditorElement()
             .querySelectorAll('button[title]')
@@ -190,6 +189,8 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       }
     };
   }
+
+  // placeholder methods
 
   public onPlaceholderPanelOpen() {
     this.inputFocused = true;
