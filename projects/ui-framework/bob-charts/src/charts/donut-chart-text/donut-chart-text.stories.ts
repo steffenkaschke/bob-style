@@ -5,7 +5,7 @@ import {StoryBookLayoutModule} from '../../../../src/lib/story-book-layout/story
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ChartsModule} from '../charts.module';
 import {TypographyModule} from '../../../../../ui-framework/src/lib/typography/typography.module';
-import {NUMBER_OF_EMPLOYEES, PIE_CHART_DATA_MOCK} from '../pie-chart/pie-chart.mock';
+import {LINE_CHART_DATA_MOCK, NUMBER_OF_EMPLOYEES} from '../chart.mock';
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
@@ -30,13 +30,13 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Donut Chart With Text'">
+<b-story-book-layout [title]="'Donut Chart With Text (Pie chart)'">
     ${template}
 </b-story-book-layout>
 `;
 
 const note = `
-  ## Donut Text Chart
+  ## Donut Text Chart  (Pie chart)
 
   #### Module
   *ChartModule*
@@ -99,7 +99,7 @@ story.add(
         preTooltipValue: text('preTooltipValue', ''),
         postTooltipValue: text('postTooltipValue', ' PEOPLE'),
         donutInnerSize: number('donutInnerSize', 100),
-        data: object('data', PIE_CHART_DATA_MOCK),
+        data: object('data', LINE_CHART_DATA_MOCK),
         colorPalette: object('colorPalette', [
           '#CC2E4E',
           '#87233D',

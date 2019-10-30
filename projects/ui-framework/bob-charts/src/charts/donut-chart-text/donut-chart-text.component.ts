@@ -20,7 +20,6 @@ export class DonutChartTextComponent implements OnChanges {
   @Input() extraOptions: Options = {};
   @Input() preTooltipValue = '';
   @Input() postTooltipValue = '';
-  @Input() tooltipValueFormatter: Function = (val) => val;
   @Input() colorPalette: string[] = [
     '#058DC7',
     '#50B432',
@@ -31,6 +30,7 @@ export class DonutChartTextComponent implements OnChanges {
     '#FF9655',
     '#FFF263',
     '#6AF9C4'];
+  @Input() tooltipValueFormatter: Function = (val) => val;
   constructor(
     private cdr: ChangeDetectorRef
   ) {

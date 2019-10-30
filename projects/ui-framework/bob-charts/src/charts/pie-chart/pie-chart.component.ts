@@ -18,7 +18,7 @@ export const minDonutWidth = 3, pieLegendHeight = 37, piePadding = 50;
   templateUrl: '../chart/chart.component.html',
   styleUrls: [
     '../chart/chart.component.scss',
-    './pie-chart.component.scss'],
+  ],
   encapsulation: ViewEncapsulation.None
 })
 export class PieChartComponent extends ChartCore implements OnInit, OnChanges {

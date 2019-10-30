@@ -1,19 +1,11 @@
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick
-} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PieChartComponent } from './pie-chart.component';
-import {
-  PIE_CHART_DATA_MOCK,
-  TOOLTIP_FORMATTER_MOCK_RESULT
-} from './pie-chart.mock';
-import { ChangeDetectorRef, NgZone } from '@angular/core';
-import { ChartCore } from '../chart/chart-core';
+import {PieChartComponent} from './pie-chart.component';
+
+import {ChangeDetectorRef, NgZone} from '@angular/core';
+import {ChartCore} from '../chart/chart-core';
 import * as Highcharts from 'highcharts';
+import {LINE_CHART_DATA_MOCK, TOOLTIP_FORMATTER_MOCK_RESULT} from '../chart.mock';
 
 export class MockNgZone extends NgZone {
   run(fn: Function): any {
@@ -21,7 +13,7 @@ export class MockNgZone extends NgZone {
   }
 }
 
-describe('PieChartComponent', () => {
+fdescribe('PieChartComponent', () => {
   let component: PieChartComponent;
   let fixture: ComponentFixture<PieChartComponent>;
   let updatePieOptionsSpy, applyOnChangeSpy, highchartRefSpy;
@@ -36,7 +28,7 @@ describe('PieChartComponent', () => {
         fixture = TestBed.createComponent(PieChartComponent);
         component = fixture.componentInstance;
         highchartRefSpy = spyOn(Highcharts, 'chart');
-        component.data = PIE_CHART_DATA_MOCK as any;
+        component.data = LINE_CHART_DATA_MOCK as any;
         component.name = 'fruits';
         fixture.detectChanges();
       });
@@ -113,7 +105,7 @@ describe('PieChartComponent', () => {
       it('should inputs be same as highchart options properties', () => {
         expect(component.options.series[0].name).toEqual('fruits');
         expect((component.options.series[0] as any).data).toEqual(
-          PIE_CHART_DATA_MOCK
+          LINE_CHART_DATA_MOCK
         );
         expect(component.options.chart.type).toEqual('pie');
         expect(component.type).toEqual('pie');
