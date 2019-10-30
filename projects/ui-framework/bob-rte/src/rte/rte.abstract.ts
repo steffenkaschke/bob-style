@@ -167,15 +167,6 @@ export abstract class RTEbaseElement extends BaseFormElement
       );
     }
 
-    // if (
-    //   !this.cntrlsInited ||
-    //   hasChanges(changes, ['controls', 'disableControls', 'placeholderList'])
-    // ) {
-    //   this.initControls();
-    //   this.initTransformers();
-    //   this.cntrlsInited = true;
-    // }
-
     if (hasChanges(changes, ['controls', 'disableControls'])) {
       this.initControls();
       this.updateToolbar();
@@ -214,7 +205,6 @@ export abstract class RTEbaseElement extends BaseFormElement
   }
 
   public ngOnInit(): void {
-    console.log('ngOnInit');
     if (!this.cntrlsInited) {
       this.initControls();
       this.updateToolbar();
@@ -331,8 +321,6 @@ export abstract class RTEbaseElement extends BaseFormElement
   }
 
   protected updateToolbar(): void {
-    console.log('updateToolbar', this.toolbarButtons);
-
     if (this.toolbarButtons) {
       this.toolbarButtons.forEach(b => {
         const cmd = b.getAttribute('data-cmd') as BlotType;

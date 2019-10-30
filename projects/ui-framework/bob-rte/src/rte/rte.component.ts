@@ -92,8 +92,6 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
     this.options.events = {
       initialized: () => {
-        console.log('initialized');
-
         this.toolbarButtons = this.getEditorElement(
           'button[title]'
         ) as HTMLElement[];
