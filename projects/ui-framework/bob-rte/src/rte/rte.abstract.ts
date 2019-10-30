@@ -129,7 +129,9 @@ export abstract class RTEbaseElement extends BaseFormElement
         changes,
         {
           minHeight: RTE_MINHEIGHT_DEF,
-          maxHeight: RTE_MAXHEIGHT_DEF
+          maxHeight: RTE_MAXHEIGHT_DEF,
+          controls: RTE_CONTROLS_DEF,
+          disableControls: RTE_DISABLE_CONTROLS_DEF
         },
         ['options', 'value']
       );
