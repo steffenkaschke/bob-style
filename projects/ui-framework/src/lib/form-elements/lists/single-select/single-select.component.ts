@@ -22,7 +22,9 @@ import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { UtilsService } from '../../../services/utils/utils.service';
 import {
   BELOW_START,
-  ABOVE_START
+  ABOVE_START,
+  ABOVE_END,
+  BELOW_END
 } from '../../../popups/panel/panel-position-service/panel-position.const';
 
 @Component({
@@ -78,7 +80,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement
       cd
     );
     this.value = null;
-    this.panelPosition = [BELOW_START, ABOVE_START];
+    this.panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
   }
 
   ngOnChanges(changes: SimpleChanges): void {

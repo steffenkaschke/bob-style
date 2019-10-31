@@ -28,7 +28,9 @@ import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { UtilsService } from '../../../services/utils/utils.service';
 import {
   BELOW_START,
-  ABOVE_START
+  ABOVE_START,
+  BELOW_END,
+  ABOVE_END
 } from '../../../popups/panel/panel-position-service/panel-position.const';
 
 @Component({
@@ -98,7 +100,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement
       zone,
       cd
     );
-    this.panelPosition = [BELOW_START, ABOVE_START];
+    this.panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
   }
 
   ngOnInit(): void {
