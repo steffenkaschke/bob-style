@@ -27,7 +27,7 @@ export class PieChartComponent extends ChartCore implements OnChanges {
     this.height = 150;
   }
 
-  updatePieOptions() {
+  updateChartOptions() {
     this.chartOptions = {
       chart: {
         height: Math.abs(this.height)
@@ -61,7 +61,7 @@ export class PieChartComponent extends ChartCore implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.updatePieOptions();
+    this.updateChartOptions();
     this.applyOnChange();
   }
 

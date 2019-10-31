@@ -83,7 +83,6 @@ export class DonutChartTextComponent {
   this.textStyle = {...this.textStyle, opacity: 0,
     transition: 'all .2s cubic-bezier(.17,.13,.53,.52)'};
     debounce(() => {
-      console.log(this.chartComponent);
       this.updateTextStyle();
     }, ANIMATION_DURATION)();
   }

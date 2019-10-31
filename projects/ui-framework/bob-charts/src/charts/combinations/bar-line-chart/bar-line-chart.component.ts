@@ -23,11 +23,11 @@ export class BarLineChartComponent extends ChartCore implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.updatePieOptions();
+    this.updateChartOptions();
     this.applyOnChange();
   }
 
-  private updatePieOptions() {
+  private updateChartOptions() {
     this.chartOptions = merge(this.extraOptions, {
       chart: {
         height: Math.abs(this.height)

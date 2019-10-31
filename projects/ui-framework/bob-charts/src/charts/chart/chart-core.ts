@@ -29,7 +29,7 @@ Boost(Highcharts);
 noData(Highcharts);
 More(Highcharts);
 
-export abstract class ChartCore implements AfterViewInit, OnChanges {
+export abstract class ChartCore implements AfterViewInit {
   @Input() abstract type: ChartTypesEnum;
   highChartRef: any;
   containerId: string = simpleUID();
@@ -91,9 +91,7 @@ export abstract class ChartCore implements AfterViewInit, OnChanges {
         chart: {
           events: {
             render: (event) => {
-              // setTimeout(() => {
-                this.legendChanged.emit();
-              // }, 400);
+              this.legendChanged.emit();
             }
           },
           height: this.height,
@@ -143,10 +141,6 @@ export abstract class ChartCore implements AfterViewInit, OnChanges {
     this.zone.runOutsideAngular(() => {
       this.highChartRef = Highcharts.chart(this.containerId, this.options);
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.applyOnChange();
   }
 
   applyOnChange() {

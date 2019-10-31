@@ -16,7 +16,7 @@ export class MockNgZone extends NgZone {
 fdescribe('PieChartComponent', () => {
   let component: PieChartComponent;
   let fixture: ComponentFixture<PieChartComponent>;
-  let updatePieOptionsSpy, applyOnChangeSpy, highchartRefSpy;
+  let updateChartOptionsSpy, applyOnChangeSpy, highchartRefSpy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -39,12 +39,12 @@ fdescribe('PieChartComponent', () => {
       expect(component).toBeTruthy();
     });
     it('should call ngOnInit', () => {
-      updatePieOptionsSpy = spyOn(
+      updateChartOptionsSpy = spyOn(
         component,
-        'updatePieOptions'
+        'updateChartOptions'
       ).and.callThrough();
       component.ngOnInit();
-      expect(updatePieOptionsSpy).toHaveBeenCalled();
+      expect(updateChartOptionsSpy).toHaveBeenCalled();
     });
   });
 
@@ -57,18 +57,18 @@ fdescribe('PieChartComponent', () => {
       component.ngAfterViewInit();
       expect(ChartCore.prototype.ngAfterViewInit).toHaveBeenCalled();
     });
-    it('should call updatePieOptions', () => {
-      updatePieOptionsSpy = spyOn(
+    it('should call updateChartOptions', () => {
+      updateChartOptionsSpy = spyOn(
         component,
-        'updatePieOptions'
+        'updateChartOptions'
       ).and.callThrough();
       component.ngOnInit.call(component);
-      expect(updatePieOptionsSpy).toHaveBeenCalled();
+      expect(updateChartOptionsSpy).toHaveBeenCalled();
     });
     it('should format value, apply color, add pre and post values', () => {
-      updatePieOptionsSpy = spyOn(
+      updateChartOptionsSpy = spyOn(
         component,
-        'updatePieOptions'
+        'updateChartOptions'
       ).and.callThrough();
       component.ngOnInit.call(component);
       component.preTooltipValue = 'ILS ';
@@ -87,13 +87,13 @@ fdescribe('PieChartComponent', () => {
     });
     describe('ngOnChanges', () => {
       beforeEach(() => {
-        updatePieOptionsSpy = spyOn(component, 'updatePieOptions');
+        updateChartOptionsSpy = spyOn(component, 'updateChartOptions');
         applyOnChangeSpy = spyOn(ChartCore.prototype, 'applyOnChange');
         component.ngOnChanges.call(component);
         fixture.detectChanges();
       });
-      it('should call updatePieOptions and applyOnChangeSpy', () => {
-        expect(updatePieOptionsSpy).toHaveBeenCalled();
+      it('should call updateChartOptions and applyOnChangeSpy', () => {
+        expect(updateChartOptionsSpy).toHaveBeenCalled();
         expect(applyOnChangeSpy).toHaveBeenCalled();
       });
       it('should highchart update with options', () => {
