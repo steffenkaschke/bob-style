@@ -87,8 +87,8 @@ tableStories.add(
           rowSelection,
           RowSelection.Multiple
         ),
-        rowData: object('rowData', mockRowData),
         columnDefs: object('columnDefs', mockColumnsDefs),
+        rowData: object('rowData', mockRowData),
         rowClicked: action('Row clicked'),
         selectionChanged: action('Selection changed'),
         sortChanged: action('sort changed')

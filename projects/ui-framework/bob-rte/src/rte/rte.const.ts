@@ -47,6 +47,8 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   tooltips: false,
   shortcutsHint: false,
 
+  placeholderText: '',
+
   imagePaste: false,
   imageDefaultAlign: 'left',
   imageDefaultWidth: 600,
