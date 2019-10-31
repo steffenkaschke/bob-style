@@ -12,7 +12,7 @@ export type LineChartTypes =
 export interface ChartFormatterThis {
   color: string;
   y: number;
-  key: number;
+  key: number | string;
   x?: number;
 }
 
