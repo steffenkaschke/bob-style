@@ -20,6 +20,7 @@ import { dedupeArray } from '../../../src/lib/services/utils/functional-utils';
 import { SelectGroupOption } from '../../../src/lib/form-elements/lists/list.interface';
 import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
 import { RichTextEditorModule } from './rte.module';
+import { mockText } from '../../../src/lib/mock.const';
 
 const inputStories = storiesOf(
   ComponentGroupType.FormElements,
@@ -55,7 +56,8 @@ const template = `
       [type]="type"
       [label]="label"
       [placeholder]="placeholder"
-      [value]="value"
+      [hideLabelOnFocus]="hideLabelOnFocus"
+      [description]="description"
       [controls]="controls"
       [disableControls]="disableControls"
       [mentionsList]="mentionsOptions"
@@ -103,7 +105,9 @@ const note = `
   --- | --- | --- | ---
   [type] | RTEType | theme: primary (white bg, border), secondary (transparent bg, no borders), tertiary (grey bg, no borders) | primary
   [label] | string | label text (above editor) | &nbsp;
-  [placeholder] | string | placeholder text (inside editor. if only label is present, it will be treated as placeholder) | &nbsp;
+  [placeholder] | string | placeholder text (inside editor) | &nbsp;
+  [description] | string | description text (icon tooltip)
+  [hideLabelOnFocus] | boolean | if true label text will be used as placeholder
   [value] | string | html content to be placed inside editor | &nbsp;
   [controls] | BlotType[] | array of toolbar controls (check BlotType enum for all possible controls). Defaults to all controls. Pass empty array to disable all controls | all
   [minChars] | number | minimum (plain) text length | 0
@@ -157,13 +161,15 @@ inputStories.add(
         type: select('type', values(RTEType), RTEType.primary),
         placeholder: text('placeholder', 'Compose an epic...'),
         label: text('label', 'Edit rich textor'),
+        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
+        description: text('description', mockText(30)),
         value: text('value', value),
         minChars: number('minChars', 20),
         maxChars: number('maxChars', 500),
         minHeight: number('minHeight', 185),
         maxHeight: number('maxHeight'),
         disabled: boolean('disabled', false),
-        required: boolean('required', false),
+        required: boolean('required', true),
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
