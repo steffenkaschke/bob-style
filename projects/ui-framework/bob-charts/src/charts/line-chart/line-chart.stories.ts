@@ -6,6 +6,7 @@ import {StoryBookLayoutModule} from '../../../../src/lib/story-book-layout/story
 import {ChartsModule} from '../charts.module';
 import {LINE_CHART_DATA_MOCK} from '../chart.mock';
 import {ChartTypesEnum} from '../chart/chart.enum';
+import {ChartLegendPositionEnum} from '../chart/chart.interface';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
@@ -19,6 +20,7 @@ const template = `
     [postTooltipValue]="postTooltipValue"
     [showDataLabels]="showDataLabels"
     [legend]="legend"
+    [legendPosition]="legendPosition"
     [colorPalette]="colorPalette"
     [name]="name"
     [height]="height"
@@ -71,6 +73,9 @@ story.add(
           ChartTypesEnum.Areaspline
         ], ChartTypesEnum.Line),
         legend: boolean('legend', true),
+        legendPosition: select('legendPosition',
+          Object.values(ChartLegendPositionEnum),
+          ChartLegendPositionEnum.BOTTOM),
         name: text('name', 'employees'),
         preTooltipValue: text('preTooltipValue', ''),
         postTooltipValue: text('postTooltipValue', ' PEOPLE'),

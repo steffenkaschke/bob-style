@@ -13,6 +13,12 @@ import {Options} from 'highcharts';
 import {ChartTypesEnum} from './chart.enum';
 import {merge} from 'lodash';
 import {simpleUID} from 'bob-style';
+import {
+  ChartLegendAlignEnum,
+  ChartLegendLayoutEnum,
+  ChartLegendPositionEnum,
+  ChartLegendVerticalAlignEnum
+} from './chart.interface';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -22,12 +28,12 @@ const More = require('highcharts/highcharts-more');
 Boost(Highcharts);
 noData(Highcharts);
 More(Highcharts);
-noData(Highcharts);
 
-export class ChartCore implements AfterViewInit, OnChanges {
-  type: ChartTypesEnum;
+export abstract class ChartCore implements AfterViewInit, OnChanges {
+  @Input() abstract type: ChartTypesEnum;
   highChartRef: any;
   containerId: string = simpleUID();
+  chartOptions: Options;
   options: Options;
   firstTimeAfterAnimate = true;
 
@@ -37,16 +43,8 @@ export class ChartCore implements AfterViewInit, OnChanges {
     };
   })(this);
 
-  tooltipFormatter(chartThis, component) {
-    return `<div class="chart-tooltip">
-      <div class="value" style="color:${chartThis.color};">
-          ${component.preTooltipValue}${component.tooltipValueFormatter(chartThis.y)}${component.postTooltipValue}
-      </div>
-      <div class="key">${chartThis.key}</div>
-    </div>`;
-  }
 
-  @Input() tooltipValueFormatter: Function = (val) => val;
+  @Input() legendPosition: ChartLegendPositionEnum = ChartLegendPositionEnum.BOTTOM;
   @Input() preTooltipValue = '';
   @Input() postTooltipValue = '';
   @Input() colorPalette: string[] = [
@@ -66,72 +64,83 @@ export class ChartCore implements AfterViewInit, OnChanges {
   @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
   @Input() extraOptions: Options = {};
   @Output() legendChanged = new EventEmitter();
+  @Input() tooltipValueFormatter: Function = (val) => val;
 
   constructor(
     public zone: NgZone,
     public cdr: ChangeDetectorRef
-  ) {
+  ) {}
 
+  tooltipFormatter(chartThis, component) {
+    return `<div class="chart-tooltip">
+      <div class="value" style="color:${chartThis.color};">
+          ${component.preTooltipValue}${component.tooltipValueFormatter(chartThis.y)}${component.postTooltipValue}
+      </div>
+      <div class="key">${chartThis.key}</div>
+    </div>`;
   }
 
+
   initialOptions(): void {
-    this.options = merge({
-      chart: {
-        height: this.height,
-        type: this.type,
-        backgroundColor: 'rgba(255, 255, 255, 0.0)',
-        animation: {
-          duration: 200,
-          // easing: function(t) { return t; }
-        }
-      },
-      title: {
-        text: this.title,
-      },
-      tooltip: {
-        outside: true,
-        useHTML: true,
-        style: {
-          textAlign: 'center',
-          shadow: false,
-          opacity: 1
+    this.zone.runOutsideAngular(() => {
+      this.options = merge({
+        colors: this.colorPalette,
+        lang: {
+          noData: '' // overrides no data alert
         },
-        formatter: this.formatter
-      },
-      plotOptions: {
-        [this.type]: {
-          animation: {},
+        chart: {
           events: {
-            afterAnimate: undefined
+            render: (event) => {
+              // setTimeout(() => {
+                this.legendChanged.emit();
+              // }, 400);
+            }
           },
-          showInLegend: this.legend,
-          dataLabels: {
-            enabled: this.showDataLabels
+          height: this.height,
+          type: this.type,
+          backgroundColor: 'rgba(255, 255, 255, 0.0)',
+          animation: {
+            duration: 200,
+            // easing: function(t) { return t; }
+          }
+        },
+        title: {
+          text: this.title,
+        },
+        legend: this.getLegendPositioning(this.legendPosition),
+        tooltip: {
+          outside: true,
+          useHTML: true,
+          style: {
+            textAlign: 'center',
+            shadow: false,
+            opacity: 1
           },
-        }
-      },
-      credits: {
-        enabled: false
-      },
-      series: [],
-    }, this.extraOptions);
-    if (this.legend && this.legendChanged && this.firstTimeAfterAnimate) {
-      this.options.plotOptions[this.type].events.afterAnimate = (event) => {
-        this.firstTimeAfterAnimate = false;
-        this.legendChanged.emit(this.highChartRef.legend.legendHeight);
-      };
-    }
+          formatter: this.formatter
+        },
+        plotOptions: {
+          [this.type]: {
+            animation: {},
+            events: {
+              afterAnimate: undefined
+            },
+            showInLegend: this.legend,
+            dataLabels: {
+              enabled: this.showDataLabels
+            },
+          }
+        },
+        credits: {
+          enabled: false
+        },
+        series: [],
+      }, this.chartOptions);
+    });
   }
 
   ngAfterViewInit(): void {
     this.initialOptions();
     this.zone.runOutsideAngular(() => {
-      Highcharts.setOptions({
-        colors: this.colorPalette,
-        lang: {
-          noData: '' // overrides no data alert
-        }
-      });
       this.highChartRef = Highcharts.chart(this.containerId, this.options);
     });
   }
@@ -144,9 +153,42 @@ export class ChartCore implements AfterViewInit, OnChanges {
     if (this.highChartRef) {
       this.cdr.markForCheck();
       this.initialOptions();
-      // window.requestAnimationFrame(() => {
-      this.highChartRef.update(this.options);
-      // });
+
+      this.zone.runOutsideAngular(() => {
+        this.highChartRef.update(this.options);
+      });
     }
+  }
+  private getLegendPositioning(position: ChartLegendPositionEnum, offset = {x: 0, y: 0}) {
+    const baseLegendPositionJson = {
+      align: null,
+      verticalAlign: null,
+      layout: null,
+      x: offset.x,
+      y: offset.y
+    };
+    switch (position) {
+      case ChartLegendPositionEnum.TOP:
+        baseLegendPositionJson.verticalAlign = ChartLegendVerticalAlignEnum.TOP;
+        baseLegendPositionJson.align = ChartLegendAlignEnum.CENTER;
+        baseLegendPositionJson.layout = ChartLegendLayoutEnum.HORIZONTAL;
+        break;
+      case ChartLegendPositionEnum.BOTTOM:
+        baseLegendPositionJson.verticalAlign = ChartLegendVerticalAlignEnum.BOTTOM;
+        baseLegendPositionJson.align = ChartLegendAlignEnum.CENTER;
+        baseLegendPositionJson.layout = ChartLegendLayoutEnum.HORIZONTAL;
+        break;
+      case ChartLegendPositionEnum.RIGHT:
+        baseLegendPositionJson.verticalAlign = ChartLegendVerticalAlignEnum.MIDDLE;
+        baseLegendPositionJson.align = ChartLegendAlignEnum.RIGHT;
+        baseLegendPositionJson.layout = ChartLegendLayoutEnum.VERTICAL;
+        break;
+      case ChartLegendPositionEnum.LEFT:
+        baseLegendPositionJson.verticalAlign = ChartLegendVerticalAlignEnum.MIDDLE;
+        baseLegendPositionJson.align = ChartLegendAlignEnum.LEFT;
+        baseLegendPositionJson.layout = ChartLegendLayoutEnum.VERTICAL;
+        break;
+    }
+    return baseLegendPositionJson;
   }
 }

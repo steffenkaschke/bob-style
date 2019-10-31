@@ -33,7 +33,7 @@ export class StackedBarChartComponent extends ChartCore implements OnInit, OnCha
   }
 
   private updatePieOptions() {
-    this.extraOptions = {
+    this.chartOptions = {
       chart: {
         height: Math.abs(this.height)
       },
@@ -42,10 +42,7 @@ export class StackedBarChartComponent extends ChartCore implements OnInit, OnCha
       },
       plotOptions: {
         column: {
-          stacking: 'normal',
-          dataLabels: {
-            enabled: true
-          }
+          stacking: 'normal'
         }
       },
       series: this.data

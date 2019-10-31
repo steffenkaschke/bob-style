@@ -1,10 +1,11 @@
 import {storiesOf} from '@storybook/angular';
-import {boolean, number, object, text, withKnobs} from '@storybook/addon-knobs/angular';
+import {select, boolean, number, object, text, withKnobs} from '@storybook/addon-knobs/angular';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ComponentGroupType} from '../../../../../src/lib/consts';
 import {StoryBookLayoutModule} from '../../../../../src/lib/story-book-layout/story-book-layout.module';
 import {ChartsModule} from '../../charts.module';
 import {COMBINED_BAR_CHART_DATA_MOCK, MULTI_BAR_CHART_CATEGORIES} from '../../chart.mock';
+import {ChartLegendPositionEnum} from '../../chart/chart.interface';
 
 const story = storiesOf(`${ComponentGroupType.Charts}.Combinations`, module).addDecorator(
   withKnobs
@@ -13,6 +14,8 @@ const template = `
 <div>
   <b-bar-line-chart
     [data]="data"
+    [legendPosition]="legendPosition"
+    [showDataLabels]="showDataLabels"
     [preTooltipValue]="preTooltipValue"
     [postTooltipValue]="postTooltipValue"
     [categories]="categories"
@@ -63,6 +66,10 @@ story.add(
       template: storyTemplate,
       props: {
         legend: boolean('legend', true),
+        legendPosition: select('legendPosition',
+          Object.values(ChartLegendPositionEnum),
+          ChartLegendPositionEnum.BOTTOM),
+        showDataLabels: boolean('showDataLabels', false),
         name: text('name', 'employees'),
         preTooltipValue: text('preTooltipValue', ''),
         postTooltipValue: text('postTooltipValue', ' PEOPLE'),

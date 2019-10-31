@@ -33,17 +33,13 @@ export class MultiBarChartComponent extends ChartCore implements OnInit, OnChang
   }
 
   private updatePieOptions() {
-    this.extraOptions = {
+    this.chartOptions = {
       chart: {
         height: Math.abs(this.height)
       },
       xAxis: {
         categories: this.categories,
         crosshair: true
-      },
-      plotOptions: {
-        column: {
-        }
       },
       series: this.data
     };

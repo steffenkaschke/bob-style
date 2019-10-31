@@ -98,7 +98,3 @@ export enum ChartTypesEnum {
   Xrange = 'xrange',
   Zigzag = 'zigzag',
 }
-export type LineChartTypes = ChartTypesEnum.Area
-  | ChartTypesEnum.Line
-  | ChartTypesEnum.Spline
-  | ChartTypesEnum.Areaspline;

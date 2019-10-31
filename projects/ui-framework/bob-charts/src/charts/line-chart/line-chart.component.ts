@@ -1,7 +1,7 @@
-import {ChangeDetectorRef, Component, Input, NgZone, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, NgZone, OnChanges, SimpleChanges} from '@angular/core';
 import {ChartCore} from '../chart/chart-core';
-import {ChartTypesEnum, LineChartTypes} from '../chart/chart.enum';
 import {SeriesPieDataOptions} from 'highcharts';
+import {LineChartTypes} from '../chart/chart.interface';
 
 @Component({
   selector: 'b-line-chart',
@@ -10,8 +10,8 @@ import {SeriesPieDataOptions} from 'highcharts';
     '../chart/chart.component.scss'
   ]
 })
-export class LineChartComponent extends ChartCore implements OnInit, OnChanges  {
-  @Input() type: LineChartTypes = ChartTypesEnum.Line;
+export class LineChartComponent extends ChartCore implements OnChanges  {
+  type: LineChartTypes;
   @Input() data: Array<(number|[string, (number|null)]|null|SeriesPieDataOptions)>;
   @Input() name: string;
   constructor(
@@ -22,16 +22,13 @@ export class LineChartComponent extends ChartCore implements OnInit, OnChanges  
     this.height = 450;
   }
 
-  ngOnInit() {
-    this.updatePieOptions();
-  }
   ngOnChanges(changes: SimpleChanges): void {
-    this.updatePieOptions();
+    this.updateOptions();
     this.applyOnChange();
   }
 
-  private updatePieOptions() {
-    this.extraOptions = {
+  private updateOptions() {
+    this.chartOptions = {
       chart: {
         height: Math.abs(this.height)
       },

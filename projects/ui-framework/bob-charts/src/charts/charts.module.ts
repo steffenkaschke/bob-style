@@ -6,7 +6,7 @@ import { DonutChartTextComponent } from './donut-chart-text/donut-chart-text.com
 import {LineChartComponent} from './line-chart/line-chart.component';
 import {MultiBarChartComponent} from './bar-chart/multi-bar-chart/multi-bar-chart.component';
 import {StackedBarChartComponent} from './bar-chart/stacked-bar-chart/stacked-bar-chart.component';
-import { BarLineChartComponent } from './combinations/bar-line-chart/bar-line-chart.component';
+import {BarLineChartComponent} from './combinations/bar-line-chart/bar-line-chart.component';
 
 @NgModule({
   declarations: [
