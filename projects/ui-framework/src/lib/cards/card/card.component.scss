@@ -77,6 +77,10 @@
   }
 }
 
+[card-top]:empty + .card-title {
+  margin-top: 0;
+}
+
 .card-action,
 .card-menu {
   & + .card-title,

@@ -26,6 +26,10 @@ import { ListFooterActions } from '../list.interface';
 import { TruncateTooltipComponent } from '../../../popups/truncate-tooltip/truncate-tooltip.component';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { UtilsService } from '../../../services/utils/utils.service';
+import {
+  BELOW_START,
+  ABOVE_START
+} from '../../../popups/panel/panel-position-service/panel-position.const';
 
 @Component({
   selector: 'b-multi-select',
@@ -94,6 +98,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement
       zone,
       cd
     );
+    this.panelPosition = [BELOW_START, ABOVE_START];
   }
 
   ngOnInit(): void {
@@ -104,6 +109,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+
     if (changes.options) {
       this.options = changes.options.currentValue;
       this.selectedValuesMap = this.getSelectedValuesMap(this.options);

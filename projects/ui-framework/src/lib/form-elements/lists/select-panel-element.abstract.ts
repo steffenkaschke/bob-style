@@ -9,7 +9,9 @@ import {
   ChangeDetectorRef,
   OnDestroy,
   EventEmitter,
-  Output
+  Output,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -31,14 +33,14 @@ import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { OverlayPositionClasses } from '../../types';
 import { UtilsService } from '../../services/utils/utils.service';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { isKey } from '../../services/utils/functional-utils';
+import { isKey, hasChanges } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { SelectGroupOption } from './list.interface';
 import { ListChange } from './list-change/list-change';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
-  implements AfterViewInit, OnDestroy {
+  implements OnChanges, AfterViewInit, OnDestroy {
   @ViewChild(CdkOverlayOrigin, { static: true })
   overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
@@ -92,6 +94,12 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     public cd: ChangeDetectorRef
   ) {
     super();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
+      this.destroyPanel();
+    }
   }
 
   ngAfterViewInit(): void {
