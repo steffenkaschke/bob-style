@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, NgZone, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, NgZone, OnChanges, SimpleChanges} from '@angular/core';
 import {ChartTypesEnum} from '../../chart/chart.enum';
 import {SeriesColumnOptions} from 'highcharts';
 import {ChartCore} from '../../chart/chart-core';
