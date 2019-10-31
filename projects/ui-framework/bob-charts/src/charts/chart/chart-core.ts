@@ -1,19 +1,11 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  EventEmitter,
-  Input,
-  NgZone,
-  OnChanges,
-  Output,
-  SimpleChanges
-} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, EventEmitter, Input, NgZone, Output} from '@angular/core';
 import * as Highcharts from 'highcharts';
 import {Options} from 'highcharts';
 import {ChartTypesEnum} from './chart.enum';
 import {merge} from 'lodash';
 import {simpleUID} from 'bob-style';
 import {
+  ChartFormatterThis,
   ChartLegendAlignEnum,
   ChartLegendLayoutEnum,
   ChartLegendPositionEnum,
@@ -35,7 +27,6 @@ export abstract class ChartCore implements AfterViewInit {
   containerId: string = simpleUID();
   chartOptions: Options;
   options: Options;
-  firstTimeAfterAnimate = true;
 
   private formatter = (function (component) {
     return function () {
@@ -64,14 +55,14 @@ export abstract class ChartCore implements AfterViewInit {
   @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
   @Input() extraOptions: Options = {};
   @Output() legendChanged = new EventEmitter();
-  @Input() tooltipValueFormatter: Function = (val) => val;
+  @Input() tooltipValueFormatter = (val: number): number | string => val;
 
   constructor(
     public zone: NgZone,
     public cdr: ChangeDetectorRef
   ) {}
 
-  tooltipFormatter(chartThis, component) {
+  tooltipFormatter(chartThis: ChartFormatterThis, component: ChartCore) {
     return `<div class="chart-tooltip">
       <div class="value" style="color:${chartThis.color};">
           ${component.preTooltipValue}${component.tooltipValueFormatter(chartThis.y)}${component.postTooltipValue}
@@ -99,7 +90,6 @@ export abstract class ChartCore implements AfterViewInit {
           backgroundColor: 'rgba(255, 255, 255, 0.0)',
           animation: {
             duration: 200,
-            // easing: function(t) { return t; }
           }
         },
         title: {
@@ -155,34 +145,32 @@ export abstract class ChartCore implements AfterViewInit {
   }
   private getLegendPositioning(position: ChartLegendPositionEnum, offset = {x: 0, y: 0}) {
     const baseLegendPositionJson = {
-      align: null,
-      verticalAlign: null,
-      layout: null,
+      [ChartLegendPositionEnum.TOP]: {
+        align: ChartLegendAlignEnum.CENTER,
+        verticalAlign: ChartLegendVerticalAlignEnum.TOP,
+        layout: ChartLegendLayoutEnum.HORIZONTAL
+      },
+      [ChartLegendPositionEnum.BOTTOM]: {
+        align: ChartLegendAlignEnum.CENTER,
+        verticalAlign: ChartLegendVerticalAlignEnum.BOTTOM,
+        layout: ChartLegendLayoutEnum.HORIZONTAL
+      },
+      [ChartLegendPositionEnum.RIGHT]: {
+        align: ChartLegendAlignEnum.RIGHT,
+        verticalAlign: ChartLegendVerticalAlignEnum.MIDDLE,
+        layout: ChartLegendLayoutEnum.VERTICAL
+      },
+      [ChartLegendPositionEnum.LEFT]: {
+        align: ChartLegendAlignEnum.LEFT,
+        verticalAlign: ChartLegendVerticalAlignEnum.MIDDLE,
+        layout: ChartLegendLayoutEnum.VERTICAL
+      },
+    };
+
+    return {
+      ...baseLegendPositionJson[position],
       x: offset.x,
       y: offset.y
     };
-    switch (position) {
-      case ChartLegendPositionEnum.TOP:
-        baseLegendPositionJson.verticalAlign = ChartLegendVerticalAlignEnum.TOP;
-        baseLegendPositionJson.align = ChartLegendAlignEnum.CENTER;
-        baseLegendPositionJson.layout = ChartLegendLayoutEnum.HORIZONTAL;
-        break;
-      case ChartLegendPositionEnum.BOTTOM:
-        baseLegendPositionJson.verticalAlign = ChartLegendVerticalAlignEnum.BOTTOM;
-        baseLegendPositionJson.align = ChartLegendAlignEnum.CENTER;
-        baseLegendPositionJson.layout = ChartLegendLayoutEnum.HORIZONTAL;
-        break;
-      case ChartLegendPositionEnum.RIGHT:
-        baseLegendPositionJson.verticalAlign = ChartLegendVerticalAlignEnum.MIDDLE;
-        baseLegendPositionJson.align = ChartLegendAlignEnum.RIGHT;
-        baseLegendPositionJson.layout = ChartLegendLayoutEnum.VERTICAL;
-        break;
-      case ChartLegendPositionEnum.LEFT:
-        baseLegendPositionJson.verticalAlign = ChartLegendVerticalAlignEnum.MIDDLE;
-        baseLegendPositionJson.align = ChartLegendAlignEnum.LEFT;
-        baseLegendPositionJson.layout = ChartLegendLayoutEnum.VERTICAL;
-        break;
-    }
-    return baseLegendPositionJson;
   }
 }

@@ -9,6 +9,13 @@ export type LineChartTypes =
   ChartTypesEnum.Spline |
   ChartTypesEnum.Areaspline;
 
+export interface ChartFormatterThis {
+  color: string;
+  y: number;
+  key: number;
+  x?: number;
+}
+
 export enum ChartLegendPositionEnum {
   TOP = 'top',
   RIGHT = 'right',
