@@ -21,7 +21,7 @@ export const minDonutWidth = 3, pieLegendHeight = 37, piePadding = 50;
   ],
   encapsulation: ViewEncapsulation.None
 })
-export class PieChartComponent extends ChartCore implements OnInit, OnChanges {
+export class PieChartComponent extends ChartCore implements OnChanges {
   type = ChartTypesEnum.Pie;
   @Input() data: SeriesPieDataOptions[];
   @Input() name: string;
@@ -34,9 +34,6 @@ export class PieChartComponent extends ChartCore implements OnInit, OnChanges {
   ) {
     super(zone, cdr);
     this.height = 150;
-  }
-  ngOnInit() {
-    this.updatePieOptions();
   }
 
   updatePieOptions() {

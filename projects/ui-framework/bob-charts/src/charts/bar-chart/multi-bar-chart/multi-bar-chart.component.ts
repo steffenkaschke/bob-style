@@ -11,7 +11,7 @@ import {ChartCore} from '../../chart/chart-core';
     './multi-bar-chart.component.scss'
   ]
 })
-export class MultiBarChartComponent extends ChartCore implements OnInit, OnChanges {
+export class MultiBarChartComponent extends ChartCore implements OnChanges {
   type = ChartTypesEnum.Column;
   @Input() categories: string[];
   @Input() data: SeriesColumnOptions[];
@@ -24,9 +24,6 @@ export class MultiBarChartComponent extends ChartCore implements OnInit, OnChang
     this.height = 450;
   }
 
-  ngOnInit() {
-    this.updatePieOptions();
-  }
   ngOnChanges(changes: SimpleChanges): void {
     this.updatePieOptions();
     this.applyOnChange();
