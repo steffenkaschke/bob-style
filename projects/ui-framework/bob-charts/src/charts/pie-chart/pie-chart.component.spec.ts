@@ -13,7 +13,7 @@ export class MockNgZone extends NgZone {
   }
 }
 
-fdescribe('PieChartComponent', () => {
+describe('PieChartComponent', () => {
   let component: PieChartComponent;
   let fixture: ComponentFixture<PieChartComponent>;
   let updateChartOptionsSpy, applyOnChangeSpy, highchartRefSpy;
@@ -38,12 +38,12 @@ fdescribe('PieChartComponent', () => {
     it('should initialize', () => {
       expect(component).toBeTruthy();
     });
-    it('should call ngOnInit', () => {
+    it('should call ngOnChanges', () => {
       updateChartOptionsSpy = spyOn(
         component,
         'updateChartOptions'
       ).and.callThrough();
-      component.ngOnInit();
+      component.ngOnChanges({});
       expect(updateChartOptionsSpy).toHaveBeenCalled();
     });
   });
@@ -62,7 +62,7 @@ fdescribe('PieChartComponent', () => {
         component,
         'updateChartOptions'
       ).and.callThrough();
-      component.ngOnInit.call(component);
+      component.ngOnChanges.call(component);
       expect(updateChartOptionsSpy).toHaveBeenCalled();
     });
     it('should format value, apply color, add pre and post values', () => {
@@ -70,7 +70,7 @@ fdescribe('PieChartComponent', () => {
         component,
         'updateChartOptions'
       ).and.callThrough();
-      component.ngOnInit.call(component);
+      component.ngOnChanges.call(component);
       component.preTooltipValue = 'ILS ';
       component.postTooltipValue = ' end';
       component.tooltipValueFormatter = val => `formatted ${val / 1000}`;
