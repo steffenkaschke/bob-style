@@ -7,22 +7,22 @@ export const selectOptionsMock: SelectGroupOption[] = [
     options: [
       {
         value: 'First name',
-        id: '/root/firstName',
+        id: 'root/firstName',
         selected: false
       },
       {
         value: 'Last name',
-        id: '/root/lastName',
+        id: 'root/lastName',
         selected: false
       },
       {
         value: 'Full name',
-        id: 'basic/fullName',
+        id: 'root/fullName',
         selected: false
       },
       {
         value: 'Display name',
-        id: '/root/displayName',
+        id: 'root/displayName',
         selected: false
       }
     ]
@@ -33,17 +33,17 @@ export const selectOptionsMock: SelectGroupOption[] = [
     options: [
       {
         value: 'Personal email',
-        id: '/personal/personalEmail',
+        id: 'personal/personalEmail',
         selected: false
       },
       {
         value: 'Personal phone',
-        id: '/personal/personalPhone',
+        id: 'personal/personalPhone',
         selected: false
       },
       {
         value: 'Personal mobile',
-        id: '/personal/personalMobile',
+        id: 'personal/personalMobile',
         selected: false
       }
     ]
@@ -54,7 +54,7 @@ export const selectOptionsMock: SelectGroupOption[] = [
     options: [
       {
         value: 'Title',
-        id: '/work/title',
+        id: 'work/title',
         selected: false
       },
       {
@@ -64,17 +64,17 @@ export const selectOptionsMock: SelectGroupOption[] = [
       },
       {
         value: 'Reports to',
-        id: '/work/reportsTo',
+        id: 'work/reportsTo',
         selected: false
       },
       {
         value: 'Start date',
-        id: '/work/startDate',
+        id: 'work/startDate',
         selected: false
       },
       {
         value: 'Site',
-        id: '/work/siteId',
+        id: 'work/siteId',
         selected: false
       }
     ]
@@ -85,17 +85,17 @@ export const selectOptionsMock: SelectGroupOption[] = [
     options: [
       {
         value: 'City',
-        id: '/address/city',
+        id: 'address/city',
         selected: false
       },
       {
         value: 'Country',
-        id: '/address/country',
+        id: 'address/country',
         selected: false
       },
       {
         value: 'State',
-        id: '/address/state',
+        id: 'address/state',
         selected: false
       }
     ]

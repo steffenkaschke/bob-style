@@ -53,6 +53,7 @@ Here's an important list of things to remember:
 
 const template = `
   <b-rich-text-editor
+      [value]="value"
       [type]="type"
       [label]="label"
       [placeholder]="placeholder"
@@ -129,10 +130,14 @@ const note = `
   --- | --- | --- | ---
   [mentionsList] | RteMentionsOption[] | pass an array of { avatar, displayName, link } objects for mentions functionality | &nbsp;
 
+  <strong>Important!</strong>   \`\`\`.link  \`\`\` should be a full url of ee profile;   \`\`\`.avatar  \`\`\` should be ee avatar url, from EmployeeAvatarService.getOptimizedAvatarImage (size mini);
+
   #### Placeholders properties
   Name | Type | Description | default
   --- | --- | --- | ---
-  [placeholderList] | SelectGroupOption[] | Single-List-compatible options model. <br> <strong>Important!</strong> Each group must have a key, and each options id must be in format /GroupKey/OptionId.
+  [placeholderList] | SelectGroupOption[] | Single-List-compatible options model.
+
+  <strong>Important!</strong> Each group must have a   \`\`\`key  \`\`\`, and each options   \`\`\`id \`\`\` must be in format \`\`\`GroupKey/OptionId\`\`\`.
 
   Example of placeholderList data:
 
@@ -142,7 +147,7 @@ const note = `
     "key": "root",
     "options": [
       {
-        "id": "/root/firstName",
+        "id": "root/firstName",
         "value": "First name"
       }
     ]
