@@ -129,7 +129,9 @@ export abstract class RTEbaseElement extends BaseFormElement
         changes,
         {
           minHeight: RTE_MINHEIGHT_DEF,
-          maxHeight: RTE_MAXHEIGHT_DEF
+          maxHeight: RTE_MAXHEIGHT_DEF,
+          controls: RTE_CONTROLS_DEF,
+          disableControls: RTE_DISABLE_CONTROLS_DEF
         },
         ['options', 'value']
       );
@@ -141,9 +143,21 @@ export abstract class RTEbaseElement extends BaseFormElement
       );
     }
 
-    if (changes.placeholder || (changes.label && !this.placeholder)) {
+    if (
+      changes.placeholder ||
+      (changes.label && this.hideLabelOnFocus) ||
+      changes.hideLabelOnFocus ||
+      (changes.required && this.hideLabelOnFocus)
+    ) {
       this.updateEditorOptions(
-        { placeholderText: this.placeholder || this.label || ' ' },
+        {
+          placeholderText:
+            this.hideLabelOnFocus && this.label
+              ? !this.required
+                ? this.label
+                : this.label + '*'
+              : this.placeholder || ' '
+        },
         () => {
           this.getEditor().placeholder.refresh();
         }

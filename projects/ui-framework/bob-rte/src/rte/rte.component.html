@@ -1,4 +1,4 @@
-<b-form-element-label *ngIf="label && placeholder"
+<b-form-element-label *ngIf="label && !hideLabelOnFocus"
                       class="bfe-label"
                       [label]="label"
                       [description]="description"
@@ -35,7 +35,7 @@
 </div>
 
 <p b-input-message
-   *ngIf="hintMessage || warnMessage || errorMessage || minChars || maxChars"
+   *ngIf="hintMessage || warnMessage || errorMessage || minChars || maxChars > 0"
    [hintMessage]="hintMessage"
    [warnMessage]="warnMessage"
    [errorMessage]="errorMessage"

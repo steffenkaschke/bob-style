@@ -47,6 +47,8 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   tooltips: false,
   shortcutsHint: false,
 
+  placeholderText: '',
+
   imagePaste: false,
   imageDefaultAlign: 'left',
   imageDefaultWidth: 600,
@@ -161,5 +163,40 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     '\'Sentinel SSm A\', \'Sentinel SSm B\', \'Helvetica\'': 'Heading font'
   },
 
-  toolbarButtons: RTE_CONTROLS_DEF
+  toolbarButtons: RTE_CONTROLS_DEF,
+
+  pluginsEnabled: [
+    'align',
+    'charCounter',
+    'colors',
+    'fontSize',
+    'inlineStyle',
+    'inlineClass',
+    'link',
+    'lists',
+    'paragraphFormat',
+    'paragraphStyle',
+    'save',
+    'url'
+    // 'emoticons',
+    // 'fontFamily',
+    // 'table',
+    // 'video',
+    // 'image',
+    // 'imageTUI',
+    // 'imageManager',
+    // 'wordPaste',
+    // 'embedly',
+    // 'codeBeautifier',
+    // 'lineHeight',
+    // 'codeView',
+    // 'draggable',
+    // 'entities',
+    // 'file',
+    // 'fontAwesome',
+    // 'fullscreen',
+    // 'lineBreaker',
+    // 'quickInsert',
+    // 'quote',
+  ]
 };

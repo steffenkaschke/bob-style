@@ -271,6 +271,7 @@ export {
 } from './lib/form-elements/radio-button/radio-button.interface';
 // Social Module
 export { SocialModule } from './lib/form-elements/social/social.module';
+export { SocialComponent } from './lib/form-elements/social/social.component';
 export { Social } from './lib/form-elements/social/social.enum';
 // Timepicker
 export { TimePickerModule } from './lib/form-elements/timepicker/timepicker.module';

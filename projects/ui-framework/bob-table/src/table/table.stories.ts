@@ -26,6 +26,7 @@ const template = `
 <b-table [type]="type"
          [rowData]="rowData"
          [columnDefs]="columnDefs"
+         [maxHeight]="maxHeight"
          [rowSelection]="rowSelection"
          (rowClicked)="rowClicked($event)"
          (selectionChanged)="selectionChanged($event)"
@@ -80,14 +81,14 @@ tableStories.add(
       template: storyTemplate,
       props: {
         type: select('type', type, TableType.Primary),
-        maxHeight: number('maxHeight', null),
+        maxHeight: number('maxHeight', 450),
         rowSelection: select(
           'rowSelection',
           rowSelection,
           RowSelection.Multiple
         ),
-        rowData: object('rowData', mockRowData),
         columnDefs: object('columnDefs', mockColumnsDefs),
+        rowData: object('rowData', mockRowData),
         rowClicked: action('Row clicked'),
         selectionChanged: action('Selection changed'),
         sortChanged: action('sort changed')
