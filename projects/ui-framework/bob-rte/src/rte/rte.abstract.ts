@@ -66,7 +66,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     super();
     this.baseValue = '';
     this.wrapEvent = false;
-    this.emitOnWrite = true;
+    this.emitOnWrite = false;
   }
 
   public tribute: TributeInstance;
@@ -297,15 +297,12 @@ export abstract class RTEbaseElement extends BaseFormElement
             }),
 
       (value: string): string =>
-        !value.includes('brte-mention')
+        !value.includes('mention')
           ? value
-          : this.parserService.enforceAttributes(value, '.brte-mention', {
+          : this.parserService.enforceAttributes(value, '[class*="mention"]', {
               class: 'fr-deletable',
               target: null,
-              spellcheck: 'false',
-              rel: 'noopener noreferrer',
-              contenteditable: false,
-              tabindex: '-1'
+              contenteditable: false
             }),
 
       (value: string): string =>

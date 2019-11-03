@@ -18,7 +18,6 @@ export class HtmlParserHelpers {
       tabindex: null,
       spellcheck: null,
       class: {
-        'brte-*': false,
         'fr-*': false
       }
     }
