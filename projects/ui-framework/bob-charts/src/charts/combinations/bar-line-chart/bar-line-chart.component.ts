@@ -28,7 +28,7 @@ export class BarLineChartComponent extends ChartCore implements OnChanges {
   }
 
   private updateChartOptions() {
-    this.chartOptions = merge(this.extraOptions, {
+    this.chartOptions = merge({
       chart: {
         height: Math.abs(this.height)
       },
@@ -42,7 +42,7 @@ export class BarLineChartComponent extends ChartCore implements OnChanges {
         };
         return dataSet;
       })
-    });
+    }, {...this.extraOptions});
   }
 
 }
