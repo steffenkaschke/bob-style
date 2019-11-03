@@ -6,6 +6,7 @@ describe('HtmlParserHelpers', () => {
   describe('cleanupHtml', () => {
     const testString = `
 
+    <div><br></div>
     <p>Hello</p>
 <div><br></div>
     <p tabindex="0">
@@ -14,7 +15,7 @@ describe('HtmlParserHelpers', () => {
       </a>
       </p>
 
-    <p spellcheck="false"></p>
+    <p class="fr-removeme" spellcheck="false"></p>
 
     <p><br></p> <em>
     </em>
@@ -42,8 +43,9 @@ describe('HtmlParserHelpers', () => {
       expect(processedString).not.toContain('<em');
     });
 
-    it('Should remove attributes', () => {
-      expect(processedString).not.toContain('class=');
+    it('Should remove attributes & classes', () => {
+      expect(processedString).not.toContain('fr-removeme');
+      expect(processedString).not.toContain('class=""');
       expect(processedString).not.toContain('contenteditable=');
       expect(processedString).not.toContain('tabindex=');
       expect(processedString).not.toContain('spellcheck=');
@@ -57,13 +59,16 @@ describe('HtmlParserHelpers', () => {
     it('Should remove unnecessary empty lines', () => {
       const regex = /\<div\>\<br\>\<\/div\>/gim;
       expect(processedString.match(regex).length).toEqual(1);
+
       expect(processedString.endsWith('<div><br></div>')).toBeFalsy();
+      expect(processedString.startsWith('<div><br></div>')).toBeFalsy();
     });
   });
 
   describe('enforceAttributes', () => {
+    const origClass = 'mydiv rem-oveme rem-ovemetoo';
     const testString = `
-      <div class="mydiv">text</div>
+      <div class="${origClass}">text</div>
       <a href="link" class="mylink">link</a>
       <span data-blah="blah">text2</span>
     `;
@@ -73,7 +78,7 @@ describe('HtmlParserHelpers', () => {
         parser.enforceAttributes(testString, 'div', {
           class: 'hello'
         })
-      ).toContain('<div class="mydiv hello">');
+      ).toContain(`<div class="${origClass} hello">`);
     });
 
     it('Should add multiple classes', () => {
@@ -84,7 +89,7 @@ describe('HtmlParserHelpers', () => {
             world: true
           }
         })
-      ).toContain('<div class="mydiv hello world">');
+      ).toContain(`<div class="${origClass} hello world">`);
     });
 
     it('Should remove class', () => {
@@ -95,6 +100,18 @@ describe('HtmlParserHelpers', () => {
           }
         })
       ).not.toContain('<div class="mydiv');
+    });
+
+    it('Should remove wildcard classes', () => {
+      expect(
+        parser.enforceAttributes(testString, 'div', {
+          class: {
+            'rem-*': false,
+            mydiv: false,
+            'new-class': true
+          }
+        })
+      ).toContain('<div class="new-class');
     });
 
     it('Should remove attribute', () => {

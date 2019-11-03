@@ -48,7 +48,7 @@ export class HtmlParserHelpers {
         .replace(/(<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*)+$/gi, '')
 
         // empty lines in the beginning
-        .replace(/$(<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*)+/gi, '')
+        .replace(/^(\s*<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>)+/gi, '')
 
         .trim()
     );
