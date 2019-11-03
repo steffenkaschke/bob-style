@@ -41,18 +41,20 @@ import {
   RTE_DISABLE_CONTROLS_DEF,
   RTE_MINHEIGHT_DEF,
   RTE_MAXHEIGHT_DEF,
-  RTE_CONTROLS_ORDER,
-  RTE_TOOLBAR_HEIGHT
+  RTE_TOOLBAR_HEIGHT,
+  RTE_MENTIONS_OPTIONS_DEF
 } from './rte.const';
 import { BlotType, RTEType } from './rte.enum';
 import { RteMentionsOption } from './rte.interface';
 import { PlaceholdersConverterService } from './placeholders.service';
 
 import { FroalaEditorDirective } from 'angular-froala-wysiwyg';
-import { FroalaEdtr, FroalaOptions } from './froala.interface';
+import { FroalaEditorInstance, FroalaOptions } from './froala.interface';
 import Tribute from 'tributejs';
+import { TributeInstance } from './tribute.interface';
 
 import './rte.direction';
+import './rte.mentions';
 
 export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges, OnInit {
@@ -67,9 +69,12 @@ export abstract class RTEbaseElement extends BaseFormElement
     this.emitOnWrite = true;
   }
 
+  public tribute: TributeInstance;
+  public editor: FroalaEditorInstance;
+  protected toolbarButtons: HTMLElement[];
+
   public length = 0;
   public editorValue: string;
-  public tribute: Tribute<any>;
   public plchldrPnlTrgrFocused = false;
 
   readonly icons = Icons;
@@ -79,8 +84,6 @@ export abstract class RTEbaseElement extends BaseFormElement
   readonly plchldrPanelPosition = [BELOW_END, ABOVE_END];
 
   private cntrlsInited = false;
-
-  protected toolbarButtons: HTMLElement[];
 
   @ViewChild('editor', { read: FroalaEditorDirective, static: true })
   protected editorDirective: FroalaEditorDirective;
@@ -123,19 +126,17 @@ export abstract class RTEbaseElement extends BaseFormElement
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (hasChanges(changes)) {
-      applyChanges(
-        this,
-        changes,
-        {
-          minHeight: RTE_MINHEIGHT_DEF,
-          maxHeight: RTE_MAXHEIGHT_DEF,
-          controls: RTE_CONTROLS_DEF,
-          disableControls: RTE_DISABLE_CONTROLS_DEF
-        },
-        ['options', 'value']
-      );
-    }
+    applyChanges(
+      this,
+      changes,
+      {
+        minHeight: RTE_MINHEIGHT_DEF,
+        maxHeight: RTE_MAXHEIGHT_DEF,
+        controls: RTE_CONTROLS_DEF,
+        disableControls: RTE_DISABLE_CONTROLS_DEF
+      },
+      ['options', 'value']
+    );
 
     if (changes.options) {
       this.updateEditorOptions(
@@ -159,14 +160,14 @@ export abstract class RTEbaseElement extends BaseFormElement
               : this.placeholder || ' '
         },
         () => {
-          this.getEditor().placeholder.refresh();
+          this.editor.placeholder.refresh();
         }
       );
     }
 
     if (changes.maxChars) {
       this.updateEditorOptions({ charCounterMax: this.maxChars || -1 }, () => {
-        this.getEditor().charCounter['_init']();
+        this.editor.charCounter['_init']();
       });
     }
 
@@ -179,7 +180,7 @@ export abstract class RTEbaseElement extends BaseFormElement
           heightMax: this.maxHeight ? this.maxHeight - RTE_TOOLBAR_HEIGHT : null
         },
         () => {
-          this.getEditor().size.refresh();
+          this.editor.size.refresh();
         }
       );
     }
@@ -194,13 +195,17 @@ export abstract class RTEbaseElement extends BaseFormElement
       this.initTransformers();
     }
 
-    if (
-      changes.mentionsList &&
-      this.tribute &&
-      isNotEmptyArray(changes.mentionsList.currentValue)
-    ) {
-      this.tribute['hideMenu']();
-      this.tribute['collection'][0].values = this.mentionsList;
+    if (changes.mentionsList && this.mentionsEnabled()) {
+      if (!this.tribute) {
+        this.initMentions();
+
+        if (this.getEditorTextbox()) {
+          this.tribute.attach(this.getEditorTextbox());
+        }
+      } else {
+        this.tribute.hideMenu();
+        this.tribute.collection[0].values = this.mentionsList;
+      }
     }
 
     if (
@@ -239,6 +244,13 @@ export abstract class RTEbaseElement extends BaseFormElement
     );
   }
 
+  public mentionsEnabled(): boolean {
+    return (
+      isNotEmptyArray(this.mentionsList) &&
+      this.controls.includes(BlotType.mentions)
+    );
+  }
+
   private initControls(): void {
     if (this.controls.includes(BlotType.list)) {
       this.controls = joinArrays(this.controls, [BlotType.ul, BlotType.ol]);
@@ -262,7 +274,7 @@ export abstract class RTEbaseElement extends BaseFormElement
       ]);
     }
 
-    this.controls = RTE_CONTROLS_ORDER.filter(
+    this.controls = RTE_CONTROLS_DEF.filter(
       (cntrl: BlotType) =>
         (this.controls || RTE_CONTROLS_DEF).includes(cntrl) &&
         !(this.disableControls || RTE_DISABLE_CONTROLS_DEF).includes(cntrl)
@@ -317,8 +329,15 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
   }
 
-  public getEditor(): FroalaEdtr {
-    return this.editorDirective['_editor'] as FroalaEdtr;
+  private initMentions(): void {
+    this.tribute = new Tribute({
+      ...RTE_MENTIONS_OPTIONS_DEF,
+      values: this.mentionsList
+    }) as TributeInstance;
+  }
+
+  public getEditor(): FroalaEditorInstance {
+    return this.editorDirective['_editor'] as FroalaEditorInstance;
   }
 
   public getEditorElement(selector = null): HTMLElement | HTMLElement[] {
@@ -334,7 +353,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   }
 
   protected getEditorTextbox(): HTMLElement {
-    return this.getEditor().el as HTMLElement;
+    return this.getEditor() && (this.getEditor().el as HTMLElement);
   }
 
   protected updateToolbar(): void {
