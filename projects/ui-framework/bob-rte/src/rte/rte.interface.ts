@@ -1,4 +1,4 @@
-import { GenericObject } from '../../../src/lib/types';
+import { GenericObject } from 'bob-style';
 
 export interface RteMentionsOption {
   avatar?: string;

@@ -51,7 +51,7 @@ import { PlaceholdersConverterService } from './placeholders.service';
 import { FroalaEditorDirective } from 'angular-froala-wysiwyg';
 import { FroalaEditorInstance, FroalaOptions } from './froala.interface';
 import Tribute from 'tributejs';
-import { TributeInstance } from './tribute.interface';
+import { TributeInstance, TributeItem } from './tribute.interface';
 
 import './rte.direction';
 import './rte.mentions';
@@ -332,7 +332,24 @@ export abstract class RTEbaseElement extends BaseFormElement
   private initMentions(): void {
     this.tribute = new Tribute({
       ...RTE_MENTIONS_OPTIONS_DEF,
-      values: this.mentionsList
+
+      values: this.mentionsList,
+
+      selectTemplate: (item: TributeItem) => {
+        // prettier-ignore
+        // tslint:disable-next-line: max-line-length
+        let html = `<a href="${item.original.link}" class="brte-mention fr-deletable" spellcheck="false" rel="noopener noreferrer" contenteditable="false" tabindex="-1">@${item.original.displayName}</a>`;
+
+        if (isNotEmptyObject(item.original.attributes)) {
+          html = this.parserService.enforceAttributes(
+            html,
+            'a',
+            item.original.attributes
+          );
+        }
+
+        return html;
+      }
     }) as TributeInstance;
   }
 

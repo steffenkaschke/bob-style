@@ -1,11 +1,6 @@
 import { BlotType } from './rte.enum';
-import { joinArrays } from 'bob-style';
+import { joinArrays, EmojiCategory, Emoji, EMOJI_DATA } from 'bob-style';
 import { FroalaOptions } from './froala.interface';
-import { EMOJI_DATA } from '../../../src/lib/popups/emoji/emoji-data.consts';
-import {
-  EmojiCategory,
-  Emoji
-} from '../../../src/lib/popups/emoji/emoji.interface';
 import { TributeOptions, TributeItem } from './tribute.interface';
 
 export const RTE_CONTROLS_DEF = joinArrays(
@@ -231,14 +226,6 @@ export const RTE_MENTIONS_OPTIONS_DEF: TributeOptions = {
           item.original.avatar
         })"></span><span>${item.string}</span>`
       : item.string;
-  },
-
-  selectTemplate: function(item: TributeItem) {
-    return (
-      // prettier-ignore
-      // tslint:disable-next-line: max-line-length
-      `<a href="${item.original.link}" class="brte-mention fr-deletable" spellcheck="false" rel="noopener noreferrer" contenteditable="false" tabindex="-1">@${item.original.displayName}</a>`
-    );
   },
 
   searchOpts: {

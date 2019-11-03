@@ -76,8 +76,6 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
             this.tribute.attach(this.getEditorTextbox());
           }
 
-          console.log(this.tribute);
-
           this.editor.events.on(
             'keydown',
             (event: KeyboardEvent) => {
@@ -88,9 +86,17 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
               ) {
                 return false;
               }
+
+              if (isKey(event.key, Keys.escape)) {
+                this.closeMentions(true);
+              }
             },
             true
           );
+
+          this.getEditorTextbox().addEventListener('tribute-replaced', () => {
+            this.editor.events.trigger('contentChanged', [], true);
+          });
         }
 
         // placeholders related
@@ -126,9 +132,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       },
 
       blur: () => {
-        if (this.tribute && this.tribute.isActive) {
-          this.tribute.hideMenu();
-        }
+        this.closeMentions(true);
 
         this.transmitValue(this.editor.html.get(), {
           eventType: [InputEventType.onBlur],
@@ -143,18 +147,17 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       },
 
       click: (event: MouseEvent) => {
-        const target = event.target as HTMLElement;
+        this.closeMentions();
 
         // prevent mentions link clicks
-        if (!event.metaKey && target.classList.contains('brte-mention')) {
+        if (
+          !event.metaKey &&
+          (event.target as HTMLElement).classList.contains('brte-mention')
+        ) {
           this.editor.selection.save();
           event.preventDefault();
           this.editor.toolbar.enable();
           this.editor.selection.restore();
-        }
-
-        if (this.tribute && this.tribute.isActive) {
-          this.tribute.hideMenu();
         }
       },
 
@@ -182,7 +185,9 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
             const curSelection = this.editor.selection.get();
             const curText = curSelection.focusNode.textContent;
 
-            if (!/\s$/.test(curText[curSelection.focusOffset - 1])) {
+            this.editor.undo.saveStep();
+
+            if (!/\s/.test(curText[curSelection.focusOffset - 1])) {
               this.editor.html.insert(' ');
             }
 
@@ -192,21 +197,15 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
         // emoji toolbar button
         if ((cmd = 'emoticonInsert') && param1 && param2) {
-          let startSpace = '';
-          let endSpace = '';
-
           const curSelection = this.editor.selection.get();
           const curText = curSelection.focusNode.textContent;
 
-          if (!/\s$/.test(curText[curSelection.focusOffset - 1])) {
-            startSpace = ' ';
-          }
-          if (!/^\s/.test(curText[curSelection.focusOffset])) {
-            endSpace = ' ';
-          }
-
           this.editor.undo.saveStep();
-          this.editor.html.insert(startSpace + param2 + endSpace);
+          this.editor.html.insert(
+            (/\s/.test(curText[curSelection.focusOffset - 1]) ? '' : ' ') +
+              param2 +
+              (/\s/.test(curText[curSelection.focusOffset]) ? '' : ' ')
+          );
           this.editor.undo.saveStep();
           this.editor.popups.hideAll();
 
@@ -214,6 +213,18 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         }
       }
     };
+  }
+
+  // mentions methods
+
+  private closeMentions(undo = false) {
+    if (this.tribute && this.tribute.isActive) {
+      this.tribute.hideMenu();
+
+      if (undo) {
+        this.editor.commands.undo();
+      }
+    }
   }
 
   // placeholder methods

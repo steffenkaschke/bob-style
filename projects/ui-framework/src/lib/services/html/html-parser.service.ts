@@ -11,14 +11,20 @@ export class HtmlParserHelpers {
     return LinkifyPipe.prototype.transform(value, add);
   }
 
-  public cleanupHtml(value: string): string {
+  public cleanupHtml(
+    value: string,
+    enforcedAttrs: GenericObject = {
+      contenteditable: null,
+      tabindex: null,
+      spellcheck: null,
+      class: {
+        'brte-*': false,
+        'fr-*': false
+      }
+    }
+  ): string {
     return (
-      this.enforceAttributes(value, 'span,p,div,a', {
-        contenteditable: null,
-        tabindex: null,
-        spellcheck: null,
-        class: null
-      })
+      this.enforceAttributes(value, 'span,p,div,a', enforcedAttrs)
 
         // removing misc froala stuff
         .replace(/(noopener noreferrer\s?){2,100}/gim, '$1')
@@ -40,6 +46,9 @@ export class HtmlParserHelpers {
 
         // empty lines in the end
         .replace(/(<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*)+$/gi, '')
+
+        // empty lines in the beginning
+        .replace(/$(<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*)+/gi, '')
 
         .trim()
     );
@@ -66,15 +75,30 @@ export class HtmlParserHelpers {
                   if (classes[c]) {
                     elem.classList.add(c);
                   } else {
-                    elem.classList.remove(c);
+                    if (
+                      c.endsWith('*') &&
+                      c.length > 1 &&
+                      elem.className !== ''
+                    ) {
+                      const srch = new RegExp(
+                        `(${c.slice(0, -1)}\\w+\\s*)`,
+                        'gi'
+                      );
+                      elem.className = elem.className.replace(srch, '');
+                    } else {
+                      elem.classList.remove(c);
+                    }
                   }
                 });
-                return;
+              } else {
+                if (isString(classes)) {
+                  classes = classes.split(' ').filter(Boolean);
+                }
+                elem.classList.add(...classes);
               }
-              if (isString(classes)) {
-                classes = classes.split(' ').filter(c => !!c);
+              if (elem.className === '') {
+                elem.removeAttribute(attr);
               }
-              elem.classList.add(...classes);
             } else {
               if (attributes[attr] !== null) {
                 elem.setAttribute(attr, attributes[attr]);
