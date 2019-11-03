@@ -38,7 +38,7 @@ const value = `<div>
   of <span style="font-size: 18px;">large</span> size.
 </div>
 <div><br></div>
-<p><strong><em><span style="font-size: 18px;">Hooray!</span></em></strong> {{basic/firstName}} is {{work/title}} of the month!</p>
+<p><strong><em><span style="font-size: 18px;">Hooray!</span></em></strong> {{root/firstName}} is {{work/title}} of the month!</p>
 <p>More details at: https://longlink.com/gohere/thenthere/onemore/page#hash?query=bigBen</p>
 <div><br></div>
 Here's an important list of things to remember:
@@ -107,8 +107,8 @@ const note = `
   [type] | RTEType | theme: primary (white bg, border), secondary (transparent bg, no borders), tertiary (grey bg, no borders) | primary
   [label] | string | label text (above editor) | &nbsp;
   [placeholder] | string | placeholder text (inside editor) | &nbsp;
-  [description] | string | description text (icon tooltip)
-  [hideLabelOnFocus] | boolean | if true label text will be used as placeholder
+  [description] | string | description text (icon tooltip) | &nbsp;
+  [hideLabelOnFocus] | boolean | if true label text will be used as placeholder | false
   [value] | string | html content to be placed inside editor | &nbsp;
   [controls] | BlotType[] | array of toolbar controls (check BlotType enum for all possible controls). Defaults to all controls. Pass empty array to disable all controls | all
   [minChars] | number | minimum (plain) text length | 0
@@ -137,7 +137,7 @@ const note = `
   --- | --- | --- | ---
   [placeholderList] | SelectGroupOption[] | Single-List-compatible options model.
 
-  <strong>Important!</strong> Each group must have a   \`\`\`key  \`\`\`, and each options   \`\`\`id \`\`\` must be in format \`\`\`GroupKey/OptionId\`\`\`.
+  <strong>Important!</strong> Each group must have a   \`\`\`key  \`\`\`, and each option's   \`\`\`id \`\`\` must be in format \`\`\`GroupKey/OptionId\`\`\`.
 
   Example of placeholderList data:
 
