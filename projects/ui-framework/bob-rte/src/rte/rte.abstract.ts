@@ -221,6 +221,7 @@ export abstract class RTEbaseElement extends BaseFormElement
             this.editorValue !== undefined &&
             this.editorValue)
       );
+
       this.transmitValue(this.editorValue, {
         eventType: [InputEventType.onWrite],
         updateValue: true

@@ -32,7 +32,7 @@ const controlsDef = dedupeArray(Object.values(BlotType)).filter(
   cntrl => !disableControlsDef.includes(cntrl)
 );
 
-const value = `
+const value = `<br>
 
 <div>
   <span style="color: red;">Hello</span> http://Google.com!
@@ -45,14 +45,14 @@ const value = `
 <div><br></div>
 Here's an important list of things to remember:
 <ul>
-  <li>don't trust the <span style="font-size: 18px;">👩</span> <a href="https://www.youtube.com/watch?v=h3SD_oBOx7g" target="_blank" class="employee-mention" mention-employee-id="666">@Bitch</a> in apartment 23</li>
+  <li><br><br>don't trust the <span style="font-size: 18px;">👩</span> <a href="https://www.youtube.com/watch?v=h3SD_oBOx7g" target="_blank" class="employee-mention" data-mention-employee-id="666">@Bitch</a> in apartment 23</li>
   <li>don't eat the <u>yellow</u> snow</li>
   <li>танцуй пока молодой <span style="font-size: 18px;">💃</span></li>
   <li>אמור לא לסמים</li>
-  <li style="direction: rtl; text-align: right;">beware the <a class="employee-mention" href="https://youtu.be/hOHvMqAgcmc?t=11" mention-employee-id="777">@Right Hook</a></li>
+  <li style="direction: rtl; text-align: right;">beware the <a class="employee-mention" href="https://youtu.be/hOHvMqAgcmc?t=11" data-mention-employee-id="777">@Right Hook</a></li>
 </ul>
 
-
+<div><br></div><div><br></div>
 `;
 
 const template = `

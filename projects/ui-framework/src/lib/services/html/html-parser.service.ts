@@ -29,14 +29,28 @@ export class HtmlParserHelpers {
         // .replace(/(noopener noreferrer\s?){2,100}/gim, '$1')
 
         // replace P with DIV
-        .replace(/(<p)/gim, '<div')
-        .replace(/<\/p>/gim, '</div>')
+        .replace(/(<p)/gi, '<div')
+        .replace(/<\/p>/gi, '</div>')
+
+        // replace headings
+        .replace(
+          /(<h[1][^>]*>)/gi,
+          '<div><br></div><div><span style="font-size: 28px;"><strong>'
+        )
+        .replace(
+          /(<h[23][^>]*>)/gi,
+          '<div><br></div><div><span style="font-size: 18px;"><strong>'
+        )
+        .replace(/(<h[456][^>]*>)/gi, '<div><br></div><div><span><strong>')
+        .replace(/(<\/h\d>)/gi, '</strong></span></div>')
+
+        // no &nbsp;
+        .replace(/&nbsp;/gi, ' ')
 
         // empty tags
         .replace(/<([^\/>\s]+)[^>]*>\s*<\/\1>/gim, ' ')
 
-        // spaces
-        .replace(/&nbsp;/gi, ' ')
+        // less white space
         .replace(/\s\s+/g, ' ')
 
         // <br>'s inside tags with text (<div><br> text</div>)
