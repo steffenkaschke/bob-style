@@ -152,7 +152,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         // prevent mentions link clicks
         if (
           !event.metaKey &&
-          (event.target as HTMLElement).classList.contains('brte-mention')
+          (event.target as HTMLElement).className.includes('mention')
         ) {
           this.editor.selection.save();
           event.preventDefault();

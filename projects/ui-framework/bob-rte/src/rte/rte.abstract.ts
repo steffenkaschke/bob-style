@@ -120,7 +120,10 @@ export abstract class RTEbaseElement extends BaseFormElement
         value
       );
     }
-    if (isNullOrUndefined(this.editorValue) && this.baseValue !== undefined) {
+    if (
+      (value === undefined || isNullOrUndefined(this.editorValue)) &&
+      this.baseValue !== undefined
+    ) {
       this.editorValue = cloneValue(this.baseValue);
     }
   }
@@ -213,7 +216,10 @@ export abstract class RTEbaseElement extends BaseFormElement
       (changes.placeholderList && this.editorValue !== undefined)
     ) {
       this.writeValue(
-        (changes.value && changes.value.currentValue) || this.editorValue
+        (changes.value && this.value) ||
+          (changes.placeholderList &&
+            this.editorValue !== undefined &&
+            this.editorValue)
       );
       this.transmitValue(this.editorValue, {
         eventType: [InputEventType.onWrite],
@@ -286,6 +292,9 @@ export abstract class RTEbaseElement extends BaseFormElement
       stringyOrFail,
 
       (value: string): string =>
+        HtmlParserHelpers.prototype.cleanupHtml(value, {}),
+
+      (value: string): string =>
         !value.includes('href')
           ? value
           : this.parserService.enforceAttributes(value, 'a', {
@@ -313,7 +322,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     ];
 
     this.outputTransformers = [
-      value => HtmlParserHelpers.prototype.cleanupHtml(value)
+      (value: string): string => HtmlParserHelpers.prototype.cleanupHtml(value)
     ];
 
     if (this.placeholdersEnabled()) {
@@ -322,7 +331,7 @@ export abstract class RTEbaseElement extends BaseFormElement
           this.placeholdersConverter.toRte(value, this.placeholderList)
       );
 
-      this.outputTransformers.push(this.placeholdersConverter.fromRte);
+      this.outputTransformers.unshift(this.placeholdersConverter.fromRte);
     }
   }
 
@@ -335,7 +344,7 @@ export abstract class RTEbaseElement extends BaseFormElement
       selectTemplate: (item: TributeItem) => {
         // prettier-ignore
         // tslint:disable-next-line: max-line-length
-        let html = `<a href="${item.original.link}" class="brte-mention fr-deletable" spellcheck="false" rel="noopener noreferrer" contenteditable="false" tabindex="-1">@${item.original.displayName}</a>`;
+        let html = `<a href="${item.original.link}" class="fr-deletable" spellcheck="false" rel="noopener noreferrer" contenteditable="false" tabindex="-1">@${item.original.displayName}</a>`;
 
         if (isNotEmptyObject(item.original.attributes)) {
           html = this.parserService.enforceAttributes(

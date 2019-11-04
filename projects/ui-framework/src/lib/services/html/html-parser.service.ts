@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LinkifyPipe } from '../filters/linkify.pipe';
 import { GenericObject } from '../../types';
-import { isString, isObject } from '../utils/functional-utils';
+import { isString, isObject, isEmptyObject } from '../utils/functional-utils';
 
 @Injectable({ providedIn: 'root' })
 export class HtmlParserHelpers {
@@ -27,7 +27,6 @@ export class HtmlParserHelpers {
 
         // removing misc froala stuff
         .replace(/(noopener noreferrer\s?){2,100}/gim, '$1')
-        // .replace(/\s?class="\s*"/gim, '')
 
         // replace P with DIV
         .replace(/(<p)/gim, '<div')
@@ -42,6 +41,9 @@ export class HtmlParserHelpers {
 
         // too many empty lines
         .replace(/(<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*){2,100}/gim, '$1')
+
+        // unnecessaty BRs
+        .replace(/(<([^\/>\s]+)[^>]*>)\s*<br>\s*(?=[^<\s]+\s*<\/\2>)/gi, '$1')
 
         // empty lines in the end
         .replace(/(<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*)+$/gi, '')
@@ -58,6 +60,9 @@ export class HtmlParserHelpers {
     selector: string,
     attributes: GenericObject = {}
   ): string {
+    if (isEmptyObject(attributes)) {
+      return value;
+    }
     const elm: HTMLElement = document.createElement('div');
     elm.innerHTML = value;
 
@@ -83,7 +88,7 @@ export class HtmlParserHelpers {
                         `(${c.slice(0, -1)}\\w+\\s*)`,
                         'gi'
                       );
-                      elem.className = elem.className.replace(srch, '');
+                      elem.className = elem.className.replace(srch, '').trim();
                     } else {
                       elem.classList.remove(c);
                     }

@@ -17,7 +17,7 @@ export const mentionsOptions = mockNames(200).map(
     avatar: mockAvatar(),
     attributes: {
       'mention-employee-id': simpleUID(),
-      class: 'mention-employee'
+      class: 'employee-mention'
     }
   })
 );
