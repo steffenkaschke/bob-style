@@ -26,30 +26,36 @@ export class HtmlParserHelpers {
       this.enforceAttributes(value, 'span,p,div,a', enforcedAttrs)
 
         // removing misc froala stuff
-        .replace(/(noopener noreferrer\s?){2,100}/gim, '$1')
+        // .replace(/(noopener noreferrer\s?){2,100}/gim, '$1')
 
         // replace P with DIV
         .replace(/(<p)/gim, '<div')
         .replace(/<\/p>/gim, '</div>')
 
         // empty tags
-        .replace(/<([^\/>\s]+)[^>]*>\s*<\/\1>/gim, '')
+        .replace(/<([^\/>\s]+)[^>]*>\s*<\/\1>/gim, ' ')
 
         // spaces
         .replace(/&nbsp;/gi, ' ')
         .replace(/\s\s+/g, ' ')
 
-        // too many empty lines
-        .replace(/(<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*){2,100}/gim, '$1')
-
-        // unnecessaty BRs
+        // <br>'s inside tags with text (<div><br> text</div>)
         .replace(/(<([^\/>\s]+)[^>]*>)\s*<br>\s*(?=[^<\s]+\s*<\/\2>)/gi, '$1')
 
-        // empty lines in the end
-        .replace(/(<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*)+$/gi, '')
+        // <br>'s at the start / end
+        .replace(/(^(\s*<br>\s*)+)|((\s*<br>\s*)+$)/gi, '')
 
-        // empty lines in the beginning
-        .replace(/^(\s*<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>)+/gi, '')
+        // replace <br><br> with <div><br></div>
+        .replace(/([^<>])(<br>\s*){2,100}(?=[^<>\s])/gi, '$1<div><br></div>')
+
+        // too many <div><br></div>
+        .replace(/(<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*){2,100}/gim, '$1')
+
+        // <div><br></div> at the start / end
+        .replace(
+          /(^(\s*<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>)+)|((<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*)+$)/gi,
+          ''
+        )
 
         .trim()
     );

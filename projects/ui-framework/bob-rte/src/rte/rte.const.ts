@@ -135,7 +135,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   htmlExecuteScripts: false,
   htmlIgnoreCSSProperties: [],
   htmlRemoveTags: ['script', 'style'],
-  // htmlUntouched: true,
+  htmlUntouched: true,
 
   pasteAllowedStyleProps: [],
   pasteDeniedAttrs: [],

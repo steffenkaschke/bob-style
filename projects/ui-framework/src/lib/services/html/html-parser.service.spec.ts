@@ -4,16 +4,20 @@ describe('HtmlParserHelpers', () => {
   const parser = new HtmlParserHelpers();
 
   describe('cleanupHtml', () => {
-    const testString = `
+    const testString = `<br>
 
     <div><br></div>
     <p>Hello</p>
 <div><br></div>
     <p tabindex="0">
-    <a class="class" href="blah" contenteditable="true">
+    <a class="class" contenteditable="true" href="blah"><br>
       blah
       </a>
       </p>
+
+      some text
+      <br><br><br>
+      some other text
 
     <p class="fr-removeme" spellcheck="false"></p>
 
@@ -30,7 +34,7 @@ describe('HtmlParserHelpers', () => {
 
     <div><br></div>
 
-    `;
+    <br>`;
 
     const processedString = parser.cleanupHtml(testString);
 
@@ -56,9 +60,23 @@ describe('HtmlParserHelpers', () => {
       expect(/\s\s+/g.test(processedString)).toBeFalsy();
     });
 
+    it('Should replace multiple BR\'s with div+br', () => {
+      expect(processedString).not.toContain('<br><br>');
+    });
+
+    it('Should remove BRs from tags with text', () => {
+      expect(processedString).not.toContain('href="blah"><br>');
+    });
+
+    it('Should remove BRs from start/end of string', () => {
+      expect(processedString.endsWith('<br>')).toBeFalsy();
+      expect(processedString.startsWith('<br>')).toBeFalsy();
+    });
+
     it('Should remove unnecessary empty lines', () => {
       const regex = /\<div\>\<br\>\<\/div\>/gim;
-      expect(processedString.match(regex).length).toEqual(1);
+
+      expect(processedString.match(regex).length).toEqual(2);
 
       expect(processedString.endsWith('<div><br></div>')).toBeFalsy();
       expect(processedString.startsWith('<div><br></div>')).toBeFalsy();
