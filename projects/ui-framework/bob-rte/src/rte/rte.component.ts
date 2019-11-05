@@ -162,7 +162,10 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       },
 
       'paste.afterCleanup': (html: string): string =>
-        this.parserService.cleanupHtml(html, {}),
+        this.inputTransformers.reduce(
+          (previousResult, fn) => fn(previousResult),
+          html
+        ),
 
       'charCounter.update': () => {
         this.length = this.getEditor().charCounter.count();

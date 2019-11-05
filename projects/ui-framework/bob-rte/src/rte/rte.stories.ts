@@ -32,27 +32,38 @@ const controlsDef = dedupeArray(Object.values(BlotType)).filter(
   cntrl => !disableControlsDef.includes(cntrl)
 );
 
-const value = `<br>
+const value = `<br><br> <br><br> <span> <br> </span> <div><br></div> <span><br></span>
 
 <div>
   <span style="color: red;">Hello</span> http://Google.com!
   Some <em>funky</em> <strong>bold</strong> text
   of <span style="font-size: 18px;">large 🔍</span> size.
 </div>
-<div><br></div><div><br></div><div><br></div>
-<p><strong><em><span style="font-size: 18px;">Hooray!</span></em></strong> {{root/firstName}} is {{work/title}} of the month!</p>
+
+<div><br></div> <span><br></span> <div><br></div>
+
+<h1><em>Hooray!</em></h1>
+
+<p><br>
+ {{root/firstName}} is {{work/title}} of the month!
+ </p>
+
 <p>More details at: https://longlink.com/gohere/thenthere/onemore/page#hash?query=bigBen</p>
+
 <div><br></div>
-Here's an important list of things to remember:
+
+<h2>Here's an important list of things to remember:</h2>
+
 <ul>
-  <li><br><br>don't trust the <span style="font-size: 18px;">👩</span> <a href="https://www.youtube.com/watch?v=h3SD_oBOx7g" target="_blank" class="employee-mention" data-mention-employee-id="666">@Bitch</a> in apartment 23</li>
+  <li> <br> <br>
+  don't trust the <span style="font-size: 18px;">👩</span> <a href="https://www.youtube.com/watch?v=h3SD_oBOx7g" target="_blank" class="employee-mention" mention-employee-id="666">@Bitch</a> in apartment 23</li>
   <li>don't eat the <u>yellow</u> snow</li>
   <li>танцуй пока молодой <span style="font-size: 18px;">💃</span></li>
   <li>אמור לא לסמים</li>
-  <li style="direction: rtl; text-align: right;">beware the <a class="employee-mention" href="https://youtu.be/hOHvMqAgcmc?t=11" data-mention-employee-id="777">@Right Hook</a></li>
+  <li style="direction: rtl; text-align: right;">beware the <a class="employee-mention" href="https://youtu.be/hOHvMqAgcmc?t=11" mention-employee-id="777">@Right Hook</a></li>
 </ul>
 
-<div><br></div><div><br></div>
+<div><br></div> <span><br></span>
 `;
 
 const template = `

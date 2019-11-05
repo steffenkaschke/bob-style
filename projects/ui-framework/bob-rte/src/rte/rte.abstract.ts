@@ -316,6 +316,11 @@ export abstract class RTEbaseElement extends BaseFormElement
             }),
 
       (value: string): string =>
+        this.parserService.enforceAttributes(value, 'span', {
+          class: null
+        }),
+
+      (value: string): string =>
         this.parserService.linkify(
           value,
           'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'

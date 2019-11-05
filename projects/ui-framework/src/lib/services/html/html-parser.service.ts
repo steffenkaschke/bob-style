@@ -25,9 +25,6 @@ export class HtmlParserHelpers {
     return (
       this.enforceAttributes(value, 'span,p,div,a', enforcedAttrs)
 
-        // removing misc froala stuff
-        // .replace(/(noopener noreferrer\s?){2,100}/gim, '$1')
-
         // replace P with DIV
         .replace(/(<p)/gi, '<div')
         .replace(/<\/p>/gi, '</div>')
@@ -45,29 +42,36 @@ export class HtmlParserHelpers {
         .replace(/(<\/h\d>)/gi, '</strong></span></div>')
 
         // no &nbsp;
-        .replace(/&nbsp;/gi, ' ')
+        // .replace(/&nbsp;/gi, ' ')
 
         // empty tags
-        .replace(/<([^\/>\s]+)[^>]*>\s*<\/\1>/gim, ' ')
+        .replace(/<([^\/>\s]+)[^>]*>\s*<\/\1>/gi, ' ')
+
+        // unnecessary wrappers
+        .replace(/<(span)>([^<]+)<\/\1>/gi, '$2')
 
         // less white space
-        .replace(/\s\s+/g, ' ')
+        // .replace(/\s\s+/gi, ' ')
+        .replace(/\s+/gi, ' ')
 
-        // <br>'s inside tags with text (<div><br> text</div>)
-        .replace(/(<([^\/>\s]+)[^>]*>)\s*<br>\s*(?=[^<\s]+\s*<\/\2>)/gi, '$1')
+        // replace <br><br> with <div><br></div>
+        .replace(/([^<>])(<br>\s*){2,}(?=[^<>\s])/gi, '$1<div><br></div>')
 
         // <br>'s at the start / end
         .replace(/(^(\s*<br>\s*)+)|((\s*<br>\s*)+$)/gi, '')
 
-        // replace <br><br> with <div><br></div>
-        .replace(/([^<>])(<br>\s*){2,100}(?=[^<>\s])/gi, '$1<div><br></div>')
+        // <br>'s inside tags with text (<div><br> text</div>)
+        .replace(/(<[^\/>\s]+[^>]*>)(\s*<br>\s*)+([^<\s]+)/gi, '$1')
 
         // too many <div><br></div>
-        .replace(/(<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*){2,100}/gim, '$1')
+        .replace(
+          /(<([^\/>\s]+)[^>]*>\s*<br>\s*<\/\2>\s*){2,}/gi,
+          '<div><br></div>'
+        )
 
         // <div><br></div> at the start / end
         .replace(
-          /(^(\s*<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>)+)|((<div([^\n\r\/<>]+)?>\s*<br>\s*<\/div>\s*)+$)/gi,
+          /(^(\s*<([^\/>\s]+)[^>]*>(\s*<br>\s*)+<\/\3>)+)|((<([^\/>\s]+)[^>]*>(\s*<br>\s*)+<\/\7>\s*)+$)/gi,
           ''
         )
 
