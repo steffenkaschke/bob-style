@@ -1,6 +1,6 @@
 import { HtmlParserHelpers } from './html-parser.service';
 
-fdescribe('HtmlParserHelpers', () => {
+describe('HtmlParserHelpers', () => {
   const parser = new HtmlParserHelpers();
 
   describe('cleanupHtml', () => {
