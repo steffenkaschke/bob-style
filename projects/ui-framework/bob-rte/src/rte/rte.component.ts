@@ -11,7 +11,7 @@ import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import {
   InputEventType,
   FormEvents,
-  // HtmlParserHelpers,
+  HtmlParserHelpers,
   isKey,
   Keys,
   ListChange,
@@ -20,8 +20,6 @@ import {
 
 import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
-
-import { HtmlParserHelpers } from '../../../src/lib/services/html/html-parser.service';
 
 @Component({
   selector: 'b-rich-text-editor',
