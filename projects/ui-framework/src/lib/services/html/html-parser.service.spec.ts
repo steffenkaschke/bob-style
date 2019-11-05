@@ -91,7 +91,6 @@ describe('HtmlParserHelpers', () => {
 
     it('Should remove unnecessary empty lines', () => {
       const regex = /\<div\>\<br\>\<\/div\>/gim;
-      console.log(processedString);
       expect(processedString.match(regex).length).toEqual(4);
       expect(processedString.endsWith('<div><br></div>')).toBeFalsy();
       expect(processedString.startsWith('<div><br></div>')).toBeFalsy();

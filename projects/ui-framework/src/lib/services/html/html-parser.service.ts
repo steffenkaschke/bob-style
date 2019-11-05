@@ -55,14 +55,17 @@ export class HtmlParserHelpers {
         // .replace(/\s\s+/gi, ' ')
         .replace(/\s+/gi, ' ')
 
+        // <br>'s inside tags with text (<div><br> text</div>)
+        .replace(
+          /(<(?:div|p|span|ul|ol|li|a|strong|em|i)[^>]*>)(?:\s*<br>\s*)+([^<\s]+)/gi,
+          '$1$2'
+        )
+
         // replace <br><br> with <div><br></div>
         .replace(/([^<>])(<br>\s*){2,}(?=[^<>\s])/gi, '$1<div><br></div>')
 
         // <br>'s at the start / end
         .replace(/(^(\s*<br>\s*)+)|((\s*<br>\s*)+$)/gi, '')
-
-        // <br>'s inside tags with text (<div><br> text</div>)
-        .replace(/(<[^\/>\s]+[^>]*>)(\s*<br>\s*)+([^<\s]+)/gi, '$1$3')
 
         // too many <div><br></div>
         .replace(
