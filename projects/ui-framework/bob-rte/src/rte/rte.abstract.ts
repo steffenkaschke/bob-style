@@ -23,7 +23,7 @@ import {
   isNotEmptyArray,
   stringyOrFail,
   InputEventType,
-  HtmlParserHelpers,
+  // HtmlParserHelpers,
   SelectGroupOption,
   Icons,
   ButtonType,
@@ -55,6 +55,8 @@ import { TributeInstance, TributeItem } from './tribute.interface';
 
 import './rte.direction';
 import './rte.mentions';
+
+import { HtmlParserHelpers } from '../../../src/lib/services/html/html-parser.service';
 
 export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges, OnInit {
@@ -293,31 +295,25 @@ export abstract class RTEbaseElement extends BaseFormElement
       stringyOrFail,
 
       (value: string): string =>
-        HtmlParserHelpers.prototype.cleanupHtml(value, {}),
+        HtmlParserHelpers.prototype.cleanupHtml(value, null),
 
       (value: string): string =>
-        !value.includes('href')
-          ? value
-          : this.parserService.enforceAttributes(value, 'a', {
-              class: 'fr-deletable',
-              target: '_blank',
-              spellcheck: 'false',
-              rel: 'noopener noreferrer',
-              tabindex: '-1'
-            }),
-
-      (value: string): string =>
-        !value.includes('mention')
-          ? value
-          : this.parserService.enforceAttributes(value, '[class*="mention"]', {
-              class: 'fr-deletable',
-              target: null,
-              contenteditable: false
-            }),
-
-      (value: string): string =>
-        this.parserService.enforceAttributes(value, 'span', {
-          class: null
+        this.parserService.enforceAttributes(value, {
+          a: {
+            class: 'fr-deletable',
+            target: '_blank',
+            spellcheck: 'false',
+            rel: 'noopener noreferrer',
+            tabindex: '-1'
+          },
+          '[class*="mention"]': {
+            class: 'fr-deletable',
+            target: null,
+            contenteditable: false
+          },
+          span: {
+            class: null
+          }
         }),
 
       (value: string): string =>
@@ -353,11 +349,9 @@ export abstract class RTEbaseElement extends BaseFormElement
         let html = `<a href="${item.original.link}" class="fr-deletable" spellcheck="false" rel="noopener noreferrer" contenteditable="false" tabindex="-1">@${item.original.displayName}</a>`;
 
         if (isNotEmptyObject(item.original.attributes)) {
-          html = this.parserService.enforceAttributes(
-            html,
-            'a',
-            item.original.attributes
-          );
+          html = this.parserService.enforceAttributes(html, {
+            a: item.original.attributes
+          });
         }
 
         return html;
