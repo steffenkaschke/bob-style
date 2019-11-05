@@ -15,8 +15,8 @@ import { DialogButtons } from './dialog.interface';
 @Component({
   selector: 'b-dialog-example',
   template: `
-    <b-button (click)="openDialog1()" style="margin-right: 10px;">Time Off Policies info</b-button>
-    <b-button (click)="openDialog2()">Success</b-button>
+    <b-button (clicked)="openDialog1()" style="margin-right: 10px;">Time Off Policies info</b-button>
+    <b-button (clicked)="openDialog2()">Success</b-button>
   `
 })
 export class DialogExampleComponent {

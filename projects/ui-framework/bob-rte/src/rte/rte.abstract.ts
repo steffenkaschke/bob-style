@@ -307,6 +307,8 @@ export abstract class RTEbaseElement extends BaseFormElement
           '[class*="mention"]': {
             class: 'fr-deletable',
             target: null,
+            spellcheck: 'false',
+            rel: 'noopener noreferrer',
             contenteditable: false
           },
           span: {
