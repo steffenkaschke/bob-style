@@ -1,6 +1,6 @@
 import { HtmlParserHelpers } from './html-parser.service';
 
-describe('HtmlParserHelpers', () => {
+fdescribe('HtmlParserHelpers', () => {
   const parser = new HtmlParserHelpers();
 
   describe('cleanupHtml', () => {
@@ -10,7 +10,8 @@ describe('HtmlParserHelpers', () => {
     <p>Hello</p>
 <div><br></div>
     <p tabindex="0">
-    <a class="class" contenteditable="true" href="blah"><br>
+    <a class="class" contenteditable="true" href="blah">
+      <br>
       blah
       </a>
       </p>
@@ -26,11 +27,17 @@ describe('HtmlParserHelpers', () => {
 
     &nbsp; &nbsp;
 
+    <h1>Some Title</h1>
+
+    <h5>Some other title</h5>
 
     <div><br></div>
     <div><br></div>
 
-    <span>  </span>
+    <span>  </span> <sometag>
+
+
+    </sometag>
 
     <div><br></div>
 
@@ -42,9 +49,18 @@ describe('HtmlParserHelpers', () => {
       expect(processedString).not.toContain('<p');
     });
 
+    it('Should replace Hx\'s', () => {
+      expect(processedString).not.toContain('<h1>');
+      expect(processedString).not.toContain('<h5>');
+      expect(processedString).toContain(
+        '<span style="font-size: 28px;"><strong>Some Title'
+      );
+      expect(processedString).toContain('<span><strong>Some other title');
+    });
+
     it('Should remove empty tags', () => {
-      expect(processedString).not.toContain('<span');
-      expect(processedString).not.toContain('<em');
+      expect(processedString).not.toContain('<sometag>');
+      expect(processedString).not.toContain('<em>');
     });
 
     it('Should remove attributes & classes', () => {
@@ -75,9 +91,8 @@ describe('HtmlParserHelpers', () => {
 
     it('Should remove unnecessary empty lines', () => {
       const regex = /\<div\>\<br\>\<\/div\>/gim;
-
-      expect(processedString.match(regex).length).toEqual(2);
-
+      console.log(processedString);
+      expect(processedString.match(regex).length).toEqual(4);
       expect(processedString.endsWith('<div><br></div>')).toBeFalsy();
       expect(processedString.startsWith('<div><br></div>')).toBeFalsy();
     });

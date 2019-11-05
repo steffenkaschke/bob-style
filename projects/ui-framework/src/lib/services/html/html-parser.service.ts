@@ -41,14 +41,15 @@ export class HtmlParserHelpers {
         .replace(/(<h[456][^>]*>)/gi, '<div><br></div><div><span><strong>')
         .replace(/(<\/h\d>)/gi, '</strong></span></div>')
 
-        // no &nbsp;
-        // .replace(/&nbsp;/gi, ' ')
-
         // empty tags
         .replace(/<([^\/>\s]+)[^>]*>\s*<\/\1>/gi, ' ')
 
         // unnecessary wrappers
         .replace(/<(span)>([^<]+)<\/\1>/gi, '$2')
+
+        // no &nbsp;
+        // .replace(/&nbsp;/gi, ' ')
+        .replace(/(<\/div>)(\s*&nbsp;\s*)+(<div>)/gi, '$1$3')
 
         // less white space
         // .replace(/\s\s+/gi, ' ')
@@ -61,7 +62,7 @@ export class HtmlParserHelpers {
         .replace(/(^(\s*<br>\s*)+)|((\s*<br>\s*)+$)/gi, '')
 
         // <br>'s inside tags with text (<div><br> text</div>)
-        .replace(/(<[^\/>\s]+[^>]*>)(\s*<br>\s*)+([^<\s]+)/gi, '$1')
+        .replace(/(<[^\/>\s]+[^>]*>)(\s*<br>\s*)+([^<\s]+)/gi, '$1$3')
 
         // too many <div><br></div>
         .replace(
