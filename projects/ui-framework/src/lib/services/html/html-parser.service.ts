@@ -18,12 +18,12 @@ export class HtmlParserHelpers {
       tabindex: null,
       spellcheck: null,
       class: {
-        'fr-*': false
+        'fr-.*': false
       }
     }
   ): string {
     return (
-      this.enforceAttributes(value, 'span,p,div,a', enforcedAttrs)
+      this.enforceAttributes(value, { 'span,p,div,a': enforcedAttrs || {} })
 
         // replace P with DIV
         .replace(/(<p)/gi, '<div')
@@ -85,61 +85,66 @@ export class HtmlParserHelpers {
 
   public enforceAttributes(
     value: string,
-    selector: string,
-    attributes: GenericObject = {}
+    enforce: {
+      [selector: string]: GenericObject;
+    } = {}
   ): string {
-    if (isEmptyObject(attributes)) {
+    if (!enforce || isEmptyObject(enforce)) {
       return value;
     }
+
     const elm: HTMLElement = document.createElement('div');
     elm.innerHTML = value;
 
-    Array.from(elm.querySelectorAll(selector)).forEach(
-      (elem: HTMLElement): void => {
-        Object.keys(attributes).forEach(attr => {
-          if (attributes[attr] === null) {
-            elem.removeAttribute(attr);
-          } else {
-            if (attr === 'class') {
-              let classes = attributes[attr];
-              if (isObject(classes)) {
-                Object.keys(classes).forEach(c => {
-                  if (classes[c]) {
-                    elem.classList.add(c);
-                  } else {
-                    if (
-                      c.endsWith('*') &&
-                      c.length > 1 &&
-                      elem.className !== ''
-                    ) {
-                      const srch = new RegExp(
-                        `(${c.slice(0, -1)}\\w+\\s*)`,
-                        'gi'
-                      );
-                      elem.className = elem.className.replace(srch, '').trim();
-                    } else {
-                      elem.classList.remove(c);
-                    }
-                  }
-                });
-              } else {
-                if (isString(classes)) {
-                  classes = classes.split(' ').filter(Boolean);
-                }
-                elem.classList.add(...classes);
-              }
-              if (elem.className === '') {
-                elem.removeAttribute(attr);
-              }
+    Object.keys(enforce).forEach((selector: string) => {
+      const attributes = enforce[selector];
+
+      Array.from(elm.querySelectorAll(selector)).forEach(
+        (elem: HTMLElement): void => {
+          Object.keys(attributes).forEach(attr => {
+            if (attributes[attr] === null) {
+              elem.removeAttribute(attr);
             } else {
-              if (attributes[attr] !== null) {
-                elem.setAttribute(attr, attributes[attr]);
+              if (attr === 'class') {
+                let classes = attributes[attr];
+
+                if (isObject(classes)) {
+                  Object.keys(classes).forEach(c => {
+                    if (classes[c]) {
+                      elem.classList.add(c);
+                    } else {
+                      if (/[.*+]/g.test(c) && elem.className !== '') {
+                        [...elem.classList['values']()].forEach(
+                          (cls: string) => {
+                            if (new RegExp(c, 'gi').test(cls)) {
+                              elem.classList.remove(cls);
+                            }
+                          }
+                        );
+                      } else {
+                        elem.classList.remove(c);
+                      }
+                    }
+                  });
+                } else {
+                  if (isString(classes)) {
+                    classes = classes.split(' ').filter(Boolean);
+                  }
+                  elem.classList.add(...classes);
+                }
+                if (elem.className === '') {
+                  elem.removeAttribute(attr);
+                }
+              } else {
+                if (attributes[attr] !== null) {
+                  elem.setAttribute(attr, attributes[attr]);
+                }
               }
             }
-          }
-        });
-      }
-    );
+          });
+        }
+      );
+    });
 
     return elm.innerHTML;
   }

@@ -1,12 +1,12 @@
 <b-text-button *ngIf="listActions.clear"
-               (click)="clear.emit()"
+               (clicked)="clear.emit()"
                class="clear-button"
                text="Clear">
 </b-text-button>
 
 <div class="cancel-apply">
   <b-button *ngIf="listActions.cancel"
-            (click)="cancel.emit()"
+            (clicked)="cancel.emit()"
             class="cancel-button"
             [size]="buttonSize.small"
             [type]="buttonType.secondary">
@@ -14,7 +14,7 @@
   </b-button>
 
   <b-button *ngIf="listActions.apply"
-            (click)="apply.emit()"
+            (clicked)="apply.emit()"
             class="apply-button"
             [size]="buttonSize.small"
             [type]="buttonType.primary">

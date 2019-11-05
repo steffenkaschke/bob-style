@@ -139,13 +139,31 @@ const note = `
   (focused) | EventEmitter&lt;string&gt; | emits latest value on editor focus | &nbsp;
   (blurred) | EventEmitter&lt;string&gt; | emits latest value on editor blur | &nbsp;
 
+  ----------------
 
   #### Mentions properties
   Name | Type | Description | default
   --- | --- | --- | ---
-  [mentionsList] | RteMentionsOption[] | pass an array of { avatar, displayName, link } objects for mentions functionality | &nbsp;
+  [mentionsList] | RteMentionsOption[] | pass an array of { avatar, displayName, link, attributes? } objects for mentions functionality | &nbsp;
 
-  <strong>Important!</strong>   \`\`\`.link  \`\`\` should be a full url of ee profile;   \`\`\`.avatar  \`\`\` should be ee avatar url, from EmployeeAvatarService.getOptimizedAvatarImage (size mini);
+  <strong>Important!</strong>   \`\`\`.link  \`\`\` should be a full url of ee profile;   \`\`\`.avatar  \`\`\` should be ee avatar url, from EmployeeAvatarService.getOptimizedAvatarImage (size mini); \`\`\`.attributes  \`\`\` object can contain any attributes to be added to the mention link.
+
+  Example of mentionsList data:
+
+  \`\`\`
+  [{
+    "displayName": "Violeta Audia",
+    "link": "/employee-profile?id=2134005328281338492",
+    "avatar": "https://randomuser.me/api/portraits/women/32.jpg",
+    "attributes": {
+      "mention-employee-id": "2134005328281338492",
+      "class": "employee-mention"
+    }
+  }]
+  \`\`\`
+
+
+  ----------------
 
   #### Placeholders properties
   Name | Type | Description | default

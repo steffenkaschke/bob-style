@@ -2,7 +2,8 @@
 
   <div class="chain-link-row">
 
-    <ng-container *ngTemplateOutlet="contentChild?.tpl; context: { selected: chainLink, selectChange: handleChange.bind(this), index: i }">
+    <ng-container
+                  *ngTemplateOutlet="contentChild?.tpl; context: { selected: chainLink, selectChange: handleChange.bind(this), index: i }">
     </ng-container>
 
     <b-square-button class="delete-button"
@@ -10,12 +11,13 @@
                      [type]="buttonType.tertiary"
                      [size]="buttonSize.large"
                      [icon]="icons.delete"
-                     (click)="removeChainLink(i)">
+                     (clicked)="removeChainLink(i)">
     </b-square-button>
 
   </div>
 
-  <div class="then" *ngIf="!(staticMode && last)">
+  <div class="then"
+       *ngIf="!(staticMode && last)">
     <b-icon [icon]="icons.arrow_right"></b-icon>
   </div>
 

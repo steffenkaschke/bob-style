@@ -1,6 +1,6 @@
 import { HtmlParserHelpers } from './html-parser.service';
 
-describe('HtmlParserHelpers', () => {
+fdescribe('HtmlParserHelpers', () => {
   const parser = new HtmlParserHelpers();
 
   describe('cleanupHtml', () => {
@@ -107,18 +107,20 @@ describe('HtmlParserHelpers', () => {
 
     it('Should add class', () => {
       expect(
-        parser.enforceAttributes(testString, 'div', {
-          class: 'hello'
+        parser.enforceAttributes(testString, {
+          div: { class: 'hello' }
         })
       ).toContain(`<div class="${origClass} hello">`);
     });
 
     it('Should add multiple classes', () => {
       expect(
-        parser.enforceAttributes(testString, 'div', {
-          class: {
-            hello: true,
-            world: true
+        parser.enforceAttributes(testString, {
+          div: {
+            class: {
+              hello: true,
+              world: true
+            }
           }
         })
       ).toContain(`<div class="${origClass} hello world">`);
@@ -126,9 +128,11 @@ describe('HtmlParserHelpers', () => {
 
     it('Should remove class', () => {
       expect(
-        parser.enforceAttributes(testString, 'div', {
-          class: {
-            mydiv: false
+        parser.enforceAttributes(testString, {
+          div: {
+            class: {
+              mydiv: false
+            }
           }
         })
       ).not.toContain('<div class="mydiv');
@@ -136,11 +140,13 @@ describe('HtmlParserHelpers', () => {
 
     it('Should remove wildcard classes', () => {
       expect(
-        parser.enforceAttributes(testString, 'div', {
-          class: {
-            'rem-*': false,
-            mydiv: false,
-            'new-class': true
+        parser.enforceAttributes(testString, {
+          div: {
+            class: {
+              'rem-.*': false,
+              mydiv: false,
+              'new-class': true
+            }
           }
         })
       ).toContain('<div class="new-class');
@@ -148,16 +154,20 @@ describe('HtmlParserHelpers', () => {
 
     it('Should remove attribute', () => {
       expect(
-        parser.enforceAttributes(testString, 'span', {
-          'data-blah': null
+        parser.enforceAttributes(testString, {
+          span: {
+            'data-blah': null
+          }
         })
       ).not.toContain('<span data-blah="blah">');
     });
 
     it('Should add/remove multiple attributes', () => {
-      const parsed = parser.enforceAttributes(testString, 'span', {
-        'data-blah': null,
-        'data-bruh': 'bro'
+      const parsed = parser.enforceAttributes(testString, {
+        span: {
+          'data-blah': null,
+          'data-bruh': 'bro'
+        }
       });
 
       expect(parsed).not.toContain('<span data-blah="blah">');
@@ -166,8 +176,10 @@ describe('HtmlParserHelpers', () => {
 
     it('Should add attribute', () => {
       expect(
-        parser.enforceAttributes(testString, 'a', {
-          target: '_blank'
+        parser.enforceAttributes(testString, {
+          a: {
+            target: '_blank'
+          }
         })
       ).toContain('<a href="link" class="mylink" target="_blank">');
     });
