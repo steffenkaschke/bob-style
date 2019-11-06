@@ -60,7 +60,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement
   truncate: TruncateTooltipComponent;
 
   @Input() showSingleGroupHeader = false;
-
   @Output() selectModified: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
@@ -73,8 +72,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement
 
   readonly listActions: ListFooterActions = {
     clear: true,
-    apply: true,
-    cancel: true
+    apply: true
   };
   readonly listElHeight = LIST_EL_HEIGHT;
 

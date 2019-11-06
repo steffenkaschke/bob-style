@@ -69,7 +69,9 @@
 </div>
 
 <b-list-footer [listActions]="listActions"
+               [listActionsState]="listActionsState"
                (clear)="onClear()"
-               (apply)="apply.emit()"
-               (cancel)="cancel.emit()">
+               (apply)="apply.emit()">
+  <ng-content select="[customAction]"></ng-content>
+  <ng-content></ng-content>
 </b-list-footer>

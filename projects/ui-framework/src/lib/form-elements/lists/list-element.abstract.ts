@@ -4,37 +4,59 @@ import {
   OnInit,
   Renderer2,
   ViewChild,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Input,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription } from 'rxjs';
-import { ListHeader, ListOption } from './list.interface';
+import {
+  ListHeader,
+  ListOption,
+  ListFooterActions,
+  SelectGroupOption
+} from './list.interface';
 import find from 'lodash/find';
 import { LIST_EL_HEIGHT } from './list.consts';
 import { ListKeyboardService } from './list-service/list-keyboard.service';
 import { Keys } from '../../enums';
+import { ListChange } from './list-change/list-change';
 
 export abstract class BaseListElement
   implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
-  @ViewChild('headers', { static: false }) headers;
-
-  noGroupHeaders: boolean;
-  focusOption: ListOption;
-  listOptions: ListOption[];
-  listHeaders: ListHeader[];
-  maxHeight: number;
-
-  readonly listElHeight = LIST_EL_HEIGHT;
-
-  focusIndex: number;
-  private keyDownSubscriber: Subscription;
-
   protected constructor(
     private renderer: Renderer2,
     private listKeyboardService: ListKeyboardService,
-    private cd: ChangeDetectorRef
+    protected cd: ChangeDetectorRef
   ) {}
+
+  @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
+  @ViewChild('headers', { static: false }) headers;
+
+  public noGroupHeaders: boolean;
+  public focusOption: ListOption;
+  public listOptions: ListOption[];
+  public listHeaders: ListHeader[];
+  public focusIndex: number;
+  public searchValue: string;
+  public shouldDisplaySearch = false;
+
+  private keyDownSubscriber: Subscription;
+  public filteredOptions: SelectGroupOption[];
+
+  readonly listElHeight = LIST_EL_HEIGHT;
+
+  @Input() options: SelectGroupOption[];
+  @Input() listActions: ListFooterActions;
+  @Input() maxHeight = this.listElHeight * 8;
+  @Input() showSingleGroupHeader = false;
+
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
+  @Output() apply: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() clear: EventEmitter<void> = new EventEmitter<void>();
 
   ngOnInit(): void {
     this.focusIndex = -1;

@@ -6,7 +6,7 @@
 </b-form-element-label>
 
 <div class="bfe-wrap has-suffix"
-     [ngClass]="{'has-prefix': hasPrefix || showPrefix, 'panel-open': panelOpen, 'panel-above':
+     [ngClass]="{'has-prefix': hasPrefix || showPrefix, focused: panelOpen, 'panel-open': panelOpen, 'panel-above':
      positionClassList['panel-above'],
      'panel-below': positionClassList['panel-below']}"
      (click)="openPanel()"
@@ -50,7 +50,8 @@
                    [maxHeight]="listElHeight*6"
                    [showSingleGroupHeader]="showSingleGroupHeader"
                    [showNoneOption]="!required">
-      <ng-content footer select="[footer]"></ng-content>
+      <ng-content footer
+                  select="[footer]"></ng-content>
     </b-single-list>
   </div>
 </ng-template>

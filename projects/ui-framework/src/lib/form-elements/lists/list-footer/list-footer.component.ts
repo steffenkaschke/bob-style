@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonSize, ButtonType } from '../../../buttons/buttons.enum';
 import { Icons } from '../../../icons/icons.enum';
-import { ListFooterActions } from '../list.interface';
+import { ListFooterActions, ListFooterActionsState } from '../list.interface';
 
 @Component({
   selector: 'b-list-footer',
@@ -9,17 +9,23 @@ import { ListFooterActions } from '../list.interface';
   styleUrls: ['./list-footer.component.scss']
 })
 export class ListFooterComponent {
-
   @Input() listActions: ListFooterActions = {
     clear: true,
-    cancel: true,
-    apply: true,
+    apply: true
   };
+  @Input() listActionsState: ListFooterActionsState = {
+    clear: { disabled: false, hidden: true },
+    apply: { disabled: true, hidden: false }
+  };
+
   @Output() clear: EventEmitter<void> = new EventEmitter<void>();
-  @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
   @Output() apply: EventEmitter<void> = new EventEmitter<void>();
 
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType;
   readonly icons = Icons;
+
+  ngOnChanges(changes) {
+    console.log('footer changes', changes);
+  }
 }
