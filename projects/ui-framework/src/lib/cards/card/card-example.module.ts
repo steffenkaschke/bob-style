@@ -46,8 +46,8 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
       }
     `,
     ':host {display: block; width: 100%;}',
-    '.single-card {margin: auto;}',
-  ],
+    '.single-card {margin: auto;}'
+  ]
 })
 export class CardExample1Component {
   readonly icons = Icons;
@@ -61,14 +61,14 @@ export class CardExample1Component {
     menuConfig: [
       {
         label: 'duplicate',
-        action: () => console.log('duplicate'),
+        action: () => console.log('duplicate')
       },
       {
         label: 'delete',
-        action: () => console.log('delete'),
-      },
+        action: () => console.log('delete')
+      }
     ],
-    footerCtaLabel: 'MANAGE',
+    footerCtaLabel: 'MANAGE'
   };
 
   constructor() {}
@@ -106,8 +106,8 @@ export class CardExample1Component {
       }
     `,
     ':host {display: block; width: 100%;}',
-    '.single-card {margin: auto;}',
-  ],
+    '.single-card {margin: auto;}'
+  ]
 })
 export class CardExample2Component {
   readonly icons = Icons;
@@ -124,9 +124,9 @@ export class CardExample2Component {
     actionConfig: {
       icon: Icons.edit_field_pencil,
       tooltip: 'Edit',
-      action: $event => console.log('edit'),
+      action: $event => console.log('edit')
     },
-    footerCtaLabel: 'EDIT',
+    footerCtaLabel: 'EDIT'
   };
 
   constructor() {}
@@ -186,8 +186,8 @@ export class CardExample2Component {
       }
     `,
     ':host {display: block; width: 100%;}',
-    '.single-card {margin: auto;}',
-  ],
+    '.single-card {margin: auto;}'
+  ]
 })
 export class CardExample3Component {
   readonly icons = Icons;
@@ -204,14 +204,14 @@ export class CardExample3Component {
     menuConfig: [
       {
         label: 'duplicate',
-        action: () => console.log('duplicate'),
+        action: () => console.log('duplicate')
       },
       {
         label: 'delete',
-        action: () => console.log('delete'),
-      },
+        action: () => console.log('delete')
+      }
     ],
-    footerCtaLabel: 'REQUEST',
+    footerCtaLabel: 'REQUEST'
   };
 
   constructor() {}
@@ -242,8 +242,8 @@ export class CardExample3Component {
       }
     `,
     ':host {display: block; width: 100%;}',
-    '.single-card {margin: auto;}',
-  ],
+    '.single-card {margin: auto;}'
+  ]
 })
 export class CardExample4Component {
   readonly icons = Icons;
@@ -258,8 +258,8 @@ export class CardExample4Component {
     actionConfig: {
       icon: Icons.delete,
       tooltip: 'Delete',
-      action: $event => console.log('delete'),
-    },
+      action: $event => console.log('delete')
+    }
   };
 
   constructor() {}
@@ -270,14 +270,14 @@ export class CardExample4Component {
     CardExample1Component,
     CardExample2Component,
     CardExample3Component,
-    CardExample4Component,
+    CardExample4Component
   ],
   imports: [CommonModule, CardsModule, IconsModule, SliderModule, AvatarModule],
   exports: [
     CardExample1Component,
     CardExample2Component,
     CardExample3Component,
-    CardExample4Component,
-  ],
+    CardExample4Component
+  ]
 })
 export class CardExampleModule {}
