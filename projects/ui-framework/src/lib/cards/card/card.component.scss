@@ -35,6 +35,11 @@
   position: relative;
 }
 
+.card-top-text-only {
+  max-height: height-from-text(2, $useCssVars: true);
+  overflow: hidden;
+}
+
 .card-top-with-image {
   &:after {
     @include pseudo;
