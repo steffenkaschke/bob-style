@@ -2,6 +2,7 @@
   position: relative;
   display: block;
   .text-container {
+    pointer-events: none;
     position: absolute;
     opacity: 0;
     left: 0;
