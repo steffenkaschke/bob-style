@@ -36,7 +36,7 @@
 }
 
 .card-top-text-only {
-  max-height: height-from-text(2, $useCssVars: true);
+  max-height: height-from-text(3, $useCssVars: true);
   overflow: hidden;
 }
 
@@ -70,6 +70,11 @@
       max-width: calc(100% - #{$cardPadding + 22px});
       padding-right: 0;
     }
+  }
+
+  [card-content] {
+    max-height: height-from-text(10, $useCssVars: true);
+    overflow: hidden;
   }
 }
 
