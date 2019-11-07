@@ -4,12 +4,12 @@ import {
   withKnobs,
   select,
   boolean,
-  number
+  number,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { simpleUID } from '../../services/utils/functional-utils';
+import { simpleUID, randomNumber } from '../../services/utils/functional-utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipListModule } from './chip-list.module';
 import { ChipType, ChipListAlign, ChipListSelectable } from '../chips.enum';
@@ -22,8 +22,11 @@ const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
 const chips = mockNames(10).map(chip => ({
   text: chip,
   id: simpleUID(),
-  imageSource: mockAvatar()
+  imageSource: mockAvatar(),
+  selected: randomNumber() > 90,
+  disabled: randomNumber() > 90,
 }));
+chips[2].selected = true;
 
 const template = `
   <b-chip-list [chips]="chips"
@@ -106,11 +109,11 @@ story.add(
       onChipRemove: action('Chip removed'),
       onChipClicked: action('Chip clicked'),
       inChipSelected: action('Chip selected'),
-      onChipKeydown: action('Chip key pressed')
+      onChipKeydown: action('Chip key pressed'),
     },
     moduleMetadata: {
-      imports: [ChipListModule, StoryBookLayoutModule, BrowserAnimationsModule]
-    }
+      imports: [ChipListModule, StoryBookLayoutModule, BrowserAnimationsModule],
+    },
   }),
   { notes: { markdown: note } }
 );

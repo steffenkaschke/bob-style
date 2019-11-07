@@ -13,16 +13,18 @@ import {
   OnDestroy,
   SimpleChange,
   SimpleChanges,
-  OnChanges
+  OnChanges,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
 
 import {
   RenderedComponent,
   RenderedComponentContent,
-  RenderedComponentHandlers
+  RenderedComponentHandlers,
 } from './component-renderer.interface';
 
 @Component({
@@ -30,7 +32,7 @@ import {
   template: `
     <ng-template #componentHost></ng-template>
   `,
-  styles: []
+  styles: [],
 })
 export class ComponentRendererComponent implements OnChanges, OnDestroy {
   constructor(
@@ -50,10 +52,19 @@ export class ComponentRendererComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.render) {
-      if (this.componentRef) {
+      const isNewRender =
+        changes.render.currentValue &&
+        (changes.render.firstChange ||
+          !isEqual(
+            get(changes.render.currentValue, 'prefixComponent'),
+            get(changes.render.previousValue, 'prefixComponent')
+          ));
+
+      if (this.componentRef && isNewRender) {
         this.destroyComponent();
       }
-      if (changes.render.currentValue) {
+
+      if (isNewRender) {
         this.insertComponent(changes.render.currentValue);
       }
     }

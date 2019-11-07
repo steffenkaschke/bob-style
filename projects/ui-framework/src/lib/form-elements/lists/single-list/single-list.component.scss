@@ -114,6 +114,21 @@
       }
     }
   }
+
+  .option {
+    display: flex;
+    align-items: center;
+    max-width: 100%;
+    cursor: default;
+
+    .comp-prefix {
+      margin-right: 8px;
+    }
+  }
+
+  .option-value {
+    min-width: 0;
+  }
 }
 
 .footer {

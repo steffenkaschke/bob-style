@@ -59,9 +59,16 @@
                     [value]="option.selected"
                     [doPropagate]="false">
         </b-checkbox>
-        <b-list-option [option]="option"
-                       [searchValue]="searchValue">
-        </b-list-option>
+
+        <b-component-renderer *ngIf="option.prefixComponent"
+                              class="comp-prefix"
+                              [render]="option.prefixComponent"></b-component-renderer>
+
+        <span class="option-value"
+              data-max-lines='3'
+              [innerHTML]="option.value | highlight: searchValue">
+        </span>
+
       </div>
     </div>
   </cdk-virtual-scroll-viewport>
