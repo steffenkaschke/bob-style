@@ -39,11 +39,13 @@ const tabs: Tab[] = [
   }
 ];
 const template = `
-<b-tabs [tabs]="tabs"
-        [type]="type"
-        [selectedIndex]="selectedIndex"
-        (selectClick)="selectClick($event)"
-        (selectChange)="selectChange($event)">
+<b-tabs
+  [controlled]="true"
+  [tabs]="tabs"
+  [type]="type"
+  [selectedIndex]="selectedIndex"
+  (selectClick)="selectClick($event)"
+  (selectChange)="selectChange($event)">
 </b-tabs>`;
 
 const storyTemplate = `
@@ -72,6 +74,7 @@ const note = `
   ${template}
   ~~~
 `;
+const selectClick = action('selectClick');
 inputStories.add(
   'Tabs',
   () => {
@@ -80,7 +83,10 @@ inputStories.add(
       props: {
         tabs: object<Tab>('tabs', tabs),
         type: select('type', Object.values(TabsType), TabsType.primary),
-        selectClick: action('selectClick'),
+        selectClick: function(e) {
+          this.selectedIndex = e.index;
+          selectClick(e);
+        },
         selectChange: action('selectChange'),
         selectedIndex: number('selectedIndex', 0, 0)
       },
