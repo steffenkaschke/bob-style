@@ -17,7 +17,7 @@ export const RTE_CONTROLS_DEF = joinArrays(
     BlotType.leftToRight,
     BlotType.emoticons,
     BlotType.mentions,
-    BlotType.placeholder
+    BlotType.placeholder,
   ],
   Object.values(BlotType)
 );
@@ -77,7 +77,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'contenteditable',
     'spellcheck',
     'tabindex',
-    '.*mention.*'
+    '.*mention.*',
 
     // 'align',
     // 'border',
@@ -93,7 +93,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'font-weight',
     'font-style',
     'text-align',
-    'direction'
+    'direction',
   ],
   htmlAllowedTags: [
     'a',
@@ -118,7 +118,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'h3',
     'h4',
     'h5',
-    'h6'
+    'h6',
 
     // 'caption',
     // 'code',
@@ -162,10 +162,13 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
 
   fontFamily: {
     '\'Gotham SSm A\', \'Gotham SSm B\', \'Helvetica\'': 'Body font',
-    '\'Sentinel SSm A\', \'Sentinel SSm B\', \'Helvetica\'': 'Heading font'
+    '\'Sentinel SSm A\', \'Sentinel SSm B\', \'Helvetica\'': 'Heading font',
   },
 
   toolbarButtons: RTE_CONTROLS_DEF,
+
+  // toolbarInline: true,
+  // toolbarVisibleWithoutSelection: true,
 
   pluginsEnabled: [
     'align',
@@ -180,7 +183,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'paragraphStyle',
     'save',
     'url',
-    'emoticons'
+    'emoticons',
     // 'fontFamily',
     // 'table',
     // 'video',
@@ -211,9 +214,9 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     emoticons: cat.data.map((icn: Emoji) => ({
       code: icn.code,
       desc: icn.description,
-      icon: icn.icon
-    }))
-  })) as any
+      icon: icn.icon,
+    })),
+  })) as any,
 };
 
 export const RTE_MENTIONS_OPTIONS_DEF: TributeOptions = {
@@ -232,6 +235,6 @@ export const RTE_MENTIONS_OPTIONS_DEF: TributeOptions = {
 
   searchOpts: {
     pre: '<em class="match">',
-    post: '</em>'
-  }
+    post: '</em>',
+  },
 };
