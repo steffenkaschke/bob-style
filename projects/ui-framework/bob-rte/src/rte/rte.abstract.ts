@@ -144,30 +144,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
     if (changes.options) {
       this.updateEditorOptions(
-        merge(RTE_OPTIONS_DEF, this.options, changes.options.currentValue),
-        () => {
-          if (
-            !changes.options.firstChange &&
-            changes.options.previousValue.toolbarInline !== true &&
-            changes.options.currentValue.toolbarInline === true
-          ) {
-            this.editor.toolbar.hide();
-            this.editor.toolbar['_init']();
-            this.editor.toolbar.showInline();
-          }
-          if (
-            !changes.options.firstChange &&
-            changes.options.previousValue.toolbarInline === true &&
-            changes.options.currentValue.toolbarInline === false
-          ) {
-            document.querySelector('.fr-toolbar.fr-inline').remove();
-            (this.getEditorElement() as HTMLElement).classList.remove(
-              'fr-inline'
-            );
-            (this.getEditorElement('.fr-toolbar') as HTMLElement).remove();
-            this.editor.toolbar['_init']();
-          }
-        }
+        merge(RTE_OPTIONS_DEF, this.options, changes.options.currentValue)
       );
     }
 
@@ -401,7 +378,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     const requestedElements = editorHostElem.querySelectorAll(selector);
     return requestedElements.length < 2
       ? requestedElements[0]
-      : requestedElements;
+      : Array.from(requestedElements);
   }
 
   protected getEditorTextbox(): HTMLElement {
@@ -426,7 +403,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
   }
 
-  public updateEditorOptions(
+  protected updateEditorOptions(
     options: Partial<FroalaOptions>,
     callback: Function = null
   ): void {

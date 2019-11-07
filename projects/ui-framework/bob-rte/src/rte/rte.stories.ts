@@ -76,7 +76,6 @@ const template = `
       [description]="description"
       [controls]="controls"
       [disableControls]="disableControls"
-      [options]="{ toolbarInline: toolbarInline }"
       [mentionsList]="mentionsList"
       [placeholderList]="placeholderList"
       [minChars]="minChars"
@@ -217,7 +216,6 @@ inputStories.add(
 
         controls: array('controls', controlsDef, '\n'),
         disableControls: array('disableControls', disableControlsDef, '\n'),
-        toolbarInline: boolean('toolbarInline', false),
 
         value: text('value', value),
         placeholderList: object<SelectGroupOption>('options', placeholderMock),
