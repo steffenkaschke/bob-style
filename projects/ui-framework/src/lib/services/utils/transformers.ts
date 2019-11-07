@@ -1,20 +1,21 @@
 import {
-  isArray,
-  isString,
-  isObject,
-  isNullOrUndefined,
-  compareAsStrings,
   asArray,
-  stringify,
+  compareAsStrings,
   getType,
-  isDateISO8601,
-  isDateFormat,
   hasProp,
+  isArray,
+  isDate,
+  isDateFormat,
+  isDateISO8601,
+  isNullOrUndefined,
   isNumber,
-  parseToNumber
+  isObject,
+  isString,
+  parseToNumber,
+  stringify
 } from './functional-utils';
 
-import { parse, format, isDate } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { InputTypes } from '../../form-elements/input/input.enum';
 import { serverDateFormat } from '../../consts';
 
@@ -41,7 +42,7 @@ export const stringListToArray = (
     return [list];
   }
   return Array.from(new Set(list.split(test).map(i => i.trim()))).filter(
-    i => !!i
+    Boolean
   );
 };
 
@@ -63,7 +64,10 @@ export const stringToDate = date => {
   if (isDate(date) || isNullOrUndefined(date)) {
     return date;
   }
-  const converted = parse(date);
+  let converted = parseISO(date);
+  if (String(converted) === 'Invalid Date') {
+    converted = new Date(date);
+  }
   return String(converted) !== 'Invalid Date' ? converted : undefined;
 };
 
@@ -84,7 +88,7 @@ export const arrayOfValuesToArrayOfObjects = (key: string) => (
   return value.map(valueToObjectKey(key));
 };
 
-export const asNumber = (inputType: InputTypes, value: any) => {
+export const valueAsNumber = (inputType: InputTypes, value: any) => {
   if (inputType !== InputTypes.number || !value) {
     return value;
   }

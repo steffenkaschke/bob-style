@@ -35,12 +35,10 @@ const template = `
                  [required]="required"
                  [errorMessage]="errorMessage"
                  [hintMessage]="hintMessage"
-                 [showSingleGroupHeader]="showSingleGroupHeader"
-                 [showNoneOption]="showNoneOption">
+                 [showSingleGroupHeader]="showSingleGroupHeader">
                  <b-text-button footer
                     [text]="'Click Me!'"
-                    [color]="'primary'"
-                    style="margin-left: auto">
+                    [color]="'primary'">
                   </b-text-button>
 </b-single-select>
 `;
@@ -113,7 +111,6 @@ const toAdd = () => ({
     hintMessage: text('hintMessage', 'This field should contain something'),
     errorMessage: text('errorMessage', ''),
     showSingleGroupHeader: boolean('showSingleGroupHeader', true),
-    showNoneOption: boolean('showNoneOption', true),
     options: object<SelectGroupOption>('options', optionsMock)
   },
   moduleMetadata: {

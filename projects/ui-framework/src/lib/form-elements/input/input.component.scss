@@ -1,5 +1,3 @@
 @import '../../style/common-imports';
 
-:host {
-  @include bFormElement();
-}
+@include bFormElement();

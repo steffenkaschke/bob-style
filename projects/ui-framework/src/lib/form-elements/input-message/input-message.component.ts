@@ -25,7 +25,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
       }}
     </span>
     <span
-      *ngIf="maxChars || (minChars && !maxChars && length < minChars)"
+      *ngIf="maxChars > 0 || (minChars && !(maxChars > 0) && length < minChars)"
       class="length-indicator"
       [ngClass]="{
         error: length < minChars || (maxChars && length > maxChars),

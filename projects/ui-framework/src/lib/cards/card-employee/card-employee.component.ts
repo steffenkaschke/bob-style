@@ -12,7 +12,7 @@ import {
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { CardEmployee } from './card-employee.interface';
 import { BaseCardElement } from '../card/card.abstract';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 @Component({
   selector: 'b-card-employee, [b-card-employee]',

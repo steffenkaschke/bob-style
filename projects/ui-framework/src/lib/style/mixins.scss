@@ -6,6 +6,8 @@
 
 @import './component-mixins/overlay.mixin';
 @import './component-mixins/form-element.mixin';
+@import './component-mixins/button.mixin';
+@import './component-mixins/checkbox.mixin';
 
 @mixin pseudo {
   content: '';
@@ -326,6 +328,16 @@
 @mixin ie-only {
   /* autoprefixer: off */
   @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    @content;
+  }
+  @supports (-ms-ime-align: auto) {
+    @content;
+  }
+}
+
+@mixin not-ie {
+  /* autoprefixer: off */
+  @supports (not (-ms-ime-align: auto)) {
     @content;
   }
 }

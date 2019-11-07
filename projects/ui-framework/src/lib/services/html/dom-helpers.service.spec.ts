@@ -2,9 +2,8 @@ import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { DOMhelpers } from './dom-helpers.service';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UtilsModule } from './utils.module';
-import { By } from '@angular/platform-browser';
-import { elementFromFixture } from './test-helpers';
+import { UtilsModule } from '../utils/utils.module';
+import { elementFromFixture } from '../utils/test-helpers';
 
 @Component({
   template: `

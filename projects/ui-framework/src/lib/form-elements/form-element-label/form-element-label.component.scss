@@ -2,6 +2,13 @@
 
 :host {
   position: relative;
+  height: $label-height;
+
+  &.bfe-label[class] {
+    display: flex;
+    align-items: center;
+  }
+
   &:after {
     content: none !important;
   }
@@ -10,6 +17,7 @@
 :host-context(.has-label.required) ::ng-deep {
   .btt {
     @include input-required;
+
     &:after {
       margin-left: -3px;
     }
@@ -17,14 +25,12 @@
 }
 
 label {
-  display: inline-block;
-  vertical-align: middle;
   &.has-description {
     max-width: calc(100% - 24px);
   }
 }
 
 b-icon {
-  display: inline-block;
-  margin-left: times8(1);
+  margin-left: 6px;
+  margin-top: -2px;
 }

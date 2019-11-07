@@ -14,7 +14,7 @@ import { ListModelService } from '../../form-elements/lists/list-service/list-mo
 import { ListChangeService } from '../../form-elements/lists/list-change/list-change.service';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
 import { IconComponent } from '../../icons/icon.component';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 describe('QuickFilterBarComponent', () => {
   let component: QuickFilterBarComponent;

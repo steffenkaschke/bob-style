@@ -1,6 +1,6 @@
 import { DatepickerComponent } from './datepicker.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   MatDatepicker,
   MatDatepickerModule,
@@ -9,11 +9,10 @@ import {
 import {
   elementFromFixture,
   getPseudoContent,
-  simpleChange,
-  inputValue
+  inputValue,
+  simpleChange
 } from '../../services/utils/test-helpers';
 import { UtilsService } from '../../services/utils/utils.service';
-import createSpyObj = jasmine.createSpyObj;
 import { of } from 'rxjs';
 import { DateParseService } from './date-parse.service';
 import { MobileService } from '../../services/utils/mobile.service';
@@ -21,12 +20,13 @@ import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { IconsModule } from '../../icons/icons.module';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { dateToString } from '../../services/utils/transformers';
-import { isDate, parse } from 'date-fns';
+import { isDate, parseISO } from 'date-fns';
 import { DatepickerType } from './datepicker.enum';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
+import createSpyObj = jasmine.createSpyObj;
 
 describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
@@ -57,7 +57,7 @@ describe('DatepickerComponent', () => {
         InputMessageModule,
         NoopAnimationsModule,
         OverlayModule,
-        FormElementLabelModule,
+        FormElementLabelModule
       ],
       declarations: [DatepickerComponent],
       providers: [
@@ -94,12 +94,17 @@ describe('DatepickerComponent', () => {
         messageElem = elementFromFixture(fixture, '[b-input-message]');
 
         spyOn(component.changed, 'emit');
+        component.changed.subscribe(() => { });
         spyOn(component, 'propagateChange');
 
         picker = component.pickers.toArray()[0];
-        picker.startAt = parse('2019-09-01');
+        picker.startAt = parseISO('2019-09-01');
       });
   }));
+
+  afterEach(() => {
+    component.changed.complete();
+  });
 
   describe('Init & Basic inputs', () => {
     it('should display label', () => {
@@ -184,7 +189,7 @@ describe('DatepickerComponent', () => {
       )[0];
       expect(pickerDateCellElem).toBeTruthy();
       const selectedDate = dateToString(
-        parse(pickerDateCellElem.getAttribute('aria-label'))
+        new Date(pickerDateCellElem.getAttribute('aria-label'))
       );
       expect(selectedDate).toEqual('2019-09-15');
       component.closePicker();
@@ -284,7 +289,7 @@ describe('DatepickerComponent', () => {
       )[0];
       expect(pickerDateCellElem).toBeTruthy();
       const selectedDate = dateToString(
-        parse(pickerDateCellElem.getAttribute('aria-label'))
+        new Date(pickerDateCellElem.getAttribute('aria-label'))
       );
       expect(selectedDate).toEqual('2019-09-01');
       component.closePicker();

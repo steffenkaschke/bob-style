@@ -22,7 +22,7 @@ import { ListModelService } from '../../form-elements/lists/list-service/list-mo
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 @Component({
   selector: 'b-quick-filter-bar',

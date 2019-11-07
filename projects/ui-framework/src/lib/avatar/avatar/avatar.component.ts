@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 import { AvatarSize, AvatarBadge, AvatarOrientation } from './avatar.enum';
 import { AvatarBadges, BadgeSize } from './avatar.consts';
-import { DOMhelpers, Styles } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { ChipType } from '../../chips/chips.enum';
 import { Chip } from '../../chips/chips.interface';
 import { BadgeConfig } from './avatar.interface';
@@ -25,6 +25,7 @@ import {
   notFirstChanges
 } from '../../services/utils/functional-utils';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { Styles } from '../../services/html/html-helpers.interface';
 
 @Component({
   selector: 'b-avatar',

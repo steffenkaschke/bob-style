@@ -14,7 +14,7 @@ import {
   OnInit,
   OnDestroy
 } from '@angular/core';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
   simpleUID,
   notFirstChanges,

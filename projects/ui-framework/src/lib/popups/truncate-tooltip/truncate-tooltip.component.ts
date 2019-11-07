@@ -16,10 +16,8 @@ import {
   TruncateTooltipType,
   TruncateTooltipPosition
 } from './truncate-tooltip.enum';
-import {
-  DOMhelpers,
-  TextProps
-} from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { TextProps } from '../../services/html/html-helpers.interface';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
@@ -195,7 +193,7 @@ export class TruncateTooltipComponent
   }
 
   private checkTooltipNecessity(): void {
-    if (this.type === TruncateTooltipType.auto) {
+    if (this.type === TruncateTooltipType.auto && this.tooltipText) {
       this.type =
         this.tooltipText.length > 130
           ? TruncateTooltipType.material

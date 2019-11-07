@@ -1,5 +1,5 @@
 import { Component, Input, HostBinding } from '@angular/core';
-import { ButtonSize } from '../buttons.enum';
+import { ButtonSize, ButtonType } from '../buttons.enum';
 import { IconColor, IconSize } from '../../icons/icons.enum';
 import { BaseButtonElement } from '../button.abstract';
 
@@ -15,7 +15,10 @@ import { BaseButtonElement } from '../button.abstract';
       (click)="onClick($event)"
     ></button>
   `,
-  styleUrls: ['./square.component.scss']
+  styleUrls: ['./square.component.scss'],
+  providers: [
+    { provide: BaseButtonElement, useExisting: SquareButtonComponent }
+  ]
 })
 export class SquareButtonComponent extends BaseButtonElement {
   constructor() {
@@ -32,7 +35,8 @@ export class SquareButtonComponent extends BaseButtonElement {
           ' b-icon-' +
           (this.size === ButtonSize.small ? IconSize.medium : IconSize.large) +
           ' b-icon-' +
-          this.color
+          this.color +
+          (this.type === ButtonType.tertiary ? ' has-hover' : '')
       : '';
   }
 }

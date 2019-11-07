@@ -31,7 +31,7 @@ import { BDateAdapter } from './date.adapter';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material';
 import { DateParseService } from './date-parse.service';
 import { Keys } from '../../enums';
-import { DOMhelpers, Styles } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { throttle } from 'rxjs/operators';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { InputEventType, FormEvents } from '../form-elements.enum';
@@ -39,6 +39,7 @@ import { InputEvent } from '../input/input.interface';
 import { set } from 'lodash';
 import { DatepickerType } from './datepicker.enum';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
+import { Styles } from '../../services/html/html-helpers.interface';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, OnDestroy {

@@ -4,7 +4,7 @@ import {ComponentGroupType} from '../../../../src/lib/consts';
 import {ChartsModule} from '../charts.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {StoryBookLayoutModule} from '../../../../src/lib/story-book-layout/story-book-layout.module';
-import {PIE_CHART_DATA_MOCK} from './pie-chart.mock';
+import {LINE_CHART_DATA_MOCK} from '../chart.mock';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
@@ -64,7 +64,7 @@ const note = `
 `;
 
 story.add(
-  'Pie Chart',
+  'Pie chart',
   () => {
     return {
       template: storyTemplate,
@@ -79,7 +79,7 @@ story.add(
         height: number('height', 200),
         donutInnerSize: number('donutInnerSize', 60),
         donutWidth: number('donutWidth', 0),
-        data: object('data', PIE_CHART_DATA_MOCK),
+        data: object('data', LINE_CHART_DATA_MOCK),
         colorPalette: object('colorPalette', [
           '#CC2E4E',
           '#87233D',

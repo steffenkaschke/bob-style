@@ -8,7 +8,7 @@ import { SingleSelectModule } from '../../form-elements/lists/single-select/sing
 import { ListModelService } from '../../form-elements/lists/list-service/list-model.service';
 import { ListChangeService } from '../../form-elements/lists/list-change/list-change.service';
 import { IconsModule } from '../../icons/icons.module';
-import { DOMhelpers } from '../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 @NgModule({
   declarations: [

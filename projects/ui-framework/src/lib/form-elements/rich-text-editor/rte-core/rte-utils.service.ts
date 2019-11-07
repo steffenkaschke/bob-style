@@ -8,7 +8,7 @@ import quillLib, {
 } from 'quill';
 const Delta: typeof DeltaType = quillLib.import('delta');
 import { keysFromArrayOrObject } from '../../../services/utils/functional-utils';
-import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { BlotType } from './rte.enum';
 
 @Injectable()

@@ -1,12 +1,9 @@
 @import '../../style/common-imports';
 
-$label-hint-margin: 6px;
-
 :host {
   width: 100%;
   margin: $label-hint-margin 0 0;
   display: flex;
-  align-items: center;
   justify-content: space-between;
   text-align: left;
   @include b-caption($color: $grey-600, $addCssVars: false);
@@ -18,8 +15,16 @@ $label-hint-margin: 6px;
   &::ng-deep .error {
     color: $color-error;
   }
+
+  &:empty {
+    display: none;
+  }
 }
 
 .length-indicator {
-  margin-left: auto;
+  margin-left: 6px;
+
+  &:only-child {
+    margin-left: auto;
+  }
 }

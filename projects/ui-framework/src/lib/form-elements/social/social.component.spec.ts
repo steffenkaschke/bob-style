@@ -35,9 +35,14 @@ describe('SocialComponent', () => {
         component = fixture.componentInstance;
         component.wrapEvent = true;
         spyOn(component.changed, 'emit');
+        component.changed.subscribe(() => { });
         component.type = Social.facebook;
       });
   }));
+
+  afterEach(() => {
+    component.changed.complete();
+  });
 
   describe('ngOnInit', () => {
     it('should assign social selection (facebook) to social input type', () => {

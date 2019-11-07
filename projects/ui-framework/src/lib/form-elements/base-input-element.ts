@@ -11,7 +11,7 @@ import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
 import { FormEvents, InputEventType } from './form-elements.enum';
 import { isKey, parseToNumber } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
-import { asNumber, stringyOrFail } from '../services/utils/transformers';
+import { valueAsNumber, stringyOrFail } from '../services/utils/transformers';
 import { FormElementKeyboardCntrlService } from './services/keyboard-cntrl.service';
 
 export abstract class BaseInputElement extends BaseFormElement {
@@ -23,9 +23,9 @@ export abstract class BaseInputElement extends BaseFormElement {
     super();
     this.inputTransformers = [
       stringyOrFail,
-      value => asNumber(this.inputType, value)
+      value => valueAsNumber(this.inputType, value)
     ];
-    this.outputTransformers = [value => asNumber(this.inputType, value)];
+    this.outputTransformers = [value => valueAsNumber(this.inputType, value)];
     this.baseValue = '';
   }
 

@@ -145,6 +145,16 @@ const template2 = `
 
     <div class="cell">
       <p class="hdr">
+        <span class="bx">LabelValueType.six</span>
+      </p>
+      <b-label-value
+        [type]="'6'"
+        [label]="'Talent Group'"
+        [value]="'Date created: 11/03/2019'"></b-label-value>
+    </div>
+
+    <div class="cell">
+      <p class="hdr">
         <span class="bx">icon example 1, icon clickable</span>
       </p>
       <b-label-value

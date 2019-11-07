@@ -271,6 +271,7 @@ export {
 } from './lib/form-elements/radio-button/radio-button.interface';
 // Social Module
 export { SocialModule } from './lib/form-elements/social/social.module';
+export { SocialComponent } from './lib/form-elements/social/social.component';
 export { Social } from './lib/form-elements/social/social.enum';
 // Timepicker
 export { TimePickerModule } from './lib/form-elements/timepicker/timepicker.module';
@@ -281,6 +282,10 @@ export { PasswordInputComponent } from './lib/form-elements/password-input/passw
 // Form Element Label
 export { FormElementLabelModule } from './lib/form-elements/form-element-label/form-element-label.module';
 export { FormElementLabelComponent } from './lib/form-elements/form-element-label/form-element-label.component';
+// Input Message
+export { InputMessageModule } from './lib/form-elements/input-message/input-message.module';
+export { InputMessageComponent } from './lib/form-elements/input-message/input-message.component';
+
 /*
  * Search
  */
@@ -396,7 +401,8 @@ export { InfoTooltipComponent } from './lib/popups/info-tooltip/info-tooltip.com
 // Emoji Module
 export { EmojiModule } from './lib/popups/emoji/emoji.module';
 export { EmojiComponent } from './lib/popups/emoji/emoji.component';
-export { Emoji } from './lib/popups/emoji/emoji.interface';
+export { Emoji, EmojiCategory } from './lib/popups/emoji/emoji.interface';
+export { EMOJI_DATA } from './lib/popups/emoji/emoji-data.consts';
 // Truncate Tooltip
 export { TruncateTooltipModule } from './lib/popups/truncate-tooltip/truncate-tooltip.module';
 export { TruncateTooltipComponent } from './lib/popups/truncate-tooltip/truncate-tooltip.component';
@@ -466,7 +472,6 @@ export { HighlightPipe } from './lib/services/filters/highlight.pipe';
 // Utils Module
 export { UtilsModule } from './lib/services/utils/utils.module';
 export { UtilsService } from './lib/services/utils/utils.service';
-export { DOMhelpers } from './lib/services/utils/dom-helpers.service';
 export { ScrollEvent } from './lib/services/utils/utils.interface';
 export { WindowRef } from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
@@ -509,6 +514,15 @@ export * from './lib/services/utils/test-helpers';
 // Util components
 export { StatsComponent } from './lib/services/util-components/stats.component';
 export { StatsModule } from './lib/services/util-components/stats.module';
+// DOM & HTML helpers
+export { HtmlHelpersModule } from './lib/services/html/html-helpers.module';
+export * from './lib/services/html/html-helpers.interface';
+export { DOMhelpers } from './lib/services/html/dom-helpers.service';
+export { HtmlParserHelpers } from './lib/services/html/html-parser.service';
+// Transformers
+export * from './lib/services/utils/transformers';
+// Mocks
+export { selectOptionsMock } from './lib/form-elements/lists/multi-select-panel/multi-select-panel.mock';
 
 /*
 * Animation

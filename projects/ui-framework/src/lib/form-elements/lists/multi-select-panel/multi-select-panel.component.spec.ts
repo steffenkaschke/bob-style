@@ -78,7 +78,7 @@ describe('MultiSelectPanelComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(MultiSelectPanelComponent);
         component = fixture.componentInstance;
-        spyOn(component, 'destroyPanel');
+        spyOn(component as any, 'destroyPanel');
         spyOn(component.selectChange, 'emit');
         component.chevronButtonText = 'Click';
       });
@@ -125,9 +125,9 @@ describe('MultiSelectPanelComponent', () => {
   describe('onCancel', () => {
     it('should invoke panel close', () => {
       (overlayContainerElement.querySelector(
-        '.cancel-button'
+        '.cancel-button button'
       ) as HTMLElement).click();
-      expect(component.destroyPanel).toHaveBeenCalled();
+      expect(component['destroyPanel']).toHaveBeenCalled();
     });
   });
 
@@ -137,7 +137,7 @@ describe('MultiSelectPanelComponent', () => {
         'b-multi-list .option'
       )[1] as HTMLElement).click();
       (overlayContainerElement.querySelector(
-        '.apply-button'
+        '.apply-button button'
       ) as HTMLElement).click();
     });
     it('should indicate selected option', () => {
@@ -153,14 +153,14 @@ describe('MultiSelectPanelComponent', () => {
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
     });
     it('should invoke panel close', () => {
-      expect(component.destroyPanel).toHaveBeenCalled();
+      expect(component['destroyPanel']).toHaveBeenCalled();
     });
   });
 
   describe('ngOnDestroy', () => {
     it('should invoke panel close', () => {
       component.ngOnDestroy();
-      expect(component.destroyPanel).toHaveBeenCalled();
+      expect(component['destroyPanel']).toHaveBeenCalled();
     });
   });
 });

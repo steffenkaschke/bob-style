@@ -136,6 +136,7 @@ import {
   set as _set,
   toPairs as _toPairs
 } from 'lodash/fp';
+import { GenericObject } from '../../types';
 
 export const flatten = (obj, path = []) => {
   return _isPlainObject(obj) || _isArray(obj)
@@ -227,9 +228,19 @@ export const notFirstChanges = (
   return !!keys.find(i => changes[i] && !changes[i].firstChange);
 };
 
-export const applyChanges = (target: any, changes: SimpleChanges): void => {
+export const applyChanges = (
+  target: any,
+  changes: SimpleChanges,
+  defaults: GenericObject = {},
+  skip: string[] = []
+): void => {
   Object.keys(changes).forEach((change: string) => {
-    target[change] = changes[change].currentValue;
+    if (!skip.includes(change)) {
+      target[change] =
+        isNullOrUndefined(changes[change].currentValue) && defaults[change]
+          ? defaults[change]
+          : changes[change].currentValue;
+    }
   });
 };
 
@@ -257,10 +268,12 @@ export const isDateFormat = (frmt: string): boolean => {
 };
 
 export const thisYear = () => new Date().getFullYear();
-export const thisMonth = (pad = true) => {
-  const month = new Date().getMonth() + 1;
+
+export const thisMonth = (pad = true, mod = 0) => {
+  const month = new Date().getMonth() + 1 + mod;
   return pad ? padWith0(month, 2) : month;
 };
+
 export const thisDay = (pad = true) => {
   const day = new Date().getDate();
   return pad ? padWith0(day, 2) : day;
@@ -288,3 +301,14 @@ export const isIterable = (smth: any): boolean => {
 
 export const lastItem = (arr: any[]): any =>
   !isIterable(arr) ? arr : arr[arr.length - 1];
+
+export const arrayInsertAt = (
+  arr: any[],
+  val: any | any[],
+  index = 0,
+  overwrite = false
+) => {
+  return arr
+    .slice(0, index)
+    .concat(val, arr.slice(!overwrite ? index : index + 1));
+};

@@ -18,8 +18,14 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListFooterActions } from '../list.interface';
-import { DOMhelpers } from '../../../services/utils/dom-helpers.service';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { UtilsService } from '../../../services/utils/utils.service';
+import {
+  BELOW_START,
+  ABOVE_START,
+  ABOVE_END,
+  BELOW_END
+} from '../../../popups/panel/panel-position-service/panel-position.const';
 
 @Component({
   selector: 'b-single-select',
@@ -43,7 +49,6 @@ import { UtilsService } from '../../../services/utils/utils.service';
 })
 export class SingleSelectComponent extends BaseSelectPanelElement
   implements OnChanges {
-  @Input() showNoneOption = true;
   @Input() showSingleGroupHeader = false;
 
   triggerValue: string;
@@ -75,9 +80,12 @@ export class SingleSelectComponent extends BaseSelectPanelElement
       cd
     );
     this.value = null;
+    this.panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+
     if (changes.options) {
       this.singleSelectOptions = changes.options.currentValue;
       this.selectedOptionId = this.getSelectedOptionId(
