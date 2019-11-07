@@ -4,7 +4,7 @@ import {
   ChangeDetectionStrategy,
   forwardRef,
   ChangeDetectorRef,
-  ElementRef
+  ElementRef,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 
@@ -15,7 +15,7 @@ import {
   isKey,
   Keys,
   ListChange,
-  cloneArray
+  cloneArray,
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
@@ -29,15 +29,15 @@ import { PlaceholdersConverterService } from './placeholders.service';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => RichTextEditorComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => RichTextEditorComponent),
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
   constructor(
@@ -113,7 +113,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       contentChanged: () => {
         this.transmitValue(this.editor.html.get(), {
           eventType: [InputEventType.onChange],
-          updateValue: true
+          updateValue: true,
         });
       },
 
@@ -122,7 +122,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
           eventType: [InputEventType.onFocus],
           eventName: FormEvents.focused,
           updateValue: true,
-          doPropagate: false
+          doPropagate: false,
         });
         this.inputFocused = true;
 
@@ -137,7 +137,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         this.transmitValue(this.editor.html.get(), {
           eventType: [InputEventType.onBlur],
           eventName: FormEvents.blurred,
-          updateValue: true
+          updateValue: true,
         });
         this.inputFocused = false;
 
@@ -217,7 +217,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
           return false;
         }
-      }
+      },
     };
   }
 
