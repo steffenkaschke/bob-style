@@ -151,6 +151,13 @@ $link-color: var(--primary-700);
 
 .fr-toolbar.fr-basic {
   background: transparent;
+  position: relative !important;
+
+  &[style*='top'] {
+    display: block !important;
+    left: auto !important;
+    top: auto !important;
+  }
 }
 
 .fr-btn[hidden] {

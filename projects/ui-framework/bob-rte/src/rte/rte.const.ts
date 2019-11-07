@@ -30,23 +30,25 @@ export const RTE_TOOLBAR_HEIGHT = 41;
 
 export const RTE_OPTIONS_DEF: FroalaOptions = {
   key: 'DUA2yE3G1A1A5B8B1pZGCTRSAPJWTLPLZHTQQe1JGZxC4B3A3B2B5B1C1E4I1B3==',
-
-  heightMin: RTE_MINHEIGHT_DEF - RTE_TOOLBAR_HEIGHT,
-  heightMax: RTE_MAXHEIGHT_DEF - RTE_TOOLBAR_HEIGHT,
+  attribution: false,
 
   enter: 1,
   initOnClick: false,
   theme: 'royal',
+  fontFamily: {
+    '\'Gotham SSm A\', \'Gotham SSm B\', \'Helvetica\'': 'Body font',
+    '\'Sentinel SSm A\', \'Sentinel SSm B\', \'Helvetica\'': 'Heading font',
+  },
+  scrollableContainer: 'body',
 
-  attribution: false,
-  toolbarBottom: true,
-  toolbarSticky: false,
+  heightMin: RTE_MINHEIGHT_DEF - RTE_TOOLBAR_HEIGHT,
+  heightMax: RTE_MAXHEIGHT_DEF - RTE_TOOLBAR_HEIGHT,
+
   charCounterCount: true,
   charCounterMax: -1,
 
   tooltips: false,
   shortcutsHint: false,
-
   placeholderText: '',
 
   imagePaste: false,
@@ -146,8 +148,6 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
 
   wordDeniedTags: ['script', 'style'],
 
-  scrollableContainer: 'body',
-
   listAdvancedTypes: false,
 
   linkAlwaysBlank: true,
@@ -160,15 +160,11 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
 
   colorsText: [],
 
-  fontFamily: {
-    '\'Gotham SSm A\', \'Gotham SSm B\', \'Helvetica\'': 'Body font',
-    '\'Sentinel SSm A\', \'Sentinel SSm B\', \'Helvetica\'': 'Heading font',
-  },
-
+  toolbarBottom: true,
+  toolbarSticky: false,
   toolbarButtons: RTE_CONTROLS_DEF,
-
-  // toolbarInline: true,
-  // toolbarVisibleWithoutSelection: true,
+  toolbarInline: false,
+  toolbarVisibleWithoutSelection: true,
 
   pluginsEnabled: [
     'align',
@@ -206,6 +202,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   ],
 
   emoticonsUseImage: false,
+  emoticonsButtons: [],
 
   emoticonsSet: EMOJI_DATA.map((cat: EmojiCategory) => ({
     name: cat.name,

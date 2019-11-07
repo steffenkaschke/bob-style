@@ -144,7 +144,30 @@ export abstract class RTEbaseElement extends BaseFormElement
 
     if (changes.options) {
       this.updateEditorOptions(
-        merge(RTE_OPTIONS_DEF, this.options, changes.options.currentValue)
+        merge(RTE_OPTIONS_DEF, this.options, changes.options.currentValue),
+        () => {
+          if (
+            !changes.options.firstChange &&
+            changes.options.previousValue.toolbarInline !== true &&
+            changes.options.currentValue.toolbarInline === true
+          ) {
+            this.editor.toolbar.hide();
+            this.editor.toolbar['_init']();
+            this.editor.toolbar.showInline();
+          }
+          if (
+            !changes.options.firstChange &&
+            changes.options.previousValue.toolbarInline === true &&
+            changes.options.currentValue.toolbarInline === false
+          ) {
+            document.querySelector('.fr-toolbar.fr-inline').remove();
+            (this.getEditorElement() as HTMLElement).classList.remove(
+              'fr-inline'
+            );
+            (this.getEditorElement('.fr-toolbar') as HTMLElement).remove();
+            this.editor.toolbar['_init']();
+          }
+        }
       );
     }
 
