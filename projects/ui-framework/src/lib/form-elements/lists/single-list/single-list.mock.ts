@@ -3,7 +3,7 @@ import { makeArray, simpleUID } from '../../../services/utils/functional-utils';
 import { mockAvatar, mockNames, mockJobs } from '../../../mock.const';
 import { AvatarComponent } from '../../../avatar/avatar/avatar.component';
 
-const groupNum = 3;
+const groupNum = 6;
 const optionsNum = 4;
 
 export const optionsMock: SelectGroupOption[] = makeArray(groupNum).map(
@@ -29,5 +29,3 @@ export const optionsMock: SelectGroupOption[] = makeArray(groupNum).map(
     };
   }
 );
-optionsMock[0].options[1].selected = true;
-optionsMock[0].options[3].disabled = true;

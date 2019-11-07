@@ -2,8 +2,9 @@ import {
   randomNumber,
   randomFromArray,
   padWith0,
-  simpleUID
+  simpleUID,
 } from './services/utils/functional-utils';
+import { Icons } from './icons/icons.enum';
 
 export const mockNamesList = [
   'Nada Gish',
@@ -65,7 +66,7 @@ export const mockNamesList = [
   'Sybil Urso',
   'Anastacia Felipe',
   'Laree Hammock',
-  'Stefania Dollinger'
+  'Stefania Dollinger',
 ];
 
 export const mockFirstNamesList = mockNamesList.map(name => name.split(' ')[0]);
@@ -114,7 +115,7 @@ export const mockJobsList = [
   'User researcher',
   'Visual designer',
   'Web developer',
-  'Website administrator'
+  'Website administrator',
 ];
 
 export const mockHobbiesList = [
@@ -425,7 +426,7 @@ export const mockHobbiesList = [
   'Yoga',
   'YoYo',
   'Ziplining',
-  'Zumba'
+  'Zumba',
 ];
 
 const lorem =
@@ -499,13 +500,13 @@ const uselessURLs = [
   'https://thepigeon.org/',
   'http://notdayoftheweek.com/',
   'http://www.amialright.com/',
-  'http://nooooooooooooooo.com/'
+  'http://nooooooooooooooo.com/',
 ];
 
 export const mockAvatar = () =>
   `https://randomuser.me/api/portraits/${randomFromArray([
     'men',
-    'women'
+    'women',
   ])}/${randomNumber(0, 99)}.jpg`;
 
 export const mockImage = (width, height) =>
@@ -597,3 +598,5 @@ export const mockUrl = (type = 'any') => {
       return uselessSite();
   }
 };
+
+export const randomIcon = () => randomFromArray(Object.values(Icons));

@@ -11,6 +11,7 @@ import { SelectGroupOption } from '../list.interface';
 import { AvatarComponent } from '../../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../../avatar/avatar/avatar.module';
 import { optionsMock } from './multi-list.mock';
+import { cloneDeep } from 'lodash';
 
 const buttonStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -50,6 +51,8 @@ const note = `
   ~~~
 `;
 
+const options = cloneDeep(optionsMock);
+
 buttonStories.add(
   'Multi list',
   () => ({
@@ -57,7 +60,7 @@ buttonStories.add(
     props: {
       selectChange: action('Multi list change'),
       showSingleGroupHeader: boolean('showSingleGroupHeader', true),
-      options: object<SelectGroupOption>('options', optionsMock),
+      options: object<SelectGroupOption>('options', options),
     },
     moduleMetadata: {
       imports: [

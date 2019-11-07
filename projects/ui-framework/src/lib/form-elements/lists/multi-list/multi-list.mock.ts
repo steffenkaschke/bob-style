@@ -8,7 +8,7 @@ import { mockAvatar, mockNames, mockJobs } from '../../../mock.const';
 import { AvatarComponent } from '../../../avatar/avatar/avatar.component';
 
 const groupNum = 6;
-const optionsNum = 3;
+const optionsNum = 4;
 
 export const optionsMock: SelectGroupOption[] = makeArray(groupNum).map(
   group => {

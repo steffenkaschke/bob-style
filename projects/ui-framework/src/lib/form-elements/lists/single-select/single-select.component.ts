@@ -6,7 +6,7 @@ import {
   SimpleChanges,
   ViewContainerRef,
   NgZone,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, isNull, isUndefined } from 'lodash';
@@ -24,7 +24,7 @@ import {
   BELOW_START,
   ABOVE_START,
   ABOVE_END,
-  BELOW_END
+  BELOW_END,
 } from '../../../popups/panel/panel-position-service/panel-position.const';
 
 @Component({
@@ -32,20 +32,20 @@ import {
   templateUrl: 'single-select.component.html',
   styleUrls: [
     '../../input/input.component.scss',
-    'single-select.component.scss'
+    'single-select.component.scss',
   ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => SingleSelectComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => SingleSelectComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class SingleSelectComponent extends BaseSelectPanelElement
   implements OnChanges {
@@ -57,7 +57,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement
 
   readonly listElHeight = LIST_EL_HEIGHT;
   readonly listActions: ListFooterActions = {
-    clear: true
+    clear: true,
   };
 
   constructor(

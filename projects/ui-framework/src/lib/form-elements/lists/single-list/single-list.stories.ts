@@ -11,6 +11,7 @@ import { SelectGroupOption } from '../list.interface';
 import { AvatarComponent } from '../../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../../avatar/avatar/avatar.module';
 import { optionsMock } from './single-list.mock';
+import { cloneDeep } from 'lodash';
 
 const buttonStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -54,6 +55,11 @@ const note = `
   ~~~
 `;
 
+const options = cloneDeep(optionsMock);
+
+options[0].options[1].selected = true;
+options[0].options[3].disabled = true;
+
 buttonStories.add(
   'Single list',
   () => ({
@@ -61,7 +67,7 @@ buttonStories.add(
     props: {
       selectChange: action('Single list change'),
       showSingleGroupHeader: boolean('showSingleGroupHeader', true),
-      options: object<SelectGroupOption>('options', optionsMock),
+      options: object<SelectGroupOption>('options', options),
     },
     moduleMetadata: {
       imports: [
