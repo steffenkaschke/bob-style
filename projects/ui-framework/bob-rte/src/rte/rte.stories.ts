@@ -8,7 +8,7 @@ import {
   object,
   select,
   text,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -120,16 +120,18 @@ const note = `
   Name | Type | Description | default
   --- | --- | --- | ---
   [type] | RTEType | theme: primary (white bg, border), secondary (transparent bg, no borders), tertiary (grey bg, no borders) | primary
-  [label] | string | label text (above editor) | &nbsp;
-  [placeholder] | string | placeholder text (inside editor) | &nbsp;
-  [description] | string | description text (icon tooltip) | &nbsp;
-  [hideLabelOnFocus] | boolean | if true label text will be used as placeholder | false
   [value] | string | html content to be placed inside editor | &nbsp;
   [controls] | BlotType[] | array of toolbar controls (check BlotType enum for all possible controls). Defaults to all controls. Pass empty array to disable all controls | all
+  [disableControls] | BlotType[] | array of toolbar controls to disable. <u>Hint:</u> if you need to disable 1-2 controls from the default set, dont set [controls], just pass controls you want disabled in [disableControls] instead. | []
+  [options] | FroalaOptions | <u>Experimental!</u> additional options for Froala editor. [See Docs](https://www.froala.com/wysiwyg-editor/docs/options). Try \`{ toolbarInline:true }\` to get inline toolbar (regular toolbar will be hidden)
   [minChars] | number | minimum (plain) text length | 0
   [maxChars] | number | maximum (plain) text length | &nbsp;
   [minHeight] | number | minimum height of editor (including toolbar). Set to **0** to disable min-height | 185
   [maxHeight] | number | maximum height of editor (including toolbar). Set to **0** to disable max-height | 350
+  [label] | string | label text (above editor) | &nbsp;
+  [placeholder] | string | placeholder text (inside editor) | &nbsp;
+  [description] | string | description text (icon tooltip) | &nbsp;
+  [hideLabelOnFocus] | boolean | if true label text will be used as placeholder | false
   [disabled] | boolean | disables editor | false
   [required] | boolean | adds * to placeholder | false
   [hintMessage] | string | adds a hint message below editor | &nbsp;
@@ -211,28 +213,30 @@ inputStories.add(
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
+
         controls: array('controls', controlsDef, '\n'),
         disableControls: array('disableControls', disableControlsDef, '\n'),
+
         value: text('value', value),
         placeholderList: object<SelectGroupOption>('options', placeholderMock),
         mentionsList: object('mentionsList', mentionsOptions),
         change: action('Value changed'),
         focus: action('Editor focused'),
-        blur: action('Editor blurred')
+        blur: action('Editor blurred'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
-          RichTextEditorModule
-        ]
-      }
+          RichTextEditorModule,
+        ],
+      },
     };
   },
   {
     notes: { markdown: note },
     knobs: {
-      escapeHTML: false
-    }
+      escapeHTML: false,
+    },
   }
 );
