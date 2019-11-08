@@ -64,7 +64,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   videoAllowedProviders: ['youtube', 'vimeo'],
   videoDefaultAlign: 'left',
   videoDefaultWidth: 600,
-  videoMaxSize: 1024 * 1024 * 30,
+  videoMaxSize: 1024 * 1024 * 60,
   videoTextNear: false,
   videoResize: false,
   videoMove: false,

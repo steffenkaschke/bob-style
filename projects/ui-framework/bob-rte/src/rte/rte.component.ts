@@ -111,8 +111,6 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       },
 
       contentChanged: () => {
-        console.log(this.editor.html.get());
-
         this.transmitValue(this.editor.html.get(), {
           eventType: [InputEventType.onChange],
           updateValue: true,
