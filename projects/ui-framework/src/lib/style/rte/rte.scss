@@ -66,6 +66,7 @@ $link-color: var(--primary-700);
     order: 1;
     background-color: transparent;
   }
+
   .fr-toolbar {
     order: 2;
   }
@@ -379,6 +380,7 @@ $link-color: var(--primary-700);
       display: flex !important;
     }
 
+    textarea,
     input[type='text'] {
       @include input-basics;
       background-color: $white;
@@ -394,9 +396,22 @@ $link-color: var(--primary-700);
       }
     }
 
+    textarea {
+      height: auto;
+      line-height: $line-height-body;
+      padding: 11px 15px;
+      resize: none;
+
+      &:focus {
+        padding: 11px 15px;
+      }
+    }
+
     // label
 
     @if not $label-to-placeholder {
+      textarea + label,
+      textarea.fr-not-empty + label,
       input + label,
       input.fr-not-empty + label {
         position: static;
@@ -409,6 +424,8 @@ $link-color: var(--primary-700);
     // label placeholder
 
     @if $label-to-placeholder {
+      textarea + label,
+      textarea.fr-not-empty + label,
       input + label,
       input.fr-not-empty + label {
         @include b-body($lineHeight: $input-height, $color: $grey-600);
@@ -421,6 +438,8 @@ $link-color: var(--primary-700);
         pointer-events: none;
       }
 
+      textarea + label,
+      textarea.fr-not-empty + label,
       input.fr-not-empty + label,
       input:focus + label {
         opacity: 0;

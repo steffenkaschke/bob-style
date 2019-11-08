@@ -19,7 +19,6 @@
   border: 1px solid $input-border-color;
   border-radius: $border-radius;
   transition: box-shadow 0.2s, border-color 0.2s;
-  overflow: hidden;
 }
 
 .bfe-wrap:focus,
@@ -79,6 +78,14 @@
 
   &.focused::ng-deep button:before {
     color: $grey-700;
+  }
+}
+
+// Theme - Primary
+
+:host[data-type='primary']::ng-deep {
+  .fr-wrapper {
+    margin: 1px 0;
   }
 }
 

@@ -18,12 +18,14 @@ export class HtmlParserHelpers {
       tabindex: null,
       spellcheck: null,
       class: {
-        'fr-.*': false
-      }
+        'fr-.*': false,
+      },
     }
   ): string {
     return (
-      this.enforceAttributes(value, { 'span,p,div,a': enforcedAttrs || {} })
+      this.enforceAttributes(value, {
+        'span,p,div,a,iframe': enforcedAttrs || {},
+      })
 
         // replace P with DIV
         .replace(/(<p)/gi, '<div')
@@ -42,7 +44,7 @@ export class HtmlParserHelpers {
         .replace(/(<\/h\d>)/gi, '</strong></span></div>')
 
         // empty tags
-        .replace(/<([^\/>\s]+)[^>]*>\s*<\/\1>/gi, ' ')
+        .replace(/<(div|p|span|ul|ol|li|a|strong|em|i)[^>]*>\s*<\/\1>/gi, ' ')
 
         // unnecessary wrappers
         .replace(/<(span)>([^<]+)<\/\1>/gi, '$2')

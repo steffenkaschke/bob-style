@@ -17,12 +17,16 @@ export const RTE_CONTROLS_DEF = joinArrays(
     BlotType.leftToRight,
     BlotType.emoticons,
     BlotType.mentions,
+    BlotType.insertVideo,
     BlotType.placeholder,
   ],
   Object.values(BlotType)
 );
 
-export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [BlotType.placeholder];
+export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [
+  BlotType.placeholder,
+  BlotType.insertVideo,
+];
 
 export const RTE_MINHEIGHT_DEF = 185;
 export const RTE_MAXHEIGHT_DEF = 350;
@@ -57,11 +61,18 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   imageMaxSize: 1024 * 1024 * 3,
   imageMinWidth: 100,
 
+  videoAllowedProviders: ['youtube', 'vimeo'],
   videoDefaultAlign: 'left',
   videoDefaultWidth: 600,
   videoMaxSize: 1024 * 1024 * 30,
+  videoTextNear: false,
+  videoResize: false,
+  videoMove: false,
+  videoInsertButtons: ['videoByURL', 'videoEmbed'],
+  videoEditButtons: ['videoReplace', 'videoRemove'],
 
   htmlAllowComments: false,
+
   htmlAllowedAttrs: [
     'alt',
     'data-.*',
@@ -81,6 +92,11 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'tabindex',
     '.*mention.*',
 
+    'frameborder',
+    'width',
+    'height',
+    'allowfullscreen',
+
     // 'align',
     // 'border',
     // 'cellpadding',
@@ -88,7 +104,9 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     // 'colspan',
     // 'rowspan',
   ],
+
   htmlAllowedEmptyTags: ['.fa', '.fr-emoticon', '.fr-inner'],
+
   htmlAllowedStyleProps: [
     'font-family',
     'font-size',
@@ -96,7 +114,9 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'font-style',
     'text-align',
     'direction',
+    'display',
   ],
+
   htmlAllowedTags: [
     'a',
     'br',
@@ -122,6 +142,8 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'h5',
     'h6',
 
+    'iframe',
+
     // 'caption',
     // 'code',
     // 'figure',
@@ -136,6 +158,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     // 'thead',
     // 'tr'
   ],
+
   htmlExecuteScripts: false,
   htmlIgnoreCSSProperties: [],
   htmlRemoveTags: ['script', 'style'],
@@ -180,9 +203,9 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'save',
     'url',
     'emoticons',
+    'video',
     // 'fontFamily',
     // 'table',
-    // 'video',
     // 'image',
     // 'imageTUI',
     // 'imageManager',
