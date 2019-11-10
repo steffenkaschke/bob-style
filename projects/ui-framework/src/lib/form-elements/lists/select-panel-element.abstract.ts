@@ -11,7 +11,7 @@ import {
   EventEmitter,
   Output,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import {
   CdkOverlayOrigin,
@@ -19,7 +19,7 @@ import {
   Overlay,
   OverlayConfig,
   OverlayRef,
-  ConnectedPosition
+  ConnectedPosition,
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import invoke from 'lodash/invoke';
@@ -63,6 +63,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
           : this.panelClassList || [];
     }
   }
+  @Input() tooltipType: TruncateTooltipType = TruncateTooltipType.auto;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
@@ -82,7 +83,6 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   private backdropClickSubscriber: Subscription;
   private positionChangeSubscriber: Subscription;
   private windowKeydownSubscriber: Subscription;
-  readonly tooltipType = TruncateTooltipType;
 
   protected constructor(
     private overlay: Overlay,
@@ -132,7 +132,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
       this.overlayRef.updatePosition();
       this.overlayRef.updateSize({
-        width: this.overlayOrigin.elementRef.nativeElement.offsetWidth
+        width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
       });
 
       const searchInput = this.overlayRef.overlayElement.querySelector(
@@ -192,7 +192,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       ...this.panelClassList,
       'b-select-panel',
       this.panelClass,
-      this.isQuickFilter ? 'b-quick-filter-panel' : null
+      this.isQuickFilter ? 'b-quick-filter-panel' : null,
     ].filter(Boolean);
   }
 
@@ -212,7 +212,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       backdropClass: 'b-select-backdrop',
       panelClass: this.getPanelClass(),
       positionStrategy,
-      scrollStrategy: this.panelPositionService.getScrollStrategy()
+      scrollStrategy: this.panelPositionService.getScrollStrategy(),
     };
   }
 
