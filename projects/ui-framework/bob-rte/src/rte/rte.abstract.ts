@@ -33,6 +33,7 @@ import {
   ABOVE_END,
   IconColor,
   isNotEmptyObject,
+  isEmptyArray,
 } from 'bob-style';
 
 import {
@@ -377,7 +378,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     const requestedElements = editorHostElem.querySelectorAll(selector);
     return requestedElements.length < 2
       ? requestedElements[0]
-      : requestedElements;
+      : Array.from(requestedElements);
   }
 
   protected getEditorTextbox(): HTMLElement {
@@ -386,18 +387,23 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   protected updateToolbar(): void {
     if (this.toolbarButtons) {
-      this.toolbarButtons.forEach(b => {
-        const cmd = b.getAttribute('data-cmd') as BlotType;
-        if (!this.controls.includes(cmd)) {
-          b.setAttribute('hidden', 'true');
-        } else {
-          b.removeAttribute('hidden');
-        }
-      });
+      if (isEmptyArray(this.controls)) {
+        this.editor.toolbar.hide();
+      } else {
+        this.toolbarButtons.forEach(b => {
+          const cmd = b.getAttribute('data-cmd') as BlotType;
+          if (!this.controls.includes(cmd)) {
+            b.setAttribute('hidden', 'true');
+          } else {
+            b.removeAttribute('hidden');
+          }
+        });
+        this.editor.toolbar.show();
+      }
     }
   }
 
-  public updateEditorOptions(
+  protected updateEditorOptions(
     options: Partial<FroalaOptions>,
     callback: Function = null
   ): void {
