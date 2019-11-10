@@ -61,7 +61,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
         this.editor = this.getEditor();
 
-        if (this.options.tooltips === false) {
+        if (this.options.tooltips === false && this.toolbarButtons) {
           this.toolbarButtons.forEach(b => {
             b.setAttribute('aria-label', b.getAttribute('title'));
             b.removeAttribute('title');
