@@ -18,8 +18,6 @@ import {
 import { DOCUMENT } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import isEqual from 'lodash/isEqual';
-import get from 'lodash/get';
 
 import {
   RenderedComponent,
@@ -52,19 +50,10 @@ export class ComponentRendererComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.render) {
-      const isNewRender =
-        changes.render.currentValue &&
-        (changes.render.firstChange ||
-          !isEqual(
-            get(changes.render.currentValue, 'prefixComponent'),
-            get(changes.render.previousValue, 'prefixComponent')
-          ));
-
-      if (this.componentRef && isNewRender) {
+      if (this.componentRef) {
         this.destroyComponent();
       }
-
-      if (isNewRender) {
+      if (changes.render.currentValue) {
         this.insertComponent(changes.render.currentValue);
       }
     }

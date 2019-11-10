@@ -81,8 +81,8 @@ const note = `
 `;
 
 const options = cloneDeep(optionsMock);
-// options[0].options[1].value =
-//   'some other very long text and some more words to have ellipsis and tooltip';
+options[0].options[1].value =
+  'some other very long text and some more words to have ellipsis and tooltip';
 
 const toAdd = () => ({
   template: storyTemplate,
