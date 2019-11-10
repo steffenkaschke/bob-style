@@ -1,11 +1,9 @@
 import { storiesOf } from '@storybook/angular';
 import {
   boolean,
-  number,
   object,
-  select,
   text,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
@@ -16,6 +14,10 @@ import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-lay
 import { SingleSelectModule } from './single-select.module';
 import { SelectGroupOption } from '../list.interface';
 import { mockText } from '../../../mock.const';
+import { optionsMock } from '../single-list/single-list.mock';
+import { AvatarComponent } from '../../../avatar/avatar/avatar.component';
+import { AvatarModule } from '../../../avatar/avatar/avatar.module';
+import { cloneDeep } from 'lodash';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -78,26 +80,9 @@ const note = `
   ~~~
 `;
 
-const groupNum = 6;
-const optionsNum = 3;
-
-const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
-  return {
-    groupName: `Personal G${i}`,
-    options: Array.from(Array(optionsNum), (_, k) => {
-      return {
-        value:
-          k % 2 === 0
-            ? `Personal G${i}_E${k} and some other very long text and some more words to have ellipsis and tooltip`
-            : `Personal G${i}_E${k}`,
-        id: i * optionsNum + k,
-        selected: false
-      };
-    })
-  };
-});
-
-optionsMock[0].options[1].selected = true;
+const options = cloneDeep(optionsMock);
+options[0].options[1].value =
+  'some other very long text and some more words to have ellipsis and tooltip';
 
 const toAdd = () => ({
   template: storyTemplate,
@@ -111,7 +96,7 @@ const toAdd = () => ({
     hintMessage: text('hintMessage', 'This field should contain something'),
     errorMessage: text('errorMessage', ''),
     showSingleGroupHeader: boolean('showSingleGroupHeader', true),
-    options: object<SelectGroupOption>('options', optionsMock)
+    options: object<SelectGroupOption>('options', options),
   },
   moduleMetadata: {
     imports: [
@@ -119,9 +104,11 @@ const toAdd = () => ({
       ButtonsModule,
       TypographyModule,
       BrowserAnimationsModule,
-      StoryBookLayoutModule
-    ]
-  }
+      StoryBookLayoutModule,
+      AvatarModule,
+    ],
+    entryComponents: [AvatarComponent],
+  },
 });
 
 story.add('Single select', toAdd, { notes: { markdown: note } });

@@ -3,7 +3,7 @@ import {
   text,
   object,
   withKnobs,
-  boolean
+  boolean,
 } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,6 +14,7 @@ import { MultiSelectPanelModule } from './multi-select-panel.module';
 import { ButtonType } from '../../../buttons/buttons.enum';
 import { action } from '@storybook/addon-actions';
 import { selectOptionsMock } from './multi-select-panel.mock';
+import { cloneDeep } from 'lodash';
 
 const inputStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -73,7 +74,7 @@ const note = `
   ~~~
 `;
 
-const optionsMock = selectOptionsMock;
+const optionsMock = cloneDeep(selectOptionsMock);
 
 optionsMock[0].options[1].selected = true;
 
@@ -86,16 +87,16 @@ inputStories.add(
         chevronButtonText: text('chevronButtonText', 'Select field'),
         disabled: boolean('disabled', false),
         options: object('options', optionsMock),
-        selectChange: action('Multi select panel change')
+        selectChange: action('Multi select panel change'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           ButtonsModule,
-          MultiSelectPanelModule
-        ]
-      }
+          MultiSelectPanelModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }
