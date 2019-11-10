@@ -21,9 +21,9 @@
   <span class="bfe-input trigger-input"
         #triggerInput
         [b-truncate-tooltip]="1"
-        [type]="tooltipType.css"
         [expectChanges]="true"
         [trustCssVars]="true"
+        [type]="tooltipType"
         [attr.data-placeholder]="!triggerValue ? (hideLabelOnFocus ?label : placeholder) : null">
     {{triggerValue}}
   </span>

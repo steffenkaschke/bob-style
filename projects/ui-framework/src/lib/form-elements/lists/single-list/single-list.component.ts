@@ -6,14 +6,14 @@ import {
   Output,
   Renderer2,
   SimpleChanges,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import {
   ListHeader,
   ListOption,
   SelectGroupOption,
-  SelectOption
+  SelectOption,
 } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
 import { findIndex, flatMap, find } from 'lodash';
@@ -26,7 +26,7 @@ import { hasChanges } from '../../../services/utils/functional-utils';
 @Component({
   selector: 'b-single-list',
   templateUrl: 'single-list.component.html',
-  styleUrls: ['single-list.component.scss']
+  styleUrls: ['single-list.component.scss'],
 })
 export class SingleListComponent extends BaseListElement implements OnChanges {
   constructor(
@@ -118,7 +118,7 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
 
   private emitChange(): void {
     const listChange = this.listChangeService.getListChange(this.options, [
-      this.selectedOption.id
+      this.selectedOption.id,
     ]);
     this.selectChange.emit(listChange);
   }

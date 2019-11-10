@@ -24,6 +24,8 @@ import { TabsType } from './tabs.enum';
 export class TabsComponent implements AfterViewInit {
   @ViewChildren('matLabels') matLabels: QueryList<ElementRef>;
 
+  // This input determine if the tabs will be changed automatically on click.
+  @Input() controlled: boolean;
   @Input() public type: TabsType = TabsType.primary;
   @Input() public tabs: Tab[] = [];
   @Input() public selectedIndex = 0;
@@ -45,6 +47,9 @@ export class TabsComponent implements AfterViewInit {
   }
 
   tabClick(tab: Tab, index: number): void {
+    if (!this.controlled) {
+      this.selectedIndex = index;
+    }
     if (this.selectClick.observers.length > 0) {
       this.zone.run(() => {
         this.selectClick.emit({ tab, index } as any);

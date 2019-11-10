@@ -15,7 +15,7 @@ $link-color: var(--primary-700);
 
 .fr-toolbar,
 .fr-wrapper,
-.fr-box.fr-basic .fr-element,
+.fr-box[class] .fr-element,
 .fr-view {
   @include b-body($color: $display-text-color, $lineHeight: null);
 }
@@ -25,7 +25,7 @@ $link-color: var(--primary-700);
   line-height: $line-height-body;
 }
 
-.fr-box.fr-basic .fr-element,
+.fr-box[class] .fr-element,
 .fr-view {
   line-height: $rte-lineheight;
 
@@ -54,7 +54,7 @@ $link-color: var(--primary-700);
   color: $grey-600;
 }
 
-.fr-box.fr-basic {
+.fr-box[class] {
   display: flex;
   flex-direction: column;
 
@@ -71,24 +71,24 @@ $link-color: var(--primary-700);
   }
 }
 
-.fr-box.fr-basic .fr-element {
+.fr-box[class] .fr-element {
   padding: 12px 15px;
 }
 
 // borders
 
-.fr-box.fr-basic {
+.fr-box[class] {
   border-radius: $border-radius;
 }
 
-.fr-box.fr-basic,
+.fr-box[class],
 .fr-toolbar.fr-bottom,
 .fr-toolbar.fr-top {
   border-color: inherit;
 }
 
-.fr-box.fr-basic.fr-top,
-.fr-box.fr-basic.fr-bottom {
+.fr-box[class].fr-top,
+.fr-box[class].fr-bottom {
   .fr-wrapper {
     border-radius: $border-radius $border-radius 0 0;
     border-width: 0;
@@ -149,8 +149,15 @@ $link-color: var(--primary-700);
 
 // toolbar
 
-.fr-toolbar {
+.fr-toolbar.fr-basic {
   background: transparent;
+  position: relative !important;
+
+  &[style*='top'] {
+    display: block !important;
+    left: auto !important;
+    top: auto !important;
+  }
 }
 
 .fr-btn[hidden] {
@@ -322,10 +329,12 @@ $link-color: var(--primary-700);
   overflow: hidden;
 }
 
+.fr-toolbar.fr-inline,
 .fr-command.fr-btn.fr-active + .fr-dropdown-menu,
 .fr-popup {
   @include OverlayPanel(null, null);
 }
+.fr-toolbar.fr-inline,
 .fr-command.fr-btn.fr-active + .fr-dropdown-menu,
 .fr-popup,
 .fr-popup.fr-above {

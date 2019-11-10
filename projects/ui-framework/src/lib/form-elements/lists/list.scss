@@ -4,6 +4,7 @@
   box-sizing: border-box;
   position: relative;
   height: $wrap-height;
+  user-select: none;
 
   &.mat-selected {
     background-color: initial;
@@ -44,6 +45,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
+      user-select: none;
 
       &.clickable {
         cursor: pointer;

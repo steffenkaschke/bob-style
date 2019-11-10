@@ -17,7 +17,7 @@ export const RTE_CONTROLS_DEF = joinArrays(
     BlotType.leftToRight,
     BlotType.emoticons,
     BlotType.mentions,
-    BlotType.placeholder
+    BlotType.placeholder,
   ],
   Object.values(BlotType)
 );
@@ -30,23 +30,25 @@ export const RTE_TOOLBAR_HEIGHT = 41;
 
 export const RTE_OPTIONS_DEF: FroalaOptions = {
   key: 'DUA2yE3G1A1A5B8B1pZGCTRSAPJWTLPLZHTQQe1JGZxC4B3A3B2B5B1C1E4I1B3==',
-
-  heightMin: RTE_MINHEIGHT_DEF - RTE_TOOLBAR_HEIGHT,
-  heightMax: RTE_MAXHEIGHT_DEF - RTE_TOOLBAR_HEIGHT,
+  attribution: false,
 
   enter: 1,
   initOnClick: false,
   theme: 'royal',
+  fontFamily: {
+    '\'Gotham SSm A\', \'Gotham SSm B\', \'Helvetica\'': 'Body font',
+    '\'Sentinel SSm A\', \'Sentinel SSm B\', \'Helvetica\'': 'Heading font',
+  },
+  scrollableContainer: 'body',
 
-  attribution: false,
-  toolbarBottom: true,
-  toolbarSticky: false,
+  heightMin: RTE_MINHEIGHT_DEF - RTE_TOOLBAR_HEIGHT,
+  heightMax: RTE_MAXHEIGHT_DEF - RTE_TOOLBAR_HEIGHT,
+
   charCounterCount: true,
   charCounterMax: -1,
 
   tooltips: false,
   shortcutsHint: false,
-
   placeholderText: '',
 
   imagePaste: false,
@@ -77,7 +79,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'contenteditable',
     'spellcheck',
     'tabindex',
-    '.*mention.*'
+    '.*mention.*',
 
     // 'align',
     // 'border',
@@ -93,7 +95,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'font-weight',
     'font-style',
     'text-align',
-    'direction'
+    'direction',
   ],
   htmlAllowedTags: [
     'a',
@@ -118,7 +120,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'h3',
     'h4',
     'h5',
-    'h6'
+    'h6',
 
     // 'caption',
     // 'code',
@@ -146,8 +148,6 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
 
   wordDeniedTags: ['script', 'style'],
 
-  scrollableContainer: 'body',
-
   listAdvancedTypes: false,
 
   linkAlwaysBlank: true,
@@ -160,12 +160,11 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
 
   colorsText: [],
 
-  fontFamily: {
-    '\'Gotham SSm A\', \'Gotham SSm B\', \'Helvetica\'': 'Body font',
-    '\'Sentinel SSm A\', \'Sentinel SSm B\', \'Helvetica\'': 'Heading font'
-  },
-
+  toolbarBottom: true,
+  toolbarSticky: false,
   toolbarButtons: RTE_CONTROLS_DEF,
+  toolbarInline: false,
+  toolbarVisibleWithoutSelection: true,
 
   pluginsEnabled: [
     'align',
@@ -180,7 +179,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'paragraphStyle',
     'save',
     'url',
-    'emoticons'
+    'emoticons',
     // 'fontFamily',
     // 'table',
     // 'video',
@@ -203,6 +202,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   ],
 
   emoticonsUseImage: false,
+  emoticonsButtons: [],
 
   emoticonsSet: EMOJI_DATA.map((cat: EmojiCategory) => ({
     name: cat.name,
@@ -211,9 +211,9 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     emoticons: cat.data.map((icn: Emoji) => ({
       code: icn.code,
       desc: icn.description,
-      icon: icn.icon
-    }))
-  })) as any
+      icon: icn.icon,
+    })),
+  })) as any,
 };
 
 export const RTE_MENTIONS_OPTIONS_DEF: TributeOptions = {
@@ -232,6 +232,6 @@ export const RTE_MENTIONS_OPTIONS_DEF: TributeOptions = {
 
   searchOpts: {
     pre: '<em class="match">',
-    post: '</em>'
-  }
+    post: '</em>',
+  },
 };

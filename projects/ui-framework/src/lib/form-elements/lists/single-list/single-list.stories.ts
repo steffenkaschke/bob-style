@@ -10,6 +10,8 @@ import { SingleListModule } from './single-list.module';
 import { SelectGroupOption } from '../list.interface';
 import { AvatarComponent } from '../../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../../avatar/avatar/avatar.module';
+import { optionsMock } from './single-list.mock';
+import { cloneDeep } from 'lodash';
 
 const buttonStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -53,31 +55,10 @@ const note = `
   ~~~
 `;
 
-const groupNum = 3;
-const optionsNum = 4;
+const options = cloneDeep(optionsMock);
 
-const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
-  return {
-    groupName: `Basic Info G${i} - header`,
-    options: Array.from(Array(optionsNum), (_, k) => {
-      return {
-        value: `Basic Info G${i}_E${k} - option`,
-        id: i * optionsNum + k,
-        selected: false,
-        prefixComponent: {
-          component: AvatarComponent,
-          attributes: {
-            imageSource:
-              'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
-          }
-        }
-      };
-    })
-  };
-});
-
-optionsMock[0].options[1].selected = true;
-optionsMock[0].options[3].disabled = true;
+options[0].options[1].selected = true;
+options[0].options[3].disabled = true;
 
 buttonStories.add(
   'Single list',
@@ -86,7 +67,7 @@ buttonStories.add(
     props: {
       selectChange: action('Single list change'),
       showSingleGroupHeader: boolean('showSingleGroupHeader', true),
-      options: object<SelectGroupOption>('options', optionsMock)
+      options: object<SelectGroupOption>('options', options),
     },
     moduleMetadata: {
       imports: [
@@ -95,10 +76,10 @@ buttonStories.add(
         TypographyModule,
         BrowserAnimationsModule,
         StoryBookLayoutModule,
-        AvatarModule
+        AvatarModule,
       ],
-      entryComponents: [AvatarComponent]
-    }
+      entryComponents: [AvatarComponent],
+    },
   }),
   { notes: { markdown: note } }
 );

@@ -7,7 +7,7 @@ import {
   ChangeDetectorRef,
   ViewChild,
   OnChanges,
-  OnInit
+  OnInit,
 } from '@angular/core';
 import { merge } from 'lodash';
 
@@ -32,7 +32,8 @@ import {
   BELOW_END,
   ABOVE_END,
   IconColor,
-  isNotEmptyObject
+  isNotEmptyObject,
+  isEmptyArray,
 } from 'bob-style';
 
 import {
@@ -42,7 +43,7 @@ import {
   RTE_MINHEIGHT_DEF,
   RTE_MAXHEIGHT_DEF,
   RTE_TOOLBAR_HEIGHT,
-  RTE_MENTIONS_OPTIONS_DEF
+  RTE_MENTIONS_OPTIONS_DEF,
 } from './rte.const';
 import { BlotType, RTEType } from './rte.enum';
 import { RteMentionsOption } from './rte.interface';
@@ -53,8 +54,8 @@ import { FroalaEditorInstance, FroalaOptions } from './froala.interface';
 import Tribute from 'tributejs';
 import { TributeInstance, TributeItem } from './tribute.interface';
 
-import './rte.direction';
-import './rte.mentions';
+import { initDirectionControl } from './rte.direction';
+import { initMentionsControl } from './rte.mentions';
 
 export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges, OnInit {
@@ -136,7 +137,7 @@ export abstract class RTEbaseElement extends BaseFormElement
         minHeight: RTE_MINHEIGHT_DEF,
         maxHeight: RTE_MAXHEIGHT_DEF,
         controls: RTE_CONTROLS_DEF,
-        disableControls: RTE_DISABLE_CONTROLS_DEF
+        disableControls: RTE_DISABLE_CONTROLS_DEF,
       },
       ['options', 'value']
     );
@@ -160,7 +161,7 @@ export abstract class RTEbaseElement extends BaseFormElement
               ? !this.required
                 ? this.label
                 : this.label + '*'
-              : this.placeholder || ' '
+              : this.placeholder || ' ',
         },
         () => {
           this.editor.placeholder.refresh();
@@ -180,7 +181,9 @@ export abstract class RTEbaseElement extends BaseFormElement
           heightMin: this.minHeight
             ? this.minHeight - RTE_TOOLBAR_HEIGHT
             : null,
-          heightMax: this.maxHeight ? this.maxHeight - RTE_TOOLBAR_HEIGHT : null
+          heightMax: this.maxHeight
+            ? this.maxHeight - RTE_TOOLBAR_HEIGHT
+            : null,
         },
         () => {
           this.editor.size.refresh();
@@ -224,7 +227,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
       this.transmitValue(this.editorValue, {
         eventType: [InputEventType.onWrite],
-        updateValue: true
+        updateValue: true,
       });
     }
 
@@ -234,6 +237,9 @@ export abstract class RTEbaseElement extends BaseFormElement
   }
 
   public ngOnInit(): void {
+    initDirectionControl();
+    initMentionsControl();
+
     if (!this.cntrlsInited) {
       this.initControls();
       this.updateToolbar();
@@ -265,19 +271,19 @@ export abstract class RTEbaseElement extends BaseFormElement
     if (this.controls.includes(BlotType.direction)) {
       this.controls = joinArrays(this.controls, [
         BlotType.rightToLeft,
-        BlotType.leftToRight
+        BlotType.leftToRight,
       ]);
     }
     if (this.disableControls.includes(BlotType.list)) {
       this.disableControls = joinArrays(this.disableControls, [
         BlotType.ul,
-        BlotType.ol
+        BlotType.ol,
       ]);
     }
     if (this.disableControls.includes(BlotType.direction)) {
       this.disableControls = joinArrays(this.disableControls, [
         BlotType.rightToLeft,
-        BlotType.leftToRight
+        BlotType.leftToRight,
       ]);
     }
 
@@ -302,29 +308,29 @@ export abstract class RTEbaseElement extends BaseFormElement
             target: '_blank',
             spellcheck: 'false',
             rel: 'noopener noreferrer',
-            tabindex: '-1'
+            tabindex: '-1',
           },
           '[class*="mention"]': {
             class: 'fr-deletable',
             target: null,
             spellcheck: 'false',
             rel: 'noopener noreferrer',
-            contenteditable: false
+            contenteditable: false,
           },
           span: {
-            class: null
-          }
+            class: null,
+          },
         }),
 
       (value: string): string =>
         this.parserService.linkify(
           value,
           'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
-        )
+        ),
     ];
 
     this.outputTransformers = [
-      (value: string): string => HtmlParserHelpers.prototype.cleanupHtml(value)
+      (value: string): string => HtmlParserHelpers.prototype.cleanupHtml(value),
     ];
 
     if (this.placeholdersEnabled()) {
@@ -350,12 +356,12 @@ export abstract class RTEbaseElement extends BaseFormElement
 
         if (isNotEmptyObject(item.original.attributes)) {
           html = this.parserService.enforceAttributes(html, {
-            a: item.original.attributes
+            a: item.original.attributes,
           });
         }
 
         return html;
-      }
+      },
     }) as TributeInstance;
   }
 
@@ -372,7 +378,7 @@ export abstract class RTEbaseElement extends BaseFormElement
     const requestedElements = editorHostElem.querySelectorAll(selector);
     return requestedElements.length < 2
       ? requestedElements[0]
-      : requestedElements;
+      : Array.from(requestedElements);
   }
 
   protected getEditorTextbox(): HTMLElement {
@@ -381,18 +387,23 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   protected updateToolbar(): void {
     if (this.toolbarButtons) {
-      this.toolbarButtons.forEach(b => {
-        const cmd = b.getAttribute('data-cmd') as BlotType;
-        if (!this.controls.includes(cmd)) {
-          b.setAttribute('hidden', 'true');
-        } else {
-          b.removeAttribute('hidden');
-        }
-      });
+      if (isEmptyArray(this.controls)) {
+        this.editor.toolbar.hide();
+      } else {
+        this.toolbarButtons.forEach(b => {
+          const cmd = b.getAttribute('data-cmd') as BlotType;
+          if (!this.controls.includes(cmd)) {
+            b.setAttribute('hidden', 'true');
+          } else {
+            b.removeAttribute('hidden');
+          }
+        });
+        this.editor.toolbar.show();
+      }
     }
   }
 
-  public updateEditorOptions(
+  protected updateEditorOptions(
     options: Partial<FroalaOptions>,
     callback: Function = null
   ): void {
