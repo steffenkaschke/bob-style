@@ -13,11 +13,9 @@ import { ListModelService } from '../list-service/list-model.service';
 import { SelectGroupOption } from '../list.interface';
 import { By } from '@angular/platform-browser';
 import { FiltersModule } from '../../../services/filters/filters.module';
-import { ListOptionModule } from '../list-option/list-option.module';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
-import { emitNativeEvent } from '../../../services/utils/test-helpers';
-import { Keys, NativeEvents } from '../../../enums';
+import { ComponentRendererModule } from '../../../services/component-renderer/component-renderer.module';
 
 describe('SingleListComponent', () => {
   let component: SingleListComponent;
@@ -30,16 +28,16 @@ describe('SingleListComponent', () => {
         groupName: 'Basic Info Header',
         options: [
           { value: 'Basic Info 1', id: 1, selected: true },
-          { value: 'Basic Info 2', id: 2, selected: false }
-        ]
+          { value: 'Basic Info 2', id: 2, selected: false },
+        ],
       },
       {
         groupName: 'Personal Header',
         options: [
           { value: 'Personal 1', id: 11, selected: false, disabled: true },
-          { value: 'Personal 2', id: 12, selected: false }
-        ]
-      }
+          { value: 'Personal 2', id: 12, selected: false },
+        ],
+      },
     ];
 
     TestBed.configureTestingModule({
@@ -54,8 +52,8 @@ describe('SingleListComponent', () => {
         IconsModule,
         ScrollingModule,
         FiltersModule,
-        ListOptionModule
-      ]
+        ComponentRendererModule,
+      ],
     })
       .compileComponents()
       .then(() => {
@@ -68,14 +66,14 @@ describe('SingleListComponent', () => {
             previousValue: undefined,
             currentValue: optionsMock,
             firstChange: true,
-            isFirstChange: () => true
+            isFirstChange: () => true,
           },
           value: {
             previousValue: undefined,
             currentValue: 2,
             firstChange: true,
-            isFirstChange: () => true
-          }
+            isFirstChange: () => true,
+          },
         });
         fixture.autoDetectChanges();
       });
@@ -89,15 +87,15 @@ describe('SingleListComponent', () => {
           isCollapsed: false,
           placeHolderSize: 88,
           selected: null,
-          indeterminate: true
+          indeterminate: true,
         },
         {
           groupName: 'Personal Header',
           isCollapsed: false,
           placeHolderSize: 88,
           selected: null,
-          indeterminate: false
-        }
+          indeterminate: false,
+        },
       ]);
     });
     it('should create optionsModel based on options', () => {
@@ -107,28 +105,28 @@ describe('SingleListComponent', () => {
           groupName: 'Basic Info Header',
           value: 'Basic Info Header',
           id: 'Basic Info Header',
-          selected: null
+          selected: null,
         },
         {
           value: 'Basic Info 1',
           id: 1,
           groupName: 'Basic Info Header',
           isPlaceHolder: false,
-          selected: true
+          selected: true,
         },
         {
           value: 'Basic Info 2',
           id: 2,
           groupName: 'Basic Info Header',
           isPlaceHolder: false,
-          selected: false
+          selected: false,
         },
         {
           isPlaceHolder: true,
           groupName: 'Personal Header',
           value: 'Personal Header',
           id: 'Personal Header',
-          selected: null
+          selected: null,
         },
         {
           value: 'Personal 1',
@@ -136,15 +134,15 @@ describe('SingleListComponent', () => {
           groupName: 'Personal Header',
           isPlaceHolder: false,
           selected: false,
-          disabled: true
+          disabled: true,
         },
         {
           value: 'Personal 2',
           id: 12,
           groupName: 'Personal Header',
           isPlaceHolder: false,
-          selected: false
-        }
+          selected: false,
+        },
       ]);
     });
     it('should render 2 headers', () => {
@@ -171,17 +169,17 @@ describe('SingleListComponent', () => {
           groupName: 'Basic Info Header',
           options: [
             { value: 'Basic Info 1', id: 1 },
-            { value: 'Basic Info 2', id: 2 }
-          ]
-        }
+            { value: 'Basic Info 2', id: 2 },
+          ],
+        },
       ];
       component.ngOnChanges({
         options: {
           previousValue: undefined,
           currentValue: changedOptions,
           firstChange: false,
-          isFirstChange: () => true
-        }
+          isFirstChange: () => true,
+        },
       });
       fixture.autoDetectChanges();
       options = fixture.debugElement.queryAll(By.css('.option'));
@@ -201,17 +199,17 @@ describe('SingleListComponent', () => {
           groupName: 'Basic Info Header',
           options: [
             { value: 'Basic Info 1', id: 1 },
-            { value: 'Basic Info 2', id: 2 }
-          ]
-        }
+            { value: 'Basic Info 2', id: 2 },
+          ],
+        },
       ];
       component.ngOnChanges({
         options: {
           previousValue: undefined,
           currentValue: changedOptions,
           firstChange: false,
-          isFirstChange: () => true
-        }
+          isFirstChange: () => true,
+        },
       });
       fixture.autoDetectChanges();
       options = fixture.debugElement.queryAll(By.css('.option'));
@@ -230,17 +228,17 @@ describe('SingleListComponent', () => {
           groupName: 'Basic Info Header',
           options: [
             { value: 'Basic Info 1', id: 1 },
-            { value: 'Basic Info 2', id: 2 }
-          ]
-        }
+            { value: 'Basic Info 2', id: 2 },
+          ],
+        },
       ];
       component.ngOnChanges({
         options: {
           previousValue: undefined,
           currentValue: changedOptions,
           firstChange: false,
-          isFirstChange: () => true
-        }
+          isFirstChange: () => true,
+        },
       });
       fixture.autoDetectChanges();
       expect(component.noGroupHeaders).toBe(false);
@@ -263,8 +261,8 @@ describe('SingleListComponent', () => {
             { value: 'Basic Info 3', id: 3 },
             { value: 'Basic Info 4', id: 4 },
             { value: 'Basic Info 5', id: 5 },
-            { value: 'Basic Info 6', id: 6 }
-          ]
+            { value: 'Basic Info 6', id: 6 },
+          ],
         },
         {
           groupName: 'Personal Header',
@@ -274,17 +272,17 @@ describe('SingleListComponent', () => {
             { value: 'Personal 3', id: 13 },
             { value: 'Personal 4', id: 14 },
             { value: 'Personal 5', id: 15 },
-            { value: 'Personal 6', id: 16 }
-          ]
-        }
+            { value: 'Personal 6', id: 16 },
+          ],
+        },
       ];
       component.ngOnChanges({
         options: {
           previousValue: undefined,
           currentValue: testOptionsMock,
           firstChange: false,
-          isFirstChange: () => false
-        }
+          isFirstChange: () => false,
+        },
       });
       fixture.autoDetectChanges();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
@@ -294,20 +292,20 @@ describe('SingleListComponent', () => {
       const testOptionsMock = [
         {
           groupName: 'Basic Info Header',
-          options: [{ value: 'Basic Info 1', id: 1 }]
+          options: [{ value: 'Basic Info 1', id: 1 }],
         },
         {
           groupName: 'Personal Header',
-          options: [{ value: 'Personal 1', id: 11 }]
-        }
+          options: [{ value: 'Personal 1', id: 11 }],
+        },
       ];
       component.ngOnChanges({
         options: {
           previousValue: undefined,
           currentValue: testOptionsMock,
           firstChange: false,
-          isFirstChange: () => false
-        }
+          isFirstChange: () => false,
+        },
       });
       fixture.autoDetectChanges();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
@@ -323,8 +321,8 @@ describe('SingleListComponent', () => {
             { value: 'Basic Info 3', id: 3, selected: false },
             { value: 'Basic Info 4', id: 4, selected: false },
             { value: 'Basic Info 5', id: 5, selected: false },
-            { value: 'Basic Info 6', id: 6, selected: false }
-          ]
+            { value: 'Basic Info 6', id: 6, selected: false },
+          ],
         },
         {
           groupName: 'Personal Header',
@@ -334,17 +332,17 @@ describe('SingleListComponent', () => {
             { value: 'Personal 3', id: 13, selected: false },
             { value: 'Personal 4', id: 14, selected: false },
             { value: 'Personal 5', id: 15, selected: false },
-            { value: 'Personal 6', id: 16, selected: false }
-          ]
-        }
+            { value: 'Personal 6', id: 16, selected: false },
+          ],
+        },
       ];
       component.ngOnChanges({
         options: {
           previousValue: undefined,
           currentValue: testOptionsMock,
           firstChange: false,
-          isFirstChange: () => false
-        }
+          isFirstChange: () => false,
+        },
       });
       fixture.autoDetectChanges();
       let searchEl = fixture.debugElement.query(By.css('b-search'));
@@ -417,16 +415,16 @@ describe('SingleListComponent', () => {
           groupName: 'Basic Info Header',
           options: [
             { value: 'Basic Info 1', id: 1, selected: false },
-            { value: 'Basic Info 2', id: 2, selected: false }
-          ]
+            { value: 'Basic Info 2', id: 2, selected: false },
+          ],
         },
         {
           groupName: 'Personal Header',
           options: [
             { value: 'Personal 1', id: 11, selected: false, disabled: true },
-            { value: 'Personal 2', id: 12, selected: true }
-          ]
-        }
+            { value: 'Personal 2', id: 12, selected: true },
+          ],
+        },
       ]);
     });
     it('should return selectedId', () => {
@@ -472,16 +470,16 @@ describe('SingleListComponent', () => {
       const testOptionsMock = [
         {
           groupName: 'Basic Info Header',
-          options: [{ value: 'Basic Info 1', id: 1 }]
-        }
+          options: [{ value: 'Basic Info 1', id: 1 }],
+        },
       ];
       component.ngOnChanges({
         options: {
           previousValue: undefined,
           currentValue: testOptionsMock,
           firstChange: false,
-          isFirstChange: () => false
-        }
+          isFirstChange: () => false,
+        },
       });
       fixture.autoDetectChanges();
       const clearSelection = fixture.debugElement.query(
@@ -495,16 +493,16 @@ describe('SingleListComponent', () => {
       const testOptionsMock = [
         {
           groupName: 'Basic Info Header',
-          options: [{ value: 'Basic Info 1', id: 1 }]
-        }
+          options: [{ value: 'Basic Info 1', id: 1 }],
+        },
       ];
       component.ngOnChanges({
         options: {
           previousValue: undefined,
           currentValue: testOptionsMock,
           firstChange: false,
-          isFirstChange: () => false
-        }
+          isFirstChange: () => false,
+        },
       });
       fixture.autoDetectChanges();
       const clearSelection = fixture.debugElement.query(
@@ -522,17 +520,17 @@ describe('SingleListComponent', () => {
           groupName: 'Basic Info Header',
           options: [
             { value: 'Basic Info 1', id: 1 },
-            { value: 'Basic Info 2', id: 2 }
-          ]
-        }
+            { value: 'Basic Info 2', id: 2 },
+          ],
+        },
       ];
       component.ngOnChanges({
         options: {
           previousValue: undefined,
           currentValue: testOptionsMock,
           firstChange: false,
-          isFirstChange: () => false
-        }
+          isFirstChange: () => false,
+        },
       });
       fixture.autoDetectChanges();
     };
