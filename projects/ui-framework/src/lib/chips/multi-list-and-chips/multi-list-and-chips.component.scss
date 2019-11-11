@@ -48,3 +48,9 @@ b-chip-list {
 :host ::ng-deep b-list-footer {
   margin-top: auto;
 }
+
+b-empty-state {
+  @include size(100%);
+  justify-content: center;
+  text-align: center;
+}

@@ -22,5 +22,8 @@
                [chips]="chips"
                [config]="chipListConfig"
                (removed)="onChipRemoved($event)">
+
+    <b-empty-state *ngIf="emptyState && chips.length === 0"
+                   [config]="emptyState"></b-empty-state>
   </b-chip-list>
 </div>
