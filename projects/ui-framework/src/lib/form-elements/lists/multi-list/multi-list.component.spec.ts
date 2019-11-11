@@ -613,18 +613,16 @@ describe('MultiListComponent', () => {
       expect(listFooter.componentInstance.listActions.clear).toBeTruthy();
       expect(listFooter.componentInstance.listActions.apply).toBeFalsy();
     });
-    it('should have all 3 footer options if passed', () => {
+    it('should have all 2 footer options if passed', () => {
       component.listActions = {
         clear: true,
         apply: true,
-        cancel: true,
       };
       fixture.autoDetectChanges();
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
       expect(listFooter.componentInstance.listActions).toEqual({
         clear: true,
         apply: true,
-        cancel: true,
       });
     });
     it('should emit apply', () => {

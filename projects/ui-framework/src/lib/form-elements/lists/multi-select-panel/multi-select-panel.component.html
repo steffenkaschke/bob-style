@@ -23,8 +23,7 @@
                   [maxHeight]="listElHeight*6"
                   [showSingleGroupHeader]="false"
                   [listActions]="listActions"
-                  (apply)="onApply()"
-                  (cancel)="onCancel()">
+                  (apply)="onApply()">
       <ng-content footerAction
                   select="[footerAction],[footer],[footerActionLeft]"></ng-content>
     </b-multi-list>
