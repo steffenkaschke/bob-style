@@ -5,7 +5,6 @@
 <div [ngStyle]="{height: listOptions && (listOptions.length * listElHeight + 'px'), maxHeight: maxHeight + 'px'}"
      [ngClass]="{'no-group-header': noGroupHeaders}"
      class="v-scroll-wrapper">
-
   <div #headers
        class="headers"
        *ngIf="!noGroupHeaders">
@@ -25,13 +24,15 @@
               [ngClass]="{'b-icon-chevron-down': !header.isCollapsed, 'b-icon-chevron-right':
               header.isCollapsed}"></span>
         <div class="header-option">
-          <b-checkbox class="checkbox"
+          <b-checkbox [hidden]="searchValue"
+                      class="checkbox"
                       [value]="header.selected"
                       [indeterminate]="header.indeterminate"
                       (checkboxChange)="headerSelect(header)"
                       [doPropagate]="false">
           </b-checkbox>
-          <span [innerHTML]="header.groupName | highlight: searchValue"></span>
+          <span class="header-option-value"
+                [innerHTML]="header.groupName | highlight: searchValue"></span>
         </div>
       </div>
       <div [ngStyle]="{height: header.isCollapsed ? 0 : header.placeHolderSize + 'px'}"
