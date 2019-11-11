@@ -21,6 +21,10 @@ const template = `
 <b-multi-list [options]="options"
               [showSingleGroupHeader]="showSingleGroupHeader"
               (selectChange)="selectChange($event)">
+    <b-text-button footerAction
+                    [text]="'Action!'"
+                    [color]="'primary'">
+    </b-text-button>
 </b-multi-list>
 `;
 
@@ -44,7 +48,9 @@ const note = `
   [options] | SelectGroupOption[] | model of selection group | none
   [showSingleGroupHeader] | boolean | displays single group with group header | false
   [maxHeight] | number | component max height | 352 (8 rows)
+  [listActions] | ListFooterActions | enable/disable footer action buttons (clear, apply) | { clear:&nbsp;true, apply:&nbsp;false }
   (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | none
+  &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
 
   ~~~
   ${template}

@@ -220,7 +220,9 @@ export {
 export {
   SelectGroupOption,
   SelectOption,
-  ListComponentPrefix
+  ListComponentPrefix,
+  ListFooterActions,
+  ListFooterActionsState
 } from './lib/form-elements/lists/list.interface';
 export { ListChange } from './lib/form-elements/lists/list-change/list-change';
 // Single select panel

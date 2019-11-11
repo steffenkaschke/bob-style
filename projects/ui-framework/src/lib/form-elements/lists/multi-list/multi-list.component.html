@@ -79,6 +79,6 @@
                [listActionsState]="listActionsState"
                (clear)="onClear()"
                (apply)="apply.emit()">
-  <ng-content select="[customAction]"></ng-content>
-  <ng-content></ng-content>
+  <ng-content footerAction
+              select="[footerAction],[footer]"></ng-content>
 </b-list-footer>

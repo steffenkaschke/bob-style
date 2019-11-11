@@ -6,16 +6,16 @@ import { ListFooterActions, ListFooterActionsState } from '../list.interface';
 @Component({
   selector: 'b-list-footer',
   templateUrl: './list-footer.component.html',
-  styleUrls: ['./list-footer.component.scss']
+  styleUrls: ['./list-footer.component.scss'],
 })
 export class ListFooterComponent {
   @Input() listActions: ListFooterActions = {
     clear: true,
-    apply: true
+    apply: true,
   };
   @Input() listActionsState: ListFooterActionsState = {
-    clear: { disabled: false, hidden: true },
-    apply: { disabled: true, hidden: false }
+    clear: { disabled: true, hidden: false },
+    apply: { disabled: true, hidden: false },
   };
 
   @Output() clear: EventEmitter<void> = new EventEmitter<void>();
@@ -24,8 +24,4 @@ export class ListFooterComponent {
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType;
   readonly icons = Icons;
-
-  ngOnChanges(changes) {
-    console.log('footer changes', changes);
-  }
 }

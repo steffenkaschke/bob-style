@@ -1,27 +1,22 @@
 import {
   Component,
-  EventEmitter,
   Input,
   OnChanges,
-  Output,
   Renderer2,
   SimpleChanges,
   ChangeDetectorRef,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
-import {
-  ListHeader,
-  ListOption,
-  SelectGroupOption,
-  SelectOption,
-} from '../list.interface';
+import { ListHeader, ListOption, SelectOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
 import { findIndex, flatMap, find } from 'lodash';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
-import { ListChange } from '../list-change/list-change';
-import { hasChanges } from '../../../services/utils/functional-utils';
+import {
+  hasChanges,
+  applyChanges,
+} from '../../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-single-list',
@@ -39,7 +34,7 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
     super(renderer, listKeyboardService, cd);
     this.listActions = {
       clear: false,
-      apply: false
+      apply: false,
     };
   }
 
@@ -48,8 +43,9 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   @Input() showNoneOption = false;
 
   ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes);
+
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
-      this.options = changes.options.currentValue;
       this.filteredOptions = this.options;
       this.shouldDisplaySearch =
         this.options &&

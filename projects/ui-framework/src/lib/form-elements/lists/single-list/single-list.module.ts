@@ -8,6 +8,7 @@ import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { SearchModule } from '../../../search/search/search.module';
 import { ComponentRendererModule } from '../../../services/component-renderer/component-renderer.module';
+import { ListFooterModule } from '../list-footer/list-footer.module';
 
 @NgModule({
   declarations: [SingleListComponent],
@@ -17,6 +18,7 @@ import { ComponentRendererModule } from '../../../services/component-renderer/co
     SearchModule,
     FiltersModule,
     ComponentRendererModule,
+    ListFooterModule,
   ],
   exports: [SingleListComponent],
   providers: [ListModelService, ListKeyboardService, ListChangeService],

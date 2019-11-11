@@ -12,39 +12,22 @@
   height: 50px;
 }
 
-.cancel-apply {
-  display: flex;
-  margin-left: auto;
-}
+:host ::ng-deep {
+  b-button,
+  b-text-button,
+  [footerAction],
+  [footer] {
+    margin: 0 3px;
 
-b-button {
-  display: block;
-  margin-right: 6px;
-
-  &:last-child {
-    margin-right: 0;
-  }
-}
-
-b-button,
-b-text-button {
-  margin: 0 3px;
-
-  &:first-child {
-    margin-left: 0;
-  }
-  &:last-child {
-    margin-right: 0;
-  }
-  &:only-child,
-  &:last-child {
-    margin-left: auto;
-  }
-}
-
-.clear-button {
-  &:only-child {
-    margin-right: auto;
-    margin-left: 0;
+    &:first-child {
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+    &:only-child,
+    &:last-child {
+      margin-left: auto;
+    }
   }
 }

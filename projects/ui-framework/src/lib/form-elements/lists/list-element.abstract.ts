@@ -7,7 +7,7 @@ import {
   ChangeDetectorRef,
   Input,
   Output,
-  EventEmitter
+  EventEmitter,
 } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription } from 'rxjs';
@@ -15,7 +15,8 @@ import {
   ListHeader,
   ListOption,
   ListFooterActions,
-  SelectGroupOption
+  SelectGroupOption,
+  ListFooterActionsState,
 } from './list.interface';
 import find from 'lodash/find';
 import { LIST_EL_HEIGHT } from './list.consts';
@@ -41,9 +42,9 @@ export abstract class BaseListElement
   public focusIndex: number;
   public searchValue: string;
   public shouldDisplaySearch = false;
-
-  private keyDownSubscriber: Subscription;
   public filteredOptions: SelectGroupOption[];
+  public listActionsState: ListFooterActionsState;
+  private keyDownSubscriber: Subscription;
 
   readonly listElHeight = LIST_EL_HEIGHT;
 
@@ -103,7 +104,7 @@ export abstract class BaseListElement
             this.focusOption.isPlaceHolder
               ? this.headerClick(
                   find(this.listHeaders, {
-                    groupName: this.focusOption.groupName
+                    groupName: this.focusOption.groupName,
                   })
                 )
               : this.optionClick(this.focusOption);

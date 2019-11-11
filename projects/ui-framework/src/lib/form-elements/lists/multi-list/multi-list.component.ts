@@ -6,7 +6,7 @@ import {
   Output,
   Renderer2,
   SimpleChanges,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep, flatMap, chain } from 'lodash';
@@ -14,7 +14,7 @@ import {
   ListHeader,
   ListOption,
   SelectGroupOption,
-  ListFooterActionsState
+  ListFooterActionsState,
 } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
@@ -22,15 +22,18 @@ import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListChange } from '../list-change/list-change';
 import { ListFooterActions } from '../list.interface';
-import { hasChanges } from '../../../services/utils/functional-utils';
+import {
+  hasChanges,
+  applyChanges,
+} from '../../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-multi-list',
   templateUrl: 'multi-list.component.html',
   styleUrls: [
     '../single-list/single-list.component.scss',
-    'multi-list.component.scss'
-  ]
+    'multi-list.component.scss',
+  ],
 })
 export class MultiListComponent extends BaseListElement implements OnChanges {
   constructor(
@@ -43,21 +46,21 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     super(renderer, listKeyboardService, cd);
     this.listActions = {
       clear: true,
-      apply: false
+      apply: false,
+    };
+    this.listActionsState = {
+      clear: { disabled: true, hidden: false },
+      apply: { disabled: true, hidden: false },
     };
   }
 
   public selectedIdsMap: (string | number)[];
-  public listActionsState: ListFooterActionsState = {
-    clear: { disabled: true, hidden: false },
-    apply: { disabled: true, hidden: false }
-  };
-
   private optionsDraft: SelectGroupOption[];
 
   ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes);
+
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
-      this.options = changes.options.currentValue;
       this.optionsDraft = this.options;
       this.selectedIdsMap = this.getSelectedIdsMap();
       this.filteredOptions = cloneDeep(this.options);

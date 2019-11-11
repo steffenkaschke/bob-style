@@ -41,13 +41,13 @@ export interface ListFooterActions {
   cancel?: boolean;
 }
 
-export interface ActionsByttonState {
+export interface ActionsButtonState {
   disabled: boolean;
   hidden: boolean;
 }
 
 export interface ListFooterActionsState {
-  clear?: ActionsByttonState;
-  apply?: ActionsByttonState;
-  cancel?: ActionsByttonState;
+  clear?: ActionsButtonState;
+  apply?: ActionsButtonState;
+  cancel?: ActionsButtonState;
 }
