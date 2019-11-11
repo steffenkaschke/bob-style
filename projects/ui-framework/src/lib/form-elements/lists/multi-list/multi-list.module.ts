@@ -11,6 +11,7 @@ import { ListFooterModule } from '../list-footer/list-footer.module';
 import { SearchModule } from '../../../search/search/search.module';
 import { CheckboxModule } from '../../checkbox/checkbox.module';
 import { ComponentRendererModule } from '../../../services/component-renderer/component-renderer.module';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 
 @NgModule({
   declarations: [MultiListComponent],
@@ -25,6 +26,11 @@ import { ComponentRendererModule } from '../../../services/component-renderer/co
     ComponentRendererModule,
   ],
   exports: [MultiListComponent],
-  providers: [ListModelService, ListChangeService, ListKeyboardService],
+  providers: [
+    ListModelService,
+    ListChangeService,
+    ListKeyboardService,
+    DOMhelpers,
+  ],
 })
 export class MultiListModule {}

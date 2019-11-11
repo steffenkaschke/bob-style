@@ -9,6 +9,7 @@ import { ListChangeService } from '../list-change/list-change.service';
 import { SearchModule } from '../../../search/search/search.module';
 import { ComponentRendererModule } from '../../../services/component-renderer/component-renderer.module';
 import { ListFooterModule } from '../list-footer/list-footer.module';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 
 @NgModule({
   declarations: [SingleListComponent],
@@ -21,6 +22,11 @@ import { ListFooterModule } from '../list-footer/list-footer.module';
     ListFooterModule,
   ],
   exports: [SingleListComponent],
-  providers: [ListModelService, ListKeyboardService, ListChangeService],
+  providers: [
+    ListModelService,
+    ListKeyboardService,
+    ListChangeService,
+    DOMhelpers,
+  ],
 })
 export class SingleListModule {}

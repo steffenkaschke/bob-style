@@ -10,6 +10,10 @@
   z-index: 1;
   background-color: $white;
   height: 50px;
+
+  &:empty {
+    display: none;
+  }
 }
 
 :host ::ng-deep {
@@ -28,6 +32,13 @@
     &:only-child,
     &:last-child {
       margin-left: auto;
+    }
+  }
+
+  .clear-button {
+    &:last-child {
+      margin-left: 0;
+      margin-right: auto;
     }
   }
 }

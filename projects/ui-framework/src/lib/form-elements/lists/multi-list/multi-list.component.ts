@@ -7,6 +7,7 @@ import {
   Renderer2,
   SimpleChanges,
   ChangeDetectorRef,
+  NgZone,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep, flatMap, chain } from 'lodash';
@@ -26,6 +27,7 @@ import {
   hasChanges,
   applyChanges,
 } from '../../../services/utils/functional-utils';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 
 @Component({
   selector: 'b-multi-list',
@@ -41,9 +43,11 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     private listChangeService: ListChangeService,
     renderer: Renderer2,
     listKeyboardService: ListKeyboardService,
-    cd: ChangeDetectorRef
+    cd: ChangeDetectorRef,
+    zone: NgZone,
+    DOM: DOMhelpers
   ) {
-    super(renderer, listKeyboardService, cd);
+    super(renderer, listKeyboardService, cd, zone, DOM);
     this.listActions = {
       clear: true,
       apply: false,

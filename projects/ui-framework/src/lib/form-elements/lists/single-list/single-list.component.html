@@ -70,7 +70,9 @@
 
 </div>
 
-<b-list-footer [listActions]="listActions"
+<b-list-footer #footer
+               *ngIf="hasFooter"
+               [listActions]="listActions"
                [listActionsState]="listActionsState"
                (clear)="clear.emit()"
                (apply)="apply.emit()">

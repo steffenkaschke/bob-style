@@ -8,6 +8,8 @@ import {
   Input,
   Output,
   EventEmitter,
+  ElementRef,
+  NgZone,
 } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription } from 'rxjs';
@@ -23,17 +25,22 @@ import { LIST_EL_HEIGHT } from './list.consts';
 import { ListKeyboardService } from './list-service/list-keyboard.service';
 import { Keys } from '../../enums';
 import { ListChange } from './list-change/list-change';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 export abstract class BaseListElement
   implements OnInit, OnDestroy, AfterViewInit {
   protected constructor(
     private renderer: Renderer2,
     private listKeyboardService: ListKeyboardService,
-    protected cd: ChangeDetectorRef
+    protected cd: ChangeDetectorRef,
+    protected zone: NgZone,
+    protected DOM: DOMhelpers
   ) {}
 
   @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
   @ViewChild('headers', { static: false }) headers;
+  @ViewChild('footer', { static: false, read: ElementRef })
+  private footer: ElementRef;
 
   public noGroupHeaders: boolean;
   public focusOption: ListOption;
@@ -45,6 +52,7 @@ export abstract class BaseListElement
   public filteredOptions: SelectGroupOption[];
   public listActionsState: ListFooterActionsState;
   private keyDownSubscriber: Subscription;
+  public hasFooter = true;
 
   readonly listElHeight = LIST_EL_HEIGHT;
 
@@ -129,6 +137,16 @@ export abstract class BaseListElement
         this.vScroll.elementRef.nativeElement.firstChild
       );
     }
+
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.hasFooter = !this.DOM.isEmpty(this.footer.nativeElement);
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, 0);
+    });
   }
 
   optionClick(option: ListOption): void {}

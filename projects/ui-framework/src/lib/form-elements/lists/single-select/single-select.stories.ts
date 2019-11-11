@@ -38,7 +38,7 @@ const template = `
                  [errorMessage]="errorMessage"
                  [hintMessage]="hintMessage"
                  [showSingleGroupHeader]="showSingleGroupHeader">
-                 <b-text-button footer
+                 <b-text-button footerAction
                     [text]="'Click Me!'"
                     [color]="'primary'">
                   </b-text-button>

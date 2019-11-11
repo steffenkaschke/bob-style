@@ -2,8 +2,7 @@
                class="clear-button"
                (clicked)="clear.emit()"
                [disabled]="listActionsState.clear.disabled"
-               text="Clear">
-</b-text-button>
+               text="Clear"></b-text-button>
 
 <ng-content select="[footerAction]"></ng-content>
 
@@ -12,6 +11,5 @@
           (clicked)="apply.emit()"
           [disabled]="listActionsState.apply.disabled"
           [size]="buttonSize.small"
-          [type]="buttonType.primary">
-  Apply
-</b-button>
+          [type]="buttonType.primary"
+          text="Apply"></b-button>

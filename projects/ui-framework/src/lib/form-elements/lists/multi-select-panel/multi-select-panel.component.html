@@ -25,6 +25,8 @@
                   [listActions]="listActions"
                   (apply)="onApply()"
                   (cancel)="onCancel()">
+      <ng-content footerAction
+                  select="[footerAction],[footer]"></ng-content>
     </b-multi-list>
   </div>
 </ng-template>
