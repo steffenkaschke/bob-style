@@ -37,6 +37,17 @@ export interface ListComponentPrefix {
 
 export interface ListFooterActions {
   clear?: boolean;
-  cancel?: boolean;
   apply?: boolean;
+  cancel?: boolean;
+}
+
+export interface ActionsButtonState {
+  disabled?: boolean;
+  hidden?: boolean;
+}
+
+export interface ListFooterActionsState {
+  clear?: ActionsButtonState;
+  apply?: ActionsButtonState;
+  cancel?: ActionsButtonState;
 }

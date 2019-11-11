@@ -19,7 +19,7 @@ export const optionsMock: SelectGroupOption[] = makeArray(groupNum).map(
       key: groupId,
 
       options: makeArray(optionsNum).map(option => ({
-        id: groupId + '/' + simpleUID(),
+        id: simpleUID(groupId + '/', 3),
         value: mockNames(1),
         selected: randomNumber() > 80,
         disabled: randomNumber() > 90,

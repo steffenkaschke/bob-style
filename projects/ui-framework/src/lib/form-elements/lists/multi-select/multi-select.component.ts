@@ -10,7 +10,7 @@ import {
   ViewContainerRef,
   ViewChild,
   NgZone,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { assign, chain, includes, map } from 'lodash';
@@ -30,7 +30,7 @@ import {
   BELOW_START,
   ABOVE_START,
   BELOW_END,
-  ABOVE_END
+  ABOVE_END,
 } from '../../../popups/panel/panel-position-service/panel-position.const';
 
 @Component({
@@ -39,47 +39,23 @@ import {
   styleUrls: [
     '../../input/input.component.scss',
     '../single-select/single-select.component.scss',
-    'multi-select.component.scss'
+    'multi-select.component.scss',
   ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => MultiSelectComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => MultiSelectComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class MultiSelectComponent extends BaseSelectPanelElement
   implements OnInit, OnChanges {
-  @ViewChild('triggerInput', { static: true })
-  truncate: TruncateTooltipComponent;
-
-  @Input() showSingleGroupHeader = false;
-
-  @Output() selectModified: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
-  @Output() selectCancelled: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
-
-  triggerValue: string;
-  selectedValuesMap: (number | string)[];
-
-  readonly listActions: ListFooterActions = {
-    clear: true,
-    apply: true,
-    cancel: true
-  };
-  readonly listElHeight = LIST_EL_HEIGHT;
-
-  private listChange: ListChange;
-
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
@@ -101,7 +77,33 @@ export class MultiSelectComponent extends BaseSelectPanelElement
       cd
     );
     this.panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
+    this.listActions = {
+      clear: true,
+      apply: true,
+    };
   }
+
+  @ViewChild('triggerInput', { static: true })
+  truncate: TruncateTooltipComponent;
+
+  @Input() showSingleGroupHeader = false;
+  @Output() selectModified: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
+  @Output() selectCancelled: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
+
+  triggerValue: string;
+  selectedValuesMap: (number | string)[];
+
+  readonly listActions: ListFooterActions = {
+    clear: true,
+    apply: true,
+  };
+  readonly listElHeight = LIST_EL_HEIGHT;
+
+  private listChange: ListChange;
 
   ngOnInit(): void {
     this.selectedValuesMap = this.options
@@ -167,7 +169,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement
       return assign({}, g, {
         options: map(g.options, o => {
           return assign({}, o, { selected: false });
-        })
+        }),
       });
     });
   }

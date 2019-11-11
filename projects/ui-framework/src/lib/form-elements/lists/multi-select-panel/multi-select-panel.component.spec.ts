@@ -4,7 +4,7 @@ import {
   fakeAsync,
   inject,
   TestBed,
-  tick
+  tick,
 } from '@angular/core/testing';
 import { MultiSelectPanelComponent } from './multi-select-panel.component';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
@@ -33,7 +33,7 @@ describe('MultiSelectPanelComponent', () => {
   beforeEach(async(() => {
     utilsServiceStub = createSpyObj('UtilsService', [
       'getResizeEvent',
-      'getWindowKeydownEvent'
+      'getWindowKeydownEvent',
     ]);
     utilsServiceStub.getResizeEvent.and.returnValue(cold('-x-', { x: {} }));
     utilsServiceStub.getWindowKeydownEvent.and.returnValue(
@@ -47,32 +47,32 @@ describe('MultiSelectPanelComponent', () => {
           {
             value: 'Basic info',
             id: '1',
-            selected: false
+            selected: false,
           },
           {
             value: 'Personal',
             id: '2',
-            selected: false
-          }
-        ]
-      }
+            selected: false,
+          },
+        ],
+      },
     ];
 
     TestBed.configureTestingModule({
       declarations: [
         MultiSelectPanelComponent,
-        MockComponent(ChevronButtonComponent)
+        MockComponent(ChevronButtonComponent),
       ],
       imports: [
         MultiListModule,
         OverlayModule,
         NoopAnimationsModule,
-        CommonModule
+        CommonModule,
       ],
       providers: [
         PanelPositionService,
-        { provide: UtilsService, useValue: utilsServiceStub }
-      ]
+        { provide: UtilsService, useValue: utilsServiceStub },
+      ],
     })
       .compileComponents()
       .then(() => {
@@ -119,15 +119,6 @@ describe('MultiSelectPanelComponent', () => {
       optionsMock[0].options[1].selected = true;
       const listChange = new ListChange(optionsMock);
       expect(component.listChange).toEqual(listChange);
-    });
-  });
-
-  describe('onCancel', () => {
-    it('should invoke panel close', () => {
-      (overlayContainerElement.querySelector(
-        '.cancel-button button'
-      ) as HTMLElement).click();
-      expect(component['destroyPanel']).toHaveBeenCalled();
     });
   });
 

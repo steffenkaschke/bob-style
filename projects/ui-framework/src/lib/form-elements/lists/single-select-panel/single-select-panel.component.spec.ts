@@ -4,7 +4,7 @@ import {
   fakeAsync,
   inject,
   TestBed,
-  tick
+  tick,
 } from '@angular/core/testing';
 import { SingleSelectPanelComponent } from './single-select-panel.component';
 import { MockComponent } from 'ng-mocks';
@@ -33,7 +33,7 @@ describe('SingleSelectPanelComponent', () => {
   beforeEach(async(() => {
     utilsServiceStub = createSpyObj('UtilsService', [
       'getResizeEvent',
-      'getWindowKeydownEvent'
+      'getWindowKeydownEvent',
     ]);
     utilsServiceStub.getResizeEvent.and.returnValue(cold('-x-', { x: {} }));
     utilsServiceStub.getWindowKeydownEvent.and.returnValue(
@@ -47,32 +47,32 @@ describe('SingleSelectPanelComponent', () => {
           {
             value: 'Basic info',
             id: '1',
-            selected: false
+            selected: false,
           },
           {
             value: 'Personal',
             id: '2',
-            selected: false
-          }
-        ]
-      }
+            selected: false,
+          },
+        ],
+      },
     ];
 
     TestBed.configureTestingModule({
       declarations: [
         SingleSelectPanelComponent,
-        MockComponent(ChevronButtonComponent)
+        MockComponent(ChevronButtonComponent),
       ],
       imports: [
         SingleListModule,
         OverlayModule,
         NoopAnimationsModule,
-        CommonModule
+        CommonModule,
       ],
       providers: [
         PanelPositionService,
-        { provide: UtilsService, useValue: utilsServiceStub }
-      ]
+        { provide: UtilsService, useValue: utilsServiceStub },
+      ],
     })
       .compileComponents()
       .then(() => {

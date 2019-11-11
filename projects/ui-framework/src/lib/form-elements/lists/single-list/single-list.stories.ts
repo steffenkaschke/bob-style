@@ -21,10 +21,10 @@ const template = `
 <b-single-list [options]="options"
                (selectChange)="selectChange($event)"
                [showSingleGroupHeader]="showSingleGroupHeader">
-                <b-text-button footer
-                  [text]="'Click Me!'"
-                  [color]="'primary'">
-                </b-text-button>
+      <b-text-button footerAction
+        [text]="'Click Me!'"
+        [color]="'primary'">
+      </b-text-button>
 </b-single-list>
 `;
 
@@ -45,10 +45,12 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [options] | SelectGroupOption[] | model of selection group | none
+  [options] | SelectGroupOption[] | model of selection group | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | false
   [maxHeight] | number | component max height | 352 (8 rows)
-  (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | none
+  [listActions] | ListFooterActions | enable/disable footer action buttons (clear, apply) | { clear:&nbsp;false, apply:&nbsp;false }
+  (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | &nbsp;
+  &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
 
   ~~~
   ${template}

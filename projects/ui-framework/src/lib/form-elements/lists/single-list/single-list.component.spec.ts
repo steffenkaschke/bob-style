@@ -16,6 +16,7 @@ import { FiltersModule } from '../../../services/filters/filters.module';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ComponentRendererModule } from '../../../services/component-renderer/component-renderer.module';
+import { ListFooterModule } from '../list-footer/list-footer.module';
 
 describe('SingleListComponent', () => {
   let component: SingleListComponent;
@@ -53,6 +54,7 @@ describe('SingleListComponent', () => {
         ScrollingModule,
         FiltersModule,
         ComponentRendererModule,
+        ListFooterModule,
       ],
     })
       .compileComponents()

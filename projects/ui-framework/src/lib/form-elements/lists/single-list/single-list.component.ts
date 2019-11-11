@@ -1,27 +1,24 @@
 import {
   Component,
-  EventEmitter,
   Input,
   OnChanges,
-  Output,
   Renderer2,
   SimpleChanges,
   ChangeDetectorRef,
+  NgZone,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
-import {
-  ListHeader,
-  ListOption,
-  SelectGroupOption,
-  SelectOption,
-} from '../list.interface';
+import { ListHeader, ListOption, SelectOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
 import { findIndex, flatMap, find } from 'lodash';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
-import { ListChange } from '../list-change/list-change';
-import { hasChanges } from '../../../services/utils/functional-utils';
+import {
+  hasChanges,
+  applyChanges,
+} from '../../../services/utils/functional-utils';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 
 @Component({
   selector: 'b-single-list',
@@ -29,34 +26,30 @@ import { hasChanges } from '../../../services/utils/functional-utils';
   styleUrls: ['single-list.component.scss'],
 })
 export class SingleListComponent extends BaseListElement implements OnChanges {
-  @Input() options: SelectGroupOption[];
-  @Input() maxHeight = this.listElHeight * 8;
-  @Input() showSingleGroupHeader = false;
-  @Input() showNoneOption = false;
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
-  @Output() clear: EventEmitter<void> = new EventEmitter<void>();
-
-  searchValue: string;
-  shouldDisplaySearch = false;
-
-  private filteredOptions: SelectGroupOption[];
-  private selectedOption: SelectOption;
-
   constructor(
     private listModelService: ListModelService,
     private listChangeService: ListChangeService,
     renderer: Renderer2,
     listKeyboardService: ListKeyboardService,
-    cd: ChangeDetectorRef
+    cd: ChangeDetectorRef,
+    zone: NgZone,
+    DOM: DOMhelpers
   ) {
-    super(renderer, listKeyboardService, cd);
+    super(renderer, listKeyboardService, cd, zone, DOM);
+    this.listActions = {
+      clear: false,
+      apply: false,
+    };
   }
 
+  private selectedOption: SelectOption;
+
+  @Input() showNoneOption = false;
+
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.shouldResetModel(changes)) {
-      this.options = changes.options.currentValue;
+    applyChanges(this, changes);
+
+    if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
       this.filteredOptions = this.options;
       this.shouldDisplaySearch =
         this.options &&
@@ -68,10 +61,6 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
 
       this.updateLists();
     }
-  }
-
-  private shouldResetModel(changes: SimpleChanges): boolean {
-    return hasChanges(changes, ['options', 'showSingleGroupHeader']);
   }
 
   headerClick(header: ListHeader): void {

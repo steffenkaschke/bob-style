@@ -134,7 +134,7 @@ import {
   merge as _merge,
   reduce as _reduce,
   set as _set,
-  toPairs as _toPairs
+  toPairs as _toPairs,
 } from 'lodash/fp';
 import { GenericObject } from '../../types';
 
@@ -312,3 +312,6 @@ export const arrayInsertAt = (
     .slice(0, index)
     .concat(val, arr.slice(!overwrite ? index : index + 1));
 };
+
+export const objectHasTruthyValue = (obj: GenericObject) =>
+  isNotEmptyObject(obj) && Object.values(obj).find(v => Boolean(v));

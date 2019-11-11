@@ -1,23 +1,15 @@
-<b-text-button *ngIf="listActions.clear"
-               (clicked)="clear.emit()"
+<b-text-button *ngIf="listActions?.clear && !listActionsState?.clear.hidden"
                class="clear-button"
-               text="Clear">
-</b-text-button>
+               (clicked)="onClear()"
+               [disabled]="listActionsState?.clear.disabled"
+               text="Clear"></b-text-button>
 
-<div class="cancel-apply">
-  <b-button *ngIf="listActions.cancel"
-            (clicked)="cancel.emit()"
-            class="cancel-button"
-            [size]="buttonSize.small"
-            [type]="buttonType.secondary">
-    Cancel
-  </b-button>
+<ng-content select="[footerAction]"></ng-content>
 
-  <b-button *ngIf="listActions.apply"
-            (clicked)="apply.emit()"
-            class="apply-button"
-            [size]="buttonSize.small"
-            [type]="buttonType.primary">
-    Apply
-  </b-button>
-</div>
+<b-button *ngIf="listActions?.apply && !listActionsState?.apply.hidden"
+          class="apply-button"
+          (clicked)="onApply()"
+          [disabled]="listActionsState?.apply.disabled"
+          [size]="buttonSize.small"
+          [type]="buttonType.primary"
+          text="Apply"></b-button>

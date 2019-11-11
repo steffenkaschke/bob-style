@@ -4,37 +4,69 @@ import {
   OnInit,
   Renderer2,
   ViewChild,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Input,
+  Output,
+  EventEmitter,
+  ElementRef,
+  NgZone,
 } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription } from 'rxjs';
-import { ListHeader, ListOption } from './list.interface';
+import {
+  ListHeader,
+  ListOption,
+  ListFooterActions,
+  SelectGroupOption,
+  ListFooterActionsState,
+} from './list.interface';
 import find from 'lodash/find';
 import { LIST_EL_HEIGHT } from './list.consts';
 import { ListKeyboardService } from './list-service/list-keyboard.service';
 import { Keys } from '../../enums';
+import { ListChange } from './list-change/list-change';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { objectHasTruthyValue } from '../../services/utils/functional-utils';
 
 export abstract class BaseListElement
   implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
-  @ViewChild('headers', { static: false }) headers;
-
-  noGroupHeaders: boolean;
-  focusOption: ListOption;
-  listOptions: ListOption[];
-  listHeaders: ListHeader[];
-  maxHeight: number;
-
-  readonly listElHeight = LIST_EL_HEIGHT;
-
-  focusIndex: number;
-  private keyDownSubscriber: Subscription;
-
   protected constructor(
     private renderer: Renderer2,
     private listKeyboardService: ListKeyboardService,
-    private cd: ChangeDetectorRef
+    protected cd: ChangeDetectorRef,
+    protected zone: NgZone,
+    protected DOM: DOMhelpers
   ) {}
+
+  @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
+  @ViewChild('headers', { static: false }) headers;
+  @ViewChild('footer', { static: false, read: ElementRef })
+  private footer: ElementRef;
+
+  public noGroupHeaders: boolean;
+  public focusOption: ListOption;
+  public listOptions: ListOption[];
+  public listHeaders: ListHeader[];
+  public focusIndex: number;
+  public searchValue: string;
+  public shouldDisplaySearch = false;
+  public filteredOptions: SelectGroupOption[];
+  public listActionsState: ListFooterActionsState;
+  private keyDownSubscriber: Subscription;
+  public hasFooter = true;
+
+  readonly listElHeight = LIST_EL_HEIGHT;
+
+  @Input() options: SelectGroupOption[];
+  @Input() listActions: ListFooterActions;
+  @Input() maxHeight = this.listElHeight * 8;
+  @Input() showSingleGroupHeader = false;
+
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
+  @Output() apply: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() clear: EventEmitter<void> = new EventEmitter<void>();
 
   ngOnInit(): void {
     this.focusIndex = -1;
@@ -81,7 +113,7 @@ export abstract class BaseListElement
             this.focusOption.isPlaceHolder
               ? this.headerClick(
                   find(this.listHeaders, {
-                    groupName: this.focusOption.groupName
+                    groupName: this.focusOption.groupName,
                   })
                 )
               : this.optionClick(this.focusOption);
@@ -106,6 +138,26 @@ export abstract class BaseListElement
         this.vScroll.elementRef.nativeElement.firstChild
       );
     }
+
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.hasFooter =
+          objectHasTruthyValue(this.listActions) ||
+          !this.DOM.isEmpty(this.footer.nativeElement);
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, 0);
+    });
+  }
+
+  onClear(): void {
+    this.clear.emit();
+  }
+
+  onApply(): void {
+    this.apply.emit();
   }
 
   optionClick(option: ListOption): void {}

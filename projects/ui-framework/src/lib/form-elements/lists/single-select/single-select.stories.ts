@@ -38,10 +38,10 @@ const template = `
                  [errorMessage]="errorMessage"
                  [hintMessage]="hintMessage"
                  [showSingleGroupHeader]="showSingleGroupHeader">
-                 <b-text-button footer
-                    [text]="'Click Me!'"
-                    [color]="'primary'">
-                  </b-text-button>
+    <b-text-button footerAction
+      [text]="'Click Me!'"
+      [color]="'primary'">
+    </b-text-button>
 </b-single-select>
 `;
 
@@ -54,7 +54,7 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Single Select 2
+  ## Single Select
 
   #### Module
   *SingleSelectModule*
@@ -62,18 +62,20 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  options | SelectGroupOption[] | model of selection group | none
-  value | (string or number) | selected id | none
-  selectChange | action | returns ListChange | none
-  label | string | label text | none
-  description | string | description text (above icon)
-  placeholder | string | placeholder text | none
-  disabled | boolean | is field disabled | none
-  required | boolean | is field required | none
-  hintMessage | text | hint text | none
-  errorMessage | text | error text | none
-  showSingleGroupHeader | boolean | displays single group with group header | false
-  showNoneOption | boolean | displays the no-selection option | true
+  [options] | SelectGroupOption[] | model of selection group | &nbsp;
+  [value] | (string or number) | selected id | &nbsp;
+  [showSingleGroupHeader] | boolean | displays single group with group header | false
+  [showNoneOption] | boolean | displays the no-selection option | true
+  [listActions] | ListFooterActions | enable/disable footer action buttons (clear, apply) | { clear:&nbsp;false, apply:&nbsp;false }
+  (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | &nbsp;
+  &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
+  [label] | string | label text | &nbsp;
+  [description] | string | description text (above icon) | &nbsp;
+  [placeholder] | string | placeholder text | &nbsp;
+  [disabled] | boolean | is field disabled | &nbsp;
+  [required] | boolean | is field required | &nbsp;
+  [hintMessage] | text | hint text | &nbsp;
+  [errorMessage] | text | error text | &nbsp;
 
   ~~~
   ${template}
