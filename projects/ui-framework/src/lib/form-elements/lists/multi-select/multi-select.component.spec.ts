@@ -186,43 +186,13 @@ describe('MultiSelectComponent', () => {
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
+
       const applyButton = overlayContainerElement.querySelector(
         'b-list-footer .apply-button button'
       ) as HTMLButtonElement;
       applyButton.click();
-      expect(component.destroyPanel).toHaveBeenCalled();
-      flush();
-    }));
-  });
 
-  describe('cancelSelection', () => {
-    it('should close the panel', fakeAsync(() => {
-      spyOn(component, 'destroyPanel');
-      component.openPanel();
-      fixture.autoDetectChanges();
-      tick(0);
-      const cancelButton = overlayContainerElement.querySelector(
-        'b-list-footer .cancel-button button'
-      ) as HTMLElement;
-      cancelButton.click();
       expect(component.destroyPanel).toHaveBeenCalled();
-      flush();
-    }));
-    it('should emit selectCancelled event and ignore option click in listChange', fakeAsync(() => {
-      const expectedListChange = new ListChange(optionsMock);
-      component.openPanel();
-      fixture.autoDetectChanges();
-      tick(0);
-      (overlayContainerElement.querySelectorAll(
-        'b-multi-list .option'
-      )[3] as HTMLElement).click();
-      const cancelButton = overlayContainerElement.querySelector(
-        'b-list-footer .cancel-button button'
-      ) as HTMLElement;
-      cancelButton.click();
-      expect(component.selectCancelled.emit).toHaveBeenCalledWith(
-        expectedListChange
-      );
       flush();
     }));
   });
@@ -242,15 +212,19 @@ describe('MultiSelectComponent', () => {
         'b-multi-list .option'
       )[3] as HTMLElement).click();
       fixture.autoDetectChanges();
+
       const clearButton = overlayContainerElement.querySelector(
         'b-list-footer .clear-button'
       ) as HTMLElement;
       clearButton.click();
+
       const applyButton = overlayContainerElement.querySelector(
         'b-list-footer .apply-button button'
       ) as HTMLElement;
       applyButton.click();
+
       fixture.autoDetectChanges();
+
       expect(component.selectedValuesMap).toEqual([]);
       expect(component.triggerValue).toEqual('');
       expect(component.options).toEqual(expectedOptionsMock);
@@ -278,54 +252,6 @@ describe('MultiSelectComponent', () => {
         expectedListChange
       );
       expect(component.propagateChange).toHaveBeenCalledWith([]);
-      flush();
-    }));
-  });
-
-  describe('clear -> cancel', () => {
-    it('should reset the selection from options, selectedValuesMap and reset triggerValue', fakeAsync(() => {
-      component.openPanel();
-      fixture.autoDetectChanges();
-      tick(0);
-      (overlayContainerElement.querySelectorAll(
-        'b-multi-list .option'
-      )[3] as HTMLElement).click();
-      fixture.autoDetectChanges();
-      const clearButton = overlayContainerElement.querySelector(
-        'b-list-footer .clear-button'
-      ) as HTMLElement;
-      clearButton.click();
-      const cancelButton = overlayContainerElement.querySelector(
-        'b-list-footer .cancel-button button'
-      ) as HTMLElement;
-      cancelButton.click();
-      fixture.autoDetectChanges();
-      expect(component.selectedValuesMap).toEqual([1, 11]);
-      expect(component.triggerValue).toEqual('Basic Info 1, Personal 1');
-      expect(component.options).toEqual(optionsMock);
-      flush();
-    }));
-    it('should invoke selectCancelled.emit with listChange and propagateChange with [3]', fakeAsync(() => {
-      const expectedListChange = new ListChange(optionsMock);
-      component.openPanel();
-      fixture.autoDetectChanges();
-      tick(0);
-      (overlayContainerElement.querySelectorAll(
-        'b-multi-list .option'
-      )[3] as HTMLElement).click();
-      fixture.autoDetectChanges();
-      const clearButton = overlayContainerElement.querySelector(
-        'b-list-footer .clear-button'
-      ) as HTMLElement;
-      clearButton.click();
-      const cancelButton = overlayContainerElement.querySelector(
-        'b-list-footer .cancel-button button'
-      ) as HTMLElement;
-      cancelButton.click();
-      fixture.autoDetectChanges();
-      expect(component.selectCancelled.emit).toHaveBeenCalledWith(
-        expectedListChange
-      );
       flush();
     }));
   });
