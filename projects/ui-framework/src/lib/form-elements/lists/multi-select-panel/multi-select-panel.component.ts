@@ -3,7 +3,7 @@ import {
   Component,
   Input,
   NgZone,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { ListFooterActions } from '../list.interface';
@@ -19,22 +19,10 @@ import { UtilsService } from '../../../services/utils/utils.service';
   templateUrl: './multi-select-panel.component.html',
   styleUrls: [
     '../list-panel.scss',
-    '../multi-select/multi-select.component.scss'
-  ]
+    '../multi-select/multi-select.component.scss',
+  ],
 })
 export class MultiSelectPanelComponent extends BaseSelectPanelElement {
-  @Input() chevronButtonText: string;
-
-  listChange: ListChange;
-
-  readonly listElHeight = LIST_EL_HEIGHT;
-  readonly listActions: ListFooterActions = {
-    clear: true,
-    apply: true,
-    cancel: true
-  };
-  panelClassList: string[] = ['b-select-panel-with-arrow'];
-
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
@@ -55,7 +43,18 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement {
     );
     this.wrapEvent = false;
     this.doPropagate = false;
+    this.listActions = {
+      clear: true,
+      apply: true,
+    };
   }
+
+  @Input() chevronButtonText: string;
+
+  listChange: ListChange;
+
+  readonly listElHeight = LIST_EL_HEIGHT;
+  panelClassList: string[] = ['b-select-panel-with-arrow'];
 
   onSelect(listChange: ListChange): void {
     this.listChange = listChange;

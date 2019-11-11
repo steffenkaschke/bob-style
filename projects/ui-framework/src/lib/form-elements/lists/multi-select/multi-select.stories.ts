@@ -3,7 +3,7 @@ import {
   withKnobs,
   object,
   text,
-  boolean
+  boolean,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
@@ -37,6 +37,10 @@ const template = `
                 [required]="required"
                 [errorMessage]="errorMessage"
                 [hintMessage]="hintMessage">
+    <b-text-button footerAction
+      [text]="'Action!'"
+      [color]="'primary'">
+    </b-text-button>
 </b-multi-select>
 `;
 
@@ -58,18 +62,20 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [options] | SelectGroupOption[] | model of selection group | none
-  [label] | string | label text | none
-  [description] | string | description text (above icon)
-  [placeholder] | string | placeholder text | none
-  [disabled] | boolean | is field disabled | none
-  [required] | boolean | is field required | none
-  [hintMessage] | text | hint text | none
-  [errorMessage] | text | error text | none
+  [options] | SelectGroupOption[] | model of selection group | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | false
-  (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | none
-  (selectModified) | EventEmitter&lt;ListChange&gt; | emits ListChange | none
-  (selectCancelled) | EventEmitter&lt;ListChange&gt; | emits ListChange | none
+  [listActions] | ListFooterActions | enable/disable footer action buttons (clear, apply) | { clear:&nbsp;true, apply:&nbsp;true }
+  (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | &nbsp;
+  (selectModified) | EventEmitter&lt;ListChange&gt; | emits ListChange | &nbsp;
+  (selectCancelled) | EventEmitter&lt;ListChange&gt; | emits ListChange | &nbsp;
+  &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
+  [label] | string | label text | &nbsp;
+  [description] | string | description text (above icon) | &nbsp;
+  [placeholder] | string | placeholder text | &nbsp;
+  [disabled] | boolean | is field disabled | &nbsp;
+  [required] | boolean | is field required | &nbsp;
+  [hintMessage] | text | hint text | &nbsp;
+  [errorMessage] | text | error text | &nbsp;
   ~~~
   ${template}
   ~~~
@@ -90,11 +96,11 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
           component: AvatarComponent,
           attributes: {
             imageSource:
-              'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg'
-          }
-        }
+              'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg',
+          },
+        },
       };
-    })
+    }),
   };
 });
 
@@ -116,7 +122,7 @@ const toAdd = () => ({
     hintMessage: text('hintMessage', 'This field should contain something'),
     errorMessage: text('errorMessage', ''),
     showSingleGroupHeader: boolean('showSingleGroupHeader', true),
-    options: object<SelectGroupOption>('options', optionsMock)
+    options: object<SelectGroupOption>('options', optionsMock),
   },
   moduleMetadata: {
     imports: [
@@ -125,10 +131,10 @@ const toAdd = () => ({
       TypographyModule,
       BrowserAnimationsModule,
       StoryBookLayoutModule,
-      AvatarModule
+      AvatarModule,
     ],
-    entryComponents: [AvatarComponent]
-  }
+    entryComponents: [AvatarComponent],
+  },
 });
 
 story.add('Multi select', toAdd, { notes: { markdown: note } });

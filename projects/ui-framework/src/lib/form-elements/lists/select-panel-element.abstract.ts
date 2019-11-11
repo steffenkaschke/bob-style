@@ -35,7 +35,7 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { isKey, hasChanges } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
-import { SelectGroupOption } from './list.interface';
+import { SelectGroupOption, ListFooterActions } from './list.interface';
 import { ListChange } from './list-change/list-change';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 
@@ -64,6 +64,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     }
   }
   @Input() tooltipType: TruncateTooltipType = TruncateTooltipType.auto;
+  @Input() listActions: ListFooterActions;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange

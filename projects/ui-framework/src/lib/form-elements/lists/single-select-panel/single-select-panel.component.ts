@@ -4,7 +4,7 @@ import {
   Input,
   NgZone,
   OnChanges,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { Overlay } from '@angular/cdk/overlay';
@@ -19,16 +19,11 @@ import { UtilsService } from '../../../services/utils/utils.service';
   templateUrl: './single-select-panel.component.html',
   styleUrls: [
     '../list-panel.scss',
-    '../single-select/single-select.component.scss'
-  ]
+    '../single-select/single-select.component.scss',
+  ],
 })
 export class SingleSelectPanelComponent extends BaseSelectPanelElement
   implements OnChanges {
-  @Input() chevronButtonText: string;
-
-  readonly listElHeight = LIST_EL_HEIGHT;
-  panelClassList: string[] = ['b-select-panel-with-arrow'];
-
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
@@ -49,7 +44,16 @@ export class SingleSelectPanelComponent extends BaseSelectPanelElement
     );
     this.wrapEvent = false;
     this.doPropagate = false;
+    this.listActions = {
+      clear: false,
+      apply: false,
+    };
   }
+
+  @Input() chevronButtonText: string;
+
+  readonly listElHeight = LIST_EL_HEIGHT;
+  panelClassList: string[] = ['b-select-panel-with-arrow'];
 
   onSelect(listChange: ListChange): void {
     this.options = listChange.getSelectGroupOptions();
