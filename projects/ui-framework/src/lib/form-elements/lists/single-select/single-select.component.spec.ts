@@ -5,7 +5,7 @@ import {
   flush,
   inject,
   TestBed,
-  tick
+  tick,
 } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,16 +37,16 @@ describe('SingleSelectComponent', () => {
         groupName: 'Basic Info',
         options: [
           { value: 'Basic Info 1', id: 1, selected: true },
-          { value: 'Basic Info 2', id: 2, selected: false }
-        ]
+          { value: 'Basic Info 2', id: 2, selected: false },
+        ],
       },
       {
         groupName: 'Personal',
         options: [
           { value: 'Personal 1', id: 11, selected: false },
-          { value: 'Personal 2', id: 12, selected: false }
-        ]
-      }
+          { value: 'Personal 2', id: 12, selected: false },
+        ],
+      },
     ];
 
     TestBed.configureTestingModule({
@@ -60,9 +60,9 @@ describe('SingleSelectComponent', () => {
         ButtonsModule,
         ListFooterModule,
         TruncateTooltipModule,
-        FormElementLabelModule
+        FormElementLabelModule,
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
@@ -75,8 +75,8 @@ describe('SingleSelectComponent', () => {
             previousValue: undefined,
             currentValue: optionsMock,
             firstChange: true,
-            isFirstChange: () => true
-          }
+            isFirstChange: () => true,
+          },
         });
         fixture.autoDetectChanges();
       });
@@ -103,8 +103,8 @@ describe('SingleSelectComponent', () => {
           previousValue: optionsMock,
           currentValue: testOptionsMock,
           firstChange: false,
-          isFirstChange: () => false
-        }
+          isFirstChange: () => false,
+        },
       });
       expect(component.triggerValue).toBe(null);
       testOptionsMock[1].options[0].selected = true;
@@ -113,8 +113,8 @@ describe('SingleSelectComponent', () => {
           previousValue: optionsMock,
           currentValue: testOptionsMock,
           firstChange: false,
-          isFirstChange: () => false
-        }
+          isFirstChange: () => false,
+        },
       });
       expect(component.triggerValue).toEqual('Personal 1');
     });
@@ -210,8 +210,8 @@ describe('SingleSelectComponent', () => {
           previousValue: undefined,
           currentValue: testOptionsMock,
           firstChange: true,
-          isFirstChange: () => true
-        }
+          isFirstChange: () => true,
+        },
       });
       fixture.autoDetectChanges();
     }));

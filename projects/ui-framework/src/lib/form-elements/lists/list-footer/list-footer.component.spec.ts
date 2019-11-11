@@ -18,93 +18,118 @@ describe('ListFooterComponent', () => {
         MockComponent(ButtonComponent),
         MockComponent(TextButtonComponent),
         MockComponent(IconComponent),
-      ]
+      ],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(ListFooterComponent);
         component = fixture.componentInstance;
+        component.listActions = {
+          clear: true,
+          apply: true,
+        };
+        component.listActionsState = {
+          clear: { disabled: false, hidden: false },
+          apply: { disabled: false, hidden: false },
+        };
+
+        fixture.detectChanges();
+
         spyOn(component.clear, 'emit');
         spyOn(component.apply, 'emit');
-        spyOn(component.cancel, 'emit');
       });
   }));
 
   describe('listActions', () => {
-    it('should show clear with the right config', () => {
-      component.listActions = {
-        clear: true
-      };
-      fixture.detectChanges();
-      const clearButton = fixture.debugElement.query(By.css('.clear-button'));
-      expect(clearButton.componentInstance.text).toEqual('Clear');
+    describe('clear button', () => {
+      let clearButton;
+
+      beforeEach(() => {
+        component.listActions = {
+          clear: true,
+        };
+        fixture.detectChanges();
+        clearButton = fixture.debugElement.query(By.css('.clear-button'));
+      });
+
+      it('should show clear with the right config', () => {
+        expect(clearButton.componentInstance.text).toEqual('Clear');
+      });
+
+      it('should emit clear on clear click', () => {
+        clearButton.componentInstance.clicked.emit();
+        expect(component.clear.emit).toHaveBeenCalled();
+      });
     });
-    it('should emit clear on clear click', () => {
-      component.listActions = {
-        clear: true
-      };
-      fixture.detectChanges();
-      const clearButton = fixture.debugElement.query(By.css('.clear-button'));
-      clearButton.componentInstance.clicked.emit();
-      expect(component.clear.emit).toHaveBeenCalled();
+
+    describe('apply button', () => {
+      let applyButton;
+
+      beforeEach(() => {
+        component.listActions = {
+          apply: true,
+        };
+        fixture.detectChanges();
+        applyButton = fixture.debugElement.query(By.css('.apply-button'));
+      });
+
+      it('should show apply with the right config', () => {
+        expect(applyButton.componentInstance.type).toEqual(ButtonType.primary);
+        expect(applyButton.componentInstance.size).toEqual(ButtonSize.small);
+        expect(applyButton.componentInstance.text).toEqual('Apply');
+      });
+
+      it('should emit apply on apply click', () => {
+        applyButton.componentInstance.clicked.emit();
+        expect(component.apply.emit).toHaveBeenCalled();
+      });
     });
-    it('should show apply with the right config', () => {
-      component.listActions = {
-        apply: true
-      };
-      fixture.detectChanges();
-      const applyButton = fixture.debugElement.queryAll(
-        By.css('.apply-button')
-      )[0];
-      expect(applyButton.componentInstance.type).toEqual(ButtonType.primary);
-      expect(applyButton.componentInstance.size).toEqual(ButtonSize.small);
-      expect(applyButton.nativeElement.innerText).toEqual('Apply');
-    });
-    it('should emit apply on apply click', () => {
-      component.listActions = {
-        apply: true
-      };
-      fixture.detectChanges();
-      const applyButton = fixture.debugElement.queryAll(
-        By.css('.apply-button')
-      )[0];
-      applyButton.componentInstance.clicked.emit();
-      expect(component.apply.emit).toHaveBeenCalled();
-    });
-    it('should show cancel with the right config', () => {
-      component.listActions = {
-        cancel: true
-      };
-      fixture.detectChanges();
-      const cancelButton = fixture.debugElement.queryAll(
-        By.css('.cancel-button')
-      )[0];
-      expect(cancelButton.componentInstance.type).toEqual(ButtonType.secondary);
-      expect(cancelButton.componentInstance.size).toEqual(ButtonSize.small);
-      expect(cancelButton.nativeElement.innerText).toEqual('Cancel');
-    });
-    it('should emit cancel on cancel click', () => {
-      component.listActions = {
-        cancel: true
-      };
-      fixture.detectChanges();
-      const cancelButton = fixture.debugElement.queryAll(
-        By.css('.cancel-button')
-      )[0];
-      cancelButton.componentInstance.clicked.emit();
-      expect(component.cancel.emit).toHaveBeenCalled();
-    });
-    it('should show all buttons if passed in config', () => {
-      component.listActions = {
-        clear: true,
-        apply: true,
-        cancel: true
-      };
-      fixture.detectChanges();
-      const footerButtons = fixture.debugElement.queryAll(By.css('b-button'));
-      const clearButton = fixture.debugElement.queryAll(By.css('.clear-button'));
-      expect(footerButtons.length).toEqual(2);
-      expect(clearButton.length).toEqual(1);
+
+    describe('all buttons', () => {
+      let clearButton;
+      let applyButton;
+      let footerButtons;
+
+      beforeEach(() => {
+        component.listActions = {
+          clear: true,
+          apply: true,
+        };
+        fixture.detectChanges();
+        applyButton = fixture.debugElement.query(By.css('.apply-button'));
+        clearButton = fixture.debugElement.query(By.css('.clear-button'));
+        footerButtons = fixture.debugElement.queryAll(
+          By.css('b-button,b-text-button')
+        );
+      });
+
+      it('should show all buttons if passed in config', () => {
+        expect(footerButtons.length).toEqual(2);
+      });
+
+      it('should set disabled state with listActionsState input', () => {
+        component.listActionsState = {
+          clear: { disabled: true },
+          apply: { disabled: false },
+        };
+        fixture.detectChanges();
+        expect(applyButton.componentInstance.disabled).toBeFalsy();
+        expect(clearButton.componentInstance.disabled).toBeTruthy();
+      });
+
+      it('should set hide buttons with listActionsState hidden true', () => {
+        component.listActionsState = {
+          clear: { hidden: false },
+          apply: { hidden: true },
+        };
+        fixture.detectChanges();
+
+        applyButton = fixture.debugElement.query(By.css('.apply-button'));
+        clearButton = fixture.debugElement.query(By.css('.clear-button'));
+
+        expect(applyButton).toBeFalsy();
+        expect(clearButton).toBeTruthy();
+      });
     });
   });
 });

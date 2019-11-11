@@ -24,4 +24,12 @@ export class ListFooterComponent {
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType;
   readonly icons = Icons;
+
+  onApply(): void {
+    this.apply.emit();
+  }
+
+  onClear(): void {
+    this.clear.emit();
+  }
 }

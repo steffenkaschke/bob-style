@@ -26,6 +26,7 @@ import { ListKeyboardService } from './list-service/list-keyboard.service';
 import { Keys } from '../../enums';
 import { ListChange } from './list-change/list-change';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { objectHasTruthyValue } from '../../services/utils/functional-utils';
 
 export abstract class BaseListElement
   implements OnInit, OnDestroy, AfterViewInit {
@@ -140,13 +141,23 @@ export abstract class BaseListElement
 
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
-        this.hasFooter = !this.DOM.isEmpty(this.footer.nativeElement);
+        this.hasFooter =
+          objectHasTruthyValue(this.listActions) ||
+          !this.DOM.isEmpty(this.footer.nativeElement);
 
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
         }
       }, 0);
     });
+  }
+
+  onClear(): void {
+    this.clear.emit();
+  }
+
+  onApply(): void {
+    this.apply.emit();
   }
 
   optionClick(option: ListOption): void {}

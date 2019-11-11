@@ -74,8 +74,8 @@
                *ngIf="hasFooter"
                [listActions]="listActions"
                [listActionsState]="listActionsState"
-               (clear)="clear.emit()"
-               (apply)="apply.emit()">
+               (clear)="onClear()"
+               (apply)="onApply()">
   <ng-content footerAction
-              select="[footerAction],[footer]"></ng-content>
+              select="[footerAction],[footer],[footerActionLeft]"></ng-content>
 </b-list-footer>

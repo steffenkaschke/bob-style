@@ -42,8 +42,8 @@ export interface ListFooterActions {
 }
 
 export interface ActionsButtonState {
-  disabled: boolean;
-  hidden: boolean;
+  disabled?: boolean;
+  hidden?: boolean;
 }
 
 export interface ListFooterActionsState {

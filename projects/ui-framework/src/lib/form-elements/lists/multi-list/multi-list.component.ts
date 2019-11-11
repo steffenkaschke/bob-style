@@ -1,9 +1,6 @@
 import {
   Component,
-  EventEmitter,
-  Input,
   OnChanges,
-  Output,
   Renderer2,
   SimpleChanges,
   ChangeDetectorRef,
@@ -11,18 +8,12 @@ import {
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep, flatMap, chain } from 'lodash';
-import {
-  ListHeader,
-  ListOption,
-  SelectGroupOption,
-  ListFooterActionsState,
-} from '../list.interface';
+import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListChange } from '../list-change/list-change';
-import { ListFooterActions } from '../list.interface';
 import {
   hasChanges,
   applyChanges,

@@ -62,7 +62,7 @@ describe('MultiListComponent', () => {
         component = fixture.componentInstance;
         spyOn(component.selectChange, 'emit');
         spyOn(component.apply, 'emit');
-        spyOn(component.cancel, 'emit');
+
         component.ngOnChanges({
           options: {
             previousValue: undefined,
@@ -610,9 +610,8 @@ describe('MultiListComponent', () => {
   describe('list footer', () => {
     it('should show clear option only by default', () => {
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
-      expect(listFooter.componentInstance.listActions).toEqual({
-        clear: true,
-      });
+      expect(listFooter.componentInstance.listActions.clear).toBeTruthy();
+      expect(listFooter.componentInstance.listActions.apply).toBeFalsy();
     });
     it('should have all 3 footer options if passed', () => {
       component.listActions = {
@@ -637,15 +636,7 @@ describe('MultiListComponent', () => {
       listFooter.componentInstance.apply.emit();
       expect(component.apply.emit).toHaveBeenCalled();
     });
-    it('should emit cancel', () => {
-      component.listActions = {
-        cancel: true,
-      };
-      fixture.autoDetectChanges();
-      const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
-      listFooter.componentInstance.cancel.emit();
-      expect(component.cancel.emit).toHaveBeenCalled();
-    });
+
     it('should clear selection on footer clear emit and emit list change', () => {
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
       listFooter.componentInstance.clear.emit();
