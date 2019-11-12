@@ -307,7 +307,7 @@ export const arrayInsertAt = (
   val: any | any[],
   index = 0,
   overwrite = false
-) => {
+): any[] => {
   return arr
     .slice(0, index)
     .concat(val, arr.slice(!overwrite ? index : index + 1));

@@ -13,7 +13,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
-import { assign, chain, includes, map } from 'lodash';
+import { chain, includes } from 'lodash';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
@@ -116,7 +116,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     super.ngOnChanges(changes);
 
     if (changes.options) {
-      this.options = changes.options.currentValue;
       this.selectedValuesMap = this.getSelectedValuesMap(this.options);
       this.setTriggerValue();
     }
@@ -162,16 +161,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     options: SelectGroupOption[]
   ): (number | string)[] {
     return this.listModelService.getSelectedIdsMap(options);
-  }
-
-  private removeAllSelected(options: SelectGroupOption[]): SelectGroupOption[] {
-    return map(options, g => {
-      return assign({}, g, {
-        options: map(g.options, o => {
-          return assign({}, o, { selected: false });
-        }),
-      });
-    });
   }
 
   private getListChange(): ListChange {

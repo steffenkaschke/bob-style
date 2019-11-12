@@ -78,7 +78,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement
   @Input() showSingleGroupHeader = false;
 
   triggerValue: string;
-  singleSelectOptions: SelectGroupOption[];
+
   selectedOptionId: number | string;
 
   readonly listElHeight = LIST_EL_HEIGHT;
@@ -87,10 +87,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement
     super.ngOnChanges(changes);
 
     if (changes.options) {
-      this.singleSelectOptions = changes.options.currentValue;
-      this.selectedOptionId = this.getSelectedOptionId(
-        this.singleSelectOptions
-      );
+      this.selectedOptionId = this.getSelectedOptionId(this.options);
     }
     this.triggerValue = isNull(this.selectedOptionId)
       ? null
@@ -107,16 +104,13 @@ export class SingleSelectComponent extends BaseSelectPanelElement
   clearSelection(): void {
     this.selectedOptionId = null;
     this.triggerValue = this.getTriggerValue(this.selectedOptionId);
-    const listChange = this.listChangeService.getListChange(
-      this.singleSelectOptions,
-      []
-    );
+    const listChange = this.listChangeService.getListChange(this.options, []);
     this.emitChange(listChange);
     this.destroyPanel();
   }
 
   private getTriggerValue(selectedOptionId: string | number): string {
-    return chain(this.singleSelectOptions)
+    return chain(this.options)
       .flatMap('options')
       .filter(option => option.id === selectedOptionId)
       .first()
@@ -134,7 +128,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement
   }
 
   private emitChange(listChange: ListChange): void {
-    this.singleSelectOptions = listChange.getSelectGroupOptions();
+    this.options = listChange.getSelectGroupOptions();
     this.selectChange.emit(listChange);
     const selectedValue = listChange.getSelectedIds()[0];
 
