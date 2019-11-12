@@ -158,7 +158,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
           filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
         )
         .subscribe(() => {
-          this.destroyPanel();
+          this.onCancel();
         });
     }
   }

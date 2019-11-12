@@ -25,7 +25,7 @@ import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate
 import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
 
 describe('MultiSelectComponent', () => {
-  let component;
+  let component: MultiSelectComponent;
   let optionsMock: SelectGroupOption[];
   let fixture: ComponentFixture<MultiSelectComponent>;
   let overlayContainer: OverlayContainer;
@@ -178,7 +178,7 @@ describe('MultiSelectComponent', () => {
     }));
 
     it('should close the panel on apply', fakeAsync(() => {
-      spyOn(component, 'destroyPanel');
+      spyOn(component as any, 'destroyPanel');
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
@@ -192,7 +192,7 @@ describe('MultiSelectComponent', () => {
       ) as HTMLButtonElement;
       applyButton.click();
 
-      expect(component.destroyPanel).toHaveBeenCalled();
+      expect(component['destroyPanel']).toHaveBeenCalled();
       flush();
     }));
   });
@@ -258,9 +258,9 @@ describe('MultiSelectComponent', () => {
 
   describe('OnDestroy', () => {
     it('should invoke panel close', () => {
-      spyOn(component, 'destroyPanel');
+      spyOn(component as any, 'destroyPanel');
       component.ngOnDestroy();
-      expect(component.destroyPanel).toHaveBeenCalled();
+      expect(component['destroyPanel']).toHaveBeenCalled();
     });
   });
 
@@ -331,6 +331,86 @@ describe('MultiSelectComponent', () => {
       ).nativeElement;
       expect(tooltipEl).not.toBe(null);
       expect(totalValuesCounter.innerText).toEqual('(4)');
+      flush();
+    }));
+  });
+
+  describe('cancelSelection', () => {
+    it('should close the panel', fakeAsync(() => {
+      spyOn(component as any, 'destroyPanel');
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+
+      component.onCancel();
+
+      expect(component['destroyPanel']).toHaveBeenCalled();
+      flush();
+    }));
+
+    it('should emit selectCancelled event and ignore option click in listChange', fakeAsync(() => {
+      const expectedListChange = new ListChange(optionsMock);
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      (overlayContainerElement.querySelectorAll(
+        'b-multi-list .option'
+      )[3] as HTMLElement).click();
+
+      component.onCancel();
+
+      expect(component.selectCancelled.emit).toHaveBeenCalledWith(
+        expectedListChange
+      );
+      flush();
+    }));
+  });
+
+  describe('clear -> cancel', () => {
+    it('should reset the selection from options, selectedValuesMap and reset triggerValue', fakeAsync(() => {
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      (overlayContainerElement.querySelectorAll(
+        'b-multi-list .option'
+      )[3] as HTMLElement).click();
+      fixture.autoDetectChanges();
+
+      const clearButton = overlayContainerElement.querySelector(
+        'b-list-footer .clear-button'
+      ) as HTMLElement;
+      clearButton.click();
+
+      component.onCancel();
+
+      fixture.autoDetectChanges();
+      expect(component.selectedValuesMap).toEqual([1, 11]);
+      expect(component.triggerValue).toEqual('Basic Info 1, Personal 1');
+      expect(component.options).toEqual(optionsMock);
+      flush();
+    }));
+
+    it('should invoke selectCancelled.emit with listChange and propagateChange with [3]', fakeAsync(() => {
+      const expectedListChange = new ListChange(optionsMock);
+      component.openPanel();
+      fixture.autoDetectChanges();
+      tick(0);
+      (overlayContainerElement.querySelectorAll(
+        'b-multi-list .option'
+      )[3] as HTMLElement).click();
+      fixture.autoDetectChanges();
+
+      const clearButton = overlayContainerElement.querySelector(
+        'b-list-footer .clear-button'
+      ) as HTMLElement;
+      clearButton.click();
+
+      component.onCancel();
+
+      fixture.autoDetectChanges();
+      expect(component.selectCancelled.emit).toHaveBeenCalledWith(
+        expectedListChange
+      );
       flush();
     }));
   });

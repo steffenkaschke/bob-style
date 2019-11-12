@@ -15,6 +15,7 @@ import { ListFooterComponent } from '../list-footer/list-footer.component';
 import { SearchModule } from '../../../search/search/search.module';
 import { CheckboxComponent } from '../../checkbox/checkbox.component';
 import { ComponentRendererModule } from '../../../services/component-renderer/component-renderer.module';
+import { simpleChange } from '../../../services/utils/test-helpers';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;
@@ -42,7 +43,7 @@ describe('MultiListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         MultiListComponent,
-        MockComponent(ListFooterComponent),
+        ListFooterComponent,
         MockComponent(CheckboxComponent),
       ],
       providers: [ListModelService, ListChangeService, ListKeyboardService],
@@ -63,20 +64,13 @@ describe('MultiListComponent', () => {
         spyOn(component.selectChange, 'emit');
         spyOn(component.apply, 'emit');
 
-        component.ngOnChanges({
-          options: {
-            previousValue: undefined,
-            currentValue: optionsMock,
-            firstChange: true,
-            isFirstChange: () => true,
-          },
-          value: {
-            previousValue: undefined,
-            currentValue: [1, 11],
-            firstChange: true,
-            isFirstChange: () => true,
-          },
-        });
+        component.ngOnChanges(
+          simpleChange({
+            options: optionsMock,
+            value: [1, 11],
+          })
+        );
+
         fixture.autoDetectChanges();
       });
   }));
@@ -187,14 +181,12 @@ describe('MultiListComponent', () => {
           ],
         },
       ];
-      component.ngOnChanges({
-        options: {
-          previousValue: undefined,
-          currentValue: changedOptions,
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
+      component.ngOnChanges(
+        simpleChange({
+          options: changedOptions,
+        })
+      );
+
       fixture.autoDetectChanges();
       options = fixture.debugElement.queryAll(By.css('.option'));
       expect(options.length).toEqual(2);
@@ -217,14 +209,13 @@ describe('MultiListComponent', () => {
           ],
         },
       ];
-      component.ngOnChanges({
-        options: {
-          previousValue: undefined,
-          currentValue: changedOptions,
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
+
+      component.ngOnChanges(
+        simpleChange({
+          options: changedOptions,
+        })
+      );
+
       fixture.detectChanges();
       options = fixture.debugElement.queryAll(By.css('.option'));
       headers = fixture.debugElement.queryAll(By.css('.header'));
@@ -247,14 +238,11 @@ describe('MultiListComponent', () => {
           ],
         },
       ];
-      component.ngOnChanges({
-        options: {
-          previousValue: undefined,
-          currentValue: changedOptions,
-          firstChange: false,
-          isFirstChange: () => true,
-        },
-      });
+      component.ngOnChanges(
+        simpleChange({
+          options: changedOptions,
+        })
+      );
       fixture.autoDetectChanges();
       expect(component.noGroupHeaders).toBe(false);
       const options = fixture.debugElement.queryAll(By.css('.option'));
@@ -291,14 +279,11 @@ describe('MultiListComponent', () => {
           ],
         },
       ];
-      component.ngOnChanges({
-        options: {
-          previousValue: undefined,
-          currentValue: testOptionsMock,
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
+      component.ngOnChanges(
+        simpleChange({
+          options: testOptionsMock,
+        })
+      );
       fixture.autoDetectChanges();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeTruthy();
@@ -314,14 +299,11 @@ describe('MultiListComponent', () => {
           options: [{ value: 'Personal 1', id: 11 }],
         },
       ];
-      component.ngOnChanges({
-        options: {
-          previousValue: undefined,
-          currentValue: testOptionsMock,
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
+      component.ngOnChanges(
+        simpleChange({
+          options: testOptionsMock,
+        })
+      );
       fixture.autoDetectChanges();
       const searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeFalsy();
@@ -351,14 +333,11 @@ describe('MultiListComponent', () => {
           ],
         },
       ];
-      component.ngOnChanges({
-        options: {
-          previousValue: undefined,
-          currentValue: testOptionsMock,
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
+      component.ngOnChanges(
+        simpleChange({
+          options: testOptionsMock,
+        })
+      );
       fixture.autoDetectChanges();
       let searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeTruthy();
@@ -455,14 +434,11 @@ describe('MultiListComponent', () => {
           ],
         },
       ];
-      component.ngOnChanges({
-        options: {
-          previousValue: undefined,
-          currentValue: testOptionsMock,
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
+      component.ngOnChanges(
+        simpleChange({
+          options: testOptionsMock,
+        })
+      );
       fixture.autoDetectChanges();
 
       const headerCheckbox = fixture.debugElement.queryAll(
@@ -613,20 +589,20 @@ describe('MultiListComponent', () => {
       expect(listFooter.componentInstance.listActions.clear).toBeTruthy();
       expect(listFooter.componentInstance.listActions.apply).toBeFalsy();
     });
-    it('should have all 3 footer options if passed', () => {
+
+    it('should have all 2 footer options if passed', () => {
       component.listActions = {
         clear: true,
         apply: true,
-        cancel: true,
       };
       fixture.autoDetectChanges();
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
       expect(listFooter.componentInstance.listActions).toEqual({
         clear: true,
         apply: true,
-        cancel: true,
       });
     });
+
     it('should emit apply', () => {
       component.listActions = {
         apply: true,
@@ -649,6 +625,7 @@ describe('MultiListComponent', () => {
       );
       expect(listChange.getSelectedIds()).toEqual([]);
     });
+
     it('on clear should set selection map for disabled and selected options', () => {
       const testOptionsMock = [
         {
@@ -666,14 +643,11 @@ describe('MultiListComponent', () => {
           ],
         },
       ];
-      component.ngOnChanges({
-        options: {
-          previousValue: undefined,
-          currentValue: testOptionsMock,
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
+      component.ngOnChanges(
+        simpleChange({
+          options: testOptionsMock,
+        })
+      );
       fixture.autoDetectChanges();
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
       listFooter.componentInstance.clear.emit();
@@ -685,6 +659,59 @@ describe('MultiListComponent', () => {
         component.selectedIdsMap
       );
       expect(listChange.getSelectedIds()).toEqual([12]);
+    });
+  });
+
+  describe('list footer actions', () => {
+    let applyButton: HTMLButtonElement;
+    let clearButton: HTMLButtonElement;
+
+    beforeEach(() => {
+      component.listActions = {
+        clear: true,
+        apply: true,
+      };
+      fixture.detectChanges();
+
+      applyButton = fixture.debugElement.query(By.css('.apply-button button'))
+        .nativeElement;
+      clearButton = fixture.debugElement.query(By.css('.clear-button'))
+        .nativeElement;
+    });
+
+    it('should start with Appply disabled', () => {
+      expect(applyButton.disabled).toBeTruthy();
+    });
+
+    it('should enable Apply button after option click', () => {
+      const options = fixture.debugElement.queryAll(
+        By.css('.option-select.option')
+      );
+
+      options[1].nativeElement.click();
+      fixture.detectChanges();
+      expect(applyButton.disabled).toBeFalsy();
+    });
+
+    it('should disable Clear button if no options are selected', () => {
+      component.ngOnChanges(
+        simpleChange({
+          options: optionsMock.map(group => ({
+            ...group,
+            options: group.options.map(option => ({
+              ...option,
+              selected: false,
+            })),
+          })),
+        })
+      );
+      fixture.detectChanges();
+
+      expect(clearButton.classList).toContain('disabled');
+    });
+
+    it('should enable Clear button if some options are selected', () => {
+      expect(clearButton.classList).not.toContain('disabled');
     });
   });
 });
