@@ -1,3 +1,5 @@
+@import '../../style/common-imports';
+
 :host {
   margin: 0 -4px;
   display: flex;
@@ -23,7 +25,12 @@
   }
 }
 
-b-chip {
+:host ::ng-deep b-chip {
   margin: 4px;
   cursor: pointer;
+
+  .chip-text {
+    max-width: 250px;
+    @include text-truncate;
+  }
 }

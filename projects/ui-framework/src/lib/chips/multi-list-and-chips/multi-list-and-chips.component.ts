@@ -17,7 +17,6 @@ import { ChipType } from '../chips.enum';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
 import { simpleUID, cloneArray } from '../../services/utils/functional-utils';
 import { EmptyStateConfig } from '../../buttons-indicators/empty-state/empty-state.interface';
-import { Icons } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-multi-list-and-chips',
@@ -73,12 +72,12 @@ export class MultiListAndChipsComponent implements OnChanges {
   public onListChange(listChange: ListChange): void {
     this.options = listChange.getSelectGroupOptions();
     this.optionsToChips(this.options);
-    this.selectChange.emit(new ListChange(this.options));
+    this.emitChange();
   }
 
   public onChipRemoved(chip: Chip) {
     this.listOptions = this.removeChipAndOption(chip);
-    this.selectChange.emit(new ListChange(this.options));
+    this.emitChange();
   }
 
   private optionsToChips(options: SelectGroupOption[] = this.options): Chip[] {
@@ -148,5 +147,9 @@ export class MultiListAndChipsComponent implements OnChanges {
     }
 
     return (this.options = options);
+  }
+
+  private emitChange(): void {
+    this.selectChange.emit(new ListChange(this.options));
   }
 }
