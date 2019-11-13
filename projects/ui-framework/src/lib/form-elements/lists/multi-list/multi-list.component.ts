@@ -5,6 +5,7 @@ import {
   SimpleChanges,
   ChangeDetectorRef,
   NgZone,
+  Input,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { cloneDeep, flatMap, chain } from 'lodash';
@@ -49,6 +50,8 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     };
   }
 
+  @Input() startWithGroupsCollapsed = true;
+
   public selectedIdsMap: (string | number)[];
   private optionsDraft: SelectGroupOption[];
 
@@ -67,7 +70,9 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
         !this.options ||
         (this.options.length < 2 && !this.showSingleGroupHeader);
 
-      this.updateLists(this.options.length > 1);
+      this.updateLists(
+        this.startWithGroupsCollapsed && this.options.length > 1
+      );
       this.updateClearButtonState();
     }
   }
@@ -160,13 +165,13 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     );
   }
 
-  searchChange(s: string): void {
-    this.searchValue = s;
+  searchChange(searchValue: string): void {
+    this.searchValue = searchValue;
     this.filteredOptions = this.listModelService.getFilteredOptions(
       this.options,
-      s
+      searchValue
     );
-    this.updateLists(!s);
+    this.updateLists(this.startWithGroupsCollapsed && !searchValue);
   }
 
   getListChange(): ListChange {

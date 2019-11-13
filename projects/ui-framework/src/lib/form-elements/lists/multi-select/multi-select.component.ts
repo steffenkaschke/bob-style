@@ -4,7 +4,6 @@ import {
   forwardRef,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
   ViewContainerRef,
@@ -32,6 +31,7 @@ import {
   BELOW_END,
   ABOVE_END,
 } from '../../../popups/panel/panel-position-service/panel-position.const';
+import { isNotEmptyArray } from '../../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-multi-select',
@@ -55,7 +55,7 @@ import {
   ],
 })
 export class MultiSelectComponent extends BaseSelectPanelElement
-  implements OnInit, OnChanges {
+  implements OnChanges {
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
@@ -87,6 +87,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement
   truncate: TruncateTooltipComponent;
 
   @Input() showSingleGroupHeader = false;
+  @Input() startWithGroupsCollapsed = true;
+
   @Output() selectModified: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
@@ -105,18 +107,14 @@ export class MultiSelectComponent extends BaseSelectPanelElement
 
   private listChange: ListChange;
 
-  ngOnInit(): void {
-    this.selectedValuesMap = this.options
-      ? this.getSelectedValuesMap(this.options)
-      : [];
-    this.setDisplayValue();
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);
 
-    if (changes.options && !changes.option.firstChange) {
-      this.selectedValuesMap = this.getSelectedValuesMap(this.options);
+    if (changes.options) {
+      this.selectedValuesMap = isNotEmptyArray(this.options)
+        ? this.getSelectedValuesMap(this.options)
+        : [];
+
       this.setDisplayValue();
     }
   }

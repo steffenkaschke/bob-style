@@ -41,7 +41,7 @@ export class ListModelService {
         groupName: group.groupName,
         value: group.groupName,
         id: group.groupName,
-        selected: null,
+        selected: false,
       };
 
       let virtualOptions;
@@ -101,7 +101,7 @@ export class ListModelService {
       set(
         option,
         'selected',
-        option.isPlaceHolder ? null : includes(selectedIdsMap, option.id)
+        option.isPlaceHolder ? false : includes(selectedIdsMap, option.id)
       );
     });
     forEach(listHeaders, header => {
@@ -119,9 +119,9 @@ export class ListModelService {
 
   getFilteredOptions(
     options: SelectGroupOption[],
-    s: string
+    searchValue: string
   ): SelectGroupOption[] {
-    const matcher = new RegExp(escapeRegExp(s), 'i');
+    const matcher = new RegExp(escapeRegExp(searchValue), 'i');
     const filteredOptions = map(options, group => {
       const filteredGroup =
         group.groupName.match(matcher) ||

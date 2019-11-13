@@ -64,10 +64,11 @@ describe('MultiListComponent', () => {
         spyOn(component.selectChange, 'emit');
         spyOn(component.apply, 'emit');
 
+        component.startWithGroupsCollapsed = false;
+
         component.ngOnChanges(
           simpleChange({
             options: optionsMock,
-            value: [1, 11],
           })
         );
 
@@ -90,6 +91,7 @@ describe('MultiListComponent', () => {
           placeHolderSize: 88,
           selected: false,
           indeterminate: true,
+          selectedCount: 1,
         },
         {
           groupName: 'Personal Header',
@@ -97,9 +99,11 @@ describe('MultiListComponent', () => {
           placeHolderSize: 88,
           selected: false,
           indeterminate: false,
+          selectedCount: 0,
         },
       ]);
     });
+
     it('should create optionsModel based on options', () => {
       expect(component.listOptions).toEqual([
         {
@@ -107,7 +111,7 @@ describe('MultiListComponent', () => {
           groupName: 'Basic Info Header',
           value: 'Basic Info Header',
           id: 'Basic Info Header',
-          selected: null,
+          selected: false,
         },
         {
           value: 'Basic Info 1',
@@ -128,7 +132,7 @@ describe('MultiListComponent', () => {
           groupName: 'Personal Header',
           value: 'Personal Header',
           id: 'Personal Header',
-          selected: null,
+          selected: false,
         },
         {
           value: 'Personal 1',
@@ -147,6 +151,7 @@ describe('MultiListComponent', () => {
         },
       ]);
     });
+
     it('should render 2 headers', () => {
       const headers = fixture.debugElement.queryAll(By.css('.header'));
       expect(headers.length).toEqual(2);
@@ -398,21 +403,21 @@ describe('MultiListComponent', () => {
 
   describe('header checkbox click', () => {
     it('should select all options in group when selecting header', () => {
-      const headerCheckbox = fixture.debugElement.queryAll(
+      const headerCheckbox = fixture.debugElement.query(
         By.css('.header .checkbox')
-      );
-      headerCheckbox[0].componentInstance.changed.emit();
+      ).nativeElement;
+      headerCheckbox.click();
       fixture.autoDetectChanges();
       expect(component.selectedIdsMap).toEqual([1, 2]);
     });
     it('should deselect all options in group when deselecting header', () => {
-      const headerCheckbox = fixture.debugElement.queryAll(
+      const headerCheckbox = fixture.debugElement.query(
         By.css('.header .checkbox')
-      );
-      headerCheckbox[0].componentInstance.changed.emit();
+      ).nativeElement;
+      headerCheckbox.click();
       fixture.autoDetectChanges();
       expect(component.selectedIdsMap).toEqual([1, 2]);
-      headerCheckbox[0].componentInstance.changed.emit();
+      headerCheckbox.click();
       fixture.autoDetectChanges();
       expect(component.selectedIdsMap).toEqual([]);
     });
@@ -443,14 +448,15 @@ describe('MultiListComponent', () => {
 
       const headerCheckbox = fixture.debugElement.queryAll(
         By.css('.header .checkbox')
-      );
-      headerCheckbox[1].componentInstance.changed.emit();
+      )[1].nativeElement;
+      headerCheckbox.click();
       fixture.autoDetectChanges();
       expect(component.selectedIdsMap).toEqual([12, 11, 13]);
-      headerCheckbox[1].componentInstance.changed.emit();
+      headerCheckbox.click();
       fixture.autoDetectChanges();
       expect(component.selectedIdsMap).toEqual([12]);
     });
+
     it('should not update options model when header is collapsed', () => {
       const expectedHeaderModel = [
         {
@@ -459,6 +465,7 @@ describe('MultiListComponent', () => {
           placeHolderSize: 88,
           selected: true,
           indeterminate: false,
+          selectedCount: 2,
         },
         {
           groupName: 'Personal Header',
@@ -466,6 +473,7 @@ describe('MultiListComponent', () => {
           placeHolderSize: 88,
           selected: false,
           indeterminate: false,
+          selectedCount: 0,
         },
       ];
       const expectedOptionsModel = [
@@ -474,14 +482,14 @@ describe('MultiListComponent', () => {
           groupName: 'Basic Info Header',
           value: 'Basic Info Header',
           id: 'Basic Info Header',
-          selected: null,
+          selected: false,
         },
         {
           isPlaceHolder: true,
           groupName: 'Personal Header',
           value: 'Personal Header',
           id: 'Personal Header',
-          selected: null,
+          selected: false,
         },
         {
           value: 'Personal 1',
@@ -499,24 +507,28 @@ describe('MultiListComponent', () => {
           selected: false,
         },
       ];
-      const headerCollapseTrigger = fixture.debugElement.queryAll(
+
+      const headerCollapseTrigger = fixture.debugElement.query(
         By.css('.header-collapse-trigger')
-      )[0];
-      headerCollapseTrigger.triggerEventHandler('click', null);
+      ).nativeElement;
+      headerCollapseTrigger.click();
       fixture.autoDetectChanges();
-      const headerCheckbox = fixture.debugElement.queryAll(
+
+      const headerCheckbox = fixture.debugElement.query(
         By.css('.header .checkbox')
-      );
-      headerCheckbox[0].componentInstance.changed.emit();
+      ).nativeElement;
+      headerCheckbox.click();
       fixture.autoDetectChanges();
+
       expect(component.listHeaders).toEqual(expectedHeaderModel);
       expect(component.listOptions).toEqual(expectedOptionsModel);
     });
+
     it('should emit event when header is selected', () => {
-      const headerCheckbox = fixture.debugElement.queryAll(
+      const headerCheckbox = fixture.debugElement.query(
         By.css('.header .checkbox')
-      );
-      headerCheckbox[0].componentInstance.changed.emit();
+      ).nativeElement;
+      headerCheckbox.click();
       fixture.autoDetectChanges();
       const listChange = component['listChangeService'].getListChange(
         component.options,
@@ -565,10 +577,8 @@ describe('MultiListComponent', () => {
       const headers = fixture.debugElement.queryAll(By.css('.header'));
       expect(options.length).toEqual(1);
       expect(headers.length).toEqual(1);
-      expect(options[0].nativeElement.innerText.trim()).toEqual('Basic Info 1');
-      expect(headers[0].nativeElement.innerText.trim()).toEqual(
-        'Basic Info Header'
-      );
+      expect(options[0].nativeElement.innerText).toContain('Basic Info 1');
+      expect(headers[0].nativeElement.innerHTML).toContain('Basic Info Header');
     });
     it('should show group headers and no options if search only matches headers', () => {
       component.searchChange('Personal He');
