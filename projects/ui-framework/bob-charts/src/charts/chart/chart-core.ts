@@ -76,9 +76,6 @@ export abstract class ChartCore implements AfterViewInit {
     this.zone.runOutsideAngular(() => {
       this.options = merge({
         colors: this.colorPalette,
-        lang: {
-          noData: '' // overrides no data alert
-        },
         chart: {
           events: {
             render: (event) => {
@@ -139,7 +136,7 @@ export abstract class ChartCore implements AfterViewInit {
       this.initialOptions();
 
       this.zone.runOutsideAngular(() => {
-        this.highChartRef.update(this.options);
+        this.highChartRef.update(this.options, true, true);
       });
     }
   }
