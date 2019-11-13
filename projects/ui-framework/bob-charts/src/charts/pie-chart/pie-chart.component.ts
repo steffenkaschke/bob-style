@@ -39,7 +39,7 @@ export class PieChartComponent extends ChartCore implements OnChanges {
         }
       },
       lang: {
-        noData: '' // overrides no data alert
+        noData: ''
       },
       series: [
         {
