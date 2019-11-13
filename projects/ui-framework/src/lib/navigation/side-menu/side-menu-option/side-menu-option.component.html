@@ -1,11 +1,11 @@
 <div class="side-menu-option-container"
-     [ngClass]="{'selected': selected, 'no-prefix': !option.prefix}"
+     [ngClass]="{'selected': selected}"
      (click)="onSelectOption()"
      (mouseenter)="setShowActions(true)"
      (mouseleave)="setShowActions(false)">
-  <div class="option-prefix">
-    <ng-template #prefix></ng-template>
-  </div>
+  <b-icon *ngIf="option.icon"
+          [icon]="option.icon"
+          [color]="selected ? colors.white : colors.normal"></b-icon>
   <div class="option-display-name"
        matTooltip="{{option.displayName}}"
        [matTooltipPosition]="'above'"

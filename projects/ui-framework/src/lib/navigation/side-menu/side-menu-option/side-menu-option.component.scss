@@ -3,8 +3,7 @@
 
 :host {
   .side-menu-option-container {
-    display: grid;
-    grid-template-columns: max-content 1fr max-content;
+    display: flex;
     cursor: pointer;
     align-items: center;
     @include listOption;
@@ -13,14 +12,6 @@
     &.selected,
     &.focus {
       background-color: $grey-200;
-    }
-
-    &.no-prefix {
-      grid-template-columns: 0px 1fr max-content;
-
-      .option-display-name {
-        margin: 0 16px 0 0;
-      }
     }
 
     &.selected {
@@ -39,5 +30,9 @@
       white-space: nowrap;
       text-align: left;
     }
+  }
+
+  .option-actions {
+    margin-left: auto;
   }
 }

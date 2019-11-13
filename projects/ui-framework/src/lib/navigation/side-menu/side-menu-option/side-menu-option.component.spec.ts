@@ -22,13 +22,12 @@ describe('SideMenuOptionComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SideMenuOptionComponent);
     component = fixture.componentInstance;
-    component.option = head(getSideMenuOptionsMock());
+    component.option = head(getSideMenuOptionsMock);
     component.selected = true;
     fixture.detectChanges();
   });
 
   describe('template', () => {
-    let prefixComponent: DebugElement;
     let sideMenuOptionContainer: DebugElement;
     let optionDisplayName: DebugElement;
     let optionActions: DebugElement;
@@ -54,40 +53,6 @@ describe('SideMenuOptionComponent', () => {
       sideMenuOptionContainer.nativeElement.click();
       fixture.detectChanges();
       expect(selectOption).toHaveBeenCalledWith(1);
-    });
-
-    it('should display prefix component if exists', () => {
-      const changes: SimpleChanges = {
-        option: {
-          currentValue: getSideMenuOptionsMock()[0],
-          previousValue: {},
-          firstChange: true,
-          isFirstChange: () => true
-        }
-      };
-      component.ngOnChanges(changes);
-      fixture.detectChanges();
-      prefixComponent = fixture.debugElement.query(
-        By.css('.option-prefix b-icon')
-      );
-      expect(prefixComponent).toBeTruthy();
-    });
-
-    it('should not display prefix component if not exists', () => {
-      const changes: SimpleChanges = {
-        option: {
-          currentValue: {},
-          previousValue: {},
-          firstChange: true,
-          isFirstChange: () => true
-        }
-      };
-      component.ngOnChanges(changes);
-      fixture.detectChanges();
-      prefixComponent = fixture.debugElement.query(
-        By.css('.option-prefix b-icon')
-      );
-      expect(prefixComponent).toBeFalsy();
     });
 
     it('should show display name', () => {

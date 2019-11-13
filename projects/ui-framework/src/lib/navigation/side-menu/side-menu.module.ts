@@ -6,6 +6,7 @@ import { MenuModule } from '../menu/menu.module';
 import { IconsModule } from '../../icons/icons.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ButtonsModule } from '../../buttons/buttons.module';
+import { TypographyModule } from '../../typography/typography.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ButtonsModule } from '../../buttons/buttons.module';
     MenuModule,
     MatTooltipModule,
     ButtonsModule,
+    TypographyModule,
   ],
   exports: [
     SideMenuComponent,

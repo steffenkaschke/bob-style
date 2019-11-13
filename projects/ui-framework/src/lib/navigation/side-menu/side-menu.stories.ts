@@ -16,6 +16,7 @@ import { IconComponent } from '../../icons/icon.component';
 import { IconsModule } from '../../icons/icons.module';
 import { getSideMenuOptionsMock } from './side-menu.mock';
 import { SideMenuOption } from './side-menu-option/side-menu-option.interface';
+import { ButtonsModule } from 'bob-style';
 
 const inputStories = storiesOf(ComponentGroupType.Navigation, module)
   .addDecorator(withNotes)
@@ -23,7 +24,9 @@ const inputStories = storiesOf(ComponentGroupType.Navigation, module)
 
 const template = `
 <b-side-menu [options]="options"
+             [headerLabel]="headerLabel"
              (selectOption)="selectOption($event)">
+  <b-square-button icon="b-icon-file-download" type="tertiary"></b-square-button>
 </b-side-menu>
 `;
 
@@ -44,6 +47,7 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | --- | ---
+  headerLabel | string | header of menu 
   options | SideMenuOption[] | array of options
   onSelectOption | Action | select option emitter
 
@@ -52,7 +56,7 @@ const note = `
   ~~~
 `;
 
-const sideMenuOptionsMock = getSideMenuOptionsMock();
+const sideMenuOptionsMock = getSideMenuOptionsMock;
 
 inputStories.add(
   'Side Menu',
@@ -60,6 +64,7 @@ inputStories.add(
     return {
       template: storyTemplate,
       props: {
+        headerLabel: text('headerLabel', 'test menu'),
         options: object<SideMenuOption[]>('options', sideMenuOptionsMock),
         selectOption: action('Side menu select')
       },
@@ -69,7 +74,8 @@ inputStories.add(
           BrowserAnimationsModule,
           SideMenuModule,
           StoryBookLayoutModule,
-          IconsModule
+          IconsModule,
+          ButtonsModule,
         ]
       }
     };
