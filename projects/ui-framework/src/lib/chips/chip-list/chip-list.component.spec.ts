@@ -5,7 +5,7 @@ import { ChipModule } from '../chip/chip.module';
 import {
   elementsFromFixture,
   simpleChange,
-  emitNativeEvent
+  emitNativeEvent,
 } from '../../services/utils/test-helpers';
 import { ChipComponent } from '../chip/chip.component';
 import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
@@ -27,35 +27,35 @@ describe('ChipListComponent', () => {
   const chips = [
     {
       text: 'A',
-      id: 1
+      id: 1,
     },
     {
       text: 'B',
-      id: 2
+      id: 2,
     },
     {
       text: 'C',
       id: 3,
-      disabled: true
-    }
+      disabled: true,
+    },
   ];
 
   const avatarChips = [
     {
       text: 'A',
       id: 1,
-      imageSource: emptyImg
+      imageSource: emptyImg,
     },
     {
       text: 'B',
       id: 2,
-      imageSource: emptyImg
+      imageSource: emptyImg,
     },
     {
       text: 'C',
       id: 3,
-      imageSource: emptyImg
-    }
+      imageSource: emptyImg,
+    },
   ];
 
   beforeEach(async(() => {
@@ -63,10 +63,10 @@ describe('ChipListComponent', () => {
       declarations: [ChipListComponent],
       imports: [ChipModule, AvatarModule],
       providers: [EventManagerPlugins[0]],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(ChipListComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default }
+        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents()
       .then(() => {
@@ -104,7 +104,7 @@ describe('ChipListComponent', () => {
   describe('Config & Attributes', () => {
     it('should change Chip type', () => {
       component.config = {
-        type: ChipType.info
+        type: ChipType.info,
       };
       fixture.detectChanges();
       expect(
@@ -114,7 +114,7 @@ describe('ChipListComponent', () => {
 
     it('should set disabled attribute', () => {
       component.config = {
-        disabled: true
+        disabled: true,
       };
       fixture.detectChanges();
       expect(
@@ -124,7 +124,7 @@ describe('ChipListComponent', () => {
 
     it('should enable focusable', () => {
       component.config = {
-        focusable: true
+        focusable: true,
       };
       fixture.detectChanges();
       expect(
@@ -171,7 +171,7 @@ describe('ChipListComponent', () => {
 
     it('should enable removable', () => {
       component.config = {
-        removable: true
+        removable: true,
       };
       fixture.detectChanges();
       expect(
@@ -181,14 +181,15 @@ describe('ChipListComponent', () => {
         chipsElements.filter(
           elem =>
             elem.children.length > 0 &&
-            elem.children[0].className === 'remove-button'
+            elem.children[elem.children.length - 1].className ===
+              'remove-button'
         ).length
       ).toEqual(2);
     });
 
     it('should set align attribute', () => {
       component.config = {
-        align: ChipListAlign.right
+        align: ChipListAlign.right,
       };
       fixture.detectChanges();
       expect(listElement.dataset.align).toEqual(ChipListAlign.right);
@@ -205,26 +206,26 @@ describe('ChipListComponent', () => {
   describe('Removable chips', () => {
     it('should emit removed event when Chip remove button is clicked', () => {
       component.config = {
-        removable: true
+        removable: true,
       };
       fixture.detectChanges();
-      (chipsElements[0].children[0] as HTMLElement).click();
+      (chipsElements[0].querySelector('.remove-button') as HTMLElement).click();
       expect(component.removed.emit).toHaveBeenCalled();
     });
     it('should not have remove event if chip is disabled', () => {
       component.config = {
-        removable: true
+        removable: true,
       };
       fixture.detectChanges();
-      expect(chipsElements[1].children.length).toEqual(1); // remove button
-      expect(chipsElements[2].children.length).toEqual(0);
+      expect(chipsElements[1].querySelector('.remove-button')).toBeTruthy(); // remove button
+      expect(chipsElements[2].querySelector('.remove-button')).toBeFalsy(0);
     });
   });
 
   describe('Selectable chips', () => {
     it('should set Chip selected atrribute when on click', () => {
       component.config = {
-        selectable: true
+        selectable: true,
       };
       fixture.detectChanges();
       expect(chipsComponents[0].selected).toBeFalsy();
@@ -234,7 +235,7 @@ describe('ChipListComponent', () => {
     });
     it('should emit selected event when Chip is selected', () => {
       component.config = {
-        selectable: true
+        selectable: true,
       };
       fixture.detectChanges();
       chipsElements[0].click();
@@ -253,7 +254,7 @@ describe('ChipListComponent', () => {
   describe('Avatar chips', () => {
     it('should display avatar Chips', () => {
       component.config = {
-        type: ChipType.avatar
+        type: ChipType.avatar,
       };
       fixture.detectChanges();
       component.chips = avatarChips;
@@ -285,7 +286,7 @@ describe('ChipListComponent', () => {
       expect(component.chips).toEqual([
         { text: 'A' },
         { text: 'B' },
-        { text: 'C' }
+        { text: 'C' },
       ]);
     });
   });

@@ -81,15 +81,17 @@ $input-focus-border-color: $grey-700;
   line-height: $input-height;
 }
 
-@mixin bFormElement-label {
+@mixin bFormElement-label($empty-rule: true) {
   box-sizing: border-box;
   display: block;
   min-height: $label-height;
   margin: 0 0 $label-hint-margin 0;
   @include b-body($color: $label-color, $addCssVars: true);
 
-  &:empty {
-    display: none;
+  @if $empty-rule {
+    &:empty {
+      display: none;
+    }
   }
 }
 

@@ -6,14 +6,14 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { EmptyStateModule } from './empty-state.module';
 import { Icons } from '../../icons/icons.enum';
 import { values } from 'lodash';
-import { EmptyStateConfig } from './empty-state.types';
+import { EmptyStateConfig } from './empty-state.interface';
 
 const iconTypes = values(Icons);
 
 const emptyStateConfig: EmptyStateConfig = {
   text: 'Place your empty state text here',
   icon: Icons.feedback_icon,
-  buttonLabel: 'CLICK HERE'
+  buttonLabel: 'CLICK HERE',
 };
 const EmptyStateStories = storiesOf(
   ComponentGroupType.Indicators,
@@ -33,8 +33,8 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  config | EmptyStateConfig | text, buttonLabel - string, icon - Icon
-  buttonClicked | Function
+  [config] | EmptyStateConfig | { text, buttonLabel, icon, iconSize } | &nbsp;
+  (buttonClicked) | EventEmitter | emited on button click | &nbsp;
   ~~~
   ${template}
   ~~~
@@ -47,11 +47,11 @@ EmptyStateStories.add(
       template: storyTemplate,
       props: {
         config: object('config', emptyStateConfig),
-        buttonClicked: action('button clicked')
+        buttonClicked: action('button clicked'),
       },
       moduleMetadata: {
-        imports: [EmptyStateModule, StoryBookLayoutModule]
-      }
+        imports: [EmptyStateModule, StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }

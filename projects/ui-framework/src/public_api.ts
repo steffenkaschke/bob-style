@@ -107,7 +107,7 @@ export { LinkColor, LinkTarget } from './lib/buttons-indicators/link/link.enum';
 // Empty State Module
 export { EmptyStateModule } from './lib/buttons-indicators/empty-state/empty-state.module';
 export { EmptyStateComponent } from './lib/buttons-indicators/empty-state/empty-state.component';
-export { EmptyStateConfig } from './lib/buttons-indicators/empty-state/empty-state.types';
+export { EmptyStateConfig } from './lib/buttons-indicators/empty-state/empty-state.interface';
 
 /*
 * Comments
