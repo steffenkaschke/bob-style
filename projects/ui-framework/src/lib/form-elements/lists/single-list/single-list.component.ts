@@ -89,7 +89,6 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   }
 
   searchChange(s: string): void {
-    console.log('searchChange');
     this.searchValue = s;
     this.filteredOptions = this.listModelService.getFilteredOptions(
       this.options,
