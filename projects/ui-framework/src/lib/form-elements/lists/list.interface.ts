@@ -4,6 +4,7 @@ export interface ListHeader {
   placeHolderSize: number;
   selected: boolean;
   indeterminate?: boolean;
+  selectedCount?: number;
 }
 
 export interface ListOption {

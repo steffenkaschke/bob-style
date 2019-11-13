@@ -38,14 +38,13 @@
       pointer-events: all;
       position: sticky;
       top: 0;
-      background-color: $white;
-      border-top: 1px solid $grey-300;
-      border-bottom: 1px solid $grey-300;
+      background-color: white;
       box-sizing: border-box;
       display: flex;
       flex-direction: row;
       align-items: center;
       user-select: none;
+      box-shadow: 0 -1px 0 0px $grey-500, 0 1px 0 0px $grey-500;
 
       &.clickable {
         cursor: pointer;
@@ -73,12 +72,10 @@
           display: flex;
           justify-content: center;
           width: 12px;
-          margin-right: 5px;
+          margin-left: -1px;
+          margin-right: 7px;
         }
       }
-    }
-    &:first-child .header {
-      border-top: none;
     }
   }
 }

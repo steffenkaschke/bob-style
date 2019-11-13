@@ -78,14 +78,23 @@ export class ListModelService {
     return flatten(groupOptions);
   }
 
-  getHeadersModel(options: SelectGroupOption[]): ListHeader[] {
-    return map(options, group => ({
-      groupName: group.groupName,
-      isCollapsed: false,
-      placeHolderSize: group.options.length * LIST_EL_HEIGHT,
-      selected: null,
-      indeterminate: this.isIndeterminate(group.options),
-    }));
+  getHeadersModel(
+    options: SelectGroupOption[],
+    isCollapsed = false
+  ): ListHeader[] {
+    return map(options, group => {
+      const selectedCount = this.countSelected(group.options);
+
+      return {
+        groupName: group.groupName,
+        isCollapsed: isCollapsed,
+        placeHolderSize: group.options.length * LIST_EL_HEIGHT,
+        selected: selectedCount === group.options.length,
+        indeterminate:
+          selectedCount > 0 && selectedCount < group.options.length,
+        selectedCount: selectedCount,
+      };
+    });
   }
 
   setSelectedOptions(
@@ -106,9 +115,19 @@ export class ListModelService {
         .filter(group => group.groupName === header.groupName)
         .flatMap('options')
         .value();
-      set(header, 'selected', every(groupOptions, ['selected', true]));
-      set(header, 'indeterminate', this.isIndeterminate(groupOptions));
+
+      header.selectedCount = this.countSelected(groupOptions);
+      header.selected = header.selectedCount === groupOptions.length;
+      header.indeterminate =
+        header.selectedCount > 0 && header.selectedCount < groupOptions.length;
+
+      console.log('groupOptions.length', groupOptions.length);
+      console.log('header.selectedCount', header.selectedCount);
+      console.log('header.selected', header.selected);
+      console.log('header.indeterminate', header.indeterminate);
     });
+
+    console.log(listHeaders);
   }
 
   getFilteredOptions(
@@ -139,10 +158,13 @@ export class ListModelService {
       .value();
   }
 
+  countSelected(options: SelectOption[]): number {
+    return options.filter(o => o.selected).length;
+  }
+
   isIndeterminate(options: SelectOption[]): boolean {
-    const isIndeterminate =
-      options.some(o => o.selected) && !options.every(o => o.selected);
-    return isIndeterminate;
+    const selectedCount = this.countSelected(options);
+    return selectedCount > 0 && selectedCount < options.length;
   }
 
   assignOptionSelectedValue(

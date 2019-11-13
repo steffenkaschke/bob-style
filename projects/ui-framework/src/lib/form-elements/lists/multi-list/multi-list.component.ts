@@ -122,6 +122,8 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.listOptions,
       this.optionsDraft
     );
+
+    this.cd.detectChanges();
   }
 
   optionClick(option: ListOption): void {
@@ -166,7 +168,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.options,
       s
     );
-    this.updateLists();
+    this.updateLists(false);
   }
 
   getListChange(): ListChange {
@@ -176,9 +178,10 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     );
   }
 
-  private updateLists(): void {
+  private updateLists(collapseHeaders = false): void {
     this.listHeaders = this.listModelService.getHeadersModel(
-      this.filteredOptions
+      this.filteredOptions,
+      collapseHeaders
     );
     this.listOptions = this.listModelService.getOptionsModel(
       this.filteredOptions,

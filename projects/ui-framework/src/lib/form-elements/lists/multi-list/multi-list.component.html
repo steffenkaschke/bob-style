@@ -31,8 +31,14 @@
                       (checkboxChange)="headerSelect(header)"
                       [doPropagate]="false">
           </b-checkbox>
+          val {{header.selected}}
           <span class="header-option-value"
+                data-max-lines='3'
                 [innerHTML]="header.groupName | highlight: searchValue"></span>
+          <span *ngIf="header.selectedCount > 0"
+                class="header-selected-count">
+            ({{header.selectedCount}})
+          </span>
         </div>
       </div>
       <div [ngStyle]="{height: header.isCollapsed ? 0 : header.placeHolderSize + 'px'}"
