@@ -9,12 +9,10 @@ import {
   set,
   includes,
   filter,
-  every,
   escapeRegExp,
   some,
   compact,
   chain,
-  cloneDeep,
 } from 'lodash';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import {
@@ -23,10 +21,6 @@ import {
   SelectGroupOption,
   SelectOption,
 } from '../list.interface';
-import {
-  hasProp,
-  arrayInsertAt,
-} from '../../../services/utils/functional-utils';
 
 @Injectable()
 export class ListModelService {
@@ -80,14 +74,14 @@ export class ListModelService {
 
   getHeadersModel(
     options: SelectGroupOption[],
-    isCollapsed = false
+    collapseHeaders = false
   ): ListHeader[] {
     return map(options, group => {
       const selectedCount = this.countSelected(group.options);
 
       return {
         groupName: group.groupName,
-        isCollapsed: isCollapsed,
+        isCollapsed: collapseHeaders,
         placeHolderSize: group.options.length * LIST_EL_HEIGHT,
         selected: selectedCount === group.options.length,
         indeterminate:
@@ -120,14 +114,7 @@ export class ListModelService {
       header.selected = header.selectedCount === groupOptions.length;
       header.indeterminate =
         header.selectedCount > 0 && header.selectedCount < groupOptions.length;
-
-      console.log('groupOptions.length', groupOptions.length);
-      console.log('header.selectedCount', header.selectedCount);
-      console.log('header.selected', header.selected);
-      console.log('header.indeterminate', header.indeterminate);
     });
-
-    console.log(listHeaders);
   }
 
   getFilteredOptions(
@@ -165,62 +152,5 @@ export class ListModelService {
   isIndeterminate(options: SelectOption[]): boolean {
     const selectedCount = this.countSelected(options);
     return selectedCount > 0 && selectedCount < options.length;
-  }
-
-  assignOptionSelectedValue(
-    value: boolean,
-    options: SelectGroupOption[],
-    group: Partial<SelectGroupOption> = null,
-    deepClone = false
-  ): SelectGroupOption[] {
-    if (group === null) {
-      return options.map((grp: SelectGroupOption) =>
-        Object.assign({}, grp, {
-          options: grp.options.map((opt: SelectOption) =>
-            Object.assign({}, opt, {
-              selected: opt.disabled ? opt.selected : value,
-            })
-          ),
-        })
-      );
-    }
-
-    const groupIndex = options.findIndex(
-      (grp: SelectGroupOption): boolean => {
-        if (hasProp(group, 'key')) {
-          return grp.key === group.key;
-        }
-        return grp.groupName === group.groupName;
-      }
-    );
-
-    return arrayInsertAt(
-      deepClone ? cloneDeep(options) : options,
-
-      Object.assign({}, options[groupIndex], {
-        options: options[groupIndex].options.map((opt: SelectOption) =>
-          Object.assign({}, opt, {
-            selected: opt.disabled ? opt.selected : value,
-          })
-        ),
-      }),
-
-      groupIndex,
-      true
-    );
-  }
-
-  selectAll(
-    options: SelectGroupOption[],
-    group: Partial<SelectGroupOption> = null
-  ): SelectGroupOption[] {
-    return this.assignOptionSelectedValue(true, options, group);
-  }
-
-  deselectAll(
-    options: SelectGroupOption[],
-    group: Partial<SelectGroupOption> = null
-  ): SelectGroupOption[] {
-    return this.assignOptionSelectedValue(false, options, group);
   }
 }

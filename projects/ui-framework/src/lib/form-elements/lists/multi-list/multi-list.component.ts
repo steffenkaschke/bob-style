@@ -67,7 +67,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
         !this.options ||
         (this.options.length < 2 && !this.showSingleGroupHeader);
 
-      this.updateLists();
+      this.updateLists(this.options.length > 1);
       this.updateClearButtonState();
     }
   }
@@ -168,7 +168,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.options,
       s
     );
-    this.updateLists(false);
+    this.updateLists(!s);
   }
 
   getListChange(): ListChange {
