@@ -92,8 +92,8 @@ describe('SingleSelectComponent', () => {
   }));
 
   describe('ngOnChanges', () => {
-    it('should set triggerValue for selected options', () => {
-      expect(component.triggerValue).toEqual('Basic Info 1');
+    it('should set displayValue for selected options', () => {
+      expect(component.displayValue).toEqual('Basic Info 1');
     });
     it('should update trigger value also when options update', () => {
       const testOptionsMock = cloneDeep(optionsMock);
@@ -106,7 +106,7 @@ describe('SingleSelectComponent', () => {
           isFirstChange: () => false,
         },
       });
-      expect(component.triggerValue).toBe(null);
+      expect(component.displayValue).toBe(null);
       testOptionsMock[1].options[0].selected = true;
       component.ngOnChanges({
         options: {
@@ -116,7 +116,7 @@ describe('SingleSelectComponent', () => {
           isFirstChange: () => false,
         },
       });
-      expect(component.triggerValue).toEqual('Personal 1');
+      expect(component.displayValue).toEqual('Personal 1');
     });
   });
 
@@ -167,7 +167,7 @@ describe('SingleSelectComponent', () => {
       ) as HTMLElement;
       clearButton.click();
       fixture.autoDetectChanges();
-      expect(component.triggerValue).toBe(null);
+      expect(component.displayValue).toBe(null);
       flush();
     }));
     it('should invoke selectChange.emit and propagateChange with null', fakeAsync(() => {

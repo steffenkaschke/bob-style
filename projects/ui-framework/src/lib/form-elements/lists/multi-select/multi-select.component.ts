@@ -94,8 +94,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     ListChange
   >();
 
-  triggerValue: string;
   selectedValuesMap: (number | string)[];
+  displayValueCount: number;
 
   readonly listActions: ListFooterActions = {
     clear: true,
@@ -109,21 +109,20 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     this.selectedValuesMap = this.options
       ? this.getSelectedValuesMap(this.options)
       : [];
-    this.setTriggerValue();
+    this.setDisplayValue();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);
 
-    if (changes.options) {
+    if (changes.options && !changes.option.firstChange) {
       this.selectedValuesMap = this.getSelectedValuesMap(this.options);
-      this.setTriggerValue();
+      this.setDisplayValue();
     }
   }
 
   onSelect(listChange: ListChange): void {
     this.selectedValuesMap = listChange.getSelectedIds();
-    this.setTriggerValue();
     this.listChange = listChange;
     this.emitSelectModified(listChange);
   }
@@ -134,21 +133,22 @@ export class MultiSelectComponent extends BaseSelectPanelElement
 
   onCancel(): void {
     this.selectedValuesMap = this.getSelectedValuesMap(this.options);
-    this.setTriggerValue();
     this.destroyPanel();
     this.selectCancelled.emit(this.getListChange());
   }
 
   onApply(): void {
+    this.setDisplayValue();
     this.emitSelectChange(this.getListChange());
     this.destroyPanel();
   }
 
-  private setTriggerValue(): void {
-    this.triggerValue = this.getTriggerValue(this.selectedValuesMap);
+  private setDisplayValue(): void {
+    this.displayValue = this.getDisplayValue(this.selectedValuesMap);
+    this.displayValueCount = this.selectedValuesMap.length;
   }
 
-  private getTriggerValue(selectedValuesMap: (string | number)[]): string {
+  private getDisplayValue(selectedValuesMap: (string | number)[]): string {
     return chain(this.options)
       .flatMap('options')
       .filter(option => includes(selectedValuesMap, option.id))

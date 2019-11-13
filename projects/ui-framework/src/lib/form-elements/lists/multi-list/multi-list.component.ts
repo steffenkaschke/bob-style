@@ -122,8 +122,6 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.listOptions,
       this.optionsDraft
     );
-
-    this.cd.detectChanges();
   }
 
   optionClick(option: ListOption): void {

@@ -23,8 +23,8 @@
         [expectChanges]="true"
         [trustCssVars]="true"
         [type]="tooltipType"
-        [attr.data-placeholder]="!triggerValue ? (hideLabelOnFocus ?label : placeholder) : null">
-    {{triggerValue}}
+        [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ? label : placeholder) : null">
+    {{displayValue}}
   </span>
 
   <div class="bfe-suffix">
