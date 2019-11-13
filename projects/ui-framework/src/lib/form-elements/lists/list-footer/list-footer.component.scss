@@ -10,6 +10,7 @@
   z-index: 1;
   background-color: $white;
   height: 50px;
+  user-select: none;
 
   &:empty {
     display: none;

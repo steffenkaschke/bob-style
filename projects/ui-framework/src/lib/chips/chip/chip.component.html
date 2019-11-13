@@ -1,7 +1,9 @@
  <ng-content select="b-avatar"></ng-content>
 
- {{ text }}
- <ng-content></ng-content>
+ <span class="chip-text">
+   {{ text }}
+   <ng-content></ng-content>
+ </span>
 
  <b-icon *ngIf="removable && !disabled"
          class="remove-button"
