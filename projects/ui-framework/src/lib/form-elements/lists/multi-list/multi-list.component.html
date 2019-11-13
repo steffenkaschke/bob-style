@@ -28,7 +28,7 @@
                       class="checkbox"
                       [value]="header.selected"
                       [indeterminate]="header.indeterminate"
-                      (checkboxChange)="headerSelect(header)"
+                      (click)="headerSelect(header)"
                       [doPropagate]="false">
           </b-checkbox>
           val {{header.selected}}

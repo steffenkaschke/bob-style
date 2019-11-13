@@ -16,6 +16,7 @@
 }
 
 :host ::ng-deep {
+  .header-option,
   .option {
     .bchk-label,
     .bchk-label:before {
