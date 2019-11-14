@@ -1,16 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DebugElement, NO_ERRORS_SCHEMA, SimpleChanges } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { SideMenuOptionComponent } from './side-menu-option.component';
-import { getSideMenuOptionsMock } from '../side-menu.mock';
-import head from 'lodash/head';
 import { By } from '@angular/platform-browser';
 import { IconsModule } from '../../../icons/icons.module';
+import { SideMenuOption } from '../../side-menu/side-menu-option/side-menu-option.interface';
 
 describe('SideMenuOptionComponent', () => {
   let component: SideMenuOptionComponent;
   let fixture: ComponentFixture<SideMenuOptionComponent>;
+  let option: SideMenuOption;
 
   beforeEach(() => {
+    option = {
+      id: 1,
+      displayName: 'option 1',
+      actions: [{
+        label: 'test',
+        action: () => {}
+      }]
+    };
+
     TestBed.configureTestingModule({
       declarations: [SideMenuOptionComponent],
       providers: [],
@@ -22,7 +31,7 @@ describe('SideMenuOptionComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SideMenuOptionComponent);
     component = fixture.componentInstance;
-    component.option = head(getSideMenuOptionsMock);
+    component.option = option;
     component.selected = true;
     fixture.detectChanges();
   });
@@ -56,7 +65,7 @@ describe('SideMenuOptionComponent', () => {
     });
 
     it('should show display name', () => {
-      expect(optionDisplayName.nativeElement.innerHTML).toEqual('option 1');
+      expect(optionDisplayName.nativeElement.innerText).toEqual(option.displayName);
     });
 
     it('should display option-action if actions provided', () => {
