@@ -56,11 +56,11 @@ const value = `<br><br> <br><br> <span> <br> </span> <div><br></div> <span><br><
 
 <ul>
   <li> <br> <br>
-  don't trust the <span style="font-size: 18px;">👩</span> <a href="https://www.youtube.com/watch?v=h3SD_oBOx7g" target="_blank" class="employee-mention" mention-employee-id="666">@Bitch</a> in apartment 23</li>
+  don't trust the <span style="font-size: 18px;">👩</span> <a href="https://www.youtube.com/watch?v=h3SD_oBOx7g" target="_blank" mention-employee-id="666">@Bitch</a> in apartment 23</li>
   <li>don't eat the <u>yellow</u> snow</li>
   <li>танцуй пока молодой <span style="font-size: 18px;">💃</span></li>
   <li>אמור לא לסמים</li>
-  <li style="direction: rtl; text-align: right;">beware the <a class="employee-mention" href="https://youtu.be/hOHvMqAgcmc?t=11" mention-employee-id="777">@Right Hook</a></li>
+  <li style="direction: rtl; text-align: right;">beware the <a href="https://youtu.be/hOHvMqAgcmc?t=11" mention-employee-id="777">@Right Hook</a></li>
 </ul>
 
 <div><br></div> <span><br></span>
