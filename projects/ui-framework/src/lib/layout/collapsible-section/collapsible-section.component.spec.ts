@@ -2,7 +2,7 @@ import { ComponentFixture, async, TestBed } from '@angular/core/testing';
 import {
   NO_ERRORS_SCHEMA,
   Component,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CollapsibleSectionComponent } from './collapsible-section.component';
@@ -14,8 +14,9 @@ import createSpyObj = jasmine.createSpyObj;
 import {
   elementFromFixture,
   emitNativeEvent,
-  simpleChange
+  simpleChange,
 } from '../../services/utils/test-helpers';
+import { ColorService } from '../../services/color-service/color.service';
 
 @Component({
   template: `
@@ -24,7 +25,7 @@ import {
       <div class="test-content" style="height: 300px;">content</div>
     </b-collapsible-section>
   `,
-  providers: []
+  providers: [],
 })
 class TestComponent {
   constructor() {}
@@ -48,14 +49,15 @@ describe('CollapsibleSectionComponent', () => {
       imports: [],
       declarations: [TestComponent, CollapsibleSectionComponent],
       providers: [
+        ColorService,
         DOMhelpers,
         { provide: UtilsService, useValue: utilsServiceStub },
-        EventManagerPlugins[0]
+        EventManagerPlugins[0],
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(CollapsibleSectionComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default }
+        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents()
       .then(() => {
@@ -154,7 +156,7 @@ describe('CollapsibleSectionComponent', () => {
       collapsibleComponent.expanded = true;
       collapsibleComponent.ngOnChanges(
         simpleChange({
-          expanded: true
+          expanded: true,
         })
       );
       collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
@@ -216,7 +218,7 @@ describe('CollapsibleSectionComponent', () => {
       collapsibleComponent.disabled = true;
       collapsibleComponent.ngOnChanges(
         simpleChange({
-          disabled: true
+          disabled: true,
         })
       );
 
@@ -232,8 +234,9 @@ describe('CollapsibleSectionComponent', () => {
       collapsibleComponent.ngOnChanges(
         simpleChange({
           options: {
-            headerTranscludeStopPropagation: true
-          }
+            headerTranscludeStopPropagation: true,
+            indicatorColor: '#cc2748',
+          },
         })
       );
 
@@ -252,6 +255,17 @@ describe('CollapsibleSectionComponent', () => {
       emitNativeEvent(collapsibleHeader, 'click');
       collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
       expect(collapsiblePanel).toBeTruthy();
+    });
+
+    it('should set css color variables, if indicatorColor prop is passed', () => {
+      const panel = elementFromFixture(fixture, 'b-collapsible-section');
+
+      expect(getComputedStyle(panel).getPropertyValue('--bcp-color')).toEqual(
+        '#cc2748'
+      );
+      expect(
+        getComputedStyle(panel).getPropertyValue('--bcp-color-rgb')
+      ).toEqual('204, 39, 72');
     });
   });
 });
