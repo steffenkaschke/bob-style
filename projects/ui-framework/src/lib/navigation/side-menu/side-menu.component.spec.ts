@@ -24,7 +24,7 @@ describe('SideMenuComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(SideMenuComponent);
         component = fixture.componentInstance;
-        component.options = getSideMenuOptionsMock();
+        component.options = getSideMenuOptionsMock;
         fixture.detectChanges();
       });
   }));
