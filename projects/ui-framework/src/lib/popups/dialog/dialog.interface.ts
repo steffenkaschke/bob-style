@@ -16,6 +16,7 @@ export interface DialogButtons {
 export interface DialogButton {
   label: string;
   disabled?: boolean;
+  class?: string;
   action?(): any;
 }
 
