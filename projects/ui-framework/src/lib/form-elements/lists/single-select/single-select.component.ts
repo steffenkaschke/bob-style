@@ -73,14 +73,13 @@ export class SingleSelectComponent extends BaseSelectPanelElement
     this.listActions = {
       clear: false,
       apply: false,
+      reset: false,
     };
   }
 
   @Input() showSingleGroupHeader = false;
 
-  selectedOptionId: number | string;
-
-  readonly listElHeight = LIST_EL_HEIGHT;
+  public selectedOptionId: number | string;
 
   ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);

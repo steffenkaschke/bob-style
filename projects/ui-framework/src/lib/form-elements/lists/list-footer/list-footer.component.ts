@@ -11,15 +11,18 @@ import { ListFooterActions, ListFooterActionsState } from '../list.interface';
 export class ListFooterComponent {
   @Input() listActions: ListFooterActions = {
     clear: true,
+    reset: false,
     apply: true,
   };
   @Input() listActionsState: ListFooterActionsState = {
     clear: { disabled: false, hidden: true },
+    reset: { disabled: false, hidden: true },
     apply: { disabled: true, hidden: false },
   };
 
   @Output() clear: EventEmitter<void> = new EventEmitter<void>();
   @Output() apply: EventEmitter<void> = new EventEmitter<void>();
+  @Output() reset: EventEmitter<void> = new EventEmitter<void>();
 
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType;
@@ -31,5 +34,9 @@ export class ListFooterComponent {
 
   onClear(): void {
     this.clear.emit();
+  }
+
+  onReset(): void {
+    this.reset.emit();
   }
 }

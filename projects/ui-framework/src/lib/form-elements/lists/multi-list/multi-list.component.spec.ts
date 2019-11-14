@@ -77,10 +77,10 @@ describe('MultiListComponent', () => {
   }));
 
   describe('OnChanges', () => {
-    it('should create selectedIdsMap based on options', () => {
+    it('should create selectedIDs based on options', () => {
       component.ngOnChanges({});
       fixture.detectChanges();
-      expect(component.selectedIdsMap).toEqual([1]);
+      expect(component.selectedIDs).toEqual([1]);
     });
     it('should create headerModel based on options', () => {
       component.ngOnChanges({});
@@ -380,7 +380,7 @@ describe('MultiListComponent', () => {
     it('should update selectionMap on option select with the option id', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
-      expect(component.selectedIdsMap).toEqual([1, 12]);
+      expect(component.selectedIDs).toEqual([1, 12]);
     });
     it('should emit event when selecting an option', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
@@ -396,7 +396,7 @@ describe('MultiListComponent', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[2].triggerEventHandler('click', null);
       fixture.detectChanges();
-      expect(component.selectedIdsMap).not.toContain(11);
+      expect(component.selectedIDs).not.toContain(11);
       expect(component.selectChange.emit).not.toHaveBeenCalled();
     });
   });
@@ -408,7 +408,7 @@ describe('MultiListComponent', () => {
       ).nativeElement;
       headerCheckbox.click();
       fixture.autoDetectChanges();
-      expect(component.selectedIdsMap).toEqual([1, 2]);
+      expect(component.selectedIDs).toEqual([1, 2]);
     });
     it('should deselect all options in group when deselecting header', () => {
       const headerCheckbox = fixture.debugElement.query(
@@ -416,10 +416,10 @@ describe('MultiListComponent', () => {
       ).nativeElement;
       headerCheckbox.click();
       fixture.autoDetectChanges();
-      expect(component.selectedIdsMap).toEqual([1, 2]);
+      expect(component.selectedIDs).toEqual([1, 2]);
       headerCheckbox.click();
       fixture.autoDetectChanges();
-      expect(component.selectedIdsMap).toEqual([]);
+      expect(component.selectedIDs).toEqual([]);
     });
     it('should concat options that are selected and disabled and deselect the rest', () => {
       const testOptionsMock = [
@@ -451,10 +451,10 @@ describe('MultiListComponent', () => {
       )[1].nativeElement;
       headerCheckbox.click();
       fixture.autoDetectChanges();
-      expect(component.selectedIdsMap).toEqual([12, 11, 13]);
+      expect(component.selectedIDs).toEqual([12, 11, 13]);
       headerCheckbox.click();
       fixture.autoDetectChanges();
-      expect(component.selectedIdsMap).toEqual([12]);
+      expect(component.selectedIDs).toEqual([12]);
     });
 
     it('should not update options model when header is collapsed', () => {
@@ -627,11 +627,11 @@ describe('MultiListComponent', () => {
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
       listFooter.componentInstance.clear.emit();
       fixture.detectChanges();
-      expect(component.selectedIdsMap).toEqual([]);
+      expect(component.selectedIDs).toEqual([]);
       expect(component.selectChange.emit).toHaveBeenCalled();
       const listChange = component['listChangeService'].getListChange(
         component.options,
-        component.selectedIdsMap
+        component.selectedIDs
       );
       expect(listChange.getSelectedIds()).toEqual([]);
     });
@@ -662,11 +662,11 @@ describe('MultiListComponent', () => {
       const listFooter = fixture.debugElement.query(By.css('b-list-footer'));
       listFooter.componentInstance.clear.emit();
       fixture.detectChanges();
-      expect(component.selectedIdsMap).toEqual([12]);
+      expect(component.selectedIDs).toEqual([12]);
       expect(component.selectChange.emit).toHaveBeenCalled();
       const listChange = component['listChangeService'].getListChange(
         component.options,
-        component.selectedIdsMap
+        component.selectedIDs
       );
       expect(listChange.getSelectedIds()).toEqual([12]);
     });

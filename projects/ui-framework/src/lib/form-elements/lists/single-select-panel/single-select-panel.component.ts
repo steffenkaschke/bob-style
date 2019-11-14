@@ -47,6 +47,7 @@ export class SingleSelectPanelComponent extends BaseSelectPanelElement
     this.listActions = {
       clear: false,
       apply: false,
+      reset: false,
     };
   }
 

@@ -45,6 +45,7 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement {
     this.doPropagate = false;
     this.listActions = {
       clear: true,
+      reset: false,
       apply: true,
     };
   }

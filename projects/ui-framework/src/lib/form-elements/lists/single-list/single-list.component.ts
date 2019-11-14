@@ -44,12 +44,13 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
     this.listActions = {
       clear: false,
       apply: false,
+      reset: false,
     };
   }
 
-  private selectedOption: SelectOption;
-
   @Input() showNoneOption = false;
+
+  public selectedOption: SelectOption;
 
   ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);

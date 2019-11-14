@@ -10,7 +10,7 @@ import { MultiListModule } from './multi-list.module';
 import { SelectGroupOption } from '../list.interface';
 import { AvatarComponent } from '../../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../../avatar/avatar/avatar.module';
-import { optionsMock } from './multi-list.mock';
+import { optionsMock, optionsMockDef } from './multi-list.mock';
 import { cloneDeep } from 'lodash';
 
 const buttonStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
@@ -19,6 +19,7 @@ const buttonStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 
 const template = `
 <b-multi-list [options]="options"
+              [optionsDefault]="optionsDefault"
               [showSingleGroupHeader]="showSingleGroupHeader"
               (selectChange)="selectChange($event)">
     <b-text-button footerAction
@@ -57,6 +58,7 @@ const note = `
 `;
 
 const options = cloneDeep(optionsMock);
+const optionsDef = cloneDeep(optionsMockDef);
 
 buttonStories.add(
   'Multi list',
@@ -66,6 +68,7 @@ buttonStories.add(
       selectChange: action('Multi list change'),
       showSingleGroupHeader: boolean('showSingleGroupHeader', true),
       options: object<SelectGroupOption>('options', options),
+      optionsDefault: object<SelectGroupOption>('optionsDefault', optionsDef),
     },
     moduleMetadata: {
       imports: [

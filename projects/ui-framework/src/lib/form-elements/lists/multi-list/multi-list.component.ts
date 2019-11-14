@@ -51,17 +51,14 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     );
     this.listActions = {
       clear: true,
+      reset: false,
       apply: false,
-    };
-    this.listActionsState = {
-      clear: { disabled: false, hidden: true },
-      apply: { disabled: true, hidden: false },
     };
   }
 
   @Input() startWithGroupsCollapsed = true;
 
-  public selectedIdsMap: (string | number)[];
+  public selectedIDs: (string | number)[];
   private optionsDraft: SelectGroupOption[];
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -69,7 +66,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
       this.optionsDraft = this.options;
-      this.selectedIdsMap = this.getSelectedIdsMap();
+      this.selectedIDs = this.getSelectedIDs();
       this.filteredOptions = cloneDeep(this.options);
       this.shouldDisplaySearch =
         this.options &&
@@ -123,13 +120,13 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       .filter(option => !option.disabled)
       .flatMap('id')
       .value();
-    this.selectedIdsMap = header.selected
-      ? chain(this.selectedIdsMap)
+    this.selectedIDs = header.selected
+      ? chain(this.selectedIDs)
           .concat(groupOptionsIds)
           .concat(this.getSelectedDisabledMap())
           .uniq()
           .value()
-      : chain(this.selectedIdsMap)
+      : chain(this.selectedIDs)
           .difference(groupOptionsIds)
           .concat(this.getSelectedDisabledMap())
           .uniq()
@@ -148,12 +145,12 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   optionClick(option: ListOption): void {
     if (!option.disabled) {
       option.selected = !option.selected;
-      this.selectedIdsMap = option.selected
-        ? chain(this.selectedIdsMap)
+      this.selectedIDs = option.selected
+        ? chain(this.selectedIDs)
             .concat(option.id)
             .uniq()
             .value()
-        : chain(this.selectedIdsMap)
+        : chain(this.selectedIDs)
             .difference([option.id])
             .value();
 
@@ -169,7 +166,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   }
 
   onClear(): void {
-    this.selectedIdsMap = this.getSelectedDisabledMap();
+    this.selectedIDs = this.getSelectedDisabledMap();
 
     this.emitChange();
     this.updateClearButtonState(true);
@@ -181,6 +178,8 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     );
   }
 
+  onReset(): void {}
+
   searchChange(searchValue: string): void {
     this.searchValue = searchValue;
     this.filteredOptions = this.listModelService.getFilteredOptions(
@@ -191,10 +190,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   }
 
   getListChange(): ListChange {
-    return this.listChangeService.getListChange(
-      this.options,
-      this.selectedIdsMap
-    );
+    return this.listChangeService.getListChange(this.options, this.selectedIDs);
   }
 
   private updateLists(collapseHeaders = false): void {
@@ -214,14 +210,14 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     );
   }
 
-  private getSelectedIdsMap(): (string | number)[] {
-    return this.listModelService.getSelectedIdsMap(this.options);
+  private getSelectedIDs(): (string | number)[] {
+    return this.listModelService.getSelectedIDs(this.options);
   }
 
   private emitChange(): void {
     const listChange: ListChange = this.listChangeService.getListChange(
       this.options,
-      this.selectedIdsMap
+      this.selectedIDs
     );
     this.optionsDraft = listChange.getSelectGroupOptions();
     this.listActionsState.apply.disabled = false;
@@ -250,6 +246,6 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     this.listActionsState.clear.hidden =
       force !== null
         ? force
-        : !this.selectedIdsMap || this.selectedIdsMap.length === 0;
+        : !this.selectedIDs || this.selectedIDs.length === 0;
   }
 }

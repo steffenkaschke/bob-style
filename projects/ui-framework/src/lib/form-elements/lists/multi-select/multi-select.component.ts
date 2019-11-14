@@ -79,6 +79,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     this.panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
     this.listActions = {
       clear: true,
+      reset: false,
       apply: true,
     };
   }
@@ -96,14 +97,13 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     ListChange
   >();
 
-  selectedValuesMap: (number | string)[];
-  displayValueCount: number;
+  public selectedIDs: (number | string)[];
+  public displayValueCount: number;
 
   readonly listActions: ListFooterActions = {
     clear: true,
     apply: true,
   };
-  readonly listElHeight = LIST_EL_HEIGHT;
 
   private listChange: ListChange;
 
@@ -111,8 +111,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     super.ngOnChanges(changes);
 
     if (changes.options) {
-      this.selectedValuesMap = isNotEmptyArray(this.options)
-        ? this.getSelectedValuesMap(this.options)
+      this.selectedIDs = isNotEmptyArray(this.options)
+        ? this.getSelectedIDs(this.options)
         : [];
 
       this.setDisplayValue();
@@ -120,7 +120,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement
   }
 
   onSelect(listChange: ListChange): void {
-    this.selectedValuesMap = listChange.getSelectedIds();
+    this.selectedIDs = listChange.getSelectedIds();
     this.listChange = listChange;
     this.emitSelectModified(listChange);
   }
@@ -130,7 +130,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement
   }
 
   onCancel(): void {
-    this.selectedValuesMap = this.getSelectedValuesMap(this.options);
+    this.selectedIDs = this.getSelectedIDs(this.options);
     this.destroyPanel();
     this.selectCancelled.emit(this.getListChange());
   }
@@ -142,30 +142,25 @@ export class MultiSelectComponent extends BaseSelectPanelElement
   }
 
   private setDisplayValue(): void {
-    this.displayValue = this.getDisplayValue(this.selectedValuesMap);
-    this.displayValueCount = this.selectedValuesMap.length;
+    this.displayValue = this.getDisplayValue(this.selectedIDs);
+    this.displayValueCount = this.selectedIDs.length;
   }
 
-  private getDisplayValue(selectedValuesMap: (string | number)[]): string {
+  private getDisplayValue(selectedIDs: (string | number)[]): string {
     return chain(this.options)
       .flatMap('options')
-      .filter(option => includes(selectedValuesMap, option.id))
+      .filter(option => includes(selectedIDs, option.id))
       .map('value')
       .join(', ')
       .value();
   }
 
-  private getSelectedValuesMap(
-    options: SelectGroupOption[]
-  ): (number | string)[] {
-    return this.listModelService.getSelectedIdsMap(options);
+  private getSelectedIDs(options: SelectGroupOption[]): (number | string)[] {
+    return this.listModelService.getSelectedIDs(options);
   }
 
   private getListChange(): ListChange {
-    return this.listChangeService.getListChange(
-      this.options,
-      this.selectedValuesMap
-    );
+    return this.listChangeService.getListChange(this.options, this.selectedIDs);
   }
 
   private emitSelectChange(listChange: ListChange): void {

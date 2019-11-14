@@ -31,6 +31,7 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
   objectHasTruthyValue,
   applyChanges,
+  isNotEmptyArray,
 } from '../../services/utils/functional-utils';
 import { ListModelService } from './list-service/list-model.service';
 import { ListChangeService } from './list-change/list-change.service';
@@ -60,7 +61,11 @@ export abstract class BaseListElement
   public searchValue: string;
   public shouldDisplaySearch = false;
   public filteredOptions: SelectGroupOption[];
-  public listActionsState: ListFooterActionsState;
+  public listActionsState: ListFooterActionsState = {
+    clear: { disabled: false, hidden: true },
+    reset: { disabled: false, hidden: true },
+    apply: { disabled: true, hidden: false },
+  };
   public hasFooter = true;
 
   protected optionsDefaultIDs: (string | number)[];
@@ -78,13 +83,19 @@ export abstract class BaseListElement
   >();
   @Output() apply: EventEmitter<ListChange> = new EventEmitter<ListChange>();
   @Output() clear: EventEmitter<void> = new EventEmitter<void>();
+  @Output() reset: EventEmitter<void> = new EventEmitter<void>();
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
 
-    // if (changes.optionsDefault) {
-    //   this.optionsDefaultIDs =
-    // }
+    if (changes.optionsDefault && isNotEmptyArray(this.optionsDefault)) {
+      this.optionsDefaultIDs = this.listModelService.getSelectedIDs(
+        this.optionsDefault
+      );
+
+      this.listActions.clear = false;
+      this.listActions.reset = true;
+    }
   }
 
   ngOnInit(): void {
@@ -171,15 +182,19 @@ export abstract class BaseListElement
     });
   }
 
+  optionClick(option: ListOption): void {}
+
+  headerClick(header: ListHeader): void {}
+
   onClear(): void {
     this.clear.emit();
+  }
+
+  onReset(): void {
+    this.reset.emit();
   }
 
   onApply(): void {
     this.apply.emit();
   }
-
-  optionClick(option: ListOption): void {}
-
-  headerClick(header: ListHeader): void {}
 }

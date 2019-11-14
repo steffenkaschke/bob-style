@@ -343,17 +343,17 @@ describe('ListModelService', () => {
     });
   });
 
-  describe('getSelectedIdsMap', () => {
+  describe('getSelectedIDs', () => {
     it('should return empty array when no option is selected', () => {
       optionsMock[0].options[0].selected = false;
-      const selectedIdsMap = listModelService.getSelectedIdsMap(optionsMock);
-      expect(selectedIdsMap).toEqual([]);
+      const selectedIDs = listModelService.getSelectedIDs(optionsMock);
+      expect(selectedIDs).toEqual([]);
     });
     it('should return array of selected Ids', () => {
       optionsMock[0].options[0].selected = true;
       optionsMock[1].options[0].selected = true;
-      const selectedIdsMap = listModelService.getSelectedIdsMap(optionsMock);
-      expect(selectedIdsMap).toEqual([1, 11]);
+      const selectedIDs = listModelService.getSelectedIDs(optionsMock);
+      expect(selectedIDs).toEqual([1, 11]);
     });
   });
 });

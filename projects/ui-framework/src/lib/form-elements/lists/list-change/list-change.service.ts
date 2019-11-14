@@ -8,19 +8,19 @@ export class ListChangeService {
 
   getListChange(
     options: SelectGroupOption[],
-    selectedIdsMap: (string | number)[],
+    selectedIDs: (string | number)[],
   ): ListChange {
-    const currentOptions = this.getCurrentSelectGroupOptions(options, selectedIdsMap);
+    const currentOptions = this.getCurrentSelectGroupOptions(options, selectedIDs);
     return new ListChange(currentOptions);
   }
 
   private getCurrentSelectGroupOptions(
     options: SelectGroupOption[],
-    selectedIdsMap: (string | number)[],
+    selectedIDs: (string | number)[],
   ): SelectGroupOption[] {
     return map(options, g => assign({}, g, {
       options: map(g.options, o => assign({}, o, {
-        selected: includes(selectedIdsMap, o.id),
+        selected: includes(selectedIDs, o.id),
       })),
     }));
   }

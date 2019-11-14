@@ -86,7 +86,8 @@
                [listActions]="listActions"
                [listActionsState]="listActionsState"
                (clear)="onClear()"
-               (apply)="onApply()">
+               (apply)="onApply()"
+               (reset)="onReset()">
   <ng-content footerAction
-              select="[footerAction],[footer],[footerActionLeft]"></ng-content>
+              select="[footerAction],[footerActionRight]"></ng-content>
 </b-list-footer>

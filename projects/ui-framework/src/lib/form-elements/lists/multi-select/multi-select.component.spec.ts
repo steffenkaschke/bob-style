@@ -96,8 +96,8 @@ describe('MultiSelectComponent', () => {
   }));
 
   describe('OnInit', () => {
-    it('should set selectedValuesMap', () => {
-      expect(component.selectedValuesMap).toEqual([1, 11]);
+    it('should set selectedIDs', () => {
+      expect(component.selectedIDs).toEqual([1, 11]);
     });
     it('should set trigger value', () => {
       expect(component.displayValue).toEqual('Basic Info 1, Personal 1');
@@ -117,8 +117,8 @@ describe('MultiSelectComponent', () => {
         })
       );
     });
-    it('should update selectedValuesMap', () => {
-      expect(component.selectedValuesMap).toEqual([12]);
+    it('should update selectedIDs', () => {
+      expect(component.selectedIDs).toEqual([12]);
     });
     it('should update trigger value when options update', () => {
       expect(component.displayValue).toEqual('Personal 2');
@@ -126,14 +126,14 @@ describe('MultiSelectComponent', () => {
   });
 
   describe('onSelect', () => {
-    it('should update selectedValuesMap but not displayValue', fakeAsync(() => {
+    it('should update selectedIDs but not displayValue', fakeAsync(() => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
-      expect(component.selectedValuesMap).toEqual([1, 11, 12]);
+      expect(component.selectedIDs).toEqual([1, 11, 12]);
 
       expect(component.displayValue).not.toEqual(
         'Basic Info 1, Personal 1, Personal 2'
@@ -159,7 +159,7 @@ describe('MultiSelectComponent', () => {
   });
 
   describe('selectChange', () => {
-    it('should emit onSelect with listChange and propagateChange with selectedValuesArray', fakeAsync(() => {
+    it('should emit onSelect with listChange and propagateChange with selected IDs array', fakeAsync(() => {
       const expectedMock = cloneDeep(optionsMock);
       expectedMock[1].options[1].selected = true;
       const expectedListChange = new ListChange(expectedMock);
@@ -213,7 +213,7 @@ describe('MultiSelectComponent', () => {
       expectedOptionsMock[0].options[0].selected = false;
       expectedOptionsMock[1].options[0].selected = false;
     });
-    it('should clear the selection from options, selectedValuesMap and empty displayValue', fakeAsync(() => {
+    it('should clear the selection from options, selectedIDs and empty displayValue', fakeAsync(() => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
@@ -234,7 +234,7 @@ describe('MultiSelectComponent', () => {
 
       fixture.autoDetectChanges();
 
-      expect(component.selectedValuesMap).toEqual([]);
+      expect(component.selectedIDs).toEqual([]);
       expect(component.displayValue).toEqual('');
       expect(component.options).toEqual(expectedOptionsMock);
       flush();
@@ -399,7 +399,7 @@ describe('MultiSelectComponent', () => {
   });
 
   describe('clear -> cancel', () => {
-    it('should reset the selection from options, selectedValuesMap and reset displayValue', fakeAsync(() => {
+    it('should reset the selection from options, selectedIDs and reset displayValue', fakeAsync(() => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
@@ -416,7 +416,7 @@ describe('MultiSelectComponent', () => {
       component.onCancel();
 
       fixture.autoDetectChanges();
-      expect(component.selectedValuesMap).toEqual([1, 11]);
+      expect(component.selectedIDs).toEqual([1, 11]);
       expect(component.displayValue).toEqual('Basic Info 1, Personal 1');
       expect(component.options).toEqual(optionsMock);
       flush();

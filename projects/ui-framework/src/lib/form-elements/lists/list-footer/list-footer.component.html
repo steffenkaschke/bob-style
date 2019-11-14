@@ -5,6 +5,13 @@
                [hidden]="listActionsState.clear.hidden"
                text="Clear"></b-text-button>
 
+<b-text-button *ngIf="listActions.reset"
+               class="reset-button"
+               (clicked)="onReset()"
+               [disabled]="listActionsState.reset.disabled"
+               [hidden]="listActionsState.reset.hidden"
+               text="Reset"></b-text-button>
+
 <ng-content select="[footerAction]"></ng-content>
 
 <b-button *ngIf="listActions.apply"

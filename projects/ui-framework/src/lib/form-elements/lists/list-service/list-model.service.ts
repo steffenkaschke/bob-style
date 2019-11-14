@@ -101,12 +101,12 @@ export class ListModelService {
     listOptions: ListOption[],
     options: SelectGroupOption[]
   ): void {
-    const selectedIdsMap = this.getSelectedIdsMap(options);
+    const selectedIDs = this.getSelectedIDs(options);
     forEach(listOptions, option => {
       set(
         option,
         'selected',
-        option.isPlaceHolder ? false : includes(selectedIdsMap, option.id)
+        option.isPlaceHolder ? false : includes(selectedIDs, option.id)
       );
     });
     forEach(listHeaders, header => {
@@ -142,7 +142,7 @@ export class ListModelService {
     return compact(filteredOptions);
   }
 
-  getSelectedIdsMap(options: SelectGroupOption[]): (number | string)[] {
+  getSelectedIDs(options: SelectGroupOption[]): (number | string)[] {
     return chain(options)
       .flatMap('options')
       .filter(o => o.selected)

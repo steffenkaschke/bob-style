@@ -42,6 +42,7 @@ import { Keys } from '../../enums';
 import { SelectGroupOption, ListFooterActions } from './list.interface';
 import { ListChange } from './list-change/list-change';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
+import { LIST_EL_HEIGHT } from './list.consts';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements OnChanges, AfterViewInit, OnDestroy {
@@ -76,18 +77,18 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
-  showPrefix = true;
-  positionClassList: OverlayPositionClasses = {};
-  panelOpen = false;
-  displayValue: string;
-  panelClassList: string[] = [];
-
-  private panelConfig: OverlayConfig;
+  public showPrefix = true;
+  public positionClassList: OverlayPositionClasses = {};
+  public panelOpen = false;
+  public displayValue: string;
+  public panelClassList: string[] = [];
   public overlayRef: OverlayRef;
+  private panelConfig: OverlayConfig;
   private templatePortal: TemplatePortal;
   private backdropClickSubscriber: Subscription;
   private positionChangeSubscriber: Subscription;
   private windowKeydownSubscriber: Subscription;
+  readonly listElHeight = LIST_EL_HEIGHT;
 
   protected constructor(
     private overlay: Overlay,
