@@ -32,7 +32,9 @@ $link-color: var(--primary-700);
   p {
     margin: 0;
   }
+}
 
+.fr-box[class] {
   [style*='color'] {
     color: inherit !important;
   }

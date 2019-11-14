@@ -310,7 +310,7 @@ export abstract class RTEbaseElement extends BaseFormElement
             rel: 'noopener noreferrer',
             tabindex: '-1',
           },
-          '[class*="mention"]': {
+          '[mention-employee-id],[class*="mention"]': {
             class: 'fr-deletable',
             target: null,
             spellcheck: 'false',
