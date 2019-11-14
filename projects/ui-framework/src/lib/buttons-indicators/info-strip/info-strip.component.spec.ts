@@ -60,11 +60,14 @@ describe('InfoStripComponent', () => {
   });
 
   it('should check info strip link', () => {
+    component.title = 'info strip title';
     component.text = 'info strip text';
     fixture.detectChanges();
-    const text = fixture.debugElement.query(By.css('.content p')).nativeElement;
-    const link = fixture.debugElement.query(By.css('b-link'));
+    const title = fixture.debugElement.query(By.css('.content p:first-child')).nativeElement;
+    expect(title.innerText).toBe('info strip title');
+    const text = fixture.debugElement.query(By.css('.content p:last-child')).nativeElement;
     expect(text.innerText).toBe('info strip text');
+    const link = fixture.debugElement.query(By.css('b-link'));
     expect(link.componentInstance.config.text).toBe('Click here');
     expect(link.componentInstance.config.url).toBe('https://app.hibob.com');
     expect(link.componentInstance.config.target).toBe('_blank');
