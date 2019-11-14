@@ -1,20 +1,19 @@
 import { storiesOf } from '@storybook/angular';
 import { boolean, object, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
-import { cloneDeep } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { QuickFilterModule } from './quick-filter.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuickFilterSelectType } from './quick-filter.enum';
-import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import { QuickFilterConfig } from './quick-filter.interface';
+import { mockCities, mockDepartments, mockJobs } from '../../mock.const';
+import { simpleUID } from '../../services/utils/functional-utils';
 
-const textareaStories = storiesOf(
-  ComponentGroupType.Search,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-quick-filter-bar [quickFilters]="quickFilters"
@@ -29,7 +28,7 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Textarea'" style="background-color: rgb(247,247,247);">
+<b-story-book-layout [title]="'Quick Filter Bar'" style="background-color: rgb(247,247,247);">
 <div style="max-width: calc(100vw - 100px);">
   ${template}
 </div>
@@ -54,53 +53,42 @@ const note = `
   ~~~
 `;
 
-const groupNun = 3;
-const optionsNum = 4;
-
-const optionsMock: SelectGroupOption[] = Array.from(Array(groupNun), (_, i) => {
-  return {
-    groupName: `Basic Info G${i} - header`,
-    options: Array.from(Array(optionsNum), (_, k) => {
-      return {
-        selected: false,
-        value: `Basic Info G${i}_E${k} - option`,
-        id: i * optionsNum + k
-      };
-    })
-  };
-});
+const optionsFromList = (list, key = 'Stuff') => [
+  {
+    groupName: key,
+    options: list.map(c => ({ value: c, id: simpleUID() })),
+  },
+];
 
 const quickFilters: QuickFilterConfig[] = [
-  {
-    selectType: QuickFilterSelectType.multiSelect,
-    label: 'Departments',
-    placeholder: 'No departments',
-    key: 'department',
-    options: [cloneDeep(optionsMock[0]), cloneDeep(optionsMock[1])]
-  },
   {
     selectType: QuickFilterSelectType.multiSelect,
     label: 'Sites',
     placeholder: 'No sites',
     key: 'site',
-    options: cloneDeep(optionsMock)
+    showSingleGroupHeader: false,
+    options: optionsFromList(mockCities(), 'All sites'),
+  },
+  {
+    selectType: QuickFilterSelectType.multiSelect,
+    label: 'Departments',
+    placeholder: 'No departments',
+    key: 'department',
+    showSingleGroupHeader: false,
+    options: optionsFromList(mockDepartments(), 'All departments'),
   },
   {
     selectType: QuickFilterSelectType.singleSelect,
-    label: 'Employment type',
-    placeholder: 'Select employment type',
+    label: 'Jobs',
+    placeholder: 'Select job type',
     key: 'employment',
-    showSingleGroupHeader: true,
-    options: [cloneDeep(optionsMock[0])]
-  }
+    showSingleGroupHeader: false,
+    options: optionsFromList(mockJobs(), 'All jobs'),
+  },
 ];
 
-quickFilters[0].options[0].options[1].selected = true;
-quickFilters[0].options[1].options[1].selected = true;
-quickFilters[2].options[0].options[3].selected = true;
-
-textareaStories.add(
-  'Quick filters',
+story.add(
+  'Quick Filter Bar',
   () => {
     return {
       template: storyTemplate,
@@ -108,16 +96,16 @@ textareaStories.add(
         showResetFilter: boolean('showResetFilter', false),
         quickFilters: object('quickFilters', quickFilters),
         filtersChange: action('Quick filter bar change'),
-        resetFilters: action('Reset Filters click')
+        resetFilters: action('Reset Filters click'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           QuickFilterModule,
-          ButtonsModule
-        ]
-      }
+          ButtonsModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

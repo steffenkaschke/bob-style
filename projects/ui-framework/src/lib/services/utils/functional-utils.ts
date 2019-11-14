@@ -315,3 +315,6 @@ export const arrayInsertAt = (
 
 export const objectHasTruthyValue = (obj: GenericObject) =>
   isNotEmptyObject(obj) && Object.values(obj).find(v => Boolean(v));
+
+export const capitalize = (smth: string): string =>
+  smth.charAt(0).toUpperCase() + smth.slice(1);

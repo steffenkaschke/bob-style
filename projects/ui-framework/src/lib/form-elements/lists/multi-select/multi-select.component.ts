@@ -32,6 +32,7 @@ import {
   BELOW_END,
   ABOVE_END,
 } from '../../../popups/panel/panel-position-service/panel-position.const';
+import { BaseFormElement } from '../../base-form-element';
 
 @Component({
   selector: 'b-multi-select',
@@ -52,6 +53,7 @@ import {
       useExisting: forwardRef(() => MultiSelectComponent),
       multi: true,
     },
+    { provide: BaseFormElement, useExisting: MultiSelectComponent },
   ],
 })
 export class MultiSelectComponent extends BaseSelectPanelElement

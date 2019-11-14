@@ -102,6 +102,7 @@ $input-focus-border-color: $grey-700;
     box-sizing: border-box;
     text-align: left;
     max-width: 100%;
+    min-width: 0;
     @include form-element-margins;
   }
 

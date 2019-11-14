@@ -4,7 +4,7 @@ import {
   Input,
   ChangeDetectorRef,
   ChangeDetectionStrategy,
-  NgZone
+  NgZone,
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
@@ -19,6 +19,7 @@ import { WindowRef } from '../../services/utils/window-ref.service';
 import { startOfMonth } from 'date-fns';
 import { DatepickerType } from './datepicker.enum';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
+import { BaseFormElement } from '../base-form-element';
 
 @Component({
   selector: 'b-datepicker',
@@ -27,24 +28,25 @@ import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.serv
   providers: [
     {
       provide: DateAdapter,
-      useClass: BDateAdapter
+      useClass: BDateAdapter,
     },
     {
       provide: MAT_DATE_FORMATS,
-      useValue: B_DATE_FORMATS
+      useValue: B_DATE_FORMATS,
     },
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DatepickerComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => DatepickerComponent),
-      multi: true
-    }
+      multi: true,
+    },
+    { provide: BaseFormElement, useExisting: DatepickerComponent },
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DatepickerComponent extends BaseDatepickerElement {
   constructor(
@@ -72,7 +74,7 @@ export class DatepickerComponent extends BaseDatepickerElement {
       (value: Date): string =>
         value && this.type === DatepickerType.month
           ? dateToString(startOfMonth(value), serverDateFormat)
-          : dateToString(value, serverDateFormat)
+          : dateToString(value, serverDateFormat),
     ];
 
     this.baseValue = '';

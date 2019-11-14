@@ -4,14 +4,14 @@ import {
   SimpleChanges,
   OnChanges,
   Output,
-  EventEmitter
+  EventEmitter,
 } from '@angular/core';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
 import {
   simpleUID,
   asArray,
   isNullOrUndefined,
-  cloneValue
+  cloneValue,
 } from '../services/utils/functional-utils';
 import { InputEventType } from './form-elements.enum';
 import { FormEvents } from './form-elements.enum';
@@ -21,6 +21,7 @@ export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {
   protected constructor() {}
 
+  @Input() id: string | number = simpleUID('bfe-');
   @Input() label: string;
   @Input() description: string;
   @Input() placeholder: string;
@@ -33,7 +34,6 @@ export abstract class BaseFormElement
   @Input() emitOnWrite = false;
 
   public inputFocused: boolean | boolean[] = false;
-  public id = simpleUID('bfe-');
   public inputTransformers: Function[] = [];
   public outputTransformers: Function[] = [];
   public wrapEvent = true;
@@ -44,7 +44,7 @@ export abstract class BaseFormElement
     eventName: FormEvents.changed,
     doPropagate: this.doPropagate,
     addToEventObj: {},
-    updateValue: false
+    updateValue: false,
   };
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
@@ -112,14 +112,14 @@ export abstract class BaseFormElement
   ): void {
     options = {
       ...this.transmitValueDefOptions,
-      ...options
+      ...options,
     };
     const {
       eventType,
       eventName,
       doPropagate,
       addToEventObj,
-      updateValue
+      updateValue,
     } = options;
 
     // If value is undefined, it will not be transmitted.
@@ -152,7 +152,7 @@ export abstract class BaseFormElement
               ? {
                   event,
                   value,
-                  ...addToEventObj
+                  ...addToEventObj,
                 }
               : value
           );

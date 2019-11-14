@@ -11,7 +11,7 @@ import {
   ElementRef,
   Output,
   EventEmitter,
-  HostBinding
+  HostBinding,
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
@@ -24,7 +24,7 @@ import {
   isKey,
   notFirstChanges,
   cloneValue,
-  isFalsyOrEmpty
+  isFalsyOrEmpty,
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
 import { BDateAdapter } from './date.adapter';
@@ -60,6 +60,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   @ViewChildren(MatDatepickerInput, { read: ElementRef })
   public inputs: QueryList<ElementRef>;
 
+  @Input() id: string | number = simpleUID('bdp-');
+
   @Input() minDate: Date | string;
   @Input() maxDate: Date | string;
   @HostBinding('attr.data-type') @Input() type: DatepickerType =
@@ -73,7 +75,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  public id = simpleUID('bdp-');
   public isMobile = false;
   public inputFocused: boolean[] = [];
 
@@ -90,9 +91,15 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   readonly inputTypes = InputTypes;
   readonly types = DatepickerType;
 
+  private doneFirstChange = false;
+
   protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
 
   ngOnInit(): void {
+    if (!this.doneFirstChange) {
+      this.ngOnChanges({});
+    }
+
     this.resizeSubscription = fromEvent(this.windowRef.nativeWindow, 'resize')
       .pipe(
         outsideZone(this.zone),
@@ -150,6 +157,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
     }
+
+    this.doneFirstChange = true;
   }
 
   protected getPicker(index: string | number): MatDatepicker<any> {
@@ -191,7 +200,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
         'pointer-events': 'none',
         left: overlayBox.left + 'px',
         right: overlayBox.right - overlayBox.width + 'px',
-        width: overlayBox.width + 'px'
+        width: overlayBox.width + 'px',
       };
     }
     return {};
@@ -202,7 +211,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   ): { dialog: HTMLElement; popup: HTMLElement } {
     const panel = {
       dialog: null,
-      popup: null
+      popup: null,
     };
 
     // desktop
@@ -381,7 +390,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
     this.transmitValue(this.value, {
       eventType: event,
-      addToEventObj: { date: this.value }
+      addToEventObj: { date: this.value },
     });
   }
 }

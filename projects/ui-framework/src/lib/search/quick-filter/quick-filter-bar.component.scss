@@ -113,18 +113,24 @@
   }
 }
 
-.bar-content {
+:host::ng-deep {
   .quick-filter-placeholder {
     background-color: $white;
     border: 1px solid $input-border-color;
     height: $wrap-height;
     flex-grow: 1;
   }
-  &:not(.has-prefix)::ng-deep {
+
+  .bar-filters > * {
+    flex: 1;
+  }
+
+  .bar-content:not(.has-prefix) {
     .quick-filter-placeholder {
       @include border-radius-left;
     }
-    b-quick-filter:first-child .bfe-wrap {
+
+    .bar-filters > :first-child .bfe-wrap {
       border-left: 1px solid $input-border-color;
       @include border-radius-left;
 
@@ -134,11 +140,12 @@
     }
   }
 
-  &:not(.has-suffix)::ng-deep {
+  .bar-content:not(.has-suffix) {
     .quick-filter-placeholder {
       @include border-radius-right;
     }
-    b-quick-filter:last-child .bfe-wrap {
+
+    .bar-filters > :last-child .bfe-wrap {
       border-right: 1px solid $input-border-color;
       @include border-radius-right;
 

@@ -5,7 +5,7 @@ import {
   Component,
   forwardRef,
   Input,
-  NgZone
+  NgZone,
 } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { B_DATE_FORMATS, BDateAdapter } from '../datepicker/date.adapter';
@@ -14,7 +14,7 @@ import { serverDateFormat } from '../../consts';
 import {
   dateOrFail,
   dateToString,
-  objectHasKeyOrFail
+  objectHasKeyOrFail,
 } from '../../services/utils/transformers';
 import { cloneObject, simpleUID } from '../../services/utils/functional-utils';
 import { BaseDatepickerElement } from '../datepicker/datepicker.abstract';
@@ -25,12 +25,13 @@ import { WindowRef } from '../../services/utils/window-ref.service';
 import { DateRangePickerValue } from './date-range-picker.interface';
 import {
   MAT_DATEPICKER_SCROLL_STRATEGY,
-  MatDatepicker
+  MatDatepicker,
 } from '@angular/material';
 import { Overlay } from '@angular/cdk/overlay';
 import { DatepickerType } from '../datepicker/datepicker.enum';
 import { lastDayOfMonth, startOfMonth } from 'date-fns';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
+import { BaseFormElement } from '../base-form-element';
 
 interface DateRangePickerValueLocal {
   startDate: Date | string;
@@ -39,7 +40,7 @@ interface DateRangePickerValueLocal {
 
 const valueDef: DateRangePickerValueLocal = {
   startDate: undefined,
-  endDate: undefined
+  endDate: undefined,
 };
 
 export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
@@ -53,34 +54,35 @@ export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
   styleUrls: [
     '../input/input.component.scss',
     '../datepicker/datepicker.component.scss',
-    './date-range-picker.component.scss'
+    './date-range-picker.component.scss',
   ],
   providers: [
     {
       provide: DateAdapter,
-      useClass: BDateAdapter
+      useClass: BDateAdapter,
     },
     {
       provide: MAT_DATE_FORMATS,
-      useValue: B_DATE_FORMATS
+      useValue: B_DATE_FORMATS,
     },
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DateRangePickerComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => DateRangePickerComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: MAT_DATEPICKER_SCROLL_STRATEGY,
       deps: [Overlay],
-      useFactory: CLOSE_SCROLL_STRATEGY_FACTORY
-    }
+      useFactory: CLOSE_SCROLL_STRATEGY_FACTORY,
+    },
+    { provide: BaseFormElement, useExisting: DateRangePickerComponent },
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DateRangePickerComponent extends BaseDatepickerElement
   implements AfterViewInit {
@@ -109,10 +111,10 @@ export class DateRangePickerComponent extends BaseDatepickerElement
         return value
           ? {
               startDate: dateOrFail(value.from),
-              endDate: dateOrFail(value.to)
+              endDate: dateOrFail(value.to),
             }
           : cloneObject(valueDef);
-      }
+      },
     ];
 
     this.outputTransformers = [
@@ -135,9 +137,9 @@ export class DateRangePickerComponent extends BaseDatepickerElement
 
         return {
           from,
-          to
+          to,
         };
-      }
+      },
     ];
 
     this.baseValue = valueDef;
@@ -160,7 +162,7 @@ export class DateRangePickerComponent extends BaseDatepickerElement
       '--end-date-label':
         this.endDateLabel || this.label
           ? '"' + this.endDateLabel || this.startDateLabel || this.label + '"'
-          : null
+          : null,
     };
   }
 
@@ -197,7 +199,7 @@ export class DateRangePickerComponent extends BaseDatepickerElement
         : [];
     }
     return [];
-  }
+  };
 
   protected doOnPickerOpen(picker: MatDatepicker<any>): void {
     if (this.type === DatepickerType.month) {
