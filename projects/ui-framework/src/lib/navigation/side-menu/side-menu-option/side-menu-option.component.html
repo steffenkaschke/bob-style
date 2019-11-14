@@ -6,10 +6,10 @@
   <b-icon *ngIf="option.icon"
           [icon]="option.icon"
           [color]="selected ? colors.white : colors.normal"></b-icon>
-  <div class="option-display-name"
-       matTooltip="{{option.displayName}}"
-       [matTooltipPosition]="'above'"
-       [matTooltipShowDelay]="300">{{option.displayName}}</div>
+  <b-truncate-tooltip [maxLines]="1"
+                      class="option-display-name">
+    {{option.displayName}}
+  </b-truncate-tooltip>
   <div class="option-actions"
        *ngIf="option.actions?.length"
        [ngStyle]="{'opacity': (showActions || selected || menuOpened) ? 1 : 0}">

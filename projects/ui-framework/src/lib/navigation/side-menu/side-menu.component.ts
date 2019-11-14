@@ -19,5 +19,4 @@ export class SideMenuComponent {
     this.selectedId = id;
     this.selectOption.emit(id);
   }
-
 }

@@ -1,9 +1,10 @@
 import { SideMenuOption } from './side-menu-option/side-menu-option.interface';
 import { Icons } from '../../icons/icons.enum';
-import { makeArray, mockText, simpleUID } from 'bob-style';
+import { makeArray } from '../../services/utils/functional-utils';
+import { mockText } from '../../mock.const';
 
-export const getSideMenuOptionsMock: SideMenuOption[] = makeArray(5).map(i => ({
-    id: simpleUID(),
+export const getSideMenuOptionsMock: SideMenuOption[] = makeArray(5).map((item, index) => ({
+    id: index,
     displayName: mockText(1),
     icon: Icons.folder,
     actions: [

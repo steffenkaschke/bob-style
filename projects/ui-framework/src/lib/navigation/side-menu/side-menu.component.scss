@@ -1,21 +1,22 @@
 @import '../../style/common-imports';
 
 :host {
-  .side-menu-container {
-    box-sizing: border-box;
-    .menu-header {
-      display: grid;
-      grid-template-columns: max-content 1fr;
-      align-items: center;
-      border-bottom: 1px solid $grey-500;
-      min-height: 36px;
-      .header-label {
-        text-transform: uppercase;
-        font-weight: 700;
-      }
-      .header-actions-wrapper {
-        justify-self: end;
-      }
-    }
-  }
+  text-align: left;
+}
+
+.menu-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $grey-500;
+  min-height: 36px;
+}
+
+.header-label {
+  flex-grow: 1;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.header-actions-wrapper {
+  justify-self: end;
 }
