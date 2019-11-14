@@ -91,7 +91,7 @@ const note = `
   [divided] | boolean | if the panel has a divider between the header and the content | true
   [title] | string | section title | &nbsp;
   [description] | string | section description (subtitle) | &nbsp;
-  [options] | CollapsibleOptions | additional options, among which: <br> **options.headerTranscludeStopPropagation** - set to true to prevent click event propagation from content transcluded in header (for example, to prevent buttons opening/closing the panel)<br>**options.indicatorColor** - will add \`--bcp-color\` and \`--bcp-color-rgb\` css variables, that you can use for custom color mods in your feature css. | collapsibleOptionsDef
+  [options] | CollapsibleOptions | additional options, among which: <br> **options.headerTranscludeStopPropagation** - set to true to prevent click event propagation from content transcluded in header (for example, to prevent buttons opening/closing the panel)<br>**options.indicatorColor** - will add \`--bcp-color\` and \`--bcp-color-rgb\` css variables, that you can use for custom color mods in your feature css, for example: \`color: var(--bcp-color)\`, or for rgba color with opacity - \`color: rgba(var(--bcp-color-rgb), 0.2)\` | collapsibleOptionsDef
   (opened) |  EventEmitter | emits when collapsible panel was opened | &nbsp;
   (closed) |  EventEmitter | emits when collapsible panel was closed | &nbsp;
 
