@@ -149,10 +149,16 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       click: (event: MouseEvent) => {
         this.closeMentions();
 
+        const target = event.target as HTMLElement;
+
         // prevent mentions link clicks
         if (
           !event.metaKey &&
-          (event.target as HTMLElement).className.includes('mention')
+          (target.className.includes('mention') ||
+            target
+              .getAttributeNames()
+              .join(' ')
+              .includes('mention'))
         ) {
           this.editor.selection.save();
           event.preventDefault();
