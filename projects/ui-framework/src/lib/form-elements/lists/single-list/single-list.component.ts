@@ -14,10 +14,7 @@ import { findIndex, flatMap, find } from 'lodash';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
-import {
-  hasChanges,
-  applyChanges,
-} from '../../../services/utils/functional-utils';
+import { hasChanges } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 
 @Component({
@@ -27,15 +24,23 @@ import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 })
 export class SingleListComponent extends BaseListElement implements OnChanges {
   constructor(
-    private listModelService: ListModelService,
-    private listChangeService: ListChangeService,
     renderer: Renderer2,
     listKeyboardService: ListKeyboardService,
+    listModelService: ListModelService,
+    listChangeService: ListChangeService,
     cd: ChangeDetectorRef,
     zone: NgZone,
     DOM: DOMhelpers
   ) {
-    super(renderer, listKeyboardService, cd, zone, DOM);
+    super(
+      renderer,
+      listKeyboardService,
+      listModelService,
+      listChangeService,
+      cd,
+      zone,
+      DOM
+    );
     this.listActions = {
       clear: false,
       apply: false,
@@ -47,7 +52,7 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
   @Input() showNoneOption = false;
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
+    super.ngOnChanges(changes);
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
       this.filteredOptions = this.options;

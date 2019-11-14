@@ -17,7 +17,8 @@ import { ListChangeService } from '../list-change/list-change.service';
 import { ListChange } from '../list-change/list-change';
 import {
   hasChanges,
-  applyChanges,
+  notFirstChanges,
+  isNotEmptyArray,
 } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 
@@ -31,21 +32,29 @@ import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 })
 export class MultiListComponent extends BaseListElement implements OnChanges {
   constructor(
-    private listModelService: ListModelService,
-    private listChangeService: ListChangeService,
     renderer: Renderer2,
     listKeyboardService: ListKeyboardService,
+    listModelService: ListModelService,
+    listChangeService: ListChangeService,
     cd: ChangeDetectorRef,
     zone: NgZone,
     DOM: DOMhelpers
   ) {
-    super(renderer, listKeyboardService, cd, zone, DOM);
+    super(
+      renderer,
+      listKeyboardService,
+      listModelService,
+      listChangeService,
+      cd,
+      zone,
+      DOM
+    );
     this.listActions = {
       clear: true,
       apply: false,
     };
     this.listActionsState = {
-      clear: { disabled: true, hidden: false },
+      clear: { disabled: false, hidden: true },
       apply: { disabled: true, hidden: false },
     };
   }
@@ -56,7 +65,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   private optionsDraft: SelectGroupOption[];
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
+    super.ngOnChanges(changes);
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
       this.optionsDraft = this.options;
@@ -74,6 +83,13 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
         this.startWithGroupsCollapsed && this.options.length > 1
       );
       this.updateClearButtonState();
+    }
+
+    if (
+      notFirstChanges(changes, ['options']) &&
+      isNotEmptyArray(changes.options.previousValue)
+    ) {
+      this.listActionsState.apply.disabled = false;
     }
   }
 
@@ -231,7 +247,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   }
 
   private updateClearButtonState(force: boolean = null) {
-    this.listActionsState.clear.disabled =
+    this.listActionsState.clear.hidden =
       force !== null
         ? force
         : !this.selectedIdsMap || this.selectedIdsMap.length === 0;

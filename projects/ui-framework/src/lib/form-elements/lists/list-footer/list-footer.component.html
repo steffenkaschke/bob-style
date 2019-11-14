@@ -1,15 +1,17 @@
-<b-text-button *ngIf="listActions?.clear && !listActionsState?.clear.hidden"
+<b-text-button *ngIf="listActions.clear"
                class="clear-button"
                (clicked)="onClear()"
-               [disabled]="listActionsState?.clear.disabled"
+               [disabled]="listActionsState.clear.disabled"
+               [hidden]="listActionsState.clear.hidden"
                text="Clear"></b-text-button>
 
 <ng-content select="[footerAction]"></ng-content>
 
-<b-button *ngIf="listActions?.apply && !listActionsState?.apply.hidden"
+<b-button *ngIf="listActions.apply"
           class="apply-button"
           (clicked)="onApply()"
-          [disabled]="listActionsState?.apply.disabled"
+          [disabled]="listActionsState.apply.disabled"
+          [hidden]="listActionsState.apply.hidden"
           [size]="buttonSize.small"
           [type]="buttonType.primary"
           text="Apply"></b-button>

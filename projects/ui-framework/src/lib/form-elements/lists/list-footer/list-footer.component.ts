@@ -14,7 +14,7 @@ export class ListFooterComponent {
     apply: true,
   };
   @Input() listActionsState: ListFooterActionsState = {
-    clear: { disabled: true, hidden: false },
+    clear: { disabled: false, hidden: true },
     apply: { disabled: true, hidden: false },
   };
 
