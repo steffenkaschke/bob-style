@@ -40,8 +40,7 @@ const template = `
                 [errorMessage]="errorMessage"
                 [hintMessage]="hintMessage">
     <b-text-button footerAction
-      [text]="'Action!'"
-      [color]="'primary'">
+      [text]="'Action'">
     </b-text-button>
 </b-multi-select>
 `;

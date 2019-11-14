@@ -22,8 +22,7 @@ const template = `
               [showSingleGroupHeader]="showSingleGroupHeader"
               (selectChange)="selectChange($event)">
     <b-text-button footerAction
-                    [text]="'Action!'"
-                    [color]="'primary'">
+                    [text]="'Action'">
     </b-text-button>
 </b-multi-list>
 `;

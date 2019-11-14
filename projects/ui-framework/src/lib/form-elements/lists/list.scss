@@ -31,50 +31,48 @@
   z-index: 2;
   pointer-events: none;
 
-  .headers-group {
-    .header {
-      position: relative;
-      z-index: 2;
-      pointer-events: all;
-      position: sticky;
+  .headers-group .header {
+    position: relative;
+    z-index: 2;
+    pointer-events: all;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    user-select: none;
+    box-shadow: 0 -1px 0 0px $grey-500, 0 1px 0 0px $grey-500;
+
+    &.clickable {
+      cursor: pointer;
+    }
+
+    &.has-hover,
+    &.clickable {
+      &:hover,
+      &.focus {
+        background-color: $grey-100;
+      }
+    }
+
+    .header-collapse-trigger {
+      position: absolute;
       top: 0;
-      background-color: white;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      user-select: none;
-      box-shadow: 0 -1px 0 0px $grey-500, 0 1px 0 0px $grey-500;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
 
-      &.clickable {
-        cursor: pointer;
-      }
-
-      &.has-hover,
-      &.clickable {
-        &:hover,
-        &.focus {
-          background-color: $grey-100;
-        }
-      }
-
-      .header-collapse-trigger {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-      }
-
-      .chevron {
-        &:before {
-          display: flex;
-          justify-content: center;
-          width: 12px;
-          margin-left: -1px;
-          margin-right: 7px;
-        }
+    .chevron {
+      &:before {
+        display: flex;
+        justify-content: center;
+        width: 12px;
+        margin-left: -1px;
+        margin-right: 7px;
       }
     }
   }
