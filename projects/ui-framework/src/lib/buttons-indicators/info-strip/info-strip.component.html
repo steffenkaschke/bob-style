@@ -5,10 +5,8 @@
           [size]="iconSize">
   </b-icon>
   <div class="content">
-    <div class="texts-container">
-      <p *ngIf="title" class="title">{{title}}</p>
-      <p>{{text}}</p>
-    </div>
+    <p *ngIf="text">{{text}}</p>
+    <ng-content></ng-content>
     <b-link *ngIf="link" [config]="link"></b-link>
   </div>
 </div>
