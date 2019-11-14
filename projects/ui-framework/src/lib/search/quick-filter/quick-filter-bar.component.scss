@@ -83,6 +83,22 @@
 // borders
 
 :host::ng-deep {
+  .bfe-label.bfe-label {
+    color: $grey-600;
+    padding-left: $input-padding;
+  }
+
+  .bfe-wrap.bfe-wrap {
+    transition: none;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+
+    &.focused {
+      border-color: $input-border-color;
+    }
+  }
+
   .bfe-wrap {
     &:before,
     &:after {
