@@ -13,8 +13,25 @@
     }
     .content {
       text-align: left;
-      p {
-        margin: 4px 0 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .texts-container {
+        display: flex;
+        flex-direction: row;
+
+        p {
+          margin: 4px 0 0;
+
+          &:first-child {
+            margin-right: times8(1);
+          }
+        }
+      }
+
+      .title {
+        font-weight: bold;
       }
     }
   }
