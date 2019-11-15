@@ -15,8 +15,13 @@
   flex-grow: 1;
   text-transform: uppercase;
   font-weight: 700;
+  margin: 0;
 }
 
 .header-actions-wrapper {
   justify-self: end;
+}
+
+:host ::ng-deep .option-display-name {
+  flex-grow: 1;
 }

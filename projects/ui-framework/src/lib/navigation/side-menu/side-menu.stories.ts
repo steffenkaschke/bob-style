@@ -13,7 +13,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { SideMenuModule } from './side-menu.module';
 import { IconComponent } from '../../icons/icon.component';
 import { IconsModule } from '../../icons/icons.module';
-import { getSideMenuOptionsMock } from './side-menu.mock';
+import { sideMenuOptionsMock } from './side-menu.mock';
 import { SideMenuOption } from './side-menu-option/side-menu-option.interface';
 import { ButtonsModule } from '../../../lib/buttons/buttons.module';
 
@@ -57,8 +57,6 @@ const note = `
   ${template}
   ~~~
 `;
-
-const sideMenuOptionsMock = getSideMenuOptionsMock;
 
 story.add(
   'Side Menu',

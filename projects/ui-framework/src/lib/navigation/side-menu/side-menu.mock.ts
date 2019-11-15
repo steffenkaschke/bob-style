@@ -3,16 +3,18 @@ import { Icons } from '../../icons/icons.enum';
 import { makeArray } from '../../services/utils/functional-utils';
 import { mockText } from '../../mock.const';
 
-export const getSideMenuOptionsMock: SideMenuOption[] = makeArray(5).map((item, index) => ({
+export const sideMenuOptionsMock: SideMenuOption[] = makeArray(5).map(
+  (item, index) => ({
     id: index,
     displayName: mockText(1),
     icon: Icons.folder,
     actions: [
       {
         label: mockText(1),
-        action: ($event) => {
+        action: $event => {
           console.log($event);
         },
-      }
+      },
     ],
-  })) as SideMenuOption[];
+  })
+) as SideMenuOption[];
