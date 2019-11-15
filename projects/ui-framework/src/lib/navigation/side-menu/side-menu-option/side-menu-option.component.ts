@@ -1,9 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SideMenuOption } from './side-menu-option.interface';
 import { IconColor, Icons } from '../../../icons/icons.enum';
 import { ButtonType } from '../../../buttons/buttons.enum';
@@ -29,10 +24,6 @@ export class SideMenuOptionComponent {
 
   onSelectOption(): void {
     this.selectOption.emit(this.option.id);
-  }
-
-  stopBubbling($event): void {
-    $event.stopPropagation();
   }
 
   setShowActions(status: boolean): void {

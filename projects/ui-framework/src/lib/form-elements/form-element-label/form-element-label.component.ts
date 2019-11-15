@@ -1,15 +1,15 @@
 import { Component, Input, HostBinding } from '@angular/core';
 import {
   TruncateTooltipPosition,
-  TruncateTooltipType
+  TruncateTooltipType,
 } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { TooltipClass } from '../../enums';
+import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
 
 @Component({
   selector: 'b-form-element-label',
   templateUrl: './form-element-label.component.html',
-  styleUrls: ['./form-element-label.component.scss']
+  styleUrls: ['./form-element-label.component.scss'],
 })
 export class FormElementLabelComponent {
   @Input() label: string;
@@ -26,6 +26,6 @@ export class FormElementLabelComponent {
   readonly truncateTooltipPosition = TruncateTooltipPosition;
   readonly tooltipClass: TooltipClass[] = [
     TooltipClass.TextLeft,
-    TooltipClass.PreWrap
+    TooltipClass.PreWrap,
   ];
 }

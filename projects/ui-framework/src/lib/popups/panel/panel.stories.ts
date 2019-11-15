@@ -16,7 +16,7 @@ import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
 import { PanelDefaultPosVer, PanelSize } from './panel.enum';
 import { values } from 'lodash';
 
-const buttonStories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
 );
 
@@ -65,21 +65,21 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [panelClass] | string | panel class | none
+  [panelClass] | string | panel class | &nbsp;
   [size] | PanelSize | panel size | "medium"
   [defaultPosVer] | PanelDefaultPosVer | default vertical position | PanelDefaultPosVer.above
   [showBackdrop] | boolean | show backdrop | true
   [openOnHover] | boolean | trigger panel open on hover (delay 300ms) | false
-  (opened) | EventEmitter&lt;OverlayRef&gt; | Emits panel Opened event | none
-  (closed) | EventEmitter&lt;void&gt; | Emits panel Closed event | none
-  (positionChanged) | EventEmitter&lt;OverlayPositionClasses&gt; | Emits when panel changes position during scrolling (above/below trigger) | none
+  (opened) | EventEmitter&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
+  (closed) | EventEmitter&lt;void&gt; | Emits panel Closed event | &nbsp;
+  (positionChanged) | EventEmitter&lt;OverlayPositionClasses&gt; | Emits when panel changes position during scrolling (above/below trigger) | &nbsp;
 
 
   ~~~
   ${template}
   ~~~
 `;
-buttonStories.add(
+story.add(
   'Panel',
   () => ({
     template: storyTemplate,

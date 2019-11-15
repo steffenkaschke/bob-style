@@ -7,7 +7,8 @@ import {
   ViewChild,
   OnInit,
   NgZone,
-  SimpleChanges
+  SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { IconColor, IconSize } from '../../icons/icons.enum';
@@ -29,16 +30,17 @@ import { URLutils } from '../../services/url/url-utils.service';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => SocialComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => SocialComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
-export class SocialComponent extends BaseFormElement implements OnInit {
+export class SocialComponent extends BaseFormElement
+  implements OnChanges, OnInit {
   constructor(private URL: URLutils, private zone: NgZone) {
     super();
     this.inputTransformers = [
@@ -53,11 +55,11 @@ export class SocialComponent extends BaseFormElement implements OnInit {
           });
         }
         return this.URL.path(value);
-      }
+      },
     ];
     this.outputTransformers = [
       (value: string): string =>
-        value ? `http://${SocialTypes[this.type].prefix}${value}` : ''
+        value ? `http://${SocialTypes[this.type].prefix}${value}` : '',
     ];
     this.baseValue = '';
     this.wrapEvent = false;
@@ -79,19 +81,21 @@ export class SocialComponent extends BaseFormElement implements OnInit {
   readonly socialLabelMap = {
     [Social.facebook]: 'Facebook',
     [Social.twitter]: 'Twitter',
-    [Social.linkedin]: 'Linkedin'
+    [Social.linkedin]: 'Linkedin',
   };
 
   ngOnInit(): void {
     this.inputId = this.bInput.id;
   }
 
-  onNgChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+
     if (changes.type && !changes.type.firstChange && this.value) {
       this.type = changes.type.currentValue;
       this.writeValue(this.value);
       this.transmitValue(this.value, {
-        eventType: [InputEventType.onBlur]
+        eventType: [InputEventType.onBlur],
       });
     }
   }
@@ -104,7 +108,7 @@ export class SocialComponent extends BaseFormElement implements OnInit {
     if (event.event === InputEventType.onChange) {
       this.writeValue(event.value);
       this.transmitValue(this.value, {
-        eventType: [InputEventType.onChange]
+        eventType: [InputEventType.onChange],
       });
     }
     if (

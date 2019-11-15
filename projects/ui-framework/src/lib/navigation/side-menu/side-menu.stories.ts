@@ -1,12 +1,10 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
 import {
-  boolean,
   object,
-  select,
   text,
   withKnobs,
-  number
+  number,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -15,11 +13,11 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { SideMenuModule } from './side-menu.module';
 import { IconComponent } from '../../icons/icon.component';
 import { IconsModule } from '../../icons/icons.module';
-import { getSideMenuOptionsMock } from './side-menu.mock';
+import { sideMenuOptionsMock } from './side-menu.mock';
 import { SideMenuOption } from './side-menu-option/side-menu-option.interface';
 import { ButtonsModule } from '../../../lib/buttons/buttons.module';
 
-const inputStories = storiesOf(ComponentGroupType.Navigation, module)
+const story = storiesOf(ComponentGroupType.Navigation, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
@@ -60,9 +58,7 @@ const note = `
   ~~~
 `;
 
-const sideMenuOptionsMock = getSideMenuOptionsMock;
-
-inputStories.add(
+story.add(
   'Side Menu',
   () => {
     return {
@@ -71,7 +67,7 @@ inputStories.add(
         headerLabel: text('headerLabel', 'test menu'),
         options: object<SideMenuOption[]>('options', sideMenuOptionsMock),
         selectOption: action('Side menu select'),
-        selectedId: number('selectedId', 3)
+        selectedId: number('selectedId', 3),
       },
       moduleMetadata: {
         entryComponents: [IconComponent],
@@ -81,8 +77,8 @@ inputStories.add(
           StoryBookLayoutModule,
           IconsModule,
           ButtonsModule,
-        ]
-      }
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

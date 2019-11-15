@@ -1,11 +1,21 @@
-import {storiesOf} from '@storybook/angular';
-import {select, boolean, number, object, text, withKnobs} from '@storybook/addon-knobs/angular';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ComponentGroupType} from '../../../../../src/lib/consts';
-import {StoryBookLayoutModule} from '../../../../../src/lib/story-book-layout/story-book-layout.module';
-import {ChartsModule} from '../../charts.module';
-import {MULTI_BAR_CHART_CATEGORIES, MULTI_BAR_CHART_DATA_MOCK} from '../../chart.mock';
-import {ChartLegendPositionEnum} from '../../chart/chart.interface';
+import { storiesOf } from '@storybook/angular';
+import {
+  select,
+  boolean,
+  number,
+  object,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs/angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentGroupType } from '../../../../../src/lib/consts';
+import { StoryBookLayoutModule } from '../../../../../src/lib/story-book-layout/story-book-layout.module';
+import { ChartsModule } from '../../charts.module';
+import {
+  MULTI_BAR_CHART_CATEGORIES,
+  MULTI_BAR_CHART_DATA_MOCK,
+} from '../../chart.mock';
+import { ChartLegendPositionEnum } from '../../chart/chart.interface';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
@@ -41,6 +51,11 @@ const note = `
 
   #### Module
   *ChartModule*
+  from <u>'bob-style/bob-charts'</u>
+
+  \`\`\`
+  import { ChartModule } from 'bob-style/bob-charts';
+  \`\`\`
 
   ~~~
   ${template}
@@ -49,12 +64,12 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  *name | string | name of series | none
-  *data | | series data array for chart | none
+  *name | string | name of series | &nbsp;
+  *data | | series data array for chart | &nbsp;
   legend (optional) | boolean | shows legend | false
   colorPalette (optional) | string[] | color palette array | default array of colors
   height (optional) | number | height of chart | 500
-  title (optional) | string | title of chart | none
+  title (optional) | string | title of chart | &nbsp;
   pointFormat (optional) | string | tooltip formatter | {series.name}: <b>{point.percentage:.1f}%</b>
 `;
 
@@ -64,9 +79,11 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        legendPosition: select('legendPosition',
+        legendPosition: select(
+          'legendPosition',
           Object.values(ChartLegendPositionEnum),
-          ChartLegendPositionEnum.BOTTOM),
+          ChartLegendPositionEnum.BOTTOM
+        ),
         showDataLabels: boolean('showDataLabels', false),
         legend: boolean('legend', true),
         name: text('name', 'employees'),
@@ -100,16 +117,12 @@ story.add(
           '#959595',
           '#616161',
           '#313131',
-        ])
+        ]),
       },
       moduleMetadata: {
-        imports: [
-          StoryBookLayoutModule,
-          BrowserAnimationsModule,
-          ChartsModule
-        ]
-      }
+        imports: [StoryBookLayoutModule, BrowserAnimationsModule, ChartsModule],
+      },
     };
   },
-  {notes: {markdown: note}}
+  { notes: { markdown: note } }
 );

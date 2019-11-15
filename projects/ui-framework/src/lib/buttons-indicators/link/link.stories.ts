@@ -5,10 +5,9 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { LinkColor, LinkTarget } from './link.enum';
 
-const linkStories = storiesOf(
-  ComponentGroupType.Indicators,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
+  withKnobs
+);
 const template = `<b-link [config]="config"></b-link>`;
 
 const storyTemplate = `<b-story-book-layout [title]="'Link'">
@@ -21,7 +20,7 @@ const note = `
   *LinkModule*
 
   #### Properties
-  Name | Type | Description | Default value
+  Name | Type | Description
   --- | --- | --- | ---
   config | Link | link configuration - text, url, target: LinkTarget, color: LinkColor
   ~~~
@@ -29,7 +28,7 @@ const note = `
   ~~~
 `;
 
-linkStories.add(
+story.add(
   'Link',
   () => {
     return {
@@ -39,12 +38,12 @@ linkStories.add(
           text: 'Learn more',
           url: 'https://app.hibob.com',
           target: LinkTarget.blank,
-          color: LinkColor.none
-        })
+          color: LinkColor.none,
+        }),
       },
       moduleMetadata: {
-        imports: [LinkModule, StoryBookLayoutModule]
-      }
+        imports: [LinkModule, StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }

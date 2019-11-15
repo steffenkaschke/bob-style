@@ -4,14 +4,15 @@ import {
   SimpleChanges,
   OnChanges,
   Output,
-  EventEmitter
+  EventEmitter,
 } from '@angular/core';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
 import {
   simpleUID,
   asArray,
   isNullOrUndefined,
-  cloneValue
+  cloneValue,
+  applyChanges,
 } from '../services/utils/functional-utils';
 import { InputEventType } from './form-elements.enum';
 import { FormEvents } from './form-elements.enum';
@@ -44,7 +45,7 @@ export abstract class BaseFormElement
     eventName: FormEvents.changed,
     doPropagate: this.doPropagate,
     addToEventObj: {},
-    updateValue: false
+    updateValue: false,
   };
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
@@ -112,14 +113,14 @@ export abstract class BaseFormElement
   ): void {
     options = {
       ...this.transmitValueDefOptions,
-      ...options
+      ...options,
     };
     const {
       eventType,
       eventName,
       doPropagate,
       addToEventObj,
-      updateValue
+      updateValue,
     } = options;
 
     // If value is undefined, it will not be transmitted.
@@ -152,7 +153,7 @@ export abstract class BaseFormElement
               ? {
                   event,
                   value,
-                  ...addToEventObj
+                  ...addToEventObj,
                 }
               : value
           );
@@ -176,6 +177,8 @@ export abstract class BaseFormElement
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes, {}, ['value', 'options']);
+
     if (changes.value) {
       this.writeValue(changes.value.currentValue);
       this.transmitValue(this.value, { eventType: [InputEventType.onWrite] });

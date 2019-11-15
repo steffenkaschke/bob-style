@@ -1,16 +1,22 @@
-import {storiesOf} from '@storybook/angular';
-import {select, number, boolean, object, text, withKnobs} from '@storybook/addon-knobs/angular';
-import {ComponentGroupType} from '../../../../src/lib/consts';
-import {StoryBookLayoutModule} from '../../../../src/lib/story-book-layout/story-book-layout.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ChartsModule} from '../charts.module';
-import {TypographyModule} from 'bob-style';
-import {LINE_CHART_DATA_MOCK, NUMBER_OF_EMPLOYEES} from '../chart.mock';
-import {ChartLegendPositionEnum} from '../chart/chart.interface';
+import { storiesOf } from '@storybook/angular';
+import {
+  select,
+  number,
+  boolean,
+  object,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs/angular';
+import { ComponentGroupType } from '../../../../src/lib/consts';
+import { StoryBookLayoutModule } from '../../../../src/lib/story-book-layout/story-book-layout.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChartsModule } from '../charts.module';
+import { TypographyModule } from 'bob-style';
+import { LINE_CHART_DATA_MOCK, NUMBER_OF_EMPLOYEES } from '../chart.mock';
+import { ChartLegendPositionEnum } from '../chart/chart.interface';
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
-
 
 const template = `
   <b-donut-text-chart
@@ -42,6 +48,11 @@ const note = `
 
   #### Module
   *ChartModule*
+  from <u>'bob-style/bob-charts'</u>
+
+  \`\`\`
+  import { ChartModule } from 'bob-style/bob-charts';
+  \`\`\`
 
   ~~~
   ${template}
@@ -59,7 +70,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        tooltipValueFormatter: (tooltipValue) => {
+        tooltipValueFormatter: tooltipValue => {
           // custom value formatter suffix number pipe example
           if (isNaN(tooltipValue)) {
             return null;
@@ -80,7 +91,7 @@ story.add(
             { key: 't', value: Math.pow(10, 12) },
             { key: 'b', value: Math.pow(10, 9) },
             { key: 'm', value: Math.pow(10, 6) },
-            { key: 'k', value: 1000 }
+            { key: 'k', value: 1000 },
           ];
 
           for (let i = 0; i < powers.length; i++) {
@@ -98,9 +109,11 @@ story.add(
         name: text('name', 'employees'),
         legend: boolean('legend', false),
         height: number('height', 300),
-        legendPosition: select('legendPosition',
+        legendPosition: select(
+          'legendPosition',
           Object.values(ChartLegendPositionEnum),
-          ChartLegendPositionEnum.BOTTOM),
+          ChartLegendPositionEnum.BOTTOM
+        ),
         preTooltipValue: text('preTooltipValue', ''),
         postTooltipValue: text('postTooltipValue', ' PEOPLE'),
         donutInnerSize: number('donutInnerSize', 100),
@@ -129,17 +142,17 @@ story.add(
           '#959595',
           '#616161',
           '#313131',
-        ])
+        ]),
       },
       moduleMetadata: {
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
           ChartsModule,
-          TypographyModule
-        ]
-      }
+          TypographyModule,
+        ],
+      },
     };
   },
-  {notes: {markdown: note}}
+  { notes: { markdown: note } }
 );

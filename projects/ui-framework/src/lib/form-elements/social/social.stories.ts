@@ -3,7 +3,7 @@ import {
   select,
   withKnobs,
   text,
-  boolean
+  boolean,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -13,10 +13,9 @@ import { SocialModule } from './social.module';
 import { SearchModule } from '../../search/search/search.module';
 import { Social } from './social.enum';
 
-const inputStories = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-social [value]="value"
@@ -48,22 +47,22 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [type] | Social | type of input field |
-  [value] | string | field value |
-  [placeholder] | string | placeholder text (inside input) |
+  [type] | Social | type of input field | &nbsp;
+  [value] | string | field value | &nbsp;
+  [placeholder] | string | placeholder text (inside input) | &nbsp;
   [disabled] | boolean | is field disabled | false
   [required] | boolean | is field required | false
-  [hintMessage] | string | hint text |
-  [warnMessage] | string | warning text |
-  [errorMessage] | string | error text |
-  (socialInputChange) |  EventEmitter&lt;InputEvent&gt; | input events emitter |
+  [hintMessage] | string | hint text | &nbsp;
+  [warnMessage] | string | warning text | &nbsp;
+  [errorMessage] | string | error text | &nbsp;
+  (socialInputChange) |  EventEmitter&lt;InputEvent&gt; | input events emitter | &nbsp;
 
   ~~~
   ${template}
   ~~~
 `;
 
-inputStories.add(
+story.add(
   'Social',
   () => {
     return {
@@ -77,16 +76,16 @@ inputStories.add(
         errorMessage: text('errorMessage', ''),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
-        socialInputChange: action('social')
+        socialInputChange: action('social'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           SearchModule,
           StoryBookLayoutModule,
-          SocialModule
-        ]
-      }
+          SocialModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

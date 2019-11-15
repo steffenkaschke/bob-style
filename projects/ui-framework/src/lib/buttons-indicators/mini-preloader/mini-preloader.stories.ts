@@ -12,7 +12,7 @@ import { MiniPreloaderModule } from './mini-preloader.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
 
-const inputStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Indicators,
   module
 ).addDecorator(withKnobs);
@@ -43,7 +43,7 @@ const note = `
   ~~~
 `;
 
-inputStories.add(
+story.add(
   'Mini preloader',
   () => {
     return {

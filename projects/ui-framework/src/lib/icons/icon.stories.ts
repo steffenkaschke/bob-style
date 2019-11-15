@@ -3,16 +3,16 @@ import {
   boolean,
   select,
   text,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { IconsModule } from './icons.module';
 import { IconColor, Icons, IconSize } from './icons.enum';
-import { reduce, values, keys } from 'lodash';
+import { reduce, values } from 'lodash';
 import { ComponentGroupType } from '../consts';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const iconStories = storiesOf(ComponentGroupType.Icons, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Icons, module).addDecorator(
   withKnobs
 );
 
@@ -49,10 +49,10 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  toolTipSummary | String | Tooltip text  |
-  icon | Icons | enum for the available icons |
-  size | IconSize | enum for the available icon sizes |
-  color | IconColor | enum for the available icon colors | dark (optional)
+  toolTipSummary | String | Tooltip text  | &nbsp;
+  icon | Icons | enum for the available icons | &nbsp;
+  size | IconSize | enum for the available icon sizes | &nbsp;
+  color | IconColor | enum for the available icon colors | dark
   hasHoverState | boolean | if icon has hover state | false
 
   ~~~
@@ -66,7 +66,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-iconStories.add(
+story.add(
   'Icon element',
   () => {
     return {
@@ -76,11 +76,11 @@ iconStories.add(
         icon: select('icon', iconClasses, Icons.person),
         size: select('size', size, IconSize.large),
         color: select('color', color, IconColor.normal),
-        hasHoverState: boolean('hasHoverState', true)
+        hasHoverState: boolean('hasHoverState', true),
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, IconsModule, StoryBookLayoutModule]
-      }
+        imports: [BrowserAnimationsModule, IconsModule, StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }
@@ -142,15 +142,15 @@ const iconsListTemplate = `
       </div>
 </b-story-book-layout>
   `;
-iconStories.add(
+story.add(
   'Icons list',
   () => {
     return {
       template: iconsListTemplate,
       props: {},
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, IconsModule, StoryBookLayoutModule]
-      }
+        imports: [BrowserAnimationsModule, IconsModule, StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }

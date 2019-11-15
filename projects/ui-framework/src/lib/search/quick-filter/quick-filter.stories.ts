@@ -11,10 +11,9 @@ import { QuickFilterSelectType } from './quick-filter.enum';
 import { SelectGroupOption } from '../../form-elements/lists/list.interface';
 import { QuickFilterConfig } from './quick-filter.interface';
 
-const textareaStories = storiesOf(
-  ComponentGroupType.Search,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-quick-filter-bar [quickFilters]="quickFilters"
@@ -44,10 +43,10 @@ const note = `
   #### Properties
   Name | Type | Description | Default Value
   --- | --- | --- | ---
-  [quickFilters] | QuickFilterConfig[] | array of quick filters | none
+  [quickFilters] | QuickFilterConfig[] | array of quick filters | &nbsp;
   [showResetFilter] | boolean | displays reset button | false
-  (filtersChange) | EventEmitter&lt;QuickFilterChangeEvent&gt; | emits on quick filter bar change | none
-  (resetFilters) | EventEmitter&lt;void&gt; |emits on reset click | none
+  (filtersChange) | EventEmitter&lt;QuickFilterChangeEvent&gt; | emits on quick filter bar change | &nbsp;
+  (resetFilters) | EventEmitter&lt;void&gt; |emits on reset click | &nbsp;
 
   ~~~
   ${template}
@@ -64,9 +63,9 @@ const optionsMock: SelectGroupOption[] = Array.from(Array(groupNun), (_, i) => {
       return {
         selected: false,
         value: `Basic Info G${i}_E${k} - option`,
-        id: i * optionsNum + k
+        id: i * optionsNum + k,
       };
-    })
+    }),
   };
 });
 
@@ -76,14 +75,14 @@ const quickFilters: QuickFilterConfig[] = [
     label: 'Departments',
     placeholder: 'No departments',
     key: 'department',
-    options: [cloneDeep(optionsMock[0]), cloneDeep(optionsMock[1])]
+    options: [cloneDeep(optionsMock[0]), cloneDeep(optionsMock[1])],
   },
   {
     selectType: QuickFilterSelectType.multiSelect,
     label: 'Sites',
     placeholder: 'No sites',
     key: 'site',
-    options: cloneDeep(optionsMock)
+    options: cloneDeep(optionsMock),
   },
   {
     selectType: QuickFilterSelectType.singleSelect,
@@ -91,15 +90,15 @@ const quickFilters: QuickFilterConfig[] = [
     placeholder: 'Select employment type',
     key: 'employment',
     showSingleGroupHeader: true,
-    options: [cloneDeep(optionsMock[0])]
-  }
+    options: [cloneDeep(optionsMock[0])],
+  },
 ];
 
 quickFilters[0].options[0].options[1].selected = true;
 quickFilters[0].options[1].options[1].selected = true;
 quickFilters[2].options[0].options[3].selected = true;
 
-textareaStories.add(
+story.add(
   'Quick filters',
   () => {
     return {
@@ -108,16 +107,16 @@ textareaStories.add(
         showResetFilter: boolean('showResetFilter', false),
         quickFilters: object('quickFilters', quickFilters),
         filtersChange: action('Quick filter bar change'),
-        resetFilters: action('Reset Filters click')
+        resetFilters: action('Reset Filters click'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           QuickFilterModule,
-          ButtonsModule
-        ]
-      }
+          ButtonsModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

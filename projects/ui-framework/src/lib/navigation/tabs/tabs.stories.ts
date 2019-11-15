@@ -1,11 +1,8 @@
 import { storiesOf } from '@storybook/angular';
 import {
-  array,
-  boolean,
   number,
   object,
   select,
-  text,
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
@@ -16,7 +13,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { Tab } from './tabs.interface';
 import { TabsType } from './tabs.enum';
 
-const inputStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Navigation,
   module
 ).addDecorator(withKnobs);
@@ -75,7 +72,7 @@ const note = `
   ~~~
 `;
 const selectClick = action('selectClick');
-inputStories.add(
+story.add(
   'Tabs',
   () => {
     return {

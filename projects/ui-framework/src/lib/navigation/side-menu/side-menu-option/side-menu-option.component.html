@@ -7,6 +7,7 @@
           [icon]="option.icon"
           [color]="selected ? colors.white : colors.normal"></b-icon>
   <b-truncate-tooltip [maxLines]="1"
+                      [trustCssVars]="true"
                       class="option-display-name">
     {{option.displayName}}
   </b-truncate-tooltip>
@@ -14,7 +15,7 @@
        *ngIf="option.actions?.length"
        [ngStyle]="{'opacity': (showActions || selected || menuOpened) ? 1 : 0}">
     <b-menu [menu]="option.actions"
-            (click)="stopBubbling($event); menuOpened = true"
+            (click)="$event.stopPropagation(); menuOpened = true"
             (closeMenu)="menuOpened = false">
       <b-square-button menu-trigger
                        [type]="types.tertiary"
