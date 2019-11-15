@@ -13,6 +13,7 @@ import {
   ContentChildren,
   QueryList,
   Type,
+  OnDestroy,
 } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { QuickFilterBarChangeEvent } from '../quick-filter/quick-filter.interface';
@@ -46,7 +47,8 @@ import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tool
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuickFilterLayoutComponent implements OnInit, AfterViewInit {
+export class QuickFilterLayoutComponent
+  implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private DOM: DOMhelpers,
     private zone: NgZone,
@@ -84,11 +86,7 @@ export class QuickFilterLayoutComponent implements OnInit, AfterViewInit {
       formComp['tooltipType'] = TruncateTooltipType.material;
       formComp['doPropagate'] = false;
 
-      (
-        formComp['selectChange'] ||
-        formComp['changed'] ||
-        this.findChangeEmitter(formComp as any)
-      ).subscribe(changeEvent => {
+      this.getChangeEmitter(formComp as any).subscribe((changeEvent: any) => {
         this.onFilterChange(formComp.id, changeEvent);
       });
     });
@@ -105,6 +103,12 @@ export class QuickFilterLayoutComponent implements OnInit, AfterViewInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.formComponents.toArray().forEach(formComp => {
+      this.getChangeEmitter(formComp as any).unsubscribe();
+    });
+  }
+
   onFilterChange(key: number | string, changeEvent: any): void {
     this.quickFiltersChanges[key] = changeEvent;
     this.filtersChange.emit(this.quickFiltersChanges);
@@ -114,11 +118,20 @@ export class QuickFilterLayoutComponent implements OnInit, AfterViewInit {
     this.resetFilters.emit();
   }
 
-  private findChangeEmitter(comp: Type<any>): EventEmitter<any> {
-    const possibleEmitters: string[] = Object.keys(comp).filter(
-      (k: string): boolean => k.toLowerCase().includes('change')
+  private findChangeEmitter(formComp: Type<any>): EventEmitter<any> {
+    const possibleEmitters: string[] = Object.keys(formComp).filter(
+      (key: string): boolean => key.toLowerCase().includes('change')
     );
-    const changeEmitter: string = possibleEmitters.find(e => comp[e].observers);
-    return changeEmitter ? comp[changeEmitter] : changeEmitter;
+    const changeEmitter: string = possibleEmitters.find(
+      emtr => formComp[emtr].observers
+    );
+
+    return changeEmitter ? formComp[changeEmitter] : changeEmitter;
+  }
+
+  private getChangeEmitter(formComp: Type<any>): EventEmitter<any> {
+    return (formComp['selectChange'] ||
+      formComp['changed'] ||
+      this.findChangeEmitter(formComp)) as EventEmitter<any>;
   }
 }
