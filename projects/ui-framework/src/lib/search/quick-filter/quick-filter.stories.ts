@@ -36,7 +36,7 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Quick filters
+  ## Quick Filter Bar
   #### Module
   *QuickFilterModule*
 
@@ -45,8 +45,8 @@ const note = `
   --- | --- | --- | ---
   [quickFilters] | QuickFilterConfig[] | array of quick filters | none
   [showResetFilter] | boolean | displays reset button | false
-  (filtersChange) | EventEmitter&lt;QuickFilterChangeEvent&gt; | emits on quick filter bar change | none
-  (resetFilters) | EventEmitter&lt;void&gt; |emits on reset click | none
+  (filtersChange) | EventEmitter&lt;QuickFilterChangeEvent&gt; | emits on quick filter bar change | &nbsp;
+  (resetFilters) | EventEmitter&lt;void&gt; | emits on reset click | &nbsp;
 
   ~~~
   ${template}

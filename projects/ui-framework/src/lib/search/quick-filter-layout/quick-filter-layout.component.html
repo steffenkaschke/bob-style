@@ -1,7 +1,7 @@
 <b-icon [@reset]
         *ngIf="showResetFilter"
         class="reset-filters"
-        (click)="resetFilters.emit()"
+        (click)="onReset()"
         [hasHoverState]="true"
         [icon]="icons.refresh"
         [color]="iconColor.normal"

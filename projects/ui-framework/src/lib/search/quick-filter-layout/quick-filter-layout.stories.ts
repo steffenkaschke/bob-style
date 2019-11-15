@@ -34,7 +34,7 @@ const template = `
             (resetFilters)="resetFilters()">
 
     <b-text-button bar-prefix
-               text="Less"
+               text="Left"
                color="primary">
     </b-text-button>
 
@@ -61,7 +61,7 @@ const template = `
     </b-date-range-picker>
 
     <b-text-button bar-suffix
-               text="More"
+               text="Right"
                color="primary">
     </b-text-button>
 

@@ -114,11 +114,22 @@
 }
 
 :host::ng-deep {
-  .quick-filter-placeholder {
-    background-color: $white;
-    border: 1px solid $input-border-color;
-    height: $wrap-height;
-    flex-grow: 1;
+  .bar-filters:empty {
+    &:before {
+      @include pseudo;
+      background-color: $white;
+      border: 1px solid $input-border-color;
+      height: $wrap-height;
+      flex-grow: 5;
+    }
+  }
+
+  .bar-filters {
+    @include mini-preloader(
+      $pseudo: after,
+      $size: 26px 12px,
+      $abs-pos-center: true
+    );
   }
 
   .bar-filters > * {
@@ -126,7 +137,7 @@
   }
 
   .bar-content:not(.has-prefix) {
-    .quick-filter-placeholder {
+    .bar-filters:empty:before {
       @include border-radius-left;
     }
 
@@ -141,7 +152,7 @@
   }
 
   .bar-content:not(.has-suffix) {
-    .quick-filter-placeholder {
+    .bar-filters:empty:before {
       @include border-radius-right;
     }
 
