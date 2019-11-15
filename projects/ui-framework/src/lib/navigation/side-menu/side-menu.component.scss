@@ -2,6 +2,8 @@
 
 :host {
   text-align: left;
+  --font-size: $font-size-body;
+  --line-height: $line-height-body;
 }
 
 .menu-header {

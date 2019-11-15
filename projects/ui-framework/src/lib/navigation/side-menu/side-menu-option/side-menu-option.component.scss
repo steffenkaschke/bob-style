@@ -2,8 +2,7 @@
 @import '../../../../lib/form-elements/lists/list';
 
 :host {
-  --font-size: $font-size-body;
-  --line-height: $line-height-body;
+  display: block;
 }
 
 .side-menu-option-container {
