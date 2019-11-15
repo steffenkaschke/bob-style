@@ -411,12 +411,7 @@ export { TruncateTooltipComponent } from './lib/popups/truncate-tooltip/truncate
 export { TruncateTooltipDirective } from './lib/popups/truncate-tooltip/truncate-tooltip.directive';
 export { TruncateTooltipType, TruncateTooltipPosition } from './lib/popups/truncate-tooltip/truncate-tooltip.enum';
 // CSS Tooltip
-export {
-  CSSTooltipWrap,
-  CSSTooltipPosition,
-  CSSTooltipShowOn,
-  CSSTooltipTextAlign
-} from './lib/popups/css-tooltip/css-tooltip.enum';
+export *  from './lib/popups/tooltip/tooltip.enum';
 
 /*
  * Layout

@@ -1,17 +1,14 @@
 import { storiesOf } from '@storybook/angular';
 import {
-  text,
-  select,
   boolean,
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { SwitchToggleModule } from './switch-toggle.module';
-import { values } from 'lodash';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const buttonStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Indicators,
   module
 ).addDecorator(withKnobs);
@@ -46,7 +43,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-buttonStories.add(
+story.add(
   'Switch toggle',
   () => ({
     template: storyTemplate,

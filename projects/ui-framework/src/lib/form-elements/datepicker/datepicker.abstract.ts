@@ -11,7 +11,8 @@ import {
   ElementRef,
   Output,
   EventEmitter,
-  HostBinding
+  HostBinding,
+  OnChanges,
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
@@ -24,7 +25,7 @@ import {
   isKey,
   notFirstChanges,
   cloneValue,
-  isFalsyOrEmpty
+  isFalsyOrEmpty,
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
 import { BDateAdapter } from './date.adapter';
@@ -42,7 +43,7 @@ import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.serv
 import { Styles } from '../../services/html/html-helpers.interface';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
-  implements OnInit, OnDestroy {
+  implements OnChanges, OnInit, OnDestroy {
   constructor(
     protected windowRef: WindowRef,
     protected mobileService: MobileService,
@@ -131,8 +132,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
-  // this extends BaseFormElement's ngOnChanges
-  onNgChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+
     this.allPickers(picker => this.closePicker(picker));
 
     if (changes.minDate) {
@@ -191,7 +193,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
         'pointer-events': 'none',
         left: overlayBox.left + 'px',
         right: overlayBox.right - overlayBox.width + 'px',
-        width: overlayBox.width + 'px'
+        width: overlayBox.width + 'px',
       };
     }
     return {};
@@ -202,7 +204,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   ): { dialog: HTMLElement; popup: HTMLElement } {
     const panel = {
       dialog: null,
-      popup: null
+      popup: null,
     };
 
     // desktop
@@ -381,7 +383,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
     this.transmitValue(this.value, {
       eventType: event,
-      addToEventObj: { date: this.value }
+      addToEventObj: { date: this.value },
     });
   }
 }

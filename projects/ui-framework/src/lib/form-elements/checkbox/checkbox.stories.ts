@@ -11,7 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CheckboxModule } from './checkbox.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const inputStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.FormElements,
   module
 ).addDecorator(withKnobs);
@@ -59,7 +59,7 @@ const note = `
   ${template}
   ~~~
 `;
-inputStories.add(
+story.add(
   'Checkbox',
   () => {
     return {

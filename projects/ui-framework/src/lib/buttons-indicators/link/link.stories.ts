@@ -5,7 +5,7 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { LinkColor, LinkTarget } from './link.enum';
 
-const linkStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Indicators,
   module
 ).addDecorator(withKnobs);
@@ -29,7 +29,7 @@ const note = `
   ~~~
 `;
 
-linkStories.add(
+story.add(
   'Link',
   () => {
     return {

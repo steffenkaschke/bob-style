@@ -14,7 +14,7 @@ import { IconsModule } from '../../icons/icons.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const buttonStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Buttons,
   module
 ).addDecorator(withKnobs);
@@ -61,7 +61,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-buttonStories.add(
+story.add(
   'Square Button',
   () => ({
     template: storyTemplate,

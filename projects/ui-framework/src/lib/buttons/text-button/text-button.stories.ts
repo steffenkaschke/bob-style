@@ -14,7 +14,7 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { LinkColor } from '../../buttons-indicators/link/link.enum';
 
-const buttonStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Buttons,
   module
 ).addDecorator(withKnobs);
@@ -69,7 +69,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-buttonStories.add(
+story.add(
   'Text Button',
   () => ({
     template: storyTemplate,

@@ -12,7 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { mockText } from '../../mock.const';
 
-const textareaStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.FormElements,
   module
 ).addDecorator(withKnobs);
@@ -69,7 +69,7 @@ const note = `
   ${template}
   ~~~
 `;
-textareaStories.add(
+story.add(
   'Textarea',
   () => {
     return {

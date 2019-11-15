@@ -1,11 +1,8 @@
 import { storiesOf } from '@storybook/angular';
 import {
-  array,
-  boolean,
   number,
   object,
   select,
-  text,
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
@@ -16,7 +13,7 @@ import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import {BreadcrumbsType, BreadcrumbsToggleStrategy} from './breadcrumbs.enum';
 
-const inputStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Navigation,
   module
 ).addDecorator(withKnobs);
@@ -76,7 +73,7 @@ const breadcrumbsButtons = {
   backBtn: { label: 'Back', isVisible: true }
 };
 
-inputStories.add(
+story.add(
   'Breadcrumbs',
   () => {
     return {

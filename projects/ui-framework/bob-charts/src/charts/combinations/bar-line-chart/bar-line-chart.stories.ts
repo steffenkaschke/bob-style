@@ -1,15 +1,26 @@
-import {storiesOf} from '@storybook/angular';
-import {select, boolean, number, object, text, withKnobs} from '@storybook/addon-knobs/angular';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ComponentGroupType} from '../../../../../src/lib/consts';
-import {StoryBookLayoutModule} from '../../../../../src/lib/story-book-layout/story-book-layout.module';
-import {ChartsModule} from '../../charts.module';
-import {COMBINED_BAR_CHART_DATA_MOCK, MULTI_BAR_CHART_CATEGORIES} from '../../chart.mock';
-import {ChartLegendPositionEnum} from '../../chart/chart.interface';
+import { storiesOf } from '@storybook/angular';
+import {
+  select,
+  boolean,
+  number,
+  object,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs/angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentGroupType } from '../../../../../src/lib/consts';
+import { StoryBookLayoutModule } from '../../../../../src/lib/story-book-layout/story-book-layout.module';
+import { ChartsModule } from '../../charts.module';
+import {
+  COMBINED_BAR_CHART_DATA_MOCK,
+  MULTI_BAR_CHART_CATEGORIES,
+} from '../../chart.mock';
+import { ChartLegendPositionEnum } from '../../chart/chart.interface';
 
-const story = storiesOf(`${ComponentGroupType.Charts}.Combinations`, module).addDecorator(
-  withKnobs
-);
+const story = storiesOf(
+  `${ComponentGroupType.Charts}.Combinations`,
+  module
+).addDecorator(withKnobs);
 const template = `
 <div>
   <b-bar-line-chart
@@ -41,6 +52,11 @@ const note = `
 
   #### Module
   *ChartModule*
+  from <u>'bob-style/bob-charts'</u>
+
+  \`\`\`
+  import { ChartModule } from 'bob-style/bob-charts';
+  \`\`\`
 
   ~~~
   ${template}
@@ -66,9 +82,11 @@ story.add(
       template: storyTemplate,
       props: {
         legend: boolean('legend', true),
-        legendPosition: select('legendPosition',
+        legendPosition: select(
+          'legendPosition',
           Object.values(ChartLegendPositionEnum),
-          ChartLegendPositionEnum.BOTTOM),
+          ChartLegendPositionEnum.BOTTOM
+        ),
         showDataLabels: boolean('showDataLabels', false),
         name: text('name', 'employees'),
         preTooltipValue: text('preTooltipValue', ''),
@@ -101,16 +119,12 @@ story.add(
           '#959595',
           '#616161',
           '#313131',
-        ])
+        ]),
       },
       moduleMetadata: {
-        imports: [
-          StoryBookLayoutModule,
-          BrowserAnimationsModule,
-          ChartsModule
-        ]
-      }
+        imports: [StoryBookLayoutModule, BrowserAnimationsModule, ChartsModule],
+      },
     };
   },
-  {notes: {markdown: note}}
+  { notes: { markdown: note } }
 );

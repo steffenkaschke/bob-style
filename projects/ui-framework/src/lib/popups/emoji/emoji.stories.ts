@@ -7,7 +7,7 @@ import {EmojiModule} from './emoji.module';
 import {ButtonsModule} from '../../buttons/buttons.module';
 import {TruncateTooltipModule} from '../truncate-tooltip/truncate-tooltip.module';
 
-const inputStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Popups,
   module
 ).addDecorator(withKnobs);
@@ -53,7 +53,7 @@ const note = `
   ~~~
 `;
 
-inputStories.add(
+story.add(
   'Emoji Picker',
   () => {
     return {

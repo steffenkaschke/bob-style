@@ -11,7 +11,7 @@ import { SliderModule } from './slider.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const sliderStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Indicators,
   module
 ).addDecorator(withKnobs);
@@ -59,7 +59,7 @@ const note = `
   ~~~
 `;
 
-sliderStories.add(
+story.add(
   'Slider',
   () => {
     return {

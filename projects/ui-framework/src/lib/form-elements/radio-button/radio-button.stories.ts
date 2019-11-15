@@ -16,7 +16,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { RadioDirection } from './radio-button.enum';
 
 const direction = values(RadioDirection);
-const radioStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.FormElements,
   module
 ).addDecorator(withKnobs);
@@ -65,7 +65,7 @@ const note = `
   ~~~
 `;
 
-radioStories.add(
+story.add(
   'Radio Button',
   () => {
     return {

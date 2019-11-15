@@ -15,7 +15,7 @@ import { AvatarSize } from '../avatar/avatar.enum';
 import zipObject from 'lodash/zipObject';
 import { EMPLOYEE_SHOWCASE_MOCK } from './employees-showcase.mock';
 
-const avatarStories = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
 );
 
@@ -66,7 +66,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-avatarStories.add(
+story.add(
   'Employees Showcase',
   () => {
     return {

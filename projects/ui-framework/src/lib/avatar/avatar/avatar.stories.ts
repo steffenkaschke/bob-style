@@ -3,7 +3,7 @@ import {
   boolean,
   select,
   text,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { zipObject } from 'lodash';
@@ -16,7 +16,7 @@ import { IconsModule } from '../../icons/icons.module';
 import { ChipType } from '../../chips/chips.enum';
 import { mockNames, mockJobs, mockAvatar } from '../../mock.const';
 
-const avatarStories = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
 );
 
@@ -96,7 +96,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-avatarStories.add(
+story.add(
   'Avatar',
   () => {
     return {
@@ -119,17 +119,17 @@ avatarStories.add(
         backgroundColor: select('background color', ['#fff', 'red', 'black']),
         chip: {
           type: select('chip type', chips, ChipType.success),
-          text: text('chip text', 'Employed')
-        }
+          text: text('chip text', 'Employed'),
+        },
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           AvatarModule,
-          IconsModule
-        ]
-      }
+          IconsModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

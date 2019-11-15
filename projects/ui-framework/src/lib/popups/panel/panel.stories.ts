@@ -16,7 +16,7 @@ import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
 import { PanelDefaultPosVer, PanelSize } from './panel.enum';
 import { values } from 'lodash';
 
-const buttonStories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
 );
 
@@ -79,7 +79,7 @@ const note = `
   ${template}
   ~~~
 `;
-buttonStories.add(
+story.add(
   'Panel',
   () => ({
     template: storyTemplate,

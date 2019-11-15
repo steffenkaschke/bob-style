@@ -6,7 +6,7 @@ import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-lay
 import { SingleSelectComponent } from '../single-select/single-select.component';
 import { ChainSelectExampleModule, template as exampleTemplate } from './chain-select.example';
 
-const buttonStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
@@ -46,7 +46,7 @@ const note = `
   ~~~
 `;
 
-buttonStories.add(
+story.add(
   'Chain select',
   () => ({
     template: storyTemplate,

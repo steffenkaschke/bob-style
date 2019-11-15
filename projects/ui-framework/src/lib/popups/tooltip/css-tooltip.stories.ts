@@ -1,32 +1,29 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  withKnobs,
-  boolean,
-  text,
-  select
-} from '@storybook/addon-knobs/angular';
+import { withKnobs, text, select } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import {
   CSSTooltipWrap,
   CSSTooltipPosition,
   CSSTooltipShowOn,
-  CSSTooltipTextAlign
-} from './css-tooltip.enum';
+  CSSTooltipTextAlign,
+} from './tooltip.enum';
+import { DividerModule } from '../../layout/divider/divider.module';
+import { TypographyModule } from '../../typography/typography.module';
 
-const stories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
   withKnobs
 );
 
 const template = `
-  <p [attr.data-tooltip]="tooltipText"
+  <b-heading [attr.data-tooltip]="tooltipText"
      [attr.data-tooltip-position]="tooltipPosition"
      [attr.data-tooltip-align]="tooltipTextAlign"
      [attr.data-tooltip-wrap]="tooltipWrap"
      [attr.data-tooltip-show]="tooltipShowOn"
      tabindex="0">
        Hover over this text to see tooltip.
-  </p>
+  </b-heading>
 `;
 
 const note = `
@@ -66,21 +63,29 @@ const note = `
 
 `;
 
-const storyTemplate = `<b-story-book-layout [title]="'Info Tooltip'">
-  <div style="padding-top: 100px;">
-    ${template}
+const storyTemplate = `<b-story-book-layout [title]="'CSS Tooltip'">
+  <div >
+
+    <div style="text-align:left; max-width: 400px; margin: 0 auto;">
+      <p>CSS Tooltip is very performant, but has some limitations.
+
+      <p><strong>When to use:</strong> For short tooltips</p>
+
+      <p><strong>When not to use:</strong> For <u>longer</u> text, or if inside  <u>overflow: hidden</u> or <u>overflow: auto</u> container - in this cases, use <u>Material Tooltip</u></p>
+    </div>
+
+    <b-divider></b-divider>
+
+      ${template}
   </div>
 </b-story-book-layout>`;
 
-stories.add(
+story.add(
   'CSS Tooltip',
   () => ({
     template: storyTemplate,
     props: {
-      tooltipText: text(
-        'tooltipText',
-        'Lorem ipsum  \ndolor sit amet, \nconsectetur adipiscing elit, \nsed do eiusmod tempor \nincididunt ut'
-      ),
+      tooltipText: text('tooltipText', 'Works best for \n short text'),
       tooltipPosition: select(
         'tooltipPosition',
         Object.values(CSSTooltipPosition),
@@ -100,11 +105,11 @@ stories.add(
         'tooltipShowOn',
         Object.values(CSSTooltipShowOn),
         CSSTooltipShowOn.hover
-      )
+      ),
     },
     moduleMetadata: {
-      imports: [StoryBookLayoutModule]
-    }
+      imports: [StoryBookLayoutModule, DividerModule, TypographyModule],
+    },
   }),
   { notes: { markdown: note } }
 );

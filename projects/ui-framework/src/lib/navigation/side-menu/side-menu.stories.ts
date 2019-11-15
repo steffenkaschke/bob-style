@@ -1,10 +1,7 @@
 import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
 import {
-  boolean,
   object,
-  select,
-  text,
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
@@ -17,7 +14,7 @@ import { IconsModule } from '../../icons/icons.module';
 import { getSideMenuOptionsMock } from './side-menu.mock';
 import { SideMenuOption } from './side-menu-option/side-menu-option.interface';
 
-const inputStories = storiesOf(ComponentGroupType.Navigation, module)
+const story = storiesOf(ComponentGroupType.Navigation, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
@@ -54,7 +51,7 @@ const note = `
 
 const sideMenuOptionsMock = getSideMenuOptionsMock();
 
-inputStories.add(
+story.add(
   'Side Menu',
   () => {
     return {

@@ -16,7 +16,7 @@ import { action } from '@storybook/addon-actions';
 import { selectOptionsMock } from './multi-select-panel.mock';
 import { cloneDeep } from 'lodash';
 
-const inputStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
@@ -78,7 +78,7 @@ const optionsMock = cloneDeep(selectOptionsMock);
 
 optionsMock[0].options[1].selected = true;
 
-inputStories.add(
+story.add(
   'Multi list panel',
   () => {
     return {

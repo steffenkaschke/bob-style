@@ -19,7 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { MenuItem } from './menu.interface';
 
-const menuStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Navigation,
   module
 ).addDecorator(withKnobs);
@@ -119,7 +119,7 @@ const menuMock: MenuItem[] = [
   }
 ];
 
-menuStories.add(
+story.add(
   'Menu',
   () => {
     return {

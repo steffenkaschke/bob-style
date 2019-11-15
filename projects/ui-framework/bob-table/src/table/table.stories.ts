@@ -3,7 +3,7 @@ import {
   number,
   object,
   select,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
@@ -18,7 +18,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { RowSelection, TableType } from './table/table.enum';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
 
-const tableStories = storiesOf(ComponentGroupType.Tables, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
   withKnobs
 );
 
@@ -48,8 +48,14 @@ const rowSelection = values(RowSelection);
 
 const note = `
   ## Auto complete Element
+
   #### Module
   *TableModule*
+  from <u>'bob-style/bob-table'</u>
+
+  \`\`\`
+  import { TableModule, TableType, RowSelection, ColumnDef, RowClickedEvent, GridActions } from 'bob-style/bob-table';
+  \`\`\`
 
   #### Properties
   Name | Type | Description | default value
@@ -74,7 +80,7 @@ const note = `
   ${template}
   ~~~
 `;
-tableStories.add(
+story.add(
   'Data Table',
   () => {
     return {
@@ -91,7 +97,7 @@ tableStories.add(
         rowData: object('rowData', mockRowData),
         rowClicked: action('Row clicked'),
         selectionChanged: action('Selection changed'),
-        sortChanged: action('sort changed')
+        sortChanged: action('sort changed'),
       },
       moduleMetadata: {
         entryComponents: [AvatarCellComponent, ActionsCellComponent],
@@ -101,9 +107,9 @@ tableStories.add(
           TableModule,
           AgGridModule,
           AvatarModule,
-          AgGridModule.withComponents([AvatarCellComponent])
-        ]
-      }
+          AgGridModule.withComponents([AvatarCellComponent]),
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

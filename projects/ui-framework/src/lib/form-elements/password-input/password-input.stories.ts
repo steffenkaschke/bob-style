@@ -13,7 +13,7 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const datepickerStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.FormElements,
   module
 ).addDecorator(withKnobs);
@@ -70,7 +70,7 @@ const note = `
   ~~~
 `;
 
-datepickerStories.add(
+story.add(
   'Password Input',
   () => {
     return {

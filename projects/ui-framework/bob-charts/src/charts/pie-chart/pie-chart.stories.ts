@@ -1,10 +1,16 @@
-import {storiesOf} from '@storybook/angular';
-import {boolean, number, object, text, withKnobs} from '@storybook/addon-knobs/angular';
-import {ComponentGroupType} from '../../../../src/lib/consts';
-import {ChartsModule} from '../charts.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {StoryBookLayoutModule} from '../../../../src/lib/story-book-layout/story-book-layout.module';
-import {LINE_CHART_DATA_MOCK} from '../chart.mock';
+import { storiesOf } from '@storybook/angular';
+import {
+  boolean,
+  number,
+  object,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs/angular';
+import { ComponentGroupType } from '../../../../src/lib/consts';
+import { ChartsModule } from '../charts.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoryBookLayoutModule } from '../../../../src/lib/story-book-layout/story-book-layout.module';
+import { LINE_CHART_DATA_MOCK } from '../chart.mock';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
@@ -42,6 +48,11 @@ const note = `
 
   #### Module
   *ChartModule*
+  from <u>'bob-style/bob-charts'</u>
+
+  \`\`\`
+  import { ChartModule } from 'bob-style/bob-charts';
+  \`\`\`
 
   ~~~
   ${template}
@@ -104,16 +115,12 @@ story.add(
           '#959595',
           '#616161',
           '#313131',
-        ])
+        ]),
       },
       moduleMetadata: {
-        imports: [
-          StoryBookLayoutModule,
-          BrowserAnimationsModule,
-          ChartsModule
-        ]
-      }
+        imports: [StoryBookLayoutModule, BrowserAnimationsModule, ChartsModule],
+      },
     };
   },
-  {notes: {markdown: note}}
+  { notes: { markdown: note } }
 );

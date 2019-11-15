@@ -12,7 +12,7 @@ import { values } from 'lodash';
 import { LinkColor, LinkTarget } from '../link/link.enum';
 import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
 
-const infoStripStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Indicators,
   module
 ).addDecorator(withKnobs);
@@ -50,7 +50,7 @@ const note = `
   ~~~
 `;
 
-infoStripStories.add(
+story.add(
   'Info Strip',
   () => {
     return {

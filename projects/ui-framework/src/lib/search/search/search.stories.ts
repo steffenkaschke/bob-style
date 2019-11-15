@@ -1,12 +1,12 @@
 import { storiesOf } from '@storybook/angular';
-import { text, boolean, withKnobs } from '@storybook/addon-knobs/angular';
+import { text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { SearchModule } from './search.module';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const inputStories = storiesOf(ComponentGroupType.Search, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
   withKnobs
 );
 
@@ -43,7 +43,7 @@ const note = `
   ${template}
   ~~~
 `;
-inputStories.add(
+story.add(
   'Search',
   () => {
     return {

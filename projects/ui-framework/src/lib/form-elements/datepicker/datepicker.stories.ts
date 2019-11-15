@@ -4,7 +4,7 @@ import {
   number,
   select,
   text,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { DatepickerModule } from './datepicker.module';
@@ -16,10 +16,9 @@ import { thisYear, thisMonth } from '../../services/utils/functional-utils';
 import { DatepickerType } from './datepicker.enum';
 import { mockText } from '../../mock.const';
 
-const datepickerStories = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 const template = `
 <b-datepicker [value]="value"
               [type]="pickerType"
@@ -81,7 +80,7 @@ const note = `
   ~~~
 `;
 
-datepickerStories.add(
+story.add(
   'Datepicker',
   () => {
     return {
@@ -93,7 +92,7 @@ datepickerStories.add(
             '',
             `${thisYear()}-${thisMonth(false, -1)}-9`,
             `${thisYear()}-${thisMonth()}-23`,
-            `${thisYear()}-${thisMonth(false, 1)}-19`
+            `${thisYear()}-${thisMonth(false, 1)}-19`,
           ],
           ''
         ),
@@ -107,7 +106,7 @@ datepickerStories.add(
           [
             '',
             `${thisYear()}-${thisMonth(false, -1)}-5`,
-            `${thisYear()}-${thisMonth()}-7`
+            `${thisYear()}-${thisMonth()}-7`,
           ],
           ''
         ),
@@ -116,7 +115,7 @@ datepickerStories.add(
           [
             '',
             `${thisYear()}-${thisMonth()}-25`,
-            `${thisYear()}-${thisMonth(false, 1)}-15`
+            `${thisYear()}-${thisMonth(false, 1)}-15`,
           ],
           ''
         ),
@@ -129,15 +128,15 @@ datepickerStories.add(
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
-        dateChange: action('Date Changed')
+        dateChange: action('Date Changed'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           DatepickerModule,
-          StoryBookLayoutModule
-        ]
-      }
+          StoryBookLayoutModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

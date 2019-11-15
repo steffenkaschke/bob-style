@@ -10,7 +10,7 @@ import { AvatarModule } from '../avatar/avatar.module';
 import { mockAvatar, mockNames } from '../../mock.const';
 import { AvatarOrientation, AvatarSize } from '../avatar/avatar.enum';
 
-const avatarLayoutStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Avatar,
   module
 ).addDecorator(withKnobs);
@@ -51,7 +51,7 @@ const storyTemplate = `
 `;
 const alignOptions = ['center', 'left'];
 
-avatarLayoutStories.add(
+story.add(
   'Avatar Layout',
   () => {
     return {

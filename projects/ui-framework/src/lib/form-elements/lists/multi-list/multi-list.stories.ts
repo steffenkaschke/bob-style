@@ -13,7 +13,7 @@ import { AvatarModule } from '../../../avatar/avatar/avatar.module';
 import { optionsMock } from './multi-list.mock';
 import { cloneDeep } from 'lodash';
 
-const buttonStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
@@ -59,7 +59,7 @@ const note = `
 
 const options = cloneDeep(optionsMock);
 
-buttonStories.add(
+story.add(
   'Multi list',
   () => ({
     template: storyTemplate,

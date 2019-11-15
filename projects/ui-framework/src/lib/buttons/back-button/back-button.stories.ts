@@ -6,13 +6,13 @@ import {
   withKnobs
 } from '@storybook/addon-knobs/angular';
 import { BackButtonType } from '../buttons.enum';
-import { values, remove } from 'lodash';
+import { values } from 'lodash';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const backButtonStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Buttons,
   module
 ).addDecorator(withKnobs);
@@ -51,7 +51,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-backButtonStories.add(
+story.add(
   'Back Button',
   () => ({
     template: storyTemplate,

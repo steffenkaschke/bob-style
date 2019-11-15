@@ -11,7 +11,7 @@ import { AutoCompleteOption } from './auto-complete.interface';
 import { mockText } from '../../mock.const';
 import { randomNumber } from '../../services/utils/functional-utils';
 
-const inputStories = storiesOf(ComponentGroupType.Search, module)
+const story = storiesOf(ComponentGroupType.Search, module)
   .addDecorator(withNotes)
   .addDecorator(withKnobs);
 
@@ -61,7 +61,7 @@ const optionsMock: AutoCompleteOption[] = Array.from(Array(20), (_, k) => {
   };
 });
 
-inputStories.add(
+story.add(
   'Auto complete',
   () => {
     return {

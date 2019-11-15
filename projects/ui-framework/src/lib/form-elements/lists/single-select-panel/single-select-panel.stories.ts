@@ -15,7 +15,7 @@ import { SingleSelectPanelModule } from './single-select-panel.module';
 import { ButtonType } from '../../../buttons/buttons.enum';
 import { action } from '@storybook/addon-actions';
 
-const inputStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
@@ -104,7 +104,7 @@ const optionsMock: SelectGroupOption[] = [
 
 optionsMock[0].options[1].selected = true;
 
-inputStories.add(
+story.add(
   'Single list panel',
   () => {
     return {

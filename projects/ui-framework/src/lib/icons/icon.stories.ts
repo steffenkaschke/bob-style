@@ -7,12 +7,12 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { IconsModule } from './icons.module';
 import { IconColor, Icons, IconSize } from './icons.enum';
-import { reduce, values, keys } from 'lodash';
+import { reduce, values } from 'lodash';
 import { ComponentGroupType } from '../consts';
 import { StoryBookLayoutModule } from '../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const iconStories = storiesOf(ComponentGroupType.Icons, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Icons, module).addDecorator(
   withKnobs
 );
 
@@ -66,7 +66,7 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
-iconStories.add(
+story.add(
   'Icon element',
   () => {
     return {
@@ -142,7 +142,7 @@ const iconsListTemplate = `
       </div>
 </b-story-book-layout>
   `;
-iconStories.add(
+story.add(
   'Icons list',
   () => {
     return {

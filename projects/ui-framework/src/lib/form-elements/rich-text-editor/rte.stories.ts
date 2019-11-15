@@ -20,7 +20,7 @@ import { BlotType, RTEType } from './rte-core/rte.enum';
 import { SelectGroupOption } from '../lists/list.interface';
 import { placeholderMock } from './rte-placeholder/rte-placeholder.mock';
 
-const inputStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.FormElements,
   module
 ).addDecorator(withKnobs);
@@ -99,7 +99,7 @@ const controlsDef = values(BlotType).filter(
   cntrl => !disableControlsDef.includes(cntrl)
 );
 
-inputStories.add(
+story.add(
   'Rich text editor',
   () => {
     return {

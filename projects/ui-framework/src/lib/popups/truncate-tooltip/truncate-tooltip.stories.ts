@@ -3,7 +3,7 @@ import {
   number,
   text,
   withKnobs,
-  select
+  select,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -13,10 +13,10 @@ import { TypographyModule } from '../../typography/typography.module';
 import { TruncateTooltipModule } from './truncate-tooltip.module';
 import {
   TruncateTooltipType,
-  TruncateTooltipPosition
+  TruncateTooltipPosition,
 } from './truncate-tooltip.enum';
 
-const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
   withKnobs
 );
 
@@ -178,7 +178,7 @@ story.add(
           headgear is truly a serious part of your traditional Pastafarian beliefs, as you are claiming –
           then they are less likely to make trouble.`
         ),
-        text2: text('text2', '😊 And this text too!')
+        text2: text('text2', '😊 And this text too!'),
       },
       moduleMetadata: {
         declarations: [],
@@ -186,10 +186,10 @@ story.add(
           TypographyModule,
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          TruncateTooltipModule
+          TruncateTooltipModule,
         ],
-        entryComponents: []
-      }
+        entryComponents: [],
+      },
     };
   },
   { notes: { markdown: note } }

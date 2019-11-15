@@ -14,7 +14,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { ButtonType, ButtonSize } from '../buttons.enum';
 import { Icons } from '../../icons/icons.enum';
 
-const buttonStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Buttons,
   module
 ).addDecorator(withKnobs);
@@ -59,7 +59,7 @@ const typeOptions = values(ButtonType);
 const sizeOptions = values(ButtonSize);
 const icons = values(Icons);
 
-buttonStories.add(
+story.add(
   'Chevron Button',
   () => ({
     template: storyTemplate,
