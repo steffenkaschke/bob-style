@@ -46,7 +46,7 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  text | text | Button text | none
+  text | text | Button text | &nbsp;
   icon | Icons | Icon enum value
   color | LinkColor | color of text and icon | dark
   clicked | Function | callback for clicking on the button |

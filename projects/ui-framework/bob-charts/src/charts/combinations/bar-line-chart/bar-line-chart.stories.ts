@@ -65,13 +65,13 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  *name | string | name of series | none
-  *data | | series data array for chart | none
+  *name | string | name of series | &nbsp;
+  *data | | series data array for chart | &nbsp;
   donut (optional) | boolean | make pie chart donut chart | false
   legend (optional) | boolean | shows legend | false
   colorPalette (optional) | string[] | color palette array | default array of colors
   height (optional) | number | height of chart | 500
-  title (optional) | string | title of chart | none
+  title (optional) | string | title of chart | &nbsp;
   pointFormat (optional) | string | tooltip formatter | {series.name}: <b>{point.percentage:.1f}%</b>
 `;
 

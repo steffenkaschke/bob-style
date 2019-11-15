@@ -59,18 +59,18 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [imageSource] | string | URL of the avatar image | none
-  [backgroundColor] | string | background color | none
+  [imageSource] | string | URL of the avatar image | &nbsp;
+  [backgroundColor] | string | background color | &nbsp;
   [size] | AvatarSize | enum for setting the avatar size | mini
   [orientation] | AvatarOrientation | vertical or horizontal | horizontal
-  [title] | string | main title of the avatar | none
-  [subtitle] | string | subtitle of the avatar | none
-  [caption] | string | caption & site | none
-  [badge] | AvatarBadge / BadgeConfig | AvatarBadge enum of approved, pending or rejected / or BadgeConfig {icon, color} object  | none
-  [chip] | Chip | object describing the chip chip (should have type & text properties) | none
+  [title] | string | main title of the avatar | &nbsp;
+  [subtitle] | string | subtitle of the avatar | &nbsp;
+  [caption] | string | caption & site | &nbsp;
+  [badge] | AvatarBadge / BadgeConfig | AvatarBadge enum of approved, pending or rejected / or BadgeConfig {icon, color} object  | &nbsp;
+  [chip] | Chip | object describing the chip chip (should have type & text properties) | &nbsp;
   [disabled] | boolean | disabled avatar | false
   [isClickable] | boolean | flag for indicating if the avatar is clickable or not | false
-  (clicked) | EventEmitter&lt;MouseEvent&gt; | emitted on avatar click | none
+  (clicked) | EventEmitter&lt;MouseEvent&gt; | emitted on avatar click | &nbsp;
 
   ~~~
   <b-avatar

@@ -35,11 +35,11 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  selectedItemList | (any)[] | selected values for each select | none (Optional)
-  actionLabel | string | action label text | none
+  selectedItemList | (any)[] | selected values for each select | &nbsp; (Optional)
+  actionLabel | string | action label text | &nbsp;
   staticMode | boolean | when in static mode, the number of select elements is determined by the selectedItemList input\
   and cannot be changed (Add and Delete buttons are hidden) | false
-  selectChange | action | EventEmitter - emits ChainSelectEvent | none
+  selectChange | action | EventEmitter - emits ChainSelectEvent | &nbsp;
 
   ~~~
   ${exampleTemplate}

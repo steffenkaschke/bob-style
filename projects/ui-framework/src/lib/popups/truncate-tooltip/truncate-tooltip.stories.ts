@@ -96,7 +96,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [maxLines] | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0 or null. | 1 (optional)
+  [maxLines] | number | maximum lines. the overflowing text will be truncated and tooltip with full text will be shown. to disable truncation, set to 0 or null. | 1
   [type] | TruncateTooltipType | Use Material tooltip or CSS tooltip. Defaut 'auto' type will use Material for text longer than 130 chars, otherwise CSS | auto
   [position] | TruncateTooltipPosition | above or below | above
   [trustCssVars] | boolean | performance can be optimised, if --line-height and --font-size CSS variables exist on the element | false
@@ -116,7 +116,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  b-truncate-tooltip (or maxLines) | number | maximum lines | 1 (optional)
+  b-truncate-tooltip (or maxLines) | number | maximum lines | 1
   other properties are the same as in example 1
 
  --------
@@ -131,7 +131,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  bTruncateTooltip | number | maximum lines  | 1 (optional)
+  bTruncateTooltip | number | maximum lines  | 1
   other properties are not supported
 
   --------

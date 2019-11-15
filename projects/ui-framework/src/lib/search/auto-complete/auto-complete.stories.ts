@@ -42,10 +42,10 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  label | string | search label | none
-  options | AutoCompleteOption[] | options for the select list | none
-  searchChange | action | search value string | none
-  optionSelect | action | AutoCompleteOption | none
+  label | string | search label | &nbsp;
+  options | AutoCompleteOption[] | options for the select list | &nbsp;
+  searchChange | action | search value string | &nbsp;
+  optionSelect | action | AutoCompleteOption | &nbsp;
   displayOptionsOnFocus | boolean | opens the list on focus | false
 
   ~~~

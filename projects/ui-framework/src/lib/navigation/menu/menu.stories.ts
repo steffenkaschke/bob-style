@@ -53,7 +53,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  menu | MenuItem[] | array of menu items | none
+  menu | MenuItem[] | array of menu items | &nbsp;
   openLeft | boolean | open left by default | false
   disabled | boolean | disables menu
   actionClick | action | notifies on action click

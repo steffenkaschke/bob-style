@@ -35,9 +35,9 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  value | string/number/float | type of input field | none
-  label | string | label text | none
-  searchChange | action | searchChange output string | none
+  value | string/number/float | type of input field | &nbsp;
+  label | string | label text | &nbsp;
+  searchChange | action | searchChange output string | &nbsp;
 
   ~~~
   ${template}

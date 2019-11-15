@@ -61,16 +61,16 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  *name | string | name of series | none
-  *data | | series data array for chart | none
+  *name | string | name of series | &nbsp;
+  *data | | series data array for chart | &nbsp;
   donut (optional) | boolean | make pie chart donut chart | false
   showDataLabels (optional) | boolean | shows label in pie | false
   legend (optional) | boolean | shows legend | false
   colorPalette (optional) | string[] | color palette array | default array of colors
   height (optional) | number | height of chart | 500
   donutInnerSize (optional) | number | defining the inner white circle in a donut pie chart | 60
-  donutWidth (optional) | number | overrides donutInnerSize by applying width of donut instead inner circle width | none
-  title (optional) | string | title of chart | none
+  donutWidth (optional) | number | overrides donutInnerSize by applying width of donut instead inner circle width | &nbsp;
+  title (optional) | string | title of chart | &nbsp;
   pointFormat (optional) | string | tooltip formatter | {series.name}: <b>{point.percentage:.1f}%</b>
 `;
 

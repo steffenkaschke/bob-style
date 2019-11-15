@@ -41,7 +41,7 @@ const note = `
   #### HTML Attributes
   Name | Type | Description | default
   --- | --- | --- | ---
-  [attr.data-tooltip] | string | tooltip text | none
+  [attr.data-tooltip] | string | tooltip text | &nbsp;
   [attr.data-tooltip-position] | TooltipPosition | above or below | 'above'
   [attr.data-tooltip-align] | CSSTooltipTextAlign | text alignment | 'center'
   [attr.data-tooltip-show] | CSSTooltipShowOn | show on hover or on focus (click) - if using on focus, be sure to add tabindex="0" attribute to non-focusable elements | 'hover'

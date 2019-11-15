@@ -3,7 +3,7 @@ import {
   boolean,
   select,
   text,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { IconsModule } from './icons.module';
 import { IconColor, Icons, IconSize } from './icons.enum';
@@ -52,7 +52,7 @@ const note = `
   toolTipSummary | String | Tooltip text  |
   icon | Icons | enum for the available icons |
   size | IconSize | enum for the available icon sizes |
-  color | IconColor | enum for the available icon colors | dark (optional)
+  color | IconColor | enum for the available icon colors | dark
   hasHoverState | boolean | if icon has hover state | false
 
   ~~~
@@ -76,11 +76,11 @@ story.add(
         icon: select('icon', iconClasses, Icons.person),
         size: select('size', size, IconSize.large),
         color: select('color', color, IconColor.normal),
-        hasHoverState: boolean('hasHoverState', true)
+        hasHoverState: boolean('hasHoverState', true),
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, IconsModule, StoryBookLayoutModule]
-      }
+        imports: [BrowserAnimationsModule, IconsModule, StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }
@@ -149,8 +149,8 @@ story.add(
       template: iconsListTemplate,
       props: {},
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, IconsModule, StoryBookLayoutModule]
-      }
+        imports: [BrowserAnimationsModule, IconsModule, StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }

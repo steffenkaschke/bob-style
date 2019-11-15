@@ -56,20 +56,20 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [type] | DatepickerType | date or month picker | date
-  [value] | DateRangePickerValue <br> ({from: Date / string (YYYY-MM-DD), <br>to: Date / string (YYYY-MM-DD)} | start and end dates | none
-  [minDate] | Date / string (YYYY-MM-DD) | minimum date | none
-  [maxDate] | Date / string (YYYY-MM-DD) | maximum date | none
-  [label] | string | label text (above input) | none
-  [startDateLabel] | string | first datepicker label | none
-  [endDateLabel] | string | second datepicker label | none
-  [placeholder] | string | placeholder text (inside input) | none
+  [value] | DateRangePickerValue <br> ({from: Date / string (YYYY-MM-DD), <br>to: Date / string (YYYY-MM-DD)} | start and end dates | &nbsp;
+  [minDate] | Date / string (YYYY-MM-DD) | minimum date | &nbsp;
+  [maxDate] | Date / string (YYYY-MM-DD) | maximum date | &nbsp;
+  [label] | string | label text (above input) | &nbsp;
+  [startDateLabel] | string | first datepicker label | &nbsp;
+  [endDateLabel] | string | second datepicker label | &nbsp;
+  [placeholder] | string | placeholder text (inside input) | &nbsp;
   [hideLabelOnFocus] | boolean | places label in placeholder position | false
   [disabled] | boolean | is field disabled | false
   [required] | boolean | is field required | false
-  [hintMessage] | string | hint text | none
-  [warnMessage] | string | warning text | none
-  [errorMessage] | string | error text | none
-  (dateChange) | EventEmitter&lt;InputEvent&gt; | Emited on date change | none
+  [hintMessage] | string | hint text | &nbsp;
+  [warnMessage] | string | warning text | &nbsp;
+  [errorMessage] | string | error text | &nbsp;
+  (dateChange) | EventEmitter&lt;InputEvent&gt; | Emited on date change | &nbsp;
 
   #### Notes
 
