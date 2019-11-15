@@ -47,7 +47,7 @@ const note = `
   [color] | IconColor | the color of the icon | dark
   [disabled] | boolean | disabled | false
   [toolTipSummary] | string | Tooltip text  | &nbsp;
-  (clicked) | EventEmitter | callback for clicking on the button | &nbsp;
+  (clicked) | EventEmitter | button click event  | &nbsp;
 
   ~~~
   ${template}

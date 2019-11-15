@@ -50,7 +50,7 @@ const note = `
   [icon] | Icons | icon for button  | &nbsp;
   [size] | ButtonSize | enum for setting the button size | medium
   [disabled] | boolean | disabled | false
-  (clicked) | EventEmitter | callback for clicking on the button | &nbsp;
+  (clicked) | EventEmitter | button click event | &nbsp;
 
   #### Style customization
 

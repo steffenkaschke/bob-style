@@ -37,7 +37,7 @@ const note = `
   --- | --- | --- | ---
   [type] | BackButtonType | enum for setting the button type | secondary
   [disabled] | boolean | disabled | false
-  (clicked) | EventEmitter | callback for clicking on the back button | &nbsp;
+  (clicked) | EventEmitter | back button click event | &nbsp;
 
   ~~~
   ${template}

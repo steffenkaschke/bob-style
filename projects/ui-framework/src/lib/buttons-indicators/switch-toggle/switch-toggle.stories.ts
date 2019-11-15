@@ -26,7 +26,7 @@ const note = `
   --- | --- | --- | ---
   [isChecked] | boolean | is switch toggle on | false
   [isDisabled] | boolean | is switch toggle disabled | false
-  (changed) | EventEmitter | callback for changing the toggle | &nbsp;
+  (changed) | EventEmitter | toggle change event | &nbsp;
 
   ~~~
   ${template}

@@ -49,7 +49,7 @@ const note = `
   [icon] | Icons | Icon enum value | &nbsp;
   [color] | LinkColor | color of text and icon | dark
   [disabled] | boolean | disabled | false
-  (clicked) | EventEmitter | callback for clicking on the button | &nbsp;
+  (clicked) | EventEmitter | button click event  | &nbsp;
 
   ~~~
   ${button1}

@@ -41,7 +41,7 @@ const note = `
   [type] | ButtonType | enum for setting the button type | primary
   [size] | ButtonSize | enum for setting the button size | medium
   [disabled] | boolean | disabled state | false
-  (clicked) | EventEmitter | callback for clicking on the button | &nbsp;
+  (clicked) | EventEmitter | button click event  | &nbsp;
 
   ~~~
   ${button}

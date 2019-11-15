@@ -43,15 +43,15 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  value | number | Current slider value | 0
-  min | number | Minimum value of the slider | 0
-  max | number | Maximum value of the slider | 100
-  step | number | Step for each slider change | 1
-  showLabel | boolean | Show the value label with symbol | true
-  disabled | boolean | Disabled mode | false
-  readOnly | boolean | Set slider to read only | false
-  labelSymbol | string | The symbol for the label | '%'
-  progressChange | EventEmitter | Progress change callback |
+  [value] | number | Current slider value | 0
+  [min] | number | Minimum value of the slider | 0
+  [max] | number | Maximum value of the slider | 100
+  [step] | number | Step for each slider change | 1
+  [showLabel] | boolean | Show the value label with symbol | true
+  [disabled] | boolean | Disabled mode | false
+  [readOnly] | boolean | Set slider to read only | false
+  [labelSymbol] | string | The symbol for the label | '%'
+  (progressChange) | EventEmitter&lt;MatSliderChange&gt; | Progress change event | &nbsp;
 
   ~~~
   ${template}

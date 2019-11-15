@@ -51,15 +51,15 @@ const note = `
 
   Name | Type | Description
   --- | --- | ---
-  value | SplitInputSingleSelectValue | value of the input and select
-  selectOptions | SelectGroupOption[] | the options model for the select element
-  label | string | label text
-  description | string | description text (above icon)
-  disabled | boolean | is field disabled
-  required | boolean | is field required
-  hintMessage | text | hint text
-  errorMessage | text | error text
-  elementChange | return { value, selectedId } | element change emitter
+  [value] | SplitInputSingleSelectValue | value of the input and select
+  [selectOptions] | SelectGroupOption[] | the options model for the select element
+  [label] | string | label text
+  [description] | string | description text (above icon)
+  [disabled] | boolean | is field disabled
+  [required] | boolean | is field required
+  [hintMessage] | text | hint text
+  [errorMessage] | text | error text
+  (elementChange) | EventEmitter&lt;InputSingleSelectValue&gt; |  change emitter
 
   ~~~
   ${template}
