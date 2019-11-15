@@ -1,17 +1,13 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  boolean,
-  withKnobs
-} from '@storybook/addon-knobs/angular';
+import { boolean, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { SwitchToggleModule } from './switch-toggle.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 
-const story = storiesOf(
-  ComponentGroupType.Indicators,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-switch-toggle [isDisabled]="isDisabled"
@@ -28,9 +24,9 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  isChecked | boolean | is switch toggle on | false
-  isDisabled | boolean | is switch toggle disabled | false
-  changed | Function | callback for changing the toggle |
+  [isChecked] | boolean | is switch toggle on | false
+  [isDisabled] | boolean | is switch toggle disabled | false
+  (changed) | EventEmitter | callback for changing the toggle | &nbsp;
 
   ~~~
   ${template}
@@ -50,11 +46,11 @@ story.add(
     props: {
       isDisabled: boolean('isDisabled', false),
       isChecked: boolean('isChecked', true),
-      switchChange: action('switchChange')
+      switchChange: action('switchChange'),
     },
     moduleMetadata: {
-      imports: [SwitchToggleModule, StoryBookLayoutModule]
-    }
+      imports: [SwitchToggleModule, StoryBookLayoutModule],
+    },
   }),
   { notes: { markdown: note } }
 );

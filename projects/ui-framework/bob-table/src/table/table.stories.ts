@@ -61,21 +61,21 @@ const note = `
   Name | Type | Description | default value
   --- | --- | --- | ---
   type | TableType | table style theme | TableType.primary
-  rowData | json | Table data |
-  columnDefs | json | Columns definition |
+  rowData | json | Table data | &nbsp;
+  columnDefs | json | Columns definition | &nbsp;
   rowSelection | RowSelection | single multiple | null
   suppressColumnVirtualisation | boolean | disables virtual scroll on columns | true
   maxHeight | number | grid max height | 450
-  rowClicked | Event | Row clicked event
-  gridInit | Event | Grid init event
-  selectionChanged | Event | All selected rows
-  sortChanged | Event | Sort changed event
+  rowClicked | Event | Row clicked event | &nbsp;
+  gridInit | Event | Grid init event | &nbsp;
+  selectionChanged | Event | All selected rows | &nbsp;
+  sortChanged | Event | Sort changed event | &nbsp;
   tableGridOptions | GridOptions - Partial | extra options that are added on grid | {}
-  addRows | Function | add rows
-  updateRows | Function | update rows
-  removeRows | Function | remove rows
-  filterRows | Function | search rows
-  resetFilter | Function | reset filter
+  addRows | Function | add rows | &nbsp;
+  updateRows | Function | update rows | &nbsp;
+  removeRows | Function | remove rows | &nbsp;
+  filterRows | Function | search rows | &nbsp;
+  resetFilter | Function | reset filter | &nbsp;
   ~~~
   ${template}
   ~~~

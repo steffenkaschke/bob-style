@@ -3,7 +3,7 @@ import {
   boolean,
   select,
   withKnobs,
-  number
+  number,
 } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { CardType } from '../cards.enum';
@@ -80,7 +80,7 @@ const note = `
   [alignCenter] | boolean | put cards in the center. by default, if there is not enough cards to fill 1 row, the cards will be centered. to disable this behaviour, set [alignCenter] to **null**. set to **true** to force centering. | false
   [mobileSwiper] | boolean | enable mobile swiper (1 row of scrollable cards) | false
   cardsInRow$ / getCardsInRow$() | Observable&lt;number&gt; | observable that returns cards in row | initial cards in row
-  (cardsAmountChanged) | EventEmitter&lt;number&gt; | emits when cardsInRow changes
+  (cardsAmountChanged) | EventEmitter&lt;number&gt; | emits when cardsInRow changes | &nbsp;
 
 #### Example
 \`\`\`
@@ -125,15 +125,15 @@ story.add(
         ),
         alignCenter: boolean('alignCenter', false),
         mobileSwiper: boolean('mobileSwiper', true),
-        maxCards: number('maxCards', 6)
+        maxCards: number('maxCards', 6),
       },
       moduleMetadata: {
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          CardLayoutExampleModule
-        ]
-      }
+          CardLayoutExampleModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

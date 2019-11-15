@@ -47,15 +47,15 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [type] | Social | type of input field |
-  [value] | string | field value |
-  [placeholder] | string | placeholder text (inside input) |
+  [type] | Social | type of input field | &nbsp;
+  [value] | string | field value | &nbsp;
+  [placeholder] | string | placeholder text (inside input) | &nbsp;
   [disabled] | boolean | is field disabled | false
   [required] | boolean | is field required | false
-  [hintMessage] | string | hint text |
-  [warnMessage] | string | warning text |
-  [errorMessage] | string | error text |
-  (socialInputChange) |  EventEmitter&lt;InputEvent&gt; | input events emitter |
+  [hintMessage] | string | hint text | &nbsp;
+  [warnMessage] | string | warning text | &nbsp;
+  [errorMessage] | string | error text | &nbsp;
+  (socialInputChange) |  EventEmitter&lt;InputEvent&gt; | input events emitter | &nbsp;
 
   ~~~
   ${template}

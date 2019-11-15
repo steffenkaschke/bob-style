@@ -1,16 +1,15 @@
-import {storiesOf} from '@storybook/angular';
-import {withKnobs, text} from '@storybook/addon-knobs/angular';
-import {ComponentGroupType} from '../../consts';
-import {StoryBookLayoutModule} from '../../story-book-layout/story-book-layout.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {EmojiModule} from './emoji.module';
-import {ButtonsModule} from '../../buttons/buttons.module';
-import {TruncateTooltipModule} from '../truncate-tooltip/truncate-tooltip.module';
+import { storiesOf } from '@storybook/angular';
+import { withKnobs, text } from '@storybook/addon-knobs/angular';
+import { ComponentGroupType } from '../../consts';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EmojiModule } from './emoji.module';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { TruncateTooltipModule } from '../truncate-tooltip/truncate-tooltip.module';
 
-const story = storiesOf(
-  ComponentGroupType.Popups,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+  withKnobs
+);
 
 const template = `
     <b-emoji style="position:absolute; right: 50%; bottom: 0; transform: translateX(50%)"
@@ -44,9 +43,11 @@ const note = `
   *EmojiModule*
 
   #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-
+  Name | Type | Description
+  --- | --- | ---
+  [title] | string | popup title
+  (toggleClick) | EventEmitter&lt;boolean&gt; | emits on popup open/close
+  (emojiSelect) | EventEmitter&lt;Emoji&gt; | emits selected emoji
 
   ~~~
   ${template}
@@ -60,11 +61,10 @@ story.add(
       template: storyTemplate,
       props: {
         title: text('title', 'Add Reaction'),
-        emojiSelect: (emoji) => {
+        emojiSelect: emoji => {
           alert(JSON.stringify(emoji));
         },
-        toggleClick: () => {
-        }
+        toggleClick: () => {},
       },
       moduleMetadata: {
         imports: [
@@ -72,9 +72,9 @@ story.add(
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           EmojiModule,
-          ButtonsModule
-        ]
-      }
+          ButtonsModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

@@ -35,9 +35,9 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  type | BackButtonType | enum for setting the button type | secondary
-  disabled | boolean | disabled | false
-  clicked | Function | callback for clicking on the back button |
+  [type] | BackButtonType | enum for setting the button type | secondary
+  [disabled] | boolean | disabled | false
+  (clicked) | EventEmitter | callback for clicking on the back button | &nbsp;
 
   ~~~
   ${template}

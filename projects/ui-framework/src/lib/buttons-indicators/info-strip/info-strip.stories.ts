@@ -3,7 +3,7 @@ import {
   text,
   withKnobs,
   select,
-  object
+  object,
 } from '@storybook/addon-knobs/angular';
 import { InfoStripModule } from './info-strip.module';
 import { ComponentGroupType } from '../../consts';
@@ -12,10 +12,9 @@ import { values } from 'lodash';
 import { LinkColor, LinkTarget } from '../link/link.enum';
 import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
 
-const story = storiesOf(
-  ComponentGroupType.Indicators,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
+  withKnobs
+);
 const iconTypes = values(InfoStripIconType);
 const iconSizes = values(InfoStripIconSize);
 
@@ -39,7 +38,7 @@ const note = `
   *InfoStripModule*
 
   #### Properties
-  Name | Type | Description | Default value
+  Name | Type | Description
   --- | --- | --- | ---
   iconType | InfoStripIconType | icon type - information, error, warning, success
   iconSize | InfoStripIconSize | icon size - normal, large
@@ -63,12 +62,12 @@ story.add(
           text: 'Click here',
           url: 'https://app.hibob.com',
           target: LinkTarget.blank,
-          color: LinkColor.none
-        })
+          color: LinkColor.none,
+        }),
       },
       moduleMetadata: {
-        imports: [InfoStripModule, StoryBookLayoutModule]
-      }
+        imports: [InfoStripModule, StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }

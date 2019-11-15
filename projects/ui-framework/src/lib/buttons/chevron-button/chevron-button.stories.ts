@@ -36,12 +36,12 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  text | text | Button text | &nbsp;
-  active | boolean | changes chevron down / up | false
-  type | ButtonType | enum for setting the button type | primary
-  size | ButtonSize | enum for setting the button size | medium
-  disabled | boolean | disabled state | false
-  clicked | Function | callback for clicking on the button |
+  [text] | text | Button text | &nbsp;
+  [active] | boolean | changes chevron down / up | false
+  [type] | ButtonType | enum for setting the button type | primary
+  [size] | ButtonSize | enum for setting the button size | medium
+  [disabled] | boolean | disabled state | false
+  (clicked) | EventEmitter | callback for clicking on the button | &nbsp;
 
   ~~~
   ${button}

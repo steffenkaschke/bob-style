@@ -60,7 +60,7 @@ const note = `
   [minDate] | Date / string (YYYY-MM-DD) | minimum date | &nbsp;
   [maxDate] | Date / string (YYYY-MM-DD) | maximum date | &nbsp;
   [label] | string | label text (above input) | &nbsp;
-  [description] | string | description text (above icon)
+  [description] | string | description text (above icon) | &nbsp;
   [placeholder] | string | placeholder text (inside input) | &nbsp;
   [hideLabelOnFocus] | boolean | places label in placeholder position | false
   [disabled] | boolean | is field disabled | false

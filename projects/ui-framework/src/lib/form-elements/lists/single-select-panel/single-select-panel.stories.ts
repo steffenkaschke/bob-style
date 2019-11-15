@@ -3,7 +3,7 @@ import {
   text,
   object,
   withKnobs,
-  boolean
+  boolean,
 } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -62,7 +62,7 @@ const note = `
   [chevronButtonText] | string | text to be displayed in chevron-button | null - can use transclude instead
   [options] | SelectGroupOptions[] | select option | null
   [disabled] | boolean | if panel is disabled | false
-  (selectChange) | ListChange | output on select change
+  (selectChange) | ListChange | output on select change | &nbsp;
   (opened) | EventEmitter&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
   (closed) | EventEmitter&lt;void&gt; | Emits panel Closed event | &nbsp;
 
@@ -86,7 +86,7 @@ const categories = [
   'Financial',
   'Payroll',
   'Employment',
-  'Equity'
+  'Equity',
 ];
 
 const optionsMock: SelectGroupOption[] = [
@@ -96,10 +96,10 @@ const optionsMock: SelectGroupOption[] = [
       return {
         value: category,
         id: category,
-        selected: false
+        selected: false,
       };
-    })
-  }
+    }),
+  },
 ];
 
 optionsMock[0].options[1].selected = true;
@@ -114,16 +114,16 @@ story.add(
         disabled: boolean('disabled', false),
         panelClass: text('panelClass', 'some-class'),
         options: object('options', optionsMock),
-        selectChange: action('Single select panel change')
+        selectChange: action('Single select panel change'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           ButtonsModule,
-          SingleSelectPanelModule
-        ]
-      }
+          SingleSelectPanelModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

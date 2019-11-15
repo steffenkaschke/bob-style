@@ -61,7 +61,7 @@ const note = `
   [chevronButtonText] | string | text to be displayed in chevron-button | null - can use transclude instead
   [options] | SelectGroupOptions[] | select option | null
   [disabled] | boolean | if panel is disabled | false
-  (selectChange) | ListChange | output on select change
+  (selectChange) | ListChange | output on select change | &nbsp;
   (opened) | EventEmitter&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
   (closed) | EventEmitter&lt;void&gt; | Emits panel Closed event | &nbsp;
 

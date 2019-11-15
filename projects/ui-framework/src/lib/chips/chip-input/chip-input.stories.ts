@@ -3,7 +3,7 @@ import {
   text,
   array,
   boolean,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -52,7 +52,7 @@ const note = `
   [label] | string | label (on top of input) | &nbsp;
   [placeholder] | string | placeholder (inide input) | &nbsp;
   [hintMessage] | string | text below input | &nbsp;
-  [warnMessage] | string | warning text
+  [warnMessage] | string | warning text | &nbsp;
   [errorMessage] | string | error text | &nbsp;
   [required] | boolean | if input is required | false
   [disabled] | boolean | if input is disabled | false
@@ -86,11 +86,11 @@ const toAdd = () => ({
     warnMessage: text('warnMessage', ''),
     errorMessage: text('errorMessage', ''),
     options: array('options', options, ','),
-    chipInputChangeHandler: action('Chip input changed')
+    chipInputChangeHandler: action('Chip input changed'),
   },
   moduleMetadata: {
-    imports: [ChipInputModule, StoryBookLayoutModule, BrowserAnimationsModule]
-  }
+    imports: [ChipInputModule, StoryBookLayoutModule, BrowserAnimationsModule],
+  },
 });
 
 story.add('Chip Input', toAdd, { notes: { markdown: note } });

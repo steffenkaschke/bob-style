@@ -45,12 +45,12 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  label | string | button text |
-  type | ButtonType | enum for setting the button type | primary
-  size | ButtonSize | enum for setting the button size | medium
-  disabled | boolean | disabled | false
-  clicked | Function | callback for clicking on the button |
-  icon | Icons | button with icon |
+  [label] | string | button text |
+  [type] | ButtonType | enum for setting the button type | primary
+  [icon] | Icons | icon for button  | &nbsp;
+  [size] | ButtonSize | enum for setting the button size | medium
+  [disabled] | boolean | disabled | false
+  (clicked) | EventEmitter | callback for clicking on the button | &nbsp;
 
   #### Style customization
 

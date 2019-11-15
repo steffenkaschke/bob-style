@@ -30,10 +30,9 @@ const note = `
   #### Properties
   Name | Type | Description | default
   --- | --- | --- | ---
-
   [matTooltip] | string | tooltip text | &nbsp;
   [matTooltipPosition] | TooltipPosition | default position - above or below | above
-  [matTooltipClass] | TooltipClass[] | add classes to define text-align (TextLeft, TextCenter, TextRight) and wrapping
+  [matTooltipClass] | TooltipClass[] | add classes to define text-align (TextLeft, TextCenter, TextRight) and wrapping \
   PreWrap, NoWrap - add PreWrap class to make tooltip respect line-break symbols \`\`\`\\n\`\`\` in text!) | TextCenter
 
   ~~~

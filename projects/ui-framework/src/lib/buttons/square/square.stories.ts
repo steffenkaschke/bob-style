@@ -41,13 +41,13 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  type | ButtonType | enum for setting the button type | primary
-  size | ButtonSize | enum for setting the button size | medium
-  icon | Icons | Icon enum value
-  color | IconColor | the color of the icon | dark
-  clicked | Function | callback for clicking on the button |
-  disabled | boolean | disabled | false
-  toolTipSummary | string | Tooltip text  |
+  [type] | ButtonType | enum for setting the button type | primary
+  [size] | ButtonSize | enum for setting the button size | medium
+  [icon] | Icons | Icon enum value | &nbsp;
+  [color] | IconColor | the color of the icon | dark
+  [disabled] | boolean | disabled | false
+  [toolTipSummary] | string | Tooltip text  | &nbsp;
+  (clicked) | EventEmitter | callback for clicking on the button | &nbsp;
 
   ~~~
   ${template}

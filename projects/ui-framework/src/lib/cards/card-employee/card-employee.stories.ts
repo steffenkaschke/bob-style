@@ -42,9 +42,9 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  type | CardType | Card theme | primary
-  card | EmployeeCard | card contents data | &nbsp;
-  clicked | Function | handler of Card Clicked event | &nbsp;
+  [type] | CardType | Card theme | primary
+  [card] | EmployeeCard | card contents data | &nbsp;
+  (clicked) | EventEmitter | handler of Card Clicked event | &nbsp;
 
   #### interface
   ~~~

@@ -3,7 +3,7 @@ import {
   object,
   select,
   boolean,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -50,8 +50,8 @@ const note = `
   [employees] | EmployeeShowcase[] | employees list | []
   [avatarSize] | AvatarSize | avatar size | 'mini'
   [expandOnClick] | boolean | expands panel on click | true
-  (selectChange) | EventEmitter&lt;ListChange&gt; | list select change |
-  (clicked) | EventEmitter&lt;EmployeeShowcase&gt; | emits when avatar is clicked |
+  (selectChange) | EventEmitter&lt;ListChange&gt; | list select change | &nbsp;
+  (clicked) | EventEmitter&lt;EmployeeShowcase&gt; | emits when avatar is clicked | &nbsp;
 
   ~~~
   ${template}
@@ -76,15 +76,15 @@ story.add(
         expandOnClick: boolean('expandOnClick', true),
         employees: object<EmployeeShowcase>('employees', employeesMock),
         selectChange: action('Showcase list change'),
-        onAvatarClick: action('Avatar clicked')
+        onAvatarClick: action('Avatar clicked'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
-          EmployeesShowcaseModule
-        ]
-      }
+          EmployeesShowcaseModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

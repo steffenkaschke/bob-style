@@ -17,10 +17,10 @@ const note = `
   *InfoTooltipModule*
 
   #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  title | string | tooltip title | ''
-  text | string | tooltip text | ''
+  Name | Type | Description
+  --- | --- | ---
+  title | string | tooltip title
+  text | string | tooltip text
   link | Link | tooltip link
   ~~~
   ${template}

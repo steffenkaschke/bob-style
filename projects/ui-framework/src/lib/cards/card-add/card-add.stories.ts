@@ -40,15 +40,15 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  type | CardType | Card theme | primary
-  card | AddCardData | data for the Add New card | &nbsp;
-  clicked | Function | handler of card click
+  [type] | CardType | Card theme | primary
+  [card] | AddCardData | data for the Add New card | &nbsp;
+  (clicked) | EventEmitter | handler of card click | &nbsp;
 
   #### [card: AddCardData]
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  title | string | main text | &nbsp;
-  subtitle | string | sub title | &nbsp;
+  Name | Type | Description
+  --- | --- | ---
+  title | string | main text
+  subtitle | string | sub title
   action | Function | handler of card click
 
 `;

@@ -3,7 +3,7 @@ import {
   boolean,
   select,
   text,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ButtonsModule } from '../buttons.module';
@@ -14,10 +14,9 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { LinkColor } from '../../buttons-indicators/link/link.enum';
 
-const story = storiesOf(
-  ComponentGroupType.Buttons,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
+  withKnobs
+);
 
 const color = values(LinkColor);
 const icons = values(Icons);
@@ -46,11 +45,11 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  text | text | Button text | &nbsp;
-  icon | Icons | Icon enum value
-  color | LinkColor | color of text and icon | dark
-  clicked | Function | callback for clicking on the button |
-  disabled | boolean | disabled | false
+  [text] | text | Button text | &nbsp;
+  [icon] | Icons | Icon enum value | &nbsp;
+  [color] | LinkColor | color of text and icon | dark
+  [disabled] | boolean | disabled | false
+  (clicked) | EventEmitter | callback for clicking on the button | &nbsp;
 
   ~~~
   ${button1}
@@ -78,11 +77,11 @@ story.add(
       icon: select('icon', icons, Icons.phone_link),
       color: select('color', color, LinkColor.none),
       disabled: boolean('disabled', false),
-      onClick: action('Text button')
+      onClick: action('Text button'),
     },
     moduleMetadata: {
-      imports: [ButtonsModule, IconsModule, StoryBookLayoutModule]
-    }
+      imports: [ButtonsModule, IconsModule, StoryBookLayoutModule],
+    },
   }),
   { notes: { markdown: note } }
 );

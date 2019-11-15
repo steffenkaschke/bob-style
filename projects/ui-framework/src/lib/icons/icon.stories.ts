@@ -49,9 +49,9 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  toolTipSummary | String | Tooltip text  |
-  icon | Icons | enum for the available icons |
-  size | IconSize | enum for the available icon sizes |
+  toolTipSummary | String | Tooltip text  | &nbsp;
+  icon | Icons | enum for the available icons | &nbsp;
+  size | IconSize | enum for the available icon sizes | &nbsp;
   color | IconColor | enum for the available icon colors | dark
   hasHoverState | boolean | if icon has hover state | false
 

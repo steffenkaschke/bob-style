@@ -58,9 +58,8 @@ let note = `
   --- | --- | --- | ---
   [chips] | Chip[] / string[] | Array of Chip objects (will also accept an array of strings) | &nbsp;
   [chipListSelectable] | chipListSelectable (single, multi) | single select (like radio buttons) or multi select | multi
-  [activeIndex] | number | active index initializer | &nbsp;\n`;
-// tslint:disable-next-line:max-line-length
-note += `[config] | ChipListConfig | list configuration (options common to all chips, including: type, removable, selectable, focusable, disabled, align) | &nbsp;
+  [activeIndex] | number | active index initializer | &nbsp;
+  [config] | ChipListConfig | list configuration (options common to all chips, including: type, removable, selectable, focusable, disabled, align) | &nbsp;
   (removed) | EventEmitter&lt;Chip&gt; | emited on chip removed event | &nbsp;
   (clicked) | EventEmitter&lt;Chip&gt; | emited on chip clicked event | &nbsp;
   (selected) | EventEmitter&lt;Chip&gt; | emited on chip selected event (fired only if chip is selectable) | &nbsp;

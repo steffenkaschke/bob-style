@@ -6,7 +6,7 @@ import {
   object,
   select,
   text,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -19,10 +19,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { MenuItem } from './menu.interface';
 
-const story = storiesOf(
-  ComponentGroupType.Navigation,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-menu [menu]="menu"
@@ -55,10 +54,10 @@ const note = `
   --- | --- | --- | ---
   menu | MenuItem[] | array of menu items | &nbsp;
   openLeft | boolean | open left by default | false
-  disabled | boolean | disables menu
-  actionClick | action | notifies on action click
-  openMenu | action | notifies on menu open
-  closeMenu | action | notifies on menu close
+  disabled | boolean | disables menu | &nbsp;
+  actionClick | action | notifies on action click | &nbsp;
+  openMenu | action | notifies on menu open | &nbsp;
+  closeMenu | action | notifies on menu close | &nbsp;
 
   ~~~
   ${template}
@@ -76,47 +75,47 @@ const menuMock: MenuItem[] = [
           {
             label: 'Update site',
             action: $event => console.log('update site', $event),
-            key: 'update.site'
+            key: 'update.site',
           },
           {
             label: 'Update email',
-            action: $event => console.log('update email', $event)
+            action: $event => console.log('update email', $event),
           },
           {
             label: 'Update reports to',
             disabled: true,
-            action: $event => console.log('update reports to', $event)
-          }
-        ]
+            action: $event => console.log('update reports to', $event),
+          },
+        ],
       },
       {
         label: 'Update internal details',
         children: [
           {
             label: 'Terminate',
-            action: $event => console.log('terminate', $event)
+            action: $event => console.log('terminate', $event),
           },
           {
             label: 'Rehire',
-            action: $event => console.log('rehire', $event)
-          }
-        ]
+            action: $event => console.log('rehire', $event),
+          },
+        ],
       },
       {
         label: 'Delete file',
-        action: $event => console.log('delete file', $event)
-      }
-    ]
+        action: $event => console.log('delete file', $event),
+      },
+    ],
   },
   {
     label: 'View profile',
-    action: $event => console.log('view profile', $event)
+    action: $event => console.log('view profile', $event),
   },
   {
     label: 'Request time-off',
     disabled: true,
-    action: $event => console.log('request time off', $event)
-  }
+    action: $event => console.log('request time off', $event),
+  },
 ];
 
 story.add(
@@ -130,7 +129,7 @@ story.add(
         menu: object('menu', menuMock),
         actionClick: action('action click'),
         openMenu: action('menu open'),
-        closeMenu: action('menu close')
+        closeMenu: action('menu close'),
       },
       moduleMetadata: {
         imports: [
@@ -138,9 +137,9 @@ story.add(
           BrowserAnimationsModule,
           MenuModule,
           ButtonsModule,
-          IconsModule
-        ]
-      }
+          IconsModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }
