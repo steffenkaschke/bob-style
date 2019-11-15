@@ -22,7 +22,7 @@ import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-
 import { RichTextEditorModule } from './rte.module';
 import { mockText } from '../../../src/lib/mock.const';
 
-const inputStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.FormElements,
   module
 ).addDecorator(withKnobs);
@@ -192,7 +192,7 @@ const note = `
 
 `;
 
-inputStories.add(
+story.add(
   'Rich text editor (NEW!)',
   () => {
     return {

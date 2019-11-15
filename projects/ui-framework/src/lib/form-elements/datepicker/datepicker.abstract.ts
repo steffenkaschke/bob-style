@@ -12,6 +12,7 @@ import {
   Output,
   EventEmitter,
   HostBinding,
+  OnChanges,
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
@@ -42,7 +43,7 @@ import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.serv
 import { Styles } from '../../services/html/html-helpers.interface';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
-  implements OnInit, OnDestroy {
+  implements OnChanges, OnInit, OnDestroy {
   constructor(
     protected windowRef: WindowRef,
     protected mobileService: MobileService,
@@ -138,8 +139,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
-  // this extends BaseFormElement's ngOnChanges
-  onNgChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+
     this.allPickers(picker => this.closePicker(picker));
 
     if (changes.minDate) {

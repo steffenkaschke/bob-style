@@ -12,7 +12,7 @@ import { Icons } from '../../icons/icons.enum';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
 
-const stories = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
 );
 
@@ -40,7 +40,7 @@ const note = `
   ~~~
 `;
 
-stories.add(
+story.add(
   'Add File',
   () => {
     return {

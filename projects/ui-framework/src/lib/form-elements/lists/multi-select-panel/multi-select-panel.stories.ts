@@ -16,7 +16,7 @@ import { action } from '@storybook/addon-actions';
 import { selectOptionsMock } from './multi-select-panel.mock';
 import { cloneDeep } from 'lodash';
 
-const inputStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
@@ -61,9 +61,9 @@ const note = `
   [chevronButtonText] | string | text to be displayed in chevron-button | null - can use transclude instead
   [options] | SelectGroupOptions[] | select option | null
   [disabled] | boolean | if panel is disabled | false
-  (selectChange) | ListChange | output on select change
-  (opened) | EventEmitter&lt;OverlayRef&gt; | Emits panel Opened event | none
-  (closed) | EventEmitter&lt;void&gt; | Emits panel Closed event | none
+  (selectChange) | ListChange | output on select change | &nbsp;
+  (opened) | EventEmitter&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
+  (closed) | EventEmitter&lt;void&gt; | Emits panel Closed event | &nbsp;
 
   ~~~
   ${componentTemplate1}
@@ -78,7 +78,7 @@ const optionsMock = cloneDeep(selectOptionsMock);
 
 optionsMock[0].options[1].selected = true;
 
-inputStories.add(
+story.add(
   'Multi list panel',
   () => {
     return {

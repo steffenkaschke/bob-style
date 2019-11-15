@@ -12,6 +12,7 @@ import {
   asArray,
   isNullOrUndefined,
   cloneValue,
+  applyChanges,
 } from '../services/utils/functional-utils';
 import { InputEventType } from './form-elements.enum';
 import { FormEvents } from './form-elements.enum';
@@ -176,6 +177,8 @@ export abstract class BaseFormElement
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes, {}, ['value', 'options']);
+
     if (changes.value) {
       this.writeValue(changes.value.currentValue);
       this.transmitValue(this.value, { eventType: [InputEventType.onWrite] });

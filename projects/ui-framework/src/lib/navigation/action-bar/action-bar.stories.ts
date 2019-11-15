@@ -6,7 +6,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { ActionBarModule } from './action-bar.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 
-const inputStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Navigation,
   module
 ).addDecorator(withKnobs);
@@ -41,7 +41,7 @@ const note = `
   ~~~
 `;
 
-inputStories.add(
+story.add(
   'Action Bar',
   () => {
     return {

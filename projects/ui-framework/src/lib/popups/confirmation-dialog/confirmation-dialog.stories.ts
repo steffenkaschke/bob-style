@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { select, withKnobs } from '@storybook/addon-knobs/angular';
+import { withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,7 +7,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { ConfirmationDialogModule } from './confirmation-dialog.module';
 import { ConfirmationDialogExampleModule } from './confirmation-dialog-example.module';
 
-const buttonStories = storiesOf(ComponentGroupType.Popups, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
 );
 
@@ -56,7 +56,7 @@ const note = `
   }
   ~~~
 `;
-buttonStories.add(
+story.add(
   'Confirmation dialog',
   () => ({
     template: storyTemplate,

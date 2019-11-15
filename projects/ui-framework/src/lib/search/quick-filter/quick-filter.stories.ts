@@ -43,10 +43,10 @@ const note = `
   #### Properties
   Name | Type | Description | Default Value
   --- | --- | --- | ---
-  [quickFilters] | QuickFilterConfig[] | array of quick filters | none
+  [quickFilters] | QuickFilterConfig[] | array of quick filters | &nbsp;
   [showResetFilter] | boolean | displays reset button | false
   (filtersChange) | EventEmitter&lt;QuickFilterChangeEvent&gt; | emits on quick filter bar change | &nbsp;
-  (resetFilters) | EventEmitter&lt;void&gt; | emits on reset click | &nbsp;
+  (resetFilters) | EventEmitter&lt;void&gt; |emits on reset click | &nbsp;
 
   ~~~
   ${template}

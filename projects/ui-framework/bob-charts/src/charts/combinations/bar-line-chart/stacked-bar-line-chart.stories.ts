@@ -1,15 +1,26 @@
-import {storiesOf} from '@storybook/angular';
-import {select, boolean, number, object, text, withKnobs} from '@storybook/addon-knobs/angular';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ComponentGroupType} from '../../../../../src/lib/consts';
-import {StoryBookLayoutModule} from '../../../../../src/lib/story-book-layout/story-book-layout.module';
-import {ChartsModule} from '../../charts.module';
-import {COMBINED_BAR_CHART_DATA_MOCK, MULTI_BAR_CHART_CATEGORIES} from '../../chart.mock';
-import {ChartLegendPositionEnum} from '../../chart/chart.interface';
+import { storiesOf } from '@storybook/angular';
+import {
+  select,
+  boolean,
+  number,
+  object,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs/angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentGroupType } from '../../../../../src/lib/consts';
+import { StoryBookLayoutModule } from '../../../../../src/lib/story-book-layout/story-book-layout.module';
+import { ChartsModule } from '../../charts.module';
+import {
+  COMBINED_BAR_CHART_DATA_MOCK,
+  MULTI_BAR_CHART_CATEGORIES,
+} from '../../chart.mock';
+import { ChartLegendPositionEnum } from '../../chart/chart.interface';
 
-const story = storiesOf(`${ComponentGroupType.Charts}.Combinations`, module).addDecorator(
-  withKnobs
-);
+const story = storiesOf(
+  `${ComponentGroupType.Charts}.Combinations`,
+  module
+).addDecorator(withKnobs);
 const template = `
 <div>
   <b-bar-line-chart
@@ -42,6 +53,11 @@ const note = `
 
   #### Module
   *ChartModule*
+  from <u>'bob-style/bob-charts'</u>
+
+  \`\`\`
+  import { ChartModule } from 'bob-style/bob-charts';
+  \`\`\`
 
   ~~~
   ${template}
@@ -50,13 +66,13 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  *name | string | name of series | none
-  *data | | series data array for chart | none
+  *name | string | name of series | &nbsp;
+  *data | | series data array for chart | &nbsp;
   donut (optional) | boolean | make pie chart donut chart | false
   legend (optional) | boolean | shows legend | false
   colorPalette (optional) | string[] | color palette array | default array of colors
   height (optional) | number | height of chart | 500
-  title (optional) | string | title of chart | none
+  title (optional) | string | title of chart | &nbsp;
   pointFormat (optional) | string | tooltip formatter | {series.name}: <b>{point.percentage:.1f}%</b>
 `;
 
@@ -68,9 +84,11 @@ story.add(
       props: {
         showDataLabels: boolean('showDataLabels', false),
         legend: boolean('legend', true),
-        legendPosition: select('legendPosition',
+        legendPosition: select(
+          'legendPosition',
           Object.values(ChartLegendPositionEnum),
-          ChartLegendPositionEnum.BOTTOM),
+          ChartLegendPositionEnum.BOTTOM
+        ),
         name: text('name', 'employees'),
         preTooltipValue: text('preTooltipValue', ''),
         postTooltipValue: text('postTooltipValue', ' PEOPLE'),
@@ -79,9 +97,9 @@ story.add(
         extraOptions: object('extraOptions', {
           plotOptions: {
             column: {
-              stacking: 'normal'
-            }
-          }
+              stacking: 'normal',
+            },
+          },
         }),
         data: object('data', COMBINED_BAR_CHART_DATA_MOCK),
         categories: object('categories', MULTI_BAR_CHART_CATEGORIES),
@@ -109,16 +127,12 @@ story.add(
           '#959595',
           '#616161',
           '#313131',
-        ])
+        ]),
       },
       moduleMetadata: {
-        imports: [
-          StoryBookLayoutModule,
-          BrowserAnimationsModule,
-          ChartsModule
-        ]
-      }
+        imports: [StoryBookLayoutModule, BrowserAnimationsModule, ChartsModule],
+      },
     };
   },
-  {notes: {markdown: note}}
+  { notes: { markdown: note } }
 );

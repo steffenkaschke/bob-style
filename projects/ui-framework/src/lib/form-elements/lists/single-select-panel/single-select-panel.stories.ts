@@ -3,7 +3,7 @@ import {
   text,
   object,
   withKnobs,
-  boolean
+  boolean,
 } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,7 +15,7 @@ import { SingleSelectPanelModule } from './single-select-panel.module';
 import { ButtonType } from '../../../buttons/buttons.enum';
 import { action } from '@storybook/addon-actions';
 
-const inputStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
@@ -62,9 +62,9 @@ const note = `
   [chevronButtonText] | string | text to be displayed in chevron-button | null - can use transclude instead
   [options] | SelectGroupOptions[] | select option | null
   [disabled] | boolean | if panel is disabled | false
-  (selectChange) | ListChange | output on select change
-  (opened) | EventEmitter&lt;OverlayRef&gt; | Emits panel Opened event | none
-  (closed) | EventEmitter&lt;void&gt; | Emits panel Closed event | none
+  (selectChange) | ListChange | output on select change | &nbsp;
+  (opened) | EventEmitter&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
+  (closed) | EventEmitter&lt;void&gt; | Emits panel Closed event | &nbsp;
 
   ~~~
   ${componentTemplate1}
@@ -86,7 +86,7 @@ const categories = [
   'Financial',
   'Payroll',
   'Employment',
-  'Equity'
+  'Equity',
 ];
 
 const optionsMock: SelectGroupOption[] = [
@@ -96,15 +96,15 @@ const optionsMock: SelectGroupOption[] = [
       return {
         value: category,
         id: category,
-        selected: false
+        selected: false,
       };
-    })
-  }
+    }),
+  },
 ];
 
 optionsMock[0].options[1].selected = true;
 
-inputStories.add(
+story.add(
   'Single list panel',
   () => {
     return {
@@ -114,16 +114,16 @@ inputStories.add(
         disabled: boolean('disabled', false),
         panelClass: text('panelClass', 'some-class'),
         options: object('options', optionsMock),
-        selectChange: action('Single select panel change')
+        selectChange: action('Single select panel change'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           ButtonsModule,
-          SingleSelectPanelModule
-        ]
-      }
+          SingleSelectPanelModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

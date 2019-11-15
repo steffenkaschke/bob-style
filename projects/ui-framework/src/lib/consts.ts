@@ -9,6 +9,7 @@ export enum ComponentGroupType {
   Chips = 'Components|Chips',
   Tables = 'Components|Tables',
   Popups = 'Components|Popups',
+  Tooltip = 'Components|Tooltip',
   Layout = 'Components|Layout',
   Misc = 'Components|Misc',
   Navigation = 'Components|Navigation',
@@ -17,7 +18,7 @@ export enum ComponentGroupType {
   Icons = 'Icons',
   Typography = 'Typography',
   Services = 'Services',
-  EyeCandy = 'Eye Candy'
+  EyeCandy = 'Eye Candy',
 }
 
 export const serverDateFormat = 'yyyy-MM-dd'; // ISO 8601

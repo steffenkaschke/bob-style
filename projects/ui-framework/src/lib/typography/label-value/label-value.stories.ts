@@ -215,11 +215,11 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [type] | LabelValueType | type/theme | LabelValueType.one
-  [label] | string | label/title text | none
-  [value] | string | value text | none
-  [labelMaxLines] | number | after maximum lines text will be truncated and tooltip shown | none
-  [valueMaxLines] | number | after maximum lines text will be truncated and tooltip shown | none
-  [icon] | Icons | icon, obviously | none
+  [label] | string | label/title text | &nbsp;
+  [value] | string | value text | &nbsp;
+  [labelMaxLines] | number | after maximum lines text will be truncated and tooltip shown | &nbsp;
+  [valueMaxLines] | number | after maximum lines text will be truncated and tooltip shown | &nbsp;
+  [icon] | Icons | icon, obviously | &nbsp;
   [iconPosition] | IconPosition | top, left, right, and also 'label' and 'value' which allow to put the icon inside label or value | left
   [iconSize] | IconSize | icon size | large (small if positioned inside label or value)
   (clicked) | EventEmitter | emits when component is clicked

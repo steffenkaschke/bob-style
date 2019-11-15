@@ -8,6 +8,7 @@ import {
   OnInit,
   NgZone,
   SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { IconColor, IconSize } from '../../icons/icons.enum';
@@ -38,7 +39,8 @@ import { URLutils } from '../../services/url/url-utils.service';
     },
   ],
 })
-export class SocialComponent extends BaseFormElement implements OnInit {
+export class SocialComponent extends BaseFormElement
+  implements OnChanges, OnInit {
   constructor(private URL: URLutils, private zone: NgZone) {
     super();
     this.inputTransformers = [
@@ -86,7 +88,9 @@ export class SocialComponent extends BaseFormElement implements OnInit {
     this.inputId = this.bInput.id;
   }
 
-  onNgChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+
     if (changes.type && !changes.type.firstChange && this.value) {
       this.type = changes.type.currentValue;
       this.writeValue(this.value);
