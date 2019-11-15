@@ -2,7 +2,9 @@ import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
 import {
   object,
-  withKnobs
+  text,
+  withKnobs,
+  number,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -13,6 +15,7 @@ import { IconComponent } from '../../icons/icon.component';
 import { IconsModule } from '../../icons/icons.module';
 import { getSideMenuOptionsMock } from './side-menu.mock';
 import { SideMenuOption } from './side-menu-option/side-menu-option.interface';
+import { ButtonsModule } from '../../../lib/buttons/buttons.module';
 
 const story = storiesOf(ComponentGroupType.Navigation, module)
   .addDecorator(withNotes)
@@ -20,7 +23,10 @@ const story = storiesOf(ComponentGroupType.Navigation, module)
 
 const template = `
 <b-side-menu [options]="options"
+             [headerLabel]="headerLabel"
+             [selectedId]="selectedId"
              (selectOption)="selectOption($event)">
+  <b-square-button icon="b-icon-file-download" type="tertiary"></b-square-button>
 </b-side-menu>
 `;
 
@@ -41,15 +47,18 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | --- | ---
-  options | SideMenuOption[] | array of options
-  onSelectOption | Action | select option emitter
+  [headerLabel] | string | header of menu
+  [options] | SideMenuOption[] | array of options
+  [selectedId] | number | selected menu item index
+  (selectOption) | EventEmitter&lt;number&gt; | emits on option select
+  - | ng-content | add actions to the header of the menu
 
   ~~~
   ${template}
   ~~~
 `;
 
-const sideMenuOptionsMock = getSideMenuOptionsMock();
+const sideMenuOptionsMock = getSideMenuOptionsMock;
 
 story.add(
   'Side Menu',
@@ -57,8 +66,10 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        headerLabel: text('headerLabel', 'test menu'),
         options: object<SideMenuOption[]>('options', sideMenuOptionsMock),
-        selectOption: action('Side menu select')
+        selectOption: action('Side menu select'),
+        selectedId: number('selectedId', 3),
       },
       moduleMetadata: {
         entryComponents: [IconComponent],
@@ -66,9 +77,10 @@ story.add(
           BrowserAnimationsModule,
           SideMenuModule,
           StoryBookLayoutModule,
-          IconsModule
-        ]
-      }
+          IconsModule,
+          ButtonsModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

@@ -4,8 +4,9 @@ import { SideMenuComponent } from './side-menu.component';
 import { SideMenuOptionComponent } from './side-menu-option/side-menu-option.component';
 import { MenuModule } from '../menu/menu.module';
 import { IconsModule } from '../../icons/icons.module';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { ButtonsModule } from '../../buttons/buttons.module';
+import { TypographyModule } from '../../typography/typography.module';
+import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 
 @NgModule({
   declarations: [
@@ -16,8 +17,9 @@ import { ButtonsModule } from '../../buttons/buttons.module';
     CommonModule,
     IconsModule,
     MenuModule,
-    MatTooltipModule,
+    TruncateTooltipModule,
     ButtonsModule,
+    TypographyModule,
   ],
   exports: [
     SideMenuComponent,

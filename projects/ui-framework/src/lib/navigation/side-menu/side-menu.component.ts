@@ -9,6 +9,7 @@ import { SideMenuOption } from './side-menu-option/side-menu-option.interface';
 export class SideMenuComponent {
   @Input() options: SideMenuOption[];
   @Input() selectedId: number = null;
+  @Input() headerLabel: string;
   @Output() selectOption: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {
@@ -18,5 +19,4 @@ export class SideMenuComponent {
     this.selectedId = id;
     this.selectOption.emit(id);
   }
-
 }
