@@ -24,9 +24,7 @@ const template = `
   [iconType]="iconType"
   [iconSize]="iconSize"
   [link]="link"
-  [title]="title"
-  [text]="text">
-</b-info-strip>
+  [text]="text"></b-info-strip>
 `;
 
 const storyTemplate = `<b-story-book-layout [title]="'Info Strip'">
@@ -45,7 +43,6 @@ const note = `
   --- | --- | --- | ---
   iconType | InfoStripIconType | icon type - information, error, warning, success
   iconSize | InfoStripIconSize | icon size - normal, large
-  Title | string | The title of the strip | none
   text | string | The text inside the strip
   link | Link | link definition - text, url, color, target
   ~~~
@@ -61,7 +58,6 @@ infoStripStories.add(
       props: {
         iconType: select('iconType', iconTypes, InfoStripIconType.information),
         iconSize: select('iconSize', iconSizes, InfoStripIconSize.large),
-        title: text('title', 'This is the title:'),
         text: text('text', 'Place your info text here'),
         link: object('link', {
           text: 'Click here',

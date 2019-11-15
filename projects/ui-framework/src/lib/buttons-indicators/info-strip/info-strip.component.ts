@@ -13,8 +13,7 @@ import { InfoStripIcon } from './info-strip.types';
 export class InfoStripComponent {
   @Input() iconType: InfoStripIconType;
   @Input() link: Link;
-  @Input() title;
-  @Input() text = '';
+  @Input() text;
   @Input() iconSize = InfoStripIconSize.large;
 
   readonly iconsDic: Dictionary<InfoStripIcon> = {
