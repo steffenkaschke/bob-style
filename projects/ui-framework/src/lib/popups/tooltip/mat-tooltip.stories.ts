@@ -1,20 +1,13 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  withKnobs,
-  boolean,
-  text,
-  select,
-} from '@storybook/addon-knobs/angular';
+import { withKnobs, text } from '@storybook/addon-knobs/angular';
+import { radios } from '@storybook/addon-knobs';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import {
-  CSSTooltipWrap,
-  CSSTooltipPosition,
-  CSSTooltipShowOn,
-  CSSTooltipTextAlign,
-} from './tooltip.enum';
+import { TooltipPosition, TooltipClass } from './tooltip.enum';
 import { DividerModule } from '../../layout/divider/divider.module';
 import { TypographyModule } from '../../typography/typography.module';
+import { MatTooltipModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
   withKnobs
@@ -22,8 +15,8 @@ const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
 
 const template = `
   <b-heading [matTooltip]="tooltipText"
-             [matTooltipClass]="tooltipClass"
-             [matTooltipPosition]="tooltipPosition">
+             [matTooltipPosition]="tooltipPosition"
+             [matTooltipClass]="tooltipClass">
        Hover over this text to see tooltip.
   </b-heading>
 `;
@@ -38,14 +31,10 @@ const note = `
   Name | Type | Description | default
   --- | --- | --- | ---
 
-
-
   [matTooltip] | string | tooltip text | &nbsp;
-
-  [attr.data-tooltip-position] | CSSTooltipPosition | above or below | 'above'
-  [attr.data-tooltip-align] | CSSTooltipTextAlign | text alignment | 'center'
-  [attr.data-tooltip-show] | CSSTooltipShowOn | show on hover or on focus (click) - if using on focus, be sure to add tabindex="0" attribute to non-focusable elements | 'hover'
-  [attr.data-tooltip-wrap] | CSSTooltipWrap | white-space CSS property - 'normal', 'nowrap' (single line, only use for predictably short tooltips) or 'pre' (will respect line-break symbols \`\`\`\\n\`\`\` in text!) | 'normal'
+  [matTooltipPosition] | TooltipPosition | default position - above or below | above
+  [matTooltipClass] | TooltipClass[] | add classes to define text-align (TextLeft, TextCenter, TextRight) and wrapping
+  PreWrap, NoWrap - add PreWrap class to make tooltip respect line-break symbols \`\`\`\\n\`\`\` in text!) | TextCenter
 
   ~~~
   ${template}
@@ -61,7 +50,7 @@ const storyTemplate = `<b-story-book-layout [title]="'Material Tooltip'">
 
       <p><strong>When to use:</strong> For long tooltip text; when inside  <u>overflow: hidden</u> or <u>overflow: auto</u> container; when CSS Tooltip does not look good for whatever reason.</p>
 
-      <p><strong>When not to use:</strong> For short (1-3) words text; If CSS Tooltip looks good, stay with CSS.</u></p>
+      <p><strong>When not to use:</strong> For short (1-3) words text; If CSS Tooltip looks good, stay with CSS.</p>
     </div>
 
     <b-divider></b-divider>
@@ -80,29 +69,26 @@ story.add(
         'Works best for long text text. \n Automatically positions itself above or below \n depending on available space.'
       ),
 
-      tooltipPosition: select(
+      tooltipPosition: radios(
         'tooltipPosition',
-        Object.values(CSSTooltipPosition),
-        CSSTooltipPosition.above
+        TooltipPosition,
+        TooltipPosition.above
       ),
-      tooltipTextAlign: select(
-        'tooltipTextAlign',
-        Object.values(CSSTooltipTextAlign),
-        CSSTooltipTextAlign.center
-      ),
-      tooltipWrap: select(
-        'tooltipWrap',
-        Object.values(CSSTooltipWrap),
-        CSSTooltipWrap.normal
-      ),
-      tooltipShowOn: select(
-        'tooltipShowOn',
-        Object.values(CSSTooltipShowOn),
-        CSSTooltipShowOn.hover
+
+      tooltipClass: radios(
+        'tooltipClass',
+        TooltipClass,
+        TooltipClass.TextCenter
       ),
     },
     moduleMetadata: {
-      imports: [StoryBookLayoutModule, DividerModule, TypographyModule],
+      imports: [
+        StoryBookLayoutModule,
+        DividerModule,
+        TypographyModule,
+        MatTooltipModule,
+        BrowserAnimationsModule,
+      ],
     },
   }),
   { notes: { markdown: note } }

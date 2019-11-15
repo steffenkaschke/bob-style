@@ -1,12 +1,14 @@
-export enum CSSTooltipWrap {
-  normal = 'normal',
-  nowrap = 'nowrap',
-  pre = 'pre',
-}
-
-export enum CSSTooltipPosition {
+export enum TooltipPosition {
   above = 'above',
   below = 'below',
+}
+
+export enum TooltipClass {
+  TextLeft = 'text-left',
+  TextCenter = 'text-center',
+  TextRight = 'text-right',
+  PreWrap = 'pre-wrap',
+  NoWrap = 'no-wrap',
 }
 
 export enum CSSTooltipShowOn {
@@ -20,10 +22,8 @@ export enum CSSTooltipTextAlign {
   center = 'center',
 }
 
-export enum MatTooltipClass {
-  TextLeft = 'text-left',
-  TextCenter = 'text-center',
-  TextRight = 'text-right',
-  PreWrap = 'pre-wrap',
-  NoWrap = 'no-wrap',
+export enum CSSTooltipWrap {
+  normal = 'normal',
+  nowrap = 'nowrap',
+  pre = 'pre',
 }

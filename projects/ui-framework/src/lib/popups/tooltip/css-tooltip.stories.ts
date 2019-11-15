@@ -4,12 +4,13 @@ import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import {
   CSSTooltipWrap,
-  CSSTooltipPosition,
+  TooltipPosition,
   CSSTooltipShowOn,
   CSSTooltipTextAlign,
 } from './tooltip.enum';
 import { DividerModule } from '../../layout/divider/divider.module';
 import { TypographyModule } from '../../typography/typography.module';
+import { radios } from '@storybook/addon-knobs';
 
 const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
   withKnobs
@@ -41,7 +42,7 @@ const note = `
   Name | Type | Description | default
   --- | --- | --- | ---
   [attr.data-tooltip] | string | tooltip text | none
-  [attr.data-tooltip-position] | CSSTooltipPosition | above or below | 'above'
+  [attr.data-tooltip-position] | TooltipPosition | above or below | 'above'
   [attr.data-tooltip-align] | CSSTooltipTextAlign | text alignment | 'center'
   [attr.data-tooltip-show] | CSSTooltipShowOn | show on hover or on focus (click) - if using on focus, be sure to add tabindex="0" attribute to non-focusable elements | 'hover'
   [attr.data-tooltip-wrap] | CSSTooltipWrap | white-space CSS property - 'normal', 'nowrap' (single line, only use for predictably short tooltips) or 'pre' (will respect line-break symbols \`\`\`\\n\`\`\` in text!) | 'normal'
@@ -86,24 +87,20 @@ story.add(
     template: storyTemplate,
     props: {
       tooltipText: text('tooltipText', 'Works best for \n short text'),
-      tooltipPosition: select(
+      tooltipPosition: radios(
         'tooltipPosition',
-        Object.values(CSSTooltipPosition),
-        CSSTooltipPosition.above
+        TooltipPosition,
+        TooltipPosition.above
       ),
-      tooltipTextAlign: select(
+      tooltipTextAlign: radios(
         'tooltipTextAlign',
-        Object.values(CSSTooltipTextAlign),
+        CSSTooltipTextAlign,
         CSSTooltipTextAlign.center
       ),
-      tooltipWrap: select(
-        'tooltipWrap',
-        Object.values(CSSTooltipWrap),
-        CSSTooltipWrap.normal
-      ),
-      tooltipShowOn: select(
+      tooltipWrap: radios('tooltipWrap', CSSTooltipWrap, CSSTooltipWrap.normal),
+      tooltipShowOn: radios(
         'tooltipShowOn',
-        Object.values(CSSTooltipShowOn),
+        CSSTooltipShowOn,
         CSSTooltipShowOn.hover
       ),
     },

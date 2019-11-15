@@ -4,7 +4,7 @@ import {
   TruncateTooltipType,
 } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { MatTooltipClass } from '../../popups/tooltip/tooltip.enum';
+import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
 
 @Component({
   selector: 'b-form-element-label',
@@ -24,8 +24,8 @@ export class FormElementLabelComponent {
   readonly iconSize = IconSize;
   readonly delay = 300;
   readonly truncateTooltipPosition = TruncateTooltipPosition;
-  readonly tooltipClass: MatTooltipClass[] = [
-    MatTooltipClass.TextLeft,
-    MatTooltipClass.PreWrap,
+  readonly tooltipClass: TooltipClass[] = [
+    TooltipClass.TextLeft,
+    TooltipClass.PreWrap,
   ];
 }
