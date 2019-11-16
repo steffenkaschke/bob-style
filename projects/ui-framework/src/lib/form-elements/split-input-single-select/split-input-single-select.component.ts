@@ -18,6 +18,12 @@ import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
 import { FormEvents } from '../form-elements.enum';
 import { objectHasKeyOrFail } from '../../services/utils/transformers';
+import { cloneObject } from '../../services/utils/functional-utils';
+
+const BSISS_VALUE_DEF = {
+  inputValue: null,
+  selectValue: null,
+};
 
 @Component({
   selector: 'b-split-input-single-select',
@@ -34,6 +40,7 @@ import { objectHasKeyOrFail } from '../../services/utils/transformers';
       useExisting: forwardRef(() => SplitInputSingleSelectComponent),
       multi: true,
     },
+    { provide: BaseFormElement, useExisting: SplitInputSingleSelectComponent },
   ],
 })
 export class SplitInputSingleSelectComponent extends BaseFormElement
@@ -44,13 +51,10 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
       objectHasKeyOrFail(['inputValue', 'selectValue']),
     ];
     this.wrapEvent = false;
-    this.baseValue = {
-      inputValue: null,
-      selectValue: null,
-    } as InputSingleSelectValue;
+    this.baseValue = cloneObject(BSISS_VALUE_DEF);
   }
 
-  @Input() value: InputSingleSelectValue;
+  @Input() value: InputSingleSelectValue = cloneObject(BSISS_VALUE_DEF);
   @Input() inputType: InputTypes;
   @Input() selectOptions: SelectGroupOption[];
 
@@ -63,7 +67,7 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
   ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);
 
-    if (changes.value || changes.selectOptions) {
+    if (changes.selectOptions) {
       this.options = this.enrichOptionsWithSelection(this.selectOptions);
     }
   }

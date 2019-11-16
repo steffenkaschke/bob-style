@@ -20,6 +20,7 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 const template = `
 <b-social [value]="value"
           [type]="type"
+          [label]="label"
           [placeholder]="placeholder"
           [disabled]="disabled"
           [required]="required"
@@ -49,7 +50,10 @@ const note = `
   --- | --- | --- | ---
   [type] | Social | type of input field | &nbsp;
   [value] | string | field value | &nbsp;
-  [placeholder] | string | placeholder text (inside input) | &nbsp;
+  [label] | string | field label (above input). By default, the Social type label is displayed, \
+  but if [label] is passed, it will be displayed instead, \
+  and the Social icon will be placed in placeholder (inside input) | &nbsp;
+  [placeholder] | string | placeholder text (inside input) | 'username'
   [disabled] | boolean | is field disabled | false
   [required] | boolean | is field required | false
   [hintMessage] | string | hint text | &nbsp;
@@ -70,6 +74,7 @@ story.add(
       props: {
         type: select('type', Social, Social.facebook),
         value: text('value', ''),
+        label: text('label', ''),
         placeholder: text('placeholder', 'username'),
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),

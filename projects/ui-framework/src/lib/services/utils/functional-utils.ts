@@ -1,5 +1,7 @@
-import { SimpleChanges } from '@angular/core';
+import { SimpleChanges, SimpleChange } from '@angular/core';
 import { metaKeys } from '../../enums';
+import { GenericObject } from '../../types';
+import { isEqual } from 'lodash';
 
 export function MixIn(baseCtors: Function[]) {
   return function(derivedCtor: Function) {
@@ -136,7 +138,6 @@ import {
   set as _set,
   toPairs as _toPairs,
 } from 'lodash/fp';
-import { GenericObject } from '../../types';
 
 export const flatten = (obj, path = []) => {
   return _isPlainObject(obj) || _isArray(obj)
@@ -176,6 +177,9 @@ export const arrayDifference = (arrA: any[], arrB: any[]) => {
     .filter(x => !arrB.includes(x))
     .concat(arrB.filter(x => !arrA.includes(x)));
 };
+
+export const arrayIntersection = (arrA: any[], arrB: any[]) =>
+  arrA.filter(x => arrB.includes(x));
 
 export const dedupeArray = (arr: any[]): any[] => Array.from(new Set(arr));
 
@@ -228,6 +232,18 @@ export const notFirstChanges = (
   return !!keys.find(i => changes[i] && !changes[i].firstChange);
 };
 
+export const onlyNewChanges = (changes: SimpleChanges) =>
+  Object.keys(changes)
+    .filter(
+      (key: string) =>
+        changes[key].isFirstChange ||
+        !isEqual(changes[key].previousValue, changes[key].currentValue)
+    )
+    .reduce((newChanges, key) => {
+      newChanges[key] = changes[key];
+      return newChanges;
+    }, {});
+
 export const applyChanges = (
   target: any,
   changes: SimpleChanges,
@@ -242,6 +258,29 @@ export const applyChanges = (
           : changes[change].currentValue;
     }
   });
+};
+
+export const onlyUpdatedProps = (
+  oldObj: GenericObject,
+  newObj: GenericObject
+): GenericObject => {
+  if (isEmptyObject(oldObj)) {
+    return newObj;
+  }
+
+  if (!newObj) {
+    return {};
+  }
+
+  return Object.keys(newObj)
+    .filter(
+      (key: string) =>
+        !hasProp(oldObj, key) || !isEqual(oldObj[key], newObj[key])
+    )
+    .reduce((updObj, key) => {
+      updObj[key] = newObj[key];
+      return updObj;
+    }, {});
 };
 
 export const isDate = (value): boolean =>

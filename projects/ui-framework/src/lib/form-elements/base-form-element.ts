@@ -22,7 +22,7 @@ export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {
   protected constructor() {}
 
-  @Input() id: string | number = simpleUID('bfe-');
+  @Input() id: string = simpleUID('bfe-');
   @Input() label: string;
   @Input() description: string;
   @Input() placeholder: string;
@@ -102,7 +102,11 @@ export abstract class BaseFormElement
         value
       );
     }
-    if (isNullOrUndefined(this.value) && this.baseValue !== undefined) {
+
+    if (
+      (value === undefined || isNullOrUndefined(this.value)) &&
+      this.baseValue !== undefined
+    ) {
       this.value = cloneValue(this.baseValue);
     }
   }

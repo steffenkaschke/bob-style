@@ -94,8 +94,11 @@
     border-right: 0;
     border-radius: 0;
 
+    &.panel-open,
     &.focused {
       border-color: $input-border-color;
+      box-shadow: none;
+      z-index: auto;
     }
   }
 
@@ -110,6 +113,11 @@
     &:after {
       right: -1px;
     }
+  }
+
+  .end-date-wrap {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 }
 
@@ -134,6 +142,13 @@
 
   .bar-filters > * {
     flex: 1;
+    position: relative;
+
+    & > b-input,
+    & > b-single-select,
+    & > b-multi-select {
+      position: relative;
+    }
   }
 
   .bar-content:not(.has-prefix) {
@@ -141,7 +156,8 @@
       @include border-radius-left;
     }
 
-    .bar-filters > :first-child .bfe-wrap {
+    .bar-filters > :first-child > .bfe-wrap:first-of-type,
+    .bar-filters > :first-child > :first-child .bfe-wrap {
       border-left: 1px solid $input-border-color;
       @include border-radius-left;
 
@@ -156,7 +172,8 @@
       @include border-radius-right;
     }
 
-    .bar-filters > :last-child .bfe-wrap {
+    .bar-filters > :last-child > .bfe-wrap:last-of-type,
+    .bar-filters > :last-child > :last-child .bfe-wrap {
       border-right: 1px solid $input-border-color;
       @include border-radius-right;
 

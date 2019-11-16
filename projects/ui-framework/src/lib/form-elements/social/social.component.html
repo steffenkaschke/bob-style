@@ -1,10 +1,12 @@
-<div class="bfe-label">
+<div class="bfe-label"
+     *ngIf="!hideLabelOnFocus">
   <b-icon class="social-icon"
+          *ngIf="!label"
           [color]="iconColor.normal"
           [icon]="socialTypes[type].icon"
-          [size]="iconSize.large">
+          [size]="iconSize.medium">
   </b-icon>
-  <label [attr.for]="inputId">{{socialLabelMap[type]}}</label>
+  <label [attr.for]="inputId">{{label ? label : socialLabelMap[type]}}</label>
 </div>
 
 <b-input #bInput
@@ -12,7 +14,6 @@
          [hasPrefix]="true"
          [value]="value"
          [placeholder]="placeholder"
-         [hideLabelOnFocus]="hideLabelOnFocus"
          [hintMessage]="hintMessage"
          [warnMessage]="warnMessage"
          [errorMessage]="errorMessage"
@@ -22,6 +23,12 @@
          [doPropagate]="false">
   <span input-prefix
         (click.outside-zone)="focusInput()">
-    {{socialTypes[type].prefix}}
+    <b-icon *ngIf="hideLabelOnFocus || label"
+            class="social-icon"
+            [color]="iconColor.normal"
+            [icon]="socialTypes[type].icon"
+            [size]="iconSize.small">
+    </b-icon>
+    {{ !narrowInput && !hideLabelOnFocus && !label ? socialTypes[type].prefix : socialTypes[type].prefixShort }}
   </span>
 </b-input>

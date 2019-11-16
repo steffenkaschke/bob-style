@@ -38,7 +38,7 @@ interface DateRangePickerValueLocal {
   endDate: Date | string;
 }
 
-const valueDef: DateRangePickerValueLocal = {
+const BDRP_VALUE_DEF: DateRangePickerValueLocal = {
   startDate: undefined,
   endDate: undefined,
 };
@@ -113,7 +113,7 @@ export class DateRangePickerComponent extends BaseDatepickerElement
               startDate: dateOrFail(value.from),
               endDate: dateOrFail(value.to),
             }
-          : cloneObject(valueDef);
+          : cloneObject(BDRP_VALUE_DEF);
       },
     ];
 
@@ -142,7 +142,7 @@ export class DateRangePickerComponent extends BaseDatepickerElement
       },
     ];
 
-    this.baseValue = valueDef;
+    this.baseValue = cloneObject(BDRP_VALUE_DEF);
   }
 
   @Input() value: DateRangePickerValueLocal;

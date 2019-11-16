@@ -4,7 +4,7 @@ import {
   select,
   boolean,
   withKnobs,
-  number
+  number,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
@@ -15,10 +15,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { mockText } from '../../mock.const';
 
-const story = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
 const inputTypes = values(InputTypes);
 const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
@@ -97,6 +96,7 @@ story.add(
         label: text('label', 'Input label'),
         description: text('description', mockText(30)),
         placeholder: text('placeholder', 'Input placeholder'),
+        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         minChars: number('minChars', ''),
         maxChars: number('maxChars', 30),
         min: number('min', 5),
@@ -107,16 +107,15 @@ story.add(
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
-        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         enableBrowserAutoComplete: select(
           'enableBrowserAutoComplete',
           inputAutoCompleteOptions,
           InputAutoCompleteOptions.off
-        )
+        ),
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, InputModule, StoryBookLayoutModule]
-      }
+        imports: [BrowserAnimationsModule, InputModule, StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }

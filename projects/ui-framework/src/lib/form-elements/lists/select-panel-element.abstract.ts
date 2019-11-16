@@ -33,7 +33,11 @@ import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { OverlayPositionClasses } from '../../types';
 import { UtilsService } from '../../services/utils/utils.service';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { isKey, hasChanges } from '../../services/utils/functional-utils';
+import {
+  isKey,
+  hasChanges,
+  applyChanges,
+} from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { SelectGroupOption, ListFooterActions } from './list.interface';
 import { ListChange } from './list-change/list-change';
@@ -98,6 +102,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes, {}, ['value', 'options']);
+
     if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
       this.destroyPanel();
     }

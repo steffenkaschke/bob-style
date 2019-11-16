@@ -61,7 +61,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   @ViewChildren(MatDatepickerInput, { read: ElementRef })
   public inputs: QueryList<ElementRef>;
 
-  @Input() id: string | number = simpleUID('bdp-');
+  @Input() id: string = simpleUID('bdp-');
 
   @Input() minDate: Date | string;
   @Input() maxDate: Date | string;

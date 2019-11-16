@@ -95,15 +95,20 @@ $input-focus-border-color: $grey-700;
   }
 }
 
+@mixin bFormElement-basics {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  text-align: left;
+  max-width: 100%;
+  min-width: 0;
+  user-select: none;
+  @include form-element-margins;
+}
+
 @mixin bFormElement {
   :host {
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    text-align: left;
-    max-width: 100%;
-    min-width: 0;
-    @include form-element-margins;
+    @include bFormElement-basics;
   }
 
   :host ::ng-deep {

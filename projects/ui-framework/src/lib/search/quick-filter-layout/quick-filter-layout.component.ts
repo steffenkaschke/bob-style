@@ -6,22 +6,37 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  AfterViewInit,
   NgZone,
   ChangeDetectorRef,
   ChangeDetectionStrategy,
   ContentChildren,
   QueryList,
-  Type,
   OnDestroy,
+  DoCheck,
+  SimpleChanges,
+  OnChanges,
+  AfterContentInit,
 } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { QuickFilterBarChangeEvent } from '../quick-filter/quick-filter.interface';
+import { QuickFilterConfig } from '../quick-filter/quick-filter.interface';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
-import { ButtonType } from '../../buttons/buttons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { BaseButtonElement } from '../../buttons/button.abstract';
+import { GenericObject } from '../../types';
+import {
+  applyChanges,
+  notFirstChanges,
+  onlyUpdatedProps,
+  asArray,
+  arrayDifference,
+  hasProp,
+} from '../../services/utils/functional-utils';
+import { simpleChange } from '../../services/utils/test-helpers';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { keyBy } from 'lodash';
 
 @Component({
   selector: 'b-quick-filter-layout',
@@ -48,7 +63,7 @@ import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tool
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuickFilterLayoutComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements DoCheck, OnChanges, OnInit, AfterContentInit, OnDestroy {
   constructor(
     private DOM: DOMhelpers,
     private zone: NgZone,
@@ -61,35 +76,155 @@ export class QuickFilterLayoutComponent
   @ContentChildren(BaseFormElement) public formComponents: QueryList<
     BaseFormElement
   >;
+  @ContentChildren(BaseButtonElement) public actionButtons: QueryList<
+    BaseButtonElement
+  >;
 
+  @Input() quickFilters: QuickFilterConfig[];
   @Input() showResetFilter = false;
 
-  @Output() filtersChange: EventEmitter<
-    QuickFilterBarChangeEvent
-  > = new EventEmitter<QuickFilterBarChangeEvent>();
+  @Output() filtersChange: EventEmitter<GenericObject> = new EventEmitter<
+    GenericObject
+  >();
   @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>();
 
-  quickFiltersChanges: QuickFilterBarChangeEvent = {};
+  public value: GenericObject = {};
+  public hasPrefix = true;
+  public hasSuffix = true;
+
+  private firstInitDone = false;
+  private formCompCount = 0;
+  private actButtsCount = 0;
+  private formCompEmittersMap: GenericObject = {};
+  private emitDebouncer: Subject<GenericObject> = new Subject<GenericObject>();
+
+  private subscribtions: Subscription[] = [];
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
-  readonly buttonType = ButtonType;
-  public hasPrefix = true;
-  public hasSuffix = true;
 
-  ngOnInit() {}
+  ngDoCheck(): void {
+    if (
+      this.firstInitDone &&
+      this.formComponents &&
+      this.formComponents.length !== this.formCompCount
+    ) {
+      if (this.formComponents.length < this.formCompCount) {
+        const deletedIDs = arrayDifference(
+          this.formComponents.toArray().map(cmp => cmp.id),
+          Object.keys(this.formCompEmittersMap)
+        );
 
-  ngAfterViewInit(): void {
-    this.formComponents.toArray().forEach(formComp => {
-      formComp['panelClass'] = 'b-quick-filter-panel';
-      formComp['tooltipType'] = TruncateTooltipType.material;
-      formComp['doPropagate'] = false;
+        deletedIDs.forEach(id => {
+          delete this.formCompEmittersMap[id];
+          delete this.value[id];
+        });
+      }
+      this.initFormElements();
+    }
 
-      this.getChangeEmitter(formComp as any).subscribe((changeEvent: any) => {
-        this.onFilterChange(formComp.id, changeEvent);
-      });
+    if (
+      this.firstInitDone &&
+      this.actionButtons &&
+      this.actionButtons.length !== this.actButtsCount
+    ) {
+      this.initActionButtons();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes);
+
+    if (notFirstChanges(changes, ['quickFilters'])) {
+      const updatedCompProps = onlyUpdatedProps(
+        keyBy(changes.quickFilters.previousValue, 'key'),
+        keyBy(changes.quickFilters.currentValue, 'key')
+      );
+
+      this.assignFormCompAttrs(Object.values(
+        updatedCompProps
+      ) as QuickFilterConfig[]);
+
+      this.initValue(Object.keys(updatedCompProps).map(key =>
+        this.formComponents.toArray().find(comp => comp.id === key)
+      ) as BaseFormElement[]);
+    }
+  }
+
+  ngOnInit() {
+    this.emitDebouncer.pipe(debounceTime(300)).subscribe(value => {
+      this.filtersChange.emit(value);
+      console.log(this.value);
     });
+  }
+
+  ngAfterContentInit(): void {
+    if (this.formComponents) {
+      this.initFormElements();
+    }
+    if (this.actionButtons) {
+      this.initActionButtons();
+    }
+    this.firstInitDone = true;
+  }
+
+  private initFormElements(): void {
+    this.formCompCount = this.formComponents.length;
+
+    this.formComponents.toArray().forEach(formComp => {
+      if (!Object.keys(this.formCompEmittersMap).includes(formComp.id)) {
+        Object.assign(formComp, {
+          panelClass: 'b-quick-filter-panel',
+          tooltipType: TruncateTooltipType.material,
+          doPropagate: false,
+          wrapEvent: false,
+        });
+
+        this.subscribtions.push(
+          this.getChangeEmitter(formComp as any).subscribe(
+            (changeEvent: any) => {
+              this.onFilterChange(formComp.id, changeEvent);
+            }
+          )
+        );
+
+        if (this.quickFilters) {
+          this.assignFormCompAttrs(this.quickFilters, formComp);
+        }
+
+        this.initValue(formComp);
+      }
+    });
+  }
+
+  private assignFormCompAttrs(
+    quickFilters: QuickFilterConfig[] = this.quickFilters,
+    formComp: BaseFormElement | BaseFormElement[] = null
+  ): void {
+    (formComp ? asArray(formComp) : this.formComponents.toArray()).forEach(
+      cmp => {
+        cmp.ngOnChanges(
+          simpleChange(quickFilters.find(fltr => fltr.key === cmp.id))
+        );
+      }
+    );
+  }
+
+  private initValue(
+    formComp: BaseFormElement | BaseFormElement[] = null
+  ): void {
+    (formComp ? asArray(formComp) : this.formComponents.toArray()).forEach(
+      cmp => {
+        if (cmp !== undefined) {
+          this.value[cmp.id] = cmp['options'] ? cmp['options'] : cmp.value;
+        }
+      }
+    );
+  }
+
+  private initActionButtons(): void {
+    this.actButtsCount = this.actionButtons.length;
 
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
@@ -104,34 +239,49 @@ export class QuickFilterLayoutComponent
   }
 
   ngOnDestroy(): void {
-    this.formComponents.toArray().forEach(formComp => {
-      this.getChangeEmitter(formComp as any).unsubscribe();
+    this.emitDebouncer.complete();
+    this.emitDebouncer.unsubscribe();
+
+    this.subscribtions.forEach(sub => {
+      sub.unsubscribe();
+      sub = null;
     });
+    this.subscribtions = null;
   }
 
-  onFilterChange(key: number | string, changeEvent: any): void {
-    this.quickFiltersChanges[key] = changeEvent;
-    this.filtersChange.emit(this.quickFiltersChanges);
+  onFilterChange(key: string, changeEvent: any): void {
+    this.value[key] = changeEvent;
+    this.emitDebouncer.next(this.value);
   }
 
   onReset(): void {
-    this.resetFilters.emit();
+    if (this.resetFilters.observers.length > 0) {
+      this.resetFilters.emit();
+    } else if (this.quickFilters) {
+      this.assignFormCompAttrs(
+        this.quickFilters.map(fltr => ({
+          ...fltr,
+          value: hasProp(fltr, 'value') ? fltr.value : null,
+        }))
+      );
+      this.initValue();
+      this.emitDebouncer.next(this.value);
+    }
   }
 
-  private findChangeEmitter(formComp: Type<any>): EventEmitter<any> {
-    const possibleEmitters: string[] = Object.keys(formComp).filter(
-      (key: string): boolean => key.toLowerCase().includes('change')
-    );
-    const changeEmitter: string = possibleEmitters.find(
-      emtr => formComp[emtr].observers
-    );
-
-    return changeEmitter ? formComp[changeEmitter] : changeEmitter;
+  private findChangeEmitterKey(formComp: BaseFormElement): string {
+    return (this.formCompEmittersMap[formComp.id] = formComp['selectChange']
+      ? 'selectChange'
+      : Object.keys(formComp).find(
+          (key: string): boolean =>
+            /change|inputEvents/i.test(key) && formComp[key].observers
+        ));
   }
 
-  private getChangeEmitter(formComp: Type<any>): EventEmitter<any> {
-    return (formComp['selectChange'] ||
-      formComp['changed'] ||
-      this.findChangeEmitter(formComp)) as EventEmitter<any>;
+  private getChangeEmitter(formComp: BaseFormElement): EventEmitter<any> {
+    return formComp[
+      this.formCompEmittersMap[formComp.id] ||
+        this.findChangeEmitterKey(formComp)
+    ];
   }
 }
