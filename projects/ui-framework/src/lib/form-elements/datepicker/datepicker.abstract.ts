@@ -193,16 +193,29 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
-  protected getOverlayStyles(): Styles {
+  protected getOverlayStyles(panelEl): Styles {
     if (this.inputWrap) {
       const overlayBox = this.inputWrap.nativeElement.getBoundingClientRect();
+      const matCalBox = panelEl
+        .querySelector('.b-datepicker-panel')
+        .getBoundingClientRect();
+
+      const alignedToRight =
+        matCalBox.width > overlayBox.width &&
+        panelEl
+          .querySelector('.mat-datepicker-content')
+          .style.cssText.includes('right');
+
+      const width = Math.max(overlayBox.width, matCalBox.width);
 
       return {
         ...this.overlayStylesDef,
         'pointer-events': 'none',
-        left: overlayBox.left + 'px',
-        right: overlayBox.right - overlayBox.width + 'px',
-        width: overlayBox.width + 'px',
+        width: width + 'px',
+        left: !alignedToRight
+          ? overlayBox.left + 'px'
+          : overlayBox.left - (width - overlayBox.width) + 'px',
+        right: 'auto',
       };
     }
     return {};
@@ -226,7 +239,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       (picker as any)._dialogRef._overlayRef &&
       (picker as any)._dialogRef._overlayRef.overlayElement
     ) {
-      panel.dialog = (picker as any)._dialogRef._overlayRef.overlayElement;
+      panel.dialog = (picker as any)._dialogRef._overlayRef.overlayElement.overlayElement;
     }
 
     return panel;
@@ -277,7 +290,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
         const panel = this.getPickerPanel(picker);
 
         if (!this.isMobile && panel.popup) {
-          this.DOM.setCssProps(panel.popup, this.getOverlayStyles());
+          this.DOM.setCssProps(panel.popup, this.getOverlayStyles(panel.popup));
         }
 
         if (this.isMobile && panel.dialog) {

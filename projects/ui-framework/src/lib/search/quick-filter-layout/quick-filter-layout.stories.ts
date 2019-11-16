@@ -158,18 +158,18 @@ const quickFilters: QuickFilterConfig[] = [
     label: 'Time to get ill',
   },
   {
-    key: 'split',
-    label: 'Pick items',
-    inputType: InputTypes.number,
-    selectOptions: animals,
-    value: { inputValue: 23, selectValue: undefined },
-  },
-  {
     key: 'hobbies',
     label: 'Your hobbies',
     placeholder: 'Pick from the list',
     options: optionsFromList(mockHobbies(), 'All hobbies'),
     showSingleGroupHeader: false,
+  },
+  {
+    key: 'split',
+    label: 'Pick items',
+    inputType: InputTypes.number,
+    selectOptions: animals,
+    value: { inputValue: 23, selectValue: undefined },
   },
 ];
 

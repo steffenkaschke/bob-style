@@ -37,6 +37,7 @@ import { simpleChange } from '../../services/utils/test-helpers';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { keyBy } from 'lodash';
+import { ListChange } from '../../form-elements/lists/list-change/list-change';
 
 @Component({
   selector: 'b-quick-filter-layout',
@@ -215,9 +216,13 @@ export class QuickFilterLayoutComponent
     formComp: BaseFormElement | BaseFormElement[] = null
   ): void {
     (formComp ? asArray(formComp) : this.formComponents.toArray()).forEach(
-      cmp => {
+      (cmp: BaseFormElement) => {
         if (cmp !== undefined) {
-          this.value[cmp.id] = cmp['options'] ? cmp['options'] : cmp.value;
+          this.value[cmp.id] = this.formCompIsSelect(cmp)
+            ? (this.value[cmp.id] = new ListChange(cmp['options'] || []))
+            : cmp.value !== undefined
+            ? cmp.value
+            : cmp.baseValue;
         }
       }
     );
@@ -267,6 +272,10 @@ export class QuickFilterLayoutComponent
       this.initValue();
       this.emitDebouncer.next(this.value);
     }
+  }
+
+  private formCompIsSelect(formComp: BaseFormElement): boolean {
+    return /SelectComponent/i.test(formComp.constructor.name);
   }
 
   private findChangeEmitterKey(formComp: BaseFormElement): string {
