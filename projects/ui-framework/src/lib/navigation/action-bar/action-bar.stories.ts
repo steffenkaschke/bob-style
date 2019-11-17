@@ -34,12 +34,12 @@ const note = `
   *ActionBarModule*
 
   #### Properties
-  Name | Type | Description
+  Name | Type | Description | Default value
   --- | --- | ---
-  [label] | string | The label that on the left side.
-  [showLabel] | boolean | Show label or label-toggle-content
-  label-toggle-content | ng-content | The content to show when label is hidden
-  - | ng-content | The content to the right of the label
+  [label] | string | The label that on the left side. | &nbsp;
+  [showLabel] | boolean | Show label or label-toggle-content | true
+  label-toggle-content | ng-content | The content to show when label is hidden | &nbsp;
+  - | ng-content | The content to the right of the label | &nbsp;
   ~~~
   ${componentTemplate}
   ~~~
