@@ -5,6 +5,7 @@ export enum LabelValueType {
   four = '4',
   five = '5',
   six = '6',
+  seven = '7',
 }
 
 export enum TextAlign {
