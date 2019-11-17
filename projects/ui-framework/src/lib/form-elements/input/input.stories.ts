@@ -66,7 +66,8 @@ const note = `
   [label] | string | label text (above input)
   [description] | string | description text (above icon)
   [placeholder] | string | placeholder text (inside input)
-  [hideLabelOnFocus] | boolean | if true: there will be no label above input, label text (if present) will be used as placeholder
+  [hideLabelOnFocus] | boolean | if true: there will be no label above\
+   input, label text (if present) will be used as placeholder
   [minChars] | number | minimum length
   [maxChars] | number | maximum length
   [min] | number | (only relevent for number inputs) minimum value (value will be corrected on blur)
@@ -78,7 +79,7 @@ const note = `
   [warnMessage] | string | warning text
   [errorMessage] | string | error text
   [enableBrowserAutoComplete] | InputAutoCompleteOptions | shows browser autocomplete options
-  (inputEvents) | EventEmitter&lt;InputEvent&gt; | input events emitter
+  (inputEvents) | EventEmitter<wbr>&lt;InputEvent&gt; | input events emitter
 
   ~~~
   ${template}

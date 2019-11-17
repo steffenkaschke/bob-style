@@ -56,7 +56,8 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [type] | DatepickerType | date or month picker | date
-  [value] | DateRangePickerValue <br> ({from: Date / string (YYYY-MM-DD), <br>to: Date / string (YYYY-MM-DD)} | start and end dates | &nbsp;
+  [value] | DateRangePickerValue <br> ({from: Date / string (YYYY-MM-DD),\
+     <br>to: Date / string (YYYY-MM-DD)} | start and end dates | &nbsp;
   [minDate] | Date / string (YYYY-MM-DD) | minimum date | &nbsp;
   [maxDate] | Date / string (YYYY-MM-DD) | maximum date | &nbsp;
   [label] | string | label text (above input) | &nbsp;
@@ -69,12 +70,14 @@ const note = `
   [hintMessage] | string | hint text | &nbsp;
   [warnMessage] | string | warning text | &nbsp;
   [errorMessage] | string | error text | &nbsp;
-  (dateChange) | EventEmitter&lt;InputEvent&gt; | Emited on date change | &nbsp;
+  (dateChange) | EventEmitter<wbr>&lt;InputEvent&gt; | Emited on date change | &nbsp;
 
   #### Notes
 
-  - In \`[type]="'month'"\` mode, the output start date \`.from\` will be 1st of month, and the end date \`.to\` will be the last day of month (28-31).
-  - the output event object also contains \`.date\` property that contains \`.startDate\` and \`.endDate\` as Date objects.
+  - In \`[type]="'month'"\` mode, the output start date \`.from\` will be\
+   1st of month, and the end date \`.to\` will be the last day of month (28-31).
+  - the output event object also contains \`.date\` property that contains
+   \`.startDate\` and \`.endDate\` as Date objects.
 
   ~~~
   ${template}

@@ -1,4 +1,4 @@
-import { SimpleChanges, SimpleChange } from '@angular/core';
+import { SimpleChanges } from '@angular/core';
 import { metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
 import { isEqual } from 'lodash';
@@ -231,18 +231,6 @@ export const notFirstChanges = (
   }
   return !!keys.find(i => changes[i] && !changes[i].firstChange);
 };
-
-export const onlyNewChanges = (changes: SimpleChanges) =>
-  Object.keys(changes)
-    .filter(
-      (key: string) =>
-        changes[key].isFirstChange ||
-        !isEqual(changes[key].previousValue, changes[key].currentValue)
-    )
-    .reduce((newChanges, key) => {
-      newChanges[key] = changes[key];
-      return newChanges;
-    }, {});
 
 export const applyChanges = (
   target: any,

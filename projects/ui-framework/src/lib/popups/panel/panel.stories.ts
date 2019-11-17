@@ -3,7 +3,7 @@ import {
   boolean,
   select,
   text,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -41,7 +41,8 @@ const template = `
       With bob you can add as many holiday policies as you need for your organisation.
       Before we create a policy, a note on what types are.
       <img style="display: block; width: 100%; margin-top: 20px;"
-      src="https://downloads.intercomcdn.com/i/o/86579629/3d3ae5d60c93aed41996abed/Screen+Shot+2018-11-20+at+11.19.09.png" />
+      src="\
+      https://downloads.intercomcdn.com/i/o/86579629/3d3ae5d60c93aed41996abed/Screen+Shot+2018-11-20+at+11.19.09.png" />
       </p>
     </div>
 
@@ -70,9 +71,10 @@ const note = `
   [defaultPosVer] | PanelDefaultPosVer | default vertical position | PanelDefaultPosVer.above
   [showBackdrop] | boolean | show backdrop | true
   [openOnHover] | boolean | trigger panel open on hover (delay 300ms) | false
-  (opened) | EventEmitter&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
-  (closed) | EventEmitter&lt;void&gt; | Emits panel Closed event | &nbsp;
-  (positionChanged) | EventEmitter&lt;OverlayPositionClasses&gt; | Emits when panel changes position during scrolling (above/below trigger) | &nbsp;
+  (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
+  (closed) | EventEmitter<wbr>&lt;void&gt; | Emits panel Closed event | &nbsp;
+  (positionChanged) | EventEmitter<wbr>&lt;OverlayPositionClasses&gt; | Emits\
+   when panel changes position during scrolling (above/below trigger) | &nbsp;
 
 
   ~~~
@@ -94,7 +96,7 @@ story.add(
       showBackdrop: boolean('showBackdrop', true),
       openOnHover: boolean('openOnHover', false),
       onPanelDestroyed: action('Panel destroyed'),
-      onPanelOpened: action('Panel opened')
+      onPanelOpened: action('Panel opened'),
     },
     moduleMetadata: {
       imports: [
@@ -103,9 +105,9 @@ story.add(
         TypographyModule,
         BrowserAnimationsModule,
         StoryBookLayoutModule,
-        CheckboxModule
-      ]
-    }
+        CheckboxModule,
+      ],
+    },
   }),
   { notes: { markdown: note } }
 );

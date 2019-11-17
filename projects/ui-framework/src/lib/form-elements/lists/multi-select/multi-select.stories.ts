@@ -64,10 +64,11 @@ const note = `
   --- | --- | --- | ---
   [options] | SelectGroupOption[] | model of selection group | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | false
-  [listActions] | ListFooterActions | enable/disable footer action buttons (clear, apply) | { clear:&nbsp;true, apply:&nbsp;true }
-  (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | &nbsp;
-  (selectModified) | EventEmitter&lt;ListChange&gt; | emits ListChange | &nbsp;
-  (selectCancelled) | EventEmitter&lt;ListChange&gt; | emits ListChange | &nbsp;
+  [listActions] | ListFooterActions | enable/disable footer action buttons\
+   (clear, apply) | { clear:&nbsp;true, apply:&nbsp;true }
+  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
+  (selectModified) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
+  (selectCancelled) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
   &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
   [label] | string | label text | &nbsp;
   [description] | string | description text (above icon) | &nbsp;

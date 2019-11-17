@@ -48,8 +48,9 @@ const note = `
   [options] | SelectGroupOption[] | model of selection group | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | false
   [maxHeight] | number | component max height | 352 (8 rows)
-  [listActions] | ListFooterActions | enable/disable footer action buttons (clear, apply) | { clear:&nbsp;false, apply:&nbsp;false }
-  (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | &nbsp;
+  [listActions] | ListFooterActions | enable/disable footer action buttons\
+   (clear, apply) | { clear:&nbsp;false, apply:&nbsp;false }
+  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
   &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
 
   ~~~

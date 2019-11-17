@@ -5,11 +5,11 @@ import { ListChange } from '../../form-elements/lists/list-change/list-change';
 export interface QuickFilterConfig {
   key: string;
   value?: any;
-  options?: SelectGroupOption[];
   selectType?: QuickFilterSelectType;
+  options?: SelectGroupOption[];
+  showSingleGroupHeader?: boolean;
   label?: string;
   placeholder?: string;
-  showSingleGroupHeader?: boolean;
   [k: string]: any;
 }
 

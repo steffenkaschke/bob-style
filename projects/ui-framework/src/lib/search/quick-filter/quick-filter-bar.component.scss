@@ -173,7 +173,7 @@
     }
 
     .bar-filters > :last-child > .bfe-wrap:last-of-type,
-    .bar-filters > :last-child > :last-child .bfe-wrap {
+    .bar-filters > :last-child > :nth-child(2) .bfe-wrap:last-of-type {
       border-right: 1px solid $input-border-color;
       @include border-radius-right;
 

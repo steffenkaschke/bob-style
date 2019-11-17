@@ -62,8 +62,8 @@ const note = `
   [options] | SelectGroupOptions[] | select option | null
   [disabled] | boolean | if panel is disabled | false
   (selectChange) | ListChange | output on select change | &nbsp;
-  (opened) | EventEmitter&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
-  (closed) | EventEmitter&lt;void&gt; | Emits panel Closed event | &nbsp;
+  (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
+  (closed) | EventEmitter<wbr>&lt;void&gt; | Emits panel Closed event | &nbsp;
 
   ~~~
   ${componentTemplate1}

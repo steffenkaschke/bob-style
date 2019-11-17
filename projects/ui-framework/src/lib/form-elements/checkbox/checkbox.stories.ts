@@ -52,7 +52,7 @@ const note = `
   [hintMessage] | string | hint text
   [warnMessage] | string | warning text
   [errorMessage] | string | error text
-  (checkboxChange) | EventEmitter&lt;InputEvent&gt; | checkboxChange emitter
+  (checkboxChange) | EventEmitter<wbr>&lt;InputEvent&gt; | checkboxChange emitter
 
   ~~~
   ${template}

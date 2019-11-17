@@ -6,13 +6,11 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  NgZone,
   ChangeDetectorRef,
   ChangeDetectionStrategy,
   ContentChildren,
   QueryList,
   OnDestroy,
-  DoCheck,
   SimpleChanges,
   OnChanges,
   AfterContentInit,
@@ -20,7 +18,6 @@ import {
 import { animate, style, transition, trigger } from '@angular/animations';
 import { QuickFilterConfig } from '../quick-filter/quick-filter.interface';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { BaseButtonElement } from '../../buttons/button.abstract';
@@ -64,12 +61,8 @@ import { ListChange } from '../../form-elements/lists/list-change/list-change';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuickFilterLayoutComponent
-  implements DoCheck, OnChanges, OnInit, AfterContentInit, OnDestroy {
-  constructor(
-    private DOM: DOMhelpers,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {}
+  implements OnChanges, OnInit, AfterContentInit, OnDestroy {
+  constructor(private cd: ChangeDetectorRef) {}
 
   @ViewChild('prefix', { static: false }) prefix: ElementRef;
   @ViewChild('suffix', { static: false }) suffix: ElementRef;
@@ -77,9 +70,8 @@ export class QuickFilterLayoutComponent
   @ContentChildren(BaseFormElement) public formComponents: QueryList<
     BaseFormElement
   >;
-  @ContentChildren(BaseButtonElement) public actionButtons: QueryList<
-    BaseButtonElement
-  >;
+  @ContentChildren(BaseButtonElement, { read: ElementRef })
+  public actionButtons: QueryList<ElementRef>;
 
   @Input() quickFilters: QuickFilterConfig[];
   @Input() showResetFilter = false;
@@ -93,7 +85,6 @@ export class QuickFilterLayoutComponent
   public hasPrefix = true;
   public hasSuffix = true;
 
-  private firstInitDone = false;
   private formCompCount = 0;
   private actButtsCount = 0;
   private formCompEmittersMap: GenericObject = {};
@@ -104,35 +95,6 @@ export class QuickFilterLayoutComponent
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
-
-  ngDoCheck(): void {
-    if (
-      this.firstInitDone &&
-      this.formComponents &&
-      this.formComponents.length !== this.formCompCount
-    ) {
-      if (this.formComponents.length < this.formCompCount) {
-        const deletedIDs = arrayDifference(
-          this.formComponents.toArray().map(cmp => cmp.id),
-          Object.keys(this.formCompEmittersMap)
-        );
-
-        deletedIDs.forEach(id => {
-          delete this.formCompEmittersMap[id];
-          delete this.value[id];
-        });
-      }
-      this.initFormElements();
-    }
-
-    if (
-      this.firstInitDone &&
-      this.actionButtons &&
-      this.actionButtons.length !== this.actButtsCount
-    ) {
-      this.initActionButtons();
-    }
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
@@ -154,19 +116,43 @@ export class QuickFilterLayoutComponent
   }
 
   ngOnInit() {
-    this.emitDebouncer.pipe(debounceTime(300)).subscribe(value => {
-      this.filtersChange.emit(value);
-    });
+    this.subscribtions.push(
+      this.emitDebouncer.pipe(debounceTime(300)).subscribe(value => {
+        this.filtersChange.emit(value);
+      })
+    );
   }
 
   ngAfterContentInit(): void {
-    if (this.formComponents) {
-      this.initFormElements();
-    }
-    if (this.actionButtons) {
-      this.initActionButtons();
-    }
-    this.firstInitDone = true;
+    this.initFormElements();
+
+    this.subscribtions.push(
+      this.formComponents.changes.subscribe(() => {
+        if (this.formComponents.length < this.formCompCount) {
+          const deletedIDs = arrayDifference(
+            this.formComponents.toArray().map(cmp => cmp.id),
+            Object.keys(this.formCompEmittersMap)
+          );
+          deletedIDs.forEach(id => {
+            delete this.formCompEmittersMap[id];
+            delete this.value[id];
+          });
+        }
+        if (this.formComponents.length !== this.formCompCount) {
+          this.initFormElements();
+        }
+      })
+    );
+
+    this.initActionButtons();
+
+    this.subscribtions.push(
+      this.actionButtons.changes.subscribe(() => {
+        if (this.actionButtons.length !== this.actButtsCount) {
+          this.initActionButtons();
+        }
+      })
+    );
   }
 
   private initFormElements(): void {
@@ -230,27 +216,22 @@ export class QuickFilterLayoutComponent
   private initActionButtons(): void {
     this.actButtsCount = this.actionButtons.length;
 
-    this.zone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.hasPrefix = !this.DOM.isEmpty(this.prefix.nativeElement);
-        this.hasSuffix = !this.DOM.isEmpty(this.suffix.nativeElement);
+    const buttons = this.actionButtons
+      .toArray()
+      .map((butt: ElementRef): HTMLElement => butt.nativeElement);
 
-        if (!this.cd['destroyed']) {
-          this.cd.detectChanges();
-        }
-      }, 0);
-    });
-  }
+    this.hasPrefix = Boolean(
+      buttons.find(butt =>
+        Boolean(butt.getAttributeNames().includes('bar-prefix'))
+      )
+    );
+    this.hasSuffix = Boolean(
+      buttons.find(butt =>
+        Boolean(butt.getAttributeNames().includes('bar-suffix'))
+      )
+    );
 
-  ngOnDestroy(): void {
-    this.emitDebouncer.complete();
-    this.emitDebouncer.unsubscribe();
-
-    this.subscribtions.forEach(sub => {
-      sub.unsubscribe();
-      sub = null;
-    });
-    this.subscribtions = null;
+    this.cd.detectChanges();
   }
 
   onFilterChange(key: string, changeEvent: any): void {
@@ -271,6 +252,16 @@ export class QuickFilterLayoutComponent
       this.initValue();
       this.emitDebouncer.next(this.value);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.emitDebouncer.complete();
+
+    this.subscribtions.forEach(sub => {
+      sub.unsubscribe();
+      sub = null;
+    });
+    this.subscribtions = null;
   }
 
   private formCompIsSelect(formComp: BaseFormElement): boolean {

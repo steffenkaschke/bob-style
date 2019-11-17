@@ -59,7 +59,7 @@ const note = `
   [required] | boolean | is field required
   [hintMessage] | text | hint text
   [errorMessage] | text | error text
-  (elementChange) | EventEmitter&lt;InputSingleSelectValue&gt; |  change emitter
+  (elementChange) | EventEmitter<wbr>&lt;InputSingleSelectValue&gt; |  change emitter
 
   ~~~
   ${template}

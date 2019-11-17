@@ -1,5 +1,3 @@
-// tslint:disable
-
 import { storiesOf } from '@storybook/angular';
 import {
   array,
@@ -22,10 +20,9 @@ import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-
 import { RichTextEditorModule } from './rte.module';
 import { mockText } from '../../../src/lib/mock.const';
 
-const story = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
 const disableControlsDef = [];
 const controlsDef = dedupeArray(Object.values(BlotType)).filter(
@@ -56,11 +53,14 @@ const value = `<br><br> <br><br> <span> <br> </span> <div><br></div> <span><br><
 
 <ul>
   <li> <br> <br>
-  don't trust the <span style="font-size: 18px;">👩</span> <a href="https://www.youtube.com/watch?v=h3SD_oBOx7g" target="_blank" mention-employee-id="666">@Bitch</a> in apartment 23</li>
+  don't trust the <span style="font-size: 18px;">👩</span> \
+  <a href="https://www.youtube.com/watch?v=h3SD_oBOx7g" \
+  target="_blank" mention-employee-id="666">@Bitch</a> in apartment 23</li>
   <li>don't eat the <u>yellow</u> snow</li>
   <li>танцуй пока молодой <span style="font-size: 18px;">💃</span></li>
   <li>אמור לא לסמים</li>
-  <li style="direction: rtl; text-align: right;">beware the <a href="https://youtu.be/hOHvMqAgcmc?t=11" mention-employee-id="777">@Right Hook</a></li>
+  <li style="direction: rtl; text-align: right;">beware the \
+  <a href="https://youtu.be/hOHvMqAgcmc?t=11" mention-employee-id="777">@Right Hook</a></li>
 </ul>
 
 <div><br></div> <span><br></span>
@@ -119,11 +119,18 @@ const note = `
   #### Properties
   Name | Type | Description | default
   --- | --- | --- | ---
-  [type] | RTEType | theme: primary (white bg, border), secondary (transparent bg, no borders), tertiary (grey bg, no borders) | primary
+  [type] | RTEType | theme: primary (white bg, border), secondary \
+  (transparent bg, no borders), tertiary (grey bg, no borders) | primary
   [value] | string | html content to be placed inside editor | &nbsp;
-  [controls] | BlotType[] | array of toolbar controls (check BlotType enum for all possible controls). Defaults to all controls. Pass empty array to disable all controls | all
-  [disableControls] | BlotType[] | array of toolbar controls to disable. <u>Hint:</u> if you need to disable 1-2 controls from the default set, dont set [controls], just pass controls you want disabled in [disableControls] instead. | []
-  [options] | FroalaOptions | <u>Experimental!</u> additional options for Froala editor. [See Docs](https://www.froala.com/wysiwyg-editor/docs/options). Try \`{ toolbarInline:true }\` to get inline toolbar (regular toolbar will be hidden)
+  [controls] | BlotType[] | array of toolbar controls \
+  (check BlotType enum for all possible controls). \
+  Defaults to all controls. Pass empty array to disable all controls | all
+  [disableControls] | BlotType[] | array of toolbar controls to disable.\
+   <u>Hint:</u> if you need to disable 1-2 controls from the default set,\
+    dont set [controls], just pass controls you want disabled in [disableControls] instead. | []
+  [options] | FroalaOptions | <u>Experimental!</u> additional options\
+   for Froala editor. [See Docs](https://www.froala.com/wysiwyg-editor/docs/options). \
+   Try \`{ toolbarInline:true }\` to get inline toolbar (regular toolbar will be hidden)
   [minChars] | number | minimum (plain) text length | 0
   [maxChars] | number | maximum (plain) text length | &nbsp;
   [minHeight] | number | minimum height of editor (including toolbar). Set to **0** to disable min-height | 185
@@ -136,19 +143,24 @@ const note = `
   [required] | boolean | adds * to placeholder | false
   [hintMessage] | string | adds a hint message below editor | &nbsp;
   [warnMessage] | string | adds a warning message below editor | &nbsp;
-  [errorMessage] | string | adds 'invalid' style, hides hint/warn message and displays error message below editor | &nbsp;
-  (changed) | EventEmitter&lt;string&gt; | emits in text change | &nbsp;
-  (focused) | EventEmitter&lt;string&gt; | emits latest value on editor focus | &nbsp;
-  (blurred) | EventEmitter&lt;string&gt; | emits latest value on editor blur | &nbsp;
+  [errorMessage] | string | adds 'invalid' style, \
+  hides hint/warn message and displays error message below editor | &nbsp;
+  (changed) | EventEmitter<wbr>&lt;string&gt; | emits in text change | &nbsp;
+  (focused) | EventEmitter<wbr>&lt;string&gt; | emits latest value on editor focus | &nbsp;
+  (blurred) | EventEmitter<wbr>&lt;string&gt; | emits latest value on editor blur | &nbsp;
 
   ----------------
 
   #### Mentions properties
   Name | Type | Description | default
   --- | --- | --- | ---
-  [mentionsList] | RteMentionsOption[] | pass an array of { avatar, displayName, link, attributes? } objects for mentions functionality | &nbsp;
+  [mentionsList] | RteMentionsOption[] | pass an array of { avatar, displayName, link, attributes? } \
+  objects for mentions functionality | &nbsp;
 
-  <strong>Important!</strong>   \`\`\`.link  \`\`\` should be a full url of ee profile;   \`\`\`.avatar  \`\`\` should be ee avatar url, from EmployeeAvatarService.getOptimizedAvatarImage (size mini); \`\`\`.attributes  \`\`\` object can contain any attributes to be added to the mention link.
+  <strong>Important!</strong>   \`\`\`.link  \`\`\` should be a full \
+  url of ee profile;   \`\`\`.avatar  \`\`\` should be ee avatar url, \
+  from <u>EmployeeAvatarService<wbr>.getOptimizedAvatarImage</u> (size mini); \
+  \`\`\`.attributes  \`\`\` object can contain any attributes to be added to the mention link.
 
   Example of mentionsList data:
 
@@ -168,11 +180,12 @@ const note = `
   ----------------
 
   #### Placeholders properties
-  Name | Type | Description | default
-  --- | --- | --- | ---
+  Name | Type | Description
+  --- | --- | ---
   [placeholderList] | SelectGroupOption[] | Single-List-compatible options model.
 
-  <strong>Important!</strong> Each group must have a   \`\`\`key  \`\`\`, and each option's   \`\`\`id \`\`\` must be in format \`\`\`GroupKey/OptionId\`\`\`.
+  <strong>Important!</strong> Each group must have a \`\`\`key \`\`\`,\
+   and each option's   \`\`\`id \`\`\` must be in format \`\`\`GroupKey/OptionId\`\`\`.
 
   Example of placeholderList data:
 

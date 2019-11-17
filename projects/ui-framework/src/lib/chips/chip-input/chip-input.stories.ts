@@ -56,7 +56,7 @@ const note = `
   [errorMessage] | string | error text | &nbsp;
   [required] | boolean | if input is required | false
   [disabled] | boolean | if input is disabled | false
-  (changed) | EventEmitter&lt;ChipInputChange&gt; | emits on change: {value, added, removed} | &nbsp;
+  (changed) | EventEmitter<wbr>&lt;ChipInputChange&gt; | emits on change: {value, added, removed} | &nbsp;
 
 
   ~~~

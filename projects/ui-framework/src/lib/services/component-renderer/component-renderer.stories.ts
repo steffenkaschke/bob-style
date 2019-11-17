@@ -75,8 +75,11 @@ const note = `
     --- | --- | --- | ---
   component | any | component reference | &nbsp;
   attributes | { inputName: inputValue } | object with component attributes (inputs) | &nbsp;
-  content | string  / RenderedComponent / (string / RenderedComponent)[] | a string, another component or an array of strings and components to be passed as ng-content of the component | &nbsp;
-  handlers | { eventName: handlerFunction() } | object that maps events output by component to handler functions | &nbsp;
+  content | string  / RenderedComponent / (string / RenderedComponent)[] |\
+   a string, another component or an array of strings and components to be\
+    passed as ng-content of the component | &nbsp;
+  handlers | { eventName: handlerFunction() } | object that maps events\
+   output by component to handler functions | &nbsp;
 
 
    #### Example

@@ -63,8 +63,9 @@ const note = `
   [listLabel] | string | label text for the Multi List component | &nbsp;
   [chipsLabel] | string | label text for the Chips List component | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | **false**
-  [emptyState] | EmptyStateConfig | config for the EmptyStateComponent to be displayed when no options are selected | &nbsp;
-  (selectChange) | EventEmitter&lt;ListChange&gt; | emits on list change | &nbsp;
+  [emptyState] | EmptyStateConfig | config for the EmptyStateComponent to\
+   be displayed when no options are selected | &nbsp;
+  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits on list change | &nbsp;
 
   ~~~
   ${template}

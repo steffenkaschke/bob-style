@@ -23,6 +23,7 @@ import { InputModule } from '../../form-elements/input/input.module';
 import { SocialModule } from '../../form-elements/social/social.module';
 import { TimePickerModule } from '../../form-elements/timepicker/timepicker.module';
 import { InputTypes } from '../../form-elements/input/input.enum';
+// tslint:disable-next-line: max-line-length
 import { SplitInputSingleSelectModule } from '../../form-elements/split-input-single-select/split-input-single-select.module';
 
 const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
@@ -32,10 +33,9 @@ const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
 const template1 = `
 <b-quick-filter-layout
             [showResetFilter]="showResetFilter"
-            (filtersChange)="filtersChange($event)"
             (resetFilters)="resetFilters()">
 
-    <b-text-button bar-prefix text="Left" color="primary">
+    <b-text-button bar-prefix *ngIf="showLeftButt" text="Left" color="primary">
     </b-text-button>
 
     <b-single-select
@@ -55,7 +55,7 @@ const template1 = `
             [endDateLabel]="'To'">
     </b-date-range-picker>
 
-    <b-text-button bar-suffix text="Right" color="primary">
+    <b-text-button bar-suffix *ngIf="showRightButt" text="Right" color="primary">
     </b-text-button>
 
 </b-quick-filter-layout>
@@ -124,7 +124,7 @@ const note = `
   Name | Type | Description | Default Value
   --- | --- | --- | ---
   [showResetFilter] | boolean | displays reset button (consumer needs to provide functionality) | false
-  (resetFilters) | EventEmitter&lt;void&gt; | emits on reset click. | &nbsp;
+  (resetFilters) | EventEmitter<wbr>&lt;void&gt; | emits on reset click. | &nbsp;
   &lt;b-form-element [id]="id"&gt; | ng-content | Any number of any form-elements. \
   Consumer has to manage its bindings and events herself.\
    \`\`\`[id]\`\`\` property is recommended but not mandatory. | &nbsp;
@@ -147,12 +147,12 @@ const note = `
   [quickFilters] | QuickFilterConfig[] | array properties (and/or state) to be applied to form elements, \
   where \`\`\`.key\`\`\` of QuickFilterConfig is matched to \`\`\`.id\`\`\` of the form component  | &nbsp;
   [showResetFilter] | boolean | displays reset button | false
-  (resetFilters) | EventEmitter&lt;void&gt; | emits on reset click.<br> \
+  (resetFilters) | EventEmitter<wbr>&lt;void&gt; | emits on reset click.<br> \
   <strong>Note!</strong><br> If there are no listeners to (resetFilters) and [showResetFilter] is true, \
   Reset button will reset form components to QuickFilterConfig state.<br> \
   Subscibing to the emitter will disable this functionality and consumer has to provide her own | &nbsp;
-  (filtersChange) | EventEmitter&lt;QuickFilter<wbr>ChangeEvent&gt; | emits on quick filter bar change, \
-  includes current value of all the form elements | &nbsp;
+  (filtersChange) | EventEmitter<wbr>&lt;GenericObject&gt; | emits on quick filter bar change, \
+  includes current value of all the form elements: \`\`\`{[key: string]: any}\`\`\` | &nbsp;
   &lt;b-form-element [id]="id"&gt; | ng-content | Any number of any form-elements. \
   They will be initialized according to QuickFilterConfig. \
   \`\`\`.key\`\`\` of QuickFilterConfig is matched to \`\`\`.id\`\`\` of the form component \
@@ -230,6 +230,8 @@ story.add(
         showSocial: boolean('showSocial', true, 'props'),
         showTime: boolean('showTime', false, 'props'),
         showSplitInpSel: boolean('showSplitInpSel', false, 'props'),
+        showLeftButt: boolean('showLeftButt', true, 'props'),
+        showRightButt: boolean('showRightButt', true, 'props'),
       },
       moduleMetadata: {
         imports: [

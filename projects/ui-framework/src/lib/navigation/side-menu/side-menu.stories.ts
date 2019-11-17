@@ -50,7 +50,7 @@ const note = `
   [headerLabel] | string | header of menu
   [options] | SideMenuOption[] | array of options
   [selectedId] | number | selected menu item index
-  (selectOption) | EventEmitter&lt;number&gt; | emits on option select
+  (selectOption) | EventEmitter<wbr>&lt;number&gt; | emits on option select
   - | ng-content | add actions to the header of the menu
 
   ~~~

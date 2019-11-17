@@ -73,9 +73,11 @@ const note = `
   --- | --- | --- | ---
   [type] | RTEType | primary (white bg, border) or secondary (transparent bg, no borders) | primary
   [label] | string | label text (above editor) | &nbsp;
-  [placeholder] | string | placeholder text (inside editor. if only label is present, it will be treated as placeholder) | &nbsp;
+  [placeholder] | string | placeholder text (inside editor. if only label\
+     is present, it will be treated as placeholder) | &nbsp;
   [value] | string | html content to be placed inside editor | &nbsp;
-  [controls] | BlotType[] | array of toolbar controls (check BlotType enum for all possible controls). Defaults to all controls. Pass empty array to disable all controls | all
+  [controls] | BlotType[] | array of toolbar controls (check BlotType enum\
+     for all possible controls). Defaults to all controls. Pass empty array to disable all controls | all
   [minChars] | number | minimum (plain) text length | 0
   [maxChars] | number | maximum (plain) text length | &nbsp;
   [minHeight] | number | minimum height of editor (including toolbar). Set to null or 0 to disable min-height | 185
@@ -84,10 +86,11 @@ const note = `
   [required] | boolean | adds * to placeholder | false
   [hintMessage] | string | adds a hint message below editor | &nbsp;
   [warnMessage] | string | adds a warning message below editor | &nbsp;
-  [errorMessage] | string | adds 'invalid' style, hides hint/warn message and displays error message below editor | &nbsp;
-  (changed) | EventEmitter&lt;string&gt; | emits in text change |
-  (focused) | EventEmitter&lt;string&gt; | emits latest value on editor focus |
-  (blurred) | EventEmitter&lt;string&gt; | emits latest value on editor blut |
+  [errorMessage] | string | adds 'invalid' style, hides hint/warn message\
+   and displays error message below editor | &nbsp;
+  (changed) | EventEmitter<wbr>&lt;string&gt; | emits in text change |
+  (focused) | EventEmitter<wbr>&lt;string&gt; | emits latest value on editor focus |
+  (blurred) | EventEmitter<wbr>&lt;string&gt; | emits latest value on editor blut |
   /content/ | any | pass content to transclude any custom controls/etc to toolbar |
 
 
