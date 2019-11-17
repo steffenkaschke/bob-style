@@ -318,6 +318,8 @@ export {
   QuickFilterBarChangeEvent
 } from './lib/search/quick-filter/quick-filter.interface';
 export { QuickFilterSelectType } from './lib/search/quick-filter/quick-filter.enum';
+export { QuickFilterLayoutModule } from './lib/search/quick-filter-layout/quick-filter-layout.module';
+export { QuickFilterLayoutComponent } from './lib/search/quick-filter-layout/quick-filter-layout.component';
 
 /*
  * Navigation
