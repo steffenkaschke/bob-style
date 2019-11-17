@@ -35,36 +35,27 @@ const template1 = `
             (filtersChange)="filtersChange($event)"
             (resetFilters)="resetFilters()">
 
-    <b-text-button bar-prefix
-               text="Left"
-               color="primary">
+    <b-text-button bar-prefix text="Left" color="primary">
     </b-text-button>
 
     <b-single-select
             [id]="'select-1'"
-            [label]="'Select here'"
-            [placeholder]="'Some stuff'"
+            [label]="'Select here'" [placeholder]="'Some stuff'"
             [options]="BSSoptions">
     </b-single-select>
 
-    <b-multi-select
-            [id]="'select-2'"
-            [label]="'Then select here'"
-            [placeholder]="'More stuff'"
+    <b-multi-select [id]="'select-2'"
+            [label]="'Then select here'" [placeholder]="'More stuff'"
             [options]="BMSoptions">
     </b-multi-select>
 
-    <b-date-range-picker
-            [id]="'picker-1'"
+    <b-date-range-picker [id]="'picker-1'" [type]="'date'"
             [label]="'Pick date range'"
             [startDateLabel]="'From'"
-            [endDateLabel]="'To'"
-            [type]="'date'">
+            [endDateLabel]="'To'">
     </b-date-range-picker>
 
-    <b-text-button bar-suffix
-               text="Right"
-               color="primary">
+    <b-text-button bar-suffix text="Right" color="primary">
     </b-text-button>
 
 </b-quick-filter-layout>
@@ -76,23 +67,18 @@ const template2 = `
             [showResetFilter]="showResetFilter"
             (filtersChange)="filtersChange($event)">
 
-    <b-input *ngIf="showName" [id]="'name'">
-    </b-input>
+    <b-input *ngIf="showName" [id]="'name'"></b-input>
 
     <b-split-input-single-select *ngIf="showSplitInpSel"
             [id]="'split'">
     </b-split-input-single-select>
 
-    <b-multi-select *ngIf="showHobbies"
-            [id]="'hobbies'">
+    <b-multi-select *ngIf="showHobbies" [id]="'hobbies'">
     </b-multi-select>
 
-    <b-social *ngIf="showSocial" [id]="'social'">
-    </b-social>
+    <b-social *ngIf="showSocial" [id]="'social'"> </b-social>
 
-    <b-timepicker *ngIf="showTime"
-              [id]="'time'">
-    </b-timepicker>
+    <b-timepicker *ngIf="showTime" [id]="'time'"></b-timepicker>
 
 </b-quick-filter-layout>
 `;
@@ -108,21 +94,74 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Quick filters
-  #### Module
+  ## Quick Filter Layout
+  #### QuickFilterLayoutModule
   *QuickFilterModule*
 
-  #### Properties
-  Name | Type | Description | Default Value
-  --- | --- | --- | ---
-  [quickFilters] | QuickFilterConfig[] | array of quick filters | none
-  [showResetFilter] | boolean | displays reset button | false
-  (filtersChange) | EventEmitter&lt;QuickFilterChangeEvent&gt; | emits on quick filter bar change | none
-  (resetFilters) | EventEmitter&lt;void&gt; |emits on reset click | none
+  -----------
+
+  <span style="font-size: 110%">
+  Quick Filter Layout can be used in two ways:
+
+  - Consumer can provide (via ng-content) any number of form elements and manage ther\
+   bindings, events & functionality manually
+  - Consumer can provide the form elements, and \`\`\`[quickFilters]\`\`\` QuickFilterConfig array.\
+   Elements will be initialized according to QuickFilterConfig's.\
+    Change events from all components are combined into single \`\`\`(filtersChange)\`\`\` output. \
+    Form elements and/or QuickFilterConfig's can be added/updated dynamically.
+
+  </span>
+
+  -----------
+
+  ### Using just for layout (consumer provides all functionality)
 
   ~~~
   ${template1}
   ~~~
+
+  #### Properties
+  Name | Type | Description | Default Value
+  --- | --- | --- | ---
+  [showResetFilter] | boolean | displays reset button (consumer needs to provide functionality) | false
+  (resetFilters) | EventEmitter&lt;void&gt; | emits on reset click. | &nbsp;
+  &lt;b-form-element [id]="id"&gt; | ng-content | Any number of any form-elements. \
+  Consumer has to manage its bindings and events herself.\
+   \`\`\`[id]\`\`\` property is recommended but not mandatory. | &nbsp;
+  &lt;b-button-element <br>bar-prefix&gt; | ng-content | Button to be displayed on the left of the bar\
+  (consumer provides functionality)  | &nbsp;
+  &lt;b-button-element <br>bar-suffix&gt; | ng-content | Button to be displayed on the right of the bar \
+  (consumer provides functionality) | &nbsp;
+
+  -----------
+
+  ### Using with [quickFilters] and (filtersChange)
+
+  ~~~
+  ${template2}
+  ~~~
+
+  #### Properties
+  Name | Type | Description | Default Value
+  --- | --- | --- | ---
+  [quickFilters] | QuickFilterConfig[] | array properties (and/or state) to be applied to form elements, \
+  where \`\`\`.key\`\`\` of QuickFilterConfig is matched to \`\`\`.id\`\`\` of the form component  | &nbsp;
+  [showResetFilter] | boolean | displays reset button | false
+  (resetFilters) | EventEmitter&lt;void&gt; | emits on reset click.<br> \
+  <strong>Note!</strong><br> If there are no listeners to (resetFilters) and [showResetFilter] is true, \
+  Reset button will reset form components to QuickFilterConfig state.<br> \
+  Subscibing to the emitter will disable this functionality and consumer has to provide her own | &nbsp;
+  (filtersChange) | EventEmitter&lt;QuickFilter<wbr>ChangeEvent&gt; | emits on quick filter bar change, \
+  includes current value of all the form elements | &nbsp;
+  &lt;b-form-element [id]="id"&gt; | ng-content | Any number of any form-elements. \
+  They will be initialized according to QuickFilterConfig. \
+  \`\`\`.key\`\`\` of QuickFilterConfig is matched to \`\`\`.id\`\`\` of the form component \
+  Elemetns can be dynamically added. \`\`\`[id]\`\`\` property is mandatory. | &nbsp;
+  &lt;b-button-element <br> bar-prefix&gt; | ng-content | Button to be displayed on the left of the bar \
+  (consumer provides functionality) | &nbsp;
+  &lt;b-button-element <br> bar-suffix&gt; | ng-content | Button to be displayed on the right of the bar \
+  (consumer provides functionality) | &nbsp;
+
 `;
 
 const optionsFromList = (list, key = 'Stuff') => [

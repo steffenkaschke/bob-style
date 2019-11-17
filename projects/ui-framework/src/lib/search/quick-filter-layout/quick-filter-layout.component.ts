@@ -156,7 +156,6 @@ export class QuickFilterLayoutComponent
   ngOnInit() {
     this.emitDebouncer.pipe(debounceTime(300)).subscribe(value => {
       this.filtersChange.emit(value);
-      console.log(this.value);
     });
   }
 
