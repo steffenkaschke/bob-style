@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { text, withKnobs } from '@storybook/addon-knobs/angular';
+import { text, withKnobs, boolean } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -12,7 +12,9 @@ const story = storiesOf(
 ).addDecorator(withKnobs);
 
 const componentTemplate = `
-<b-action-bar [label]="label">
+<b-action-bar [label]="label"
+              [showLabel]="showLabel">
+    <b-button label-toggle-content>Actions</b-button>
     <b-button>Test</b-button>
 </b-action-bar>
 `;
@@ -32,10 +34,12 @@ const note = `
   *ActionBarModule*
 
   #### Properties
-  Name | Type | Description
+  Name | Type | Description | Default value
   --- | --- | ---
-  label | string | The label that on the left side.
-
+  [label] | string | The label that on the left side. | &nbsp;
+  [showLabel] | boolean | Show label or label-toggle-content | true
+  label-toggle-content | ng-content | The content to show when label is hidden | &nbsp;
+  - | ng-content | The content to the right of the label | &nbsp;
   ~~~
   ${componentTemplate}
   ~~~
@@ -47,7 +51,8 @@ story.add(
     return {
       template,
       props: {
-        label: text('label', 'Test label')
+        label: text('label', 'Test label'),
+        showLabel: boolean('showLabel', true),
       },
       moduleMetadata: {
         imports: [

@@ -28,5 +28,12 @@ describe('ActionBarComponent', () => {
       labelElement = fixture.debugElement.query(By.css('b-bold-body'));
       expect(labelElement.nativeElement.textContent).toEqual('test');
     });
+    it('should hide label when showLabel is false', () => {
+      component.label = 'test';
+      component.showLabel = false;
+      fixture.detectChanges();
+      labelElement = fixture.debugElement.query(By.css('b-bold-body'));
+      expect(labelElement.nativeElement.hidden).toBeTruthy();
+    });
   });
 });
