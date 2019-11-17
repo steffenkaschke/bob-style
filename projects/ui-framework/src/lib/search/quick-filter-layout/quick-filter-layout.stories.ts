@@ -33,23 +33,24 @@ const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
 const template1 = `
 <b-quick-filter-layout
             [showResetFilter]="showResetFilter"
-            (resetFilters)="resetFilters()">
+            (resetFilters)="resetFilters()"
+            (filtersChange)="filtersChange($event)">
 
     <b-text-button bar-prefix *ngIf="showLeftButt" text="Left" color="primary">
     </b-text-button>
 
     <b-single-select
-            [id]="'select-1'"
+            [id]="'Some stuff'"
             [label]="'Select here'" [placeholder]="'Some stuff'"
             [options]="BSSoptions">
     </b-single-select>
 
-    <b-multi-select [id]="'select-2'"
+    <b-multi-select [id]="'More stuff'"
             [label]="'Then select here'" [placeholder]="'More stuff'"
             [options]="BMSoptions">
     </b-multi-select>
 
-    <b-date-range-picker [id]="'picker-1'" [type]="'date'"
+    <b-date-range-picker [id]="'Date Range'" [type]="'date'"
             [label]="'Pick date range'"
             [startDateLabel]="'From'"
             [endDateLabel]="'To'">
@@ -101,15 +102,17 @@ const note = `
   -----------
 
   <span style="font-size: 110%">
-  Quick Filter Layout can be used in two ways:
+  <strong>Quick Filter Layout can be used in two ways:</strong> <br>
 
   - Consumer can provide (via ng-content) any number of form elements and manage ther\
-   bindings, events & functionality manually
-  - Consumer can provide the form elements, and \`\`\`[quickFilters]\`\`\` QuickFilterConfig array.\
-   Elements will be initialized according to QuickFilterConfig's.\
-    Change events from all components are combined into single \`\`\`(filtersChange)\`\`\` output. \
-    Form elements and/or QuickFilterConfig's can be added/updated dynamically.
+   bindings <u>manually</u>.<br> The layout component will collect all change events and\
+    output as single object via \`(filtersChange)\`.
 
+  - Consumer can provide the form elements, and \`[quickFilters]\`  QuickFilterConfig array.\
+   Elements will be initialized/bound  <u>automatically</u> according to QuickFilterConfig's.<br>\
+    Change events from all components are combined into single \`(filtersChange)\` output.
+  <br><br>
+  <strong>Note:</strong> Form elements and/or QuickFilterConfig's can be added/updated dynamically.
   </span>
 
   -----------
@@ -125,6 +128,8 @@ const note = `
   --- | --- | --- | ---
   [showResetFilter] | boolean | displays reset button (consumer needs to provide functionality) | false
   (resetFilters) | EventEmitter<wbr>&lt;void&gt; | emits on reset click. | &nbsp;
+  (filtersChange) | EventEmitter<wbr>&lt;GenericObject&gt; | emits on quick filter bar change, \
+  includes current value of all the form elements: \`\`\`{[key: string]: any}\`\`\` | &nbsp;
   &lt;b-form-element [id]="id"&gt; | ng-content | Any number of any form-elements. \
   Consumer has to manage its bindings and events herself.\
    \`\`\`[id]\`\`\` property is recommended but not mandatory. | &nbsp;
@@ -136,6 +141,8 @@ const note = `
   -----------
 
   ### Using with [quickFilters] and (filtersChange)
+
+  Only [id] prop needs to be provided on the form elements, the rest props are bound via QuickFilterConfig.
 
   ~~~
   ${template2}
