@@ -196,17 +196,20 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   protected getOverlayStyles(panelEl): Styles {
     if (this.inputWrap) {
       const overlayBox = this.inputWrap.nativeElement.getBoundingClientRect();
-      const matCalBox = panelEl
-        .querySelector('.b-datepicker-panel')
-        .getBoundingClientRect();
+      const datePickerPanel = panelEl.querySelector('.b-datepicker-panel');
+      const matCalBox =
+        datePickerPanel && datePickerPanel.getBoundingClientRect();
 
       const alignedToRight =
+        matCalBox &&
         matCalBox.width > overlayBox.width &&
         panelEl
           .querySelector('.mat-datepicker-content')
           .style.cssText.includes('right');
 
-      const width = Math.max(overlayBox.width, matCalBox.width);
+      const width = matCalBox
+        ? Math.max(overlayBox.width, matCalBox.width)
+        : overlayBox.width;
 
       return {
         ...this.overlayStylesDef,
