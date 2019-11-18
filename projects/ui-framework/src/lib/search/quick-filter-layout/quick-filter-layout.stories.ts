@@ -77,7 +77,7 @@ const template2 = `
     <b-multi-select *ngIf="showHobbies" [id]="'hobbies'">
     </b-multi-select>
 
-    <b-social *ngIf="showSocial" [id]="'social'"> </b-social>
+    <b-social *ngIf="showSocial" [id]="'social'"></b-social>
 
     <b-timepicker *ngIf="showTime" [id]="'time'"></b-timepicker>
 
@@ -198,6 +198,7 @@ const quickFilters: QuickFilterConfig[] = [
   {
     key: 'social',
     label: 'Your social account',
+    type: 'facebook',
   },
   {
     key: 'time',
@@ -232,13 +233,13 @@ story.add(
         filtersChange: action('Quick filter bar change'),
         resetFilters: action('Reset Filters click'),
 
-        showName: boolean('showName', true, 'props'),
-        showHobbies: boolean('showHobbies', true, 'props'),
-        showSocial: boolean('showSocial', true, 'props'),
-        showTime: boolean('showTime', false, 'props'),
-        showSplitInpSel: boolean('showSplitInpSel', false, 'props'),
-        showLeftButt: boolean('showLeftButt', true, 'props'),
-        showRightButt: boolean('showRightButt', true, 'props'),
+        showName: boolean('showName (for demo)', true, 'props'),
+        showHobbies: boolean('showHobbies (for demo)', true, 'props'),
+        showSocial: boolean('showSocial (for demo)', true, 'props'),
+        showTime: boolean('showTime (for demo)', false, 'props'),
+        showSplitInpSel: boolean('showSplitInpSel (for demo)', false, 'props'),
+        showLeftButt: boolean('showLeftButt (for demo)', true, 'props'),
+        showRightButt: boolean('showRightButt (for demo)', true, 'props'),
       },
       moduleMetadata: {
         imports: [

@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  ViewChild,
   Input,
   Output,
   EventEmitter,
@@ -27,7 +26,6 @@ import {
   notFirstChanges,
   onlyUpdatedProps,
   asArray,
-  arrayDifference,
   hasProp,
 } from '../../services/utils/functional-utils';
 import { simpleChange } from '../../services/utils/test-helpers';
@@ -64,9 +62,6 @@ export class QuickFilterLayoutComponent
   implements OnChanges, OnInit, AfterContentInit, OnDestroy {
   constructor(private cd: ChangeDetectorRef) {}
 
-  @ViewChild('prefix', { static: false }) prefix: ElementRef;
-  @ViewChild('suffix', { static: false }) suffix: ElementRef;
-
   @ContentChildren(BaseFormElement) public formComponents: QueryList<
     BaseFormElement
   >;
@@ -89,8 +84,8 @@ export class QuickFilterLayoutComponent
   private actButtsCount = 0;
   private formCompEmittersMap: GenericObject = {};
   private emitDebouncer: Subject<GenericObject> = new Subject<GenericObject>();
-
   private subscribtions: Subscription[] = [];
+  private hasChanges = false;
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
@@ -112,13 +107,15 @@ export class QuickFilterLayoutComponent
       this.initValue(Object.keys(updatedCompProps).map(key =>
         this.formComponents.toArray().find(comp => comp.id === key)
       ) as BaseFormElement[]);
+
+      this.cd.detectChanges();
     }
   }
 
   ngOnInit() {
     this.subscribtions.push(
       this.emitDebouncer.pipe(debounceTime(300)).subscribe(value => {
-        this.filtersChange.emit(value);
+        this.transmit(value);
       })
     );
   }
@@ -128,19 +125,29 @@ export class QuickFilterLayoutComponent
 
     this.subscribtions.push(
       this.formComponents.changes.subscribe(() => {
-        if (this.formComponents.length < this.formCompCount) {
-          const deletedIDs = arrayDifference(
-            this.formComponents.toArray().map(cmp => cmp.id),
-            Object.keys(this.formCompEmittersMap)
-          );
+        const currentIDs = this.formComponents.toArray().map(cmp => cmp.id);
+        const prevIDs = Object.keys(this.formCompEmittersMap);
+        let newIDs: string[];
+
+        if (prevIDs.length > 0) {
+          const deletedIDs = prevIDs.filter(id => !currentIDs.includes(id));
+          newIDs = currentIDs.filter(id => !prevIDs.includes(id));
+
           deletedIDs.forEach(id => {
             delete this.formCompEmittersMap[id];
             delete this.value[id];
           });
         }
-        if (this.formComponents.length !== this.formCompCount) {
+
+        // this.cd.detectChanges();
+
+        if ((newIDs || currentIDs).length > 0) {
           this.initFormElements();
         }
+
+        console.log('currentIDs: ' + currentIDs);
+        console.log('prevIDs: ' + prevIDs);
+        console.log('newIDs: ' + newIDs);
       })
     );
 
@@ -182,6 +189,8 @@ export class QuickFilterLayoutComponent
         this.initValue(formComp);
       }
     });
+
+    this.cd.detectChanges();
   }
 
   private assignFormCompAttrs(
@@ -236,6 +245,7 @@ export class QuickFilterLayoutComponent
 
   onFilterChange(key: string, changeEvent: any): void {
     this.value[key] = changeEvent;
+    this.hasChanges = true;
     this.emitDebouncer.next(this.value);
   }
 
@@ -264,6 +274,11 @@ export class QuickFilterLayoutComponent
     this.subscribtions = null;
   }
 
+  private transmit(value: GenericObject): void {
+    this.filtersChange.emit(value);
+    console.log(value);
+  }
+
   private formCompIsSelect(formComp: BaseFormElement): boolean {
     return /SelectComponent/i.test(formComp.constructor.name);
   }
@@ -282,5 +297,12 @@ export class QuickFilterLayoutComponent
       this.formCompEmittersMap[formComp.id] ||
         this.findChangeEmitterKey(formComp)
     ];
+  }
+
+  public showResetButt(): boolean {
+    return (
+      this.showResetFilter &&
+      (!this.quickFilters || (this.quickFilters && this.hasChanges))
+    );
   }
 }

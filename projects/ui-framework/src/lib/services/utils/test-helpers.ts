@@ -7,18 +7,21 @@ import {
   NativeEvents,
 } from '../../enums';
 
-export const elementsFromFixture = (
+export const elementsFromFixture = <T = HTMLElement>(
   fixtr: ComponentFixture<any>,
   selector: string
-): HTMLElement[] => {
+): T[] => {
   const debugElems = fixtr.debugElement.queryAll(By.css(selector));
-  return debugElems.map(de => (de ? de.nativeElement : null));
+
+  return debugElems.map(de => {
+    return de ? de.nativeElement : null;
+  });
 };
 
-export const elementFromFixture = (
+export const elementFromFixture = <T = HTMLElement>(
   fixtr: ComponentFixture<any>,
   selector: string
-): HTMLElement => elementsFromFixture(fixtr, selector)[0];
+): T => elementsFromFixture<T>(fixtr, selector)[0];
 
 export const componentFromFixture = (
   fixtr: ComponentFixture<any>,

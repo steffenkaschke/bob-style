@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { UtilsModule } from './utils/utils.module';
 import { FormElementsModule } from '../../../ui-framework/src/lib/form-elements/form-elements.module';
 import { StatsModule } from '../../../ui-framework/src/lib/services/util-components/stats.module';
+import { FilterBarTestModule } from './filter-bar/filter-bar.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,10 +32,11 @@ import { StatsModule } from '../../../ui-framework/src/lib/services/util-compone
     RouterModule,
     AppRoutingModule,
     UtilsModule,
-    StatsModule
+    StatsModule,
+    FilterBarTestModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: []
+  entryComponents: [],
 })
 export class AppModule {}

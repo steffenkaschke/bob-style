@@ -1,5 +1,5 @@
 <b-icon [@reset]
-        *ngIf="showResetFilter"
+        *ngIf="showResetButt()"
         class="reset-filters"
         (click)="onReset()"
         [hasHoverState]="true"
@@ -14,8 +14,7 @@
         'has-suffix': hasSuffix
      }">
 
-  <div #prefix
-       *ngIf="hasPrefix"
+  <div *ngIf="hasPrefix"
        class="bar-prefix">
     <ng-content select="[bar-prefix]"></ng-content>
   </div>
@@ -24,8 +23,7 @@
     <ng-content></ng-content>
   </div>
 
-  <div #suffix
-       *ngIf="hasSuffix"
+  <div *ngIf="hasSuffix"
        class="bar-suffix">
     <ng-content select="[bar-suffix]"></ng-content>
   </div>

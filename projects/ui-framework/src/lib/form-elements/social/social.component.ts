@@ -73,7 +73,7 @@ export class SocialComponent extends BaseFormElement
 
   @ViewChild('bInput', { static: true }) bInput: InputComponent;
 
-  @Input() type: Social = Social.facebook;
+  @Input() type: Social;
   @Input() placeholder = 'username';
 
   @Output(FormEvents.socialInputChange) changed: EventEmitter<
@@ -96,7 +96,6 @@ export class SocialComponent extends BaseFormElement
     super.ngOnChanges(changes);
 
     if (changes.type && !changes.type.firstChange && this.value) {
-      this.type = changes.type.currentValue;
       this.writeValue(this.value);
       this.transmitValue(this.value, {
         eventType: [InputEventType.onBlur],
