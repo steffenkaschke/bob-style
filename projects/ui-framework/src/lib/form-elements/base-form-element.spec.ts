@@ -237,7 +237,7 @@ describe('BaseFormElement', () => {
       baseFormElement.wrapEvent = false;
     });
 
-    it('should not emit event, if in has no observers', () => {
+    it('should not emit event, if it has no observers', () => {
       baseFormElement.changed.complete();
       baseFormElement.ngOnChanges(
         simpleChange({

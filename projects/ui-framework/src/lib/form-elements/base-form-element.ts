@@ -17,6 +17,7 @@ import {
   notFirstChanges,
   chainCall,
   Func,
+  cloneArray,
 } from '../services/utils/functional-utils';
 import { InputEventType } from './form-elements.enum';
 import { FormEvents } from './form-elements.enum';
@@ -29,6 +30,11 @@ export const TRANSMIT_OPTIONS_DEF: Partial<TransmitOptions> = {
   addToEventObj: {},
   updateValue: false,
 };
+export const IGNORE_EVENTS_DEF: InputEventType[] = [
+  InputEventType.onWrite,
+  InputEventType.onFocus,
+  InputEventType.onKey,
+];
 
 export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {
@@ -50,7 +56,7 @@ export abstract class BaseFormElement
   public outputTransformers: Func[] = [];
   public baseValue: any;
   public wrapEvent = true;
-  public ignoreEvents: InputEventType[] = [InputEventType.onWrite];
+  public ignoreEvents: InputEventType[] = cloneArray(IGNORE_EVENTS_DEF);
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
 
@@ -159,14 +165,16 @@ export abstract class BaseFormElement
         });
       }
 
-      if (doPropagate) {
-        if (!allowedEvents.includes(InputEventType.onFocus)) {
-          this.propagateChange(value);
-        }
+      if (
+        doPropagate &&
+        allowedEvents.filter(event => event !== InputEventType.onFocus).length >
+          0
+      ) {
+        this.propagateChange(value);
+      }
 
-        if (allowedEvents.includes(InputEventType.onBlur)) {
-          this.onTouched();
-        }
+      if (doPropagate && allowedEvents.includes(InputEventType.onBlur)) {
+        this.onTouched();
       }
     }
   }

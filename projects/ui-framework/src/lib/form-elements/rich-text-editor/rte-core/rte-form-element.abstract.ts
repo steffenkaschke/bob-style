@@ -22,7 +22,10 @@ import { RteUtilsService } from './rte-utils.service';
 import { BlotData, SpecialBlots, StoreCurrentResult } from './rte.interface';
 import { BaseFormElement } from '../../base-form-element';
 import { PanelComponent } from '../../../popups/panel/panel.component';
-import { notFirstChanges } from '../../../services/utils/functional-utils';
+import {
+  notFirstChanges,
+  applyChanges,
+} from '../../../services/utils/functional-utils';
 
 quillLib.register(quillLib.import('attributors/style/direction'), true);
 quillLib.register(quillLib.import('attributors/style/align'), true);
@@ -205,21 +208,14 @@ export abstract class RTEformElement extends BaseFormElement
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes, {}, ['value']);
+
     if (changes.disabled) {
-      this.disabled = changes.disabled.currentValue;
       if (this.editor) {
         this.editor.enable(!this.disabled);
       }
     }
-    if (changes.placeholder) {
-      this.placeholder = changes.placeholder.currentValue;
-    }
-    if (changes.label) {
-      this.label = changes.label.currentValue;
-    }
-    if (changes.required) {
-      this.required = changes.required.currentValue;
-    }
+
     if (changes.placeholder || changes.label || changes.required) {
       this.rteUtils.setEditorPlaceholder(
         this.editor,

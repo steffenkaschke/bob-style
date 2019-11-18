@@ -1,6 +1,5 @@
 import { DatepickerComponent } from './datepicker.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   MatDatepicker,
   MatDatepickerModule,
@@ -67,11 +66,7 @@ describe('DatepickerComponent', () => {
         DateParseService,
         EventManagerPlugins[0],
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     })
-      .overrideComponent(DatepickerComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
-      })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(DatepickerComponent);
@@ -132,7 +127,11 @@ describe('DatepickerComponent', () => {
 
   describe('Input messages', () => {
     it('should display error message', () => {
-      component.errorMessage = 'Error';
+      component.ngOnChanges(
+        simpleChange({
+          errorMessage: 'Error',
+        })
+      );
       fixture.detectChanges();
 
       expect(componentElem.classList).toContain('error');

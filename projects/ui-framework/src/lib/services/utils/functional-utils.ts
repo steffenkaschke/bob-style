@@ -332,3 +332,6 @@ export const chainCall = <A = any>(
     value
   );
 };
+
+export const arrayFlatten = <T = any>(arr: any[]): T[] =>
+  [].concat(...asArray(arr));
