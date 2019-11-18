@@ -20,21 +20,8 @@ import {
   cloneArray,
 } from '../services/utils/functional-utils';
 import { InputEventType } from './form-elements.enum';
-import { FormEvents } from './form-elements.enum';
 import { TransmitOptions } from './form-elements.interface';
-
-export const TRANSMIT_OPTIONS_DEF: Partial<TransmitOptions> = {
-  eventType: [InputEventType.onChange],
-  emitterName: FormEvents.changed,
-  doPropagate: true,
-  addToEventObj: {},
-  updateValue: false,
-};
-export const IGNORE_EVENTS_DEF: InputEventType[] = [
-  InputEventType.onWrite,
-  InputEventType.onFocus,
-  InputEventType.onKey,
-];
+import { IGNORE_EVENTS_DEF, TRANSMIT_OPTIONS_DEF } from './form-elements.const';
 
 export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {

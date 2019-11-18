@@ -67,7 +67,6 @@ export abstract class RTEbaseElement extends BaseFormElement
     super(cd);
     this.baseValue = '';
     this.wrapEvent = false;
-    this.ignoreEvents = [InputEventType.onWrite, InputEventType.onFocus];
   }
 
   public tribute: TributeInstance;
