@@ -28,12 +28,15 @@ import { TimePickerModule } from './timepicker/timepicker.module';
 import { TimePickerComponent } from './timepicker/timepicker.component';
 import { EventManagerPlugins } from '../services/utils/eventManager.plugins';
 import { FormElementLabelModule } from './form-element-label/form-element-label.module';
+import { DateRangePickerComponent } from './date-range-picker/date-range-picker.component';
+import { DateRangePickerModule } from './date-range-picker/date-range-picker.module';
 
 @NgModule({
   imports: [
     InputModule,
     TextareaModule,
     DatepickerModule,
+    DateRangePickerModule,
     RadioButtonModule,
     CheckboxModule,
     MultiSelectModule,
@@ -52,6 +55,7 @@ import { FormElementLabelModule } from './form-element-label/form-element-label.
     InputComponent,
     TextareaComponent,
     DatepickerComponent,
+    DateRangePickerComponent,
     RadioButtonComponent,
     CheckboxComponent,
     MultiSelectComponent,
@@ -62,9 +66,8 @@ import { FormElementLabelModule } from './form-element-label/form-element-label.
     SocialComponent,
     PasswordInputComponent,
     TimePickerComponent,
-    ChipInputComponent
+    ChipInputComponent,
   ],
-  providers: [EventManagerPlugins[0]]
+  providers: [EventManagerPlugins[0]],
 })
-export class FormElementsModule {
-}
+export class FormElementsModule {}

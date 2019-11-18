@@ -63,7 +63,9 @@ export class SplitInputSingleSelectComponent extends BaseFormElement {
   // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
     if (changes.value || changes.selectOptions) {
-      this.options = this.enrichOptionsWithSelection(this.selectOptions);
+      this.options = this.value
+        ? this.enrichOptionsWithSelection(this.selectOptions)
+        : this.selectOptions;
     }
   }
 
