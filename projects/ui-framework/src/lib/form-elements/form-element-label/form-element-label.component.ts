@@ -1,4 +1,9 @@
-import { Component, Input, HostBinding } from '@angular/core';
+import {
+  Component,
+  Input,
+  HostBinding,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import {
   TruncateTooltipPosition,
   TruncateTooltipType,
@@ -10,8 +15,10 @@ import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
   selector: 'b-form-element-label',
   templateUrl: './form-element-label.component.html',
   styleUrls: ['./form-element-label.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormElementLabelComponent {
+  constructor() {}
   @Input() label: string;
   @Input() description: string;
   @Input() fieldId: string | number;

@@ -6,7 +6,7 @@ import {
   ElementRef,
   Input,
   NgZone,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseInputElement } from '../base-input-element';
@@ -22,23 +22,23 @@ import { InputTypes } from './input.enum';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => InputComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => InputComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class InputComponent extends BaseInputElement implements AfterViewInit {
   constructor(
-    private DOM: DOMhelpers,
-    zone: NgZone,
     cd: ChangeDetectorRef,
-    kbrdCntrlSrvc: FormElementKeyboardCntrlService
+    zone: NgZone,
+    kbrdCntrlSrvc: FormElementKeyboardCntrlService,
+    private DOM: DOMhelpers
   ) {
-    super(zone, cd, kbrdCntrlSrvc);
+    super(cd, zone, kbrdCntrlSrvc);
   }
 
   @ViewChild('input', { static: true }) input: ElementRef;

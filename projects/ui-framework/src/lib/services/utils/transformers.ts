@@ -12,7 +12,7 @@ import {
   isObject,
   isString,
   parseToNumber,
-  stringify
+  stringify,
 } from './functional-utils';
 
 import { format, parseISO } from 'date-fns';
@@ -227,7 +227,7 @@ export const objectHasKeyOrFail = (
     );
   }
   for (const k of asArray(key)) {
-    if (!hasProp(value, k)) {
+    if (!hasProp(value, k as string)) {
       throw new Error(
         `Value object (${stringify(value)}) has no key (${key}).`
       );

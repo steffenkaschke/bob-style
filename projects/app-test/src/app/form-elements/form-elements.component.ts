@@ -123,7 +123,7 @@ export class FormElementsTestComponent
   bInput_maxChars = this.global_maxChars;
   bInput_formSubmitted = false;
   bInput_nodeCount = 0;
-  bInput_lastEventName;
+  bInput_lastemitterName;
   bInput_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bInput_Form = new FormGroup({
@@ -164,7 +164,7 @@ export class FormElementsTestComponent
   bTextarea_maxChars = this.global_maxChars;
   bTextarea_formSubmitted = false;
   bTextarea_nodeCount = 0;
-  bTextarea_lastEventName;
+  bTextarea_lastemitterName;
   bTextarea_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bTextarea_Form = new FormGroup({
@@ -205,7 +205,7 @@ export class FormElementsTestComponent
   bDatepicker_setInputProgrammatically = this.global_setInputProgrammatically;
   bDatepicker_formSubmitted = false;
   bDatepicker_nodeCount = 0;
-  bDatepicker_lastEventName;
+  bDatepicker_lastemitterName;
   bDatepicker_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bDatepicker_Form = new FormGroup({
@@ -247,7 +247,7 @@ export class FormElementsTestComponent
   bChipinput_setInputProgrammatically = this.global_setInputProgrammatically;
   bChipinput_formSubmitted = false;
   bChipinput_nodeCount = 0;
-  bChipinput_lastEventName;
+  bChipinput_lastemitterName;
 
   bChipinput_Form = new FormGroup({
     bChipinput: new FormControl(
@@ -287,7 +287,7 @@ export class FormElementsTestComponent
   bSocial_setInputProgrammatically = this.global_setInputProgrammatically;
   bSocial_formSubmitted = false;
   bSocial_nodeCount = 0;
-  bSocial_lastEventName;
+  bSocial_lastemitterName;
   bSocial_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bSocial_Form = new FormGroup({
@@ -328,7 +328,7 @@ export class FormElementsTestComponent
   bCheckbox_setInputProgrammatically = this.global_setInputProgrammatically;
   bCheckbox_formSubmitted = false;
   bCheckbox_nodeCount = 0;
-  bCheckbox_lastEventName;
+  bCheckbox_lastemitterName;
 
   bCheckbox_Form = new FormGroup({
     bCheckbox: new FormControl(
@@ -379,7 +379,7 @@ export class FormElementsTestComponent
   bRadio_setInputProgrammatically = this.global_setInputProgrammatically;
   bRadio_formSubmitted = false;
   bRadio_nodeCount = 0;
-  bRadio_lastEventName;
+  bRadio_lastemitterName;
 
   bRadio_Form = new FormGroup({
     bRadio: new FormControl(
@@ -444,7 +444,7 @@ export class FormElementsTestComponent
   bSingleSelect_setInputProgrammatically = this.global_setInputProgrammatically;
   bSingleSelect_formSubmitted = false;
   bSingleSelect_nodeCount = 0;
-  bSingleSelect_lastEventName;
+  bSingleSelect_lastemitterName;
   bSingleSelect_numberOfCustEvents = 1;
   bSingleSelect_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
@@ -516,7 +516,7 @@ export class FormElementsTestComponent
   bMultiSelect_setInputProgrammatically = this.global_setInputProgrammatically;
   bMultiSelect_formSubmitted = false;
   bMultiSelect_nodeCount = 0;
-  bMultiSelect_lastEventName;
+  bMultiSelect_lastemitterName;
   bMultiSelect_numberOfCustEvents = 1;
   bMultiSelect_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
@@ -629,7 +629,7 @@ export class FormElementsTestComponent
   bSplitInput_setInputProgrammatically = this.global_setInputProgrammatically;
   bSplitInput_formSubmitted = false;
   bSplitInput_nodeCount = 0;
-  bSplitInput_lastEventName;
+  bSplitInput_lastemitterName;
   bSplitInput_hideLabelOnFocus = this.global_hideLabelOnFocus;
 
   bSplitInput_Form = new FormGroup({
@@ -707,7 +707,7 @@ export class FormElementsTestComponent
   bRTE_setInputProgrammatically = this.global_setInputProgrammatically;
   bRTE_formSubmitted = false;
   bRTE_nodeCount = 0;
-  bRTE_lastEventName;
+  bRTE_lastemitterName;
 
   bRTE_Form = new FormGroup({
     bRTE: new FormControl(
@@ -808,7 +808,7 @@ export class FormElementsTestComponent
     }
   }
 
-  onEvent(name, $event, eventName, flat = false) {
+  onEvent(name, $event, emitterName, flat = false) {
     $event = this.asString($event);
 
     const max =
@@ -833,14 +833,14 @@ export class FormElementsTestComponent
 
     this[name + '_EventValue'] = value;
     this[name + '_EventCounter']++;
-    this[name + '_lastEventName'] = eventName;
+    this[name + '_lastemitterName'] = emitterName;
 
     if (this.global_consoleLog) {
       console.log('-------->>>>>>>>-----------');
       console.log(
         name +
           ' custom event (' +
-          eventName +
+          emitterName +
           ') ' +
           this[name + '_EventCounter'] +
           ':'

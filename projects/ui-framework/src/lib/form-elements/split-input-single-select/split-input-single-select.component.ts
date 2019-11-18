@@ -2,10 +2,10 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   Output,
   SimpleChanges,
   forwardRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { SelectGroupOption } from '../lists/list.interface';
 import { InputTypes } from '../input/input.enum';
@@ -36,10 +36,10 @@ import { objectHasKeyOrFail } from '../../services/utils/transformers';
     },
   ],
 })
-export class SplitInputSingleSelectComponent extends BaseFormElement
-  implements OnChanges {
-  constructor() {
-    super();
+export class SplitInputSingleSelectComponent extends BaseFormElement {
+  constructor(cd: ChangeDetectorRef) {
+    super(cd);
+
     this.inputTransformers = [
       objectHasKeyOrFail(['inputValue', 'selectValue']),
     ];
@@ -60,11 +60,12 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
     InputSingleSelectValue
   > = new EventEmitter<InputSingleSelectValue>();
 
-  ngOnChanges(changes: SimpleChanges): void {
-    super.ngOnChanges(changes);
-
+  // extends BaseFormElement's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
     if (changes.value || changes.selectOptions) {
-      this.options = this.enrichOptionsWithSelection(this.selectOptions);
+      this.options = this.value
+        ? this.enrichOptionsWithSelection(this.selectOptions)
+        : this.selectOptions;
     }
   }
 

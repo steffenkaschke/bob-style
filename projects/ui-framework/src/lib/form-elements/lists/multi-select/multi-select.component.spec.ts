@@ -13,7 +13,6 @@ import { ButtonsModule } from '../../../buttons/buttons.module';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MultiSelectComponent } from './multi-select.component';
 import { MultiListModule } from '../multi-list/multi-list.module';
 import { By } from '@angular/platform-browser';
@@ -23,6 +22,7 @@ import { cloneDeep } from 'lodash';
 import { ListChange } from '../list-change/list-change';
 import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate-tooltip.module';
 import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
+import { InputMessageModule } from '../../input-message/input-message.module';
 
 describe('MultiSelectComponent', () => {
   let component: MultiSelectComponent;
@@ -61,8 +61,8 @@ describe('MultiSelectComponent', () => {
         ButtonsModule,
         TruncateTooltipModule,
         FormElementLabelModule,
+        InputMessageModule,
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {

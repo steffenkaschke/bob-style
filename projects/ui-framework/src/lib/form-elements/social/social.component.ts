@@ -8,7 +8,7 @@ import {
   OnInit,
   NgZone,
   SimpleChanges,
-  OnChanges,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { IconColor, IconSize } from '../../icons/icons.enum';
@@ -39,10 +39,14 @@ import { URLutils } from '../../services/url/url-utils.service';
     },
   ],
 })
-export class SocialComponent extends BaseFormElement
-  implements OnChanges, OnInit {
-  constructor(private URL: URLutils, private zone: NgZone) {
-    super();
+export class SocialComponent extends BaseFormElement implements OnInit {
+  constructor(
+    protected cd: ChangeDetectorRef,
+    private URL: URLutils,
+    private zone: NgZone
+  ) {
+    super(cd);
+
     this.inputTransformers = [
       stringyOrFail,
       (value: string): string => {
@@ -88,9 +92,8 @@ export class SocialComponent extends BaseFormElement
     this.inputId = this.bInput.id;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    super.ngOnChanges(changes);
-
+  // extends BaseFormElement's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
     if (changes.type && !changes.type.firstChange && this.value) {
       this.type = changes.type.currentValue;
       this.writeValue(this.value);
