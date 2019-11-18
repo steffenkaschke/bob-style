@@ -14,8 +14,7 @@
     background-color: $grey-100;
   }
   &.selected {
-    background-color: $grey-600;
-    color: white;
+    background-color: $color-option-selected;
     font-weight: bold;
   }
   &.disabled {
