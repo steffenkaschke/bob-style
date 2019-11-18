@@ -120,7 +120,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       focus: () => {
         this.transmitValue(this.editor.html.get(), {
           eventType: [InputEventType.onFocus],
-          eventName: FormEvents.focused,
+          emitterName: FormEvents.focused,
           updateValue: true,
           doPropagate: false,
         });
@@ -136,7 +136,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
         this.transmitValue(this.editor.html.get(), {
           eventType: [InputEventType.onBlur],
-          eventName: FormEvents.blurred,
+          emitterName: FormEvents.blurred,
           updateValue: true,
         });
         this.inputFocused = false;

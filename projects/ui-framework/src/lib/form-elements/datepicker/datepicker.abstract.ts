@@ -12,7 +12,6 @@ import {
   Output,
   EventEmitter,
   HostBinding,
-  OnChanges,
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
@@ -23,7 +22,6 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 import {
   simpleUID,
   isKey,
-  notFirstChanges,
   cloneValue,
   isFalsyOrEmpty,
 } from '../../services/utils/functional-utils';
@@ -43,7 +41,7 @@ import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.serv
 import { Styles } from '../../services/html/html-helpers.interface';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
-  implements OnChanges, OnInit, OnDestroy {
+  implements OnInit, OnDestroy {
   constructor(
     protected windowRef: WindowRef,
     protected mobileService: MobileService,
@@ -53,7 +51,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     protected kbrdCntrlSrvc: FormElementKeyboardCntrlService,
     protected dateParseSrvc: DateParseService
   ) {
-    super();
+    super(cd);
   }
 
   @ViewChild('inputWrap', { static: true }) inputWrap: ElementRef;
@@ -132,9 +130,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    super.ngOnChanges(changes);
-
+  // extends BaseFormElement's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
     this.allPickers(picker => this.closePicker(picker));
 
     if (changes.minDate) {
@@ -147,10 +144,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
     if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
       this.placeholder = BDateAdapter.bFormat.toLowerCase();
-    }
-
-    if (notFirstChanges(changes) && !this.cd['destroyed']) {
-      this.cd.detectChanges();
     }
   }
 

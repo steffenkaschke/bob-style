@@ -1,4 +1,12 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  Input,
+  ChangeDetectionStrategy,
+  SimpleChanges,
+  ChangeDetectorRef,
+  OnChanges,
+} from '@angular/core';
+import { notFirstChanges } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-input-message, [b-input-message]',
@@ -41,10 +49,10 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
     <ng-content></ng-content>
   `,
   styleUrls: ['./input-message.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InputMessageComponent {
-  constructor() {}
+export class InputMessageComponent implements OnChanges {
+  constructor(private cd: ChangeDetectorRef) {}
   @Input() disabled = false;
   @Input() hintMessage: string;
   @Input() warnMessage: string;
@@ -52,4 +60,10 @@ export class InputMessageComponent {
   @Input() minChars: number;
   @Input() maxChars: number;
   @Input() length: number;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
+  }
 }

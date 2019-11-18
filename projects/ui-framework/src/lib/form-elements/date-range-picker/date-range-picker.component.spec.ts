@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 import {
   MatDatepicker,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
 } from '@angular/material';
 import { IconsModule } from '../../icons/icons.module';
 import { InputMessageModule } from '../input-message/input-message.module';
@@ -18,7 +18,7 @@ import {
   elementsFromFixture,
   getPseudoContent,
   inputValue,
-  simpleChange
+  simpleChange,
 } from '../../services/utils/test-helpers';
 import { dateToString, stringToDate } from '../../services/utils/transformers';
 import { isDate, parseISO } from 'date-fns';
@@ -54,19 +54,19 @@ describe('DateRangePickerComponent', () => {
         MatNativeDateModule,
         IconsModule,
         InputMessageModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
       ],
       declarations: [DateRangePickerComponent],
       providers: [
         { provide: UtilsService, useValue: utilsServiceStub },
         { provide: MobileService, useValue: mobileServiceStub },
         DateParseService,
-        EventManagerPlugins[0]
+        EventManagerPlugins[0],
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(DateRangePickerComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default }
+        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents()
       .then(() => {
@@ -74,7 +74,7 @@ describe('DateRangePickerComponent', () => {
         component = fixture.componentInstance;
         componentElem = fixture.nativeElement;
 
-        component.emitOnWrite = true;
+        component.ignoreEvents = [];
         component.startDateLabel = 'Start date';
         component.endDateLabel = 'End date';
         component.hintMessage = 'Hint';
@@ -92,7 +92,7 @@ describe('DateRangePickerComponent', () => {
         pickers[1].startAt = parseISO('2019-09-01');
 
         spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => { });
+        component.changed.subscribe(() => {});
         spyOn(component, 'propagateChange');
       });
   }));
@@ -138,7 +138,7 @@ describe('DateRangePickerComponent', () => {
       component.ngOnChanges(
         simpleChange({
           minDate: '2019-09-10',
-          maxDate: '2019-09-25'
+          maxDate: '2019-09-25',
         })
       );
       fixture.detectChanges();
@@ -161,8 +161,8 @@ describe('DateRangePickerComponent', () => {
         simpleChange({
           value: {
             from: '2019-09-15',
-            to: '2019-09-27'
-          }
+            to: '2019-09-27',
+          },
         })
       );
       fixture.detectChanges();
@@ -203,12 +203,12 @@ describe('DateRangePickerComponent', () => {
         event: 'onWrite',
         value: {
           from: '2019-09-15',
-          to: '2019-09-27'
-        }
+          to: '2019-09-27',
+        },
       });
       expect(component.propagateChange).toHaveBeenCalledWith({
         from: '2019-09-15',
-        to: '2019-09-27'
+        to: '2019-09-27',
       });
     });
   });
@@ -237,8 +237,8 @@ describe('DateRangePickerComponent', () => {
         simpleChange({
           value: {
             from: '2019-09-15',
-            to: '2019-09-27'
-          }
+            to: '2019-09-27',
+          },
         })
       );
       fixture.detectChanges();
@@ -258,16 +258,16 @@ describe('DateRangePickerComponent', () => {
         event: 'onBlur',
         value: {
           from: null,
-          to: '2019-09-27'
+          to: '2019-09-27',
         },
         date: {
           startDate: null,
-          endDate: stringToDate('2019-09-27')
-        }
+          endDate: stringToDate('2019-09-27'),
+        },
       });
       expect(component.propagateChange).toHaveBeenCalledWith({
         from: null,
-        to: '2019-09-27'
+        to: '2019-09-27',
       });
     });
 
@@ -279,16 +279,16 @@ describe('DateRangePickerComponent', () => {
         event: 'onBlur',
         value: {
           from: '2019-09-15',
-          to: null
+          to: null,
         },
         date: {
           startDate: stringToDate('2019-09-15'),
-          endDate: null
-        }
+          endDate: null,
+        },
       });
       expect(component.propagateChange).toHaveBeenCalledWith({
         from: '2019-09-15',
-        to: null
+        to: null,
       });
     });
   });
@@ -299,7 +299,7 @@ describe('DateRangePickerComponent', () => {
         component.ngOnChanges(
           simpleChange({
             minDate: '2019-09-10',
-            maxDate: '2019-09-25'
+            maxDate: '2019-09-25',
           })
         );
         fixture.detectChanges();
@@ -346,8 +346,8 @@ describe('DateRangePickerComponent', () => {
           simpleChange({
             value: {
               from: '2019-09-15',
-              to: '2019-09-27'
-            }
+              to: '2019-09-27',
+            },
           })
         );
         fixture.detectChanges();
@@ -435,8 +435,8 @@ describe('DateRangePickerComponent', () => {
             simpleChange({
               value: {
                 from: '2019-09-15',
-                to: null
-              }
+                to: null,
+              },
             })
           );
           fixture.detectChanges();
@@ -475,8 +475,8 @@ describe('DateRangePickerComponent', () => {
             simpleChange({
               value: {
                 from: null,
-                to: '2019-09-27'
-              }
+                to: '2019-09-27',
+              },
             })
           );
           fixture.detectChanges();
@@ -549,22 +549,22 @@ describe('DateRangePickerComponent', () => {
 
       expect(component.value).toEqual({
         startDate: parseISO('2019-01-01'),
-        endDate: parseISO('2019-02-01')
+        endDate: parseISO('2019-02-01'),
       });
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onBlur',
         date: {
           startDate: parseISO('2019-01-01'),
-          endDate: parseISO('2019-02-01')
+          endDate: parseISO('2019-02-01'),
         },
         value: {
           from: '2019-01-01',
-          to: '2019-02-28'
-        }
+          to: '2019-02-28',
+        },
       });
       expect(component.propagateChange).toHaveBeenCalledWith({
         from: '2019-01-01',
-        to: '2019-02-28'
+        to: '2019-02-28',
       });
       component.closePicker(0);
       component.closePicker(1);
