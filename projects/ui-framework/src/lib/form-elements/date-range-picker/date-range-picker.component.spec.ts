@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { DateRangePickerComponent } from './date-range-picker.component';
 import { UtilsService } from '../../services/utils/utils.service';
 import { MobileService } from '../../services/utils/mobile.service';
@@ -63,18 +62,14 @@ describe('DateRangePickerComponent', () => {
         DateParseService,
         EventManagerPlugins[0],
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     })
-      .overrideComponent(DateRangePickerComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
-      })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(DateRangePickerComponent);
         component = fixture.componentInstance;
         componentElem = fixture.nativeElement;
 
-        component.emitOnWrite = true;
+        component.ignoreEvents = [];
         component.startDateLabel = 'Start date';
         component.endDateLabel = 'End date';
         component.hintMessage = 'Hint';
@@ -125,7 +120,11 @@ describe('DateRangePickerComponent', () => {
 
   describe('Input messages', () => {
     it('should display error message', () => {
-      component.errorMessage = 'Error';
+      component.ngOnChanges(
+        simpleChange({
+          errorMessage: 'Error',
+        })
+      );
       fixture.detectChanges();
 
       expect(componentElem.classList).toContain('error');
@@ -513,7 +512,11 @@ describe('DateRangePickerComponent', () => {
 
   describe('Month range', () => {
     beforeEach(() => {
-      component.type = DatepickerType.month;
+      component.ngOnChanges(
+        simpleChange({
+          type: DatepickerType.month,
+        })
+      );
       fixture.detectChanges();
     });
 

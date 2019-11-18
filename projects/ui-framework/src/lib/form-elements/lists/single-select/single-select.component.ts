@@ -2,7 +2,6 @@ import {
   Component,
   forwardRef,
   Input,
-  OnChanges,
   SimpleChanges,
   ViewContainerRef,
   NgZone,
@@ -48,8 +47,7 @@ import { BaseFormElement } from '../../base-form-element';
     { provide: BaseFormElement, useExisting: SingleSelectComponent },
   ],
 })
-export class SingleSelectComponent extends BaseSelectPanelElement
-  implements OnChanges {
+export class SingleSelectComponent extends BaseSelectPanelElement {
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
@@ -85,9 +83,8 @@ export class SingleSelectComponent extends BaseSelectPanelElement
 
   readonly listElHeight = LIST_EL_HEIGHT;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    super.ngOnChanges(changes);
-
+  // extends BaseSelectPanelElement's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
     if (changes.options) {
       this.singleSelectOptions = changes.options.currentValue;
       this.selectedOptionId = this.getSelectedOptionId(

@@ -3,7 +3,6 @@ import {
   EventEmitter,
   forwardRef,
   Input,
-  OnChanges,
   OnInit,
   Output,
   SimpleChanges,
@@ -57,7 +56,7 @@ import { BaseFormElement } from '../../base-form-element';
   ],
 })
 export class MultiSelectComponent extends BaseSelectPanelElement
-  implements OnInit, OnChanges {
+  implements OnInit {
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
@@ -114,9 +113,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     this.setTriggerValue();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    super.ngOnChanges(changes);
-
+  // extends BaseSelectPanelElement's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
     if (changes.options) {
       this.options = changes.options.currentValue;
       this.selectedValuesMap = this.getSelectedValuesMap(this.options);

@@ -35,12 +35,12 @@ import { BaseFormElement } from '../base-form-element';
 })
 export class InputComponent extends BaseInputElement implements AfterViewInit {
   constructor(
-    private DOM: DOMhelpers,
-    zone: NgZone,
     cd: ChangeDetectorRef,
-    kbrdCntrlSrvc: FormElementKeyboardCntrlService
+    zone: NgZone,
+    kbrdCntrlSrvc: FormElementKeyboardCntrlService,
+    private DOM: DOMhelpers
   ) {
-    super(zone, cd, kbrdCntrlSrvc);
+    super(cd, zone, kbrdCntrlSrvc);
   }
 
   @ViewChild('input', { static: true }) input: ElementRef;

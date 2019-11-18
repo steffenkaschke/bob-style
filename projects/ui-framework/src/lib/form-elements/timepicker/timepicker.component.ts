@@ -59,11 +59,12 @@ const BTP_PARSE_CONFIG_DEF: ParseConfig = {
 })
 export class TimePickerComponent extends BaseFormElement {
   constructor(
-    private cd: ChangeDetectorRef,
+    cd: ChangeDetectorRef,
     private zone: NgZone,
     private kbrdCntrlSrvc: FormElementKeyboardCntrlService
   ) {
-    super();
+    super(cd);
+
     this.inputTransformers = [
       timeyOrFail,
       (value: string) => {
@@ -75,6 +76,7 @@ export class TimePickerComponent extends BaseFormElement {
 
     this.baseValue = null;
   }
+
   @ViewChild('inputHours', { static: true }) inputHours: ElementRef;
   @ViewChild('inputMinutes', { static: true }) inputMinutes: ElementRef;
 

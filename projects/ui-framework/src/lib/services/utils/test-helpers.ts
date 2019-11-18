@@ -7,6 +7,22 @@ import {
   NativeEvents,
 } from '../../enums';
 
+export const eventEmitterMock = {
+  emit: value => value,
+  observers: [1, 2, 3],
+  subscribe: () => {},
+  complete: () => {},
+};
+
+export const changeDetectorMock = {
+  destroyed: false,
+  markForCheck: () => {},
+  detach: () => {},
+  detectChanges: () => {},
+  checkNoChanges: () => {},
+  reattach: () => {},
+};
+
 export const elementsFromFixture = <T = HTMLElement>(
   fixtr: ComponentFixture<any>,
   selector: string

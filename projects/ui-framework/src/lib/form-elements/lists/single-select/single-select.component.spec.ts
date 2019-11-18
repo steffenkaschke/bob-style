@@ -13,7 +13,6 @@ import { SingleSelectComponent } from './single-select.component';
 import { ButtonsModule } from '../../../buttons/buttons.module';
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { SelectGroupOption } from '../list.interface';
 import { cloneDeep } from 'lodash';
@@ -22,6 +21,7 @@ import { PanelPositionService } from '../../../popups/panel/panel-position-servi
 import { SingleListModule } from '../single-list/single-list.module';
 import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate-tooltip.module';
 import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
+import { InputMessageModule } from '../../input-message/input-message.module';
 
 describe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
@@ -61,8 +61,8 @@ describe('SingleSelectComponent', () => {
         ListFooterModule,
         TruncateTooltipModule,
         FormElementLabelModule,
+        InputMessageModule,
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {

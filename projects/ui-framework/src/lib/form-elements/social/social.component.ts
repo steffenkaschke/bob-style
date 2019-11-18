@@ -10,6 +10,7 @@ import {
   SimpleChanges,
   OnChanges,
   ElementRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { IconColor, IconSize } from '../../icons/icons.enum';
@@ -41,14 +42,15 @@ import { URLutils } from '../../services/url/url-utils.service';
     { provide: BaseFormElement, useExisting: SocialComponent },
   ],
 })
-export class SocialComponent extends BaseFormElement
-  implements OnChanges, OnInit {
+export class SocialComponent extends BaseFormElement implements OnInit {
   constructor(
+    protected cd: ChangeDetectorRef,
     private URL: URLutils,
     private zone: NgZone,
     private host: ElementRef
   ) {
-    super();
+    super(cd);
+
     this.inputTransformers = [
       stringyOrFail,
       (value: string): string => {
@@ -92,9 +94,8 @@ export class SocialComponent extends BaseFormElement
     [Social.linkedin]: 'Linkedin',
   };
 
-  ngOnChanges(changes: SimpleChanges): void {
-    super.ngOnChanges(changes);
-
+  // extends BaseFormElement's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
     if (changes.type && !changes.type.firstChange && this.value) {
       this.writeValue(this.value);
       this.transmitValue(this.value, {

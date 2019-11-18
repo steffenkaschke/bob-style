@@ -37,6 +37,7 @@ import {
   isKey,
   hasChanges,
   applyChanges,
+  notFirstChanges,
 } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { SelectGroupOption, ListFooterActions } from './list.interface';
@@ -96,9 +97,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     protected utilsService: UtilsService,
     public DOM: DOMhelpers,
     protected zone: NgZone,
-    public cd: ChangeDetectorRef
+    protected cd: ChangeDetectorRef
   ) {
-    super();
+    super(cd);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -106,6 +107,12 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
     if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
       this.destroyPanel();
+    }
+
+    this.onNgChanges(changes);
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 

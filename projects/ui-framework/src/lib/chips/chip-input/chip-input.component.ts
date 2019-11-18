@@ -6,12 +6,12 @@ import {
   forwardRef,
   OnInit,
   SimpleChanges,
-  OnChanges,
   Output,
   EventEmitter,
   OnDestroy,
   ChangeDetectionStrategy,
   NgZone,
+  ChangeDetectorRef,
 } from '@angular/core';
 import {
   MatAutocompleteSelectedEvent,
@@ -54,9 +54,13 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipInputComponent extends BaseFormElement
-  implements OnChanges, OnInit, OnDestroy {
-  constructor(private utilsService: UtilsService, private zone: NgZone) {
-    super();
+  implements OnInit, OnDestroy {
+  constructor(
+    protected cd: ChangeDetectorRef,
+    private utilsService: UtilsService,
+    private zone: NgZone
+  ) {
+    super(cd);
     this.inputTransformers = [arrayOrFail];
     this.baseValue = [];
   }
@@ -89,9 +93,8 @@ export class ChipInputComponent extends BaseFormElement
     ChipInputChange
   >();
 
-  ngOnChanges(changes: SimpleChanges): void {
-    super.ngOnChanges(changes);
-
+  // extends BaseFormElement's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
     if (changes.value && !changes.value.firstChange) {
       this.updatePossibleChips();
     }
