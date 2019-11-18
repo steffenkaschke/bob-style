@@ -1,0 +1,12 @@
+<ol>
+  <li *ngFor="let item of items">
+    <b-icon [icon]="item.icon"></b-icon>
+    <b-body>{{item.label}}</b-body>
+    <b-menu *ngIf="menu" [menu]="menu">
+      <b-square-button menu-trigger
+                       type="tertiary"
+                       icon="b-icon-more-horiz">
+      </b-square-button>
+    </b-menu>
+  </li>
+</ol>
