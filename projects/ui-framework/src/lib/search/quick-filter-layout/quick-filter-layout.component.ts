@@ -5,8 +5,6 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  ChangeDetectorRef,
-  ChangeDetectionStrategy,
   ContentChildren,
   QueryList,
   OnDestroy,
@@ -32,7 +30,7 @@ import {
 import { simpleChange } from '../../services/utils/test-helpers';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { keyBy } from 'lodash';
+import { keyBy, cloneDeep } from 'lodash';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
 import { IGNORE_EVENTS_DEF } from '../../form-elements/form-elements.const';
 
@@ -58,11 +56,10 @@ import { IGNORE_EVENTS_DEF } from '../../form-elements/form-elements.const';
       ]),
     ]),
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuickFilterLayoutComponent
   implements OnChanges, OnInit, AfterContentInit, OnDestroy {
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor() {}
 
   @ContentChildren(BaseFormElement) public formComponents: QueryList<
     BaseFormElement
@@ -109,8 +106,6 @@ export class QuickFilterLayoutComponent
       this.initValue(Object.keys(updatedCompProps).map(key =>
         this.formComponents.toArray().find(comp => comp.id === key)
       ) as BaseFormElement[]);
-
-      this.cd.detectChanges();
     }
   }
 
@@ -141,15 +136,9 @@ export class QuickFilterLayoutComponent
           });
         }
 
-        // this.cd.detectChanges();
-
         if ((newIDs || currentIDs).length > 0) {
           this.initFormElements();
         }
-
-        console.log('currentIDs: ' + currentIDs);
-        console.log('prevIDs: ' + prevIDs);
-        console.log('newIDs: ' + newIDs);
       })
     );
 
@@ -190,10 +179,10 @@ export class QuickFilterLayoutComponent
         }
 
         this.initValue(formComp);
+
+        this.getChangeEmitter(formComp as any).emit(NaN as any);
       }
     });
-
-    this.cd.detectChanges();
   }
 
   private assignFormCompAttrs(
@@ -242,14 +231,14 @@ export class QuickFilterLayoutComponent
         Boolean(butt.getAttributeNames().includes('bar-suffix'))
       )
     );
-
-    this.cd.detectChanges();
   }
 
   onFilterChange(key: string, changeEvent: any): void {
-    this.value[key] = changeEvent;
-    this.hasChanges = true;
-    this.emitDebouncer.next(this.value);
+    if (changeEvent === changeEvent) {
+      this.value[key] = changeEvent;
+      this.hasChanges = true;
+    }
+    this.emitDebouncer.next(cloneDeep(this.value));
   }
 
   onReset(): void {
@@ -263,7 +252,8 @@ export class QuickFilterLayoutComponent
         }))
       );
       this.initValue();
-      this.emitDebouncer.next(this.value);
+
+      this.emitDebouncer.next(cloneDeep(this.value));
     }
   }
 
@@ -279,7 +269,6 @@ export class QuickFilterLayoutComponent
 
   private transmit(value: GenericObject): void {
     this.filtersChange.emit(value);
-    console.log(value);
   }
 
   private formCompIsSelect(formComp: BaseFormElement): boolean {

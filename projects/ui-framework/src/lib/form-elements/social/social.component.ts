@@ -94,16 +94,6 @@ export class SocialComponent extends BaseFormElement implements OnInit {
     [Social.linkedin]: 'Linkedin',
   };
 
-  // extends BaseFormElement's ngOnChanges
-  onNgChanges(changes: SimpleChanges): void {
-    if (changes.type && !changes.type.firstChange && this.value) {
-      this.writeValue(this.value);
-      this.transmitValue(this.value, {
-        eventType: [InputEventType.onBlur],
-      });
-    }
-  }
-
   ngOnInit(): void {
     this.inputId = this.bInput.id;
     this.narrowInput =

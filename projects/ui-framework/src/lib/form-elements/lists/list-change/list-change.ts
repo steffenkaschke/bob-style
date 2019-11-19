@@ -10,7 +10,7 @@ export class ListChange {
     selectedIDsSrc: (string | number)[] = null
   ) {
     this.selectGroupOptions = selectedGroupOptionsSrc;
-    this.selectedIDs = selectedIDsSrc || this.getSelectedIds();
+    this.selectedIDs = selectedIDsSrc || this.getIds();
   }
 
   getSelectGroupOptions(): SelectGroupOption[] {
@@ -18,11 +18,7 @@ export class ListChange {
   }
 
   getSelectedIds(): (number | string)[] {
-    return chain(this.selectGroupOptions)
-      .flatMap('options')
-      .filter(o => o.selected)
-      .flatMap('id')
-      .value();
+    return this.selectedIDs;
   }
 
   getSelectedGroupOptions(): SelectGroupOption[] {
@@ -33,6 +29,14 @@ export class ListChange {
         })
       )
       .filter(groupOption => groupOption.options.length)
+      .value();
+  }
+
+  private getIds(): (number | string)[] {
+    return chain(this.selectGroupOptions)
+      .flatMap('options')
+      .filter(o => o.selected)
+      .flatMap('id')
       .value();
   }
 }

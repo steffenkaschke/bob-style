@@ -1070,6 +1070,15 @@ export const mockDate = () =>
     randomNumber(1, 12)
   )}/${new Date().getFullYear()}`;
 
+export const mockISOdate = () =>
+  `${new Date().getFullYear()}-${padWith0(randomNumber(1, 12))}-${randomNumber(
+    1,
+    31
+  )}`;
+
+export const mockTime = () =>
+  `${padWith0(randomNumber(0, 23))}:${padWith0(randomNumber(0, 59))}`;
+
 export const mockDateRange = (length = 0) => {
   const year = new Date().getFullYear();
   const month = randomNumber(1, 12);

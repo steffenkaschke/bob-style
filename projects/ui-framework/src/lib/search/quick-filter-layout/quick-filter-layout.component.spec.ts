@@ -12,7 +12,6 @@ import {
   Output,
   EventEmitter,
   ChangeDetectorRef,
-  AfterViewInit,
   NO_ERRORS_SCHEMA,
   DoCheck,
 } from '@angular/core';
@@ -158,10 +157,10 @@ const QFconfig = [
     </b-quick-filter-layout>
   `,
   providers: [],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-class TestComponent implements AfterViewInit, DoCheck {
-  constructor(public cd: ChangeDetectorRef) {}
+class TestComponent {
+  constructor() {}
 
   public quickFilters: QuickFilterConfig[] = QFconfig;
 
@@ -183,18 +182,7 @@ class TestComponent implements AfterViewInit, DoCheck {
     GenericObject
   >();
 
-  ngDoCheck() {
-    // this.cd.detectChanges();
-  }
-
-  ngAfterViewInit() {
-    // this.cd.detectChanges();
-  }
-
-  public onFiltersChange($event) {
-    // this.cd.detectChanges();
-    this.filtersChange.emit($event);
-  }
+  public onFiltersChange($event) {}
 }
 
 fdescribe('QuickFilterLayoutComponent', () => {
@@ -222,9 +210,6 @@ fdescribe('QuickFilterLayoutComponent', () => {
       providers: [],
       schemas: [NO_ERRORS_SCHEMA],
     })
-      .overrideComponent(QuickFilterLayoutComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
-      })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(TestComponent);
@@ -305,7 +290,7 @@ fdescribe('QuickFilterLayoutComponent', () => {
     });
   });
 
-  fdescribe('Dynamic ng-content form elements', () => {
+  describe('Dynamic ng-content form elements', () => {
     beforeEach(() => {
       testComponent.showTimePicker = false;
       testComponent.showSocial = true;
@@ -317,14 +302,8 @@ fdescribe('QuickFilterLayoutComponent', () => {
       expect(elementFromFixture(fixture, 'b-social')).toBeTruthy();
     });
 
-    it('Should remove timepicker key from value and formCompEmittersMap objects', fakeAsync(() => {
-      tick(100);
-
-      fixture.autoDetectChanges();
-
+    it('Should remove timepicker key from value and formCompEmittersMap objects', () => {
       fixture.detectChanges();
-
-      console.log(QFLcomponent.value, QFLcomponent['formCompEmittersMap']);
 
       expect(QFLcomponent.value).toEqual({
         input: 'Some text',
@@ -334,7 +313,6 @@ fdescribe('QuickFilterLayoutComponent', () => {
         input: 'changed',
         social: 'changed',
       });
-      flush();
-    }));
+    });
   });
 });
