@@ -13,8 +13,7 @@
       <div [ngClass]="{
            'clickable': options.length > 1,
            'collapsed': header.isCollapsed,
-           'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName
-           }"
+           'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header)}"
            class="option-select header has-hover">
         <span (click)="headerClick(header)"
               class="header-collapse-trigger">
@@ -28,11 +27,16 @@
                       class="checkbox"
                       [value]="header.selected"
                       [indeterminate]="header.indeterminate"
-                      (checkboxChange)="headerSelect(header)"
+                      (click)="headerSelect(header)"
                       [doPropagate]="false">
           </b-checkbox>
           <span class="header-option-value"
+                data-max-lines='3'
                 [innerHTML]="header.groupName | highlight: searchValue"></span>
+          <span *ngIf="header.selectedCount > 0"
+                class="header-selected-count">
+            ({{header.selectedCount}})
+          </span>
         </div>
       </div>
       <div [ngStyle]="{height: header.isCollapsed ? 0 : header.placeHolderSize + 'px'}"
@@ -81,7 +85,8 @@
                [listActions]="listActions"
                [listActionsState]="listActionsState"
                (clear)="onClear()"
-               (apply)="onApply()">
+               (apply)="onApply()"
+               (reset)="onReset()">
   <ng-content footerAction
-              select="[footerAction],[footer],[footerActionLeft]"></ng-content>
+              select="[footerAction],[footerActionRight]"></ng-content>
 </b-list-footer>

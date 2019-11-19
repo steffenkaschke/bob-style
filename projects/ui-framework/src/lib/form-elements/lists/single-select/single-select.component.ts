@@ -10,7 +10,6 @@ import {
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, isUndefined } from 'lodash';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
-import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -73,51 +72,41 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
     this.listActions = {
       clear: false,
       apply: false,
+      reset: false,
     };
   }
 
   @Input() showSingleGroupHeader = false;
 
-  triggerValue: string;
-  singleSelectOptions: SelectGroupOption[];
-  selectedOptionId: number | string;
-
-  readonly listElHeight = LIST_EL_HEIGHT;
+  public selectedOptionId: number | string;
 
   // extends BaseSelectPanelElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
     if (changes.options) {
-      this.singleSelectOptions = changes.options.currentValue;
-      this.selectedOptionId = this.getSelectedOptionId(
-        this.singleSelectOptions
-      );
+      this.selectedOptionId = this.getSelectedOptionId(this.options);
     }
-    this.triggerValue = isNullOrUndefined(this.selectedOptionId)
+    this.displayValue = isNullOrUndefined(this.selectedOptionId)
       ? null
-      : this.getTriggerValue(this.selectedOptionId);
+      : this.getDisplayValue(this.selectedOptionId);
   }
 
   onSelect(listChange: ListChange) {
     this.selectedOptionId = listChange.getSelectedIds()[0];
-    this.triggerValue = this.getTriggerValue(this.selectedOptionId);
-
+    this.displayValue = this.getDisplayValue(this.selectedOptionId);
     this.emitChange(listChange);
     this.destroyPanel();
   }
 
   clearSelection(): void {
     this.selectedOptionId = null;
-    this.triggerValue = this.getTriggerValue(this.selectedOptionId);
-    const listChange = this.listChangeService.getListChange(
-      this.singleSelectOptions,
-      []
-    );
+    this.displayValue = this.getDisplayValue(this.selectedOptionId);
+    const listChange = this.listChangeService.getListChange(this.options, []);
     this.emitChange(listChange);
     this.destroyPanel();
   }
 
-  private getTriggerValue(selectedOptionId: string | number): string {
-    return chain(this.singleSelectOptions)
+  private getDisplayValue(selectedOptionId: string | number): string {
+    return chain(this.options)
       .flatMap('options')
       .filter(option => option.id === selectedOptionId)
       .first()
@@ -135,7 +124,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
   }
 
   private emitChange(listChange: ListChange): void {
-    this.singleSelectOptions = listChange.getSelectGroupOptions();
+    this.options = listChange.getSelectGroupOptions();
     this.selectChange.emit(listChange);
     const selectedValue = listChange.getSelectedIds()[0];
 

@@ -364,4 +364,4 @@ export const chainCall = <A = any>(
 };
 
 export const arrayFlatten = <T = any>(arr: any[]): T[] =>
-  [].concat(...asArray(arr));
+  asArray(arr).reduce((acc, val) => acc.concat(val), []);

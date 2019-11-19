@@ -1,14 +1,17 @@
 export interface ListHeader {
   groupName: string;
+  key?: string | number;
   isCollapsed: boolean;
   placeHolderSize: number;
   selected: boolean;
   indeterminate?: boolean;
+  selectedCount?: number;
 }
 
 export interface ListOption {
   isPlaceHolder: boolean;
   groupName: string;
+  key?: string | number;
   value: string;
   id: number | string;
   selected: boolean;
@@ -36,8 +39,9 @@ export interface ListComponentPrefix {
 }
 
 export interface ListFooterActions {
-  clear?: boolean;
   apply?: boolean;
+  clear?: boolean;
+  reset?: boolean;
   cancel?: boolean;
 }
 
@@ -47,7 +51,8 @@ export interface ActionsButtonState {
 }
 
 export interface ListFooterActionsState {
-  clear?: ActionsButtonState;
   apply?: ActionsButtonState;
+  clear?: ActionsButtonState;
+  reset?: ActionsButtonState;
   cancel?: ActionsButtonState;
 }

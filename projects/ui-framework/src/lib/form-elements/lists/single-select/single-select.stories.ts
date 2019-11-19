@@ -39,8 +39,7 @@ const template = `
                  [hintMessage]="hintMessage"
                  [showSingleGroupHeader]="showSingleGroupHeader">
     <b-text-button footerAction
-      [text]="'Click Me!'"
-      [color]="'primary'">
+      [text]="'Click Me!'">
     </b-text-button>
 </b-single-select>
 `;
@@ -87,19 +86,25 @@ const options = cloneDeep(optionsMock);
 options[0].options[1].value =
   'some other very long text and some more words to have ellipsis and tooltip';
 
+options[0].options[3].disabled = true;
+
 const toAdd = () => ({
   template: storyTemplate,
   props: {
     selectChange: action('Single select change'),
-    label: text('label', 'label text'),
-    description: text('description', mockText(30)),
-    placeholder: text('placeholder', 'placeholder text'),
-    disabled: boolean('disabled', false),
-    required: boolean('required', false),
-    hintMessage: text('hintMessage', 'This field should contain something'),
-    errorMessage: text('errorMessage', ''),
-    showSingleGroupHeader: boolean('showSingleGroupHeader', true),
-    options: object<SelectGroupOption>('options', options),
+    label: text('label', 'label text', 'Props'),
+    description: text('description', mockText(30), 'Props'),
+    placeholder: text('placeholder', 'placeholder text', 'Props'),
+    disabled: boolean('disabled', false, 'Props'),
+    required: boolean('required', false, 'Props'),
+    hintMessage: text(
+      'hintMessage',
+      'This field should contain something',
+      'Props'
+    ),
+    errorMessage: text('errorMessage', '', 'Props'),
+    showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+    options: object<SelectGroupOption>('options', options, 'Options'),
   },
   moduleMetadata: {
     imports: [

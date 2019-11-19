@@ -5,20 +5,19 @@ import {
   SimpleChanges,
   ChangeDetectorRef,
   NgZone,
+  Input,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
-import { cloneDeep, flatMap, chain } from 'lodash';
+import { cloneDeep, flatMap, chain, isEqual } from 'lodash';
 import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListChange } from '../list-change/list-change';
-import {
-  hasChanges,
-  applyChanges,
-} from '../../../services/utils/functional-utils';
+import { hasChanges } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { simpleChange } from '../../../services/utils/test-helpers';
 
 @Component({
   selector: 'b-multi-list',
@@ -30,35 +29,41 @@ import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 })
 export class MultiListComponent extends BaseListElement implements OnChanges {
   constructor(
-    private listModelService: ListModelService,
-    private listChangeService: ListChangeService,
     renderer: Renderer2,
     listKeyboardService: ListKeyboardService,
+    listModelService: ListModelService,
+    listChangeService: ListChangeService,
     cd: ChangeDetectorRef,
     zone: NgZone,
     DOM: DOMhelpers
   ) {
-    super(renderer, listKeyboardService, cd, zone, DOM);
+    super(
+      renderer,
+      listKeyboardService,
+      listModelService,
+      listChangeService,
+      cd,
+      zone,
+      DOM
+    );
     this.listActions = {
       clear: true,
+      reset: false,
       apply: false,
-    };
-    this.listActionsState = {
-      clear: { disabled: true, hidden: false },
-      apply: { disabled: true, hidden: false },
     };
   }
 
-  public selectedIdsMap: (string | number)[];
-  private optionsDraft: SelectGroupOption[];
+  @Input() startWithGroupsCollapsed = true;
+
+  public selectedIDs: (string | number)[];
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
+    super.ngOnChanges(changes);
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
-      this.optionsDraft = this.options;
-      this.selectedIdsMap = this.getSelectedIdsMap();
-      this.filteredOptions = cloneDeep(this.options);
+      this.filteredOptions = cloneDeep(this.options || []);
+      this.selectedIDs = this.getSelectedIDs(this.options);
+
       this.shouldDisplaySearch =
         this.options &&
         flatMap(this.options, 'options').length > DISPLAY_SEARCH_OPTION_NUM;
@@ -67,8 +72,19 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
         !this.options ||
         (this.options.length < 2 && !this.showSingleGroupHeader);
 
-      this.updateLists();
-      this.updateClearButtonState();
+      this.updateLists(
+        this.startWithGroupsCollapsed && this.options.length > 1
+      );
+    }
+
+    if (
+      hasChanges(changes, [
+        'options',
+        'showSingleGroupHeader',
+        'optionsDefault',
+      ])
+    ) {
+      this.updateActionButtonsState();
     }
   }
 
@@ -90,95 +106,109 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
-      this.optionsDraft
+      this.options
     );
   }
 
   headerSelect(header: ListHeader): void {
     header.selected = this.getHeaderSelect(header);
     const groupOptionsIds = chain(this.options)
-      .filter(group => group.groupName === header.groupName)
+      .filter(group => this.isSameGroup(header, group))
       .flatMap('options')
       .filter(option => !option.disabled)
       .flatMap('id')
       .value();
-    this.selectedIdsMap = header.selected
-      ? chain(this.selectedIdsMap)
+    this.selectedIDs = header.selected
+      ? chain(this.selectedIDs)
           .concat(groupOptionsIds)
           .concat(this.getSelectedDisabledMap())
           .uniq()
           .value()
-      : chain(this.selectedIdsMap)
+      : chain(this.selectedIDs)
           .difference(groupOptionsIds)
           .concat(this.getSelectedDisabledMap())
           .uniq()
           .value();
 
     this.emitChange();
-    this.updateClearButtonState();
+    this.updateActionButtonsState();
 
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
-      this.optionsDraft
+      this.options
     );
   }
 
   optionClick(option: ListOption): void {
     if (!option.disabled) {
       option.selected = !option.selected;
-      this.selectedIdsMap = option.selected
-        ? chain(this.selectedIdsMap)
+      this.selectedIDs = option.selected
+        ? chain(this.selectedIDs)
             .concat(option.id)
             .uniq()
             .value()
-        : chain(this.selectedIdsMap)
+        : chain(this.selectedIDs)
             .difference([option.id])
             .value();
 
       this.emitChange();
-      this.updateClearButtonState();
+      this.updateActionButtonsState();
 
       this.listModelService.setSelectedOptions(
         this.listHeaders,
         this.listOptions,
-        this.optionsDraft
+        this.options
       );
     }
   }
 
   onClear(): void {
-    this.selectedIdsMap = this.getSelectedDisabledMap();
+    this.selectedIDs = this.getSelectedDisabledMap();
 
     this.emitChange();
-    this.updateClearButtonState(true);
+    this.updateActionButtonsState(true);
 
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
-      this.optionsDraft
+      this.options
     );
   }
 
-  searchChange(s: string): void {
-    this.searchValue = s;
+  onReset(): void {
+    this.ngOnChanges(
+      simpleChange({
+        options: cloneDeep(this.optionsDefault),
+      })
+    );
+    this.listActionsState.apply.disabled = false;
+    this.emitChange();
+
+    this.listModelService.setSelectedOptions(
+      this.listHeaders,
+      this.listOptions,
+      this.options
+    );
+  }
+
+  searchChange(searchValue: string): void {
+    this.searchValue = searchValue;
     this.filteredOptions = this.listModelService.getFilteredOptions(
       this.options,
-      s
+      searchValue
     );
-    this.updateLists();
+    this.updateLists(this.startWithGroupsCollapsed && !searchValue);
   }
 
   getListChange(): ListChange {
-    return this.listChangeService.getListChange(
-      this.options,
-      this.selectedIdsMap
-    );
+    return this.listChangeService.getListChange(this.options, this.selectedIDs);
   }
 
-  private updateLists(): void {
+  private updateLists(collapseHeaders = false): void {
     this.listHeaders = this.listModelService.getHeadersModel(
-      this.filteredOptions
+      this.filteredOptions,
+      collapseHeaders
     );
     this.listOptions = this.listModelService.getOptionsModel(
       this.filteredOptions,
@@ -188,20 +218,22 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
-      this.optionsDraft
+      this.options
     );
   }
 
-  private getSelectedIdsMap(): (string | number)[] {
-    return this.listModelService.getSelectedIdsMap(this.options);
+  private getSelectedIDs(
+    options: SelectGroupOption[] = this.options
+  ): (string | number)[] {
+    return this.listModelService.getSelectedIDs(options);
   }
 
   private emitChange(): void {
     const listChange: ListChange = this.listChangeService.getListChange(
       this.options,
-      this.selectedIdsMap
+      this.selectedIDs
     );
-    this.optionsDraft = listChange.getSelectGroupOptions();
+    this.options = listChange.getSelectGroupOptions();
     this.listActionsState.apply.disabled = false;
 
     this.selectChange.emit(listChange);
@@ -216,18 +248,28 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   }
 
   private getHeaderSelect(header: ListHeader): boolean {
-    const options = chain(this.optionsDraft)
-      .filter(group => group.groupName === header.groupName)
+    const options = chain(this.options)
+      .filter(group => this.isSameGroup(header, group))
       .flatMap('options')
       .filter(o => !(o.disabled && !o.selected))
       .value();
     return !options.every(o => o.selected);
   }
 
-  private updateClearButtonState(force: boolean = null) {
-    this.listActionsState.clear.disabled =
-      force !== null
-        ? force
-        : !this.selectedIdsMap || this.selectedIdsMap.length === 0;
+  private updateActionButtonsState(
+    forceClear: boolean = null,
+    forceReset: boolean = null
+  ) {
+    this.listActionsState.clear.hidden =
+      forceClear !== null
+        ? forceClear
+        : !this.selectedIDs || this.selectedIDs.length === 0;
+
+    this.listActionsState.reset.hidden =
+      forceReset !== null
+        ? forceReset
+        : !this.selectedIDs ||
+          !this.optionsDefaultIDs ||
+          isEqual(this.selectedIDs.sort(), this.optionsDefaultIDs.sort());
   }
 }

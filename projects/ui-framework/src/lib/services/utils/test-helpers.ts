@@ -6,6 +6,7 @@ import {
   NativeKeyboardEvents,
   NativeEvents,
 } from '../../enums';
+import { GenericObject } from '../../types';
 
 export const eventEmitterMock = {
   emit: value => value,
@@ -48,7 +49,7 @@ export const componentFromFixture = (
 };
 
 export const simpleChange = (
-  changes = {},
+  changes: GenericObject = {},
   firstChange = false
 ): SimpleChanges => {
   const simpleChanges = {};

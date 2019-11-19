@@ -16,6 +16,8 @@ import { SelectGroupOption } from '../list.interface';
 import { AvatarComponent } from '../../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../../avatar/avatar/avatar.module';
 import { mockText } from '../../../mock.const';
+import { cloneDeep } from 'lodash';
+import { optionsMock, optionsMockDef } from '../multi-list/multi-list.mock';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -30,6 +32,9 @@ const template = `
                 [placeholder]="placeholder"
                 [description]="description"
                 [options]="options"
+                [optionsDefault]="optionsDefault"
+                [showSingleGroupHeader]="showSingleGroupHeader"
+                [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                 (selectChange)="selectChange($event)"
                 (selectModified)="selectModified($event)"
                 (selectCancelled)="selectCancelled($event)"
@@ -38,8 +43,7 @@ const template = `
                 [errorMessage]="errorMessage"
                 [hintMessage]="hintMessage">
     <b-text-button footerAction
-      [text]="'Action!'"
-      [color]="'primary'">
+      [text]="'Action'">
     </b-text-button>
 </b-multi-select>
 `;
@@ -63,9 +67,13 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [options] | SelectGroupOption[] | model of selection group | &nbsp;
+  [optionsDefault] |  SelectGroupOption[] | default options. \
+  if present, the Clear button (if enabled) will be replaced with Reset button, that will set the state \
+  to optionsDefault | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | false
-  [listActions] | ListFooterActions | enable/disable footer action buttons\
-   (clear, apply) | { clear:&nbsp;true, apply:&nbsp;true }
+  [startWithGroupsCollapsed] | boolean | if should start with groups closed | true
+  [listActions] | ListFooterActions | enable/disable footer \
+  action buttons (clear, apply) | { clear:&nbsp;true, apply:&nbsp;true }
   (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
   (selectModified) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
   (selectCancelled) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
@@ -82,48 +90,41 @@ const note = `
   ~~~
 `;
 
-const groupNum = 3;
-const optionsNum = 4;
+const options = cloneDeep(optionsMock);
 
-const optionsMock: SelectGroupOption[] = Array.from(Array(groupNum), (_, i) => {
-  return {
-    groupName: `Basic Info G${i} - header`,
-    options: Array.from(Array(optionsNum), (_, k) => {
-      return {
-        value: `Basic Info G${i}_E${k} - option`,
-        id: i * optionsNum + k,
-        selected: false,
-        prefixComponent: {
-          component: AvatarComponent,
-          attributes: {
-            imageSource:
-              'https://pixel.nymag.com/imgs/daily/vulture/2017/03/23/23-han-solo.w330.h330.jpg',
-          },
-        },
-      };
-    }),
-  };
-});
-
-optionsMock[0].options[1].selected = true;
-optionsMock[1].options[2].selected = true;
-optionsMock[2].options[0].disabled = true;
+const optionsDef = cloneDeep(optionsMockDef);
 
 const toAdd = () => ({
   template: storyTemplate,
   props: {
+    showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+    startWithGroupsCollapsed: boolean(
+      'startWithGroupsCollapsed',
+      true,
+      'Props'
+    ),
+    label: text('label', 'label text', 'Props'),
+    description: text('description', mockText(30), 'Props'),
+    placeholder: text('placeholder', 'placeholder text', 'Props'),
+    disabled: boolean('disabled', false, 'Props'),
+    required: boolean('required', false, 'Props'),
+    hintMessage: text(
+      'hintMessage',
+      'This field should contain something',
+      'Props'
+    ),
+    errorMessage: text('errorMessage', '', 'Props'),
+
+    options: object<SelectGroupOption>('options', options, 'Options'),
+    optionsDefault: object<SelectGroupOption>(
+      'optionsDefault',
+      optionsDef,
+      'Options'
+    ),
+
     selectChange: action('Multi select change'),
     selectModified: action('Multi select modified'),
     selectCancelled: action('Multi select cancelled'),
-    label: text('label', 'label text'),
-    description: text('description', mockText(30)),
-    placeholder: text('placeholder', 'placeholder text'),
-    disabled: boolean('disabled', false),
-    required: boolean('required', false),
-    hintMessage: text('hintMessage', 'This field should contain something'),
-    errorMessage: text('errorMessage', ''),
-    showSingleGroupHeader: boolean('showSingleGroupHeader', true),
-    options: object<SelectGroupOption>('options', optionsMock),
   },
   moduleMetadata: {
     imports: [

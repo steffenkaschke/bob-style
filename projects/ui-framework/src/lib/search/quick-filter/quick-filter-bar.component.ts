@@ -83,7 +83,7 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
           key: qf.key,
           listChange: this.listChangeService.getListChange(
             qf.options,
-            this.listModelService.getSelectedIdsMap(qf.options)
+            this.listModelService.getSelectedIDs(qf.options)
           ),
         }))
         .keyBy('key')
