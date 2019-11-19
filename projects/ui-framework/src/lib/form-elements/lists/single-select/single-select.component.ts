@@ -10,7 +10,6 @@ import {
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, isUndefined } from 'lodash';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
-import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';

@@ -2,10 +2,15 @@ import { chain, assign, filter } from 'lodash';
 import { SelectGroupOption } from '../list.interface';
 
 export class ListChange {
-  private readonly selectGroupOptions: SelectGroupOption[];
+  public readonly selectGroupOptions: SelectGroupOption[];
+  public readonly selectedIDs: (string | number)[];
 
-  constructor(selectedGroupOptionsSrc: SelectGroupOption[]) {
+  constructor(
+    selectedGroupOptionsSrc: SelectGroupOption[],
+    selectedIDsSrc: (string | number)[] = null
+  ) {
     this.selectGroupOptions = selectedGroupOptionsSrc;
+    this.selectedIDs = selectedIDsSrc || this.getSelectedIds();
   }
 
   getSelectGroupOptions(): SelectGroupOption[] {
