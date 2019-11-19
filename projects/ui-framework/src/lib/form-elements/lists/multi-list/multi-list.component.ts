@@ -184,12 +184,6 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     );
     this.listActionsState.apply.disabled = false;
     this.emitChange();
-
-    this.listModelService.setSelectedOptions(
-      this.listHeaders,
-      this.listOptions,
-      this.options
-    );
   }
 
   searchChange(searchValue: string): void {

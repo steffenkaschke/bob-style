@@ -590,6 +590,7 @@ describe('MultiListComponent', () => {
       expect(options[0].nativeElement.innerText).toContain('Basic Info 1');
       expect(headers[0].nativeElement.innerHTML).toContain('Basic Info Header');
     });
+    // Deprecated: Group header search
     xit('should show group headers and no options if search only matches headers', () => {
       component.searchChange('Personal He');
       fixture.autoDetectChanges();
