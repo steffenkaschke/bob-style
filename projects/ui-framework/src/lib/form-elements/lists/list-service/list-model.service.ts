@@ -12,7 +12,6 @@ import {
   escapeRegExp,
   some,
   compact,
-  chain,
   cloneDeep,
 } from 'lodash';
 import { LIST_EL_HEIGHT } from '../list.consts';
@@ -23,8 +22,9 @@ import {
   SelectOption,
 } from '../list.interface';
 import {
-  hasProp,
   arrayInsertAt,
+  arrayFlatten,
+  isNullOrUndefined,
 } from '../../../services/utils/functional-utils';
 
 @Injectable()
@@ -37,13 +37,13 @@ export class ListModelService {
     noGroupHeaders: boolean
   ): ListOption[] {
     const groupOptions = map(options, group => {
-      const groupHeader: ListHeader = find(
-        listHeaders,
-        header => header.groupName === group.groupName
+      const groupHeader: ListHeader = find(listHeaders, header =>
+        this.isSameGroup(header, group)
       );
       const placeholder = {
         isPlaceHolder: true,
         groupName: group.groupName,
+        key: group.key,
         value: group.groupName,
         id: group.groupName,
         selected: false,
@@ -55,6 +55,7 @@ export class ListModelService {
         virtualOptions = map(group.options, option =>
           assign({}, option, {
             groupName: group.groupName,
+            key: group.key,
             isPlaceHolder: false,
           })
         );
@@ -66,6 +67,7 @@ export class ListModelService {
           map(group.options, option =>
             assign({}, option, {
               groupName: group.groupName,
+              key: group.key,
               isPlaceHolder: false,
               selected: option.selected,
             })
@@ -86,6 +88,7 @@ export class ListModelService {
 
       return {
         groupName: group.groupName,
+        key: group.key,
         isCollapsed: collapseHeaders,
         placeHolderSize: group.options.length * LIST_EL_HEIGHT,
         selected: selectedCount === group.options.length,
@@ -109,11 +112,11 @@ export class ListModelService {
         option.isPlaceHolder ? false : includes(selectedIDs, option.id)
       );
     });
-    forEach(listHeaders, header => {
-      const groupOptions = chain(options)
-        .filter(group => group.groupName === header.groupName)
-        .flatMap('options')
-        .value();
+
+    listHeaders.forEach((header: ListHeader) => {
+      const groupOptions = options.find(group =>
+        this.isSameGroup(header, group)
+      ).options;
 
       header.selectedCount = this.countSelected(groupOptions);
       header.selected = header.selectedCount === groupOptions.length;
@@ -129,7 +132,7 @@ export class ListModelService {
     const matcher = new RegExp(escapeRegExp(searchValue), 'i');
     const filteredOptions = map(options, group => {
       const filteredGroup =
-        group.groupName.match(matcher) ||
+        // group.groupName.match(matcher) ||
         some(group.options, option => option.value.match(matcher))
           ? assign({}, group, {
               options: filter(group.options, option =>
@@ -143,11 +146,13 @@ export class ListModelService {
   }
 
   getSelectedIDs(options: SelectGroupOption[]): (number | string)[] {
-    return chain(options)
-      .flatMap('options')
-      .filter(o => o.selected)
-      .flatMap('id')
-      .value();
+    return arrayFlatten<string | number>(
+      options.map(group =>
+        group.options
+          .filter((option: SelectOption) => option.selected)
+          .map((optn: SelectOption) => optn.id)
+      )
+    );
   }
 
   countSelected(options: SelectOption[]): number {
@@ -178,12 +183,7 @@ export class ListModelService {
     }
 
     const groupIndex = options.findIndex(
-      (grp: SelectGroupOption): boolean => {
-        if (hasProp(group, 'key')) {
-          return grp.key === group.key;
-        }
-        return grp.groupName === group.groupName;
-      }
+      (grp: SelectGroupOption): boolean => this.isSameGroup(group, grp)
     );
 
     return arrayInsertAt(
@@ -214,5 +214,18 @@ export class ListModelService {
     group: Partial<SelectGroupOption> = null
   ): SelectGroupOption[] {
     return this.assignOptionSelectedValue(false, options, group);
+  }
+
+  isSameGroup(
+    group1: Partial<SelectGroupOption> | Partial<ListHeader>,
+    group2: Partial<SelectGroupOption> | Partial<ListHeader>
+  ): boolean {
+    if (!group1 || !group2) {
+      return false;
+    }
+    return (
+      (!isNullOrUndefined(group1.key) && group1.key === group2.key) ||
+      (isNullOrUndefined(group1.key) && group1.groupName === group2.groupName)
+    );
   }
 }

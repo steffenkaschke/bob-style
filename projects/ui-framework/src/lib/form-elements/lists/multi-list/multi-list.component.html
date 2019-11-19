@@ -13,8 +13,7 @@
       <div [ngClass]="{
            'clickable': options.length > 1,
            'collapsed': header.isCollapsed,
-           'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName
-           }"
+           'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header)}"
            class="option-select header has-hover">
         <span (click)="headerClick(header)"
               class="header-collapse-trigger">

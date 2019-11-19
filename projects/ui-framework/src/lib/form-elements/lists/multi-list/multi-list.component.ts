@@ -56,15 +56,14 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   @Input() startWithGroupsCollapsed = true;
 
   public selectedIDs: (string | number)[];
-  private optionsDraft: SelectGroupOption[];
 
   ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
-      this.optionsDraft = this.options;
-      this.selectedIDs = this.getSelectedIDs();
-      this.filteredOptions = cloneDeep(this.options);
+      this.filteredOptions = cloneDeep(this.options || []);
+      this.selectedIDs = this.getSelectedIDs(this.options);
+
       this.shouldDisplaySearch =
         this.options &&
         flatMap(this.options, 'options').length > DISPLAY_SEARCH_OPTION_NUM;
@@ -76,6 +75,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.updateLists(
         this.startWithGroupsCollapsed && this.options.length > 1
       );
+
       this.updateActionButtonsState();
     }
   }
@@ -98,14 +98,14 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
-      this.optionsDraft
+      this.options
     );
   }
 
   headerSelect(header: ListHeader): void {
     header.selected = this.getHeaderSelect(header);
     const groupOptionsIds = chain(this.options)
-      .filter(group => group.groupName === header.groupName)
+      .filter(group => this.isSameGroup(header, group))
       .flatMap('options')
       .filter(option => !option.disabled)
       .flatMap('id')
@@ -128,7 +128,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
-      this.optionsDraft
+      this.options
     );
   }
 
@@ -150,7 +150,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.listModelService.setSelectedOptions(
         this.listHeaders,
         this.listOptions,
-        this.optionsDraft
+        this.options
       );
     }
   }
@@ -164,7 +164,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
-      this.optionsDraft
+      this.options
     );
   }
 
@@ -176,6 +176,12 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     );
     this.listActionsState.apply.disabled = false;
     this.emitChange();
+
+    this.listModelService.setSelectedOptions(
+      this.listHeaders,
+      this.listOptions,
+      this.options
+    );
   }
 
   searchChange(searchValue: string): void {
@@ -204,12 +210,14 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     this.listModelService.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
-      this.optionsDraft
+      this.options
     );
   }
 
-  private getSelectedIDs(): (string | number)[] {
-    return this.listModelService.getSelectedIDs(this.options);
+  private getSelectedIDs(
+    options: SelectGroupOption[] = this.options
+  ): (string | number)[] {
+    return this.listModelService.getSelectedIDs(options);
   }
 
   private emitChange(): void {
@@ -217,7 +225,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.options,
       this.selectedIDs
     );
-    this.optionsDraft = listChange.getSelectGroupOptions();
+    this.options = listChange.getSelectGroupOptions();
     this.listActionsState.apply.disabled = false;
 
     this.selectChange.emit(listChange);
@@ -232,8 +240,8 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
   }
 
   private getHeaderSelect(header: ListHeader): boolean {
-    const options = chain(this.optionsDraft)
-      .filter(group => group.groupName === header.groupName)
+    const options = chain(this.options)
+      .filter(group => this.isSameGroup(header, group))
       .flatMap('options')
       .filter(o => !(o.disabled && !o.selected))
       .value();

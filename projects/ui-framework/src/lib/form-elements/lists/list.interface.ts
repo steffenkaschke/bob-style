@@ -1,5 +1,6 @@
 export interface ListHeader {
   groupName: string;
+  key?: string | number;
   isCollapsed: boolean;
   placeHolderSize: number;
   selected: boolean;

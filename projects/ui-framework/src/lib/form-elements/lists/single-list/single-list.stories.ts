@@ -67,8 +67,8 @@ story.add(
     template: storyTemplate,
     props: {
       selectChange: action('Single list change'),
-      showSingleGroupHeader: boolean('showSingleGroupHeader', true),
-      options: object<SelectGroupOption>('options', options),
+      showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+      options: object<SelectGroupOption>('options', options, 'Options'),
     },
     moduleMetadata: {
       imports: [

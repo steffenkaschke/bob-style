@@ -197,4 +197,11 @@ export abstract class BaseListElement
   onApply(): void {
     this.apply.emit();
   }
+
+  isSameGroup(
+    group1: Partial<SelectGroupOption> | Partial<ListHeader>,
+    group2: Partial<SelectGroupOption> | Partial<ListHeader>
+  ): boolean {
+    return this.listModelService.isSameGroup(group1, group2);
+  }
 }

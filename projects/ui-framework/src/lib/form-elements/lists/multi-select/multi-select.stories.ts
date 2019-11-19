@@ -33,6 +33,8 @@ const template = `
                 [description]="description"
                 [options]="options"
                 [optionsDefault]="optionsDefault"
+                [showSingleGroupHeader]="showSingleGroupHeader"
+                [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                 (selectChange)="selectChange($event)"
                 (selectModified)="selectModified($event)"
                 (selectCancelled)="selectCancelled($event)"
@@ -65,11 +67,16 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [options] | SelectGroupOption[] | model of selection group | &nbsp;
+  [optionsDefault] |  SelectGroupOption[] | default options. \
+  if present, the Clear button (if enabled) will be replaced with Reset button, that will set the state \
+  to optionsDefault | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | false
-  [listActions] | ListFooterActions | enable/disable footer action buttons (clear, apply) | { clear:&nbsp;true, apply:&nbsp;true }
-  (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | &nbsp;
-  (selectModified) | EventEmitter&lt;ListChange&gt; | emits ListChange | &nbsp;
-  (selectCancelled) | EventEmitter&lt;ListChange&gt; | emits ListChange | &nbsp;
+  [startWithGroupsCollapsed] | boolean | if should start with groups closed | true
+  [listActions] | ListFooterActions | enable/disable footer \
+  action buttons (clear, apply) | { clear:&nbsp;true, apply:&nbsp;true }
+  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
+  (selectModified) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
+  (selectCancelled) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
   &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
   [label] | string | label text | &nbsp;
   [description] | string | description text (above icon) | &nbsp;
@@ -84,11 +91,18 @@ const note = `
 `;
 
 const options = cloneDeep(optionsMock);
+
 const optionsDef = cloneDeep(optionsMockDef);
 
 const toAdd = () => ({
   template: storyTemplate,
   props: {
+    showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+    startWithGroupsCollapsed: boolean(
+      'startWithGroupsCollapsed',
+      true,
+      'Props'
+    ),
     label: text('label', 'label text', 'Props'),
     description: text('description', mockText(30), 'Props'),
     placeholder: text('placeholder', 'placeholder text', 'Props'),
@@ -100,12 +114,12 @@ const toAdd = () => ({
       'Props'
     ),
     errorMessage: text('errorMessage', '', 'Props'),
-    showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
-    options: object<SelectGroupOption>('options', options, 'options'),
+
+    options: object<SelectGroupOption>('options', options, 'Options'),
     optionsDefault: object<SelectGroupOption>(
       'optionsDefault',
       optionsDef,
-      'options'
+      'Options'
     ),
 
     selectChange: action('Multi select change'),

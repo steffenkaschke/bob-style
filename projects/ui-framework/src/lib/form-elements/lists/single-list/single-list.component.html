@@ -15,8 +15,7 @@
            [ngClass]="{
            'clickable': options.length > 1,
            'collapsed': header.isCollapsed,
-           'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName
-           }"
+           'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header)}"
            class="option-select header">
         <span *ngIf="options.length > 1"
               class="chevron b-icon-medium"
