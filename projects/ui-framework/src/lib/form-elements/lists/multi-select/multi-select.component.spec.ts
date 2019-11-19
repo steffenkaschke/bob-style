@@ -22,6 +22,7 @@ import { cloneDeep } from 'lodash';
 import { ListChange } from '../list-change/list-change';
 import { TruncateTooltipModule } from '../../../popups/truncate-tooltip/truncate-tooltip.module';
 import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
+import { simpleChange } from '../../../services/utils/test-helpers';
 import { InputMessageModule } from '../../input-message/input-message.module';
 
 describe('MultiSelectComponent', () => {
@@ -68,7 +69,15 @@ describe('MultiSelectComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(MultiSelectComponent);
         component = fixture.componentInstance;
-        component.options = optionsMock;
+
+        component.startWithGroupsCollapsed = false;
+
+        component.ngOnChanges(
+          simpleChange({
+            options: optionsMock,
+          })
+        );
+
         spyOn(component.selectChange, 'emit');
         spyOn(component.selectModified, 'emit');
         spyOn(component.selectCancelled, 'emit');
@@ -87,11 +96,11 @@ describe('MultiSelectComponent', () => {
   }));
 
   describe('OnInit', () => {
-    it('should set selectedValuesMap', () => {
-      expect(component.selectedValuesMap).toEqual([1, 11]);
+    it('should set selectedIDs', () => {
+      expect(component.selectedIDs).toEqual([1, 11]);
     });
     it('should set trigger value', () => {
-      expect(component.triggerValue).toEqual('Basic Info 1, Personal 1');
+      expect(component.displayValue).toEqual('Basic Info 1, Personal 1');
     });
   });
 
@@ -101,37 +110,37 @@ describe('MultiSelectComponent', () => {
       newOptionsMock[0].options[0].selected = false;
       newOptionsMock[1].options[0].selected = false;
       newOptionsMock[1].options[1].selected = true;
-      component.ngOnChanges({
-        options: {
-          previousValue: undefined,
-          currentValue: newOptionsMock,
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
+
+      component.ngOnChanges(
+        simpleChange({
+          options: newOptionsMock,
+        })
+      );
     });
-    it('should update selectedValuesMap', () => {
-      expect(component.selectedValuesMap).toEqual([12]);
+    it('should update selectedIDs', () => {
+      expect(component.selectedIDs).toEqual([12]);
     });
     it('should update trigger value when options update', () => {
-      expect(component.triggerValue).toEqual('Personal 2');
+      expect(component.displayValue).toEqual('Personal 2');
     });
   });
 
   describe('onSelect', () => {
-    it('should update selectedValuesMap and triggerValue', fakeAsync(() => {
+    it('should update selectedIDs but not displayValue', fakeAsync(() => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
-      expect(component.selectedValuesMap).toEqual([1, 11, 12]);
-      expect(component.triggerValue).toEqual(
+      expect(component.selectedIDs).toEqual([1, 11, 12]);
+
+      expect(component.displayValue).not.toEqual(
         'Basic Info 1, Personal 1, Personal 2'
       );
       flush();
     }));
+
     it('should emit onSelectModified with listChange', fakeAsync(() => {
       const expectedOptionsMock: SelectGroupOption[] = cloneDeep(optionsMock);
       expectedOptionsMock[1].options[1].selected = true;
@@ -150,7 +159,7 @@ describe('MultiSelectComponent', () => {
   });
 
   describe('selectChange', () => {
-    it('should emit onSelect with listChange and propagateChange with selectedValuesArray', fakeAsync(() => {
+    it('should emit onSelect with listChange and propagateChange with selected IDs array', fakeAsync(() => {
       const expectedMock = cloneDeep(optionsMock);
       expectedMock[1].options[1].selected = true;
       const expectedListChange = new ListChange(expectedMock);
@@ -204,7 +213,7 @@ describe('MultiSelectComponent', () => {
       expectedOptionsMock[0].options[0].selected = false;
       expectedOptionsMock[1].options[0].selected = false;
     });
-    it('should clear the selection from options, selectedValuesMap and empty triggerValue', fakeAsync(() => {
+    it('should clear the selection from options, selectedIDs and empty displayValue', fakeAsync(() => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
@@ -225,8 +234,8 @@ describe('MultiSelectComponent', () => {
 
       fixture.autoDetectChanges();
 
-      expect(component.selectedValuesMap).toEqual([]);
-      expect(component.triggerValue).toEqual('');
+      expect(component.selectedIDs).toEqual([]);
+      expect(component.displayValue).toEqual('');
       expect(component.options).toEqual(expectedOptionsMock);
       flush();
     }));
@@ -265,15 +274,20 @@ describe('MultiSelectComponent', () => {
   });
 
   describe('tooltip', () => {
-    beforeEach(async(() => {
-      fixture = TestBed.createComponent(MultiSelectComponent);
-      component = fixture.componentInstance;
+    beforeEach(() => {
       fixture.nativeElement.style.width = '150px';
-      spyOn(component.selectChange, 'emit');
-    }));
+    });
+
     it('should not show tooltip', () => {
+      const newOptionsMock: SelectGroupOption[] = cloneDeep(optionsMock);
       optionsMock[0].options[0].selected = false;
-      component.options = optionsMock;
+
+      component.ngOnChanges(
+        simpleChange({
+          options: newOptionsMock,
+        })
+      );
+
       fixture.detectChanges();
 
       const tooltipEl = fixture.debugElement.query(
@@ -281,16 +295,22 @@ describe('MultiSelectComponent', () => {
       );
       expect(tooltipEl).toBe(null);
     });
+
     it('should add tooltip', fakeAsync(() => {
-      component.options = optionsMock;
       component.openPanel();
 
       tick(0);
       fixture.detectChanges();
 
-      (overlayContainerElement.querySelectorAll(
+      const option = overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
-      )[3] as HTMLElement).click();
+      )[3] as HTMLElement;
+      option.click();
+
+      const applyButton = overlayContainerElement.querySelector(
+        'b-list-footer .apply-button button'
+      ) as HTMLButtonElement;
+      applyButton.click();
 
       tick(0);
       fixture.detectChanges();
@@ -309,26 +329,38 @@ describe('MultiSelectComponent', () => {
   });
 
   describe('total-values counter', () => {
+    beforeEach(() => {
+      fixture.nativeElement.style.width = '150px';
+    });
+
     it('should put a selected values number in suffix, if tooltip is enabled', fakeAsync(() => {
-      fixture.nativeElement.style.width = '200px';
-      component.options = optionsMock;
-      fixture.detectChanges();
       component.openPanel();
+
       tick();
       fixture.detectChanges();
+      tick(0);
+
       const options = overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       );
       (options[1] as HTMLElement).click();
       (options[3] as HTMLElement).click();
+
+      const applyButton = overlayContainerElement.querySelector(
+        'b-list-footer .apply-button button'
+      ) as HTMLButtonElement;
+      applyButton.click();
+
       tick();
       fixture.detectChanges();
+
       const tooltipEl = fixture.debugElement.query(
         By.css('.btt.tooltip-enabled')
       );
       const totalValuesCounter = fixture.debugElement.query(
         By.css('.total-values')
       ).nativeElement;
+
       expect(tooltipEl).not.toBe(null);
       expect(totalValuesCounter.innerText).toEqual('(4)');
       flush();
@@ -367,7 +399,7 @@ describe('MultiSelectComponent', () => {
   });
 
   describe('clear -> cancel', () => {
-    it('should reset the selection from options, selectedValuesMap and reset triggerValue', fakeAsync(() => {
+    it('should reset the selection from options, selectedIDs and reset displayValue', fakeAsync(() => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(0);
@@ -384,8 +416,8 @@ describe('MultiSelectComponent', () => {
       component.onCancel();
 
       fixture.autoDetectChanges();
-      expect(component.selectedValuesMap).toEqual([1, 11]);
-      expect(component.triggerValue).toEqual('Basic Info 1, Personal 1');
+      expect(component.selectedIDs).toEqual([1, 11]);
+      expect(component.displayValue).toEqual('Basic Info 1, Personal 1');
       expect(component.options).toEqual(optionsMock);
       flush();
     }));

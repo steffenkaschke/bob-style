@@ -15,8 +15,7 @@
            [ngClass]="{
            'clickable': options.length > 1,
            'collapsed': header.isCollapsed,
-           'focus': focusOption?.isPlaceHolder && focusOption?.groupName === header.groupName
-           }"
+           'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header)}"
            class="option-select header">
         <span *ngIf="options.length > 1"
               class="chevron b-icon-medium"
@@ -77,5 +76,5 @@
                (clear)="onClear()"
                (apply)="onApply()">
   <ng-content footerAction
-              select="[footerAction],[footer],[footerActionLeft]"></ng-content>
+              select="[footerAction],[footerActionRight]"></ng-content>
 </b-list-footer>

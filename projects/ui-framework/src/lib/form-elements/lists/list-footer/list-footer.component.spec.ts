@@ -6,6 +6,7 @@ import { IconComponent } from '../../../icons/icon.component';
 import { By } from '@angular/platform-browser';
 import { ButtonSize, ButtonType } from '../../../buttons/buttons.enum';
 import { TextButtonComponent } from '../../../buttons/text-button/text-button.component';
+import { elementFromFixture } from '../../../services/utils/test-helpers';
 
 describe('ListFooterComponent', () => {
   let component: ListFooterComponent;
@@ -124,11 +125,11 @@ describe('ListFooterComponent', () => {
         };
         fixture.detectChanges();
 
-        applyButton = fixture.debugElement.query(By.css('.apply-button'));
-        clearButton = fixture.debugElement.query(By.css('.clear-button'));
+        applyButton = elementFromFixture(fixture, '.apply-button');
+        clearButton = elementFromFixture(fixture, '.clear-button');
 
-        expect(applyButton).toBeFalsy();
-        expect(clearButton).toBeTruthy();
+        expect(applyButton.getAttributeNames()).toContain('hidden');
+        expect(clearButton.getAttributeNames()).not.toContain('hidden');
       });
     });
   });

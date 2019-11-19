@@ -110,10 +110,14 @@ story.add(
     return {
       template,
       props: {
-        chevronButtonText: text('chevronButtonText', 'Jump to section'),
-        disabled: boolean('disabled', false),
-        panelClass: text('panelClass', 'some-class'),
-        options: object('options', optionsMock),
+        chevronButtonText: text(
+          'chevronButtonText',
+          'Jump to section',
+          'Props'
+        ),
+        disabled: boolean('disabled', false, 'Props'),
+        panelClass: text('panelClass', 'some-class', 'Props'),
+        options: object('options', optionsMock, 'Options'),
         selectChange: action('Single select panel change'),
       },
       moduleMetadata: {

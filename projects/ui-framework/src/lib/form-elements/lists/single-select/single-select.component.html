@@ -23,8 +23,8 @@
         [expectChanges]="true"
         [trustCssVars]="true"
         [type]="tooltipType"
-        [attr.data-placeholder]="!triggerValue ? (hideLabelOnFocus ?label : placeholder) : null">
-    {{triggerValue}}
+        [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ? label : placeholder) : null">
+    {{displayValue}}
   </span>
 
   <div class="bfe-suffix">
@@ -46,13 +46,14 @@
     <b-single-list class="b-select-list"
                    (selectChange)="onSelect($event)"
                    (clear)="clearSelection()"
-                   [options]="singleSelectOptions"
+                   [options]="options"
+                   [optionsDefault]="optionsDefault"
                    [maxHeight]="listElHeight*6"
                    [showSingleGroupHeader]="showSingleGroupHeader"
                    [showNoneOption]="!required"
                    [listActions]="listActions">
       <ng-content footerAction
-                  select="[footerAction],[footer],[footerActionLeft]"></ng-content>
+                  select="[footerAction],[footerActionRight]"></ng-content>
     </b-single-list>
   </div>
 </ng-template>

@@ -287,6 +287,9 @@ describe('MultiListAndChipsComponent', () => {
 
     it('Should emit event when chip is removed', () => {
       const updatedOptions = cloneDeep(options);
+      updatedOptions[0].options[3].selected = true;
+      const listChange = new ListChange(updatedOptions);
+
       listOptions[0].click();
       listOptions[3].click();
 
@@ -294,9 +297,6 @@ describe('MultiListAndChipsComponent', () => {
 
       const removeButts = elementsFromFixture(fixture, 'b-chip .remove-button');
       removeButts[0].click();
-
-      const listChange = new ListChange(updatedOptions);
-      updatedOptions[0].options[3].selected = true;
 
       expect(component.selectChange.emit).toHaveBeenCalledTimes(3);
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);

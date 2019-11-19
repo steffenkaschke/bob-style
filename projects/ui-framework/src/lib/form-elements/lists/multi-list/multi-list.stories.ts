@@ -10,7 +10,7 @@ import { MultiListModule } from './multi-list.module';
 import { SelectGroupOption } from '../list.interface';
 import { AvatarComponent } from '../../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../../avatar/avatar/avatar.module';
-import { optionsMock } from './multi-list.mock';
+import { optionsMock, optionsMockDef } from './multi-list.mock';
 import { cloneDeep } from 'lodash';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
@@ -19,11 +19,12 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 
 const template = `
 <b-multi-list [options]="options"
+              [optionsDefault]="optionsDefault"
               [showSingleGroupHeader]="showSingleGroupHeader"
+              [startWithGroupsCollapsed]="startWithGroupsCollapsed"
               (selectChange)="selectChange($event)">
     <b-text-button footerAction
-                    [text]="'Action!'"
-                    [color]="'primary'">
+                    [text]="'Action'">
     </b-text-button>
 </b-multi-list>
 `;
@@ -46,10 +47,15 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [options] | SelectGroupOption[] | model of selection group | &nbsp;
+  [optionsDefault] |  SelectGroupOption[] | default options. \
+  if present, the Clear button (if enabled) will be replaced with Reset button, that will set the state \
+  to optionsDefault | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | false
+  [startWithGroupsCollapsed] | boolean | if should start with groups closed | true
   [maxHeight] | number | component max height | 352 (8 rows)
-  [listActions] | ListFooterActions | enable/disable footer action buttons (clear, apply) | { clear:&nbsp;true, apply:&nbsp;false }
-  (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | &nbsp;
+  [listActions] | ListFooterActions | enable/disable footer action \
+  buttons (clear, apply) | { clear:&nbsp;true, apply:&nbsp;false }
+  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
   &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
 
   ~~~
@@ -58,6 +64,7 @@ const note = `
 `;
 
 const options = cloneDeep(optionsMock);
+const optionsDef = cloneDeep(optionsMockDef);
 
 story.add(
   'Multi list',
@@ -65,8 +72,18 @@ story.add(
     template: storyTemplate,
     props: {
       selectChange: action('Multi list change'),
-      showSingleGroupHeader: boolean('showSingleGroupHeader', true),
-      options: object<SelectGroupOption>('options', options),
+      showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+      startWithGroupsCollapsed: boolean(
+        'startWithGroupsCollapsed',
+        true,
+        'Props'
+      ),
+      options: object<SelectGroupOption>('options', options, 'Options'),
+      optionsDefault: object<SelectGroupOption>(
+        'optionsDefault',
+        optionsDef,
+        'Options'
+      ),
     },
     moduleMetadata: {
       imports: [

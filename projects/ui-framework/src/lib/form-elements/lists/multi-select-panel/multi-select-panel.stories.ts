@@ -84,9 +84,9 @@ story.add(
     return {
       template,
       props: {
-        chevronButtonText: text('chevronButtonText', 'Select field'),
-        disabled: boolean('disabled', false),
-        options: object('options', optionsMock),
+        chevronButtonText: text('chevronButtonText', 'Select field', 'Props'),
+        disabled: boolean('disabled', false, 'Props'),
+        options: object('options', optionsMock, 'Options'),
         selectChange: action('Multi select panel change'),
       },
       moduleMetadata: {

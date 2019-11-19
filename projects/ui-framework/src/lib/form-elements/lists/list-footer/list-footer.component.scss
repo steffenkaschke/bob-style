@@ -5,6 +5,7 @@
   align-items: center;
   padding: 0 15px;
   border-top: 1px solid $grey-500;
+  margin-top: -1px;
   border-bottom-left-radius: $border-radius;
   border-bottom-right-radius: $border-radius;
   z-index: 1;
@@ -19,31 +20,38 @@
 
 :host ::ng-deep {
   b-button,
-  b-text-button,
-  [footerAction],
-  [footer] {
-    margin: 0 3px;
-
-    &:first-child {
-      margin-left: 0;
-    }
-    &:last-child {
-      margin-right: 0;
-    }
-    &:only-child,
-    &:last-child {
-      margin-left: auto;
+  b-text-button {
+    &[hidden] {
+      display: none;
     }
   }
 
-  .clear-button,
-  [footerActionLeft] {
-    &:last-child {
-      margin-right: auto;
-      margin-left: 3px;
-    }
+  b-text-button {
+    padding: 0 times8(1);
+
     &:first-child {
-      margin-left: 0;
+      padding-left: 0;
     }
+
+    &:last-child {
+      padding-right: 0;
+    }
+
+    & + b-text-button {
+      background-image: linear-gradient($body-text-color, $body-text-color);
+      background-size: 1px 14px;
+      background-position: left center;
+    }
+
+    &:first-child[hidden] + b-text-button {
+      background-image: none;
+      padding-left: 0;
+    }
+  }
+
+  b-button,
+  b-square-button,
+  [footerActionRight] {
+    margin-left: auto;
   }
 }

@@ -16,6 +16,7 @@ b-display-3 {
   padding: 20px 0;
   color: $white;
   background-color: var(--primary-500);
+  text-transform: capitalize;
 }
 
 :host ::ng-deep .story-content {

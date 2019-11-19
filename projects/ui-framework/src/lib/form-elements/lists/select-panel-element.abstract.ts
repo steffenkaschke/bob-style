@@ -36,21 +36,36 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 import {
   isKey,
   hasChanges,
+  applyChanges,
   notFirstChanges,
 } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { SelectGroupOption, ListFooterActions } from './list.interface';
 import { ListChange } from './list-change/list-change';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
+import { LIST_EL_HEIGHT } from './list.consts';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements OnChanges, AfterViewInit, OnDestroy {
+  protected constructor(
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef,
+    private panelPositionService: PanelPositionService,
+    protected utilsService: UtilsService,
+    public DOM: DOMhelpers,
+    protected zone: NgZone,
+    protected cd: ChangeDetectorRef
+  ) {
+    super(cd);
+  }
+
   @ViewChild(CdkOverlayOrigin, { static: true })
   overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
   @ViewChild('prefix', { static: false }) prefix: ElementRef;
 
   @Input() options: SelectGroupOption[];
+  @Input() optionsDefault: SelectGroupOption[];
   @Input() panelClass: string;
   @Input() isQuickFilter = false;
   @Input() hasPrefix = false;
@@ -76,32 +91,22 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
-  showPrefix = true;
-  positionClassList: OverlayPositionClasses = {};
-  panelOpen = false;
-  triggerValue: any;
-  panelClassList: string[] = [];
-
-  private panelConfig: OverlayConfig;
+  public showPrefix = true;
+  public positionClassList: OverlayPositionClasses = {};
+  public panelOpen = false;
+  public displayValue: string;
+  public panelClassList: string[] = [];
   public overlayRef: OverlayRef;
+  private panelConfig: OverlayConfig;
   private templatePortal: TemplatePortal;
   private backdropClickSubscriber: Subscription;
   private positionChangeSubscriber: Subscription;
   private windowKeydownSubscriber: Subscription;
-
-  protected constructor(
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService,
-    protected utilsService: UtilsService,
-    public DOM: DOMhelpers,
-    protected zone: NgZone,
-    protected cd: ChangeDetectorRef
-  ) {
-    super(cd);
-  }
+  readonly listElHeight = LIST_EL_HEIGHT;
 
   ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes);
+
     if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
       this.destroyPanel();
     }
