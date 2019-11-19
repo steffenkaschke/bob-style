@@ -7,10 +7,11 @@ import { IconsModule } from '../../../../ui-framework/src/lib/icons/icons.module
 import { FormElementsTestComponent } from './form-elements.component';
 import { AvatarModule } from '../../../../ui-framework/src/lib/avatar/avatar/avatar.module';
 import { EventManagerPlugins } from '../../../../ui-framework/src/lib/services/utils/eventManager.plugins';
+import { FormElemSmallTestComponent } from './frmelm-small-test.component';
 
 @NgModule({
-  declarations: [FormElementsTestComponent],
-  exports: [FormElementsTestComponent],
+  declarations: [FormElementsTestComponent, FormElemSmallTestComponent],
+  exports: [FormElementsTestComponent, FormElemSmallTestComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -18,8 +19,8 @@ import { EventManagerPlugins } from '../../../../ui-framework/src/lib/services/u
     ReactiveFormsModule,
     IconsModule,
     FormElementsModule,
-    AvatarModule
+    AvatarModule,
   ],
-  providers: [EventManagerPlugins[0]]
+  providers: [EventManagerPlugins[0]],
 })
 export class FormElementsTestModule {}

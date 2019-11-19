@@ -2,10 +2,10 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   Output,
   SimpleChanges,
-  forwardRef
+  forwardRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { SelectGroupOption } from '../lists/list.interface';
 import { InputTypes } from '../input/input.enum';
@@ -27,26 +27,26 @@ import { objectHasKeyOrFail } from '../../services/utils/transformers';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => SplitInputSingleSelectComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => SplitInputSingleSelectComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
-export class SplitInputSingleSelectComponent extends BaseFormElement
-  implements OnChanges {
-  constructor() {
-    super();
+export class SplitInputSingleSelectComponent extends BaseFormElement {
+  constructor(cd: ChangeDetectorRef) {
+    super(cd);
+
     this.inputTransformers = [
-      objectHasKeyOrFail(['inputValue', 'selectValue'])
+      objectHasKeyOrFail(['inputValue', 'selectValue']),
     ];
     this.wrapEvent = false;
     this.baseValue = {
       inputValue: null,
-      selectValue: null
+      selectValue: null,
     } as InputSingleSelectValue;
   }
 
@@ -60,12 +60,12 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
     InputSingleSelectValue
   > = new EventEmitter<InputSingleSelectValue>();
 
+  // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    if (changes.selectOptions) {
-      this.selectOptions = changes.selectOptions.currentValue;
-    }
     if (changes.value || changes.selectOptions) {
-      this.options = this.enrichOptionsWithSelection(this.selectOptions);
+      this.options = this.value
+        ? this.enrichOptionsWithSelection(this.selectOptions)
+        : this.selectOptions;
     }
   }
 
@@ -76,7 +76,7 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
       assign({}, g, {
         options: map(g.options, o =>
           assign({}, o, { selected: o.id === this.value.selectValue })
-        )
+        ),
       })
     );
   }
@@ -88,7 +88,7 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
     ) {
       this.value.inputValue = event.value;
       this.transmitValue(this.value, {
-        eventType: [event.event]
+        eventType: [event.event],
       });
     }
   }
@@ -97,7 +97,7 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
     this.value.selectValue = listChange.getSelectedIds()[0];
 
     this.transmitValue(this.value, {
-      eventType: [InputEventType.onBlur]
+      eventType: [InputEventType.onBlur],
     });
   }
 }

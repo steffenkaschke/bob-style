@@ -63,8 +63,8 @@ describe('InfoStripComponent', () => {
     component.text = 'info strip text';
     fixture.detectChanges();
     const text = fixture.debugElement.query(By.css('.content p')).nativeElement;
-    const link = fixture.debugElement.query(By.css('b-link'));
     expect(text.innerText).toBe('info strip text');
+    const link = fixture.debugElement.query(By.css('b-link'));
     expect(link.componentInstance.config.text).toBe('Click here');
     expect(link.componentInstance.config.url).toBe('https://app.hibob.com');
     expect(link.componentInstance.config.target).toBe('_blank');

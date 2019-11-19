@@ -4,7 +4,7 @@ import {
   ViewChild,
   ElementRef,
   ChangeDetectorRef,
-  NgZone
+  NgZone,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
@@ -14,7 +14,7 @@ import {
   isKey,
   isNumber,
   cloneObject,
-  isNullOrUndefined
+  isNullOrUndefined,
 } from '../../services/utils/functional-utils';
 import { timeyOrFail } from '../../services/utils/transformers';
 import { InputEventType } from '../form-elements.enum';
@@ -37,7 +37,7 @@ const ParseConfigDef: ParseConfig = {
   mod: 0,
   round: 1,
   pad: 2,
-  def: ''
+  def: '',
 };
 
 @Component({
@@ -48,33 +48,35 @@ const ParseConfigDef: ParseConfig = {
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => TimePickerComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => TimePickerComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class TimePickerComponent extends BaseFormElement {
   constructor(
-    private cd: ChangeDetectorRef,
+    cd: ChangeDetectorRef,
     private zone: NgZone,
     private kbrdCntrlSrvc: FormElementKeyboardCntrlService
   ) {
-    super();
+    super(cd);
+
     this.inputTransformers = [
       timeyOrFail,
       (value: string) => {
         this.valueHours = this.splitValue(value, 0);
         this.valueMinutes = this.splitValue(value, 1);
         return this.combineValue(this.valueHours, this.valueMinutes);
-      }
+      },
     ];
 
     this.baseValue = '';
   }
+
   @ViewChild('inputHours', { static: true }) inputHours: ElementRef;
   @ViewChild('inputMinutes', { static: true }) inputMinutes: ElementRef;
 
@@ -221,7 +223,7 @@ export class TimePickerComponent extends BaseFormElement {
   clearInput() {
     this.value = this.valueMinutes = this.valueHours = null;
     this.transmitValue(this.value, {
-      eventType: [InputEventType.onChange]
+      eventType: [InputEventType.onChange],
     });
   }
 

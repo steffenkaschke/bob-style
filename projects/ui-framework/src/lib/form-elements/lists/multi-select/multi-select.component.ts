@@ -3,7 +3,6 @@ import {
   EventEmitter,
   forwardRef,
   Input,
-  OnChanges,
   Output,
   SimpleChanges,
   ViewContainerRef,
@@ -14,7 +13,6 @@ import {
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, includes } from 'lodash';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
-import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -54,8 +52,7 @@ import { isNotEmptyArray } from '../../../services/utils/functional-utils';
     },
   ],
 })
-export class MultiSelectComponent extends BaseSelectPanelElement
-  implements OnChanges {
+export class MultiSelectComponent extends BaseSelectPanelElement {
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
@@ -107,9 +104,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement
 
   private listChange: ListChange;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    super.ngOnChanges(changes);
-
+  // extends BaseSelectPanelElement's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
     if (changes.options) {
       this.selectedIDs = isNotEmptyArray(this.options)
         ? this.getSelectedIDs(this.options)

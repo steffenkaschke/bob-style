@@ -4,8 +4,24 @@ import { SimpleChange, Type } from '@angular/core';
 import {
   NativeMouseEvents,
   NativeKeyboardEvents,
-  NativeEvents
+  NativeEvents,
 } from '../../enums';
+
+export const eventEmitterMock = {
+  emit: value => value,
+  observers: [1, 2, 3],
+  subscribe: () => {},
+  complete: () => {},
+};
+
+export const changeDetectorMock = {
+  destroyed: false,
+  markForCheck: () => {},
+  detach: () => {},
+  detectChanges: () => {},
+  checkNoChanges: () => {},
+  reattach: () => {},
+};
 
 export const elementsFromFixture = (
   fixtr: ComponentFixture<any>,
@@ -45,14 +61,14 @@ export const inputValue = (
   (inputElem as HTMLElement).dispatchEvent(
     new Event('input', {
       target: inputElem,
-      type: 'input'
+      type: 'input',
     } as EventInit)
   );
   if (doBlur) {
     (inputElem as HTMLElement).dispatchEvent(
       new Event('blur', {
         target: inputElem,
-        type: 'blur'
+        type: 'blur',
       } as EventInit)
     );
   }
@@ -75,7 +91,7 @@ export const emitNativeEvent = (
     bubbles: true,
     currentTarget: props.target,
     srcElement: props.target,
-    ...props
+    ...props,
   } as EventInit;
 
   if (NativeMouseEvents.includes(type as any)) {

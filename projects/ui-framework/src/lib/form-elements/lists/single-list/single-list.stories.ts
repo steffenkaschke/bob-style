@@ -13,7 +13,7 @@ import { AvatarModule } from '../../../avatar/avatar/avatar.module';
 import { optionsMock } from './single-list.mock';
 import { cloneDeep } from 'lodash';
 
-const buttonStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
@@ -61,7 +61,7 @@ const options = cloneDeep(optionsMock);
 options[0].options[1].selected = true;
 options[0].options[3].disabled = true;
 
-buttonStories.add(
+story.add(
   'Single list',
   () => ({
     template: storyTemplate,

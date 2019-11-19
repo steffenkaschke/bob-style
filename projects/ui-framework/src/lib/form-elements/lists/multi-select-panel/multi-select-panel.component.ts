@@ -6,7 +6,6 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
-import { ListFooterActions } from '../list.interface';
 import { ListChange } from '../list-change/list-change';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { Overlay } from '@angular/cdk/overlay';

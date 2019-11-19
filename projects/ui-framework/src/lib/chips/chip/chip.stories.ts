@@ -3,7 +3,7 @@ import {
   text,
   select,
   boolean,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ChipModule } from './chip.module';
@@ -45,9 +45,9 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   text | string | chip text | ''
-  type | ChipType | enum for setting the chip type (tag, info, warning, error, success, avatar) | default (optional)
+  type | ChipType | enum for setting the chip type (tag, info, warning, error, success, avatar) | default
   removable | boolean | if chip has a 'x' button | false
-  removed | &lt;void&gt; | handler for chip-removed event | none
+  removed | &lt;void&gt; | handler for chip-removed event | &nbsp;
 
   ~~~
   ${template}
@@ -70,11 +70,11 @@ story.add(
       text: text('text', textMock),
       removable: boolean('removable', false),
       disabled: boolean('disabled', false),
-      onRemove: action('Chip removed')
+      onRemove: action('Chip removed'),
     },
     moduleMetadata: {
-      imports: [ChipModule, StoryBookLayoutModule]
-    }
+      imports: [ChipModule, StoryBookLayoutModule],
+    },
   }),
   { notes: { markdown: note } }
 );

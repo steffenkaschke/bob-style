@@ -56,15 +56,14 @@ let note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  [chips] | Chip[] / string[] | Array of Chip objects (will also accept an array of strings) | none
+  [chips] | Chip[] / string[] | Array of Chip objects (will also accept an array of strings) | &nbsp;
   [chipListSelectable] | chipListSelectable (single, multi) | single select (like radio buttons) or multi select | multi
-  [activeIndex] | number | active index initializer | none\n`;
-// tslint:disable-next-line:max-line-length
-note += `[config] | ChipListConfig | list configuration (options common to all chips, including: type, removable, selectable, focusable, disabled, align) | none
-  (removed) | EventEmitter&lt;Chip&gt; | emited on chip removed event | none
-  (clicked) | EventEmitter&lt;Chip&gt; | emited on chip clicked event | none
-  (selected) | EventEmitter&lt;Chip&gt; | emited on chip selected event (fired only if chip is selectable) | none
-  (keyPressed) | EventEmitter&lt;Chip&gt; | emited on chip KeyDown event | none
+  [activeIndex] | number | active index initializer | &nbsp;
+  [config] | ChipListConfig | list configuration (options common to all chips, including: type, removable, selectable, focusable, disabled, align) | &nbsp;
+  (removed) | EventEmitter&lt;Chip&gt; | emited on chip removed event | &nbsp;
+  (clicked) | EventEmitter&lt;Chip&gt; | emited on chip clicked event | &nbsp;
+  (selected) | EventEmitter&lt;Chip&gt; | emited on chip selected event (fired only if chip is selectable) | &nbsp;
+  (keyPressed) | EventEmitter&lt;Chip&gt; | emited on chip KeyDown event | &nbsp;
 
   ~~~
   ${template}

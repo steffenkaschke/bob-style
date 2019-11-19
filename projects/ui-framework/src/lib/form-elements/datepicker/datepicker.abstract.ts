@@ -11,7 +11,7 @@ import {
   ElementRef,
   Output,
   EventEmitter,
-  HostBinding
+  HostBinding,
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
@@ -22,9 +22,8 @@ import { outsideZone } from '../../services/utils/rxjs.operators';
 import {
   simpleUID,
   isKey,
-  notFirstChanges,
   cloneValue,
-  isFalsyOrEmpty
+  isFalsyOrEmpty,
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
 import { BDateAdapter } from './date.adapter';
@@ -52,7 +51,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     protected kbrdCntrlSrvc: FormElementKeyboardCntrlService,
     protected dateParseSrvc: DateParseService
   ) {
-    super();
+    super(cd);
   }
 
   @ViewChild('inputWrap', { static: true }) inputWrap: ElementRef;
@@ -131,7 +130,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
-  // this extends BaseFormElement's ngOnChanges
+  // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
     this.allPickers(picker => this.closePicker(picker));
 
@@ -145,10 +144,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
     if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
       this.placeholder = BDateAdapter.bFormat.toLowerCase();
-    }
-
-    if (notFirstChanges(changes) && !this.cd['destroyed']) {
-      this.cd.detectChanges();
     }
   }
 
@@ -191,7 +186,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
         'pointer-events': 'none',
         left: overlayBox.left + 'px',
         right: overlayBox.right - overlayBox.width + 'px',
-        width: overlayBox.width + 'px'
+        width: overlayBox.width + 'px',
       };
     }
     return {};
@@ -202,7 +197,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   ): { dialog: HTMLElement; popup: HTMLElement } {
     const panel = {
       dialog: null,
-      popup: null
+      popup: null,
     };
 
     // desktop
@@ -381,7 +376,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
     this.transmitValue(this.value, {
       eventType: event,
-      addToEventObj: { date: this.value }
+      addToEventObj: { date: this.value },
     });
   }
 }

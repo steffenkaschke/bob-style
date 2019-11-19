@@ -3,7 +3,6 @@ import {
   Component,
   Input,
   NgZone,
-  OnChanges,
   ViewContainerRef,
 } from '@angular/core';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
@@ -22,8 +21,7 @@ import { UtilsService } from '../../../services/utils/utils.service';
     '../single-select/single-select.component.scss',
   ],
 })
-export class SingleSelectPanelComponent extends BaseSelectPanelElement
-  implements OnChanges {
+export class SingleSelectPanelComponent extends BaseSelectPanelElement {
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,

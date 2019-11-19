@@ -37,6 +37,7 @@ import {
   isKey,
   hasChanges,
   applyChanges,
+  notFirstChanges,
 } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { SelectGroupOption, ListFooterActions } from './list.interface';
@@ -46,6 +47,18 @@ import { LIST_EL_HEIGHT } from './list.consts';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements OnChanges, AfterViewInit, OnDestroy {
+  protected constructor(
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef,
+    private panelPositionService: PanelPositionService,
+    protected utilsService: UtilsService,
+    public DOM: DOMhelpers,
+    protected zone: NgZone,
+    protected cd: ChangeDetectorRef
+  ) {
+    super(cd);
+  }
+
   @ViewChild(CdkOverlayOrigin, { static: true })
   overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
@@ -90,23 +103,17 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   private windowKeydownSubscriber: Subscription;
   readonly listElHeight = LIST_EL_HEIGHT;
 
-  protected constructor(
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService,
-    protected utilsService: UtilsService,
-    public DOM: DOMhelpers,
-    protected zone: NgZone,
-    public cd: ChangeDetectorRef
-  ) {
-    super();
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
 
     if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
       this.destroyPanel();
+    }
+
+    this.onNgChanges(changes);
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 

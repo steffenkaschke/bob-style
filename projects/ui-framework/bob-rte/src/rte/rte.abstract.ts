@@ -9,7 +9,7 @@ import {
   OnChanges,
   OnInit,
 } from '@angular/core';
-import { merge } from 'lodash';
+import { merge, cloneDeep } from 'lodash';
 
 import {
   BaseFormElement,
@@ -60,14 +60,13 @@ import { initMentionsControl } from './rte.mentions';
 export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges, OnInit {
   constructor(
-    public cd: ChangeDetectorRef,
+    protected cd: ChangeDetectorRef,
     public placeholdersConverter: PlaceholdersConverterService,
     public parserService: HtmlParserHelpers
   ) {
-    super();
+    super(cd);
     this.baseValue = '';
     this.wrapEvent = false;
-    this.emitOnWrite = false;
   }
 
   public tribute: TributeInstance;
@@ -102,7 +101,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   @Input() public minHeight = RTE_MINHEIGHT_DEF;
   @Input() public maxHeight = RTE_MAXHEIGHT_DEF;
 
-  @Input() public options: FroalaOptions = cloneArray(RTE_OPTIONS_DEF);
+  @Input() public options: FroalaOptions = cloneDeep(RTE_OPTIONS_DEF);
 
   @Input() public mentionsList: RteMentionsOption[];
   @Input() public placeholderList: SelectGroupOption[];

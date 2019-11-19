@@ -14,10 +14,9 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { ButtonType, ButtonSize } from '../buttons.enum';
 import { Icons } from '../../icons/icons.enum';
 
-const buttonStories = storiesOf(
-  ComponentGroupType.Buttons,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
+  withKnobs
+);
 
 const button = `
 <b-chevron-button (clicked)="onClick($event)"
@@ -37,12 +36,12 @@ const note = `
 
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  text | text | Button text | none
-  active | boolean | changes chevron down / up | false
-  type | ButtonType | enum for setting the button type | primary (optional)
-  size | ButtonSize | enum for setting the button size | medium (optional)
-  disabled | boolean | disabled state | false
-  clicked | Function | callback for clicking on the button |
+  [text] | text | Button text | &nbsp;
+  [active] | boolean | changes chevron down / up | false
+  [type] | ButtonType | enum for setting the button type | primary
+  [size] | ButtonSize | enum for setting the button size | medium
+  [disabled] | boolean | disabled state | false
+  (clicked) | EventEmitter | button click event  | &nbsp;
 
   ~~~
   ${button}
@@ -59,7 +58,7 @@ const typeOptions = values(ButtonType);
 const sizeOptions = values(ButtonSize);
 const icons = values(Icons);
 
-buttonStories.add(
+story.add(
   'Chevron Button',
   () => ({
     template: storyTemplate,

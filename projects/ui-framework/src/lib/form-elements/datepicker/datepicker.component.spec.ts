@@ -1,16 +1,15 @@
 import { DatepickerComponent } from './datepicker.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   MatDatepicker,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
 } from '@angular/material';
 import {
   elementFromFixture,
   getPseudoContent,
   inputValue,
-  simpleChange
+  simpleChange,
 } from '../../services/utils/test-helpers';
 import { UtilsService } from '../../services/utils/utils.service';
 import { of } from 'rxjs';
@@ -57,7 +56,7 @@ describe('DatepickerComponent', () => {
         InputMessageModule,
         NoopAnimationsModule,
         OverlayModule,
-        FormElementLabelModule
+        FormElementLabelModule,
       ],
       declarations: [DatepickerComponent],
       providers: [
@@ -65,20 +64,16 @@ describe('DatepickerComponent', () => {
         { provide: MobileService, useValue: mobileServiceStub },
         FormElementKeyboardCntrlService,
         DateParseService,
-        EventManagerPlugins[0]
+        EventManagerPlugins[0],
       ],
-      schemas: [NO_ERRORS_SCHEMA]
     })
-      .overrideComponent(DatepickerComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default }
-      })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(DatepickerComponent);
         component = fixture.componentInstance;
         componentElem = fixture.nativeElement;
 
-        component.emitOnWrite = true;
+        component.ignoreEvents = [];
         component.label = 'Label';
         component.hintMessage = 'Hint';
         component.required = true;
@@ -94,7 +89,7 @@ describe('DatepickerComponent', () => {
         messageElem = elementFromFixture(fixture, '[b-input-message]');
 
         spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => { });
+        component.changed.subscribe(() => {});
         spyOn(component, 'propagateChange');
 
         picker = component.pickers.toArray()[0];
@@ -132,7 +127,11 @@ describe('DatepickerComponent', () => {
 
   describe('Input messages', () => {
     it('should display error message', () => {
-      component.errorMessage = 'Error';
+      component.ngOnChanges(
+        simpleChange({
+          errorMessage: 'Error',
+        })
+      );
       fixture.detectChanges();
 
       expect(componentElem.classList).toContain('error');
@@ -145,7 +144,7 @@ describe('DatepickerComponent', () => {
       component.ngOnChanges(
         simpleChange({
           minDate: '2019-09-10',
-          maxDate: '2019-09-25'
+          maxDate: '2019-09-25',
         })
       );
       fixture.detectChanges();
@@ -164,7 +163,7 @@ describe('DatepickerComponent', () => {
     beforeEach(() => {
       component.ngOnChanges(
         simpleChange({
-          value: '2019-09-15'
+          value: '2019-09-15',
         })
       );
       fixture.detectChanges();
@@ -198,7 +197,7 @@ describe('DatepickerComponent', () => {
     it('should emit changed event', () => {
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onWrite',
-        value: '2019-09-15'
+        value: '2019-09-15',
       });
       expect(component.propagateChange).toHaveBeenCalledWith('2019-09-15');
     });
@@ -239,7 +238,7 @@ describe('DatepickerComponent', () => {
     beforeEach(() => {
       component.ngOnChanges(
         simpleChange({
-          value: '2019-09-15'
+          value: '2019-09-15',
         })
       );
       fixture.detectChanges();
@@ -257,7 +256,7 @@ describe('DatepickerComponent', () => {
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onBlur',
         value: null,
-        date: null
+        date: null,
       });
       expect(component.propagateChange).toHaveBeenCalledWith(null);
     });
@@ -268,7 +267,7 @@ describe('DatepickerComponent', () => {
       component.type = DatepickerType.month;
       component.ngOnChanges(
         simpleChange({
-          value: '2019-09-15'
+          value: '2019-09-15',
         })
       );
       fixture.detectChanges();
@@ -310,7 +309,7 @@ describe('DatepickerComponent', () => {
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onBlur',
         date: component.value,
-        value: '2019-11-01'
+        value: '2019-11-01',
       });
       expect(component.propagateChange).toHaveBeenCalledWith('2019-11-01');
       component.closePicker();

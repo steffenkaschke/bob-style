@@ -41,7 +41,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
     <ng-content></ng-content>
   `,
   styleUrls: ['./input-message.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputMessageComponent {
   constructor() {}

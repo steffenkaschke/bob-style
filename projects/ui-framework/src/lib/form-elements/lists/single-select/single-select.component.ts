@@ -2,7 +2,6 @@ import {
   Component,
   forwardRef,
   Input,
-  OnChanges,
   SimpleChanges,
   ViewContainerRef,
   NgZone,
@@ -47,8 +46,7 @@ import { isNullOrUndefined } from '../../../services/utils/functional-utils';
     },
   ],
 })
-export class SingleSelectComponent extends BaseSelectPanelElement
-  implements OnChanges {
+export class SingleSelectComponent extends BaseSelectPanelElement {
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
@@ -81,9 +79,8 @@ export class SingleSelectComponent extends BaseSelectPanelElement
 
   public selectedOptionId: number | string;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    super.ngOnChanges(changes);
-
+  // extends BaseSelectPanelElement's ngOnChanges
+  onNgChanges(changes: SimpleChanges): void {
     if (changes.options) {
       this.selectedOptionId = this.getSelectedOptionId(this.options);
     }

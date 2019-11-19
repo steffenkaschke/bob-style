@@ -15,7 +15,7 @@ const emptyStateConfig: EmptyStateConfig = {
   icon: Icons.feedback_icon,
   buttonLabel: 'CLICK HERE',
 };
-const EmptyStateStories = storiesOf(
+const story = storiesOf(
   ComponentGroupType.Indicators,
   module
 ).addDecorator(withKnobs);
@@ -40,7 +40,7 @@ const note = `
   ~~~
 `;
 
-EmptyStateStories.add(
+story.add(
   'Empty State',
   () => {
     return {

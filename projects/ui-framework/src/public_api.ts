@@ -149,9 +149,8 @@ export { MultiListAndChipsComponent } from './lib/chips/multi-list-and-chips/mul
 
 // FormElements Module
 export { FormElementsModule } from './lib/form-elements/form-elements.module';
-export {
-  FormEvents, InputEventType,
-} from './lib/form-elements/form-elements.enum';
+export * from './lib/form-elements/form-elements.enum';
+export * from './lib/form-elements/form-elements.const';
 export { BaseFormElement } from './lib/form-elements/base-form-element';
 // Textarea Module
 export { TextareaModule } from './lib/form-elements/textarea/textarea.module';
@@ -411,12 +410,7 @@ export { TruncateTooltipComponent } from './lib/popups/truncate-tooltip/truncate
 export { TruncateTooltipDirective } from './lib/popups/truncate-tooltip/truncate-tooltip.directive';
 export { TruncateTooltipType, TruncateTooltipPosition } from './lib/popups/truncate-tooltip/truncate-tooltip.enum';
 // CSS Tooltip
-export {
-  CSSTooltipWrap,
-  CSSTooltipPosition,
-  CSSTooltipShowOn,
-  CSSTooltipTextAlign
-} from './lib/popups/css-tooltip/css-tooltip.enum';
+export *  from './lib/popups/tooltip/tooltip.enum';
 
 /*
  * Layout

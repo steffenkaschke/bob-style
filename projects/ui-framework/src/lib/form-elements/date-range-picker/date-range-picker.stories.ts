@@ -4,7 +4,7 @@ import {
   select,
   text,
   withKnobs,
-  object
+  object,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -15,10 +15,9 @@ import { DateRangePickerModule } from './date-range-picker.module';
 import { thisYear, thisMonth } from '../../services/utils/functional-utils';
 import { DatepickerType } from '../datepicker/datepicker.enum';
 
-const datepickerStories = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 const template = `
 <b-date-range-picker [value]="value"
               [type]="pickerType"
@@ -57,20 +56,20 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [type] | DatepickerType | date or month picker | date
-  [value] | DateRangePickerValue <br> ({from: Date / string (YYYY-MM-DD), <br>to: Date / string (YYYY-MM-DD)} | start and end dates | none
-  [minDate] | Date / string (YYYY-MM-DD) | minimum date | none
-  [maxDate] | Date / string (YYYY-MM-DD) | maximum date | none
-  [label] | string | label text (above input) | none
-  [startDateLabel] | string | first datepicker label | none
-  [endDateLabel] | string | second datepicker label | none
-  [placeholder] | string | placeholder text (inside input) | none
+  [value] | DateRangePickerValue <br> ({from: Date / string (YYYY-MM-DD), <br>to: Date / string (YYYY-MM-DD)} | start and end dates | &nbsp;
+  [minDate] | Date / string (YYYY-MM-DD) | minimum date | &nbsp;
+  [maxDate] | Date / string (YYYY-MM-DD) | maximum date | &nbsp;
+  [label] | string | label text (above input) | &nbsp;
+  [startDateLabel] | string | first datepicker label | &nbsp;
+  [endDateLabel] | string | second datepicker label | &nbsp;
+  [placeholder] | string | placeholder text (inside input) | &nbsp;
   [hideLabelOnFocus] | boolean | places label in placeholder position | false
   [disabled] | boolean | is field disabled | false
   [required] | boolean | is field required | false
-  [hintMessage] | string | hint text | none
-  [warnMessage] | string | warning text | none
-  [errorMessage] | string | error text | none
-  (dateChange) | EventEmitter&lt;InputEvent&gt; | Emited on date change | none
+  [hintMessage] | string | hint text | &nbsp;
+  [warnMessage] | string | warning text | &nbsp;
+  [errorMessage] | string | error text | &nbsp;
+  (dateChange) | EventEmitter&lt;InputEvent&gt; | Emited on date change | &nbsp;
 
   #### Notes
 
@@ -86,11 +85,11 @@ const mockValues = [
   '',
   {
     from: `${thisYear()}-${thisMonth()}-25`,
-    to: `${thisYear()}-${thisMonth(false, 1)}-5`
-  }
+    to: `${thisYear()}-${thisMonth(false, 1)}-5`,
+  },
 ];
 
-datepickerStories.add(
+story.add(
   'Date Range Picker',
   () => {
     return {
@@ -107,7 +106,7 @@ datepickerStories.add(
           [
             '',
             `${thisYear()}-${thisMonth(false, -1)}-5`,
-            `${thisYear()}-${thisMonth()}-7`
+            `${thisYear()}-${thisMonth()}-7`,
           ],
           ''
         ),
@@ -116,7 +115,7 @@ datepickerStories.add(
           [
             '',
             `${thisYear()}-${thisMonth()}-25`,
-            `${thisYear()}-${thisMonth(false, 1)}-15`
+            `${thisYear()}-${thisMonth(false, 1)}-15`,
           ],
           ''
         ),
@@ -130,15 +129,15 @@ datepickerStories.add(
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
-        dateChange: action('Date Changed')
+        dateChange: action('Date Changed'),
       },
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
           DateRangePickerModule,
-          StoryBookLayoutModule
-        ]
-      }
+          StoryBookLayoutModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

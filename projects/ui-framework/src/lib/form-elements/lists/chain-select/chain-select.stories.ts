@@ -4,9 +4,12 @@ import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { SingleSelectComponent } from '../single-select/single-select.component';
-import { ChainSelectExampleModule, template as exampleTemplate } from './chain-select.example';
+import {
+  ChainSelectExampleModule,
+  template as exampleTemplate,
+} from './chain-select.example';
 
-const buttonStories = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
@@ -35,18 +38,18 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  selectedItemList | (any)[] | selected values for each select | none (Optional)
-  actionLabel | string | action label text | none
+  selectedItemList | (any)[] | selected values for each select | &nbsp;
+  actionLabel | string | action label text | &nbsp;
   staticMode | boolean | when in static mode, the number of select elements is determined by the selectedItemList input\
   and cannot be changed (Add and Delete buttons are hidden) | false
-  selectChange | action | EventEmitter - emits ChainSelectEvent | none
+  selectChange | action | EventEmitter - emits ChainSelectEvent | &nbsp;
 
   ~~~
   ${exampleTemplate}
   ~~~
 `;
 
-buttonStories.add(
+story.add(
   'Chain select',
   () => ({
     template: storyTemplate,
@@ -57,8 +60,8 @@ buttonStories.add(
     },
     moduleMetadata: {
       imports: [StoryBookLayoutModule, ChainSelectExampleModule],
-      entryComponents: [SingleSelectComponent]
-    }
+      entryComponents: [SingleSelectComponent],
+    },
   }),
   { notes: { markdown: note } }
 );
