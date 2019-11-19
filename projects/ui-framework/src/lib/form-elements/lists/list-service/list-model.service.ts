@@ -40,24 +40,30 @@ export class ListModelService {
       const groupHeader: ListHeader = find(listHeaders, header =>
         this.isSameGroup(header, group)
       );
-      const placeholder = {
-        isPlaceHolder: true,
-        groupName: group.groupName,
-        key: group.key,
-        value: group.groupName,
-        id: group.groupName,
-        selected: false,
-      };
+      const placeholder = Object.assign(
+        {
+          isPlaceHolder: true,
+          groupName: group.groupName,
+          value: group.groupName,
+          id: group.groupName,
+          selected: false,
+        },
+        !isNullOrUndefined(group.key) ? { key: group.key } : {}
+      );
 
       let virtualOptions;
 
       if (noGroupHeaders) {
         virtualOptions = map(group.options, option =>
-          assign({}, option, {
-            groupName: group.groupName,
-            key: group.key,
-            isPlaceHolder: false,
-          })
+          assign(
+            {},
+            option,
+            {
+              groupName: group.groupName,
+              isPlaceHolder: false,
+            },
+            !isNullOrUndefined(group.key) ? { key: group.key } : {}
+          )
         );
       } else if (groupHeader.isCollapsed) {
         virtualOptions = placeholder;
@@ -65,12 +71,16 @@ export class ListModelService {
         virtualOptions = concat(
           placeholder,
           map(group.options, option =>
-            assign({}, option, {
-              groupName: group.groupName,
-              key: group.key,
-              isPlaceHolder: false,
-              selected: option.selected,
-            })
+            assign(
+              {},
+              option,
+              {
+                groupName: group.groupName,
+                isPlaceHolder: false,
+                selected: option.selected,
+              },
+              !isNullOrUndefined(group.key) ? { key: group.key } : {}
+            )
           )
         );
       }
@@ -86,16 +96,18 @@ export class ListModelService {
     return map(options, group => {
       const selectedCount = this.countSelected(group.options);
 
-      return {
-        groupName: group.groupName,
-        key: group.key,
-        isCollapsed: collapseHeaders,
-        placeHolderSize: group.options.length * LIST_EL_HEIGHT,
-        selected: selectedCount === group.options.length,
-        indeterminate:
-          selectedCount > 0 && selectedCount < group.options.length,
-        selectedCount: selectedCount,
-      };
+      return Object.assign(
+        {
+          groupName: group.groupName,
+          isCollapsed: collapseHeaders,
+          placeHolderSize: group.options.length * LIST_EL_HEIGHT,
+          selected: selectedCount === group.options.length,
+          indeterminate:
+            selectedCount > 0 && selectedCount < group.options.length,
+          selectedCount: selectedCount,
+        },
+        !isNullOrUndefined(group.key) ? { key: group.key } : {}
+      );
     });
   }
 

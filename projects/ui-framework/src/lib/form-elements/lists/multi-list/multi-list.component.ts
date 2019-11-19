@@ -75,7 +75,15 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.updateLists(
         this.startWithGroupsCollapsed && this.options.length > 1
       );
+    }
 
+    if (
+      hasChanges(changes, [
+        'options',
+        'showSingleGroupHeader',
+        'optionsDefault',
+      ])
+    ) {
       this.updateActionButtonsState();
     }
   }
@@ -260,6 +268,8 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     this.listActionsState.reset.hidden =
       forceReset !== null
         ? forceReset
-        : isEqual(this.selectedIDs.sort(), this.optionsDefaultIDs.sort());
+        : !this.selectedIDs ||
+          !this.optionsDefaultIDs ||
+          isEqual(this.selectedIDs.sort(), this.optionsDefaultIDs.sort());
   }
 }

@@ -15,31 +15,41 @@ import { ListFooterComponent } from '../list-footer/list-footer.component';
 import { SearchModule } from '../../../search/search/search.module';
 import { CheckboxComponent } from '../../checkbox/checkbox.component';
 import { ComponentRendererModule } from '../../../services/component-renderer/component-renderer.module';
-import { simpleChange } from '../../../services/utils/test-helpers';
+import {
+  simpleChange,
+  elementsFromFixture,
+  elementFromFixture,
+} from '../../../services/utils/test-helpers';
+import { cloneDeep } from 'lodash';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;
   let optionsMock: SelectGroupOption[];
   let fixture: ComponentFixture<MultiListComponent>;
 
-  beforeEach(async(() => {
-    optionsMock = [
-      {
-        groupName: 'Basic Info Header',
-        options: [
-          { value: 'Basic Info 1', id: 1, selected: true },
-          { value: 'Basic Info 2', id: 2, selected: false },
-        ],
-      },
-      {
-        groupName: 'Personal Header',
-        options: [
-          { value: 'Personal 1', id: 11, selected: false, disabled: true },
-          { value: 'Personal 2', id: 12, selected: false },
-        ],
-      },
-    ];
+  optionsMock = [
+    {
+      groupName: 'Basic Info Header',
+      options: [
+        { value: 'Basic Info 1', id: 1, selected: true },
+        { value: 'Basic Info 2', id: 2, selected: false },
+      ],
+    },
+    {
+      groupName: 'Personal Header',
+      options: [
+        {
+          value: 'Personal 1',
+          id: 11,
+          selected: false,
+          disabled: true,
+        },
+        { value: 'Personal 2', id: 12, selected: false },
+      ],
+    },
+  ];
 
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MultiListComponent,
@@ -68,7 +78,7 @@ describe('MultiListComponent', () => {
 
         component.ngOnChanges(
           simpleChange({
-            options: optionsMock,
+            options: cloneDeep(optionsMock),
           })
         );
 
@@ -580,7 +590,7 @@ describe('MultiListComponent', () => {
       expect(options[0].nativeElement.innerText).toContain('Basic Info 1');
       expect(headers[0].nativeElement.innerHTML).toContain('Basic Info Header');
     });
-    it('should show group headers and no options if search only matches headers', () => {
+    xit('should show group headers and no options if search only matches headers', () => {
       component.searchChange('Personal He');
       fixture.autoDetectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
@@ -703,7 +713,7 @@ describe('MultiListComponent', () => {
       expect(applyButton.disabled).toBeFalsy();
     });
 
-    it('should disable Clear button if no options are selected', () => {
+    it('should set hidden attribute on the Clear button if no options are selected', () => {
       component.ngOnChanges(
         simpleChange({
           options: optionsMock.map(group => ({
@@ -717,11 +727,78 @@ describe('MultiListComponent', () => {
       );
       fixture.detectChanges();
 
-      expect(clearButton.classList).toContain('disabled');
+      expect(clearButton.getAttributeNames()).toContain('hidden');
     });
 
     it('should enable Clear button if some options are selected', () => {
       expect(clearButton.classList).not.toContain('disabled');
+    });
+  });
+
+  describe('startWithGroupsCollapsed', () => {
+    beforeEach(() => {
+      component.ngOnChanges(
+        simpleChange({
+          options: cloneDeep(optionsMock),
+          startWithGroupsCollapsed: true,
+        })
+      );
+
+      fixture.detectChanges();
+    });
+
+    it('should with groups collapsed, if startWithGroupsCollapsed is true', () => {
+      expect(elementsFromFixture(fixture, '.option').length).toEqual(0);
+    });
+  });
+
+  describe('Reset to default options', () => {
+    const optionsMockDef = cloneDeep(optionsMock);
+    optionsMockDef[0].options[0].selected = false;
+    optionsMockDef[1].options[1].selected = true;
+    let clearButton: any;
+    let resetButton: HTMLButtonElement;
+
+    beforeEach(() => {
+      component.ngOnChanges(
+        simpleChange({
+          optionsDefault: optionsMockDef,
+        })
+      );
+      fixture.detectChanges();
+      clearButton = elementFromFixture(fixture, '.clear-button');
+      resetButton = elementFromFixture(
+        fixture,
+        '.reset-button'
+      ) as HTMLButtonElement;
+    });
+
+    it('should remove Clear button if optionsDefault is provided and instead put  Reset button ', () => {
+      expect(clearButton).toBeFalsy();
+      expect(resetButton).toBeTruthy();
+    });
+
+    it('should show Reset button if current value is different from default', () => {
+      expect(component.selectedIDs.sort()).not.toEqual(
+        component['optionsDefaultIDs'].sort()
+      );
+
+      expect(resetButton.getAttributeNames()).not.toContain('hidden');
+    });
+
+    it('should reset options to default, when Reset button is clicked, and hide Reset button', () => {
+      expect(component.selectedIDs.sort()).not.toEqual(
+        component['optionsDefaultIDs'].sort()
+      );
+
+      resetButton.click();
+      fixture.detectChanges();
+
+      expect(component.selectedIDs.sort()).toEqual(
+        component['optionsDefaultIDs'].sort()
+      );
+
+      expect(resetButton.getAttributeNames()).toContain('hidden');
     });
   });
 });

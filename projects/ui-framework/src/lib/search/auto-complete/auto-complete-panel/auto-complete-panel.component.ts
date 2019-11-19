@@ -8,7 +8,7 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { LIST_EL_HEIGHT } from '../../../form-elements/lists/list.consts';
 import { AutoCompleteOption } from '../auto-complete.interface';
@@ -21,7 +21,7 @@ import { Keys } from '../../../enums';
 @Component({
   selector: 'b-auto-complete-panel',
   templateUrl: './auto-complete-panel.component.html',
-  styleUrls: ['./auto-complete-panel.component.scss']
+  styleUrls: ['./auto-complete-panel.component.scss'],
 })
 export class AutoCompletePanelComponent
   implements OnChanges, OnInit, OnDestroy {
@@ -56,6 +56,7 @@ export class AutoCompletePanelComponent
     this.keyDownSubscriber = this.listKeyboardService
       .getKeyboardNavigationObservable()
       .subscribe((e: KeyboardEvent) => {
+        console.log('win key!');
         switch (e.key) {
           case Keys.arrowdown:
             this.focusIndex = this.listKeyboardService.getNextFocusIndex(
