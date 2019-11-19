@@ -144,6 +144,7 @@ export class ListModelService {
     const matcher = new RegExp(escapeRegExp(searchValue), 'i');
     const filteredOptions = map(options, group => {
       const filteredGroup =
+        // Deprecated: Group header search
         // group.groupName.match(matcher) ||
         some(group.options, option => option.value.match(matcher))
           ? assign({}, group, {
