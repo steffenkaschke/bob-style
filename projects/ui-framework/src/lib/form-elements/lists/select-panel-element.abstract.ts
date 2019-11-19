@@ -65,6 +65,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @ViewChild('prefix', { static: false }) prefix: ElementRef;
 
   @Input() options: SelectGroupOption[];
+  @Input() optionsDefault: SelectGroupOption[];
   @Input() panelClass: string;
   @Input() isQuickFilter = false;
   @Input() hasPrefix = false;

@@ -50,7 +50,7 @@ export class QuickFilterComponent implements OnChanges {
       this.showSingleGroupHeader =
         this.quickFilterConfig.showSingleGroupHeader || false;
       this.hasValue =
-        this.listModelService.getSelectedIdsMap(this.quickFilterConfig.options)
+        this.listModelService.getSelectedIDs(this.quickFilterConfig.options)
           .length > 0;
     }
   }

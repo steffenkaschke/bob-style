@@ -8,19 +8,16 @@ import {
   Input,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
-import { cloneDeep, flatMap, chain } from 'lodash';
+import { cloneDeep, flatMap, chain, isEqual } from 'lodash';
 import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListChange } from '../list-change/list-change';
-import {
-  hasChanges,
-  notFirstChanges,
-  isNotEmptyArray,
-} from '../../../services/utils/functional-utils';
+import { hasChanges } from '../../../services/utils/functional-utils';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { simpleChange } from '../../../services/utils/test-helpers';
 
 @Component({
   selector: 'b-multi-list',
@@ -79,14 +76,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.updateLists(
         this.startWithGroupsCollapsed && this.options.length > 1
       );
-      this.updateClearButtonState();
-    }
-
-    if (
-      notFirstChanges(changes, ['options']) &&
-      isNotEmptyArray(changes.options.previousValue)
-    ) {
-      this.listActionsState.apply.disabled = false;
+      this.updateActionButtonsState();
     }
   }
 
@@ -133,7 +123,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
           .value();
 
     this.emitChange();
-    this.updateClearButtonState();
+    this.updateActionButtonsState();
 
     this.listModelService.setSelectedOptions(
       this.listHeaders,
@@ -155,7 +145,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
             .value();
 
       this.emitChange();
-      this.updateClearButtonState();
+      this.updateActionButtonsState();
 
       this.listModelService.setSelectedOptions(
         this.listHeaders,
@@ -169,7 +159,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     this.selectedIDs = this.getSelectedDisabledMap();
 
     this.emitChange();
-    this.updateClearButtonState(true);
+    this.updateActionButtonsState(true);
 
     this.listModelService.setSelectedOptions(
       this.listHeaders,
@@ -178,7 +168,15 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     );
   }
 
-  onReset(): void {}
+  onReset(): void {
+    this.ngOnChanges(
+      simpleChange({
+        options: cloneDeep(this.optionsDefault),
+      })
+    );
+    this.listActionsState.apply.disabled = false;
+    this.emitChange();
+  }
 
   searchChange(searchValue: string): void {
     this.searchValue = searchValue;
@@ -242,10 +240,18 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     return !options.every(o => o.selected);
   }
 
-  private updateClearButtonState(force: boolean = null) {
+  private updateActionButtonsState(
+    forceClear: boolean = null,
+    forceReset: boolean = null
+  ) {
     this.listActionsState.clear.hidden =
-      force !== null
-        ? force
+      forceClear !== null
+        ? forceClear
         : !this.selectedIDs || this.selectedIDs.length === 0;
+
+    this.listActionsState.reset.hidden =
+      forceReset !== null
+        ? forceReset
+        : isEqual(this.selectedIDs.sort(), this.optionsDefaultIDs.sort());
   }
 }

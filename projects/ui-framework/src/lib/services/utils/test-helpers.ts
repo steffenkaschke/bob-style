@@ -1,6 +1,6 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SimpleChange, Type } from '@angular/core';
+import { SimpleChange, Type, SimpleChanges } from '@angular/core';
 import {
   NativeMouseEvents,
   NativeKeyboardEvents,
@@ -44,10 +44,13 @@ export const componentFromFixture = (
   return comp && comp.componentInstance ? comp.componentInstance : null;
 };
 
-export const simpleChange = changes => {
+export const simpleChange = (
+  changes: SimpleChanges,
+  firstChange = false
+): SimpleChanges => {
   const simpleChanges = {};
   Object.keys(changes).forEach(key => {
-    simpleChanges[key] = new SimpleChange(undefined, changes[key], false);
+    simpleChanges[key] = new SimpleChange(undefined, changes[key], firstChange);
   });
   return simpleChanges;
 };

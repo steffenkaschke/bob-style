@@ -17,7 +17,7 @@ import { AvatarComponent } from '../../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../../avatar/avatar/avatar.module';
 import { mockText } from '../../../mock.const';
 import { cloneDeep } from 'lodash';
-import { optionsMock } from '../multi-list/multi-list.mock';
+import { optionsMock, optionsMockDef } from '../multi-list/multi-list.mock';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -32,6 +32,7 @@ const template = `
                 [placeholder]="placeholder"
                 [description]="description"
                 [options]="options"
+                [optionsDefault]="optionsDefault"
                 (selectChange)="selectChange($event)"
                 (selectModified)="selectModified($event)"
                 (selectCancelled)="selectCancelled($event)"
@@ -83,22 +84,33 @@ const note = `
 `;
 
 const options = cloneDeep(optionsMock);
+const optionsDef = cloneDeep(optionsMockDef);
 
 const toAdd = () => ({
   template: storyTemplate,
   props: {
+    label: text('label', 'label text', 'Props'),
+    description: text('description', mockText(30), 'Props'),
+    placeholder: text('placeholder', 'placeholder text', 'Props'),
+    disabled: boolean('disabled', false, 'Props'),
+    required: boolean('required', false, 'Props'),
+    hintMessage: text(
+      'hintMessage',
+      'This field should contain something',
+      'Props'
+    ),
+    errorMessage: text('errorMessage', '', 'Props'),
+    showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+    options: object<SelectGroupOption>('options', options, 'options'),
+    optionsDefault: object<SelectGroupOption>(
+      'optionsDefault',
+      optionsDef,
+      'options'
+    ),
+
     selectChange: action('Multi select change'),
     selectModified: action('Multi select modified'),
     selectCancelled: action('Multi select cancelled'),
-    label: text('label', 'label text'),
-    description: text('description', mockText(30)),
-    placeholder: text('placeholder', 'placeholder text'),
-    disabled: boolean('disabled', false),
-    required: boolean('required', false),
-    hintMessage: text('hintMessage', 'This field should contain something'),
-    errorMessage: text('errorMessage', ''),
-    showSingleGroupHeader: boolean('showSingleGroupHeader', true),
-    options: object<SelectGroupOption>('options', options),
   },
   moduleMetadata: {
     imports: [
