@@ -40,10 +40,12 @@ const QFconfig = [
     key: 'input',
     value: 'Some text',
     label: 'Input label',
+    hintMessage: 'Input hint',
   },
   {
     key: 'singleSelect',
     label: 'SingleSelect label',
+    hintMessage: 'SingleSelect hint',
     options: [
       {
         groupName: 'singleSelect',
@@ -58,6 +60,7 @@ const QFconfig = [
   {
     key: 'multiSelect',
     label: 'MultiSelect label',
+    hintMessage: 'MultiSelect hint',
     options: [
       {
         groupName: 'multiSelect',
@@ -73,19 +76,33 @@ const QFconfig = [
     key: 'social',
     type: 'facebook',
     label: 'Social label',
+    hintMessage: 'Social hint',
   },
   {
     key: 'dateRange',
     type: 'date',
     label: 'DateRange label',
+    hintMessage: 'DateRange hint',
   },
   {
     key: 'timePicker',
     label: 'TimePicker label',
+    hintMessage: 'TimePicker hint',
   },
   {
     key: 'splitInpSel',
     label: 'SplitInpSel label',
+    hintMessage: 'SplitInpSel hint',
+    selectOptions: [
+      {
+        groupName: 'splitInpSel',
+        options: [
+          { value: 'sis-option-1', id: 'sis-option-1-id' },
+          { value: 'sis-option-2', id: 'sis-option-2-id' },
+          { value: 'sis-option-3', id: 'sis-option-3-id' },
+        ],
+      },
+    ],
   },
 ];
 

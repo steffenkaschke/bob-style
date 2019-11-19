@@ -27,12 +27,14 @@ import {
   onlyUpdatedProps,
   asArray,
   hasProp,
+  cloneArray,
 } from '../../services/utils/functional-utils';
 import { simpleChange } from '../../services/utils/test-helpers';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { keyBy } from 'lodash';
 import { ListChange } from '../../form-elements/lists/list-change/list-change';
+import { IGNORE_EVENTS_DEF } from '../../form-elements/form-elements.const';
 
 @Component({
   selector: 'b-quick-filter-layout',
@@ -172,6 +174,7 @@ export class QuickFilterLayoutComponent
           tooltipType: TruncateTooltipType.material,
           doPropagate: false,
           wrapEvent: false,
+          ignoreEvents: cloneArray(IGNORE_EVENTS_DEF),
         });
 
         this.subscribtions.push(

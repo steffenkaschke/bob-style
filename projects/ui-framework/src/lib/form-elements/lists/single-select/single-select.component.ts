@@ -8,7 +8,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
-import { chain, isNull, isUndefined } from 'lodash';
+import { chain, isUndefined } from 'lodash';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
@@ -25,6 +25,7 @@ import {
   BELOW_END,
 } from '../../../popups/panel/panel-position-service/panel-position.const';
 import { BaseFormElement } from '../../base-form-element';
+import { isNullOrUndefined } from '../../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-single-select',
@@ -91,7 +92,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
         this.singleSelectOptions
       );
     }
-    this.triggerValue = isNull(this.selectedOptionId)
+    this.triggerValue = isNullOrUndefined(this.selectedOptionId)
       ? null
       : this.getTriggerValue(this.selectedOptionId);
   }
@@ -99,6 +100,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
   onSelect(listChange: ListChange) {
     this.selectedOptionId = listChange.getSelectedIds()[0];
     this.triggerValue = this.getTriggerValue(this.selectedOptionId);
+
     this.emitChange(listChange);
     this.destroyPanel();
   }
