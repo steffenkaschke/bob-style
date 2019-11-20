@@ -17,7 +17,8 @@
     "highcharts": "^7.1.2",
     "date-fns": "^2.4.1",
     "angular-froala-wysiwyg": "^3.0.6",
-    "tributejs": "^4.0.0"
+    "tributejs": "^4.0.0",
+    "ngx-smooth-dnd": "^0.4.1"
   },
   "browserslist": [
     "> 1%",
