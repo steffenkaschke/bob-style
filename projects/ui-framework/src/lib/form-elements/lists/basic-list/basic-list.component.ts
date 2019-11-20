@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ContentChild, Input, OnInit } from '@angular/core';
 import { BasicListItem } from './basic-list.interface';
-import { MenuItem } from '../../../navigation/menu/menu.interface';
+import { BasicListActionDirective } from './basic-list-action/basic-list-action.directive';
 
 @Component({
   selector: 'b-basic-list',
@@ -9,7 +9,8 @@ import { MenuItem } from '../../../navigation/menu/menu.interface';
 })
 export class BasicListComponent implements OnInit {
   @Input() items: BasicListItem[];
-  @Input() menu?: MenuItem[];
+
+  @ContentChild(BasicListActionDirective, { static: true }) contentChild !: BasicListActionDirective;
 
   constructor() { }
 

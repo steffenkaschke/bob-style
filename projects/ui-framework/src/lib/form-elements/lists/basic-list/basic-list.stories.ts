@@ -5,6 +5,8 @@ import { ComponentGroupType } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { Icons } from '../../../icons/icons.enum';
 import { BasicListModule } from './basic-list.module';
+import { MenuModule } from '../../../navigation/menu/menu.module';
+import { ButtonsModule } from '../../../buttons/buttons.module';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -12,7 +14,16 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 
 const template = `
   <b-story-book-layout [title]="'Basic List'">
-    <b-basic-list [items]="items" [menu]="menu"></b-basic-list>
+    <b-basic-list [items]="items">
+      <b-menu *bBasicListAction="let item=item; let index=index"
+              [menu]="menu"
+              (actionClick)="action('Action triggered with item, index')(item, index)">
+        <b-square-button menu-trigger
+                         type="tertiary"
+                         icon="b-icon-more-horiz">
+        </b-square-button>
+      </b-menu>
+    </b-basic-list>
   </b-story-book-layout>
 `;
 
@@ -26,7 +37,6 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | ---
   items | BasicListItem[] | List of items to display | none
-  menu | MenuItem[] | Optional menu for each list item | undefined
 
   ~~~
   ${template}
@@ -37,7 +47,7 @@ const items = [{
   label: 'Item 1',
   icon: Icons.doc,
 }, {
-  label: 'Item 2',
+  label: 'Item 222',
   icon: Icons.doc,
 }];
 
@@ -54,13 +64,16 @@ story.add(
   () => ({
     template,
     props: {
+      action,
       items: object('items', items),
       menu: object('menu', menu),
     },
     moduleMetadata: {
       imports: [
         BasicListModule,
-        StoryBookLayoutModule
+        MenuModule,
+        StoryBookLayoutModule,
+        ButtonsModule,
       ],
     },
   }),

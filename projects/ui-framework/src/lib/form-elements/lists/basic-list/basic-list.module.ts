@@ -1,24 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BasicListComponent } from './basic-list.component';
-import { MenuModule } from '../../../navigation/menu/menu.module';
 import { IconsModule } from '../../../icons/icons.module';
 import { TypographyModule } from '../../../typography/typography.module';
-import { ButtonsModule } from '../../../buttons/buttons.module';
+import { BasicListActionDirective } from './basic-list-action/basic-list-action.directive';
 
 @NgModule({
   declarations: [
     BasicListComponent,
+    BasicListActionDirective,
   ],
   imports: [
     CommonModule,
     IconsModule,
-    MenuModule,
     TypographyModule,
-    ButtonsModule,
   ],
   exports: [
-    BasicListComponent
+    BasicListComponent,
+    BasicListActionDirective,
   ],
 })
 export class BasicListModule { }
