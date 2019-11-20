@@ -1,6 +1,7 @@
 import { SimpleChanges } from '@angular/core';
 import { metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
+import { isEqual } from 'lodash';
 
 export function MixIn(baseCtors: Function[]) {
   return function(derivedCtor: Function) {
@@ -181,6 +182,9 @@ export const arrayDifference = <T = any>(arrA: T[], arrB: T[]): T[] => {
     .concat(arrB.filter(x => !arrA.includes(x)));
 };
 
+export const arrayIntersection = <T = any>(arrA: T[], arrB: T[]): T[] =>
+  arrA.filter(x => arrB.includes(x));
+
 export const dedupeArray = <T = any>(arr: T[]): T[] => Array.from(new Set(arr));
 
 export const joinArrays = <T = any>(arr1: T[], ...rest): T[] =>
@@ -246,6 +250,29 @@ export const applyChanges = (
           : changes[change].currentValue;
     }
   });
+};
+
+export const onlyUpdatedProps = (
+  oldObj: GenericObject,
+  newObj: GenericObject
+): GenericObject => {
+  if (isEmptyObject(oldObj)) {
+    return newObj;
+  }
+
+  if (!newObj) {
+    return {};
+  }
+
+  return Object.keys(newObj)
+    .filter(
+      (key: string) =>
+        !hasProp(oldObj, key) || !isEqual(oldObj[key], newObj[key])
+    )
+    .reduce((updObj, key) => {
+      updObj[key] = newObj[key];
+      return updObj;
+    }, {});
 };
 
 export const isDate = (value: any): boolean =>
@@ -316,6 +343,9 @@ export const arrayInsertAt = <T = any>(
     .slice(0, index)
     .concat(val, arr.slice(!overwrite ? index : index + 1));
 };
+
+export const capitalize = (smth: string): string =>
+  smth.charAt(0).toUpperCase() + smth.slice(1);
 
 export const objectHasTruthyValue = (obj: GenericObject): boolean =>
   isNotEmptyObject(obj) && Boolean(Object.values(obj).find(v => Boolean(v)));

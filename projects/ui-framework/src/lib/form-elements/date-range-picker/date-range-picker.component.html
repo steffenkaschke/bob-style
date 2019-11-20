@@ -1,11 +1,15 @@
 <div class="bdrp-label-wrap">
   <label *ngIf="(label || startDateLabel) && !hideLabelOnFocus"
          class="bfe-label start-date-label"
-         [attr.for]="!startDateLabel || !endDateLabel ? id : idSD">{{startDateLabel || label}}</label>
+         [attr.for]="!startDateLabel || !endDateLabel ? id : idSD">
+    {{label || startDateLabel}}
+  </label>
 
   <label *ngIf="!label && endDateLabel && !hideLabelOnFocus"
          class="bfe-label end-date-label"
-         [attr.for]="!startDateLabel ? id : idED">{{endDateLabel}}</label>
+         [attr.for]="idED">
+    {{endDateLabel}}
+  </label>
 </div>
 
 <div class="bdrp-inputs-wrap"
@@ -22,8 +26,7 @@
            [attr.name]="idSD"
            [type]="inputTypes.text"
            [attr.placeholder]="hideLabelOnFocus && (startDateLabel || label) ? (!required ? (startDateLabel || label) :
-           (startDateLabel || label) + '*') :
-           placeholder"
+           (startDateLabel || label) + '*') : !hideLabelOnFocus && label && startDateLabel ? startDateLabel : placeholder"
            [value]="value?.startDate"
            [disabled]="disabled"
            [required]="required"
@@ -59,7 +62,7 @@
            [type]="inputTypes.text"
            [attr.placeholder]="hideLabelOnFocus && (endDateLabel || label) ? (!required ? ((label && null) ||
            endDateLabel) : ((label && ' ') || endDateLabel + '*')) :
-           placeholder"
+           !hideLabelOnFocus && label && endDateLabel ? endDateLabel : placeholder"
            [value]="value?.endDate"
            [disabled]="disabled"
            [required]="required"

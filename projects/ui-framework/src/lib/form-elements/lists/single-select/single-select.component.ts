@@ -23,6 +23,7 @@ import {
   ABOVE_END,
   BELOW_END,
 } from '../../../popups/panel/panel-position-service/panel-position.const';
+import { BaseFormElement } from '../../base-form-element';
 import { isNullOrUndefined } from '../../../services/utils/functional-utils';
 
 @Component({
@@ -43,6 +44,7 @@ import { isNullOrUndefined } from '../../../services/utils/functional-utils';
       useExisting: forwardRef(() => SingleSelectComponent),
       multi: true,
     },
+    { provide: BaseFormElement, useExisting: SingleSelectComponent },
   ],
 })
 export class SingleSelectComponent extends BaseSelectPanelElement {

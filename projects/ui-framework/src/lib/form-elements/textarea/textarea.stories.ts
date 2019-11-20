@@ -62,7 +62,7 @@ const note = `
   [hintMessage] | text | hint text
   [warnMessage] | string | warning text
   [errorMessage] | text | error text
-  (inputEvents) | EventEmitter&lt;InputEvent&gt; | input events emitter
+  (inputEvents) | EventEmitter<wbr>&lt;InputEvent&gt; | input events emitter
 
   ~~~
   ${template}

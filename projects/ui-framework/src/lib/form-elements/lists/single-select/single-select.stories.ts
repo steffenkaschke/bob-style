@@ -65,8 +65,9 @@ const note = `
   [value] | (string or number) | selected id | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | false
   [showNoneOption] | boolean | displays the no-selection option | true
-  [listActions] | ListFooterActions | enable/disable footer action buttons (clear, apply) | { clear:&nbsp;false, apply:&nbsp;false }
-  (selectChange) | EventEmitter&lt;ListChange&gt; | emits ListChange | &nbsp;
+  [listActions] | ListFooterActions | enable/disable footer action buttons\
+   (clear, apply) | { clear:&nbsp;false, apply:&nbsp;false }
+  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
   &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
   [label] | string | label text | &nbsp;
   [description] | string | description text (above icon) | &nbsp;

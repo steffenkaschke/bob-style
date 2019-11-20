@@ -61,9 +61,10 @@ const note = `
   [hintMessage] | string | hint text
   [warnMessage] | string | warning text
   [errorMessage] | string | error text
-  [hideLabelOnFocus] | boolean | if true: there will be no label above input, label text (if present) will be used as placeholder
+  [hideLabelOnFocus] | boolean | if true: there will be no label above\
+   input, label text (if present) will be used as placeholder
   [enableBrowserAutoComplete] | InputAutoCompleteOptions | shows browser autocomplete options
-  (inputEvents) | EventEmitter&lt;InputEvent&gt; | input events emitter
+  (inputEvents) | EventEmitter<wbr>&lt;InputEvent&gt; | input events emitter
   ~~~
   ${template}
   ~~~

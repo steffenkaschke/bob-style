@@ -196,7 +196,8 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 
 // quick filter panel
 
-.b-quick-filter-panel {
+.b-quick-filter-panel,
+.b-select-panel.b-quick-filter-panel {
   position: relative !important;
-  min-width: 320px;
+  min-width: 300px;
 }

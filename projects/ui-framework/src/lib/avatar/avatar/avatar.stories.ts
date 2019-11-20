@@ -66,11 +66,12 @@ const note = `
   [title] | string | main title of the avatar | &nbsp;
   [subtitle] | string | subtitle of the avatar | &nbsp;
   [caption] | string | caption & site | &nbsp;
-  [badge] | AvatarBadge / BadgeConfig | AvatarBadge enum of approved, pending or rejected / or BadgeConfig {icon, color} object  | &nbsp;
+  [badge] | AvatarBadge / BadgeConfig | AvatarBadge enum of approved, \
+  pending or rejected / or BadgeConfig {icon, color} object  | &nbsp;
   [chip] | Chip | object describing the chip chip (should have type & text properties) | &nbsp;
   [disabled] | boolean | disabled avatar | false
   [isClickable] | boolean | flag for indicating if the avatar is clickable or not | false
-  (clicked) | EventEmitter&lt;MouseEvent&gt; | emitted on avatar click | &nbsp;
+  (clicked) | EventEmitter<wbr>&lt;MouseEvent&gt; | emitted on avatar click | &nbsp;
 
   ~~~
   <b-avatar

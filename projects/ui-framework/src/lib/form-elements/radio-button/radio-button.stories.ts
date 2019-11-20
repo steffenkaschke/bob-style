@@ -57,7 +57,7 @@ const note = `
   [errorMessage] | string | error text
   [disabled] | boolean | is field disabled
   [required] | boolean | is field required
-  (radioChange) | EventEmitter&lt;string/number&gt; | fired on radio change, returns option ID
+  (radioChange) | EventEmitter<wbr>&lt;string/number&gt; | fired on radio change, returns option ID
 
   ~~~
   ${template}

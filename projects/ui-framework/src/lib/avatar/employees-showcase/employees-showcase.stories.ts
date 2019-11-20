@@ -50,8 +50,8 @@ const note = `
   [employees] | EmployeeShowcase[] | employees list | []
   [avatarSize] | AvatarSize | avatar size | 'mini'
   [expandOnClick] | boolean | expands panel on click | true
-  (selectChange) | EventEmitter&lt;ListChange&gt; | list select change | &nbsp;
-  (clicked) | EventEmitter&lt;EmployeeShowcase&gt; | emits when avatar is clicked | &nbsp;
+  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | list select change | &nbsp;
+  (clicked) | EventEmitter<wbr>&lt;EmployeeShowcase&gt; | emits when avatar is clicked | &nbsp;
 
   ~~~
   ${template}

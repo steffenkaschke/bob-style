@@ -83,7 +83,21 @@ export class YourDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dialogButtonConfig = {} // DialogButtons config
+    this.dialogButtonConfig = {
+      ok: {
+        label: 'Ok',
+        class: 'ok-button-666',
+        disabled: false,
+        action: ...
+      },
+      cancel: {
+        label: 'Cancel',
+        class: 'cancel-button-666',
+        disabled: false,
+        action: ...
+      },
+    ...
+    }
   }
 }
   ~~~

@@ -96,6 +96,10 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
     this.filtersChange.emit(this.quickFiltersChanges);
   }
 
+  onReset(): void {
+    this.resetFilters.emit();
+  }
+
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {

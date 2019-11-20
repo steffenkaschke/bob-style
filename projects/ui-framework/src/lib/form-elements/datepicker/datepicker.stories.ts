@@ -68,7 +68,7 @@ const note = `
   [hintMessage] | string | hint text | &nbsp;
   [warnMessage] | string | warning text | &nbsp;
   [errorMessage] | string | error text | &nbsp;
-  (dateChange) | EventEmitter&lt;InputEvent&gt; |  Emited on date change | &nbsp;
+  (dateChange) | EventEmitter<wbr>&lt;InputEvent&gt; |  Emited on date change | &nbsp;
 
   #### Notes
 

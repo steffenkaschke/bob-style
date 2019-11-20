@@ -13,6 +13,7 @@ import { BaseInputElement } from '../base-input-element';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { InputTypes } from './input.enum';
+import { BaseFormElement } from '../base-form-element';
 
 @Component({
   selector: 'b-input',
@@ -29,6 +30,7 @@ import { InputTypes } from './input.enum';
       useExisting: forwardRef(() => InputComponent),
       multi: true,
     },
+    { provide: BaseFormElement, useExisting: InputComponent },
   ],
 })
 export class InputComponent extends BaseInputElement implements AfterViewInit {

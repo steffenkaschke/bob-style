@@ -8,6 +8,8 @@ import {
   OnInit,
   NgZone,
   SimpleChanges,
+  OnChanges,
+  ElementRef,
   ChangeDetectorRef,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
@@ -37,13 +39,15 @@ import { URLutils } from '../../services/url/url-utils.service';
       useExisting: forwardRef(() => SocialComponent),
       multi: true,
     },
+    { provide: BaseFormElement, useExisting: SocialComponent },
   ],
 })
 export class SocialComponent extends BaseFormElement implements OnInit {
   constructor(
     protected cd: ChangeDetectorRef,
     private URL: URLutils,
-    private zone: NgZone
+    private zone: NgZone,
+    private host: ElementRef
   ) {
     super(cd);
 
@@ -72,12 +76,14 @@ export class SocialComponent extends BaseFormElement implements OnInit {
   @ViewChild('bInput', { static: true }) bInput: InputComponent;
 
   @Input() type: Social;
+  @Input() placeholder = 'username';
+
   @Output(FormEvents.socialInputChange) changed: EventEmitter<
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  public inputId: string;
-
+  public inputId: string | number;
+  public narrowInput = false;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
   readonly inputTypes = InputTypes;
@@ -90,17 +96,8 @@ export class SocialComponent extends BaseFormElement implements OnInit {
 
   ngOnInit(): void {
     this.inputId = this.bInput.id;
-  }
-
-  // extends BaseFormElement's ngOnChanges
-  onNgChanges(changes: SimpleChanges): void {
-    if (changes.type && !changes.type.firstChange && this.value) {
-      this.type = changes.type.currentValue;
-      this.writeValue(this.value);
-      this.transmitValue(this.value, {
-        eventType: [InputEventType.onBlur],
-      });
-    }
+    this.narrowInput =
+      (this.host.nativeElement as HTMLElement).offsetWidth < 300;
   }
 
   focusInput(): void {
@@ -110,22 +107,16 @@ export class SocialComponent extends BaseFormElement implements OnInit {
   onInputEvents(event: InputEvent): void {
     if (event.event === InputEventType.onChange) {
       this.writeValue(event.value);
-      this.transmitValue(this.value, {
-        eventType: [InputEventType.onChange],
-      });
     }
-    if (
-      event.event === InputEventType.onFocus ||
-      event.event === InputEventType.onBlur
-    ) {
-      this.transmitValue(this.value, { eventType: [event.event] });
-    }
+
     if (event.event === InputEventType.onBlur) {
       this.zone.runOutsideAngular(() => {
         setTimeout(() => {
-          this.bInput.input.nativeElement.value = this.value;
+          this.bInput.input.nativeElement.value = this.value || '';
         }, 0);
       });
     }
+
+    this.transmitValue(this.value, { eventType: [event.event] });
   }
 }

@@ -27,6 +27,7 @@ export abstract class BaseFormElement
   implements ControlValueAccessor, OnChanges {
   protected constructor(protected cd: ChangeDetectorRef) {}
 
+  @Input() id: string = simpleUID('bfe-');
   @Input() label: string;
   @Input() description: string;
   @Input() placeholder: string;
@@ -38,7 +39,6 @@ export abstract class BaseFormElement
   @Input() doPropagate = true;
 
   public inputFocused: boolean | boolean[] = false;
-  public id = simpleUID('bfe-');
   public inputTransformers: Func[] = [];
   public outputTransformers: Func[] = [];
   public baseValue: any;
@@ -96,7 +96,11 @@ export abstract class BaseFormElement
     if (value !== undefined) {
       this.value = chainCall(this.inputTransformers, value);
     }
-    if (isNullOrUndefined(this.value) && this.baseValue !== undefined) {
+
+    if (
+      (value === undefined || isNullOrUndefined(this.value)) &&
+      this.baseValue !== undefined
+    ) {
       this.value = cloneValue(this.baseValue);
     }
   }

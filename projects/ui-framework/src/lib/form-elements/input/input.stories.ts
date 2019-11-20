@@ -4,7 +4,7 @@ import {
   select,
   boolean,
   withKnobs,
-  number
+  number,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
@@ -15,10 +15,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { mockText } from '../../mock.const';
 
-const story = storiesOf(
-  ComponentGroupType.FormElements,
-  module
-).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
+  withKnobs
+);
 
 const inputTypes = values(InputTypes);
 const inputAutoCompleteOptions = values(InputAutoCompleteOptions);
@@ -67,7 +66,8 @@ const note = `
   [label] | string | label text (above input)
   [description] | string | description text (above icon)
   [placeholder] | string | placeholder text (inside input)
-  [hideLabelOnFocus] | boolean | if true: there will be no label above input, label text (if present) will be used as placeholder
+  [hideLabelOnFocus] | boolean | if true: there will be no label above\
+   input, label text (if present) will be used as placeholder
   [minChars] | number | minimum length
   [maxChars] | number | maximum length
   [min] | number | (only relevent for number inputs) minimum value (value will be corrected on blur)
@@ -79,7 +79,7 @@ const note = `
   [warnMessage] | string | warning text
   [errorMessage] | string | error text
   [enableBrowserAutoComplete] | InputAutoCompleteOptions | shows browser autocomplete options
-  (inputEvents) | EventEmitter&lt;InputEvent&gt; | input events emitter
+  (inputEvents) | EventEmitter<wbr>&lt;InputEvent&gt; | input events emitter
 
   ~~~
   ${template}
@@ -97,6 +97,7 @@ story.add(
         label: text('label', 'Input label'),
         description: text('description', mockText(30)),
         placeholder: text('placeholder', 'Input placeholder'),
+        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         minChars: number('minChars', ''),
         maxChars: number('maxChars', 30),
         min: number('min', 5),
@@ -107,16 +108,15 @@ story.add(
         hintMessage: text('hintMessage', 'This field should contain something'),
         warnMessage: text('warnMessage', ''),
         errorMessage: text('errorMessage', ''),
-        hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         enableBrowserAutoComplete: select(
           'enableBrowserAutoComplete',
           inputAutoCompleteOptions,
           InputAutoCompleteOptions.off
-        )
+        ),
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, InputModule, StoryBookLayoutModule]
-      }
+        imports: [BrowserAnimationsModule, InputModule, StoryBookLayoutModule],
+      },
     };
   },
   { notes: { markdown: note } }

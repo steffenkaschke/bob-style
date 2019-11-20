@@ -23,7 +23,6 @@ import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tool
 @Component({
   selector: 'b-quick-filter',
   templateUrl: './quick-filter.component.html',
-  styleUrls: ['./quick-filter.component.scss'],
 })
 export class QuickFilterComponent implements OnChanges {
   @ViewChild('singleSelect', { static: true }) singleSelect: TemplateRef<

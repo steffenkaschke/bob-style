@@ -46,8 +46,8 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   [title] | string | popup title
-  (toggleClick) | EventEmitter&lt;boolean&gt; | emits on popup open/close
-  (emojiSelect) | EventEmitter&lt;Emoji&gt; | emits selected emoji
+  (toggleClick) | EventEmitter<wbr>&lt;boolean&gt; | emits on popup open/close
+  (emojiSelect) | EventEmitter<wbr>&lt;Emoji&gt; | emits selected emoji
 
   ~~~
   ${template}

@@ -1,5 +1,5 @@
 <b-icon [@reset]
-        *ngIf="showResetFilter"
+        *ngIf="showResetButt()"
         class="reset-filters"
         (click)="onReset()"
         [hasHoverState]="true"
@@ -14,27 +14,17 @@
         'has-suffix': hasSuffix
      }">
 
-  <div #prefix
-       *ngIf="hasPrefix"
+  <div *ngIf="hasPrefix"
        class="bar-prefix">
     <ng-content select="[bar-prefix]"></ng-content>
   </div>
 
   <div class="bar-filters">
-
-    <b-quick-filter *ngFor="let quickFilterConfig of quickFilters"
-                    class="quick-filter-holder"
-                    [ngStyle]="{width: 100/quickFilters.length + '%'}"
-                    [quickFilterConfig]="quickFilterConfig"
-                    (filterChange)="onFilterChange($event)">
-    </b-quick-filter>
-
+    <ng-content></ng-content>
   </div>
 
-  <div #suffix
-       *ngIf="hasSuffix"
+  <div *ngIf="hasSuffix"
        class="bar-suffix">
     <ng-content select="[bar-suffix]"></ng-content>
   </div>
-
 </div>

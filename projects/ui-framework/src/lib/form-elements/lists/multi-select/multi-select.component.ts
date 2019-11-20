@@ -29,6 +29,7 @@ import {
   BELOW_END,
   ABOVE_END,
 } from '../../../popups/panel/panel-position-service/panel-position.const';
+import { BaseFormElement } from '../../base-form-element';
 import { isNotEmptyArray } from '../../../services/utils/functional-utils';
 
 @Component({
@@ -50,6 +51,7 @@ import { isNotEmptyArray } from '../../../services/utils/functional-utils';
       useExisting: forwardRef(() => MultiSelectComponent),
       multi: true,
     },
+    { provide: BaseFormElement, useExisting: MultiSelectComponent },
   ],
 })
 export class MultiSelectComponent extends BaseSelectPanelElement {

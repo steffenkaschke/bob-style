@@ -59,6 +59,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   @ViewChildren(MatDatepickerInput, { read: ElementRef })
   public inputs: QueryList<ElementRef>;
 
+  @Input() id: string = simpleUID('bdp-');
+
   @Input() minDate: Date | string;
   @Input() maxDate: Date | string;
   @HostBinding('attr.data-type') @Input() type: DatepickerType =
@@ -72,7 +74,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     InputEvent
   > = new EventEmitter<InputEvent>();
 
-  public id = simpleUID('bdp-');
   public isMobile = false;
   public inputFocused: boolean[] = [];
 
@@ -89,9 +90,15 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   readonly inputTypes = InputTypes;
   readonly types = DatepickerType;
 
+  private doneFirstChange = false;
+
   protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
 
   ngOnInit(): void {
+    if (!this.doneFirstChange) {
+      this.ngOnChanges({});
+    }
+
     this.resizeSubscription = fromEvent(this.windowRef.nativeWindow, 'resize')
       .pipe(
         outsideZone(this.zone),
@@ -145,6 +152,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
       this.placeholder = BDateAdapter.bFormat.toLowerCase();
     }
+
+    this.doneFirstChange = true;
   }
 
   protected getPicker(index: string | number): MatDatepicker<any> {
@@ -177,16 +186,32 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
-  protected getOverlayStyles(): Styles {
+  protected getOverlayStyles(panelEl): Styles {
     if (this.inputWrap) {
       const overlayBox = this.inputWrap.nativeElement.getBoundingClientRect();
+      const datePickerPanel = panelEl.querySelector('.b-datepicker-panel');
+      const matCalBox =
+        datePickerPanel && datePickerPanel.getBoundingClientRect();
+
+      const alignedToRight =
+        matCalBox &&
+        matCalBox.width > overlayBox.width &&
+        panelEl
+          .querySelector('.mat-datepicker-content')
+          .style.cssText.includes('right');
+
+      const width = matCalBox
+        ? Math.max(overlayBox.width, matCalBox.width)
+        : overlayBox.width;
 
       return {
         ...this.overlayStylesDef,
         'pointer-events': 'none',
-        left: overlayBox.left + 'px',
-        right: overlayBox.right - overlayBox.width + 'px',
-        width: overlayBox.width + 'px',
+        width: width + 'px',
+        left: !alignedToRight
+          ? overlayBox.left + 'px'
+          : overlayBox.left - (width - overlayBox.width) + 'px',
+        right: 'auto',
       };
     }
     return {};
@@ -210,7 +235,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       (picker as any)._dialogRef._overlayRef &&
       (picker as any)._dialogRef._overlayRef.overlayElement
     ) {
-      panel.dialog = (picker as any)._dialogRef._overlayRef.overlayElement;
+      panel.dialog = (picker as any)._dialogRef._overlayRef.overlayElement.overlayElement;
     }
 
     return panel;
@@ -261,7 +286,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
         const panel = this.getPickerPanel(picker);
 
         if (!this.isMobile && panel.popup) {
-          this.DOM.setCssProps(panel.popup, this.getOverlayStyles());
+          this.DOM.setCssProps(panel.popup, this.getOverlayStyles(panel.popup));
         }
 
         if (this.isMobile && panel.dialog) {

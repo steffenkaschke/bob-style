@@ -13,7 +13,6 @@ import {
   isString,
   isKey,
   isNumber,
-  cloneObject,
   isNullOrUndefined,
 } from '../../services/utils/functional-utils';
 import { timeyOrFail } from '../../services/utils/transformers';
@@ -31,7 +30,7 @@ interface ParseConfig {
   def?: any;
 }
 
-const ParseConfigDef: ParseConfig = {
+const BTP_PARSE_CONFIG_DEF: ParseConfig = {
   minValue: 0,
   maxValue: undefined,
   mod: 0,
@@ -55,6 +54,7 @@ const ParseConfigDef: ParseConfig = {
       useExisting: forwardRef(() => TimePickerComponent),
       multi: true,
     },
+    { provide: BaseFormElement, useExisting: TimePickerComponent },
   ],
 })
 export class TimePickerComponent extends BaseFormElement {
@@ -74,7 +74,7 @@ export class TimePickerComponent extends BaseFormElement {
       },
     ];
 
-    this.baseValue = '';
+    this.baseValue = null;
   }
 
   @ViewChild('inputHours', { static: true }) inputHours: ElementRef;
@@ -235,11 +235,8 @@ export class TimePickerComponent extends BaseFormElement {
     }
   }
 
-  private parseValue(
-    value: string,
-    config: ParseConfig = cloneObject(ParseConfigDef)
-  ): string {
-    config = { ...ParseConfigDef, ...config };
+  private parseValue(value: string, config: ParseConfig = {} as any): string {
+    config = { ...BTP_PARSE_CONFIG_DEF, ...config };
 
     const parsed = parseInt(value, 10);
     if (parsed !== parsed) {

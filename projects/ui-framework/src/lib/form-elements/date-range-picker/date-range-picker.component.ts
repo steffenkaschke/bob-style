@@ -31,6 +31,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { DatepickerType } from '../datepicker/datepicker.enum';
 import { lastDayOfMonth, startOfMonth } from 'date-fns';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
+import { BaseFormElement } from '../base-form-element';
 
 interface DateRangePickerValueLocal {
   startDate: Date | string;
@@ -79,6 +80,7 @@ export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
       deps: [Overlay],
       useFactory: CLOSE_SCROLL_STRATEGY_FACTORY,
     },
+    { provide: BaseFormElement, useExisting: DateRangePickerComponent },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

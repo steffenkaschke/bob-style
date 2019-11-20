@@ -51,7 +51,7 @@ const note = `
   [disabled] | boolean | Disabled mode | false
   [readOnly] | boolean | Set slider to read only | false
   [labelSymbol] | string | The symbol for the label | '%'
-  (progressChange) | EventEmitter&lt;MatSliderChange&gt; | Progress change event | &nbsp;
+  (progressChange) | EventEmitter<wbr>&lt;MatSliderChange&gt; | Progress change event | &nbsp;
 
   ~~~
   ${template}
