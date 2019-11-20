@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AutoCompletePanelComponent } from './auto-complete-panel.component';
-import { ListKeyboardService } from '../../../form-elements/lists/list-service/list-keyboard.service';
+import { ListKeyboardService } from '../../../lists/list-service/list-keyboard.service';
 import { AutoCompleteOption } from '../auto-complete.interface';
 import { By } from '@angular/platform-browser';
 import { ScrollingModule } from '@angular/cdk/scrolling';

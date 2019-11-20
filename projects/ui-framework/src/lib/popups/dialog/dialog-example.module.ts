@@ -8,7 +8,7 @@ import { ButtonsModule } from '../../buttons/buttons.module';
 import { FormElementsModule } from '../../form-elements/form-elements.module';
 import { InputEventType } from '../../form-elements/form-elements.enum';
 import { InputEvent } from '../../form-elements/input/input.interface';
-import { SelectGroupOption } from '../../form-elements/lists/list.interface';
+import { SelectGroupOption } from '../../lists/list.interface';
 import { DialogSize } from './dialog.enum';
 import { DialogButtons } from './dialog.interface';
 
@@ -34,13 +34,15 @@ a note on what types are.`,
   constructor(private dialogService: DialogService) {}
 
   openDialog1(): void {
-    const dialogRef: MatDialogRef<
-      ExampleDialog1Component
-    > = this.dialogService.openDialog(ExampleDialog1Component, {
-      size: DialogSize.large,
-      panelClass: 'dialog-example-1',
-      data: this.dataMock,
-    });
+    const dialogRef: MatDialogRef<ExampleDialog1Component> = this.dialogService.openDialog(
+    // tslint:disable-next-line: no-use-before-declare
+      ExampleDialog1Component,
+      {
+        size: DialogSize.large,
+        panelClass: 'dialog-example-1',
+        data: this.dataMock,
+      }
+    );
 
     dialogRef.beforeClosed().subscribe(res => {
       console.log('res', res);
@@ -48,13 +50,15 @@ a note on what types are.`,
   }
 
   openDialog2(): void {
-    const dialogRef: MatDialogRef<
-      ExampleDialog2Component
-    > = this.dialogService.openDialog(ExampleDialog2Component, {
-      size: DialogSize.small,
-      panelClass: 'dialog-example-2',
-      data: {},
-    });
+    const dialogRef: MatDialogRef<ExampleDialog2Component> = this.dialogService.openDialog(
+    // tslint:disable-next-line: no-use-before-declare
+      ExampleDialog2Component,
+      {
+        size: DialogSize.small,
+        panelClass: 'dialog-example-2',
+        data: {},
+      }
+    );
   }
 }
 

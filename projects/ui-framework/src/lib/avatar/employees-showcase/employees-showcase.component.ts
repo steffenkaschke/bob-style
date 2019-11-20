@@ -20,9 +20,9 @@ import { Icons } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { interval, Subscription } from 'rxjs';
 import { assign, cloneDeep, floor, invoke, random } from 'lodash';
-import { SelectGroupOption } from '../../form-elements/lists/list.interface';
+import { SelectGroupOption } from '../../lists/list.interface';
 import { AvatarComponent } from '../avatar/avatar.component';
-import { ListChange } from '../../form-elements/lists/list-change/list-change';
+import { ListChange } from '../../lists/list-change/list-change';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 
 const SHUFFLE_EMPLOYEES_INTERVAL = 3000;

@@ -14,12 +14,12 @@ import { IconComponent } from '../../icons/icon.component';
 import { CommonModule } from '@angular/common';
 import { ChipComponent } from '../chip/chip.component';
 import { makeArray } from '../../services/utils/functional-utils';
-import { MultiListModule } from '../../form-elements/lists/multi-list/multi-list.module';
+import { MultiListModule } from '../../lists/multi-list/multi-list.module';
 import { ChipListComponent } from '../chip-list/chip-list.component';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { cloneDeep } from 'lodash';
-import { ListChange } from '../../form-elements/lists/list-change/list-change';
+import { ListChange } from '../../lists/list-change/list-change';
 
 describe('MultiListAndChipsComponent', () => {
   let component: MultiListAndChipsComponent;

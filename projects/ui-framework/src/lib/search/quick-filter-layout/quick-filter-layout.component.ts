@@ -31,7 +31,7 @@ import { simpleChange } from '../../services/utils/test-helpers';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { keyBy, cloneDeep } from 'lodash';
-import { ListChange } from '../../form-elements/lists/list-change/list-change';
+import { ListChange } from '../../lists/list-change/list-change';
 import { IGNORE_EVENTS_DEF } from '../../form-elements/form-elements.const';
 
 @Component({

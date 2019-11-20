@@ -17,7 +17,7 @@ import { TypographyModule } from '../../typography/typography.module';
 import { RichTextEditorModule } from './rte.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BlotType, RTEType } from './rte-core/rte.enum';
-import { SelectGroupOption } from '../lists/list.interface';
+import { SelectGroupOption } from '../../lists/list.interface';
 import { placeholderMock } from './rte-placeholder/rte-placeholder.mock';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(

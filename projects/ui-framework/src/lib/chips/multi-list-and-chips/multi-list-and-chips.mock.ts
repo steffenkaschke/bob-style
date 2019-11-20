@@ -1,7 +1,7 @@
 import {
   SelectGroupOption,
   SelectOption,
-} from '../../form-elements/lists/list.interface';
+} from '../../lists/list.interface';
 import {
   simpleUID,
   randomNumber,

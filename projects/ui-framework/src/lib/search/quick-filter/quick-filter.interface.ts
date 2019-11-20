@@ -1,6 +1,6 @@
-import { SelectGroupOption } from '../../form-elements/lists/list.interface';
+import { SelectGroupOption } from '../../lists/list.interface';
 import { QuickFilterSelectType } from './quick-filter.enum';
-import { ListChange } from '../../form-elements/lists/list-change/list-change';
+import { ListChange } from '../../lists/list-change/list-change';
 
 export interface QuickFilterConfig {
   key: string;

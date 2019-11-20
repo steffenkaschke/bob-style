@@ -14,10 +14,10 @@ import {
 } from './quick-filter.interface';
 import { QuickFilterSelectType } from './quick-filter.enum';
 import has from 'lodash/has';
-import { SingleSelectComponent } from '../../form-elements/lists/single-select/single-select.component';
-import { MultiSelectComponent } from '../../form-elements/lists/multi-select/multi-select.component';
-import { ListChange } from '../../form-elements/lists/list-change/list-change';
-import { ListModelService } from '../../form-elements/lists/list-service/list-model.service';
+import { SingleSelectComponent } from '../../lists/single-select/single-select.component';
+import { MultiSelectComponent } from '../../lists/multi-select/multi-select.component';
+import { ListChange } from '../../lists/list-change/list-change';
+import { ListModelService } from '../../lists/list-service/list-model.service';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
 @Component({
