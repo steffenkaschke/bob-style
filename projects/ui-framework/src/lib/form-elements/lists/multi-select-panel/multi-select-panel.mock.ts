@@ -1,4 +1,5 @@
 import { SelectGroupOption } from '../list.interface';
+import { randomNumber } from '../../../services/utils/functional-utils';
 
 export const selectOptionsMock: SelectGroupOption[] = [
   {
@@ -8,24 +9,24 @@ export const selectOptionsMock: SelectGroupOption[] = [
       {
         value: 'First name',
         id: 'root/firstName',
-        selected: false
+        selected: false,
       },
       {
         value: 'Last name',
         id: 'root/lastName',
-        selected: false
+        selected: false,
       },
       {
         value: 'Full name',
         id: 'root/fullName',
-        selected: false
+        selected: false,
       },
       {
         value: 'Display name',
         id: 'root/displayName',
-        selected: false
-      }
-    ]
+        selected: false,
+      },
+    ],
   },
   {
     groupName: 'Personal',
@@ -34,19 +35,19 @@ export const selectOptionsMock: SelectGroupOption[] = [
       {
         value: 'Personal email',
         id: 'personal/personalEmail',
-        selected: false
+        selected: false,
       },
       {
         value: 'Personal phone',
         id: 'personal/personalPhone',
-        selected: false
+        selected: false,
       },
       {
         value: 'Personal mobile',
         id: 'personal/personalMobile',
-        selected: false
-      }
-    ]
+        selected: false,
+      },
+    ],
   },
   {
     groupName: 'Work',
@@ -55,29 +56,29 @@ export const selectOptionsMock: SelectGroupOption[] = [
       {
         value: 'Title',
         id: 'work/title',
-        selected: false
+        selected: false,
       },
       {
         value: 'Team',
         id: 'work/team',
-        selected: false
+        selected: false,
       },
       {
         value: 'Reports to',
         id: 'work/reportsTo',
-        selected: false
+        selected: false,
       },
       {
         value: 'Start date',
         id: 'work/startDate',
-        selected: false
+        selected: false,
       },
       {
         value: 'Site',
         id: 'work/siteId',
-        selected: false
-      }
-    ]
+        selected: false,
+      },
+    ],
   },
   {
     groupName: 'Address',
@@ -86,18 +87,29 @@ export const selectOptionsMock: SelectGroupOption[] = [
       {
         value: 'City',
         id: 'address/city',
-        selected: false
+        selected: false,
       },
       {
         value: 'Country',
         id: 'address/country',
-        selected: false
+        selected: false,
       },
       {
         value: 'State',
         id: 'address/state',
-        selected: false
-      }
-    ]
-  }
+        selected: false,
+      },
+    ],
+  },
 ];
+
+export const selectOptionsMockDef: SelectGroupOption[] = selectOptionsMock.map(
+  group => ({
+    ...group,
+    options: group.options.map(option => ({
+      ...option,
+      selected: randomNumber() > 80,
+      disabled: randomNumber() > 90,
+    })),
+  })
+);
