@@ -13,8 +13,12 @@ import { Icons } from '../../../icons/icons.enum';
 import { MultiSelectPanelModule } from './multi-select-panel.module';
 import { ButtonType } from '../../../buttons/buttons.enum';
 import { action } from '@storybook/addon-actions';
-import { selectOptionsMock } from './multi-select-panel.mock';
+import {
+  selectOptionsMock,
+  selectOptionsMockDef,
+} from './multi-select-panel.mock';
 import { cloneDeep } from 'lodash';
+import { SelectGroupOption } from '../list.interface';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -24,6 +28,7 @@ const componentTemplate1 = `
 <b-multi-select-panel [chevronButtonText]="chevronButtonText"
                       [disabled]="disabled"
                       [options]="options"
+                      [optionsDefault]="optionsDefault"
                       (selectChange)="selectChange($event)">
 </b-multi-select-panel>
 `;
@@ -59,7 +64,10 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | ---
   [chevronButtonText] | string | text to be displayed in chevron-button | null - can use transclude instead
-  [options] | SelectGroupOptions[] | select option | null
+  [options] | SelectGroupOptions[] | select option | &nbsp;
+  [optionsDefault] |  SelectGroupOption[] | default options. \
+  if present, the Clear button (if enabled) will be replaced with Reset button, that will set the state \
+  to optionsDefault | &nbsp;
   [disabled] | boolean | if panel is disabled | false
   (selectChange) | ListChange | output on select change | &nbsp;
   (opened) | EventEmitter&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
@@ -76,6 +84,8 @@ const note = `
 
 const optionsMock = cloneDeep(selectOptionsMock);
 
+const optionsDef = cloneDeep(selectOptionsMockDef);
+
 optionsMock[0].options[1].selected = true;
 
 story.add(
@@ -86,7 +96,12 @@ story.add(
       props: {
         chevronButtonText: text('chevronButtonText', 'Select field', 'Props'),
         disabled: boolean('disabled', false, 'Props'),
-        options: object('options', optionsMock, 'Options'),
+        options: object<SelectGroupOption>('options', optionsMock, 'Options'),
+        optionsDefault: object<SelectGroupOption>(
+          'optionsDefault',
+          optionsDef,
+          'Options'
+        ),
         selectChange: action('Multi select panel change'),
       },
       moduleMetadata: {
