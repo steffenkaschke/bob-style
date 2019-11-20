@@ -7,13 +7,7 @@ import { BasicListActionDirective } from './basic-list-action/basic-list-action.
   templateUrl: './basic-list.component.html',
   styleUrls: ['./basic-list.component.scss']
 })
-export class BasicListComponent implements OnInit {
+export class BasicListComponent {
   @Input() items: BasicListItem[];
-
   @ContentChild(BasicListActionDirective, { static: true }) contentChild !: BasicListActionDirective;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 }

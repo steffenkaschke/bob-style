@@ -1,8 +1,8 @@
-<ol>
-  <li *ngFor="let item of items; index as i">
-    <b-icon [icon]="item.icon"></b-icon>
-    <span>{{item.label}}</span>
-    <div class="action-container">
+<ol class="bbl-list">
+  <li class="bbl-list__item" *ngFor="let item of items; index as i">
+    <b-icon class="bbl-list__item__icon" [icon]="item.icon"></b-icon>
+    <span class="bbl-list__item__label" data-max-lines="2">{{item.label}}</span>
+    <div class="bbl-list__item__action-container">
       <ng-container
         *ngTemplateOutlet="contentChild?.tpl; context: { item: item, index: i }">
       </ng-container>
