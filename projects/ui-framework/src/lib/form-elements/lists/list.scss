@@ -30,54 +30,49 @@
   z-index: 2;
   pointer-events: none;
 
-  .headers-group {
-    .header {
-      position: relative;
-      z-index: 2;
-      pointer-events: all;
-      position: sticky;
-      top: 0;
-      background-color: $white;
-      border-top: 1px solid $grey-300;
-      border-bottom: 1px solid $grey-300;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      user-select: none;
+  .headers-group .header {
+    position: relative;
+    z-index: 2;
+    pointer-events: all;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    user-select: none;
+    box-shadow: 0 -1px 0 0px $grey-500, 0 1px 0 0px $grey-500;
 
-      &.clickable {
-        cursor: pointer;
-      }
+    &.clickable {
+      cursor: pointer;
+    }
 
-      &.has-hover,
-      &.clickable {
-        &:hover,
-        &.focus {
-          background-color: $grey-100;
-        }
-      }
-
-      .header-collapse-trigger {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-      }
-
-      .chevron {
-        &:before {
-          display: flex;
-          justify-content: center;
-          width: 12px;
-          margin-right: 5px;
-        }
+    &.has-hover,
+    &.clickable {
+      &:hover,
+      &.focus {
+        background-color: $grey-100;
       }
     }
-    &:first-child .header {
-      border-top: none;
+
+    .header-collapse-trigger {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .chevron {
+      &:before {
+        display: flex;
+        justify-content: center;
+        width: 12px;
+        margin-left: -1px;
+        margin-right: 7px;
+      }
     }
   }
 }

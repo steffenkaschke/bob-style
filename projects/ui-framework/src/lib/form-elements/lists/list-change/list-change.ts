@@ -1,13 +1,16 @@
-import { chain, concat, map, assign, filter } from 'lodash';
+import { chain, assign, filter } from 'lodash';
 import { SelectGroupOption } from '../list.interface';
 
 export class ListChange {
-  private readonly selectGroupOptions: SelectGroupOption[];
+  public readonly selectGroupOptions: SelectGroupOption[];
+  public readonly selectedIDs: (string | number)[];
 
   constructor(
     selectedGroupOptionsSrc: SelectGroupOption[],
+    selectedIDsSrc: (string | number)[] = null
   ) {
     this.selectGroupOptions = selectedGroupOptionsSrc;
+    this.selectedIDs = selectedIDsSrc || this.getSelectedIds();
   }
 
   getSelectGroupOptions(): SelectGroupOption[] {
@@ -24,9 +27,11 @@ export class ListChange {
 
   getSelectedGroupOptions(): SelectGroupOption[] {
     return chain(this.selectGroupOptions)
-      .map((groupOptions: SelectGroupOption) => assign({},
-        groupOptions,
-        { options: filter(groupOptions.options, option => option.selected) }))
+      .map((groupOptions: SelectGroupOption) =>
+        assign({}, groupOptions, {
+          options: filter(groupOptions.options, option => option.selected),
+        })
+      )
       .filter(groupOption => groupOption.options.length)
       .value();
   }

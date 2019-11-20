@@ -16,10 +16,15 @@
 }
 
 :host ::ng-deep {
+  .header-option,
   .option {
     .bchk-label,
     .bchk-label:before {
       pointer-events: none;
     }
   }
+}
+
+.header-selected-count {
+  margin-left: 5px;
 }

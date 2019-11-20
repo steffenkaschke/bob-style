@@ -22,8 +22,7 @@ const template = `
                (selectChange)="selectChange($event)"
                [showSingleGroupHeader]="showSingleGroupHeader">
       <b-text-button footerAction
-        [text]="'Click Me!'"
-        [color]="'primary'">
+        [text]="'Click Me!'">
       </b-text-button>
 </b-single-list>
 `;
@@ -68,8 +67,8 @@ story.add(
     template: storyTemplate,
     props: {
       selectChange: action('Single list change'),
-      showSingleGroupHeader: boolean('showSingleGroupHeader', true),
-      options: object<SelectGroupOption>('options', options),
+      showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+      options: object<SelectGroupOption>('options', options, 'Options'),
     },
     moduleMetadata: {
       imports: [

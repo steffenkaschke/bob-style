@@ -3,7 +3,6 @@ import {
   EventEmitter,
   forwardRef,
   Input,
-  OnInit,
   Output,
   SimpleChanges,
   ViewContainerRef,
@@ -12,9 +11,8 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
-import { assign, chain, includes, map } from 'lodash';
+import { chain, includes } from 'lodash';
 import { PanelPositionService } from '../../../popups/panel/panel-position-service/panel-position.service';
-import { LIST_EL_HEIGHT } from '../list.consts';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -31,6 +29,7 @@ import {
   BELOW_END,
   ABOVE_END,
 } from '../../../popups/panel/panel-position-service/panel-position.const';
+import { isNotEmptyArray } from '../../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-multi-select',
@@ -53,8 +52,7 @@ import {
     },
   ],
 })
-export class MultiSelectComponent extends BaseSelectPanelElement
-  implements OnInit {
+export class MultiSelectComponent extends BaseSelectPanelElement {
   constructor(
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
@@ -78,6 +76,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     this.panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
     this.listActions = {
       clear: true,
+      reset: false,
       apply: true,
     };
   }
@@ -86,6 +85,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement
   truncate: TruncateTooltipComponent;
 
   @Input() showSingleGroupHeader = false;
+  @Input() startWithGroupsCollapsed = true;
+
   @Output() selectModified: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
@@ -93,36 +94,29 @@ export class MultiSelectComponent extends BaseSelectPanelElement
     ListChange
   >();
 
-  triggerValue: string;
-  selectedValuesMap: (number | string)[];
+  public selectedIDs: (number | string)[];
+  public displayValueCount: number;
 
   readonly listActions: ListFooterActions = {
     clear: true,
     apply: true,
   };
-  readonly listElHeight = LIST_EL_HEIGHT;
 
   private listChange: ListChange;
-
-  ngOnInit(): void {
-    this.selectedValuesMap = this.options
-      ? this.getSelectedValuesMap(this.options)
-      : [];
-    this.setTriggerValue();
-  }
 
   // extends BaseSelectPanelElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
     if (changes.options) {
-      this.options = changes.options.currentValue;
-      this.selectedValuesMap = this.getSelectedValuesMap(this.options);
-      this.setTriggerValue();
+      this.selectedIDs = isNotEmptyArray(this.options)
+        ? this.getSelectedIDs(this.options)
+        : [];
+
+      this.setDisplayValue();
     }
   }
 
   onSelect(listChange: ListChange): void {
-    this.selectedValuesMap = listChange.getSelectedIds();
-    this.setTriggerValue();
+    this.selectedIDs = listChange.getSelectedIds();
     this.listChange = listChange;
     this.emitSelectModified(listChange);
   }
@@ -132,51 +126,37 @@ export class MultiSelectComponent extends BaseSelectPanelElement
   }
 
   onCancel(): void {
-    this.selectedValuesMap = this.getSelectedValuesMap(this.options);
-    this.setTriggerValue();
+    this.selectedIDs = this.getSelectedIDs(this.options);
     this.destroyPanel();
     this.selectCancelled.emit(this.getListChange());
   }
 
   onApply(): void {
+    this.setDisplayValue();
     this.emitSelectChange(this.getListChange());
     this.destroyPanel();
   }
 
-  private setTriggerValue(): void {
-    this.triggerValue = this.getTriggerValue(this.selectedValuesMap);
+  private setDisplayValue(): void {
+    this.displayValue = this.getDisplayValue(this.selectedIDs);
+    this.displayValueCount = this.selectedIDs.length;
   }
 
-  private getTriggerValue(selectedValuesMap: (string | number)[]): string {
+  private getDisplayValue(selectedIDs: (string | number)[]): string {
     return chain(this.options)
       .flatMap('options')
-      .filter(option => includes(selectedValuesMap, option.id))
+      .filter(option => includes(selectedIDs, option.id))
       .map('value')
       .join(', ')
       .value();
   }
 
-  private getSelectedValuesMap(
-    options: SelectGroupOption[]
-  ): (number | string)[] {
-    return this.listModelService.getSelectedIdsMap(options);
-  }
-
-  private removeAllSelected(options: SelectGroupOption[]): SelectGroupOption[] {
-    return map(options, g => {
-      return assign({}, g, {
-        options: map(g.options, o => {
-          return assign({}, o, { selected: false });
-        }),
-      });
-    });
+  private getSelectedIDs(options: SelectGroupOption[]): (number | string)[] {
+    return this.listModelService.getSelectedIDs(options);
   }
 
   private getListChange(): ListChange {
-    return this.listChangeService.getListChange(
-      this.options,
-      this.selectedValuesMap
-    );
+    return this.listChangeService.getListChange(this.options, this.selectedIDs);
   }
 
   private emitSelectChange(listChange: ListChange): void {

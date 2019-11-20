@@ -10,6 +10,8 @@ import {
   EventEmitter,
   ElementRef,
   NgZone,
+  SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription } from 'rxjs';
@@ -26,13 +28,21 @@ import { ListKeyboardService } from './list-service/list-keyboard.service';
 import { Keys } from '../../enums';
 import { ListChange } from './list-change/list-change';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { objectHasTruthyValue } from '../../services/utils/functional-utils';
+import {
+  objectHasTruthyValue,
+  applyChanges,
+  isNotEmptyArray,
+} from '../../services/utils/functional-utils';
+import { ListModelService } from './list-service/list-model.service';
+import { ListChangeService } from './list-change/list-change.service';
 
 export abstract class BaseListElement
-  implements OnInit, OnDestroy, AfterViewInit {
+  implements OnChanges, OnInit, OnDestroy, AfterViewInit {
   protected constructor(
     private renderer: Renderer2,
     private listKeyboardService: ListKeyboardService,
+    protected listModelService: ListModelService,
+    protected listChangeService: ListChangeService,
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
     protected DOM: DOMhelpers
@@ -51,13 +61,19 @@ export abstract class BaseListElement
   public searchValue: string;
   public shouldDisplaySearch = false;
   public filteredOptions: SelectGroupOption[];
-  public listActionsState: ListFooterActionsState;
-  private keyDownSubscriber: Subscription;
+  public listActionsState: ListFooterActionsState = {
+    clear: { disabled: false, hidden: true },
+    reset: { disabled: false, hidden: true },
+    apply: { disabled: true, hidden: false },
+  };
   public hasFooter = true;
 
+  protected optionsDefaultIDs: (string | number)[];
+  private keyDownSubscriber: Subscription;
   readonly listElHeight = LIST_EL_HEIGHT;
 
   @Input() options: SelectGroupOption[];
+  @Input() optionsDefault: SelectGroupOption[];
   @Input() listActions: ListFooterActions;
   @Input() maxHeight = this.listElHeight * 8;
   @Input() showSingleGroupHeader = false;
@@ -67,6 +83,20 @@ export abstract class BaseListElement
   >();
   @Output() apply: EventEmitter<ListChange> = new EventEmitter<ListChange>();
   @Output() clear: EventEmitter<void> = new EventEmitter<void>();
+  @Output() reset: EventEmitter<void> = new EventEmitter<void>();
+
+  ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes);
+
+    if (changes.optionsDefault && isNotEmptyArray(this.optionsDefault)) {
+      this.optionsDefaultIDs = this.listModelService.getSelectedIDs(
+        this.optionsDefault
+      );
+
+      this.listActions.clear = false;
+      this.listActions.reset = true;
+    }
+  }
 
   ngOnInit(): void {
     this.focusIndex = -1;
@@ -152,15 +182,26 @@ export abstract class BaseListElement
     });
   }
 
+  optionClick(option: ListOption): void {}
+
+  headerClick(header: ListHeader): void {}
+
   onClear(): void {
     this.clear.emit();
+  }
+
+  onReset(): void {
+    this.reset.emit();
   }
 
   onApply(): void {
     this.apply.emit();
   }
 
-  optionClick(option: ListOption): void {}
-
-  headerClick(header: ListHeader): void {}
+  isSameGroup(
+    group1: Partial<SelectGroupOption> | Partial<ListHeader>,
+    group2: Partial<SelectGroupOption> | Partial<ListHeader>
+  ): boolean {
+    return this.listModelService.isSameGroup(group1, group2);
+  }
 }

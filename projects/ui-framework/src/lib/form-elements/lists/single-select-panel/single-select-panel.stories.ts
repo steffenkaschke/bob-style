@@ -14,6 +14,7 @@ import { SelectGroupOption } from '../list.interface';
 import { SingleSelectPanelModule } from './single-select-panel.module';
 import { ButtonType } from '../../../buttons/buttons.enum';
 import { action } from '@storybook/addon-actions';
+import { mockJobs } from '../../../mock.const';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -75,24 +76,10 @@ const note = `
   ~~~
 `;
 
-const categories = [
-  'Basic info',
-  'Personal',
-  'Personal contact details',
-  'Identification',
-  'Work',
-  'About',
-  'Address',
-  'Financial',
-  'Payroll',
-  'Employment',
-  'Equity',
-];
-
 const optionsMock: SelectGroupOption[] = [
   {
     groupName: 'Categories',
-    options: categories.map(category => {
+    options: mockJobs().map(category => {
       return {
         value: category,
         id: category,
@@ -110,10 +97,14 @@ story.add(
     return {
       template,
       props: {
-        chevronButtonText: text('chevronButtonText', 'Jump to section'),
-        disabled: boolean('disabled', false),
-        panelClass: text('panelClass', 'some-class'),
-        options: object('options', optionsMock),
+        chevronButtonText: text(
+          'chevronButtonText',
+          'Jump to section',
+          'Props'
+        ),
+        disabled: boolean('disabled', false, 'Props'),
+        panelClass: text('panelClass', 'some-class', 'Props'),
+        options: object('options', optionsMock, 'Options'),
         selectChange: action('Single select panel change'),
       },
       moduleMetadata: {
