@@ -32,6 +32,7 @@ import {
   objectHasTruthyValue,
   applyChanges,
   isNotEmptyArray,
+  getEventPath,
 } from '../../services/utils/functional-utils';
 import { ListModelService } from './list-service/list-model.service';
 import { ListChangeService } from './list-change/list-change.service';
@@ -45,7 +46,8 @@ export abstract class BaseListElement
     protected listChangeService: ListChangeService,
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
-    protected DOM: DOMhelpers
+    protected DOM: DOMhelpers,
+    protected host: ElementRef
   ) {}
 
   @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
@@ -103,8 +105,13 @@ export abstract class BaseListElement
     this.keyDownSubscriber = this.listKeyboardService
       .getKeyboardNavigationObservable()
       .subscribe((e: KeyboardEvent) => {
+        if (!getEventPath(e).includes(this.host.nativeElement)) {
+          return;
+        }
+
         switch (e.key) {
           case Keys.arrowdown:
+            e.preventDefault();
             this.focusIndex = this.listKeyboardService.getNextFocusIndex(
               Keys.arrowdown,
               this.focusIndex,
@@ -122,6 +129,7 @@ export abstract class BaseListElement
             }
             break;
           case Keys.arrowup:
+            e.preventDefault();
             this.focusIndex = this.listKeyboardService.getNextFocusIndex(
               Keys.arrowup,
               this.focusIndex,

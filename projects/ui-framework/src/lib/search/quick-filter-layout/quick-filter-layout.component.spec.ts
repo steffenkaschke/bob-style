@@ -10,7 +10,6 @@ import {
   ChangeDetectionStrategy,
   Output,
   EventEmitter,
-  NO_ERRORS_SCHEMA,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { By } from '@angular/platform-browser';
@@ -180,9 +179,7 @@ class TestComponent {
     GenericObject
   >();
 
-  public onFiltersChange($event) {
-    console.log($event);
-  }
+  public onFiltersChange($event) {}
 }
 
 describe('QuickFilterLayoutComponent', () => {
@@ -208,7 +205,6 @@ describe('QuickFilterLayoutComponent', () => {
         SplitInputSingleSelectModule,
       ],
       providers: [],
-      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
