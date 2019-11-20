@@ -6,6 +6,7 @@ import {
   SimpleChanges,
   ChangeDetectorRef,
   NgZone,
+  ElementRef,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { ListHeader, ListOption, SelectOption } from '../list.interface';
@@ -30,7 +31,8 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
     listChangeService: ListChangeService,
     cd: ChangeDetectorRef,
     zone: NgZone,
-    DOM: DOMhelpers
+    DOM: DOMhelpers,
+    host: ElementRef
   ) {
     super(
       renderer,
@@ -39,7 +41,8 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
       listChangeService,
       cd,
       zone,
-      DOM
+      DOM,
+      host
     );
     this.listActions = {
       clear: false,
