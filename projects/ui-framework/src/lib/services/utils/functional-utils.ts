@@ -365,3 +365,8 @@ export const chainCall = <A = any>(
 
 export const arrayFlatten = <T = any>(arr: any[]): T[] =>
   asArray(arr).reduce((acc, val) => acc.concat(val), []);
+
+export const getEventPath = (event: Event): HTMLElement[] =>
+  ((event['path'] as any[]) ||
+    (event.composedPath && (event.composedPath() as any[])) ||
+    []) as HTMLElement[];

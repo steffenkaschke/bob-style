@@ -79,6 +79,7 @@ $input-focus-border-color: $grey-700;
   background: transparent;
   height: $input-height;
   line-height: $input-height;
+  text-overflow: ellipsis;
 }
 
 @mixin bFormElement-label($empty-rule: true) {
