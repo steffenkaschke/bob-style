@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BasicListComponent } from './basic-list.component';
 import { IconsModule } from '../../../icons/icons.module';
-import { TypographyModule } from '../../../typography/typography.module';
 import { BasicListActionDirective } from './basic-list-action/basic-list-action.directive';
 
 @NgModule({
@@ -13,7 +12,6 @@ import { BasicListActionDirective } from './basic-list-action/basic-list-action.
   imports: [
     CommonModule,
     IconsModule,
-    TypographyModule,
   ],
   exports: [
     BasicListComponent,

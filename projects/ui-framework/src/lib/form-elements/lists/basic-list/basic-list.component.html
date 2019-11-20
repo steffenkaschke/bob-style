@@ -1,7 +1,7 @@
 <ol>
   <li *ngFor="let item of items; index as i">
     <b-icon [icon]="item.icon"></b-icon>
-    <b-body>{{item.label}}</b-body>
+    <span>{{item.label}}</span>
     <div class="action-container">
       <ng-container
         *ngTemplateOutlet="contentChild?.tpl; context: { item: item, index: i }">
