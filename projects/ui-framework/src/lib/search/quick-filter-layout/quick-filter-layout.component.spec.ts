@@ -4,16 +4,13 @@ import {
   TestBed,
   fakeAsync,
   tick,
-  flush,
 } from '@angular/core/testing';
 import {
   Component,
   ChangeDetectionStrategy,
   Output,
   EventEmitter,
-  ChangeDetectorRef,
   NO_ERRORS_SCHEMA,
-  DoCheck,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { By } from '@angular/platform-browser';
@@ -36,6 +33,7 @@ import {
   elementFromFixture,
   elementsFromFixture,
   simpleChange,
+  inputValue,
 } from '../../services/utils/test-helpers';
 import { cloneDeep } from 'lodash';
 
@@ -182,10 +180,12 @@ class TestComponent {
     GenericObject
   >();
 
-  public onFiltersChange($event) {}
+  public onFiltersChange($event) {
+    console.log($event);
+  }
 }
 
-fdescribe('QuickFilterLayoutComponent', () => {
+describe('QuickFilterLayoutComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let testComponent: TestComponent;
 
@@ -214,11 +214,11 @@ fdescribe('QuickFilterLayoutComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(TestComponent);
         testComponent = fixture.componentInstance;
-
         fixture.detectChanges();
         QFLcomponent = fixture.debugElement.query(
           By.css('b-quick-filter-layout')
         ).componentInstance;
+        spyOn(QFLcomponent.filtersChange, 'emit').and.callThrough();
       });
   }));
 
@@ -314,5 +314,68 @@ fdescribe('QuickFilterLayoutComponent', () => {
         social: 'changed',
       });
     });
+  });
+
+  describe('Change emitter', () => {
+    it('Should emit initial aggregated values on every element added', () => {
+      expect(QFLcomponent.filtersChange.emit).toHaveBeenCalledTimes(1);
+
+      expect(QFLcomponent.filtersChange.emit).toHaveBeenCalledWith({
+        input: 'Some text',
+        timePicker: null,
+      });
+    });
+
+    it('Should emit  aggregated value when one of the form elements is changed', fakeAsync(() => {
+      const hourInput = elementFromFixture(fixture, '.bfe-input-hours');
+      const minuteInput = elementFromFixture(fixture, '.bfe-input-minutes');
+      const textInput = elementFromFixture(fixture, 'b-input .bfe-input');
+
+      inputValue(hourInput, 22);
+
+      tick(500);
+
+      expect(QFLcomponent.filtersChange.emit).toHaveBeenCalledTimes(2);
+
+      expect(QFLcomponent.filtersChange.emit).toHaveBeenCalledWith({
+        input: 'Some text',
+        timePicker: '22:00',
+      });
+
+      inputValue(textInput, 'Some other text');
+      inputValue(minuteInput, 30);
+
+      tick(500);
+
+      expect(QFLcomponent.filtersChange.emit).toHaveBeenCalledTimes(3);
+
+      expect(QFLcomponent.filtersChange.emit).toHaveBeenCalledWith({
+        input: 'Some other text',
+        timePicker: '22:30',
+      });
+    }));
+
+    it('Should include newly added elements in the emit', fakeAsync(() => {
+      testComponent.showSocial = true;
+      testComponent.quickFilters[3].type = 'twitter';
+
+      fixture.detectChanges();
+
+      const socialInput = elementFromFixture(fixture, 'b-social .bfe-input');
+      const minuteInput = elementFromFixture(fixture, '.bfe-input-minutes');
+
+      inputValue(socialInput, 'donald-trump');
+      inputValue(minuteInput, 30);
+
+      tick(500);
+
+      expect(QFLcomponent.filtersChange.emit).toHaveBeenCalledTimes(2);
+
+      expect(QFLcomponent.filtersChange.emit).toHaveBeenCalledWith({
+        input: 'Some text',
+        timePicker: '00:30',
+        social: 'http://www.twitter.com/donald-trump',
+      });
+    }));
   });
 });
