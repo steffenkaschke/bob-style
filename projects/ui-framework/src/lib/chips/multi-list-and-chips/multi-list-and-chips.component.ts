@@ -7,14 +7,14 @@ import {
   EventEmitter,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { LIST_EL_HEIGHT } from '../../form-elements/lists/list.consts';
+import { LIST_EL_HEIGHT } from '../../lists/list.consts';
 import {
   SelectGroupOption,
   SelectOption,
-} from '../../form-elements/lists/list.interface';
+} from '../../lists/list.interface';
 import { ChipListConfig, Chip } from '../chips.interface';
 import { ChipType } from '../chips.enum';
-import { ListChange } from '../../form-elements/lists/list-change/list-change';
+import { ListChange } from '../../lists/list-change/list-change';
 import { simpleUID, cloneArray } from '../../services/utils/functional-utils';
 import { EmptyStateConfig } from '../../buttons-indicators/empty-state/empty-state.interface';
 

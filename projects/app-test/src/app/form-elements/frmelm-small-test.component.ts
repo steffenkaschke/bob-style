@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { optionsMock } from '../../../../ui-framework/src/lib/form-elements/lists/single-list/single-list.mock';
+import { optionsMock } from '../../../../ui-framework/src/lib/lists/single-list/single-list.mock';
 import { cloneDeep } from 'lodash';
 
 @Component({

@@ -15,7 +15,7 @@ import { BlotType, RTEType } from './rte.enum';
 import { mentionsOptions, placeholderMock } from './rte.mocks';
 import { ComponentGroupType } from '../../../src/lib/consts';
 import { dedupeArray } from '../../../src/lib/services/utils/functional-utils';
-import { SelectGroupOption } from '../../../src/lib/form-elements/lists/list.interface';
+import { SelectGroupOption } from '../../../src/lib/lists/list.interface';
 import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
 import { RichTextEditorModule } from './rte.module';
 import { mockText } from '../../../src/lib/mock.const';

@@ -194,59 +194,59 @@ export {
 // Lists Module
 export {
   SingleListModule
-} from './lib/form-elements/lists/single-list/single-list.module';
+} from './lib/lists/single-list/single-list.module';
 export {
   SingleListComponent
-} from './lib/form-elements/lists/single-list/single-list.component';
+} from './lib/lists/single-list/single-list.component';
 export {
   SingleSelectModule
-} from './lib/form-elements/lists/single-select/single-select.module';
+} from './lib/lists/single-select/single-select.module';
 export {
   SingleSelectComponent
-} from './lib/form-elements/lists/single-select/single-select.component';
+} from './lib/lists/single-select/single-select.component';
 export {
   MultiListModule
-} from './lib/form-elements/lists/multi-list/multi-list.module';
+} from './lib/lists/multi-list/multi-list.module';
 export {
   MultiListComponent
-} from './lib/form-elements/lists/multi-list/multi-list.component';
+} from './lib/lists/multi-list/multi-list.component';
 export {
   MultiSelectModule
-} from './lib/form-elements/lists/multi-select/multi-select.module';
+} from './lib/lists/multi-select/multi-select.module';
 export {
   MultiSelectComponent
-} from './lib/form-elements/lists/multi-select/multi-select.component';
+} from './lib/lists/multi-select/multi-select.component';
 export {
   SelectGroupOption,
   SelectOption,
   ListComponentPrefix,
   ListFooterActions,
   ListFooterActionsState
-} from './lib/form-elements/lists/list.interface';
-export { ListChange } from './lib/form-elements/lists/list-change/list-change';
+} from './lib/lists/list.interface';
+export { ListChange } from './lib/lists/list-change/list-change';
 // Single select panel
-export { SingleSelectPanelModule } from './lib/form-elements/lists/single-select-panel/single-select-panel.module';
+export { SingleSelectPanelModule } from './lib/lists/single-select-panel/single-select-panel.module';
 export {
   SingleSelectPanelComponent,
-} from './lib/form-elements/lists/single-select-panel/single-select-panel.component';
+} from './lib/lists/single-select-panel/single-select-panel.component';
 // Multi select panel
-export { MultiSelectPanelModule } from './lib/form-elements/lists/multi-select-panel/multi-select-panel.module';
+export { MultiSelectPanelModule } from './lib/lists/multi-select-panel/multi-select-panel.module';
 export {
   MultiSelectPanelComponent,
-} from './lib/form-elements/lists/multi-select-panel/multi-select-panel.component';
+} from './lib/lists/multi-select-panel/multi-select-panel.component';
 // Chain select
 export {
   ChainSelectEventEnum
-} from './lib/form-elements/lists/chain-select/chain-select.enum';
+} from './lib/lists/chain-select/chain-select.enum';
 export {
   ChainSelectEvent
-} from './lib/form-elements/lists/chain-select/chain-select.interface';
+} from './lib/lists/chain-select/chain-select.interface';
 export {
   ChainSelectComponent
-} from './lib/form-elements/lists/chain-select/chain-select.component';
+} from './lib/lists/chain-select/chain-select.component';
 export {
   ChainSelectModule
-} from './lib/form-elements/lists/chain-select/chain-select.module';
+} from './lib/lists/chain-select/chain-select.module';
 // Rich Text Editor
 export {
   RichTextEditorModule
@@ -520,7 +520,7 @@ export { HtmlParserHelpers } from './lib/services/html/html-parser.service';
 // Transformers
 export * from './lib/services/utils/transformers';
 // Mocks
-export { selectOptionsMock } from './lib/form-elements/lists/multi-select-panel/multi-select-panel.mock';
+export { selectOptionsMock } from './lib/lists/multi-select-panel/multi-select-panel.mock';
 
 /*
 * Animation

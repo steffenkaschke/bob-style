@@ -18,9 +18,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { QuickFilterLayoutModule } from '../../../../ui-framework/src/lib/search/quick-filter-layout/quick-filter-layout.module';
 import { InputModule } from '../../../../ui-framework/src/lib/form-elements/input/input.module';
 // tslint:disable-next-line: max-line-length
-import { MultiSelectModule } from '../../../../ui-framework/src/lib/form-elements/lists/multi-select/multi-select.module';
+import { MultiSelectModule } from '../../../../ui-framework/src/lib/lists/multi-select/multi-select.module';
 // tslint:disable-next-line: max-line-length
-import { SingleSelectModule } from '../../../../ui-framework/src/lib/form-elements/lists/single-select/single-select.module';
+import { SingleSelectModule } from '../../../../ui-framework/src/lib/lists/single-select/single-select.module';
 import { SocialModule } from '../../../../ui-framework/src/lib/form-elements/social/social.module';
 // tslint:disable-next-line: max-line-length
 import { DateRangePickerModule } from '../../../../ui-framework/src/lib/form-elements/date-range-picker/date-range-picker.module';
@@ -40,9 +40,9 @@ import {
   InputTypes,
 } from '../../../../ui-framework/src/public_api';
 // tslint:disable-next-line: max-line-length
-import { optionsMock as SSoptionsMock } from '../../../../ui-framework/src/lib/form-elements/lists/single-list/single-list.mock';
+import { optionsMock as SSoptionsMock } from '../../../../ui-framework/src/lib/lists/single-list/single-list.mock';
 // tslint:disable-next-line: max-line-length
-import { optionsMock as MSoptionsMock } from '../../../../ui-framework/src/lib/form-elements/lists/multi-list/multi-list.mock';
+import { optionsMock as MSoptionsMock } from '../../../../ui-framework/src/lib/lists/multi-list/multi-list.mock';
 import { Social } from '../../../../ui-framework/src/lib/form-elements/social/social.enum';
 
 const deselectOptions = options =>

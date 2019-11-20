@@ -17,8 +17,8 @@ import {
   QuickFilterConfig,
 } from './quick-filter.interface';
 import { chain, has } from 'lodash';
-import { ListChangeService } from '../../form-elements/lists/list-change/list-change.service';
-import { ListModelService } from '../../form-elements/lists/list-service/list-model.service';
+import { ListChangeService } from '../../lists/list-change/list-change.service';
+import { ListModelService } from '../../lists/list-service/list-model.service';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { animate, style, transition, trigger } from '@angular/animations';

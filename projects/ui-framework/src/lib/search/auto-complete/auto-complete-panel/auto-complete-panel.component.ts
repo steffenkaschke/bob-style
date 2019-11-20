@@ -10,12 +10,12 @@ import {
   ViewChild,
   ChangeDetectorRef,
 } from '@angular/core';
-import { LIST_EL_HEIGHT } from '../../../form-elements/lists/list.consts';
+import { LIST_EL_HEIGHT } from '../../../lists/list.consts';
 import { AutoCompleteOption } from '../auto-complete.interface';
 import { has } from 'lodash';
 import { Subscription } from 'rxjs';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { ListKeyboardService } from '../../../form-elements/lists/list-service/list-keyboard.service';
+import { ListKeyboardService } from '../../../lists/list-service/list-keyboard.service';
 import { Keys } from '../../../enums';
 
 import { SearchComponent } from '../../search/search.component';
