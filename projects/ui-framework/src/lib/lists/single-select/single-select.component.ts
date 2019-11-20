@@ -30,7 +30,7 @@ import { isNullOrUndefined } from '../../services/utils/functional-utils';
   selector: 'b-single-select',
   templateUrl: 'single-select.component.html',
   styleUrls: [
-    '../../input/input.component.scss',
+    '../../form-elements/input/input.component.scss',
     'single-select.component.scss',
   ],
   providers: [

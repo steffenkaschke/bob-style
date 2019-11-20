@@ -36,7 +36,7 @@ import { isNotEmptyArray } from '../../services/utils/functional-utils';
   selector: 'b-multi-select',
   templateUrl: 'multi-select.component.html',
   styleUrls: [
-    '../../input/input.component.scss',
+    '../../form-elements/input/input.component.scss',
     '../single-select/single-select.component.scss',
     'multi-select.component.scss',
   ],
