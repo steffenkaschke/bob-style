@@ -72,8 +72,9 @@ const note = `
   to optionsDefault | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | false
   [startWithGroupsCollapsed] | boolean | if should start with groups closed | true
-  [listActions] | ListFooterActions | enable/disable footer \
-  action buttons (clear, apply) | { clear:&nbsp;true, apply:&nbsp;true }
+  [listActions] | ListFooterActions / string | enable/disable footer action buttons\
+   (clear, apply, reset). If you provide a string, \
+   it will be used for button text, instead of default. | { clear:&nbsp;true, apply:&nbsp;true }
   (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
   (selectModified) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
   (selectCancelled) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;

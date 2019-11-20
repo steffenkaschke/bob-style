@@ -36,6 +36,10 @@ const componentTemplate1 = `
 const componentTemplate2 = `
 <b-multi-select-panel [options]="options"
                       [disabled]="disabled"
+                      [listActions]="{
+                        clear: 'Clear selection',
+                        apply: 'Lets go'
+                      }"
                       (selectChange)="selectChange($event)">
     <b-square-button  [disabled]="disabled"
                       type="${ButtonType.secondary}"
@@ -68,6 +72,9 @@ const note = `
   [optionsDefault] |  SelectGroupOption[] | default options. \
   if present, the Clear button (if enabled) will be replaced with Reset button, that will set the state \
   to optionsDefault | &nbsp;
+  [listActions] | ListFooterActions / string | enable/disable footer action buttons\
+   (clear, apply, reset). If you provide a string, \
+   it will be used for button text, instead of default. | { clear:&nbsp;true, apply:&nbsp;true }
   [disabled] | boolean | if panel is disabled | false
   (selectChange) | ListChange | output on select change | &nbsp;
   (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;

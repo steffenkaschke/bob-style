@@ -39,10 +39,10 @@ export interface ListComponentPrefix {
 }
 
 export interface ListFooterActions {
-  apply?: boolean;
-  clear?: boolean;
-  reset?: boolean;
-  cancel?: boolean;
+  apply?: boolean | string;
+  clear?: boolean | string;
+  reset?: boolean | string;
+  cancel?: boolean | string;
 }
 
 export interface ActionsButtonState {
