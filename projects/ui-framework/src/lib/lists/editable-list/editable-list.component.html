@@ -73,7 +73,7 @@
         </b-button>
         <b-button *ngIf="allowedActions.sort"
                   class="bel-remove-button"
-                  [type]="buttonType.primary"
+                  [type]="buttonType.negative"
                   [size]="buttonSize.small"
                   (clicked)="removeItem(item.id, true)">
           Remove
