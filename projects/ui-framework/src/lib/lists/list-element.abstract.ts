@@ -96,7 +96,10 @@ export abstract class BaseListElement
       );
 
       this.listActions.clear = false;
-      this.listActions.reset = true;
+      this.listActions.reset =
+        typeof this.listActions.reset === 'string'
+          ? this.listActions.reset
+          : true;
     }
   }
 

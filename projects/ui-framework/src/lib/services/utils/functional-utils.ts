@@ -370,3 +370,21 @@ export const getEventPath = (event: Event): HTMLElement[] =>
   ((event['path'] as any[]) ||
     (event.composedPath && (event.composedPath() as any[])) ||
     []) as HTMLElement[];
+
+export const arrOfObjSortByProp = (
+  arr: GenericObject[],
+  prop: string,
+  asc = true
+): GenericObject[] => {
+  arr.sort((a: GenericObject, b: GenericObject) => {
+    const x = a[prop].toLowerCase();
+    const y = b[prop].toLowerCase();
+    return x < y ? -1 : x > y ? 1 : 0;
+  });
+
+  if (!asc) {
+    arr.reverse();
+  }
+
+  return arr;
+};

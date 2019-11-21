@@ -5,20 +5,22 @@
             [size]="buttonSize.small"
             [icon]="icons.add"
             [text]="allowedActions.add!==true ? allowedActions.add : 'Add'"
+            [disabled]="editingNewItem"
             (clicked)="addItem()">
   </b-button>
 
-  <button *ngIf="allowedActions.sort"
-          type="button"
-          class="bel-reset-button"
-          [ngClass]="{'custom-sorting':listIsAscending === undefined}"
-          (click)="sortList()">
-    {{listIsAscending === undefined || listIsAscending === true ?
-      'A - Z' : 'Z - A'}}
-
-    <b-icon [icon]="listIsAscending === undefined || listIsAscending === true ? icons.download : icons.upload"
-            [size]="iconSize.medium"></b-icon>
-  </button>
+  <b-button *ngIf="allowedActions.sort"
+            class="bel-reset-button"
+            [type]="buttonType.tertiary"
+            [size]="buttonSize.small"
+            [icon]="listIsAscending === undefined || listIsAscending === true ? icons.sort_asc : icons.sort_desc"
+            [ngClass]="{'custom-sorting':listIsAscending === undefined}"
+            (clicked)="sortList()">
+    {{listIsAscending === undefined
+      ? 'Custom' :
+        listIsAscending === true ?
+          'A - Z' : 'Z - A'}}
+  </b-button>
 
 </header>
 
@@ -26,6 +28,7 @@
                       [orientation]="'vertical'"
                       [lockAxis]="'y'"
                       [dragClass]="'bel-item-dragged'"
+                      [dropClass]="'bel-item-dropped'"
                       [nonDragAreaSelector]="'.bel-item-input.edit-mode'"
                       (drop)="onDrop($event)">
 
@@ -33,7 +36,10 @@
                         role="listitem">
 
     <div class="bel-item b-icon-drag-alt b-icon-medium b-icon-dark"
-         [ngClass]="{'edit-mode': !item.readonly, focused: item.focused}"
+         [ngClass]="{
+           'edit-mode': !item.readonly,
+           focused: item.focused
+         }"
          [attr.data-item-id]="item.id">
 
       <input #itemEditInputs

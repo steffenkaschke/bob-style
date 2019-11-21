@@ -77,3 +77,13 @@ $sizeLarge: 44px;
     @include Button(disabled, $basics: false);
   }
 }
+
+@mixin button-icon-right($padding: 15px) {
+  flex-direction: row-reverse;
+  padding-left: $padding;
+  padding-right: $padding - 3px;
+  &:before {
+    margin-right: 0;
+    margin-left: 6px;
+  }
+}

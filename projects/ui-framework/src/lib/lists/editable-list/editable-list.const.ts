@@ -7,7 +7,6 @@ export const EDITABLE_LIST_MENU_LABELS = {
 
 export const EDITABLE_LIST_ALLOWED_ACTIONS_DEF: EditableListActions = {
   sort: true,
-  drag: true,
   edit: true,
   add: true,
   remove: true,

@@ -10,7 +10,6 @@ export interface EditableListViewItem {
 
 export interface EditableListActions {
   sort?: boolean;
-  drag?: boolean;
   edit?: boolean;
   add?: boolean | string;
   remove?: boolean;

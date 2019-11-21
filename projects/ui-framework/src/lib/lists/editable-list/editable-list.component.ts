@@ -12,11 +12,12 @@ import {
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
+  ViewChild,
 } from '@angular/core';
 import { SelectOption } from '../list.interface';
 
-import { DropResult } from 'ngx-smooth-dnd';
-import { Icons, IconSize } from '../../icons/icons.enum';
+import { DropResult, ContainerComponent } from 'ngx-smooth-dnd';
+import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
 import {
   EditableListViewItem,
@@ -29,6 +30,7 @@ import {
   cloneObject,
   simpleUID,
   isKey,
+  arrOfObjSortByProp,
 } from '../../services/utils/functional-utils';
 import { simpleChange } from '../../services/utils/test-helpers';
 import { cloneDeep } from 'lodash';
@@ -68,7 +70,8 @@ export const applyDrag = (arr, dragResult) => {
 export class EditableListComponent implements OnChanges, OnInit {
   constructor(private cd: ChangeDetectorRef) {}
 
-  @ViewChildren('itemEditInputs') itemEditInputs: QueryList<ElementRef>;
+  @ViewChildren('itemEditInputs')
+  itemEditInputs: QueryList<ElementRef>;
 
   @Input() list: SelectOption[] = [];
   @Input() allowedActions: EditableListActions = cloneObject(
@@ -83,9 +86,11 @@ export class EditableListComponent implements OnChanges, OnInit {
   public updatedList: SelectOption[];
 
   public listIsAscending: boolean;
+  public editingNewItem = false;
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
 
@@ -105,6 +110,7 @@ export class EditableListComponent implements OnChanges, OnInit {
   @HostListener('focusout', ['$event'])
   onHostBlur($event: FocusEvent) {
     const target = $event.target as HTMLInputElement;
+
     if (
       this.allowedActions.edit &&
       target.matches('.bel-item-input:not([readonly])')
@@ -174,8 +180,6 @@ export class EditableListComponent implements OnChanges, OnInit {
   }
 
   onDrop(dropResult: DropResult) {
-    console.log(dropResult);
-
     this.listIsAscending = undefined;
     this.listViewModel = applyDrag(this.listViewModel, dropResult);
     this.transmit();
@@ -192,12 +196,12 @@ export class EditableListComponent implements OnChanges, OnInit {
       this.listViewModel[index].readonly = false;
       this.listViewModel[index].focused = true;
       input.focus();
-
       input.selectionStart = input.selectionEnd = input.value.length;
     }
   }
 
   itemEditDone(id: string | number, $event: Event): void {
+    this.editingNewItem = false;
     const item = this.getItemByID(id) as EditableListViewItem;
     const input = $event.target as HTMLInputElement;
     if (item) {
@@ -207,21 +211,28 @@ export class EditableListComponent implements OnChanges, OnInit {
     if (item && Boolean(input.value.trim())) {
       item.value = input.value;
       this.transmit();
+    } else if (item) {
+      this.removeItem(id);
     }
   }
 
   itemEditCancel(id: string | number, $event: Event): void {
+    this.editingNewItem = false;
     const item = this.getItemByID(id) as EditableListViewItem;
     const input = $event.target as HTMLInputElement;
-    if (item) {
+
+    if (item && !Boolean(item.value) && !Boolean(input.value.trim())) {
+      this.removeItem(id);
+    } else if (item) {
       item.readonly = true;
       item.focused = false;
+      input.value = item.value;
     }
-    input.value = item.value;
   }
 
   public addItem(): void {
-    const id = simpleUID('', 10);
+    this.editingNewItem = true;
+    const id = simpleUID('new-');
     this.listViewModel.unshift({
       id: id,
       value: '',
@@ -238,21 +249,23 @@ export class EditableListComponent implements OnChanges, OnInit {
     input.focus();
   }
 
-  public removeItem(id: string | number) {
+  public removeItem(
+    id: string | number,
+    list: (EditableListViewItem | SelectOption)[] = this.listViewModel
+  ) {
+    this.editingNewItem = false;
     const index = this.getItemIndexByID(id);
-    this.listViewModel.splice(index, 1);
-    this.transmit();
+    if (index > -1) {
+      list.splice(index, 1);
+      this.transmit();
+    }
   }
 
-  public sortList(): void {
-    this.listViewModel.sort((a, b) => {
-      const x = a.value.toLowerCase();
-      const y = b.value.toLowerCase();
-      return x < y ? -1 : x > y ? 1 : 0;
-    });
-    if (this.listIsAscending === true) {
-      this.listViewModel.reverse();
-    }
+  public sortList(
+    list: (EditableListViewItem | SelectOption)[] = this.listViewModel
+  ): void {
+    arrOfObjSortByProp(list, 'value', this.listIsAscending !== true);
+
     this.listIsAscending = !this.listIsAscending;
     this.transmit();
   }
@@ -280,29 +293,35 @@ export class EditableListComponent implements OnChanges, OnInit {
     return list.find(i => compareAsStrings(i.id, id));
   }
 
-  private transmit(value: SelectOption[] = null): void {
+  private transmit(
+    value: SelectOption[] = null,
+    list: (EditableListViewItem | SelectOption)[] = this.listViewModel
+  ): SelectOption[] {
     this.updatedList =
       value !== null
         ? cloneDeep(value)
-        : this.listViewModel
+        : list
             .filter(item => Boolean(item.value.trim()))
             .map((item: EditableListViewItem) => ({
               ...this.getItemByID(item.id, this.list),
-              id: item.id,
               value: item.value,
             }));
     this.changed.emit(this.updatedList);
+    return this.updatedList;
   }
 
-  private getItemMenu(id: string | number): MenuItem[] {
+  private getItemMenu(
+    id: string | number,
+    allowedActions: EditableListActions = this.allowedActions
+  ): MenuItem[] {
     const menu: MenuItem[] = [];
-    if (this.allowedActions.edit) {
+    if (allowedActions.edit) {
       menu.push({
         label: EDITABLE_LIST_MENU_LABELS.edit,
         action: () => this.itemEditEnable(id),
       });
     }
-    if (this.allowedActions.remove) {
+    if (allowedActions.remove) {
       menu.push({
         label: EDITABLE_LIST_MENU_LABELS.remove,
         action: () => this.removeItem(id),
