@@ -43,8 +43,7 @@
              [value]="item.value"
              [readonly]="item.readonly"
              autocomplete="off"
-             [attr.data-item-id]="item.id"
-             (blur)="itemEditDone(item.id, $event)">
+             [attr.data-item-id]="item.id">
 
       <b-menu *ngIf="item.menu"
               [menu]="item.menu"

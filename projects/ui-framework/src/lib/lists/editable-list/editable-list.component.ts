@@ -102,6 +102,18 @@ export class EditableListComponent implements OnChanges, OnInit {
     }
   }
 
+  @HostListener('focusout', ['$event'])
+  onHostBlur($event: FocusEvent) {
+    const target = $event.target as HTMLInputElement;
+    if (
+      this.allowedActions.edit &&
+      target.matches('.bel-item-input:not([readonly])')
+    ) {
+      const id = target.getAttribute('data-item-id');
+      this.itemEditDone(id, $event);
+    }
+  }
+
   @HostListener('keydown', ['$event'])
   onHostKeydown($event: KeyboardEvent) {
     const target = $event.target as HTMLInputElement;
