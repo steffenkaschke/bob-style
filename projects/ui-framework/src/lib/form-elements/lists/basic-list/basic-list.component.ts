@@ -1,4 +1,4 @@
-import { Component, ContentChild, Input, OnInit } from '@angular/core';
+import { Component, ContentChild, Input } from '@angular/core';
 import { BasicListItem } from './basic-list.interface';
 import { BasicListActionDirective } from './basic-list-action/basic-list-action.directive';
 
