@@ -418,10 +418,8 @@ describe('SingleListComponent', () => {
       const headers = fixture.debugElement.queryAll(By.css('.header'));
       expect(options.length).toEqual(1);
       expect(headers.length).toEqual(1);
-      expect(options[0].nativeElement.innerText.trim()).toEqual('Basic Info 1');
-      expect(headers[0].nativeElement.innerText.trim()).toEqual(
-        'Basic Info Header'
-      );
+      expect(options[0].nativeElement.innerHTML).toContain('Info 1');
+      expect(headers[0].nativeElement.innerHTML).toContain('Basic Info Header');
     });
     // Deprecated: Group header search
     xit('should show group headers and no options if search only matches headers', () => {
@@ -431,9 +429,7 @@ describe('SingleListComponent', () => {
       const headers = fixture.debugElement.queryAll(By.css('.header'));
       expect(options.length).toEqual(0);
       expect(headers.length).toEqual(1);
-      expect(headers[0].nativeElement.innerText.trim()).toEqual(
-        'Personal Header'
-      );
+      expect(headers[0].nativeElement.innerHTML).toContain('Personal Header');
     });
   });
 
