@@ -8,7 +8,7 @@
   border: 1px solid $grey-300;
   border-radius: $border-radius;
 
-  &__item {
+  &-item {
     display: flex;
     align-items: center;
     border-bottom: 1px solid $grey-300;
@@ -17,13 +17,13 @@
     &:last-of-type {
       border-bottom: none;
     }
+  }
 
-    &__icon {
-      margin-right: 5px;
-    }
+  &-icon {
+    margin-right: 5px;
+  }
 
-    &__action-container {
-      margin-left: auto;
-    }
+  &-action-container {
+    margin-left: auto;
   }
 }
