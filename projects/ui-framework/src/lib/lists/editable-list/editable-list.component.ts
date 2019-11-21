@@ -12,11 +12,11 @@ import {
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
-  ViewChild,
+  HostBinding,
 } from '@angular/core';
 import { SelectOption } from '../list.interface';
 
-import { DropResult, ContainerComponent } from 'ngx-smooth-dnd';
+import { DropResult } from 'ngx-smooth-dnd';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
 import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
 import {
@@ -68,10 +68,12 @@ export const applyDrag = (arr, dragResult) => {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditableListComponent implements OnChanges, OnInit {
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor(private cd: ChangeDetectorRef, private host: ElementRef) {}
 
   @ViewChildren('itemEditInputs')
   itemEditInputs: QueryList<ElementRef>;
+
+  @HostBinding('attr.tabindex') role = '0';
 
   @Input() list: SelectOption[] = [];
   @Input() allowedActions: EditableListActions = cloneObject(
@@ -87,6 +89,7 @@ export class EditableListComponent implements OnChanges, OnInit {
 
   public listIsAscending: boolean;
   public editingNewItem = false;
+  public removeConfirmShown = false;
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
@@ -123,6 +126,9 @@ export class EditableListComponent implements OnChanges, OnInit {
   @HostListener('keydown', ['$event'])
   onHostKeydown($event: KeyboardEvent) {
     const target = $event.target as HTMLInputElement;
+
+    console.log(target);
+
     if (
       this.allowedActions.edit &&
       target.matches('.bel-item-input:not([readonly])')
@@ -185,7 +191,11 @@ export class EditableListComponent implements OnChanges, OnInit {
     this.transmit();
   }
 
-  itemEditEnable(id: string | number, inputEL: HTMLInputElement = null): void {
+  itemEditEnable(
+    id: string | number,
+    inputEL: HTMLInputElement = null,
+    list: EditableListViewItem[] = this.listViewModel
+  ): void {
     const index = this.getItemIndexByID(id);
     if (index > -1) {
       const input =
@@ -193,8 +203,8 @@ export class EditableListComponent implements OnChanges, OnInit {
           ? inputEL
           : (this.itemEditInputs.toArray()[index]
               .nativeElement as HTMLInputElement);
-      this.listViewModel[index].readonly = false;
-      this.listViewModel[index].focused = true;
+      list[index].readonly = false;
+      list[index].focused = true;
       input.focus();
       input.selectionStart = input.selectionEnd = input.value.length;
     }
@@ -251,21 +261,31 @@ export class EditableListComponent implements OnChanges, OnInit {
 
   public removeItem(
     id: string | number,
-    list: (EditableListViewItem | SelectOption)[] = this.listViewModel
+    confirm: boolean = null,
+    list: EditableListViewItem[] = this.listViewModel
   ) {
     this.editingNewItem = false;
     const index = this.getItemIndexByID(id);
-    if (index > -1) {
+
+    if (index > -1 && confirm === null) {
+      list[index].focused = true;
+      list[index].showRemoveConfirm = true;
+      this.host.nativeElement.focus();
+    }
+
+    if (index > -1 && confirm === false) {
+      list[index].focused = false;
+      list[index].showRemoveConfirm = false;
+    }
+
+    if (index > -1 && confirm === true) {
       list.splice(index, 1);
       this.transmit();
     }
   }
 
-  public sortList(
-    list: (EditableListViewItem | SelectOption)[] = this.listViewModel
-  ): void {
+  public sortList(list: EditableListViewItem[] = this.listViewModel): void {
     arrOfObjSortByProp(list, 'value', this.listIsAscending !== true);
-
     this.listIsAscending = !this.listIsAscending;
     this.transmit();
   }
@@ -281,21 +301,21 @@ export class EditableListComponent implements OnChanges, OnInit {
 
   private getItemIndexByID(
     id: string | number,
-    list: (EditableListViewItem | SelectOption)[] = this.listViewModel
+    list: EditableListViewItem[] = this.listViewModel
   ): number {
     return list.findIndex(i => compareAsStrings(i.id, id));
   }
 
   private getItemByID(
     id: string | number,
-    list: (EditableListViewItem | SelectOption)[] = this.listViewModel
-  ): EditableListViewItem | SelectOption {
+    list: EditableListViewItem[] = this.listViewModel
+  ): EditableListViewItem {
     return list.find(i => compareAsStrings(i.id, id));
   }
 
   private transmit(
     value: SelectOption[] = null,
-    list: (EditableListViewItem | SelectOption)[] = this.listViewModel
+    list: EditableListViewItem[] = this.listViewModel
   ): SelectOption[] {
     this.updatedList =
       value !== null

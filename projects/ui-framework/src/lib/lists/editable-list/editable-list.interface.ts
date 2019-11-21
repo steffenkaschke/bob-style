@@ -6,6 +6,7 @@ export interface EditableListViewItem {
   menu?: MenuItem[];
   readonly?: boolean;
   focused?: boolean;
+  showRemoveConfirm?: boolean;
 }
 
 export interface EditableListActions {

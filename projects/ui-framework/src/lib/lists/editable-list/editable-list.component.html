@@ -52,6 +52,7 @@
              [attr.data-item-id]="item.id">
 
       <b-menu *ngIf="item.menu"
+              [hidden]="item.showRemoveConfirm"
               [menu]="item.menu"
               class="bel-item-menu">
         <b-square-button menu-trigger
@@ -60,6 +61,24 @@
                          [icon]="icons.three_dots_vert">
         </b-square-button>
       </b-menu>
+
+      <div *ngIf="item.showRemoveConfirm"
+           class="bel-item-confirm">
+        <b-button *ngIf="allowedActions.sort"
+                  class="bel-cancel-button"
+                  [type]="buttonType.tertiary"
+                  [size]="buttonSize.small"
+                  (clicked)="removeItem(item.id, false)">
+          Cancel
+        </b-button>
+        <b-button *ngIf="allowedActions.sort"
+                  class="bel-remove-button"
+                  [type]="buttonType.primary"
+                  [size]="buttonSize.small"
+                  (clicked)="removeItem(item.id, true)">
+          Remove
+        </b-button>
+      </div>
 
     </div>
 

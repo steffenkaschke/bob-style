@@ -6,7 +6,9 @@ $bel-item-dragged-bgcolor: $grey-100;
 $bel-item-dragged-border-color: $grey-400;
 
 :host {
+  display: block;
   text-align: left;
+  outline: 0;
 }
 
 .bel-header {
@@ -109,4 +111,12 @@ $bel-item-dragged-border-color: $grey-400;
 
 .bel-item-menu {
   margin-left: auto;
+}
+
+.bel-item-confirm {
+  @include animate(slide-left, 0.2s, $keyframes: true, $mod: 5px);
+}
+
+[hidden] {
+  display: none;
 }
