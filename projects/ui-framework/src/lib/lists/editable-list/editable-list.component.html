@@ -1,0 +1,61 @@
+<header *ngIf="allowedActions.add || allowedActions.sort"
+        class="bel-header">
+  <b-button *ngIf="allowedActions.add"
+            [type]="buttonType.secondary"
+            [size]="buttonSize.small"
+            [icon]="icons.add"
+            [text]="allowedActions.add!==true ? allowedActions.add : 'Add'"
+            (clicked)="addItem()">
+  </b-button>
+
+  <button *ngIf="allowedActions.sort"
+          type="button"
+          class="bel-reset-button"
+          [ngClass]="{'custom-sorting':listIsAscending === undefined}"
+          (click)="sortList()">
+    {{listIsAscending === undefined || listIsAscending === true ?
+      'A - Z' : 'Z - A'}}
+
+    <b-icon [icon]="listIsAscending === undefined || listIsAscending === true ? icons.download : icons.upload"
+            [size]="iconSize.medium"></b-icon>
+  </button>
+
+</header>
+
+<smooth-dnd-container role="list"
+                      [orientation]="'vertical'"
+                      [lockAxis]="'y'"
+                      [dragClass]="'bel-item-dragged'"
+                      [nonDragAreaSelector]="'.bel-item-input.edit-mode'"
+                      (drop)="onDrop($event)">
+
+  <smooth-dnd-draggable *ngFor="let item of listViewModel; trackBy: listTrackBy"
+                        role="listitem">
+
+    <div class="bel-item b-icon-drag-alt b-icon-medium b-icon-dark"
+         [ngClass]="{'edit-mode': !item.readonly, focused: item.focused}"
+         [attr.data-item-id]="item.id">
+
+      <input #itemEditInputs
+             type="text"
+             class="bfe-input bel-item-input"
+             [ngClass]="{'edit-mode': !item.readonly}"
+             [value]="item.value"
+             [readonly]="item.readonly"
+             autocomplete="off"
+             [attr.data-item-id]="item.id">
+
+      <b-menu *ngIf="item.menu"
+              [menu]="item.menu"
+              class="bel-item-menu">
+        <b-square-button menu-trigger
+                         [type]="buttonType.tertiary"
+                         [size]="buttonSize.small"
+                         [icon]="icons.three_dots_vert">
+        </b-square-button>
+      </b-menu>
+
+    </div>
+
+  </smooth-dnd-draggable>
+</smooth-dnd-container>

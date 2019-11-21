@@ -60,12 +60,12 @@ $input-focus-border-color: $grey-700;
   }
 }
 
-@mixin input-basics {
+@mixin input-basics($height: $input-height, $padding: 0 $input-padding) {
   box-sizing: border-box;
   display: block;
   min-width: 0;
   flex-grow: 1;
-  padding: 0 $input-padding;
+  padding: $padding;
   border: 0;
   border-color: inherit;
   border-radius: inherit;
@@ -77,8 +77,8 @@ $input-focus-border-color: $grey-700;
     $addCssVars: false
   );
   background: transparent;
-  height: $input-height;
-  line-height: $input-height;
+  height: $height;
+  line-height: $height;
   text-overflow: ellipsis;
 }
 

@@ -3,7 +3,7 @@ export enum IconSize {
   medium = 'medium',
   large = 'large',
   xLarge = 'x-large',
-  xxLarge = 'xx-large'
+  xxLarge = 'xx-large',
 }
 
 export enum IconColor {
@@ -14,7 +14,7 @@ export enum IconColor {
   primary = 'primary',
   inform = 'inform',
   negative = 'negative',
-  positive = 'positive'
+  positive = 'positive',
 }
 
 export enum Icons {
@@ -127,5 +127,6 @@ export enum Icons {
   dir_rtl = 'b-icon-dir-rtl',
   field_add = 'b-icon-field-add',
   chat = 'b-icon-chat',
-  at = 'b-icon-at'
+  at = 'b-icon-at',
+  drag_alt = 'b-icon-drag-alt',
 }
