@@ -228,6 +228,7 @@ export * from './lib/lists/editable-list/editable-list.const';
 export * from './lib/lists/editable-list/editable-list.interface';
 export { EditableListModule } from './lib/lists/editable-list/editable-list.module';
 export { EditableListComponent } from './lib/lists/editable-list/editable-list.component';
+export { BasicListItem } from './lib/lists/basic-list/basic-list.interface';
 // Single select panel
 export { SingleSelectPanelModule } from './lib/lists/single-select-panel/single-select-panel.module';
 export {
