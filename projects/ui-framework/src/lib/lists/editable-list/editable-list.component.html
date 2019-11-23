@@ -29,7 +29,7 @@
                       [lockAxis]="'y'"
                       [dragClass]="'bel-item-dragged'"
                       [dropClass]="'bel-item-dropped'"
-                      [nonDragAreaSelector]="'.bel-item-input.edit-mode'"
+                      [nonDragAreaSelector]="'.bel-item-input.edit-mode, .bel-item-menu'"
                       (drop)="onDrop($event)">
 
   <smooth-dnd-draggable *ngFor="let item of listViewModel; trackBy: listTrackBy"
@@ -37,8 +37,9 @@
 
     <div class="bel-item b-icon-drag-alt b-icon-medium b-icon-dark"
          [ngClass]="{
-           'edit-mode': !item.readonly,
-           focused: item.focused
+           'focused': item.focused,
+           'bel-item-new': item.new,
+           'bel-item-deleted': item.deleted
          }"
          [attr.data-item-id]="item.id">
 

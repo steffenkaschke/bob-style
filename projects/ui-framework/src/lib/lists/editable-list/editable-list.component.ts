@@ -222,7 +222,7 @@ export class EditableListComponent implements OnChanges, OnInit {
       item.value = input.value;
       this.transmit();
     } else if (item) {
-      this.removeItem(id);
+      this.removeItem(id, true);
     }
   }
 
@@ -232,7 +232,7 @@ export class EditableListComponent implements OnChanges, OnInit {
     const input = $event.target as HTMLInputElement;
 
     if (item && !Boolean(item.value) && !Boolean(input.value.trim())) {
-      this.removeItem(id);
+      this.removeItem(id, true);
     } else if (item) {
       item.readonly = true;
       item.focused = false;
@@ -248,6 +248,7 @@ export class EditableListComponent implements OnChanges, OnInit {
       value: '',
       readonly: false,
       focused: true,
+      new: true,
       menu:
         (this.allowedActions.edit || this.allowedActions.remove) &&
         this.getItemMenu(id),
@@ -279,7 +280,8 @@ export class EditableListComponent implements OnChanges, OnInit {
     }
 
     if (index > -1 && confirm === true) {
-      list.splice(index, 1);
+      // list.splice(index, 1);
+      list[index].deleted = true;
       this.transmit();
     }
   }
@@ -321,7 +323,7 @@ export class EditableListComponent implements OnChanges, OnInit {
       value !== null
         ? cloneDeep(value)
         : list
-            .filter(item => Boolean(item.value.trim()))
+            .filter(item => Boolean(item.value.trim() && !item.deleted))
             .map((item: EditableListViewItem) => ({
               ...this.getItemByID(item.id, this.list),
               value: item.value,

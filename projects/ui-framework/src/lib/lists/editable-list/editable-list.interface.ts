@@ -6,6 +6,8 @@ export interface EditableListViewItem {
   menu?: MenuItem[];
   readonly?: boolean;
   focused?: boolean;
+  new?: boolean;
+  deleted?: boolean;
   showRemoveConfirm?: boolean;
 }
 
