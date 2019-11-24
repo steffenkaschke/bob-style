@@ -1,13 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  array,
-  boolean,
-  number,
-  object,
-  select,
-  text,
-  withKnobs,
-} from '@storybook/addon-knobs/angular';
+import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { ButtonType } from '../../buttons/buttons.enum';
@@ -19,17 +11,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { MenuItem } from './menu.interface';
 
-const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
-  withKnobs
-);
+const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
 
 const template = `
-<b-menu [menu]="menu"
+<b-menu [id]="'employee-menu'"
+        [menu]="menu"
         [openLeft]="openLeft"
         [disabled]="disabled"
-        (actionClick)="actionClick()"
-        (openMenu)="openMenu()"
-        (closeMenu)="closeMenu()">
+        (actionClick)="onActionClick($event)"
+        (openMenu)="onMenuOpen($event)"
+        (closeMenu)="onMenuClose($event)">
   <b-square-button menu-trigger
                    type="${ButtonType.secondary}"
                    icon="${Icons.three_dots}">
@@ -52,12 +43,14 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  menu | MenuItem[] | array of menu items | &nbsp;
-  openLeft | boolean | open left by default | false
-  disabled | boolean | disables menu | &nbsp;
-  actionClick | action | notifies on action click | &nbsp;
-  openMenu | action | notifies on menu open | &nbsp;
-  closeMenu | action | notifies on menu close | &nbsp;
+  [id] | string | menu id (can be used to reference the item, that has the menu) | &nbsp;
+  [menu] | MenuItem[] | array of menu items | &nbsp;
+  [openLeft] | boolean | open left by default | false
+  [disabled] | boolean | disables menu | &nbsp;
+  (actionClick) | &lt;MenuItem&gt; | notifies on action click, emits menu item, \
+  enriched with menu id (if present) | &nbsp;
+  (openMenu) | &lt;string / void&gt; | notifies on menu open, outputs menu's id, if present | &nbsp;
+  (closeMenu) | &lt;string / void&gt; | notifies on menu close, outputs menu's id, if present | &nbsp;
 
   ~~~
   ${template}
@@ -67,55 +60,68 @@ const note = `
 const menuMock: MenuItem[] = [
   {
     label: 'Employee',
+    key: 'employee',
+
     children: [
       {
         label: 'Update work details',
         key: 'update.work.details',
+
         children: [
           {
             label: 'Update site',
-            action: $event => console.log('update site', $event),
-            key: 'update.site',
+            action: action('update site'),
+            key: 'update.site'
           },
           {
             label: 'Update email',
-            action: $event => console.log('update email', $event),
+            action: action('update email'),
+            key: 'update.email'
           },
           {
             label: 'Update reports to',
             disabled: true,
-            action: $event => console.log('update reports to', $event),
-          },
-        ],
+            action: action('update reports to'),
+            key: 'update.reportsto'
+          }
+        ]
       },
+
       {
         label: 'Update internal details',
+        key: 'update.internal.details',
+
         children: [
           {
             label: 'Terminate',
-            action: $event => console.log('terminate', $event),
+            action: action('terminate'),
+            key: 'terminate123'
           },
           {
             label: 'Rehire',
-            action: $event => console.log('rehire', $event),
-          },
-        ],
+            action: action('rehire'),
+            key: 'rehire'
+          }
+        ]
       },
       {
         label: 'Delete file',
-        action: $event => console.log('delete file', $event),
-      },
-    ],
+        action: action('delete file'),
+        key: 'delete.file'
+      }
+    ]
   },
   {
     label: 'View profile',
-    action: $event => console.log('view profile', $event),
+    action: action('view profile'),
+    key: 'view.profile'
   },
   {
     label: 'Request time-off',
     disabled: true,
-    action: $event => console.log('request time off', $event),
-  },
+    action: action('request time off'),
+    key: 'request.timeoff'
+  }
 ];
 
 story.add(
@@ -127,19 +133,13 @@ story.add(
         openLeft: boolean('openLeft', false),
         disabled: boolean('disabled', false),
         menu: object('menu', menuMock),
-        actionClick: action('action click'),
-        openMenu: action('menu open'),
-        closeMenu: action('menu close'),
+        onActionClick: action('action click'),
+        onMenuOpen: action('menu open'),
+        onMenuClose: action('menu close')
       },
       moduleMetadata: {
-        imports: [
-          StoryBookLayoutModule,
-          BrowserAnimationsModule,
-          MenuModule,
-          ButtonsModule,
-          IconsModule,
-        ],
-      },
+        imports: [StoryBookLayoutModule, BrowserAnimationsModule, MenuModule, ButtonsModule, IconsModule]
+      }
     };
   },
   { notes: { markdown: note } }
