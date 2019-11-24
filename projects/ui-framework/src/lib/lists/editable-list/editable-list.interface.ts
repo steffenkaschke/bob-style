@@ -15,5 +15,3 @@ export interface EditableListActions {
   add?: boolean | string;
   remove?: boolean;
 }
-
-// remove this
