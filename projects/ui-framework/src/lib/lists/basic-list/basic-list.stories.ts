@@ -15,7 +15,7 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 
 const withMenuTemplate = `
   <b-basic-list [items]="items">
-    <b-menu *bBasicListAction="let index=index" [menu]="menu[index]">
+    <b-menu *bBasicListAction="let item=item" [menu]="item.menu">
       <b-square-button menu-trigger
                        type="tertiary"
                        icon="b-icon-more-horiz">
@@ -52,7 +52,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | ---
-  items | BasicListItem[] | List of items to display | none
+  items | BasicListItem[] | List of items to display | &nbsp;
 
   ~~~
   ${withMenuTemplate}
@@ -66,18 +66,24 @@ const note = `
 const items = [{
   label: 'Item 1',
   icon: Icons.doc,
+  menu: [{
+    label: 'Menu item 1',
+    action: action(`List item Item 1,  Menu action 1`),
+  }, {
+    label: 'Menu item 2',
+    action: action(`List item Item 1,  Menu action 2`),
+  }],
 }, {
-  label: 'Item 222',
+  label: 'Item 2',
   icon: Icons.doc,
+  menu: [{
+    label: 'Menu item 1',
+    action: action(`List item Item 2,  Menu action 1`),
+  }, {
+    label: 'Menu item 2',
+    action: action(`List item Item 2,  Menu action 2`),
+  }],
 }];
-
-const menu = items.map(item => ([{
-  label: 'Menu item 1',
-  action: action(`List item ${item.label},  Menu action 1`),
-}, {
-  label: 'Menu item 2',
-  action: action(`List item ${item.label},  Menu action 2`),
-}]));
 
 story.add(
   'Basic list',
@@ -86,7 +92,6 @@ story.add(
     props: {
       action,
       items: object('items', items),
-      menu: object('menu', menu),
     },
     moduleMetadata: {
       imports: [
