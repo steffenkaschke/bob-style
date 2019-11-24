@@ -3,11 +3,12 @@ import { withKnobs, object } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { Icons } from '../../icons/icons.enum';
+import { Icons, IconColor } from '../../icons/icons.enum';
 import { BasicListModule } from './basic-list.module';
 import { MenuModule } from '../../navigation/menu/menu.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BasicListItem } from './basic-list.interface';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -18,7 +19,8 @@ const withMenuTemplate = `
     <b-menu *bBasicListAction="let item=item" [menu]="item.menu">
       <b-square-button menu-trigger
                        type="tertiary"
-                       icon="b-icon-more-horiz">
+                       icon="b-icon-more-horiz"
+                       [color]="iconColor.normal">
       </b-square-button>
     </b-menu>
   </b-basic-list>
@@ -65,7 +67,7 @@ const note = `
   ~~~
 `;
 
-const items = [{
+const items: BasicListItem[] = [{
   label: 'Item 1',
   icon: Icons.doc,
   menu: [{
@@ -94,6 +96,7 @@ story.add(
     props: {
       action,
       items: object('items', items),
+      iconColor: IconColor,
     },
     moduleMetadata: {
       imports: [
