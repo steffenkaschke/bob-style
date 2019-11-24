@@ -1,9 +1,5 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
-import {
-  NO_ERRORS_SCHEMA,
-  Component,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+import { NO_ERRORS_SCHEMA, Component, ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CollapsibleSectionComponent } from './collapsible-section.component';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -11,11 +7,7 @@ import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { UtilsService } from '../../services/utils/utils.service';
 import { of } from 'rxjs';
 import createSpyObj = jasmine.createSpyObj;
-import {
-  elementFromFixture,
-  emitNativeEvent,
-  simpleChange,
-} from '../../services/utils/test-helpers';
+import { elementFromFixture, emitNativeEvent, simpleChange } from '../../services/utils/test-helpers';
 import { ColorService } from '../../services/color-service/color.service';
 
 @Component({
@@ -65,9 +57,7 @@ describe('CollapsibleSectionComponent', () => {
         component = fixture.componentInstance;
         fixture.detectChanges();
 
-        collapsibleComponent = fixture.debugElement.query(
-          By.css('b-collapsible-section')
-        ).componentInstance;
+        collapsibleComponent = fixture.debugElement.query(By.css('b-collapsible-section')).componentInstance;
 
         collapsibleSection = elementFromFixture(fixture, '.bcp-section');
         collapsibleHeader = elementFromFixture(fixture, '.bcp-header');
@@ -89,9 +79,7 @@ describe('CollapsibleSectionComponent', () => {
     });
 
     it('should default to non-collapsible section', () => {
-      expect(collapsibleSection.classList).not.toContain(
-        'bcp-section-collapsible'
-      );
+      expect(collapsibleSection.classList).not.toContain('bcp-section-collapsible');
       expect(collapsiblePanel).toBeTruthy();
     });
 
@@ -106,14 +94,8 @@ describe('CollapsibleSectionComponent', () => {
     let panelContentElement: HTMLElement;
 
     beforeEach(() => {
-      headerContentElement = elementFromFixture(
-        fixture,
-        '.bcp-header-content [header]'
-      );
-      panelContentElement = elementFromFixture(
-        fixture,
-        '.bcp-panel-content-wrap .test-content'
-      );
+      headerContentElement = elementFromFixture(fixture, '.bcp-header-content [header]');
+      panelContentElement = elementFromFixture(fixture, '.bcp-panel-content-wrap .test-content');
     });
 
     it('should put content marked with [header] in the header', () => {
@@ -140,11 +122,14 @@ describe('CollapsibleSectionComponent', () => {
       fixture.detectChanges();
     });
 
+    afterEach(() => {
+      collapsibleComponent.opened.complete();
+      collapsibleComponent.closed.complete();
+    });
+
     it('should start with panel collapsed', () => {
       expect(collapsibleSection.classList).toContain('bcp-section-collapsible');
-      expect(collapsibleSection.classList).not.toContain(
-        'bcp-section-expanded'
-      );
+      expect(collapsibleSection.classList).not.toContain('bcp-section-expanded');
     });
 
     it('should not put panel in the DOM at init', () => {
@@ -187,18 +172,14 @@ describe('CollapsibleSectionComponent', () => {
       emitNativeEvent(collapsibleHeader, 'click');
       fixture.detectChanges();
 
-      expect(collapsibleSection.classList).not.toContain(
-        'bcp-section-expanded'
-      );
+      expect(collapsibleSection.classList).not.toContain('bcp-section-expanded');
       expect(collapsibleHeader.classList).not.toContain('no-shadow');
       expect(collapsiblePanel.classList).not.toContain('no-top-border');
       expect(collapsibleComponent.closed.emit).toHaveBeenCalled();
     });
 
     it('should not show divider when divided = false', () => {
-      expect(collapsibleSection.classList).not.toContain(
-        'bcp-section-not-divided'
-      );
+      expect(collapsibleSection.classList).not.toContain('bcp-section-not-divided');
       collapsibleComponent.divided = false;
       fixture.detectChanges();
       expect(collapsibleSection.classList).toContain('bcp-section-not-divided');
@@ -208,9 +189,7 @@ describe('CollapsibleSectionComponent', () => {
       emitNativeEvent(collapsibleHeader, 'click');
       fixture.detectChanges();
 
-      expect(collapsibleHost.getAttribute('style')).toContain(
-        '--panel-height:300px;'
-      );
+      expect(collapsibleHost.getAttribute('style')).toContain('--panel-height:300px;');
     });
 
     it('should disable the component with disabled property', () => {
@@ -244,9 +223,7 @@ describe('CollapsibleSectionComponent', () => {
     });
 
     it('should disable click event propagation with headerTranscludeStopPropagation option', () => {
-      expect(headerContentElement.classList).not.toContain(
-        'bcp-header-content-clickable'
-      );
+      expect(headerContentElement.classList).not.toContain('bcp-header-content-clickable');
 
       emitNativeEvent(headerContentElement, 'click');
       collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
@@ -260,12 +237,8 @@ describe('CollapsibleSectionComponent', () => {
     it('should set css color variables, if indicatorColor prop is passed', () => {
       const panel = elementFromFixture(fixture, 'b-collapsible-section');
 
-      expect(getComputedStyle(panel).getPropertyValue('--bcp-color')).toEqual(
-        '#cc2748'
-      );
-      expect(
-        getComputedStyle(panel).getPropertyValue('--bcp-color-rgb')
-      ).toEqual('204, 39, 72');
+      expect(getComputedStyle(panel).getPropertyValue('--bcp-color')).toEqual('#cc2748');
+      expect(getComputedStyle(panel).getPropertyValue('--bcp-color-rgb')).toEqual('204, 39, 72');
     });
   });
 });
