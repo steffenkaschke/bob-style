@@ -33,7 +33,8 @@
                       [nonDragAreaSelector]="'.bel-item-input.edit-mode, .bel-item-menu'"
                       (drop)="onItemMove($event)">
 
-  <smooth-dnd-draggable *ngFor="let item of listViewModel; trackBy: listTrackBy" role="listitem">
+  <smooth-dnd-draggable *ngFor="let item of listViewModel; trackBy: listTrackBy"
+                        role="listitem">
 
     <div class="bel-item b-icon-drag-alt b-icon-medium b-icon-dark"
          [ngClass]="{
@@ -53,6 +54,7 @@
       <b-menu *ngIf="item.menu"
               [hidden]="item.showRemoveConfirm"
               [menu]="item.menu"
+              (actionClick)="onMenuClick(item.id, $event.key)"
               class="bel-item-menu">
         <b-square-button menu-trigger
                          [type]="buttonType.tertiary"
@@ -63,7 +65,7 @@
 
       <div *ngIf="item.showRemoveConfirm"
            class="bel-item-confirm">
-        <b-button  class="bel-cancel-button"
+        <b-button class="bel-cancel-button"
                   [type]="buttonType.tertiary"
                   [size]="buttonSize.small"
                   [text]="translation.cancel">
@@ -72,7 +74,7 @@
                   [type]="buttonType.negative"
                   [size]="buttonSize.small"
                   [text]="translation.remove"
-                  [attr.data-item-id]="item.id">
+                  (clicked)="removeItem(item.id,true)">
         </b-button>
       </div>
 
