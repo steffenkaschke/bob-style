@@ -71,20 +71,20 @@ const menuMock: MenuItem[] = [
           {
             label: 'Update site',
             action: action('update site'),
-            key: 'update.site'
+            key: 'update.site',
           },
           {
             label: 'Update email',
             action: action('update email'),
-            key: 'update.email'
+            key: 'update.email',
           },
           {
             label: 'Update reports to',
             disabled: true,
             action: action('update reports to'),
-            key: 'update.reportsto'
-          }
-        ]
+            key: 'update.reportsto',
+          },
+        ],
       },
 
       {
@@ -95,33 +95,41 @@ const menuMock: MenuItem[] = [
           {
             label: 'Terminate',
             action: action('terminate'),
-            key: 'terminate123'
+            key: 'terminate',
           },
           {
             label: 'Rehire',
             action: action('rehire'),
-            key: 'rehire'
-          }
-        ]
+            key: 'rehire',
+
+            children: [
+              {
+                label: 'Secret action',
+                action: action('Deep action'),
+                key: 'deep',
+              },
+            ],
+          },
+        ],
       },
       {
         label: 'Delete file',
         action: action('delete file'),
-        key: 'delete.file'
-      }
-    ]
+        key: 'delete.file',
+      },
+    ],
   },
   {
     label: 'View profile',
     action: action('view profile'),
-    key: 'view.profile'
+    key: 'view.profile',
   },
   {
     label: 'Request time-off',
     disabled: true,
     action: action('request time off'),
-    key: 'request.timeoff'
-  }
+    key: 'request.timeoff',
+  },
 ];
 
 story.add(
@@ -135,11 +143,11 @@ story.add(
         menu: object('menu', menuMock),
         onActionClick: action('action click'),
         onMenuOpen: action('menu open'),
-        onMenuClose: action('menu close')
+        onMenuClose: action('menu close'),
       },
       moduleMetadata: {
-        imports: [StoryBookLayoutModule, BrowserAnimationsModule, MenuModule, ButtonsModule, IconsModule]
-      }
+        imports: [StoryBookLayoutModule, BrowserAnimationsModule, MenuModule, ButtonsModule, IconsModule],
+      },
     };
   },
   { notes: { markdown: note } }
