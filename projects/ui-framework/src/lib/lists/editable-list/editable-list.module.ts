@@ -5,6 +5,7 @@ import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 import { IconsModule } from '../../icons/icons.module';
 import { MenuModule } from '../../navigation/menu/menu.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
+import { EditableListService } from './editable-list.service';
 
 @NgModule({
   imports: [
@@ -16,5 +17,6 @@ import { ButtonsModule } from '../../buttons/buttons.module';
   ],
   declarations: [EditableListComponent],
   exports: [EditableListComponent],
+  providers: [EditableListService],
 })
 export class EditableListModule {}

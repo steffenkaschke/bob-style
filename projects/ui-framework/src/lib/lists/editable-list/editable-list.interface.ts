@@ -7,8 +7,9 @@ export interface EditableListViewItem {
   readonly?: boolean;
   focused?: boolean;
   new?: boolean;
-  deleted?: boolean;
   showRemoveConfirm?: boolean;
+  warn?: boolean;
+  error?: boolean;
 }
 
 export interface EditableListActions {
@@ -16,4 +17,16 @@ export interface EditableListActions {
   edit?: boolean;
   add?: boolean | string;
   remove?: boolean;
+}
+
+export interface EditableListTranslation {
+  add: string;
+  edit: string;
+  remove: string;
+  cancel: string;
+  sortAsc: string;
+  sortDesc: string;
+  sortCustom: string;
+  alreadyExists: string[];
+  duplicate: string;
 }

@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   Input,
   SimpleChanges,
   OnChanges,
@@ -12,7 +11,6 @@ import {
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
-  HostBinding,
 } from '@angular/core';
 import { SelectOption } from '../list.interface';
 
@@ -26,7 +24,6 @@ import {
 import {
   applyChanges,
   notFirstChanges,
-  compareAsStrings,
   cloneObject,
   simpleUID,
   isKey,
@@ -36,30 +33,11 @@ import { simpleChange } from '../../services/utils/test-helpers';
 import { cloneDeep } from 'lodash';
 import { MenuItem } from '../../navigation/menu/menu.interface';
 import {
-  EDITABLE_LIST_MENU_LABELS,
+  EDITABLE_LIST_TRANSLATION,
   EDITABLE_LIST_ALLOWED_ACTIONS_DEF,
 } from './editable-list.const';
 import { Keys } from '../../enums';
-
-export const applyDrag = (arr, dragResult) => {
-  const { removedIndex, addedIndex, payload } = dragResult;
-  if (removedIndex === null && addedIndex === null) {
-    return arr;
-  }
-
-  const result = [...arr];
-  let itemToAdd = payload;
-
-  if (removedIndex !== null) {
-    itemToAdd = result.splice(removedIndex, 1)[0];
-  }
-
-  if (addedIndex !== null) {
-    result.splice(addedIndex, 0, itemToAdd);
-  }
-
-  return result;
-};
+import { EditableListService } from './editable-list.service';
 
 @Component({
   selector: 'b-editable-list',
@@ -67,13 +45,13 @@ export const applyDrag = (arr, dragResult) => {
   styleUrls: ['./editable-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditableListComponent implements OnChanges, OnInit {
-  constructor(private cd: ChangeDetectorRef, private host: ElementRef) {}
+export class EditableListComponent implements OnChanges {
+  constructor(
+    private srvc: EditableListService,
+    private cd: ChangeDetectorRef
+  ) {}
 
-  @ViewChildren('itemEditInputs')
-  itemEditInputs: QueryList<ElementRef>;
-
-  @HostBinding('attr.tabindex') role = '0';
+  @ViewChildren('itemEditInput') itemEditInputs: QueryList<ElementRef>;
 
   @Input() list: SelectOption[] = [];
   @Input() allowedActions: EditableListActions = cloneObject(
@@ -88,14 +66,15 @@ export class EditableListComponent implements OnChanges, OnInit {
   public updatedList: SelectOption[];
 
   public listIsAscending: boolean;
-  public editingNewItem = false;
-  public removeConfirmShown = false;
+  public editingItem: EditableListViewItem | null = null;
+  public deletingItem: EditableListViewItem | null = null;
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
+  readonly translation = EDITABLE_LIST_TRANSLATION;
 
   @HostListener('dblclick', ['$event'])
   onHostDblClick($event: MouseEvent) {
@@ -104,30 +83,49 @@ export class EditableListComponent implements OnChanges, OnInit {
       this.allowedActions.edit &&
       target.matches('.bel-item-input[readonly]')
     ) {
-      const id = target.getAttribute('data-item-id');
       $event.preventDefault();
-      this.itemEditEnable(id, target);
+      const id = target.getAttribute('data-item-id');
+      this.itemEditStart(id, target);
     }
   }
 
   @HostListener('focusout', ['$event'])
   onHostBlur($event: FocusEvent) {
     const target = $event.target as HTMLInputElement;
+    const relatedTarget = $event.relatedTarget as HTMLElement;
+    const id = target.getAttribute('data-item-id');
 
     if (
       this.allowedActions.edit &&
-      target.matches('.bel-item-input:not([readonly])')
+      target.matches('.bel-item-input.edit-mode')
     ) {
-      const id = target.getAttribute('data-item-id');
       this.itemEditDone(id, $event);
+    }
+
+    if (
+      this.deletingItem &&
+      (!relatedTarget || !relatedTarget.matches('.bel-remove-button button'))
+    ) {
+      const item = this.deletingItem as EditableListViewItem;
+      item.showRemoveConfirm = false;
+      item.focused = false;
+      this.deletingItem = null;
+    }
+  }
+
+  @HostListener('click', ['$event'])
+  onHostClick($event: MouseEvent) {
+    const target = $event.target as HTMLInputElement;
+
+    if (target.matches('.bel-remove-button button')) {
+      const id = target.parentElement.getAttribute('data-item-id');
+      this.removeItem(id, true);
     }
   }
 
   @HostListener('keydown', ['$event'])
   onHostKeydown($event: KeyboardEvent) {
     const target = $event.target as HTMLInputElement;
-
-    console.log(target);
 
     if (
       this.allowedActions.edit &&
@@ -145,9 +143,22 @@ export class EditableListComponent implements OnChanges, OnInit {
         this.itemEditCancel(id, $event);
       }
     }
-  }
 
-  ngOnInit() {}
+    if (this.deletingItem) {
+      const item = this.deletingItem as EditableListViewItem;
+
+      if (isKey($event.key, Keys.enter)) {
+        this.removeItem(item.id, true);
+      }
+
+      if (isKey($event.key, Keys.tab) || isKey($event.key, Keys.escape)) {
+        item.showRemoveConfirm = false;
+        item.focused = false;
+      }
+
+      this.deletingItem = null;
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     applyChanges(this, changes, {
@@ -185,18 +196,19 @@ export class EditableListComponent implements OnChanges, OnInit {
     }
   }
 
-  onDrop(dropResult: DropResult) {
-    this.listIsAscending = undefined;
-    this.listViewModel = applyDrag(this.listViewModel, dropResult);
-    this.transmit();
+  onItemMove(dropResult: DropResult) {
+    if (this.srvc.onItemMove(this.listViewModel, dropResult)) {
+      this.listIsAscending = undefined;
+      this.transmit();
+    }
   }
 
-  itemEditEnable(
+  itemEditStart(
     id: string | number,
     inputEL: HTMLInputElement = null,
     list: EditableListViewItem[] = this.listViewModel
   ): void {
-    const index = this.getItemIndexByID(id);
+    const index = this.srvc.getItemIndexByID(id, this.listViewModel);
     if (index > -1) {
       const input =
         inputEL !== null
@@ -205,14 +217,19 @@ export class EditableListComponent implements OnChanges, OnInit {
               .nativeElement as HTMLInputElement);
       list[index].readonly = false;
       list[index].focused = true;
+      this.editingItem = list[index];
       input.focus();
       input.selectionStart = input.selectionEnd = input.value.length;
     }
   }
 
+  // COMBINE itemEditDone with itemEditCancel
   itemEditDone(id: string | number, $event: Event): void {
-    this.editingNewItem = false;
-    const item = this.getItemByID(id) as EditableListViewItem;
+    this.editingItem = null;
+    const item = this.srvc.getItemByID(
+      id,
+      this.listViewModel
+    ) as EditableListViewItem;
     const input = $event.target as HTMLInputElement;
     if (item) {
       item.readonly = true;
@@ -226,9 +243,13 @@ export class EditableListComponent implements OnChanges, OnInit {
     }
   }
 
+  // COMBINE itemEditDone with itemEditCancel
   itemEditCancel(id: string | number, $event: Event): void {
-    this.editingNewItem = false;
-    const item = this.getItemByID(id) as EditableListViewItem;
+    this.editingItem = null;
+    const item = this.srvc.getItemByID(
+      id,
+      this.listViewModel
+    ) as EditableListViewItem;
     const input = $event.target as HTMLInputElement;
 
     if (item && !Boolean(item.value) && !Boolean(input.value.trim())) {
@@ -241,7 +262,6 @@ export class EditableListComponent implements OnChanges, OnInit {
   }
 
   public addItem(): void {
-    this.editingNewItem = true;
     const id = simpleUID('new-');
     this.listViewModel.unshift({
       id: id,
@@ -253,6 +273,7 @@ export class EditableListComponent implements OnChanges, OnInit {
         (this.allowedActions.edit || this.allowedActions.remove) &&
         this.getItemMenu(id),
     });
+    this.editingItem = this.listViewModel[0];
     this.listIsAscending = undefined;
     this.cd.detectChanges();
     const input = this.itemEditInputs.toArray()[0]
@@ -265,33 +286,41 @@ export class EditableListComponent implements OnChanges, OnInit {
     confirm: boolean = null,
     list: EditableListViewItem[] = this.listViewModel
   ) {
-    this.editingNewItem = false;
-    const index = this.getItemIndexByID(id);
+    this.editingItem = null;
+    const index = this.srvc.getItemIndexByID(id, this.listViewModel);
 
     if (index > -1 && confirm === null) {
       list[index].focused = true;
       list[index].showRemoveConfirm = true;
-      this.host.nativeElement.focus();
+      this.deletingItem = list[index];
+
+      const input = this.itemEditInputs.toArray()[index]
+        .nativeElement as HTMLInputElement;
+      input.focus();
     }
 
     if (index > -1 && confirm === false) {
       list[index].focused = false;
       list[index].showRemoveConfirm = false;
+      this.deletingItem = null;
     }
 
     if (index > -1 && confirm === true) {
-      // list.splice(index, 1);
-      list[index].deleted = true;
+      list.splice(index, 1);
       this.transmit();
+      this.deletingItem = null;
     }
+    this.cd.detectChanges();
   }
 
+  // keep here
   public sortList(list: EditableListViewItem[] = this.listViewModel): void {
     arrOfObjSortByProp(list, 'value', this.listIsAscending !== true);
     this.listIsAscending = !this.listIsAscending;
     this.transmit();
   }
 
+  // keep here
   public resetList(value: SelectOption[] = null): void {
     this.ngOnChanges(
       simpleChange({
@@ -301,37 +330,24 @@ export class EditableListComponent implements OnChanges, OnInit {
     this.transmit(value || this.list);
   }
 
-  private getItemIndexByID(
-    id: string | number,
-    list: EditableListViewItem[] = this.listViewModel
-  ): number {
-    return list.findIndex(i => compareAsStrings(i.id, id));
-  }
-
-  private getItemByID(
-    id: string | number,
-    list: EditableListViewItem[] = this.listViewModel
-  ): EditableListViewItem {
-    return list.find(i => compareAsStrings(i.id, id));
-  }
-
+  // keep here
   private transmit(
     value: SelectOption[] = null,
     list: EditableListViewItem[] = this.listViewModel
-  ): SelectOption[] {
+  ): void {
     this.updatedList =
       value !== null
         ? cloneDeep(value)
         : list
-            .filter(item => Boolean(item.value.trim() && !item.deleted))
+            .filter(item => Boolean(item.value.trim()))
             .map((item: EditableListViewItem) => ({
-              ...this.getItemByID(item.id, this.list),
+              ...this.srvc.getItemByID(item.id, this.list),
               value: item.value,
             }));
     this.changed.emit(this.updatedList);
-    return this.updatedList;
   }
 
+  // keep here
   private getItemMenu(
     id: string | number,
     allowedActions: EditableListActions = this.allowedActions
@@ -339,19 +355,20 @@ export class EditableListComponent implements OnChanges, OnInit {
     const menu: MenuItem[] = [];
     if (allowedActions.edit) {
       menu.push({
-        label: EDITABLE_LIST_MENU_LABELS.edit,
-        action: () => this.itemEditEnable(id),
+        label: EDITABLE_LIST_TRANSLATION.edit,
+        action: () => this.itemEditStart(id),
       });
     }
     if (allowedActions.remove) {
       menu.push({
-        label: EDITABLE_LIST_MENU_LABELS.remove,
+        label: EDITABLE_LIST_TRANSLATION.remove,
         action: () => this.removeItem(id),
       });
     }
     return menu;
   }
 
+  // keep here
   public listTrackBy(index: number, item: SelectOption): string | number {
     return item.id;
   }
