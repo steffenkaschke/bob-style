@@ -27,6 +27,8 @@ const withMenuTemplate = `
 const withButtonTemplate = `
   <b-basic-list [items]="items">
     <b-button *bBasicListAction="let item=item"
+              type="secondary"
+              size="small"
               (clicked)="action('List item button clicked with item')(item)">
       Click me
     </b-button>
