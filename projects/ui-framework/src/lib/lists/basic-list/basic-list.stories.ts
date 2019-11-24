@@ -7,23 +7,39 @@ import { Icons } from '../../icons/icons.enum';
 import { BasicListModule } from './basic-list.module';
 import { MenuModule } from '../../navigation/menu/menu.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
-const template = `
+const withMenuTemplate = `
+  <b-basic-list [items]="items">
+    <b-menu *bBasicListAction="let index=index" [menu]="menu[index]">
+      <b-square-button menu-trigger
+                       type="tertiary"
+                       icon="b-icon-more-horiz">
+      </b-square-button>
+    </b-menu>
+  </b-basic-list>
+`;
+
+const withButtonTemplate = `
+  <b-basic-list [items]="items">
+    <b-button *bBasicListAction="let item=item"
+              (clicked)="action('List item button clicked with item')(item)">
+      Click me
+    </b-button>
+  </b-basic-list>
+`;
+
+const storyTemplate = `
   <b-story-book-layout [title]="'Basic List'">
-    <b-basic-list [items]="items">
-      <b-menu *bBasicListAction="let item=item; let index=index"
-              [menu]="menu"
-              (actionClick)="action('Action triggered with item, index')(item, index)">
-        <b-square-button menu-trigger
-                         type="tertiary"
-                         icon="b-icon-more-horiz">
-        </b-square-button>
-      </b-menu>
-    </b-basic-list>
+    <div style="max-width: 400px;">
+      ${withMenuTemplate}
+      &nbsp;&nbsp;
+      ${withButtonTemplate}
+    </div>
   </b-story-book-layout>
 `;
 
@@ -39,7 +55,11 @@ const note = `
   items | BasicListItem[] | List of items to display | none
 
   ~~~
-  ${template}
+  ${withMenuTemplate}
+  ~~~
+
+  ~~~
+  ${withButtonTemplate}
   ~~~
 `;
 
@@ -51,18 +71,18 @@ const items = [{
   icon: Icons.doc,
 }];
 
-const menu = [{
+const menu = items.map(item => ([{
   label: 'Menu item 1',
-  action: action('Menu item 1 action'),
+  action: action(`List item ${item.label},  Menu action 1`),
 }, {
   label: 'Menu item 2',
-  action: action('Menu item 2 action'),
-}];
+  action: action(`List item ${item.label},  Menu action 2`),
+}]));
 
 story.add(
   'Basic list',
   () => ({
-    template,
+    template: storyTemplate,
     props: {
       action,
       items: object('items', items),
@@ -74,6 +94,7 @@ story.add(
         MenuModule,
         StoryBookLayoutModule,
         ButtonsModule,
+        BrowserAnimationsModule,
       ],
     },
   }),
