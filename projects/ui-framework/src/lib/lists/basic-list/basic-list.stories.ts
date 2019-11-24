@@ -7,10 +7,9 @@ import { Icons } from '../../icons/icons.enum';
 import { BasicListModule } from './basic-list.module';
 import { MenuModule } from '../../navigation/menu/menu.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
-  withKnobs
-);
+const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(withKnobs);
 
 const template = `
   <b-story-book-layout [title]="'Basic List'">
@@ -43,21 +42,27 @@ const note = `
   ~~~
 `;
 
-const items = [{
-  label: 'Item 1',
-  icon: Icons.doc,
-}, {
-  label: 'Item 222',
-  icon: Icons.doc,
-}];
+const items = [
+  {
+    label: 'Item 1',
+    icon: Icons.doc,
+  },
+  {
+    label: 'Item 222',
+    icon: Icons.doc,
+  },
+];
 
-const menu = [{
-  label: 'Menu item 1',
-  action: action('Menu item 1 action'),
-}, {
-  label: 'Menu item 2',
-  action: action('Menu item 2 action'),
-}];
+const menu = [
+  {
+    label: 'Menu item 1',
+    action: action('Menu item 1 action'),
+  },
+  {
+    label: 'Menu item 2',
+    action: action('Menu item 2 action'),
+  },
+];
 
 story.add(
   'Basic list',
@@ -69,12 +74,7 @@ story.add(
       menu: object('menu', menu),
     },
     moduleMetadata: {
-      imports: [
-        BasicListModule,
-        MenuModule,
-        StoryBookLayoutModule,
-        ButtonsModule,
-      ],
+      imports: [BasicListModule, MenuModule, StoryBookLayoutModule, ButtonsModule, BrowserAnimationsModule],
     },
   }),
   { notes: { markdown: note } }
