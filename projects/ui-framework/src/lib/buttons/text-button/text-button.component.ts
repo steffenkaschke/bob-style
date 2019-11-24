@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  HostBinding,
-  HostListener,
-  Input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
 import { IconColor, IconSize } from '../../icons/icons.enum';
 import { LinkColor } from '../../buttons-indicators/link/link.enum';
 import { BaseButtonElement } from '../button.abstract';
@@ -32,7 +25,9 @@ export class TextButtonComponent extends BaseButtonElement {
 
   @HostListener('click', ['$event'])
   onClick($event: MouseEvent) {
-    this.clicked.emit($event);
+    if (this.clicked.observers.length > 0) {
+      this.clicked.emit($event);
+    }
   }
 
   getIconClass(): string {
