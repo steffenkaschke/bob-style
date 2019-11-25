@@ -1,6 +1,5 @@
 import { storiesOf } from '@storybook/angular';
 import { text, select, boolean, withKnobs, number } from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { ProgressBarModule } from './progress-bar.module';
