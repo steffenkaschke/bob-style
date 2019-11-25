@@ -55,6 +55,73 @@ const note = `
   ~~~
   ${template}
   ~~~
+
+  #### Example \`MenuItem[]\` config:
+
+  ~~~
+menu = [
+    {
+      label: 'Employee',
+      key: 'employee',
+
+      children: [
+        {
+          label: 'Update work details',
+          key: 'update.work.details',
+          action: (event: MenuItem) => {
+            const {id: itemID, key: actionKey} = event;
+            this[actionKey](itemID);
+          }
+        },
+        {
+          label: 'Delete file',
+          key: 'delete.file',
+          action: (event: MenuItem) => {
+            this.deleteFile(event.id)
+          }
+        },
+      ],
+    }
+  ]
+~~~
+
+#### Note
+If you utilize menu \`id\` input (for example, referencing the item that has \
+  the menu) and \`key\` of menu items, you might not need to provide \
+  menu item actions at all. You can use single \`(actionClick)\` binding \
+  (that receives MenuItem with menu \`id\` and action \`key\`) to have single handler for all actions.
+
+~~~
+menu = [
+    {
+      label: 'Employee',
+
+      children: [
+        {
+          label: 'Update work details',
+          key: 'updateDetails',
+        },
+        {
+          label: 'Delete file',
+          key: 'deleteFile',
+        },
+      ],
+    }
+  ]
+
+  <b-menu [id]="'employee-123'"
+          [menu]="menu"
+          (actionClick)="onActionClick($event)">
+
+  onActionClick(event) {
+    const {id: itemID, key: actionKey} = event;
+
+    // itemID equals menu [id] ('employee-123'),
+    // actionKey equals menu item .key ('updateDetails')
+
+    this[actionKey](itemID);
+  }
+~~~
 `;
 
 const menuMock: MenuItem[] = [
@@ -71,20 +138,20 @@ const menuMock: MenuItem[] = [
           {
             label: 'Update site',
             action: action('update site'),
-            key: 'update.site',
+            key: 'update.site'
           },
           {
             label: 'Update email',
             action: action('update email'),
-            key: 'update.email',
+            key: 'update.email'
           },
           {
             label: 'Update reports to',
             disabled: true,
             action: action('update reports to'),
-            key: 'update.reportsto',
-          },
-        ],
+            key: 'update.reportsto'
+          }
+        ]
       },
 
       {
@@ -95,7 +162,7 @@ const menuMock: MenuItem[] = [
           {
             label: 'Terminate',
             action: action('terminate'),
-            key: 'terminate',
+            key: 'terminate'
           },
           {
             label: 'Rehire',
@@ -106,30 +173,30 @@ const menuMock: MenuItem[] = [
               {
                 label: 'Secret action',
                 action: action('Deep action'),
-                key: 'deep',
-              },
-            ],
-          },
-        ],
+                key: 'deep'
+              }
+            ]
+          }
+        ]
       },
       {
         label: 'Delete file',
         action: action('delete file'),
-        key: 'delete.file',
-      },
-    ],
+        key: 'delete.file'
+      }
+    ]
   },
   {
     label: 'View profile',
     action: action('view profile'),
-    key: 'view.profile',
+    key: 'view.profile'
   },
   {
     label: 'Request time-off',
     disabled: true,
     action: action('request time off'),
-    key: 'request.timeoff',
-  },
+    key: 'request.timeoff'
+  }
 ];
 
 story.add(
@@ -143,11 +210,11 @@ story.add(
         menu: object('menu', menuMock),
         onActionClick: action('action click'),
         onMenuOpen: action('menu open'),
-        onMenuClose: action('menu close'),
+        onMenuClose: action('menu close')
       },
       moduleMetadata: {
-        imports: [StoryBookLayoutModule, BrowserAnimationsModule, MenuModule, ButtonsModule, IconsModule],
-      },
+        imports: [StoryBookLayoutModule, BrowserAnimationsModule, MenuModule, ButtonsModule, IconsModule]
+      }
     };
   },
   { notes: { markdown: note } }
