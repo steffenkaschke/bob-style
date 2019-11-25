@@ -1,8 +1,19 @@
 import { Injectable } from '@angular/core';
-import { fromEvent, Observable } from 'rxjs';
-import { debounceTime, map, share, shareReplay, throttleTime, tap } from 'rxjs/operators';
+import { fromEvent, Observable, merge } from 'rxjs';
+import {
+  debounceTime,
+  map,
+  share,
+  shareReplay,
+  throttleTime,
+  tap,
+  startWith,
+  filter,
+  distinctUntilChanged
+} from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
 import { ScrollEvent } from './utils.interface';
+import { DOMhelpers } from '../html/dom-helpers.service';
 
 @Injectable({
   providedIn: 'root'
@@ -44,5 +55,17 @@ export class UtilsService {
 
   public getWindowKeydownEvent(): Observable<KeyboardEvent> {
     return this.winKey$;
+  }
+
+  public getElementInViewEvent(element: HTMLElement): Observable<boolean> {
+    return merge(this.winScroll$, this.winResize$).pipe(
+      startWith(1),
+      throttleTime(300, undefined, {
+        leading: true,
+        trailing: true
+      }),
+      map(() => DOMhelpers.prototype.isInView(element)),
+      distinctUntilChanged()
+    );
   }
 }
