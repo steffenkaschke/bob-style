@@ -100,7 +100,7 @@ const storyTemplate = `
     <br><br>
     ${template2}
     <div style="margin-top: 100vh; padding-bottom: 100px;">
-    <h3 style="text-align: left; margin-bottom: 50px;">Progress bars animate as they come in view</h3>
+    <h3 style="text-align: left; margin-bottom: 50px;">Progress bars animate as they come into view</h3>
       ${examples}
     </div>
   </div>
