@@ -51,7 +51,7 @@ describe('ActionsMenuButtonComponent', () => {
 
   it('should check if menu opened to left', () => {
     component.menuItems = menuItemsMock;
-    component.openLeft = true
+    component.openLeft = true;
     fixture.detectChanges();
     const menuElement = fixture.debugElement.query(By.css('b-menu'));
     expect(menuElement.componentInstance.openLeft).toEqual(true);
