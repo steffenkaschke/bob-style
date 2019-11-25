@@ -8,7 +8,8 @@ import {
   ChangeDetectorRef,
   SimpleChanges,
   OnChanges,
-  AfterViewInit
+  AfterViewInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { SimpleBarChartItem } from './simple-bar-chart.interface';
 import {
@@ -29,7 +30,8 @@ import { InputTypes } from '../../form-elements/input/input.enum';
 @Component({
   selector: 'b-simple-bar-chart',
   templateUrl: './simple-bar-chart.component.html',
-  styleUrls: ['./simple-bar-chart.component.scss']
+  styleUrls: ['./simple-bar-chart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
   constructor(
@@ -45,6 +47,8 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
   @Input() data: SimpleBarChartItem[] = [];
   @Input() config: ProgressBarConfig = {};
 
+  private wasInView = false;
+
   readonly id = simpleUID('bsbc-');
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -57,7 +61,7 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
       }));
     }
 
-    if (notFirstChanges(changes, ['data'])) {
+    if (notFirstChanges(changes)) {
       this.zone.runOutsideAngular(() => {
         setTimeout(() => {
           this.setCssProps();
@@ -80,6 +84,7 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
           take(1)
         )
         .subscribe(() => {
+          this.wasInView = true;
           this.setCssProps();
         });
     } else {
@@ -96,7 +101,7 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
         '--bsbc-item-count': this.data.length
       });
       this.DOM.setCssProps(barElmnt, {
-        '--bsbc-value': item.value + '%',
+        '--bsbc-value': this.wasInView || this.config.disableAnimation ? item.value + '%' : null,
         '--bsbc-color': item.color || null,
         '--bsbc-trans': this.config.disableAnimation
           ? '0s'

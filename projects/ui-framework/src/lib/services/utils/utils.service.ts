@@ -4,13 +4,11 @@ import {
   debounceTime,
   map,
   share,
-  shareReplay,
   throttleTime,
-  tap,
   startWith,
-  filter,
   distinctUntilChanged,
-  flatMap
+  flatMap,
+  delay
 } from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
 import { ScrollEvent } from './utils.interface';
@@ -87,7 +85,8 @@ export class UtilsService {
     }).pipe(
       flatMap((entries: IntersectionObserverEntry[]) => entries),
       map((entry: IntersectionObserverEntry) => entry.isIntersecting),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      delay(100)
     );
   }
 }

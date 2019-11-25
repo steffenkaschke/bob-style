@@ -44,10 +44,10 @@ export class ProgressBarComponent implements OnChanges, OnInit {
   @HostBinding('attr.data-type') @Input() type: ProgressBarType = ProgressBarType.primary;
   @HostBinding('attr.data-size') @Input() size: ProgressBarSize = ProgressBarSize.medium;
 
-  @Input() color: string;
-  @Input() value: number;
   @Input() data: ProgressBarData;
   @Input() config: ProgressBarConfig = {};
+
+  private wasInView = false;
 
   readonly id = simpleUID('bpb-');
   readonly barType = ProgressBarType;
@@ -55,11 +55,11 @@ export class ProgressBarComponent implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
 
-    if (changes.value) {
-      this.value = numberMinMax(valueAsNumber(InputTypes.number, this.value, 0), 0, 100);
+    if (changes.data) {
+      this.data.value = numberMinMax(valueAsNumber(InputTypes.number, this.data.value, 0), 0, 100);
     }
 
-    if (notFirstChanges(changes, ['color', 'value'])) {
+    if (notFirstChanges(changes)) {
       this.setCssProps();
     }
 
@@ -78,18 +78,21 @@ export class ProgressBarComponent implements OnChanges, OnInit {
           take(1)
         )
         .subscribe(() => {
+          this.wasInView = true;
           this.setCssProps();
         });
+    } else {
+      this.setCssProps();
     }
   }
 
   private setCssProps(): void {
     this.DOM.setCssProps(this.host.nativeElement, {
-      '--bpb-value': this.value + '%',
-      '--bpb-color': (this.type !== ProgressBarType.secondary && this.color) || null,
+      '--bpb-value': this.wasInView || this.config.disableAnimation ? this.data.value + '%' : null,
+      '--bpb-color': (this.type !== ProgressBarType.secondary && this.data.color) || null,
       '--bpb-trans': this.config.disableAnimation
         ? '0s'
-        : (this.value > 50 ? randomNumber(1000, 2000) : randomNumber(500, 1000)) + 'ms',
+        : (this.data.value > 50 ? randomNumber(1000, 2000) : randomNumber(500, 1000)) + 'ms',
       '--bpb-trans-delay': this.config.disableAnimation ? '0s' : randomNumber(70, 250) + 'ms'
     });
   }
