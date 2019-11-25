@@ -95,7 +95,7 @@ export class ProgressBarComponent implements OnChanges, OnInit {
       '--bpb-trans': this.config.disableAnimation
         ? '0s'
         : (this.value > 50 ? randomNumber(1000, 2000) : randomNumber(500, 1000)) + 'ms',
-      '--bpb-trans-delay': this.config.disableAnimation ? '0s' : randomNumber(0, 200) + 'ms'
+      '--bpb-trans-delay': this.config.disableAnimation ? '0s' : randomNumber(70, 300) + 'ms'
     });
   }
 }

@@ -58,7 +58,7 @@ $BPBtypeMap: (
   --bpb-value: 0%;
   --bpb-color: #{$grey-600};
   --bpb-trans: 1s;
-  --bpb-trans-delay: 1s;
+  --bpb-trans-delay: 0.2s;
   @include b-body($addCssVars: true, $font-family: null);
 }
 

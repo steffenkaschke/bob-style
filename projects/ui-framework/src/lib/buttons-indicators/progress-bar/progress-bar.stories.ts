@@ -112,6 +112,10 @@ const note = `
   #### Module
   *ProgressBarModule*
 
+  *Note*: Progress bar animates when it appears in viewport. <br>
+  To disable this behaviour (and all animation in general), \
+  pass \`\`\`{ disableAnimation: true }\`\`\` as [config].
+
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
