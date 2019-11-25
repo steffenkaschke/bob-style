@@ -79,7 +79,7 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
           filter(i => Boolean(i)),
           take(1)
         )
-        .subscribe(d => {
+        .subscribe(() => {
           this.setCssProps();
         });
     } else {
@@ -96,7 +96,7 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
         '--bsbc-item-count': this.data.length
       });
       this.DOM.setCssProps(barElmnt, {
-        '--bsbc-value': (item.value || 0) + '%',
+        '--bsbc-value': item.value + '%',
         '--bsbc-color': item.color || null,
         '--bsbc-trans': this.config.disableAnimation
           ? '0s'
