@@ -1,4 +1,5 @@
 @import '../../style/common-imports';
+@import './progress-bar.mixin';
 
 $BPBtypeMap: (
   'primary': (
@@ -7,7 +8,8 @@ $BPBtypeMap: (
         margin-bottom: 12px
       ),
       '.bpb-value': (
-        margin-right: times8(2)
+        margin-right: times8(2),
+        width: 2.8em
       )
     ),
     'large': (
@@ -52,14 +54,8 @@ $BPBtypeMap: (
 );
 
 :host {
-  display: block;
-  width: 100%;
+  @include progress-bar-host('bpb');
   text-align: left;
-  --bpb-value: 0%;
-  --bpb-color: #{$grey-600};
-  --bpb-trans: 1s;
-  --bpb-trans-delay: 0.2s;
-  @include b-body($addCssVars: true, $font-family: null);
 }
 
 h5,
@@ -68,16 +64,7 @@ p {
 }
 
 .bpb-bar {
-  background-color: $grey-100;
-  background-image: linear-gradient(var(--bpb-color), var(--bpb-color));
-  background-size: var(--bpb-value) 100%;
-  background-position: left center;
-  background-repeat: no-repeat;
-  transition: background-size var(--bpb-trans);
-  transition-delay: var(--bpb-trans-delay);
-  transition-timing-function: ease-in-out;
-  width: 100%;
-  overflow: hidden;
+  @include progress-bar(horizontal, 'bpb');
 }
 
 .bpb-header,

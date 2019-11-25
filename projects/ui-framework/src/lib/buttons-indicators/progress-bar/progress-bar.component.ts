@@ -10,8 +10,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef
 } from '@angular/core';
-import { filter, take, throttleTime, startWith } from 'rxjs/operators';
-import { merge } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 import {
   applyChanges,
   notFirstChanges,
@@ -71,18 +70,14 @@ export class ProgressBarComponent implements OnChanges, OnInit {
 
   ngOnInit() {
     if (!this.config.disableAnimation) {
-      merge(this.utilsService.getScrollEvent(), this.utilsService.getResizeEvent())
+      this.utilsService
+        .getElementInViewEvent(this.host.nativeElement)
         .pipe(
           outsideZone(this.zone),
-          startWith(1),
-          throttleTime(300, undefined, {
-            leading: true,
-            trailing: true
-          }),
-          filter(() => this.DOM.isInView(this.host.nativeElement)),
+          filter(i => Boolean(i)),
           take(1)
         )
-        .subscribe(() => {
+        .subscribe(d => {
           this.setCssProps();
         });
     }
@@ -95,7 +90,7 @@ export class ProgressBarComponent implements OnChanges, OnInit {
       '--bpb-trans': this.config.disableAnimation
         ? '0s'
         : (this.value > 50 ? randomNumber(1000, 2000) : randomNumber(500, 1000)) + 'ms',
-      '--bpb-trans-delay': this.config.disableAnimation ? '0s' : randomNumber(70, 300) + 'ms'
+      '--bpb-trans-delay': this.config.disableAnimation ? '0s' : randomNumber(70, 250) + 'ms'
     });
   }
 }

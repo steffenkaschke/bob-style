@@ -6,7 +6,7 @@ import { ProgressBarModule } from './progress-bar.module';
 import { randomNumber, randomFromArray } from '../../services/utils/functional-utils';
 import { ProgressBarType, ProgressBarSize } from './progress-bar.enum';
 import { ColorService } from '../../services/color-service/color.service';
-import { DividerModule } from '../../layout/divider/divider.module';
+
 import { Icons } from '../../icons/icons.enum';
 import { ButtonsModule } from '../../buttons/buttons.module';
 
@@ -30,22 +30,6 @@ const template = `
 
 const examples = `
 <b-progress-bar [type]="'primary'"
-                [size]="'large'"
-                [color]="color1"
-                [value]="value1"
-                [config]="{
-                  disableAnimation: disableAnimation
-                }"
-                [data]="{
-                    textHeaderLeft: 'Primary large',
-                    textHeaderRight: textRight1,
-                    iconHeaderRight: icon1
-                  }">
-</b-progress-bar>
-
-<br><br>
-
-<b-progress-bar [type]="'primary'"
                 [size]="'medium'"
                 [color]="color2"
                 [value]="value2"
@@ -58,8 +42,20 @@ const examples = `
                     iconHeaderRight: icon2
                   }">
 </b-progress-bar>
-
-
+<br><br>
+<b-progress-bar [type]="'primary'"
+                [size]="'large'"
+                [color]="color1"
+                [value]="value1"
+                [config]="{
+                  disableAnimation: disableAnimation
+                }"
+                [data]="{
+                    textHeaderLeft: 'Primary large',
+                    textHeaderRight: textRight1,
+                    iconHeaderRight: icon1
+                  }">
+</b-progress-bar>
 `;
 
 const template2 = `
@@ -194,7 +190,7 @@ story.add(
         disableAnimation: boolean('disableAnimation', false)
       },
       moduleMetadata: {
-        imports: [StoryBookLayoutModule, ProgressBarModule, DividerModule, ButtonsModule]
+        imports: [StoryBookLayoutModule, ProgressBarModule, ButtonsModule]
       }
     };
   },
