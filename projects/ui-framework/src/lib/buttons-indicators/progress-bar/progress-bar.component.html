@@ -1,0 +1,39 @@
+<div class="bpb-header">
+
+  <h5 *ngIf="type === barType.primary"
+      class="bpb-value"
+      [id]="id+'-val'">{{value}}%</h5>
+
+  <p class="bpb-text bpb-text-left"
+     [id]="id+'-dsc1'"
+     data-max-lines='1'>
+    {{data?.textHeaderLeft}}
+    <ng-content select="[header-left]"></ng-content>
+  </p>
+
+  <p *ngIf="type === barType.primary"
+     class="bpb-text bpb-text-right"
+     [id]="id+'-dsc2'"
+     data-max-lines='1'
+     [ngClass]="
+     data && data.iconHeaderRight ? data.iconHeaderRight + ' b-icon-medium b-icon-normal' : ''
+     ">
+    {{data?.textHeaderRight}}
+    <ng-content select="[header-right]"></ng-content>
+  </p>
+
+</div>
+
+<div class="bpb-bar-wrap">
+  <div class="bpb-bar"
+       [id]="id"
+       role="progressbar"
+       [attr.aria-labelledby]="id+'-val '+id+'-dsc1 '+id+'-dsc2'"
+       [attr.aria-valuenow]="value || null"
+       aria-valuemin="0"
+       aria-valuemax="100"></div>
+
+  <h5 *ngIf="type === barType.secondary"
+      class="bpb-value"
+      [id]="id+'-val'">{{value}}%</h5>
+</div>
