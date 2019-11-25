@@ -8,7 +8,7 @@ import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { MultiListAndChipsComponent } from './multi-list-and-chips.component';
 import { Icons } from '../../icons/icons.enum';
 import { MockComponent } from 'ng-mocks';
-import { EmptyStateComponent } from '../../buttons-indicators/empty-state/empty-state.component';
+import { EmptyStateComponent } from '../../indicators/empty-state/empty-state.component';
 import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { IconComponent } from '../../icons/icon.component';
 import { CommonModule } from '@angular/common';

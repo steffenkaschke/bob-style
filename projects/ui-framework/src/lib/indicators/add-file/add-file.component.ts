@@ -1,5 +1,5 @@
-import { Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import {IconColor, Icons, IconSize} from '../../icons/icons.enum';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-add-file',
@@ -13,8 +13,7 @@ export class AddFileComponent {
   readonly iconColor = IconColor;
   readonly iconSize = IconSize;
   readonly iconShape = Icons;
-  constructor() {
-  }
+  constructor() {}
   @HostListener('click')
   onClick() {
     this.clicked.emit();

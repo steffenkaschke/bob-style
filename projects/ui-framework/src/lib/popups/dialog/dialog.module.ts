@@ -6,7 +6,7 @@ import { DialogComponent } from './dialog.component';
 import { TypographyModule } from '../../typography/typography.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { IconsModule } from '../../icons/icons.module';
-import { MiniPreloaderModule } from '../../buttons-indicators/mini-preloader/mini-preloader.module';
+import { MiniPreloaderModule } from '../../indicators/mini-preloader/mini-preloader.module';
 
 @NgModule({
   declarations: [DialogComponent],

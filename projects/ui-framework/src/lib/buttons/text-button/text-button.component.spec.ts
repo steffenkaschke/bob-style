@@ -5,7 +5,7 @@ import { MockComponent } from 'ng-mocks';
 import { TypographyModule } from '../../typography/typography.module';
 import { By } from '@angular/platform-browser';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
-import { LinkColor } from '../../buttons-indicators/link/link.enum';
+import { LinkColor } from '../../indicators/link/link.enum';
 
 describe('TextButtonComponent', () => {
   let component: TextButtonComponent;
