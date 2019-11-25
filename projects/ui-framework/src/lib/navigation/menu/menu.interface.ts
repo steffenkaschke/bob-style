@@ -5,6 +5,7 @@ export interface MenuItem {
   label: string;
   disabled?: boolean;
   key?: string;
+  id?: string;
   action?($event): void;
 }
 
