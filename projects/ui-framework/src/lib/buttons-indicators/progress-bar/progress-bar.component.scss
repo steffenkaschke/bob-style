@@ -76,11 +76,7 @@ p {
   transition: background-size var(--bpb-trans);
   transition-delay: var(--bpb-trans-delay);
   transition-timing-function: ease-in-out;
-
-  height: 20px;
   width: 100%;
-
-  border-radius: 10px;
   overflow: hidden;
 }
 

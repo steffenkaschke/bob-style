@@ -50,8 +50,7 @@ export class ProgressBarComponent implements OnChanges, OnInit {
   @Input() data: ProgressBarData;
   @Input() config: ProgressBarConfig = {};
 
-  public id = simpleUID('bpb-');
-
+  readonly id = simpleUID('bpb-');
   readonly barType = ProgressBarType;
 
   ngOnChanges(changes: SimpleChanges): void {
