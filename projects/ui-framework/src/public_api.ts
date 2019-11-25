@@ -76,47 +76,47 @@ export { AvatarLayoutComponent } from './lib/avatar/avatar-layout/avatar-layout.
 // Preloader
 export {
   MiniPreloaderModule
-} from './lib/buttons-indicators/mini-preloader/mini-preloader.module';
+} from './lib/indicators/mini-preloader/mini-preloader.module';
 export {
   MiniPreloaderComponent
-} from './lib/buttons-indicators/mini-preloader/mini-preloader.component';
+} from './lib/indicators/mini-preloader/mini-preloader.component';
 // Add File Module
-export { AddFileModule } from './lib/buttons-indicators/add-file/add-file.module';
-export { AddFileComponent } from './lib/buttons-indicators/add-file/add-file.component';
+export { AddFileModule } from './lib/indicators/add-file/add-file.module';
+export { AddFileComponent } from './lib/indicators/add-file/add-file.component';
 // Slider Module
-export { SliderModule } from './lib/buttons-indicators/slider/slider.module';
+export { SliderModule } from './lib/indicators/slider/slider.module';
 export {
   SliderComponent
-} from './lib/buttons-indicators/slider/slider.component';
+} from './lib/indicators/slider/slider.component';
 // SwitchToggle Module
 export {
   SwitchToggleModule
-} from './lib/buttons-indicators/switch-toggle/switch-toggle.module';
+} from './lib/indicators/switch-toggle/switch-toggle.module';
 export {
   SwitchToggleComponent
-} from './lib/buttons-indicators/switch-toggle/switch-toggle.component';
+} from './lib/indicators/switch-toggle/switch-toggle.component';
 // InfoStrip Module
-export { InfoStripModule } from './lib/buttons-indicators/info-strip/info-strip.module';
-export { InfoStripComponent } from './lib/buttons-indicators/info-strip/info-strip.component';
-export { InfoStripIconType } from './lib/buttons-indicators/info-strip/info-strip.enum';
+export { InfoStripModule } from './lib/indicators/info-strip/info-strip.module';
+export { InfoStripComponent } from './lib/indicators/info-strip/info-strip.component';
+export { InfoStripIconType } from './lib/indicators/info-strip/info-strip.enum';
 // Link Module
-export { LinkModule } from './lib/buttons-indicators/link/link.module';
-export { LinkComponent } from './lib/buttons-indicators/link/link.component';
-export { Link } from './lib/buttons-indicators/link/link.types';
-export { LinkColor, LinkTarget } from './lib/buttons-indicators/link/link.enum';
+export { LinkModule } from './lib/indicators/link/link.module';
+export { LinkComponent } from './lib/indicators/link/link.component';
+export { Link } from './lib/indicators/link/link.types';
+export { LinkColor, LinkTarget } from './lib/indicators/link/link.enum';
 // Empty State Module
-export { EmptyStateModule } from './lib/buttons-indicators/empty-state/empty-state.module';
-export { EmptyStateComponent } from './lib/buttons-indicators/empty-state/empty-state.component';
-export { EmptyStateConfig } from './lib/buttons-indicators/empty-state/empty-state.interface';
+export { EmptyStateModule } from './lib/indicators/empty-state/empty-state.module';
+export { EmptyStateComponent } from './lib/indicators/empty-state/empty-state.component';
+export { EmptyStateConfig } from './lib/indicators/empty-state/empty-state.interface';
 // Progress Bar
-export * from './lib/buttons-indicators/progress-bar/progress-bar.enum';
-export * from './lib/buttons-indicators/progress-bar/progress-bar.interface';
-export { ProgressBarModule } from './lib/buttons-indicators/progress-bar/progress-bar.module';
-export { ProgressBarComponent } from './lib/buttons-indicators/progress-bar/progress-bar.component';
+export * from './lib/indicators/progress-bar/progress-bar.enum';
+export * from './lib/indicators/progress-bar/progress-bar.interface';
+export { ProgressBarModule } from './lib/indicators/progress-bar/progress-bar.module';
+export { ProgressBarComponent } from './lib/indicators/progress-bar/progress-bar.component';
 // Simple Bar Chart
-export * from './lib/buttons-indicators/simple-bar-chart/simple-bar-chart.interface';
-export { SimpleBarChartModule } from './lib/buttons-indicators/simple-bar-chart/simple-bar-chart.module';
-export { SimpleBarChartComponent } from './lib/buttons-indicators/simple-bar-chart/simple-bar-chart.component';
+export * from './lib/indicators/simple-bar-chart/simple-bar-chart.interface';
+export { SimpleBarChartModule } from './lib/indicators/simple-bar-chart/simple-bar-chart.module';
+export { SimpleBarChartComponent } from './lib/indicators/simple-bar-chart/simple-bar-chart.component';
 
 /*
 * Comments

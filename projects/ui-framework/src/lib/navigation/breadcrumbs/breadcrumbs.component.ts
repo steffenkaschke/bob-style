@@ -1,13 +1,25 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, HostBinding, OnDestroy, NgZone, ChangeDetectorRef} from '@angular/core';
-import {has} from 'lodash';
-import {Subscription} from 'rxjs';
-import {LinkColor} from '../../buttons-indicators/link/link.enum';
-import {ButtonSize, ButtonType} from '../../buttons/buttons.enum';
-import {IconColor, Icons, IconSize} from '../../icons/icons.enum';
-import {MobileService, MediaEvent} from '../../services/utils/mobile.service';
-import {outsideZone} from '../../services/utils/rxjs.operators';
-import {BreadcrumbsType, BreadcrumbsToggleStrategy} from './breadcrumbs.enum';
-import {Breadcrumb, BreadcrumbNavButtons} from './breadcrumbs.interface';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  HostBinding,
+  OnDestroy,
+  NgZone,
+  ChangeDetectorRef
+} from '@angular/core';
+import { has } from 'lodash';
+import { Subscription } from 'rxjs';
+import { LinkColor } from '../../indicators/link/link.enum';
+import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
+import { outsideZone } from '../../services/utils/rxjs.operators';
+import { BreadcrumbsType, BreadcrumbsToggleStrategy } from './breadcrumbs.enum';
+import { Breadcrumb, BreadcrumbNavButtons } from './breadcrumbs.interface';
 
 @Component({
   selector: 'b-breadcrumbs',
@@ -39,11 +51,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   readonly breadcrumbsType = BreadcrumbsType;
   private mediaEventSubscriber: Subscription;
 
-  constructor(
-    private mobileService: MobileService,
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {}
+  constructor(private mobileService: MobileService, private zone: NgZone, private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.mediaEventSubscriber = this.mobileService
@@ -68,8 +76,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   showTitle(i: number) {
-    return this.toggleStrategy === BreadcrumbsToggleStrategy.alwaysOpen ||
-      i === this.activeIndex;
+    return this.toggleStrategy === BreadcrumbsToggleStrategy.alwaysOpen || i === this.activeIndex;
   }
 
   onStepClick(stepIndex): void {

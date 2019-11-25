@@ -16,7 +16,7 @@ import { ChipListConfig, Chip } from '../chips.interface';
 import { ChipType } from '../chips.enum';
 import { ListChange } from '../../lists/list-change/list-change';
 import { simpleUID, cloneArray } from '../../services/utils/functional-utils';
-import { EmptyStateConfig } from '../../buttons-indicators/empty-state/empty-state.interface';
+import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
 
 @Component({
   selector: 'b-multi-list-and-chips',

@@ -3,7 +3,7 @@ import { withKnobs, object, text } from '@storybook/addon-knobs/angular';
 import { InfoTooltipModule } from './info-tooltip.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { LinkColor, LinkTarget } from '../../buttons-indicators/link/link.enum';
+import { LinkColor, LinkTarget } from '../../indicators/link/link.enum';
 
 const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
   withKnobs

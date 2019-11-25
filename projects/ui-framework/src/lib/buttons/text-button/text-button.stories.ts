@@ -12,7 +12,7 @@ import { Icons } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { LinkColor } from '../../buttons-indicators/link/link.enum';
+import { LinkColor } from '../../indicators/link/link.enum';
 
 const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
   withKnobs
