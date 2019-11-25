@@ -108,6 +108,11 @@ export { LinkColor, LinkTarget } from './lib/buttons-indicators/link/link.enum';
 export { EmptyStateModule } from './lib/buttons-indicators/empty-state/empty-state.module';
 export { EmptyStateComponent } from './lib/buttons-indicators/empty-state/empty-state.component';
 export { EmptyStateConfig } from './lib/buttons-indicators/empty-state/empty-state.interface';
+// Progress Bar
+export * from './lib/buttons-indicators/progress-bar/progress-bar.enum';
+export * from './lib/buttons-indicators/progress-bar/progress-bar.interface';
+export { ProgressBarModule } from './lib/buttons-indicators/progress-bar/progress-bar.module';
+export { ProgressBarComponent } from './lib/buttons-indicators/progress-bar/progress-bar.component';
 
 /*
 * Comments

@@ -1,0 +1,146 @@
+@import '../../style/common-imports';
+
+$BPBtypeMap: (
+  'primary': (
+    '*': (
+      '.bpb-header': (
+        margin-bottom: 12px
+      ),
+      '.bpb-value': (
+        margin-right: times8(2)
+      )
+    ),
+    'large': (
+      '.bpb-bar': (
+        height: times8(2),
+        border-radius: times8(2) / 2
+      ),
+      '.bpb-value': (
+        font-size: $font-size-display-1,
+        font-weight: $font-weight-display-1
+      )
+    ),
+    'medium': (
+      '.bpb-bar': (
+        height: times8(1),
+        border-radius: times8(1) / 2
+      ),
+      '.bpb-value': (
+        font-size: $font-size-display-3,
+        font-weight: $font-weight-display-3
+      )
+    )
+  ),
+  'secondary': (
+    '*': (
+      '.bpb-header': (
+        margin-bottom: 5px
+      ),
+      '.bpb-bar': (
+        height: times8(3),
+        border-radius: $border-radius
+      ),
+      '.bpb-value': (
+        font-size: $font-size-display-4,
+        font-weight: $font-weight-display-4,
+        text-align: right,
+        width: 3.3em,
+        margin-left: times8(2)
+      )
+    )
+  )
+);
+
+:host {
+  display: block;
+  width: 100%;
+  text-align: left;
+  --bpb-value: 0%;
+  --bpb-color: #{$grey-600};
+  --bpb-trans: 1s;
+  --bpb-trans-delay: 1s;
+  @include b-body($addCssVars: true, $font-family: null);
+}
+
+h5,
+p {
+  margin: 0;
+}
+
+.bpb-bar {
+  background-color: $grey-100;
+  background-image: linear-gradient(var(--bpb-color), var(--bpb-color));
+  background-size: var(--bpb-value) 100%;
+  background-position: left center;
+  background-repeat: no-repeat;
+  transition: background-size var(--bpb-trans);
+  transition-delay: var(--bpb-trans-delay);
+  transition-timing-function: ease-in-out;
+
+  height: 20px;
+  width: 100%;
+
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.bpb-header,
+.bpb-bar-wrap,
+.bpb-text-right {
+  display: flex;
+  align-items: center;
+}
+
+.bpb-text {
+  &:empty {
+    display: none;
+  }
+}
+
+.bpb-text-left {
+  color: $grey-800;
+  flex-grow: 1;
+}
+
+.bpb-text-right {
+  color: $grey-600;
+  margin-left: times8(2);
+
+  &:before {
+    order: 10;
+    margin-left: times8(1);
+  }
+}
+
+.bpb-value {
+  color: $display-text-color;
+  font-family: var(--display-font-family);
+  line-height: 1;
+}
+
+:host {
+  @each $type, $sizes in $BPBtypeMap {
+    &[data-type='#{$type}'] {
+      @each $size, $elems in $sizes {
+        $sel: '&::ng-deep ';
+        @if $size != '*' {
+          $sel: '&[data-size="' + $size + '"]::ng-deep';
+        }
+
+        #{$sel} {
+          @each $elem, $props in $elems {
+            #{$elem} {
+              @each $prop, $value in $props {
+                #{$prop}: $value;
+
+                @if ($prop == 'font-size' or $prop == 'line-height') {
+                  --#{$prop}: #{$value};
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
