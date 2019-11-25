@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { fromEvent, Observable, merge } from 'rxjs';
+import { fromEvent, Observable, merge, Observer } from 'rxjs';
 import {
   debounceTime,
   map,
   share,
-  shareReplay,
   throttleTime,
-  tap,
   startWith,
-  filter,
-  distinctUntilChanged
+  distinctUntilChanged,
+  flatMap,
+  delay
 } from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
 import { ScrollEvent } from './utils.interface';
@@ -58,14 +57,36 @@ export class UtilsService {
   }
 
   public getElementInViewEvent(element: HTMLElement): Observable<boolean> {
-    return merge(this.winScroll$, this.winResize$).pipe(
-      startWith(1),
-      throttleTime(300, undefined, {
-        leading: true,
-        trailing: true
-      }),
-      map(() => DOMhelpers.prototype.isInView(element)),
-      distinctUntilChanged()
+    if (
+      !('IntersectionObserver' in this.windowRef.nativeWindow) ||
+      !('IntersectionObserverEntry' in this.windowRef.nativeWindow) ||
+      !('intersectionRatio' in this.windowRef.nativeWindow.IntersectionObserverEntry.prototype)
+    ) {
+      return merge(this.winScroll$, this.winResize$).pipe(
+        startWith(1),
+        throttleTime(300, undefined, {
+          leading: true,
+          trailing: true
+        }),
+        map(() => DOMhelpers.prototype.isInView(element)),
+        distinctUntilChanged()
+      );
+    }
+
+    return new Observable((observer: Observer<IntersectionObserverEntry[]>) => {
+      const intersectionObserver = new IntersectionObserver(entries => {
+        observer.next(entries);
+      });
+      intersectionObserver.observe(element);
+
+      return () => {
+        intersectionObserver.disconnect();
+      };
+    }).pipe(
+      flatMap((entries: IntersectionObserverEntry[]) => entries),
+      map((entry: IntersectionObserverEntry) => entry.isIntersecting),
+      distinctUntilChanged(),
+      delay(100)
     );
   }
 }

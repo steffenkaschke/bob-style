@@ -15,15 +15,15 @@ const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(with
 const template = `
   <b-progress-bar [type]="type"
                   [size]="size"
-                  [color]="color"
-                  [value]="value"
-                  [config]="{
-                    disableAnimation: disableAnimation
-                  }"
                   [data]="{
+                    color: color,
+                    value: value,
                     textHeaderLeft: textHeaderLeft,
                     textHeaderRight: textHeaderRight,
                     iconHeaderRight: iconHeaderRight
+                  }"
+                  [config]="{
+                    disableAnimation: disableAnimation
                   }">
   </b-progress-bar>
 `;
@@ -31,36 +31,38 @@ const template = `
 const examples = `
 <b-progress-bar [type]="'primary'"
                 [size]="'medium'"
-                [color]="color2"
-                [value]="value2"
+                [data]="{
+                  color: color2,
+                  value: value2,
+                  textHeaderLeft: 'Primary medium',
+                  textHeaderRight: textRight2,
+                  iconHeaderRight: icon2
+                }"
                 [config]="{
                   disableAnimation: disableAnimation
-                }"
-                [data]="{
-                    textHeaderLeft: 'Primary medium',
-                    textHeaderRight: textRight2,
-                    iconHeaderRight: icon2
-                  }">
+                }">
 </b-progress-bar>
 <br><br>
 <b-progress-bar [type]="'primary'"
                 [size]="'large'"
-                [color]="color1"
-                [value]="value1"
+                [data]="{
+                  color: color1,
+                  value: value1,
+                  textHeaderLeft: 'Primary large',
+                  textHeaderRight: textRight1,
+                  iconHeaderRight: icon1
+                }"
                 [config]="{
                   disableAnimation: disableAnimation
-                }"
-                [data]="{
-                    textHeaderLeft: 'Primary large',
-                    textHeaderRight: textRight1,
-                    iconHeaderRight: icon1
-                  }">
+                }">
 </b-progress-bar>
 `;
 
 const template2 = `
   <b-progress-bar [type]="'secondary'"
-                  [value]="value3"
+                  [data]="{
+                    value: value3
+                  }"
                   [config]="{
                     disableAnimation: disableAnimation
                   }">
@@ -73,8 +75,10 @@ const template2 = `
 const template3 = `
   <b-progress-bar [type]="'primary'"
                   [size]="'large'"
-                  [color]="color4"
-                  [value]="value4"
+                  [data]="{
+                    color: color4,
+                    value: value4
+                  }"
                   [config]="{
                     disableAnimation: disableAnimation
                   }">
@@ -117,9 +121,9 @@ const note = `
   --- | --- | --- | ---
   [type] | ProgressBarType | theme | primary
   [size] | ProgressBarSize | theme size | medium
-  [color]| string | bar color | &nbsp;
-  [value] | number | progress value (0-100) |  &nbsp;
-  [data] | ProgressBarData | \`\`\`textHeaderLeft: string\`\`\` - text for the left part of header,<br>\
+  [data] | ProgressBarData | \`\`\`color: string\`\`\` - bar color,<br>\
+  \`\`\`value: number\`\`\` -  progress value (0-100),<br>\
+  \`\`\`textHeaderLeft: string\`\`\` - text for the left part of header,<br>\
    \`\`\`textHeaderRight: string\`\`\` - text for the right part of header,<br>\
     \`\`\`iconHeaderRight: Icons\`\`\` - icon for the right part of header |  &nbsp;
   [config] | ProgressBarConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation  |  &nbsp;
@@ -129,6 +133,17 @@ const note = `
   ~~~
   ${template}
   ${template3}
+  ~~~
+
+  #### Example \`data\`
+  ~~~
+data = {
+      color: '#926296',
+      value: 73,
+      textHeaderLeft: 'Strongly disagree',
+      textHeaderRight: '12/32',
+      iconHeaderRight: Icons.doc_icon
+    }
   ~~~
 `;
 

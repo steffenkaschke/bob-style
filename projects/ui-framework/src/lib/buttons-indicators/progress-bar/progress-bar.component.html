@@ -2,7 +2,7 @@
 
   <h5 *ngIf="type === barType.primary"
       class="bpb-value"
-      [id]="id+'-val'">{{value}}%</h5>
+      [id]="id+'-val'">{{data?.value}}%</h5>
 
   <p class="bpb-text bpb-text-left"
      [id]="id+'-dsc1'"
@@ -28,11 +28,11 @@
        [id]="id"
        role="progressbar"
        [attr.aria-labelledby]="id+'-val '+id+'-dsc1 '+id+'-dsc2'"
-       [attr.aria-valuenow]="value || null"
+       [attr.aria-valuenow]="data?.value || null"
        aria-valuemin="0"
        aria-valuemax="100"></div>
 
   <h5 *ngIf="type === barType.secondary"
       class="bpb-value"
-      [id]="id+'-val'">{{value}}%</h5>
+      [id]="id+'-val'">{{data?.value}}%</h5>
 </div>
