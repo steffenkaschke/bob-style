@@ -17,6 +17,9 @@ const template = `
                   [size]="size"
                   [color]="color"
                   [value]="value"
+                  [config]="{
+                    disableAnimation: disableAnimation
+                  }"
                   [data]="{
                     textHeaderLeft: textHeaderLeft,
                     textHeaderRight: textHeaderRight,
@@ -116,6 +119,10 @@ const note = `
   [size] | ProgressBarSize | theme size | medium
   [color]| string | bar color | &nbsp;
   [value] | number | progress value (0-100) |  &nbsp;
+  [data] | ProgressBarData | \`\`\`textHeaderLeft: string\`\`\` - text for the left part of header,<br>\
+   \`\`\`textHeaderRight: string\`\`\` - text for the right part of header,<br>\
+    \`\`\`iconHeaderRight: Icons\`\`\` - icon for the right part of header |  &nbsp;
+  [config] | ProgressBarConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation  |  &nbsp;
   &lt;elem header-left&gt; | ng-content | content for the left part of header | &nbsp;
   &lt;elem header-right&gt; | ng-content | content for the right part of header | &nbsp;
 
