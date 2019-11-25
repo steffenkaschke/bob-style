@@ -49,7 +49,9 @@ export {
   ButtonSize,
   BackButtonType
 } from './lib/buttons/buttons.enum';
-
+export {
+  ActionsMenuButtonComponent
+} from './lib/buttons/action-menu-button/action-menu-button.component';
 /*
  * Avatar
  */

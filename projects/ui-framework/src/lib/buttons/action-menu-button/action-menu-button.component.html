@@ -1,0 +1,12 @@
+<div class="b-action-menu-button">
+  <b-menu [menu]="menuItems"
+          [openLeft]="openLeft"
+          (click)="$event.stopPropagation()">
+    <b-square-button menu-trigger
+                     [type]="buttonType"
+                     [icon]="buttonIcon"
+                     [color]="buttonColor">
+    </b-square-button>
+  </b-menu>
+</div>
+
