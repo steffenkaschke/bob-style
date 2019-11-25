@@ -77,7 +77,7 @@ export class ProgressBarComponent implements OnChanges, OnInit {
           filter(i => Boolean(i)),
           take(1)
         )
-        .subscribe(d => {
+        .subscribe(() => {
           this.setCssProps();
         });
     }
