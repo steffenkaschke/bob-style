@@ -149,6 +149,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       this.overlayRef.updatePosition();
       this.overlayRef.updateSize({
         width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
+        height: 360
       });
 
       const searchInput = this.overlayRef.overlayElement.querySelector(
