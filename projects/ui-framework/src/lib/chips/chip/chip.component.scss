@@ -16,27 +16,27 @@ $chipTypeMap: (
     background-color: $grey-300,
     color: $grey-700,
     border-color: $grey-300,
-    font-weight: $font-weight-body,
+    font-weight: $font-weight-body
   ),
   info: (
     background-color: var(--inform-500),
     color: white,
-    border-color: var(--inform-500),
+    border-color: var(--inform-500)
   ),
   warning: (
     background-color: $color-warn,
     color: white,
-    border-color: $color-warn,
+    border-color: $color-warn
   ),
   error: (
     background-color: $color-error,
     color: white,
-    border-color: $color-error,
+    border-color: $color-error
   ),
   success: (
     background-color: var(--positive-500),
     color: white,
-    border-color: var(--positive-500),
+    border-color: var(--positive-500)
   ),
   avatar: (
     background-color: white,
@@ -44,22 +44,33 @@ $chipTypeMap: (
     border-color: $grey-300,
     height: map-get($avatarSizes, mini) + 2px,
     border-radius: (
-      map-get($avatarSizes, mini) + 2px,
-    ) /2,
+      (map-get($avatarSizes, mini) + 2px) / 2
+    ),
+    padding: 0 12px 0 10px
   ),
+  icon: (
+    background-color: white,
+    color: $grey-800,
+    border-color: $grey-300,
+    height: map-get($avatarSizes, mini) + 2px,
+    border-radius: (
+      (map-get($avatarSizes, mini) + 2px) / 2
+    ),
+    padding: 0 12px 0 10px
+  )
 );
 
 $chipStateMap: (
   selected: (
     background-color: $primary-600,
     color: white,
-    border-color: $primary-600,
+    border-color: $primary-600
   ),
   disabled: (
     background-color: $grey-200,
     color: $grey-500,
-    border-color: $grey-200,
-  ),
+    border-color: $grey-200
+  )
 );
 
 :host {
@@ -125,7 +136,15 @@ $chipStateMap: (
   cursor: pointer;
 }
 
-// additional styles for Avatar Chip
+// additional styles for Avatar & Icon Chip
+
+:host[data-type='icon']::ng-deep,
+:host[data-type='avatar']::ng-deep {
+  .remove-button {
+    margin-right: -3px;
+    margin-left: 6px;
+  }
+}
 
 :host[data-type='avatar']::ng-deep {
   b-avatar {
@@ -136,8 +155,29 @@ $chipStateMap: (
       box-shadow: none;
     }
   }
+}
 
-  .remove-button {
-    margin-right: -4px;
+:host[data-disabled='true'][data-type='avatar']::ng-deep {
+  b-avatar {
+    @include disabled-state;
+    filter: grayscale(1);
+
+    .avatar {
+      opacity: 0.8;
+    }
   }
+}
+
+:host[data-type='icon']:before {
+  margin-right: 5px;
+}
+
+:host[data-disabled='true'][data-type='icon']:before {
+  opacity: 0.3;
+}
+
+:host[data-selected='true'][data-type='icon'] {
+  color: $grey-800;
+  background-color: $color-option-selected;
+  border-color: $color-option-selected;
 }

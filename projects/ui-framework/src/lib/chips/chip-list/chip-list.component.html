@@ -3,6 +3,7 @@
         role="listitem"
         [text]="chip.text"
         [type]="chip.type || config.type"
+        [icon]="chip.icon"
         [disabled]="chip.disabled || config.disabled"
         [removable]="chip.removable || config.removable"
         [selected]="checkSelected(chip, index)"

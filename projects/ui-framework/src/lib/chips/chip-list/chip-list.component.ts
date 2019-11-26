@@ -19,6 +19,7 @@ import { ChipComponent } from '../chip/chip.component';
 import { arrayOfValuesToArrayOfObjects } from '../../services/utils/transformers';
 import { ChipType, ChipListAlign, ChipListSelectable } from '../chips.enum';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { IconSize } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-chip-list',
@@ -38,13 +39,12 @@ export class ChipListComponent implements OnChanges {
 
   readonly chipType = ChipType;
   readonly avatarSize = AvatarSize;
+  readonly iconSize = IconSize;
 
   @Output() removed: EventEmitter<Chip> = new EventEmitter<Chip>();
   @Output() selected: EventEmitter<Chip> = new EventEmitter<Chip>();
   @Output() clicked: EventEmitter<Chip> = new EventEmitter<Chip>();
-  @Output() keyPressed: EventEmitter<ChipKeydownEvent> = new EventEmitter<
-    ChipKeydownEvent
-  >();
+  @Output() keyPressed: EventEmitter<ChipKeydownEvent> = new EventEmitter<ChipKeydownEvent>();
 
   @HostBinding('attr.role') role = 'list';
   @HostBinding('attr.data-align')
@@ -85,9 +85,7 @@ export class ChipListComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.chips) {
-      this.chips = arrayOfValuesToArrayOfObjects('text')(
-        changes.chips.currentValue
-      );
+      this.chips = arrayOfValuesToArrayOfObjects('text')(changes.chips.currentValue);
     }
   }
 
@@ -119,35 +117,24 @@ export class ChipListComponent implements OnChanges {
         event.stopPropagation();
         this.focusChipElByIndex(index - 1);
       }
-      if (
-        isKey(event.key, Keys.arrowright) ||
-        isKey(event.key, Keys.arrowdown)
-      ) {
+      if (isKey(event.key, Keys.arrowright) || isKey(event.key, Keys.arrowdown)) {
         event.stopPropagation();
         this.focusChipElByIndex(index + 1);
       }
     }
 
-    if (
-      this.config.selectable &&
-      (isKey(event.key, Keys.space) || isKey(event.key, Keys.enter))
-    ) {
+    if (this.config.selectable && (isKey(event.key, Keys.space) || isKey(event.key, Keys.enter))) {
       event.stopPropagation();
       this.selectChip(chip, index);
     }
 
-    if (
-      this.config.removable &&
-      (isKey(event.key, Keys.backspace) || isKey(event.key, Keys.delete))
-    ) {
+    if (this.config.removable && (isKey(event.key, Keys.backspace) || isKey(event.key, Keys.delete))) {
       event.stopPropagation();
       this.onChipRemove(chip);
 
       this.zone.runOutsideAngular(() => {
         setTimeout(() => {
-          this.focusChipElByIndex(
-            isKey(event.key, Keys.backspace) ? index - 1 : index
-          );
+          this.focusChipElByIndex(isKey(event.key, Keys.backspace) ? index - 1 : index);
         }, 0);
       });
     }

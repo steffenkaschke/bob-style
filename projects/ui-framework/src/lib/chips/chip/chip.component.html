@@ -1,4 +1,4 @@
- <ng-content select="b-avatar"></ng-content>
+ <ng-content select="b-avatar, b-icon"></ng-content>
 
  <span class="chip-text">
    {{ text }}
@@ -7,12 +7,13 @@
 
  <b-icon *ngIf="removable && !disabled"
          class="remove-button"
-         [icon]="icon"
+         [icon]="icons.reset_x"
          [color]="
-          (type === chipType.tag || type === chipType.avatar) && !selected
+          ((type === chipType.tag || type === chipType.avatar || type === chipType.icon) && !selected)
+          || (type === chipType.icon && selected)
           ? iconColor.normal
           : iconColor.white"
          [hasHoverState]="true"
-         [size]="iconSize"
+         [size]="iconSize.small"
          (click)="onRemoveClick($event)">
  </b-icon>
