@@ -1,7 +1,6 @@
 import {
   Component,
   forwardRef,
-  Input,
   SimpleChanges,
   ViewContainerRef,
   NgZone,
@@ -75,8 +74,6 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
       reset: false,
     };
   }
-
-  @Input() showSingleGroupHeader = false;
 
   public selectedOptionId: number | string;
 

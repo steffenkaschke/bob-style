@@ -5,7 +5,6 @@ import {
   SimpleChanges,
   ChangeDetectorRef,
   NgZone,
-  Input,
   ElementRef,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
@@ -55,8 +54,6 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       apply: false,
     };
   }
-
-  @Input() startWithGroupsCollapsed = true;
 
   public selectedIDs: (string | number)[];
 

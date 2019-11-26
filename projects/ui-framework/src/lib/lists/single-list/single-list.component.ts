@@ -68,7 +68,9 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
         !this.options ||
         (this.options.length < 2 && !this.showSingleGroupHeader);
 
-      this.updateLists();
+      this.updateLists(
+        this.startWithGroupsCollapsed && this.options.length > 1
+      );
     }
   }
 
@@ -97,13 +99,13 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
     }
   }
 
-  searchChange(s: string): void {
-    this.searchValue = s;
+  searchChange(searchValue: string): void {
+    this.searchValue = searchValue;
     this.filteredOptions = this.listModelService.getFilteredOptions(
       this.options,
-      s
+      searchValue
     );
-    this.updateLists();
+    this.updateLists(this.startWithGroupsCollapsed && !searchValue);
   }
 
   getListHeight(): number {
@@ -113,9 +115,10 @@ export class SingleListComponent extends BaseListElement implements OnChanges {
     );
   }
 
-  private updateLists(): void {
+  private updateLists(collapseHeaders = false): void {
     this.listHeaders = this.listModelService.getHeadersModel(
-      this.filteredOptions
+      this.filteredOptions,
+      collapseHeaders
     );
     this.listOptions = this.listModelService.getOptionsModel(
       this.filteredOptions,

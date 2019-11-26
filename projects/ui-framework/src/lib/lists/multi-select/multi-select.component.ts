@@ -2,7 +2,6 @@ import {
   Component,
   EventEmitter,
   forwardRef,
-  Input,
   Output,
   SimpleChanges,
   ViewContainerRef,
@@ -85,9 +84,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
 
   @ViewChild('triggerInput', { static: true })
   truncate: TruncateTooltipComponent;
-
-  @Input() showSingleGroupHeader = false;
-  @Input() startWithGroupsCollapsed = true;
 
   @Output() selectModified: EventEmitter<ListChange> = new EventEmitter<
     ListChange

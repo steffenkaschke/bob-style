@@ -79,6 +79,7 @@ export abstract class BaseListElement
   @Input() listActions: ListFooterActions;
   @Input() maxHeight = this.listElHeight * 8;
   @Input() showSingleGroupHeader = false;
+  @Input() startWithGroupsCollapsed = true;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange

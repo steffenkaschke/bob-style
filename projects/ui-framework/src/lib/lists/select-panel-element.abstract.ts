@@ -82,6 +82,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
           : this.panelClassList || [];
     }
   }
+  @Input() showSingleGroupHeader = false;
+  @Input() startWithGroupsCollapsed = true;
   @Input() tooltipType: TruncateTooltipType = TruncateTooltipType.auto;
   @Input() listActions: ListFooterActions;
 
@@ -99,10 +101,10 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   public overlayRef: OverlayRef;
   private panelConfig: OverlayConfig;
   private templatePortal: TemplatePortal;
-  private backdropClickSubscriber: Subscription;
-  private positionChangeSubscriber: Subscription;
-  private windowKeydownSubscriber: Subscription;
+
   readonly listElHeight = LIST_EL_HEIGHT;
+
+  private subscribtions: Subscription[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
@@ -149,7 +151,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       this.overlayRef.updatePosition();
       this.overlayRef.updateSize({
         width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
-        height: 360
+        height: 360,
       });
 
       const searchInput = this.overlayRef.overlayElement.querySelector(
@@ -161,21 +163,23 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
       this.opened.emit(this.overlayRef);
 
-      this.backdropClickSubscriber = this.overlayRef
-        .backdropClick()
-        .subscribe(() => {
+      this.subscribtions.push(
+        this.overlayRef.backdropClick().subscribe(() => {
           this.onCancel();
-        });
+        })
+      );
 
-      this.windowKeydownSubscriber = this.utilsService
-        .getWindowKeydownEvent()
-        .pipe(
-          outsideZone(this.zone),
-          filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
-        )
-        .subscribe(() => {
-          this.onCancel();
-        });
+      this.subscribtions.push(
+        this.utilsService
+          .getWindowKeydownEvent()
+          .pipe(
+            outsideZone(this.zone),
+            filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
+          )
+          .subscribe(() => {
+            this.onCancel();
+          })
+      );
     }
   }
 
@@ -191,12 +195,16 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     this.panelOpen = false;
     if (this.overlayRef) {
       invoke(this.overlayRef, 'dispose');
-      invoke(this.backdropClickSubscriber, 'unsubscribe');
-      invoke(this.positionChangeSubscriber, 'unsubscribe');
-      invoke(this.windowKeydownSubscriber, 'unsubscribe');
       this.panelConfig = {};
       this.templatePortal = null;
       this.overlayRef = null;
+
+      this.subscribtions.forEach(sub => {
+        sub.unsubscribe();
+        sub = null;
+      });
+      this.subscribtions = [];
+
       this.closed.emit();
     }
     if (!this.cd['destroyed']) {
@@ -236,20 +244,22 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   private subscribeToPositions(
     positionStrategy: FlexibleConnectedPositionStrategy
   ): void {
-    this.positionChangeSubscriber = positionStrategy.positionChanges
-      .pipe(distinctUntilChanged(isEqual))
-      .subscribe(change => {
-        this.positionClassList = this.panelPositionService.getPositionClassList(
-          change
-        ) as OverlayPositionClasses;
+    this.subscribtions.push(
+      positionStrategy.positionChanges
+        .pipe(distinctUntilChanged(isEqual))
+        .subscribe(change => {
+          this.positionClassList = this.panelPositionService.getPositionClassList(
+            change
+          ) as OverlayPositionClasses;
 
-        if (!this.cd['destroyed']) {
-          this.cd.detectChanges();
-          this.overlayRef.overlayElement.children[0].className = this
-            .positionClassList['panel-above']
-            ? 'b-select-panel panel-above'
-            : 'b-select-panel panel-below';
-        }
-      });
+          if (!this.cd['destroyed']) {
+            this.cd.detectChanges();
+            this.overlayRef.overlayElement.children[0].className = this
+              .positionClassList['panel-above']
+              ? 'b-select-panel panel-above'
+              : 'b-select-panel panel-below';
+          }
+        })
+    );
   }
 }
