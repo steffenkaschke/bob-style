@@ -69,7 +69,8 @@ $chipStateMap: (
   disabled: (
     background-color: $grey-200,
     color: $grey-500,
-    border-color: $grey-200
+    border-color: $grey-200,
+    pointer-events: none
   )
 );
 
@@ -159,11 +160,9 @@ $chipStateMap: (
 
 :host[data-disabled='true'][data-type='avatar']::ng-deep {
   b-avatar {
-    @include disabled-state;
-    filter: grayscale(1);
-
     .avatar {
-      opacity: 0.8;
+      filter: grayscale(1);
+      opacity: 0.3;
     }
   }
 }
@@ -172,12 +171,12 @@ $chipStateMap: (
   margin-right: 5px;
 }
 
-:host[data-disabled='true'][data-type='icon']:before {
-  opacity: 0.3;
-}
-
-:host[data-selected='true'][data-type='icon'] {
+:host[data-type='icon'][data-selected='true']:not([data-disabled='true']) {
   color: $grey-800;
   background-color: $color-option-selected;
   border-color: $color-option-selected;
+}
+
+:host[data-type='icon'][data-disabled='true']:before {
+  opacity: 0.3;
 }
