@@ -10,10 +10,9 @@ import { QuickFilterSelectType } from './quick-filter.enum';
 import { QuickFilterConfig } from './quick-filter.interface';
 import { mockCities, mockDepartments, mockJobs } from '../../mock.const';
 import { simpleUID } from '../../services/utils/functional-utils';
+import { LinkColor } from '../../indicators/link/link.enum';
 
-const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
-  withKnobs
-);
+const story = storiesOf(ComponentGroupType.Search, module).addDecorator(withKnobs);
 
 const template = `
 <b-quick-filter-bar [quickFilters]="quickFilters"
@@ -21,8 +20,8 @@ const template = `
                     (filtersChange)="filtersChange($event)"
                     (resetFilters)="resetFilters()">
   <b-text-button bar-suffix
-                 text="More"
-                 color="primary">
+                 [text]="'More'"
+                 [color]="linkColor.primary">
   </b-text-button>
 </b-quick-filter-bar>
 `;
@@ -56,8 +55,8 @@ const note = `
 const optionsFromList = (list, key = 'Stuff') => [
   {
     groupName: key,
-    options: list.map(c => ({ value: c, id: simpleUID() })),
-  },
+    options: list.map(c => ({ value: c, id: simpleUID() }))
+  }
 ];
 
 const quickFilters: QuickFilterConfig[] = [
@@ -67,7 +66,7 @@ const quickFilters: QuickFilterConfig[] = [
     placeholder: 'No sites',
     key: 'site',
     showSingleGroupHeader: false,
-    options: optionsFromList(mockCities(), 'All sites'),
+    options: optionsFromList(mockCities(), 'All sites')
   },
   {
     selectType: QuickFilterSelectType.multiSelect,
@@ -75,7 +74,7 @@ const quickFilters: QuickFilterConfig[] = [
     placeholder: 'No departments',
     key: 'department',
     showSingleGroupHeader: false,
-    options: optionsFromList(mockDepartments(), 'All departments'),
+    options: optionsFromList(mockDepartments(), 'All departments')
   },
   {
     selectType: QuickFilterSelectType.singleSelect,
@@ -83,8 +82,8 @@ const quickFilters: QuickFilterConfig[] = [
     placeholder: 'Select job type',
     key: 'employment',
     showSingleGroupHeader: false,
-    options: optionsFromList(mockJobs(), 'All jobs'),
-  },
+    options: optionsFromList(mockJobs(), 'All jobs')
+  }
 ];
 
 story.add(
@@ -93,19 +92,15 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        linkColor: LinkColor,
         showResetFilter: boolean('showResetFilter', false),
         quickFilters: object('quickFilters', quickFilters),
         filtersChange: action('Quick filter bar change'),
-        resetFilters: action('Reset Filters click'),
+        resetFilters: action('Reset Filters click')
       },
       moduleMetadata: {
-        imports: [
-          BrowserAnimationsModule,
-          StoryBookLayoutModule,
-          QuickFilterModule,
-          ButtonsModule,
-        ],
-      },
+        imports: [BrowserAnimationsModule, StoryBookLayoutModule, QuickFilterModule, ButtonsModule]
+      }
     };
   },
   { notes: { markdown: note } }

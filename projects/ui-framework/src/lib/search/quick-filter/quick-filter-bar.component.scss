@@ -150,6 +150,7 @@
       @include border-radius-left;
     }
 
+    b-quick-filter:first-child .bfe-wrap,
     .bar-filters > :first-child > .bfe-wrap:first-of-type,
     .bar-filters > :first-child > :first-child .bfe-wrap {
       border-left: 1px solid $input-border-color;
@@ -166,6 +167,7 @@
       @include border-radius-right;
     }
 
+    b-quick-filter:last-child .bfe-wrap,
     .bar-filters > :last-child > .bfe-wrap:last-of-type,
     .bar-filters > :last-child > :nth-child(2) .bfe-wrap:last-of-type {
       border-right: 1px solid $input-border-color;

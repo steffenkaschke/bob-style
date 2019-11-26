@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { assign, map } from 'lodash';
 import { MenuItem } from '../../navigation/menu/menu.interface';
 import { ButtonConfig } from '../buttons.interface';
 import { ButtonType } from '../../buttons/buttons.enum';
@@ -20,7 +19,7 @@ export class ActionMenuButtonComponent implements OnInit {
   public buttonColor: IconColor;
   public buttonIcon: Icons;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.buttonType = this.buttonConfig ? this.buttonConfig.type : ButtonType.tertiary;
@@ -31,5 +30,4 @@ export class ActionMenuButtonComponent implements OnInit {
   public onActionClicked($event) {
     this.actionClick.emit($event);
   }
-
 }

@@ -154,6 +154,8 @@ export class DateRangePickerComponent extends BaseDatepickerElement
   public idED = simpleUID('bdp-ed-');
 
   ngAfterViewInit(): void {
+    super.ngAfterViewInit();
+
     this.overlayStylesDef = {
       '--start-date-label':
         this.startDateLabel || this.label

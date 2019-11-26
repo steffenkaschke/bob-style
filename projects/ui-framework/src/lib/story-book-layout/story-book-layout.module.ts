@@ -4,6 +4,7 @@ import { StoryBookLayoutComponent } from './story-book-layout.component';
 import { TypographyModule } from '../typography/typography.module';
 import { StatsModule } from '../services/util-components/stats.module';
 import { UtilsService } from '../services/utils/utils.service';
+import 'zone.js/dist/zone-patch-rxjs';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material';
 
 @NgModule({
@@ -16,9 +17,9 @@ import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material';
       provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
       useValue: {
         showDelay: 300,
-        position: 'above'
-      }
-    }
-  ]
+        position: 'above',
+      },
+    },
+  ],
 })
 export class StoryBookLayoutModule {}
