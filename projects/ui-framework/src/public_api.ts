@@ -50,7 +50,7 @@ export {
   BackButtonType
 } from './lib/buttons/buttons.enum';
 export {
-  ActionsMenuButtonComponent
+  ActionMenuButtonComponent
 } from './lib/buttons/action-menu-button/action-menu-button.component';
 /*
  * Avatar

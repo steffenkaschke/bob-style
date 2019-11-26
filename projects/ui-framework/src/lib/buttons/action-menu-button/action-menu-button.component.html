@@ -1,7 +1,8 @@
 <div class="b-action-menu-button">
   <b-menu [menu]="menuItems"
           [openLeft]="openLeft"
-          (click)="$event.stopPropagation()">
+          (click)="$event.stopPropagation()"
+          (actionClick)="onActionClicked($event)">
     <b-square-button menu-trigger
                      [type]="buttonType"
                      [icon]="buttonIcon"

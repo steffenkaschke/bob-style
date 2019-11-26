@@ -7,19 +7,19 @@ import { Icons } from '../../icons/icons.enum';
 import { SquareButtonComponent } from '../square/square.component';
 import { MenuComponent } from '../../navigation/menu/menu.component';
 import { ButtonType } from '../../buttons/buttons.enum';
-import { ActionsMenuButtonComponent } from './action-menu-button.component';
+import { ActionMenuButtonComponent } from './action-menu-button.component';
 import { menuItemsMock } from './action-menu-button.mock';
 
-describe('ActionsMenuButtonComponent', () => {
-  let component: ActionsMenuButtonComponent;
-  let fixture: ComponentFixture<ActionsMenuButtonComponent>;
+describe('ActionMenuButtonComponent', () => {
+  let component: ActionMenuButtonComponent;
+  let fixture: ComponentFixture<ActionMenuButtonComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(SquareButtonComponent),
         MockComponent(MenuComponent),
-        ActionsMenuButtonComponent
+        ActionMenuButtonComponent
       ],
       imports: [
         NoopAnimationsModule,
@@ -30,7 +30,7 @@ describe('ActionsMenuButtonComponent', () => {
     })
       .compileComponents()
       .then(() => {
-        fixture = TestBed.createComponent(ActionsMenuButtonComponent);
+        fixture = TestBed.createComponent(ActionMenuButtonComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
       });

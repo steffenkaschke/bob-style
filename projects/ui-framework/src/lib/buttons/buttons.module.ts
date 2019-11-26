@@ -6,7 +6,7 @@ import { BackButtonComponent } from './back-button/back-button.component';
 import { CommonModule } from '@angular/common';
 import { TextButtonComponent } from './text-button/text-button.component';
 import { ChevronButtonComponent } from './chevron-button/chevron-button.component';
-import { ActionsMenuButtonComponent } from './action-menu-button/action-menu-button.component';
+import { ActionMenuButtonComponent } from './action-menu-button/action-menu-button.component';
 import { MenuModule } from '../navigation/menu/menu.module';
 
 @NgModule({
@@ -17,7 +17,7 @@ import { MenuModule } from '../navigation/menu/menu.module';
     BackButtonComponent,
     TextButtonComponent,
     ChevronButtonComponent,
-    ActionsMenuButtonComponent
+    ActionMenuButtonComponent
   ],
   imports: [CommonModule , MenuModule],
   exports: [
@@ -27,7 +27,7 @@ import { MenuModule } from '../navigation/menu/menu.module';
     BackButtonComponent,
     TextButtonComponent,
     ChevronButtonComponent,
-    ActionsMenuButtonComponent
+    ActionMenuButtonComponent
   ]
 })
 export class ButtonsModule {}
