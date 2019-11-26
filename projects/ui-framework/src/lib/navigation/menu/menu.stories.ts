@@ -84,8 +84,9 @@ menu = [
     }
   ]
 ~~~
+<br>
 
-#### Note
+### Note: Using single method to handle all menu actions
 If you utilize menu \`id\` input (for example, referencing the item that has \
   the menu) and \`key\` of menu items, you might not need to provide \
   menu item actions at all. You can use single \`(actionClick)\` binding \
@@ -114,10 +115,13 @@ menu = [
           (actionClick)="onActionClick($event)">
 
   onActionClick(event) {
+
     const {id: itemID, key: actionKey} = event;
 
-    // itemID equals menu [id] ('employee-123'),
-    // actionKey equals menu item .key ('updateDetails')
+    // itemID now equals menu [id] ('employee-123'),
+    // actionKey now equals menu item .key ('updateDetails')
+
+    // calling [actionKey] (=== 'updateDetails') method of the component with the itemID:
 
     this[actionKey](itemID);
   }
