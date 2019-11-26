@@ -4,7 +4,7 @@ import { StoryBookLayoutComponent } from './story-book-layout.component';
 import { TypographyModule } from '../typography/typography.module';
 import { StatsModule } from '../services/util-components/stats.module';
 import { UtilsService } from '../services/utils/utils.service';
-// import 'zone.js/dist/zone-patch-rxjs';
+import 'zone.js/dist/zone-patch-rxjs';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material';
 
 @NgModule({
