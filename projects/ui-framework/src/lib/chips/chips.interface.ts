@@ -1,5 +1,6 @@
 import { ChipType, ChipListAlign } from './chips.enum';
 import { InputEventType } from '../form-elements/form-elements.enum';
+import { Icons } from '../icons/icons.enum';
 
 export interface Chip {
   text: string;
@@ -9,6 +10,7 @@ export interface Chip {
   removable?: boolean;
   disabled?: boolean;
   selected?: boolean;
+  icon?: Icons;
 }
 
 export interface ChipListConfig {

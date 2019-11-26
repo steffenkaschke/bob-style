@@ -4,7 +4,8 @@ export enum ChipType {
   warning = 'warning',
   error = 'error',
   success = 'success',
-  avatar = 'avatar'
+  avatar = 'avatar',
+  icon = 'icon'
 }
 
 export enum ChipListAlign {
@@ -16,5 +17,5 @@ export enum ChipListAlign {
 
 export enum ChipListSelectable {
   multi = 'multi',
-  single = 'single',
+  single = 'single'
 }

@@ -1,30 +1,48 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  object,
-  withKnobs,
-  select,
-  boolean,
-  number,
-} from '@storybook/addon-knobs/angular';
+import { object, withKnobs, select, boolean, number } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { simpleUID, randomNumber } from '../../services/utils/functional-utils';
+import { simpleUID, randomNumber, randomFromArray } from '../../services/utils/functional-utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipListModule } from './chip-list.module';
 import { ChipType, ChipListAlign, ChipListSelectable } from '../chips.enum';
 import { mockAvatar, mockNames } from '../../mock.const';
+import { Icons } from '../../icons/icons.enum';
 
-const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
-  withKnobs
+const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(withKnobs);
+
+const icons = randomFromArray(
+  [
+    Icons.calendar,
+    Icons.chat,
+    Icons.doc_add,
+    Icons.doc_icon,
+    Icons.email,
+    Icons.harmonise,
+    Icons.home_main,
+    Icons.home,
+    Icons.infinite,
+    Icons.lock,
+    Icons.megaphone,
+    Icons.note,
+    Icons.department_icon,
+    Icons.person,
+    Icons.person_check,
+    Icons.print,
+    Icons.success,
+    Icons.tag
+  ],
+  null
 );
 
-const chips = mockNames(10).map(chip => ({
+const chips = mockNames(10).map((chip, index) => ({
   text: chip,
   id: simpleUID(),
   imageSource: mockAvatar(),
   selected: randomNumber() > 90,
   disabled: randomNumber() > 90,
+  icon: icons[index]
 }));
 chips[2].selected = true;
 
@@ -99,21 +117,17 @@ story.add(
       selectable: boolean('selectable', true),
       focusable: boolean('focusable', true),
       disabled: boolean('disabled', false),
-      chipListSelectable: select(
-        'chipListSelectable',
-        chipListSelectable,
-        ChipListSelectable.multi
-      ),
+      chipListSelectable: select('chipListSelectable', chipListSelectable, ChipListSelectable.multi),
       activeIndex: number('activeIndex', 0),
       chips: object('chips', chips),
       onChipRemove: action('Chip removed'),
       onChipClicked: action('Chip clicked'),
       inChipSelected: action('Chip selected'),
-      onChipKeydown: action('Chip key pressed'),
+      onChipKeydown: action('Chip key pressed')
     },
     moduleMetadata: {
-      imports: [ChipListModule, StoryBookLayoutModule, BrowserAnimationsModule],
-    },
+      imports: [ChipListModule, StoryBookLayoutModule, BrowserAnimationsModule]
+    }
   }),
   { notes: { markdown: note } }
 );

@@ -23,9 +23,14 @@ describe('ChipComponent', () => {
         fixture = TestBed.createComponent(ChipComponent);
         component = fixture.componentInstance;
         chipElement = fixture.nativeElement;
+        component.removed.subscribe(() => {});
         spyOn(component.removed, 'emit');
       });
   }));
+
+  afterEach(() => {
+    component.removed.complete();
+  });
 
   describe('Text', () => {
     it('should put the right text', () => {
@@ -59,8 +64,7 @@ describe('ChipComponent', () => {
     it('should emit Removed event, when remove button is clicked', () => {
       component.removable = true;
       fixture.detectChanges();
-      const removeButton = fixture.debugElement.query(By.css('.remove-button'))
-        .nativeElement;
+      const removeButton = fixture.debugElement.query(By.css('.remove-button')).nativeElement;
       removeButton.click();
       expect(component.removed.emit).toHaveBeenCalled();
     });
