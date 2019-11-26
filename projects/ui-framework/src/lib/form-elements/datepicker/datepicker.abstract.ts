@@ -12,6 +12,7 @@ import {
   Output,
   EventEmitter,
   HostBinding,
+  AfterViewInit,
 } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
@@ -41,7 +42,7 @@ import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.serv
 import { Styles } from '../../services/html/html-helpers.interface';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
-  implements OnInit, OnDestroy {
+  implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     protected windowRef: WindowRef,
     protected mobileService: MobileService,
@@ -95,10 +96,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
 
   ngOnInit(): void {
-    if (!this.doneFirstChange) {
-      this.ngOnChanges({});
-    }
-
     this.resizeSubscription = fromEvent(this.windowRef.nativeWindow, 'resize')
       .pipe(
         outsideZone(this.zone),
@@ -125,6 +122,12 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
     if (isFalsyOrEmpty(this.value, true)) {
       this.value = cloneValue(this.baseValue);
+    }
+  }
+
+  ngAfterViewInit() {
+    if (!this.doneFirstChange) {
+      this.ngOnChanges({});
     }
   }
 
@@ -231,11 +234,11 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
     // mobile
     if (
-      (picker as any)._dialogRef &&
-      (picker as any)._dialogRef._overlayRef &&
-      (picker as any)._dialogRef._overlayRef.overlayElement
+      picker['_dialogRef'] &&
+      picker['_dialogRef']._overlayRef &&
+      picker['_dialogRef']._overlayRef.overlayElement
     ) {
-      panel.dialog = (picker as any)._dialogRef._overlayRef.overlayElement.overlayElement;
+      panel.dialog = picker['_dialogRef']._overlayRef.overlayElement;
     }
 
     return panel;
