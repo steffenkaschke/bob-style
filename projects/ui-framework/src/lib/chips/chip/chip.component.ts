@@ -41,13 +41,19 @@ export class ChipComponent implements OnChanges {
     });
 
     if (changes.type || changes.icon) {
-      if (this.type === ChipType.icon && this.icon) {
-        this.chip.nativeElement.classList.add('b-icon-dark', 'b-icon-large', this.icon);
-      } else {
-        this.chip.nativeElement.className = this.chip.nativeElement.className
+      const chipEl = this.chip.nativeElement as HTMLElement;
+
+      if (this.type === ChipType.icon || changes.type.previousValue === ChipType.icon) {
+        chipEl.className = chipEl.className
           .split(' ')
           .filter((c: string) => Boolean(c.trim()) && !c.includes('b-icon'))
           .join(' ');
+        if (!chipEl.className) {
+          chipEl.removeAttribute('class');
+        }
+      }
+      if (this.type === ChipType.icon && this.icon) {
+        chipEl.classList.add('b-icon-dark', 'b-icon-large', this.icon);
       }
     }
   }
