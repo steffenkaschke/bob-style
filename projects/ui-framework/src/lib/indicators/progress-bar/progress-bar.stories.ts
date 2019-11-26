@@ -73,8 +73,8 @@ const template2 = `
 `;
 
 const template3 = `
-  <b-progress-bar [type]="'primary'"
-                  [size]="'large'"
+  <b-progress-bar [type]="progressBarType.primary"
+                  [size]="progressBarSize.large"
                   [data]="{
                     color: color4,
                     value: value4
@@ -174,6 +174,9 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        progressBarType: ProgressBarType,
+        progressBarSize: ProgressBarSize,
+
         color1: ColorService.prototype.randomColor(),
         color2: ColorService.prototype.randomColor(),
         color3: ColorService.prototype.randomColor(),
