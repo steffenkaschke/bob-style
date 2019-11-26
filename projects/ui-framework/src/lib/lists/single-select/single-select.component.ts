@@ -48,16 +48,17 @@ import { isNullOrUndefined } from '../../services/utils/functional-utils';
 })
 export class SingleSelectComponent extends BaseSelectPanelElement {
   constructor(
+    listChangeService: ListChangeService,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
     utilsService: UtilsService,
     DOM: DOMhelpers,
     zone: NgZone,
-    cd: ChangeDetectorRef,
-    private listChangeService: ListChangeService
+    cd: ChangeDetectorRef
   ) {
     super(
+      listChangeService,
       overlay,
       viewContainerRef,
       panelPositionService,

@@ -69,9 +69,7 @@ describe('MultiSelectComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(MultiSelectComponent);
         component = fixture.componentInstance;
-
         component.startWithGroupsCollapsed = false;
-
         component.ngOnChanges(
           simpleChange({
             options: optionsMock,

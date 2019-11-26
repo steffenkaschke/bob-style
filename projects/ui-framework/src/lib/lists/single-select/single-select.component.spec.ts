@@ -68,8 +68,7 @@ describe('SingleSelectComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(SingleSelectComponent);
         component = fixture.componentInstance;
-        spyOn(component.selectChange, 'emit');
-        spyOn(component, 'propagateChange');
+        component.startWithGroupsCollapsed = false;
         component.ngOnChanges({
           options: {
             previousValue: undefined,
@@ -78,6 +77,9 @@ describe('SingleSelectComponent', () => {
             isFirstChange: () => true,
           },
         });
+
+        spyOn(component.selectChange, 'emit');
+        spyOn(component, 'propagateChange');
         fixture.autoDetectChanges();
       });
 

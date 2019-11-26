@@ -55,6 +55,7 @@ import { isNotEmptyArray } from '../../services/utils/functional-utils';
 })
 export class MultiSelectComponent extends BaseSelectPanelElement {
   constructor(
+    listChangeService: ListChangeService,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
@@ -62,10 +63,10 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     DOM: DOMhelpers,
     zone: NgZone,
     cd: ChangeDetectorRef,
-    private listChangeService: ListChangeService,
     private listModelService: ListModelService
   ) {
     super(
+      listChangeService,
       overlay,
       viewContainerRef,
       panelPositionService,

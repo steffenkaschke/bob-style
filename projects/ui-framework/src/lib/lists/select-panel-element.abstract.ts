@@ -38,16 +38,22 @@ import {
   hasChanges,
   applyChanges,
   notFirstChanges,
+  isNullOrUndefined,
+  isNotEmptyArray,
 } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
 import { SelectGroupOption, ListFooterActions } from './list.interface';
 import { ListChange } from './list-change/list-change';
 import { PanelDefaultPosVer } from '../popups/panel/panel.enum';
 import { LIST_EL_HEIGHT } from './list.consts';
+import { simpleChange } from '../services/utils/test-helpers';
+import { ListChangeService } from './list-change/list-change.service';
+import { selectValueOrFail } from '../services/utils/transformers';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements OnChanges, AfterViewInit, OnDestroy {
   protected constructor(
+    protected listChangeService: ListChangeService,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService,
@@ -135,6 +141,21 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
   ngOnDestroy(): void {
     this.destroyPanel();
+  }
+
+  writeValue(value: any): void {
+    if (!isNullOrUndefined(value) && isNotEmptyArray(this.options)) {
+      this.value = selectValueOrFail(value);
+
+      this.ngOnChanges(
+        simpleChange({
+          options: this.listChangeService.getCurrentSelectGroupOptions(
+            this.options,
+            this.value
+          ),
+        })
+      );
+    }
   }
 
   openPanel(): void {

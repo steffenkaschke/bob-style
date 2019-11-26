@@ -12,6 +12,7 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import { ListChange } from '../list-change/list-change';
 import { UtilsService } from '../../services/utils/utils.service';
+import { ListChangeService } from '../list-change/list-change.service';
 
 @Component({
   selector: 'b-single-select-panel',
@@ -23,6 +24,7 @@ import { UtilsService } from '../../services/utils/utils.service';
 })
 export class SingleSelectPanelComponent extends BaseSelectPanelElement {
   constructor(
+    listChangeService: ListChangeService,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
@@ -32,6 +34,7 @@ export class SingleSelectPanelComponent extends BaseSelectPanelElement {
     cd: ChangeDetectorRef
   ) {
     super(
+      listChangeService,
       overlay,
       viewContainerRef,
       panelPositionService,

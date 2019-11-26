@@ -12,7 +12,7 @@ import {
   isObject,
   isString,
   parseToNumber,
-  stringify
+  stringify,
 } from './functional-utils';
 
 import { format, parseISO } from 'date-fns';
@@ -31,20 +31,29 @@ export const truthyOrFalse = value => {
   return value;
 };
 
-export const stringListToArray = (list: string, test = /[^\w\u0020]+/): string[] => {
+export const stringListToArray = (
+  list: string,
+  test = /[^\w\u0020]+/
+): string[] => {
   if (isArray(list) || !list) {
     return list as any;
   }
   if (!isString(list)) {
     return [list];
   }
-  return Array.from(new Set(list.split(test).map(i => i.trim()))).filter(Boolean);
+  return Array.from(new Set(list.split(test).map(i => i.trim()))).filter(
+    Boolean
+  );
 };
 
 export const arrayOfStringsOrArrayFromString = value =>
   isArray(value) ? value : isString(value) ? stringListToArray(value) : [];
 
-export const valueToObjectWithKeyOfValueFromArray = (value: any, key: string, array: object[]) => {
+export const valueToObjectWithKeyOfValueFromArray = (
+  value: any,
+  key: string,
+  array: object[]
+) => {
   if (isNullOrUndefined(value) || isNullOrUndefined(array)) {
     return undefined;
   }
@@ -62,13 +71,16 @@ export const stringToDate = date => {
   return String(converted) !== 'Invalid Date' ? converted : undefined;
 };
 
-export const dateToString = (date, frmt = serverDateFormat) => (isDate(date) ? format(date, frmt) : date);
+export const dateToString = (date, frmt = serverDateFormat) =>
+  isDate(date) ? format(date, frmt) : date;
 
 export const valueToObjectKey = (key: string) => (value: any) => {
   return hasProp(value, key) ? value : { [key]: value };
 };
 
-export const arrayOfValuesToArrayOfObjects = (key: string) => (value: any[]) => {
+export const arrayOfValuesToArrayOfObjects = (key: string) => (
+  value: any[]
+) => {
   if (isNullOrUndefined(value)) {
     return value;
   }
@@ -76,7 +88,11 @@ export const arrayOfValuesToArrayOfObjects = (key: string) => (value: any[]) => 
   return value.map(valueToObjectKey(key));
 };
 
-export const valueAsNumber = (inputType: InputTypes, value: any, def: any = undefined) => {
+export const valueAsNumber = (
+  inputType: InputTypes,
+  value: any,
+  def: any = undefined
+) => {
   if (inputType !== InputTypes.number || !value) {
     return value;
   }
@@ -96,7 +112,11 @@ export const booleanOrFail = value => {
     return value;
   }
   if (typeof value !== 'boolean') {
-    throw new Error(`Value (${stringify(value)}) must be of type boolean, instead ${getType(value)} was provided.`);
+    throw new Error(
+      `Value (${stringify(value)}) must be of type boolean, instead ${getType(
+        value
+      )} was provided.`
+    );
   }
   return value;
 };
@@ -106,7 +126,11 @@ export const arrayOrFail = value => {
     return value;
   }
   if (!isArray(value)) {
-    throw new Error(`Value (${stringify(value)}) must be an array, instead ${getType(value)} was provided.`);
+    throw new Error(
+      `Value (${stringify(value)}) must be an array, instead ${getType(
+        value
+      )} was provided.`
+    );
   }
   return value;
 };
@@ -116,7 +140,11 @@ export const objectOrFail = value => {
     return value;
   }
   if (!isObject(value)) {
-    throw new Error(`Value (${stringify(value)}) must be an object, instead ${getType(value)} was provided.`);
+    throw new Error(
+      `Value (${stringify(value)}) must be an object, instead ${getType(
+        value
+      )} was provided.`
+    );
   }
   return value;
 };
@@ -126,7 +154,11 @@ export const stringyOrFail = value => {
     return value;
   }
   if (!(isString(value) || isNumber(value))) {
-    throw new Error(`Value (${stringify(value)}) should not be ${getType(value).toUpperCase()}.`);
+    throw new Error(
+      `Value (${stringify(value)}) should not be ${getType(
+        value
+      ).toUpperCase()}.`
+    );
   }
   return value + '';
 };
@@ -139,7 +171,9 @@ export const dateOrFail = value => {
     return undefined;
   }
   if (!isDateISO8601(value)) {
-    throw new Error(`Date string (${stringify(value)}) must be in ISO8601 format to parse.`);
+    throw new Error(
+      `Date string (${stringify(value)}) must be in ISO8601 format to parse.`
+    );
   }
   return stringToDate(value);
 };
@@ -152,7 +186,9 @@ export const dateFormatOrFail = value => {
     return undefined;
   }
   if (!isDateFormat(value)) {
-    throw new Error(`Provided string (${stringify(value)}) does not describe Date format.`);
+    throw new Error(
+      `Provided string (${stringify(value)}) does not describe Date format.`
+    );
   }
   return value;
 };
@@ -170,13 +206,34 @@ export const timeyOrFail = value => {
   return value;
 };
 
+export const selectValueOrFail = value => {
+  if (isNullOrUndefined(value)) {
+    return value;
+  }
+
+  if (!(isString(value) || isNumber(value) || isArray(value))) {
+    throw new Error(
+      `Value (${stringify(
+        value
+      )}) should be string, number or (string | number)[], instead ${getType(
+        value
+      ).toUpperCase()} was provided.`
+    );
+  }
+  return value;
+};
+
 // -------------------------------
 // Validators
 // -------------------------------
 
-export const defaultValue = def => value => (isNullOrUndefined(value) ? def : value);
+export const defaultValue = def => value =>
+  isNullOrUndefined(value) ? def : value;
 
-export const objectHasKeyOrFail = (key: string | string[], fuzzyFalsey = false) => (value: object) => {
+export const objectHasKeyOrFail = (
+  key: string | string[],
+  fuzzyFalsey = false
+) => (value: object) => {
   if (isNullOrUndefined(value)) {
     return value;
   }
@@ -184,27 +241,42 @@ export const objectHasKeyOrFail = (key: string | string[], fuzzyFalsey = false) 
     return undefined;
   }
   if (isNullOrUndefined(key) || !isObject(value)) {
-    throw new Error(`Value (${stringify(value)}) is  not an object or key (${key}) is invalid.`);
+    throw new Error(
+      `Value (${stringify(
+        value
+      )}) is  not an object or key (${key}) is invalid.`
+    );
   }
   for (const k of asArray(key)) {
     if (!hasProp(value, k as string)) {
-      throw new Error(`Value object (${stringify(value)}) has no key (${key}).`);
+      throw new Error(
+        `Value object (${stringify(value)}) has no key (${key}).`
+      );
     }
   }
   return value;
 };
 
-export const valueInArrayOrFail = (value: any, array: any[], key: string = null) => {
+export const valueInArrayOrFail = (
+  value: any,
+  array: any[],
+  key: string = null
+) => {
   if (isNullOrUndefined(value)) {
     return value;
   }
   if (isNullOrUndefined(array)) {
     return undefined;
   }
-  if ((key && !array.find(i => i[key] === value[key])) || (!key && !array.includes(value))) {
+  if (
+    (key && !array.find(i => i[key] === value[key])) ||
+    (!key && !array.includes(value))
+  ) {
     value = stringify(value);
     array = array.map(i => stringify(i));
-    throw new Error(`Value (${stringify(value)}) is not part of array (${stringify(array)}).`);
+    throw new Error(
+      `Value (${stringify(value)}) is not part of array (${stringify(array)}).`
+    );
   }
 
   return value;
