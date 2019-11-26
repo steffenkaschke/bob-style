@@ -6,6 +6,8 @@
 /*
 * Global
 */
+import { ButtonConfig } from './lib/buttons/buttons.interface';
+
 export * from './lib/enums';
 export * from './lib/types';
 export { serverDateFormat, mobileBreakpoint } from './lib/consts';
@@ -49,7 +51,12 @@ export {
   ButtonSize,
   BackButtonType
 } from './lib/buttons/buttons.enum';
-
+export {
+  ActionMenuButtonComponent
+} from './lib/buttons/action-menu-button/action-menu-button.component';
+export {
+  ButtonConfig
+} from './lib/buttons/buttons.interface';
 /*
  * Avatar
  */
