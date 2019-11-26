@@ -43,7 +43,7 @@ export class ChipComponent implements OnChanges {
     if (changes.type || changes.icon) {
       const chipEl = this.chip.nativeElement as HTMLElement;
 
-      if (this.type === ChipType.icon || changes.type.previousValue === ChipType.icon) {
+      if (this.type === ChipType.icon || (changes.type && changes.type.previousValue === ChipType.icon)) {
         chipEl.className = chipEl.className
           .split(' ')
           .filter((c: string) => Boolean(c.trim()) && !c.includes('b-icon'))
