@@ -61,7 +61,7 @@ const note = `
   #### Properties
   Name | Type | Description
   --- | --- | ---
-  InputType | InputTypes | type of input field
+  [inputType] | InputTypes | type of input field
   [value] | string/number | value of input field
   [label] | string | label text (above input)
   [description] | string | description text (above icon)

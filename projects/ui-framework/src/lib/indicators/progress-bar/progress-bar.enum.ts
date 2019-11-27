@@ -1,9 +1,10 @@
 export enum ProgressBarType {
   primary = 'primary',
-  secondary = 'secondary'
+  secondary = 'secondary',
 }
 
 export enum ProgressBarSize {
+  small = 'small',
   medium = 'medium',
-  large = 'large'
+  large = 'large',
 }
