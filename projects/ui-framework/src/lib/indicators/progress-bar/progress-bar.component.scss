@@ -110,6 +110,7 @@ p {
   }
 
   .bpb-value + &,
+  .bpb-text-prmr:empty + &,
   &:first-child {
     margin-left: 0;
     flex-direction: row-reverse;
