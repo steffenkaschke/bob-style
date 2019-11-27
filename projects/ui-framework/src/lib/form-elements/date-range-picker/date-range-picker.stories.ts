@@ -1,5 +1,10 @@
 import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs, } from '@storybook/addon-knobs/angular';
+import {
+  boolean,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 
@@ -59,6 +64,7 @@ const note = `
   [startDateLabel] | string | first datepicker label | &nbsp;
   [endDateLabel] | string | second datepicker label | &nbsp;
   [placeholder] | string | placeholder text (inside input) | &nbsp;
+  [dateFormat] | string | string, representing date format (to be used as default placeholder) | &nbsp;
   [hideLabelOnFocus] | boolean | places label in placeholder position | false
   [disabled] | boolean | is field disabled | false
   [required] | boolean | is field required | false
