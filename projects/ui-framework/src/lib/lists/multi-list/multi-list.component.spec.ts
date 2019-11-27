@@ -71,9 +71,6 @@ describe('MultiListComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(MultiListComponent);
         component = fixture.componentInstance;
-        spyOn(component.selectChange, 'emit');
-        spyOn(component.apply, 'emit');
-
         component.startWithGroupsCollapsed = false;
 
         component.ngOnChanges(
@@ -82,6 +79,8 @@ describe('MultiListComponent', () => {
           })
         );
 
+        spyOn(component.selectChange, 'emit');
+        spyOn(component.apply, 'emit');
         fixture.autoDetectChanges();
       });
   }));

@@ -76,6 +76,11 @@ describe('MultiSelectComponent', () => {
           })
         );
 
+        component.selectChange.subscribe(() => {});
+        component.selectModified.subscribe(() => {});
+        component.selectCancelled.subscribe(() => {});
+        component.changed.subscribe(() => {});
+
         spyOn(component.selectChange, 'emit');
         spyOn(component.selectModified, 'emit');
         spyOn(component.selectCancelled, 'emit');
@@ -92,6 +97,13 @@ describe('MultiSelectComponent', () => {
       }
     )();
   }));
+
+  afterEach(() => {
+    component.selectChange.complete();
+    component.selectModified.complete();
+    component.selectCancelled.complete();
+    component.changed.complete();
+  });
 
   describe('OnInit', () => {
     it('should set selectedIDs', () => {

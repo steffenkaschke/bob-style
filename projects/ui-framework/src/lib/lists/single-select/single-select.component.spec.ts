@@ -22,6 +22,7 @@ import { SingleListModule } from '../single-list/single-list.module';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { FormElementLabelModule } from '../../form-elements/form-element-label/form-element-label.module';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
+import { simpleChange } from '../../services/utils/test-helpers';
 
 describe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
@@ -69,14 +70,17 @@ describe('SingleSelectComponent', () => {
         fixture = TestBed.createComponent(SingleSelectComponent);
         component = fixture.componentInstance;
         component.startWithGroupsCollapsed = false;
-        component.ngOnChanges({
-          options: {
-            previousValue: undefined,
-            currentValue: optionsMock,
-            firstChange: true,
-            isFirstChange: () => true,
-          },
-        });
+        component.ngOnChanges(
+          simpleChange(
+            {
+              options: optionsMock,
+            },
+            true
+          )
+        );
+
+        component.selectChange.subscribe(() => {});
+        component.changed.subscribe(() => {});
 
         spyOn(component.selectChange, 'emit');
         spyOn(component, 'propagateChange');
@@ -93,6 +97,11 @@ describe('SingleSelectComponent', () => {
     )();
   }));
 
+  afterEach(() => {
+    component.selectChange.complete();
+    component.changed.complete();
+  });
+
   describe('ngOnChanges', () => {
     it('should set displayValue for selected options', () => {
       expect(component.displayValue).toEqual('Basic Info 1');
@@ -100,24 +109,19 @@ describe('SingleSelectComponent', () => {
     it('should update trigger value also when options update', () => {
       const testOptionsMock = cloneDeep(optionsMock);
       testOptionsMock[0].options[0].selected = false;
-      component.ngOnChanges({
-        options: {
-          previousValue: optionsMock,
-          currentValue: testOptionsMock,
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
+      component.ngOnChanges(
+        simpleChange({
+          options: testOptionsMock,
+        })
+      );
       expect(component.displayValue).toBe(null);
+
       testOptionsMock[1].options[0].selected = true;
-      component.ngOnChanges({
-        options: {
-          previousValue: optionsMock,
-          currentValue: testOptionsMock,
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
+      component.ngOnChanges(
+        simpleChange({
+          options: testOptionsMock,
+        })
+      );
       expect(component.displayValue).toEqual('Personal 1');
     });
   });
@@ -203,18 +207,15 @@ describe('SingleSelectComponent', () => {
       const testOptionsMock = cloneDeep(optionsMock);
       testOptionsMock[1].options[1].value =
         'a very very very long text that should have a tooltip';
-      fixture = TestBed.createComponent(SingleSelectComponent);
-      component = fixture.componentInstance;
-      spyOn(component.selectChange, 'emit');
       fixture.nativeElement.style.width = '200px';
-      component.ngOnChanges({
-        options: {
-          previousValue: undefined,
-          currentValue: testOptionsMock,
-          firstChange: true,
-          isFirstChange: () => true,
-        },
-      });
+      component.ngOnChanges(
+        simpleChange(
+          {
+            options: testOptionsMock,
+          },
+          true
+        )
+      );
       fixture.autoDetectChanges();
     }));
     it('should not show tooltip', () => {

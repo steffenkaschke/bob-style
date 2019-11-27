@@ -62,8 +62,10 @@ describe('SingleListComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(SingleListComponent);
         component = fixture.componentInstance;
+        component.startWithGroupsCollapsed = false;
         spyOn(component.selectChange, 'emit');
         spyOn(component.clear, 'emit');
+
         component.ngOnChanges(
           simpleChange({
             options: optionsMock,

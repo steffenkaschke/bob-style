@@ -13,7 +13,6 @@ import { Overlay } from '@angular/cdk/overlay';
 import { chain, includes } from 'lodash';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
-import { SelectGroupOption } from '../list.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
@@ -30,6 +29,7 @@ import {
 } from '../../popups/panel/panel-position-service/panel-position.const';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import { isNotEmptyArray } from '../../services/utils/functional-utils';
+import { FormEvents } from '../../form-elements/form-elements.enum';
 
 @Component({
   selector: 'b-multi-select',
@@ -101,13 +101,11 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     apply: true,
   };
 
-  private listChange: ListChange;
-
   // extends BaseSelectPanelElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
     if (changes.options) {
       this.selectedIDs = isNotEmptyArray(this.options)
-        ? this.getSelectedIDs(this.options)
+        ? this.listModelService.getSelectedIDs(this.options)
         : [];
 
       this.setDisplayValue();
@@ -116,23 +114,18 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
 
   onSelect(listChange: ListChange): void {
     this.selectedIDs = listChange.getSelectedIds();
-    this.listChange = listChange;
-    this.emitSelectModified(listChange);
-  }
-
-  cancelSelection(): void {
-    this.onCancel();
-  }
-
-  onCancel(): void {
-    this.selectedIDs = this.getSelectedIDs(this.options);
-    this.destroyPanel();
-    this.selectCancelled.emit(this.getListChange());
+    this.emitChange(FormEvents.selectModified, listChange);
   }
 
   onApply(): void {
     this.setDisplayValue();
-    this.emitSelectChange(this.getListChange());
+    this.emitChange(FormEvents.selectChange);
+    this.destroyPanel();
+  }
+
+  onCancel(): void {
+    this.selectedIDs = this.listModelService.getSelectedIDs(this.options);
+    this.emitChange(FormEvents.selectCancelled);
     this.destroyPanel();
   }
 
@@ -150,23 +143,25 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
       .value();
   }
 
-  private getSelectedIDs(options: SelectGroupOption[]): (number | string)[] {
-    return this.listModelService.getSelectedIDs(options);
-  }
+  private emitChange(event: FormEvents, listChange: ListChange = null): void {
+    listChange =
+      listChange ||
+      this.listChangeService.getListChange(this.options, this.selectedIDs);
 
-  private getListChange(): ListChange {
-    return this.listChangeService.getListChange(this.options, this.selectedIDs);
-  }
+    if (this[event].observers.length > 0) {
+      this[event].emit(listChange);
+    }
 
-  private emitSelectChange(listChange: ListChange): void {
-    this.options = listChange.getSelectGroupOptions();
-    this.selectChange.emit(listChange);
-    const selectedValue = listChange.getSelectedIds();
-    this.propagateChange(selectedValue);
-    this.onTouched();
-  }
+    if (event === FormEvents.selectChange) {
+      this.options = listChange.getSelectGroupOptions();
 
-  private emitSelectModified(listChange: ListChange): void {
-    this.selectModified.emit(listChange);
+      if (this.changed.observers.length > 0) {
+        this.changed.emit(this.selectedIDs);
+      }
+      if (this.doPropagate) {
+        this.propagateChange(this.selectedIDs);
+        this.onTouched();
+      }
+    }
   }
 }

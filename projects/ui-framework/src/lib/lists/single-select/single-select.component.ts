@@ -23,7 +23,10 @@ import {
   BELOW_END,
 } from '../../popups/panel/panel-position-service/panel-position.const';
 import { BaseFormElement } from '../../form-elements/base-form-element';
-import { isNullOrUndefined } from '../../services/utils/functional-utils';
+import {
+  isNullOrUndefined,
+  arrayFlatten,
+} from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-single-select',
@@ -76,16 +79,17 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
     };
   }
 
-  public selectedOptionId: number | string;
+  public selectedOptionId: number | string = null;
 
   // extends BaseSelectPanelElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
     if (changes.options) {
       this.selectedOptionId = this.getSelectedOptionId(this.options);
+
+      this.displayValue = isNullOrUndefined(this.selectedOptionId)
+        ? null
+        : this.getDisplayValue(this.selectedOptionId);
     }
-    this.displayValue = isNullOrUndefined(this.selectedOptionId)
-      ? null
-      : this.getDisplayValue(this.selectedOptionId);
   }
 
   onSelect(listChange: ListChange) {
@@ -98,8 +102,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
   clearSelection(): void {
     this.selectedOptionId = null;
     this.displayValue = this.getDisplayValue(this.selectedOptionId);
-    const listChange = this.listChangeService.getListChange(this.options, []);
-    this.emitChange(listChange);
+    this.emitChange(this.listChangeService.getListChange(this.options, []));
     this.destroyPanel();
   }
 
@@ -113,20 +116,22 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
   }
 
   private getSelectedOptionId(options: SelectGroupOption[]): number | string {
-    return chain(options)
-      .flatMap('options')
-      .filter(o => o.selected)
-      .flatMap('id')
-      .first()
-      .value();
+    const selectedOption = arrayFlatten(
+      options.map(group => group.options)
+    ).find(option => option.selected);
+    console.log(selectedOption ? selectedOption.id : null);
+    return selectedOption ? selectedOption.id : null;
   }
 
   private emitChange(listChange: ListChange): void {
     this.options = listChange.getSelectGroupOptions();
-    this.selectChange.emit(listChange);
-    const selectedValue = listChange.getSelectedIds()[0];
 
-    this.propagateChange(isUndefined(selectedValue) ? null : selectedValue);
-    this.onTouched();
+    this.selectChange.emit(listChange);
+    this.changed.emit(this.selectedOptionId);
+
+    if (this.doPropagate) {
+      this.propagateChange(this.selectedOptionId);
+      this.onTouched();
+    }
   }
 }

@@ -35,13 +35,14 @@ const template = `
                 [optionsDefault]="optionsDefault"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
-                (selectChange)="selectChange($event)"
-                (selectModified)="selectModified($event)"
-                (selectCancelled)="selectCancelled($event)"
                 [disabled]="disabled"
                 [required]="required"
                 [errorMessage]="errorMessage"
-                [hintMessage]="hintMessage">
+                [hintMessage]="hintMessage"
+                (selectChange)="selectChange($event)"
+                (selectModified)="selectModified($event)"
+                (selectCancelled)="selectCancelled($event)"
+                (changed)="selectValueChange($event)">
     <b-text-button footerAction
       [text]="'Action'">
     </b-text-button>
@@ -78,6 +79,7 @@ const note = `
   (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
   (selectModified) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
   (selectCancelled) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
+  (changed) | EventEmitter<wbr>&lt;(string/number)[]&gt; | emits array of selected IDs | &nbsp;
   &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
   [label] | string | label text | &nbsp;
   [description] | string | description text (above icon) | &nbsp;
@@ -126,6 +128,7 @@ const toAdd = () => ({
     selectChange: action('Multi select change'),
     selectModified: action('Multi select modified'),
     selectCancelled: action('Multi select cancelled'),
+    selectValueChange: action('Value (Selected IDs)'),
   },
   moduleMetadata: {
     imports: [

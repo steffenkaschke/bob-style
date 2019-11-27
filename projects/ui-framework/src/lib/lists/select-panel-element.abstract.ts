@@ -113,10 +113,15 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   private subscribtions: Subscription[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
+    applyChanges(this, changes, {}, ['value']);
 
     if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
       this.destroyPanel();
+    }
+
+    if (changes.value) {
+      this.writeValue(changes.value.currentValue);
+      return;
     }
 
     this.onNgChanges(changes);
