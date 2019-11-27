@@ -23,7 +23,7 @@ import {
   ListFooterActionsState,
   UpdateListsConfig,
 } from './list.interface';
-import { find, flatMap, cloneDeep } from 'lodash';
+import { find, cloneDeep, isEqual } from 'lodash';
 import {
   LIST_EL_HEIGHT,
   DISPLAY_SEARCH_OPTION_NUM,
@@ -42,14 +42,15 @@ import {
 } from '../services/utils/functional-utils';
 import { ListModelService } from './list-service/list-model.service';
 import { ListChangeService } from './list-change/list-change.service';
+import { simpleChange } from '../services/utils/test-helpers';
 
 export abstract class BaseListElement
   implements OnChanges, OnInit, OnDestroy, AfterViewInit {
   protected constructor(
     private renderer: Renderer2,
-    private listKeyboardService: ListKeyboardService,
-    protected listModelService: ListModelService,
-    protected listChangeService: ListChangeService,
+    private keybrdSrvc: ListKeyboardService,
+    protected modelSrvc: ListModelService,
+    protected listChangeSrvc: ListChangeService,
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
     protected DOM: DOMhelpers,
@@ -77,7 +78,9 @@ export abstract class BaseListElement
   public hasFooter = true;
   public allGroupsCollapsed: boolean;
 
+  public selectedIDs: (string | number)[];
   protected optionsDefaultIDs: (string | number)[];
+
   private keyDownSubscriber: Subscription;
   readonly listElHeight = LIST_EL_HEIGHT;
 
@@ -91,9 +94,8 @@ export abstract class BaseListElement
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
+
   @Output() apply: EventEmitter<ListChange> = new EventEmitter<ListChange>();
-  @Output() clear: EventEmitter<void> = new EventEmitter<void>();
-  @Output() reset: EventEmitter<void> = new EventEmitter<void>();
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
@@ -103,21 +105,14 @@ export abstract class BaseListElement
         this.startWithGroupsCollapsed && this.options.length > 1;
     }
 
-    if (changes.optionsDefault && isNotEmptyArray(this.optionsDefault)) {
-      this.optionsDefaultIDs = this.listModelService.getSelectedIDs(
-        this.optionsDefault
-      );
-
-      this.listActions.clear = false;
-      this.listActions.reset = true;
-    }
-
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
+      this.selectedIDs = this.getSelectedIDs(this.options);
       this.filteredOptions = cloneDeep(this.options || []);
 
       this.shouldDisplaySearch =
         this.options &&
-        flatMap(this.options, 'options').length > DISPLAY_SEARCH_OPTION_NUM;
+        this.modelSrvc.totalOptionsCount(this.options) >
+          DISPLAY_SEARCH_OPTION_NUM;
 
       this.noGroupHeaders =
         !this.options ||
@@ -125,11 +120,34 @@ export abstract class BaseListElement
 
       this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
     }
+
+    if (changes.optionsDefault) {
+      const defaultsExist = isNotEmptyArray(this.optionsDefault);
+
+      this.optionsDefaultIDs = defaultsExist
+        ? this.getSelectedIDs(this.optionsDefault)
+        : undefined;
+
+      this.listActions.clear = !defaultsExist;
+      this.listActions.reset = defaultsExist;
+    }
+
+    if (
+      hasChanges(changes, [
+        'options',
+        'showSingleGroupHeader',
+        'optionsDefault',
+      ])
+    ) {
+      this.updateActionButtonsState();
+    }
+
+    this.cd.detectChanges();
   }
 
   ngOnInit(): void {
     this.focusIndex = -1;
-    this.keyDownSubscriber = this.listKeyboardService
+    this.keyDownSubscriber = this.keybrdSrvc
       .getKeyboardNavigationObservable()
       .subscribe((e: KeyboardEvent) => {
         if (!getEventPath(e).includes(this.host.nativeElement)) {
@@ -139,17 +157,14 @@ export abstract class BaseListElement
         switch (e.key) {
           case Keys.arrowdown:
             e.preventDefault();
-            this.focusIndex = this.listKeyboardService.getNextFocusIndex(
+            this.focusIndex = this.keybrdSrvc.getNextFocusIndex(
               Keys.arrowdown,
               this.focusIndex,
               this.listOptions.length
             );
             this.focusOption = this.listOptions[this.focusIndex];
             this.vScroll.scrollToIndex(
-              this.listKeyboardService.getScrollToIndex(
-                this.focusIndex,
-                this.maxHeight
-              )
+              this.keybrdSrvc.getScrollToIndex(this.focusIndex, this.maxHeight)
             );
             if (!this.cd['destroyed']) {
               this.cd.detectChanges();
@@ -157,17 +172,14 @@ export abstract class BaseListElement
             break;
           case Keys.arrowup:
             e.preventDefault();
-            this.focusIndex = this.listKeyboardService.getNextFocusIndex(
+            this.focusIndex = this.keybrdSrvc.getNextFocusIndex(
               Keys.arrowup,
               this.focusIndex,
               this.listOptions.length
             );
             this.focusOption = this.listOptions[this.focusIndex];
             this.vScroll.scrollToIndex(
-              this.listKeyboardService.getScrollToIndex(
-                this.focusIndex,
-                this.maxHeight
-              )
+              this.keybrdSrvc.getScrollToIndex(this.focusIndex, this.maxHeight)
             );
             if (!this.cd['destroyed']) {
               this.cd.detectChanges();
@@ -219,13 +231,81 @@ export abstract class BaseListElement
 
   protected searchChange(searchValue: string): void {
     this.searchValue = searchValue;
-    this.filteredOptions = this.listModelService.getFilteredOptions(
+    this.filteredOptions = this.modelSrvc.getFilteredOptions(
       this.options,
       searchValue
     );
     this.updateLists({
       collapseHeaders: this.startWithGroupsCollapsed && !searchValue,
     });
+  }
+
+  optionClick(option: ListOption, allowMultiple = false): void {
+    if (!option.disabled) {
+      option.selected = !option.selected;
+
+      this.selectedIDs = allowMultiple
+        ? option.selected
+          ? this.selectedIDs.concat(option.id)
+          : this.selectedIDs.filter(id => id !== option.id)
+        : [option.id];
+
+      this.emitChange();
+
+      this.updateLists({
+        updateListHeaders: false,
+        updateListOptions: false,
+        selectedIDs: this.selectedIDs,
+      });
+
+      this.updateActionButtonsState();
+    }
+  }
+
+  headerClick(header: ListHeader, ...args): void {}
+
+  toggleGroupCollapse(header: ListHeader): void {
+    header.isCollapsed = !header.isCollapsed;
+
+    this.updateLists({
+      updateListHeaders: false,
+      selectedIDs: this.selectedIDs,
+    });
+
+    this.allGroupsCollapsed =
+      this.listOptions.length === this.listHeaders.length;
+  }
+
+  toggleCollapseAll(): void {
+    if (this.options.length > 1) {
+      this.allGroupsCollapsed = !this.allGroupsCollapsed;
+      this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
+    }
+  }
+
+  protected clearList(): void {
+    this.selectedIDs = this.getSelectedIDs(this.options, 'disabled');
+
+    this.emitChange();
+
+    this.modelSrvc.setSelectedOptions(
+      this.listHeaders,
+      this.listOptions,
+      this.options
+    );
+
+    this.updateActionButtonsState(true);
+  }
+
+  protected resetList(): void {
+    this.ngOnChanges(
+      simpleChange({
+        options: cloneDeep(this.optionsDefault),
+      })
+    );
+
+    this.emitChange();
+    this.listActionsState.apply.disabled = false;
   }
 
   protected updateLists(config: UpdateListsConfig = {}): void {
@@ -235,53 +315,63 @@ export abstract class BaseListElement
     };
 
     if (config.updateListHeaders) {
-      this.listHeaders = this.listModelService.getHeadersModel(
+      this.listHeaders = this.modelSrvc.getHeadersModel(
         this.filteredOptions,
         config.collapseHeaders
       );
     }
 
     if (config.updateListOptions) {
-      this.listOptions = this.listModelService.getOptionsModel(
+      this.listOptions = this.modelSrvc.getOptionsModel(
         this.filteredOptions,
         this.listHeaders,
         this.noGroupHeaders
       );
     }
 
-    this.listModelService.setSelectedOptions(
+    this.modelSrvc.setSelectedOptions(
       this.listHeaders,
       this.listOptions,
       this.options,
       config.selectedIDs
     );
 
-    this.cd.detectChanges();
+    // this.cd.detectChanges();
   }
 
-  expandGroups(): void {
-    this.updateLists({ collapseHeaders: false });
+  protected getSelectedIDs(
+    options: SelectGroupOption[] = this.options,
+    mustBe = 'selected'
+  ): (string | number)[] {
+    return this.modelSrvc.getSelectedIDs(options, mustBe);
   }
 
-  collapseGroups(): void {
-    this.updateLists({ collapseHeaders: true });
+  protected emitChange(): void {
+    const listChange: ListChange = this.listChangeSrvc.getListChange(
+      this.options,
+      this.selectedIDs
+    );
+
+    this.options = listChange.getSelectGroupOptions();
+    this.selectChange.emit(listChange);
+    this.listActionsState.apply.disabled = false;
   }
 
-  toggleGroupsCollapse(): void {
-    this.allGroupsCollapsed = !this.allGroupsCollapsed;
-    this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
-  }
+  protected updateActionButtonsState(
+    forceClear: boolean = null,
+    forceReset: boolean = null
+  ) {
+    this.listActionsState.clear.hidden =
+      forceClear !== null
+        ? forceClear
+        : !this.selectedIDs || this.selectedIDs.length === 0;
 
-  optionClick(option: ListOption, ...args): void {}
-
-  headerClick(header: ListHeader, ...args): void {}
-
-  onClear(): void {
-    this.clear.emit();
-  }
-
-  onReset(): void {
-    this.reset.emit();
+    this.listActionsState.reset.hidden =
+      forceReset !== null
+        ? forceReset
+        : !this.selectedIDs ||
+          !this.optionsDefaultIDs ||
+          isEqual(this.selectedIDs.sort(), this.optionsDefaultIDs.sort());
   }
 
   onApply(): void {
@@ -292,6 +382,6 @@ export abstract class BaseListElement
     group1: Partial<SelectGroupOption> | Partial<ListHeader>,
     group2: Partial<SelectGroupOption> | Partial<ListHeader>
   ): boolean {
-    return this.listModelService.isSameGroup(group1, group2);
+    return this.modelSrvc.isSameGroup(group1, group2);
   }
 }

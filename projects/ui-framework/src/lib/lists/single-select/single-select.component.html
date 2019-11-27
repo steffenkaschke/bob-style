@@ -44,15 +44,14 @@
   <div class="b-select-panel"
        [ngClass]="positionClassList">
     <b-single-list class="b-select-list"
-                   (selectChange)="onSelect($event)"
-                   (clear)="clearSelection()"
                    [options]="options"
                    [optionsDefault]="optionsDefault"
                    [maxHeight]="listElHeight*6"
                    [showSingleGroupHeader]="showSingleGroupHeader"
                    [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                    [showNoneOption]="!required"
-                   [listActions]="listActions">
+                   [listActions]="listActions"
+                   (selectChange)="onSelect($event)">
       <ng-content footerAction
                   select="[footerAction],[footerActionRight]"></ng-content>
     </b-single-list>

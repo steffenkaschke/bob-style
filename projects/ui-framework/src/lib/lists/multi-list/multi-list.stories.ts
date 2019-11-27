@@ -25,9 +25,9 @@ const template = `
               [startWithGroupsCollapsed]="startWithGroupsCollapsed"
               (selectChange)="selectChange($event)">
 
-      <b-text-button footerAction
+      <b-text-button footerAction *ngIf="options.length>1"
               [text]="list.allGroupsCollapsed ? 'Expand' : 'Collapse'"
-              (clicked)="list.toggleGroupsCollapse()">
+              (clicked)="list.toggleCollapseAll()">
       </b-text-button>
 
 </b-multi-list>

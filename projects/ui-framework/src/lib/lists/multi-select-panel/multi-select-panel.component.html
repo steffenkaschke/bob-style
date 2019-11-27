@@ -18,13 +18,13 @@
   <div class="b-select-panel"
        [ngClass]="positionClassList">
     <b-multi-list class="b-select-list"
-                  (selectChange)="onSelect($event)"
                   [options]="options"
                   [optionsDefault]="optionsDefault"
                   [maxHeight]="listElHeight*6"
                   [showSingleGroupHeader]="false"
                   [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                   [listActions]="listActions"
+                  (selectChange)="onSelect($event)"
                   (apply)="onApply()">
       <ng-content footerAction
                   select="[footerAction],[footerActionRight]"></ng-content>

@@ -18,13 +18,13 @@
   <div class="b-select-panel"
        [ngClass]="positionClassList">
     <b-single-list class="b-select-list"
-                   (selectChange)="onSelect($event)"
                    [options]="options"
                    [optionsDefault]="optionsDefault"
                    [maxHeight]="listElHeight*6"
                    [showSingleGroupHeader]="false"
                    [startWithGroupsCollapsed]="startWithGroupsCollapsed"
-                   [showNoneOption]="false">
+                   [showNoneOption]="false"
+                   (selectChange)="onSelect($event)">
     </b-single-list>
   </div>
 </ng-template>

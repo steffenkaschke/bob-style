@@ -27,7 +27,7 @@
                       class="checkbox"
                       [value]="header.selected"
                       [indeterminate]="header.indeterminate"
-                      (click)="headerSelect(header)"
+                      (click)="selectGroup(header)"
                       [doPropagate]="false">
           </b-checkbox>
           <span class="header-option-value"
@@ -50,7 +50,7 @@
                                maxBufferPx="{{8*listElHeight}}"
                                minBufferPx="{{8*listElHeight}}">
     <div class="options">
-      <div (click)="optionClick(option)"
+      <div (click)="optionClick(option, true)"
            *cdkVirtualFor="let option of listOptions"
            [ngClass]="{
             'header-placeholder': option.isPlaceHolder,
@@ -65,7 +65,8 @@
                     [doPropagate]="false">
         </b-checkbox>
 
-        <b-component-renderer *ngIf="option.prefixComponent"
+        <b-component-renderer *ngIf="option.prefixComponent
+                        && option.prefixComponent.component"
                               class="comp-prefix"
                               [render]="option.prefixComponent"></b-component-renderer>
 
@@ -84,9 +85,9 @@
                *ngIf="hasFooter"
                [listActions]="listActions"
                [listActionsState]="listActionsState"
-               (clear)="onClear()"
+               (clear)="clearList()"
                (apply)="onApply()"
-               (reset)="onReset()">
+               (reset)="resetList()">
   <ng-content footerAction
               select="[footerAction],[footerActionRight]"></ng-content>
 </b-list-footer>

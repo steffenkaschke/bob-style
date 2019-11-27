@@ -23,7 +23,7 @@ import { ListChangeService } from '../list-change/list-change.service';
 })
 export class SingleSelectPanelComponent extends BaseSelectPanelElement {
   constructor(
-    listChangeService: ListChangeService,
+    listChangeSrvc: ListChangeService,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
@@ -33,7 +33,7 @@ export class SingleSelectPanelComponent extends BaseSelectPanelElement {
     cd: ChangeDetectorRef
   ) {
     super(
-      listChangeService,
+      listChangeSrvc,
       overlay,
       viewContainerRef,
       panelPositionService,

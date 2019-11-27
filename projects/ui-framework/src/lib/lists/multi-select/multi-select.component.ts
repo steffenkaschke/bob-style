@@ -56,7 +56,7 @@ import { FormEvents } from '../../form-elements/form-elements.enum';
 })
 export class MultiSelectComponent extends BaseSelectPanelElement {
   constructor(
-    listChangeService: ListChangeService,
+    listChangeSrvc: ListChangeService,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
@@ -64,10 +64,10 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     DOM: DOMhelpers,
     zone: NgZone,
     cd: ChangeDetectorRef,
-    private listModelService: ListModelService
+    private modelSrvc: ListModelService
   ) {
     super(
-      listChangeService,
+      listChangeSrvc,
       overlay,
       viewContainerRef,
       panelPositionService,
@@ -105,7 +105,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   onNgChanges(changes: SimpleChanges): void {
     if (changes.options) {
       this.value = isNotEmptyArray(this.options)
-        ? this.listModelService.getSelectedIDs(this.options)
+        ? this.modelSrvc.getSelectedIDs(this.options)
         : [];
 
       this.setDisplayValue();
@@ -124,7 +124,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   }
 
   onCancel(): void {
-    this.value = this.listModelService.getSelectedIDs(this.options);
+    this.value = this.modelSrvc.getSelectedIDs(this.options);
     this.emitChange(FormEvents.selectCancelled);
     this.destroyPanel();
   }
@@ -145,8 +145,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
 
   private emitChange(event: FormEvents, listChange: ListChange = null): void {
     listChange =
-      listChange ||
-      this.listChangeService.getListChange(this.options, this.value);
+      listChange || this.listChangeSrvc.getListChange(this.options, this.value);
 
     if (this[event].observers.length > 0) {
       this[event].emit(listChange);

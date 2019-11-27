@@ -53,7 +53,7 @@ import { selectValueOrFail } from '../services/utils/transformers';
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements OnChanges, AfterViewInit, OnDestroy {
   protected constructor(
-    protected listChangeService: ListChangeService,
+    protected listChangeSrvc: ListChangeService,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService,
@@ -155,7 +155,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
       this.ngOnChanges(
         simpleChange({
-          options: this.listChangeService.getCurrentSelectGroupOptions(
+          options: this.listChangeSrvc.getCurrentSelectGroupOptions(
             this.options,
             this.value
           ),

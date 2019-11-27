@@ -41,13 +41,13 @@
     <button *ngIf="showNoneOption"
             type="button"
             class="clear-selection"
-            (click)="clear.emit()">
+            (click)="clearList()">
       — None —
     </button>
 
     <div class="options">
       <div *cdkVirtualFor="let option of listOptions; let index = index;"
-           (click)="optionClick(option, index)"
+           (click)="optionClick(option)"
            [ngClass]="{
             'header-placeholder': option.isPlaceHolder,
             'option': !option.isPlaceHolder,
@@ -58,7 +58,8 @@
            }"
            class="option-select">
 
-        <b-component-renderer *ngIf="option.prefixComponent"
+        <b-component-renderer *ngIf="option.prefixComponent
+                  && option.prefixComponent.component"
                               class="comp-prefix"
                               [render]="option.prefixComponent"></b-component-renderer>
 
@@ -77,8 +78,9 @@
                *ngIf="hasFooter"
                [listActions]="listActions"
                [listActionsState]="listActionsState"
-               (clear)="onClear()"
-               (apply)="onApply()">
+               (clear)="clearList()"
+               (apply)="onApply()"
+               (reset)="resetList()">
   <ng-content footerAction
               select="[footerAction],[footerActionRight]"></ng-content>
 </b-list-footer>

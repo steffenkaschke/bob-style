@@ -3,11 +3,9 @@ import {
   selectSome,
   optionsMock as SingleListPptionsMock,
 } from '../single-list/single-list.mock';
-import { cloneDeep } from 'lodash';
 
-export const optionsMock: SelectGroupOption[] = cloneDeep(
-  //selectSome(
-  SingleListPptionsMock
+export const optionsMock: SelectGroupOption[] = selectSome(
+  SingleListPptionsMock //.slice(0, 1)
 );
 
 export const optionsMockDef: SelectGroupOption[] = selectSome(

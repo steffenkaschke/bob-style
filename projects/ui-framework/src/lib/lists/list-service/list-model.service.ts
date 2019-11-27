@@ -104,8 +104,6 @@ export class ListModelService {
   ): void {
     selectedIDs = selectedIDs || this.getSelectedIDs(options);
 
-    console.log('setSelectedOptions selectedIDs', selectedIDs);
-
     listOptions.forEach((option: ListOption) => {
       option.selected = option.isPlaceHolder
         ? false
@@ -122,8 +120,6 @@ export class ListModelService {
       header.indeterminate =
         header.selectedCount > 0 && header.selectedCount < groupOptions.length;
     });
-
-    console.log('listHeaders', listHeaders);
   }
 
   getFilteredOptions(
@@ -143,11 +139,14 @@ export class ListModelService {
       .filter((group: SelectGroupOption) => isNotEmptyArray(group.options));
   }
 
-  getSelectedIDs(options: SelectGroupOption[]): (number | string)[] {
+  getSelectedIDs(
+    options: SelectGroupOption[],
+    mustBe = 'selected'
+  ): (number | string)[] {
     return arrayFlatten<string | number>(
       options.map(group =>
         group.options
-          .filter((option: SelectOption) => option.selected)
+          .filter((option: SelectOption) => option.selected && option[mustBe])
           .map((opt: SelectOption) => opt.id)
       )
     );
@@ -211,5 +210,9 @@ export class ListModelService {
       (!isNullOrUndefined(group1.key) && group1.key === group2.key) ||
       (isNullOrUndefined(group1.key) && group1.groupName === group2.groupName)
     );
+  }
+
+  totalOptionsCount(options: SelectGroupOption[]): number {
+    return arrayFlatten(options.map(group => group.options)).length;
   }
 }

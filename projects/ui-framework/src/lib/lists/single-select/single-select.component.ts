@@ -52,7 +52,7 @@ import {
 })
 export class SingleSelectComponent extends BaseSelectPanelElement {
   constructor(
-    listChangeService: ListChangeService,
+    listChangeSrvc: ListChangeService,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
@@ -62,7 +62,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
     cd: ChangeDetectorRef
   ) {
     super(
-      listChangeService,
+      listChangeSrvc,
       overlay,
       viewContainerRef,
       panelPositionService,
@@ -94,33 +94,29 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
   }
 
   onSelect(listChange: ListChange) {
-    this.value = listChange.getSelectedIds()[0];
+    this.value = listChange.getSelectedIds()[0] || null;
     this.displayValue = this.getDisplayValue(this.value);
     this.emitChange(listChange);
     this.destroyPanel();
   }
 
-  clearSelection(): void {
-    this.value = null;
-    this.displayValue = this.getDisplayValue(this.value);
-    this.emitChange(this.listChangeService.getListChange(this.options, []));
-    this.destroyPanel();
-  }
-
   private getDisplayValue(selectedOptionId: string | number): string {
-    return chain(this.options)
-      .flatMap('options')
-      .filter(option => option.id === selectedOptionId)
-      .first()
-      .get('value', null)
-      .value();
+    return (
+      selectedOptionId &&
+      chain(this.options)
+        .flatMap('options')
+        .filter(option => option.id === selectedOptionId)
+        .first()
+        .get('value', null)
+        .value()
+    );
   }
 
   private getSelectedOptionId(options: SelectGroupOption[]): number | string {
     const selectedOption = arrayFlatten(
       options.map(group => group.options)
     ).find(option => option.selected);
-    console.log(selectedOption ? selectedOption.id : null);
+
     return selectedOption ? selectedOption.id : null;
   }
 
