@@ -8,7 +8,7 @@ export class DateParseService {
       .replace(/[a-zA-Z]+/g, '')
       .replace(/\W+/g, useChar)
       .replace(/(^\W+)/g, '');
-    let valueSplit = value.split('/');
+    let valueSplit = value.split(useChar);
 
     if (valueSplit.length > 3) {
       valueSplit = valueSplit.slice(0, 3);
@@ -18,7 +18,7 @@ export class DateParseService {
       valueSplit = (
         valueSplit[0].slice(0, 4).replace(/(.{2})/g, '$1/') +
         valueSplit[0].slice(4)
-      ).split('/');
+      ).split(useChar);
     }
 
     if (valueSplit.length > 0 && parseInt(valueSplit[0], 10) > 31) {
@@ -56,9 +56,9 @@ export class DateParseService {
       valueSplit[valueSplit.length - 1].length === 2
     ) {
       valueSplit[valueSplit.length - 1] =
-        valueSplit[valueSplit.length - 1] + '/';
+        valueSplit[valueSplit.length - 1] + useChar;
     }
 
-    return valueSplit.join('/');
+    return valueSplit.join(useChar);
   }
 }
