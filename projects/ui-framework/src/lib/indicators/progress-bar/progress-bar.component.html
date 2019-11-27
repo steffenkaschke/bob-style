@@ -4,7 +4,7 @@
       class="bpb-value"
       [id]="id+'-val'">{{data.value}}%</h5>
 
-  <p *ngIf="data['headerTextPrimary'] !== false && data['headerTextPrimary'] !== ''"
+  <p *ngIf="data.headerTextPrimary !== false"
      class="bpb-text bpb-text-prmr"
      [id]="id+'-dsc1'"
      data-max-lines='1'>
@@ -15,9 +15,7 @@
   <p *ngIf="type === barType.primary"
      class="bpb-text bpb-text-scndr"
      [id]="id+'-dsc2'"
-     [ngClass]="
-     data && data.iconHeaderRight ? data.iconHeaderRight + ' b-icon-medium b-icon-normal' : ''
-     ">
+     [ngClass]="data && data.iconHeaderRight ? data.iconHeaderRight + ' b-icon-medium b-icon-normal' : ''">
     {{data.headerTextSecondary}}
     <ng-content select="[header-right]"></ng-content>
   </p>

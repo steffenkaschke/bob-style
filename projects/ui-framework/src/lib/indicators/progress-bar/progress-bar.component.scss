@@ -109,6 +109,7 @@ p {
     margin-top: -2px;
   }
 
+  .bpb-value + &,
   &:first-child {
     margin-left: 0;
     flex-direction: row-reverse;

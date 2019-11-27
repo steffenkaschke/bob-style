@@ -29,7 +29,7 @@ const template = `
                   [data]="{
                     color: color,
                     value: value,
-                    headerTextPrimary: headerTextPrimary,
+                    headerTextPrimary: headerTextPrimary || false,
                     headerTextSecondary: headerTextSecondary,
                     iconHeaderRight: iconHeaderRight
                   }"
