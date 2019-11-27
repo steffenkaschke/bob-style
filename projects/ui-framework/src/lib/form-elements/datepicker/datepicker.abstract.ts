@@ -153,7 +153,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
 
     if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
-      this.placeholder = BDateAdapter.bFormat.toLowerCase();
+      this.placeholder = (
+        this.dateFormat || BDateAdapter.bFormat
+      ).toLowerCase();
     }
 
     this.doneFirstChange = true;

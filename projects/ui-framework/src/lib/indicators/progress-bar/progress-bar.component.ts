@@ -8,7 +8,7 @@ import {
   OnChanges,
   HostBinding,
   ChangeDetectionStrategy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import { filter, take } from 'rxjs/operators';
 import {
@@ -16,7 +16,7 @@ import {
   notFirstChanges,
   simpleUID,
   numberMinMax,
-  randomNumber
+  randomNumber,
 } from '../../services/utils/functional-utils';
 import { valueAsNumber } from '../../services/utils/transformers';
 import { UtilsService } from '../../services/utils/utils.service';
@@ -30,7 +30,7 @@ import { ProgressBarData, ProgressBarConfig } from './progress-bar.interface';
   selector: 'b-progress-bar',
   templateUrl: './progress-bar.component.html',
   styleUrls: ['./progress-bar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProgressBarComponent implements OnChanges, OnInit {
   constructor(
@@ -41,10 +41,12 @@ export class ProgressBarComponent implements OnChanges, OnInit {
     private cd: ChangeDetectorRef
   ) {}
 
-  @HostBinding('attr.data-type') @Input() type: ProgressBarType = ProgressBarType.primary;
-  @HostBinding('attr.data-size') @Input() size: ProgressBarSize = ProgressBarSize.medium;
+  @HostBinding('attr.data-type') @Input() type: ProgressBarType =
+    ProgressBarType.primary;
+  @HostBinding('attr.data-size') @Input() size: ProgressBarSize =
+    ProgressBarSize.medium;
 
-  @Input() data: ProgressBarData;
+  @Input() data: ProgressBarData = {} as ProgressBarData;
   @Input() config: ProgressBarConfig = {};
 
   private wasInView = false;
@@ -56,7 +58,11 @@ export class ProgressBarComponent implements OnChanges, OnInit {
     applyChanges(this, changes);
 
     if (changes.data) {
-      this.data.value = numberMinMax(valueAsNumber(InputTypes.number, this.data.value, 0), 0, 100);
+      this.data.value = numberMinMax(
+        valueAsNumber(InputTypes.number, this.data.value, 0),
+        0,
+        100
+      );
     }
 
     if (notFirstChanges(changes)) {
@@ -88,12 +94,20 @@ export class ProgressBarComponent implements OnChanges, OnInit {
 
   private setCssProps(): void {
     this.DOM.setCssProps(this.host.nativeElement, {
-      '--bpb-value': this.wasInView || this.config.disableAnimation ? this.data.value + '%' : null,
-      '--bpb-color': (this.type !== ProgressBarType.secondary && this.data.color) || null,
+      '--bpb-value':
+        this.wasInView || this.config.disableAnimation
+          ? this.data.value + '%'
+          : null,
+      '--bpb-color':
+        (this.type !== ProgressBarType.secondary && this.data.color) || null,
       '--bpb-trans': this.config.disableAnimation
         ? '0s'
-        : (this.data.value > 50 ? randomNumber(1000, 2000) : randomNumber(500, 1000)) + 'ms',
-      '--bpb-trans-delay': this.config.disableAnimation ? '0s' : randomNumber(70, 250) + 'ms'
+        : (this.data.value > 50
+            ? randomNumber(1000, 2000)
+            : randomNumber(500, 1000)) + 'ms',
+      '--bpb-trans-delay': this.config.disableAnimation
+        ? '0s'
+        : randomNumber(70, 250) + 'ms',
     });
   }
 }
