@@ -24,7 +24,7 @@ import { FormElementLabelModule } from '../../form-elements/form-element-label/f
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 import { simpleChange } from '../../services/utils/test-helpers';
 
-describe('SingleSelectComponent', () => {
+fdescribe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
   let optionsMock: SelectGroupOption[];
   let fixture: ComponentFixture<SingleSelectComponent>;

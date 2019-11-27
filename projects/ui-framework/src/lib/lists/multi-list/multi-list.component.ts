@@ -8,10 +8,9 @@ import {
   ElementRef,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
-import { cloneDeep, flatMap, chain, isEqual } from 'lodash';
+import { cloneDeep, chain, isEqual } from 'lodash';
 import { ListHeader, ListOption, SelectGroupOption } from '../list.interface';
 import { BaseListElement } from '../list-element.abstract';
-import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListChange } from '../list-change/list-change';
@@ -61,20 +60,7 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     super.ngOnChanges(changes);
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
-      this.filteredOptions = cloneDeep(this.options || []);
       this.selectedIDs = this.getSelectedIDs(this.options);
-
-      this.shouldDisplaySearch =
-        this.options &&
-        flatMap(this.options, 'options').length > DISPLAY_SEARCH_OPTION_NUM;
-
-      this.noGroupHeaders =
-        !this.options ||
-        (this.options.length < 2 && !this.showSingleGroupHeader);
-
-      this.updateLists(
-        this.startWithGroupsCollapsed && this.options.length > 1
-      );
     }
 
     if (
@@ -98,16 +84,14 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
 
   toggleGroupCollapse(header: ListHeader): void {
     header.isCollapsed = !header.isCollapsed;
-    this.listOptions = this.listModelService.getOptionsModel(
-      this.filteredOptions,
-      this.listHeaders,
-      this.noGroupHeaders
-    );
-    this.listModelService.setSelectedOptions(
-      this.listHeaders,
-      this.listOptions,
-      this.options
-    );
+
+    this.updateLists({
+      updateListHeaders: false,
+      selectedIDs: this.selectedIDs,
+    });
+
+    this.allGroupsCollapsed =
+      this.listOptions.length === this.listHeaders.length;
   }
 
   headerSelect(header: ListHeader): void {
@@ -133,16 +117,17 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     this.emitChange();
     this.updateActionButtonsState();
 
-    this.listModelService.setSelectedOptions(
-      this.listHeaders,
-      this.listOptions,
-      this.options
-    );
+    this.updateLists({
+      updateListHeaders: false,
+      updateListOptions: false,
+      selectedIDs: this.selectedIDs,
+    });
   }
 
   optionClick(option: ListOption): void {
     if (!option.disabled) {
       option.selected = !option.selected;
+
       this.selectedIDs = option.selected
         ? chain(this.selectedIDs)
             .concat(option.id)
@@ -152,14 +137,16 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
             .difference([option.id])
             .value();
 
+      console.log('optionClick selectedIDs', this.selectedIDs);
+
+      this.updateLists({
+        updateListHeaders: false,
+        updateListOptions: false,
+        selectedIDs: this.selectedIDs,
+      });
+
       this.emitChange();
       this.updateActionButtonsState();
-
-      this.listModelService.setSelectedOptions(
-        this.listHeaders,
-        this.listOptions,
-        this.options
-      );
     }
   }
 
@@ -186,34 +173,8 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
     this.emitChange();
   }
 
-  searchChange(searchValue: string): void {
-    this.searchValue = searchValue;
-    this.filteredOptions = this.listModelService.getFilteredOptions(
-      this.options,
-      searchValue
-    );
-    this.updateLists(this.startWithGroupsCollapsed && !searchValue);
-  }
-
   getListChange(): ListChange {
     return this.listChangeService.getListChange(this.options, this.selectedIDs);
-  }
-
-  private updateLists(collapseHeaders = false): void {
-    this.listHeaders = this.listModelService.getHeadersModel(
-      this.filteredOptions,
-      collapseHeaders
-    );
-    this.listOptions = this.listModelService.getOptionsModel(
-      this.filteredOptions,
-      this.listHeaders,
-      this.noGroupHeaders
-    );
-    this.listModelService.setSelectedOptions(
-      this.listHeaders,
-      this.listOptions,
-      this.options
-    );
   }
 
   private getSelectedIDs(
@@ -227,7 +188,9 @@ export class MultiListComponent extends BaseListElement implements OnChanges {
       this.options,
       this.selectedIDs
     );
+
     this.options = listChange.getSelectGroupOptions();
+
     this.listActionsState.apply.disabled = false;
 
     this.selectChange.emit(listChange);

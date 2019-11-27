@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { ListChange } from '../list-change/list-change';
-import { LIST_EL_HEIGHT } from '../list.consts';
 import { Overlay } from '@angular/cdk/overlay';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -43,8 +42,10 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement {
       zone,
       cd
     );
+
     this.wrapEvent = false;
     this.doPropagate = false;
+    this.panelClassList = ['b-select-panel-with-arrow'];
     this.listActions = {
       clear: true,
       reset: false,
@@ -56,20 +57,19 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement {
 
   listChange: ListChange;
 
-  readonly listElHeight = LIST_EL_HEIGHT;
-  panelClassList: string[] = ['b-select-panel-with-arrow'];
-
   onSelect(listChange: ListChange): void {
     this.listChange = listChange;
   }
 
   onCancel(): void {
+    this.listChange = undefined;
     this.destroyPanel();
   }
 
   onApply(): void {
     this.options = this.listChange.getSelectGroupOptions();
     this.selectChange.emit(this.listChange);
+    this.listChange = undefined;
     this.destroyPanel();
   }
 }

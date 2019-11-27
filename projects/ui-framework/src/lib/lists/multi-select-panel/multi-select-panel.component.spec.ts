@@ -21,7 +21,7 @@ import { cold } from 'jasmine-marbles';
 import { UtilsService } from '../../services/utils/utils.service';
 import createSpyObj = jasmine.createSpyObj;
 
-describe('MultiSelectPanelComponent', () => {
+fdescribe('MultiSelectPanelComponent', () => {
   let component: MultiSelectPanelComponent;
   let fixture: ComponentFixture<MultiSelectPanelComponent>;
   let utilsServiceStub: jasmine.SpyObj<UtilsService>;

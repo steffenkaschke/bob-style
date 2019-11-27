@@ -8,6 +8,7 @@ import {
   ViewChild,
   NgZone,
   ChangeDetectorRef,
+  Input,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, includes } from 'lodash';
@@ -86,15 +87,14 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   @ViewChild('triggerInput', { static: true })
   truncate: TruncateTooltipComponent;
 
+  @Input() value: (number | string)[];
+
   @Output() selectModified: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
   @Output() selectCancelled: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
-
-  public selectedIDs: (number | string)[];
-  public displayValueCount: number;
 
   readonly listActions: ListFooterActions = {
     clear: true,
@@ -104,7 +104,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   // extends BaseSelectPanelElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
     if (changes.options) {
-      this.selectedIDs = isNotEmptyArray(this.options)
+      this.value = isNotEmptyArray(this.options)
         ? this.listModelService.getSelectedIDs(this.options)
         : [];
 
@@ -113,7 +113,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   }
 
   onSelect(listChange: ListChange): void {
-    this.selectedIDs = listChange.getSelectedIds();
+    this.value = listChange.getSelectedIds();
     this.emitChange(FormEvents.selectModified, listChange);
   }
 
@@ -124,14 +124,14 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   }
 
   onCancel(): void {
-    this.selectedIDs = this.listModelService.getSelectedIDs(this.options);
+    this.value = this.listModelService.getSelectedIDs(this.options);
     this.emitChange(FormEvents.selectCancelled);
     this.destroyPanel();
   }
 
   private setDisplayValue(): void {
-    this.displayValue = this.getDisplayValue(this.selectedIDs);
-    this.displayValueCount = this.selectedIDs.length;
+    this.displayValue = this.getDisplayValue(this.value);
+    this.displayValueCount = this.value.length;
   }
 
   private getDisplayValue(selectedIDs: (string | number)[]): string {
@@ -146,7 +146,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   private emitChange(event: FormEvents, listChange: ListChange = null): void {
     listChange =
       listChange ||
-      this.listChangeService.getListChange(this.options, this.selectedIDs);
+      this.listChangeService.getListChange(this.options, this.value);
 
     if (this[event].observers.length > 0) {
       this[event].emit(listChange);
@@ -156,10 +156,10 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
       this.options = listChange.getSelectGroupOptions();
 
       if (this.changed.observers.length > 0) {
-        this.changed.emit(this.selectedIDs);
+        this.changed.emit(this.value);
       }
       if (this.doPropagate) {
-        this.propagateChange(this.selectedIDs);
+        this.propagateChange(this.value);
         this.onTouched();
       }
     }

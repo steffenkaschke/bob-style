@@ -21,7 +21,7 @@ import createSpyObj = jasmine.createSpyObj;
 import { UtilsService } from '../../services/utils/utils.service';
 import { cold } from 'jasmine-marbles';
 
-describe('SingleSelectPanelComponent', () => {
+fdescribe('SingleSelectPanelComponent', () => {
   let component: SingleSelectPanelComponent;
   let fixture: ComponentFixture<SingleSelectPanelComponent>;
   let utilsServiceStub: jasmine.SpyObj<UtilsService>;

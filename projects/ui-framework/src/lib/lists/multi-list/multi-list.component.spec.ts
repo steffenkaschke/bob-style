@@ -22,7 +22,7 @@ import {
 } from '../../services/utils/test-helpers';
 import { cloneDeep } from 'lodash';
 
-describe('MultiListComponent', () => {
+fdescribe('MultiListComponent', () => {
   let component: MultiListComponent;
   let optionsMock: SelectGroupOption[];
   let fixture: ComponentFixture<MultiListComponent>;

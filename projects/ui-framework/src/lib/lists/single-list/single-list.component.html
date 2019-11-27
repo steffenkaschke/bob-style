@@ -22,6 +22,10 @@
               [ngClass]="{'b-icon-chevron-down': !header.isCollapsed, 'b-icon-chevron-right':
               header.isCollapsed}"></span>
         <span [innerHTML]="header.groupName | highlight: searchValue"></span>
+        <span *ngIf="header.selectedCount > 0"
+              class="header-selected-count">
+          ({{header.selectedCount}})
+        </span>
       </div>
       <div [ngStyle]="{height: header.isCollapsed ? 0 : header.placeHolderSize + 'px'}"
            class="placeholder"></div>
@@ -42,15 +46,15 @@
     </button>
 
     <div class="options">
-      <div (click)="optionClick(option)"
-           *cdkVirtualFor="let option of listOptions"
+      <div *cdkVirtualFor="let option of listOptions; let index = index;"
+           (click)="optionClick(option, index)"
            [ngClass]="{
-           'header-placeholder': option.isPlaceHolder,
-           'option': !option.isPlaceHolder,
-           'selected': option.selected,
-           'focus': option.id===focusOption?.id,
-           'disabled': option.disabled,
-           'single-group-option': options.length === 1
+            'header-placeholder': option.isPlaceHolder,
+            'option': !option.isPlaceHolder,
+            'selected': option.selected,
+            'focus': option.id===focusOption?.id,
+            'disabled': option.disabled,
+            'single-group-option': options.length === 1
            }"
            class="option-select">
 

@@ -5,6 +5,7 @@ import {
   ViewContainerRef,
   NgZone,
   ChangeDetectorRef,
+  Input,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { chain, isUndefined } from 'lodash';
@@ -79,29 +80,29 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
     };
   }
 
-  public selectedOptionId: number | string = null;
+  @Input() value: number | string = null;
 
   // extends BaseSelectPanelElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
     if (changes.options) {
-      this.selectedOptionId = this.getSelectedOptionId(this.options);
+      this.value = this.getSelectedOptionId(this.options);
 
-      this.displayValue = isNullOrUndefined(this.selectedOptionId)
+      this.displayValue = isNullOrUndefined(this.value)
         ? null
-        : this.getDisplayValue(this.selectedOptionId);
+        : this.getDisplayValue(this.value);
     }
   }
 
   onSelect(listChange: ListChange) {
-    this.selectedOptionId = listChange.getSelectedIds()[0];
-    this.displayValue = this.getDisplayValue(this.selectedOptionId);
+    this.value = listChange.getSelectedIds()[0];
+    this.displayValue = this.getDisplayValue(this.value);
     this.emitChange(listChange);
     this.destroyPanel();
   }
 
   clearSelection(): void {
-    this.selectedOptionId = null;
-    this.displayValue = this.getDisplayValue(this.selectedOptionId);
+    this.value = null;
+    this.displayValue = this.getDisplayValue(this.value);
     this.emitChange(this.listChangeService.getListChange(this.options, []));
     this.destroyPanel();
   }
@@ -127,10 +128,10 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
     this.options = listChange.getSelectGroupOptions();
 
     this.selectChange.emit(listChange);
-    this.changed.emit(this.selectedOptionId);
+    this.changed.emit(this.value);
 
     if (this.doPropagate) {
-      this.propagateChange(this.selectedOptionId);
+      this.propagateChange(this.value);
       this.onTouched();
     }
   }

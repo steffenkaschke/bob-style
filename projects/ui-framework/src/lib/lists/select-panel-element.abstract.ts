@@ -103,6 +103,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   public positionClassList: OverlayPositionClasses = {};
   public panelOpen = false;
   public displayValue: string;
+  public displayValueCount: number;
   public panelClassList: string[] = [];
   public overlayRef: OverlayRef;
   private panelConfig: OverlayConfig;

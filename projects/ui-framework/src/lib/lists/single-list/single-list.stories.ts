@@ -12,18 +12,22 @@ import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { optionsMock } from './single-list.mock';
 import { cloneDeep } from 'lodash';
+import { ListChange } from '../list-change/list-change';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-single-list [options]="options"
+<b-single-list #list [options]="options"
                (selectChange)="selectChange($event)"
                [showSingleGroupHeader]="showSingleGroupHeader">
+
       <b-text-button footerAction
-        [text]="'Click Me!'">
+              [text]="list.allGroupsCollapsed ? 'Expand' : 'Collapse'"
+              (clicked)="list.toggleGroupsCollapse()">
       </b-text-button>
+
 </b-single-list>
 `;
 
@@ -68,7 +72,11 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      selectChange: action('Single list change'),
+      selectChange: (change: ListChange) => {
+        change.selectGroupOptions.sort();
+        return action('Single list change')(change);
+      },
+
       showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
       options: object<SelectGroupOption>('options', options, 'Options'),
     },

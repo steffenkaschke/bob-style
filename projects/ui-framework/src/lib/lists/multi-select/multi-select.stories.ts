@@ -4,6 +4,7 @@ import {
   object,
   text,
   boolean,
+  select,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -18,6 +19,7 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { mockText } from '../../mock.const';
 import { cloneDeep } from 'lodash';
 import { optionsMock, optionsMockDef } from '../multi-list/multi-list.mock';
+import { ListModelService } from '../list-service/list-model.service';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -28,11 +30,12 @@ const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 );
 
 const template = `
-<b-multi-select [label]="label"
-                [placeholder]="placeholder"
+<b-multi-select [options]="options"
+                [value]="value"
                 [description]="description"
-                [options]="options"
                 [optionsDefault]="optionsDefault"
+                [label]="label"
+                [placeholder]="placeholder"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                 [disabled]="disabled"
@@ -93,13 +96,45 @@ const note = `
   ~~~
 `;
 
-const options = cloneDeep(optionsMock);
-
+const options = ListModelService.prototype.selectAll<SelectGroupOption>(
+  cloneDeep(optionsMock)
+);
 const optionsDef = cloneDeep(optionsMockDef);
 
 const toAdd = () => ({
   template: storyTemplate,
   props: {
+    value: select(
+      'value',
+      [
+        [
+          options[0].options[0].id,
+          options[1].options[2].id,
+          options[3].options[3].id,
+          options[0].options[2].id,
+        ],
+        [
+          options[0].options[1].id,
+          options[1].options[3].id,
+          options[2].options[2].id,
+          options[4].options[0].id,
+        ],
+        [
+          options[3].options[3].id,
+          options[1].options[2].id,
+          options[4].options[0].id,
+          options[2].options[1].id,
+        ],
+      ],
+      [
+        options[0].options[0].id,
+        options[1].options[2].id,
+        options[3].options[3].id,
+        options[0].options[2].id,
+      ],
+      'Props'
+    ),
+
     showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
     startWithGroupsCollapsed: boolean(
       'startWithGroupsCollapsed',

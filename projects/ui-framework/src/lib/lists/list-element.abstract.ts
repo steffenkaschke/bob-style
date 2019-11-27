@@ -21,9 +21,14 @@ import {
   ListFooterActions,
   SelectGroupOption,
   ListFooterActionsState,
+  UpdateListsConfig,
 } from './list.interface';
-import find from 'lodash/find';
-import { LIST_EL_HEIGHT } from './list.consts';
+import { find, flatMap, cloneDeep } from 'lodash';
+import {
+  LIST_EL_HEIGHT,
+  DISPLAY_SEARCH_OPTION_NUM,
+  UPDATE_LISTS_CONFIG_DEF,
+} from './list.consts';
 import { ListKeyboardService } from './list-service/list-keyboard.service';
 import { Keys } from '../enums';
 import { ListChange } from './list-change/list-change';
@@ -33,6 +38,7 @@ import {
   applyChanges,
   isNotEmptyArray,
   getEventPath,
+  hasChanges,
 } from '../services/utils/functional-utils';
 import { ListModelService } from './list-service/list-model.service';
 import { ListChangeService } from './list-change/list-change.service';
@@ -69,6 +75,7 @@ export abstract class BaseListElement
     apply: { disabled: true, hidden: false },
   };
   public hasFooter = true;
+  public allGroupsCollapsed: boolean;
 
   protected optionsDefaultIDs: (string | number)[];
   private keyDownSubscriber: Subscription;
@@ -91,6 +98,11 @@ export abstract class BaseListElement
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
 
+    if (changes.options) {
+      this.allGroupsCollapsed =
+        this.startWithGroupsCollapsed && this.options.length > 1;
+    }
+
     if (changes.optionsDefault && isNotEmptyArray(this.optionsDefault)) {
       this.optionsDefaultIDs = this.listModelService.getSelectedIDs(
         this.optionsDefault
@@ -98,6 +110,20 @@ export abstract class BaseListElement
 
       this.listActions.clear = false;
       this.listActions.reset = true;
+    }
+
+    if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
+      this.filteredOptions = cloneDeep(this.options || []);
+
+      this.shouldDisplaySearch =
+        this.options &&
+        flatMap(this.options, 'options').length > DISPLAY_SEARCH_OPTION_NUM;
+
+      this.noGroupHeaders =
+        !this.options ||
+        (this.options.length < 2 && !this.showSingleGroupHeader);
+
+      this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
     }
   }
 
@@ -191,9 +217,64 @@ export abstract class BaseListElement
     });
   }
 
-  optionClick(option: ListOption): void {}
+  protected searchChange(searchValue: string): void {
+    this.searchValue = searchValue;
+    this.filteredOptions = this.listModelService.getFilteredOptions(
+      this.options,
+      searchValue
+    );
+    this.updateLists({
+      collapseHeaders: this.startWithGroupsCollapsed && !searchValue,
+    });
+  }
 
-  headerClick(header: ListHeader): void {}
+  protected updateLists(config: UpdateListsConfig = {}): void {
+    config = {
+      ...UPDATE_LISTS_CONFIG_DEF,
+      ...config,
+    };
+
+    if (config.updateListHeaders) {
+      this.listHeaders = this.listModelService.getHeadersModel(
+        this.filteredOptions,
+        config.collapseHeaders
+      );
+    }
+
+    if (config.updateListOptions) {
+      this.listOptions = this.listModelService.getOptionsModel(
+        this.filteredOptions,
+        this.listHeaders,
+        this.noGroupHeaders
+      );
+    }
+
+    this.listModelService.setSelectedOptions(
+      this.listHeaders,
+      this.listOptions,
+      this.options,
+      config.selectedIDs
+    );
+
+    this.cd.detectChanges();
+  }
+
+  expandGroups(): void {
+    this.updateLists({ collapseHeaders: false });
+  }
+
+  collapseGroups(): void {
+    this.updateLists({ collapseHeaders: true });
+  }
+
+  toggleGroupsCollapse(): void {
+    this.allGroupsCollapsed = !this.allGroupsCollapsed;
+    this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
+  }
+
+  optionClick(option: ListOption, ...args): void {}
+
+  headerClick(header: ListHeader, ...args): void {}
 
   onClear(): void {
     this.clear.emit();

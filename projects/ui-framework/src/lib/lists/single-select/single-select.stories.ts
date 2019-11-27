@@ -19,6 +19,7 @@ import { optionsMock } from '../single-list/single-list.mock';
 import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { cloneDeep } from 'lodash';
+import { ListModelService } from '../list-service/list-model.service';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -86,10 +87,9 @@ const note = `
   ~~~
 `;
 
-const options = cloneDeep(optionsMock);
+const options = ListModelService.prototype.selectAll(cloneDeep(optionsMock));
 options[0].options[1].value =
   'some other very long text and some more words to have ellipsis and tooltip';
-
 options[0].options[3].disabled = true;
 
 const toAdd = () => ({

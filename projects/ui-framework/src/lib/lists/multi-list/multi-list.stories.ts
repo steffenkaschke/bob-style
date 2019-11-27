@@ -12,20 +12,24 @@ import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { optionsMock, optionsMockDef } from './multi-list.mock';
 import { cloneDeep } from 'lodash';
+import { ListChange } from '../list-change/list-change';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-multi-list [options]="options"
+<b-multi-list #list [options]="options"
               [optionsDefault]="optionsDefault"
               [showSingleGroupHeader]="showSingleGroupHeader"
               [startWithGroupsCollapsed]="startWithGroupsCollapsed"
               (selectChange)="selectChange($event)">
-    <b-text-button footerAction
-                    [text]="'Action'">
-    </b-text-button>
+
+      <b-text-button footerAction
+              [text]="list.allGroupsCollapsed ? 'Expand' : 'Collapse'"
+              (clicked)="list.toggleGroupsCollapse()">
+      </b-text-button>
+
 </b-multi-list>
 `;
 
@@ -72,7 +76,12 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      selectChange: action('Multi list change'),
+      selectChange: (change: ListChange) => {
+        change.selectGroupOptions.sort();
+        change.selectedIDs.sort();
+        return action('Multi list change')(change);
+      },
+
       showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
       startWithGroupsCollapsed: boolean(
         'startWithGroupsCollapsed',
