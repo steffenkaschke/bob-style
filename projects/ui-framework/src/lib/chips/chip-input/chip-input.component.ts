@@ -79,6 +79,8 @@ export class ChipInputComponent extends BaseFormElement
     focusable: true,
   };
 
+  private ignoreAutoClosedEvent = false;
+
   @ViewChild('chips', { static: true }) public chips: ChipListComponent;
   @ViewChild('input', { static: true }) private input: ElementRef<
     HTMLInputElement
@@ -194,6 +196,11 @@ export class ChipInputComponent extends BaseFormElement
   public onInputChange(event: any): void {
     this.filteredChips =
       this.filterChips(event.target.value) || this.possibleChips;
+
+    if (this.filteredChips === this.possibleChips) {
+      this.ignoreAutoClosedEvent = true;
+      this.autocompleteTrigger.closePanel();
+    }
   }
 
   public optionSelected(event: MatAutocompleteSelectedEvent): void {
@@ -231,7 +238,10 @@ export class ChipInputComponent extends BaseFormElement
   }
 
   public onAutoClosed(): void {
-    this.addChipFromInput();
+    if (!this.ignoreAutoClosedEvent) {
+      this.addChipFromInput();
+    }
+    this.ignoreAutoClosedEvent = false;
   }
 
   public onInputFocus(): void {
