@@ -103,6 +103,8 @@ export abstract class BaseFormElement
     ) {
       this.value = cloneValue(this.baseValue);
     }
+
+    this.cd.detectChanges();
   }
 
   protected transmitValue(
