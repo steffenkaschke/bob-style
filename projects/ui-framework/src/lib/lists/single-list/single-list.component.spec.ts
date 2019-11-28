@@ -96,14 +96,10 @@ fdescribe('SingleListComponent', () => {
         },
       ]);
     });
-    fit('should create optionsModel based on options', () => {
-      console.log(component.listOptions);
+    it('should create optionsModel based on options', () => {
       expect(component.listOptions).toEqual([
         {
           isPlaceHolder: true,
-          groupName: 'Basic Info Header',
-          value: 'Basic Info Header',
-          id: 'Basic Info Header',
           selected: false,
         },
         {
@@ -122,9 +118,6 @@ fdescribe('SingleListComponent', () => {
         },
         {
           isPlaceHolder: true,
-          groupName: 'Personal Header',
-          value: 'Personal Header',
-          id: 'Personal Header',
           selected: false,
         },
         {
@@ -142,7 +135,7 @@ fdescribe('SingleListComponent', () => {
           isPlaceHolder: false,
           selected: false,
         },
-      ]);
+      ] as any);
     });
     it('should render 2 headers', () => {
       const headers = fixture.debugElement.queryAll(By.css('.header'));

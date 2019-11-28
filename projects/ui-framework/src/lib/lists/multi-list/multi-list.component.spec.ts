@@ -117,9 +117,6 @@ fdescribe('MultiListComponent', () => {
       expect(component.listOptions).toEqual([
         {
           isPlaceHolder: true,
-          groupName: 'Basic Info Header',
-          value: 'Basic Info Header',
-          id: 'Basic Info Header',
           selected: false,
         },
         {
@@ -138,9 +135,6 @@ fdescribe('MultiListComponent', () => {
         },
         {
           isPlaceHolder: true,
-          groupName: 'Personal Header',
-          value: 'Personal Header',
-          id: 'Personal Header',
           selected: false,
         },
         {
@@ -158,7 +152,7 @@ fdescribe('MultiListComponent', () => {
           isPlaceHolder: false,
           selected: false,
         },
-      ]);
+      ] as any);
     });
 
     it('should render 2 headers', () => {
@@ -488,16 +482,10 @@ fdescribe('MultiListComponent', () => {
       const expectedOptionsModel = [
         {
           isPlaceHolder: true,
-          groupName: 'Basic Info Header',
-          value: 'Basic Info Header',
-          id: 'Basic Info Header',
           selected: false,
         },
         {
           isPlaceHolder: true,
-          groupName: 'Personal Header',
-          value: 'Personal Header',
-          id: 'Personal Header',
           selected: false,
         },
         {
@@ -530,7 +518,7 @@ fdescribe('MultiListComponent', () => {
       fixture.autoDetectChanges();
 
       expect(component.listHeaders).toEqual(expectedHeaderModel);
-      expect(component.listOptions).toEqual(expectedOptionsModel);
+      expect(component.listOptions).toEqual(expectedOptionsModel as any);
     });
 
     it('should emit event when header is selected', () => {

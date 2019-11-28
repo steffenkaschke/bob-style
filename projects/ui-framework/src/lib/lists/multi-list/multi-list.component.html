@@ -60,7 +60,9 @@
             'single-group-option': options.length === 1
            }"
            class="option-select">
-        <b-checkbox class="checkbox"
+
+        <b-checkbox *ngIf="!option.isPlaceHolder"
+                    class="checkbox"
                     [value]="option.selected"
                     [doPropagate]="false">
         </b-checkbox>
@@ -70,7 +72,8 @@
                               class="comp-prefix"
                               [render]="option.prefixComponent"></b-component-renderer>
 
-        <span class="option-value"
+        <span *ngIf="!option.isPlaceHolder"
+              class="option-value"
               data-max-lines='3'
               [innerHTML]="option.value | highlight: searchValue">
         </span>
