@@ -134,7 +134,7 @@ fdescribe('SingleSelectComponent', () => {
       (overlayContainerElement.querySelectorAll(
         'b-single-list .option'
       )[3] as HTMLElement).click();
-      const listChange = component['listChangeService'].getListChange(
+      const listChange = component['listChangeSrvc'].getListChange(
         optionsMock,
         [12]
       );
@@ -185,7 +185,7 @@ fdescribe('SingleSelectComponent', () => {
       ) as HTMLElement;
       clearButton.click();
       fixture.autoDetectChanges();
-      const listChange = component['listChangeService'].getListChange(
+      const listChange = component['listChangeSrvc'].getListChange(
         optionsMock,
         []
       );

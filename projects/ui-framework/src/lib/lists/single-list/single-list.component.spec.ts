@@ -28,6 +28,7 @@ fdescribe('SingleListComponent', () => {
     optionsMock = [
       {
         groupName: 'Basic Info Header',
+
         options: [
           { value: 'Basic Info 1', id: 1, selected: true },
           { value: 'Basic Info 2', id: 2, selected: false },
@@ -64,7 +65,6 @@ fdescribe('SingleListComponent', () => {
         component = fixture.componentInstance;
         component.startWithGroupsCollapsed = false;
         spyOn(component.selectChange, 'emit');
-        spyOn(component.clear, 'emit');
 
         component.ngOnChanges(
           simpleChange({
@@ -96,7 +96,8 @@ fdescribe('SingleListComponent', () => {
         },
       ]);
     });
-    it('should create optionsModel based on options', () => {
+    fit('should create optionsModel based on options', () => {
+      console.log(component.listOptions);
       expect(component.listOptions).toEqual([
         {
           isPlaceHolder: true,
@@ -327,7 +328,7 @@ fdescribe('SingleListComponent', () => {
       fixture.autoDetectChanges();
       let searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeTruthy();
-      component.searchChange('no possible options');
+      component['searchChange']('no possible options');
       fixture.autoDetectChanges();
       expect(component.listOptions.length).toEqual(0);
       searchEl = fixture.debugElement.query(By.css('b-search'));
@@ -358,13 +359,13 @@ fdescribe('SingleListComponent', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
       fixture.detectChanges();
-      expect(component['selectedOption'].id).toEqual(12);
+      expect(component.selectedIDs).toEqual([12]);
     });
 
     it('should emit event when selecting an option', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
-      const listChange = component['listChangeService'].getListChange(
+      const listChange = component['listChangeSrvc'].getListChange(
         component.options,
         [12]
       );
@@ -375,7 +376,7 @@ fdescribe('SingleListComponent', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[2].triggerEventHandler('click', null);
       fixture.detectChanges();
-      expect(component['selectedOption'].id).not.toEqual(11);
+      expect(component.selectedIDs).not.toEqual([11]);
       expect(component.selectChange.emit).not.toHaveBeenCalled();
     });
   });
@@ -383,7 +384,7 @@ fdescribe('SingleListComponent', () => {
   describe('singleList listChange class', () => {
     let listChange;
     beforeEach(() => {
-      listChange = component['listChangeService'].getListChange(
+      listChange = component['listChangeSrvc'].getListChange(
         component.options,
         [12]
       );
@@ -414,7 +415,7 @@ fdescribe('SingleListComponent', () => {
 
   describe('searchChange', () => {
     it('should show group header and option that match the search', () => {
-      component.searchChange('info 1');
+      component['searchChange']('info 1');
       fixture.autoDetectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       const headers = fixture.debugElement.queryAll(By.css('.header'));
@@ -425,7 +426,7 @@ fdescribe('SingleListComponent', () => {
     });
     // Deprecated: Group header search
     xit('should show group headers and no options if search only matches headers', () => {
-      component.searchChange('Personal He');
+      component['searchChange']('Personal He');
       fixture.autoDetectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       const headers = fixture.debugElement.queryAll(By.css('.header'));
@@ -462,7 +463,9 @@ fdescribe('SingleListComponent', () => {
       expect(clearSelection).toBeTruthy();
       expect(clearSelection.nativeElement.innerText).toEqual('— None —');
     });
-    it('should emit clear on click', () => {
+    it('should call clearList method  on click', () => {
+      spyOn(component, 'clearList');
+
       component.showNoneOption = true;
       const testOptionsMock = [
         {
@@ -480,7 +483,7 @@ fdescribe('SingleListComponent', () => {
         By.css('.clear-selection')
       );
       clearSelection.triggerEventHandler('click', null);
-      expect(component.clear.emit).toHaveBeenCalled();
+      expect(component.clearList).toHaveBeenCalled();
     });
   });
 

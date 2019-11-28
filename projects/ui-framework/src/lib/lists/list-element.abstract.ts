@@ -283,7 +283,7 @@ export abstract class BaseListElement
     }
   }
 
-  protected clearList(): void {
+  clearList(): void {
     this.selectedIDs = this.getSelectedIDs(this.options, 'disabled');
 
     this.emitChange();
@@ -297,7 +297,7 @@ export abstract class BaseListElement
     this.updateActionButtonsState(true);
   }
 
-  protected resetList(): void {
+  resetList(): void {
     this.ngOnChanges(
       simpleChange({
         options: cloneDeep(this.optionsDefault),
@@ -335,8 +335,6 @@ export abstract class BaseListElement
       this.options,
       config.selectedIDs
     );
-
-    // this.cd.detectChanges();
   }
 
   protected getSelectedIDs(

@@ -8,7 +8,7 @@ import {
   Input,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
-import { chain, isUndefined } from 'lodash';
+import { chain } from 'lodash';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { SelectGroupOption } from '../list.interface';

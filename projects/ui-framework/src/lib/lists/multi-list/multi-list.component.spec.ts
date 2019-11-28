@@ -355,7 +355,7 @@ fdescribe('MultiListComponent', () => {
       fixture.autoDetectChanges();
       let searchEl = fixture.debugElement.query(By.css('b-search'));
       expect(searchEl).toBeTruthy();
-      component.searchChange('no possible options');
+      component['searchChange']('no possible options');
       fixture.autoDetectChanges();
       expect(component.listOptions.length).toEqual(0);
       searchEl = fixture.debugElement.query(By.css('b-search'));
@@ -394,7 +394,7 @@ fdescribe('MultiListComponent', () => {
     it('should emit event when selecting an option', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
-      const listChange = component['listChangeService'].getListChange(
+      const listChange = component['listChangeSrvc'].getListChange(
         component.options,
         [1, 12]
       );
@@ -539,7 +539,7 @@ fdescribe('MultiListComponent', () => {
       ).nativeElement;
       headerCheckbox.click();
       fixture.autoDetectChanges();
-      const listChange = component['listChangeService'].getListChange(
+      const listChange = component['listChangeSrvc'].getListChange(
         component.options,
         [1, 2]
       );
@@ -550,7 +550,7 @@ fdescribe('MultiListComponent', () => {
   describe('singleList listChange class', () => {
     let listChange;
     beforeEach(() => {
-      listChange = component['listChangeService'].getListChange(
+      listChange = component['listChangeSrvc'].getListChange(
         component.options,
         [1, 12]
       );
@@ -580,7 +580,7 @@ fdescribe('MultiListComponent', () => {
 
   describe('searchChange', () => {
     it('should show group header and option that match the search', () => {
-      component.searchChange('info 1');
+      component['searchChange']('info 1');
       fixture.autoDetectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       const headers = fixture.debugElement.queryAll(By.css('.header'));
@@ -591,7 +591,7 @@ fdescribe('MultiListComponent', () => {
     });
     // Deprecated: Group header search
     xit('should show group headers and no options if search only matches headers', () => {
-      component.searchChange('Personal He');
+      component['searchChange']('Personal He');
       fixture.autoDetectChanges();
       const options = fixture.debugElement.queryAll(By.css('.option'));
       const headers = fixture.debugElement.queryAll(By.css('.header'));
@@ -639,7 +639,7 @@ fdescribe('MultiListComponent', () => {
       fixture.detectChanges();
       expect(component.selectedIDs).toEqual([]);
       expect(component.selectChange.emit).toHaveBeenCalled();
-      const listChange = component['listChangeService'].getListChange(
+      const listChange = component['listChangeSrvc'].getListChange(
         component.options,
         component.selectedIDs
       );
@@ -674,7 +674,7 @@ fdescribe('MultiListComponent', () => {
       fixture.detectChanges();
       expect(component.selectedIDs).toEqual([12]);
       expect(component.selectChange.emit).toHaveBeenCalled();
-      const listChange = component['listChangeService'].getListChange(
+      const listChange = component['listChangeSrvc'].getListChange(
         component.options,
         component.selectedIDs
       );
