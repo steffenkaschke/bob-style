@@ -102,7 +102,7 @@ export class DateParseService {
     }
 
     ['day', 'month', 'year'].forEach(
-      (i, cntr) =>
+      i =>
         (result.index[i] =
           result.index[i] > -1 ? result.index[i] : result.items)
     );
@@ -110,21 +110,6 @@ export class DateParseService {
     result.order = (['day', 'month', 'year'] as DateFormatKeys[]).sort(
       (a, b) => {
         return result.index[a] - result.index[b];
-
-        // if (
-        //   isNullOrUndefined(result.index[a]) &&
-        //   isNullOrUndefined(result.index[b])
-        // ) {
-        //   return 0;
-        // }
-        // if (isNullOrUndefined(result.index[a])) {
-        //   return 1;
-        // }
-        // if (isNullOrUndefined(result.index[b])) {
-        //   return -1;
-        // }
-
-        // return result.index[a] - result.index[b];
       }
     );
 
@@ -143,8 +128,6 @@ export class DateParseService {
     if (isString(frmt)) {
       frmt = this.parseFormat(frmt as any);
     }
-
-    // frmt.index.map( (itm,idx) => itm === null ?  )
 
     const resultValue = [],
       resultFormat = [],
@@ -210,15 +193,6 @@ export class DateParseService {
       (resultItems === 1 && !onlyYear && !onlyDay) ||
       (resultItems === 2 && index.year > -1);
 
-    // console.log(
-    //   'INDEXES 1 - day:',
-    //   index.day,
-    //   'month:',
-    //   index.month,
-    //   'year:',
-    //   index.year
-    // );
-
     console.log(
       'onlyDay',
       onlyDay,
@@ -227,10 +201,6 @@ export class DateParseService {
       'onlyYear',
       onlyYear
     );
-
-    //
-    //
-    //
 
     let needIndex = frmt.order.filter(k => index[k] < 0);
     const indexes = Object.values(index),
@@ -288,24 +258,13 @@ export class DateParseService {
       padWith0(split[index.month], 2) ||
       (onlyYear ? '01' : thisMonth(frmt.length.month === 2) + '');
 
-    resultValue[
-      frmt.index.year || Math.max(resultItems, frmt.items, resultValue.length)
-    ] = split[index.year] //&&
-      ? // ((split[index.year].length < 3 && parseInt(split[index.year], 10) > 30) ||
-        //   (split[index.year].length === 4 &&
-        //     Math.abs(thisYear() - parseInt(split[index.year], 10)) < 110))
-        split[index.year]
-      : (thisYear() + '').slice(4 - frmt.length.year);
-
-    console.log('frmt', frmt);
-
-    console.log(
-      'split[index.year]: "' + split[index.year] + '"',
-      typeof split[index.year]
-    );
-    console.log(
-      'resultValue[frmt.index.year]: "' + resultValue[frmt.index.year] + '"'
-    );
+    resultValue[frmt.index.year] =
+      split[index.year] &&
+      ((split[index.year].length < 3 && parseInt(split[index.year], 10) > 30) ||
+        (split[index.year].length === 4 &&
+          Math.abs(thisYear() - parseInt(split[index.year], 10)) < 110))
+        ? split[index.year]
+        : (thisYear() + '').slice(4 - (frmt.length.year || 4));
 
     const lastDay = lastDayOfMonth(
       monthIndex(resultValue[frmt.index.month]),
