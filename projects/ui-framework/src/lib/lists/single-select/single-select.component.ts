@@ -82,13 +82,6 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
     };
   }
 
-  // extends BaseSelectPanelElement's ngOnChanges
-  onNgChanges(changes: SimpleChanges): void {
-    if (hasChanges(changes, ['options', 'value'])) {
-      this.displayValue = this.getDisplayValue(this.value) || null;
-    }
-  }
-
   onSelect(listChange: ListChange) {
     this.value = listChange.getSelectedIds();
     this.displayValue = this.getDisplayValue(this.value) || null;
@@ -96,10 +89,16 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
     this.destroyPanel();
   }
 
+  protected setDisplayValue(): void {
+    this.displayValue = this.getDisplayValue(this.value) || null;
+  }
+
   private getDisplayValue(selectedIDs: (string | number)[]): string {
-    const option = arrayFlatten(this.options.map(group => group.options)).find(
-      (opt: SelectOption) => selectedIDs.includes(opt.id)
-    );
+    const option =
+      selectedIDs &&
+      arrayFlatten(this.options.map(group => group.options)).find(
+        (opt: SelectOption) => selectedIDs.includes(opt.id)
+      );
     return option && option.value;
   }
 

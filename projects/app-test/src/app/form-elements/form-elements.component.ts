@@ -25,6 +25,7 @@ import {
   arrayOfStringsOrArrayFromString,
   valueToObjectWithKeyOfValueFromArray,
   valueAsNumber,
+  stringListToArray,
 } from '../../../../ui-framework/src/lib/services/utils/transformers';
 import {
   mockHobbies,
@@ -804,9 +805,10 @@ export class FormElementsTestComponent
     });
   }
 
-  onValueInput(name, event = null, parse = false, value = NaN) {
+  onValueInput(name, event = null, parse = false, value: any = NaN) {
     value = value === value ? value : event.target.value;
     value = parse ? JSON.parse(value as any) : value;
+
     if (this[name + '_setInputProgrammatically']) {
       event && event.preventDefault();
       this.runComponentNgOnChanges(name, value);
@@ -816,9 +818,11 @@ export class FormElementsTestComponent
   }
 
   onSelectValueInput(name, event = null) {
-    const value = valueAsNumber(InputTypes.number, event.target.value);
+    const value = stringListToArray(event.target.value).map(val =>
+      valueAsNumber(InputTypes.number, val)
+    );
 
-    this.onValueInput(name, null, null, value);
+    this.onValueInput(name, event, null, value);
   }
 
   onEvent(name, $event, emitterName, flat = false) {

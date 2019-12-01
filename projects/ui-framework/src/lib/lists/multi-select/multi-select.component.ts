@@ -101,13 +101,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     apply: true,
   };
 
-  // extends BaseSelectPanelElement's ngOnChanges
-  onNgChanges(changes: SimpleChanges): void {
-    if (hasChanges(changes, ['options', 'value'])) {
-      this.setDisplayValue();
-    }
-  }
-
   onSelect(listChange: ListChange): void {
     this.value = listChange.getSelectedIds();
     this.emitChange(FormEvents.selectModified, listChange);
@@ -125,16 +118,19 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     this.destroyPanel();
   }
 
-  private setDisplayValue(): void {
+  protected setDisplayValue(): void {
     this.displayValue = this.getDisplayValue(this.value) || null;
-    this.displayValueCount = this.value.length;
+    this.displayValueCount = this.value ? this.value.length : 0;
   }
 
   private getDisplayValue(selectedIDs: (string | number)[]): string {
-    return arrayFlatten(this.options.map(group => group.options))
-      .filter((option: SelectOption) => selectedIDs.includes(option.id))
-      .map((option: SelectOption) => option.value)
-      .join(', ');
+    return (
+      selectedIDs &&
+      arrayFlatten(this.options.map(group => group.options))
+        .filter((option: SelectOption) => selectedIDs.includes(option.id))
+        .map((option: SelectOption) => option.value)
+        .join(', ')
+    );
   }
 
   private emitChange(event: FormEvents, listChange: ListChange = null): void {

@@ -137,6 +137,10 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
     this.onNgChanges(changes);
 
+    if (hasChanges(changes, ['options', 'value'])) {
+      this.setDisplayValue();
+    }
+
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
     }
@@ -169,6 +173,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
         this.value
       );
     }
+
+    this.setDisplayValue();
   }
 
   openPanel(): void {
@@ -296,4 +302,6 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
         })
     );
   }
+
+  protected setDisplayValue() {}
 }
