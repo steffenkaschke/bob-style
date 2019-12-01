@@ -165,8 +165,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   }
 
   writeValue(value: any, options: SelectGroupOption[] = this.options): void {
-    if (isArray(value)) {
-      this.value = selectValueOrFail(value);
+    if (isArray(value) || value === null) {
+      this.value = selectValueOrFail(value) || [];
       this.fitOptionsToValue = true;
 
       if (isNotEmptyArray(options)) {
@@ -177,6 +177,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       }
 
       this.setDisplayValue();
+    } else {
+      console.warn(`Provided value (${value}) is not valid.`);
     }
   }
 

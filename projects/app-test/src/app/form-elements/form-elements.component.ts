@@ -818,9 +818,11 @@ export class FormElementsTestComponent
   }
 
   onSelectValueInput(name, event = null) {
-    const value = stringListToArray(event.target.value).map(val =>
-      valueAsNumber(InputTypes.number, val)
-    );
+    const value = event.target.value
+      ? stringListToArray(event.target.value).map(val =>
+          valueAsNumber(InputTypes.number, val)
+        )
+      : null;
 
     this.onValueInput(name, event, null, value);
   }
