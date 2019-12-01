@@ -1,6 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, NgZone, } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  forwardRef,
+  Input,
+  NgZone,
+} from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { serverDateFormat } from '../../consts';
+import { SERVER_DATE_FORMAT } from '../../consts';
 import { dateOrFail, dateToString } from '../../services/utils/transformers';
 import { MobileService } from '../../services/utils/mobile.service';
 import { BaseDatepickerElement } from './datepicker.abstract';
@@ -56,8 +63,8 @@ export class DatepickerComponent extends BaseDatepickerElement {
     this.outputTransformers = [
       (value: Date): string =>
         value && this.type === DatepickerType.month
-          ? dateToString(startOfMonth(value), serverDateFormat)
-          : dateToString(value, serverDateFormat),
+          ? dateToString(startOfMonth(value), SERVER_DATE_FORMAT)
+          : dateToString(value, SERVER_DATE_FORMAT),
     ];
 
     this.baseValue = '';

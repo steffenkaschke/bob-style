@@ -27,7 +27,6 @@ import {
   isFalsyOrEmpty,
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
-import { BDateAdapter } from './date.adapter';
 import { MatDatepicker, MatDatepickerInput } from '@angular/material';
 import { DateParseService } from './date-parse.service';
 import { Keys } from '../../enums';
@@ -40,6 +39,8 @@ import { set } from 'lodash';
 import { DatepickerType } from './datepicker.enum';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { Styles } from '../../services/html/html-helpers.interface';
+import { BDateAdapterMock } from './dateadapter.mock';
+import { DOMInputEvent } from '../../types';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, AfterViewInit, OnDestroy {
@@ -83,7 +84,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   private allowInputBlur = !this.allowKeyInput;
   private resizeSubscription: Subscription;
   private mediaEventSubscription: Subscription;
-  private skipParse = false;
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
@@ -152,10 +152,12 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       this.maxDate = dateOrFail(changes.maxDate.currentValue);
     }
 
-    if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
-      this.placeholder = (
-        this.dateFormat || BDateAdapter.bFormat
-      ).toLowerCase();
+    if (
+      !this.placeholder &&
+      !(this.hideLabelOnFocus && this.label) &&
+      this.dateFormat
+    ) {
+      this.placeholder = this.dateFormat.toLowerCase();
     }
 
     this.doneFirstChange = true;
@@ -358,12 +360,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public onInputKeydown(event: KeyboardEvent, index: number = 0): void {
-    this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9,\W]/i);
-
-    if (isKey(event.key, Keys.backspace) || isKey(event.key, Keys.delete)) {
-      this.skipParse = true;
-    }
-
     if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) {
       this.closePicker(index);
     }
@@ -386,13 +382,35 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
-  public onInputChange(event, index: number = 0): void {
-    if (!this.skipParse) {
-      (event.target as HTMLInputElement).value = this.dateParseSrvc.parseDateInput(
-        (event.target as HTMLInputElement).value
-      );
-    }
-    this.skipParse = false;
+  public onInputChange(event: DOMInputEvent, index: number = 0): void {
+    const value = event.target.value;
+    // if (!this.skipParse) {
+    //   (event.target as HTMLInputElement).value = this.dateParseSrvc.parseDateInput(
+    //     (event.target as HTMLInputElement).value
+    //   );
+    // }
+    // this.skipParse = false;
+
+    // const picker = this.getPicker(index);
+
+    // console.log(
+    //   '>>>>>>>>',
+    //   DateParseService.prototype.adaptFormat(
+    //     BDateAdapterMock.bFormatParsed,
+    //     value
+    //   ).date
+    // );
+
+    // picker.select(
+    //   DateParseService.prototype.adaptFormat(
+    //     BDateAdapterMock.bFormatParsed,
+    //     value
+    //   ).date
+    // );
+
+    // this.cd.detectChanges();
+
+    // console.log(picker, picker._popupRef);
   }
 
   public transmit(

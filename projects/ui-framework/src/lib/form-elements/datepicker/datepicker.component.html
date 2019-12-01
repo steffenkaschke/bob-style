@@ -11,7 +11,6 @@
 
   <input class="bfe-input"
          [readonly]="!allowKeyInput"
-         maxlength="10"
          autocomplete="off"
          [attr.id]="id"
          [attr.name]="id"
@@ -23,8 +22,8 @@
          (click)="openPicker()"
          (focus)="onInputFocus()"
          (blur)="onInputBlur()"
+         (input)="onInputChange($event)"
          (keydown.outside-zone)="onInputKeydown($event)"
-         (input.outside-zone)="onInputChange($event)"
          (dateChange)="transmit($event.value)"
          [matDatepicker]="picker"
          [min]="minDate || null"

@@ -48,7 +48,7 @@ const note = `
 
   Name | Type | Description
   --- | --- | ---
-  [radioConfig] | RadioConfig[] | list of RadioConfig ({id,value}) objects
+  [radioConfig] | RadioConfig[] | list of RadioConfig ({id, label}) objects
   [value] | RadioConfig | selected option
   [direction] | RadioDirection | column or row, default=row
   [label] | string | label text

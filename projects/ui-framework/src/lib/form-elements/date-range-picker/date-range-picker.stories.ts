@@ -13,7 +13,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { DateRangePickerModule } from './date-range-picker.module';
 import { thisMonth, thisYear } from '../../services/utils/functional-utils';
 import { DatepickerType } from '../datepicker/datepicker.enum';
-import { BDateAdapter } from '../datepicker/date.adapter';
+import { BDateAdapterMock } from '../datepicker/dateadapter.mock';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -138,7 +138,7 @@ story.add(
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
-          DateRangePickerModule.init(BDateAdapter),
+          DateRangePickerModule.init(BDateAdapterMock),
           StoryBookLayoutModule,
         ],
       },

@@ -10,7 +10,7 @@ import { ButtonConfig } from './lib/buttons/buttons.interface';
 
 export * from './lib/enums';
 export * from './lib/types';
-export { serverDateFormat, mobileBreakpoint } from './lib/consts';
+export { SERVER_DATE_FORMAT, mobileBreakpoint } from './lib/consts';
 
 /*
  * Typography

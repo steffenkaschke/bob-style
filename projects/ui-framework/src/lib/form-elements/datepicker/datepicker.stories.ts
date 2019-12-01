@@ -14,7 +14,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { thisMonth, thisYear } from '../../services/utils/functional-utils';
 import { DatepickerType } from './datepicker.enum';
 import { mockText } from '../../mock.const';
-import { BDateAdapter } from './date.adapter';
+import { BDateAdapterMock, UserLocaleServiceMock } from './dateadapter.mock';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -22,6 +22,7 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 const template = `
 <b-datepicker [value]="value"
               [type]="pickerType"
+              [dateFormat]="userLocaleService.getDateFormat()"
               [minDate]="minDate"
               [maxDate]="maxDate"
               [label]="label"
@@ -87,6 +88,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        userLocaleService: UserLocaleServiceMock,
         value: select(
           'value',
           [
@@ -134,7 +136,7 @@ story.add(
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
-          DatepickerModule.init(BDateAdapter),
+          DatepickerModule.init(BDateAdapterMock),
           StoryBookLayoutModule,
         ],
       },
