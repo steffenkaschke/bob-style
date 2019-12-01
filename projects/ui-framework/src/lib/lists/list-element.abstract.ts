@@ -229,7 +229,7 @@ export abstract class BaseListElement
     });
   }
 
-  protected searchChange(searchValue: string): void {
+  searchChange(searchValue: string): void {
     this.searchValue = searchValue;
     this.filteredOptions = this.modelSrvc.getFilteredOptions(
       this.options,
