@@ -38,7 +38,7 @@ import {
   hasChanges,
   applyChanges,
   notFirstChanges,
-  isNullOrUndefined,
+  isArray,
   isNotEmptyArray,
 } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
@@ -117,27 +117,28 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   private fitOptionsToValue = false;
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes, {}, ['value']);
+    applyChanges(this, changes, {}, ['value', 'options']);
 
     if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
       this.destroyPanel();
     }
 
     if (changes.options && !this.fitOptionsToValue) {
+      this.options = changes.options.currentValue;
       this.value = this.modelSrvc.getSelectedIDs(this.options);
     }
 
     if (changes.options && this.fitOptionsToValue) {
-      this.writeValue(this.value);
+      this.writeValue(this.value, changes.options.currentValue);
     }
 
     if (changes.value) {
-      this.writeValue(changes.value.currentValue);
+      this.writeValue(changes.value.currentValue, this.options);
     }
 
     this.onNgChanges(changes);
 
-    if (hasChanges(changes, ['options', 'value'])) {
+    if (changes.options && !this.fitOptionsToValue) {
       this.setDisplayValue();
     }
 
@@ -163,18 +164,20 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     this.destroyPanel();
   }
 
-  writeValue(value: any): void {
-    this.value = selectValueOrFail(value);
-    this.fitOptionsToValue = true;
+  writeValue(value: any, options: SelectGroupOption[] = this.options): void {
+    if (isArray(value)) {
+      this.value = selectValueOrFail(value);
+      this.fitOptionsToValue = true;
 
-    if (!isNullOrUndefined(value) && isNotEmptyArray(this.options)) {
-      this.options = this.listChangeSrvc.getCurrentSelectGroupOptions(
-        this.options,
-        this.value
-      );
+      if (isNotEmptyArray(options)) {
+        this.options = this.listChangeSrvc.getCurrentSelectGroupOptions(
+          options,
+          this.value
+        );
+      }
+
+      this.setDisplayValue();
     }
-
-    this.setDisplayValue();
   }
 
   openPanel(): void {
