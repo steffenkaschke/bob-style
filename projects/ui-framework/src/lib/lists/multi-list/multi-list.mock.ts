@@ -5,7 +5,7 @@ import {
 } from '../single-list/single-list.mock';
 
 export const optionsMock: SelectGroupOption[] = selectSome(
-  SingleListPptionsMock //.slice(0, 1)
+  SingleListPptionsMock
 );
 
 export const optionsMockDef: SelectGroupOption[] = selectSome(

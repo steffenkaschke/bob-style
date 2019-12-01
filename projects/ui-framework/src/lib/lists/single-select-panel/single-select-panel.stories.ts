@@ -82,7 +82,6 @@ const jobs = mockJobs(40);
 const optionsMock: SelectGroupOption[] = [
   {
     groupName: 'Categories',
-    // key: 111, //simpleUID('categories' + '-'),
 
     options: jobs.slice(0, 20).map(category => {
       return {
@@ -94,7 +93,6 @@ const optionsMock: SelectGroupOption[] = [
   },
   {
     groupName: 'Categories',
-    // key: 111, //simpleUID('categories' + '-'),
 
     options: jobs.slice(20, 40).map(category => {
       return {

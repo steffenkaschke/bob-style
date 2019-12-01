@@ -7,7 +7,6 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
-import { chain } from 'lodash';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -23,10 +22,8 @@ import {
 } from '../../popups/panel/panel-position-service/panel-position.const';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import {
-  isNullOrUndefined,
   isArray,
   hasChanges,
-  isEmptyArray,
   arrayFlatten,
 } from '../../services/utils/functional-utils';
 import { ListModelService } from '../list-service/list-model.service';

@@ -48,9 +48,10 @@ export class ListModelService {
   ): ListOption[] {
     const groupOptions = options.map(
       (group: SelectGroupOption, index: number) => {
-        const placeholder = Object.assign({
+        const placeholder = {
           isPlaceHolder: true,
-        } as ListOption);
+          selected: false,
+        };
 
         let virtualOptions: Partial<ListOption>[];
 
