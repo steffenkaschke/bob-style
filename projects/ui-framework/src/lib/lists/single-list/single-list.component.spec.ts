@@ -19,7 +19,7 @@ import { ComponentRendererModule } from '../../services/component-renderer/compo
 import { ListFooterModule } from '../list-footer/list-footer.module';
 import { simpleChange } from '../../services/utils/test-helpers';
 
-fdescribe('SingleListComponent', () => {
+describe('SingleListComponent', () => {
   let component: SingleListComponent;
   let optionsMock: SelectGroupOption[];
   let fixture: ComponentFixture<SingleListComponent>;

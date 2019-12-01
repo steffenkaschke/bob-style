@@ -220,7 +220,7 @@ export const selectValueOrFail = value => {
       ).toUpperCase()} was provided.`
     );
   }
-  return value;
+  return asArray(value);
 };
 
 // -------------------------------

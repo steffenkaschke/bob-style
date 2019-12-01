@@ -5,13 +5,11 @@ import {
   ViewContainerRef,
   NgZone,
   ChangeDetectorRef,
-  Input,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { chain } from 'lodash';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
-import { SelectGroupOption } from '../list.interface';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
@@ -26,8 +24,13 @@ import {
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import {
   isNullOrUndefined,
+  isArray,
+  hasChanges,
+  isEmptyArray,
   arrayFlatten,
 } from '../../services/utils/functional-utils';
+import { ListModelService } from '../list-service/list-model.service';
+import { SelectOption } from '../list.interface';
 
 @Component({
   selector: 'b-single-select',
@@ -53,6 +56,7 @@ import {
 export class SingleSelectComponent extends BaseSelectPanelElement {
   constructor(
     listChangeSrvc: ListChangeService,
+    modelSrvc: ListModelService,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
@@ -63,6 +67,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
   ) {
     super(
       listChangeSrvc,
+      modelSrvc,
       overlay,
       viewContainerRef,
       panelPositionService,
@@ -80,54 +85,41 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
     };
   }
 
-  @Input() value: number | string = null;
-
   // extends BaseSelectPanelElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    if (changes.options) {
-      this.value = this.getSelectedOptionId(this.options);
-
-      this.displayValue = isNullOrUndefined(this.value)
-        ? null
-        : this.getDisplayValue(this.value);
+    if (hasChanges(changes, ['options', 'value'])) {
+      this.displayValue = this.getDisplayValue(this.value) || null;
     }
   }
 
   onSelect(listChange: ListChange) {
-    this.value = listChange.getSelectedIds()[0] || null;
-    this.displayValue = this.getDisplayValue(this.value);
+    this.value = listChange.getSelectedIds();
+    this.displayValue = this.getDisplayValue(this.value) || null;
     this.emitChange(listChange);
     this.destroyPanel();
   }
 
-  private getDisplayValue(selectedOptionId: string | number): string {
-    return (
-      selectedOptionId &&
-      chain(this.options)
-        .flatMap('options')
-        .filter(option => option.id === selectedOptionId)
-        .first()
-        .get('value', null)
-        .value()
+  private getDisplayValue(selectedIDs: (string | number)[]): string {
+    const option = arrayFlatten(this.options.map(group => group.options)).find(
+      (opt: SelectOption) => selectedIDs.includes(opt.id)
     );
-  }
-
-  private getSelectedOptionId(options: SelectGroupOption[]): number | string {
-    const selectedOption = arrayFlatten(
-      options.map(group => group.options)
-    ).find(option => option.selected);
-
-    return selectedOption ? selectedOption.id : null;
+    return option && option.value;
   }
 
   private emitChange(listChange: ListChange): void {
     this.options = listChange.getSelectGroupOptions();
 
     this.selectChange.emit(listChange);
-    this.changed.emit(this.value);
 
+    if (this.changed.observers.length > 0) {
+      this.changed.emit(
+        (isArray(this.value) ? this.value[0] : this.value) || null
+      );
+    }
     if (this.doPropagate) {
-      this.propagateChange(this.value);
+      this.propagateChange(
+        (isArray(this.value) ? this.value[0] : this.value) || null
+      );
       this.onTouched();
     }
   }

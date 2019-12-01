@@ -46,14 +46,15 @@ import { SelectGroupOption, ListFooterActions } from './list.interface';
 import { ListChange } from './list-change/list-change';
 import { PanelDefaultPosVer } from '../popups/panel/panel.enum';
 import { LIST_EL_HEIGHT } from './list.consts';
-import { simpleChange } from '../services/utils/test-helpers';
 import { ListChangeService } from './list-change/list-change.service';
 import { selectValueOrFail } from '../services/utils/transformers';
+import { ListModelService } from './list-service/list-model.service';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements OnChanges, AfterViewInit, OnDestroy {
   protected constructor(
     protected listChangeSrvc: ListChangeService,
+    protected modelSrvc: ListModelService,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private panelPositionService: PanelPositionService,
@@ -70,6 +71,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
   @ViewChild('prefix', { static: false }) prefix: ElementRef;
 
+  @Input() value: (number | string)[];
   @Input() options: SelectGroupOption[];
   @Input() optionsDefault: SelectGroupOption[];
   @Input() panelClass: string;
@@ -112,6 +114,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   readonly listElHeight = LIST_EL_HEIGHT;
 
   private subscribtions: Subscription[] = [];
+  private fitOptionsToValue = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes, {}, ['value']);
@@ -120,9 +123,16 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       this.destroyPanel();
     }
 
+    if (changes.options && !this.fitOptionsToValue) {
+      this.value = this.modelSrvc.getSelectedIDs(this.options);
+    }
+
+    if (changes.options && this.fitOptionsToValue) {
+      this.writeValue(this.value);
+    }
+
     if (changes.value) {
       this.writeValue(changes.value.currentValue);
-      return;
     }
 
     this.onNgChanges(changes);
@@ -150,16 +160,13 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   }
 
   writeValue(value: any): void {
-    if (!isNullOrUndefined(value) && isNotEmptyArray(this.options)) {
-      this.value = selectValueOrFail(value);
+    this.value = selectValueOrFail(value);
+    this.fitOptionsToValue = true;
 
-      this.ngOnChanges(
-        simpleChange({
-          options: this.listChangeSrvc.getCurrentSelectGroupOptions(
-            this.options,
-            this.value
-          ),
-        })
+    if (!isNullOrUndefined(value) && isNotEmptyArray(this.options)) {
+      this.options = this.listChangeSrvc.getCurrentSelectGroupOptions(
+        this.options,
+        this.value
       );
     }
   }

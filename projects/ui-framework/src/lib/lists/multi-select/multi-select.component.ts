@@ -8,17 +8,15 @@ import {
   ViewChild,
   NgZone,
   ChangeDetectorRef,
-  Input,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
-import { chain, includes } from 'lodash';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
-import { ListFooterActions } from '../list.interface';
+import { ListFooterActions, SelectOption } from '../list.interface';
 import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate-tooltip.component';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
@@ -29,8 +27,11 @@ import {
   ABOVE_END,
 } from '../../popups/panel/panel-position-service/panel-position.const';
 import { BaseFormElement } from '../../form-elements/base-form-element';
-import { isNotEmptyArray } from '../../services/utils/functional-utils';
 import { FormEvents } from '../../form-elements/form-elements.enum';
+import {
+  arrayFlatten,
+  hasChanges,
+} from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-multi-select',
@@ -57,17 +58,18 @@ import { FormEvents } from '../../form-elements/form-elements.enum';
 export class MultiSelectComponent extends BaseSelectPanelElement {
   constructor(
     listChangeSrvc: ListChangeService,
+    modelSrvc: ListModelService,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
     utilsService: UtilsService,
     DOM: DOMhelpers,
     zone: NgZone,
-    cd: ChangeDetectorRef,
-    private modelSrvc: ListModelService
+    cd: ChangeDetectorRef
   ) {
     super(
       listChangeSrvc,
+      modelSrvc,
       overlay,
       viewContainerRef,
       panelPositionService,
@@ -87,8 +89,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   @ViewChild('triggerInput', { static: true })
   truncate: TruncateTooltipComponent;
 
-  @Input() value: (number | string)[];
-
   @Output() selectModified: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
@@ -103,11 +103,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
 
   // extends BaseSelectPanelElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    if (changes.options) {
-      this.value = isNotEmptyArray(this.options)
-        ? this.modelSrvc.getSelectedIDs(this.options)
-        : [];
-
+    if (hasChanges(changes, ['options', 'value'])) {
       this.setDisplayValue();
     }
   }
@@ -130,17 +126,15 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   }
 
   private setDisplayValue(): void {
-    this.displayValue = this.getDisplayValue(this.value);
+    this.displayValue = this.getDisplayValue(this.value) || null;
     this.displayValueCount = this.value.length;
   }
 
   private getDisplayValue(selectedIDs: (string | number)[]): string {
-    return chain(this.options)
-      .flatMap('options')
-      .filter(option => includes(selectedIDs, option.id))
-      .map('value')
-      .join(', ')
-      .value();
+    return arrayFlatten(this.options.map(group => group.options))
+      .filter((option: SelectOption) => selectedIDs.includes(option.id))
+      .map((option: SelectOption) => option.value)
+      .join(', ');
   }
 
   private emitChange(event: FormEvents, listChange: ListChange = null): void {

@@ -12,6 +12,7 @@ import { PanelPositionService } from '../../popups/panel/panel-position-service/
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { ListChangeService } from '../list-change/list-change.service';
+import { ListModelService } from '../list-service/list-model.service';
 
 @Component({
   selector: 'b-multi-select-panel',
@@ -24,6 +25,7 @@ import { ListChangeService } from '../list-change/list-change.service';
 export class MultiSelectPanelComponent extends BaseSelectPanelElement {
   constructor(
     listChangeSrvc: ListChangeService,
+    modelSrvc: ListModelService,
     overlay: Overlay,
     viewContainerRef: ViewContainerRef,
     panelPositionService: PanelPositionService,
@@ -34,6 +36,7 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement {
   ) {
     super(
       listChangeSrvc,
+      modelSrvc,
       overlay,
       viewContainerRef,
       panelPositionService,

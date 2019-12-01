@@ -25,7 +25,7 @@ import { FormElementLabelModule } from '../../form-elements/form-element-label/f
 import { simpleChange } from '../../services/utils/test-helpers';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 
-fdescribe('MultiSelectComponent', () => {
+describe('MultiSelectComponent', () => {
   let component: MultiSelectComponent;
   let optionsMock: SelectGroupOption[];
   let fixture: ComponentFixture<MultiSelectComponent>;
@@ -245,7 +245,7 @@ fdescribe('MultiSelectComponent', () => {
       fixture.autoDetectChanges();
 
       expect(component.value).toEqual([]);
-      expect(component.displayValue).toEqual('');
+      expect(component.displayValue).toBeFalsy();
       expect(component.options).toEqual(expectedOptionsMock);
       flush();
     }));
