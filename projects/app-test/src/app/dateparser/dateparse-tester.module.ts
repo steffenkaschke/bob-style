@@ -70,61 +70,65 @@ export class DateParseTesterComponent {
     console.time('test');
 
     Object.keys(DateParseServiceTest).forEach(format => {
-      Object.keys(DateParseServiceTest[format]).forEach(date => {
-        const parsed = DateParseService.prototype.parseDate(
-          format as any,
-          date
-        );
+      Object.keys(DateParseServiceTest[format])
+        .filter(k => DateParseServiceTest[format][k].only)
+        .forEach(date => {
+          const parsed = DateParseService.prototype.parseDate(
+            format as any,
+            date
+          );
 
-        const parsedStrict = DateParseService.prototype.parseDate(
-          format as any,
-          date,
-          true
-        );
+          const parsedStrict = DateParseService.prototype.parseDate(
+            format as any,
+            date,
+            true
+          );
 
-        if (parsed.displayValue !== DateParseServiceTest[format][date].result) {
-          ++counter;
+          if (
+            parsed.displayValue !== DateParseServiceTest[format][date].result
+          ) {
+            ++counter;
 
-          const message =
-            '=======> FAILED: ' +
-            date +
-            ' (' +
-            format +
-            ') => expected ' +
-            DateParseServiceTest[format][date].result +
-            ', instead saw: ' +
-            parsed.displayValue;
+            const message =
+              '=======> FAILED: ' +
+              date +
+              ' (' +
+              format +
+              ') => expected ' +
+              DateParseServiceTest[format][date].result +
+              ', instead saw: ' +
+              parsed.displayValue;
 
-          if (parsed.displayValue === null) {
-            console.warn(message);
-          } else {
-            console.log(message);
+            if (parsed.displayValue === null) {
+              console.warn(message);
+            } else {
+              console.log(message);
+            }
           }
-        }
 
-        if (
-          parsedStrict.displayValue !==
-          DateParseServiceTest[format][date].resultStrict
-        ) {
-          ++counter;
+          if (
+            parsedStrict.displayValue !==
+            DateParseServiceTest[format][date].resultStrict
+          ) {
+            ++counter;
 
-          const message =
-            '=======> FAILED STRICT: ' +
-            date +
-            ' (' +
-            format +
-            ') => expected ' +
-            DateParseServiceTest[format][date].resultStrict +
-            ', instead saw: ' +
-            parsedStrict.displayValue;
+            const message =
+              '=======> FAILED STRICT: ' +
+              date +
+              ' (' +
+              format +
+              ') => expected ' +
+              DateParseServiceTest[format][date].resultStrict +
+              ', instead saw: ' +
+              parsedStrict.displayValue;
 
-          if (parsedStrict.displayValue === null) {
-            console.warn(message);
-          } else {
-            console.log(message);
+            if (parsedStrict.displayValue === null) {
+              console.warn(message);
+            } else {
+              console.log(message);
+            }
           }
-        }
-      });
+        });
     });
 
     console.timeEnd('test');

@@ -103,8 +103,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
 
   ngOnInit(): void {
-    console.log(this.dateFormat, this.parsedFormat);
-
     this.resizeSubscription = fromEvent(this.windowRef.nativeWindow, 'resize')
       .pipe(
         outsideZone(this.zone),
@@ -151,8 +149,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
-
     this.allPickers(picker => this.closePicker(picker));
 
     if (changes.minDate) {

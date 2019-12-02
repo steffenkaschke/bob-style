@@ -151,7 +151,7 @@ export class DateParseService {
       resultItems = split.length;
     }
 
-    console.log('split', split);
+    console.log('1 split', split);
 
     index.day = split.findIndex(
       i => parseInt(i, 10) > 12 && parseInt(i, 10) < 32
@@ -159,11 +159,16 @@ export class DateParseService {
     index.month = split.findIndex(i => isNaN(parseInt(i, 10)));
     index.year = split.findIndex(i => parseInt(i, 10) > 31 && i.length > 2);
 
+    console.log('2 index', index);
+
     onlyYear =
       (frmt.items === 1 && frmt.index.year === 0) ||
       (resultItems === 1 && index.year > -1);
 
-    onlyDay = resultItems === 1 && !onlyYear && index.day > -1;
+    onlyDay =
+      resultItems === 1 &&
+      !onlyYear && //frmt.
+      (index.day > -1 || (index.day === -1 && index.month === -1));
 
     onlyMonth =
       (frmt.items === 1 && frmt.index.month === 0) ||
@@ -171,7 +176,7 @@ export class DateParseService {
       (resultItems === 2 && index.year > -1);
 
     console.log(
-      'onlyDay',
+      '3 onlyDay',
       onlyDay,
       'onlyMonth',
       onlyMonth,
@@ -185,6 +190,8 @@ export class DateParseService {
       needOrderDay = needIndex.findIndex(i => i === 'day'),
       needOrderMonth = needIndex.findIndex(i => i === 'month');
 
+    console.log('4-A needIndex', needIndex, 'extraIndexes', extraIndexes);
+
     if (
       needIndex.includes('year') &&
       needIndex[needIndex.length - 1] !== 'year'
@@ -192,6 +199,8 @@ export class DateParseService {
       needIndex = needIndex.filter(i => i !== 'year');
       needIndex.push('year');
     }
+
+    console.log('4-B needIndex', needIndex, 'extraIndexes', extraIndexes);
 
     if (
       (resultItems === 1 &&
@@ -209,8 +218,8 @@ export class DateParseService {
       index[itm] = extraIndexes[idx];
     });
 
-    console.log('needIndex', needIndex);
-    console.log('index', index);
+    console.log('5 needIndex', needIndex);
+    console.log('6 index', index);
 
     // parsed result
 
