@@ -10,7 +10,12 @@ import { SingleSelectModule } from '../../lists/single-select/single-select.modu
 import { DateRangePickerModule } from '../../form-elements/date-range-picker/date-range-picker.module';
 import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import { mockThings, mockAnimals, mockNames, mockHobbies } from '../../mock.const';
+import {
+  mockThings,
+  mockAnimals,
+  mockNames,
+  mockHobbies,
+} from '../../mock.const';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { QuickFilterConfig } from '../quick-filter/quick-filter.interface';
@@ -22,8 +27,11 @@ import { InputTypes } from '../../form-elements/input/input.enum';
 import { SplitInputSingleSelectModule } from '../../form-elements/split-input-single-select/split-input-single-select.module';
 import { LinkColor } from '../../indicators/link/link.enum';
 import { DatepickerType } from '../../form-elements/datepicker/datepicker.enum';
+import { BDateAdapter } from '../../form-elements/datepicker/date.adapter';
 
-const story = storiesOf(ComponentGroupType.Search, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
+  withKnobs
+);
 
 const template1 = `
 <b-quick-filter-layout
@@ -171,14 +179,14 @@ const note = `
 const optionsFromList = (list, key = 'Stuff') => [
   {
     groupName: key,
-    options: list.map(c => ({ value: c, id: simpleUID() }))
-  }
+    options: list.map(c => ({ value: c, id: simpleUID() })),
+  },
 ];
 
 const deselectOptions = options =>
   options.map(g => ({
     ...g,
-    options: g.options.map(o => ({ ...o, selected: false }))
+    options: g.options.map(o => ({ ...o, selected: false })),
   }));
 
 const items = optionsFromList(mockThings(), 'Things');
@@ -190,31 +198,31 @@ const quickFilters: QuickFilterConfig[] = [
     key: 'name',
     label: 'Your name',
     placeholder: 'Enter your name',
-    value: mockNames(1)
+    value: mockNames(1),
   },
   {
     key: 'social',
     label: 'Your social account',
-    type: 'facebook'
+    type: 'facebook',
   },
   {
     key: 'time',
-    label: 'Time to get ill'
+    label: 'Time to get ill',
   },
   {
     key: 'hobbies',
     label: 'Your hobbies',
     placeholder: 'Pick from the list',
     options: optionsFromList(mockHobbies(), 'All hobbies'),
-    showSingleGroupHeader: false
+    showSingleGroupHeader: false,
   },
   {
     key: 'split',
     label: 'Pick items',
     inputType: InputTypes.number,
     selectOptions: animals,
-    value: { inputValue: 23, selectValue: undefined }
-  }
+    value: { inputValue: 23, selectValue: undefined },
+  },
 ];
 
 story.add(
@@ -239,7 +247,7 @@ story.add(
         showTime: boolean('showTime (for demo)', false, 'props'),
         showSplitInpSel: boolean('showSplitInpSel (for demo)', false, 'props'),
         showLeftButt: boolean('showLeftButt (for demo)', true, 'props'),
-        showRightButt: boolean('showRightButt (for demo)', true, 'props')
+        showRightButt: boolean('showRightButt (for demo)', true, 'props'),
       },
       moduleMetadata: {
         imports: [
@@ -248,16 +256,16 @@ story.add(
           QuickFilterLayoutModule,
           MultiSelectModule,
           SingleSelectModule,
-          DateRangePickerModule,
+          DateRangePickerModule.init(BDateAdapter),
           AvatarModule,
           ButtonsModule,
           InputModule,
           SocialModule,
           TimePickerModule,
-          SplitInputSingleSelectModule
+          SplitInputSingleSelectModule,
         ],
-        entryComponents: [AvatarComponent]
-      }
+        entryComponents: [AvatarComponent],
+      },
     };
   },
   { notes: { markdown: note } }

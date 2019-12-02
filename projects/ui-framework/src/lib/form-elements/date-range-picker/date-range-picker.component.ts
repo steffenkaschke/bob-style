@@ -1,7 +1,19 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, NgZone, } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  forwardRef,
+  Input,
+  NgZone,
+} from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
-import { dateOrFail, dateToString, objectHasKeyOrFail, } from '../../services/utils/transformers';
+import {
+  dateOrFail,
+  dateToString,
+  objectHasKeyOrFail,
+} from '../../services/utils/transformers';
 import { cloneObject, simpleUID } from '../../services/utils/functional-utils';
 import { BaseDatepickerElement } from '../datepicker/datepicker.abstract';
 import { MobileService } from '../../services/utils/mobile.service';
@@ -9,7 +21,10 @@ import { DateParseService } from '../datepicker/date-parse.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { DateRangePickerValue } from './date-range-picker.interface';
-import { MAT_DATEPICKER_SCROLL_STRATEGY, MatDatepicker, } from '@angular/material';
+import {
+  MAT_DATEPICKER_SCROLL_STRATEGY,
+  MatDatepicker,
+} from '@angular/material';
 import { Overlay } from '@angular/cdk/overlay';
 import { DatepickerType } from '../datepicker/datepicker.enum';
 import { lastDayOfMonth, startOfMonth } from 'date-fns';
