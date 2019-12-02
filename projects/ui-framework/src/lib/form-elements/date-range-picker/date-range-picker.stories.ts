@@ -89,7 +89,7 @@ const mockValues = [
   '',
   {
     from: `${thisYear()}-${thisMonth()}-25`,
-    to: `${thisYear()}-${thisMonth(false, 1)}-5`,
+    to: `${thisYear()}-${Math.min(thisMonth(false, 1) as number, 12)}-5`,
   },
 ];
 
@@ -109,7 +109,7 @@ story.add(
           'minDate',
           [
             '',
-            `${thisYear()}-${thisMonth(false, -1)}-5`,
+            `${thisYear()}-${Math.max(thisMonth(false, -1) as number, 1)}-5`,
             `${thisYear()}-${thisMonth()}-7`,
           ],
           ''
@@ -119,7 +119,7 @@ story.add(
           [
             '',
             `${thisYear()}-${thisMonth()}-25`,
-            `${thisYear()}-${thisMonth(false, 1)}-15`,
+            `${thisYear()}-${Math.min(thisMonth(false, 1) as number, 12)}-15`,
           ],
           ''
         ),
