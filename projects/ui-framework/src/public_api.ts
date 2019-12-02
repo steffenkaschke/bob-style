@@ -181,9 +181,9 @@ export {
 // DatePicker Module
 export * from './lib/form-elements/date-picker/datepicker.enum';
 export * from './lib/form-elements/date-picker/datepicker.interface';
-export { DateParseService } from './lib/form-elements/date-picker/date-parse.service';
-export { DateInputDirectiveModule } from './lib/form-elements/date-picker/dateinput.directive.module';
-export { DateInputDirective } from './lib/form-elements/date-picker/dateinput.directive';
+export { DateParseService } from './lib/form-elements/date-picker/date-parse-service/date-parse.service';
+export { DateInputDirectiveModule } from './lib/form-elements/date-picker/date-input-directive/dateinput.directive.module';
+export { DateInputDirective } from './lib/form-elements/date-picker/date-input-directive/dateinput.directive';
 export {
   DatepickerModule
 } from './lib/form-elements/date-picker/datepicker/datepicker.module';

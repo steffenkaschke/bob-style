@@ -11,7 +11,7 @@ import { SERVER_DATE_FORMAT } from '../../../consts';
 import { dateOrFail, dateToString } from '../../../services/utils/transformers';
 import { MobileService } from '../../../services/utils/mobile.service';
 import { BaseDatepickerElement } from '../datepicker.abstract';
-import { DateParseService } from '../date-parse.service';
+import { DateParseService } from '../date-parse-service/date-parse.service';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { WindowRef } from '../../../services/utils/window-ref.service';
 import { startOfMonth } from 'date-fns';

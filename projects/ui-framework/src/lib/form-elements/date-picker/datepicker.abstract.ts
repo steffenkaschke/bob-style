@@ -29,7 +29,7 @@ import {
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
 import { MatDatepicker } from '@angular/material';
-import { DateParseService } from './date-parse.service';
+import { DateParseService } from './date-parse-service/date-parse.service';
 import { Keys } from '../../enums';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { throttle } from 'rxjs/operators';

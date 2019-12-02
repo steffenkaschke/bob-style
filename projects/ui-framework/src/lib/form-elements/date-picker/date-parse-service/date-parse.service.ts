@@ -10,14 +10,14 @@ import {
   isString,
   lastDayOfMonth,
   monthIndex,
-} from '../../services/utils/functional-utils';
+} from '../../../services/utils/functional-utils';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import {
   FormatParserResult,
   DateFormatKeys,
   DateParseResult,
-} from './datepicker.interface';
+} from '../datepicker.interface';
 
 @Injectable()
 export class DateParseService {
@@ -151,6 +151,8 @@ export class DateParseService {
       resultItems = split.length;
     }
 
+    console.log('split', split);
+
     index.day = split.findIndex(
       i => parseInt(i, 10) > 12 && parseInt(i, 10) < 32
     );
@@ -167,6 +169,15 @@ export class DateParseService {
       (frmt.items === 1 && frmt.index.month === 0) ||
       (resultItems === 1 && !onlyYear && !onlyDay) ||
       (resultItems === 2 && index.year > -1);
+
+    console.log(
+      'onlyDay',
+      onlyDay,
+      'onlyMonth',
+      onlyMonth,
+      'onlyYear',
+      onlyYear
+    );
 
     let needIndex = frmt.order.filter(k => index[k] < 0);
     const indexes = Object.values(index),
@@ -197,6 +208,9 @@ export class DateParseService {
     needIndex.forEach((itm, idx) => {
       index[itm] = extraIndexes[idx];
     });
+
+    console.log('needIndex', needIndex);
+    console.log('index', index);
 
     // parsed result
 

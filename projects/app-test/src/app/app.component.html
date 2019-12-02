@@ -27,29 +27,7 @@
 
 -->
 
-<div
-     style="width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-
-
-  <select [(ngModel)]="formatStr">
-    <option *ngFor="let frmt of formatVars "
-            [value]="frmt">{{frmt}}</option>
-  </select>
-
-  <br><br>
-
-  <input type="text"
-         [bDateInput]="formatStr">
-
-  <br><br>
-  <select [(ngModel)]="dateStr"
-          (change)="onValueChange($event.target.value)">
-    <option *ngFor="let date of dateStrVars "
-            [value]="date">{{date}}</option>
-  </select>
-
-</div>
-
+<date-parse-tester></date-parse-tester>
 
 <b-stats [rootElem]="'b-story-book-layout'"
          [countChildren]="true"></b-stats>

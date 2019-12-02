@@ -8,12 +8,12 @@ import {
   EventEmitter,
   OnChanges,
 } from '@angular/core';
-import { DOMInputEvent } from '../../types';
-import { DateParseService } from './date-parse.service';
-import { isDate, applyChanges } from '../../services/utils/functional-utils';
+import { DOMInputEvent } from '../../../types';
+import { DateParseService } from '../date-parse-service/date-parse.service';
+import { isDate, applyChanges } from '../../../services/utils/functional-utils';
 import isBefore from 'date-fns/isBefore';
 import { isAfter } from 'date-fns';
-import { DateParseResult, FormatParserResult } from './datepicker.interface';
+import { DateParseResult, FormatParserResult } from '../datepicker.interface';
 
 @Directive({
   selector: '[bDateInput]',

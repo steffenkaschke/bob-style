@@ -4,10 +4,8 @@ import { LocaleFormat, DateLocaleFormatKeys } from '../../types';
 import { LOCALE_FORMATS } from '../../consts';
 import { get } from 'lodash';
 import { format, parseISO } from 'date-fns';
-import {
-  DateParseService,
-  FormatParserResult,
-} from './date-parse.service';
+import { DateParseService } from './date-parse-service/date-parse.service';
+import { FormatParserResult } from './datepicker.interface';
 
 const mockUser: {
   dateFormat: DateLocaleFormatKeys;
@@ -18,11 +16,11 @@ const mockUser: {
 export const UserLocaleServiceMock = {
   dateFormat: mockUser.dateFormat.toUpperCase(),
 
-  getDateFormat: () => {
+  getDateFormat() {
     return UserLocaleServiceMock.dateFormat;
   },
 
-  getDisplayDate: (date, localeFormat) => {
+  getDisplayDate(date, localeFormat) {
     let dateToFormat = date;
 
     const dateFormat = get(

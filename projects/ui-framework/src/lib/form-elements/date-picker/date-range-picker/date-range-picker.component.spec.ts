@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DateRangePickerComponent } from './date-range-picker.component';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { MobileService } from '../../../services/utils/mobile.service';
-import { DateParseService } from '../date-parse.service';
+import { DateParseService } from '../date-parse-service/date-parse.service';
 import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
 import { of } from 'rxjs';
 import {

@@ -16,11 +16,14 @@ import { FormElementsModule } from '../../../ui-framework/src/lib/form-elements/
 import { StatsModule } from '../../../ui-framework/src/lib/services/util-components/stats.module';
 import { FilterBarTestModule } from './filter-bar/filter-bar.module';
 import { DatepickerModule } from '../../../ui-framework/src/public_api';
+import { DateParseTesterModule } from './dateparser/dateparse-tester.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    CommonModule,
     BrowserAnimationsModule,
     FormElementsTestModule,
     UrlTesterModule,
@@ -36,6 +39,7 @@ import { DatepickerModule } from '../../../ui-framework/src/public_api';
     StatsModule,
     FilterBarTestModule,
     DatepickerModule,
+    DateParseTesterModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

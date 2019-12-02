@@ -13,7 +13,7 @@ import {
 } from '../../../services/utils/test-helpers';
 import { UtilsService } from '../../../services/utils/utils.service';
 import { of } from 'rxjs';
-import { DateParseService } from '../date-parse.service';
+import { DateParseService } from '../date-parse-service/date-parse.service';
 import { MobileService } from '../../../services/utils/mobile.service';
 import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
 import { IconsModule } from '../../../icons/icons.module';

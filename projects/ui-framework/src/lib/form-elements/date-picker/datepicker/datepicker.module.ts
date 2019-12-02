@@ -10,11 +10,11 @@ import { IconsModule } from '../../../icons/icons.module';
 import { CommonModule } from '@angular/common';
 import { InputMessageModule } from '../../input-message/input-message.module';
 import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
-import { DateParseService } from '../date-parse.service';
+import { DateParseService } from '../date-parse-service/date-parse.service';
 import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
 import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
 import { B_DATE_FORMATS } from '../dateadapter.mock';
-import { DateInputDirectiveModule } from '../dateinput.directive.module';
+import { DateInputDirectiveModule } from '../date-input-directive/dateinput.directive.module';
 
 @NgModule({
   declarations: [DatepickerComponent],
