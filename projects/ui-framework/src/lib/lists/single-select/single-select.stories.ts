@@ -31,7 +31,7 @@ const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 
 const template = `
 <b-single-select [options]="options"
-                 [value]="value"
+                 [value]="[value]"
                  [label]="label"
                  [placeholder]="placeholder"
                  [description]="description"

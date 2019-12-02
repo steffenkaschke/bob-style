@@ -178,7 +178,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
       this.setDisplayValue();
     } else {
-      console.warn(`Provided value (${value}) is not valid.`);
+      console.warn(
+        `Provided value (${typeof value}: ${value}) is not valid. It should be an array of selected IDs.`
+      );
     }
   }
 
