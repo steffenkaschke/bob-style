@@ -69,14 +69,17 @@ describe('MultiSelectComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(MultiSelectComponent);
         component = fixture.componentInstance;
-
         component.startWithGroupsCollapsed = false;
-
         component.ngOnChanges(
           simpleChange({
             options: optionsMock,
           })
         );
+
+        component.selectChange.subscribe(() => {});
+        component.selectModified.subscribe(() => {});
+        component.selectCancelled.subscribe(() => {});
+        component.changed.subscribe(() => {});
 
         spyOn(component.selectChange, 'emit');
         spyOn(component.selectModified, 'emit');
@@ -95,9 +98,16 @@ describe('MultiSelectComponent', () => {
     )();
   }));
 
+  afterEach(() => {
+    component.selectChange.complete();
+    component.selectModified.complete();
+    component.selectCancelled.complete();
+    component.changed.complete();
+  });
+
   describe('OnInit', () => {
     it('should set selectedIDs', () => {
-      expect(component.selectedIDs).toEqual([1, 11]);
+      expect(component.value).toEqual([1, 11]);
     });
     it('should set trigger value', () => {
       expect(component.displayValue).toEqual('Basic Info 1, Personal 1');
@@ -118,7 +128,7 @@ describe('MultiSelectComponent', () => {
       );
     });
     it('should update selectedIDs', () => {
-      expect(component.selectedIDs).toEqual([12]);
+      expect(component.value).toEqual([12]);
     });
     it('should update trigger value when options update', () => {
       expect(component.displayValue).toEqual('Personal 2');
@@ -133,7 +143,7 @@ describe('MultiSelectComponent', () => {
       (overlayContainerElement.querySelectorAll(
         'b-multi-list .option'
       )[3] as HTMLElement).click();
-      expect(component.selectedIDs).toEqual([1, 11, 12]);
+      expect(component.value).toEqual([1, 11, 12]);
 
       expect(component.displayValue).not.toEqual(
         'Basic Info 1, Personal 1, Personal 2'
@@ -234,8 +244,8 @@ describe('MultiSelectComponent', () => {
 
       fixture.autoDetectChanges();
 
-      expect(component.selectedIDs).toEqual([]);
-      expect(component.displayValue).toEqual('');
+      expect(component.value).toEqual([]);
+      expect(component.displayValue).toBeFalsy();
       expect(component.options).toEqual(expectedOptionsMock);
       flush();
     }));
@@ -416,7 +426,7 @@ describe('MultiSelectComponent', () => {
       component.onCancel();
 
       fixture.autoDetectChanges();
-      expect(component.selectedIDs).toEqual([1, 11]);
+      expect(component.value).toEqual([1, 11]);
       expect(component.displayValue).toEqual('Basic Info 1, Personal 1');
       expect(component.options).toEqual(optionsMock);
       flush();

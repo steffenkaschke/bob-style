@@ -206,6 +206,23 @@ export const timeyOrFail = value => {
   return value;
 };
 
+export const selectValueOrFail = value => {
+  if (isNullOrUndefined(value)) {
+    return value;
+  }
+
+  if (!(isString(value) || isNumber(value) || isArray(value))) {
+    throw new Error(
+      `Value (${stringify(
+        value
+      )}) should be string, number or (string | number)[], instead ${getType(
+        value
+      ).toUpperCase()} was provided.`
+    );
+  }
+  return asArray(value);
+};
+
 // -------------------------------
 // Validators
 // -------------------------------

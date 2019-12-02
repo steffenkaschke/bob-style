@@ -82,6 +82,6 @@ export class PanelPositionService {
   }
 
   getScrollStrategy(): ScrollStrategy {
-    return this.scrollStrategyOptions.reposition();
+    return this.overlay.scrollStrategies.reposition();
   }
 }

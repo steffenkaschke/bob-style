@@ -2108,8 +2108,8 @@
        </p>
        <label>
          <input class="simple-input bigger"
-                (input)="onValueInput('bSingleSelect', $event)"
-                [value]="bSingleSelect_value"
+                (change)="onSelectValueInput('bSingleSelect',$event)"
+                [value]="bSingleSelect_value || null"
                 type="search">
        </label>
      </div>
@@ -2363,8 +2363,8 @@
        </p>
        <label>
          <input class="simple-input bigger"
-                (input)="onValueInput('bMultiSelect', $event)"
-                [value]="bMultiSelect_value"
+                (change)="onSelectValueInput('bMultiSelect',$event)"
+                [value]="bMultiSelect_value || null"
                 type="search">
        </label>
      </div>
