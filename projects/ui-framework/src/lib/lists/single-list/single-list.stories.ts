@@ -12,18 +12,23 @@ import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { optionsMock } from './single-list.mock';
 import { cloneDeep } from 'lodash';
+import { ListChange } from '../list-change/list-change';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-single-list [options]="options"
+<b-single-list #list [options]="options"
                (selectChange)="selectChange($event)"
-               [showSingleGroupHeader]="showSingleGroupHeader">
-      <b-text-button footerAction
-        [text]="'Click Me!'">
+               [showSingleGroupHeader]="showSingleGroupHeader"
+               [showNoneOption]="showNoneOption">
+
+      <b-text-button footerAction *ngIf="options.length>1"
+              [text]="list.allGroupsCollapsed ? 'Expand' : 'Collapse'"
+              (clicked)="list.toggleCollapseAll()">
       </b-text-button>
+
 </b-single-list>
 `;
 
@@ -45,7 +50,11 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [options] | SelectGroupOption[] | model of selection group | &nbsp;
+  [optionsDefault] |  SelectGroupOption[] | default options. \
+  if present, the Clear button (if enabled) will be replaced with Reset button, that will set the state \
+  to optionsDefault | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | false
+  [showNoneOption] | boolean | show -None- list option | false
   [maxHeight] | number | component max height | 352 (8 rows)
   [listActions] | ListFooterActions / string | enable/disable footer action buttons\
    (clear, apply, reset). If you provide a string, \
@@ -68,8 +77,13 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      selectChange: action('Single list change'),
+      selectChange: (change: ListChange) => {
+        change.selectGroupOptions.sort();
+        return action('Single list change')(change);
+      },
+
       showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+      showNoneOption: boolean('showNoneOption', false, 'Props'),
       options: object<SelectGroupOption>('options', options, 'Options'),
     },
     moduleMetadata: {

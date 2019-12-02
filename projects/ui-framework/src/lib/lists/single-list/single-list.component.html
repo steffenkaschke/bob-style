@@ -22,6 +22,10 @@
               [ngClass]="{'b-icon-chevron-down': !header.isCollapsed, 'b-icon-chevron-right':
               header.isCollapsed}"></span>
         <span [innerHTML]="header.groupName | highlight: searchValue"></span>
+        <span *ngIf="header.selectedCount > 0"
+              class="header-selected-count">
+          ({{header.selectedCount}})
+        </span>
       </div>
       <div [ngStyle]="{height: header.isCollapsed ? 0 : header.placeHolderSize + 'px'}"
            class="placeholder"></div>
@@ -37,28 +41,30 @@
     <button *ngIf="showNoneOption"
             type="button"
             class="clear-selection"
-            (click)="clear.emit()">
+            (click)="clearList()">
       — None —
     </button>
 
     <div class="options">
-      <div (click)="optionClick(option)"
-           *cdkVirtualFor="let option of listOptions"
+      <div *cdkVirtualFor="let option of listOptions; let index = index;"
+           (click)="optionClick(option)"
            [ngClass]="{
-           'header-placeholder': option.isPlaceHolder,
-           'option': !option.isPlaceHolder,
-           'selected': option.selected,
-           'focus': option.id===focusOption?.id,
-           'disabled': option.disabled,
-           'single-group-option': options.length === 1
+            'header-placeholder': option.isPlaceHolder,
+            'option': !option.isPlaceHolder,
+            'selected': option.selected,
+            'focus': option.id===focusOption?.id,
+            'disabled': option.disabled,
+            'single-group-option': options.length === 1
            }"
            class="option-select">
 
-        <b-component-renderer *ngIf="option.prefixComponent"
+        <b-component-renderer *ngIf="option.prefixComponent
+                  && option.prefixComponent.component"
                               class="comp-prefix"
                               [render]="option.prefixComponent"></b-component-renderer>
 
-        <span class="option-value"
+        <span *ngIf="!option.isPlaceHolder"
+              class="option-value"
               data-max-lines='3'
               [innerHTML]="option.value | highlight: searchValue">
         </span>
@@ -73,8 +79,9 @@
                *ngIf="hasFooter"
                [listActions]="listActions"
                [listActionsState]="listActionsState"
-               (clear)="onClear()"
-               (apply)="onApply()">
+               (clear)="clearList()"
+               (apply)="onApply()"
+               (reset)="resetList()">
   <ng-content footerAction
               select="[footerAction],[footerActionRight]"></ng-content>
 </b-list-footer>

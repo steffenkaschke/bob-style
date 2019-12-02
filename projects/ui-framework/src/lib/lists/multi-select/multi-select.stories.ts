@@ -4,6 +4,7 @@ import {
   object,
   text,
   boolean,
+  select,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -18,6 +19,7 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { mockText } from '../../mock.const';
 import { cloneDeep } from 'lodash';
 import { optionsMock, optionsMockDef } from '../multi-list/multi-list.mock';
+import { ListModelService } from '../list-service/list-model.service';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -28,20 +30,22 @@ const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 );
 
 const template = `
-<b-multi-select [label]="label"
-                [placeholder]="placeholder"
+<b-multi-select [options]="options"
+                [value]="value"
                 [description]="description"
-                [options]="options"
                 [optionsDefault]="optionsDefault"
+                [label]="label"
+                [placeholder]="placeholder"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
-                (selectChange)="selectChange($event)"
-                (selectModified)="selectModified($event)"
-                (selectCancelled)="selectCancelled($event)"
                 [disabled]="disabled"
                 [required]="required"
                 [errorMessage]="errorMessage"
-                [hintMessage]="hintMessage">
+                [hintMessage]="hintMessage"
+                (selectChange)="selectChange($event)"
+                (selectModified)="selectModified($event)"
+                (selectCancelled)="selectCancelled($event)"
+                (changed)="selectValueChange($event)">
     <b-text-button footerAction
       [text]="'Action'">
     </b-text-button>
@@ -78,6 +82,7 @@ const note = `
   (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
   (selectModified) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
   (selectCancelled) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
+  (changed) | EventEmitter<wbr>&lt;(string/number)[]&gt; | emits array of selected IDs | &nbsp;
   &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
   [label] | string | label text | &nbsp;
   [description] | string | description text (above icon) | &nbsp;
@@ -91,13 +96,45 @@ const note = `
   ~~~
 `;
 
-const options = cloneDeep(optionsMock);
-
+const options = ListModelService.prototype.selectAll<SelectGroupOption>(
+  cloneDeep(optionsMock)
+);
 const optionsDef = cloneDeep(optionsMockDef);
 
 const toAdd = () => ({
   template: storyTemplate,
   props: {
+    value: select(
+      'value',
+      [
+        [
+          options[0].options[0].id,
+          options[1].options[2].id,
+          options[3].options[3].id,
+          options[0].options[2].id,
+        ],
+        [
+          options[0].options[1].id,
+          options[1].options[3].id,
+          options[2].options[2].id,
+          options[4].options[0].id,
+        ],
+        [
+          options[3].options[3].id,
+          options[1].options[2].id,
+          options[4].options[0].id,
+          options[2].options[1].id,
+        ],
+      ],
+      [
+        options[0].options[0].id,
+        options[1].options[2].id,
+        options[3].options[3].id,
+        options[0].options[2].id,
+      ],
+      'Props'
+    ),
+
     showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
     startWithGroupsCollapsed: boolean(
       'startWithGroupsCollapsed',
@@ -126,6 +163,7 @@ const toAdd = () => ({
     selectChange: action('Multi select change'),
     selectModified: action('Multi select modified'),
     selectCancelled: action('Multi select cancelled'),
+    selectValueChange: action('Value (Selected IDs)'),
   },
   moduleMetadata: {
     imports: [

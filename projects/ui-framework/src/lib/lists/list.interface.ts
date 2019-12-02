@@ -56,3 +56,10 @@ export interface ListFooterActionsState {
   reset?: ActionsButtonState;
   cancel?: ActionsButtonState;
 }
+
+export interface UpdateListsConfig {
+  collapseHeaders?: boolean;
+  updateListHeaders?: boolean;
+  updateListOptions?: boolean;
+  selectedIDs?: (string | number)[];
+}
