@@ -101,7 +101,7 @@ export abstract class BaseListElement
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
 
-    if (changes.options) {
+    if (hasChanges(changes, ['options'])) {
       this.allGroupsCollapsed =
         this.startWithGroupsCollapsed && isNotEmptyArray(this.options, 1);
     }
@@ -122,7 +122,7 @@ export abstract class BaseListElement
       this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
     }
 
-    if (changes.optionsDefault && changes.optionsDefault.currentValue) {
+    if (hasChanges(changes, ['optionsDefault'])) {
       const defaultsExist = isNotEmptyArray(this.optionsDefault);
 
       this.optionsDefaultIDs = defaultsExist
