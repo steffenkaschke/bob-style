@@ -15,10 +15,10 @@ import { UtilsModule } from './utils/utils.module';
 import { FormElementsModule } from '../../../ui-framework/src/lib/form-elements/form-elements.module';
 import { StatsModule } from '../../../ui-framework/src/lib/services/util-components/stats.module';
 import { FilterBarTestModule } from './filter-bar/filter-bar.module';
-import { DateInputDirective } from '../../../ui-framework/src/lib/form-elements/datepicker/dateinput.directive';
+import { DatepickerModule } from '../../../ui-framework/src/public_api';
 
 @NgModule({
-  declarations: [AppComponent, DateInputDirective],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -35,6 +35,7 @@ import { DateInputDirective } from '../../../ui-framework/src/lib/form-elements/
     UtilsModule,
     StatsModule,
     FilterBarTestModule,
+    DatepickerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

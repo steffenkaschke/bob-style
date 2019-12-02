@@ -4,7 +4,10 @@ import { LocaleFormat, DateLocaleFormatKeys } from '../../types';
 import { LOCALE_FORMATS } from '../../consts';
 import { get } from 'lodash';
 import { format, parseISO } from 'date-fns';
-import { DateParseService } from './date-parse.service';
+import {
+  DateParseService,
+  FormatParserResult,
+} from './date-parse.service';
 
 const mockUser: {
   dateFormat: DateLocaleFormatKeys;
@@ -46,15 +49,23 @@ export class BDateAdapterMock extends NativeDateAdapter {
     LocaleFormat.FullDate
   );
 
-  public static readonly bFormatParsed = DateParseService.prototype.parseFormat(
+  public static readonly bFormatParsed: FormatParserResult = DateParseService.prototype.parseFormat(
     get(
       get(LOCALE_FORMATS, UserLocaleServiceMock.dateFormat),
       LocaleFormat.FullDate
     )
   );
 
+  getFormat() {
+    return BDateAdapterMock.bFormat;
+  }
+
+  getParsedFormat() {
+    return BDateAdapterMock.bFormatParsed;
+  }
+
   parse(value: any): Date | null {
-    console.log('----------------------');
+    console.log('-------BDateAdapterMock------Parse---------');
 
     if (BDateAdapterMock.bFormatParsed.valid) {
       return DateParseService.prototype.parseDate(
@@ -67,6 +78,8 @@ export class BDateAdapterMock extends NativeDateAdapter {
   }
 
   format(date: Date, displayFormat: any): string {
+    console.log('-------BDateAdapterMock------Format---------');
+
     switch (displayFormat) {
       case 'input':
         return UserLocaleServiceMock.getDisplayDate(

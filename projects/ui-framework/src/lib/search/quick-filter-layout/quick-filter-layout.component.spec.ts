@@ -23,7 +23,7 @@ import { InputModule } from '../../form-elements/input/input.module';
 import { MultiSelectModule } from '../../lists/multi-select/multi-select.module';
 import { SingleSelectModule } from '../../lists/single-select/single-select.module';
 import { SocialModule } from '../../form-elements/social/social.module';
-import { DateRangePickerModule } from '../../form-elements/date-range-picker/date-range-picker.module';
+import { DateRangePickerModule } from '../../form-elements/date-picker/date-range-picker/date-range-picker.module';
 import { TimePickerModule } from '../../form-elements/timepicker/timepicker.module';
 // tslint:disable-next-line: max-line-length
 import { SplitInputSingleSelectModule } from '../../form-elements/split-input-single-select/split-input-single-select.module';

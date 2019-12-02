@@ -8,28 +8,32 @@ import {
   NgZone,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { SERVER_DATE_FORMAT } from '../../consts';
+import { SERVER_DATE_FORMAT } from '../../../consts';
 import {
   dateOrFail,
   dateToString,
   objectHasKeyOrFail,
-} from '../../services/utils/transformers';
-import { cloneObject, simpleUID } from '../../services/utils/functional-utils';
-import { BaseDatepickerElement } from '../datepicker/datepicker.abstract';
-import { MobileService } from '../../services/utils/mobile.service';
-import { DateParseService } from '../datepicker/date-parse.service';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { WindowRef } from '../../services/utils/window-ref.service';
-import { DateRangePickerValue } from './date-range-picker.interface';
+} from '../../../services/utils/transformers';
+import {
+  cloneObject,
+  simpleUID,
+} from '../../../services/utils/functional-utils';
+import { BaseDatepickerElement } from '../datepicker.abstract';
+import { MobileService } from '../../../services/utils/mobile.service';
+import { DateParseService } from '../date-parse.service';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { WindowRef } from '../../../services/utils/window-ref.service';
+import { DateRangePickerValue } from '../datepicker.interface';
 import {
   MAT_DATEPICKER_SCROLL_STRATEGY,
   MatDatepicker,
+  DateAdapter,
 } from '@angular/material';
 import { Overlay } from '@angular/cdk/overlay';
-import { DatepickerType } from '../datepicker/datepicker.enum';
+import { DatepickerType } from '../datepicker.enum';
 import { lastDayOfMonth, startOfMonth } from 'date-fns';
-import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
-import { BaseFormElement } from '../base-form-element';
+import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
+import { BaseFormElement } from '../../base-form-element';
 
 interface DateRangePickerValueLocal {
   startDate: Date | string;
@@ -50,7 +54,7 @@ export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
   selector: 'b-date-range-picker',
   templateUrl: './date-range-picker.component.html',
   styleUrls: [
-    '../input/input.component.scss',
+    '../../input/input.component.scss',
     '../datepicker/datepicker.component.scss',
     './date-range-picker.component.scss',
   ],
@@ -83,7 +87,8 @@ export class DateRangePickerComponent extends BaseDatepickerElement
     cd: ChangeDetectorRef,
     zone: NgZone,
     kbrdCntrlSrvc: FormElementKeyboardCntrlService,
-    dateParseSrvc: DateParseService
+    dateParseSrvc: DateParseService,
+    dateAdapter: DateAdapter<any>
   ) {
     super(
       windowRef,
@@ -92,7 +97,8 @@ export class DateRangePickerComponent extends BaseDatepickerElement
       cd,
       zone,
       kbrdCntrlSrvc,
-      dateParseSrvc
+      dateParseSrvc,
+      dateAdapter
     );
 
     this.inputTransformers = [

@@ -7,22 +7,26 @@ import {
   NgZone,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { SERVER_DATE_FORMAT } from '../../consts';
-import { dateOrFail, dateToString } from '../../services/utils/transformers';
-import { MobileService } from '../../services/utils/mobile.service';
-import { BaseDatepickerElement } from './datepicker.abstract';
-import { DateParseService } from './date-parse.service';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { WindowRef } from '../../services/utils/window-ref.service';
+import { SERVER_DATE_FORMAT } from '../../../consts';
+import { dateOrFail, dateToString } from '../../../services/utils/transformers';
+import { MobileService } from '../../../services/utils/mobile.service';
+import { BaseDatepickerElement } from '../datepicker.abstract';
+import { DateParseService } from '../date-parse.service';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { WindowRef } from '../../../services/utils/window-ref.service';
 import { startOfMonth } from 'date-fns';
-import { DatepickerType } from './datepicker.enum';
-import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
-import { BaseFormElement } from '../base-form-element';
+import { DatepickerType } from '../datepicker.enum';
+import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
+import { BaseFormElement } from '../../base-form-element';
+import { DateAdapter } from '@angular/material';
 
 @Component({
   selector: 'b-datepicker',
   templateUrl: './datepicker.component.html',
-  styleUrls: ['../input/input.component.scss', './datepicker.component.scss'],
+  styleUrls: [
+    '../../input/input.component.scss',
+    './datepicker.component.scss',
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -46,7 +50,8 @@ export class DatepickerComponent extends BaseDatepickerElement {
     cd: ChangeDetectorRef,
     zone: NgZone,
     kbrdCntrlSrvc: FormElementKeyboardCntrlService,
-    dateParseSrvc: DateParseService
+    dateParseSrvc: DateParseService,
+    dateAdapter: DateAdapter<any>
   ) {
     super(
       windowRef,
@@ -55,7 +60,8 @@ export class DatepickerComponent extends BaseDatepickerElement {
       cd,
       zone,
       kbrdCntrlSrvc,
-      dateParseSrvc
+      dateParseSrvc,
+      dateAdapter
     );
 
     this.inputTransformers = [dateOrFail];

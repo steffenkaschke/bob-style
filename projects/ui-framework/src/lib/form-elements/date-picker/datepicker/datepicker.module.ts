@@ -6,14 +6,15 @@ import {
   MatNativeDateModule,
 } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { IconsModule } from '../../icons/icons.module';
+import { IconsModule } from '../../../icons/icons.module';
 import { CommonModule } from '@angular/common';
-import { InputMessageModule } from '../input-message/input-message.module';
-import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { DateParseService } from './date-parse.service';
-import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
-import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
-import { B_DATE_FORMATS } from './dateadapter.mock';
+import { InputMessageModule } from '../../input-message/input-message.module';
+import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
+import { DateParseService } from '../date-parse.service';
+import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
+import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
+import { B_DATE_FORMATS } from '../dateadapter.mock';
+import { DateInputDirectiveModule } from '../dateinput.directive.module';
 
 @NgModule({
   declarations: [DatepickerComponent],
@@ -24,6 +25,7 @@ import { B_DATE_FORMATS } from './dateadapter.mock';
     IconsModule,
     InputMessageModule,
     FormElementLabelModule,
+    DateInputDirectiveModule,
   ],
   exports: [DatepickerComponent],
   entryComponents: [],

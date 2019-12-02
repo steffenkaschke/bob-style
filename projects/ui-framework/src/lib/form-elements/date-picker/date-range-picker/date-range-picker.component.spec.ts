@@ -1,27 +1,30 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DateRangePickerComponent } from './date-range-picker.component';
-import { UtilsService } from '../../services/utils/utils.service';
-import { MobileService } from '../../services/utils/mobile.service';
-import { DateParseService } from '../datepicker/date-parse.service';
-import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { UtilsService } from '../../../services/utils/utils.service';
+import { MobileService } from '../../../services/utils/mobile.service';
+import { DateParseService } from '../date-parse.service';
+import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
 import { of } from 'rxjs';
 import {
   MatDatepicker,
   MatDatepickerModule,
   MatNativeDateModule,
 } from '@angular/material';
-import { IconsModule } from '../../icons/icons.module';
-import { InputMessageModule } from '../input-message/input-message.module';
+import { IconsModule } from '../../../icons/icons.module';
+import { InputMessageModule } from '../../input-message/input-message.module';
 import {
   elementFromFixture,
   elementsFromFixture,
   getPseudoContent,
   inputValue,
   simpleChange,
-} from '../../services/utils/test-helpers';
-import { dateToString, stringToDate } from '../../services/utils/transformers';
+} from '../../../services/utils/test-helpers';
+import {
+  dateToString,
+  stringToDate,
+} from '../../../services/utils/transformers';
 import { isDate, parseISO } from 'date-fns';
-import { DatepickerType } from '../datepicker/datepicker.enum';
+import { DatepickerType } from '../datepicker.enum';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import createSpyObj = jasmine.createSpyObj;
 

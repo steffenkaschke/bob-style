@@ -7,25 +7,36 @@
 
 <div class="bfe-wrap has-suffix"
      #inputWrap
-     [ngClass]="{focused: inputFocused[0]}">
+     [ngClass]="{
+        focused: inputFocused[0],
+        invalid: inputValid[0]===false
+     }">
 
-  <input class="bfe-input"
+  <input #input
+         class="bfe-input"
+         [bDateInput]="dateFormat"
+         [date]="value"
+         [min]="minDate || null"
+         [max]="maxDate || null"
+         (parsed)="onInputChange($event)"
          [readonly]="!allowKeyInput"
          autocomplete="off"
          [attr.id]="id"
          [attr.name]="id"
          [type]="inputTypes.text"
          [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
-         [value]="value"
          [disabled]="disabled"
          [required]="required"
          (click)="openPicker()"
          (focus)="onInputFocus()"
          (blur)="onInputBlur()"
-         (input)="onInputChange($event)"
-         (keydown.outside-zone)="onInputKeydown($event)"
-         (dateChange)="transmit($event.value)"
+         (keydown.outside-zone)="onInputKeydown($event)">
+
+  <input type="text"
+         class="dpi-ghost-input"
+         [disabled]="disabled"
          [matDatepicker]="picker"
+         (dateChange)="transmit($event.value)"
          [min]="minDate || null"
          [max]="maxDate || null">
 

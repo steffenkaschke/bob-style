@@ -1,4 +1,4 @@
-@import '../../style/common-imports';
+@import '../../../style/common-imports';
 
 b-icon,
 :host .bfe-input[readonly] {
@@ -10,6 +10,19 @@ b-icon {
 }
 
 @include clear-input-suffix;
+
+.dpi-ghost-input {
+  @include size(100%);
+  @include position(0 0 0 0);
+  pointer-events: none;
+  outline: 0;
+  z-index: -1;
+  visibility: hidden;
+}
+
+.bfe-wrap.invalid {
+  border-color: $color-error;
+}
 
 ::ng-deep {
   .b-datepicker-panel .mat-ripple {

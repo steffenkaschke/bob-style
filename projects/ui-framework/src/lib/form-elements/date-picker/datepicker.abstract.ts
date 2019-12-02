@@ -25,9 +25,10 @@ import {
   isKey,
   cloneValue,
   isFalsyOrEmpty,
+  applyChanges,
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
-import { MatDatepicker, MatDatepickerInput } from '@angular/material';
+import { MatDatepicker } from '@angular/material';
 import { DateParseService } from './date-parse.service';
 import { Keys } from '../../enums';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -39,8 +40,7 @@ import { set } from 'lodash';
 import { DatepickerType } from './datepicker.enum';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { Styles } from '../../services/html/html-helpers.interface';
-import { BDateAdapterMock } from './dateadapter.mock';
-import { DOMInputEvent } from '../../types';
+import { DateParseResult, FormatParserResult } from './datepicker.interface';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, AfterViewInit, OnDestroy {
@@ -51,14 +51,18 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
     protected kbrdCntrlSrvc: FormElementKeyboardCntrlService,
-    protected dateParseSrvc: DateParseService
+    protected dateParseSrvc: DateParseService,
+    private dateAdapter: any
   ) {
     super(cd);
+
+    this.dateFormat = this.dateAdapter.getFormat();
+    this.parsedFormat = this.dateAdapter.getParsedFormat();
   }
 
   @ViewChild('inputWrap', { static: true }) inputWrap: ElementRef;
   @ViewChildren(MatDatepicker) public pickers: QueryList<MatDatepicker<any>>;
-  @ViewChildren(MatDatepickerInput, { read: ElementRef })
+  @ViewChildren('input', { read: ElementRef })
   public inputs: QueryList<ElementRef>;
 
   @Input() id: string = simpleUID('bdp-');
@@ -69,7 +73,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     DatepickerType.date;
 
   @Input() allowKeyInput = true;
-  @Input() dateFormat: string;
+  @Input() dateFormat = 'dd/mm/yyyy';
   @Input() panelClass: string;
 
   @Output(FormEvents.dateChange) changed: EventEmitter<
@@ -78,6 +82,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   public isMobile = false;
   public inputFocused: boolean[] = [];
+  public inputValid: boolean[] = [];
 
   protected overlayStylesDef: Styles = {};
 
@@ -92,10 +97,14 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   readonly types = DatepickerType;
 
   private doneFirstChange = false;
+  private useFormatForPlaceholder = false;
+  private parsedFormat: FormatParserResult;
 
   protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
 
   ngOnInit(): void {
+    console.log(this.dateFormat, this.parsedFormat);
+
     this.resizeSubscription = fromEvent(this.windowRef.nativeWindow, 'resize')
       .pipe(
         outsideZone(this.zone),
@@ -142,6 +151,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes);
+
     this.allPickers(picker => this.closePicker(picker));
 
     if (changes.minDate) {
@@ -152,12 +163,17 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       this.maxDate = dateOrFail(changes.maxDate.currentValue);
     }
 
+    if (changes.dateFormat) {
+      this.parsedFormat = this.dateParseSrvc.parseFormat(this.dateFormat);
+    }
+
     if (
-      !this.placeholder &&
-      !(this.hideLabelOnFocus && this.label) &&
+      ((!this.placeholder && !(this.hideLabelOnFocus && this.label)) ||
+        this.useFormatForPlaceholder) &&
       this.dateFormat
     ) {
       this.placeholder = this.dateFormat.toLowerCase();
+      this.useFormatForPlaceholder = true;
     }
 
     this.doneFirstChange = true;
@@ -382,35 +398,14 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
-  public onInputChange(event: DOMInputEvent, index: number = 0): void {
-    const value = event.target.value;
-    // if (!this.skipParse) {
-    //   (event.target as HTMLInputElement).value = this.dateParseSrvc.parseDateInput(
-    //     (event.target as HTMLInputElement).value
-    //   );
-    // }
-    // this.skipParse = false;
+  public onInputChange(parsed: DateParseResult, index: number = 0): void {
+    const picker = this.getPicker(index);
 
-    // const picker = this.getPicker(index);
+    this.inputValid[index] = parsed.valid;
 
-    // console.log(
-    //   '>>>>>>>>',
-    //   DateParseService.prototype.adaptFormat(
-    //     BDateAdapterMock.bFormatParsed,
-    //     value
-    //   ).date
-    // );
-
-    // picker.select(
-    //   DateParseService.prototype.adaptFormat(
-    //     BDateAdapterMock.bFormatParsed,
-    //     value
-    //   ).date
-    // );
-
-    // this.cd.detectChanges();
-
-    // console.log(picker, picker._popupRef);
+    if (parsed.valid) {
+      picker.select(parsed.date);
+    }
   }
 
   public transmit(

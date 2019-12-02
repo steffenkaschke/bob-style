@@ -5,13 +5,14 @@ import {
   MatNativeDateModule,
 } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { IconsModule } from '../../icons/icons.module';
+import { IconsModule } from '../../../icons/icons.module';
 import { CommonModule } from '@angular/common';
-import { InputMessageModule } from '../input-message/input-message.module';
+import { InputMessageModule } from '../../input-message/input-message.module';
 import { DateRangePickerComponent } from './date-range-picker.component';
-import { DateParseService } from '../datepicker/date-parse.service';
-import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { B_DATE_FORMATS } from '../datepicker/dateadapter.mock';
+import { DateParseService } from '../date-parse.service';
+import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
+import { B_DATE_FORMATS } from '../dateadapter.mock';
+import { DateInputDirectiveModule } from '../dateinput.directive.module';
 
 @NgModule({
   declarations: [DateRangePickerComponent],
@@ -21,6 +22,7 @@ import { B_DATE_FORMATS } from '../datepicker/dateadapter.mock';
     MatNativeDateModule,
     IconsModule,
     InputMessageModule,
+    DateInputDirectiveModule,
   ],
   exports: [DateRangePickerComponent],
   entryComponents: [],
