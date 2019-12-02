@@ -28,6 +28,8 @@ import { SplitInputSingleSelectModule } from '../../form-elements/split-input-si
 import { LinkColor } from '../../indicators/link/link.enum';
 import { DatepickerType } from '../../form-elements/date-picker/datepicker.enum';
 
+import { BDateAdapterMock } from '../../form-elements/date-picker/dateadapter.mock';
+
 const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
   withKnobs
 );
@@ -255,7 +257,7 @@ story.add(
           QuickFilterLayoutModule,
           MultiSelectModule,
           SingleSelectModule,
-          DateRangePickerModule,
+          DateRangePickerModule.init(BDateAdapterMock),
           AvatarModule,
           ButtonsModule,
           InputModule,
