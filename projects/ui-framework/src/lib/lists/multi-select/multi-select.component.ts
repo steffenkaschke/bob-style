@@ -126,6 +126,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   private getDisplayValue(selectedIDs: (string | number)[]): string {
     return (
       selectedIDs &&
+      this.options &&
       arrayFlatten(this.options.map(group => group.options))
         .filter((option: SelectOption) => selectedIDs.includes(option.id))
         .map((option: SelectOption) => option.value)

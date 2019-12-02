@@ -13,6 +13,7 @@ import {
   isNotEmptyArray,
   isArray,
   hasProp,
+  isEmptyArray,
 } from '../../services/utils/functional-utils';
 
 @Injectable()
@@ -140,6 +141,9 @@ export class ListModelService {
     options: SelectGroupOption[],
     mustBe = 'selected'
   ): (number | string)[] {
+    if (isEmptyArray(options)) {
+      return [];
+    }
     return arrayFlatten<string | number>(
       options.map(group =>
         group.options

@@ -90,6 +90,7 @@ export abstract class BaseListElement
   @Input() maxHeight = this.listElHeight * 8;
   @Input() showSingleGroupHeader = false;
   @Input() startWithGroupsCollapsed = true;
+  @Input() showNoneOption = false;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
@@ -100,9 +101,9 @@ export abstract class BaseListElement
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
 
-    if (changes.options) {
+    if (hasChanges(changes, ['options'])) {
       this.allGroupsCollapsed =
-        this.startWithGroupsCollapsed && this.options.length > 1;
+        this.startWithGroupsCollapsed && isNotEmptyArray(this.options, 1);
     }
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
@@ -121,14 +122,14 @@ export abstract class BaseListElement
       this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
     }
 
-    if (changes.optionsDefault) {
+    if (hasChanges(changes, ['optionsDefault'])) {
       const defaultsExist = isNotEmptyArray(this.optionsDefault);
 
       this.optionsDefaultIDs = defaultsExist
         ? this.getSelectedIDs(this.optionsDefault)
         : undefined;
 
-      this.listActions.clear = !defaultsExist;
+      this.listActions.clear = !defaultsExist && !this.showNoneOption;
       this.listActions.reset = defaultsExist;
     }
 

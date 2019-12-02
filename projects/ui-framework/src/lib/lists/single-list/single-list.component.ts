@@ -37,8 +37,6 @@ export class SingleListComponent extends BaseListElement {
     };
   }
 
-  @Input() showNoneOption = false;
-
   headerClick(header: ListHeader): void {
     if (this.options.length > 1) {
       this.toggleGroupCollapse(header);

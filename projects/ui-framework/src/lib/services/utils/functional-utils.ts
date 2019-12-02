@@ -45,8 +45,8 @@ export const isEmptyString = (val: any): boolean => !isNotEmptyString(val);
 
 export const isArray = (val: any): boolean => val && Array.isArray(val);
 
-export const isNotEmptyArray = (val: any): boolean =>
-  isArray(val) && val.length > 0;
+export const isNotEmptyArray = (val: any, min = 0): boolean =>
+  isArray(val) && val.length > min;
 
 export const isEmptyArray = (val: any): boolean => !isNotEmptyArray(val);
 
@@ -218,7 +218,12 @@ export const hasChanges = (
   if (!keys) {
     keys = Object.keys(changes);
   }
-  return !!keys.find(i => !!changes[i]);
+  return !!keys.find(
+    i =>
+      changes[i] !== undefined &&
+      (changes[i].currentValue !== undefined ||
+        changes[i].previousValue !== undefined)
+  );
 };
 
 export const firstChanges = (

@@ -96,6 +96,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
   private getDisplayValue(selectedIDs: (string | number)[]): string {
     const option =
       selectedIDs &&
+      this.options &&
       arrayFlatten(this.options.map(group => group.options)).find(
         (opt: SelectOption) => selectedIDs.includes(opt.id)
       );

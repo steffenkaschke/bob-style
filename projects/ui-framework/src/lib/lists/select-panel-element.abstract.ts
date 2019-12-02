@@ -123,22 +123,22 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       this.destroyPanel();
     }
 
-    if (changes.options && !this.fitOptionsToValue) {
+    if (hasChanges(changes, ['options']) && !this.fitOptionsToValue) {
       this.options = changes.options.currentValue;
       this.value = this.modelSrvc.getSelectedIDs(this.options);
     }
 
-    if (changes.options && this.fitOptionsToValue) {
+    if (hasChanges(changes, ['options']) && this.fitOptionsToValue) {
       this.writeValue(this.value, changes.options.currentValue);
     }
 
-    if (changes.value) {
+    if (hasChanges(changes, ['value'])) {
       this.writeValue(changes.value.currentValue, this.options);
     }
 
     this.onNgChanges(changes);
 
-    if (changes.options && !this.fitOptionsToValue) {
+    if (hasChanges(changes, ['options']) && !this.fitOptionsToValue) {
       this.setDisplayValue();
     }
 
@@ -178,7 +178,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
       this.setDisplayValue();
     } else {
-      console.warn(`Provided value (${value}) is not valid.`);
+      console.warn(
+        `Provided value (${typeof value}: ${value}) is not valid. It should be an array of selected IDs.`
+      );
     }
   }
 
