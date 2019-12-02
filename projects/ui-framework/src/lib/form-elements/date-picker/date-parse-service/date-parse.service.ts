@@ -151,6 +151,8 @@ export class DateParseService {
       resultItems = split.length;
     }
 
+    console.log('0 frmt', frmt);
+
     console.log('1 split', split);
 
     index.day = split.findIndex(
@@ -167,12 +169,18 @@ export class DateParseService {
 
     onlyDay =
       resultItems === 1 &&
-      !onlyYear && //frmt.
-      (index.day > -1 || (index.day === -1 && index.month === -1));
+      !onlyYear &&
+      (index.day > -1 ||
+        (index.day === -1 &&
+          index.month === -1 &&
+          frmt.index.day > frmt.items));
 
     onlyMonth =
       (frmt.items === 1 && frmt.index.month === 0) ||
-      (resultItems === 1 && !onlyYear && !onlyDay) ||
+      (resultItems === 1 &&
+        !onlyYear &&
+        !onlyDay &&
+        frmt.index.month < frmt.index.day) ||
       (resultItems === 2 && index.year > -1);
 
     console.log(

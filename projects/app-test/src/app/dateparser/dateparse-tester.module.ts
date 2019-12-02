@@ -71,7 +71,7 @@ export class DateParseTesterComponent {
 
     Object.keys(DateParseServiceTest).forEach(format => {
       Object.keys(DateParseServiceTest[format])
-        .filter(k => DateParseServiceTest[format][k].only)
+        // .filter(k => DateParseServiceTest[format][k].only)
         .forEach(date => {
           const parsed = DateParseService.prototype.parseDate(
             format as any,

@@ -1,15 +1,5 @@
 import { thisYear, thisMonth } from '../../../services/utils/functional-utils';
 
-// const thisDay = (pad = true) => {
-//   return pad ? '07' : 7;
-// };
-// const thisMonth = (pad = true, mod = 0, name = false) => {
-//   return name ? 'Jul' : pad ? '07' : 7;
-// };
-// const thisYear = (short = false) => {
-//   return short ? '19' : 2019;
-// };
-
 export const DateParseServiceTest = {
   'dd/MM/yyyy': {
     '02 03 2010': {
@@ -655,13 +645,10 @@ export const DateParseServiceTest = {
       result: '03/2010',
       resultStrict: '03/2010',
     },
-    /////////
     '04': {
       result: '04/' + thisYear(),
       resultStrict: null,
-      only: true,
     },
-    /////////
     '20': {
       result: thisMonth() + '/' + thisYear(),
       resultStrict: null,
@@ -698,13 +685,10 @@ export const DateParseServiceTest = {
     '10 feb 2010': { result: '02', resultStrict: '10' },
     '20 5 2010': { result: '05', resultStrict: thisMonth() },
     '5-20-2010': { result: '05', resultStrict: '05' },
-    ////////////
     '20 02': {
       result: '02',
       resultStrict: thisMonth(),
-      // only: true,
     },
-    ////////////
     '02 05': {
       result: '02',
       resultStrict: '02',
@@ -722,13 +706,10 @@ export const DateParseServiceTest = {
       result: thisMonth(),
       resultStrict: thisMonth(),
     },
-    ////////////
     '2010': {
       result: '01',
       resultStrict: thisMonth(),
-      // only: true
     },
-    ////////////
     '2010 feb 10': {
       result: '02',
       resultStrict: thisMonth(),
