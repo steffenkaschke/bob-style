@@ -117,9 +117,25 @@ const note = `
   - Consumer can provide the form elements, and \`[quickFilters]\`  QuickFilterConfig array.\
    Elements will be initialized/bound  <u>automatically</u> according to QuickFilterConfig's.<br>\
     Change events from all components are combined into single \`(filtersChange)\` output.
-  <br><br>
-  <strong>Note:</strong> Form elements and/or QuickFilterConfig's can be added/updated dynamically.
+  <br>
+  Form elements and/or QuickFilterConfig's can be added/updated dynamically.
   </span>
+
+  <strong><u>Note:</u></strong>
+    There is a seemingly weird behaviour: on init, all form \
+    elements inside Quick Filter Layout will emit change event with value of **NaN**.<br>\
+     This is needed to propagate/update \
+    properties bound from QuickFilterConfig. <br>\
+    If it gets in the way, you can filter it out in your event handlers:
+
+~~~
+onChange(event){
+    if (event === event) { // NaN === NaN is always false
+      doStuff();
+    }
+}
+~~~
+
 
   -----------
 

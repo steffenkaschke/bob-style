@@ -129,4 +129,6 @@ export enum Icons {
   chat = 'b-icon-chat',
   at = 'b-icon-at',
   drag_alt = 'b-icon-drag-alt',
+  person_peer = 'b-icon-person-peer',
+  person_sub = 'b-icon-person-sub',
 }
