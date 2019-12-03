@@ -56,6 +56,7 @@
     <b-button (clicked)="onOk()"
               [disabled]="showProgress || dialogButtons.ok.disabled"
               [size]="buttonSize.medium"
+              [type]="(showConfirmation ? dialogButtons.confirmation.buttonType : dialogButtons.ok.type) || buttonType.primary"
               class="dialog-button ok-button{{dialogButtons.ok.class ? ' ' + dialogButtons.ok.class : ''}}">
       {{showConfirmation ? dialogButtons.confirmation.buttonLabel : dialogButtons.ok.label}}
     </b-button>

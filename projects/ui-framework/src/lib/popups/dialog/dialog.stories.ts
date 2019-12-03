@@ -86,6 +86,7 @@ export class YourDialogComponent implements OnInit {
     this.dialogButtonConfig = {
       ok: {
         label: 'Ok',
+        type: ButtonType.primary,
         class: 'ok-button-666',
         disabled: false,
         action: ...
@@ -124,6 +125,32 @@ export class YourDialogComponent implements OnInit {
   export class YourModule {
   }
   ~~~
+
+  #### interface DialogButtons
+  Name | Type | Description
+  --- | --- | ---
+  ok | DialogButton | ok button config
+  cancel | DialogButton | cancel button config
+  preloaderMessage | string | message to show while loading data
+  confirmation | DialogConfirmation | confirmation dialog config
+
+  #### interface DialogButton
+  Name | Type | Description
+  --- | --- | ---
+  label | string | button text
+  class | boolean | class to be added to the button
+  type | ButtonType | button type (primary, negative...)
+  disabled | boolean | if is disabled
+  action | Function | will be invoked on button click
+
+  #### interface DialogConfirmation
+  Name | Type | Description
+  --- | --- | ---
+  title | string | confirm dialog title
+  subTitle | string | subtitle
+  buttonLabel | string | confirm button text
+  buttonClass | string confirm button class
+  buttonType | ButtonType | confirm button type (primary, negative...)
 
 `;
 story.add(
