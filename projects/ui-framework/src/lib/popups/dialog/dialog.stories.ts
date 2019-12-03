@@ -149,7 +149,7 @@ export class YourDialogComponent implements OnInit {
   title | string | confirm dialog title
   subTitle | string | subtitle
   buttonLabel | string | confirm button text
-  buttonClass | string confirm button class
+  buttonClass | string | confirm button class
   buttonType | ButtonType | confirm button type (primary, negative...)
 
 `;
