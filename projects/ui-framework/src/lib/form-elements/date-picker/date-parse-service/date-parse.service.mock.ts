@@ -187,7 +187,7 @@ export const DateParseServiceTest = {
       resultStrict: null,
     },
     '02': {
-      result: thisMonth(true, 0, true) + '/02/' + thisYear(),
+      result: 'Feb/01/' + thisYear(),
       resultStrict: null,
     },
     '2010': { result: 'Jan/01/2010', resultStrict: null },
@@ -274,7 +274,7 @@ export const DateParseServiceTest = {
       resultStrict: null,
     },
     '02': {
-      result: thisYear() + '/' + thisMonth() + '/02',
+      result: thisYear() + '/02/01',
       resultStrict: null,
     },
     '2010': { result: '2010/01/01', resultStrict: null },
@@ -313,7 +313,7 @@ export const DateParseServiceTest = {
       resultStrict: null,
     },
     '02': {
-      result: thisYear(true) + '/' + thisMonth() + '/02',
+      result: thisYear(true) + '/02/01',
       resultStrict: null,
     },
     '2 2010 20 5': {
@@ -404,7 +404,7 @@ export const DateParseServiceTest = {
       resultStrict: null,
     },
     '02': {
-      result: thisMonth(true, 0, true) + '-02-' + thisYear(),
+      result: 'Feb-01-' + thisYear(),
       resultStrict: null,
     },
     '20': {
@@ -464,7 +464,7 @@ export const DateParseServiceTest = {
       resultStrict: null,
     },
     '02': {
-      result: thisMonth() + '-02-' + thisYear(),
+      result: '02-01-' + thisYear(),
       resultStrict: null,
     },
     '2010': { result: '01-01-2010', resultStrict: null },
@@ -708,16 +708,16 @@ export const DateParseServiceTest = {
     },
     '2010': {
       result: '01',
-      resultStrict: thisMonth(),
+      resultStrict: '01', //thisMonth(),
     },
     '2010 feb 10': {
       result: '02',
-      resultStrict: thisMonth(),
+      resultStrict: '01',
     },
-    '2010 5 20': { result: '05', resultStrict: thisMonth() },
-    '2010/5/3': { result: '05', resultStrict: thisMonth() },
+    '2010 5 20': { result: '05', resultStrict: '01' },
+    '2010/5/3': { result: '05', resultStrict: '01' },
     '5 2010 3': { result: '05', resultStrict: '05' },
-    '2010 05': { result: '05', resultStrict: thisMonth() },
+    '2010 05': { result: '05', resultStrict: '01' },
     'may 2010': { result: '05', resultStrict: '05' },
     '2 2010 20 5': { result: '02', resultStrict: '02' },
   },
@@ -733,6 +733,14 @@ export const DateParseServiceTest = {
     '02 04 9999': {
       result: '02.04.2019',
       resultStrict: '02.04.2019',
+    },
+    '2 3 81': {
+      result: '02.03.1981',
+      resultStrict: '02.03.1981',
+    },
+    '81 21': {
+      result: '21.12.1981',
+      resultStrict: null,
     },
   },
 };
