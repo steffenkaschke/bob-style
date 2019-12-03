@@ -12,11 +12,11 @@ fdescribe('DateParseService', () => {
 
           const parsedStrict = parser.parseDate(format as any, date, true);
 
-          expect(parsed.displayValue).toEqual(
+          expect(parsed.value).toEqual(
             DateParseServiceTest[format][date].result
           );
 
-          expect(parsedStrict.displayValue).toEqual(
+          expect(parsedStrict.value).toEqual(
             DateParseServiceTest[format][date].resultStrict
           );
         });

@@ -24,13 +24,10 @@ export interface FormatParserResult {
     month: number;
     year: number;
   };
-
-  example: string;
 }
 export interface DateParseResult {
   valid: boolean;
   format: string;
   value: string;
   date: Date;
-  displayValue: string;
 }

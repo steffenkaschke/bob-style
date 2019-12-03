@@ -7,10 +7,7 @@
 
 <div class="bfe-wrap has-suffix"
      #inputWrap
-     [ngClass]="{
-        focused: inputFocused[0],
-        invalid: inputValid[0]===false
-     }">
+     [ngClass]="{focused: inputFocused[0]}">
 
   <input #input
          class="bfe-input"
@@ -34,8 +31,12 @@
 
   <input type="text"
          class="dpi-ghost-input"
+         readonly
+         tabindex="-1"
+         aria-hidden="true"
          [disabled]="disabled"
          [matDatepicker]="picker"
+         [value]="value"
          (dateChange)="transmit($event.value)"
          [min]="minDate || null"
          [max]="maxDate || null">

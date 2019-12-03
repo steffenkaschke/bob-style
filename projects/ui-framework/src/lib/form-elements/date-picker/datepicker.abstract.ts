@@ -25,7 +25,8 @@ import {
   isKey,
   cloneValue,
   isFalsyOrEmpty,
-  applyChanges,
+  hasProp,
+  hasChanges,
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
 import { MatDatepicker } from '@angular/material';
@@ -40,7 +41,8 @@ import { set } from 'lodash';
 import { DatepickerType } from './datepicker.enum';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { Styles } from '../../services/html/html-helpers.interface';
-import { DateParseResult, FormatParserResult } from './datepicker.interface';
+import { DateParseResult } from './datepicker.interface';
+import { DISPLAY_DATE_FORMAT_DEF } from '../../consts';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, AfterViewInit, OnDestroy {
@@ -56,8 +58,10 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   ) {
     super(cd);
 
-    this.dateFormat = this.dateAdapter.getFormat();
-    this.parsedFormat = this.dateAdapter.getParsedFormat();
+    this.dateAdapterFormat =
+      (hasProp(this.dateAdapter, 'getFormat', false) &&
+        this.dateAdapter.getFormat()) ||
+      DISPLAY_DATE_FORMAT_DEF;
   }
 
   @ViewChild('inputWrap', { static: true }) inputWrap: ElementRef;
@@ -73,7 +77,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     DatepickerType.date;
 
   @Input() allowKeyInput = true;
-  @Input() dateFormat = 'dd/mm/yyyy';
+  @Input() dateFormat;
   @Input() panelClass: string;
 
   @Output(FormEvents.dateChange) changed: EventEmitter<
@@ -82,7 +86,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   public isMobile = false;
   public inputFocused: boolean[] = [];
-  public inputValid: boolean[] = [];
 
   protected overlayStylesDef: Styles = {};
 
@@ -98,7 +101,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   private doneFirstChange = false;
   private useFormatForPlaceholder = false;
-  private parsedFormat: FormatParserResult;
+  private dateAdapterFormat;
 
   protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
 
@@ -127,6 +130,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     if (this.value) {
       this.cd.detectChanges();
     }
+
     if (isFalsyOrEmpty(this.value, true)) {
       this.value = cloneValue(this.baseValue);
     }
@@ -151,16 +155,16 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   onNgChanges(changes: SimpleChanges): void {
     this.allPickers(picker => this.closePicker(picker));
 
-    if (changes.minDate) {
+    if (hasChanges(changes, ['minDate'])) {
       this.minDate = dateOrFail(changes.minDate.currentValue);
     }
 
-    if (changes.maxDate) {
+    if (hasChanges(changes, ['maxDate'])) {
       this.maxDate = dateOrFail(changes.maxDate.currentValue);
     }
 
-    if (changes.dateFormat) {
-      this.parsedFormat = this.dateParseSrvc.parseFormat(this.dateFormat);
+    if (!this.dateFormat) {
+      this.dateFormat = this.dateAdapterFormat || DISPLAY_DATE_FORMAT_DEF;
     }
 
     if (
@@ -340,10 +344,11 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public clearInput(index: number = 0, path = 'value'): void {
-    this.getInput(index).value = '';
+    // this.getInput(index).value = '';
+
     set(this, path, null);
     this.cd.detectChanges();
-    this.transmit();
+    // this.transmit();
   }
 
   public onInputFocus(index: number = 0): void {
@@ -397,9 +402,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   public onInputChange(parsed: DateParseResult, index: number = 0): void {
     const picker = this.getPicker(index);
 
-    this.inputValid[index] = parsed.valid;
+    console.log('onInputChange', parsed);
 
-    if (parsed.valid) {
+    if (picker) {
       picker.select(parsed.date);
     }
   }

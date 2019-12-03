@@ -6,7 +6,7 @@ import {
   EventEmitter,
   HostBinding,
   SimpleChanges,
-  OnChanges
+  OnChanges,
 } from '@angular/core';
 import { ChipType } from '../chips.enum';
 import { Icons, IconSize, IconColor } from '../../icons/icons.enum';
@@ -15,7 +15,7 @@ import { applyChanges } from '../../services/utils/functional-utils';
 @Component({
   selector: 'b-chip, [b-chip]',
   templateUrl: './chip.component.html',
-  styleUrls: ['./chip.component.scss']
+  styleUrls: ['./chip.component.scss'],
 })
 export class ChipComponent implements OnChanges {
   constructor(public chip: ElementRef) {}
@@ -36,14 +36,23 @@ export class ChipComponent implements OnChanges {
   readonly iconSize = IconSize;
 
   ngOnChanges(changes: SimpleChanges) {
-    applyChanges(this, changes, {
-      type: ChipType.tag
-    });
+    applyChanges(
+      this,
+      changes,
+      {
+        type: ChipType.tag,
+      },
+      [],
+      true
+    );
 
     if (changes.type || changes.icon) {
       const chipEl = this.chip.nativeElement as HTMLElement;
 
-      if (this.type === ChipType.icon || (changes.type && changes.type.previousValue === ChipType.icon)) {
+      if (
+        this.type === ChipType.icon ||
+        (changes.type && changes.type.previousValue === ChipType.icon)
+      ) {
         chipEl.className = chipEl.className
           .split(' ')
           .filter((c: string) => Boolean(c.trim()) && !c.includes('b-icon'))

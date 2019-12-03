@@ -22,7 +22,7 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 const template = `
 <b-datepicker [value]="value"
               [type]="pickerType"
-              [dateFormat]="'yyyy'"
+              [dateFormat]="dateFormat"
               [minDate]="minDate"
               [maxDate]="maxDate"
               [label]="label"
@@ -100,17 +100,9 @@ story.add(
           'value',
           [
             '',
-            `${thisYear()}-${
-              thisMonth<number>(false) !== 1
-                ? thisMonth(false, -1)
-                : thisMonth(false)
-            }-9`,
+            `${thisYear()}-${Math.max(1, thisMonth(false, -1))}-9`,
             `${thisYear()}-${thisMonth()}-23`,
-            `${thisYear()}-${
-              thisMonth<number>(false) !== 12
-                ? thisMonth(false, 1)
-                : thisMonth(false)
-            }-19`,
+            `${thisYear()}-${Math.min(12, thisMonth(false, 1))}-19`,
           ],
           ''
         ),
@@ -123,11 +115,7 @@ story.add(
           'minDate',
           [
             '',
-            `${thisYear()}-${
-              thisMonth<number>(false) !== 1
-                ? thisMonth(false, -1)
-                : thisMonth(false)
-            }-5`,
+            `${thisYear()}-${Math.max(1, thisMonth(false, -1))}-5`,
             `${thisYear()}-${thisMonth()}-7`,
           ],
           ''
@@ -137,17 +125,13 @@ story.add(
           [
             '',
             `${thisYear()}-${thisMonth()}-25`,
-            `${thisYear()}-${
-              thisMonth<number>(false) !== 12
-                ? thisMonth(false, 1)
-                : thisMonth(false)
-            }-15`,
+            `${thisYear()}-${Math.min(12, thisMonth(false, 1))}-15`,
           ],
           ''
         ),
         label: text('label', 'Date picker'),
-        description: text('description', mockText(30)),
         placeholder: text('placeholder', ''),
+        description: text('description', mockText(30)),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         disabled: boolean('disabled', false),
         required: boolean('required', false),

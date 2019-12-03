@@ -138,10 +138,16 @@ export class EditableListComponent implements OnChanges, OnInit {
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    applyChanges(this, changes, {
-      list: [],
-      allowedActions: cloneObject(EDITABLE_LIST_ALLOWED_ACTIONS_DEF),
-    });
+    applyChanges(
+      this,
+      changes,
+      {
+        list: [],
+        allowedActions: cloneObject(EDITABLE_LIST_ALLOWED_ACTIONS_DEF),
+      },
+      [],
+      true
+    );
 
     if (changes.list) {
       this.listViewModel = this.list.map((item: SelectOption) => ({

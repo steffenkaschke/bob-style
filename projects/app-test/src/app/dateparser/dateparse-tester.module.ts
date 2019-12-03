@@ -59,81 +59,79 @@ export class DateParseTesterComponent {
   }
 
   ngAfterViewInit() {
-    // this.onValueChange(this.dateStr);
+    this.onValueChange(this.dateStr);
   }
 
   ngOnInit() {
-    let counter = 0;
+    const doTest = true;
 
-    // test 1
+    if (doTest) {
+      let counter = 0;
 
-    console.time('test');
+      console.time('test');
+      Object.keys(DateParseServiceTest).forEach(format => {
+        Object.keys(DateParseServiceTest[format])
+          // .filter(k => DateParseServiceTest[format][k].only)
+          .forEach(date => {
+            const parsed = DateParseService.prototype.parseDate(
+              format as any,
+              date
+            );
 
-    Object.keys(DateParseServiceTest).forEach(format => {
-      Object.keys(DateParseServiceTest[format])
-        // .filter(k => DateParseServiceTest[format][k].only)
-        .forEach(date => {
-          const parsed = DateParseService.prototype.parseDate(
-            format as any,
-            date
-          );
+            const parsedStrict = DateParseService.prototype.parseDate(
+              format as any,
+              date,
+              true
+            );
 
-          const parsedStrict = DateParseService.prototype.parseDate(
-            format as any,
-            date,
-            true
-          );
+            if (parsed.value !== DateParseServiceTest[format][date].result) {
+              ++counter;
 
-          if (
-            parsed.displayValue !== DateParseServiceTest[format][date].result
-          ) {
-            ++counter;
+              const message =
+                '=======> FAILED: ' +
+                date +
+                ' (' +
+                format +
+                ') => expected ' +
+                DateParseServiceTest[format][date].result +
+                ', instead saw: ' +
+                parsed.value;
 
-            const message =
-              '=======> FAILED: ' +
-              date +
-              ' (' +
-              format +
-              ') => expected ' +
-              DateParseServiceTest[format][date].result +
-              ', instead saw: ' +
-              parsed.displayValue;
-
-            if (parsed.displayValue === null) {
-              console.warn(message);
-            } else {
-              console.log(message);
+              if (parsed.value === null) {
+                console.warn(message);
+              } else {
+                console.log(message);
+              }
             }
-          }
 
-          if (
-            parsedStrict.displayValue !==
-            DateParseServiceTest[format][date].resultStrict
-          ) {
-            ++counter;
+            if (
+              parsedStrict.value !==
+              DateParseServiceTest[format][date].resultStrict
+            ) {
+              ++counter;
 
-            const message =
-              '=======> FAILED STRICT: ' +
-              date +
-              ' (' +
-              format +
-              ') => expected ' +
-              DateParseServiceTest[format][date].resultStrict +
-              ', instead saw: ' +
-              parsedStrict.displayValue;
+              const message =
+                '=======> FAILED STRICT: ' +
+                date +
+                ' (' +
+                format +
+                ') => expected ' +
+                DateParseServiceTest[format][date].resultStrict +
+                ', instead saw: ' +
+                parsedStrict.value;
 
-            if (parsedStrict.displayValue === null) {
-              console.warn(message);
-            } else {
-              console.log(message);
+              if (parsedStrict.value === null) {
+                console.warn(message);
+              } else {
+                console.log(message);
+              }
             }
-          }
-        });
-    });
+          });
+      });
+      console.timeEnd('test');
 
-    console.timeEnd('test');
-
-    console.log('TOTAL FAILED: ', counter);
+      console.log('TOTAL FAILED: ', counter);
+    }
   }
 }
 

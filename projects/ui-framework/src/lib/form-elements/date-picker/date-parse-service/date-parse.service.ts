@@ -25,7 +25,6 @@ export class DateParseService {
     const result: Partial<FormatParserResult> = {
       format: frmt.trim().replace(/\s+/g, ' '),
       valid: false,
-      example: null,
       items: 0,
       length: {
         day: 0,
@@ -91,8 +90,6 @@ export class DateParseService {
 
     result.format = split.join(result.separator);
 
-    result.example = format(new Date(), result.format);
-
     return result as FormatParserResult;
   }
 
@@ -109,9 +106,8 @@ export class DateParseService {
       result: Partial<DateParseResult> = {
         valid: false,
         format: frmt.format,
-        value: value,
+        value: null,
         date: null,
-        displayValue: null,
       },
       index = {
         day: null,
@@ -130,7 +126,7 @@ export class DateParseService {
       result.date = new Date(value);
     }
 
-    if (!isString(value)) {
+    if (!isString(value) || !frmt.valid) {
       return result as DateParseResult;
     }
 
@@ -214,20 +210,18 @@ export class DateParseService {
 
     // parsed result
 
-    const resultOrigOrder = [];
-
-    resultOrigOrder[index.day] = resultValue[frmt.index.day] =
+    resultValue[frmt.index.day] =
       onlyMonth || onlyYear
         ? '01'
         : padWith0(split[index.day], 2) || thisDay(frmt.length.day === 2) + '';
 
-    resultOrigOrder[index.month] = resultValue[frmt.index.month] =
+    resultValue[frmt.index.month] =
       onlyYear && !onlyMonth
         ? '01'
         : padWith0(split[index.month], 2) ||
           thisMonth(frmt.length.month === 2) + '';
 
-    resultOrigOrder[index.year] = resultValue[frmt.index.year] =
+    resultValue[frmt.index.year] =
       split[index.year] &&
       ((split[index.year].length < 3 && parseInt(split[index.year], 10) > 30) ||
         (split[index.year].length === 4 &&
@@ -266,12 +260,9 @@ export class DateParseService {
       );
     }
 
-    // assembling result
+    // assembling final result
 
     result.value = resultValue.join(frmt.separator);
-    result.format = resultFormat.join(frmt.separator);
-
-    // getting date
 
     result.date = new Date(
       parseInt(resultValue[frmt.index.year], 10),
@@ -281,24 +272,20 @@ export class DateParseService {
 
     result.date = isDate(result.date)
       ? result.date
-      : parse(result.value, result.format, new Date());
-
-    // final result
+      : parse(result.value, resultFormat.join(frmt.separator), new Date());
 
     result.date = isDate(result.date) ? result.date : null;
-
     result.valid = result.date !== null;
-
-    result.displayValue =
-      (result.valid && format(result.date, frmt.format)) || null;
+    result.value = (result.valid && format(result.date, frmt.format)) || null;
 
     return result as DateParseResult;
   }
 
   getDisplayDate(frmt: Partial<FormatParserResult>, date: Date): string {
-    if (!frmt.valid || !isDate(date)) {
+    if (!frmt || !frmt.valid || !isDate(date)) {
       return null;
     }
-    return format(date, frmt.format);
+    const displayDate = format(date, frmt.format);
+    return !displayDate.toLowerCase().includes('invalid') ? displayDate : null;
   }
 }

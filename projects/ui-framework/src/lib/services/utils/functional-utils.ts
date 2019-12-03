@@ -57,8 +57,14 @@ export const isEmptyArray = (val: any): boolean =>
 export const isObject = (val: any): boolean =>
   val && !isArray(val) && typeof val !== 'function' && val === Object(val);
 
-export const hasProp = (obj: GenericObject, key: string): boolean =>
-  isObject(obj) && obj.hasOwnProperty(key);
+export const hasProp = (
+  obj: GenericObject,
+  key: string,
+  strict = true
+): boolean =>
+  isObject(obj) &&
+  ((strict && Object.prototype.hasOwnProperty.call(obj, key)) ||
+    (!strict && typeof obj.key !== undefined));
 
 export const isNotEmptyObject = (val: any): boolean =>
   isObject(val) && Object.keys(val).length > 0;
@@ -69,8 +75,7 @@ export const isEmptyObject = (val: any): boolean =>
 export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
   isNullOrUndefined(smth) ||
   smth === false ||
-  (fuzzy && smth === '') ||
-  (fuzzy && smth === 0) ||
+  (fuzzy && !Boolean(smth)) ||
   isEmptyArray(smth) ||
   isEmptyObject(smth);
 
@@ -215,7 +220,8 @@ export const padWith0 = (number: string | number, digits = 2): string => {
 
 export const hasChanges = (
   changes: SimpleChanges,
-  keys: string[] = null
+  keys: string[] = null,
+  discardAllFalsey = false
 ): boolean => {
   if (!keys) {
     keys = Object.keys(changes);
@@ -224,7 +230,9 @@ export const hasChanges = (
     i =>
       changes[i] !== undefined &&
       (changes[i].currentValue !== undefined ||
-        changes[i].previousValue !== undefined)
+        changes[i].previousValue !== undefined) &&
+      (!discardAllFalsey ||
+        (discardAllFalsey && Boolean(changes[i].currentValue)))
   );
 };
 
@@ -252,12 +260,16 @@ export const applyChanges = (
   target: any,
   changes: SimpleChanges,
   defaults: GenericObject = {},
-  skip: string[] = []
+  skip: string[] = [],
+  discardAllFalsey = false
 ): void => {
   Object.keys(changes).forEach((change: string) => {
     if (!skip.includes(change)) {
       target[change] =
-        isNullOrUndefined(changes[change].currentValue) && defaults[change]
+        defaults[change] &&
+        ((!discardAllFalsey &&
+          isNullOrUndefined(changes[change].currentValue)) ||
+          (discardAllFalsey && !Boolean(changes[change].currentValue)))
           ? defaults[change]
           : changes[change].currentValue;
     }
