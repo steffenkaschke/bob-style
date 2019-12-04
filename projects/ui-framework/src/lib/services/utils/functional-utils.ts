@@ -64,7 +64,7 @@ export const hasProp = (
 ): boolean =>
   isObject(obj) &&
   ((strict && Object.prototype.hasOwnProperty.call(obj, key)) ||
-    (!strict && typeof obj.key !== undefined));
+    (!strict && typeof obj[key] !== 'undefined'));
 
 export const isNotEmptyObject = (val: any): boolean =>
   isObject(val) && Object.keys(val).length > 0;

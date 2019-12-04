@@ -7,14 +7,17 @@
 
 <div class="bfe-wrap has-suffix"
      #inputWrap
-     [ngClass]="{focused: inputFocused[0]}">
+     [ngClass]="{focused: inputFocused[0],
+                'panel-above': panelPosition === panelPos.above,
+                'panel-below': panelPosition === panelPos.below}">
 
   <input #input
          class="bfe-input"
-         [bDateInput]="dateFormat"
+         [bDateInput]="dateFormats[type]"
          [date]="value"
          [min]="minDate || null"
          [max]="maxDate || null"
+         [setTo]="type === types.month ? dateAdjust.startOfMonth : null"
          (parsed)="onInputChange($event)"
          [readonly]="!allowKeyInput"
          autocomplete="off"
@@ -36,7 +39,6 @@
          aria-hidden="true"
          [disabled]="disabled"
          [matDatepicker]="picker"
-         [value]="value"
          (dateChange)="transmit($event.value)"
          [min]="minDate || null"
          [max]="maxDate || null">

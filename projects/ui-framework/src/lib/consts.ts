@@ -27,8 +27,6 @@ export const mobileBreakpoint = 768;
 
 export const SERVER_DATE_FORMAT = 'yyyy-MM-dd';
 
-export const DISPLAY_DATE_FORMAT_DEF = 'dd/MM/yyyy';
-
 export const LOCALE_FORMATS: DateLocaleFormats = {
   'DD/MM/YYYY': {
     DayMonth: 'dd/MM',
@@ -85,3 +83,7 @@ export const LOCALE_FORMATS: DateLocaleFormats = {
     ShortDate: 'MMM-d-yy',
   },
 };
+
+export const DISPLAY_DATE_FORMAT_DEF = LOCALE_FORMATS['DD/MM/YYYY'].FullDate;
+
+export const DISPLAY_MONTH_FORMAT_DEF = LOCALE_FORMATS['DD/MM/YYYY'].MonthYear;

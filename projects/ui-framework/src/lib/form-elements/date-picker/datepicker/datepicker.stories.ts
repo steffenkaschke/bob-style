@@ -63,9 +63,7 @@ const note = `
   [label] | string | label text (above input) | &nbsp;
   [description] | string | description text (above icon) | &nbsp;
   [placeholder] | string | placeholder text (inside input) | &nbsp;
-  [dateFormat] | string | string, representing date format (will also be used as default placeholder)<br>
-  <strong>Note:</strong> this input is necessary for proper date \
-  parsing (use userLocaleService.<wbr>getDateFormat())  | &nbsp;
+  [dateFormat] | string | string, representing date format (will also be used as default placeholder) | &nbsp;
   [hideLabelOnFocus] | boolean | places label in placeholder position | false
   [disabled] | boolean | is field disabled | false
   [required] | boolean | is field required | false

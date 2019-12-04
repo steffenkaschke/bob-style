@@ -50,7 +50,9 @@ export type DateFormat =
   | 'dd-M-yy'
   | 'M-dd-yy'
   | 'dd-MMM-yy'
-  | 'MMM-d-yy';
+  | 'MMM-d-yy'
+  | 'MM/yyyy'
+  | 'MM-yyyy';
 
 export type DateFormatDayMonth =
   | 'dd/MM'
@@ -67,7 +69,9 @@ export type DateFormatMonthYear =
   | 'MMM/yy'
   | 'yy/MM'
   | 'MMM-yy'
-  | 'MM-yy';
+  | 'MM-yy'
+  | 'MM/yyyy'
+  | 'MM-yyyy';
 
 export type DateFormatFullDate =
   | 'dd/MM/yyyy'

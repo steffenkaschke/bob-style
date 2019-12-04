@@ -1,3 +1,5 @@
+import { DateFormat } from '../../types';
+
 export interface DateRangePickerValue {
   from: string;
   to: string;
@@ -6,7 +8,7 @@ export interface DateRangePickerValue {
 export type DateFormatKeys = 'day' | 'month' | 'year';
 
 export interface FormatParserResult {
-  format: string;
+  format: DateFormat;
   valid: boolean;
   items: number;
   separator: string;
@@ -27,7 +29,7 @@ export interface FormatParserResult {
 }
 export interface DateParseResult {
   valid: boolean;
-  format: string;
+  format: DateFormat;
   value: string;
   date: Date;
 }

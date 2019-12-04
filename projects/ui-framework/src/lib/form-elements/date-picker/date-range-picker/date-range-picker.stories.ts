@@ -13,7 +13,7 @@ import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-lay
 import { DateRangePickerModule } from './date-range-picker.module';
 import { thisMonth, thisYear } from '../../../services/utils/functional-utils';
 import { DatepickerType } from '../datepicker.enum';
-import { BDateAdapterMock } from '../dateadapter.mock';
+import { BDateAdapterMock, UserLocaleServiceMock } from '../dateadapter.mock';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -21,6 +21,7 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 const template = `
 <b-date-range-picker [value]="value"
               [type]="pickerType"
+              [dateFormat]="dateFormat"
               [minDate]="minDate"
               [maxDate]="maxDate"
               [label]="label"
@@ -64,7 +65,7 @@ const note = `
   [startDateLabel] | string | first datepicker label | &nbsp;
   [endDateLabel] | string | second datepicker label | &nbsp;
   [placeholder] | string | placeholder text (inside input) | &nbsp;
-  [dateFormat] | string | string, representing date format (to be used as default placeholder) | &nbsp;
+  [dateFormat] | string | string, representing date format (will also be used as default placeholder) | &nbsp;
   [hideLabelOnFocus] | boolean | places label in placeholder position | false
   [disabled] | boolean | is field disabled | false
   [required] | boolean | is field required | false
@@ -99,6 +100,12 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        userLocaleService: UserLocaleServiceMock,
+        dateFormat: select(
+          'dateFormat',
+          ['', 'dd/MM/yyyy', 'MM/dd/yyyy', 'yyyy/MM/dd', 'dd/MMM/yyyy'],
+          ''
+        ),
         value: select('value', mockValues, ''),
         pickerType: select(
           'type',

@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { NativeDateAdapter } from '@angular/material/core';
-import { LocaleFormat, DateLocaleFormatKeys } from '../../types';
-import { LOCALE_FORMATS } from '../../consts';
+import { LocaleFormat, DateLocaleFormatKeys, DateFormat } from '../../types';
+import {
+  LOCALE_FORMATS,
+  DISPLAY_DATE_FORMAT_DEF,
+  DISPLAY_MONTH_FORMAT_DEF,
+} from '../../consts';
 import { get } from 'lodash';
 import { format, parseISO } from 'date-fns';
 import { DateParseService } from './date-parse-service/date-parse.service';
@@ -28,6 +32,14 @@ export const UserLocaleServiceMock = {
       localeFormat
     );
 
+    if (dateFormat === undefined) {
+      throw new Error(
+        `${
+          UserLocaleServiceMock.dateFormat
+        } is not a valid User Locale date format.`
+      );
+    }
+
     return format(
       typeof dateToFormat === 'string' ? parseISO(dateToFormat) : dateToFormat,
       dateFormat
@@ -39,45 +51,45 @@ export const UserLocaleServiceMock = {
   providedIn: 'root',
 })
 export class BDateAdapterMock extends NativeDateAdapter {
-  public static readonly monthFormat = 'MMM';
-  public static readonly monthYearFormat = 'MMM yyyy';
+  public static readonly formatMonthYearLabel = 'MMM yyyy';
 
-  public static bFormat = get(
-    get(LOCALE_FORMATS, UserLocaleServiceMock.dateFormat),
-    LocaleFormat.FullDate
-  );
-
-  public static readonly bFormatParsed: FormatParserResult = DateParseService.prototype.parseFormat(
+  public static readonly formatFullDate: FormatParserResult = DateParseService.prototype.parseFormat(
     get(
       get(LOCALE_FORMATS, UserLocaleServiceMock.dateFormat),
       LocaleFormat.FullDate
-    )
+    ) || DISPLAY_DATE_FORMAT_DEF
   );
 
-  getFormat() {
-    return BDateAdapterMock.bFormat;
+  public static readonly formatMonthYear: FormatParserResult = DateParseService.prototype.parseFormat(
+    get(
+      get(LOCALE_FORMATS, UserLocaleServiceMock.dateFormat),
+      LocaleFormat.MonthYear
+    ) || DISPLAY_MONTH_FORMAT_DEF
+  );
+
+  getFormat(
+    displayFormat: LocaleFormat = LocaleFormat.FullDate
+  ): FormatParserResult {
+    switch (displayFormat) {
+      case LocaleFormat.MonthYear:
+        return BDateAdapterMock.formatMonthYear;
+      default:
+        return BDateAdapterMock.formatFullDate;
+    }
   }
 
-  getParsedFormat() {
-    return BDateAdapterMock.bFormatParsed;
+  getLocaleFormat(key: DateLocaleFormatKeys, frmt: LocaleFormat): DateFormat {
+    return get(get(LOCALE_FORMATS, key.toUpperCase()), frmt);
   }
 
   parse(value: any): Date | null {
-    console.log('-------BDateAdapterMock------Parse---------');
-
-    if (BDateAdapterMock.bFormatParsed.valid) {
-      return DateParseService.prototype.parseDate(
-        BDateAdapterMock.bFormatParsed,
-        value
-      ).date;
-    }
-
-    return null;
+    return DateParseService.prototype.parseDate(
+      BDateAdapterMock.formatFullDate,
+      value
+    ).date;
   }
 
   format(date: Date, displayFormat: any): string {
-    console.log('-------BDateAdapterMock------Format---------');
-
     switch (displayFormat) {
       case 'input':
         return UserLocaleServiceMock.getDisplayDate(
@@ -85,9 +97,12 @@ export class BDateAdapterMock extends NativeDateAdapter {
           LocaleFormat.FullDate
         );
       case 'inputMonth':
-        return format(date, BDateAdapterMock.monthFormat);
-      case 'monthYearFormat':
-        return format(date, BDateAdapterMock.monthYearFormat);
+        return UserLocaleServiceMock.getDisplayDate(
+          date,
+          LocaleFormat.MonthYear
+        );
+      case 'monthYearLabel':
+        return format(date, BDateAdapterMock.formatMonthYearLabel);
       default:
         return date.toDateString();
     }
@@ -98,8 +113,13 @@ export const B_DATE_FORMATS = {
   parse: {},
   display: {
     dateInput: 'input',
-    monthYearLabel: 'monthYearFormat',
-    dateA11yLabel: { day: 'numeric', month: 'long', year: 'numeric' },
+    monthYearLabel: 'monthYearLabel',
+
+    dateA11yLabel: {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    },
     monthYearA11yLabel: { month: 'short', year: 'numeric' },
   },
 };

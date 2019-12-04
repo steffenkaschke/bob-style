@@ -15,6 +15,7 @@ import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.s
 import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
 import { B_DATE_FORMATS } from '../dateadapter.mock';
 import { DateInputDirectiveModule } from '../date-input-directive/dateinput.directive.module';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [DatepickerComponent],
@@ -26,6 +27,7 @@ import { DateInputDirectiveModule } from '../date-input-directive/dateinput.dire
     InputMessageModule,
     FormElementLabelModule,
     DateInputDirectiveModule,
+    NoopAnimationsModule,
   ],
   exports: [DatepickerComponent],
   entryComponents: [],

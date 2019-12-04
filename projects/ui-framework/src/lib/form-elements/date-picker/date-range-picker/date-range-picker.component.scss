@@ -40,9 +40,9 @@
   border-right-width: 0;
 
   &.focused {
-    box-shadow: 1px 0 0 $input-focus-border-color;
-    position: relative;
-    z-index: 1;
+    & + .end-date-wrap {
+      border-left-color: $input-focus-border-color;
+    }
   }
 }
 

@@ -1,4 +1,11 @@
-import { Component, NgModule, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  NgModule,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   DateParseService,
@@ -41,14 +48,14 @@ import { BrowserModule } from '@angular/platform-browser';
   `,
   providers: [],
 })
-export class DateParseTesterComponent {
+export class DateParseTesterComponent implements AfterViewInit, OnInit {
   constructor() {}
 
   @ViewChild(DateInputDirective, { static: true, read: ElementRef })
   input: ElementRef;
 
-  formatStr: string = 'MMM/dd/yyyy';
-  dateStr: string = '2010/5/3';
+  formatStr = 'MMM/dd/yyyy';
+  dateStr = '2010/5/3';
 
   formatVars = Object.keys(DateParseServiceTest);
   dateStrVars = Object.keys(DateParseServiceTest['dd/MM/yyyy']);
