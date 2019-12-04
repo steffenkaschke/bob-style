@@ -97,6 +97,10 @@ $chipStateMap: (
     @include animate(blink, 0.3s);
   }
 
+  &[data-clickable='true'] {
+    cursor: pointer;
+  }
+
   &[tabindex='0']:focus,
   &.focused {
     position: relative;
