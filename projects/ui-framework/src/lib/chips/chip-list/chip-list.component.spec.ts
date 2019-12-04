@@ -13,7 +13,7 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { cloneDeep } from 'lodash';
 
-fdescribe('ChipListComponent', () => {
+describe('ChipListComponent', () => {
   let component: ChipListComponent;
   let fixture: ComponentFixture<ChipListComponent>;
   let componentEl: HTMLElement;
