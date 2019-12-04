@@ -22,7 +22,7 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 );
 
 const componentTemplate1 = `
-<b-editable-list tabindex="0" [list]="list === 'Ascending' ?listMockAsc : list === 'Descending' ? listMockDesc : listMock"
+<b-editable-list [list]="list === 'Ascending' ?listMockAsc : list === 'Descending' ? listMockDesc : listMock"
                   [sortType]="sortType !== 0 ? sortType : undefined"
                  [allowedActions]="{
                    sort: allowSort,
@@ -49,17 +49,34 @@ const note = `
 
   #### Properties
   Name | Type | Description | Default value
-  --- | --- | ---
-  [list] | SelectOption[] | flat list of SelectOption to edit | &nbsp;
+  --- | --- | --- | ---
+  [list] | SelectOption[] | flat list of SelectOption to edit | []
   [allowedActions] | EditableListActions | what actions are available (sort, add, remove)\
-   | all enabled
-  (changed) | SelectOption[] | emits updated list | &nbsp;
+   | EDITABLE-LIST<wbr>-ALLOWED-ACTIONS-DEF (all enabled)
+  [sortType] | ListSortType | this input can be used to control sorting from outside \
+   (provided sortType will be applied to current list) | &nbsp;
+  [translation] | EditableListTranslation | object with texts used in the component\
+   (button titles, etc) | EDITABLE-LIST-TRANSLATION
+  (changed) | EventEmitter<wbr>&lt;EditableListState&gt; | emits updated list | &nbsp;
 
 
   ~~~
-  ${componentTemplate1}
+<b-editable-list [list]="list"
+                 [sortType]="sortType"
+                 [allowedActions]="allowedActions"
+                 (changed)="onListUpdate($event)">
+</b-editable-list>
   ~~~
 
+  #### interface EditableListState
+  Name | Type | Description
+  --- | --- | ---
+  delete | string[] | array of removed items
+  create | string[] | array of added items
+  sortType | ListSortType | list sorting (Asc/Desc/UserDefined)
+  order | string[] | array of item values, representing item order (including new items)
+  list | SelectOption[] | current list of {id,value} \
+  items (including new items, which will have generated ids that start with 'new-')
 
 `;
 

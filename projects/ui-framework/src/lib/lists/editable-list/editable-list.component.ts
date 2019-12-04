@@ -86,6 +86,7 @@ export class EditableListComponent implements OnChanges {
   public isDragged = false;
   public removingIndex: number = null;
   public addingItem = false;
+  public addedItem = false;
   public inpuFocused = false;
 
   @HostListener('keydown.outside-zone', ['$event'])
@@ -162,6 +163,7 @@ export class EditableListComponent implements OnChanges {
       const value = this.addItemInput.nativeElement.value;
 
       if (value.trim()) {
+        this.addedItem = true;
         this.srvc.addItem(this.listState.list, value);
         this.listState.create.push(value);
         this.transmit();
@@ -216,6 +218,7 @@ export class EditableListComponent implements OnChanges {
       this.listState.list.splice(index, 1);
       this.transmit();
       this.removingIndex = null;
+      this.addedItem = false;
     }
 
     if (!this.cd['destroyed']) {
@@ -242,6 +245,7 @@ export class EditableListComponent implements OnChanges {
 
   public onDragStart(): void {
     this.isDragged = true;
+    this.addedItem = false;
   }
 
   public onDrop(dropResult: DropResult): void {
@@ -258,6 +262,7 @@ export class EditableListComponent implements OnChanges {
     currentOrder: ListSortType = this.listState.sortType
   ): void {
     this.listState.sortType = this.srvc.sortList(list, order, currentOrder);
+    this.addedItem = false;
     this.transmit();
   }
 

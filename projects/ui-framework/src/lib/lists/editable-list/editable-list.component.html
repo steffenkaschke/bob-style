@@ -23,7 +23,8 @@
              autocomplete="off"
              (input.outside-zone)="onInputChange($event)">
 
-      <div class="bel-item-confirm" tabindex="0">
+      <div class="bel-item-confirm"
+           tabindex="0">
         <b-button class="bel-cancel-button"
                   [type]="buttonType.tertiary"
                   [size]="buttonSize.small"
@@ -79,7 +80,8 @@
                         role="listitem">
 
     <div class="bel-item b-icon-drag-alt b-icon-medium b-icon-dark"
-         [attr.data-item-id]="item.id">
+         [attr.data-item-id]="item.id"
+         [ngClass]="{'bel-item-new': addedItem && index === 0}">
 
       <span class="bel-item-value"
             data-max-lines="2">
