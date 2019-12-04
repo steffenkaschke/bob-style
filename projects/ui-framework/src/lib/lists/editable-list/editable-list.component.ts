@@ -7,9 +7,12 @@ import {
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
+  ElementRef,
+  ViewChild,
+  NgZone,
+  HostListener,
 } from '@angular/core';
 import { SelectOption } from '../list.interface';
-
 import { DropResult } from 'ngx-smooth-dnd';
 import { Icons } from '../../icons/icons.enum';
 import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
@@ -25,6 +28,8 @@ import {
   hasChanges,
   isNotEmptyArray,
   cloneArray,
+  isKey,
+  isNumber,
 } from '../../services/utils/functional-utils';
 import { cloneDeep } from 'lodash';
 import {
@@ -33,6 +38,8 @@ import {
 } from './editable-list.const';
 import { ListSortType } from './editable-list.enum';
 import { EditableListService } from './editable-list.service';
+import { Keys } from '../../enums';
+import { DOMInputEvent } from '../../types';
 
 @Component({
   selector: 'b-editable-list',
@@ -43,8 +50,11 @@ import { EditableListService } from './editable-list.service';
 export class EditableListComponent implements OnChanges {
   constructor(
     private srvc: EditableListService,
+    private zone: NgZone,
     private cd: ChangeDetectorRef
   ) {}
+
+  @ViewChild('addItemInput', { static: false }) addItemInput: ElementRef;
 
   @Input() list: SelectOption[] = [];
   @Input() sortType: ListSortType;
@@ -74,19 +84,47 @@ export class EditableListComponent implements OnChanges {
   };
 
   public isDragged = false;
-  public removingIndex: number;
+  public removingIndex: number = null;
+  public addingItem = false;
+  public inpuFocused = false;
 
-  ngOnChanges(changes: SimpleChanges) {
-    applyChanges(
-      this,
-      changes,
-      {
-        list: [],
-        allowedActions: cloneObject(EDITABLE_LIST_ALLOWED_ACTIONS_DEF),
-        translation: cloneObject(EDITABLE_LIST_TRANSLATION),
-      },
-      []
-    );
+  @HostListener('keydown.outside-zone', ['$event'])
+  private onHostKeydown(event: KeyboardEvent) {
+    if (isKey(event.key, Keys.escape) && isNumber(this.removingIndex)) {
+      this.removeCancel();
+    }
+    if (isKey(event.key, Keys.enter) && isNumber(this.removingIndex)) {
+      this.removeItem(this.removingIndex, true);
+    }
+
+    if (
+      this.addingItem &&
+      (isKey(event.key, Keys.enter) || isKey(event.key, Keys.tab))
+    ) {
+      this.addItem(true);
+    }
+    if (this.addingItem && isKey(event.key, Keys.escape)) {
+      this.addItemCancel();
+    }
+  }
+
+  @HostListener('focusout.outside-zone', ['$event'])
+  private onHostFocusout(event: FocusEvent) {
+    if (isNumber(this.removingIndex)) {
+      this.removeCancel(event);
+    }
+
+    if (this.addingItem) {
+      this.addItemCancel(event);
+    }
+  }
+
+  public ngOnChanges(changes: SimpleChanges) {
+    applyChanges(this, changes, {
+      list: [],
+      allowedActions: cloneObject(EDITABLE_LIST_ALLOWED_ACTIONS_DEF),
+      translation: cloneObject(EDITABLE_LIST_TRANSLATION),
+    });
 
     if (hasChanges(changes, ['list'])) {
       this.listState.list = cloneDeep(this.list);
@@ -106,41 +144,107 @@ export class EditableListComponent implements OnChanges {
     }
   }
 
-  ////// -----------------------------------------------
+  public addItem(confirm = false): void {
+    if (!confirm) {
+      this.addingItem = true;
 
-  public addItem(): void {
-    this.srvc.addItem(
-      this.listState.list,
-      this.allowedActions,
-      this.translation
-    );
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.addItemInput.nativeElement.focus();
+          this.inpuFocused = true;
 
-    // this.listState.sortType = ListSortType.UserDefined;
-    this.cd.detectChanges();
-  }
+          if (!this.cd['destroyed']) {
+            this.cd.detectChanges();
+          }
+        }, 0);
+      });
+    } else {
+      const value = this.addItemInput.nativeElement.value;
 
-  public removeItem(
-    index: number,
-    confirm = false,
-    list: SelectOption[] = this.listState.list
-  ) {
-    if (index > -1) {
-      if (!confirm) {
-        this.removingIndex = index;
-      } else {
-        this.listState.delete.push(list[index].value);
-        list.splice(index, 1);
+      if (value.trim()) {
+        this.srvc.addItem(this.listState.list, value);
+        this.listState.create.push(value);
         this.transmit();
-        this.removingIndex = null;
+        this.listState.sortType = ListSortType.UserDefined;
+        this.inpuFocused = false;
+        this.addingItem = false;
+        this.addItemInput.nativeElement.value = '';
+      } else {
+        this.addItemCancel();
       }
     }
 
-    this.cd.detectChanges();
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
-  ////// -----------------------------------------------
+  public addItemCancel(event: FocusEvent = null) {
+    const relatedTarget = event && (event.relatedTarget as HTMLElement);
 
-  public onDrop(dropResult: DropResult) {
+    if (
+      !relatedTarget ||
+      !relatedTarget.matches(
+        '.bel-done-button button, .bel-item-confirm, .bel-item-input'
+      )
+    ) {
+      this.inpuFocused = false;
+      this.addingItem = false;
+
+      if (!this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
+    }
+
+    if (relatedTarget && relatedTarget.matches('.bel-item-confirm')) {
+      this.addItemInput.nativeElement.focus();
+    }
+
+    if (
+      !event ||
+      (relatedTarget && relatedTarget.matches('.bel-cancel-button button'))
+    ) {
+      this.addItemInput.nativeElement.value = '';
+    }
+  }
+
+  public removeItem(index: number, confirm = false): void {
+    if (!confirm) {
+      this.removingIndex = index;
+    } else {
+      this.listState.delete.push(this.listState.list[index].value);
+      this.listState.list.splice(index, 1);
+      this.transmit();
+      this.removingIndex = null;
+    }
+
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
+  }
+
+  public removeCancel(event: FocusEvent = null): void {
+    const relatedTarget = event && (event.relatedTarget as HTMLElement);
+
+    if (!relatedTarget || !relatedTarget.matches('.bel-remove-button button')) {
+      this.removingIndex = null;
+
+      if (!this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
+    }
+  }
+
+  public onInputChange(event: DOMInputEvent): void {
+    const value = event.target.value;
+    console.log('onAddItemInputChange', value);
+  }
+
+  public onDragStart(): void {
+    this.isDragged = true;
+  }
+
+  public onDrop(dropResult: DropResult): void {
     this.isDragged = false;
     if (this.srvc.onDrop(this.listState.list, dropResult)) {
       this.listState.sortType = ListSortType.UserDefined;
@@ -148,15 +252,11 @@ export class EditableListComponent implements OnChanges {
     }
   }
 
-  public onDragStart() {
-    this.isDragged = true;
-  }
-
-  sortList(
+  public sortList(
     list: SelectOption[] = this.listState.list,
     order: ListSortType = null,
     currentOrder: ListSortType = this.listState.sortType
-  ) {
+  ): void {
     this.listState.sortType = this.srvc.sortList(list, order, currentOrder);
     this.transmit();
   }

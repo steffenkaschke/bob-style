@@ -6,10 +6,12 @@ import {
 export const EDITABLE_LIST_TRANSLATION: EditableListTranslation = {
   add: 'Add',
   remove: 'Remove',
+  done: 'Done',
   cancel: 'Cancel',
   sortAsc: 'A - Z',
   sortDesc: 'Z - A',
   sortCustom: 'Custom',
+  total: 'Total',
   alreadyExists: ['Item', 'already exists'],
   duplicate: 'Duplicate item',
 };

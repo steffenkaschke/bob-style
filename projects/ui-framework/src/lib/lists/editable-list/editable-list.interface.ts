@@ -10,10 +10,12 @@ export interface EditableListActions {
 export interface EditableListTranslation {
   add: string;
   remove: string;
+  done: string;
   cancel: string;
   sortAsc: string;
   sortDesc: string;
   sortCustom: string;
+  total: string;
   alreadyExists: string[];
   duplicate: string;
 }

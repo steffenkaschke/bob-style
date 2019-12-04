@@ -15,13 +15,15 @@ import { editableListMock } from './editable-list.mock';
 import { action } from '@storybook/addon-actions';
 import { EditableListService } from './editable-list.service';
 import { ListSortType } from './editable-list.enum';
+import { CommonModule } from '@angular/common';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
 const componentTemplate1 = `
-<b-editable-list [list]="list === 'Ascending' ?listMockAsc : list === 'Descending' ? listMockDesc : listMock"
+<b-editable-list tabindex="0" [list]="list === 'Ascending' ?listMockAsc : list === 'Descending' ? listMockDesc : listMock"
+                  [sortType]="sortType !== 0 ? sortType : undefined"
                  [allowedActions]="{
                    sort: allowSort,
                    add: allowAdd,
@@ -77,10 +79,6 @@ story.add(
         listMock: listMock,
         listMockAsc: listMockAsc,
         listMockDesc: listMockDesc,
-        allowSort: boolean('allowSort', true, 'Props'),
-        allowAdd: boolean('allowAdd', true, 'Props'),
-        allowRemove: boolean('allowRemove', true, 'Props'),
-        onListUpdate: action('onListUpdate'),
 
         list: select(
           'list',
@@ -88,9 +86,16 @@ story.add(
           'Custom order',
           'Props'
         ),
+
+        sortType: select('sortType', [0, 'Asc', 'Desc'], 0, 'Props'),
+        allowSort: boolean('allowSort', true, 'Props'),
+        allowAdd: boolean('allowAdd', true, 'Props'),
+        allowRemove: boolean('allowRemove', true, 'Props'),
+        onListUpdate: action('onListUpdate'),
       },
       moduleMetadata: {
         imports: [
+          CommonModule,
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           EditableListModule,

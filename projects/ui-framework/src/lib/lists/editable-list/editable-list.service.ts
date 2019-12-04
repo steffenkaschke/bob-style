@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-  EditableListActions,
-  EditableListTranslation,
-} from './editable-list.interface';
-import {
-  compareAsStrings,
   simpleUID,
   arrOfObjSortByProp,
 } from '../../services/utils/functional-utils';
@@ -17,14 +12,6 @@ import { ListSortType } from './editable-list.enum';
 export class EditableListService {
   constructor() {}
 
-  getItemIndexByID(id: string | number, list: SelectOption[]): number {
-    return list.findIndex(i => compareAsStrings(i.id, id));
-  }
-
-  getItemByID(id: string | number, list: SelectOption[]): SelectOption {
-    return list.find(i => compareAsStrings(i.id, id));
-  }
-
   onDrop(list: SelectOption[], dropResult: DropResult): SelectOption[] {
     const { removedIndex, addedIndex } = dropResult;
     if (removedIndex === addedIndex) {
@@ -35,15 +22,13 @@ export class EditableListService {
     return list;
   }
 
-  addItem(
-    list: SelectOption[],
-    allowedActions: EditableListActions,
-    translation: EditableListTranslation
-  ): SelectOption[] {
-    list.unshift({
-      id: simpleUID('new-'),
-      value: '',
-    });
+  addItem(list: SelectOption[], value: string): SelectOption[] {
+    if (value) {
+      list.unshift({
+        id: simpleUID('new-'),
+        value: value,
+      });
+    }
     return list;
   }
 
