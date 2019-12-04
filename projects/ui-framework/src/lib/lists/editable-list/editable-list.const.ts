@@ -5,7 +5,6 @@ import {
 
 export const EDITABLE_LIST_TRANSLATION: EditableListTranslation = {
   add: 'Add',
-  edit: 'Edit',
   remove: 'Remove',
   cancel: 'Cancel',
   sortAsc: 'A - Z',
@@ -17,7 +16,6 @@ export const EDITABLE_LIST_TRANSLATION: EditableListTranslation = {
 
 export const EDITABLE_LIST_ALLOWED_ACTIONS_DEF: EditableListActions = {
   sort: true,
-  edit: true,
   add: true,
   remove: true,
 };

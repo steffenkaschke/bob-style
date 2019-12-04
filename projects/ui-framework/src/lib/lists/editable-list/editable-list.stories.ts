@@ -21,7 +21,6 @@ const componentTemplate1 = `
 <b-editable-list [list]="list"
                  [allowedActions]="{
                    sort: allowSort,
-                   edit: allowEdit,
                    add: allowAdd,
                    remove: allowRemove
                  }"
@@ -47,7 +46,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | ---
   [list] | SelectOption[] | flat list of SelectOption to edit | &nbsp;
-  [allowedActions] | EditableListActions | what actions are available (sort, edit, remove)\
+  [allowedActions] | EditableListActions | what actions are available (sort, add, remove)\
    | all enabled
   (changed) | SelectOption[] | emits updated list | &nbsp;
 
@@ -68,7 +67,6 @@ story.add(
       template,
       props: {
         allowSort: boolean('allowSort', true, 'Props'),
-        allowEdit: boolean('allowEdit', true, 'Props'),
         allowAdd: boolean('allowAdd', true, 'Props'),
         allowRemove: boolean('allowRemove', true, 'Props'),
         list: object('list', listMock, 'Options'),

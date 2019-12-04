@@ -19,7 +19,7 @@ $bel-item-dragged-border-color: $grey-400;
   margin-bottom: times8(2);
 }
 
-:host ::ng-deep .bel-reset-button {
+:host ::ng-deep .bel-sort-button {
   margin-left: auto;
 
   button[class*='b-icon'] {
@@ -59,7 +59,7 @@ $bel-item-dragged-border-color: $grey-400;
   align-items: center;
   border-radius: $border-radius;
   padding: 0 $bel-item-padding;
-  @include b-body($color: $grey-700);
+  @include b-body($color: $grey-700, $addCssVars: true);
   background-color: white;
   user-select: none;
   transition: box-shadow 0.35s, background-color 0.15s;
@@ -99,15 +99,11 @@ $bel-item-dragged-border-color: $grey-400;
   }
 }
 
-.bfe-input {
-  @include input-basics($padding: 0, $height: $bel-item-height);
-
-  &:read-only {
-    user-select: none;
-  }
+.bel-item-value {
+  flex-grow: 1;
 }
 
-.bel-item-menu,
+.bel-remove-button,
 .bel-item-confirm {
   height: 100%;
   display: flex;
@@ -117,7 +113,7 @@ $bel-item-dragged-border-color: $grey-400;
   cursor: default;
 }
 
-.bel-item-menu {
+.bel-remove-button {
   margin-left: auto;
 }
 
