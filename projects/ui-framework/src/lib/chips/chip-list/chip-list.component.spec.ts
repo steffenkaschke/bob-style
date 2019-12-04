@@ -11,8 +11,9 @@ import { ChipComponent } from '../chip/chip.component';
 import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { cloneDeep } from 'lodash';
 
-describe('ChipListComponent', () => {
+fdescribe('ChipListComponent', () => {
   let component: ChipListComponent;
   let fixture: ComponentFixture<ChipListComponent>;
   let componentEl: HTMLElement;
@@ -20,8 +21,8 @@ describe('ChipListComponent', () => {
   let chipsElements: HTMLElement[];
   let chipsComponents: ChipComponent[];
 
-  // tslint:disable-next-line: max-line-length
   const emptyImg =
+    // tslint:disable-next-line: max-line-length
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
 
   const chips = [
@@ -74,7 +75,7 @@ describe('ChipListComponent', () => {
         component = fixture.componentInstance;
         componentEl = fixture.debugElement.nativeElement;
         component.config = {};
-        component.chips = chips;
+        component.chips = cloneDeep(chips);
         spyOn(component.clicked, 'emit');
         spyOn(component.removed, 'emit');
         spyOn(component.selected, 'emit');
@@ -144,28 +145,46 @@ describe('ChipListComponent', () => {
         ).toEqual(0);
       });
     });
-    describe('should chip list selectable single few clicks and active', () => {
+    describe('chipListSelectable = single', () => {
       beforeEach(() => {
+        component.config = {
+          selectable: true,
+        };
         component.chipListSelectable = ChipListSelectable.single;
-        component.activeIndex = 2;
         chipsElements[0].click();
         fixture.detectChanges();
-        chipsElements[2].click();
+        chipsElements[1].click();
         fixture.detectChanges();
       });
-      it('should have one selected when radioSelect is true', () => {
+      it('should have only 1 selected chip', () => {
         expect(
           chipsElements.filter(
             elem => elem.getAttribute('data-selected') === 'true'
           ).length
         ).toEqual(1);
+        expect(component.chips.filter(i => i.selected).length).toEqual(1);
       });
-      it('should have 4th be selected when radioSelect is true', () => {
+      it('should have second chip selected', () => {
         expect(
           chipsElements.findIndex(
             elem => elem.getAttribute('data-selected') === 'true'
           )
-        ).toEqual(2);
+        ).toEqual(1);
+        expect(component.chips.findIndex(i => i.selected)).toEqual(1);
+      });
+      it('should select chip with activeIndex index', () => {
+        component.ngOnChanges(
+          simpleChange({
+            activeIndex: 0,
+          })
+        );
+        fixture.detectChanges();
+        expect(
+          chipsElements.findIndex(
+            elem => elem.getAttribute('data-selected') === 'true'
+          )
+        ).toEqual(0);
+        expect(component.chips.findIndex(i => i.selected)).toEqual(0);
       });
     });
 
@@ -223,7 +242,7 @@ describe('ChipListComponent', () => {
   });
 
   describe('Selectable chips', () => {
-    it('should set Chip selected atrribute when on click', () => {
+    it('should set Chip selected atrribute on click', () => {
       component.config = {
         selectable: true,
       };
@@ -257,7 +276,7 @@ describe('ChipListComponent', () => {
         type: ChipType.avatar,
       };
       fixture.detectChanges();
-      component.chips = avatarChips;
+      component.chips = cloneDeep(avatarChips);
       fixture.detectChanges();
       chipsElements = elementsFromFixture(fixture, 'b-chip');
 
