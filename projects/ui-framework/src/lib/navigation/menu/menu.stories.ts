@@ -55,6 +55,77 @@ const note = `
   ~~~
   ${template}
   ~~~
+
+  #### Example \`MenuItem[]\` config:
+
+  ~~~
+menu = [
+    {
+      label: 'Employee',
+      key: 'employee',
+
+      children: [
+        {
+          label: 'Update work details',
+          key: 'update.work.details',
+          action: (event: MenuItem) => {
+            const {id: itemID, key: actionKey} = event;
+            this[actionKey](itemID);
+          }
+        },
+        {
+          label: 'Delete file',
+          key: 'delete.file',
+          action: (event: MenuItem) => {
+            this.deleteFile(event.id)
+          }
+        },
+      ],
+    }
+  ]
+~~~
+<br>
+
+### Note: Using single method to handle all menu actions
+If you utilize menu \`id\` input (for example, referencing the item that has \
+  the menu) and \`key\` of menu items, you might not need to provide \
+  menu item actions at all. You can use single \`(actionClick)\` binding \
+  (that receives MenuItem with menu \`id\` and action \`key\`) to have single handler for all actions.
+
+~~~
+menu = [
+    {
+      label: 'Employee',
+
+      children: [
+        {
+          label: 'Update work details',
+          key: 'updateDetails',
+        },
+        {
+          label: 'Delete file',
+          key: 'deleteFile',
+        },
+      ],
+    }
+  ]
+
+  <b-menu [id]="'employee-123'"
+          [menu]="menu"
+          (actionClick)="onActionClick($event)">
+
+  onActionClick(event) {
+
+    const {id: itemID, key: actionKey} = event;
+
+    // itemID now equals menu [id] ('employee-123'),
+    // actionKey now equals menu item .key ('updateDetails')
+
+    // calling [actionKey] (=== 'updateDetails') method of the component with the itemID:
+
+    this[actionKey](itemID);
+  }
+~~~
 `;
 
 const menuMock: MenuItem[] = [
@@ -95,12 +166,20 @@ const menuMock: MenuItem[] = [
           {
             label: 'Terminate',
             action: action('terminate'),
-            key: 'terminate123'
+            key: 'terminate'
           },
           {
             label: 'Rehire',
             action: action('rehire'),
-            key: 'rehire'
+            key: 'rehire',
+
+            children: [
+              {
+                label: 'Secret action',
+                action: action('Deep action'),
+                key: 'deep'
+              }
+            ]
           }
         ]
       },

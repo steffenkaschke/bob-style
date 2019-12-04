@@ -1,7 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import {
   boolean,
-  number,
   select,
   text,
   withKnobs,
@@ -12,9 +11,10 @@ import { ComponentGroupType } from '../../consts';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { thisYear, thisMonth } from '../../services/utils/functional-utils';
+import { thisMonth, thisYear } from '../../services/utils/functional-utils';
 import { DatepickerType } from './datepicker.enum';
 import { mockText } from '../../mock.const';
+import { BDateAdapter } from './date.adapter';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -62,6 +62,7 @@ const note = `
   [label] | string | label text (above input) | &nbsp;
   [description] | string | description text (above icon) | &nbsp;
   [placeholder] | string | placeholder text (inside input) | &nbsp;
+  [dateFormat] | string | string, representing date format (to be used as default placeholder) | &nbsp;
   [hideLabelOnFocus] | boolean | places label in placeholder position | false
   [disabled] | boolean | is field disabled | false
   [required] | boolean | is field required | false
@@ -133,7 +134,7 @@ story.add(
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
-          DatepickerModule,
+          DatepickerModule.init(BDateAdapter),
           StoryBookLayoutModule,
         ],
       },

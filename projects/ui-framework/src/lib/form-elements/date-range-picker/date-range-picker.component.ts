@@ -7,8 +7,6 @@ import {
   Input,
   NgZone,
 } from '@angular/core';
-import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { B_DATE_FORMATS, BDateAdapter } from '../datepicker/date.adapter';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { serverDateFormat } from '../../consts';
 import {
@@ -57,14 +55,6 @@ export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
     './date-range-picker.component.scss',
   ],
   providers: [
-    {
-      provide: DateAdapter,
-      useClass: BDateAdapter,
-    },
-    {
-      provide: MAT_DATE_FORMATS,
-      useValue: B_DATE_FORMATS,
-    },
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DateRangePickerComponent),
@@ -154,6 +144,8 @@ export class DateRangePickerComponent extends BaseDatepickerElement
   public idED = simpleUID('bdp-ed-');
 
   ngAfterViewInit(): void {
+    super.ngAfterViewInit();
+
     this.overlayStylesDef = {
       '--start-date-label':
         this.startDateLabel || this.label

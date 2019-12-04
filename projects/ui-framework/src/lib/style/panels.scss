@@ -75,6 +75,7 @@
 html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
   @include desktop {
     min-height: 365px;
+    min-width: 450px;
   }
 }
 
@@ -92,6 +93,7 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
 
 .b-select-panel {
   flex-direction: column;
+  justify-content: inherit;
 
   .b-select-list {
     border: 0;

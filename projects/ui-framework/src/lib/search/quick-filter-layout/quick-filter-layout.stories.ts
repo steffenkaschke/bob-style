@@ -25,6 +25,9 @@ import { TimePickerModule } from '../../form-elements/timepicker/timepicker.modu
 import { InputTypes } from '../../form-elements/input/input.enum';
 // tslint:disable-next-line: max-line-length
 import { SplitInputSingleSelectModule } from '../../form-elements/split-input-single-select/split-input-single-select.module';
+import { LinkColor } from '../../indicators/link/link.enum';
+import { DatepickerType } from '../../form-elements/datepicker/datepicker.enum';
+import { BDateAdapter } from '../../form-elements/datepicker/date.adapter';
 
 const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
   withKnobs
@@ -36,7 +39,8 @@ const template1 = `
             (resetFilters)="resetFilters()"
             (filtersChange)="filtersChange($event)">
 
-    <b-text-button bar-prefix *ngIf="showLeftButt" text="Left" color="primary">
+    <b-text-button bar-prefix *ngIf="showLeftButt"
+                   [text]="'Left'" [color]="linkColor.primary">
     </b-text-button>
 
     <b-single-select
@@ -50,13 +54,14 @@ const template1 = `
             [options]="BMSoptions">
     </b-multi-select>
 
-    <b-date-range-picker [id]="'Date Range'" [type]="'date'"
+    <b-date-range-picker [id]="'Date Range'" [type]="datepickerType.date"
             [label]="'Pick date range'"
             [startDateLabel]="'From'"
             [endDateLabel]="'To'">
     </b-date-range-picker>
 
-    <b-text-button bar-suffix *ngIf="showRightButt" text="Right" color="primary">
+    <b-text-button bar-suffix *ngIf="showRightButt"
+                   [text]="'Right'" [color]="linkColor.primary">
     </b-text-button>
 
 </b-quick-filter-layout>
@@ -111,9 +116,25 @@ const note = `
   - Consumer can provide the form elements, and \`[quickFilters]\`  QuickFilterConfig array.\
    Elements will be initialized/bound  <u>automatically</u> according to QuickFilterConfig's.<br>\
     Change events from all components are combined into single \`(filtersChange)\` output.
-  <br><br>
-  <strong>Note:</strong> Form elements and/or QuickFilterConfig's can be added/updated dynamically.
+  <br>
+  Form elements and/or QuickFilterConfig's can be added/updated dynamically.
   </span>
+
+  <strong><u>Note:</u></strong>
+    There is a seemingly weird behaviour: on init, all form \
+    elements inside Quick Filter Layout will emit change event with value of **NaN**.<br>\
+     This is needed to propagate/update \
+    properties bound from QuickFilterConfig. <br>\
+    If it gets in the way, you can filter it out in your event handlers:
+
+~~~
+onChange(event){
+    if (event === event) { // NaN === NaN is always false
+      doStuff();
+    }
+}
+~~~
+
 
   -----------
 
@@ -226,6 +247,9 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        linkColor: LinkColor,
+        datepickerType: DatepickerType,
+
         showResetFilter: boolean('showResetFilter', false, 'props'),
         quickFilters: object('quickFilters', quickFilters, 'props'),
         BSSoptions: object('BSSoptions', items, 'ignore'),
@@ -248,7 +272,7 @@ story.add(
           QuickFilterLayoutModule,
           MultiSelectModule,
           SingleSelectModule,
-          DateRangePickerModule,
+          DateRangePickerModule.init(BDateAdapter),
           AvatarModule,
           ButtonsModule,
           InputModule,

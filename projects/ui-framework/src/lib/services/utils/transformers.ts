@@ -88,7 +88,11 @@ export const arrayOfValuesToArrayOfObjects = (key: string) => (
   return value.map(valueToObjectKey(key));
 };
 
-export const valueAsNumber = (inputType: InputTypes, value: any) => {
+export const valueAsNumber = (
+  inputType: InputTypes,
+  value: any,
+  def: any = undefined
+) => {
   if (inputType !== InputTypes.number || !value) {
     return value;
   }
@@ -96,7 +100,7 @@ export const valueAsNumber = (inputType: InputTypes, value: any) => {
   if (parsed !== parsed) {
     console.warn(`Value (${stringify(value)}) is not parseable to number.`);
   }
-  return parsed === parsed ? parsed : undefined;
+  return parsed === parsed ? parsed : def;
 };
 
 // -------------------------------
@@ -200,6 +204,23 @@ export const timeyOrFail = value => {
     throw new Error(`Value (${stringify(value)}) could not be parsed to Time.`);
   }
   return value;
+};
+
+export const selectValueOrFail = value => {
+  if (isNullOrUndefined(value)) {
+    return value;
+  }
+
+  if (!(isString(value) || isNumber(value) || isArray(value))) {
+    throw new Error(
+      `Value (${stringify(
+        value
+      )}) should be string, number or (string | number)[], instead ${getType(
+        value
+      ).toUpperCase()} was provided.`
+    );
+  }
+  return asArray(value);
 };
 
 // -------------------------------

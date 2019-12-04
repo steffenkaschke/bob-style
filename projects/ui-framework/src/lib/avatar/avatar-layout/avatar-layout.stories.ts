@@ -10,9 +10,7 @@ import { AvatarModule } from '../avatar/avatar.module';
 import { mockAvatar, mockNames } from '../../mock.const';
 import { AvatarOrientation, AvatarSize } from '../avatar/avatar.enum';
 
-const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
-  withKnobs
-);
+const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(withKnobs);
 
 const template = `
 <b-avatar-layout
@@ -36,7 +34,7 @@ const note = `
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  itemsInRowChange | Event Emitter | makes an output when item in row count changes | &nbsp;
+  (itemsInRowChange) | EventEmitter<wbr>&lt;number&gt; |  emits when item in row count changes | &nbsp;
 
   ~~~
   ${template}
@@ -57,7 +55,7 @@ story.add(
       template: storyTemplate,
       props: {
         itemsInRowChange: action('items in row changed', {
-          clearOnStoryChange: true,
+          clearOnStoryChange: true
         }),
         avatarSize: AvatarSize.small,
         avatarOrientation: AvatarOrientation.vertical,
@@ -66,19 +64,14 @@ story.add(
           'items',
           new Array(11).fill(0).map(x => ({
             avatar: mockAvatar(),
-            name: mockNames(1),
+            name: mockNames(1)
           }))
-        ),
+        )
       },
       moduleMetadata: {
         providers: [UtilsService],
-        imports: [
-          BrowserAnimationsModule,
-          StoryBookLayoutModule,
-          AvatarLayoutModule,
-          AvatarModule,
-        ],
-      },
+        imports: [BrowserAnimationsModule, StoryBookLayoutModule, AvatarLayoutModule, AvatarModule]
+      }
     };
   },
   { notes: { markdown: note } }

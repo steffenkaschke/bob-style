@@ -15,6 +15,7 @@ import { SingleSelectPanelModule } from './single-select-panel.module';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { action } from '@storybook/addon-actions';
 import { mockJobs } from '../../mock.const';
+import { simpleUID } from '../../services/utils/functional-utils';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -76,13 +77,27 @@ const note = `
   ~~~
 `;
 
+const jobs = mockJobs(40);
+
 const optionsMock: SelectGroupOption[] = [
   {
     groupName: 'Categories',
-    options: mockJobs().map(category => {
+
+    options: jobs.slice(0, 20).map(category => {
       return {
         value: category,
-        id: category,
+        id: simpleUID(category + '-'),
+        selected: false,
+      };
+    }),
+  },
+  {
+    groupName: 'Categories',
+
+    options: jobs.slice(20, 40).map(category => {
+      return {
+        value: category,
+        id: simpleUID(category + '-'),
         selected: false,
       };
     }),

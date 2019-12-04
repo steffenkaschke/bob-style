@@ -4,7 +4,6 @@ import {
   select,
   text,
   withKnobs,
-  object,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
@@ -12,8 +11,9 @@ import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { DateRangePickerModule } from './date-range-picker.module';
-import { thisYear, thisMonth } from '../../services/utils/functional-utils';
+import { thisMonth, thisYear } from '../../services/utils/functional-utils';
 import { DatepickerType } from '../datepicker/datepicker.enum';
+import { BDateAdapter } from '../datepicker/date.adapter';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -64,6 +64,7 @@ const note = `
   [startDateLabel] | string | first datepicker label | &nbsp;
   [endDateLabel] | string | second datepicker label | &nbsp;
   [placeholder] | string | placeholder text (inside input) | &nbsp;
+  [dateFormat] | string | string, representing date format (to be used as default placeholder) | &nbsp;
   [hideLabelOnFocus] | boolean | places label in placeholder position | false
   [disabled] | boolean | is field disabled | false
   [required] | boolean | is field required | false
@@ -88,7 +89,7 @@ const mockValues = [
   '',
   {
     from: `${thisYear()}-${thisMonth()}-25`,
-    to: `${thisYear()}-${thisMonth(false, 1)}-5`,
+    to: `${thisYear()}-${Math.min(thisMonth(false, 1) as number, 12)}-5`,
   },
 ];
 
@@ -108,7 +109,7 @@ story.add(
           'minDate',
           [
             '',
-            `${thisYear()}-${thisMonth(false, -1)}-5`,
+            `${thisYear()}-${Math.max(thisMonth(false, -1) as number, 1)}-5`,
             `${thisYear()}-${thisMonth()}-7`,
           ],
           ''
@@ -118,7 +119,7 @@ story.add(
           [
             '',
             `${thisYear()}-${thisMonth()}-25`,
-            `${thisYear()}-${thisMonth(false, 1)}-15`,
+            `${thisYear()}-${Math.min(thisMonth(false, 1) as number, 12)}-15`,
           ],
           ''
         ),
@@ -137,7 +138,7 @@ story.add(
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
-          DateRangePickerModule,
+          DateRangePickerModule.init(BDateAdapter),
           StoryBookLayoutModule,
         ],
       },

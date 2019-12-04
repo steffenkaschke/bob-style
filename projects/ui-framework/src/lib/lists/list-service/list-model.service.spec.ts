@@ -76,12 +76,10 @@ describe('ListModelService', () => {
         headerModel,
         noGroupHeaders
       );
+
       expect(optionsModel).toEqual([
         {
           isPlaceHolder: true,
-          groupName: 'Basic Info',
-          value: 'Basic Info',
-          id: 'Basic Info',
           selected: false,
         },
         {
@@ -100,9 +98,6 @@ describe('ListModelService', () => {
         },
         {
           isPlaceHolder: true,
-          groupName: 'Personal',
-          value: 'Personal',
-          id: 'Personal',
           selected: false,
         },
         {
@@ -119,7 +114,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: false,
         },
-      ]);
+      ] as any);
     });
     it('should return options model for virtual scroll filtered by collapsed headers', () => {
       const noGroupHeaders = false;
@@ -142,22 +137,17 @@ describe('ListModelService', () => {
         headerModel,
         noGroupHeaders
       );
+
       expect(optionsModel).toEqual([
         {
           isPlaceHolder: true,
-          groupName: 'Basic Info',
-          value: 'Basic Info',
-          id: 'Basic Info',
           selected: false,
         },
         {
           isPlaceHolder: true,
-          groupName: 'Personal',
-          value: 'Personal',
-          id: 'Personal',
           selected: false,
         },
-      ]);
+      ] as any);
     });
   });
 
@@ -220,12 +210,10 @@ describe('ListModelService', () => {
           selectedCount: 2,
         },
       ] as any);
+
       expect(optionsModel).toEqual([
         {
           isPlaceHolder: true,
-          groupName: 'Basic Info',
-          value: 'Basic Info',
-          id: 'Basic Info',
           selected: false,
         },
         {
@@ -244,9 +232,6 @@ describe('ListModelService', () => {
         },
         {
           isPlaceHolder: true,
-          groupName: 'Personal',
-          value: 'Personal',
-          id: 'Personal',
           selected: false,
         },
         {
@@ -263,7 +248,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: true,
         },
-      ]);
+      ] as any);
     });
     it('should enrich header selected values also when header is collapsed', () => {
       const noGroupHeaders = false;
@@ -327,19 +312,13 @@ describe('ListModelService', () => {
       expect(optionsModel).toEqual([
         {
           isPlaceHolder: true,
-          groupName: 'Basic Info',
-          value: 'Basic Info',
-          id: 'Basic Info',
           selected: false,
         },
         {
           isPlaceHolder: true,
-          groupName: 'Personal',
-          value: 'Personal',
-          id: 'Personal',
           selected: false,
         },
-      ]);
+      ] as any);
     });
   });
 

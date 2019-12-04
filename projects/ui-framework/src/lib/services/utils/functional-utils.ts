@@ -27,6 +27,9 @@ export const randomFromArray = (array: any[] = [], num: number = 1) => {
   return num === 1 ? random[0] : random;
 };
 
+export const isNullOrUndefined = (val: any): boolean =>
+  val === undefined || val === null;
+
 export const keysFromArrayOrObject = (smth: string[] | {}): string[] =>
   Array.isArray(smth) ? smth : Object.keys(smth);
 
@@ -45,10 +48,11 @@ export const isEmptyString = (val: any): boolean => !isNotEmptyString(val);
 
 export const isArray = (val: any): boolean => val && Array.isArray(val);
 
-export const isNotEmptyArray = (val: any): boolean =>
-  isArray(val) && val.length > 0;
+export const isNotEmptyArray = (val: any, min = 0): boolean =>
+  isArray(val) && val.length > min;
 
-export const isEmptyArray = (val: any): boolean => !isNotEmptyArray(val);
+export const isEmptyArray = (val: any): boolean =>
+  isNullOrUndefined(val) || (Array.isArray(val) && val.length === 0);
 
 export const isObject = (val: any): boolean =>
   val && !isArray(val) && typeof val !== 'function' && val === Object(val);
@@ -59,10 +63,8 @@ export const hasProp = (obj: GenericObject, key: string): boolean =>
 export const isNotEmptyObject = (val: any): boolean =>
   isObject(val) && Object.keys(val).length > 0;
 
-export const isEmptyObject = (val: any): boolean => !isNotEmptyObject(val);
-
-export const isNullOrUndefined = (val: any): boolean =>
-  val === undefined || val === null;
+export const isEmptyObject = (val: any): boolean =>
+  isNullOrUndefined(val) || (isObject(val) && Object.keys(val).length === 0);
 
 export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
   isNullOrUndefined(smth) ||
@@ -213,7 +215,12 @@ export const hasChanges = (
   if (!keys) {
     keys = Object.keys(changes);
   }
-  return !!keys.find(i => !!changes[i]);
+  return !!keys.find(
+    i =>
+      changes[i] !== undefined &&
+      (changes[i].currentValue !== undefined ||
+        changes[i].previousValue !== undefined)
+  );
 };
 
 export const firstChanges = (
@@ -388,3 +395,9 @@ export const arrOfObjSortByProp = (
 
   return arr;
 };
+
+export const numberMinMax = (
+  number: number,
+  min: number = 0,
+  max: number = 100
+): number => Math.max(Math.min(max, number), min);

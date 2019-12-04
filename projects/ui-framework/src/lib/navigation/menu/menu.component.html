@@ -19,6 +19,7 @@
         <span>{{child.label}}</span>
       </button>
       <b-menu #menu
+              [id]="id"
               [menu]="child.children"
               [openLeft]="openLeft"
               (actionClick)="onClick($event, false)">
