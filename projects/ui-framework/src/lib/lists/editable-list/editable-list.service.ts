@@ -6,10 +6,12 @@ import {
 import {
   compareAsStrings,
   simpleUID,
+  arrOfObjSortByProp,
 } from '../../services/utils/functional-utils';
 import { DropResult } from 'ngx-smooth-dnd';
 
 import { SelectOption } from '../list.interface';
+import { ListSortType } from './editable-list.enum';
 
 @Injectable()
 export class EditableListService {
@@ -23,7 +25,7 @@ export class EditableListService {
     return list.find(i => compareAsStrings(i.id, id));
   }
 
-  onItemMove(list: SelectOption[], dropResult: DropResult): SelectOption[] {
+  onDrop(list: SelectOption[], dropResult: DropResult): SelectOption[] {
     const { removedIndex, addedIndex } = dropResult;
     if (removedIndex === addedIndex) {
       return null;
@@ -43,5 +45,51 @@ export class EditableListService {
       value: '',
     });
     return list;
+  }
+
+  sortList(
+    list: SelectOption[],
+    order: ListSortType = null,
+    currentOrder: ListSortType = null
+  ): ListSortType {
+    if (order === ListSortType.UserDefined) {
+      return ListSortType.UserDefined;
+    }
+
+    arrOfObjSortByProp(
+      list,
+      'value',
+      order === ListSortType.Asc ||
+        (currentOrder && currentOrder !== ListSortType.Asc)
+    );
+
+    return order === ListSortType.Asc ||
+      (currentOrder && currentOrder !== ListSortType.Asc)
+      ? ListSortType.Asc
+      : ListSortType.Desc;
+  }
+
+  isListAscending(list: SelectOption[]): boolean {
+    const length = list.length;
+    return !list.find(
+      (itm, indx) =>
+        indx + 2 <= length && list[indx].value > list[indx + 1].value
+    );
+  }
+
+  isListDescending(list: SelectOption[]): boolean {
+    const length = list.length;
+    return !list.find(
+      (itm, indx) =>
+        indx + 2 <= length && list[indx].value < list[indx + 1].value
+    );
+  }
+
+  getListSortType(list: SelectOption[]): ListSortType {
+    return this.isListAscending(list)
+      ? ListSortType.Asc
+      : this.isListDescending(list)
+      ? ListSortType.Desc
+      : ListSortType.UserDefined;
   }
 }

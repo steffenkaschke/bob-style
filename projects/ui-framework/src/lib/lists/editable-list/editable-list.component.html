@@ -27,20 +27,19 @@
 </header>
 
 <smooth-dnd-container role="list"
+                      [ngClass]="{'bel-has-item-dragged': isDragged}"
                       [orientation]="'vertical'"
                       [lockAxis]="'y'"
                       [dragClass]="'bel-item-dragged'"
                       [dropClass]="'bel-item-dropped'"
                       [nonDragAreaSelector]="'.bel-remove-button'"
-                      (drop)="onItemMove($event)">
+                      (dragStart)="onDragStart()"
+                      (drop)="onDrop($event)">
 
-  <smooth-dnd-draggable *ngFor="let item of listState.list; trackBy: listTrackBy"
+  <smooth-dnd-draggable *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy"
                         role="listitem">
 
     <div class="bel-item b-icon-drag-alt b-icon-medium b-icon-dark"
-         [ngClass]="{
-           'bel-item-new': item.new
-         }"
          [attr.data-item-id]="item.id">
 
       <span class="bel-item-value"
@@ -48,27 +47,27 @@
         {{ item.value }}
       </span>
 
-
-      <b-square-button *ngIf="allowedActions.remove"
+      <b-square-button *ngIf="allowedActions.remove && removingIndex !== index"
                        class="bel-remove-button"
                        [type]="buttonType.tertiary"
                        [size]="buttonSize.small"
                        [icon]="icons.delete"
-                       (clicked)="removeItem(item.id)">
+                       (clicked)="removeItem(index)">
       </b-square-button>
 
-      <div *ngIf="false"
+      <div *ngIf="removingIndex === index"
            class="bel-item-confirm">
         <b-button class="bel-cancel-button"
                   [type]="buttonType.tertiary"
                   [size]="buttonSize.small"
-                  [text]="translation.cancel">
+                  [text]="translation.cancel"
+                  (clicked)="removingIndex = null">
         </b-button>
         <b-button class="bel-remove-button"
                   [type]="buttonType.negative"
                   [size]="buttonSize.small"
                   [text]="translation.remove"
-                  (clicked)="removeItem(item.id,true)">
+                  (clicked)="removeItem(index,true)">
         </b-button>
       </div>
 

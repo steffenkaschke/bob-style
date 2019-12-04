@@ -22,13 +22,10 @@ import {
   applyChanges,
   notFirstChanges,
   cloneObject,
-  arrOfObjSortByProp,
   hasChanges,
-  arrayIntersection,
   isNotEmptyArray,
   cloneArray,
 } from '../../services/utils/functional-utils';
-import { simpleChange } from '../../services/utils/test-helpers';
 import { cloneDeep } from 'lodash';
 import {
   EDITABLE_LIST_TRANSLATION,
@@ -76,6 +73,9 @@ export class EditableListComponent implements OnChanges {
     list: null,
   };
 
+  public isDragged = false;
+  public removingIndex: number;
+
   ngOnChanges(changes: SimpleChanges) {
     applyChanges(
       this,
@@ -90,16 +90,15 @@ export class EditableListComponent implements OnChanges {
 
     if (hasChanges(changes, ['list'])) {
       this.listState.list = cloneDeep(this.list);
-      this.listState.sortType = this.getListSortType(this.listState.list);
+      this.listState.sortType = this.srvc.getListSortType(this.listState.list);
     }
 
     if (hasChanges(changes, ['sortType'])) {
-      this.listState.sortType = this.sortList(
+      this.sortList(
         this.listState.list,
         this.sortType,
         this.listState.sortType
       );
-      this.transmit();
     }
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
@@ -121,42 +120,45 @@ export class EditableListComponent implements OnChanges {
   }
 
   public removeItem(
-    id: string | number,
-    confirm: boolean = null,
+    index: number,
+    confirm = false,
     list: SelectOption[] = this.listState.list
   ) {
+    if (index > -1) {
+      if (!confirm) {
+        this.removingIndex = index;
+      } else {
+        this.listState.delete.push(list[index].value);
+        list.splice(index, 1);
+        this.transmit();
+        this.removingIndex = null;
+      }
+    }
+
     this.cd.detectChanges();
   }
 
   ////// -----------------------------------------------
 
-  public onItemMove(dropResult: DropResult) {
-    if (this.srvc.onItemMove(this.listState.list, dropResult)) {
+  public onDrop(dropResult: DropResult) {
+    this.isDragged = false;
+    if (this.srvc.onDrop(this.listState.list, dropResult)) {
       this.listState.sortType = ListSortType.UserDefined;
       this.transmit();
     }
   }
 
-  public sortList(
+  public onDragStart() {
+    this.isDragged = true;
+  }
+
+  sortList(
     list: SelectOption[] = this.listState.list,
     order: ListSortType = null,
-    currentOrder = this.listState.sortType
-  ): ListSortType {
-    if (order === ListSortType.UserDefined) {
-      return ListSortType.UserDefined;
-    }
-
-    arrOfObjSortByProp(
-      list,
-      'value',
-      order === ListSortType.Asc || currentOrder !== ListSortType.Asc
-    );
-
-    return order === ListSortType.Asc ||
-      currentOrder === ListSortType.Desc ||
-      currentOrder === ListSortType.UserDefined
-      ? ListSortType.Asc
-      : ListSortType.Desc;
+    currentOrder: ListSortType = this.listState.sortType
+  ) {
+    this.listState.sortType = this.srvc.sortList(list, order, currentOrder);
+    this.transmit();
   }
 
   private transmit(): void {
@@ -181,25 +183,5 @@ export class EditableListComponent implements OnChanges {
 
   public listTrackBy(index: number, item: SelectOption): string | number {
     return item.id || item.value || JSON.stringify(item);
-  }
-
-  private isListAscending(list: SelectOption[] = this.listState.list): boolean {
-    return !list.find((itm, indx) => list[indx].value > list[indx + 1].value);
-  }
-
-  private isListDescending(
-    list: SelectOption[] = this.listState.list
-  ): boolean {
-    return !list.find((itm, indx) => list[indx].value < list[indx + 1].value);
-  }
-
-  private getListSortType(
-    list: SelectOption[] = this.listState.list
-  ): ListSortType {
-    return this.isListAscending(list)
-      ? ListSortType.Asc
-      : this.isListDescending(list)
-      ? ListSortType.Desc
-      : ListSortType.UserDefined;
   }
 }
