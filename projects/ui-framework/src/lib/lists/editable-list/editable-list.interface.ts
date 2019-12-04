@@ -1,17 +1,29 @@
-import { MenuItem } from '../../navigation/menu/menu.interface';
-
-export interface EditableListViewItem {
-  id: string | number;
-  value: string;
-  menu?: MenuItem[];
-  readonly?: boolean;
-  focused?: boolean;
-}
+import { ListSortType } from './editable-list.enum';
+import { SelectOption } from '../list.interface';
 
 export interface EditableListActions {
   sort?: boolean;
-  drag?: boolean;
-  edit?: boolean;
   add?: boolean | string;
   remove?: boolean;
+}
+
+export interface EditableListTranslation {
+  add: string;
+  remove: string;
+  done: string;
+  cancel: string;
+  sortAsc: string;
+  sortDesc: string;
+  sortCustom: string;
+  total: string;
+  alreadyExists: string[];
+  duplicate: string;
+}
+
+export interface EditableListState {
+  delete: string[];
+  create: string[];
+  sortType: ListSortType;
+  order: string[];
+  list: SelectOption[];
 }

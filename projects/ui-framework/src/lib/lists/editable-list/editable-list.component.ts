@@ -1,63 +1,45 @@
 import {
   Component,
-  OnInit,
   Input,
   SimpleChanges,
   OnChanges,
   ChangeDetectorRef,
-  ViewChildren,
-  QueryList,
-  ElementRef,
-  HostListener,
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
+  ElementRef,
+  ViewChild,
+  NgZone,
+  HostListener,
 } from '@angular/core';
 import { SelectOption } from '../list.interface';
-
 import { DropResult } from 'ngx-smooth-dnd';
-import { Icons, IconSize } from '../../icons/icons.enum';
+import { Icons } from '../../icons/icons.enum';
 import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
 import {
-  EditableListViewItem,
   EditableListActions,
+  EditableListTranslation,
+  EditableListState,
 } from './editable-list.interface';
 import {
   applyChanges,
   notFirstChanges,
-  compareAsStrings,
   cloneObject,
-  simpleUID,
+  hasChanges,
+  isNotEmptyArray,
+  cloneArray,
   isKey,
+  isNumber,
 } from '../../services/utils/functional-utils';
-import { simpleChange } from '../../services/utils/test-helpers';
 import { cloneDeep } from 'lodash';
-import { MenuItem } from '../../navigation/menu/menu.interface';
 import {
-  EDITABLE_LIST_MENU_LABELS,
+  EDITABLE_LIST_TRANSLATION,
   EDITABLE_LIST_ALLOWED_ACTIONS_DEF,
 } from './editable-list.const';
+import { ListSortType } from './editable-list.enum';
+import { EditableListService } from './editable-list.service';
 import { Keys } from '../../enums';
-
-export const applyDrag = (arr, dragResult) => {
-  const { removedIndex, addedIndex, payload } = dragResult;
-  if (removedIndex === null && addedIndex === null) {
-    return arr;
-  }
-
-  const result = [...arr];
-  let itemToAdd = payload;
-
-  if (removedIndex !== null) {
-    itemToAdd = result.splice(removedIndex, 1)[0];
-  }
-
-  if (addedIndex !== null) {
-    result.splice(addedIndex, 0, itemToAdd);
-  }
-
-  return result;
-};
+import { DOMInputEvent } from '../../types';
 
 @Component({
   selector: 'b-editable-list',
@@ -65,107 +47,97 @@ export const applyDrag = (arr, dragResult) => {
   styleUrls: ['./editable-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditableListComponent implements OnChanges, OnInit {
-  constructor(private cd: ChangeDetectorRef) {}
+export class EditableListComponent implements OnChanges {
+  constructor(
+    private srvc: EditableListService,
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
+  ) {}
 
-  @ViewChildren('itemEditInputs') itemEditInputs: QueryList<ElementRef>;
+  @ViewChild('addItemInput', { static: false }) addItemInput: ElementRef;
 
   @Input() list: SelectOption[] = [];
+  @Input() sortType: ListSortType;
+
   @Input() allowedActions: EditableListActions = cloneObject(
     EDITABLE_LIST_ALLOWED_ACTIONS_DEF
   );
+  @Input() translation: EditableListTranslation = cloneObject(
+    EDITABLE_LIST_TRANSLATION
+  );
 
-  @Output() changed: EventEmitter<SelectOption[]> = new EventEmitter<
-    SelectOption[]
+  @Output() changed: EventEmitter<EditableListState> = new EventEmitter<
+    EditableListState
   >();
 
-  public listViewModel: EditableListViewItem[] = [];
-  public updatedList: SelectOption[];
-
-  public listIsAscending: boolean;
-
   readonly icons = Icons;
-  readonly iconSize = IconSize;
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
+  readonly order = ListSortType;
 
-  @HostListener('dblclick', ['$event'])
-  onHostDblClick($event: MouseEvent) {
-    const target = $event.target as HTMLInputElement;
+  public listState: EditableListState = {
+    delete: [],
+    create: [],
+    order: null,
+    sortType: null,
+    list: null,
+  };
+
+  public isDragged = false;
+  public removingIndex: number = null;
+  public addingItem = false;
+  public addedItem = false;
+  public inpuFocused = false;
+
+  @HostListener('keydown.outside-zone', ['$event'])
+  private onHostKeydown(event: KeyboardEvent) {
+    if (isKey(event.key, Keys.escape) && isNumber(this.removingIndex)) {
+      this.removeCancel();
+    }
+    if (isKey(event.key, Keys.enter) && isNumber(this.removingIndex)) {
+      this.removeItem(this.removingIndex, true);
+    }
+
     if (
-      this.allowedActions.edit &&
-      target.matches('.bel-item-input[readonly]')
+      this.addingItem &&
+      (isKey(event.key, Keys.enter) || isKey(event.key, Keys.tab))
     ) {
-      const id = target.getAttribute('data-item-id');
-      $event.preventDefault();
-      this.itemEditEnable(id, target);
+      this.addItem(true);
+    }
+    if (this.addingItem && isKey(event.key, Keys.escape)) {
+      this.addItemCancel();
     }
   }
 
-  @HostListener('focusout', ['$event'])
-  onHostBlur($event: FocusEvent) {
-    const target = $event.target as HTMLInputElement;
-    if (
-      this.allowedActions.edit &&
-      target.matches('.bel-item-input:not([readonly])')
-    ) {
-      const id = target.getAttribute('data-item-id');
-      this.itemEditDone(id, $event);
+  @HostListener('focusout.outside-zone', ['$event'])
+  private onHostFocusout(event: FocusEvent) {
+    if (isNumber(this.removingIndex)) {
+      this.removeCancel(event);
+    }
+
+    if (this.addingItem) {
+      this.addItemCancel(event);
     }
   }
 
-  @HostListener('keydown', ['$event'])
-  onHostKeydown($event: KeyboardEvent) {
-    const target = $event.target as HTMLInputElement;
-    if (
-      this.allowedActions.edit &&
-      target.matches('.bel-item-input:not([readonly])')
-    ) {
-      const id = target.getAttribute('data-item-id');
-
-      if (isKey($event.key, Keys.enter) || isKey($event.key, Keys.tab)) {
-        $event.preventDefault();
-        this.itemEditDone(id, $event);
-      }
-
-      if (isKey($event.key, Keys.escape)) {
-        $event.preventDefault();
-        this.itemEditCancel(id, $event);
-      }
-    }
-  }
-
-  ngOnInit() {}
-
-  ngOnChanges(changes: SimpleChanges) {
+  public ngOnChanges(changes: SimpleChanges) {
     applyChanges(this, changes, {
       list: [],
       allowedActions: cloneObject(EDITABLE_LIST_ALLOWED_ACTIONS_DEF),
+      translation: cloneObject(EDITABLE_LIST_TRANSLATION),
     });
 
-    if (changes.list) {
-      this.listViewModel = this.list.map((item: SelectOption) => ({
-        ...item,
-        readonly: true,
-        focused: false,
-        menu:
-          (this.allowedActions.edit || this.allowedActions.remove) &&
-          this.getItemMenu(item.id),
-      }));
+    if (hasChanges(changes, ['list'])) {
+      this.listState.list = cloneDeep(this.list);
+      this.listState.sortType = this.srvc.getListSortType(this.listState.list);
     }
 
-    if (
-      notFirstChanges(changes, ['allowedActions']) &&
-      (changes.allowedActions.previousValue.edit !==
-        changes.allowedActions.currentValue.edit ||
-        changes.allowedActions.previousValue.remove !==
-          changes.allowedActions.currentValue.remove)
-    ) {
-      this.listViewModel.forEach(item => {
-        item.menu =
-          (this.allowedActions.edit || this.allowedActions.remove) &&
-          this.getItemMenu(item.id);
-      });
+    if (hasChanges(changes, ['sortType'])) {
+      this.sortList(
+        this.listState.list,
+        this.sortType,
+        this.listState.sortType
+      );
     }
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
@@ -173,145 +145,148 @@ export class EditableListComponent implements OnChanges, OnInit {
     }
   }
 
-  onDrop(dropResult: DropResult) {
-    console.log(dropResult);
+  public addItem(confirm = false): void {
+    if (!confirm) {
+      this.addingItem = true;
 
-    this.listIsAscending = undefined;
-    this.listViewModel = applyDrag(this.listViewModel, dropResult);
-    this.transmit();
-  }
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.addItemInput.nativeElement.focus();
+          this.inpuFocused = true;
 
-  itemEditEnable(id: string | number, inputEL: HTMLInputElement = null): void {
-    const index = this.getItemIndexByID(id);
-    if (index > -1) {
-      const input =
-        inputEL !== null
-          ? inputEL
-          : (this.itemEditInputs.toArray()[index]
-              .nativeElement as HTMLInputElement);
-      this.listViewModel[index].readonly = false;
-      this.listViewModel[index].focused = true;
-      input.focus();
+          if (!this.cd['destroyed']) {
+            this.cd.detectChanges();
+          }
+        }, 0);
+      });
+    } else {
+      const value = this.addItemInput.nativeElement.value;
 
-      input.selectionStart = input.selectionEnd = input.value.length;
+      if (value.trim()) {
+        this.addedItem = true;
+        this.srvc.addItem(this.listState.list, value);
+        this.listState.create.push(value);
+        this.transmit();
+        this.listState.sortType = ListSortType.UserDefined;
+        this.inpuFocused = false;
+        this.addingItem = false;
+        this.addItemInput.nativeElement.value = '';
+      } else {
+        this.addItemCancel();
+      }
+    }
+
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 
-  itemEditDone(id: string | number, $event: Event): void {
-    const item = this.getItemByID(id) as EditableListViewItem;
-    const input = $event.target as HTMLInputElement;
-    if (item) {
-      item.readonly = true;
-      item.focused = false;
+  public addItemCancel(event: FocusEvent = null) {
+    const relatedTarget = event && (event.relatedTarget as HTMLElement);
+
+    if (
+      !relatedTarget ||
+      !relatedTarget.matches(
+        '.bel-done-button button, .bel-item-confirm, .bel-item-input'
+      )
+    ) {
+      this.inpuFocused = false;
+      this.addingItem = false;
+
+      if (!this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
     }
-    if (item && Boolean(input.value.trim())) {
-      item.value = input.value;
+
+    if (relatedTarget && relatedTarget.matches('.bel-item-confirm')) {
+      this.addItemInput.nativeElement.focus();
+    }
+
+    if (
+      !event ||
+      (relatedTarget && relatedTarget.matches('.bel-cancel-button button'))
+    ) {
+      this.addItemInput.nativeElement.value = '';
+    }
+  }
+
+  public removeItem(index: number, confirm = false): void {
+    if (!confirm) {
+      this.removingIndex = index;
+    } else {
+      this.listState.delete.push(this.listState.list[index].value);
+      this.listState.list.splice(index, 1);
+      this.transmit();
+      this.removingIndex = null;
+      this.addedItem = false;
+    }
+
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
+  }
+
+  public removeCancel(event: FocusEvent = null): void {
+    const relatedTarget = event && (event.relatedTarget as HTMLElement);
+
+    if (!relatedTarget || !relatedTarget.matches('.bel-remove-button button')) {
+      this.removingIndex = null;
+
+      if (!this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
+    }
+  }
+
+  public onInputChange(event: DOMInputEvent): void {
+    const value = event.target.value;
+    console.log('onAddItemInputChange', value);
+  }
+
+  public onDragStart(): void {
+    this.isDragged = true;
+    this.addedItem = false;
+  }
+
+  public onDrop(dropResult: DropResult): void {
+    this.isDragged = false;
+    if (this.srvc.onDrop(this.listState.list, dropResult)) {
+      this.listState.sortType = ListSortType.UserDefined;
       this.transmit();
     }
   }
 
-  itemEditCancel(id: string | number, $event: Event): void {
-    const item = this.getItemByID(id) as EditableListViewItem;
-    const input = $event.target as HTMLInputElement;
-    if (item) {
-      item.readonly = true;
-      item.focused = false;
-    }
-    input.value = item.value;
-  }
-
-  public addItem(): void {
-    const id = simpleUID('', 10);
-    this.listViewModel.unshift({
-      id: id,
-      value: '',
-      readonly: false,
-      focused: true,
-      menu:
-        (this.allowedActions.edit || this.allowedActions.remove) &&
-        this.getItemMenu(id),
-    });
-    this.listIsAscending = undefined;
-    this.cd.detectChanges();
-    const input = this.itemEditInputs.toArray()[0]
-      .nativeElement as HTMLInputElement;
-    input.focus();
-  }
-
-  public removeItem(id: string | number) {
-    const index = this.getItemIndexByID(id);
-    this.listViewModel.splice(index, 1);
+  public sortList(
+    list: SelectOption[] = this.listState.list,
+    order: ListSortType = null,
+    currentOrder: ListSortType = this.listState.sortType
+  ): void {
+    this.listState.sortType = this.srvc.sortList(list, order, currentOrder);
+    this.addedItem = false;
     this.transmit();
   }
 
-  public sortList(): void {
-    this.listViewModel.sort((a, b) => {
-      const x = a.value.toLowerCase();
-      const y = b.value.toLowerCase();
-      return x < y ? -1 : x > y ? 1 : 0;
-    });
-    if (this.listIsAscending === true) {
-      this.listViewModel.reverse();
-    }
-    this.listIsAscending = !this.listIsAscending;
-    this.transmit();
-  }
+  private transmit(): void {
+    this.listState.order = this.listState.list.map(i => i.value);
+    this.listState.list = cloneArray(this.listState.list);
 
-  public resetList(value: SelectOption[] = null): void {
-    this.ngOnChanges(
-      simpleChange({
-        list: value || this.list,
-      })
+    const itersection = this.listState.create.filter(i =>
+      this.listState.delete.includes(i)
     );
-    this.transmit(value || this.list);
-  }
 
-  private getItemIndexByID(
-    id: string | number,
-    list: (EditableListViewItem | SelectOption)[] = this.listViewModel
-  ): number {
-    return list.findIndex(i => compareAsStrings(i.id, id));
-  }
-
-  private getItemByID(
-    id: string | number,
-    list: (EditableListViewItem | SelectOption)[] = this.listViewModel
-  ): EditableListViewItem | SelectOption {
-    return list.find(i => compareAsStrings(i.id, id));
-  }
-
-  private transmit(value: SelectOption[] = null): void {
-    this.updatedList =
-      value !== null
-        ? cloneDeep(value)
-        : this.listViewModel
-            .filter(item => Boolean(item.value.trim()))
-            .map((item: EditableListViewItem) => ({
-              ...this.getItemByID(item.id, this.list),
-              id: item.id,
-              value: item.value,
-            }));
-    this.changed.emit(this.updatedList);
-  }
-
-  private getItemMenu(id: string | number): MenuItem[] {
-    const menu: MenuItem[] = [];
-    if (this.allowedActions.edit) {
-      menu.push({
-        label: EDITABLE_LIST_MENU_LABELS.edit,
-        action: () => this.itemEditEnable(id),
-      });
+    if (isNotEmptyArray(itersection)) {
+      this.listState.create = this.listState.create.filter(
+        i => !itersection.includes(i)
+      );
+      this.listState.delete = this.listState.delete.filter(
+        i => !itersection.includes(i)
+      );
     }
-    if (this.allowedActions.remove) {
-      menu.push({
-        label: EDITABLE_LIST_MENU_LABELS.remove,
-        action: () => this.removeItem(id),
-      });
-    }
-    return menu;
+
+    this.changed.emit(cloneObject(this.listState));
   }
 
   public listTrackBy(index: number, item: SelectOption): string | number {
-    return item.id;
+    return item.id || item.value || JSON.stringify(item);
   }
 }

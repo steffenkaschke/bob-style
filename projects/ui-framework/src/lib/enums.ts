@@ -88,6 +88,7 @@ export enum NativeEvents {
   touchenter = 'touchenter',
   touchleave = 'touchleave',
   touchcancel = 'touchcancel',
+  focusout = 'focusout',
 }
 
 export const NativeMouseEvents = [

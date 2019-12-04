@@ -1,59 +1,120 @@
 <header *ngIf="allowedActions.add || allowedActions.sort"
         class="bel-header">
-  <b-button *ngIf="allowedActions.add"
-            [type]="buttonType.secondary"
-            [size]="buttonSize.small"
-            [icon]="icons.add"
-            [text]="allowedActions.add!==true ? allowedActions.add : 'Add'"
-            (clicked)="addItem()">
-  </b-button>
 
-  <button *ngIf="allowedActions.sort"
-          type="button"
-          class="bel-reset-button"
-          [ngClass]="{'custom-sorting':listIsAscending === undefined}"
-          (click)="sortList()">
-    {{listIsAscending === undefined || listIsAscending === true ?
-      'A - Z' : 'Z - A'}}
+  <div class="bel-header-top"
+       *ngIf="allowedActions.add">
 
-    <b-icon [icon]="listIsAscending === undefined || listIsAscending === true ? icons.download : icons.upload"
-            [size]="iconSize.medium"></b-icon>
-  </button>
+    <b-button class="bel-plus-button"
+              [hidden]="addingItem"
+              [type]="buttonType.secondary"
+              [size]="buttonSize.small"
+              [icon]="icons.add"
+              [text]="allowedActions.add!==true ? allowedActions.add : translation.add"
+              (clicked)="addItem()">
+    </b-button>
+
+    <div class="bel-item"
+         [hidden]="!addingItem"
+         [ngClass]="{focused: inpuFocused}">
+
+      <input #addItemInput
+             type="text"
+             class="bfe-input bel-item-input"
+             autocomplete="off"
+             (input.outside-zone)="onInputChange($event)">
+
+      <div class="bel-item-confirm"
+           tabindex="0">
+        <b-button class="bel-cancel-button"
+                  [type]="buttonType.tertiary"
+                  [size]="buttonSize.small"
+                  [text]="translation.cancel">
+        </b-button>
+        <b-button class="bel-done-button"
+                  [type]="buttonType.secondary"
+                  [size]="buttonSize.small"
+                  [text]="translation.done"
+                  (clicked)="addItem(true)">
+        </b-button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bel-header-bottom">
+
+    <span class="bel-total b-big-body">
+      {{translation.total}}: {{listState.list.length || 0}}
+    </span>
+
+    <b-button *ngIf="allowedActions.sort"
+              class="bel-sort-button"
+              [type]="buttonType.tertiary"
+              [size]="buttonSize.small"
+              [icon]="listState.sortType === order.UserDefined || listState.sortType === order.Asc ? icons.sort_asc :
+              icons.sort_desc"
+              [ngClass]="{'custom-sorting': listState.sortType === order.UserDefined}"
+              (clicked)="sortList()"
+              [text]="listState.sortType === order.Asc
+                ? translation.sortAsc :
+                  listState.sortType === order.Desc ?
+                  translation.sortDesc :
+                  translation.sortCustom">
+    </b-button>
+
+  </div>
 
 </header>
 
 <smooth-dnd-container role="list"
+                      [ngClass]="{'bel-has-item-dragged': isDragged}"
                       [orientation]="'vertical'"
                       [lockAxis]="'y'"
                       [dragClass]="'bel-item-dragged'"
-                      [nonDragAreaSelector]="'.bel-item-input.edit-mode'"
+                      [dropClass]="'bel-item-dropped'"
+                      [nonDragAreaSelector]="'.bel-item-confirm, .bel-trash-button'"
+                      (dragStart)="onDragStart()"
                       (drop)="onDrop($event)">
 
-  <smooth-dnd-draggable *ngFor="let item of listViewModel; trackBy: listTrackBy"
+  <smooth-dnd-draggable *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy"
                         role="listitem">
 
     <div class="bel-item b-icon-drag-alt b-icon-medium b-icon-dark"
-         [ngClass]="{'edit-mode': !item.readonly, focused: item.focused}"
-         [attr.data-item-id]="item.id">
+         [attr.data-item-id]="item.id"
+         [ngClass]="{'bel-item-new': addedItem && index === 0}">
 
-      <input #itemEditInputs
-             type="text"
-             class="bfe-input bel-item-input"
-             [ngClass]="{'edit-mode': !item.readonly}"
-             [value]="item.value"
-             [readonly]="item.readonly"
-             autocomplete="off"
-             [attr.data-item-id]="item.id">
+      <span class="bel-item-value"
+            data-max-lines="2">
+        {{ item.value }}
+      </span>
 
-      <b-menu *ngIf="item.menu"
-              [menu]="item.menu"
-              class="bel-item-menu">
-        <b-square-button menu-trigger
-                         [type]="buttonType.tertiary"
-                         [size]="buttonSize.small"
-                         [icon]="icons.three_dots_vert">
-        </b-square-button>
-      </b-menu>
+      <b-square-button *ngIf="allowedActions.remove"
+                       class="bel-trash-button"
+                       [hidden]="removingIndex === index"
+                       [type]="buttonType.tertiary"
+                       [size]="buttonSize.small"
+                       [icon]="icons.delete"
+                       (clicked)="removeItem(index)">
+      </b-square-button>
+
+      <div *ngIf="allowedActions.remove"
+           class="bel-item-confirm"
+           [hidden]="removingIndex !== index"
+           tabindex="0">
+
+        <b-button class="bel-cancel-button"
+                  [type]="buttonType.tertiary"
+                  [size]="buttonSize.small"
+                  [text]="translation.cancel">
+        </b-button>
+
+        <b-button class="bel-remove-button"
+                  [type]="buttonType.negative"
+                  [size]="buttonSize.small"
+                  [text]="translation.remove"
+                  (clicked)="removeItem(index,true)">
+        </b-button>
+      </div>
 
     </div>
 

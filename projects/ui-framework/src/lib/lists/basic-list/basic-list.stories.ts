@@ -11,7 +11,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BasicListItem } from './basic-list.interface';
 import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
 
-const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
+  withKnobs
+);
 
 const withMenuTemplate = `
   <b-basic-list [items]="items">
@@ -73,13 +75,13 @@ const items: BasicListItem[] = [
     menu: [
       {
         label: 'Menu item 1',
-        action: action(`List item Item 1,  Menu action 1`)
+        action: action(`List item Item 1,  Menu action 1`),
       },
       {
         label: 'Menu item 2',
-        action: action(`List item Item 1,  Menu action 2`)
-      }
-    ]
+        action: action(`List item Item 1,  Menu action 2`),
+      },
+    ],
   },
   {
     label: 'Item 2',
@@ -87,14 +89,14 @@ const items: BasicListItem[] = [
     menu: [
       {
         label: 'Menu item 1',
-        action: action(`List item Item 2,  Menu action 1`)
+        action: action(`List item Item 2,  Menu action 1`),
       },
       {
         label: 'Menu item 2',
-        action: action(`List item Item 2,  Menu action 2`)
-      }
-    ]
-  }
+        action: action(`List item Item 2,  Menu action 2`),
+      },
+    ],
+  },
 ];
 
 story.add(
@@ -108,11 +110,17 @@ story.add(
       iconColor: IconColor,
 
       action,
-      items: object('items', items)
+      items: object('items', items),
     },
     moduleMetadata: {
-      imports: [BasicListModule, MenuModule, StoryBookLayoutModule, ButtonsModule, BrowserAnimationsModule]
-    }
+      imports: [
+        BasicListModule,
+        MenuModule,
+        StoryBookLayoutModule,
+        ButtonsModule,
+        BrowserAnimationsModule,
+      ],
+    },
   }),
   { notes: { markdown: note } }
 );

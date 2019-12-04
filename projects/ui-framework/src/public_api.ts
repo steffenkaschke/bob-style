@@ -240,10 +240,13 @@ export {
   ListFooterActionsState
 } from './lib/lists/list.interface';
 export { ListChange } from './lib/lists/list-change/list-change';
+// Editable list
 export * from './lib/lists/editable-list/editable-list.const';
 export * from './lib/lists/editable-list/editable-list.interface';
+export * from './lib/lists/editable-list/editable-list.enum';
 export { EditableListModule } from './lib/lists/editable-list/editable-list.module';
 export { EditableListComponent } from './lib/lists/editable-list/editable-list.component';
+// Basic list
 export { BasicListModule } from './lib/lists/basic-list/basic-list.module';
 export { BasicListComponent } from './lib/lists/basic-list/basic-list.component';
 export { BasicListItem } from './lib/lists/basic-list/basic-list.interface';

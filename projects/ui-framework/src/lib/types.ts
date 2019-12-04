@@ -8,3 +8,11 @@ export interface OverlayPositionClasses {
   'panel-after'?: boolean;
   'panel-before'?: boolean;
 }
+
+export interface DOMInputEvent extends UIEvent {
+  readonly data: string | null;
+  readonly isComposing: boolean;
+  readonly dataTransfer: DataTransfer;
+  readonly inputType: string;
+  readonly target: HTMLInputElement;
+}

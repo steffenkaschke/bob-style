@@ -1,9 +1,5 @@
 import { BaseFormElement } from './base-form-element';
-import {
-  simpleChange,
-  eventEmitterMock,
-  changeDetectorMock,
-} from '../services/utils/test-helpers';
+import { simpleChange, eventEmitterMock, changeDetectorMock } from '../services/utils/test-helpers';
 import { InputEventType, FormEvents } from './form-elements.enum';
 import { cloneObject } from '../services/utils/functional-utils';
 
@@ -39,6 +35,10 @@ describe('BaseFormElement', () => {
     spyOn(baseFormElement, 'onTouched');
 
     baseFormElement.changed.subscribe(() => {});
+  });
+
+  afterEach(() => {
+    baseFormElement.changed.complete();
   });
 
   describe('WriteValue', () => {
@@ -86,9 +86,7 @@ describe('BaseFormElement', () => {
     beforeEach(() => {
       baseFormElement.wrapEvent = false;
 
-      baseFormElement.outputTransformers.push(
-        (value: string): string => value + outTransAddedString
-      );
+      baseFormElement.outputTransformers.push((value: string): string => value + outTransAddedString);
 
       baseFormElement.ngOnChanges(
         simpleChange({
@@ -102,12 +100,8 @@ describe('BaseFormElement', () => {
     });
 
     it('Should transform output value', () => {
-      expect(baseFormElement.changed.emit).toHaveBeenCalledWith(
-        testString + outTransAddedString
-      );
-      expect(baseFormElement.propagateChange).toHaveBeenCalledWith(
-        testString + outTransAddedString
-      );
+      expect(baseFormElement.changed.emit).toHaveBeenCalledWith(testString + outTransAddedString);
+      expect(baseFormElement.propagateChange).toHaveBeenCalledWith(testString + outTransAddedString);
     });
   });
 
@@ -192,9 +186,7 @@ describe('BaseFormElement', () => {
 
     it('Should update value with (output-)transformed value, if updateValue option is true', () => {
       baseFormElement.value = testString;
-      baseFormElement.outputTransformers.push(
-        (value: string): string => value + outTransAddedString
-      );
+      baseFormElement.outputTransformers.push((value: string): string => value + outTransAddedString);
 
       baseFormElement['transmitValue']('DEF 456', {
         eventType: [InputEventType.onKey],
@@ -249,9 +241,5 @@ describe('BaseFormElement', () => {
       expect(baseFormElement.propagateChange).toHaveBeenCalledWith(testString);
       expect(baseFormElement.onTouched).not.toHaveBeenCalled();
     });
-  });
-
-  afterEach(() => {
-    baseFormElement.changed.complete();
   });
 });
