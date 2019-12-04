@@ -180,8 +180,8 @@ export class DateParseService {
         !onlyYear &&
         !onlyDay &&
         frmt.index.month < frmt.index.day) ||
-      (resultItems === 2 && index.year > -1 && index.day < 0) ||
-      (resultItems > 1 && frmt.length.day === 0);
+      (resultItems === 2 && index.year > -1 && index.day < 0);
+    // || (resultItems > 1 && frmt.length.day === 0);
 
     console.log(
       'onlyDay',
