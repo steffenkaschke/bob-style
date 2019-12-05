@@ -146,8 +146,11 @@
 // Theme - Tertiary
 
 :host[data-type='tertiary']::ng-deep {
-  .fr-box.fr-basic .fr-element {
+  .fr-box[class] .fr-wrapper {
     background-color: $grey-100;
+  }
+
+  .fr-box.fr-basic .fr-element {
     padding: 20px;
   }
 
@@ -161,10 +164,22 @@
   }
 }
 
-:host[data-type='secondary'].warn::ng-deep,
-:host[data-type='secondary'].error::ng-deep {
+:host[data-type='tertiary'].warn::ng-deep,
+:host[data-type='tertiary'].error::ng-deep {
   .fr-toolbar.fr-bottom,
   .fr-toolbar.fr-top {
     border-bottom-width: 1px;
+  }
+}
+
+:host[data-type='tertiary'].warn::ng-deep {
+  .fr-box[class] .fr-wrapper {
+    box-shadow: 0 0 0 1px $color-warn;
+  }
+}
+
+:host[data-type='tertiary'].error::ng-deep {
+  .fr-box[class] .fr-wrapper {
+    box-shadow: 0 0 0 1px $color-error;
   }
 }
