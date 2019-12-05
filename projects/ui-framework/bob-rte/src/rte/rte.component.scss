@@ -171,15 +171,3 @@
     border-bottom-width: 1px;
   }
 }
-
-:host[data-type='tertiary'].warn::ng-deep {
-  .fr-box[class] .fr-wrapper {
-    box-shadow: 0 0 0 1px $color-warn;
-  }
-}
-
-:host[data-type='tertiary'].error::ng-deep {
-  .fr-box[class] .fr-wrapper {
-    box-shadow: 0 0 0 1px $color-error;
-  }
-}
