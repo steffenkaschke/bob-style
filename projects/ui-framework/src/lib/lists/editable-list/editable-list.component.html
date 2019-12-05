@@ -21,7 +21,7 @@
              type="text"
              class="bfe-input bel-item-input"
              autocomplete="off"
-             (input.outside-zone)="onInputChange($event)">
+             (input.outside-zone)="onInputChange()">
 
       <div class="bel-item-confirm"
            tabindex="0">
@@ -81,7 +81,9 @@
 
     <div class="bel-item b-icon-drag-alt b-icon-medium b-icon-dark"
          [attr.data-item-id]="item.id"
-         [ngClass]="{'bel-item-new': addedItem && index === 0, 'blink': sameItemIndex === index}">
+         [ngClass]="{'new': addedItem && index === 0,
+                     'deleted':removedItem && removingIndex === index,
+                     'blink': sameItemIndex === index}">
 
       <span class="bel-item-value"
             data-max-lines="2">
