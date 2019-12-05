@@ -39,7 +39,6 @@ import {
 import { ListSortType } from './editable-list.enum';
 import { EditableListService } from './editable-list.service';
 import { Keys } from '../../enums';
-import { DOMInputEvent } from '../../types';
 
 @Component({
   selector: 'b-editable-list',
@@ -68,6 +67,7 @@ export class EditableListComponent implements OnChanges {
   @Output() changed: EventEmitter<EditableListState> = new EventEmitter<
     EditableListState
   >();
+  @Output() inputChanged: EventEmitter<string> = new EventEmitter<string>();
 
   readonly icons = Icons;
   readonly buttonType = ButtonType;
@@ -88,13 +88,14 @@ export class EditableListComponent implements OnChanges {
   public inputInvalid = false;
   public sameItemIndex: number = null;
   public removingIndex: number = null;
+  public removedItem = false;
 
   @HostListener('keydown.outside-zone', ['$event'])
   private onHostKeydown(event: KeyboardEvent) {
-    if (isKey(event.key, Keys.escape) && isNumber(this.removingIndex)) {
+    if (isNumber(this.removingIndex) && isKey(event.key, Keys.escape)) {
       this.removeCancel();
     }
-    if (isKey(event.key, Keys.enter) && isNumber(this.removingIndex)) {
+    if (isNumber(this.removingIndex) && isKey(event.key, Keys.enter)) {
       this.removeItem(this.removingIndex, true);
     }
 
@@ -179,12 +180,12 @@ export class EditableListComponent implements OnChanges {
         }
 
         if (this.sameItemIndex === -1) {
+          this.addingItem = false;
           this.addedItem = true;
           this.srvc.addItem(this.listState.list, value);
           this.listState.create.push(value);
           this.transmit();
           this.listState.sortType = ListSortType.UserDefined;
-          this.addingItem = false;
           this.addItemInput.nativeElement.value = '';
         }
       } else {
@@ -199,7 +200,6 @@ export class EditableListComponent implements OnChanges {
 
   public addItemCancel(event: FocusEvent = null) {
     const relatedTarget = event && (event.relatedTarget as HTMLElement);
-    let hasViewChanges = false;
 
     if (
       !relatedTarget ||
@@ -209,7 +209,11 @@ export class EditableListComponent implements OnChanges {
     ) {
       this.addingItem = false;
       this.inputInvalid = false;
-      hasViewChanges = true;
+      this.sameItemIndex = null;
+
+      if (!this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
     }
 
     if (relatedTarget && relatedTarget.matches('.bel-item-confirm')) {
@@ -217,17 +221,10 @@ export class EditableListComponent implements OnChanges {
     }
 
     if (
-      !event ||
+      !relatedTarget ||
       (relatedTarget && relatedTarget.matches('.bel-cancel-button button'))
     ) {
       this.addItemInput.nativeElement.value = '';
-      this.inputInvalid = false;
-      this.sameItemIndex = null;
-      hasViewChanges = true;
-    }
-
-    if (hasViewChanges && !this.cd['destroyed']) {
-      this.cd.detectChanges();
     }
   }
 
@@ -235,11 +232,20 @@ export class EditableListComponent implements OnChanges {
     if (!confirm) {
       this.removingIndex = index;
     } else {
-      this.listState.delete.push(this.listState.list[index].value);
-      this.listState.list.splice(index, 1);
-      this.transmit();
-      this.removingIndex = null;
       this.addedItem = false;
+      this.removedItem = true;
+
+      setTimeout(() => {
+        this.removingIndex = null;
+        this.removedItem = false;
+        this.listState.delete.push(this.listState.list[index].value);
+        this.listState.list.splice(index, 1);
+        this.transmit();
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, 150);
     }
 
     if (!this.cd['destroyed']) {
@@ -259,12 +265,17 @@ export class EditableListComponent implements OnChanges {
     }
   }
 
-  public onInputChange(event: DOMInputEvent): void {
+  public onInputChange(): void {
+    const value = this.addItemInput.nativeElement.value.trim();
     this.inputInvalid = false;
     this.sameItemIndex = null;
 
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
+    }
+
+    if (this.inputChanged.observers.length) {
+      this.inputChanged.emit(value);
     }
   }
 
