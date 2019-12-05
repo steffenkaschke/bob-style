@@ -1,7 +1,7 @@
 @import '../../style/common-imports';
 @import '../../avatar/avatar/avatar.mixin';
 
-@keyframes blink {
+@keyframes bchp-blink {
   0%,
   100% {
     box-shadow: 0 0 0 0 transparent;
@@ -94,7 +94,7 @@ $chipStateMap: (
   outline: 0;
 
   &.blink {
-    @include animate(blink, 0.3s);
+    @include animate(bchp-blink, 0.3s);
   }
 
   &[data-clickable='true'] {

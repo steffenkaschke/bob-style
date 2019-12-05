@@ -58,7 +58,6 @@ export class EditableListComponent implements OnChanges {
 
   @Input() list: SelectOption[] = [];
   @Input() sortType: ListSortType;
-
   @Input() allowedActions: EditableListActions = cloneObject(
     EDITABLE_LIST_ALLOWED_ACTIONS_DEF
   );
@@ -84,10 +83,11 @@ export class EditableListComponent implements OnChanges {
   };
 
   public isDragged = false;
-  public removingIndex: number = null;
   public addingItem = false;
   public addedItem = false;
-  public inpuFocused = false;
+  public inputInvalid = false;
+  public sameItemIndex: number = null;
+  public removingIndex: number = null;
 
   @HostListener('keydown.outside-zone', ['$event'])
   private onHostKeydown(event: KeyboardEvent) {
@@ -152,7 +152,6 @@ export class EditableListComponent implements OnChanges {
       this.zone.runOutsideAngular(() => {
         setTimeout(() => {
           this.addItemInput.nativeElement.focus();
-          this.inpuFocused = true;
 
           if (!this.cd['destroyed']) {
             this.cd.detectChanges();
@@ -160,17 +159,34 @@ export class EditableListComponent implements OnChanges {
         }, 0);
       });
     } else {
-      const value = this.addItemInput.nativeElement.value;
+      const value = this.addItemInput.nativeElement.value.trim();
 
-      if (value.trim()) {
-        this.addedItem = true;
-        this.srvc.addItem(this.listState.list, value);
-        this.listState.create.push(value);
-        this.transmit();
-        this.listState.sortType = ListSortType.UserDefined;
-        this.inpuFocused = false;
-        this.addingItem = false;
-        this.addItemInput.nativeElement.value = '';
+      if (value) {
+        this.sameItemIndex = this.listState.list
+          .map(i => i.value)
+          .findIndex(i => i.toLowerCase().trim() === value.toLowerCase());
+
+        if (this.sameItemIndex > -1) {
+          this.inputInvalid = true;
+
+          setTimeout(() => {
+            this.sameItemIndex = null;
+
+            if (!this.cd['destroyed']) {
+              this.cd.detectChanges();
+            }
+          }, 300);
+        }
+
+        if (this.sameItemIndex === -1) {
+          this.addedItem = true;
+          this.srvc.addItem(this.listState.list, value);
+          this.listState.create.push(value);
+          this.transmit();
+          this.listState.sortType = ListSortType.UserDefined;
+          this.addingItem = false;
+          this.addItemInput.nativeElement.value = '';
+        }
       } else {
         this.addItemCancel();
       }
@@ -183,6 +199,7 @@ export class EditableListComponent implements OnChanges {
 
   public addItemCancel(event: FocusEvent = null) {
     const relatedTarget = event && (event.relatedTarget as HTMLElement);
+    let hasViewChanges = false;
 
     if (
       !relatedTarget ||
@@ -190,12 +207,9 @@ export class EditableListComponent implements OnChanges {
         '.bel-done-button button, .bel-item-confirm, .bel-item-input'
       )
     ) {
-      this.inpuFocused = false;
       this.addingItem = false;
-
-      if (!this.cd['destroyed']) {
-        this.cd.detectChanges();
-      }
+      this.inputInvalid = false;
+      hasViewChanges = true;
     }
 
     if (relatedTarget && relatedTarget.matches('.bel-item-confirm')) {
@@ -207,6 +221,13 @@ export class EditableListComponent implements OnChanges {
       (relatedTarget && relatedTarget.matches('.bel-cancel-button button'))
     ) {
       this.addItemInput.nativeElement.value = '';
+      this.inputInvalid = false;
+      this.sameItemIndex = null;
+      hasViewChanges = true;
+    }
+
+    if (hasViewChanges && !this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 
@@ -239,8 +260,12 @@ export class EditableListComponent implements OnChanges {
   }
 
   public onInputChange(event: DOMInputEvent): void {
-    const value = event.target.value;
-    console.log('onAddItemInputChange', value);
+    this.inputInvalid = false;
+    this.sameItemIndex = null;
+
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
   public onDragStart(): void {
@@ -268,7 +293,6 @@ export class EditableListComponent implements OnChanges {
 
   private transmit(): void {
     this.listState.order = this.listState.list.map(i => i.value);
-    this.listState.list = cloneArray(this.listState.list);
 
     const itersection = this.listState.create.filter(i =>
       this.listState.delete.includes(i)
@@ -283,7 +307,11 @@ export class EditableListComponent implements OnChanges {
       );
     }
 
-    this.changed.emit(cloneObject(this.listState));
+    this.changed.emit(
+      Object.assign({}, this.listState, {
+        list: cloneArray(this.listState.list),
+      })
+    );
   }
 
   public listTrackBy(index: number, item: SelectOption): string | number {
