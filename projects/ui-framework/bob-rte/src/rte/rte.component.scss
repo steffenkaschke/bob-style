@@ -164,8 +164,7 @@
   }
 }
 
-:host[data-type='tertiary'].warn::ng-deep,
-:host[data-type='tertiary'].error::ng-deep {
+:host[data-type='tertiary'].has-message::ng-deep {
   .fr-toolbar.fr-bottom,
   .fr-toolbar.fr-top {
     border-bottom-width: 1px;
