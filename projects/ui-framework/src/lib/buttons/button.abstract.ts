@@ -28,6 +28,8 @@ export abstract class BaseButtonElement {
   readonly iconColor = IconColor;
 
   onClick($event: MouseEvent) {
-    this.clicked.emit($event);
+    if (this.clicked.observers.length > 0) {
+      this.clicked.emit($event);
+    }
   }
 }

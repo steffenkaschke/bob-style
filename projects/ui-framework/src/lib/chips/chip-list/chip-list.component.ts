@@ -10,10 +10,15 @@ import {
   QueryList,
   HostListener,
   ChangeDetectionStrategy,
-  NgZone
+  NgZone,
 } from '@angular/core';
 import { Chip, ChipListConfig, ChipKeydownEvent } from '../chips.interface';
-import { isKey } from '../../services/utils/functional-utils';
+import {
+  isKey,
+  isNumber,
+  hasChanges,
+  applyChanges,
+} from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 import { ChipComponent } from '../chip/chip.component';
 import { arrayOfValuesToArrayOfObjects } from '../../services/utils/transformers';
@@ -25,7 +30,7 @@ import { IconSize } from '../../icons/icons.enum';
   selector: 'b-chip-list',
   templateUrl: './chip-list.component.html',
   styleUrls: ['./chip-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipListComponent implements OnChanges {
   constructor(private zone: NgZone) {}
@@ -33,7 +38,9 @@ export class ChipListComponent implements OnChanges {
   @ViewChildren('list') public list: QueryList<ChipComponent>;
 
   @Input() chipListSelectable: ChipListSelectable = ChipListSelectable.multi;
-  @Input() activeIndex: number = null;
+
+  @Input() activeIndex: number;
+
   @Input() chips: Chip[] = [];
   @Input() config: ChipListConfig = {};
 
@@ -44,7 +51,9 @@ export class ChipListComponent implements OnChanges {
   @Output() removed: EventEmitter<Chip> = new EventEmitter<Chip>();
   @Output() selected: EventEmitter<Chip> = new EventEmitter<Chip>();
   @Output() clicked: EventEmitter<Chip> = new EventEmitter<Chip>();
-  @Output() keyPressed: EventEmitter<ChipKeydownEvent> = new EventEmitter<ChipKeydownEvent>();
+  @Output() keyPressed: EventEmitter<ChipKeydownEvent> = new EventEmitter<
+    ChipKeydownEvent
+  >();
 
   @HostBinding('attr.role') role = 'list';
   @HostBinding('attr.data-align')
@@ -84,16 +93,28 @@ export class ChipListComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.chips) {
-      this.chips = arrayOfValuesToArrayOfObjects('text')(changes.chips.currentValue);
-    }
-  }
+    applyChanges(
+      this,
+      changes,
+      {
+        chips: [],
+      },
+      ['chips']
+    );
 
-  checkSelected(chip: Chip, index: number) {
-    if (this.chipListSelectable === ChipListSelectable.single) {
-      return this.activeIndex === index;
-    } else {
-      return chip.selected;
+    if (hasChanges(changes, ['chips'])) {
+      this.chips = arrayOfValuesToArrayOfObjects('text')(
+        changes.chips.currentValue
+      );
+    }
+
+    if (
+      changes.activeIndex &&
+      isNumber(this.activeIndex) &&
+      this.chipListSelectable === ChipListSelectable.single &&
+      this.chips[this.activeIndex]
+    ) {
+      this.selectChip(this.chips[this.activeIndex], this.activeIndex);
     }
   }
 
@@ -117,36 +138,60 @@ export class ChipListComponent implements OnChanges {
         event.stopPropagation();
         this.focusChipElByIndex(index - 1);
       }
-      if (isKey(event.key, Keys.arrowright) || isKey(event.key, Keys.arrowdown)) {
+      if (
+        isKey(event.key, Keys.arrowright) ||
+        isKey(event.key, Keys.arrowdown)
+      ) {
         event.stopPropagation();
         this.focusChipElByIndex(index + 1);
       }
     }
 
-    if (this.config.selectable && (isKey(event.key, Keys.space) || isKey(event.key, Keys.enter))) {
+    if (
+      this.config.selectable &&
+      (isKey(event.key, Keys.space) || isKey(event.key, Keys.enter))
+    ) {
       event.stopPropagation();
       this.selectChip(chip, index);
     }
 
-    if (this.config.removable && (isKey(event.key, Keys.backspace) || isKey(event.key, Keys.delete))) {
+    if (
+      this.config.removable &&
+      (isKey(event.key, Keys.backspace) || isKey(event.key, Keys.delete))
+    ) {
       event.stopPropagation();
       this.onChipRemove(chip);
 
       this.zone.runOutsideAngular(() => {
         setTimeout(() => {
-          this.focusChipElByIndex(isKey(event.key, Keys.backspace) ? index - 1 : index);
+          this.focusChipElByIndex(
+            isKey(event.key, Keys.backspace) ? index - 1 : index
+          );
         }, 0);
       });
     }
   }
 
   private selectChip(chip: Chip, index): void {
+    const isSelected = chip.selected;
+
     if (this.chipListSelectable === ChipListSelectable.single) {
-      this.activeIndex = index;
+      if (!isSelected) {
+        this.deselectAllChips();
+        chip.selected = true;
+      }
     } else {
-      chip.selected = !chip.selected;
+      chip.selected = !isSelected;
     }
-    this.selected.emit(chip);
+    if (chip.selected !== isSelected) {
+      this.selected.emit(chip);
+    }
+  }
+
+  private deselectAllChips(): void {
+    this.chips.forEach(chip => {
+      chip.selected = false;
+    });
   }
 
   private focusChipElByIndex(index: number): void {

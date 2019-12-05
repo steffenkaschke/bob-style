@@ -146,8 +146,11 @@
 // Theme - Tertiary
 
 :host[data-type='tertiary']::ng-deep {
-  .fr-box.fr-basic .fr-element {
+  .fr-box[class] .fr-wrapper {
     background-color: $grey-100;
+  }
+
+  .fr-box.fr-basic .fr-element {
     padding: 20px;
   }
 
@@ -161,8 +164,7 @@
   }
 }
 
-:host[data-type='secondary'].warn::ng-deep,
-:host[data-type='secondary'].error::ng-deep {
+:host[data-type='tertiary'].has-message::ng-deep {
   .fr-toolbar.fr-bottom,
   .fr-toolbar.fr-top {
     border-bottom-width: 1px;
