@@ -29,7 +29,8 @@ const componentTemplate1 = `
                    add: allowAdd,
                    remove: allowRemove
                  }"
-                 (changed)="onListUpdate($event)">
+                 (changed)="onListUpdate($event)"
+                 (inputChanged)="onInputChange($event)">
 </b-editable-list>
 `;
 
@@ -58,13 +59,15 @@ const note = `
   [translation] | EditableListTranslation | object with texts used in the component\
    (button titles, etc) | EDITABLE-LIST-TRANSLATION
   (changed) | EventEmitter<wbr>&lt;EditableListState&gt; | emits updated list | &nbsp;
+  (inputChanged) | EventEmitter&lt;string&gt; | Outputs input value (for external validation) | &nbsp;
 
 
   ~~~
 <b-editable-list [list]="list"
                  [sortType]="sortType"
                  [allowedActions]="allowedActions"
-                 (changed)="onListUpdate($event)">
+                 (changed)="onListUpdate($event)"
+                 (inputChanged)="onInputChange($event)>
 </b-editable-list>
   ~~~
 
@@ -108,7 +111,9 @@ story.add(
         allowSort: boolean('allowSort', true, 'Props'),
         allowAdd: boolean('allowAdd', true, 'Props'),
         allowRemove: boolean('allowRemove', true, 'Props'),
+
         onListUpdate: action('onListUpdate'),
+        onInputChange: action('onInputChange'),
       },
       moduleMetadata: {
         imports: [

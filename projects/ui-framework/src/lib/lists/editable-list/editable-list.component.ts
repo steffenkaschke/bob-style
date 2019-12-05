@@ -11,6 +11,8 @@ import {
   ViewChild,
   NgZone,
   HostListener,
+  OnInit,
+  OnDestroy,
 } from '@angular/core';
 import { SelectOption } from '../list.interface';
 import { DropResult } from 'ngx-smooth-dnd';
@@ -39,6 +41,8 @@ import {
 import { ListSortType } from './editable-list.enum';
 import { EditableListService } from './editable-list.service';
 import { Keys } from '../../enums';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'b-editable-list',
@@ -46,7 +50,7 @@ import { Keys } from '../../enums';
   styleUrls: ['./editable-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditableListComponent implements OnChanges {
+export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
     private srvc: EditableListService,
     private zone: NgZone,
@@ -90,8 +94,11 @@ export class EditableListComponent implements OnChanges {
   public removingIndex: number = null;
   public removedItem = false;
 
+  private inputChangeDbncr: Subject<string> = new Subject<string>();
+  private inputChangeSbscr: Subscription;
+
   @HostListener('keydown.outside-zone', ['$event'])
-  private onHostKeydown(event: KeyboardEvent) {
+  private onHostKeydown(event: KeyboardEvent): void {
     if (isNumber(this.removingIndex) && isKey(event.key, Keys.escape)) {
       this.removeCancel();
     }
@@ -111,7 +118,7 @@ export class EditableListComponent implements OnChanges {
   }
 
   @HostListener('focusout.outside-zone', ['$event'])
-  private onHostFocusout(event: FocusEvent) {
+  private onHostFocusout(event: FocusEvent): void {
     if (isNumber(this.removingIndex)) {
       this.removeCancel(event);
     }
@@ -121,7 +128,7 @@ export class EditableListComponent implements OnChanges {
     }
   }
 
-  public ngOnChanges(changes: SimpleChanges) {
+  public ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes, {
       list: [],
       allowedActions: cloneObject(EDITABLE_LIST_ALLOWED_ACTIONS_DEF),
@@ -143,6 +150,16 @@ export class EditableListComponent implements OnChanges {
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
+    }
+  }
+
+  public ngOnInit(): void {
+    if (this.inputChanged.observers.length) {
+      this.inputChangeSbscr = this.inputChangeDbncr
+        .pipe(debounceTime(300))
+        .subscribe(value => {
+          this.inputChanged.emit(value);
+        });
     }
   }
 
@@ -198,7 +215,7 @@ export class EditableListComponent implements OnChanges {
     }
   }
 
-  public addItemCancel(event: FocusEvent = null) {
+  public addItemCancel(event: FocusEvent = null): void {
     const relatedTarget = event && (event.relatedTarget as HTMLElement);
 
     if (
@@ -274,8 +291,15 @@ export class EditableListComponent implements OnChanges {
       this.cd.detectChanges();
     }
 
-    if (this.inputChanged.observers.length) {
-      this.inputChanged.emit(value);
+    if (this.inputChangeSbscr) {
+      this.inputChangeDbncr.next(value);
+    }
+  }
+
+  public ngOnDestroy(): void {
+    if (this.inputChangeSbscr) {
+      this.inputChangeDbncr.complete();
+      this.inputChangeSbscr.unsubscribe();
     }
   }
 
