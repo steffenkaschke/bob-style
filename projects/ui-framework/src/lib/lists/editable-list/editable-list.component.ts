@@ -177,12 +177,18 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
         }, 0);
       });
     } else {
-      const value = this.addItemInput.nativeElement.value.trim();
+      const value = this.addItemInput.nativeElement.value
+        .replace(/\s+/gi, ' ')
+        .trim();
 
       if (value) {
         this.sameItemIndex = this.listState.list
           .map(i => i.value)
-          .findIndex(i => i.toLowerCase().trim() === value.toLowerCase());
+          .findIndex(
+            i =>
+              i.toLowerCase().replace(/\W/g, '') ===
+              value.toLowerCase().replace(/\W/g, '')
+          );
 
         if (this.sameItemIndex > -1) {
           this.inputInvalid = true;
@@ -238,7 +244,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     }
 
     if (
-      !relatedTarget ||
+      !event ||
       (relatedTarget && relatedTarget.matches('.bel-cancel-button button'))
     ) {
       this.addItemInput.nativeElement.value = '';
