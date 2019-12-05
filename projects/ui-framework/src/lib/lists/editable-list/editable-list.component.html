@@ -13,9 +13,9 @@
               (clicked)="addItem()">
     </b-button>
 
-    <div class="bel-item"
+    <div class="bel-item focused"
          [hidden]="!addingItem"
-         [ngClass]="{focused: inpuFocused}">
+         [ngClass]="{invalid: inputInvalid}">
 
       <input #addItemInput
              type="text"
@@ -81,7 +81,7 @@
 
     <div class="bel-item b-icon-drag-alt b-icon-medium b-icon-dark"
          [attr.data-item-id]="item.id"
-         [ngClass]="{'bel-item-new': addedItem && index === 0}">
+         [ngClass]="{'bel-item-new': addedItem && index === 0, 'blink': sameItemIndex === index}">
 
       <span class="bel-item-value"
             data-max-lines="2">
