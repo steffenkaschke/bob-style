@@ -1,13 +1,14 @@
 import { SelectOption } from '../list.interface';
-import {
-  makeArray,
-  simpleUID,
-  randomNumber,
-} from '../../services/utils/functional-utils';
-import { mockAnimals } from '../../mock.const';
+import { simpleUID, randomNumber } from '../../services/utils/functional-utils';
+import { mockHobbies } from '../../mock.const';
 
-export const editableListMock: SelectOption[] = makeArray(10).map(i => ({
-  id: simpleUID(),
-  value: mockAnimals(1),
-  selected: randomNumber() > 90,
-}));
+const listItems = 10;
+
+export const editableListMock: SelectOption[] = mockHobbies()
+  .filter(i => i.split(' ').length > 1)
+  .slice(0, listItems)
+  .map(i => ({
+    id: simpleUID(),
+    value: i,
+    selected: randomNumber() > 90,
+  }));
