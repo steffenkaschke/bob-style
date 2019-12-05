@@ -98,7 +98,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   private inputChangeSbscr: Subscription;
 
   @HostListener('keydown.outside-zone', ['$event'])
-  private onHostKeydown(event: KeyboardEvent): void {
+  onHostKeydown(event: KeyboardEvent): void {
     if (isNumber(this.removingIndex) && isKey(event.key, Keys.escape)) {
       this.removeCancel();
     }
@@ -118,7 +118,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   @HostListener('focusout.outside-zone', ['$event'])
-  private onHostFocusout(event: FocusEvent): void {
+  onHostFocusout(event: FocusEvent): void {
     if (isNumber(this.removingIndex)) {
       this.removeCancel(event);
     }
