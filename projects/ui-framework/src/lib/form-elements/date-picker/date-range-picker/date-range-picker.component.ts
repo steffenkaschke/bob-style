@@ -6,6 +6,7 @@ import {
   forwardRef,
   Input,
   NgZone,
+  HostListener,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SERVER_DATE_FORMAT } from '../../../consts';
@@ -149,6 +150,21 @@ export class DateRangePickerComponent extends BaseDatepickerElement
   public idSD = simpleUID('bdp-sd-');
   public idED = simpleUID('bdp-ed-');
 
+  @HostListener('window:click', ['$event'])
+  onWindowEvent(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (
+      this.type === DatepickerType.month &&
+      target.matches('.mat-calendar-next-button,.mat-calendar-previous-button')
+    ) {
+      const isStartDate = target
+        .closest('.b-datepicker-panel')
+        .classList.contains('start-date-picker');
+
+      this.doOnPickerOpen(this.getPicker(isStartDate ? 0 : 1));
+    }
+  }
+
   ngAfterViewInit(): void {
     super.ngAfterViewInit();
 
@@ -216,9 +232,5 @@ export class DateRangePickerComponent extends BaseDatepickerElement
         });
       });
     }
-  }
-
-  onPickerYearSelect(index = 0) {
-    console.log(index);
   }
 }
