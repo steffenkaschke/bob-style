@@ -76,12 +76,7 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      selectChange: (change: ListChange) => {
-        change.selectGroupOptions.sort();
-        change.selectedIDs.sort();
-        return action('Multi list change')(change);
-      },
-
+      selectChange: action('Multi list change'),
       showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
       startWithGroupsCollapsed: boolean(
         'startWithGroupsCollapsed',
