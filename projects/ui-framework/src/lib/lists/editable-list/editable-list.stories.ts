@@ -55,7 +55,9 @@ const note = `
   [allowedActions] | EditableListActions | what actions are available (sort, add, remove)\
    | EDITABLE-LIST<wbr>-ALLOWED-ACTIONS-DEF (all enabled)
   [sortType] | ListSortType | this input can be used to control sorting from outside \
-   (provided sortType will be applied to current list) | &nbsp;
+   (provided sortType will be applied to current list). <br>\
+   **Note**:  you don't need to provide [sortType] input to describe list sorting, \
+   it checks sorting automatically. | &nbsp;
   [translation] | EditableListTranslation | object with texts used in the component\
    (button titles, etc) | EDITABLE-LIST-TRANSLATION
   (changed) | EventEmitter<wbr>&lt;EditableListState&gt; | emits updated list | &nbsp;
@@ -66,6 +68,7 @@ const note = `
 <b-editable-list [list]="list"
                  [sortType]="sortType"
                  [allowedActions]="allowedActions"
+                 [translation]="translation"
                  (changed)="onListUpdate($event)"
                  (inputChanged)="onInputChange($event)>
 </b-editable-list>

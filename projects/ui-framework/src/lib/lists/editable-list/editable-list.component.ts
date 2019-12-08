@@ -192,14 +192,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
 
         if (this.sameItemIndex > -1) {
           this.inputInvalid = true;
-
-          setTimeout(() => {
-            this.sameItemIndex = null;
-
-            if (!this.cd['destroyed']) {
-              this.cd.detectChanges();
-            }
-          }, 300);
+          this.addedItem = false;
         }
 
         if (this.sameItemIndex === -1) {
