@@ -104,11 +104,11 @@
   $iterate: 1,
   $dir: null,
   $keyframes: false,
-  $mod: null
+  $val: null
 ) {
   $id: simpleUID();
   @if $keyframes {
-    @include keyframes($name, $val: $mod, $id: ('-' + $id));
+    @include keyframes($name, $val: $val, $id: ('-' + $id));
     animation-name: (unquote($name) + '-' + $id);
   } @else {
     animation-name: unquote($name);

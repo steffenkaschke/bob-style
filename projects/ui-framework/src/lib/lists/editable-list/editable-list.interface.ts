@@ -17,7 +17,6 @@ export interface EditableListTranslation {
   sortCustom: string;
   total: string;
   alreadyExists: string[];
-  duplicate: string;
 }
 
 export interface EditableListState {
