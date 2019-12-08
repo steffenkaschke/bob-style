@@ -11,7 +11,7 @@ import {
   NgZone,
 } from '@angular/core';
 import { Tab } from './tabs.interface';
-import { , MatTabChangeEvent,  } from '@angular/material/tabs';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { TabsType } from './tabs.enum';
 
 @Component({
