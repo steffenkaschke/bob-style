@@ -15,7 +15,7 @@
 
     <div class="bel-item focused"
          [hidden]="!addingItem"
-         [ngClass]="{invalid: inputInvalid}">
+         [ngClass]="{error: inputInvalid}">
 
       <input #addItemInput
              type="text"
@@ -38,6 +38,13 @@
         </b-button>
       </div>
     </div>
+
+    <p *ngIf="inputInvalid"
+       class="b-input-message error">
+      {{translation.alreadyExists[0]}}
+      "{{listState?.list[sameItemIndex]?.value}}"
+      {{translation.alreadyExists[1]}}
+    </p>
 
   </div>
 
@@ -83,7 +90,7 @@
          [attr.data-item-id]="item.id"
          [ngClass]="{'new': addedItem && index === 0,
                      'deleted':removedItem && removingIndex === index,
-                     'blink': sameItemIndex === index}">
+                     'warn': sameItemIndex === index}">
 
       <span class="bel-item-value"
             data-max-lines="2">
