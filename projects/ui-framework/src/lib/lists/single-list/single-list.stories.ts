@@ -77,11 +77,7 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
-      selectChange: (change: ListChange) => {
-        change.selectGroupOptions.sort();
-        return action('Single list change')(change);
-      },
-
+      selectChange: action('Single list change'),
       showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
       showNoneOption: boolean('showNoneOption', false, 'Props'),
       options: object<SelectGroupOption>('options', options, 'Options'),

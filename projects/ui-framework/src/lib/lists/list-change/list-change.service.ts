@@ -13,7 +13,7 @@ export class ListChangeService {
       options,
       selectedIDs
     );
-    return new ListChange(currentOptions, selectedIDs);
+    return new ListChange(currentOptions, null);
   }
 
   getCurrentSelectGroupOptions(
