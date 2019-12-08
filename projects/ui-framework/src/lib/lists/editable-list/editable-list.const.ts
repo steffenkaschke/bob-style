@@ -12,7 +12,7 @@ export const EDITABLE_LIST_TRANSLATION: EditableListTranslation = {
   sortDesc: 'Z - A',
   sortCustom: 'Custom',
   total: 'Total',
-  alreadyExists: ['Item', 'already exists'],
+  alreadyExists: 'already exists',
 };
 
 export const EDITABLE_LIST_ALLOWED_ACTIONS_DEF: EditableListActions = {
