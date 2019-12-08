@@ -41,9 +41,8 @@
 
     <p *ngIf="inputInvalid"
        class="b-input-message error">
-      {{translation.alreadyExists[0]}}
-      "{{listState?.list[sameItemIndex]?.value}}"
-      {{translation.alreadyExists[1]}}
+      "{{listState.list[sameItemIndex].value}}"
+      {{translation.alreadyExists}}
     </p>
 
   </div>
