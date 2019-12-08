@@ -342,7 +342,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     if (typeof picker === 'number') {
       picker = this.getPicker(picker);
     }
-    if (!picker.opened) {
+    if (!picker.opened && !this.disabled) {
       picker.open();
     }
   }

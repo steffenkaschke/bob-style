@@ -217,4 +217,8 @@ export class DateRangePickerComponent extends BaseDatepickerElement
       });
     }
   }
+
+  onPickerYearSelect(index = 0) {
+    console.log(index);
+  }
 }
