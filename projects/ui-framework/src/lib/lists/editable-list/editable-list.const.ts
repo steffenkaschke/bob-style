@@ -13,7 +13,6 @@ export const EDITABLE_LIST_TRANSLATION: EditableListTranslation = {
   sortCustom: 'Custom',
   total: 'Total',
   alreadyExists: ['Item', 'already exists'],
-  duplicate: 'Duplicate item',
 };
 
 export const EDITABLE_LIST_ALLOWED_ACTIONS_DEF: EditableListActions = {
