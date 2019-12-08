@@ -3,7 +3,6 @@ import {
   EventEmitter,
   forwardRef,
   Output,
-  SimpleChanges,
   ViewContainerRef,
   ViewChild,
   NgZone,
@@ -28,10 +27,7 @@ import {
 } from '../../popups/panel/panel-position-service/panel-position.const';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import { FormEvents } from '../../form-elements/form-elements.enum';
-import {
-  arrayFlatten,
-  hasChanges,
-} from '../../services/utils/functional-utils';
+import { arrayFlatten } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-multi-select',
