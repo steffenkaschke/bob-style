@@ -24,6 +24,7 @@ const template = `
 <div>
   <b-multi-bar-chart
     [data]="data"
+    [exportChartType]="downloadChart"
     [showDataLabels]="showDataLabels"
     [legendPosition]="legendPosition"
     [preTooltipValue]="preTooltipValue"
@@ -79,6 +80,16 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        downloadChart: select(
+          'downloadChart',
+          [
+            null,
+            'application/pdf',
+            'image/jpeg',
+            'image/png',
+            'image/svg+xml'
+          ],
+          null),
         legendPosition: select(
           'legendPosition',
           Object.values(ChartLegendPositionEnum),

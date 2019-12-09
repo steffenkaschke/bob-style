@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, EventEmitter, Input, NgZone, Output} from '@angular/core';
 import * as Highcharts from 'highcharts';
-import {Options} from 'highcharts';
+import {Options, ExportingMimeTypeValue, Chart} from 'highcharts';
 import {ChartTypesEnum} from './chart.enum';
 import {merge} from 'lodash';
 import {simpleUID} from 'bob-style';
@@ -14,16 +14,18 @@ import {
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
+const Exporting = require('highcharts/modules/exporting');
 const noData = require('highcharts/modules/no-data-to-display');
 const More = require('highcharts/highcharts-more');
 
+Exporting(Highcharts);
 Boost(Highcharts);
 noData(Highcharts);
 More(Highcharts);
 
 export abstract class ChartCore implements AfterViewInit {
   @Input() abstract type: ChartTypesEnum;
-  highChartRef: any;
+  highChartRef: Chart;
   containerId: string = simpleUID();
   chartOptions: Options;
   options: Options;
@@ -51,6 +53,11 @@ export abstract class ChartCore implements AfterViewInit {
   @Input() height = 500;
   @Input() title: string = null;
   @Input() legend = false;
+  @Input() set exportChartType (type: ExportingMimeTypeValue) {
+    if (typeof type !== 'undefined') {
+      this.exportChart(type);
+    }
+  }
   @Input() showDataLabels = false;
   @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
   @Input() extraOptions: Options = {};
@@ -71,6 +78,13 @@ export abstract class ChartCore implements AfterViewInit {
     </div>`;
   }
 
+  exportChart(type: ExportingMimeTypeValue) {
+    (this.highChartRef as any).exportChart(
+      {
+        type: type
+      }, {chart: {backgroundColor: '#ffffff'}}
+    );
+  }
 
   initialOptions(): void {
     this.zone.runOutsideAngular(() => {
@@ -119,6 +133,9 @@ export abstract class ChartCore implements AfterViewInit {
           enabled: false
         },
         series: [],
+        exporting: {
+          enabled: false
+        }
       }, this.chartOptions);
     });
   }

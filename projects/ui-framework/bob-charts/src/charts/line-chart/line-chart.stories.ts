@@ -21,6 +21,7 @@ const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
 const template = `
 <div>
   <b-line-chart
+    [exportChartType]="downloadChart"
     [data]="data"
     [type]="type"
     [preTooltipValue]="preTooltipValue"
@@ -78,6 +79,16 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        downloadChart: select(
+          'downloadChart',
+          [
+            null,
+            'application/pdf',
+            'image/jpeg',
+            'image/png',
+            'image/svg+xml'
+          ],
+          null),
         type: select(
           'type',
           [

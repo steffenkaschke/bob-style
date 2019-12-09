@@ -25,6 +25,7 @@ const template = `
 <div>
   <b-bar-line-chart
     [data]="data"
+    [exportChartType]="downloadChart"
     [legendPosition]="legendPosition"
     [showDataLabels]="showDataLabels"
     [preTooltipValue]="preTooltipValue"
@@ -81,6 +82,16 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        downloadChart: select(
+          'downloadChart',
+          [
+            null,
+            'application/pdf',
+            'image/jpeg',
+            'image/png',
+            'image/svg+xml'
+          ],
+          null),
         legend: boolean('legend', true),
         legendPosition: select(
           'legendPosition',

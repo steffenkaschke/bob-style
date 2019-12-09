@@ -3,6 +3,7 @@ import {
   boolean,
   number,
   object,
+  select,
   text,
   withKnobs,
 } from '@storybook/addon-knobs/angular';
@@ -19,6 +20,7 @@ const template = `
 <div>
   <small>Demo of all binding options</small>
   <b-pie-chart
+    [exportChartType]="downloadChart"
     [data]="data"
     [preTooltipValue]="preTooltipValue"
     [postTooltipValue]="postTooltipValue"
@@ -69,7 +71,7 @@ const note = `
   colorPalette (optional) | string[] | color palette array | default array of colors
   height (optional) | number | height of chart | 500
   donutInnerSize (optional) | number | defining the inner white circle in a donut pie chart | 60
-  donutWidth (optional) | number | overrides donutInnerSize by applying width of donut instead inner circle width | &nbsp;
+  donutWidth (optional) | number | overrides donutInnerSize by applying width of donut instead inner circle width |
   title (optional) | string | title of chart | &nbsp;
   pointFormat (optional) | string | tooltip formatter | {series.name}: <b>{point.percentage:.1f}%</b>
 `;
@@ -80,6 +82,16 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        downloadChart: select(
+          'downloadChart',
+          [
+            null,
+            'application/pdf',
+            'image/jpeg',
+            'image/png',
+            'image/svg+xml'
+          ],
+          null),
         showDataLabels: boolean('showDataLabels', false),
         donut: boolean('donut', false),
         legend: boolean('legend', true),
