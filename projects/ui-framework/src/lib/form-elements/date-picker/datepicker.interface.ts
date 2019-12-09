@@ -12,6 +12,7 @@ export interface FormatParserResult {
   valid: boolean;
   items: number;
   separator: string;
+  onlyMonth: boolean;
 
   index: {
     day: number;
@@ -27,6 +28,7 @@ export interface FormatParserResult {
     year: number;
   };
 }
+
 export interface DateParseResult {
   valid: boolean;
   format: DateFormat;

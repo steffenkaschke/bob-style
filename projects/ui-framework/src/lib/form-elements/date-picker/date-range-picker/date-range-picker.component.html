@@ -25,10 +25,11 @@
 
     <input #input
            class="bfe-input start-date-input"
-           [bDateInput]="dateFormat"
+           [bDateInput]="dateFormats[type]"
            [date]="value?.startDate"
            [min]="minDate || null"
            [max]="value?.endDate || maxDate || null"
+           [setTo]="type === types.month ? dateAdjust.startOfMonth : null"
            (parsed)="onInputChange($event,0)"
            [readonly]="!allowKeyInput"
            autocomplete="off"
@@ -74,10 +75,11 @@
 
     <input #input
            class="bfe-input end-date-input"
-           [bDateInput]="dateFormat"
+           [bDateInput]="dateFormats[type]"
            [date]="value?.endDate"
            [min]="value?.startDate || minDate || null"
            [max]="maxDate || null"
+           [setTo]="type === types.month ? dateAdjust.endOfMonth : null"
            (parsed)="onInputChange($event,1)"
            [readonly]="!allowKeyInput"
            autocomplete="off"

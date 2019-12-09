@@ -21,7 +21,10 @@ import { DateFormat } from '../../../types';
 
 @Injectable()
 export class DateParseService {
-  parseFormat(frmt: string | DateFormat): FormatParserResult {
+  parseFormat(
+    frmt: string | DateFormat,
+    monthlength = null
+  ): FormatParserResult {
     if (!isString(frmt)) {
       return frmt as any;
     }
@@ -40,6 +43,7 @@ export class DateParseService {
         month: null,
         year: null,
       },
+      onlyMonth: false,
     };
 
     result.separator = arrayMode<string>(result.format.match(/\W/g)) || '/';
@@ -61,10 +65,22 @@ export class DateParseService {
     result.length.month =
       result.index.month > -1 ? split[result.index.month].length : 0;
     result.length.year =
-      result.index.year > -1 ? split[result.index.year].length : 0;
+      result.index.year > -1
+        ? isNumber(monthlength)
+          ? monthlength
+          : split[result.index.year].length
+        : 0;
+
+    if (result.length.year) {
+      split[result.index.year] = 'y'.repeat(result.length.year);
+    }
 
     if (result.index.month > -1) {
       split[result.index.month] = split[result.index.month].toUpperCase();
+    }
+
+    if (!result.length.day) {
+      result.onlyMonth = true;
     }
 
     result.valid =
@@ -105,8 +121,6 @@ export class DateParseService {
     if (isString(frmt)) {
       frmt = this.parseFormat(frmt as any);
     }
-
-    console.log('parseDate', frmt, value);
 
     const resultValue = [],
       result: Partial<DateParseResult> = {
@@ -152,8 +166,6 @@ export class DateParseService {
       resultItems = split.length;
     }
 
-    console.log('split', split);
-
     index.day = split.findIndex(
       i => parseInt(i, 10) > 12 && parseInt(i, 10) < 32
     );
@@ -175,22 +187,13 @@ export class DateParseService {
           frmt.index.day > frmt.items));
 
     onlyMonth =
+      frmt.onlyMonth ||
       (frmt.items === 1 && frmt.index.month === 0 && !onlyYear) ||
       (resultItems === 1 &&
         !onlyYear &&
         !onlyDay &&
         frmt.index.month < frmt.index.day) ||
       (resultItems === 2 && index.year > -1 && index.day < 0);
-    // || (resultItems > 1 && frmt.length.day === 0);
-
-    console.log(
-      'onlyDay',
-      onlyDay,
-      'onlyMonth',
-      onlyMonth,
-      'onlyYear',
-      onlyYear
-    );
 
     let needIndex = frmt.order.filter(k => index[k] < 0);
     const indexes = Object.values(index),
@@ -224,15 +227,6 @@ export class DateParseService {
     needIndex.forEach((itm, idx) => {
       index[itm] = extraIndexes[idx];
     });
-
-    console.log(
-      'index.day',
-      index.day,
-      'index.month',
-      index.month,
-      'index.year',
-      index.year
-    );
 
     // parsed result
 

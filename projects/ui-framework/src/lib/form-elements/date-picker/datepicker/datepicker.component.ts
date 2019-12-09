@@ -67,10 +67,7 @@ export class DatepickerComponent extends BaseDatepickerElement {
     this.inputTransformers = [dateOrFail];
 
     this.outputTransformers = [
-      (value: Date): string =>
-        value && this.type === DatepickerType.month
-          ? dateToString(startOfMonth(value), SERVER_DATE_FORMAT)
-          : dateToString(value, SERVER_DATE_FORMAT),
+      (value: Date): string => dateToString(value, SERVER_DATE_FORMAT),
     ];
 
     this.baseValue = '';

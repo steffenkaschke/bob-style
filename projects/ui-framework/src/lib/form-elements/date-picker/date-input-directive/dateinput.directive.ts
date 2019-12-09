@@ -24,8 +24,6 @@ import isAfter from 'date-fns/isAfter';
 import isSameDay from 'date-fns/isSameDay';
 import startOfMonth from 'date-fns/startOfMonth';
 import endOfMonth from 'date-fns/endOfMonth';
-import addMilliseconds from 'date-fns/addMilliseconds';
-import addMinutes from 'date-fns/addMinutes';
 import toDate from 'date-fns/toDate';
 
 @Directive({
@@ -58,12 +56,11 @@ export class DateInputDirective implements OnChanges, OnInit {
     DateParseResult
   >();
 
-  @HostListener('change', ['$event']) onChange($event: DOMInputEvent) {
-    console.log($event.target.value);
+  @HostListener('change', ['$event']) onChange($event: DOMInputEvent): void {
     this.process();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
       this,
       changes,
@@ -75,42 +72,38 @@ export class DateInputDirective implements OnChanges, OnInit {
     );
 
     if (hasChanges(changes, ['dateFormat'], true)) {
-      console.log(
-        'DIRECTIVE CHANGES FORMAT',
-        this.dateFormat,
-        isNullOrUndefined(this.date)
-      );
-      this.format = this.parseService.parseFormat(this.dateFormat as string);
-
-      console.log('this.date', this.date);
+      this.format = this.parseService.parseFormat(this.dateFormat as string, 4);
 
       this.process(!isNullOrUndefined(this.date), true);
     }
 
     if (hasChanges(changes, ['date']) && changes.date.currentValue !== '') {
-      console.log('hasChanges date');
       this.process(true);
     }
 
     if (hasChanges(changes, ['min', 'max'], true)) {
-      this.process();
+      if (
+        this.input.value &&
+        (!this.date || !this.dateConformsMinMax(this.date))
+      ) {
+        this.process(!isNullOrUndefined(this.date), true);
+      }
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (!this.format && this.dateFormat) {
-      this.format = this.parseService.parseFormat(this.dateFormat as string);
+      this.format = this.parseService.parseFormat(this.dateFormat as string, 4);
     }
   }
 
-  process(useDate = false, force = false) {
+  process(useDate = false, force = false): void {
     if (
       (!useDate && !this.input.value) ||
       (useDate &&
         ((!this.date && !this.lastDate) ||
           (!force && isSameDay(this.date, this.lastDate))))
     ) {
-      console.log('same date');
       return;
     }
 
@@ -122,23 +115,17 @@ export class DateInputDirective implements OnChanges, OnInit {
     };
 
     if (useDate) {
-      console.log('parsing date');
       parsed.date = this.date || null;
       parsed.value = this.parseService.getDisplayDate(this.format, parsed.date);
       parsed.valid = Boolean(parsed.value);
-
-      // this.lastDate = this.date;
     } else if (this.input.value) {
-      console.log('parsing input');
       parsed = this.parseService.parseDate(
         (this.format || this.dateFormat) as any,
         this.input.value
       );
-
-      // this.lastDate = parsed.date;
     }
 
-    if (isBefore(parsed.date, this.min) || isAfter(parsed.date, this.max)) {
+    if (!this.dateConformsMinMax(parsed.date)) {
       parsed.valid = false;
       parsed.value = null;
       parsed.date = null;
@@ -150,12 +137,10 @@ export class DateInputDirective implements OnChanges, OnInit {
 
     parsed.date = this.getAdjustedDate(parsed.date);
 
-    console.log('DIRECTIVE EMIT', parsed);
-
     this.parsed.emit(parsed);
   }
 
-  private getAdjustedDate(date: Date) {
+  private getAdjustedDate(date: Date): Date {
     return !date
       ? null
       : this.setTo === DateAdjust.startOfMonth
@@ -163,5 +148,24 @@ export class DateInputDirective implements OnChanges, OnInit {
       : this.setTo === DateAdjust.endOfMonth
       ? endOfMonth(date)
       : toDate(date);
+  }
+
+  private dateConformsMinMax(date: Date): boolean {
+    if (
+      !this.format.onlyMonth &&
+      (isBefore(date, this.min) || isAfter(date, this.max))
+    ) {
+      return false;
+    }
+
+    if (
+      this.format.onlyMonth &&
+      (isBefore(startOfMonth(date), startOfMonth(this.min)) ||
+        isAfter(endOfMonth(date), endOfMonth(this.max)))
+    ) {
+      return false;
+    }
+
+    return true;
   }
 }

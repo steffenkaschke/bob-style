@@ -59,3 +59,11 @@
   width: 100%;
   padding-left: 0;
 }
+
+:host.error .start-date-wrap + .end-date-wrap {
+  border-left-color: $color-error;
+}
+
+:host.warn .start-date-wrap + .end-date-wrap {
+  border-left-color: $color-warn;
+}

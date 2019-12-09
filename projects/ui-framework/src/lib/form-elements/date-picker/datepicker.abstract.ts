@@ -48,7 +48,7 @@ import {
   LOCALE_FORMATS,
 } from '../../consts';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
-import { LocaleFormat, DateFormatFullDate } from '../../types';
+import { LocaleFormat, DateFormatFullDate, DateFormat } from '../../types';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, AfterViewInit, OnDestroy {
@@ -73,13 +73,20 @@ export abstract class BaseDatepickerElement extends BaseFormElement
           LocaleFormat.MonthYear
         ),
       };
+
+      this.dateFormats[DatepickerType.month].format = this.dateFormats[
+        DatepickerType.month
+      ].format.replace(/y+/g, 'yyyy') as DateFormat;
+      this.dateFormats[DatepickerType.month].length.year = 4;
     } else {
       this.dateFormats = {
         [DatepickerType.date]: this.dateParseSrvc.parseFormat(
-          DISPLAY_DATE_FORMAT_DEF
+          DISPLAY_DATE_FORMAT_DEF,
+          4
         ),
         [DatepickerType.month]: this.dateParseSrvc.parseFormat(
-          DISPLAY_MONTH_FORMAT_DEF
+          DISPLAY_MONTH_FORMAT_DEF,
+          4
         ),
       };
     }
@@ -205,7 +212,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       ) {
         this.dateFormats = {
           [DatepickerType.date]: this.dateParseSrvc.parseFormat(
-            this.dateFormat
+            this.dateFormat,
+            4
           ),
           [DatepickerType.month]: this.dateParseSrvc.parseFormat(
             hasProp(this.dateAdapter, 'getLocaleFormat', false)
@@ -216,7 +224,8 @@ export abstract class BaseDatepickerElement extends BaseFormElement
               : get(
                   get(LOCALE_FORMATS, this.dateFormat.toUpperCase()),
                   LocaleFormat.MonthYear
-                )
+                ),
+            4
           ),
         };
       }
@@ -468,8 +477,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   public onInputChange(parsed: DateParseResult, index: number = 0): void {
     const picker = this.getPicker(index);
-
-    console.log('onInputChange', parsed);
 
     if (picker) {
       picker.select(parsed.date);
