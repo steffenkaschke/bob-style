@@ -26,6 +26,7 @@ import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.s
 import { OverlayModule } from '@angular/cdk/overlay';
 import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
 import createSpyObj = jasmine.createSpyObj;
+import { DateInputDirectiveModule } from '../date-input-directive/dateinput.directive.module';
 
 describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
@@ -57,6 +58,7 @@ describe('DatepickerComponent', () => {
         NoopAnimationsModule,
         OverlayModule,
         FormElementLabelModule,
+        DateInputDirectiveModule,
       ],
       declarations: [DatepickerComponent],
       providers: [
@@ -65,14 +67,6 @@ describe('DatepickerComponent', () => {
         FormElementKeyboardCntrlService,
         DateParseService,
         EventManagerPlugins[0],
-        // {
-        //   provide: DateAdapter,
-        //   useClass: BDateAdapter,
-        // },
-        // {
-        //   provide: MAT_DATE_FORMATS,
-        //   useValue: B_DATE_FORMATS,
-        // },
       ],
     })
       .compileComponents()
@@ -229,7 +223,7 @@ describe('DatepickerComponent', () => {
       fixture.detectChanges();
       pickerDateCellElem = component.getPickerPanelElements(
         picker,
-        '.mat-calendar-body td[aria-label*=" 27 "]'
+        '.mat-calendar-body td[aria-label*="27"]'
       )[0];
       fixture.detectChanges();
       expect(component.value).toBeFalsy();
@@ -307,7 +301,7 @@ describe('DatepickerComponent', () => {
       fixture.detectChanges();
       pickerDateCellElem = component.getPickerPanelElements(
         picker,
-        '.mat-calendar-body td[aria-label*=" Nov "]'
+        '.mat-calendar-body td[aria-label*="Nov"]'
       )[0];
       expect(pickerDateCellElem).toBeTruthy();
       pickerDateCellElem.click();

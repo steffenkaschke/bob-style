@@ -82,13 +82,8 @@ export class DateParseTesterComponent implements AfterViewInit, OnInit {
           .forEach(date => {
             const parsed = DateParseService.prototype.parseDate(
               format as any,
-              date
-            );
-
-            const parsedStrict = DateParseService.prototype.parseDate(
-              format as any,
               date,
-              true
+              false
             );
 
             if (parsed.value !== DateParseServiceTest[format][date].result) {
@@ -110,6 +105,12 @@ export class DateParseTesterComponent implements AfterViewInit, OnInit {
                 console.log(message);
               }
             }
+
+            const parsedStrict = DateParseService.prototype.parseDate(
+              format as any,
+              date,
+              true
+            );
 
             if (
               parsedStrict.value !==

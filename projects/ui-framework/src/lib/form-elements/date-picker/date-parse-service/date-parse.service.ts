@@ -187,7 +187,7 @@ export class DateParseService {
           frmt.index.day > frmt.items));
 
     onlyMonth =
-      frmt.onlyMonth ||
+      (frmt.onlyMonth && !onlyYear) ||
       (frmt.items === 1 && frmt.index.month === 0 && !onlyYear) ||
       (resultItems === 1 &&
         !onlyYear &&
