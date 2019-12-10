@@ -44,6 +44,7 @@ b-chip-list {
   border-radius: $border-radius;
   margin: 0;
   padding: ($gap - 4px);
+  position: relative;
 }
 
 :host ::ng-deep b-list-footer {
@@ -51,7 +52,8 @@ b-chip-list {
 }
 
 b-empty-state {
-  @include size(100%);
+  @include position(0 0 0 0);
   justify-content: center;
   text-align: center;
+  padding: inherit;
 }
