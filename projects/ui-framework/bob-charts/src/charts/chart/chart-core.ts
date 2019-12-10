@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, EventEmitter, Input, NgZone, Output} from '@angular/core';
 import * as Highcharts from 'highcharts';
-import {Options} from 'highcharts';
+import {Chart, ExportingMimeTypeValue, Options} from 'highcharts';
 import {ChartTypesEnum} from './chart.enum';
 import {merge} from 'lodash';
 import {simpleUID} from 'bob-style';
@@ -14,20 +14,21 @@ import {
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
+const Exporting = require('highcharts/modules/exporting');
 const noData = require('highcharts/modules/no-data-to-display');
 const More = require('highcharts/highcharts-more');
 
+Exporting(Highcharts);
 Boost(Highcharts);
 noData(Highcharts);
 More(Highcharts);
 
-export abstract class ChartCore implements AfterViewInit {
+export abstract class ChartCore implements AfterViewInit  {
   @Input() abstract type: ChartTypesEnum;
-  highChartRef: any;
+  highChartRef: Chart;
   containerId: string = simpleUID();
   chartOptions: Options;
   options: Options;
-
   private formatter = (function (component) {
     return function () {
       return component.tooltipFormatter(this, component);
@@ -71,56 +72,64 @@ export abstract class ChartCore implements AfterViewInit {
     </div>`;
   }
 
+  exportChart(type: ExportingMimeTypeValue) {
+    (this.highChartRef as any).exportChart(
+      {
+        type: type
+      }
+    );
+  }
 
   initialOptions(): void {
-    this.zone.runOutsideAngular(() => {
-      this.options = merge({
-        colors: this.colorPalette,
-        chart: {
+    this.options = merge({
+      colors: this.colorPalette,
+      chart: {
+        events: {
+          render: (event) => {
+            this.legendChanged.emit();
+          }
+        },
+        height: this.height,
+        type: this.type,
+        backgroundColor: 'rgba(255, 255, 255, 0.0)',
+        animation: {
+          duration: 200,
+        }
+      },
+      title: {
+        text: this.title,
+      },
+      legend: this.getLegendPositioning(this.legendPosition),
+      tooltip: {
+        outside: true,
+        useHTML: true,
+        style: {
+          textAlign: 'center',
+          shadow: false,
+          opacity: 1
+        },
+        formatter: this.formatter
+      },
+      plotOptions: {
+        [this.type]: {
+          animation: {},
           events: {
-            render: (event) => {
-              this.legendChanged.emit();
-            }
+            afterAnimate: undefined
           },
-          height: this.height,
-          type: this.type,
-          backgroundColor: 'rgba(255, 255, 255, 0.0)',
-          animation: {
-            duration: 200,
-          }
-        },
-        title: {
-          text: this.title,
-        },
-        legend: this.getLegendPositioning(this.legendPosition),
-        tooltip: {
-          outside: true,
-          useHTML: true,
-          style: {
-            textAlign: 'center',
-            shadow: false,
-            opacity: 1
+          showInLegend: this.legend,
+          dataLabels: {
+            enabled: this.showDataLabels
           },
-          formatter: this.formatter
-        },
-        plotOptions: {
-          [this.type]: {
-            animation: {},
-            events: {
-              afterAnimate: undefined
-            },
-            showInLegend: this.legend,
-            dataLabels: {
-              enabled: this.showDataLabels
-            },
-          }
-        },
-        credits: {
-          enabled: false
-        },
-        series: [],
-      }, this.chartOptions);
-    });
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      series: [],
+      exporting: {
+        enabled: false
+      }
+    }, this.chartOptions);
   }
 
   ngAfterViewInit(): void {
