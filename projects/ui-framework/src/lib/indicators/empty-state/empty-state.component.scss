@@ -4,14 +4,15 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  .empty-state-text {
-    margin: 10px 0 25px;
-    color: $grey-600;
-  }
-
-  b-button {
-    display: flex;
-    justify-content: center;
-  }
 }
 
+.empty-state-text {
+  margin: times8(1) 0 0;
+  color: $grey-600;
+}
+
+b-button {
+  margin-top: times8(3);
+  display: flex;
+  justify-content: center;
+}
