@@ -1,11 +1,10 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {PieChartComponent} from './pie-chart.component';
-
 import {ChangeDetectorRef, NgZone} from '@angular/core';
-import {ChartCore} from '../chart/chart-core';
 import * as Highcharts from 'highcharts';
-import {LINE_CHART_DATA_MOCK, TOOLTIP_FORMATTER_MOCK_RESULT} from '../chart.mock';
+import {PieChartComponent} from '../../../bob-charts/src/charts/pie-chart/pie-chart.component';
+import {LINE_CHART_DATA_MOCK, TOOLTIP_FORMATTER_MOCK_RESULT} from '../../../bob-charts/src/charts/chart.mock';
+import {ChartCore} from '../../../bob-charts/src/charts/chart/chart-core';
 
 export class MockNgZone extends NgZone {
   run(fn: Function): any {
@@ -13,7 +12,7 @@ export class MockNgZone extends NgZone {
   }
 }
 
-describe('PieChartComponent', () => {
+describe('ChartComponent', () => {
   let component: PieChartComponent;
   let fixture: ComponentFixture<PieChartComponent>;
   let updateChartOptionsSpy, applyOnChangeSpy, highchartRefSpy;
@@ -30,7 +29,6 @@ describe('PieChartComponent', () => {
         highchartRefSpy = spyOn(Highcharts, 'chart');
         component.data = LINE_CHART_DATA_MOCK as any;
         component.name = 'fruits';
-        fixture.detectChanges();
       });
   }));
 
@@ -85,10 +83,25 @@ describe('PieChartComponent', () => {
         )
       ).toEqual(TOOLTIP_FORMATTER_MOCK_RESULT);
     });
+    describe('export chart', () => {
+      it('should export chart call chart ref with type', () => {
+        component.highChartRef = {
+          exportChart: (exportObj) => {}
+        } as any;
+        const spyHighChartRefExport = spyOn((component.highChartRef as any), 'exportChart');
+
+        component.exportChart('image/svg+xml');
+        expect(spyHighChartRefExport).toHaveBeenCalledWith({
+          type: 'image/svg+xml'
+        });
+      });
+    });
     describe('ngOnChanges', () => {
       beforeEach(() => {
-        updateChartOptionsSpy = spyOn(component, 'updateChartOptions');
-        applyOnChangeSpy = spyOn(ChartCore.prototype, 'applyOnChange');
+        updateChartOptionsSpy = spyOn(component, 'updateChartOptions').and.callThrough();
+        applyOnChangeSpy = spyOn(ChartCore.prototype, 'applyOnChange').and.callThrough();
+        highchartRefSpy.and.callThrough();
+        fixture.detectChanges();
         component.ngOnChanges.call(component);
         fixture.detectChanges();
       });
@@ -103,6 +116,7 @@ describe('PieChartComponent', () => {
         );
       });
       it('should inputs be same as highchart options properties', () => {
+        fixture.detectChanges();
         expect(component.options.series[0].name).toEqual('fruits');
         expect((component.options.series[0] as any).data).toEqual(
           LINE_CHART_DATA_MOCK

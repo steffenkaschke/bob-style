@@ -76,62 +76,60 @@ export abstract class ChartCore implements AfterViewInit  {
     (this.highChartRef as any).exportChart(
       {
         type: type
-      }, {chart: {backgroundColor: '#ffffff'}}
+      }
     );
   }
 
   initialOptions(): void {
-    this.zone.runOutsideAngular(() => {
-      this.options = merge({
-        colors: this.colorPalette,
-        chart: {
-          events: {
-            render: (event) => {
-              this.legendChanged.emit();
-            }
-          },
-          height: this.height,
-          type: this.type,
-          backgroundColor: 'rgba(255, 255, 255, 0.0)',
-          animation: {
-            duration: 200,
+    this.options = merge({
+      colors: this.colorPalette,
+      chart: {
+        events: {
+          render: (event) => {
+            this.legendChanged.emit();
           }
         },
-        title: {
-          text: this.title,
-        },
-        legend: this.getLegendPositioning(this.legendPosition),
-        tooltip: {
-          outside: true,
-          useHTML: true,
-          style: {
-            textAlign: 'center',
-            shadow: false,
-            opacity: 1
-          },
-          formatter: this.formatter
-        },
-        plotOptions: {
-          [this.type]: {
-            animation: {},
-            events: {
-              afterAnimate: undefined
-            },
-            showInLegend: this.legend,
-            dataLabels: {
-              enabled: this.showDataLabels
-            },
-          }
-        },
-        credits: {
-          enabled: false
-        },
-        series: [],
-        exporting: {
-          enabled: false
+        height: this.height,
+        type: this.type,
+        backgroundColor: 'rgba(255, 255, 255, 0.0)',
+        animation: {
+          duration: 200,
         }
-      }, this.chartOptions);
-    });
+      },
+      title: {
+        text: this.title,
+      },
+      legend: this.getLegendPositioning(this.legendPosition),
+      tooltip: {
+        outside: true,
+        useHTML: true,
+        style: {
+          textAlign: 'center',
+          shadow: false,
+          opacity: 1
+        },
+        formatter: this.formatter
+      },
+      plotOptions: {
+        [this.type]: {
+          animation: {},
+          events: {
+            afterAnimate: undefined
+          },
+          showInLegend: this.legend,
+          dataLabels: {
+            enabled: this.showDataLabels
+          },
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      series: [],
+      exporting: {
+        enabled: false
+      }
+    }, this.chartOptions);
   }
 
   ngAfterViewInit(): void {
