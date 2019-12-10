@@ -24,7 +24,6 @@ const story = storiesOf(
 const template = `
 <div>
   <b-bar-line-chart
-    [exportChartType]="downloadChart"
     [data]="data"
     [legendPosition]="legendPosition"
     [showDataLabels]="showDataLabels"
@@ -38,8 +37,10 @@ const template = `
     [height]="height"
     [title]="title"
     [pointFormat]="pointFormat"
+    #chart
   >
   </b-bar-line-chart>
+  <button (click)="chart.exportChart(downloadChart)">download</button>
 </div>
 `;
 
@@ -86,13 +87,12 @@ story.add(
         downloadChart: select(
           'downloadChart',
           [
-            null,
             'application/pdf',
             'image/jpeg',
             'image/png',
             'image/svg+xml'
           ],
-          null),
+          'image/jpeg'),
         showDataLabels: boolean('showDataLabels', false),
         legend: boolean('legend', true),
         legendPosition: select(

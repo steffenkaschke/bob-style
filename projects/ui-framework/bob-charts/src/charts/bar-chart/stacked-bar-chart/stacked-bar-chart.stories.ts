@@ -36,9 +36,10 @@ const template = `
     [height]="height"
     [title]="title"
     [pointFormat]="pointFormat"
-    [exportChartType]="downloadChart"
+    #chart
   >
   </b-stacked-bar-chart>
+  <button (click)="chart.exportChart(downloadChart)">download</button>
 </div>
 `;
 
@@ -84,13 +85,12 @@ story.add(
         downloadChart: select(
           'downloadChart',
           [
-            null,
             'application/pdf',
             'image/jpeg',
             'image/png',
             'image/svg+xml'
           ],
-          null),
+          'image/jpeg'),
         showDataLabels: boolean('showDataLabels', false),
         stackedDataLabels: boolean('stackedDataLabels', false),
         legendPosition: select(

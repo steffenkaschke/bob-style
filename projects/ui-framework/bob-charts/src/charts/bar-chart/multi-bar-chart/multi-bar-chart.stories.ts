@@ -24,7 +24,6 @@ const template = `
 <div>
   <b-multi-bar-chart
     [data]="data"
-    [exportChartType]="downloadChart"
     [showDataLabels]="showDataLabels"
     [legendPosition]="legendPosition"
     [preTooltipValue]="preTooltipValue"
@@ -36,8 +35,10 @@ const template = `
     [height]="height"
     [title]="title"
     [pointFormat]="pointFormat"
+    #chart
   >
   </b-multi-bar-chart>
+  <button (click)="chart.exportChart(downloadChart)">download</button>
 </div>
 `;
 
@@ -83,13 +84,12 @@ story.add(
         downloadChart: select(
           'downloadChart',
           [
-            null,
             'application/pdf',
             'image/jpeg',
             'image/png',
             'image/svg+xml'
           ],
-          null),
+          'image/jpeg'),
         legendPosition: select(
           'legendPosition',
           Object.values(ChartLegendPositionEnum),

@@ -20,7 +20,6 @@ const template = `
 <div>
   <small>Demo of all binding options</small>
   <b-pie-chart
-    [exportChartType]="downloadChart"
     [data]="data"
     [preTooltipValue]="preTooltipValue"
     [postTooltipValue]="postTooltipValue"
@@ -34,8 +33,10 @@ const template = `
     [donutInnerSize]="donutInnerSize"
     [title]="title"
     [pointFormat]="pointFormat"
+    #chart
   >
   </b-pie-chart>
+  <button (click)="chart.exportChart(downloadChart)">download</button>
 </div>
 `;
 
@@ -85,13 +86,12 @@ story.add(
         downloadChart: select(
           'downloadChart',
           [
-            null,
             'application/pdf',
             'image/jpeg',
             'image/png',
             'image/svg+xml'
           ],
-          null),
+          'image/jpeg'),
         showDataLabels: boolean('showDataLabels', false),
         donut: boolean('donut', false),
         legend: boolean('legend', true),

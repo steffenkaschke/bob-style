@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, EventEmitter, Input, NgZone, Output} from '@angular/core';
 import * as Highcharts from 'highcharts';
-import {Options, ExportingMimeTypeValue, Chart} from 'highcharts';
+import {Chart, ExportingMimeTypeValue, Options} from 'highcharts';
 import {ChartTypesEnum} from './chart.enum';
 import {merge} from 'lodash';
 import {simpleUID} from 'bob-style';
@@ -23,13 +23,12 @@ Boost(Highcharts);
 noData(Highcharts);
 More(Highcharts);
 
-export abstract class ChartCore implements AfterViewInit {
+export abstract class ChartCore implements AfterViewInit  {
   @Input() abstract type: ChartTypesEnum;
   highChartRef: Chart;
   containerId: string = simpleUID();
   chartOptions: Options;
   options: Options;
-
   private formatter = (function (component) {
     return function () {
       return component.tooltipFormatter(this, component);
@@ -53,11 +52,6 @@ export abstract class ChartCore implements AfterViewInit {
   @Input() height = 500;
   @Input() title: string = null;
   @Input() legend = false;
-  @Input() set exportChartType (type: ExportingMimeTypeValue) {
-    if (typeof type !== 'undefined') {
-      this.exportChart(type);
-    }
-  }
   @Input() showDataLabels = false;
   @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
   @Input() extraOptions: Options = {};
