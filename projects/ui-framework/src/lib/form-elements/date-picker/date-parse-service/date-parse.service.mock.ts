@@ -2,6 +2,18 @@ import { thisYear, thisMonth } from '../../../services/utils/functional-utils';
 
 export const DateParseServiceTest = {
   'dd/MM/yyyy': {
+    '02032010': {
+      result: '02/03/2010',
+      resultStrict: '02/03/2010',
+    },
+    '20122010': {
+      result: '20/12/2010',
+      resultStrict: '20/12/2010',
+    },
+    '2012': {
+      result: '01/01/2012',
+      resultStrict: null,
+    },
     '02 03 2010': {
       result: '02/03/2010',
       resultStrict: '02/03/2010',
@@ -71,6 +83,18 @@ export const DateParseServiceTest = {
     },
   },
   'dd/MMM/yyyy': {
+    '02032010': {
+      result: '01/Jan/' + thisYear(),
+      resultStrict: null,
+    },
+    '20122010': {
+      result: '01/Jan/' + thisYear(),
+      resultStrict: null,
+    },
+    '2012': {
+      result: '01/Jan/2012',
+      resultStrict: null,
+    },
     '02 03 2010': {
       result: '02/Mar/2010',
       resultStrict: '02/Mar/2010',
@@ -140,6 +164,18 @@ export const DateParseServiceTest = {
     },
   },
   'MMM/dd/yyyy': {
+    '02032010': {
+      result: 'Jan/01/' + thisYear(),
+      resultStrict: null,
+    },
+    '20122010': {
+      result: 'Jan/01/' + thisYear(),
+      resultStrict: null,
+    },
+    '2012': {
+      result: 'Jan/01/2012',
+      resultStrict: null,
+    },
     '02 03 2010': {
       result: 'Feb/03/2010',
       resultStrict: 'Feb/03/2010',
@@ -209,6 +245,10 @@ export const DateParseServiceTest = {
     },
   },
   'MMM/dd/yy': {
+    '02032010': {
+      result: 'Jan/01/' + thisYear(true),
+      resultStrict: null,
+    },
     'feb.10.2010': {
       result: 'Feb/10/10',
       resultStrict: 'Feb/10/10',
@@ -227,6 +267,18 @@ export const DateParseServiceTest = {
     },
   },
   'yyyy/MM/dd': {
+    '02032010': {
+      result: thisYear() + '/10/20',
+      resultStrict: thisYear() + '/10/20',
+    },
+    '20122010': {
+      result: '2012/10/20',
+      resultStrict: '2012/10/20',
+    },
+    '2012': {
+      result: '2012/01/01',
+      resultStrict: null,
+    },
     '02 03 2010': {
       result: '2010/02/03',
       resultStrict: '2010/02/03',
@@ -295,7 +347,15 @@ export const DateParseServiceTest = {
       resultStrict: '2010/02/20',
     },
   },
+  /////////////
+  /////////////
+  /////////////
+  ////////////
   'yy/MM/dd': {
+    '02032010': {
+      result: '10/02/03',
+      resultStrict: '10/02/03',
+    },
     '2010 feb 10': {
       result: '10/02/10',
       resultStrict: '10/02/10',
@@ -322,6 +382,10 @@ export const DateParseServiceTest = {
     },
   },
   'yy/dd/MM': {
+    '02032010': {
+      result: '10/02/03',
+      resultStrict: '10/02/03',
+    },
     '02 03 2010': {
       result: '10/02/03',
       resultStrict: '10/02/03',
@@ -391,6 +455,18 @@ export const DateParseServiceTest = {
     },
   },
   'MMM-dd-yyyy': {
+    '02032010': {
+      result: 'Jan-01-' + thisYear(),
+      resultStrict: null,
+    },
+    '20122010': {
+      result: 'Jan-01-' + thisYear(),
+      resultStrict: null,
+    },
+    '2012': {
+      result: 'Jan-01-2012',
+      resultStrict: null,
+    },
     'feb.10.2010': {
       result: 'Feb-10-2010',
       resultStrict: 'Feb-10-2010',
@@ -417,6 +493,10 @@ export const DateParseServiceTest = {
     },
   },
   'MM-dd-yyyy': {
+    '02032010': {
+      result: '02-03-2010',
+      resultStrict: '02-03-2010',
+    },
     '02 03 2010': {
       result: '02-03-2010',
       resultStrict: '02-03-2010',
@@ -486,6 +566,18 @@ export const DateParseServiceTest = {
     },
   },
   'dd-MMM-yyyy': {
+    '02032010': {
+      result: '01-Jan-' + thisYear(),
+      resultStrict: null,
+    },
+    '20122010': {
+      result: '01-Jan-' + thisYear(),
+      resultStrict: null,
+    },
+    '2012': {
+      result: '01-Jan-2012',
+      resultStrict: null,
+    },
     '5-20-2010': {
       result: '20-May-2010',
       resultStrict: '20-May-2010',
@@ -506,6 +598,18 @@ export const DateParseServiceTest = {
     },
   },
   'dd/mm': {
+    '02032010': {
+      result: '02/03',
+      resultStrict: '02/03',
+    },
+    '20122010': {
+      result: '20/12',
+      resultStrict: '20/12',
+    },
+    '2012': {
+      result: '01/01',
+      resultStrict: null,
+    },
     '02 03 2010': { result: '02/03', resultStrict: '02/03' },
     'feb.10.2010': { result: '10/02', resultStrict: '10/02' },
     '10 feb 2010': { result: '10/02', resultStrict: '10/02' },
@@ -545,6 +649,18 @@ export const DateParseServiceTest = {
     '2 2010 20 5': { result: '20/02', resultStrict: '01/02' },
   },
   yyyy: {
+    '02032010': {
+      result: '2019',
+      resultStrict: '2019',
+    },
+    '20122010': {
+      result: '2012',
+      resultStrict: '2012',
+    },
+    '2012': {
+      result: '2012',
+      resultStrict: '2012',
+    },
     '02 03 2010': {
       result: '2010',
       resultStrict: thisYear() + '',
@@ -607,7 +723,23 @@ export const DateParseServiceTest = {
       resultStrict: thisYear() + '',
     },
   },
+
+  ///////////////////
+  ///////////////////
+  ///////////////////
   'mm/yyyy': {
+    '02032010': {
+      result: '02/2010',
+      resultStrict: '02/2010',
+    },
+    '20122010': {
+      result: '12/2010',
+      resultStrict: '12/2010',
+    },
+    '2012': {
+      result: '01/2012',
+      resultStrict: null,
+    },
     '02 03 2010': {
       result: '02/2010',
       resultStrict: '02/' + thisYear(),
@@ -680,6 +812,18 @@ export const DateParseServiceTest = {
     },
   },
   mm: {
+    '02032010': {
+      result: '02',
+      resultStrict: '02',
+    },
+    '20122010': {
+      result: '12',
+      resultStrict: '12',
+    },
+    '2012': {
+      result: '01',
+      resultStrict: '01',
+    },
     '04 02 2010': { result: '04', resultStrict: '04' },
     'feb.10.2010': { result: '02', resultStrict: '02' },
     '10 feb 2010': { result: '02', resultStrict: '10' },

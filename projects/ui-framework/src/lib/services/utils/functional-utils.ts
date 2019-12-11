@@ -459,8 +459,8 @@ export const lastDayOfMonth = (month: number, year: number = thisYear()) =>
 export const monthIndex = (month: number | string, minusOne = true): number => {
   let num = parseInt(month as string, 10);
   if (isNaN(num)) {
-    num = monthShortNames.findIndex(
-      i => i.toLowerCase() === (month as string).toLowerCase()
+    num = monthShortNames.findIndex(i =>
+      (month as string).toLowerCase().includes(i.toLowerCase())
     );
     if (num === -1) {
       return month as any;

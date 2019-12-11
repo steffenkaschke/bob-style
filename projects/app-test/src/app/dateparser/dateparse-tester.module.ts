@@ -60,19 +60,23 @@ export class DateParseTesterComponent implements AfterViewInit, OnInit {
   formatVars = Object.keys(DateParseServiceTest);
   dateStrVars = Object.keys(DateParseServiceTest['dd/MM/yyyy']);
 
+  doTest = true;
+
   onValueChange(value) {
-    this.input.nativeElement.value = value;
-    this.input.nativeElement.dispatchEvent(new Event('change'));
+    if (!this.doTest) {
+      this.input.nativeElement.value = value;
+      this.input.nativeElement.dispatchEvent(new Event('change'));
+    }
   }
 
   ngAfterViewInit() {
-    this.onValueChange(this.dateStr);
+    if (!this.doTest) {
+      this.onValueChange(this.dateStr);
+    }
   }
 
   ngOnInit() {
-    const doTest = true;
-
-    if (doTest) {
+    if (this.doTest) {
       let counter = 0;
 
       console.time('test');
