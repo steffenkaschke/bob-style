@@ -1,5 +1,5 @@
 <div>
-  <b-bold-body [hidden]="!showLabel">{{ label }}</b-bold-body>
+  <div class="label" [hidden]="!showLabel">{{ label }}</div>
   <div [hidden]="showLabel">
     <ng-content select="[label-toggle-content]"></ng-content>
   </div>
