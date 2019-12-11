@@ -13,7 +13,6 @@ import { DateParseService } from '../date-parse-service/date-parse.service';
 import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
 import { B_DATE_FORMATS } from '../dateadapter.mock';
 import { DateInputDirectiveModule } from '../date-input-directive/dateinput.directive.module';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [DateRangePickerComponent],
@@ -24,7 +23,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     IconsModule,
     InputMessageModule,
     DateInputDirectiveModule,
-    NoopAnimationsModule,
   ],
   exports: [DateRangePickerComponent],
   entryComponents: [],

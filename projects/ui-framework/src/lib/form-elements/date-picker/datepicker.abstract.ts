@@ -115,9 +115,9 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   public isMobile = false;
   public inputFocused: boolean[] = [];
   public dateFormats: { [key in DatepickerType]: FormatParserResult };
+  public panelPosition: PanelDefaultPosVer;
 
   protected overlayStylesDef: Styles = {};
-  protected panelPosition: PanelDefaultPosVer;
 
   private allowInputBlur = !this.allowKeyInput;
   private resizeSubscription: Subscription;
@@ -428,12 +428,14 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public onInputFocus(index: number = 0): void {
-    this.inputFocused[index] = true;
-    if (this.allowKeyInput && !this.isMobile) {
-      this.getInput(index).select();
-    }
-    if (!this.isMobile) {
-      this.openPicker(index);
+    if (!this.disabled) {
+      this.inputFocused[index] = true;
+      if (this.allowKeyInput && !this.isMobile) {
+        this.getInput(index).select();
+      }
+      if (!this.isMobile) {
+        this.openPicker(index);
+      }
     }
   }
 

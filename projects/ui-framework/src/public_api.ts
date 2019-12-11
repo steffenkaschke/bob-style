@@ -6,11 +6,10 @@
 /*
 * Global
 */
-import { ButtonConfig } from './lib/buttons/buttons.interface';
 
 export * from './lib/enums';
 export * from './lib/types';
-export { SERVER_DATE_FORMAT, mobileBreakpoint } from './lib/consts';
+export * from './lib/consts';
 
 /*
  * Typography
