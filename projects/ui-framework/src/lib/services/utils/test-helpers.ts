@@ -62,7 +62,8 @@ export const simpleChange = (
 export const inputValue = (
   inputElem: any,
   value: string | number,
-  doBlur = true
+  doBlur = true,
+  doChange = true
 ): void => {
   (inputElem as HTMLInputElement).value = value as string;
   (inputElem as HTMLElement).dispatchEvent(
@@ -76,6 +77,14 @@ export const inputValue = (
       new Event('blur', {
         target: inputElem,
         type: 'blur',
+      } as EventInit)
+    );
+  }
+  if (doChange) {
+    (inputElem as HTMLElement).dispatchEvent(
+      new Event('change', {
+        target: inputElem,
+        type: 'change',
       } as EventInit)
     );
   }

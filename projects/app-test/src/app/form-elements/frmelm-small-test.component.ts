@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { optionsMock } from '../../../../ui-framework/src/lib/lists/single-list/single-list.mock';
 import { cloneDeep } from 'lodash';
+import { mockISOdate } from '../../../../ui-framework/src/lib/mock.const';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -23,6 +24,7 @@ import { cloneDeep } from 'lodash';
     </form>
   `,
   styles: [':host {display: block;}'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormElemSmallTestComponent implements OnInit {
   constructor() {}
@@ -44,5 +46,9 @@ export class FormElemSmallTestComponent implements OnInit {
         console.log(key + ':', value);
       });
     });
+
+    setInterval(() => {
+      this.testForm.get('datePicker').setValue(mockISOdate());
+    }, 1000);
   }
 }

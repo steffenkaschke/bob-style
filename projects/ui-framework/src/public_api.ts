@@ -6,11 +6,10 @@
 /*
 * Global
 */
-import { ButtonConfig } from './lib/buttons/buttons.interface';
 
 export * from './lib/enums';
 export * from './lib/types';
-export { serverDateFormat, mobileBreakpoint } from './lib/consts';
+export * from './lib/consts';
 
 /*
  * Typography
@@ -179,17 +178,21 @@ export {
   CheckboxComponent
 } from './lib/form-elements/checkbox/checkbox.component';
 // DatePicker Module
+export * from './lib/form-elements/date-picker/datepicker.enum';
+export * from './lib/form-elements/date-picker/datepicker.interface';
+export { DateParseService } from './lib/form-elements/date-picker/date-parse-service/date-parse.service';
+export { DateInputDirectiveModule } from './lib/form-elements/date-picker/date-input-directive/dateinput.directive.module';
+export { DateInputDirective } from './lib/form-elements/date-picker/date-input-directive/dateinput.directive';
 export {
   DatepickerModule
-} from './lib/form-elements/datepicker/datepicker.module';
+} from './lib/form-elements/date-picker/datepicker/datepicker.module';
 export {
   DatepickerComponent
-} from './lib/form-elements/datepicker/datepicker.component';
-export { DatepickerType } from './lib/form-elements/datepicker/datepicker.enum';
+} from './lib/form-elements/date-picker/datepicker/datepicker.component';
 // DateRangePickerModule
-export { DateRangePickerModule } from './lib/form-elements/date-range-picker/date-range-picker.module';
-export { DateRangePickerComponent } from './lib/form-elements/date-range-picker/date-range-picker.component';
-export { DateRangePickerValue } from './lib/form-elements/date-range-picker/date-range-picker.interface';
+export { DateRangePickerModule } from './lib/form-elements/date-picker/date-range-picker/date-range-picker.module';
+// tslint:disable-next-line: max-line-length
+export { DateRangePickerComponent } from './lib/form-elements/date-picker/date-range-picker/date-range-picker.component';
 // Input Module
 export { InputModule } from './lib/form-elements/input/input.module';
 export { InputComponent } from './lib/form-elements/input/input.component';

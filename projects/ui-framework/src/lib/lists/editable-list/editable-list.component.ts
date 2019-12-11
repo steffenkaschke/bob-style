@@ -129,11 +129,17 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes, {
-      list: [],
-      allowedActions: cloneObject(EDITABLE_LIST_ALLOWED_ACTIONS_DEF),
-      translation: cloneObject(EDITABLE_LIST_TRANSLATION),
-    });
+    applyChanges(
+      this,
+      changes,
+      {
+        list: [],
+        allowedActions: cloneObject(EDITABLE_LIST_ALLOWED_ACTIONS_DEF),
+        translation: cloneObject(EDITABLE_LIST_TRANSLATION),
+      },
+      [],
+      true
+    );
 
     if (hasChanges(changes, ['list'])) {
       this.listState.list = cloneDeep(this.list);

@@ -165,23 +165,21 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   }
 
   writeValue(value: any, options: SelectGroupOption[] = this.options): void {
-    if (isArray(value) || value === null) {
-      this.value = selectValueOrFail(value) || [];
-      this.fitOptionsToValue = true;
+    if (value === undefined) {
+      return;
+    }
 
-      if (isNotEmptyArray(options)) {
-        this.options = this.listChangeSrvc.getCurrentSelectGroupOptions(
-          options,
-          this.value
-        );
-      }
+    this.value = selectValueOrFail(value);
+    this.fitOptionsToValue = true;
 
-      this.setDisplayValue();
-    } else {
-      console.warn(
-        `Provided value (${typeof value}: ${value}) is not valid. It should be an array of selected IDs.`
+    if (isNotEmptyArray(options)) {
+      this.options = this.listChangeSrvc.getCurrentSelectGroupOptions(
+        options,
+        this.value
       );
     }
+
+    this.setDisplayValue();
   }
 
   openPanel(): void {

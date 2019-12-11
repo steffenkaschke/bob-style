@@ -25,21 +25,30 @@ import {
   isKey,
   cloneValue,
   isFalsyOrEmpty,
+  hasProp,
+  hasChanges,
 } from '../../services/utils/functional-utils';
 import { dateOrFail } from '../../services/utils/transformers';
-import { BDateAdapter } from './date.adapter';
-import { MatDatepicker, MatDatepickerInput } from '@angular/material';
-import { DateParseService } from './date-parse.service';
+import { MatDatepicker } from '@angular/material';
+import { DateParseService } from './date-parse-service/date-parse.service';
 import { Keys } from '../../enums';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { throttle } from 'rxjs/operators';
 import { WindowRef } from '../../services/utils/window-ref.service';
 import { InputEventType, FormEvents } from '../form-elements.enum';
 import { InputEvent } from '../input/input.interface';
-import { set } from 'lodash';
-import { DatepickerType } from './datepicker.enum';
+import { set, get } from 'lodash';
+import { DatepickerType, DateAdjust } from './datepicker.enum';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { Styles } from '../../services/html/html-helpers.interface';
+import { DateParseResult, FormatParserResult } from './datepicker.interface';
+import {
+  DISPLAY_DATE_FORMAT_DEF,
+  DISPLAY_MONTH_FORMAT_DEF,
+  LOCALE_FORMATS,
+} from '../../consts';
+import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
+import { LocaleFormat, DateFormatFullDate, DateFormat } from '../../types';
 
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, AfterViewInit, OnDestroy {
@@ -50,14 +59,42 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
     protected kbrdCntrlSrvc: FormElementKeyboardCntrlService,
-    protected dateParseSrvc: DateParseService
+    protected dateParseSrvc: DateParseService,
+    private dateAdapter: any
   ) {
     super(cd);
+
+    if (hasProp(this.dateAdapter, 'getFormat', false)) {
+      this.dateFormats = {
+        [DatepickerType.date]: this.dateAdapter.getFormat(
+          LocaleFormat.FullDate
+        ),
+        [DatepickerType.month]: this.dateAdapter.getFormat(
+          LocaleFormat.MonthYear
+        ),
+      };
+
+      this.dateFormats[DatepickerType.month].format = this.dateFormats[
+        DatepickerType.month
+      ].format.replace(/y+/g, 'yyyy') as DateFormat;
+      this.dateFormats[DatepickerType.month].length.year = 4;
+    } else {
+      this.dateFormats = {
+        [DatepickerType.date]: this.dateParseSrvc.parseFormat(
+          DISPLAY_DATE_FORMAT_DEF,
+          4
+        ),
+        [DatepickerType.month]: this.dateParseSrvc.parseFormat(
+          DISPLAY_MONTH_FORMAT_DEF,
+          4
+        ),
+      };
+    }
   }
 
   @ViewChild('inputWrap', { static: true }) inputWrap: ElementRef;
   @ViewChildren(MatDatepicker) public pickers: QueryList<MatDatepicker<any>>;
-  @ViewChildren(MatDatepickerInput, { read: ElementRef })
+  @ViewChildren('input', { read: ElementRef })
   public inputs: QueryList<ElementRef>;
 
   @Input() id: string = simpleUID('bdp-');
@@ -68,7 +105,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     DatepickerType.date;
 
   @Input() allowKeyInput = true;
-  @Input() dateFormat: string;
+  @Input() dateFormat: DateFormatFullDate;
   @Input() panelClass: string;
 
   @Output(FormEvents.dateChange) changed: EventEmitter<
@@ -77,21 +114,25 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
   public isMobile = false;
   public inputFocused: boolean[] = [];
+  public dateFormats: { [key in DatepickerType]: FormatParserResult };
+  public panelPosition: PanelDefaultPosVer;
 
   protected overlayStylesDef: Styles = {};
 
   private allowInputBlur = !this.allowKeyInput;
   private resizeSubscription: Subscription;
   private mediaEventSubscription: Subscription;
-  private skipParse = false;
 
   readonly icons = Icons;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
   readonly inputTypes = InputTypes;
   readonly types = DatepickerType;
+  readonly panelPos = PanelDefaultPosVer;
+  readonly dateAdjust = DateAdjust;
 
   private doneFirstChange = false;
+  private useFormatForPlaceholder = false;
 
   protected doOnPickerOpen(picker: MatDatepicker<any>): void {}
 
@@ -120,6 +161,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     if (this.value) {
       this.cd.detectChanges();
     }
+
     if (isFalsyOrEmpty(this.value, true)) {
       this.value = cloneValue(this.baseValue);
     }
@@ -144,18 +186,57 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   onNgChanges(changes: SimpleChanges): void {
     this.allPickers(picker => this.closePicker(picker));
 
-    if (changes.minDate) {
+    if (hasChanges(changes, ['minDate'])) {
       this.minDate = dateOrFail(changes.minDate.currentValue);
     }
 
-    if (changes.maxDate) {
+    if (hasChanges(changes, ['maxDate'])) {
       this.maxDate = dateOrFail(changes.maxDate.currentValue);
     }
 
-    if (!this.placeholder && !(this.hideLabelOnFocus && this.label)) {
-      this.placeholder = (
-        this.dateFormat || BDateAdapter.bFormat
-      ).toLowerCase();
+    if (
+      hasChanges(changes, ['allowKeyInput']) &&
+      this.allowKeyInput !== ('' as any)
+    ) {
+      this.allowInputBlur = !this.allowKeyInput;
+    }
+
+    if (!this.type) {
+      this.type = DatepickerType.date;
+    }
+
+    if (hasChanges(changes, ['dateFormat'], true)) {
+      if (
+        this.dateFormat.toUpperCase() !==
+        this.dateFormats[DatepickerType.date].format.toUpperCase()
+      ) {
+        this.dateFormats = {
+          [DatepickerType.date]: this.dateParseSrvc.parseFormat(
+            this.dateFormat,
+            4
+          ),
+          [DatepickerType.month]: this.dateParseSrvc.parseFormat(
+            hasProp(this.dateAdapter, 'getLocaleFormat', false)
+              ? this.dateAdapter.getLocaleFormat(
+                  this.dateFormat,
+                  LocaleFormat.MonthYear
+                )
+              : get(
+                  get(LOCALE_FORMATS, this.dateFormat.toUpperCase()),
+                  LocaleFormat.MonthYear
+                ),
+            4
+          ),
+        };
+      }
+    }
+
+    if (
+      (!this.placeholder && !(this.hideLabelOnFocus && this.label)) ||
+      this.useFormatForPlaceholder
+    ) {
+      this.placeholder = this.dateFormats[this.type].format.toLowerCase();
+      this.useFormatForPlaceholder = true;
     }
 
     this.doneFirstChange = true;
@@ -216,7 +297,12 @@ export abstract class BaseDatepickerElement extends BaseFormElement
         left: !alignedToRight
           ? overlayBox.left + 'px'
           : overlayBox.left - (width - overlayBox.width) + 'px',
-        right: 'auto',
+        right: alignedToRight
+          ? overlayBox.right - overlayBox.width + 'px'
+          : overlayBox.right -
+            overlayBox.width -
+            (width - overlayBox.width) +
+            'px',
       };
     }
     return {};
@@ -265,7 +351,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     if (typeof picker === 'number') {
       picker = this.getPicker(picker);
     }
-    if (!picker.opened) {
+    if (!picker.opened && !this.disabled) {
       picker.open();
     }
   }
@@ -292,6 +378,16 @@ export abstract class BaseDatepickerElement extends BaseFormElement
 
         if (!this.isMobile && panel.popup) {
           this.DOM.setCssProps(panel.popup, this.getOverlayStyles(panel.popup));
+
+          const popupStyles = panel.popup.getAttribute('style');
+
+          if (popupStyles.includes('bottom')) {
+            this.panelPosition = PanelDefaultPosVer.above;
+          }
+          if (popupStyles.includes('top')) {
+            this.panelPosition = PanelDefaultPosVer.below;
+          }
+          this.cd.detectChanges();
         }
 
         if (this.isMobile && panel.dialog) {
@@ -309,6 +405,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     } else {
       this.getInput(index).blur();
     }
+    this.panelPosition = null;
   }
 
   public onPickerMonthSelect(date: Date, index: number = 0): void {
@@ -326,19 +423,19 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public clearInput(index: number = 0, path = 'value'): void {
-    this.getInput(index).value = '';
     set(this, path, null);
     this.cd.detectChanges();
-    this.transmit();
   }
 
   public onInputFocus(index: number = 0): void {
-    this.inputFocused[index] = true;
-    if (this.allowKeyInput && !this.isMobile) {
-      this.getInput(index).select();
-    }
-    if (!this.isMobile) {
-      this.openPicker(index);
+    if (!this.disabled) {
+      this.inputFocused[index] = true;
+      if (this.allowKeyInput && !this.isMobile) {
+        this.getInput(index).select();
+      }
+      if (!this.isMobile) {
+        this.openPicker(index);
+      }
     }
   }
 
@@ -358,12 +455,6 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   }
 
   public onInputKeydown(event: KeyboardEvent, index: number = 0): void {
-    this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9,\W]/i);
-
-    if (isKey(event.key, Keys.backspace) || isKey(event.key, Keys.delete)) {
-      this.skipParse = true;
-    }
-
     if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) {
       this.closePicker(index);
     }
@@ -386,13 +477,12 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
   }
 
-  public onInputChange(event, index: number = 0): void {
-    if (!this.skipParse) {
-      (event.target as HTMLInputElement).value = this.dateParseSrvc.parseDateInput(
-        (event.target as HTMLInputElement).value
-      );
+  public onInputChange(parsed: DateParseResult, index: number = 0): void {
+    const picker = this.getPicker(index);
+
+    if (picker) {
+      picker.select(parsed.date);
     }
-    this.skipParse = false;
   }
 
   public transmit(

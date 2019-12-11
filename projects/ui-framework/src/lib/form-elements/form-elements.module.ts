@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { InputModule } from './input/input.module';
 import { InputComponent } from './input/input.component';
-import { DatepickerModule } from './datepicker/datepicker.module';
-import { DatepickerComponent } from './datepicker/datepicker.component';
+import { DatepickerModule } from './date-picker/datepicker/datepicker.module';
+import { DatepickerComponent } from './date-picker/datepicker/datepicker.component';
 import { TextareaModule } from './textarea/textarea.module';
 import { TextareaComponent } from './textarea/textarea.component';
 import { CheckboxModule } from './checkbox/checkbox.module';
@@ -28,8 +28,8 @@ import { TimePickerModule } from './timepicker/timepicker.module';
 import { TimePickerComponent } from './timepicker/timepicker.component';
 import { EventManagerPlugins } from '../services/utils/eventManager.plugins';
 import { FormElementLabelModule } from './form-element-label/form-element-label.module';
-import { DateRangePickerComponent } from './date-range-picker/date-range-picker.component';
-import { DateRangePickerModule } from './date-range-picker/date-range-picker.module';
+import { DateRangePickerComponent } from './date-picker/date-range-picker/date-range-picker.component';
+import { DateRangePickerModule } from './date-picker/date-range-picker/date-range-picker.module';
 
 @NgModule({
   imports: [

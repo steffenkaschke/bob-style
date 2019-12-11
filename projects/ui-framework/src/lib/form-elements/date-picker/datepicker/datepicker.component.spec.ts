@@ -1,24 +1,32 @@
 import { DatepickerComponent } from './datepicker.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDatepicker, MatDatepickerModule, MatNativeDateModule, } from '@angular/material';
-import { elementFromFixture, getPseudoContent, inputValue, simpleChange, } from '../../services/utils/test-helpers';
-import { UtilsService } from '../../services/utils/utils.service';
+import {
+  MatDatepicker,
+  MatDatepickerModule,
+  MatNativeDateModule,
+} from '@angular/material';
+import {
+  elementFromFixture,
+  getPseudoContent,
+  inputValue,
+  simpleChange,
+} from '../../../services/utils/test-helpers';
+import { UtilsService } from '../../../services/utils/utils.service';
 import { of } from 'rxjs';
-import { DateParseService } from './date-parse.service';
-import { MobileService } from '../../services/utils/mobile.service';
-import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { IconsModule } from '../../icons/icons.module';
-import { InputMessageModule } from '../input-message/input-message.module';
-import { dateToString } from '../../services/utils/transformers';
+import { DateParseService } from '../date-parse-service/date-parse.service';
+import { MobileService } from '../../../services/utils/mobile.service';
+import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
+import { IconsModule } from '../../../icons/icons.module';
+import { InputMessageModule } from '../../input-message/input-message.module';
+import { dateToString } from '../../../services/utils/transformers';
 import { isDate, parseISO } from 'date-fns';
-import { DatepickerType } from './datepicker.enum';
+import { DatepickerType } from '../datepicker.enum';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
+import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
-import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { B_DATE_FORMATS, BDateAdapter } from './date.adapter';
+import { FormElementLabelModule } from '../../form-element-label/form-element-label.module';
 import createSpyObj = jasmine.createSpyObj;
+import { DateInputDirectiveModule } from '../date-input-directive/dateinput.directive.module';
 
 describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
@@ -50,6 +58,7 @@ describe('DatepickerComponent', () => {
         NoopAnimationsModule,
         OverlayModule,
         FormElementLabelModule,
+        DateInputDirectiveModule,
       ],
       declarations: [DatepickerComponent],
       providers: [
@@ -58,14 +67,6 @@ describe('DatepickerComponent', () => {
         FormElementKeyboardCntrlService,
         DateParseService,
         EventManagerPlugins[0],
-        {
-          provide: DateAdapter,
-          useClass: BDateAdapter,
-        },
-        {
-          provide: MAT_DATE_FORMATS,
-          useValue: B_DATE_FORMATS,
-        },
       ],
     })
       .compileComponents()
@@ -222,7 +223,7 @@ describe('DatepickerComponent', () => {
       fixture.detectChanges();
       pickerDateCellElem = component.getPickerPanelElements(
         picker,
-        '.mat-calendar-body td[aria-label*=" 27 "]'
+        '.mat-calendar-body td[aria-label*="27"]'
       )[0];
       fixture.detectChanges();
       expect(component.value).toBeFalsy();
@@ -300,7 +301,7 @@ describe('DatepickerComponent', () => {
       fixture.detectChanges();
       pickerDateCellElem = component.getPickerPanelElements(
         picker,
-        '.mat-calendar-body td[aria-label*=" Nov "]'
+        '.mat-calendar-body td[aria-label*="Nov"]'
       )[0];
       expect(pickerDateCellElem).toBeTruthy();
       pickerDateCellElem.click();

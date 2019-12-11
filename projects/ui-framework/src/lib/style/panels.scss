@@ -110,7 +110,7 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
   .panel-below {
     border-top-right-radius: 0;
     border-top-left-radius: 0;
-    margin-top: -1px;
+    border-top-width: 0;
 
     b-search .bfe-wrap {
       border-top-right-radius: 0;
@@ -120,8 +120,7 @@ html:not(.cdk-global-scrollblock) .cdk-overlay-connected-position-bounding-box {
   .panel-above {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
-    margin-bottom: -1px;
-
+    border-bottom-width: 0;
     box-shadow: 0 -2px 5px $boxShadowColor;
 
     b-list-footer {

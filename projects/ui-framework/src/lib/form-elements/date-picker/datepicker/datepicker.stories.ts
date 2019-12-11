@@ -7,14 +7,14 @@ import {
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { DatepickerModule } from './datepicker.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType } from '../../../consts';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { thisMonth, thisYear } from '../../services/utils/functional-utils';
-import { DatepickerType } from './datepicker.enum';
-import { mockText } from '../../mock.const';
-import { BDateAdapter } from './date.adapter';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import { thisMonth, thisYear } from '../../../services/utils/functional-utils';
+import { DatepickerType } from '../datepicker.enum';
+import { mockText } from '../../../mock.const';
+import { BDateAdapterMock, UserLocaleServiceMock } from '../dateadapter.mock';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -22,6 +22,7 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 const template = `
 <b-datepicker [value]="value"
               [type]="pickerType"
+              [dateFormat]="dateFormat"
               [minDate]="minDate"
               [maxDate]="maxDate"
               [label]="label"
@@ -62,7 +63,7 @@ const note = `
   [label] | string | label text (above input) | &nbsp;
   [description] | string | description text (above icon) | &nbsp;
   [placeholder] | string | placeholder text (inside input) | &nbsp;
-  [dateFormat] | string | string, representing date format (to be used as default placeholder) | &nbsp;
+  [dateFormat] | string | string, representing date format (will also be used as default placeholder) | &nbsp;
   [hideLabelOnFocus] | boolean | places label in placeholder position | false
   [disabled] | boolean | is field disabled | false
   [required] | boolean | is field required | false
@@ -87,13 +88,19 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        userLocaleService: UserLocaleServiceMock,
+        dateFormat: select(
+          'dateFormat',
+          ['', 'dd/MM/yyyy', 'MM/dd/yyyy', 'yyyy/MM/dd', 'dd/MMM/yyyy'],
+          ''
+        ),
         value: select(
           'value',
           [
             '',
-            `${thisYear()}-${thisMonth(false, -1)}-9`,
+            `${thisYear()}-${Math.max(1, thisMonth(false, -1))}-9`,
             `${thisYear()}-${thisMonth()}-23`,
-            `${thisYear()}-${thisMonth(false, 1)}-19`,
+            `${thisYear()}-${Math.min(12, thisMonth(false, 1))}-19`,
           ],
           ''
         ),
@@ -106,7 +113,7 @@ story.add(
           'minDate',
           [
             '',
-            `${thisYear()}-${thisMonth(false, -1)}-5`,
+            `${thisYear()}-${Math.max(1, thisMonth(false, -1))}-5`,
             `${thisYear()}-${thisMonth()}-7`,
           ],
           ''
@@ -116,13 +123,13 @@ story.add(
           [
             '',
             `${thisYear()}-${thisMonth()}-25`,
-            `${thisYear()}-${thisMonth(false, 1)}-15`,
+            `${thisYear()}-${Math.min(12, thisMonth(false, 1))}-15`,
           ],
           ''
         ),
         label: text('label', 'Date picker'),
-        description: text('description', mockText(30)),
         placeholder: text('placeholder', ''),
+        description: text('description', mockText(30)),
         hideLabelOnFocus: boolean('hideLabelOnFocus', false),
         disabled: boolean('disabled', false),
         required: boolean('required', false),
@@ -134,7 +141,7 @@ story.add(
       moduleMetadata: {
         imports: [
           BrowserAnimationsModule,
-          DatepickerModule.init(BDateAdapter),
+          DatepickerModule.init(BDateAdapterMock),
           StoryBookLayoutModule,
         ],
       },

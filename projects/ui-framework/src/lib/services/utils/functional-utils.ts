@@ -57,8 +57,14 @@ export const isEmptyArray = (val: any): boolean =>
 export const isObject = (val: any): boolean =>
   val && !isArray(val) && typeof val !== 'function' && val === Object(val);
 
-export const hasProp = (obj: GenericObject, key: string): boolean =>
-  isObject(obj) && obj.hasOwnProperty(key);
+export const hasProp = (
+  obj: GenericObject,
+  key: string,
+  strict = true
+): boolean =>
+  isObject(obj) &&
+  ((strict && Object.prototype.hasOwnProperty.call(obj, key)) ||
+    (!strict && typeof obj[key] !== 'undefined'));
 
 export const isNotEmptyObject = (val: any): boolean =>
   isObject(val) && Object.keys(val).length > 0;
@@ -69,8 +75,7 @@ export const isEmptyObject = (val: any): boolean =>
 export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
   isNullOrUndefined(smth) ||
   smth === false ||
-  (fuzzy && smth === '') ||
-  (fuzzy && smth === 0) ||
+  (fuzzy && !Boolean(smth)) ||
   isEmptyArray(smth) ||
   isEmptyObject(smth);
 
@@ -205,12 +210,18 @@ export const arrayOfNumbers = (
     (e, i) => i + start + ((asStrings ? '' : 0) as any)
   );
 
-export const padWith0 = (number: string | number, digits = 2): string =>
-  String(number).padStart(digits, '0');
+export const padWith0 = (number: string | number, digits = 2): string => {
+  if (isNullOrUndefined(number) || isNaN(parseInt(number as string, 10))) {
+    return number as any;
+  }
+
+  return String(number).padStart(digits, '0');
+};
 
 export const hasChanges = (
   changes: SimpleChanges,
-  keys: string[] = null
+  keys: string[] = null,
+  discardAllFalsey = false
 ): boolean => {
   if (!keys) {
     keys = Object.keys(changes);
@@ -219,7 +230,9 @@ export const hasChanges = (
     i =>
       changes[i] !== undefined &&
       (changes[i].currentValue !== undefined ||
-        changes[i].previousValue !== undefined)
+        changes[i].previousValue !== undefined) &&
+      (!discardAllFalsey ||
+        (discardAllFalsey && Boolean(changes[i].currentValue)))
   );
 };
 
@@ -247,12 +260,16 @@ export const applyChanges = (
   target: any,
   changes: SimpleChanges,
   defaults: GenericObject = {},
-  skip: string[] = []
+  skip: string[] = [],
+  discardAllFalsey = false
 ): void => {
   Object.keys(changes).forEach((change: string) => {
     if (!skip.includes(change)) {
       target[change] =
-        isNullOrUndefined(changes[change].currentValue) && defaults[change]
+        defaults[change] &&
+        ((!discardAllFalsey &&
+          isNullOrUndefined(changes[change].currentValue)) ||
+          (discardAllFalsey && !Boolean(changes[change].currentValue)))
           ? defaults[change]
           : changes[change].currentValue;
     }
@@ -280,41 +297,6 @@ export const onlyUpdatedProps = (
       updObj[key] = newObj[key];
       return updObj;
     }, {});
-};
-
-export const isDate = (value: any): boolean =>
-  value instanceof Date && typeof value.getMonth === 'function';
-
-export const isDateISO8601 = (date: string): boolean =>
-  isString(date) &&
-  date.split('-').length === 3 &&
-  date.split('-')[0].length === 4 &&
-  parseInt(date.split('-')[1], 10) < 13;
-
-export const isDateFormat = (frmt: string): boolean => {
-  if (!isString(frmt)) {
-    return false;
-  }
-  const split = frmt.toUpperCase().split(/[.|\-|/|:| ]+/);
-
-  return (
-    split.length > 1 &&
-    (!!split.find(i => i === 'DD') ||
-      !!split.find(i => i === 'YYYY') ||
-      !!split.find(i => i.includes('MM')))
-  );
-};
-
-export const thisYear = () => new Date().getFullYear();
-
-export const thisMonth = (pad = true, mod = 0) => {
-  const month = new Date().getMonth() + 1 + mod;
-  return pad ? padWith0(month, 2) : month;
-};
-
-export const thisDay = (pad = true) => {
-  const day = new Date().getDate();
-  return pad ? padWith0(day, 2) : day;
 };
 
 export const cloneObject = <T = any>(value: T): T =>
@@ -401,3 +383,90 @@ export const numberMinMax = (
   min: number = 0,
   max: number = 100
 ): number => Math.max(Math.min(max, number), min);
+
+export const arrayMode = <T = any>(arr: T[]): T =>
+  isArray(arr) &&
+  arr
+    .sort(
+      (a, b) =>
+        arr.filter(v => v === a).length - arr.filter(v => v === b).length
+    )
+    .pop();
+
+// DATES
+
+export const monthShortNames = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+export const isDate = (value: any): boolean =>
+  String(value) !== 'Invalid Date' &&
+  value instanceof Date &&
+  typeof value.getMonth === 'function';
+
+export const isDateISO8601 = (date: string): boolean =>
+  isString(date) &&
+  date.split('-').length === 3 &&
+  date.split('-')[0].length === 4 &&
+  parseInt(date.split('-')[1], 10) < 13;
+
+export const isDateFormat = (frmt: string): boolean => {
+  if (!isString(frmt)) {
+    return false;
+  }
+  const split = frmt.toUpperCase().split(/[.|\-|/|:| ]+/);
+
+  return (
+    split.length > 1 &&
+    (!!split.find(i => i === 'DD') ||
+      !!split.find(i => i === 'YYYY') ||
+      !!split.find(i => i.includes('MM')))
+  );
+};
+
+export const thisYear = <T = number>(short = false): T => {
+  const year = new Date().getFullYear();
+  return ((short ? (year + '').slice(2) : year) as any) as T;
+};
+
+export const thisMonth = <T = string>(pad = true, mod = 0, name = false): T => {
+  if (name) {
+    return (monthShortNames[new Date().getMonth()] as any) as T;
+  }
+  const month = new Date().getMonth() + 1 + mod;
+  return ((pad ? padWith0(month, 2) : month) as any) as T;
+};
+
+export const thisDay = <T = string>(pad = true): T => {
+  const day = new Date().getDate();
+  return ((pad ? padWith0(day, 2) : day) as any) as T;
+};
+
+export const lastDayOfMonth = (month: number, year: number = thisYear()) =>
+  32 - new Date(year, month, 32).getDate();
+
+export const monthIndex = (month: number | string, minusOne = true): number => {
+  let num = parseInt(month as string, 10);
+  if (isNaN(num)) {
+    num = monthShortNames.findIndex(
+      i => i.toLowerCase() === (month as string).toLowerCase()
+    );
+    if (num === -1) {
+      return month as any;
+    }
+  } else if (minusOne) {
+    num = num - 1;
+  }
+  return Math.max(0, Math.min(11, num));
+};

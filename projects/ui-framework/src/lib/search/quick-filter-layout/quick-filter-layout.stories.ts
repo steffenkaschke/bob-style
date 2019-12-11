@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuickFilterLayoutModule } from './quick-filter-layout.module';
 import { MultiSelectModule } from '../../lists/multi-select/multi-select.module';
 import { SingleSelectModule } from '../../lists/single-select/single-select.module';
-import { DateRangePickerModule } from '../../form-elements/date-range-picker/date-range-picker.module';
+import { DateRangePickerModule } from '../../form-elements/date-picker/date-range-picker/date-range-picker.module';
 import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import {
@@ -26,8 +26,9 @@ import { InputTypes } from '../../form-elements/input/input.enum';
 // tslint:disable-next-line: max-line-length
 import { SplitInputSingleSelectModule } from '../../form-elements/split-input-single-select/split-input-single-select.module';
 import { LinkColor } from '../../indicators/link/link.enum';
-import { DatepickerType } from '../../form-elements/datepicker/datepicker.enum';
-import { BDateAdapter } from '../../form-elements/datepicker/date.adapter';
+import { DatepickerType } from '../../form-elements/date-picker/datepicker.enum';
+
+import { BDateAdapterMock } from '../../form-elements/date-picker/dateadapter.mock';
 
 const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
   withKnobs
@@ -272,7 +273,7 @@ story.add(
           QuickFilterLayoutModule,
           MultiSelectModule,
           SingleSelectModule,
-          DateRangePickerModule.init(BDateAdapter),
+          DateRangePickerModule.init(BDateAdapterMock),
           AvatarModule,
           ButtonsModule,
           InputModule,

@@ -17,7 +17,7 @@ import {
 
 import { format, parseISO } from 'date-fns';
 import { InputTypes } from '../../form-elements/input/input.enum';
-import { serverDateFormat } from '../../consts';
+import { SERVER_DATE_FORMAT } from '../../consts';
 
 // -------------------------------
 // Transformers
@@ -71,7 +71,7 @@ export const stringToDate = date => {
   return String(converted) !== 'Invalid Date' ? converted : undefined;
 };
 
-export const dateToString = (date, frmt = serverDateFormat) =>
+export const dateToString = (date, frmt = SERVER_DATE_FORMAT) =>
   isDate(date) ? format(date, frmt) : date;
 
 export const valueToObjectKey = (key: string) => (value: any) => {

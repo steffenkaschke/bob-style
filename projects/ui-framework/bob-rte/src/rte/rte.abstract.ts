@@ -138,7 +138,8 @@ export abstract class RTEbaseElement extends BaseFormElement
         controls: RTE_CONTROLS_DEF,
         disableControls: RTE_DISABLE_CONTROLS_DEF,
       },
-      ['options', 'value']
+      ['options', 'value'],
+      true
     );
 
     if (changes.options) {

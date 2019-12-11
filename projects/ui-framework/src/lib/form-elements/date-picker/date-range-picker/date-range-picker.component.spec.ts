@@ -1,21 +1,33 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DateRangePickerComponent } from './date-range-picker.component';
-import { UtilsService } from '../../services/utils/utils.service';
-import { MobileService } from '../../services/utils/mobile.service';
-import { DateParseService } from '../datepicker/date-parse.service';
-import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { UtilsService } from '../../../services/utils/utils.service';
+import { MobileService } from '../../../services/utils/mobile.service';
+import { DateParseService } from '../date-parse-service/date-parse.service';
+import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
 import { of } from 'rxjs';
-import { MatDatepicker, MatDatepickerModule, MatNativeDateModule, } from '@angular/material';
-import { IconsModule } from '../../icons/icons.module';
-import { InputMessageModule } from '../input-message/input-message.module';
-import { elementFromFixture, elementsFromFixture, getPseudoContent, inputValue, simpleChange, } from '../../services/utils/test-helpers';
-import { dateToString, stringToDate } from '../../services/utils/transformers';
-import { isDate, parseISO } from 'date-fns';
-import { DatepickerType } from '../datepicker/datepicker.enum';
+import {
+  MatDatepicker,
+  MatDatepickerModule,
+  MatNativeDateModule,
+} from '@angular/material';
+import { IconsModule } from '../../../icons/icons.module';
+import { InputMessageModule } from '../../input-message/input-message.module';
+import {
+  elementFromFixture,
+  elementsFromFixture,
+  getPseudoContent,
+  inputValue,
+  simpleChange,
+} from '../../../services/utils/test-helpers';
+import {
+  dateToString,
+  stringToDate,
+} from '../../../services/utils/transformers';
+import { isDate, parseISO, endOfMonth } from 'date-fns';
+import { DatepickerType } from '../datepicker.enum';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { B_DATE_FORMATS, BDateAdapter } from '../datepicker/date.adapter';
 import createSpyObj = jasmine.createSpyObj;
+import { DateInputDirectiveModule } from '../date-input-directive/dateinput.directive.module';
 
 describe('DateRangePickerComponent', () => {
   let fixture: ComponentFixture<DateRangePickerComponent>;
@@ -46,19 +58,12 @@ describe('DateRangePickerComponent', () => {
         IconsModule,
         InputMessageModule,
         NoopAnimationsModule,
+        DateInputDirectiveModule,
       ],
       declarations: [DateRangePickerComponent],
       providers: [
         { provide: UtilsService, useValue: utilsServiceStub },
         { provide: MobileService, useValue: mobileServiceStub },
-        {
-          provide: DateAdapter,
-          useClass: BDateAdapter,
-        },
-        {
-          provide: MAT_DATE_FORMATS,
-          useValue: B_DATE_FORMATS,
-        },
         DateParseService,
         EventManagerPlugins[0],
       ],
@@ -534,8 +539,9 @@ describe('DateRangePickerComponent', () => {
       fixture.detectChanges();
       pickerDateCellElems = component.getPickerPanelElements(
         pickers[0],
-        '.mat-calendar-body td[aria-label*=" Jan "]'
+        '.mat-calendar-body td[aria-label*="Jan"]'
       );
+
       expect(pickerDateCellElems[0]).toBeTruthy();
       pickerDateCellElems[0].click();
       fixture.detectChanges();
@@ -544,7 +550,7 @@ describe('DateRangePickerComponent', () => {
       fixture.detectChanges();
       pickerDateCellElems = component.getPickerPanelElements(
         pickers[1],
-        '.mat-calendar-body td[aria-label*=" Feb "]'
+        '.mat-calendar-body td[aria-label*="Feb"]'
       );
       expect(pickerDateCellElems[0]).toBeTruthy();
       pickerDateCellElems[0].click();
@@ -552,13 +558,13 @@ describe('DateRangePickerComponent', () => {
 
       expect(component.value).toEqual({
         startDate: parseISO('2019-01-01'),
-        endDate: parseISO('2019-02-01'),
+        endDate: endOfMonth(parseISO('2019-02-28')),
       });
       expect(component.changed.emit).toHaveBeenCalledWith({
         event: 'onBlur',
         date: {
           startDate: parseISO('2019-01-01'),
-          endDate: parseISO('2019-02-01'),
+          endDate: endOfMonth(parseISO('2019-02-28')),
         },
         value: {
           from: '2019-01-01',

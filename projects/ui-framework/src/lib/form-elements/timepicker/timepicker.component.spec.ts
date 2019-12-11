@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimePickerComponent } from './timepicker.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMessageModule } from '../input-message/input-message.module';
-import { DateParseService } from '../datepicker/date-parse.service';
+import { DateParseService } from '../date-picker/date-parse-service/date-parse.service';
 import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import {

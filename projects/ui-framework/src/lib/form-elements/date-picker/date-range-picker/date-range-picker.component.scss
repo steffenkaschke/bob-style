@@ -1,4 +1,4 @@
-@import '../../style/common-imports';
+@import '../../../style/common-imports';
 
 .bdrp-label-wrap,
 .bdrp-inputs-wrap {
@@ -40,9 +40,9 @@
   border-right-width: 0;
 
   &.focused {
-    box-shadow: 1px 0 0 $input-focus-border-color;
-    position: relative;
-    z-index: 1;
+    & + .end-date-wrap {
+      border-left-color: $input-focus-border-color;
+    }
   }
 }
 
@@ -58,4 +58,12 @@
 .bfe-label:only-child {
   width: 100%;
   padding-left: 0;
+}
+
+:host.error .start-date-wrap + .end-date-wrap {
+  border-left-color: $color-error;
+}
+
+:host.warn .start-date-wrap + .end-date-wrap {
+  border-left-color: $color-warn;
 }

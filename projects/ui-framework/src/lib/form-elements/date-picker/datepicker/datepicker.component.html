@@ -7,26 +7,39 @@
 
 <div class="bfe-wrap has-suffix"
      #inputWrap
-     [ngClass]="{focused: inputFocused[0]}">
+     [ngClass]="{focused: inputFocused[0],
+                'panel-above': panelPosition === panelPos.above,
+                'panel-below': panelPosition === panelPos.below}">
 
-  <input class="bfe-input"
+  <input #input
+         class="bfe-input"
+         [bDateInput]="dateFormats[type]"
+         [date]="value"
+         [min]="minDate || null"
+         [max]="maxDate || null"
+         [setTo]="type === types.month ? dateAdjust.startOfMonth : null"
+         (parsed)="onInputChange($event)"
          [readonly]="!allowKeyInput"
-         maxlength="10"
          autocomplete="off"
          [attr.id]="id"
          [attr.name]="id"
          [type]="inputTypes.text"
          [attr.placeholder]="hideLabelOnFocus && label ? (!required ? label : label + '*') : placeholder"
-         [value]="value"
          [disabled]="disabled"
          [required]="required"
          (click)="openPicker()"
          (focus)="onInputFocus()"
          (blur)="onInputBlur()"
-         (keydown.outside-zone)="onInputKeydown($event)"
-         (input.outside-zone)="onInputChange($event)"
-         (dateChange)="transmit($event.value)"
+         (keydown.outside-zone)="onInputKeydown($event)">
+
+  <input type="text"
+         class="dpi-ghost-input"
+         readonly
+         tabindex="-1"
+         aria-hidden="true"
+         [disabled]="disabled"
          [matDatepicker]="picker"
+         (dateChange)="transmit($event.value)"
          [min]="minDate || null"
          [max]="maxDate || null">
 
