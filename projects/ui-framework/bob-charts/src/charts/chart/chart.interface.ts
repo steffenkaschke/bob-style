@@ -1,8 +1,11 @@
-import {Options} from 'highcharts';
+import {Options, ExportingMimeTypeValue} from 'highcharts';
 import {ChartTypesEnum} from './chart.enum';
 
 export class HighChartOptions implements Options {
 }
+
+export type ChartExportType = ExportingMimeTypeValue;
+
 export type LineChartTypes =
   ChartTypesEnum.Area |
   ChartTypesEnum.Line |

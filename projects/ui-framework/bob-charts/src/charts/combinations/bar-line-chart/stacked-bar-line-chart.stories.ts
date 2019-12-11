@@ -37,8 +37,10 @@ const template = `
     [height]="height"
     [title]="title"
     [pointFormat]="pointFormat"
+    #chart
   >
   </b-bar-line-chart>
+  <button (click)="chart.exportChart(downloadChart)">download</button>
 </div>
 `;
 
@@ -82,6 +84,15 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        downloadChart: select(
+          'downloadChart',
+          [
+            'application/pdf',
+            'image/jpeg',
+            'image/png',
+            'image/svg+xml'
+          ],
+          'image/jpeg'),
         showDataLabels: boolean('showDataLabels', false),
         legend: boolean('legend', true),
         legendPosition: select(
