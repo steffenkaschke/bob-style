@@ -12,10 +12,6 @@
     .bfe-wrap {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-
-      &.focused {
-        border-color: $grey-500;
-      }
     }
   }
 }

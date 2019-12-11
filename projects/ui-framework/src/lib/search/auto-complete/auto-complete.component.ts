@@ -9,6 +9,8 @@ import {
   TemplateRef,
   ViewChild,
   ViewContainerRef,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { escapeRegExp, filter, invoke, has } from 'lodash';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
@@ -29,6 +31,7 @@ import { OverlayPositionClasses } from '../../types';
   selector: 'b-auto-complete',
   templateUrl: './auto-complete.component.html',
   styleUrls: ['./auto-complete.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AutoCompleteComponent implements OnChanges, OnDestroy {
   @ViewChild(CdkOverlayOrigin, { static: true })
@@ -63,7 +66,8 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   constructor(
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService
+    private panelPositionService: PanelPositionService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -153,6 +157,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
     invoke(this.backdropClickSubscriber, 'unsubscribe');
     this.panelConfig = {};
     this.templatePortal = null;
+    this.cd.detectChanges();
   }
 
   private getConfig(): OverlayConfig {
