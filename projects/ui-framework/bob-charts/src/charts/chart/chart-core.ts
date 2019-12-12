@@ -35,7 +35,6 @@ export abstract class ChartCore implements AfterViewInit  {
     };
   })(this);
 
-
   @Input() legendPosition: ChartLegendPositionEnum = ChartLegendPositionEnum.BOTTOM;
   @Input() preTooltipValue = '';
   @Input() postTooltipValue = '';
@@ -56,6 +55,13 @@ export abstract class ChartCore implements AfterViewInit  {
   @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
   @Input() extraOptions: Options = {};
   @Output() legendChanged = new EventEmitter();
+  @Input() tooltipTemplate = <ChartTooltipTemplateFormatter>
+  (component: ChartCore, chartPoint: ChartFormatterThis) => `<div class="chart-tooltip">
+      <div class="value" style="color:${chartPoint.color};">
+          ${component.formatValue(chartPoint.y)}
+      </div>
+      <div class="key">${chartPoint.key}</div>
+    </div>`
   @Input() tooltipValueFormatter = (val: number): number | string => val;
 
   constructor(
@@ -64,12 +70,11 @@ export abstract class ChartCore implements AfterViewInit  {
   ) {}
 
   tooltipFormatter(chartThis: ChartFormatterThis, component: ChartCore) {
-    return `<div class="chart-tooltip">
-      <div class="value" style="color:${chartThis.color};">
-          ${component.preTooltipValue}${component.tooltipValueFormatter(chartThis.y)}${component.postTooltipValue}
-      </div>
-      <div class="key">${chartThis.key}</div>
-    </div>`;
+    return this.tooltipTemplate(component, chartThis);
+  }
+
+  formatValue(value: number): string {
+    return `${this.preTooltipValue}${this.tooltipValueFormatter(value)}${this.postTooltipValue}`;
   }
 
   exportChart(type: ExportingMimeTypeValue) {
