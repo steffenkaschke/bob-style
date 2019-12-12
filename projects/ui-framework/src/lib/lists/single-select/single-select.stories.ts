@@ -36,6 +36,7 @@ const template = `
                  [placeholder]="placeholder"
                  [description]="description"
                  [showSingleGroupHeader]="showSingleGroupHeader"
+                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                  [disabled]="disabled"
                  [required]="required"
                  [errorMessage]="errorMessage"
@@ -67,6 +68,7 @@ const note = `
   --- | --- | --- | ---
   [options] | SelectGroupOption[] | model of selection group | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | false
+  [startWithGroupsCollapsed] | boolean | if should start with groups closed | true
   [showNoneOption] | boolean | displays the no-selection option | true
   [listActions] | ListFooterActions / string | enable/disable footer action buttons\
    (clear, apply, reset). If you provide a string, \
@@ -95,9 +97,6 @@ options[0].options[3].disabled = true;
 const toAdd = () => ({
   template: storyTemplate,
   props: {
-    selectChange: action('Single select change'),
-    selectValueChange: action('Value (Selected IDs)'),
-
     value: select(
       'value',
       [
@@ -107,6 +106,13 @@ const toAdd = () => ({
         options[0].options[2].id,
       ],
       options[0].options[2].id,
+      'Props'
+    ),
+
+    showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+    startWithGroupsCollapsed: boolean(
+      'startWithGroupsCollapsed',
+      true,
       'Props'
     ),
 
@@ -121,8 +127,11 @@ const toAdd = () => ({
       'Props'
     ),
     errorMessage: text('errorMessage', '', 'Props'),
-    showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+
     options: object<SelectGroupOption>('options', options, 'Options'),
+
+    selectChange: action('Single select change'),
+    selectValueChange: action('Value (Selected IDs)'),
   },
   moduleMetadata: {
     imports: [

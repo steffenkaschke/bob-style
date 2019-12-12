@@ -46,7 +46,7 @@ $chipTypeMap: (
     border-radius: (
       (map-get($avatarSizes, mini) + 2px) / 2,
     ),
-    padding: 0 12px 0 10px,
+    padding: 0 16px 0 10px,
   ),
   icon: (
     background-color: white,
@@ -56,7 +56,14 @@ $chipTypeMap: (
     border-radius: (
       (map-get($avatarSizes, mini) + 2px) / 2,
     ),
-    padding: 0 12px 0 10px,
+    padding: 0 16px,
+  ),
+  tab: (
+    color: $grey-800,
+    border: 0,
+    height: 32px,
+    border-radius: 16px,
+    padding: 0 16px,
   ),
 );
 
@@ -142,12 +149,13 @@ $chipStateMap: (
   cursor: pointer;
 }
 
-// additional styles for Avatar & Icon Chip
+// additional styles for Avatar, Icon & Tab chips
 
+:host[data-type='tab']::ng-deep,
 :host[data-type='icon']::ng-deep,
 :host[data-type='avatar']::ng-deep {
   .remove-button {
-    margin-right: -3px;
+    margin-right: -5px;
     margin-left: 6px;
   }
 }
@@ -163,7 +171,7 @@ $chipStateMap: (
   }
 }
 
-:host[data-disabled='true'][data-type='avatar']::ng-deep {
+:host[data-type='avatar'][data-disabled='true']::ng-deep {
   b-avatar {
     .avatar {
       filter: grayscale(1);
@@ -172,8 +180,10 @@ $chipStateMap: (
   }
 }
 
+:host[data-type='tab']:before,
 :host[data-type='icon']:before {
-  margin-right: 5px;
+  margin-right: 8px;
+  margin-left: -4px;
 }
 
 :host[data-type='icon'][data-selected='true']:not([data-disabled='true']) {
@@ -182,6 +192,27 @@ $chipStateMap: (
   border-color: $color-option-selected;
 }
 
+:host[data-type='tab'][data-disabled='true']:before,
 :host[data-type='icon'][data-disabled='true']:before {
   opacity: 0.3;
+}
+
+:host[data-type='tab'][data-selected='true']:not([data-disabled='true']) {
+  color: white;
+  background-color: var(--negative-600);
+
+  &:before {
+    color: white;
+  }
+}
+
+:host[data-type='tab'][data-selected='false']:not([data-disabled='true'])[data-clickable='true'] {
+  &:hover,
+  &:focus {
+    background-color: $grey-100;
+  }
+}
+
+:host[data-type='tab']:focus:after {
+  display: none;
 }

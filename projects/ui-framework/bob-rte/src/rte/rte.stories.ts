@@ -42,7 +42,7 @@ const value = `<br><br> <br><br> <span> <br> </span> <div><br></div> <span><br><
 <h1><em>Hooray!</em></h1>
 
 <p><br>
- {{root/firstName}} is {{work/title}} of the month!
+ {{root##%%firstName}} is {{work##%%title}} of the month!
  </p>
 
 <p>More details at: https://longlink.com/gohere/thenthere/onemore/page#hash?query=bigBen</p>

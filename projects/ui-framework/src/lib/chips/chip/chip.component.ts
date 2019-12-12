@@ -32,8 +32,9 @@ export class ChipComponent implements OnChanges {
 
   readonly chipType = ChipType;
   readonly icons = Icons;
-  readonly iconColor = IconColor;
   readonly iconSize = IconSize;
+
+  public removeIconColor: IconColor;
 
   ngOnChanges(changes: SimpleChanges) {
     applyChanges(
@@ -49,10 +50,7 @@ export class ChipComponent implements OnChanges {
     if (changes.type || changes.icon) {
       const chipEl = this.chip.nativeElement as HTMLElement;
 
-      if (
-        this.type === ChipType.icon ||
-        (changes.type && changes.type.previousValue === ChipType.icon)
-      ) {
+      if (this.icon || (changes.icon && changes.icon.previousValue)) {
         chipEl.className = chipEl.className
           .split(' ')
           .filter((c: string) => Boolean(c.trim()) && !c.includes('b-icon'))
@@ -61,9 +59,27 @@ export class ChipComponent implements OnChanges {
           chipEl.removeAttribute('class');
         }
       }
-      if (this.type === ChipType.icon && this.icon) {
-        chipEl.classList.add('b-icon-dark', 'b-icon-large', this.icon);
+      if (
+        this.icon &&
+        (this.type === ChipType.icon || this.type === ChipType.tab)
+      ) {
+        chipEl.classList.add('b-icon-large', this.icon);
       }
+    }
+
+    if (changes.type || changes.removable) {
+      this.removable = this.type !== ChipType.tab ? this.removable : false;
+    }
+
+    if (changes.type || changes.selected) {
+      this.removeIconColor =
+        ((this.type === ChipType.tag ||
+          this.type === ChipType.avatar ||
+          this.type === ChipType.icon) &&
+          !this.selected) ||
+        (this.type === ChipType.icon && this.selected)
+          ? IconColor.normal
+          : IconColor.white;
     }
   }
 

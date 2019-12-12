@@ -143,7 +143,16 @@ export abstract class BaseListElement
       this.updateActionButtonsState();
     }
 
-    this.cd.detectChanges();
+    if (
+      changes.startWithGroupsCollapsed &&
+      typeof this.startWithGroupsCollapsed === 'boolean'
+    ) {
+      this.toggleCollapseAll(this.startWithGroupsCollapsed);
+    }
+
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
   ngOnInit(): void {
@@ -277,9 +286,10 @@ export abstract class BaseListElement
       this.listOptions.length === this.listHeaders.length;
   }
 
-  toggleCollapseAll(): void {
+  toggleCollapseAll(force = null): void {
     if (this.options.length > 1) {
-      this.allGroupsCollapsed = !this.allGroupsCollapsed;
+      this.allGroupsCollapsed =
+        force !== null ? force : !this.allGroupsCollapsed;
       this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
     }
   }

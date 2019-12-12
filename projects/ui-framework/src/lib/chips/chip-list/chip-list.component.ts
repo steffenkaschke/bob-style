@@ -11,6 +11,7 @@ import {
   HostListener,
   ChangeDetectionStrategy,
   NgZone,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Chip, ChipListConfig, ChipKeydownEvent } from '../chips.interface';
 import {
@@ -33,7 +34,7 @@ import { IconSize } from '../../icons/icons.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipListComponent implements OnChanges {
-  constructor(private zone: NgZone) {}
+  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
 
   @ViewChildren('list') public list: QueryList<ChipComponent>;
 
@@ -59,6 +60,10 @@ export class ChipListComponent implements OnChanges {
   @HostBinding('attr.data-align')
   get alignChips() {
     return this.config.align || ChipListAlign.left;
+  }
+  @HostBinding('attr.data-type')
+  get chipsType() {
+    return this.config.type || ChipType.tag;
   }
 
   @HostListener('click.outside-zone', ['$event'])
@@ -97,15 +102,39 @@ export class ChipListComponent implements OnChanges {
       this,
       changes,
       {
-        chips: [],
+        config: {},
+        chipListSelectable: ChipListSelectable.multi,
       },
       ['chips']
     );
 
-    if (hasChanges(changes, ['chips'])) {
+    if (hasChanges(changes, ['chips'], true)) {
       this.chips = arrayOfValuesToArrayOfObjects('text')(
         changes.chips.currentValue
       );
+    }
+
+    if (hasChanges(changes, ['config'], true)) {
+      this.config.selectable =
+        this.config.type === ChipType.tab
+          ? ChipListSelectable.single
+          : this.config.selectable;
+
+      this.config.focusable =
+        this.config.type === ChipType.tab ? true : this.config.focusable;
+
+      this.chipListSelectable =
+        this.config.selectable !== ChipListSelectable.single &&
+        this.config.type !== ChipType.tab
+          ? ChipListSelectable.multi
+          : ChipListSelectable.single;
+    }
+
+    if (
+      hasChanges(changes, ['chipListSelectable'], true) &&
+      this.chipListSelectable !== changes.chipListSelectable.currentValue
+    ) {
+      this.chipListSelectable = changes.chipListSelectable.currentValue;
     }
 
     if (
@@ -116,10 +145,16 @@ export class ChipListComponent implements OnChanges {
     ) {
       this.selectChip(this.chips[this.activeIndex], this.activeIndex);
     }
+
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
   onChipRemove(chip: Chip): void {
-    this.removed.emit(chip);
+    if (this.removed.observers) {
+      this.removed.emit(chip);
+    }
   }
 
   onChipClick(event: MouseEvent, chip: Chip, index: number): void {
@@ -127,11 +162,15 @@ export class ChipListComponent implements OnChanges {
     if (this.config.selectable) {
       this.selectChip(chip, index);
     }
-    this.clicked.emit(chip);
+    if (this.clicked.observers) {
+      this.clicked.emit(chip);
+    }
   }
 
   onChipKeydown(event: KeyboardEvent, chip: Chip, index: number): void {
-    this.keyPressed.emit({ event, chip });
+    if (this.keyPressed.observers) {
+      this.keyPressed.emit({ event, chip });
+    }
 
     if (this.config.focusable) {
       if (isKey(event.key, Keys.arrowleft) || isKey(event.key, Keys.arrowup)) {
@@ -183,7 +222,7 @@ export class ChipListComponent implements OnChanges {
     } else {
       chip.selected = !isSelected;
     }
-    if (chip.selected !== isSelected) {
+    if (chip.selected !== isSelected && this.selected.observers) {
       this.selected.emit(chip);
     }
   }

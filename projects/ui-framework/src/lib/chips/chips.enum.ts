@@ -5,17 +5,18 @@ export enum ChipType {
   error = 'error',
   success = 'success',
   avatar = 'avatar',
-  icon = 'icon'
+  icon = 'icon',
+  tab = 'tab',
 }
 
 export enum ChipListAlign {
   left = 'left',
   right = 'right',
   center = 'center',
-  justify = 'justify'
+  justify = 'justify',
 }
 
 export enum ChipListSelectable {
   multi = 'multi',
-  single = 'single'
+  single = 'single',
 }

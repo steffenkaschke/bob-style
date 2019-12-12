@@ -6,6 +6,7 @@ export class PlaceholdersConverterService {
   constructor() {}
 
   padChar = '\xa0';
+  separator = '##%%';
 
   public fromRte(rteInnerHtml: string): string {
     const elm: HTMLElement = document.createElement('div');
@@ -55,7 +56,7 @@ export class PlaceholdersConverterService {
   }
 
   public getGroupName(placeholders: SelectGroupOption[], id: string): string {
-    const groupId = id.split('/').filter(Boolean)[0];
+    const groupId = id.split(this.separator).filter(Boolean)[0];
     const group = placeholders.find(g => g.key === groupId);
     return group ? group.groupName : null;
   }

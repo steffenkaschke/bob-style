@@ -1,5 +1,7 @@
 import { PlaceholdersConverterService } from '../../../bob-rte/src/rte/placeholders.service';
 
+const separator = '##%%';
+
 describe('PlachholderRteConverterService', () => {
   const options = [
     {
@@ -8,13 +10,13 @@ describe('PlachholderRteConverterService', () => {
       options: [
         {
           value: 'First name',
-          id: 'root/firstName'
+          id: 'root' + separator + 'firstName',
         },
         {
           value: 'Last name',
-          id: 'root/lastName'
-        }
-      ]
+          id: 'root' + separator + 'lastName',
+        },
+      ],
     },
     {
       groupName: 'Work',
@@ -22,45 +24,62 @@ describe('PlachholderRteConverterService', () => {
       options: [
         {
           value: 'Title',
-          id: 'work/title'
+          id: 'work' + separator + 'title',
         },
         {
           value: 'Team',
-          id: 'work/team'
-        }
-      ]
-    }
+          id: 'work' + separator + 'team',
+        },
+      ],
+    },
   ];
 
   const htmlIn =
     // tslint:disable-next-line: max-line-length
-    '<p><strong><em><span style="font-size: 18px;">Hooray!</span></em></strong> {{root/firstName}} is {{work/title}} of the month!</p>';
+    '<p><strong><em><span style="font-size: 18px;">Hooray!</span></em></strong> {{root' +
+    separator +
+    'firstName}} is {{work' +
+    separator +
+    'title}} of the month!</p>';
 
   const htmlOut =
     // tslint:disable-next-line: max-line-length
-    '<div><strong><em><span style="font-size: 18px;">Hooray!</span></em></strong> <span class="fr-deletable" contenteditable="false" data-placeholder-id="root/firstName"><em>{{&nbsp;</em><strong>Basic info</strong><em>&nbsp;-&nbsp;</em>First name<em>&nbsp;}}</em></span> is <span class="fr-deletable" contenteditable="false" data-placeholder-id="work/title"><em>{{&nbsp;</em><strong>Work</strong><em>&nbsp;-&nbsp;</em>Title<em>&nbsp;}}</em></span> of the month!</div>';
+    '<div><strong><em><span style="font-size: 18px;">Hooray!</span></em></strong> <span class="fr-deletable" contenteditable="false" data-placeholder-id="root' +
+    separator +
+    // tslint:disable-next-line: max-line-length
+    'firstName"><em>{{&nbsp;</em><strong>Basic info</strong><em>&nbsp;-&nbsp;</em>First name<em>&nbsp;}}</em></span> is <span class="fr-deletable" contenteditable="false" data-placeholder-id="work' +
+    separator +
+    // tslint:disable-next-line: max-line-length
+    'title"><em>{{&nbsp;</em><strong>Work</strong><em>&nbsp;-&nbsp;</em>Title<em>&nbsp;}}</em></span> of the month!</div>';
 
   const converter = new PlaceholdersConverterService();
 
   describe('getGroupName', () => {
     it('Should return groupName by option Id', () => {
-      expect(converter.getGroupName(options, 'work/team')).toEqual('Work');
+      expect(
+        converter.getGroupName(options, 'work' + separator + 'team')
+      ).toEqual('Work');
     });
   });
 
   describe('getOptionName', () => {
     it('Should return option Value by option Id', () => {
-      expect(converter.getOptionName(options, 'root/lastName')).toEqual(
-        'Last name'
-      );
+      expect(
+        converter.getOptionName(options, 'root' + separator + 'lastName')
+      ).toEqual('Last name');
     });
   });
 
   describe('getPlaceholderHtml', () => {
     it('Should return placeholder html', () => {
-      const converted = converter.getPlaceholderHtml(options, 'work/title');
+      const converted = converter.getPlaceholderHtml(
+        options,
+        'work' + separator + 'title'
+      );
 
-      expect(converted).toContain('data-placeholder-id="work/title">');
+      expect(converted).toContain(
+        'data-placeholder-id="work' + separator + 'title">'
+      );
       expect(converted).toContain(
         '{{&nbsp;</em><strong>Work</strong><em>&nbsp;-&nbsp;</em>Title<em>&nbsp;}}'
       );
@@ -71,15 +90,19 @@ describe('PlachholderRteConverterService', () => {
     it('Should convert {{}} to placeholder html', () => {
       const converted = converter.toRte(htmlIn, options);
 
-      expect(converted).not.toContain('{{root/firstName}}');
-      expect(converted).not.toContain('{{work/title}}');
+      expect(converted).not.toContain('{{root' + separator + 'firstName}}');
+      expect(converted).not.toContain('{{work' + separator + 'title}}');
       expect(converted).toContain(
         // tslint:disable-next-line: max-line-length
-        'data-placeholder-id="root/firstName"><em>{{&nbsp;</em><strong>Basic</strong><em>&nbsp;-&nbsp;</em>First name<em>&nbsp;}}'
+        'data-placeholder-id="root' +
+          separator +
+          'firstName"><em>{{&nbsp;</em><strong>Basic</strong><em>&nbsp;-&nbsp;</em>First name<em>&nbsp;}}'
       );
       expect(converted).toContain(
         // tslint:disable-next-line: max-line-length
-        'data-placeholder-id="work/title"><em>{{&nbsp;</em><strong>Work</strong><em>&nbsp;-&nbsp;</em>Title<em>&nbsp;}}'
+        'data-placeholder-id="work' +
+          separator +
+          'title"><em>{{&nbsp;</em><strong>Work</strong><em>&nbsp;-&nbsp;</em>Title<em>&nbsp;}}'
       );
     });
   });
@@ -88,10 +111,14 @@ describe('PlachholderRteConverterService', () => {
     it('Should convert html with placeholders to html with {{}}', () => {
       const converted = converter.fromRte(htmlOut);
 
-      expect(converted).not.toContain('data-placeholder-id="root/firstName"');
-      expect(converted).not.toContain('data-placeholder-id="work/title"');
-      expect(converted).toContain('{{root/firstName}}');
-      expect(converted).toContain('{{work/title}}');
+      expect(converted).not.toContain(
+        'data-placeholder-id="root' + separator + 'firstName"'
+      );
+      expect(converted).not.toContain(
+        'data-placeholder-id="work' + separator + 'title"'
+      );
+      expect(converted).toContain('{{root' + separator + 'firstName}}');
+      expect(converted).toContain('{{work' + separator + 'title}}');
     });
   });
 });

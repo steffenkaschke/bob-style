@@ -17,7 +17,7 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipListModule } from './chip-list.module';
 import { ChipType, ChipListAlign, ChipListSelectable } from '../chips.enum';
-import { mockAvatar, mockNames } from '../../mock.const';
+import { mockAvatar, mockNames, mockCities } from '../../mock.const';
 import { Icons } from '../../icons/icons.enum';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
@@ -48,6 +48,19 @@ const icons = randomFromArray(
   null
 );
 
+const tabIcons = randomFromArray(
+  [
+    Icons.department_icon,
+    Icons.person,
+    Icons.person_check,
+    Icons.person_add,
+    Icons.person_manager,
+    Icons.person_peer,
+    Icons.person_reports,
+  ],
+  null
+);
+
 const chips = mockNames(10).map((chip, index) => ({
   text: chip,
   id: simpleUID(),
@@ -58,9 +71,14 @@ const chips = mockNames(10).map((chip, index) => ({
 }));
 chips[2].selected = true;
 
+const chipTabs = mockCities(3).map((chip, index) => ({
+  text: chip,
+  id: simpleUID(),
+  icon: tabIcons[index],
+}));
+
 const template = `
   <b-chip-list [chips]="chips"
-               [chipListSelectable]="chipListSelectable"
                [activeIndex]="activeIndex"
                [config]="{
                   type: type,
@@ -72,8 +90,18 @@ const template = `
                 }"
                 (removed)="onChipRemove($event)"
                 (clicked)="onChipClicked($event)"
-                (selected)="inChipSelected($event)"
+                (selected)="onChipSelected($event)"
                 (keyPressed)="onChipKeydown($event)">
+  </b-chip-list>
+`;
+
+const templateTabs = `
+  <b-chip-list [chips]="chipTabs"
+               [activeIndex]="activeIndex"
+               [config]="{
+                  type: chipType.tab
+                }"
+                (selected)="onChipSelected($event)">
   </b-chip-list>
 `;
 
@@ -84,61 +112,87 @@ const note = `
   *ChipListModule*
 
   #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  [chips] | Chip[] / string[] | Array of Chip objects (will also accept an array of strings) | &nbsp;
-  [chipListSelectable] | chipListSelectable (single, multi) | single select (like radio buttons) or multi select | multi
-  [activeIndex] | number | active index initializer | &nbsp;
-  [config] | ChipListConfig | list configuration (options common to all \
-    chips, including: type, removable, selectable, focusable, disabled, align) | &nbsp;
-  (removed) | EventEmitter<wbr>&lt;Chip&gt; | emited on chip removed event | &nbsp;
-  (clicked) | EventEmitter<wbr>&lt;Chip&gt; | emited on chip clicked event | &nbsp;
-  (selected) | EventEmitter<wbr>&lt;Chip&gt; | emited on chip selected event (fired only if chip is selectable) | &nbsp;
-  (keyPressed) | EventEmitter<wbr>&lt;Chip&gt; | emited on chip KeyDown event | &nbsp;
+  Name | Type | Description
+  --- | --- | ---
+  [chips] | Chip[] / string[] | Array of Chip objects (will also accept an array of strings)
+  **[config]** | ChipListConfig | list configuration (options common to all \
+    chips, including: type, removable, selectable, focusable, disabled, align)
+  [activeIndex] | number | index of selected chip (can be used to select chip in single-selectable mode)
+  (removed) | EventEmitter<wbr>&lt;Chip&gt; | emited on chip removed event
+  (clicked) | EventEmitter<wbr>&lt;Chip&gt; | emited on chip clicked event
+  (selected) | EventEmitter<wbr>&lt;Chip&gt; | emited on chip selected event (fired only if chip is selectable)
+  (keyPressed) | EventEmitter<wbr>&lt;{chip: Chip, event: KeyboardEvent}&gt; | emited on chip KeyDown event
 
   ~~~
   ${template}
   ~~~
+
+  <br>
+
+  #### interface ChipListConfig
+  Name | Type | Description
+  --- | --- | ---
+  type | ChipType | chip type (tag, tab, avatar, icon, info, warning, error, success) | tag
+  removable | boolean | if chip has remove (x) button | false
+  selectable | boolean / ChipListSelectable | single (only 1 chip \
+     selected at a time), multi (multiple chips can be selected). setting to true equals <u>multi</u> | false
+  focusable | boolean | if true, focused chip will be indicated via a \
+   slightly darker background color (usefull for keyboard navigation) | false
+  disabled | boolean | disables chip list | false
+  align | ChipListAlign | controls chip alignment (left, right, center, justify) | left
+
+  <br>
+
+  #### Tabs view example
+  ~~~
+  ${templateTabs}
+  ~~~
+
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Chip List'">
+<div>
   <div style="max-width:500px;">
-    ${template}
-    <br>
-    <p>
+
+  ${template}
+    <p style="margin: 20px 0 0 0">
       * Set chip type to Avatar (in Knobs panel) to see Avatar Chip List
     </p>
   </div>
 
+  <hr style="margin: 60px 0 50px 0; border: 0; height: 0; border-top: 2px dashed #d2d2d2;">
+
+
+  <h4>Tabs view: </h4>
+  ${templateTabs}
+
+</div>
 </b-story-book-layout>
 `;
-
-const typeOptions = Object.values(ChipType);
-const alignOptions = Object.values(ChipListAlign);
-const chipListSelectable = Object.values(ChipListSelectable);
 
 story.add(
   'Chip List',
   () => ({
     template: storyTemplate,
     props: {
-      type: select('type', typeOptions, ChipType.tag),
-      align: select('align', alignOptions, ChipListAlign.left),
+      chipTabs: chipTabs,
+      chipType: ChipType,
+      type: select('type', Object.values(ChipType), ChipType.tag),
+      align: select('align', Object.values(ChipListAlign), ChipListAlign.left),
       removable: boolean('removable', true),
-      selectable: boolean('selectable', true),
       focusable: boolean('focusable', true),
       disabled: boolean('disabled', false),
-      chipListSelectable: select(
-        'chipListSelectable',
-        chipListSelectable,
+      selectable: select(
+        'selectable',
+        Object.values(ChipListSelectable),
         ChipListSelectable.multi
       ),
       activeIndex: number('activeIndex', 0),
       chips: object('chips', chips),
       onChipRemove: action('Chip removed'),
       onChipClicked: action('Chip clicked'),
-      inChipSelected: action('Chip selected'),
+      onChipSelected: action('Chip selected'),
       onChipKeydown: action('Chip key pressed'),
     },
     moduleMetadata: {

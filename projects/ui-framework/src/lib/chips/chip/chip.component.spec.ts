@@ -16,7 +16,7 @@ describe('ChipComponent', () => {
       declarations: [ChipComponent],
       imports: [],
       providers: [ColorService],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
@@ -64,7 +64,8 @@ describe('ChipComponent', () => {
     it('should emit Removed event, when remove button is clicked', () => {
       component.removable = true;
       fixture.detectChanges();
-      const removeButton = fixture.debugElement.query(By.css('.remove-button')).nativeElement;
+      const removeButton = fixture.debugElement.query(By.css('.remove-button'))
+        .nativeElement;
       removeButton.click();
       expect(component.removed.emit).toHaveBeenCalled();
     });
