@@ -126,6 +126,9 @@ export abstract class RTEbaseElement extends BaseFormElement
     ) {
       this.editorValue = cloneValue(this.baseValue);
     }
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
   public ngOnChanges(changes: SimpleChanges): void {

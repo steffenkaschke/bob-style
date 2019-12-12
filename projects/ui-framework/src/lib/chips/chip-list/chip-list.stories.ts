@@ -17,7 +17,7 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChipListModule } from './chip-list.module';
 import { ChipType, ChipListAlign, ChipListSelectable } from '../chips.enum';
-import { mockAvatar, mockNames } from '../../mock.const';
+import { mockAvatar, mockNames, mockCities } from '../../mock.const';
 import { Icons } from '../../icons/icons.enum';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
@@ -48,6 +48,19 @@ const icons = randomFromArray(
   null
 );
 
+const tabIcons = randomFromArray(
+  [
+    Icons.department_icon,
+    Icons.person,
+    Icons.person_check,
+    Icons.person_add,
+    Icons.person_manager,
+    Icons.person_peer,
+    Icons.person_reports,
+  ],
+  null
+);
+
 const chips = mockNames(10).map((chip, index) => ({
   text: chip,
   id: simpleUID(),
@@ -57,6 +70,12 @@ const chips = mockNames(10).map((chip, index) => ({
   icon: icons[index],
 }));
 chips[2].selected = true;
+
+const chipTabs = mockCities(3).map((chip, index) => ({
+  text: chip,
+  id: simpleUID(),
+  icon: tabIcons[index],
+}));
 
 const template = `
   <b-chip-list [chips]="chips"
@@ -71,8 +90,18 @@ const template = `
                 }"
                 (removed)="onChipRemove($event)"
                 (clicked)="onChipClicked($event)"
-                (selected)="inChipSelected($event)"
+                (selected)="onChipSelected($event)"
                 (keyPressed)="onChipKeydown($event)">
+  </b-chip-list>
+`;
+
+const templateTabs = `
+  <b-chip-list [chips]="chipTabs"
+               [activeIndex]="activeIndex"
+               [config]="{
+                  type: chipType.tab
+                }"
+                (selected)="onChipSelected($event)">
   </b-chip-list>
 `;
 
@@ -98,6 +127,7 @@ const note = `
   ${template}
   ~~~
 
+  <br>
 
   #### interface ChipListConfig
   Name | Type | Description
@@ -111,45 +141,58 @@ const note = `
   disabled | boolean | disables chip list | false
   align | ChipListAlign | controls chip alignment (left, right, center, justify) | left
 
+  <br>
+
+  #### Tabs view example
+  ~~~
+  ${templateTabs}
+  ~~~
+
 `;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Chip List'">
+<div>
   <div style="max-width:500px;">
-    ${template}
-    <br>
-    <p>
+
+  ${template}
+    <p style="margin: 20px 0 0 0">
       * Set chip type to Avatar (in Knobs panel) to see Avatar Chip List
     </p>
   </div>
 
+  <hr style="margin: 60px 0 50px 0; border: 0; height: 0; border-top: 2px dashed #d2d2d2;">
+
+
+  <h4>Tabs view: </h4>
+  ${templateTabs}
+
+</div>
 </b-story-book-layout>
 `;
-
-const typeOptions = Object.values(ChipType);
-const alignOptions = Object.values(ChipListAlign);
-const chipListSelectable = Object.values(ChipListSelectable);
 
 story.add(
   'Chip List',
   () => ({
     template: storyTemplate,
     props: {
-      type: select('type', typeOptions, ChipType.tag),
-      align: select('align', alignOptions, ChipListAlign.left),
+      chipTabs: chipTabs,
+      chipType: ChipType,
+      type: select('type', Object.values(ChipType), ChipType.tag),
+      align: select('align', Object.values(ChipListAlign), ChipListAlign.left),
       removable: boolean('removable', true),
       focusable: boolean('focusable', true),
       disabled: boolean('disabled', false),
       selectable: select(
         'selectable',
-        chipListSelectable,
+        Object.values(ChipListSelectable),
         ChipListSelectable.multi
       ),
       activeIndex: number('activeIndex', 0),
       chips: object('chips', chips),
       onChipRemove: action('Chip removed'),
       onChipClicked: action('Chip clicked'),
-      inChipSelected: action('Chip selected'),
+      onChipSelected: action('Chip selected'),
       onChipKeydown: action('Chip key pressed'),
     },
     moduleMetadata: {

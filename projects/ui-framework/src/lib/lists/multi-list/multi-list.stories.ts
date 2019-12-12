@@ -12,7 +12,6 @@ import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { optionsMock, optionsMockDef } from './multi-list.mock';
 import { cloneDeep } from 'lodash';
-import { ListChange } from '../list-change/list-change';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs

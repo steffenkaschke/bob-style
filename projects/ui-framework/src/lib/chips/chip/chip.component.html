@@ -8,11 +8,7 @@
  <b-icon *ngIf="removable && !disabled"
          class="remove-button"
          [icon]="icons.reset_x"
-         [color]="
-          ((type === chipType.tag || type === chipType.avatar || type === chipType.icon) && !selected)
-          || (type === chipType.icon && selected)
-          ? iconColor.normal
-          : iconColor.white"
+         [color]="removeIconColor"
          [hasHoverState]="true"
          [size]="iconSize.small"
          (click)="onRemoveClick($event)">
