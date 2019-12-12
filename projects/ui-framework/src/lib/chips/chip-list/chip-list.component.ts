@@ -131,6 +131,13 @@ export class ChipListComponent implements OnChanges {
     }
 
     if (
+      hasChanges(changes, ['chipListSelectable'], true) &&
+      this.chipListSelectable !== changes.chipListSelectable.currentValue
+    ) {
+      this.chipListSelectable = changes.chipListSelectable.currentValue;
+    }
+
+    if (
       changes.activeIndex &&
       isNumber(this.activeIndex) &&
       this.chipListSelectable === ChipListSelectable.single &&
