@@ -29,7 +29,14 @@ import { BaseFormElement } from '../form-elements/base-form-element';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
 import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
 import { isEqual } from 'lodash';
-import { distinctUntilChanged, filter } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  filter,
+  throttleTime,
+  pairwise,
+  map,
+  take,
+} from 'rxjs/operators';
 import { OverlayPositionClasses } from '../types';
 import { UtilsService } from '../services/utils/utils.service';
 import { outsideZone } from '../services/utils/rxjs.operators';
@@ -38,7 +45,6 @@ import {
   hasChanges,
   applyChanges,
   notFirstChanges,
-  isArray,
   isNotEmptyArray,
 } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
@@ -49,6 +55,7 @@ import { LIST_EL_HEIGHT } from './list.consts';
 import { ListChangeService } from './list-change/list-change.service';
 import { selectValueOrFail } from '../services/utils/transformers';
 import { ListModelService } from './list-service/list-model.service';
+import { ScrollEvent } from '../services/utils/utils.interface';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements OnChanges, AfterViewInit, OnDestroy {
@@ -210,7 +217,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
       this.subscribtions.push(
         this.overlayRef.backdropClick().subscribe(() => {
-          this.onCancel();
+          this.destroyPanel();
         })
       );
 
@@ -222,7 +229,29 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
             filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
           )
           .subscribe(() => {
-            this.onCancel();
+            this.destroyPanel();
+          })
+      );
+
+      this.subscribtions.push(
+        this.utilsService
+          .getScrollEvent()
+          .pipe(
+            outsideZone(this.zone),
+            throttleTime(500, undefined, {
+              leading: true,
+              trailing: true,
+            }),
+            map((e: ScrollEvent) => e.scrollY),
+            pairwise(),
+            filter(
+              (scrollArr: number[]) =>
+                Math.abs(scrollArr[0] - scrollArr.slice(-1)[0]) > 200
+            ),
+            take(1)
+          )
+          .subscribe(() => {
+            this.destroyPanel();
           })
       );
     }
@@ -291,7 +320,13 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   ): void {
     this.subscribtions.push(
       positionStrategy.positionChanges
-        .pipe(distinctUntilChanged(isEqual))
+        .pipe(
+          throttleTime(200, undefined, {
+            leading: true,
+            trailing: true,
+          }),
+          distinctUntilChanged(isEqual)
+        )
         .subscribe(change => {
           this.positionClassList = this.panelPositionService.getPositionClassList(
             change

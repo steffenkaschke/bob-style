@@ -9,8 +9,9 @@ import {
   TemplateRef,
   ViewChild,
   ViewContainerRef,
+  NgZone,
 } from '@angular/core';
-import { escapeRegExp, filter, invoke, has } from 'lodash';
+import { escapeRegExp, invoke, has } from 'lodash';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Subscription } from 'rxjs';
@@ -24,6 +25,10 @@ import {
 import { AutoCompleteOption } from './auto-complete.interface';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
 import { OverlayPositionClasses } from '../../types';
+import { UtilsService } from '../../services/utils/utils.service';
+import { outsideZone } from '../../services/utils/rxjs.operators';
+import { throttleTime, map, pairwise, take, filter } from 'rxjs/operators';
+import { ScrollEvent } from '../../services/utils/utils.interface';
 
 @Component({
   selector: 'b-auto-complete',
@@ -57,13 +62,15 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   private panelConfig: OverlayConfig;
   private overlayRef: OverlayRef;
   private templatePortal: TemplatePortal;
-  private positionChangeSubscriber: Subscription;
-  private backdropClickSubscriber: Subscription;
+
+  private subscribtions: Subscription[] = [];
 
   constructor(
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService
+    private panelPositionService: PanelPositionService,
+    private utilsService: UtilsService,
+    private zone: NgZone
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -76,9 +83,9 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   onSearchChange(searchVal: string): void {
     this.searchValue = searchVal;
     if (this.searchValue.length > 0) {
-      this.invokePanelOpen();
+      this.openPanel();
     } else {
-      this.invokePanelDestroy();
+      this.destroyPanel();
     }
     this.updateFilteredList();
     this.searchChange.emit(this.searchValue);
@@ -86,7 +93,7 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
 
   onSearchFocus(): void {
     if (this.displayOptionsOnFocus) {
-      this.invokePanelOpen();
+      this.openPanel();
       this.updateFilteredList();
     }
   }
@@ -94,65 +101,83 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   onOptionSelect(option: AutoCompleteOption): void {
     this.searchValue = option.value;
     this.optionSelect.emit(option);
-    this.invokePanelDestroy();
+    this.destroyPanel();
   }
 
   onEscape(): void {
-    this.invokePanelDestroy();
+    this.destroyPanel();
   }
 
   ngOnDestroy(): void {
-    this.invokePanelDestroy();
+    this.destroyPanel();
   }
 
   private updateFilteredList(): void {
     this.filteredOptions = this.getFilteredOptions();
     if (this.filteredOptions.length === 0) {
-      this.invokePanelDestroy();
-    }
-  }
-
-  private invokePanelOpen(): void {
-    if (!this.panelOpen && this.options.length > 0) {
-      this.openPanel();
-    }
-  }
-
-  private invokePanelDestroy(): void {
-    if (this.panelOpen) {
       this.destroyPanel();
     }
   }
 
   private openPanel(): void {
-    this.panelOpen = true;
-    this.panelConfig = this.getConfig();
-    this.overlayRef = this.overlay.create(this.panelConfig);
-    this.templatePortal = new TemplatePortal(
-      this.templateRef,
-      this.viewContainerRef
-    );
-    this.overlayRef.attach(this.templatePortal);
+    if (!this.panelOpen && this.options.length > 0) {
+      this.panelOpen = true;
+      this.panelConfig = this.getConfig();
+      this.overlayRef = this.overlay.create(this.panelConfig);
+      this.templatePortal = new TemplatePortal(
+        this.templateRef,
+        this.viewContainerRef
+      );
+      this.overlayRef.attach(this.templatePortal);
 
-    this.overlayRef.updatePosition();
-    this.overlayRef.updateSize({
-      width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
-    });
-
-    this.backdropClickSubscriber = this.overlayRef
-      .backdropClick()
-      .subscribe(() => {
-        this.destroyPanel();
+      this.overlayRef.updatePosition();
+      this.overlayRef.updateSize({
+        width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
       });
+
+      this.subscribtions.push(
+        this.overlayRef.backdropClick().subscribe(() => {
+          this.destroyPanel();
+        })
+      );
+
+      this.subscribtions.push(
+        this.utilsService
+          .getScrollEvent()
+          .pipe(
+            outsideZone(this.zone),
+            throttleTime(500, undefined, {
+              leading: true,
+              trailing: true,
+            }),
+            map((e: ScrollEvent) => e.scrollY),
+            pairwise(),
+            filter(
+              (scrollArr: number[]) =>
+                Math.abs(scrollArr[0] - scrollArr.slice(-1)[0]) > 200
+            ),
+            take(1)
+          )
+          .subscribe(() => {
+            this.destroyPanel();
+          })
+      );
+    }
   }
 
   private destroyPanel(): void {
-    this.panelOpen = false;
-    invoke(this.overlayRef, 'dispose');
-    invoke(this.positionChangeSubscriber, 'unsubscribe');
-    invoke(this.backdropClickSubscriber, 'unsubscribe');
-    this.panelConfig = {};
-    this.templatePortal = null;
+    if (this.panelOpen) {
+      this.panelOpen = false;
+      invoke(this.overlayRef, 'dispose');
+      this.panelConfig = {};
+      this.templatePortal = null;
+
+      this.subscribtions.forEach(sub => {
+        sub.unsubscribe();
+        sub = null;
+      });
+      this.subscribtions = [];
+    }
   }
 
   private getConfig(): OverlayConfig {
@@ -175,19 +200,19 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   private subscribeToPositions(
     positionStrategy: FlexibleConnectedPositionStrategy
   ): void {
-    this.positionChangeSubscriber = positionStrategy.positionChanges.subscribe(
-      change => {
+    this.subscribtions.push(
+      positionStrategy.positionChanges.subscribe(change => {
         this.positionClassList = this.panelPositionService.getPositionClassList(
           change
         ) as OverlayPositionClasses;
-      }
+      })
     );
   }
 
   private getFilteredOptions(): AutoCompleteOption[] {
     const matcher = new RegExp(escapeRegExp(this.searchValue), 'i');
-    return filter(
-      this.options,
+
+    return this.options.filter(
       option =>
         option.value.match(matcher) ||
         (option.subText && option.subText.match(matcher))
