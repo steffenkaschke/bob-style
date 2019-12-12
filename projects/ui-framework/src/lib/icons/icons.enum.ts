@@ -131,6 +131,7 @@ export enum Icons {
   drag_alt = 'b-icon-drag-alt',
   sort_asc = 'b-icon-sort-asc',
   sort_desc = 'b-icon-sort-desc',
+  person_reports = 'b-icon-person-reports',
+  person_manager = 'b-icon-person-manager',
   person_peer = 'b-icon-person-peer',
-  person_sub = 'b-icon-person-sub',
 }

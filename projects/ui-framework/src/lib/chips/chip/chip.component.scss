@@ -62,9 +62,9 @@ $chipTypeMap: (
 
 $chipStateMap: (
   selected: (
-    background-color: $primary-600,
+    background-color: var(--primary-600),
     color: white,
-    border-color: $primary-600,
+    border-color: var(--primary-600),
   ),
   disabled: (
     background-color: $grey-200,

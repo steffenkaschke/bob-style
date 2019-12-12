@@ -97,15 +97,23 @@ export class ChipListComponent implements OnChanges {
       this,
       changes,
       {
-        chips: [],
+        config: {},
+        chipListSelectable: ChipListSelectable.multi,
       },
       ['chips']
     );
 
-    if (hasChanges(changes, ['chips'])) {
+    if (hasChanges(changes, ['chips'], true)) {
       this.chips = arrayOfValuesToArrayOfObjects('text')(
         changes.chips.currentValue
       );
+    }
+
+    if (hasChanges(changes, ['config'], true)) {
+      this.chipListSelectable =
+        this.config.selectable === ChipListSelectable.single
+          ? ChipListSelectable.single
+          : ChipListSelectable.multi;
     }
 
     if (
@@ -119,7 +127,9 @@ export class ChipListComponent implements OnChanges {
   }
 
   onChipRemove(chip: Chip): void {
-    this.removed.emit(chip);
+    if (this.removed.observers) {
+      this.removed.emit(chip);
+    }
   }
 
   onChipClick(event: MouseEvent, chip: Chip, index: number): void {
@@ -127,11 +137,15 @@ export class ChipListComponent implements OnChanges {
     if (this.config.selectable) {
       this.selectChip(chip, index);
     }
-    this.clicked.emit(chip);
+    if (this.clicked.observers) {
+      this.clicked.emit(chip);
+    }
   }
 
   onChipKeydown(event: KeyboardEvent, chip: Chip, index: number): void {
-    this.keyPressed.emit({ event, chip });
+    if (this.keyPressed.observers) {
+      this.keyPressed.emit({ event, chip });
+    }
 
     if (this.config.focusable) {
       if (isKey(event.key, Keys.arrowleft) || isKey(event.key, Keys.arrowup)) {
@@ -183,7 +197,7 @@ export class ChipListComponent implements OnChanges {
     } else {
       chip.selected = !isSelected;
     }
-    if (chip.selected !== isSelected) {
+    if (chip.selected !== isSelected && this.selected.observers) {
       this.selected.emit(chip);
     }
   }
