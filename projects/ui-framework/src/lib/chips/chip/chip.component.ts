@@ -67,8 +67,8 @@ export class ChipComponent implements OnChanges {
       }
     }
 
-    if (changes.type) {
-      this.removable = this.removable && this.type !== ChipType.tab;
+    if (changes.type || changes.removable) {
+      this.removable = this.type !== ChipType.tab ? this.removable : false;
     }
 
     if (changes.type || changes.selected) {

@@ -46,14 +46,16 @@ $chipTypeMap: (
     border-radius: (
       (map-get($avatarSizes, mini) + 2px) / 2,
     ),
-    padding: 0 12px 0 10px,
+    padding: 0 16px 0 10px,
   ),
   icon: (
     background-color: white,
     color: $grey-800,
     border-color: $grey-300,
-    height: 32px,
-    border-radius: 16px,
+    height: map-get($avatarSizes, mini) + 2px,
+    border-radius: (
+      (map-get($avatarSizes, mini) + 2px) / 2,
+    ),
     padding: 0 16px,
   ),
   tab: (
@@ -153,7 +155,7 @@ $chipStateMap: (
 :host[data-type='icon']::ng-deep,
 :host[data-type='avatar']::ng-deep {
   .remove-button {
-    margin-right: -3px;
+    margin-right: -5px;
     margin-left: 6px;
   }
 }
