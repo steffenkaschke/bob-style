@@ -1,10 +1,9 @@
 import {Options, ExportingMimeTypeValue} from 'highcharts';
 import {ChartTypesEnum} from './chart.enum';
+import {ChartCore} from './chart-core';
 
 export class HighChartOptions implements Options {
 }
-
-export type ChartExportType = ExportingMimeTypeValue;
 
 export type LineChartTypes =
   ChartTypesEnum.Area |
@@ -18,6 +17,11 @@ export interface ChartFormatterThis {
   key: number | string;
   x?: number;
 }
+
+export type ChartTooltipTemplateFormatter = (component: ChartCore, chartThis: ChartFormatterThis) => string;
+
+export type ChartExportType = ExportingMimeTypeValue;
+
 
 export enum ChartLegendPositionEnum {
   TOP = 'top',
