@@ -12,20 +12,31 @@ import { ChartsModule } from '../charts.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../../../src/lib/story-book-layout/story-book-layout.module';
 import { LINE_CHART_DATA_MOCK } from '../chart.mock';
+import { ChartLegendPositionEnum } from '../chart/chart.interface';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
 );
+
+const tooltipTemplate = '<div class="chart-tooltip">\n' +
+    '\t<div class="value" style="color:${chartPoint.color};">\n' +
+        '\t\t${component.formatValue(chartPoint.y)}\n' +
+    '\t</div>\n' +
+    '\t<div class="key">${chartPoint.key}</div>\n' +
+  '</div>';
+
 const template = `
 <div>
   <small>Demo of all binding options</small>
   <b-pie-chart
     [data]="data"
+    [tooltipTemplate]="tooltipTemplate"
     [preTooltipValue]="preTooltipValue"
     [postTooltipValue]="postTooltipValue"
     [donut]="donut"
     [showDataLabels]="showDataLabels"
     [legend]="legend"
+    [legendPosition]="legendPosition"
     [colorPalette]="colorPalette"
     [name]="name"
     [height]="height"
@@ -45,10 +56,47 @@ const storyTemplate = `
     ${template}
 </b-story-book-layout>
 `;
-
+// tslint:disable:max-line-length
 const note = `
-  ## Single Chart
 
+  ## Applies to all types of charts
+
+  ### Tooltips
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  preTooltipValue | string | presented before tooltip value | ''
+  postTooltipValue | string | presented after tooltip value | ''
+  tooltipTemplate | function (component, point) | returns html string for tooltip | * See default tooltip template down
+  pointFormat (optional) | string | tooltip formatter | {series.name}: <b>{point.percentage:.1f}%</b>
+
+  #### Tooltip default template
+
+  ~~~
+  ${tooltipTemplate}
+  ~~~
+
+
+  ### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  *name | string | name of series | &nbsp;
+  *data | | series data array for chart | &nbsp;
+  showDataLabels (optional) | boolean | shows label in pie | false
+  legend (optional) | boolean | shows legend | false
+  colorPalette (optional) | string[] | color palette array | default array of colors
+  height (optional) | number | height of chart | 500
+  title (optional) | string | title of chart | &nbsp;
+  legendPosition (optional) | ChartLegendPositionEnum | where the legend should be set relative to the chart | ChartLegendPositionEnum.BOTTOM
+
+
+  ### Methods
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  formatValue | (number) => string) | apply value formatter and adds pre, post tooltip values | &nbsp;
+  valueFormatter | (number) => string) | format of value number i.e make 30000 30,000 or 30k | val => 'val';
+  exportChart | (type: ChartExportType) => void | download chart image by type (svg, pdf, jpeg, png mime types. i.e 'application/pdf' or 'image/svg+xml') | jpeg
+
+  ## Pie chart only
   #### Module
   *ChartModule*
   from <u>'bob-style/bob-charts'</u>
@@ -57,32 +105,29 @@ const note = `
   import { ChartModule } from 'bob-style/bob-charts';
   \`\`\`
 
+
   ~~~
   ${template}
   ~~~
 
-  #### Properties
+  #### Pie Chart Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
-  *name | string | name of series | &nbsp;
-  *data | | series data array for chart | &nbsp;
   donut (optional) | boolean | make pie chart donut chart | false
-  showDataLabels (optional) | boolean | shows label in pie | false
-  legend (optional) | boolean | shows legend | false
-  colorPalette (optional) | string[] | color palette array | default array of colors
-  height (optional) | number | height of chart | 500
   donutInnerSize (optional) | number | defining the inner white circle in a donut pie chart | 60
-  donutWidth (optional) | number | overrides donutInnerSize by applying width of donut instead inner circle width |
-  title (optional) | string | title of chart | &nbsp;
-  pointFormat (optional) | string | tooltip formatter | {series.name}: <b>{point.percentage:.1f}%</b>
+  donutWidth (optional) | number | overrides donutInnerSize by applying width of donut instead inner circle width | null
 `;
-
+// tslint:enable:max-line-length
 story.add(
   'Pie chart',
   () => {
     return {
       template: storyTemplate,
       props: {
+        tooltipTemplate: (component, point) => {
+          console.log('point: ', point);
+          return `<b>${point.key}</b> - ${component.formatValue(point.y)}`;
+        },
         downloadChart: select(
           'downloadChart',
           [
@@ -95,6 +140,11 @@ story.add(
         showDataLabels: boolean('showDataLabels', false),
         donut: boolean('donut', false),
         legend: boolean('legend', true),
+        legendPosition: select(
+          'legendPosition',
+          Object.values(ChartLegendPositionEnum),
+          ChartLegendPositionEnum.BOTTOM
+        ),
         name: text('name', 'employees'),
         preTooltipValue: text('preTooltipValue', ''),
         postTooltipValue: text('postTooltipValue', ' PEOPLE'),
