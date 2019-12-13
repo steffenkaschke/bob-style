@@ -20,15 +20,16 @@ import {
   OverlayConfig,
   OverlayRef,
   ConnectedPosition,
+  ConnectedOverlayPositionChange,
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import invoke from 'lodash/invoke';
-import { Subscription } from 'rxjs';
+import { Subscription, merge } from 'rxjs';
 import { PanelPositionService } from '../popups/panel/panel-position-service/panel-position.service';
 import { BaseFormElement } from '../form-elements/base-form-element';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
 import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
-import { isEqual } from 'lodash';
+import invoke from 'lodash/invoke';
+import isEqual from 'lodash/isEqual';
 import {
   distinctUntilChanged,
   filter,
@@ -192,7 +193,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   openPanel(): void {
     if (!this.overlayRef && !this.disabled) {
       this.panelOpen = true;
-      this.panelConfig = this.getDefaultConfig();
+      this.panelConfig = this.getConfig();
       this.overlayRef = this.overlay.create(this.panelConfig);
       this.templatePortal = new TemplatePortal(
         this.templateRef,
@@ -216,29 +217,38 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       this.opened.emit(this.overlayRef);
 
       this.subscribtions.push(
-        this.overlayRef.backdropClick().subscribe(() => {
-          this.destroyPanel();
-        })
-      );
-
-      this.subscribtions.push(
-        this.utilsService
-          .getWindowKeydownEvent()
+        (this.panelConfig
+          .positionStrategy as FlexibleConnectedPositionStrategy).positionChanges
           .pipe(
             outsideZone(this.zone),
-            filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
+            throttleTime(200, undefined, {
+              leading: true,
+              trailing: true,
+            }),
+            distinctUntilChanged(isEqual)
           )
-          .subscribe(() => {
-            this.destroyPanel();
+          .subscribe((change: ConnectedOverlayPositionChange) => {
+            this.positionClassList = this.panelPositionService.getPositionClassList(
+              change
+            );
+
+            if (!this.cd['destroyed']) {
+              this.cd.detectChanges();
+            }
           })
       );
 
       this.subscribtions.push(
-        this.utilsService
-          .getScrollEvent()
-          .pipe(
+        merge(
+          this.overlayRef.backdropClick().pipe(outsideZone(this.zone)),
+          this.utilsService.getWindowKeydownEvent().pipe(
             outsideZone(this.zone),
-            throttleTime(500, undefined, {
+            filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
+          ),
+          this.utilsService.getResizeEvent().pipe(outsideZone(this.zone)),
+          this.utilsService.getScrollEvent().pipe(
+            outsideZone(this.zone),
+            throttleTime(300, undefined, {
               leading: true,
               trailing: true,
             }),
@@ -246,12 +256,15 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
             pairwise(),
             filter(
               (scrollArr: number[]) =>
-                Math.abs(scrollArr[0] - scrollArr.slice(-1)[0]) > 200
-            ),
-            take(1)
+                Math.abs(scrollArr[0] - scrollArr[1]) > 150
+            )
           )
+        )
+          .pipe(take(1))
           .subscribe(() => {
-            this.destroyPanel();
+            this.zone.run(() => {
+              this.destroyPanel();
+            });
           })
       );
     }
@@ -295,52 +308,18 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     ].filter(Boolean);
   }
 
-  private getDefaultConfig(): OverlayConfig {
-    const positionStrategy = this.panelPositionService.getPanelPositionStrategy(
-      this.overlayOrigin,
-      this.panelPosition
-    );
-
-    this.subscribeToPositions(
-      positionStrategy as FlexibleConnectedPositionStrategy
-    );
-
+  private getConfig(): OverlayConfig {
     return {
       disposeOnNavigation: true,
       hasBackdrop: true,
       backdropClass: 'b-select-backdrop',
       panelClass: this.getPanelClass(),
-      positionStrategy,
+      positionStrategy: this.panelPositionService.getPanelPositionStrategy(
+        this.overlayOrigin,
+        this.panelPosition
+      ),
       scrollStrategy: this.panelPositionService.getScrollStrategy(),
     };
-  }
-
-  private subscribeToPositions(
-    positionStrategy: FlexibleConnectedPositionStrategy
-  ): void {
-    this.subscribtions.push(
-      positionStrategy.positionChanges
-        .pipe(
-          throttleTime(200, undefined, {
-            leading: true,
-            trailing: true,
-          }),
-          distinctUntilChanged(isEqual)
-        )
-        .subscribe(change => {
-          this.positionClassList = this.panelPositionService.getPositionClassList(
-            change
-          ) as OverlayPositionClasses;
-
-          if (!this.cd['destroyed']) {
-            this.cd.detectChanges();
-            this.overlayRef.overlayElement.children[0].className = this
-              .positionClassList['panel-above']
-              ? 'b-select-panel panel-above'
-              : 'b-select-panel panel-below';
-          }
-        })
-    );
   }
 
   protected setDisplayValue() {}

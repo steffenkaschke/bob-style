@@ -10,25 +10,36 @@ import {
   ViewChild,
   ViewContainerRef,
   NgZone,
+  ChangeDetectorRef,
 } from '@angular/core';
-import { escapeRegExp, invoke, has } from 'lodash';
+import { escapeRegExp, invoke, has, isEqual } from 'lodash';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Subscription } from 'rxjs';
+import { Subscription, merge } from 'rxjs';
 import {
   CdkOverlayOrigin,
   FlexibleConnectedPositionStrategy,
   Overlay,
   OverlayConfig,
   OverlayRef,
+  ConnectedOverlayPositionChange,
 } from '@angular/cdk/overlay';
 import { AutoCompleteOption } from './auto-complete.interface';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
 import { OverlayPositionClasses } from '../../types';
 import { UtilsService } from '../../services/utils/utils.service';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { throttleTime, map, pairwise, take, filter } from 'rxjs/operators';
+import {
+  throttleTime,
+  map,
+  pairwise,
+  take,
+  filter,
+  distinctUntilChanged,
+} from 'rxjs/operators';
 import { ScrollEvent } from '../../services/utils/utils.interface';
+import { isKey } from '../../services/utils/functional-utils';
+import { Keys } from '../../enums';
 
 @Component({
   selector: 'b-auto-complete',
@@ -36,6 +47,15 @@ import { ScrollEvent } from '../../services/utils/utils.interface';
   styleUrls: ['./auto-complete.component.scss'],
 })
 export class AutoCompleteComponent implements OnChanges, OnDestroy {
+  constructor(
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef,
+    private panelPositionService: PanelPositionService,
+    private utilsService: UtilsService,
+    private zone: NgZone,
+    protected cd: ChangeDetectorRef
+  ) {}
+
   @ViewChild(CdkOverlayOrigin, { static: true })
   overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
@@ -64,14 +84,6 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   private templatePortal: TemplatePortal;
 
   private subscribtions: Subscription[] = [];
-
-  constructor(
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
-    private panelPositionService: PanelPositionService,
-    private utilsService: UtilsService,
-    private zone: NgZone
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'options')) {
@@ -133,20 +145,42 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
       this.overlayRef.updatePosition();
       this.overlayRef.updateSize({
         width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
+        height: 360,
       });
 
       this.subscribtions.push(
-        this.overlayRef.backdropClick().subscribe(() => {
-          this.destroyPanel();
-        })
+        (this.panelConfig
+          .positionStrategy as FlexibleConnectedPositionStrategy).positionChanges
+          .pipe(
+            outsideZone(this.zone),
+            throttleTime(200, undefined, {
+              leading: true,
+              trailing: true,
+            }),
+            distinctUntilChanged(isEqual)
+          )
+          .subscribe((change: ConnectedOverlayPositionChange) => {
+            this.positionClassList = this.panelPositionService.getPositionClassList(
+              change
+            );
+
+            if (!this.cd['destroyed']) {
+              this.cd.detectChanges();
+            }
+          })
       );
 
       this.subscribtions.push(
-        this.utilsService
-          .getScrollEvent()
-          .pipe(
+        merge(
+          this.overlayRef.backdropClick().pipe(outsideZone(this.zone)),
+          this.utilsService.getWindowKeydownEvent().pipe(
             outsideZone(this.zone),
-            throttleTime(500, undefined, {
+            filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
+          ),
+          this.utilsService.getResizeEvent().pipe(outsideZone(this.zone)),
+          this.utilsService.getScrollEvent().pipe(
+            outsideZone(this.zone),
+            throttleTime(300, undefined, {
               leading: true,
               trailing: true,
             }),
@@ -154,12 +188,15 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
             pairwise(),
             filter(
               (scrollArr: number[]) =>
-                Math.abs(scrollArr[0] - scrollArr.slice(-1)[0]) > 200
-            ),
-            take(1)
+                Math.abs(scrollArr[0] - scrollArr[1]) > 150
+            )
           )
+        )
+          .pipe(take(1))
           .subscribe(() => {
-            this.destroyPanel();
+            this.zone.run(() => {
+              this.destroyPanel();
+            });
           })
       );
     }
@@ -181,32 +218,16 @@ export class AutoCompleteComponent implements OnChanges, OnDestroy {
   }
 
   private getConfig(): OverlayConfig {
-    const positionStrategy = this.panelPositionService.getCenterPanelPositionStrategy(
-      this.overlayOrigin
-    );
-    this.subscribeToPositions(
-      positionStrategy as FlexibleConnectedPositionStrategy
-    );
     return {
       disposeOnNavigation: true,
       hasBackdrop: true,
       backdropClass: 'b-select-backdrop',
       panelClass: ['b-auto-complete-panel'],
-      positionStrategy,
+      positionStrategy: this.panelPositionService.getCenterPanelPositionStrategy(
+        this.overlayOrigin
+      ),
       scrollStrategy: this.panelPositionService.getScrollStrategy(),
     };
-  }
-
-  private subscribeToPositions(
-    positionStrategy: FlexibleConnectedPositionStrategy
-  ): void {
-    this.subscribtions.push(
-      positionStrategy.positionChanges.subscribe(change => {
-        this.positionClassList = this.panelPositionService.getPositionClassList(
-          change
-        ) as OverlayPositionClasses;
-      })
-    );
   }
 
   private getFilteredOptions(): AutoCompleteOption[] {
