@@ -222,8 +222,6 @@ export abstract class RTEbaseElement extends BaseFormElement
       }
     }
 
-    const t = changes.value ? this.value : this.editorValue;
-
     if (
       changes.value ||
       (changes.placeholderList && this.editorValue !== undefined)
