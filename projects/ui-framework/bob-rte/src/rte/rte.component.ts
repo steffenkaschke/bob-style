@@ -20,6 +20,7 @@ import {
 
 import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'b-rich-text-editor',
@@ -44,9 +45,10 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
     public cd: ChangeDetectorRef,
     public placeholdersConverter: PlaceholdersConverterService,
     public parserService: HtmlParserHelpers,
+    protected sanitizer: DomSanitizer,
     private host: ElementRef
   ) {
-    super(cd, placeholdersConverter, parserService);
+    super(cd, placeholdersConverter, parserService, sanitizer);
   }
 
   public ngOnInit(): void {

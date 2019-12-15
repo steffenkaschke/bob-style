@@ -8,6 +8,7 @@ import {
   ViewChild,
   OnChanges,
   OnInit,
+  SecurityContext,
 } from '@angular/core';
 import { merge, cloneDeep } from 'lodash';
 
@@ -57,12 +58,15 @@ import { TributeInstance, TributeItem } from './tribute.interface';
 import { initDirectionControl } from './rte.direction';
 import { initMentionsControl } from './rte.mentions';
 
+import { DomSanitizer } from '@angular/platform-browser';
+
 export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges, OnInit {
   constructor(
     protected cd: ChangeDetectorRef,
-    public placeholdersConverter: PlaceholdersConverterService,
-    public parserService: HtmlParserHelpers
+    protected placeholdersConverter: PlaceholdersConverterService,
+    protected parserService: HtmlParserHelpers,
+    protected sanitizer: DomSanitizer
   ) {
     super(cd);
     this.baseValue = '';
@@ -205,7 +209,10 @@ export abstract class RTEbaseElement extends BaseFormElement
       this.cntrlsInited = true;
     }
 
-    if (changes.placeholderList) {
+    if (
+      changes.placeholderList ||
+      (this.inputTransformers.length === 0 && !notFirstChanges(changes))
+    ) {
       this.initTransformers();
     }
 
@@ -300,6 +307,9 @@ export abstract class RTEbaseElement extends BaseFormElement
   private initTransformers(): void {
     this.inputTransformers = [
       stringyOrFail,
+
+      (value: string): string =>
+        this.sanitizer.sanitize(SecurityContext.HTML, value),
 
       (value: string): string =>
         HtmlParserHelpers.prototype.cleanupHtml(value, null),

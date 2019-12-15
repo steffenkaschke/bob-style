@@ -36,8 +36,10 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   initOnClick: false,
   theme: 'royal',
   fontFamily: {
-    '\'Gotham SSm A\', \'Gotham SSm B\', \'Helvetica\'': 'Body font',
-    '\'Sentinel SSm A\', \'Sentinel SSm B\', \'Helvetica\'': 'Heading font',
+    // tslint:disable-next-line: quotemark
+    "'Gotham SSm A', 'Gotham SSm B', 'Helvetica'": 'Body font',
+    // tslint:disable-next-line: quotemark
+    "'Sentinel SSm A', 'Sentinel SSm B', 'Helvetica'": 'Heading font',
   },
   scrollableContainer: 'body',
 
@@ -142,7 +144,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   htmlUntouched: true,
 
   pasteAllowedStyleProps: [],
-  pasteDeniedAttrs: [],
+  pasteDeniedAttrs: ['on.*'],
   pasteDeniedTags: ['script', 'style'],
   pastePlain: false,
 

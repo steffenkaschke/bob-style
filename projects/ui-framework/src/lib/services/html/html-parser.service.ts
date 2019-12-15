@@ -18,8 +18,8 @@ export class HtmlParserHelpers {
       tabindex: null,
       spellcheck: null,
       class: {
-        'fr-.*': false
-      }
+        'fr-.*': false,
+      },
     }
   ): string {
     return (
@@ -103,7 +103,16 @@ export class HtmlParserHelpers {
         (elem: HTMLElement): void => {
           Object.keys(attributes).forEach(attr => {
             if (attributes[attr] === null) {
-              elem.removeAttribute(attr);
+              if (!/[.*+]/g.test(attr)) {
+                elem.removeAttribute(attr);
+              } else {
+                Array.from(elem.attributes)
+                  .map(a => a.name)
+                  .filter(a => new RegExp(attr, 'gi').test(a))
+                  .forEach(a => {
+                    elem.removeAttribute(a);
+                  });
+              }
             } else {
               if (attr === 'class') {
                 let classes = attributes[attr];
