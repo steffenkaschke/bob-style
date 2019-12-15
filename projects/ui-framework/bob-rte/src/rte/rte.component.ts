@@ -16,10 +16,12 @@ import {
   Keys,
   ListChange,
   cloneArray,
+  chainCall,
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'b-rich-text-editor',
@@ -44,9 +46,10 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
     public cd: ChangeDetectorRef,
     public placeholdersConverter: PlaceholdersConverterService,
     public parserService: HtmlParserHelpers,
+    protected sanitizer: DomSanitizer,
     private host: ElementRef
   ) {
-    super(cd, placeholdersConverter, parserService);
+    super(cd, placeholdersConverter, parserService, sanitizer);
   }
 
   public ngOnInit(): void {
@@ -168,10 +171,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       },
 
       'paste.afterCleanup': (html: string): string =>
-        this.inputTransformers.reduce(
-          (previousResult, fn) => fn(previousResult),
-          html
-        ),
+        chainCall(this.inputTransformers, html),
 
       'charCounter.update': () => {
         this.length = this.getEditor().charCounter.count();
