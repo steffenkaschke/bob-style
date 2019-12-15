@@ -103,7 +103,7 @@ export class HtmlParserHelpers {
         (elem: HTMLElement): void => {
           Object.keys(attributes).forEach(attr => {
             if (attributes[attr] === null) {
-              if (!/[.*+]/g.test(attr)) {
+              if (!/[.*+^]/g.test(attr)) {
                 elem.removeAttribute(attr);
               } else {
                 Array.from(elem.attributes)
@@ -122,7 +122,7 @@ export class HtmlParserHelpers {
                     if (classes[c]) {
                       elem.classList.add(c);
                     } else {
-                      if (/[.*+]/g.test(c) && elem.className !== '') {
+                      if (/[.*+^]/g.test(c) && elem.className !== '') {
                         [...elem.classList['values']()].forEach(
                           (cls: string) => {
                             if (new RegExp(c, 'gi').test(cls)) {
