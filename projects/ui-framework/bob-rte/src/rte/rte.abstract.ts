@@ -35,6 +35,7 @@ import {
   IconColor,
   isNotEmptyObject,
   isEmptyArray,
+  chainCall,
 } from 'bob-style';
 
 import {
@@ -119,10 +120,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   public writeValue(value: any, onChanges = false): void {
     if (value !== undefined) {
-      this.editorValue = this.inputTransformers.reduce(
-        (previousResult, fn) => fn(previousResult),
-        value
-      );
+      this.editorValue = chainCall(this.inputTransformers, value);
     }
     if (
       (value === undefined || isNullOrUndefined(this.editorValue)) &&

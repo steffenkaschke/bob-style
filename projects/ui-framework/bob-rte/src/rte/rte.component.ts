@@ -16,6 +16,7 @@ import {
   Keys,
   ListChange,
   cloneArray,
+  chainCall,
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
@@ -170,10 +171,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
       },
 
       'paste.afterCleanup': (html: string): string =>
-        this.inputTransformers.reduce(
-          (previousResult, fn) => fn(previousResult),
-          html
-        ),
+        chainCall(this.inputTransformers, html),
 
       'charCounter.update': () => {
         this.length = this.getEditor().charCounter.count();
