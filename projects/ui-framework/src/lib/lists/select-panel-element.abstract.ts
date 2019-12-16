@@ -23,7 +23,7 @@ import {
   ConnectedOverlayPositionChange,
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Subscription, merge } from 'rxjs';
+import { Subscription, race } from 'rxjs';
 import { PanelPositionService } from '../popups/panel/panel-position-service/panel-position.service';
 import { BaseFormElement } from '../form-elements/base-form-element';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
@@ -36,7 +36,6 @@ import {
   throttleTime,
   pairwise,
   map,
-  take,
 } from 'rxjs/operators';
 import { OverlayPositionClasses } from '../types';
 import { UtilsService } from '../services/utils/utils.service';
@@ -239,7 +238,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       );
 
       this.subscribtions.push(
-        merge(
+        race(
           this.overlayRef.backdropClick().pipe(outsideZone(this.zone)),
           this.utilsService.getWindowKeydownEvent().pipe(
             outsideZone(this.zone),
@@ -259,13 +258,11 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
                 Math.abs(scrollArr[0] - scrollArr[1]) > 150
             )
           )
-        )
-          .pipe(take(1))
-          .subscribe(() => {
-            this.zone.run(() => {
-              this.destroyPanel();
-            });
-          })
+        ).subscribe(() => {
+          this.zone.run(() => {
+            this.destroyPanel();
+          });
+        })
       );
     }
   }
