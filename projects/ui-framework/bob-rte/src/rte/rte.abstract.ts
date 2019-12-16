@@ -307,6 +307,9 @@ export abstract class RTEbaseElement extends BaseFormElement
           '*': {
             '^on.*': null,
           },
+          br: {
+            '.*': null,
+          },
         }),
 
       (value: string): string =>
