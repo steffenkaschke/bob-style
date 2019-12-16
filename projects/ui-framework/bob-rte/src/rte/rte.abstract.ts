@@ -331,9 +331,6 @@ export abstract class RTEbaseElement extends BaseFormElement
             rel: 'noopener noreferrer',
             contenteditable: false,
           },
-          span: {
-            class: null,
-          },
         }),
 
       (value: string): string =>
