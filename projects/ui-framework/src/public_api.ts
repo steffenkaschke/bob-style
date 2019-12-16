@@ -340,6 +340,7 @@ export {
 export {
   QuickFilterComponent
 } from './lib/search/quick-filter/quick-filter.component';
+export { QuickFilterBarComponent } from './lib/search/quick-filter/quick-filter-bar.component';
 export {
   QuickFilterConfig,
   QuickFilterChangeEvent,
