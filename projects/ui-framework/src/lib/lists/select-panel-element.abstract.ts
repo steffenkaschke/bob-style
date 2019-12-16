@@ -79,7 +79,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @ViewChild('prefix', { static: false }) prefix: ElementRef;
 
   @Input() value: (number | string)[];
-  @Input() options: SelectGroupOption[];
+  @Input() options: SelectGroupOption[] = [];
   @Input() optionsDefault: SelectGroupOption[];
   @Input() panelClass: string;
   @Input() isQuickFilter = false;
@@ -124,14 +124,20 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   private fitOptionsToValue = false;
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes, {}, ['value', 'options']);
+    applyChanges(
+      this,
+      changes,
+      {
+        options: [],
+      },
+      ['value']
+    );
 
     if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
       this.destroyPanel();
     }
 
     if (hasChanges(changes, ['options']) && !this.fitOptionsToValue) {
-      this.options = changes.options.currentValue;
       this.value = this.modelSrvc.getSelectedIDs(this.options);
     }
 
