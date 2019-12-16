@@ -84,7 +84,7 @@ export abstract class BaseListElement
   private keyDownSubscriber: Subscription;
   readonly listElHeight = LIST_EL_HEIGHT;
 
-  @Input() options: SelectGroupOption[];
+  @Input() options: SelectGroupOption[] = [];
   @Input() optionsDefault: SelectGroupOption[];
   @Input() listActions: ListFooterActions;
   @Input() maxHeight = this.listElHeight * 8;
@@ -99,7 +99,9 @@ export abstract class BaseListElement
   @Output() apply: EventEmitter<ListChange> = new EventEmitter<ListChange>();
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes);
+    applyChanges(this, changes, {
+      options: [],
+    });
 
     if (hasChanges(changes, ['options'])) {
       this.allGroupsCollapsed =
@@ -144,7 +146,7 @@ export abstract class BaseListElement
     }
 
     if (
-      changes.startWithGroupsCollapsed &&
+      hasChanges(changes, ['startWithGroupsCollapsed']) &&
       typeof this.startWithGroupsCollapsed === 'boolean'
     ) {
       this.toggleCollapseAll(this.startWithGroupsCollapsed);
@@ -287,7 +289,7 @@ export abstract class BaseListElement
   }
 
   toggleCollapseAll(force = null): void {
-    if (this.options.length > 1) {
+    if (this.options && this.options.length > 1) {
       this.allGroupsCollapsed =
         force !== null ? force : !this.allGroupsCollapsed;
       this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
