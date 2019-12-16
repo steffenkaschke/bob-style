@@ -8,7 +8,6 @@ import {
   ViewChild,
   OnChanges,
   OnInit,
-  SecurityContext,
 } from '@angular/core';
 import { merge, cloneDeep } from 'lodash';
 
@@ -59,15 +58,12 @@ import { TributeInstance, TributeItem } from './tribute.interface';
 import { initDirectionControl } from './rte.direction';
 import { initMentionsControl } from './rte.mentions';
 
-import { DomSanitizer } from '@angular/platform-browser';
-
 export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges, OnInit {
   constructor(
     protected cd: ChangeDetectorRef,
     protected placeholdersConverter: PlaceholdersConverterService,
-    protected parserService: HtmlParserHelpers,
-    protected sanitizer: DomSanitizer
+    protected parserService: HtmlParserHelpers
   ) {
     super(cd);
     this.baseValue = '';
@@ -307,7 +303,11 @@ export abstract class RTEbaseElement extends BaseFormElement
       stringyOrFail,
 
       (value: string): string =>
-        this.sanitizer.sanitize(SecurityContext.HTML, value),
+        HtmlParserHelpers.prototype.enforceAttributes(value, {
+          '*': {
+            '^on.*': null,
+          },
+        }),
 
       (value: string): string =>
         HtmlParserHelpers.prototype.cleanupHtml(value, null),
