@@ -168,13 +168,32 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         }
       },
 
+      'window.copy': (event: ClipboardEvent) => {
+        event.preventDefault();
+
+        const clipboardData: DataTransfer =
+          event.clipboardData || event['originalEvent'].clipboardData;
+
+        const html = chainCall(
+          this.outputTransformers,
+          this.editor.html.getSelected()
+        );
+
+        clipboardData.setData('text/plain', html);
+      },
+
       'paste.afterCleanup': (html: string): string =>
         chainCall(this.inputTransformers, html),
 
       'charCounter.update': () => {
-        this.length = this.getEditor().charCounter.count();
+        const newLength = this.getEditorTextbox().innerText.trim().length;
 
-        if (!this.cd['destroyed']) {
+        if (newLength === 0) {
+          this.editor.html.set('');
+        }
+
+        if (newLength !== this.length && !this.cd['destroyed']) {
+          this.length = newLength;
           this.cd.detectChanges();
         }
       },
@@ -192,7 +211,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         // mentions toolbar button
         if (cmd === 'mentions') {
           if (this.tribute) {
-            const curSelection = this.editor.selection.get();
+            const curSelection: Selection = this.editor.selection.get();
             const curText = curSelection.focusNode.textContent;
 
             this.editor.undo.saveStep();
@@ -207,7 +226,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
 
         // emoji toolbar button
         if ((cmd = 'emoticonInsert') && param1 && param2) {
-          const curSelection = this.editor.selection.get();
+          const curSelection: Selection = this.editor.selection.get();
           const curText = curSelection.focusNode.textContent;
 
           this.editor.undo.saveStep();

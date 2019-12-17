@@ -79,6 +79,7 @@ const template = `
       [mentionsList]="mentionsList"
       [placeholderList]="placeholderList"
       [minChars]="minChars"
+      [maxChars]="maxChars"
       [minHeight]="minHeight"
       [maxHeight]="maxHeight"
       [disabled]="disabled"
@@ -218,7 +219,7 @@ story.add(
         description: text('description', mockText(30)),
 
         minChars: number('minChars', 20),
-        maxChars: number('maxChars', 500),
+        maxChars: number('maxChars', 400),
         minHeight: number('minHeight', 185),
         maxHeight: number('maxHeight'),
         disabled: boolean('disabled', false),

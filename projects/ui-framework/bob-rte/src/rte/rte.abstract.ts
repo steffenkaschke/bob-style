@@ -23,7 +23,7 @@ import {
   isNotEmptyArray,
   stringyOrFail,
   InputEventType,
-  HtmlParserHelpers,
+  // HtmlParserHelpers,
   SelectGroupOption,
   Icons,
   ButtonType,
@@ -57,6 +57,8 @@ import { TributeInstance, TributeItem } from './tribute.interface';
 
 import { initDirectionControl } from './rte.direction';
 import { initMentionsControl } from './rte.mentions';
+
+import { HtmlParserHelpers } from '../../../src/lib/services/html/html-parser.service';
 
 export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges, OnInit {

@@ -41,15 +41,19 @@ export class HtmlParserHelpers {
         .replace(/(<h[456][^>]*>)/gi, '<div><br></div><div><span><strong>')
         .replace(/(<\/h\d>)/gi, '</strong></span></div>')
 
+        // no &nbsp;
+        // .replace(/&nbsp;/gi, ' ')
+        // .replace(/(<\/div>)(\s*&nbsp;\s*)+(<div>)/gi, '$1$3')
+
         // empty tags
         .replace(/<([^\/>\s]+)[^>]*>\s*<\/\1>/gi, ' ')
 
         // unnecessary wrappers
         .replace(/<(span)>([^<]+)<\/\1>/gi, '$2')
 
-        // no &nbsp;
+        // // no &nbsp;
         // .replace(/&nbsp;/gi, ' ')
-        .replace(/(<\/div>)(\s*&nbsp;\s*)+(<div>)/gi, '$1$3')
+        // // .replace(/(<\/div>)(\s*&nbsp;\s*)+(<div>)/gi, '$1$3')
 
         // less white space
         // .replace(/\s\s+/gi, ' ')
