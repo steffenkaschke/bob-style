@@ -4,8 +4,6 @@
   text-align: left;
   --font-size: #{$font-size-body};
   --line-height: #{$line-height-body};
-  width: 270px;
-  display: block;
 }
 
 .menu-header {
@@ -13,6 +11,10 @@
   align-items: center;
   border-bottom: 1px solid $grey-500;
   min-height: 36px;
+}
+
+.menu-options-wrapper, .menu-header {
+  width: 270px;
 }
 
 .header-label {
