@@ -3,6 +3,10 @@ import { LinkifyPipe } from '../filters/linkify.pipe';
 import { GenericObject } from '../../types';
 import { isString, isObject, isEmptyObject } from '../utils/functional-utils';
 
+export interface CleanupHtmlConfig {
+  removeNbsp?: boolean;
+}
+
 @Injectable({ providedIn: 'root' })
 export class HtmlParserHelpers {
   constructor() {}
@@ -11,76 +15,72 @@ export class HtmlParserHelpers {
     return LinkifyPipe.prototype.transform(value, add);
   }
 
-  public cleanupHtml(
-    value: string,
-    enforcedAttrs: GenericObject = {
-      contenteditable: null,
-      tabindex: null,
-      spellcheck: null,
-      class: {
-        'fr-.*': false,
-      },
-    }
-  ): string {
-    return (
-      this.enforceAttributes(value, { 'span,p,div,a': enforcedAttrs || {} })
+  public cleanupHtml(value: string, config: CleanupHtmlConfig = {}): string {
+    //
+    let processed: string = value
 
-        // replace P with DIV
-        .replace(/(<p)/gi, '<div')
-        .replace(/<\/p>/gi, '</div>')
+      // replace P with DIV
+      .replace(/(<p)/gi, '<div')
+      .replace(/<\/p>/gi, '</div>')
 
-        // replace headings
-        .replace(
-          /(<h[1][^>]*>)/gi,
-          '<div><br></div><div><span style="font-size: 28px;"><strong>'
-        )
-        .replace(
-          /(<h[23][^>]*>)/gi,
-          '<div><br></div><div><span style="font-size: 18px;"><strong>'
-        )
-        .replace(/(<h[456][^>]*>)/gi, '<div><br></div><div><span><strong>')
-        .replace(/(<\/h\d>)/gi, '</strong></span></div>')
+      // replace headings
+      .replace(
+        /(<h[1][^>]*>)/gi,
+        '<div><br></div><div><span style="font-size: 28px;"><strong>'
+      )
+      .replace(
+        /(<h[23][^>]*>)/gi,
+        '<div><br></div><div><span style="font-size: 18px;"><strong>'
+      )
+      .replace(/(<h[456][^>]*>)/gi, '<div><br></div><div><span><strong>')
+      .replace(/(<\/h\d>)/gi, '</strong></span></div>');
 
-        // empty tags
-        .replace(/<([^\/>\s]+)[^>]*>\s*<\/\1>/gi, ' ')
-
-        // unnecessary wrappers
-        .replace(/<(span)>([^<]+)<\/\1>/gi, '$2')
-
+    if (config.removeNbsp) {
+      processed = processed
         // no &nbsp;
-        // .replace(/&nbsp;/gi, ' ')
-        .replace(/(<\/div>)(\s*&nbsp;\s*)+(<div>)/gi, '$1$3')
+        .replace(/&nbsp;/gi, ' ');
+      // .replace(/(<\/div>)(\s*&nbsp;\s*)+(<div>)/gi, '$1$3')
+    }
 
-        // less white space
-        // .replace(/\s\s+/gi, ' ')
-        .replace(/\s+/gi, ' ')
+    processed = processed
 
-        // <br>'s inside tags with text (<div><br> text</div>)
-        .replace(
-          /(<(?:div|p|span|ul|ol|li|a|strong|em|i)[^>]*>)(?:\s*<br[^>]*>\s*)+([^<\s]+)/gi,
-          '$1$2'
-        )
+      // empty tags
+      .replace(/<([^\/>\s]+)[^>]*>\s*<\/\1>/gi, ' ')
 
-        // replace <br><br> with <div><br></div>
-        .replace(/([^<>])(<br[^>]*>\s*){2,}(?=[^<>\s])/gi, '$1<div><br></div>')
+      // unnecessary wrappers
+      .replace(/<(span)>([^<]+)<\/\1>/gi, '$2')
 
-        // <br>'s at the start / end
-        .replace(/(^(\s*<br[^>]*>\s*)+)|((\s*<br[^>]*>\s*)+$)/gi, '')
+      // less white space
+      // .replace(/\s\s+/gi, ' ')
+      .replace(/\s+/gi, ' ')
 
-        // too many <div><br></div>
-        .replace(
-          /(<([^\/>\s]+)[^>]*>\s*<br[^>]*>\s*<\/\2>\s*){2,}/gi,
-          '<div><br></div>'
-        )
+      // <br>'s inside tags with text (<div><br> text</div>)
+      .replace(
+        /(<(?:div|p|span|ul|ol|li|a|strong|em|i)[^>]*>)(?:\s*<br[^>]*>\s*)+([^<\s]+)/gi,
+        '$1$2'
+      )
 
-        // <div><br></div> at the start / end
-        .replace(
-          /(^(\s*<([^\/>\s]+)[^>]*>(\s*<br[^>]*>\s*)+<\/\3>)+)|((<([^\/>\s]+)[^>]*>(\s*<br[^>]*>\s*)+<\/\7>\s*)+$)/gi,
-          ''
-        )
+      // replace <br><br> with <div><br></div>
+      .replace(/([^<>])(<br[^>]*>\s*){2,}(?=[^<>\s])/gi, '$1<div><br></div>')
 
-        .trim()
-    );
+      // <br>'s at the start / end
+      .replace(/(^(\s*<br[^>]*>\s*)+)|((\s*<br[^>]*>\s*)+$)/gi, '')
+
+      // too many <div><br></div>
+      .replace(
+        /(<([^\/>\s]+)[^>]*>\s*<br[^>]*>\s*<\/\2>\s*){2,}/gi,
+        '<div><br></div>'
+      )
+
+      // <div><br></div> at the start / end
+      .replace(
+        /(^(\s*<([^\/>\s]+)[^>]*>(\s*<br[^>]*>\s*)+<\/\3>)+)|((<([^\/>\s]+)[^>]*>(\s*<br[^>]*>\s*)+<\/\7>\s*)+$)/gi,
+        ''
+      )
+
+      .trim();
+
+    return processed;
   }
 
   public enforceAttributes(
