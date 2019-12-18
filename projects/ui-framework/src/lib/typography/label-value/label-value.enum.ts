@@ -11,7 +11,7 @@ export enum LabelValueType {
 export enum TextAlign {
   left = 'left',
   right = 'right',
-  center = 'center'
+  center = 'center',
 }
 
 export enum IconPosition {
@@ -19,5 +19,7 @@ export enum IconPosition {
   right = 'right',
   top = 'top',
   label = 'label',
-  value = 'value'
+  value = 'value',
+  label_after = 'label_after',
+  value_after = 'value_after',
 }
