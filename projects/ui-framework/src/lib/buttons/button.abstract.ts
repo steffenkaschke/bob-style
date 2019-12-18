@@ -7,6 +7,7 @@ import {
   OnChanges,
   SimpleChanges,
   ChangeDetectorRef,
+  OnInit,
 } from '@angular/core';
 import { ButtonType, ButtonSize, BackButtonType } from './buttons.enum';
 import { Icons, IconColor, IconSize } from '../icons/icons.enum';
@@ -16,7 +17,7 @@ import {
   applyChanges,
 } from '../services/utils/functional-utils';
 
-export abstract class BaseButtonElement implements OnChanges {
+export abstract class BaseButtonElement implements OnChanges, OnInit {
   constructor(protected cd: ChangeDetectorRef) {}
 
   @ViewChild('button', { static: true }) public button: ElementRef;
@@ -38,6 +39,12 @@ export abstract class BaseButtonElement implements OnChanges {
   readonly iconColor = IconColor;
 
   public buttonClass: string = null;
+
+  ngOnInit(): void {
+    if (!this.buttonClass) {
+      this.buttonClass = this.getButtonClass();
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
