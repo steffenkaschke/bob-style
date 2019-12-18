@@ -253,7 +253,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
           this.utilsService.getResizeEvent().pipe(outsideZone(this.zone)),
           this.utilsService.getScrollEvent().pipe(
             outsideZone(this.zone),
-            throttleTime(300, undefined, {
+            throttleTime(50, undefined, {
               leading: true,
               trailing: true,
             }),
@@ -261,7 +261,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
             pairwise(),
             filter(
               (scrollArr: number[]) =>
-                Math.abs(scrollArr[0] - scrollArr[1]) > 150
+                Math.abs(scrollArr[0] - scrollArr[1]) > 20
             )
           )
         ).subscribe(() => {
