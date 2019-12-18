@@ -65,8 +65,11 @@ export { AvatarModule } from './lib/avatar/avatar/avatar.module';
 export {
   AvatarComponent
 } from './lib/avatar/avatar/avatar.component';
-export { AvatarSize, AvatarOrientation, AvatarBadge } from './lib/avatar/avatar/avatar.enum';
-export { BadgeConfig, Avatar } from './lib/avatar/avatar/avatar.interface';
+export {
+  AvatarImageComponent
+} from './lib/avatar/avatar/avatar-image.component';
+export * from './lib/avatar/avatar/avatar.enum';
+export * from './lib/avatar/avatar/avatar.interface';
 // Employees Showcase Module
 export { EmployeesShowcaseModule } from './lib/avatar/employees-showcase/employees-showcase.module';
 export { EmployeesShowcaseComponent } from './lib/avatar/employees-showcase/employees-showcase.component';
