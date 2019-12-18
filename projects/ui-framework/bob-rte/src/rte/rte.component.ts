@@ -5,6 +5,7 @@ import {
   forwardRef,
   ChangeDetectorRef,
   ElementRef,
+  OnDestroy,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 
@@ -40,7 +41,8 @@ import { PlaceholdersConverterService } from './placeholders.service';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
+export class RichTextEditorComponent extends RTEbaseElement
+  implements OnInit, OnDestroy {
   constructor(
     public cd: ChangeDetectorRef,
     public placeholdersConverter: PlaceholdersConverterService,
@@ -180,6 +182,7 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         );
 
         clipboardData.setData('text/plain', html);
+        clipboardData.setData('text/html', html);
       },
 
       'paste.afterCleanup': (html: string): string =>
@@ -242,6 +245,15 @@ export class RichTextEditorComponent extends RTEbaseElement implements OnInit {
         }
       },
     };
+  }
+
+  public ngOnDestroy(): void {
+    if (this.tribute) {
+      this.tribute.detach(this.getEditorTextbox());
+    }
+
+    // remove event listeners
+    this.getEditorTextbox().outerHTML = this.getEditorTextbox().outerHTML;
   }
 
   // mentions methods

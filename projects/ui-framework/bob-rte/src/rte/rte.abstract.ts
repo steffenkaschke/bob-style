@@ -315,7 +315,7 @@ export abstract class RTEbaseElement extends BaseFormElement
         }),
 
       (value: string): string =>
-        HtmlParserHelpers.prototype.cleanupHtml(value, null),
+        HtmlParserHelpers.prototype.cleanupHtml(value, { removeNbsp: false }),
 
       (value: string): string =>
         this.parserService.enforceAttributes(value, {
@@ -343,7 +343,22 @@ export abstract class RTEbaseElement extends BaseFormElement
     ];
 
     this.outputTransformers = [
-      (value: string): string => HtmlParserHelpers.prototype.cleanupHtml(value),
+      (value: string): string =>
+        this.parserService.enforceAttributes(value, {
+          'span,p,div,a': {
+            contenteditable: null,
+            tabindex: null,
+            spellcheck: null,
+            class: {
+              'fr-.*': false,
+            },
+          },
+        }),
+
+      (value: string): string =>
+        HtmlParserHelpers.prototype.cleanupHtml(value, {
+          removeNbsp: true,
+        }),
     ];
 
     if (this.placeholdersEnabled()) {
