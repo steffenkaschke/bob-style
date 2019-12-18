@@ -12,7 +12,6 @@ import {
 import { ButtonType, ButtonSize, BackButtonType } from './buttons.enum';
 import { Icons, IconColor, IconSize } from '../icons/icons.enum';
 import {
-  hasChanges,
   notFirstChanges,
   applyChanges,
 } from '../services/utils/functional-utils';
@@ -49,18 +48,7 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes);
 
-    if (
-      hasChanges(changes, [
-        'icon',
-        'size',
-        'type',
-        'active',
-        'color',
-        'disabled',
-      ])
-    ) {
-      this.buttonClass = this.getButtonClass();
-    }
+    this.buttonClass = this.getButtonClass();
 
     if (notFirstChanges(changes) && !this.cd['destroyed']) {
       this.cd.detectChanges();
