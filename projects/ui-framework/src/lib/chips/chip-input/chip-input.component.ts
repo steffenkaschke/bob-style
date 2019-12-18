@@ -73,6 +73,8 @@ export class ChipInputComponent extends BaseFormElement
   public filteredChips: string[] = this.options;
   public readonly inputTypes = InputTypes;
 
+  public maxChars = 50;
+
   readonly chipListConfig: ChipListConfig = {
     type: ChipType.tag,
     removable: true,
