@@ -451,6 +451,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
     if (editorBox) {
       const newLength = this.getEditorTextbox().innerText.trim().length;
+
       if (newLength !== this.length && !this.cd['destroyed']) {
         this.length = newLength;
         this.cd.detectChanges();

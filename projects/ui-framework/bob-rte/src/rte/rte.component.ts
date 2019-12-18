@@ -132,6 +132,8 @@ export class RichTextEditorComponent extends RTEbaseElement
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
         }
+
+        this.editor.placeholder.hide();
       },
 
       blur: () => {
@@ -146,6 +148,10 @@ export class RichTextEditorComponent extends RTEbaseElement
 
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
+        }
+
+        if (this.length === 0) {
+          this.editor.placeholder.show();
         }
       },
 
@@ -191,15 +197,6 @@ export class RichTextEditorComponent extends RTEbaseElement
       'charCounter.update': () => {
         this.updateLength();
       },
-
-      // keydown: (event: KeyboardEvent) => {
-      //   if (isKey(event.key, Keys.backspace) || isKey(event.key, Keys.delete)) {
-      //     this.updateLength();
-      //     if (this.length === 0) {
-      //       this.editor.html.set('');
-      //     }
-      //   }
-      // },
 
       'commands.after': (cmd: string) => {
         if (cmd === 'linkInsert') {
