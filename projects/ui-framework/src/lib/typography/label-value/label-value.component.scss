@@ -87,6 +87,22 @@ $BLVTypeMap: (
       font-weight: $font-weight-body,
     ),
   ),
+  '8': (
+    '.blv-label': (
+      color: $grey-600,
+      font-size: $font-size-display-4,
+      font-weight: $font-weight-display-4,
+      font-family: var(--display-font-family),
+      line-height: $line-height-heading,
+    ),
+    '.blv-value': (
+      color: $grey-600,
+      font-size: $font-size-display-4,
+      font-weight: $font-weight-display-4,
+      font-family: var(--display-font-family),
+      line-height: $line-height-heading,
+    ),
+  ),
 );
 
 .blv-icon {
