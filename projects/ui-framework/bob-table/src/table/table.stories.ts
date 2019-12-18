@@ -1,41 +1,37 @@
-import { storiesOf } from '@storybook/angular';
-import {
-  number,
-  object,
-  select,
-  withKnobs,
-  boolean,
-} from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
-import { values } from 'lodash';
-import { ComponentGroupType } from '../../../src/lib/consts';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
-import { TableModule } from './table.module';
-import { AvatarModule } from '../../../src/lib/avatar/avatar/avatar.module';
-import { mockColumnsDefs, mockRowData } from './table-mocks/table-story.mock';
-import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
-import { AgGridModule } from 'ag-grid-angular';
-import { RowSelection, TableType } from './table/table.enum';
-import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {action} from '@storybook/addon-actions';
+import {boolean, number, object, select, withKnobs,} from '@storybook/addon-knobs/angular';
+import {storiesOf} from '@storybook/angular';
+import {AgGridModule} from 'ag-grid-angular';
+import {AvatarModule, ComponentGroupType} from 'bob-style';
+import {values} from 'lodash';
+import {StoryBookLayoutModule} from '../../../src/lib/story-book-layout/story-book-layout.module';
+import {ActionsCellComponent} from './table-cell-components/actions-cell/actions-cell.component';
+import {AvatarCellComponent} from './table-cell-components/avatar-cell/avatar.component';
+import {mockColumnsDefs, mockRowData, treeColumnDefsMock, treeRowDataMock} from './table-mocks/table-story.mock';
+import {TableModule} from './table.module';
+import {TableComponent} from './table/table.component';
+import {RowSelection, TableType} from './table/table.enum';
+import {ColumnDef} from './table/table.interface';
 
 const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
-  withKnobs
+    withKnobs
 );
 
 const template = `
-<b-table [type]="type"
-         [rowData]="rowData"
-         [columnDefs]="columnDefs"
-         [maxHeight]="maxHeight"
-         [rowSelection]="rowSelection"
-         [removeColumnButtonEnabled]="removeColumnButtonEnabled"
-         (rowClicked)="rowClicked($event)"
-         (cellClicked)="cellClicked($event)"
-         (selectionChanged)="selectionChanged($event)"
-         (sortChanged)="sortChanged($event)"
-         (columnsOrderChanged)="columnsOrderChanged($event)"
-         (columnRemoved)="columnRemoved($event)">
+<b-table
+  [type]="type"
+  [treeConfig]="treeConfig"
+  [rowData]="rowData"
+  [columnDefs]="columnDefs"
+  [maxHeight]="maxHeight"
+  [rowSelection]="rowSelection"
+  [removeColumnButtonEnabled]="removeColumnButtonEnabled"
+  (rowClicked)="rowClicked($event)"
+  (cellClicked)="cellClicked($event)"
+  (selectionChanged)="selectionChanged($event)"
+  (sortChanged)="sortChanged($event)"(columnsOrderChanged)="columnsOrderChanged($event)"
+  (columnRemoved)="columnRemoved($event)">
 </b-table>
 `;
 
@@ -101,6 +97,72 @@ const note = `
   ${template}
   ~~~
 `;
+
+tableStoryFactory({
+  title       : 'Data Table',
+  HTMLTemplate: storyTemplate,
+  tableCols   : mockColumnsDefs,
+  tableData   : mockRowData,
+  notes       : note,
+});
+
+tableStoryFactory({
+  title       : 'Tree Table',
+  HTMLTemplate: storyTemplate,
+  tableCols   : treeColumnDefsMock,
+  tableData   : treeRowDataMock,
+  notes       : note,
+  props       : {
+    treeConfig: {
+      treeData   : true,
+      getDataPath: (data) => {
+        return data.orgHierarchy;
+      }
+    }
+  }
+});
+
+export interface TableStory {
+  title: string;
+  HTMLTemplate: string;
+  tableData: any;
+  tableCols: ColumnDef[];
+  notes: string;
+  props?: Partial<TableComponent>;
+}
+
+function tableStoryFactory({title, HTMLTemplate, tableData, tableCols, notes, props}: TableStory) {
+  const defaultProps = {
+    type            : select('type', type, TableType.Primary),
+    maxHeight       : number('maxHeight', 450),
+    columnDefs      : object(title + ' columnDefs', tableCols),
+    rowData         : object(title + ' rowData', tableData),
+    rowClicked      : action('Row clicked'),
+    selectionChanged: action('Selection changed'),
+    sortChanged     : action('sort changed'),
+  };
+  story.add(
+      title,
+      () => {
+        return {
+          template      : HTMLTemplate,
+          props         : {...defaultProps, ...props},
+          moduleMetadata: {
+            entryComponents: [AvatarCellComponent, ActionsCellComponent],
+            imports        : [
+              BrowserAnimationsModule,
+              StoryBookLayoutModule,
+              TableModule,
+              AgGridModule,
+              AvatarModule,
+              AgGridModule.withComponents([AvatarCellComponent]),
+            ],
+          },
+        };
+      },
+      {notes: {markdown: notes}}
+  );
+}
 story.add(
   'Data Table',
   () => {
