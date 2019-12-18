@@ -445,4 +445,17 @@ export abstract class RTEbaseElement extends BaseFormElement
       }
     }
   }
+
+  protected updateLength(): number {
+    const editorBox = this.getEditorTextbox();
+
+    if (editorBox) {
+      const newLength = this.getEditorTextbox().innerText.trim().length;
+      if (newLength !== this.length && !this.cd['destroyed']) {
+        this.length = newLength;
+        this.cd.detectChanges();
+      }
+    }
+    return this.length;
+  }
 }

@@ -189,17 +189,17 @@ export class RichTextEditorComponent extends RTEbaseElement
         chainCall(this.inputTransformers, html),
 
       'charCounter.update': () => {
-        const newLength = this.getEditorTextbox().innerText.trim().length;
-
-        if (newLength === 0) {
-          this.editor.html.set('');
-        }
-
-        if (newLength !== this.length && !this.cd['destroyed']) {
-          this.length = newLength;
-          this.cd.detectChanges();
-        }
+        this.updateLength();
       },
+
+      // keydown: (event: KeyboardEvent) => {
+      //   if (isKey(event.key, Keys.backspace) || isKey(event.key, Keys.delete)) {
+      //     this.updateLength();
+      //     if (this.length === 0) {
+      //       this.editor.html.set('');
+      //     }
+      //   }
+      // },
 
       'commands.after': (cmd: string) => {
         if (cmd === 'linkInsert') {
