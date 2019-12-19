@@ -247,6 +247,11 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     path = 'value',
     event = [InputEventType.onBlur]
   ) {
+    if (this.writingValue) {
+      this.writingValue = false;
+      return;
+    }
+
     if (value === value) {
       set(this, path, value);
     }
@@ -264,6 +269,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
       picker.select(parsed.date);
     } else {
       setTimeout(() => {
+        this.writingValue = true;
         picker = this.getPicker(index);
         picker.select(parsed.date);
       }, 0);
