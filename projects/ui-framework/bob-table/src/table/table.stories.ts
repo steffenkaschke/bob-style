@@ -63,6 +63,7 @@ const note = `
   --- | --- | --- | ---
   [type] | TableType | table style theme | TableType.primary
   [rowData] | json | Table data | &nbsp;
+  [treeConfig] | TreeConfig | the tree configuration of the table | &nbsp;
   [columnDefs] | json | Columns definition | &nbsp;
   [rowSelection] | RowSelection | single multiple | null
   suppressColumnVirtualisation | boolean | disables virtual scroll on columns | true

@@ -38,7 +38,7 @@ import {WithTree} from './tree-able';
 @Component({
   selector: 'b-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss'],
+  styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss', './styles/tree-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent extends WithTree(WithAgGrid()) implements OnInit, OnChanges {
