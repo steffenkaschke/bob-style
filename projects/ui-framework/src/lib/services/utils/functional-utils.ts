@@ -48,6 +48,11 @@ export const isEmptyString = (val: any): boolean => !isNotEmptyString(val);
 
 export const isArray = (val: any): boolean => val && Array.isArray(val);
 
+export const isDate = (value: any): boolean =>
+  String(value) !== 'Invalid Date' &&
+  value instanceof Date &&
+  typeof value.getMonth === 'function';
+
 export const isNotEmptyArray = (val: any, min = 0): boolean =>
   isArray(val) && val.length > min;
 
@@ -77,7 +82,7 @@ export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
   smth === false ||
   (fuzzy && !Boolean(smth)) ||
   isEmptyArray(smth) ||
-  isEmptyObject(smth);
+  (isEmptyObject(smth) && !isDate(smth));
 
 export const isRenderedComponent = (obj: any): boolean =>
   hasProp(obj, 'component');
@@ -409,11 +414,6 @@ export const monthShortNames = [
   'Nov',
   'Dec',
 ];
-
-export const isDate = (value: any): boolean =>
-  String(value) !== 'Invalid Date' &&
-  value instanceof Date &&
-  typeof value.getMonth === 'function';
 
 export const isDateISO8601 = (date: string): boolean =>
   isString(date) &&
