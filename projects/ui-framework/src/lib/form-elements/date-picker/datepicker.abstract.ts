@@ -252,7 +252,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
     }
 
     this.transmitValue(this.value, {
-      eventType: event,
+      eventType: this.writingValue ? [InputEventType.onWrite] : event,
       addToEventObj: { date: this.value },
     });
   }
