@@ -85,6 +85,7 @@ const note = `
   ${template}
   ~~~
 
+  xxx
 `;
 
 const mockValues = [
