@@ -577,18 +577,6 @@ describe('MultiListComponent', () => {
       expect(options[0].nativeElement.innerText).toContain('Basic Info 1');
       expect(headers[0].nativeElement.innerHTML).toContain('Basic Info Header');
     });
-    // Deprecated: Group header search
-    xit('should show group headers and no options if search only matches headers', () => {
-      component['searchChange']('Personal He');
-      fixture.autoDetectChanges();
-      const options = fixture.debugElement.queryAll(By.css('.option'));
-      const headers = fixture.debugElement.queryAll(By.css('.header'));
-      expect(options.length).toEqual(0);
-      expect(headers.length).toEqual(1);
-      expect(headers[0].nativeElement.innerText.trim()).toEqual(
-        'Personal Header'
-      );
-    });
   });
 
   describe('list footer', () => {
