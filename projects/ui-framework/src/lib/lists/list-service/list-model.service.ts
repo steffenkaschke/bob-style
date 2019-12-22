@@ -70,7 +70,9 @@ export class ListModelService {
               {
                 groupName: group.groupName,
                 isPlaceHolder: false,
-                hidden: isBoolean(group.hidden) ? group.hidden : option.hidden,
+                hidden: isBoolean(group.hidden)
+                  ? group.hidden
+                  : !!option.hidden,
               },
               !isNullOrUndefined(group.key) ? { key: group.key } : {}
             )
@@ -87,10 +89,9 @@ export class ListModelService {
                 {
                   groupName: group.groupName,
                   isPlaceHolder: false,
-                  // selected: option.selected,
                   hidden: isBoolean(group.hidden)
                     ? group.hidden
-                    : option.hidden,
+                    : !!option.hidden,
                 },
                 !isNullOrUndefined(group.key) ? { key: group.key } : {}
               )
