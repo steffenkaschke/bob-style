@@ -170,18 +170,6 @@ export class ListModelService {
     );
   }
 
-  countOptions(options: SelectOption[], mustBe = null) {
-    return mustBe ? options.filter(opt => opt[mustBe]).length : options.length;
-  }
-
-  isIndeterminate(options: SelectOption[], selectedCount = null): boolean {
-    selectedCount =
-      selectedCount !== null
-        ? selectedCount
-        : this.countOptions(options, 'selected');
-    return selectedCount > 0 && selectedCount < options.length;
-  }
-
   selectAll<T = SelectGroupOption>(options: T[]): T[] {
     options.forEach((option: T) => {
       let allSelected = true;
@@ -231,6 +219,18 @@ export class ListModelService {
       (!isNullOrUndefined(group1.key) && group1.key === group2.key) ||
       (isNullOrUndefined(group1.key) && group1.groupName === group2.groupName)
     );
+  }
+
+  countOptions(options: SelectOption[], mustBe = null) {
+    return mustBe ? options.filter(opt => opt[mustBe]).length : options.length;
+  }
+
+  isIndeterminate(options: SelectOption[], selectedCount = null): boolean {
+    selectedCount =
+      selectedCount !== null
+        ? selectedCount
+        : this.countOptions(options, 'selected');
+    return selectedCount > 0 && selectedCount < options.length;
   }
 
   totalOptionsCount(options: SelectGroupOption[]): number {
