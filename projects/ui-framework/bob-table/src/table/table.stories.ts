@@ -4,6 +4,7 @@ import {
   object,
   select,
   withKnobs,
+  boolean,
 } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { values } from 'lodash';
@@ -28,9 +29,13 @@ const template = `
          [columnDefs]="columnDefs"
          [maxHeight]="maxHeight"
          [rowSelection]="rowSelection"
+         [removeColumnButtonEnabled]="removeColumnButtonEnabled"
          (rowClicked)="rowClicked($event)"
+         (cellClicked)="cellClicked($event)"
          (selectionChanged)="selectionChanged($event)"
-         (sortChanged)="sortChanged($event)">
+         (sortChanged)="sortChanged($event)"
+         (columnsOrderChanged)="columnsOrderChanged($event)"
+         (columnRemoved)="columnRemoved($event)">
 </b-table>
 `;
 
@@ -60,22 +65,38 @@ const note = `
   #### Properties
   Name | Type | Description | default value
   --- | --- | --- | ---
-  type | TableType | table style theme | TableType.primary
-  rowData | json | Table data | &nbsp;
-  columnDefs | json | Columns definition | &nbsp;
-  rowSelection | RowSelection | single multiple | null
+  [type] | TableType | table style theme | TableType.primary
+  [rowData] | json | Table data | &nbsp;
+  [columnDefs] | json | Columns definition | &nbsp;
+  [rowSelection] | RowSelection | single multiple | null
   suppressColumnVirtualisation | boolean | disables virtual scroll on columns | true
-  maxHeight | number | grid max height | 450
-  rowClicked | Event | Row clicked event | &nbsp;
-  gridInit | Event | Grid init event | &nbsp;
-  selectionChanged | Event | All selected rows | &nbsp;
-  sortChanged | Event | Sort changed event | &nbsp;
-  tableGridOptions | GridOptions - Partial | extra options that are added on grid | {}
-  addRows | Function | add rows | &nbsp;
-  updateRows | Function | update rows | &nbsp;
-  removeRows | Function | remove rows | &nbsp;
-  filterRows | Function | search rows | &nbsp;
-  resetFilter | Function | reset filter | &nbsp;
+  [maxHeight] | number | grid max height | 450
+  [tableGridOptions] | GridOptions - Partial | extra options that are added on grid | {}
+  [suppressDragLeaveHidesColumns] | boolean | disables 'dragging column out to remove it' behaviour | false
+  [removeColumnButtonEnabled] | boolean | adds (x) button to column header | false
+  (rowClicked) | EventEmitter<wbr>&lt;RowClickedEvent&gt; | Row clicked event | &nbsp;
+  (gridInit) | EventEmitter<wbr>&lt;void&gt;  | Grid init event | &nbsp;
+  (selectionChanged) | EventEmitter<wbr>&lt;any[]&gt; | All selected rows | &nbsp;
+  (sortChanged) | EventEmitter<wbr>&lt;SortChangedEvent&gt; | Sort changed event | &nbsp;
+  (columnsChanged) | EventEmitter<wbr>&lt;void&gt; | emits when columns change | &nbsp;
+  (columnsOrderChanged) | EventEmitter<wbr>&lt;ColumnsOrderChangedEvent&gt; | emits when column order changes | &nbsp;
+  (cellClicked) | EventEmitter<wbr>&lt;CellClickedEvent&gt; | emits on cell click | &nbsp;
+  (columnRemoved) | EventEmitter<wbr>&lt;string&gt; | Emits Cell ID,\
+   when remove coulumn button is clicked in column header. \
+   <br>**Note** the column is not removed - consumer has to provide this functionality. | &nbsp;
+
+  #### Methods
+  Name | Type | Description
+  --- | --- | --- | ---
+  addRows | (rows: any[]): void | add rows
+  updateRows | (rowsData: any[]): void  | update rows
+  removeRows | (rows: any[]): void  | remove rows
+  filterRows | (filterQuery: string): void  | search rows
+  resetFilter | (): void | reset filter
+  getDisplayedRowCount | (): number | get displayed rows number
+  getRow | (rowIndex: string): RowNode | returns row by index
+  deselectAll | (): void | deselects all
+
   ~~~
   ${template}
   ~~~
@@ -86,18 +107,27 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        type: select('type', type, TableType.Primary),
-        maxHeight: number('maxHeight', 450),
+        type: select('type', type, TableType.Primary, 'Props'),
+        maxHeight: number('maxHeight', 450, {}, 'Props'),
         rowSelection: select(
           'rowSelection',
           rowSelection,
-          RowSelection.Multiple
+          RowSelection.Multiple,
+          'Props'
         ),
-        columnDefs: object('columnDefs', mockColumnsDefs),
-        rowData: object('rowData', mockRowData),
+        removeColumnButtonEnabled: boolean(
+          'removeColumnButtonEnabled',
+          false,
+          'Props'
+        ),
+        columnDefs: object('columnDefs', mockColumnsDefs, 'Data'),
+        rowData: object('rowData', mockRowData, 'Data'),
         rowClicked: action('Row clicked'),
+        cellClicked: action('Cell clicked'),
         selectionChanged: action('Selection changed'),
-        sortChanged: action('sort changed'),
+        sortChanged: action('Sort changed'),
+        columnsOrderChanged: action('Column order changed'),
+        columnRemoved: action('Column remove button clicked'),
       },
       moduleMetadata: {
         entryComponents: [AvatarCellComponent, ActionsCellComponent],

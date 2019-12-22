@@ -59,6 +59,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Input() suppressColumnVirtualisation = true;
   @Input() tableGridOptions: Partial<GridOptions> = {};
   @Input() suppressDragLeaveHidesColumns = false;
+  @Input() removeColumnButtonEnabled = false;
 
   @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
     SortChangedEvent
@@ -75,6 +76,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Output() cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<
     CellClickedEvent
   >();
+  @Output() columnRemoved: EventEmitter<string> = new EventEmitter<string>();
 
   readonly rowHeight: number = 56;
   readonly autoSizePadding: number = 30;
@@ -86,14 +88,13 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   private columns: string[];
 
-  public removeColumnButtonEnabled = false;
-
   @HostListener('click', ['$event'])
   onHostClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
 
     if (
       this.removeColumnButtonEnabled &&
+      this.columnRemoved.observers &&
       target.matches('.ag-header-cell[col-id]')
     ) {
       const outerWidth = target.offsetWidth;
@@ -104,8 +105,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         event.offsetX >= outerWidth - paddingRight - 16
       ) {
         event.stopPropagation();
-        const colID = target.getAttribute('col-id');
-        console.log('remove button clicked, ID: ', colID);
+        this.columnRemoved.emit(target.getAttribute('col-id'));
       }
     }
   }
