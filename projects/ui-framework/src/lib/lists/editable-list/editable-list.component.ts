@@ -83,7 +83,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     create: [],
     order: null,
     sortType: null,
-    list: null,
+    list: [],
   };
 
   public isDragged = false;
