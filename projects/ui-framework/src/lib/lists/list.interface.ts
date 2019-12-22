@@ -3,9 +3,10 @@ export interface ListHeader {
   key?: string | number;
   isCollapsed: boolean;
   placeHolderSize: number;
-  selected: boolean;
+  selected?: boolean;
   indeterminate?: boolean;
   selectedCount?: number;
+  hidden?: boolean;
 }
 
 export interface ListOption {
@@ -17,12 +18,15 @@ export interface ListOption {
   selected: boolean;
   prefixComponent?: ListComponentPrefix;
   disabled?: boolean;
+  hidden?: boolean;
 }
 
 export interface SelectGroupOption {
   groupName: string;
   key?: string | number;
   options: SelectOption[];
+  selected?: boolean;
+  hidden?: boolean;
 }
 
 export interface SelectOption {
@@ -31,6 +35,7 @@ export interface SelectOption {
   selected?: boolean;
   prefixComponent?: ListComponentPrefix;
   disabled?: boolean;
+  hidden?: boolean;
 }
 
 export interface ListComponentPrefix {

@@ -40,15 +40,15 @@ export class MultiListComponent extends BaseListElement {
     };
   }
 
-  headerClick(header: ListHeader): void {
+  headerClick(header: ListHeader, index: number): void {
     if (this.options.length > 1) {
       this.toggleGroupCollapse(header);
     } else {
-      this.selectGroup(header);
+      this.selectGroup(header, index);
     }
   }
 
-  selectGroup(header: ListHeader): void {
+  selectGroup(header: ListHeader, index: number): void {
     header.selected = this.getHeaderSelect(header);
 
     const groupOptionsIds = chain(this.options)
