@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { escapeRegExp } from 'lodash';
+import { escapeRegExp, cloneDeep } from 'lodash';
 import { LIST_EL_HEIGHT } from '../list.consts';
 import {
   ListOption,
@@ -137,17 +137,20 @@ export class ListModelService {
     options: SelectGroupOption[],
     searchValue: string
   ): SelectGroupOption[] {
+    searchValue = searchValue.trim();
     const matcher = new RegExp(escapeRegExp(searchValue), 'i');
 
-    return options
-      .map((group: SelectGroupOption) =>
-        Object.assign({}, group, {
-          options: group.options.filter((option: SelectOption) =>
-            matcher.test(option.value)
-          ),
-        })
-      )
-      .filter((group: SelectGroupOption) => isNotEmptyArray(group.options));
+    return searchValue
+      ? options
+          .map((group: SelectGroupOption) =>
+            Object.assign({}, group, {
+              options: group.options.filter((option: SelectOption) =>
+                matcher.test(option.value)
+              ),
+            })
+          )
+          .filter((group: SelectGroupOption) => isNotEmptyArray(group.options))
+      : cloneDeep(options);
   }
 
   getSelectedIDs(
