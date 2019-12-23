@@ -236,4 +236,6 @@ export class ListModelService {
   totalOptionsCount(options: SelectGroupOption[]): number {
     return arrayFlatten(options.map(group => group.options)).length;
   }
+
+  // bye
 }
