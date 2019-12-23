@@ -168,9 +168,9 @@ $min-table-height: 140px;
       align-items: center;
       cursor: default;
 
-      @include b-icon($icon: 'close', $size: small, $elem: '&:after');
+      @include b-icon($icon: 'close', $size: small, $elem: '&:hover:after');
 
-      &:after {
+      &:hover:after {
         font-size: 14px;
         text-align: right;
         color: black;
