@@ -29,6 +29,6 @@ import { TableActionsWrapperComponent } from './table-cell-components/table-acti
     MenuModule,
     AgGridModule.withComponents([AvatarCellComponent, ActionsCellComponent, ActionsCellComponent]),
   ],
-  exports: [TableComponent, AvatarCellComponent, ActionsCellComponent],
+  exports: [TableComponent, AvatarCellComponent, ActionsCellComponent, TableActionsWrapperComponent],
 })
 export class TableModule {}
