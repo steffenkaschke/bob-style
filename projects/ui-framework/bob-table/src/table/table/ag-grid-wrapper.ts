@@ -20,14 +20,14 @@ export function WithAgGrid<C extends Constructor<{}>>(Base: C = (class {} as any
         })
     );
 
-    protected gridOptions: GridOptions;
+    public gridOptions: GridOptions;
 
     constructor(...args) {
       super(...args);
       this.tableLicense();
     }
 
-    protected setGridOptions(gridOptions: GridOptions) {
+    public setGridOptions(gridOptions: GridOptions) {
       this.gridOptions = gridOptions;
     }
 
