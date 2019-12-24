@@ -30,7 +30,8 @@ const template = `
   (rowClicked)="rowClicked($event)"
   (cellClicked)="cellClicked($event)"
   (selectionChanged)="selectionChanged($event)"
-  (sortChanged)="sortChanged($event)"(columnsOrderChanged)="columnsOrderChanged($event)"
+  (sortChanged)="sortChanged($event)"
+  (columnsOrderChanged)="columnsOrderChanged($event)"
   (columnRemoved)="columnRemoved($event)">
 </b-table>
 `;
@@ -134,13 +135,27 @@ export interface TableStory {
 
 function tableStoryFactory({title, HTMLTemplate, tableData, tableCols, notes, props}: TableStory) {
   const defaultProps = {
-    type            : select('type', type, TableType.Primary),
-    maxHeight       : number('maxHeight', 450),
-    columnDefs      : object(title + ' columnDefs', tableCols),
-    rowData         : object(title + ' rowData', tableData),
-    rowClicked      : action('Row clicked'),
+    type: select('type', type, TableType.Primary, 'Props'),
+    maxHeight: number('maxHeight', 450, {}, 'Props'),
+    rowSelection: select(
+        'rowSelection',
+        rowSelection,
+        RowSelection.Multiple,
+        'Props'
+    ),
+    removeColumnButtonEnabled: boolean(
+        'removeColumnButtonEnabled',
+        false,
+        'Props'
+    ),
+    columnDefs: object(`${title} columnDefs`, tableCols, 'Data'),
+    rowData: object(`${title} rowData`, tableData, 'Data'),
+    rowClicked: action('Row clicked'),
+    cellClicked: action('Cell clicked'),
     selectionChanged: action('Selection changed'),
-    sortChanged     : action('sort changed'),
+    sortChanged: action('Sort changed'),
+    columnsOrderChanged: action('Column order changed'),
+    columnRemoved: action('Column remove button clicked'),
   };
   story.add(
       title,
@@ -164,46 +179,3 @@ function tableStoryFactory({title, HTMLTemplate, tableData, tableCols, notes, pr
       {notes: {markdown: notes}}
   );
 }
-story.add(
-  'Data Table',
-  () => {
-    return {
-      template: storyTemplate,
-      props: {
-        type: select('type', type, TableType.Primary, 'Props'),
-        maxHeight: number('maxHeight', 450, {}, 'Props'),
-        rowSelection: select(
-          'rowSelection',
-          rowSelection,
-          RowSelection.Multiple,
-          'Props'
-        ),
-        removeColumnButtonEnabled: boolean(
-          'removeColumnButtonEnabled',
-          false,
-          'Props'
-        ),
-        columnDefs: object('columnDefs', mockColumnsDefs, 'Data'),
-        rowData: object('rowData', mockRowData, 'Data'),
-        rowClicked: action('Row clicked'),
-        cellClicked: action('Cell clicked'),
-        selectionChanged: action('Selection changed'),
-        sortChanged: action('Sort changed'),
-        columnsOrderChanged: action('Column order changed'),
-        columnRemoved: action('Column remove button clicked'),
-      },
-      moduleMetadata: {
-        entryComponents: [AvatarCellComponent, ActionsCellComponent],
-        imports: [
-          BrowserAnimationsModule,
-          StoryBookLayoutModule,
-          TableModule,
-          AgGridModule,
-          AvatarModule,
-          AgGridModule.withComponents([AvatarCellComponent]),
-        ],
-      },
-    };
-  },
-  { notes: { markdown: note } }
-);

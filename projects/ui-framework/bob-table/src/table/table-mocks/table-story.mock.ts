@@ -54,7 +54,10 @@ export const mockColumnsDefs: ColumnDef[] = [
   }
 ];
 
-export const treeColumnDefsMock = [{ field: 'jobTitle', headerName: 'Job Title' }, { field: 'employmentType', headerName: 'Employment Type' }];
+export const treeColumnDefsMock: ColumnDef[] = [
+  { field: 'jobTitle', headerName: 'Job Title', sortable: true },
+  { field: 'employmentType', headerName: 'Employment Type', sortable: true }
+];
 export const treeRowDataMock = [
   {
     orgHierarchy: ['Erica Rogers'],

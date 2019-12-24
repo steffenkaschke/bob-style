@@ -172,6 +172,11 @@ export class TableComponent extends WithTree(WithAgGrid()) implements OnInit, On
       suppressDragLeaveHidesColumns: this.suppressDragLeaveHidesColumns,
       autoSizePadding: this.autoSizePadding,
       suppressColumnVirtualisation: this.suppressColumnVirtualisation,
+      autoGroupColumnDef: {
+        cellRendererParams: {
+          suppressCount: true
+        }
+      },
       rowHeight: this.rowHeight,
       headerHeight: this.rowHeight,
       rowSelection: this.rowSelection,
