@@ -18,7 +18,7 @@ export const defaultTreeConfig: TreeConfig = {
 export function WithTree<C extends Constructor<{}>>(Base: C = (class {} as any)) {
   class TreeAble extends Base {
 
-    private _treeConfig: TreeConfig = defaultTreeConfig;
+    _treeConfig: TreeConfig = defaultTreeConfig;
 
     @Input() set treeConfig(treeConfig: TreeConfig) {
       this._treeConfig = {...defaultTreeConfig, ...treeConfig};
