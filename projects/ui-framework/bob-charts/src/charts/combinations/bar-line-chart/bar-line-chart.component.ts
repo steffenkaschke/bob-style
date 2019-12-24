@@ -66,7 +66,7 @@ export class BarLineChartComponent extends ChartCore implements OnChanges {
               : {...MULTI_COLUMN_WIDTH, stacking: undefined}
           }
       },
-      { ...this.extraOptions }
+      this.extraOptions
     );
   }
 }
