@@ -29,7 +29,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   @Input() type: TableType = TableType.Primary;
 
-  private treeConfig: TreeConfig;
+  public treeConfig: TreeConfig;
   @Input('treeConfig') set setTreeConfig(treeConfig: TreeConfig) {
     this.treeConfig = {...defaultTreeConfig, ...treeConfig};
   }

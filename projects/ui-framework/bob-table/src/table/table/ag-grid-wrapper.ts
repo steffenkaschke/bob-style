@@ -1,42 +1,16 @@
 import {RowNode, GridOptions} from 'ag-grid-community';
-import {Constructor} from 'bob-style';
-import {once} from 'lodash';
 import * as agGrid from 'ag-grid-enterprise';
 
 const LICENSE_KEY =
   'hibob_Bob_1Devs_1Deployment_23_April_2020__MTU4NzU5NjQwMDAwMA==5b77134bf43e27e7f8ccb20bdfa3c155';
 
 
-let isLicenseSet = false;
-// export function WithAgGrid<C extends Constructor<{}>>(Base: C = (class {} as any)) {
-//   return
-// }
 export class AgGridWrapper {
-
-  readonly tableLicense = once(() =>
-      // @ts-ignore
-      import('ag-grid-enterprise').then(agGrig => {
-        if (!isLicenseSet) {
-          isLicenseSet = true;
-          agGrig.LicenseManager.setLicenseKey(LICENSE_KEY);
-        }
-      })
-  );
 
   public gridOptions: GridOptions;
 
   constructor() {
     agGrid.LicenseManager.setLicenseKey(LICENSE_KEY);
-  }
-
-  public a(): Promise<any> {
-    return new Promise(res => import('ag-grid-enterprise').then(agGrig => {
-      if (!isLicenseSet) {
-        isLicenseSet = true;
-        agGrig.LicenseManager.setLicenseKey(LICENSE_KEY);
-      }
-      res();
-    }));
   }
 
   public setGridOptions(gridOptions: GridOptions) {
