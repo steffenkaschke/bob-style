@@ -29,7 +29,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   @Input() type: TableType = TableType.Primary;
 
-  public treeConfig: TreeConfig;
+  public treeConfig: TreeConfig = defaultTreeConfig;
   @Input('treeConfig') set setTreeConfig(treeConfig: TreeConfig) {
     this.treeConfig = {...defaultTreeConfig, ...treeConfig};
   }
@@ -63,7 +63,6 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   readonly rowHeight: number = 56;
   readonly autoSizePadding: number = 30;
   readonly tableType = TableType;
-  loaded = false;
   gridReady = false;
   gridOptions: GridOptions;
   gridColumnDefs: ColumnDef[];
@@ -96,8 +95,6 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.loaded = true;
-    this.cdr.markForCheck();
     this.setGridHeight(this.maxHeight);
     this.setGridOptions({
       ...this.initGridOptions(),
