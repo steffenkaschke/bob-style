@@ -1,16 +1,17 @@
 :host {
   display: flex;
+  align-items: center;
 
   .actionable-item {
     flex-grow: 1;
   }
 
-  &:hover b-menu {
+  /* &:hover b-menu, &:hover b-button {
     visibility: visible;
   }
 
-  b-menu {
+  b-menu, b-button {
     visibility: hidden;
-  }
+  }*/
 }
 
