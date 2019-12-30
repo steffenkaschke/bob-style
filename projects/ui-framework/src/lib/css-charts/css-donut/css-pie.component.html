@@ -1,0 +1,29 @@
+
+<svg [attr.height]="sizeWithPadding"
+     [attr.width]="sizeWithPadding"
+     [attr.viewBox]="'0 0 ' + sizeWithPadding + ' ' + sizeWithPadding"
+     class="donut-chart"
+     [class.animate]="animate">
+  <g *ngFor="let value of sortedValues trackBy trackByIndex; index as index">
+    <circle
+      [attr.cx]="cx"
+      [attr.cy]="cy"
+      [attr.r]="radius"
+      [attr.stroke]="colors[index % colors.length]"
+      [attr.stroke-width]="_border"
+      [attr.stroke-dasharray]="adjustedCircumference()"
+      [attr.stroke-dashoffset]="calculateStrokeDashOffset(value, circumference())"
+      fill="transparent"
+      [style.transform]="returnCircleTransformValue(index)"
+      [style.transformOrigin]="returnCircleTransformOriginValue(index)"
+    />
+
+    <text *ngIf="showText && segmentBigEnough(value)"
+          text-anchor="middle"
+          dy="3px"
+          [attr.fill]="'white'"
+          [attr.font-size]="'10px'"
+          [attr.x]="chartData[index]?.textX"
+          [attr.y]="chartData[index]?.textY">{{ percentageString(value) }}</text>
+  </g>
+</svg>

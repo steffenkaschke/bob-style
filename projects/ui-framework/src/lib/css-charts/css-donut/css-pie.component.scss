@@ -1,0 +1,21 @@
+
+.donut-chart {
+  &.animate {
+    circle, text {
+      transition: all 1s;
+    }
+
+  }
+  //background: red;
+  //width: var(--size);
+  //height: var(--size);
+  //margin: 1em auto;
+  //border: var(--border) solid transparent;
+  //border-radius: 50%;
+  //background: linear-gradient(white, white) padding-box, conic-gradient(lightseagreen var(--value), lightgrey var(--value)) border-box;
+  //position: relative;
+  //display: flex;
+  //justify-content: center;
+  //align-items: center;
+  //font-size: 2em;
+}

@@ -130,6 +130,23 @@ export abstract class ChartCore implements AfterViewInit  {
       credits: {
         enabled: false
       },
+      yAxis: [{
+        stackLabels: {
+          enabled: true,
+          align: 'right',
+          formatter: (function (component) {
+            return function () {
+              return component.formatValue(this.total);
+            };
+          })(this),
+          style: {
+            color: '#ff0000',
+            fontWeight: 'bold'
+          },
+          x: -5,
+          verticalAlign: 'top'
+        }
+      }],
       series: [],
       exporting: {
         enabled: false
