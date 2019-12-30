@@ -1,4 +1,3 @@
-// tslint:disable-next-line:max-line-length
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,7 +13,6 @@ import {
   HostListener,
 } from '@angular/core';
 import { AgGridNg2 } from 'ag-grid-angular';
-// tslint:disable-next-line:max-line-length
 import {
   CellClickedEvent,
   Column,
@@ -25,25 +23,30 @@ import {
 } from 'ag-grid-community';
 import { cloneDeep, get, has, map } from 'lodash';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
-import { WithAgGrid } from './ag-grid-wrapper';
+import { AgGridWrapper } from './ag-grid-wrapper';
 import { RowSelection, TableType } from './table.enum';
 import {
   ColumnDef,
   ColumnsOrderChangedEvent,
   RowClickedEvent,
-  SortChangedEvent
+  SortChangedEvent,
 } from './table.interface';
-import {WithTree} from './tree-able';
-// DO NOT DELETE!!!!, need this import for the build
-import {Constructor} from 'bob-style';
+import { TreeConfig, defaultTreeConfig } from './tree-able';
+
+const CLOSE_BUTTON_DIAMETER = 20;
+const CLOSE_MARGIN_OFFSET = 6;
 
 @Component({
   selector: 'b-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./styles/table.component.scss', './styles/table-checkbox.scss', './styles/tree-table.component.scss'],
+  styleUrls: [
+    './styles/table.component.scss',
+    './styles/table-checkbox.scss',
+    './styles/tree-table.component.scss',
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableComponent extends WithTree(WithAgGrid()) implements OnInit, OnChanges {
+export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   constructor(
     private tableUtilsService: TableUtilsService,
     private elRef: ElementRef,
@@ -55,8 +58,15 @@ export class TableComponent extends WithTree(WithAgGrid()) implements OnInit, On
   @ViewChild('agGrid', { static: true }) agGrid: AgGridNg2;
 
   @Input() type: TableType = TableType.Primary;
-  @Input() rowData: any[];
-  @Input() columnDefs: ColumnDef[];
+
+  public treeConfig: TreeConfig = defaultTreeConfig;
+
+  @Input('treeConfig') set setTreeConfig(treeConfig: TreeConfig) {
+    this.treeConfig = { ...defaultTreeConfig, ...treeConfig };
+  }
+
+  @Input() rowData: any[] = [];
+  @Input() columnDefs: ColumnDef[] = [];
   @Input() rowSelection: RowSelection = null;
   @Input() maxHeight = 450;
   @Input() suppressColumnVirtualisation = true;
@@ -64,27 +74,18 @@ export class TableComponent extends WithTree(WithAgGrid()) implements OnInit, On
   @Input() suppressDragLeaveHidesColumns = false;
   @Input() removeColumnButtonEnabled = false;
 
-  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
-    SortChangedEvent
-  >();
-  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<
-    RowClickedEvent
-  >();
+  @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
+  @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
   @Output() columnsChanged: EventEmitter<void> = new EventEmitter<void>();
-  @Output() columnsOrderChanged: EventEmitter<
-    ColumnsOrderChangedEvent
-  > = new EventEmitter<ColumnsOrderChangedEvent>();
-  @Output() cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<
-    CellClickedEvent
-  >();
+  @Output() columnsOrderChanged: EventEmitter<ColumnsOrderChangedEvent> = new EventEmitter<ColumnsOrderChangedEvent>();
+  @Output() cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<CellClickedEvent>();
   @Output() columnRemoved: EventEmitter<string> = new EventEmitter<string>();
 
   readonly rowHeight: number = 56;
   readonly autoSizePadding: number = 30;
   readonly tableType = TableType;
-
   gridReady = false;
   gridOptions: GridOptions;
   gridColumnDefs: ColumnDef[];
@@ -103,12 +104,11 @@ export class TableComponent extends WithTree(WithAgGrid()) implements OnInit, On
       const outerWidth = target.offsetWidth;
       const outerHeight = target.offsetHeight;
       const paddingRight = parseFloat(getComputedStyle(target).paddingRight);
-
       if (
-        event.offsetX <= outerWidth - paddingRight &&
-        event.offsetX >= outerWidth - paddingRight - 16 &&
-        event.offsetY >= outerHeight / 2 - 8 &&
-        event.offsetY <= outerHeight / 2 + 8
+        event.offsetX <= outerWidth - paddingRight + CLOSE_MARGIN_OFFSET &&
+        event.offsetX >= outerWidth - paddingRight + CLOSE_MARGIN_OFFSET - CLOSE_BUTTON_DIAMETER &&
+        event.offsetY >= (outerHeight - CLOSE_BUTTON_DIAMETER) / 2 &&
+        event.offsetY <= (outerHeight + CLOSE_BUTTON_DIAMETER) / 2
       ) {
         event.stopPropagation();
         this.columnRemoved.emit(target.getAttribute('col-id'));
@@ -162,7 +162,7 @@ export class TableComponent extends WithTree(WithAgGrid()) implements OnInit, On
   }
 
   private setGridHeight(height: number): void {
-    this.elRef.nativeElement.style.setProperty('--max-height', `${height}px`);
+    this.elRef.nativeElement.style.setProperty('--max-height', `${ height }px`);
   }
 
   public getOrderedColumnFields(): string[] {
@@ -179,8 +179,8 @@ export class TableComponent extends WithTree(WithAgGrid()) implements OnInit, On
       suppressColumnVirtualisation: this.suppressColumnVirtualisation,
       autoGroupColumnDef: {
         cellRendererParams: {
-          suppressCount: true
-        }
+          suppressCount: true,
+        },
       },
       rowHeight: this.rowHeight,
       headerHeight: this.rowHeight,
