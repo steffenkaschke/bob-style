@@ -54,22 +54,23 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
     private srvc: EditableListService,
     private zone: NgZone,
-    private cd: ChangeDetectorRef,
-  ) {
-  }
+    private cd: ChangeDetectorRef
+  ) {}
 
   @ViewChild('addItemInput', { static: false }) addItemInput: ElementRef;
 
   @Input() list: SelectOption[] = [];
   @Input() sortType: ListSortType;
   @Input() allowedActions: EditableListActions = cloneObject(
-    EDITABLE_LIST_ALLOWED_ACTIONS_DEF,
+    EDITABLE_LIST_ALLOWED_ACTIONS_DEF
   );
   @Input() translation: EditableListTranslation = cloneObject(
-    EDITABLE_LIST_TRANSLATION,
+    EDITABLE_LIST_TRANSLATION
   );
   @Input() maxChars = 100;
-  @Output() changed: EventEmitter<EditableListState> = new EventEmitter<EditableListState>();
+  @Output() changed: EventEmitter<EditableListState> = new EventEmitter<
+    EditableListState
+  >();
   @Output() inputChanged: EventEmitter<string> = new EventEmitter<string>();
 
   readonly icons = Icons;
@@ -121,7 +122,6 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     if (isNumber(this.removingIndex)) {
       this.removeCancel(event);
     }
-
     if (this.addingItem) {
       this.addItemCancel(event);
     }
@@ -137,7 +137,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
         translation: cloneObject(EDITABLE_LIST_TRANSLATION),
       },
       [],
-      true,
+      true
     );
 
     if (hasChanges(changes, ['list'])) {
@@ -149,7 +149,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
       this.sortList(
         this.listState.list,
         this.sortType,
-        this.listState.sortType,
+        this.listState.sortType
       );
     }
 
@@ -195,7 +195,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
                 .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, '') ===
               value
                 .toLowerCase()
-                .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, ''),
+                .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, '')
           );
 
         if (this.sameItemIndex > -1) {
@@ -211,6 +211,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
           this.transmit();
           this.listState.sortType = ListSortType.UserDefined;
           this.addItemInput.nativeElement.value = '';
+          this.addingItemLen = 0;
         }
       } else {
         this.addItemCancel();
@@ -228,7 +229,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
     if (
       !relatedTarget ||
       !relatedTarget.matches(
-        '.bel-done-button button, .bel-item-confirm, .bel-item-input',
+        '.bel-done-button button, .bel-item-confirm, .bel-item-input'
       )
     ) {
       this.addingItem = false;
@@ -249,6 +250,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
       (relatedTarget && relatedTarget.matches('.bel-cancel-button button'))
     ) {
       this.addItemInput.nativeElement.value = '';
+      this.addingItemLen = 0;
     }
   }
 
@@ -327,7 +329,7 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   public sortList(
     list: SelectOption[] = this.listState.list,
     order: ListSortType = null,
-    currentOrder: ListSortType = this.listState.sortType,
+    currentOrder: ListSortType = this.listState.sortType
   ): void {
     this.listState.sortType = this.srvc.sortList(list, order, currentOrder);
     this.addedItem = false;
@@ -337,22 +339,22 @@ export class EditableListComponent implements OnChanges, OnInit, OnDestroy {
   private transmit(): void {
     this.listState.order = this.listState.list.map(i => i.value);
     const itersection = this.listState.create.filter(i =>
-      this.listState.delete.includes(i),
+      this.listState.delete.includes(i)
     );
 
     if (isNotEmptyArray(itersection)) {
       this.listState.create = this.listState.create.filter(
-        i => !itersection.includes(i),
+        i => !itersection.includes(i)
       );
       this.listState.delete = this.listState.delete.filter(
-        i => !itersection.includes(i),
+        i => !itersection.includes(i)
       );
     }
 
     this.changed.emit(
       Object.assign({}, this.listState, {
         list: cloneArray(this.listState.list),
-      }),
+      })
     );
   }
 
