@@ -88,7 +88,7 @@ const note = `
   height (optional) | number | height of chart | 500
   title (optional) | string | title of chart | &nbsp;
   legendPosition (optional) | ChartLegendPositionEnum | where the legend should be set relative to the chart | ChartLegendPositionEnum.BOTTOM
-  extraOptions (optional) | extra highcharts options for customize options that are not currently supported with other inputs | {}
+  extraOptions (optional) | HighChartOptions | extra highcharts options for customize options that are not currently supported with other inputs | {}
 
 
   ### Methods
