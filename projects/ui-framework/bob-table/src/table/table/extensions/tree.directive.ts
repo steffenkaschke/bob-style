@@ -22,7 +22,7 @@ function getFileCellRenderer(treeConfig: TreeConfig) {
 })
 export class TreeDirective implements OnInit {
 
-  public treeConfig: TreeConfig = defaultTreeConfig;
+  public treeConfig: TreeConfig;
   get table() {
     return this.tableComponent.agGrid;
   }
