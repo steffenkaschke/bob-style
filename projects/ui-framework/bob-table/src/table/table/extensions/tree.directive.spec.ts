@@ -40,7 +40,7 @@ describe('TreeDirective', () => {
 
   describe('treeAble', () => {
     let grid: AgGridNg2;
-    const defaultConfigMock = {...defaultTreeConfig};
+    const defaultConfigMock = {...defaultTreeConfig, hierarchyGetter: () => []};
     function setup(treeConfig: TreeConfig = defaultConfigMock) {
       component.treeConfig = treeConfig;
       fixture.detectChanges();
