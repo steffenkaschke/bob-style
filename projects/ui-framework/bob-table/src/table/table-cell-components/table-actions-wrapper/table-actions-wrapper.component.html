@@ -1,6 +1,10 @@
 <div class="actionable-item">
   <ng-content></ng-content>
 </div>
+<b-icon
+  *ngIf="icon"
+  [icon]="icon">
+</b-icon>
 <b-menu
   *ngIf="menuItems && menuItems.length > 1"
   [menu]="menuItems"

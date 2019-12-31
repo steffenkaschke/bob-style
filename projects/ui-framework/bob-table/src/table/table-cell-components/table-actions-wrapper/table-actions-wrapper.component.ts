@@ -7,8 +7,9 @@ import { ButtonSize, ButtonType, IconColor, Icons, MenuItem } from 'bob-style';
   styleUrls: ['./table-actions-wrapper.component.scss']
 })
 export class TableActionsWrapperComponent implements OnInit {
-  @Input() public menuItems: MenuItem[];
-  @Input() public primary = true;
+  @Input() menuItems: MenuItem[];
+  @Input() primary = true;
+  @Input() icon: Icons = null;
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType
 
