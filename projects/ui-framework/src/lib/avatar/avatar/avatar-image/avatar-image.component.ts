@@ -11,6 +11,7 @@ import {
   Output,
   NgZone,
   AfterViewInit,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { AvatarSize, AvatarBadge } from '../avatar.enum';
@@ -28,6 +29,7 @@ import { Icon } from '../../../icons/icon.interface';
   selector: 'b-avatar-image',
   template: `
     <ng-content></ng-content>
+    {{ text }}
   `,
   styleUrls: ['./avatar-image.component.scss'],
   providers: [],
@@ -37,19 +39,20 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   constructor(
     private elRef: ElementRef,
     private DOM: DOMhelpers,
-    private zone: NgZone
+    private zone: NgZone,
+    private cd: ChangeDetectorRef
   ) {
     this.host = this.elRef.nativeElement;
   }
 
   private host: HTMLElement;
-  private hasContent = false;
 
   @Input() size: AvatarSize = AvatarSize.mini;
   @Input() imageSource: string;
   @Input() backgroundColor: string;
   @Input() icon: Icons | Icon;
   @Input() badge: AvatarBadge | Icon;
+  @Input() text: string;
   @Input() disabled = false;
   @Input() isClickable = false;
   @Input() supressWarnings = false;
@@ -75,7 +78,15 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
       []
     );
     if (notFirstChanges(changes)) {
-      this.setAttributes();
+      if (changes.text) {
+        this.cd.detectChanges();
+      }
+
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.setAttributes();
+        }, 0);
+      });
     }
   }
 
@@ -86,8 +97,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       setTimeout(() => {
-        this.hasContent = !this.DOM.isEmpty(this.host);
-        if (this.hasContent) {
+        if (!this.DOM.isEmpty(this.host)) {
           this.setAttributes();
         }
       }, 0);
@@ -96,6 +106,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
 
   private setAttributes(): void {
     const isClickable = this.isClickable || this.clicked.observers.length > 0;
+    const hasContent = !this.DOM.isEmpty(this.host);
 
     if (
       !this.supressWarnings &&
@@ -134,12 +145,12 @@ on b-avatar-image element.`);
       'data-icon-after-size': BadgeSize[this.size],
 
       'data-icon-before':
-        !this.hasContent && this.icon
+        !hasContent && this.icon
           ? ((this.icon as Icon).icon || (this.icon as string)).replace(
               'b-icon-',
               ''
             )
-          : !this.hasContent && !this.imageSource && !this.icon
+          : !hasContent && !this.imageSource && !this.icon
           ? Icons.person.replace('b-icon-', '')
           : null,
       'data-icon-before-color':
@@ -164,10 +175,8 @@ on b-avatar-image element.`);
     this.DOM.bindClasses(this.host, {
       avatar: true,
       'has-hover': isClickable && !this.disabled,
-      'icon-on-hover': Boolean(
-        this.imageSource && (this.icon || this.hasContent)
-      ),
-      'has-content': this.hasContent,
+      'icon-on-hover': Boolean(this.imageSource && (this.icon || hasContent)),
+      'has-content': hasContent,
     });
 
     if (!this.host.className) {
