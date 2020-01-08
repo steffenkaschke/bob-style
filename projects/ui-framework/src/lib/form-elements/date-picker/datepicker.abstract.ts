@@ -49,6 +49,12 @@ import {
 } from '../../consts';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { LocaleFormat, DateFormatFullDate, DateFormat } from '../../types';
+import { Overlay } from '@angular/cdk/overlay';
+
+export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
+  const strategy = () => overlay.scrollStrategies.close();
+  return strategy;
+}
 
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, AfterViewInit, OnDestroy {

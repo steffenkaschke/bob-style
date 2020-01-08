@@ -141,4 +141,5 @@ export enum Icons {
   person_peer = 'b-icon-person-peer',
   doc_description = 'b-icon-doc-description',
   notification = 'b-icon-notification',
+  placeholder_add = 'b-icon-placeholder-add',
 }
