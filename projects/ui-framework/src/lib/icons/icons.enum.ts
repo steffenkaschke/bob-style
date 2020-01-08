@@ -142,4 +142,7 @@ export enum Icons {
   doc_description = 'b-icon-doc-description',
   notification = 'b-icon-notification',
   placeholder_add = 'b-icon-placeholder-add',
+  success_alt = 'b-icon-success-alt',
+  people_alt2 = 'b-icon-people-alt2',
+  arrow_left_alt = 'b-icon-arrow-left-alt',
 }
