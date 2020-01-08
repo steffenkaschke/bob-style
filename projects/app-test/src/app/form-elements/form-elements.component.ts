@@ -18,6 +18,7 @@ import {
   getType,
   makeArray,
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
+// tslint:disable-next-line: max-line-length
 import { BlotType } from '../../../../ui-framework/src/lib/form-elements/rich-text-editor/rte-core/rte.enum';
 import { AvatarComponent } from '../../../../ui-framework/src/lib/avatar/avatar/avatar.component';
 import {
@@ -654,6 +655,7 @@ export class FormElementsTestComponent
 
   ///////////////////////////////////
 
+  // tslint:disable-next-line: max-line-length
   RTEvalueMock = `<div> <span style="color: red;">Hello</span> <a href="http://www.google.com">World</a>!</div>
 <div>Some <em>initial</em> <strong>bold</strong> text</div> {{/work/title}}`;
 
