@@ -97,14 +97,14 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 
     .ag-icon-asc,
     .ag-icon-desc {
-      @include b-icon($icon: 'arrow-left-alt', $size: 15px) {
+      @include b-icon($icon: 'arrow-left-alt', $size: 14px) {
         font-weight: bold;
       }
-      margin-top: -1px;
     }
 
     .ag-icon-asc {
       transform: rotate(-90deg);
+      margin-bottom: -1px;
     }
 
     .ag-icon-desc {
@@ -180,7 +180,6 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
         text-align: right;
         cursor: pointer;
         margin-right: -6px;
-        margin-top: -1px;
       }
     }
   }
