@@ -111,6 +111,12 @@ export const isKey = (key: string, expected: string): boolean =>
 export const isMetaKey = (key: string): boolean =>
   metaKeys.includes(key as any);
 
+export const eventHasCntrlKey = (event: KeyboardEvent | MouseEvent): boolean =>
+  event.metaKey || event.ctrlKey;
+
+export const eventHasMetaKey = (event: KeyboardEvent | MouseEvent): boolean =>
+  event.metaKey || event.shiftKey || event.ctrlKey || event.altKey;
+
 export const asArray = <T = any>(smth: T | T[]): T[] =>
   !isNullOrUndefined(smth)
     ? isArray(smth)
