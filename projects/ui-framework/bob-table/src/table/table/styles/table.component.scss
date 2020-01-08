@@ -58,6 +58,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
       display: flex;
       align-items: center;
       cursor: default;
+      overflow: visible;
     }
 
     .ag-header-cell-sortable .ag-header-cell-label {
@@ -86,16 +87,7 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
       right: -3px;
       width: 5px;
       cursor: move;
-
-      &:after {
-        content: '';
-        position: absolute;
-        top: calc(50% - 15px);
-        left: 0;
-        width: 1px;
-        height: 30px;
-        background-color: $grey-500;
-      }
+      @include cell-border;
     }
 
     .ag-header-icon {
@@ -103,15 +95,20 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
       margin-left: 2px;
     }
 
-    .ag-icon-asc, .ag-icon-desc {
-      transform: rotate(90deg);
-      @include b-icon($icon: 'arrow-right-alt2', $size: small) {
+    .ag-icon-asc,
+    .ag-icon-desc {
+      @include b-icon($icon: 'arrow-left-alt', $size: 14px) {
         font-weight: bold;
       }
     }
 
-    .ag-icon-desc {
+    .ag-icon-asc {
       transform: rotate(-90deg);
+      margin-bottom: -1px;
+    }
+
+    .ag-icon-desc {
+      transform: rotate(90deg);
     }
   }
 
@@ -175,9 +172,11 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 :host ::ng-deep .remove-column-button {
   .ag-header-viewport {
     .ag-header-cell {
-      @include b-icon($icon: 'circle-cancel', $size: small, $elem: '&:hover:after');
-
-      &:after {
+      @include b-icon(
+        $icon: 'circle-cancel',
+        $size: small,
+        $elem: '&:hover:after'
+      ) {
         text-align: right;
         cursor: pointer;
         margin-right: -6px;
