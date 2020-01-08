@@ -145,4 +145,5 @@ export enum Icons {
   success_alt = 'b-icon-success-alt',
   people_alt2 = 'b-icon-people-alt2',
   arrow_left_alt = 'b-icon-arrow-left-alt',
+  in_progress = 'b-icon-in-progress',
 }
