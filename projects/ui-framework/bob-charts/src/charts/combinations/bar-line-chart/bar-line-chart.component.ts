@@ -19,6 +19,8 @@ import { ChartTypesEnum } from '../../chart/chart.enum';
 export class BarLineChartComponent extends ChartCore implements OnChanges {
   type: ChartTypesEnum = ChartTypesEnum.Column;
   @Input() categories: string[];
+  @Input() stacked = false;
+  @Input() stackedPercent = false;
   @Input() data: SeriesOptionsType[];
   @Input() name: string;
   constructor(public zone: NgZone, public cdr: ChangeDetectorRef) {
@@ -47,6 +49,12 @@ export class BarLineChartComponent extends ChartCore implements OnChanges {
           };
           return dataSet as SeriesOptionsType[];
         }),
+        plotOptions: this.stacked
+          ? this.stackedPercent
+            ? { column: { stacking: 'percent', }, }
+            : { column: { stacking: 'normal', }, }
+          : { column: { stacking: undefined, }, }
+
       },
       { ...this.extraOptions }
     );
