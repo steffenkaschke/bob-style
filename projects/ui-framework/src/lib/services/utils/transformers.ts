@@ -92,11 +92,11 @@ export const arrayOfValuesToArrayOfObjects = (key: string) => (
 };
 
 export const valueAsNumber = (
-  inputType: InputTypes,
+  inputType: InputTypes | boolean,
   value: any,
   def: any = undefined
 ): number => {
-  if (inputType !== InputTypes.number || !value) {
+  if (!value || (inputType !== InputTypes.number && inputType !== true)) {
     return value;
   }
   const parsed = parseToNumber(value);
@@ -155,6 +155,9 @@ export const objectOrFail = value => {
 export const stringyOrFail = value => {
   if (isNullOrUndefined(value)) {
     return value;
+  }
+  if (value !== value) {
+    return undefined;
   }
   if (!(isString(value) || isNumber(value))) {
     throw new Error(
@@ -291,5 +294,10 @@ export const valueInArrayOrFail = (
 
 export const logValue = <T = any>(value: T): T => {
   console.log(value);
+  return value;
+};
+
+export const logValueComment = (comment: string) => <T = any>(value: T): T => {
+  console.log(comment + ': ', value);
   return value;
 };
