@@ -194,6 +194,8 @@ export const getType = (smth: any): string =>
     ? 'array'
     : smth instanceof Date
     ? 'date'
+    : smth !== smth
+    ? 'NaN'
     : String(typeof smth);
 
 export const arrayDifference = <T = any>(arrA: T[], arrB: T[]): T[] => {
