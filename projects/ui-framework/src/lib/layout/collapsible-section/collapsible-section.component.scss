@@ -135,6 +135,10 @@ p {
 .bcp-panel {
   border-top: 1px solid $border-color;
 
+  &:first-child {
+    border-top: 0;
+  }
+
   &::ng-deep {
     p {
       @include normalize-par;
