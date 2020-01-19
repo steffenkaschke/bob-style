@@ -1,8 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CircleIconAndLabelComponent } from './circle-icon-and-label.component';
-import { By } from '@angular/platform-browser';
-import { CircleIconAndLabelParams } from './circle-icon-and-label.interface';
-import { AvatarModule, Icons, IconsModule } from 'bob-style';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {CircleIconAndLabelComponent} from './circle-icon-and-label.component';
+import {By} from '@angular/platform-browser';
+import {CircleIconAndLabelParams} from './circle-icon-and-label.interface';
+import {AvatarModule, Icons, IconsModule} from 'bob-style';
+import {ActionsType} from '../table-actions-wrapper/table-actions-wrapper.enum';
+import {MockComponent} from 'ng-mocks';
+import {TableActionsWrapperComponent} from '../table-actions-wrapper/table-actions-wrapper.component';
 
 describe('CircleIconAndLabelComponent', () => {
   let component: CircleIconAndLabelComponent;
@@ -10,7 +13,10 @@ describe('CircleIconAndLabelComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CircleIconAndLabelComponent],
+      declarations: [
+        CircleIconAndLabelComponent,
+        MockComponent(TableActionsWrapperComponent),
+      ],
       imports: [AvatarModule, IconsModule],
     })
       .compileComponents()
@@ -65,5 +71,16 @@ describe('CircleIconAndLabelComponent', () => {
       Icons.department_icon
     );
     expect(labelElement.nativeElement.textContent).toBe('label');
+  });
+
+  it('Should wrap component with table actions wrapper', () => {
+    const circleIconAndLabelParams: CircleIconAndLabelParams = {
+      value: { icon: Icons.department_icon, label: 'label', actionsType: ActionsType.asInlineButton, menuItems: [] },
+    } as CircleIconAndLabelParams;
+    component.agInit(circleIconAndLabelParams);
+    fixture.detectChanges();
+    const actionsWrapper = fixture.debugElement.query(By.css('b-table-actions-wrapper'));
+    expect(actionsWrapper.componentInstance.actionsType).toEqual(ActionsType.asInlineButton);
+    expect(actionsWrapper.componentInstance.menuItems).toEqual([]);
   });
 });

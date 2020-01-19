@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { TableActionsWrapperComponent } from './table-actions-wrapper.component';
-import { By } from '@angular/platform-browser';
-import { MockComponent } from 'ng-mocks';
-import { ButtonComponent, ButtonType, IconComponent, Icons, MenuComponent, SquareButtonComponent, } from 'bob-style';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {TableActionsWrapperComponent} from './table-actions-wrapper.component';
+import {By} from '@angular/platform-browser';
+import {MockComponent} from 'ng-mocks';
+import {ButtonComponent, ButtonType, IconComponent, Icons, MenuComponent, SquareButtonComponent,} from 'bob-style';
+import {ActionsType} from './table-actions-wrapper.enum';
 
 describe('TableActionsWrapperComponent', () => {
   let component: TableActionsWrapperComponent;
@@ -47,6 +47,7 @@ describe('TableActionsWrapperComponent', () => {
       expect(button).toBe(null);
     });
     it('Should display button', () => {
+      component.actionsType = ActionsType.asInlineButton;
       component.menuItems = [
         {
           label: 'save',
@@ -62,6 +63,7 @@ describe('TableActionsWrapperComponent', () => {
       expect(button.type).toBe(ButtonType.primary);
     });
     it('Should display button', () => {
+      component.actionsType = ActionsType.asInlineButton;
       component.primary = false;
       component.menuItems = [
         {
