@@ -1,6 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ButtonSize, ButtonType, IconColor, Icons, IconSize, IconType, MenuItem} from 'bob-style';
-import {ActionsType} from './table-actions-wrapper.enum';
+import { Component, Input, OnInit } from '@angular/core';
+import { ButtonSize, ButtonType, IconColor, Icons, IconSize, IconType, MenuItem } from 'bob-style';
 
 @Component({
   selector: 'b-table-actions-wrapper',
@@ -12,13 +11,10 @@ export class TableActionsWrapperComponent implements OnInit {
   @Input() primary = true;
   @Input() icon: Icons = null;
   @Input() iconType: IconType = IconType.circular;
-  @Input() actionsType: ActionsType = ActionsType.asMenu;
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
-  readonly actionsInMenu = ActionsType.asMenu;
-  readonly actionInButton = ActionsType.asInlineButton;
 
   public openLeft: boolean;
   readonly buttonColor: IconColor = IconColor.normal;
