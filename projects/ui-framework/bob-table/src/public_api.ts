@@ -24,4 +24,3 @@ export {
 export {
   CircleIconAndLabelParams
 } from './table/table-cell-components/circle-icon-and-label/circle-icon-and-label.interface';
-export { ActionsType } from './table/table-cell-components/table-actions-wrapper/table-actions-wrapper.enum';
