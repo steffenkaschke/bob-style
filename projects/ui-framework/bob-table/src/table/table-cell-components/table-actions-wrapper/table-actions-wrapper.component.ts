@@ -13,7 +13,7 @@ export class TableActionsWrapperComponent {
   @Input() iconType: IconType = IconType.circular;
   public openLeft: boolean;
   readonly buttonSize = ButtonSize;
-  readonly squareButtonType: ButtonType = ButtonType.tertiary;
+  readonly squareButtonType = ButtonType;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
   readonly buttonColor: IconColor = IconColor.normal;
