@@ -6,5 +6,6 @@ export interface CircleIconAndLabelParams extends ICellRendererParams {
     icon?: Icons;
     label?: string;
     menuItems?: MenuItem[];
+    primary: boolean;
   };
 }

@@ -74,11 +74,12 @@ describe('CircleIconAndLabelComponent', () => {
 
   it('Should wrap component with table actions wrapper', () => {
     const circleIconAndLabelParams: CircleIconAndLabelParams = {
-      value: { icon: Icons.department_icon, label: 'label', menuItems: [] },
+      value: { icon: Icons.department_icon, label: 'label', menuItems: [], primary: false, },
     } as CircleIconAndLabelParams;
     component.agInit(circleIconAndLabelParams);
     fixture.detectChanges();
     const actionsWrapper = fixture.debugElement.query(By.css('b-table-actions-wrapper'));
     expect(actionsWrapper.componentInstance.menuItems).toEqual([]);
+    expect(actionsWrapper.componentInstance.primary).toBeFalsy();
   });
 });
