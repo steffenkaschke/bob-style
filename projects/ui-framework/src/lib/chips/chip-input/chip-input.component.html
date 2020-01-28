@@ -6,9 +6,7 @@
      matAutocompleteOrigin
      #wrapper="matAutocompleteOrigin"
      [ngClass]="{
-       focused: inputFocused,
-       'has-suffix': hasSuffix || showSuffix,
-       'autocomplete-open': auto.isOpen,
+       focused: inputFocused || auto.isOpen,
        'empty': !value || value.length === 0
       }"
      (click.outside-zone)="input.focus()">
@@ -63,4 +61,7 @@
    [hintMessage]="hintMessage"
    [warnMessage]="warnMessage"
    [errorMessage]="errorMessage"
-   [disabled]="disabled"></p>
+   [disabled]="disabled">
+
+  <ng-content select="[footerAction]"></ng-content>
+</p>
