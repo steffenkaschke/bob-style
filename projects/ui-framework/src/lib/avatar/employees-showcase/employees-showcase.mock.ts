@@ -1,49 +1,44 @@
 import { EmployeeShowcase } from './employees-showcase.interface';
+import {
+  simpleUID,
+  makeArray,
+  randomFromArray,
+} from '../../services/utils/functional-utils';
+import { mockNames, mockAvatar, randomIcon } from '../../mock.const';
+import { SelectGroupOption } from '../../lists/list.interface';
+import { AvatarImageComponent } from '../avatar/avatar-image/avatar-image.component';
+import { AvatarSize, AvatarBadge } from '../avatar/avatar.enum';
 
-export const EMPLOYEE_SHOWCASE_MOCK: EmployeeShowcase[] = [
+const maxEEs = 50;
+const groupID = simpleUID();
+const badges = Object.values(AvatarBadge);
+
+export const EMPLOYEE_SHOWCASE_MOCK: EmployeeShowcase[] = makeArray(maxEEs).map(
+  i => ({
+    id: simpleUID(),
+    displayName: mockNames(1),
+    imageSource: mockAvatar(),
+  })
+);
+
+export const EMPLOYEE_SHOWCASE_OPTIONS_MOCK: SelectGroupOption[] = [
   {
-    id: '1',
-    displayName: 'Ben Baler',
-    imageSource: 'https://randomuser.me/api/portraits/men/1.jpg'
-  },
-  {
-    id: '2',
-    displayName: 'Omri Hecht',
-    imageSource: 'https://randomuser.me/api/portraits/men/2.jpg'
-  },
-  {
-    id: '3',
-    displayName: 'Guy Katz',
-    imageSource: 'https://randomuser.me/api/portraits/men/3.jpg'
-  },
-  {
-    id: '4',
-    displayName: 'Dana Zelniker',
-    imageSource: 'https://randomuser.me/api/portraits/women/4.jpg'
-  },
-  {
-    id: '5',
-    displayName: 'Revi Fridman',
-    imageSource: 'https://randomuser.me/api/portraits/women/5.jpg'
-  },
-  {
-    id: '6',
-    displayName: 'Keshet Rozenfeld',
-    imageSource: 'https://randomuser.me/api/portraits/women/6.jpg'
-  },
-  {
-    id: '7',
-    displayName: 'Liz',
-    imageSource: 'https://randomuser.me/api/portraits/women/7.jpg'
-  },
-  {
-    id: '8',
-    displayName: 'Ori Danus',
-    imageSource: 'https://randomuser.me/api/portraits/men/8.jpg'
-  },
-  {
-    id: '9',
-    displayName: 'Tomer Aronovski',
-    imageSource: 'https://randomuser.me/api/portraits/men/9.jpg'
+    groupName: groupID,
+    key: groupID,
+    options: makeArray(maxEEs).map((o, i) => ({
+      id: groupID + '_' + i,
+      value: mockNames(1),
+      selected: false,
+      disabled: false,
+      prefixComponent: {
+        component: AvatarImageComponent,
+        attributes: {
+          imageSource: mockAvatar(),
+          size: AvatarSize.mini,
+          badge: randomFromArray(badges),
+          // icon: randomIcon(),
+        },
+      },
+    })),
   },
 ];

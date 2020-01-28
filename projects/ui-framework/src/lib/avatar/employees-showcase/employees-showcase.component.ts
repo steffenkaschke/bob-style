@@ -10,55 +10,41 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges
+  SimpleChanges,
+  ChangeDetectionStrategy,
+  HostBinding,
 } from '@angular/core';
 import { EmployeeShowcase } from './employees-showcase.interface';
 import { AvatarSize } from '../avatar/avatar.enum';
 import { UtilsService } from '../../services/utils/utils.service';
-import { AvatarGap } from './employees-showcase.const';
-import { Icons } from '../../icons/icons.enum';
+import {
+  AvatarGap,
+  SHUFFLE_EMPLOYEES_INTERVAL,
+} from './employees-showcase.const';
+import { Icons, IconColor } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { interval, Subscription } from 'rxjs';
-import { assign, cloneDeep, floor, invoke, random } from 'lodash';
 import { SelectGroupOption } from '../../lists/list.interface';
-import { AvatarComponent } from '../avatar/avatar.component';
 import { ListChange } from '../../lists/list-change/list-change';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-
-const SHUFFLE_EMPLOYEES_INTERVAL = 3000;
+import {
+  applyChanges,
+  notFirstChanges,
+  hasChanges,
+} from '../../services/utils/functional-utils';
+import { EmployeesShowcaseService } from './employees-showcase.service';
+import { Avatar } from '../avatar/avatar.interface';
 
 @Component({
   selector: 'b-employees-showcase',
   templateUrl: './employees-showcase.component.html',
-  styleUrls: ['./employees-showcase.component.scss']
+  styleUrls: ['./employees-showcase.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeesShowcaseComponent
   implements OnInit, OnChanges, OnDestroy, AfterViewInit {
-  @Input() employees: EmployeeShowcase[] = [];
-  @Input() avatarSize: AvatarSize = AvatarSize.mini;
-  @Input() expandOnClick = true;
-
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
-  @Output() clicked: EventEmitter<EmployeeShowcase> = new EventEmitter<
-    EmployeeShowcase
-  >();
-
-  panelListOptions: SelectGroupOption[];
-  avatarsToFit = 0;
-  showThreeDotsButton = false;
-
-  readonly icon = Icons;
-  readonly panelClass = 'ee-showcase-panel';
-
-  private shuffleEmployeesMode: boolean;
-  private avatarGap: number = AvatarGap[AvatarSize.mini];
-  private clientWidth = 0;
-  private resizeEventSubscriber: Subscription;
-  private intervalSubscriber: Subscription;
-
   constructor(
+    private showcaseSrvc: EmployeesShowcaseService,
     private utilsService: UtilsService,
     private host: ElementRef,
     private DOM: DOMhelpers,
@@ -66,133 +52,212 @@ export class EmployeesShowcaseComponent
     private cd: ChangeDetectorRef
   ) {}
 
+  @Input() employees: EmployeeShowcase[] | SelectGroupOption[] = [];
+  @Input() avatarSize: AvatarSize = AvatarSize.mini;
+  @Input() min = 3;
+  @Input() max = 15;
+
+  @Input() doShuffle = false;
+  @Input() showMoreIcon = true;
+  @Input() readonly = false;
+
+  @HostBinding('attr.data-clickable')
+  @Input()
+  expandOnClick = true;
+
+  @HostBinding('attr.data-inverse-stack')
+  @Input()
+  inverseStack = false;
+
+  @HostBinding('attr.data-fade-out')
+  @Input()
+  fadeOut = false;
+
+  @HostBinding('attr.data-zoom-on-hover')
+  @Input()
+  zoomOnHover = false;
+
+  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
+    ListChange
+  >();
+
+  public employeeListOptions: SelectGroupOption[];
+  public showcaseViewModel: Avatar[] = [];
+  public avatarsToShow: Avatar[] = [];
+
+  public avatarsLeft = 0;
+  public showThreeDotsButton = false;
+
+  readonly panelClass = 'ee-showcase-panel';
+  readonly dotsIcon = {
+    icon: Icons.three_dots,
+    color: IconColor.dark,
+  };
+
+  private totalAvatars = 0;
+  private avatarsToFit = 0;
+  private clientWidth = 0;
+  private resizeEventSubscriber: Subscription;
+  private intervalSubscriber: Subscription;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes, {
+      min: 3,
+      max: 15,
+      employees: [],
+      avatarSize: AvatarSize.mini,
+    });
+
+    if (hasChanges(changes, ['employees'], true)) {
+      this.setViewModels();
+    }
+
+    if (notFirstChanges(changes)) {
+      this.initShowcase();
+    }
+  }
+
   ngOnInit(): void {
+    this.initShowcase();
+
     this.resizeEventSubscriber = this.utilsService
       .getResizeEvent()
       .pipe(outsideZone(this.zone))
       .subscribe(() => {
         this.initShowcase();
-        this.cd.detectChanges();
       });
 
-    this.panelListOptions = this.getPanelListOptions();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.avatarSize) {
-      this.avatarSize = changes.avatarSize.currentValue;
-      this.initShowcase();
+    if (!this.employeeListOptions) {
+      this.setViewModels();
     }
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => this.initShowcase());
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.initShowcase();
+      }, 1000);
+    });
   }
 
   ngOnDestroy(): void {
-    invoke(this.resizeEventSubscriber, 'unsubscribe');
-    invoke(this.intervalSubscriber, 'unsubscribe');
+    if (this.resizeEventSubscriber) {
+      this.resizeEventSubscriber.unsubscribe();
+      this.resizeEventSubscriber = null;
+    }
+    if (this.intervalSubscriber) {
+      this.intervalSubscriber.unsubscribe();
+      this.intervalSubscriber = null;
+    }
   }
 
   onSelectChange(listChange: ListChange): void {
     this.selectChange.emit(listChange);
   }
 
-  onAvatarClick(ee: EmployeeShowcase) {
-    this.clicked.emit(ee);
-  }
-
-  private initShowcase() {
-    this.clientWidth = this.getClientWidth();
-    this.avatarGap = this.getAvatarGap();
-    this.setAvatarGapCss();
-    this.avatarsToFit = this.getAvatarsToFit(this.clientWidth, this.avatarGap);
-    this.shuffleEmployeesMode = this.avatarSize >= AvatarSize.medium;
-    this.showThreeDotsButton = this.shouldShowThreeDotsButton();
-    this.subscribeToShuffleEmployees();
-  }
-
-  private shouldShowThreeDotsButton(): boolean {
-    return (
-      !this.shuffleEmployeesMode && this.avatarsToFit < this.employees.length
-    );
-  }
-
-  private getPanelListOptions(): SelectGroupOption[] {
-    return [
-      {
-        groupName: '',
-        options: this.employees.map(employee => ({
-          value: employee.displayName,
-          id: employee.id,
-          selected: false,
-          prefixComponent: {
-            component: AvatarComponent,
-            attributes: {
-              imageSource: employee.imageSource
-            }
-          }
-        }))
-      }
-    ];
-  }
-
-  private getClientWidth() {
-    return this.DOM.getClosest(
+  public initShowcase(): void {
+    this.clientWidth = this.DOM.getClosest(
       this.host.nativeElement,
       this.DOM.getInnerWidth,
       'result'
     );
-  }
 
-  /*
-  Calculates the total number of avatars that can fit in a certain width.
-  floor((width - size) / (size - gap) + 1)
-  */
-  private getAvatarsToFit(clientWidth: number, avatarGap: number): number {
-    return floor(
-      (clientWidth - this.avatarSize) / (this.avatarSize - avatarGap) + 1
+    const maxFit = Math.floor(
+      (this.clientWidth - this.avatarSize) /
+        (this.avatarSize - AvatarGap[this.avatarSize]) +
+        1
     );
-  }
 
-  private getAvatarGap(): number {
-    return AvatarGap[this.avatarSize];
-  }
+    this.avatarsToFit = Math.min(
+      30,
+      this.max,
+      Math.max(this.min, maxFit),
+      this.totalAvatars
+    );
 
-  private setAvatarGapCss() {
     this.DOM.setCssProps(this.host.nativeElement, {
-      '--avatar-gap': '-' + this.avatarGap + 'px'
+      '--avatar-count': this.avatarsToFit,
+      '--avatar-gap': '-' + AvatarGap[this.avatarSize] + 'px',
     });
-  }
 
-  private subscribeToShuffleEmployees() {
-    invoke(this.intervalSubscriber, 'unsubscribe');
+    this.showThreeDotsButton =
+      this.showMoreIcon &&
+      !this.fadeOut &&
+      this.avatarSize < AvatarSize.medium &&
+      this.avatarsToFit < this.totalAvatars;
+
+    if (!this.employeeListOptions) {
+      this.setViewModels();
+    }
+
+    this.setAvatarsToShow();
+
+    this.avatarsLeft = Math.max(
+      this.totalAvatars - this.avatarsToShow.length,
+      0
+    );
+
     if (
-      this.shuffleEmployeesMode &&
-      this.avatarsToFit < this.employees.length
+      this.doShuffle &&
+      this.avatarSize >= AvatarSize.medium &&
+      this.avatarsToFit < this.totalAvatars
     ) {
-      this.intervalSubscriber = interval(SHUFFLE_EMPLOYEES_INTERVAL).subscribe(
-        () => this.shuffleEmployees()
-      );
+      if (!this.intervalSubscriber) {
+        this.zone.runOutsideAngular(() => {
+          this.intervalSubscriber = interval(
+            SHUFFLE_EMPLOYEES_INTERVAL
+          ).subscribe(() => this.shuffleAvatars());
+        });
+      }
+    } else {
+      if (this.intervalSubscriber) {
+        this.intervalSubscriber.unsubscribe();
+        this.intervalSubscriber = null;
+      }
+    }
+
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 
-  private shuffleEmployees() {
-    const firstIndex = random(
-      0,
-      this.avatarsToFit > 1 ? this.avatarsToFit - 1 : 0
+  private setViewModels(): void {
+    this.employeeListOptions = this.showcaseSrvc.getEmployeeListOptions(
+      this.employees,
+      false
     );
-    const secondIndex = random(
-      this.avatarsToFit,
-      this.employees.length > 1 ? this.employees.length - 1 : 0
+    this.showcaseViewModel = this.showcaseSrvc.getShowcaseViewModel(
+      this.employeeListOptions
     );
-    this.switchEmployeesImage(firstIndex, secondIndex);
-    this.cd.detectChanges();
+    this.totalAvatars = this.showcaseViewModel.length;
   }
 
-  private switchEmployeesImage(firstIndex, secondIndex) {
-    const firstEmployee = cloneDeep(this.employees[firstIndex]);
-    assign(this.employees[firstIndex], this.employees[secondIndex]);
-    this.employees[secondIndex] = firstEmployee;
+  private setAvatarsToShow(): void {
+    this.avatarsToShow = this.showcaseViewModel.slice(
+      0,
+      !this.showThreeDotsButton ? this.avatarsToFit : this.avatarsToFit - 1
+    );
+  }
+
+  private shuffleAvatars(): void {
+    this.showcaseSrvc.shuffleShowcaseViewModel(
+      this.showcaseViewModel,
+      this.avatarsToFit,
+      () => {
+        this.setAvatarsToShow();
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }
+    );
+  }
+
+  public trackBy(index: number, item: EmployeeShowcase): string {
+    return (
+      (item.id !== undefined && item.id) ||
+      item.displayName ||
+      JSON.stringify(item)
+    );
   }
 }

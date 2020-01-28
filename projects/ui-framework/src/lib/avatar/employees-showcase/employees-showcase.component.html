@@ -1,29 +1,26 @@
-<b-single-select-panel [options]="panelListOptions"
+<b-single-select-panel [options]="employeeListOptions"
                        [disabled]="!expandOnClick"
                        [panelClass]="panelClass"
+                       [readonly]="readonly || !selectChange.observers.length"
                        (selectChange)="onSelectChange($event)">
 
-  <div class="avatar-showcase"
-       [ngClass]="{'clickable': expandOnClick}">
+  <div class="avatar-showcase">
 
-    <ng-container *ngFor="let employee of employees; let i = index; let last = last">
+    <b-avatar-image *ngFor="let avatar of avatarsToShow; trackBy: trackBy"
+                    class="showcase-avatar"
+                    [imageSource]="avatar.imageSource"
+                    [size]="avatarSize || avatar.size"
+                    [backgroundColor]="avatar.backgroundColor"
+                    [badge]="avatar.badge"
+                    [icon]="avatar.icon">
+    </b-avatar-image>
 
-      <b-avatar class="showcase-avatar"
-                *ngIf="i < avatarsToFit - 1 || (i < avatarsToFit && !showThreeDotsButton)"
-                [imageSource]="employee.imageSource"
-                [size]="avatarSize"
-                [isClickable]="clicked.observers.length > 0"
-                (clicked)="onAvatarClick(employee)">
-      </b-avatar>
-
-    </ng-container>
-
-    <b-avatar class="show-more-indicator"
-              *ngIf="showThreeDotsButton"
-              [size]="avatarSize">
-      <b-icon [icon]="icon.three_dots"></b-icon>
-    </b-avatar>
-
+    <b-avatar-image class="show-more"
+                    *ngIf="showThreeDotsButton"
+                    [size]="avatarSize"
+                    [icon]="dotsIcon"
+                    [text]="avatarsLeft < 100 ? '+' + avatarsLeft: null">
+    </b-avatar-image>
   </div>
 
 </b-single-select-panel>
