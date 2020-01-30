@@ -61,11 +61,11 @@
 }
 
 @function base8($num: 0) {
-  @return round($num/8) * 8px;
+  @return round(strip-unit($num) / 8) * 8px;
 }
 
 @function times8($times: 1) {
-  @return 8px * $times;
+  @return 8px * strip-unit($times);
 }
 
 @function simpleUID() {
