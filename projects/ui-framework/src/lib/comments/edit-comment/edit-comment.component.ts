@@ -15,6 +15,8 @@ import { isKey, eventHasMetaKey } from '../../services/utils/functional-utils';
 import { Keys } from '../../enums';
 // tslint:disable-next-line: max-line-length
 import { FormElementKeyboardCntrlService } from '../../form-elements/services/keyboard-cntrl.service';
+import { PasteStartEvent } from 'ag-grid-community';
+import { InputEvent } from '../../form-elements/input/input.interface';
 
 @Component({
   selector: 'b-edit-comment',
@@ -62,11 +64,12 @@ export class EditCommentComponent implements AfterViewInit {
     }
   }
 
-  shallParse(event) {
-    this.kbrdCntrlSrvc.shallParse(event, this.commentInput.nativeElement);
+  parseIfSymbol(event: InputEvent): void {
+    this.kbrdCntrlSrvc.parseIfSymbol(event, this.commentInput.nativeElement);
   }
-  parse() {
-    this.kbrdCntrlSrvc.parseEmoji(this.commentInput.nativeElement);
+
+  parse(): void {
+    this.kbrdCntrlSrvc.setParsedEmoji(this.commentInput.nativeElement);
   }
 
   ngAfterViewInit(): void {

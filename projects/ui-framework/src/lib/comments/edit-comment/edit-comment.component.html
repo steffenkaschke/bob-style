@@ -12,7 +12,7 @@
     [attr.placeholder]="placeholder || null"
     [value]="comment?.content"
     (keydown)="enterPress($event)"
-    (input)="shallParse($event)"
+    (input)="parseIfSymbol($event)"
     (paste)="parse()"
   ></textarea>
 </div>

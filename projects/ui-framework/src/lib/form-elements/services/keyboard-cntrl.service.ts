@@ -8,6 +8,7 @@ import {
   CLOSING_SYMBOLS,
   SMILEY_EMOJI_MAP,
 } from '../../popups/emoji/smiley-to-emoji-data.consts';
+import { InputEvent } from 'bob-style';
 
 @Injectable({
   providedIn: 'root',
@@ -53,34 +54,41 @@ export class FormElementKeyboardCntrlService {
 
     return inputEl.value;
   }
- public  shallParse(event, inputEl) {
+
+  public parseIfSymbol(event: InputEvent, inputEl: HTMLInputElement): void {
     if (this.closingSymbols.test(event.data)) {
-      this.parseEmoji(inputEl);
+      this.setParsedEmoji(inputEl);
     }
   }
 
-  public parseEmoji(inputEl): void {
+  public setParsedEmoji(inputEl: HTMLInputElement): void {
     setTimeout(() => {
       let str = this.reverseParse(inputEl.value);
       const cursorPos = inputEl.selectionStart;
+      str = this.parse(str);
 
-      Object.keys(this.combinations).forEach(key => {
-        const regex = new RegExp(this.escapeRegExp(key), 'g');
-        str = str.replace(regex, this.combinations[key]);
-      });
       inputEl.value = str;
       inputEl.selectionStart = cursorPos;
       inputEl.selectionEnd = cursorPos;
     }, 0);
   }
-  private reverseParse(string): string {
+
+  private parse(str: string): string {
     Object.keys(this.combinations).forEach(key => {
-      string = string.replace(new RegExp(this.combinations[key], 'g'), key);
+      const regex = new RegExp(this.escapeRegExp(key), 'g');
+      str = str.replace(regex, this.combinations[key]);
     });
-    return string;
+    return str;
   }
 
-  private escapeRegExp(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  private reverseParse(str: string): string {
+    Object.keys(this.combinations).forEach(key => {
+      str = str.replace(new RegExp(this.combinations[key], 'g'), key);
+    });
+    return str;
+  }
+
+  private escapeRegExp(str: string): string {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 }
