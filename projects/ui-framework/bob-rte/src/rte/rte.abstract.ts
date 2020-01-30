@@ -13,7 +13,7 @@ import {
 import { merge, cloneDeep } from 'lodash';
 
 import {
-  BaseFormElement,
+  // BaseFormElement,
   cloneArray,
   hasChanges,
   notFirstChanges,
@@ -60,6 +60,9 @@ import { TributeInstance, TributeItem } from './tribute.interface';
 
 import { initDirectionControl } from './rte.direction';
 import { initMentionsControl } from './rte.mentions';
+import { initImagesControl } from './rte.images';
+
+import { BaseFormElement } from '../../../src/lib/form-elements/base-form-element';
 
 export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges, OnInit {
@@ -256,6 +259,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   public ngOnInit(): void {
     initDirectionControl();
     initMentionsControl();
+    initImagesControl();
 
     if (!this.cntrlsInited) {
       this.initControls();

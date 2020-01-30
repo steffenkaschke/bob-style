@@ -330,6 +330,7 @@ $link-color: var(--primary-700);
 
 .fr-popup {
   overflow: hidden;
+  font-family: inherit;
 }
 
 .fr-toolbar.fr-inline,
@@ -346,15 +347,16 @@ $link-color: var(--primary-700);
 
 // popup buttons
 
-.fr-popup .fr-buttons .fr-btn {
-  margin: 0;
+.fr-popup .fr-buttons .fr-btn,
+.fr-popup .fr-tabs .fr-command.fr-btn {
   height: auto;
   transition: none;
+  width: $icon-size + 3px + 8px;
+  margin: 0 3px;
 }
 
 .fr-popup .fr-command.fr-btn svg.fr-svg {
   @include size($icon-size + 3px);
-  margin: 3px;
 }
 
 .fr-popup .fr-action-buttons button.fr-command {
@@ -455,6 +457,27 @@ $link-color: var(--primary-700);
 .fr-popup .fr-link-insert-layer.fr-layer {
   @include desktop {
     width: 260px;
+  }
+}
+
+// images popup
+
+.fr-popup .fr-buttons.fr-tabs:not(.fr-tabs-scroll)[style] {
+  background-color: transparent;
+  padding: 5px;
+}
+
+.fr-popup .fr-image-upload-layer {
+  font-family: var(--body-font-family);
+  font-size: $font-size-body;
+}
+
+label[for*='fr-image-by-url'] {
+  font-size: 0px !important;
+
+  &:before {
+    content: 'Paste in an image URL';
+    font-size: $font-size-body;
   }
 }
 

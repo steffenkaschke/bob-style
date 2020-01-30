@@ -16,9 +16,10 @@ export const RTE_CONTROLS_DEF = joinArrays(
     BlotType.align,
     BlotType.rightToLeft,
     BlotType.leftToRight,
+    BlotType.insertImage,
+    BlotType.insertVideo,
     BlotType.emoticons,
     BlotType.mentions,
-    BlotType.insertVideo,
     BlotType.placeholder,
   ],
   Object.values(BlotType)
@@ -76,6 +77,9 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   imageDefaultWidth: 600,
   imageMaxSize: 1024 * 1024 * 3,
   imageMinWidth: 100,
+
+  imageInsertButtons: ['imageUpload', 'imageByURL'],
+  imageEditButtons: ['imageReplace', 'imageRemove'],
 
   videoAllowedProviders: ['youtube', 'vimeo'],
   videoDefaultAlign: 'left',
@@ -196,9 +200,9 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'url',
     'emoticons',
     'video',
+    'image',
     // 'fontFamily',
     // 'table',
-    // 'image',
     // 'imageTUI',
     // 'imageManager',
     // 'wordPaste',

@@ -24,7 +24,7 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
 
-const disableControlsDef = [BlotType.video];
+const disableControlsDef = [];
 const controlsDef = dedupeArray(Object.values(BlotType));
 
 const value = `<br><br> <br><br> <span> <br> </span> <div><br></div> <span><br></span>

@@ -6,7 +6,7 @@ import {
   FormElementLabelModule,
   HtmlParserHelpers,
   SingleSelectPanelModule,
-  ButtonsModule
+  ButtonsModule,
 } from 'bob-style';
 
 import { RichTextEditorComponent } from './rte.component';
@@ -21,6 +21,7 @@ import 'froala-editor/js/plugins/char_counter.min.js';
 import 'froala-editor/js/plugins/url.min.js';
 import 'froala-editor/js/plugins/emoticons.min.js';
 import 'froala-editor/js/plugins/video.min.js';
+import 'froala-editor/js/plugins/image.min.js';
 
 @NgModule({
   declarations: [RichTextEditorComponent],
@@ -31,9 +32,9 @@ import 'froala-editor/js/plugins/video.min.js';
     SingleSelectPanelModule,
     ButtonsModule,
     FroalaEditorModule.forRoot(),
-    FroalaViewModule.forRoot()
+    FroalaViewModule.forRoot(),
   ],
   exports: [RichTextEditorComponent],
-  providers: [PlaceholdersConverterService, HtmlParserHelpers]
+  providers: [PlaceholdersConverterService, HtmlParserHelpers],
 })
 export class RichTextEditorModule {}

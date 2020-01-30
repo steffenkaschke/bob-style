@@ -26,4 +26,6 @@ export enum BlotType {
   emoticons = 'emoticons',
   video = 'insertVideo',
   insertVideo = 'insertVideo',
+  image = 'insertImage',
+  insertImage = 'insertImage',
 }
