@@ -62,6 +62,13 @@ export class EditCommentComponent implements AfterViewInit {
     }
   }
 
+  shallParse(event) {
+    this.kbrdCntrlSrvc.shallParse(event, this.commentInput.nativeElement);
+  }
+  parse() {
+    this.kbrdCntrlSrvc.parseEmoji(this.commentInput.nativeElement);
+  }
+
   ngAfterViewInit(): void {
     if (this.autoFocus) {
       this.focus();

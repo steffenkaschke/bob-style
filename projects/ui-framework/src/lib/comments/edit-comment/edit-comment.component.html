@@ -1,12 +1,18 @@
-<b-avatar-image [size]="avatarSize.mini"
-                [imageSource]="comment?.avatar"
-                [matTooltip]="comment?.name">
+<b-avatar-image
+  [size]="avatarSize.mini"
+  [imageSource]="comment?.avatar"
+  [matTooltip]="comment?.name"
+>
 </b-avatar-image>
 
 <div class="bfe-wrap text-section">
-  <textarea #commentInput
-            class="bfe-input bfe-textarea"
-            [attr.placeholder]="placeholder || null"
-            [value]="comment?.content"
-            (keydown)="enterPress($event)"></textarea>
+  <textarea
+    #commentInput
+    class="bfe-input bfe-textarea"
+    [attr.placeholder]="placeholder || null"
+    [value]="comment?.content"
+    (keydown)="enterPress($event)"
+    (input)="shallParse($event)"
+    (paste)="parse()"
+  ></textarea>
 </div>
