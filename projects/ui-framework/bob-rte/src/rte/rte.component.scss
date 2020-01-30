@@ -82,6 +82,14 @@
   }
 }
 
+// Theme - Primary
+
+:host[data-type='primary']::ng-deep {
+  .fr-wrapper {
+    margin: 1px 0;
+  }
+}
+
 // Theme - Secondary & Tertiary common
 
 :host[data-type='secondary']::ng-deep,

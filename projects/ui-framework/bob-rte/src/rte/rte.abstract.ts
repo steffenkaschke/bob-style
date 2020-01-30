@@ -205,6 +205,12 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
 
     if (hasChanges(changes, ['controls', 'disableControls'])) {
+      if (isNotEmptyArray(changes.disableControls.previousValue)) {
+        this.controls = joinArrays(
+          this.controls,
+          changes.disableControls.previousValue
+        );
+      }
       this.initControls();
       this.updateToolbar();
       this.cntrlsInited = true;

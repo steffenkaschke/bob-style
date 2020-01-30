@@ -20,6 +20,7 @@ import 'froala-editor/js/plugins/lists.min.js';
 import 'froala-editor/js/plugins/char_counter.min.js';
 import 'froala-editor/js/plugins/url.min.js';
 import 'froala-editor/js/plugins/emoticons.min.js';
+import 'froala-editor/js/plugins/video.min.js';
 
 @NgModule({
   declarations: [RichTextEditorComponent],

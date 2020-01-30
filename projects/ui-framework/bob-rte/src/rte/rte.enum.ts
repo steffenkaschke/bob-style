@@ -1,7 +1,7 @@
 export enum RTEType {
   primary = 'primary',
   secondary = 'secondary',
-  tertiary = 'tertiary'
+  tertiary = 'tertiary',
 }
 
 export enum BlotType {
@@ -23,5 +23,7 @@ export enum BlotType {
   leftToRight = 'leftToRight',
   placeholder = 'placeholder',
   mentions = 'mentions',
-  emoticons = 'emoticons'
+  emoticons = 'emoticons',
+  video = 'insertVideo',
+  insertVideo = 'insertVideo',
 }
