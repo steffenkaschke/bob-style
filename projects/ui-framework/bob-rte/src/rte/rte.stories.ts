@@ -263,6 +263,7 @@ story.add(
           StoryBookLayoutModule,
           RichTextEditorModule,
         ],
+        providers: [],
       },
     };
   },

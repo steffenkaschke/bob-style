@@ -167,8 +167,6 @@ export abstract class BaseFormElement
         event => !this.ignoreEvents.includes(event)
       );
 
-      console.log(value);
-
       if (emitterName && this[emitterName].observers.length > 0) {
         allowedEvents.forEach(event => {
           this[emitterName].emit(

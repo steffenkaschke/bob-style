@@ -1,0 +1,24 @@
+b-search {
+  margin-bottom: 16px;
+}
+
+.gif-target {
+  max-height: 350px;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+}
+
+.sticker-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.sticker-img {
+  max-height: 50px;
+}

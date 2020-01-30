@@ -1,0 +1,13 @@
+<b-search #search
+          [value]="gifQuery"
+          (searchChange)="searchGiphy($event)">
+</b-search>
+
+<div class="gif-target">
+  <span class="sticker-wrap"
+        *ngFor="let gifImage of gifImages$ | async"
+        (click)="selectGif(gifImage)">
+    <img class="sticker-img"
+         [src]="gifImage.thumbNailUrl" />
+  </span>
+</div>

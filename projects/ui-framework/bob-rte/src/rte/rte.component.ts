@@ -6,6 +6,7 @@ import {
   ChangeDetectorRef,
   ElementRef,
   OnDestroy,
+  ViewChild,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 
@@ -20,6 +21,7 @@ import {
   chainCall,
   eventHasMetaKey,
   eventHasCntrlKey,
+  PanelComponent,
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
@@ -53,6 +55,9 @@ export class RichTextEditorComponent extends RTEbaseElement
   ) {
     super(cd, placeholdersConverter, parserService);
   }
+
+  @ViewChild('giphyPanel', { static: false })
+  protected giphyPanel: PanelComponent;
 
   public ngOnInit(): void {
     super.ngOnInit();
@@ -123,7 +128,7 @@ export class RichTextEditorComponent extends RTEbaseElement
         // placeholders related
         this.editor.events.bindClick(
           this.editor.$(this.host.nativeElement),
-          '.placeholder-panel-trigger',
+          '.placeholder-panel-trigger,.giphy-butt',
           () => {
             this.editor.undo.saveStep();
             this.editor.events.disableBlur();
@@ -321,5 +326,24 @@ export class RichTextEditorComponent extends RTEbaseElement
     this.editor.undo.saveStep();
 
     this.placeholderList = cloneArray(this.placeholderList);
+  }
+
+  onGifPanelOpen() {
+    this.editor.undo.saveStep();
+    this.editor.selection.save();
+    this.inputFocused = true;
+  }
+
+  onGifPanelClose() {
+    this.editor.selection.restore();
+    this.editor.events.enableBlur();
+  }
+
+  insertSticker(url) {
+    const img = `<img src="${url}">`;
+    this.giphyPanel.closePanel();
+    this.editor.selection.restore();
+    this.editor.html.insert(img);
+    this.editor.undo.saveStep();
   }
 }

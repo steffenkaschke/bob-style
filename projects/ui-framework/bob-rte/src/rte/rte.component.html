@@ -14,7 +14,7 @@
        [froalaEditor]="options"
        [(froalaModel)]="editorValue"></div>
 
-  <b-single-select-panel *ngIf="!disabled && placeholdersEnabled()"
+  <b-single-select-panel *ngIf="false && !disabled && placeholdersEnabled()"
                          #placeholderPanel
                          class="placeholder-select"
                          [options]="placeholderList"
@@ -33,6 +33,28 @@
                      (clicked)="onPlaceholderPanelOpen()">
     </b-square-button>
   </b-single-select-panel>
+
+
+  <b-panel #giphyPanel
+           class="placeholder-select"
+           [size]="'small'"
+           [panelClass]="'giphy-panel'"
+           [defaultPosVer]="plchldrPanelPosition"
+           [showBackdrop]="false"
+           [openOnHover]="false"
+           (opened)="onGifPanelOpen()"
+           (closed)="onGifPanelClose()">
+
+    <span panel-trigger
+          (click)="onGifPanelOpen()"
+          class="giphy-butt"></span>
+
+    <div panel-content>
+      <b-gif-search (gifSelected)="insertSticker($event)">
+      </b-gif-search>
+    </div>
+
+  </b-panel>
 </div>
 
 <p b-input-message

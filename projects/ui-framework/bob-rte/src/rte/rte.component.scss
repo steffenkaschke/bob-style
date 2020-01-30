@@ -179,3 +179,21 @@
     border-bottom-width: 1px;
   }
 }
+
+// Temporary
+
+.giphy-butt {
+  display: block;
+  @include size(36px);
+  border: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 66 65' fill='%23fff' fill-rule='evenodd' stroke='%23000' stroke-linecap='round' stroke-linejoin='round'%3E%3Cuse xlink:href='%23A' x='.5' y='.5'/%3E%3Csymbol id='A' overflow='visible'%3E%3Cg stroke='none' fill-rule='nonzero'%3E%3Cpath d='M0 10A9.98 9.98 0 0 1 10 0h44a9.98 9.98 0 0 1 10 10v44a9.98 9.98 0 0 1-10 10H10A9.98 9.98 0 0 1 0 54z' fill='%231a1a1a'/%3E%3Cpath d='M15.52 16.662l4.013-.107.83 31.33-4.013.107z' fill='%230f9'/%3E%3Cpath d='M43.84 23.945l4.02-.107.617 23.315-4.02.107z' fill='%2393f'/%3E%3Cpath d='M16.352 47.982l32.125-.854.107 4.02L16.46 52z' fill='%230cf'/%3E%3Cpath d='M15.412 12.645l20.076-.534.107 4.02-20.076.534z' fill='%23ff9'/%3E%3Cpath d='M39.617 16.017l-.107-4.015-4.022.107.32 12.05 12.05-.32-.107-4.015-4.022.107-.107-4.015z' fill='%23f66'/%3E%3Cpath d='M43.844 23.943l4.02-.107.107 4.02-4.02.107z' fill='%234c197f'/%3E%3C/g%3E%3C/symbol%3E%3C/svg%3E");
+  background-size: contain;
+  cursor: pointer;
+  margin: 3px;
+}
+
+::ng-deep .giphy-panel {
+  .panel-wrapper {
+    max-height: none;
+  }
+}

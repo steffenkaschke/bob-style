@@ -7,6 +7,8 @@ import {
   HtmlParserHelpers,
   SingleSelectPanelModule,
   ButtonsModule,
+  PanelModule,
+  SearchModule,
 } from 'bob-style';
 
 import { RichTextEditorComponent } from './rte.component';
@@ -22,9 +24,11 @@ import 'froala-editor/js/plugins/url.min.js';
 import 'froala-editor/js/plugins/emoticons.min.js';
 import 'froala-editor/js/plugins/video.min.js';
 import 'froala-editor/js/plugins/image.min.js';
+import { GifSearchComponent } from './gif-search/gif-search.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [RichTextEditorComponent],
+  declarations: [RichTextEditorComponent, GifSearchComponent],
   imports: [
     CommonModule,
     FormElementLabelModule,
@@ -33,6 +37,9 @@ import 'froala-editor/js/plugins/image.min.js';
     ButtonsModule,
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
+    PanelModule,
+    SearchModule,
+    HttpClientModule,
   ],
   exports: [RichTextEditorComponent],
   providers: [PlaceholdersConverterService, HtmlParserHelpers],
