@@ -197,3 +197,10 @@
     max-height: none;
   }
 }
+
+::ng-deep .fr-view {
+  .sticker {
+    max-height: 50px;
+    max-width: 50px;
+  }
+}

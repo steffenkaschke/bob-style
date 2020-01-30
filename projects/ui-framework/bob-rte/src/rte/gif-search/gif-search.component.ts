@@ -1,12 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
   OnInit,
   Output,
   EventEmitter,
   ChangeDetectorRef,
   ViewChild,
+  AfterViewInit,
 } from '@angular/core';
 import { GifInterface, GifSearchService } from './gif-search.service';
 import { Observable, of } from 'rxjs';
@@ -25,7 +25,7 @@ export class GifSearchComponent implements OnInit {
   ) {}
 
   @ViewChild('search', { static: false })
-  protected search: SearchComponent;
+  public search: SearchComponent;
 
   @Output() gifSelected: EventEmitter<string> = new EventEmitter<string>();
 
@@ -41,11 +41,10 @@ export class GifSearchComponent implements OnInit {
   }
 
   selectGif(gifImage: GifInterface) {
-    console.log(gifImage);
     this.gifSelected.emit(gifImage.thumbNailUrl);
     this.gifImages$ = of([]);
     this.gifQuery = '';
-    this.search.input.nativeElement.value = '';
+    this.search.onResetClick();
     this.cd.detectChanges();
   }
 }

@@ -26,6 +26,7 @@ import {
 
 import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
+import { GifSearchComponent } from './gif-search/gif-search.component';
 
 @Component({
   selector: 'b-rich-text-editor',
@@ -58,6 +59,8 @@ export class RichTextEditorComponent extends RTEbaseElement
 
   @ViewChild('giphyPanel', { static: false })
   protected giphyPanel: PanelComponent;
+  @ViewChild('giphySearch', { static: false })
+  protected giphySearch: GifSearchComponent;
 
   public ngOnInit(): void {
     super.ngOnInit();
@@ -329,9 +332,9 @@ export class RichTextEditorComponent extends RTEbaseElement
   }
 
   onGifPanelOpen() {
-    this.editor.undo.saveStep();
     this.editor.selection.save();
     this.inputFocused = true;
+    this.giphySearch.search.input.nativeElement.focus();
   }
 
   onGifPanelClose() {
@@ -340,7 +343,7 @@ export class RichTextEditorComponent extends RTEbaseElement
   }
 
   insertSticker(url) {
-    const img = `<img src="${url}">`;
+    const img = `<img class="sticker" src="${url}">`;
     this.giphyPanel.closePanel();
     this.editor.selection.restore();
     this.editor.html.insert(img);

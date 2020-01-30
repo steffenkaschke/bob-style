@@ -46,11 +46,11 @@
            (closed)="onGifPanelClose()">
 
     <span panel-trigger
-          (click)="onGifPanelOpen()"
           class="giphy-butt"></span>
 
     <div panel-content>
-      <b-gif-search (gifSelected)="insertSticker($event)">
+      <b-gif-search #giphySearch
+                    (gifSelected)="insertSticker($event)">
       </b-gif-search>
     </div>
 
