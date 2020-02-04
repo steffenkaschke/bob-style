@@ -52,6 +52,8 @@ export class TreeDirective implements OnInit {
       ...treeConfig.colDef,
       cellRendererParams: {
         suppressCount: treeConfig.suppressCount,
+        suppressDoubleClickExpand: true,
+        suppressEnterExpand: true,
         innerRenderer: getFileCellRenderer(treeConfig)
       },
       valueGetter: treeConfig.dataGetter

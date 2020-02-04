@@ -59,8 +59,10 @@ $toolpanel-indent-size: 35px;
     display: flex;
   }
   &.tree-no-collapse {
-    .ag-row[role="row"] :first-child {
-      pointer-events: none;
+    .ag-center-cols-clipper {
+      .ag-row[role="row"] :first-child {
+        pointer-events: none;
+      }
     }
   }
 }
