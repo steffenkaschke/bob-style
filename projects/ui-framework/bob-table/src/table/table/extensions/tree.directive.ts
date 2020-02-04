@@ -39,7 +39,9 @@ export class TreeDirective implements OnInit {
 
   public ngOnInit(): void {
     this.tableComponent.addClass('tree-table');
-    this.tableComponent.addClass('tree-no-collapse');
+    if (!this.isCollapsable) {
+      this.tableComponent.addClass('tree-no-collapse');
+    }
   }
 
   private applyTreeConfig(treeConfig: TreeConfig) {
