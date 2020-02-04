@@ -1,4 +1,4 @@
-import {Directive, Input, OnInit, Host, OnChanges} from '@angular/core';
+import {Directive, Input, OnInit, Host } from '@angular/core';
 import {TableComponent} from '../table.component';
 import {TreeConfig, defaultTreeConfig} from './tree.config';
 import { merge } from 'lodash';
