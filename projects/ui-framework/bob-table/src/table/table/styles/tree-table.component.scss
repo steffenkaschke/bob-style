@@ -35,6 +35,22 @@ $toolpanel-indent-size: 35px;
     }
   }
 
+  &.tree-no-collapse {
+    .ag-center-cols-clipper {
+      .ag-row[role="row"] :first-child {
+        pointer-events: none;
+      }
+    }
+    .ag-icon {
+      &.ag-icon-contracted, &.ag-icon-expanded {
+        //@include ag-icon('chevron-down');
+        // TODO: put new icon
+
+        @include icon-class('arrow-dir-right');
+      }
+    }
+  }
+
   .ag-cell .ag-group-expanded,
   .ag-cell .ag-group-contracted {
     &:before {
@@ -57,12 +73,5 @@ $toolpanel-indent-size: 35px;
   }
   [class*="ag-row-group-indent-"] {
     display: flex;
-  }
-  &.tree-no-collapse {
-    .ag-center-cols-clipper {
-      .ag-row[role="row"] :first-child {
-        pointer-events: none;
-      }
-    }
   }
 }
