@@ -64,12 +64,17 @@ export class FormElementKeyboardCntrlService {
   public setParsedEmoji(inputEl: HTMLInputElement): void {
     setTimeout(() => {
       let str = this.reverseParse(inputEl.value);
-      const cursorPos = inputEl.selectionStart;
       str = this.parse(str);
+      let cursorPos = inputEl.selectionStart;
 
       inputEl.value = str;
-      inputEl.selectionStart = cursorPos;
-      inputEl.selectionEnd = cursorPos;
+
+      cursorPos =
+        this.reverseParse(inputEl.value.substring(0, cursorPos)).length ===
+        inputEl.value.substring(0, cursorPos).length
+          ? cursorPos
+          : cursorPos - 1;
+      inputEl.setSelectionRange(cursorPos, cursorPos);
     }, 0);
   }
 
