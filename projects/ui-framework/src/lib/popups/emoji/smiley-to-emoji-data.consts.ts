@@ -14,4 +14,4 @@ export const SMILEY_EMOJI_MAP = {
   ':-': '🤥',
   ':*': '😙',
 };
-export const CLOSING_SYMBOLS = /[-!$%^&*()_+|~=`{}\[\]:";'<>p,c.\/]/;
+export const CLOSING_SYMBOLS = /[-^*()|={}\[\]:']/;
