@@ -43,7 +43,7 @@ $toolpanel-indent-size: 35px;
       }
     }
     .ag-center-cols-clipper {
-      .ag-row[role="row"] :first-child {
+      .ag-row[role="row"] > :first-child {
         pointer-events: none;
       }
       .ag-row:not(.ag-row-level-0) {
