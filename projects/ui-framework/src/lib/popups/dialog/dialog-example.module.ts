@@ -90,6 +90,7 @@ a note on what types are.`,
               </b-single-select>
           </div>
           <b-checkbox mat-dialog-footer-left label="Auto approve on request"></b-checkbox>
+          <div b-dialog-confirmation>*here you can add confirmation template*</div>
       </b-dialog>
   `,
 })

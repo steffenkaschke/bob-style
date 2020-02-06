@@ -151,6 +151,14 @@ export class YourDialogComponent implements OnInit {
   buttonLabel | string | confirm button text
   buttonClass | string | confirm button class
   buttonType | ButtonType | confirm button type (primary, negative...)
+  
+  #### content selectors
+  Name | Description
+  --- | ---
+  b-dialog-above-header | will be displayed above the title
+  b-dialog-sub-title | the sub title of the dialog
+  b-dialog-content | the dialog content
+  b-dialog-confirmation | template for the confirmatiom window
 
 `;
 story.add(

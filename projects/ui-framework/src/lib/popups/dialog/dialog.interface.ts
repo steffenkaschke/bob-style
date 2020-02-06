@@ -23,7 +23,7 @@ export interface DialogButton {
 }
 
 export interface DialogConfirmation {
-  title: string;
+  title?: string;
   subTitle?: string;
   buttonLabel: string;
   buttonClass?: string;

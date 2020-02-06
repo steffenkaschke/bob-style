@@ -31,8 +31,13 @@
   <div *ngIf="showConfirmation"
        [@confirmMessage]
        class="confirmation-message">
-    <b-subheading>{{dialogButtons.confirmation.title}}</b-subheading>
-    <div *ngIf="dialogButtons.confirmation.subTitle">{{dialogButtons.confirmation.subTitle}}</div>
+    <b-subheading *ngIf="dialogButtons.confirmation.title">
+      {{dialogButtons.confirmation.title}}
+    </b-subheading>
+    <div *ngIf="dialogButtons.confirmation.subTitle">
+      {{dialogButtons.confirmation.subTitle}}
+    </div>
+    <ng-content select="[b-dialog-confirmation]"></ng-content>
   </div>
 
   <div mat-dialog-actions
