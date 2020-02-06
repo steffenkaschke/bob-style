@@ -75,7 +75,7 @@ a note on what types are.`,
                   The article id is {{ data.id }}
               </b-subheading>
           </div>
-        <div b-dialog-content>
+          <div b-dialog-content>
               <b-textarea label="Edit text"
                           style="width: 100%;"
                           value="{{ data.textContent }}"
