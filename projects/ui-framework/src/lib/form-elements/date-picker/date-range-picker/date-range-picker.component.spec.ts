@@ -30,6 +30,7 @@ import {
   utilsServiceStub,
   mobileServiceStub,
 } from '../../../tests/services.stub.spec';
+import { InputEventType } from '../../form-elements.enum';
 
 describe('DateRangePickerComponent', () => {
   let fixture: ComponentFixture<DateRangePickerComponent>;
@@ -198,7 +199,7 @@ describe('DateRangePickerComponent', () => {
 
     it('should emit changed event', () => {
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'onWrite',
+        event: InputEventType.onWrite,
         value: {
           from: '2019-09-15',
           to: '2019-09-27',
@@ -253,7 +254,7 @@ describe('DateRangePickerComponent', () => {
       iconElems[0].click();
       expect(component.value.startDate).toBeNull();
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'onBlur',
+        event: InputEventType.onBlur,
         value: {
           from: null,
           to: '2019-09-27',
@@ -274,7 +275,7 @@ describe('DateRangePickerComponent', () => {
       iconElems[1].click();
       expect(component.value.endDate).toBeNull();
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'onBlur',
+        event: InputEventType.onBlur,
         value: {
           from: '2019-09-15',
           to: null,
@@ -555,7 +556,7 @@ describe('DateRangePickerComponent', () => {
         endDate: endOfMonth(parseISO('2019-02-28')),
       });
       expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'onBlur',
+        event: InputEventType.onBlur,
         date: {
           startDate: parseISO('2019-01-01'),
           endDate: endOfMonth(parseISO('2019-02-28')),
