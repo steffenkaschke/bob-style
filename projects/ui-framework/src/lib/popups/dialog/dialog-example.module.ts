@@ -75,7 +75,7 @@ a note on what types are.`,
                   The article id is {{ data.id }}
               </b-subheading>
           </div>
-          <div b-dialog-content>
+        <div b-dialog-content>
               <b-textarea label="Edit text"
                           style="width: 100%;"
                           value="{{ data.textContent }}"
@@ -90,6 +90,7 @@ a note on what types are.`,
               </b-single-select>
           </div>
           <b-checkbox mat-dialog-footer-left label="Auto approve on request"></b-checkbox>
+          <div b-dialog-confirmation>*here you can add confirmation template*</div>
       </b-dialog>
   `,
 })
