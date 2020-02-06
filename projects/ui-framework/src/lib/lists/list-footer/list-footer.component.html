@@ -12,13 +12,27 @@
                [hidden]="listActionsState.reset.hidden"
                [text]="(listActions.reset !== true && listActions.reset) || 'Reset'"></b-text-button>
 
-<ng-content select="[footerAction]"></ng-content>
+<ng-content select="[footerAction],[footerActionRight]"></ng-content>
 
-<b-button *ngIf="listActions.apply"
-          class="apply-button"
-          (clicked)="onApply()"
-          [disabled]="listActionsState.apply.disabled"
-          [hidden]="listActionsState.apply.hidden"
-          [size]="buttonSize.small"
-          [type]="buttonType.primary"
-          [text]="(listActions.apply !== true && listActions.apply) || 'Apply'"></b-button>
+<div class="cancel-apply"
+     *ngIf="listActions.cancel || listActions.apply">
+
+  <b-button *ngIf="listActions.cancel"
+            class="cancel-button"
+            (clicked)="onCancel()"
+            [disabled]="listActionsState.cancel.disabled"
+            [hidden]="listActionsState.cancel.hidden"
+            [size]="buttonSize.small"
+            [type]="buttonType.secondary"
+            [text]="(listActions.cancel !== true && listActions.cancel) || 'Cancel'">
+  </b-button>
+
+  <b-button *ngIf="listActions.apply"
+            class="apply-button"
+            (clicked)="onApply()"
+            [disabled]="listActionsState.apply.disabled"
+            [hidden]="listActionsState.apply.hidden"
+            [size]="buttonSize.small"
+            [type]="buttonType.primary"
+            [text]="(listActions.apply !== true && listActions.apply) || 'Apply'"></b-button>
+</div>

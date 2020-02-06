@@ -37,9 +37,10 @@ export class MultiListComponent extends BaseListElement {
   ) {
     super(renderer, keybrdSrvc, modelSrvc, listChangeSrvc, cd, zone, DOM, host);
     this.listActions = {
+      apply: false,
+      cancel: false,
       clear: true,
       reset: false,
-      apply: false,
     };
   }
 

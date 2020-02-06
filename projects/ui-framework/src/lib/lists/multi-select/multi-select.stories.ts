@@ -19,9 +19,11 @@ import { mockText } from '../../mock.const';
 import { cloneDeep } from 'lodash';
 import { optionsMock, optionsMockDef } from '../multi-list/multi-list.mock';
 import { ListModelService } from '../list-service/list-model.service';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 import listInterfaceDoc from '../list.interface.md';
-import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import selectsPropsDoc from '../selects.properties.md';
+import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -32,26 +34,53 @@ const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 );
 
 const template = `
-<b-multi-select [options]="options"
-                [value]="value"
-                [description]="description"
+<b-multi-select [value]="value"
+                [options]="options"
                 [optionsDefault]="optionsDefault"
                 [label]="label"
                 [placeholder]="placeholder"
+                [description]="description"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                 [disabled]="disabled"
                 [required]="required"
                 [readonly]="readonly"
-                [errorMessage]="errorMessage"
                 [hintMessage]="hintMessage"
+                [errorMessage]="errorMessage"
+                (opened)="opened()"
+                (closed)="closed()"
                 (selectChange)="selectChange($event)"
+                (changed)="selectValueChange($event)"
                 (selectModified)="selectModified($event)"
-                (selectCancelled)="selectCancelled($event)"
-                (changed)="selectValueChange($event)">
+                (selectCancelled)="selectCancelled($event)">
+
     <b-text-button footerAction
-      [text]="'Action'">
+        [text]="'Action'">
     </b-text-button>
+</b-multi-select>
+`;
+
+const templateForNotes = `
+<b-multi-select [value]="value"
+                [options]="options"
+                [optionsDefault]="optionsDefault"
+                [label]="label"
+                [placeholder]="placeholder"
+                [description]="description"
+                [showSingleGroupHeader]="showSingleGroupHeader"
+                [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+                [disabled]="disabled"
+                [required]="required"
+                [readonly]="readonly"
+                [hintMessage]="hintMessage"
+                [errorMessage]="errorMessage"
+                (selectChange)="selectChange($event)"
+                (changed)="selectValueChange($event)">
+
+    <b-text-button footerAction
+        [text]="'Action'">
+    </b-text-button>
+
 </b-multi-select>
 `;
 
@@ -70,34 +99,25 @@ const note = `
   #### Module
   *MultiSelectModule*
 
-  #### Properties
-  Name | Type | Description | Default value
+  ~~~
+  ${templateForNotes}
+  ~~~
+
+  #### MultiSelect properties
+  Name | Type | Description | Default
   --- | --- | --- | ---
-  [options] | SelectGroupOption[] | model of selection group | &nbsp;
-  [optionsDefault] |  SelectGroupOption[] | default options. \
-  if present, the Clear button (if enabled) will be replaced with Reset button, that will set the state \
-  to optionsDefault | &nbsp;
-  [showSingleGroupHeader] | boolean | displays single group with group header | false
-  [startWithGroupsCollapsed] | boolean | if should start with groups closed | true
-  [listActions] | ListFooterActions / string | enable/disable footer action buttons\
-   (clear, apply, reset). If you provide a string, \
-   it will be used for button text, instead of default. | { clear:&nbsp;true, apply:&nbsp;true }
-  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
-  (selectModified) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
-  (selectCancelled) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
-  (changed) | EventEmitter<wbr>&lt;(string/number)[]&gt; | emits array of selected IDs | &nbsp;
-  &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
-  [label] | string | label text | &nbsp;
-  [description] | string | description text (above icon) | &nbsp;
-  [placeholder] | string | placeholder text | &nbsp;
-  [disabled] | boolean | is field disabled | false
-  [required] | boolean | is field required | false
-  [readonly] | boolean | if true, will not emit events and not allow selection | false
-  [hintMessage] | text | hint text | &nbsp;
-  [errorMessage] | text | error text | &nbsp;
-  ~~~
-  ${template}
-  ~~~
+  [value] | (number / string)[] | array of selected options's IDs.<br>\
+   If present, the \`.selected\` props of \`[options]\` will be ignored, \
+   and instead \`[value]\` will be used to select options | &nbsp;
+  (selectModified) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange - on every option change.<br>\
+  **Note:** In most cases, it's better to use \`(selectChange)\` or \`(changed)\`, \
+  that emit on Apply (see doc below) | &nbsp;
+  (selectCancelled) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange - on Cancel. \
+  Only relevant if you use \`(selectModified)\` | &nbsp;
+
+  ${selectsPropsDoc}
+
+  ${formElemsPropsDoc}
 
   ${listInterfaceDoc}
 `;
@@ -167,10 +187,12 @@ const toAdd = () => ({
       'Options'
     ),
 
-    selectChange: action('Multi select change'),
-    selectModified: action('Multi select modified'),
-    selectCancelled: action('Multi select cancelled'),
+    opened: action('Panel opened'),
+    closed: action('Panel closed'),
+    selectChange: action('Change Applied'),
     selectValueChange: action('Value (Selected IDs)'),
+    selectModified: action('Options modified'),
+    selectCancelled: action('Changes Cancelled'),
   },
   moduleMetadata: {
     imports: [

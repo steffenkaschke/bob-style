@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { Icons } from '../../icons/icons.enum';
 import { ListFooterActions, ListFooterActionsState } from '../list.interface';
+import { LIST_ACTIONS_DEF, LIST_ACTIONS_STATE_DEF } from './list-footer.const';
+import { cloneObject, cloneDeepSimpleObject } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-list-footer',
@@ -9,19 +11,14 @@ import { ListFooterActions, ListFooterActionsState } from '../list.interface';
   styleUrls: ['./list-footer.component.scss'],
 })
 export class ListFooterComponent {
-  @Input() listActions: ListFooterActions = {
-    clear: true,
-    reset: false,
-    apply: true,
-  };
-  @Input() listActionsState: ListFooterActionsState = {
-    clear: { disabled: false, hidden: true },
-    reset: { disabled: false, hidden: true },
-    apply: { disabled: true, hidden: false },
-  };
+  @Input() listActions: ListFooterActions = cloneObject(LIST_ACTIONS_DEF);
+  @Input() listActionsState: ListFooterActionsState = cloneDeepSimpleObject(
+    LIST_ACTIONS_STATE_DEF
+  );
 
-  @Output() clear: EventEmitter<void> = new EventEmitter<void>();
   @Output() apply: EventEmitter<void> = new EventEmitter<void>();
+  @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
+  @Output() clear: EventEmitter<void> = new EventEmitter<void>();
   @Output() reset: EventEmitter<void> = new EventEmitter<void>();
 
   readonly buttonSize = ButtonSize;
@@ -30,6 +27,10 @@ export class ListFooterComponent {
 
   onApply(): void {
     this.apply.emit();
+  }
+
+  onCancel(): void {
+    this.cancel.emit();
   }
 
   onClear(): void {

@@ -28,7 +28,6 @@ import { PanelPositionService } from '../popups/panel/panel-position-service/pan
 import { BaseFormElement } from '../form-elements/base-form-element';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
 import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
-import invoke from 'lodash/invoke';
 import isEqual from 'lodash/isEqual';
 import {
   distinctUntilChanged,
@@ -56,6 +55,8 @@ import { ListChangeService } from './list-change/list-change.service';
 import { selectValueOrFail } from '../services/utils/transformers';
 import { ListModelService } from './list-service/list-model.service';
 import { ScrollEvent } from '../services/utils/utils.interface';
+import { SelectType } from './list.enum';
+import { FormEvents } from '../form-elements/form-elements.enum';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements OnChanges, AfterViewInit, OnDestroy {
@@ -108,20 +109,21 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
+  protected type: SelectType;
   public showPrefix = true;
-  public positionClassList: OverlayPositionClasses = {};
-  public panelOpen = false;
   public displayValue: string;
   public displayValueCount: number;
+  protected listChange: ListChange;
+  private subscribtions: Subscription[] = [];
+  private fitOptionsToValue = false;
+  readonly listElHeight = LIST_EL_HEIGHT;
+
   public panelClassList: string[] = [];
+  public positionClassList: OverlayPositionClasses = {};
   public overlayRef: OverlayRef;
   private panelConfig: OverlayConfig;
   private templatePortal: TemplatePortal;
-
-  readonly listElHeight = LIST_EL_HEIGHT;
-
-  private subscribtions: Subscription[] = [];
-  private fitOptionsToValue = false;
+  public panelOpen = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
@@ -204,8 +206,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
         this.templateRef,
         this.viewContainerRef
       );
-      this.overlayRef.attach(this.templatePortal);
 
+      this.overlayRef.attach(this.templatePortal);
       this.overlayRef.updatePosition();
       this.overlayRef.updateSize({
         width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
@@ -219,7 +221,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
         searchInput.focus();
       }
 
-      this.opened.emit(this.overlayRef);
+      if (this.opened.observers.length > 0) {
+        this.opened.emit(this.overlayRef);
+      }
 
       this.subscribtions.push(
         (this.panelConfig
@@ -245,7 +249,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
 
       this.subscribtions.push(
         race(
-          this.overlayRef.backdropClick().pipe(outsideZone(this.zone)),
+          this.overlayRef.backdropClick(),
           this.utilsService.getWindowKeydownEvent().pipe(
             outsideZone(this.zone),
             filter((event: KeyboardEvent) => isKey(event.key, Keys.escape))
@@ -266,7 +270,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
           )
         ).subscribe(() => {
           this.zone.run(() => {
-            this.destroyPanel();
+            this.onApply();
           });
         })
       );
@@ -277,14 +281,25 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     this.destroyPanel();
   }
 
-  protected onCancel(): void {
+  onApply(): void {
     this.destroyPanel();
+  }
+
+  onCancel(): void {
+    this.destroyPanel();
+  }
+
+  onSelect(listChange: ListChange): void {
+    this.listChange = listChange;
+    this.value = listChange.getSelectedIds();
+    this.setDisplayValue();
+    this.emitChange(FormEvents.selectModified, listChange);
   }
 
   protected destroyPanel(): void {
     this.panelOpen = false;
     if (this.overlayRef) {
-      invoke(this.overlayRef, 'dispose');
+      this.overlayRef.dispose();
       this.panelConfig = {};
       this.templatePortal = null;
       this.overlayRef = null;
@@ -295,7 +310,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       });
       this.subscribtions = [];
 
-      this.closed.emit();
+      if (this.closed.observers.length > 0) {
+        this.closed.emit();
+      }
     }
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
@@ -325,5 +342,15 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     };
   }
 
-  protected setDisplayValue() {}
+  protected setDisplayValue(): void {
+    this.displayValue = this.getDisplayValue() || null;
+    this.displayValueCount = this.value ? this.value.length : 0;
+    this.cd.detectChanges();
+  }
+
+  protected getDisplayValue(): string {
+    return null;
+  }
+
+  protected emitChange(event: FormEvents, listChange: ListChange): void {}
 }

@@ -39,10 +39,13 @@ import {
   isNotEmptyArray,
   getEventPath,
   hasChanges,
+  cloneDeepSimpleObject,
 } from '../services/utils/functional-utils';
 import { ListModelService } from './list-service/list-model.service';
 import { ListChangeService } from './list-change/list-change.service';
 import { simpleChange } from '../services/utils/test-helpers';
+import { LIST_ACTIONS_STATE_DEF } from './list-footer/list-footer.const';
+import { SelectType } from './list.enum';
 
 export abstract class BaseListElement
   implements OnChanges, OnInit, OnDestroy, AfterViewInit {
@@ -62,32 +65,10 @@ export abstract class BaseListElement
   @ViewChild('footer', { static: false, read: ElementRef })
   private footer: ElementRef;
 
-  public noGroupHeaders: boolean;
-  public focusOption: ListOption;
-  public listOptions: ListOption[];
-  public listHeaders: ListHeader[];
-  public focusIndex: number;
-  public searchValue: string;
-  public shouldDisplaySearch = false;
-  public filteredOptions: SelectGroupOption[];
-  public listActionsState: ListFooterActionsState = {
-    clear: { disabled: false, hidden: true },
-    reset: { disabled: false, hidden: true },
-    apply: { disabled: true, hidden: false },
-  };
-  public hasFooter = true;
-  public allGroupsCollapsed: boolean;
-
-  public selectedIDs: (string | number)[];
-  protected optionsDefaultIDs: (string | number)[];
-
-  private keyDownSubscriber: Subscription;
-  readonly listElHeight = LIST_EL_HEIGHT;
-
   @Input() options: SelectGroupOption[] = [];
   @Input() optionsDefault: SelectGroupOption[];
   @Input() listActions: ListFooterActions;
-  @Input() maxHeight = this.listElHeight * 8;
+  @Input() maxHeight = LIST_EL_HEIGHT * 8;
   @Input() showSingleGroupHeader = false;
   @Input() startWithGroupsCollapsed = true;
   @Input() showNoneOption = false;
@@ -98,6 +79,29 @@ export abstract class BaseListElement
   >();
 
   @Output() apply: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
+
+  protected type: SelectType;
+  public noGroupHeaders: boolean;
+  public focusOption: ListOption;
+  public listOptions: ListOption[];
+  public listHeaders: ListHeader[];
+  public focusIndex: number;
+  public searchValue: string;
+  public shouldDisplaySearch = false;
+  public filteredOptions: SelectGroupOption[];
+  public listActionsState: ListFooterActionsState = cloneDeepSimpleObject(
+    LIST_ACTIONS_STATE_DEF
+  );
+  public hasFooter = true;
+  public allGroupsCollapsed: boolean;
+
+  public selectedIDs: (string | number)[];
+  protected optionsDefaultIDs: (string | number)[];
+  protected listChange: ListChange;
+
+  private keyDownSubscriber: Subscription;
+  readonly listElHeight = LIST_EL_HEIGHT;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes, {
@@ -335,6 +339,14 @@ export abstract class BaseListElement
     this.listActionsState.apply.disabled = false;
   }
 
+  onApply(): void {
+    this.apply.emit(this.listChange);
+  }
+
+  onCancel(): void {
+    this.cancel.emit();
+  }
+
   protected updateLists(config: UpdateListsConfig = {}): void {
     config = {
       ...UPDATE_LISTS_CONFIG_DEF,
@@ -372,13 +384,13 @@ export abstract class BaseListElement
   }
 
   protected emitChange(): void {
-    const listChange: ListChange = this.listChangeSrvc.getListChange(
+    this.listChange = this.listChangeSrvc.getListChange(
       this.options,
       this.selectedIDs
     );
 
-    this.options = listChange.getSelectGroupOptions();
-    this.selectChange.emit(listChange);
+    this.options = this.listChange.getSelectGroupOptions();
+    this.selectChange.emit(this.listChange);
     this.listActionsState.apply.disabled = false;
   }
 
@@ -397,10 +409,6 @@ export abstract class BaseListElement
         : !this.selectedIDs ||
           !this.optionsDefaultIDs ||
           isEqual(this.selectedIDs.sort(), this.optionsDefaultIDs.sort());
-  }
-
-  onApply(): void {
-    this.apply.emit();
   }
 
   isSameGroup(

@@ -2,7 +2,6 @@ import { storiesOf } from '@storybook/angular';
 import {
   boolean,
   number,
-  select,
   text,
   withKnobs,
 } from '@storybook/addon-knobs/angular';

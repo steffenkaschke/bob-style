@@ -30,8 +30,9 @@ export class SingleListComponent extends BaseListElement {
   ) {
     super(renderer, keybrdSrvc, modelSrvc, listChangeSrvc, cd, zone, DOM, host);
     this.listActions = {
-      clear: false,
       apply: false,
+      cancel: false,
+      clear: false,
       reset: false,
     };
   }

@@ -22,6 +22,8 @@ import { ListModelService } from '../list-service/list-model.service';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 import listInterfaceDoc from '../list.interface.md';
+import selectsPropsDoc from '../selects.properties.md';
+import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -32,23 +34,51 @@ const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 );
 
 const template = `
-<b-single-select [options]="options"
-                 [value]="[value]"
+<b-single-select [value]="[value]"
+                 [options]="options"
                  [label]="label"
                  [placeholder]="placeholder"
                  [description]="description"
+                 [showNoneOption]="showNoneOption"
                  [showSingleGroupHeader]="showSingleGroupHeader"
                  [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                  [disabled]="disabled"
                  [required]="required"
                  [readonly]="readonly"
-                 [errorMessage]="errorMessage"
                  [hintMessage]="hintMessage"
+                 [errorMessage]="errorMessage"
+                 (opened)="opened()"
+                 (closed)="closed()"
                  (selectChange)="selectChange($event)"
                  (changed)="selectValueChange($event)">
-    <b-text-button footerAction
-      [text]="'Click Me!'">
-    </b-text-button>
+
+      <b-text-button footerAction
+          [text]="'Action'">
+      </b-text-button>
+</b-single-select>
+`;
+
+const templateForNotes = `
+<b-single-select [value]="[value]"
+                 [options]="options"
+                 [label]="label"
+                 [placeholder]="placeholder"
+                 [description]="description"
+                 [showNoneOption]="showNoneOption"
+                 [showSingleGroupHeader]="showSingleGroupHeader"
+                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+                 [disabled]="disabled"
+                 [required]="required"
+                 [readonly]="readonly"
+                 [hintMessage]="hintMessage"
+                 [errorMessage]="errorMessage"
+                 (selectChange)="selectChange($event)"
+                 (changed)="selectValueChange($event)">
+
+      <b-text-button footerAction
+          [text]="'Action'">
+      </b-text-button>
+
 </b-single-select>
 `;
 
@@ -66,31 +96,22 @@ const note = `
   #### Module
   *SingleSelectModule*
 
-  #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  [options] | SelectGroupOption[] | model of selection group | &nbsp;
-  [showSingleGroupHeader] | boolean | displays single group with group header | false
-  [startWithGroupsCollapsed] | boolean | if should start with groups closed | true
-  [showNoneOption] | boolean | displays the no-selection option | true
-  [listActions] | ListFooterActions / string | enable/disable footer action buttons\
-   (clear, apply, reset). If you provide a string, \
-   it will be used for button text, instead of default. | { clear:&nbsp;false, apply:&nbsp;false }
-  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
-  (changed) | EventEmitter<wbr>&lt;string/number&gt; | emits selected option ID | &nbsp;
-  &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
-  [label] | string | label text | &nbsp;
-  [description] | string | description text (above icon) | &nbsp;
-  [placeholder] | string | placeholder text | &nbsp;
-  [disabled] | boolean | is field disabled | false
-  [required] | boolean | is field required | false
-  [readonly] | boolean | if true, will not emit events and not allow selection | false
-  [hintMessage] | text | hint text | &nbsp;
-  [errorMessage] | text | error text | &nbsp;
+  ~~~
+  ${templateForNotes}
+  ~~~
 
-  ~~~
-  ${template}
-  ~~~
+  #### SingleSelect properties
+  Name | Type | Description | Default
+  --- | --- | --- | ---
+  [value] | number / string | selected option's ID.<br>\
+   If present, the \`.selected\` props of \`[options]\` will be ignored, \
+   and instead \`[value]\` will be used to select option | &nbsp;
+  [showNoneOption] | boolean | displays the no-selection option.<br>\
+  **Note:** If \`[required]\` is true, \`[showNoneOption]\` will automatically set to false | true
+
+  ${selectsPropsDoc}
+
+  ${formElemsPropsDoc}
 
   ${listInterfaceDoc}
 `;
@@ -115,6 +136,7 @@ const toAdd = () => ({
       'Props'
     ),
 
+    showNoneOption: boolean('showNoneOption', true, 'Props'),
     showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
     startWithGroupsCollapsed: boolean(
       'startWithGroupsCollapsed',
@@ -137,7 +159,9 @@ const toAdd = () => ({
 
     options: object<SelectGroupOption>('options', options, 'Options'),
 
-    selectChange: action('Single select change'),
+    opened: action('Panel opened'),
+    closed: action('Panel closed'),
+    selectChange: action('Change Applied'),
     selectValueChange: action('Value (Selected IDs)'),
   },
   moduleMetadata: {
