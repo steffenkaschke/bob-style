@@ -6,7 +6,7 @@ import {
   NgZone,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
@@ -20,21 +20,68 @@ const SHADOW_BLEED = 10;
   selector: 'b-floating-avatars',
   template: '<canvas #canvas></canvas>',
   styleUrls: ['./floating-avatars.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FloatingAvatarsComponent implements OnInit, OnDestroy {
   @ViewChild('canvas', { static: true }) canvas: ElementRef;
 
   @Input() centerAvatarImage: string = null;
   @Input() avatarImages: string[] = [];
-  @Input() speed = 4;
+  @Input() speed = 0;
 
   private canvasEl: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private loopReq;
   private canvasDimension = {
     width: 0,
-    height: 0
+    height: 0,
+  };
+  private avatarsStaticData = [
+    {
+      ballSize: 30,
+      x: 0.12,
+      y: 0.4,
+    },
+    {
+      ballSize: 17,
+      x: 0.15,
+      y: 0.65,
+    },
+    {
+      ballSize: 18,
+      x: 0.3,
+      y: 0.35,
+    },
+    {
+      ballSize: 50,
+      x: 0.3,
+      y: 0.65,
+    },
+    {
+      ballSize: 19,
+      x: 0.7,
+      y: 0.27,
+    },
+    {
+      ballSize: 35,
+      x: 0.65,
+      y: 0.8,
+    },
+    {
+      ballSize: 55,
+      x: 0.77,
+      y: 0.53,
+    },
+    {
+      ballSize: 35,
+      x: 0.92,
+      y: 0.35,
+    },
+  ];
+  private invisibleAvatar = {
+    ballSize: 0,
+    x: 1,
+    y: 1,
   };
   private particles: Ball[] = [];
   private resizeSubscribe: Subscription;
@@ -42,8 +89,9 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
   constructor(
     private hostRef: ElementRef,
     private zone: NgZone,
-    private utils: UtilsService
-  ) {}
+    private utils: UtilsService,
+  ) {
+  }
 
   ngOnInit(): void {
     this.canvasEl = this.canvas.nativeElement;
@@ -71,20 +119,53 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
   private scaleCanvas(): void {
     this.canvasDimension = {
       width: this.hostRef.nativeElement.clientWidth,
-      height: this.hostRef.nativeElement.clientHeight
+      height: this.hostRef.nativeElement.clientHeight,
     };
     this.canvasEl.width = this.canvasDimension.width;
     this.canvasEl.height = this.canvasDimension.height;
   }
 
   private setScene(): void {
+    if (!this.speed) {
+      this.createStaticDisplay();
+
+      return;
+    }
+
     for (let particle, i = 0; i < this.avatarImages.length; i++) {
       particle = new Ball(
         Math.round(Math.random() * 30 + 20),
-        this.avatarImages[i]
+        this.avatarImages[i],
       );
       particle.x = Math.random() * this.canvasDimension.width;
       particle.y = Math.random() * this.canvasDimension.height;
+      particle.vx = Math.random() * this.speed - this.speed / 2;
+      particle.vy = Math.random() * this.speed - this.speed / 2;
+
+      this.particles.push(particle);
+    }
+    if (this.centerAvatarImage) {
+      let particle: Ball;
+      particle = new Ball(90, this.centerAvatarImage);
+      particle.x = this.canvasDimension.width / 2;
+      particle.y = this.canvasDimension.height / 2;
+      particle.vx = 1;
+      particle.vy = 1;
+      particle.isCenter = true;
+      this.particles.push(particle);
+    }
+  }
+
+  createStaticDisplay(): void {
+    for (let particle, i = 0; i < this.avatarImages.length; i++) {
+      const ballData = this.avatarsStaticData[i] ? this.avatarsStaticData[i] : this.invisibleAvatar;
+
+      particle = new Ball(
+        ballData.ballSize,
+        this.avatarImages[i],
+      );
+      particle.x = ballData.x * this.canvasDimension.width;
+      particle.y = ballData.y * this.canvasDimension.height;
       particle.vx = Math.random() * this.speed - this.speed / 2;
       particle.vy = Math.random() * this.speed - this.speed / 2;
       this.particles.push(particle);
@@ -107,10 +188,14 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
         0,
         0,
         this.canvasDimension.width,
-        this.canvasDimension.height
+        this.canvasDimension.height,
       );
+
       this.particles.forEach((particle, index) => {
-        this.move(particle, index);
+        if (this.speed) {
+          this.move(particle, index);
+        }
+
         particle.draw(this.ctx);
       });
       this.loopReq = requestAnimationFrame(this.loop.bind(this));
@@ -212,7 +297,7 @@ export class Ball {
       -this.radius,
       -this.radius,
       this.radius * 2,
-      this.radius * 2
+      this.radius * 2,
     );
 
     context.restore();
