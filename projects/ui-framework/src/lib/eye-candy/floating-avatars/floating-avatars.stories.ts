@@ -8,10 +8,11 @@ import {
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { mockAvatar, mockStaticAvatarsLocation } from '../../mock.const';
+import { mockAvatar } from '../../mock.const';
 import { EyeCandyModule } from '../eye-candy.module';
 import { boolean } from '@storybook/addon-knobs';
 import { StaticAvatarLocation } from './floating-avatars.interface';
+import { mockStaticAvatarsLocation } from './floating-avatars.mock';
 
 const story = storiesOf(ComponentGroupType.EyeCandy, module).addDecorator(
   withKnobs
