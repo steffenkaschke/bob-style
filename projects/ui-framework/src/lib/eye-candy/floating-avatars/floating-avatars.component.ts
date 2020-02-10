@@ -39,12 +39,6 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
     width: 0,
     height: 0,
   };
-
-  private invisibleAvatar = {
-    ballSize: 0,
-    x: 1,
-    y: 1,
-  };
   private particles: Ball[] = [];
   private resizeSubscribe: Subscription;
 
