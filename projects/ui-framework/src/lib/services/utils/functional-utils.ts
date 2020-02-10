@@ -62,6 +62,9 @@ export const getType = (smth: any): string =>
     ? 'NaN'
     : String(typeof smth);
 
+export const isRegExp = (val: any): val is RegExp =>
+  !!val && typeof val === 'object' && val instanceof RegExp;
+
 // ----------------------
 // NUMBERS
 // ----------------------
@@ -154,6 +157,14 @@ export const onlyUpdatedProps = (
       updObj[key] = newObj[key];
       return updObj;
     }, {});
+};
+
+export const objectRemoveKey = (
+  object: GenericObject,
+  key: string
+): GenericObject => {
+  const { [key]: deletedKey, ...otherKeys } = object;
+  return otherKeys;
 };
 
 // ----------------------
@@ -357,7 +368,19 @@ export const monthIndex = (month: number | string, minusOne = true): number => {
 };
 
 // ----------------------
-// RONDOMIZERS
+// REGEX
+// ----------------------
+
+export const escapeRegExp = (value: string): string => {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
+export const stringToRegex = (value: string, options = 'i'): RegExp => {
+  return new RegExp(escapeRegExp(value), options);
+};
+
+// ----------------------
+// RANDOMIZERS
 // ----------------------
 
 export const randomNumber = (min = 0, max = 100): number =>

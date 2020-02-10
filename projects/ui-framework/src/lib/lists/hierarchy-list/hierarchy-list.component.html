@@ -1,0 +1,78 @@
+<!--
+  if global index < 3, show tooltip below!
+ -->
+
+
+<ng-template #listItem
+             let-item="item"
+             let-index="index">
+  <li class="bhl-item"
+      [id]="item.id"
+      [ngClass]="{
+        selected: item.selected,
+        indeterminate: item.indeterminate,
+        disabled: item.disabled,
+        'bhl-item-option': !item.childrenCount,
+        'bhl-item-group': item.childrenCount
+      }"
+      [attr.tabIndex]="!readonly ? 0 : null"
+      [attr.data-level]="item.parentCount || 1"
+      [attr.data-icon-before]="getChevronIcon(item, index)"
+      (click)="itemClick(item)">
+
+    <span [attr.data-tooltip]="item.tooltipText"></span>
+
+    <span *ngIf="showCheckbox(item)"
+          class="bhl-item-checkbox"
+          role="checkbox"
+          [hidden]="searchValue"
+          [attr.aria-checked]="item.selected"
+          (click)="$event.stopPropagation(); toggleItemSelect(item);"></span>
+
+    <span class="bhl-item-name"
+          data-max-lines='3'
+          [innerHTML]="item.name | highlight: searchValue">
+      {{item.name}}
+    </span>
+
+    <span *ngIf="item.selectedCount"
+          class="bhl-selected-count">
+      ({{item.selectedCount}})
+    </span>
+  </li>
+
+</ng-template>
+
+
+<b-search *ngIf="showSearch"
+          (searchChange)="searchChange($event)">
+</b-search>
+
+
+<p>Total selected: {{ itemsMap.get('#root').selectedCount }}</p>
+
+<ul *ngIf="listView$ | async as listView"
+    class="bhl-list"
+    [attr.data-type]="type"
+    [attr.aria-readonly]="readonly || null">
+
+  <ng-container *ngFor="let itemID of listView; let index = index; trackBy: trackBy">
+    <ng-container *ngTemplateOutlet="listItem; context: {item: itemsMap.get(itemID), index: index}"></ng-container>
+  </ng-container>
+
+</ul>
+
+<b-list-footer #footer
+               *ngIf="hasFooter"
+               [listActions]="!readonly ? listActions : {}"
+               [listActionsState]="!readonly ? listActionsState : {}"
+               (apply)="onApply()"
+               (cancel)="onCancel()"
+               (clear)="clearList()"
+               (reset)="resetList()">
+  <ng-content footerAction
+              select="[footerAction],[footerActionRight]"></ng-content>
+</b-list-footer>
+
+<button type="button"
+        (click)="log()">Log data</button>
