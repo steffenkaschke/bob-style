@@ -55,6 +55,7 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
     this.scaleCanvas();
     this.setScene();
     this.loop();
+
     this.resizeSubscribe = this.utils
       .getResizeEvent()
       .pipe(outsideZone(this.zone))
@@ -95,10 +96,10 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
   }
 
   createStaticDisplayParts(): void {
-    for (let particle, i = 0; i < this.staticAvatarsLocation.length; i++) {
+    for (let i = 0; i < this.staticAvatarsLocation.length; i++) {
       const ballData = this.staticAvatarsLocation[i];
-      particle = new Ball(
-        ballData.ballSize,
+      const particle = new Ball(
+        ballData.avatarSize,
         this.avatarImages[i],
       );
       particle.x = ballData.x * this.canvasDimension.width;
@@ -108,8 +109,8 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
   }
 
   createAnimatedDisplayParts(): void {
-    for (let particle, i = 0; i < this.avatarImages.length; i++) {
-      particle = new Ball(
+    for (let i = 0; i < this.avatarImages.length; i++) {
+      const particle = new Ball(
         Math.round(Math.random() * 30 + 20),
         this.avatarImages[i],
       );
@@ -138,7 +139,10 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
 
         particle.draw(this.ctx);
       });
-      this.loopReq = requestAnimationFrame(this.loop.bind(this));
+
+      if (this.animation) {
+        this.loopReq = requestAnimationFrame(this.loop.bind(this));
+      }
     });
   }
 
@@ -194,9 +198,8 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private createCenterAvatar(centerAvatarImage, canvasDimension ): Ball {
-    let particle: Ball;
-    particle = new Ball(90, centerAvatarImage);
+  private createCenterAvatar(centerAvatarImage, canvasDimension): Ball {
+    const particle: Ball = new Ball(90, centerAvatarImage);
     particle.x = canvasDimension.width / 2;
     particle.y = canvasDimension.height / 2;
     particle.vx = 1;

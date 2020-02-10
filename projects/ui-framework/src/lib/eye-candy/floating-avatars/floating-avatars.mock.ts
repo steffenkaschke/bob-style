@@ -3,42 +3,42 @@ import { StaticAvatarLocation } from './floating-avatars.interface';
 export const mockStaticAvatarsLocation = (): StaticAvatarLocation[] => {
   return [
     {
-      ballSize: 30,
+      avatarSize: 30,
       x: 0.12,
       y: 0.4,
     },
     {
-      ballSize: 17,
+      avatarSize: 17,
       x: 0.15,
       y: 0.65,
     },
     {
-      ballSize: 18,
+      avatarSize: 18,
       x: 0.3,
       y: 0.35,
     },
     {
-      ballSize: 50,
+      avatarSize: 50,
       x: 0.3,
       y: 0.65,
     },
     {
-      ballSize: 19,
+      avatarSize: 19,
       x: 0.7,
       y: 0.27,
     },
     {
-      ballSize: 35,
+      avatarSize: 35,
       x: 0.65,
       y: 0.8,
     },
     {
-      ballSize: 55,
+      avatarSize: 55,
       x: 0.77,
       y: 0.53,
     },
     {
-      ballSize: 35,
+      avatarSize: 35,
       x: 0.92,
       y: 0.35,
     },

@@ -1,5 +1,5 @@
 export interface StaticAvatarLocation {
-  ballSize: number;
+  avatarSize: number;
   x: number;
   y: number;
 }
