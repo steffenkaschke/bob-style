@@ -6,7 +6,6 @@ import {
   capitalize,
 } from './services/utils/functional-utils';
 import { Icons } from './icons/icons.enum';
-import { StaticAvatarLocation } from './eye-candy/floating-avatars/floating-avatars.interface';
 
 export const mockCitiesList = [
   'Tokyo-Yokohama',
