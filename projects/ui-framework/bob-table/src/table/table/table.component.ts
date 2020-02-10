@@ -194,6 +194,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       onCellClicked(event: CellClickedEvent): void {
         that.cellClicked.emit(event);
       },
+      accentedSort: true
     };
   }
 
