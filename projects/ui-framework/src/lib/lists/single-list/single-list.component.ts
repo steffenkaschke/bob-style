@@ -11,6 +11,7 @@ import { BaseListElement } from '../list-element.abstract';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { SelectType } from '../list.enum';
 
 @Component({
   selector: 'b-single-list',
@@ -29,6 +30,7 @@ export class SingleListComponent extends BaseListElement {
     host: ElementRef
   ) {
     super(renderer, keybrdSrvc, modelSrvc, listChangeSrvc, cd, zone, DOM, host);
+    this.type = SelectType.single;
     this.listActions = {
       apply: false,
       cancel: false,
