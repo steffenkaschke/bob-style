@@ -109,7 +109,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [size] | ProgressSize | theme size | medium
-  [data] | ProgressDonutData | \`\`\`color: string\`\`\` - bar color,<br>\
+  [data] | ProgressData | \`\`\`color: string\`\`\` - bar color,<br>\
   \`\`\`value: number\`\`\` -  progress value (0-100) **&lt;= number indicating percentage**,<br>\
   \`\`\`headerTextPrimary: string / boolean\`\`\` - \
    text for the top line of the header (headings font-family),<br>\
@@ -117,7 +117,7 @@ const note = `
    text for the bottom line of the header (smaller font-size &amp; lighter grey color)<br><br>\
    **Note**: If \`headerTextPrimary\` is not provided (set to falsy value), value (in %) will be put in its place. \
    To hide primary text slot completely, also set \`hideValue\` to true in \`config\` |  &nbsp;
-  [config] | ProgressDonutConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation <br>\
+  [config] | ProgressConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation <br>\
   \`\`\`hideValue: boolean\`\`\` - hides value text |  &nbsp;
 
   ~~~
