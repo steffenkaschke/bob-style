@@ -240,7 +240,7 @@ export class Ball {
     this.scaleY = 1;
     this.img = new Image();
     this.img.src = imgUrl;
-    this.lineWidth = Math.min(Math.floor(radius / 10), 4);
+    this.lineWidth = Math.min(Math.floor(radius / 10), 2);
   }
 
   public draw(context: CanvasRenderingContext2D) {
