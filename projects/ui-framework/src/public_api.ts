@@ -132,6 +132,9 @@ export * from './lib/indicators/progress/progress.enum';
 export * from './lib/indicators/progress/progress.interface';
 export { ProgressBarModule } from './lib/indicators/progress/progress-bar/progress-bar.module';
 export { ProgressBarComponent } from './lib/indicators/progress/progress-bar/progress-bar.component';
+// Progress Donut Bar
+export { ProgressDonutComponent } from './lib/indicators/progress/progress-donut/progress-donut.component';
+export { ProgressDonutModule } from './lib/indicators/progress/progress-donut/progress-donut.module';
 // Simple Bar Chart
 export * from './lib/indicators/simple-bar-chart/simple-bar-chart.interface';
 export { SimpleBarChartModule } from './lib/indicators/simple-bar-chart/simple-bar-chart.module';
