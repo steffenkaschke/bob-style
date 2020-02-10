@@ -90,11 +90,30 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
   private setScene(): void {
     if (!this.animation) {
       this.speed = 0;
-      this.createStaticDisplay();
-
-      return;
+      this.createStaticDisplayParts();
+    } else {
+      this.createAnimatedDisplayParts();
     }
+    if (this.centerAvatarImage) {
+      const particle: Ball = this.createCenterAvatar(this.centerAvatarImage, this.canvasDimension);
+      this.particles.push(particle);
+    }
+  }
 
+  createStaticDisplayParts(): void {
+    for (let particle, i = 0; i < this.staticAvatarsLocation.length; i++) {
+      const ballData = this.staticAvatarsLocation[i];
+      particle = new Ball(
+        ballData.ballSize,
+        this.avatarImages[i],
+      );
+      particle.x = ballData.x * this.canvasDimension.width;
+      particle.y = ballData.y * this.canvasDimension.height;
+      this.particles.push(particle);
+    }
+  }
+
+  createAnimatedDisplayParts(): void {
     for (let particle, i = 0; i < this.avatarImages.length; i++) {
       particle = new Ball(
         Math.round(Math.random() * 30 + 20),
@@ -105,42 +124,6 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
       particle.vx = Math.random() * this.speed - this.speed / 2;
       particle.vy = Math.random() * this.speed - this.speed / 2;
 
-      this.particles.push(particle);
-    }
-    if (this.centerAvatarImage) {
-      let particle: Ball;
-      particle = new Ball(90, this.centerAvatarImage);
-      particle.x = this.canvasDimension.width / 2;
-      particle.y = this.canvasDimension.height / 2;
-      particle.vx = 1;
-      particle.vy = 1;
-      particle.isCenter = true;
-      this.particles.push(particle);
-    }
-  }
-
-  createStaticDisplay(): void {
-    for (let particle, i = 0; i < this.avatarImages.length; i++) {
-      const ballData = this.staticAvatarsLocation[i] ? this.staticAvatarsLocation[i] : this.invisibleAvatar;
-
-      particle = new Ball(
-        ballData.ballSize,
-        this.avatarImages[i],
-      );
-      particle.x = ballData.x * this.canvasDimension.width;
-      particle.y = ballData.y * this.canvasDimension.height;
-      particle.vx = 0;
-      particle.vy = 0;
-      this.particles.push(particle);
-    }
-    if (this.centerAvatarImage) {
-      let particle: Ball;
-      particle = new Ball(90, this.centerAvatarImage);
-      particle.x = this.canvasDimension.width / 2;
-      particle.y = this.canvasDimension.height / 2;
-      particle.vx = 1;
-      particle.vy = 1;
-      particle.isCenter = true;
       this.particles.push(particle);
     }
   }
@@ -215,6 +198,18 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
       ball2.vx -= ax / 500;
       ball2.vy -= ay / 500;
     }
+  }
+
+  private createCenterAvatar(centerAvatarImage, canvasDimension ): Ball {
+    let particle: Ball;
+    particle = new Ball(90, centerAvatarImage);
+    particle.x = canvasDimension.width / 2;
+    particle.y = canvasDimension.height / 2;
+    particle.vx = 1;
+    particle.vy = 1;
+    particle.isCenter = true;
+
+    return particle;
   }
 }
 
