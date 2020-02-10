@@ -11,6 +11,7 @@ import {
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
+import { StaticAvatarLocation } from './floating-avatars.interface';
 
 const MIN_DIST = 250;
 const SPRING_AMOUNT = 0.0001;
@@ -27,7 +28,9 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
 
   @Input() centerAvatarImage: string = null;
   @Input() avatarImages: string[] = [];
-  @Input() speed = 0;
+  @Input() speed = 4;
+  @Input() animation = true;
+  @Input() staticAvatarsLocation: StaticAvatarLocation[] = [];
 
   private canvasEl: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
@@ -36,48 +39,7 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
     width: 0,
     height: 0,
   };
-  private avatarsStaticData = [
-    {
-      ballSize: 30,
-      x: 0.12,
-      y: 0.4,
-    },
-    {
-      ballSize: 17,
-      x: 0.15,
-      y: 0.65,
-    },
-    {
-      ballSize: 18,
-      x: 0.3,
-      y: 0.35,
-    },
-    {
-      ballSize: 50,
-      x: 0.3,
-      y: 0.65,
-    },
-    {
-      ballSize: 19,
-      x: 0.7,
-      y: 0.27,
-    },
-    {
-      ballSize: 35,
-      x: 0.65,
-      y: 0.8,
-    },
-    {
-      ballSize: 55,
-      x: 0.77,
-      y: 0.53,
-    },
-    {
-      ballSize: 35,
-      x: 0.92,
-      y: 0.35,
-    },
-  ];
+
   private invisibleAvatar = {
     ballSize: 0,
     x: 1,
@@ -126,7 +88,8 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
   }
 
   private setScene(): void {
-    if (!this.speed) {
+    if (!this.animation) {
+      this.speed = 0;
       this.createStaticDisplay();
 
       return;
@@ -158,7 +121,7 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
 
   createStaticDisplay(): void {
     for (let particle, i = 0; i < this.avatarImages.length; i++) {
-      const ballData = this.avatarsStaticData[i] ? this.avatarsStaticData[i] : this.invisibleAvatar;
+      const ballData = this.staticAvatarsLocation[i] ? this.staticAvatarsLocation[i] : this.invisibleAvatar;
 
       particle = new Ball(
         ballData.ballSize,
@@ -166,8 +129,8 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
       );
       particle.x = ballData.x * this.canvasDimension.width;
       particle.y = ballData.y * this.canvasDimension.height;
-      particle.vx = Math.random() * this.speed - this.speed / 2;
-      particle.vy = Math.random() * this.speed - this.speed / 2;
+      particle.vx = 0;
+      particle.vy = 0;
       this.particles.push(particle);
     }
     if (this.centerAvatarImage) {
@@ -311,6 +274,8 @@ export class Ball {
       context.closePath();
       context.lineWidth = this.lineWidth;
       context.strokeStyle = 'rgba(255,255,255,1)';
+      context.shadowColor = 'grey';
+      context.shadowBlur = 15;
       context.stroke();
     }
 

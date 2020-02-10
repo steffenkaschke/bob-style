@@ -8,8 +8,10 @@ import {
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { mockAvatar } from '../../mock.const';
+import { mockAvatar, mockStaticAvatarsLocation } from '../../mock.const';
 import { EyeCandyModule } from '../eye-candy.module';
+import { boolean } from '@storybook/addon-knobs';
+import { StaticAvatarLocation } from './floating-avatars.interface';
 
 const story = storiesOf(ComponentGroupType.EyeCandy, module).addDecorator(
   withKnobs
@@ -21,10 +23,22 @@ const avatarImagesMock: string[] = Array.from(Array(avatarNum), (_, i) => {
 });
 const centerAvatarImageMock = mockAvatar();
 
+const staticAvatarsLocationMock: StaticAvatarLocation[] =  mockStaticAvatarsLocation();
+
+
 const template = `
-  <b-floating-avatars [avatarImages]="avatarImages"
+  <b-floating-avatars *ngIf="animation" [avatarImages]="avatarImages"
                       [centerAvatarImage]="centerAvatarImage"
-                      [speed]="speed">
+                      [speed]="speed"
+                      [animation]="animation"
+                      >
+  </b-floating-avatars>
+  <b-floating-avatars *ngIf="!animation" [avatarImages]="avatarImages"
+                      [centerAvatarImage]="centerAvatarImage"
+                      [speed]="speed"
+                      [animation]="animation"
+                      [staticAvatarsLocation]="staticAvatarsLocation"
+                      >
   </b-floating-avatars>
 `;
 
@@ -40,6 +54,8 @@ const note = `
   [avatarImages] | string[] | Array of image urls | []
   [centerAvatarImage] | string | the avatar to be displayed in center | null
   [speed] | number | avatar movement speed is around value | 4
+  [animation] | boolean | avatar will move or stay static | true
+  [staticAvatarsLocation] | StaticAvatarLocation[] | location of static avatars | []
 
   ~~~
   ${template}
@@ -67,8 +83,10 @@ const toAdd = () => ({
   template: storyTemplate,
   props: {
     speed: number('speed', 4),
+    animation: boolean('animation', true),
     centerAvatarImage: text('centerAvatarImage', centerAvatarImageMock),
-    avatarImages: object('avatarImages', avatarImagesMock)
+    avatarImages: object('avatarImages', avatarImagesMock),
+    staticAvatarsLocation: object('staticAvatarsLocation', staticAvatarsLocationMock)
   },
   moduleMetadata: {
     imports: [StoryBookLayoutModule, BrowserAnimationsModule, EyeCandyModule]
