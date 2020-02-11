@@ -11,8 +11,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { mockAvatar } from '../../mock.const';
 import { EyeCandyModule } from '../eye-candy.module';
 import { boolean } from '@storybook/addon-knobs';
-import { StaticAvatarLocation } from './floating-avatars.interface';
-import { mockStaticAvatarsLocation } from './floating-avatars.mock';
+import {
+  StaticAvatarLocation,
+  staticAvatarLocationDesktopDefault,
+  staticAvatarLocationMobileDefault,
+} from './floating-avatars.interface';
 
 const story = storiesOf(ComponentGroupType.EyeCandy, module).addDecorator(
   withKnobs
@@ -23,8 +26,6 @@ const avatarImagesMock: string[] = Array.from(Array(avatarNum), (_, i) => {
   return mockAvatar();
 });
 const centerAvatarImageMock = mockAvatar();
-
-const staticAvatarsLocationMock: StaticAvatarLocation[] =  mockStaticAvatarsLocation();
 
 
 const template = `
@@ -83,8 +84,8 @@ const toAdd = () => ({
     animation: boolean('animation', true),
     centerAvatarImage: text('centerAvatarImage', centerAvatarImageMock),
     avatarImages: object('avatarImages', avatarImagesMock),
-    staticAvatarsLocationDesktop: object('staticAvatarsLocationDesktop', staticAvatarsLocationMock),
-    staticAvatarsLocationMobile: object('staticAvatarsLocationMobile', staticAvatarsLocationMock)
+    staticAvatarsLocationDesktop: object('staticAvatarsLocationDesktop', staticAvatarLocationDesktopDefault),
+    staticAvatarsLocationMobile: object('staticAvatarsLocationMobile', staticAvatarLocationMobileDefault)
   },
   moduleMetadata: {
     imports: [StoryBookLayoutModule, BrowserAnimationsModule, EyeCandyModule]
