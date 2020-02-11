@@ -96,9 +96,9 @@ $input-focus-border-color: $grey-700;
   }
 }
 
-@mixin bFormElement-basics {
+@mixin bFormElement-basics($dir: column) {
   display: flex;
-  flex-direction: column;
+  flex-direction: $dir;
   box-sizing: border-box;
   text-align: left;
   max-width: 100%;
