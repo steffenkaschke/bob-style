@@ -3,9 +3,11 @@ import {
   Component,
   ElementRef,
   Input,
-  NgZone, OnChanges,
+  NgZone,
+  OnChanges,
   OnDestroy,
-  OnInit, SimpleChanges,
+  OnInit,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
@@ -17,7 +19,7 @@ import {
   staticAvatarLocationMobileDefault,
 } from './floating-avatars.interface';
 import { MobileService } from '../../services/utils/mobile.service';
-
+import { notFirstChanges } from '../../services/utils/functional-utils';
 
 const MIN_DIST = 250;
 const SPRING_AMOUNT = 0.0001;
@@ -36,13 +38,15 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() avatarImages: string[] = [];
   @Input() speed = 4;
   @Input() animation = true;
-  @Input() staticAvatarsLocationDesktop: StaticAvatarLocation[] = staticAvatarLocationDesktopDefault;
-  @Input() staticAvatarsLocationMobile: StaticAvatarLocation[] = staticAvatarLocationMobileDefault;
+  @Input()
+  staticAvatarsLocationDesktop: StaticAvatarLocation[] = staticAvatarLocationDesktopDefault;
+  @Input()
+  staticAvatarsLocationMobile: StaticAvatarLocation[] = staticAvatarLocationMobileDefault;
 
   private canvasEl: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private loopReq;
-  private canvasDimension = {
+  private canvasDimension: { width: number; height: number } = {
     width: 0,
     height: 0,
   };
@@ -54,25 +58,30 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
     private hostRef: ElementRef,
     private zone: NgZone,
     private utils: UtilsService,
-    private mobileService: MobileService,
-  ) {
-  }
+    private mobileService: MobileService
+  ) {}
 
   ngOnInit(): void {
-    this.isMobile = this.mobileService.isMobileBrowser();
-    this.resizeSubscribe = combineLatest(
+    console.log('ngOnInit');
+
+    this.isMobile = this.mobileService.getMediaData().matchMobile;
+    this.build();
+
+    this.resizeSubscribe = combineLatest([
       this.mobileService.getMediaEvent(),
-      this.utils
-        .getResizeEvent()
-        .pipe(outsideZone(this.zone)),
-    ).subscribe(([mediaEvent, resizeEvent]) => {
-      this.isMobile = mediaEvent.isMobileBrowser;
+      this.utils.getResizeEvent().pipe(outsideZone(this.zone)),
+    ]).subscribe(([mediaEvent, resizeEvent]) => {
+      console.log('mediaEvent', mediaEvent);
+      this.isMobile = mediaEvent.matchMobile;
       this.build();
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.build();
+    if (notFirstChanges(changes)) {
+      console.log('ngOnChanges');
+      this.build();
+    }
   }
 
   ngOnDestroy(): void {
@@ -83,16 +92,21 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private build() {
+    console.log('build');
     window.cancelAnimationFrame(this.loopReq);
     this.particles = [];
     this.loopReq = null;
-    this.canvasDimension.width = null;
-    this.canvasDimension.height = null;
+    // this.canvasDimension.width = null;
+    // this.canvasDimension.height = null;
     this.canvasEl = this.canvas.nativeElement;
     this.ctx = this.canvasEl.getContext('2d');
+
     this.scaleCanvas();
     this.setScene();
-    this.loop();
+
+    if (this.animation) {
+      this.loop();
+    }
   }
 
   private scaleCanvas(): void {
@@ -105,37 +119,52 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setScene(): void {
+    this.ctx.clearRect(
+      0,
+      0,
+      this.canvasDimension.width,
+      this.canvasDimension.height
+    );
+
     if (!this.animation) {
-      const staticAvatarsLocation = this.isMobile ?
-        this.staticAvatarsLocationMobile : this.staticAvatarsLocationDesktop;
+      const staticAvatarsLocation = this.isMobile
+        ? this.staticAvatarsLocationMobile
+        : this.staticAvatarsLocationDesktop;
       this.createStaticDisplayParts(staticAvatarsLocation);
     } else {
       this.createAnimatedDisplayParts();
     }
     if (this.centerAvatarImage) {
-      const particle: Ball = this.createCenterAvatar(this.centerAvatarImage, this.canvasDimension);
+      const particle: Ball = this.createCenterAvatar(
+        this.centerAvatarImage,
+        this.canvasDimension
+      );
       this.particles.push(particle);
     }
+
+    this.particles.forEach((particle, index) => {
+      particle.draw(this.ctx);
+    });
   }
 
-  createStaticDisplayParts(staticAvatarsLocation): void {
+  createStaticDisplayParts(
+    staticAvatarsLocation: StaticAvatarLocation[]
+  ): void {
     for (let i = 0; i < staticAvatarsLocation.length; i++) {
       const ballData = staticAvatarsLocation[i];
-      const particle = new Ball(
-        ballData.avatarSize,
-        this.avatarImages[i],
-      );
+      const particle = new Ball(ballData.avatarSize, this.avatarImages[i]);
       particle.x = ballData.x * this.canvasDimension.width;
       particle.y = ballData.y * this.canvasDimension.height;
       this.particles.push(particle);
     }
+    console.log('createStaticDisplayParts', this.particles);
   }
 
   createAnimatedDisplayParts(): void {
     for (let i = 0; i < this.avatarImages.length; i++) {
       const particle = new Ball(
         Math.round(Math.random() * 30 + 20),
-        this.avatarImages[i],
+        this.avatarImages[i]
       );
       particle.x = Math.random() * this.canvasDimension.width;
       particle.y = Math.random() * this.canvasDimension.height;
@@ -152,20 +181,15 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
         0,
         0,
         this.canvasDimension.width,
-        this.canvasDimension.height,
+        this.canvasDimension.height
       );
 
       this.particles.forEach((particle, index) => {
-        if (this.animation) {
-          this.move(particle, index);
-        }
-
+        this.move(particle, index);
         particle.draw(this.ctx);
       });
 
-      if (this.animation) {
-        this.loopReq = requestAnimationFrame(this.loop.bind(this));
-      }
+      this.loopReq = requestAnimationFrame(this.loop.bind(this));
     });
   }
 
@@ -275,7 +299,7 @@ export class Ball {
       -this.radius,
       -this.radius,
       this.radius * 2,
-      this.radius * 2,
+      this.radius * 2
     );
 
     context.restore();

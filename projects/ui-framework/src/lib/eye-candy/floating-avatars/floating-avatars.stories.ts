@@ -3,7 +3,7 @@ import {
   object,
   text,
   number,
-  withKnobs
+  withKnobs,
 } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -25,7 +25,6 @@ const avatarImagesMock: string[] = Array.from(Array(avatarNum), (_, i) => {
   return mockAvatar();
 });
 const centerAvatarImageMock = mockAvatar();
-
 
 const template = `
   <b-floating-avatars [avatarImages]="avatarImages"
@@ -80,15 +79,21 @@ const toAdd = () => ({
   template: storyTemplate,
   props: {
     speed: number('speed', 4),
-    animation: boolean('animation', true),
+    animation: boolean('animation', false),
     centerAvatarImage: text('centerAvatarImage', centerAvatarImageMock),
     avatarImages: object('avatarImages', avatarImagesMock),
-    staticAvatarsLocationDesktop: object('staticAvatarsLocationDesktop', staticAvatarLocationDesktopDefault),
-    staticAvatarsLocationMobile: object('staticAvatarsLocationMobile', staticAvatarLocationMobileDefault)
+    staticAvatarsLocationDesktop: object(
+      'staticAvatarsLocationDesktop',
+      staticAvatarLocationDesktopDefault
+    ),
+    staticAvatarsLocationMobile: object(
+      'staticAvatarsLocationMobile',
+      staticAvatarLocationMobileDefault
+    ),
   },
   moduleMetadata: {
-    imports: [StoryBookLayoutModule, BrowserAnimationsModule, EyeCandyModule]
-  }
+    imports: [StoryBookLayoutModule, BrowserAnimationsModule, EyeCandyModule],
+  },
 });
 
 story.add('Floating avatars', toAdd, { notes: { markdown: note } });
