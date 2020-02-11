@@ -13,17 +13,15 @@ import {
 import { UtilsService } from '../../services/utils/utils.service';
 import { combineLatest, Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
+import { AvatarLocation, CanvasDimension } from './floating-avatars.interface';
 import {
-  StaticAvatarLocation,
-  staticAvatarLocationDesktopDefault,
-  staticAvatarLocationMobileDefault,
-} from './floating-avatars.interface';
-import { MobileService } from '../../services/utils/mobile.service';
+  AVATAR_LOCATIONS_DEF_DESK,
+  AVATAR_LOCATIONS_DEF_MOB,
+} from './floating-avatars.const';
+import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
 import { notFirstChanges } from '../../services/utils/functional-utils';
-
-const MIN_DIST = 250;
-const SPRING_AMOUNT = 0.0001;
-const SHADOW_BLEED = 10;
+import { skip } from 'rxjs/operators';
+import { AvatarParticle } from './avatar.particle';
 
 @Component({
   selector: 'b-floating-avatars',
@@ -34,25 +32,28 @@ const SHADOW_BLEED = 10;
 export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('canvas', { static: true }) canvas: ElementRef;
 
-  @Input() centerAvatarImage: string = null;
   @Input() avatarImages: string[] = [];
-  @Input() speed = 4;
-  @Input() animation = true;
+  @Input() centerAvatarImage: string = null;
+  @Input() speed = 2.5;
+  @Input() lines = false;
+  @Input() shadows = false;
+  @Input() animateOnDesktop = true;
+  @Input() animateOnMobile = false;
   @Input()
-  staticAvatarsLocationDesktop: StaticAvatarLocation[] = staticAvatarLocationDesktopDefault;
+  avatarsLocationsDesktop: AvatarLocation[] = AVATAR_LOCATIONS_DEF_DESK;
   @Input()
-  staticAvatarsLocationMobile: StaticAvatarLocation[] = staticAvatarLocationMobileDefault;
+  avatarLocationsMobile: AvatarLocation[] = AVATAR_LOCATIONS_DEF_MOB;
 
   private canvasEl: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private loopReq;
-  private canvasDimension: { width: number; height: number } = {
+  private canvasDimension: CanvasDimension = {
     width: 0,
     height: 0,
   };
-  private particles: Ball[] = [];
-  private resizeSubscribe: Subscription;
-  private isMobile: boolean;
+  private particles: AvatarParticle[] = [];
+  private resizeSubscriber: Subscription;
+  private isMobile = false;
 
   constructor(
     private hostRef: ElementRef,
@@ -62,50 +63,55 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log('ngOnInit');
-
     this.isMobile = this.mobileService.getMediaData().matchMobile;
     this.build();
 
-    this.resizeSubscribe = combineLatest([
-      this.mobileService.getMediaEvent(),
+    this.resizeSubscriber = combineLatest([
+      this.mobileService
+        .getMediaEvent()
+        .pipe(outsideZone<MediaEvent>(this.zone), skip(1)),
       this.utils.getResizeEvent().pipe(outsideZone(this.zone)),
     ]).subscribe(([mediaEvent, resizeEvent]) => {
-      console.log('mediaEvent', mediaEvent);
       this.isMobile = mediaEvent.matchMobile;
+      this.stop();
       this.build();
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (notFirstChanges(changes)) {
-      console.log('ngOnChanges');
+      this.stop();
       this.build();
     }
   }
 
   ngOnDestroy(): void {
-    if (this.resizeSubscribe) {
-      this.resizeSubscribe.unsubscribe();
+    this.stop();
+    if (this.resizeSubscriber) {
+      this.resizeSubscriber.unsubscribe();
     }
-    window.cancelAnimationFrame(this.loopReq);
   }
 
-  private build() {
-    console.log('build');
+  private stop() {
     window.cancelAnimationFrame(this.loopReq);
     this.particles = [];
     this.loopReq = null;
-    // this.canvasDimension.width = null;
-    // this.canvasDimension.height = null;
+  }
+
+  private build() {
     this.canvasEl = this.canvas.nativeElement;
     this.ctx = this.canvasEl.getContext('2d');
 
     this.scaleCanvas();
     this.setScene();
 
-    if (this.animation) {
-      this.loop();
+    if (
+      (!this.isMobile && this.animateOnDesktop) ||
+      (this.isMobile && this.animateOnMobile)
+    ) {
+      this.zone.runOutsideAngular(() => {
+        this.loop();
+      });
     }
   }
 
@@ -126,45 +132,74 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
       this.canvasDimension.height
     );
 
-    if (!this.animation) {
-      const staticAvatarsLocation = this.isMobile
-        ? this.staticAvatarsLocationMobile
-        : this.staticAvatarsLocationDesktop;
-      this.createStaticDisplayParts(staticAvatarsLocation);
+    if (
+      (!this.isMobile && !this.animateOnDesktop) ||
+      (this.isMobile && !this.animateOnMobile)
+    ) {
+      this.createStaticDisplayParts(
+        this.isMobile
+          ? this.avatarLocationsMobile
+          : this.avatarsLocationsDesktop
+      );
     } else {
       this.createAnimatedDisplayParts();
     }
     if (this.centerAvatarImage) {
-      const particle: Ball = this.createCenterAvatar(
-        this.centerAvatarImage,
-        this.canvasDimension
+      const particle: AvatarParticle = this.createCenterAvatar(
+        this.centerAvatarImage
       );
       this.particles.push(particle);
     }
+  }
 
+  private draw(move = false) {
     this.particles.forEach((particle, index) => {
-      particle.draw(this.ctx);
+      if (move) {
+        particle.move(this.canvasDimension, index);
+      }
+      particle.draw();
     });
   }
 
-  createStaticDisplayParts(
-    staticAvatarsLocation: StaticAvatarLocation[]
+  private loop(): void {
+    this.ctx.clearRect(
+      0,
+      0,
+      this.canvasDimension.width,
+      this.canvasDimension.height
+    );
+    this.draw(true);
+    this.loopReq = requestAnimationFrame(this.loop.bind(this));
+  }
+
+  private createStaticDisplayParts(
+    staticAvatarsLocation: AvatarLocation[]
   ): void {
     for (let i = 0; i < staticAvatarsLocation.length; i++) {
       const ballData = staticAvatarsLocation[i];
-      const particle = new Ball(ballData.avatarSize, this.avatarImages[i]);
+      const particle = new AvatarParticle(
+        ballData.avatarSize,
+        this.avatarImages[i],
+        this.lines,
+        this.shadows,
+        this.particles,
+        this.ctx
+      );
       particle.x = ballData.x * this.canvasDimension.width;
       particle.y = ballData.y * this.canvasDimension.height;
       this.particles.push(particle);
     }
-    console.log('createStaticDisplayParts', this.particles);
   }
 
-  createAnimatedDisplayParts(): void {
+  private createAnimatedDisplayParts(): void {
     for (let i = 0; i < this.avatarImages.length; i++) {
-      const particle = new Ball(
+      const particle = new AvatarParticle(
         Math.round(Math.random() * 30 + 20),
-        this.avatarImages[i]
+        this.avatarImages[i],
+        this.lines,
+        this.shadows,
+        this.particles,
+        this.ctx
       );
       particle.x = Math.random() * this.canvasDimension.width;
       particle.y = Math.random() * this.canvasDimension.height;
@@ -175,149 +210,21 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private loop(): void {
-    this.zone.runOutsideAngular(() => {
-      this.ctx.clearRect(
-        0,
-        0,
-        this.canvasDimension.width,
-        this.canvasDimension.height
-      );
-
-      this.particles.forEach((particle, index) => {
-        this.move(particle, index);
-        particle.draw(this.ctx);
-      });
-
-      this.loopReq = requestAnimationFrame(this.loop.bind(this));
-    });
-  }
-
-  private move(ball1: Ball, index: number): void {
-    if (!ball1.isCenter) {
-      ball1.x += ball1.vx;
-      ball1.y += ball1.vy;
-    }
-
-    if (ball1.x > this.canvasDimension.width - ball1.radius - SHADOW_BLEED) {
-      ball1.x = this.canvasDimension.width - ball1.radius - SHADOW_BLEED - 2;
-      ball1.vx = -ball1.vx;
-    } else if (ball1.x < ball1.radius + SHADOW_BLEED) {
-      ball1.x = ball1.radius + SHADOW_BLEED + 2;
-      ball1.vx = -ball1.vx;
-    }
-
-    if (ball1.y > this.canvasDimension.height - ball1.radius - SHADOW_BLEED) {
-      ball1.y = this.canvasDimension.height - ball1.radius - SHADOW_BLEED - 2;
-      ball1.vy = -ball1.vy;
-    } else if (ball1.y < ball1.radius) {
-      ball1.y = ball1.radius + 2;
-      ball1.vy = -ball1.vy;
-    }
-
-    for (let ball2, j = index + 1; j <= this.avatarImages.length; j++) {
-      ball2 = this.particles[j];
-      this.spring(ball1, ball2);
-    }
-  }
-
-  private spring(ball1: Ball, ball2: Ball): void {
-    const dx = ball2.x - ball1.x;
-    const dy = ball2.y - ball1.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-
-    if (dist < MIN_DIST) {
-      const alpha = 1 - dist / MIN_DIST;
-      this.ctx.strokeStyle = `rgba(200,200,200, ${alpha})`;
-      this.ctx.lineWidth = 1;
-      this.ctx.beginPath();
-      this.ctx.moveTo(ball1.x, ball1.y);
-      this.ctx.lineTo(ball2.x, ball2.y);
-      this.ctx.closePath();
-      this.ctx.stroke();
-
-      const ax = dx * SPRING_AMOUNT;
-      const ay = dy * SPRING_AMOUNT;
-      ball1.vx += ax / 500;
-      ball1.vy += ay / 500;
-      ball2.vx -= ax / 500;
-      ball2.vy -= ay / 500;
-    }
-  }
-
-  private createCenterAvatar(centerAvatarImage, canvasDimension): Ball {
-    const particle: Ball = new Ball(90, centerAvatarImage);
-    particle.x = canvasDimension.width / 2;
-    particle.y = canvasDimension.height / 2;
+  private createCenterAvatar(centerAvatarImage: string): AvatarParticle {
+    const particle: AvatarParticle = new AvatarParticle(
+      90,
+      centerAvatarImage,
+      this.lines,
+      this.shadows,
+      this.particles,
+      this.ctx
+    );
+    particle.x = this.canvasDimension.width / 2;
+    particle.y = this.canvasDimension.height / 2;
     particle.vx = 1;
     particle.vy = 1;
     particle.isCenter = true;
 
     return particle;
-  }
-}
-
-export class Ball {
-  x: number;
-  y: number;
-  radius: number;
-  vx: number;
-  vy: number;
-  scaleX: number;
-  scaleY: number;
-  lineWidth: number;
-  isCenter: boolean;
-  img: HTMLImageElement;
-
-  constructor(radius: number, imgUrl: string) {
-    this.x = 0;
-    this.y = 0;
-    this.radius = radius;
-    this.vx = 0;
-    this.vy = 0;
-    this.scaleX = 1;
-    this.scaleY = 1;
-    this.img = new Image();
-    this.img.src = imgUrl;
-    this.lineWidth = Math.min(Math.floor(radius / 10), 2);
-  }
-
-  public draw(context: CanvasRenderingContext2D) {
-    context.save();
-    context.translate(this.x, this.y);
-    context.scale(this.scaleX, this.scaleY);
-
-    context.fillStyle = 'rgba(248,247,247,1)';
-    context.beginPath();
-    context.arc(0, 0, this.radius, 0, Math.PI * 2, true);
-    context.closePath();
-    context.fill();
-    context.clip();
-
-    context.drawImage(
-      this.img,
-      -this.radius,
-      -this.radius,
-      this.radius * 2,
-      this.radius * 2
-    );
-
-    context.restore();
-    context.save();
-    context.translate(this.x, this.y);
-    context.scale(this.scaleX, this.scaleY);
-
-    if (this.lineWidth > 0) {
-      context.beginPath();
-      context.arc(0, 0, this.radius, 0, Math.PI * 2, true);
-      context.closePath();
-      context.lineWidth = this.lineWidth;
-      context.strokeStyle = 'rgba(255,255,255,1)';
-      context.shadowColor = 'grey';
-      context.shadowBlur = 15;
-      context.stroke();
-    }
-
-    context.restore();
   }
 }
