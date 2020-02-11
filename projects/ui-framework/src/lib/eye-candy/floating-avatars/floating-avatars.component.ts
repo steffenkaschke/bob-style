@@ -152,15 +152,6 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private draw(move = false) {
-    this.particles.forEach((particle, index) => {
-      if (move) {
-        particle.move(this.canvasDimension, index);
-      }
-      particle.draw();
-    });
-  }
-
   private loop(): void {
     this.ctx.clearRect(
       0,
@@ -168,7 +159,10 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
       this.canvasDimension.width,
       this.canvasDimension.height
     );
-    this.draw(true);
+    this.particles.forEach((particle, index) => {
+      particle.move(this.canvasDimension, index);
+      particle.draw();
+    });
     this.loopReq = requestAnimationFrame(this.loop.bind(this));
   }
 
