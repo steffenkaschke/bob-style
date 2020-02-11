@@ -29,6 +29,7 @@ const centerAvatarImageMock = mockAvatar();
 const template = `
   <b-floating-avatars [avatarImages]="avatarImages"
                       [centerAvatarImage]="centerAvatarImage"
+                      [centerAvatarSize]="centerAvatarSize"
                       [animationSpeed]="animationSpeed"
                       [animateLines]="animateLines"
                       [animateShadows]="animateShadows"
@@ -50,6 +51,7 @@ const note = `
   --- | --- | --- | ---
   [avatarImages] | string[] | Array of image urls | []
   [centerAvatarImage] | string | the avatar to be displayed in center | null
+  [centerAvatarSize] | number | diameter of centered avatar | 180
   [animationSpeed] | number | avatar movement speed  | 2.5
   [animateLines] | boolean | connect animated avatars with lines; static avatars have no lines | false
   [animateShadows] | boolean | if animated avatars have shadows (performance is better with shadows disabled); static avatars will always have shadows | false
@@ -83,6 +85,7 @@ const storyTemplate = `
 const toAdd = () => ({
   template: storyTemplate,
   props: {
+    centerAvatarSize: number('centerAvatarSize', 180, {}, 'Props'),
     animationSpeed: number('animationSpeed', 2.5, {}, 'Props'),
     animateLines: boolean('animateLines', false, 'Props'),
     animateShadows: boolean('animateShadows', false, 'Props'),

@@ -34,6 +34,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() avatarImages: string[] = [];
   @Input() centerAvatarImage: string = null;
+  @Input() centerAvatarSize = 180;
   @Input() animationSpeed = 2.5;
   @Input() animateLines = false;
   @Input() animateShadows = false;
@@ -144,7 +145,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.createAnimatedDisplayParts();
     }
-    if (this.centerAvatarImage) {
+    if (this.centerAvatarImage && this.centerAvatarSize) {
       const particle: AvatarParticle = this.createCenterAvatar(
         this.centerAvatarImage
       );
@@ -208,7 +209,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
 
   private createCenterAvatar(centerAvatarImage: string): AvatarParticle {
     const particle: AvatarParticle = new AvatarParticle(
-      90,
+      this.centerAvatarSize / 2,
       centerAvatarImage,
       this.animateLines,
       (!this.isMobile && !this.animateOnDesktop) ||
