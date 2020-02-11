@@ -45,7 +45,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
   avatarLocationsMobile: AvatarLocation[] = AVATAR_LOCATIONS_DEF_MOB;
 
   private canvasEl: HTMLCanvasElement;
-  private ctx: CanvasRenderingContext2D;
+  private context: CanvasRenderingContext2D;
   private loopReq;
   private canvasDimension: CanvasDimension = {
     width: 0,
@@ -100,7 +100,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
 
   private build() {
     this.canvasEl = this.canvas.nativeElement;
-    this.ctx = this.canvasEl.getContext('2d');
+    this.context = this.canvasEl.getContext('2d');
 
     this.scaleCanvas();
     this.setScene();
@@ -125,7 +125,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setScene(): void {
-    this.ctx.clearRect(
+    this.context.clearRect(
       0,
       0,
       this.canvasDimension.width,
@@ -153,7 +153,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private loop(): void {
-    this.ctx.clearRect(
+    this.context.clearRect(
       0,
       0,
       this.canvasDimension.width,
@@ -177,7 +177,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
         this.lines,
         this.shadows,
         this.particles,
-        this.ctx
+        this.context
       );
       particle.x = ballData.x * this.canvasDimension.width;
       particle.y = ballData.y * this.canvasDimension.height;
@@ -193,7 +193,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
         this.lines,
         this.shadows,
         this.particles,
-        this.ctx
+        this.context
       );
       particle.x = Math.random() * this.canvasDimension.width;
       particle.y = Math.random() * this.canvasDimension.height;
@@ -211,7 +211,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
       this.lines,
       this.shadows,
       this.particles,
-      this.ctx
+      this.context
     );
     particle.x = this.canvasDimension.width / 2;
     particle.y = this.canvasDimension.height / 2;

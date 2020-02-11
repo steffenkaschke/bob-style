@@ -55,8 +55,8 @@ const note = `
   [shadows] | boolean | if avatars have shadows (performance is better with shadows disabled) | false
   [animateOnDesktop] | boolean | avatar will move or stay static on desktop | true
   [animateOnMobile] | boolean | avatar will move or stay static on mobile | false
-  [avatarsLocationsDesktop] | AvatarLocation[] | location of static avatars | []
-  [avatarLocationsMobile] | AvatarLocation[] | location of static avatars | []
+  [avatarsLocationsDesktop] | AvatarLocation[] | location of static avatars | AVATAR-LOCATIONS-<wbr>DEF-MOB
+  [avatarLocationsMobile] | AvatarLocation[] | location of static avatars | AVATAR-LOCATIONS-<wbr>DEF-DESK
 
   ~~~
   ${template}
