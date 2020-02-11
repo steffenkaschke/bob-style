@@ -28,17 +28,12 @@ const staticAvatarsLocationMock: StaticAvatarLocation[] =  mockStaticAvatarsLoca
 
 
 const template = `
-  <b-floating-avatars *ngIf="animation" [avatarImages]="avatarImages"
+  <b-floating-avatars [avatarImages]="avatarImages"
                       [centerAvatarImage]="centerAvatarImage"
                       [speed]="speed"
                       [animation]="animation"
-                      >
-  </b-floating-avatars>
-  <b-floating-avatars *ngIf="!animation" [avatarImages]="avatarImages"
-                      [centerAvatarImage]="centerAvatarImage"
-                      [speed]="speed"
-                      [animation]="animation"
-                      [staticAvatarsLocation]="staticAvatarsLocation"
+                      [staticAvatarsLocationDesktop]="staticAvatarsLocationDesktop"
+                      [staticAvatarsLocationMobile]="staticAvatarsLocationMobile"
                       >
   </b-floating-avatars>
 `;
@@ -56,7 +51,8 @@ const note = `
   [centerAvatarImage] | string | the avatar to be displayed in center | null
   [speed] | number | avatar movement speed is around value | 4
   [animation] | boolean | avatar will move or stay static | true
-  [staticAvatarsLocation] | StaticAvatarLocation[] | location of static avatars | []
+  [staticAvatarsLocationDesktop] | StaticAvatarLocation[] | location of static avatars | []
+  [staticAvatarsLocationMobile] | StaticAvatarLocation[] | location of static avatars | []
 
   ~~~
   ${template}
@@ -87,7 +83,8 @@ const toAdd = () => ({
     animation: boolean('animation', true),
     centerAvatarImage: text('centerAvatarImage', centerAvatarImageMock),
     avatarImages: object('avatarImages', avatarImagesMock),
-    staticAvatarsLocation: object('staticAvatarsLocation', staticAvatarsLocationMock)
+    staticAvatarsLocationMobile: object('staticAvatarsLocationMobile', staticAvatarsLocationMock),
+    staticAvatarsLocationDesktop: object('staticAvatarsLocationDesktop', staticAvatarsLocationMock)
   },
   moduleMetadata: {
     imports: [StoryBookLayoutModule, BrowserAnimationsModule, EyeCandyModule]

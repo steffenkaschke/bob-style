@@ -3,15 +3,21 @@ import {
   Component,
   ElementRef,
   Input,
-  NgZone,
+  NgZone, OnChanges,
   OnDestroy,
-  OnInit,
+  OnInit, SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { StaticAvatarLocation } from './floating-avatars.interface';
+import {
+  StaticAvatarLocation,
+  staticAvatarLocationDesktopDefault,
+  staticAvatarLocationMobileDefault,
+} from './floating-avatars.interface';
+import { MobileService } from '../../services/utils/mobile.service';
+
 
 const MIN_DIST = 250;
 const SPRING_AMOUNT = 0.0001;
@@ -23,14 +29,15 @@ const SHADOW_BLEED = 10;
   styleUrls: ['./floating-avatars.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FloatingAvatarsComponent implements OnInit, OnDestroy {
+export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('canvas', { static: true }) canvas: ElementRef;
 
   @Input() centerAvatarImage: string = null;
   @Input() avatarImages: string[] = [];
   @Input() speed = 4;
   @Input() animation = true;
-  @Input() staticAvatarsLocation: StaticAvatarLocation[] = [];
+  @Input() staticAvatarsLocationDesktop: StaticAvatarLocation[] = staticAvatarLocationDesktopDefault;
+  @Input() staticAvatarsLocationMobile: StaticAvatarLocation[] = staticAvatarLocationMobileDefault;
 
   private canvasEl: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
@@ -41,29 +48,31 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
   };
   private particles: Ball[] = [];
   private resizeSubscribe: Subscription;
+  private isMobile: boolean;
 
   constructor(
     private hostRef: ElementRef,
     private zone: NgZone,
     private utils: UtilsService,
+    private mobileService: MobileService,
   ) {
   }
 
   ngOnInit(): void {
-    this.canvasEl = this.canvas.nativeElement;
-    this.ctx = this.canvasEl.getContext('2d');
-    this.scaleCanvas();
-    this.setScene();
-    this.loop();
+    this.isMobile = this.mobileService.isMobileBrowser();
+    this.resizeSubscribe = combineLatest(
+      this.mobileService.getMediaEvent(),
+      this.utils
+        .getResizeEvent()
+        .pipe(outsideZone(this.zone)),
+    ).subscribe(([mediaEvent, resizeEvent]) => {
+      this.isMobile = mediaEvent.isMobileBrowser;
+      this.build();
+    });
+  }
 
-    this.resizeSubscribe = this.utils
-      .getResizeEvent()
-      .pipe(outsideZone(this.zone))
-      .subscribe(() => {
-        this.scaleCanvas();
-        this.particles = [];
-        this.setScene();
-      });
+  ngOnChanges(changes: SimpleChanges): void {
+    this.build();
   }
 
   ngOnDestroy(): void {
@@ -71,6 +80,18 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
       this.resizeSubscribe.unsubscribe();
     }
     window.cancelAnimationFrame(this.loopReq);
+  }
+
+  private build() {
+    this.particles = [];
+    this.loopReq = null;
+    this.canvasDimension.width = null;
+    this.canvasDimension.height = null;
+    this.canvasEl = this.canvas.nativeElement;
+    this.ctx = this.canvasEl.getContext('2d');
+    this.scaleCanvas();
+    this.setScene();
+    this.loop();
   }
 
   private scaleCanvas(): void {
@@ -84,8 +105,9 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
 
   private setScene(): void {
     if (!this.animation) {
-      this.speed = 0;
-      this.createStaticDisplayParts();
+      const staticAvatarsLocation = this.isMobile ?
+        this.staticAvatarsLocationMobile : this.staticAvatarsLocationDesktop;
+      this.createStaticDisplayParts(staticAvatarsLocation);
     } else {
       this.createAnimatedDisplayParts();
     }
@@ -95,9 +117,9 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
     }
   }
 
-  createStaticDisplayParts(): void {
-    for (let i = 0; i < this.staticAvatarsLocation.length; i++) {
-      const ballData = this.staticAvatarsLocation[i];
+  createStaticDisplayParts(staticAvatarsLocation): void {
+    for (let i = 0; i < staticAvatarsLocation.length; i++) {
+      const ballData = staticAvatarsLocation[i];
       const particle = new Ball(
         ballData.avatarSize,
         this.avatarImages[i],
@@ -116,8 +138,8 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
       );
       particle.x = Math.random() * this.canvasDimension.width;
       particle.y = Math.random() * this.canvasDimension.height;
-      particle.vx = Math.random() * this.speed - this.speed / 2;
-      particle.vy = Math.random() * this.speed - this.speed / 2;
+      particle.vx = Math.random() * this.speed - this.speed / 3;
+      particle.vy = Math.random() * this.speed - this.speed / 3;
 
       this.particles.push(particle);
     }
@@ -133,7 +155,7 @@ export class FloatingAvatarsComponent implements OnInit, OnDestroy {
       );
 
       this.particles.forEach((particle, index) => {
-        if (this.speed) {
+        if (this.animation) {
           this.move(particle, index);
         }
 
