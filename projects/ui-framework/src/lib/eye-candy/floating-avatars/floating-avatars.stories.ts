@@ -83,8 +83,8 @@ const toAdd = () => ({
     animation: boolean('animation', true),
     centerAvatarImage: text('centerAvatarImage', centerAvatarImageMock),
     avatarImages: object('avatarImages', avatarImagesMock),
-    staticAvatarsLocationMobile: object('staticAvatarsLocationMobile', staticAvatarsLocationMock),
-    staticAvatarsLocationDesktop: object('staticAvatarsLocationDesktop', staticAvatarsLocationMock)
+    staticAvatarsLocationDesktop: object('staticAvatarsLocationDesktop', staticAvatarsLocationMock),
+    staticAvatarsLocationMobile: object('staticAvatarsLocationMobile', staticAvatarsLocationMock)
   },
   moduleMetadata: {
     imports: [StoryBookLayoutModule, BrowserAnimationsModule, EyeCandyModule]
