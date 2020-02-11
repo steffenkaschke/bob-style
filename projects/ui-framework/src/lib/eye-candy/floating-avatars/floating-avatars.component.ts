@@ -175,7 +175,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
         ballData.avatarSize,
         this.avatarImages[i],
         this.lines,
-        this.shadows,
+        true,
         this.particles,
         this.context
       );

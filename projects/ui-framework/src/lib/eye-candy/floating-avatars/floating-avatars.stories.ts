@@ -52,7 +52,7 @@ const note = `
   [centerAvatarImage] | string | the avatar to be displayed in center | null
   [speed] | number | avatar movement speed is around value | 4
   [lines] | boolean | connect avatars with lines | false
-  [shadows] | boolean | if avatars have shadows (performance is better with shadows disabled) | false
+  [shadows] | boolean | if animated avatars have shadows (performance is better with shadows disabled); static avatars will always have shadows | false
   [animateOnDesktop] | boolean | avatar will move or stay static on desktop | true
   [animateOnMobile] | boolean | avatar will move or stay static on mobile | false
   [avatarsLocationsDesktop] | AvatarLocation[] | location of static avatars | AVATAR-LOCATIONS-<wbr>DEF-MOB
