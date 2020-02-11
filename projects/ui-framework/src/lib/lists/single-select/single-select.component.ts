@@ -88,9 +88,9 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
     const option =
       this.value &&
       this.options &&
-      arrayFlatten(this.options.map(group => group.options)).find(
-        (opt: SelectOption) => this.value.includes(opt.id)
-      );
+      arrayFlatten(
+        this.options.map(group => group.options)
+      ).find((opt: SelectOption) => this.value.includes(opt.id));
     return option && option.value;
   }
 

@@ -99,6 +99,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     if (this.listChange) {
       this.emitChange(FormEvents.selectChange);
     }
+    this.listChange = undefined;
     this.destroyPanel();
   }
 
@@ -109,6 +110,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
       FormEvents.selectCancelled,
       this.listChangeSrvc.getListChange(this.options, this.value)
     );
+    this.listChange = undefined;
     this.destroyPanel();
   }
 
@@ -127,9 +129,6 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     event: FormEvents,
     listChange: ListChange = this.listChange
   ): void {
-    // listChange =
-    //   listChange || this.listChangeSrvc.getListChange(this.options, this.value);
-
     if (this[event].observers.length > 0) {
       this[event].emit(listChange);
     }

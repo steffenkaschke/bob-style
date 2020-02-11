@@ -13,6 +13,7 @@ import { ListChange } from '../list-change/list-change';
 import { UtilsService } from '../../services/utils/utils.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
+import { SelectType } from '../list.enum';
 
 @Component({
   selector: 'b-single-select-panel',
@@ -45,13 +46,14 @@ export class SingleSelectPanelComponent extends BaseSelectPanelElement {
       zone,
       cd
     );
-
+    this.type = SelectType.single;
     this.wrapEvent = false;
     this.doPropagate = false;
     this.panelClassList = ['b-select-panel-with-arrow'];
     this.listActions = {
-      clear: false,
       apply: false,
+      cancel: false,
+      clear: false,
       reset: false,
     };
   }

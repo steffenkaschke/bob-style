@@ -293,7 +293,12 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
     this.listChange = listChange;
     this.value = listChange.getSelectedIds();
     this.setDisplayValue();
-    this.emitChange(FormEvents.selectModified, listChange);
+    this.emitChange(
+      this.type === SelectType.multi
+        ? FormEvents.selectModified
+        : FormEvents.selectChange,
+      listChange
+    );
   }
 
   protected destroyPanel(): void {

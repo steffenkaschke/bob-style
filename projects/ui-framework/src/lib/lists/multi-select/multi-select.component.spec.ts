@@ -136,7 +136,7 @@ describe('MultiSelectComponent', () => {
   });
 
   describe('onSelect', () => {
-    it('should update selectedIDs but not displayValue', fakeAsync(() => {
+    it('should update selectedIDs', fakeAsync(() => {
       component.openPanel();
       fixture.autoDetectChanges();
       tick(500);
@@ -145,9 +145,6 @@ describe('MultiSelectComponent', () => {
       )[3] as HTMLElement).click();
       expect(component.value).toEqual([1, 11, 12]);
 
-      expect(component.displayValue).not.toEqual(
-        'Basic Info 1, Personal 1, Personal 2'
-      );
       flush();
     }));
 
