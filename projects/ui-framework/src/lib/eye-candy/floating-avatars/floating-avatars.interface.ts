@@ -4,7 +4,7 @@ export interface StaticAvatarLocation {
   y: number;
 }
 
-export const staticAvatarLocationDesktopDefault = [
+export const staticAvatarLocationDesktopDefault: StaticAvatarLocation[] = [
   {
     avatarSize: 30,
     x: 0.12,
@@ -47,7 +47,7 @@ export const staticAvatarLocationDesktopDefault = [
   },
 ];
 
-export const staticAvatarLocationMobileDefault = [
+export const staticAvatarLocationMobileDefault: StaticAvatarLocation[] = [
   {
     avatarSize: 30,
     x: 0.12,

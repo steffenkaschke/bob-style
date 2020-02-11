@@ -12,7 +12,6 @@ import { mockAvatar } from '../../mock.const';
 import { EyeCandyModule } from '../eye-candy.module';
 import { boolean } from '@storybook/addon-knobs';
 import {
-  StaticAvatarLocation,
   staticAvatarLocationDesktopDefault,
   staticAvatarLocationMobileDefault,
 } from './floating-avatars.interface';
