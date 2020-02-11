@@ -11,19 +11,18 @@ import {
   ViewChild,
 } from '@angular/core';
 import { UtilsService } from '../../services/utils/utils.service';
-import { combineLatest, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { AvatarLocation, CanvasDimension } from './floating-avatars.interface';
 import {
   AVATAR_LOCATIONS_DEF_DESK,
   AVATAR_LOCATIONS_DEF_MOB,
 } from './floating-avatars.const';
-import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
+import { MobileService } from '../../services/utils/mobile.service';
 import {
   notFirstChanges,
   isNotEmptyArray,
 } from '../../services/utils/functional-utils';
-import { skip } from 'rxjs/operators';
 import { AvatarParticle } from './avatar.particle';
 
 @Component({
@@ -71,16 +70,14 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
     this.isMobile = this.mobileService.getMediaData().matchMobile;
     this.build();
 
-    this.resizeSubscriber = combineLatest([
-      this.mobileService
-        .getMediaEvent()
-        .pipe(outsideZone<MediaEvent>(this.zone), skip(1)),
-      this.utilsService.getResizeEvent().pipe(outsideZone(this.zone)),
-    ]).subscribe(([mediaEvent, resizeEvent]) => {
-      this.isMobile = mediaEvent.matchMobile;
-      this.stopLoop();
-      this.build();
-    });
+    this.resizeSubscriber = this.utilsService
+      .getResizeEvent()
+      .pipe(outsideZone(this.zone))
+      .subscribe(() => {
+        this.stopLoop();
+        this.isMobile = this.mobileService.getMediaData().matchMobile;
+        this.build();
+      });
 
     this.inViewSubscriber = this.utilsService
       .getElementInViewEvent(this.hostRef.nativeElement)
