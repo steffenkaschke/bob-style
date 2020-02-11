@@ -19,7 +19,10 @@ import {
   AVATAR_LOCATIONS_DEF_MOB,
 } from './floating-avatars.const';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
-import { notFirstChanges } from '../../services/utils/functional-utils';
+import {
+  notFirstChanges,
+  isNotEmptyArray,
+} from '../../services/utils/functional-utils';
 import { skip } from 'rxjs/operators';
 import { AvatarParticle } from './avatar.particle';
 
@@ -54,12 +57,13 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
   };
   private particles: AvatarParticle[] = [];
   private resizeSubscriber: Subscription;
+  private inViewSubscriber: Subscription;
   private isMobile = false;
 
   constructor(
     private hostRef: ElementRef,
     private zone: NgZone,
-    private utils: UtilsService,
+    private utilsService: UtilsService,
     private mobileService: MobileService
   ) {}
 
@@ -71,49 +75,50 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
       this.mobileService
         .getMediaEvent()
         .pipe(outsideZone<MediaEvent>(this.zone), skip(1)),
-      this.utils.getResizeEvent().pipe(outsideZone(this.zone)),
+      this.utilsService.getResizeEvent().pipe(outsideZone(this.zone)),
     ]).subscribe(([mediaEvent, resizeEvent]) => {
       this.isMobile = mediaEvent.matchMobile;
-      this.stop();
+      this.stopLoop();
       this.build();
     });
+
+    this.inViewSubscriber = this.utilsService
+      .getElementInViewEvent(this.hostRef.nativeElement)
+      .pipe(outsideZone(this.zone))
+      .subscribe(isInView => {
+        if (isInView) {
+          this.startLoop();
+        } else {
+          this.stopLoop();
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (notFirstChanges(changes)) {
-      this.stop();
+      this.stopLoop();
       this.build();
     }
   }
 
   ngOnDestroy(): void {
-    this.stop();
     if (this.resizeSubscriber) {
       this.resizeSubscriber.unsubscribe();
     }
-  }
-
-  private stop() {
-    window.cancelAnimationFrame(this.loopReq);
-    this.particles = [];
-    this.loopReq = null;
+    if (this.inViewSubscriber) {
+      this.inViewSubscriber.unsubscribe();
+    }
+    this.stopLoop();
   }
 
   private build() {
+    this.particles = [];
     this.canvasEl = this.canvas.nativeElement;
     this.context = this.canvasEl.getContext('2d');
 
     this.scaleCanvas();
     this.setScene();
-
-    if (
-      (!this.isMobile && this.animateOnDesktop) ||
-      (this.isMobile && this.animateOnMobile)
-    ) {
-      this.zone.runOutsideAngular(() => {
-        this.loop();
-      });
-    }
+    this.startLoop();
   }
 
   private scaleCanvas(): void {
@@ -133,10 +138,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
       this.canvasDimension.height
     );
 
-    if (
-      (!this.isMobile && !this.animateOnDesktop) ||
-      (this.isMobile && !this.animateOnMobile)
-    ) {
+    if (!this.animationEnabled()) {
       this.createStaticDisplayParts(
         this.isMobile
           ? this.avatarLocationsMobile
@@ -150,6 +152,25 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
         this.centerAvatarImage
       );
       this.particles.push(particle);
+    }
+  }
+
+  private startLoop(): void {
+    if (
+      this.animationEnabled() &&
+      !this.loopReq &&
+      isNotEmptyArray(this.particles)
+    ) {
+      this.zone.runOutsideAngular(() => {
+        this.loop();
+      });
+    }
+  }
+
+  private stopLoop(): void {
+    if (this.loopReq) {
+      window.cancelAnimationFrame(this.loopReq);
+      this.loopReq = null;
     }
   }
 
@@ -212,10 +233,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
       this.centerAvatarSize / 2,
       centerAvatarImage,
       this.animateLines,
-      (!this.isMobile && !this.animateOnDesktop) ||
-      (this.isMobile && !this.animateOnMobile)
-        ? true
-        : this.animateShadows,
+      !this.animationEnabled() ? true : this.animateShadows,
       this.particles,
       this.context
     );
@@ -226,5 +244,12 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
     particle.isCenter = true;
 
     return particle;
+  }
+
+  private animationEnabled(): boolean {
+    return (
+      (!this.isMobile && this.animateOnDesktop) ||
+      (this.isMobile && this.animateOnMobile)
+    );
   }
 }

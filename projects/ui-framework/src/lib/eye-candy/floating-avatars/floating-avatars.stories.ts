@@ -60,6 +60,8 @@ const note = `
   [avatarsLocationsDesktop] | AvatarLocation[] | location of static avatars | AVATAR-LOCATIONS-<wbr>DEF-MOB
   [avatarLocationsMobile] | AvatarLocation[] | location of static avatars | AVATAR-LOCATIONS-<wbr>DEF-DESK
 
+  **Note:** To optimize performance, avatar movement is stopped when component is not in view.
+
   ~~~
   ${template}
   ~~~
