@@ -83,6 +83,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private build() {
+    window.cancelAnimationFrame(this.loopReq);
     this.particles = [];
     this.loopReq = null;
     this.canvasDimension.width = null;
