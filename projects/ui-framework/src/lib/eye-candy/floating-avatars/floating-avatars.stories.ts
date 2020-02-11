@@ -29,9 +29,9 @@ const centerAvatarImageMock = mockAvatar();
 const template = `
   <b-floating-avatars [avatarImages]="avatarImages"
                       [centerAvatarImage]="centerAvatarImage"
-                      [speed]="speed"
-                      [lines]="lines"
-                      [shadows]="shadows"
+                      [animationSpeed]="animationSpeed"
+                      [animateLines]="animateLines"
+                      [animateShadows]="animateShadows"
                       [animateOnDesktop]="animateOnDesktop"
                       [animateOnMobile]="animateOnMobile"
                       [avatarsLocationsDesktop]="avatarsLocationsDesktop"
@@ -50,9 +50,9 @@ const note = `
   --- | --- | --- | ---
   [avatarImages] | string[] | Array of image urls | []
   [centerAvatarImage] | string | the avatar to be displayed in center | null
-  [speed] | number | avatar movement speed is around value | 4
-  [lines] | boolean | connect avatars with lines | false
-  [shadows] | boolean | if animated avatars have shadows (performance is better with shadows disabled); static avatars will always have shadows | false
+  [animationSpeed] | number | avatar movement speed  | 2.5
+  [animateLines] | boolean | connect animated avatars with lines; static avatars have no lines | false
+  [animateShadows] | boolean | if animated avatars have shadows (performance is better with shadows disabled); static avatars will always have shadows | false
   [animateOnDesktop] | boolean | avatar will move or stay static on desktop | true
   [animateOnMobile] | boolean | avatar will move or stay static on mobile | false
   [avatarsLocationsDesktop] | AvatarLocation[] | location of static avatars | AVATAR-LOCATIONS-<wbr>DEF-MOB
@@ -83,9 +83,9 @@ const storyTemplate = `
 const toAdd = () => ({
   template: storyTemplate,
   props: {
-    speed: number('speed', 2.5, {}, 'Props'),
-    lines: boolean('lines', false, 'Props'),
-    shadows: boolean('shadows', false, 'Props'),
+    animationSpeed: number('animationSpeed', 2.5, {}, 'Props'),
+    animateLines: boolean('animateLines', false, 'Props'),
+    animateShadows: boolean('animateShadows', false, 'Props'),
     animateOnDesktop: boolean('animateOnDesktop', true, 'Props'),
     animateOnMobile: boolean('animateOnMobile', false, 'Props'),
     centerAvatarImage: text('centerAvatarImage', centerAvatarImageMock, 'Data'),

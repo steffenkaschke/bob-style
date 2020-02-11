@@ -34,9 +34,9 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() avatarImages: string[] = [];
   @Input() centerAvatarImage: string = null;
-  @Input() speed = 2.5;
-  @Input() lines = false;
-  @Input() shadows = false;
+  @Input() animationSpeed = 2.5;
+  @Input() animateLines = false;
+  @Input() animateShadows = false;
   @Input() animateOnDesktop = true;
   @Input() animateOnMobile = false;
   @Input()
@@ -174,7 +174,7 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
       const particle = new AvatarParticle(
         ballData.avatarSize,
         this.avatarImages[i],
-        this.lines,
+        this.animateLines,
         true,
         this.particles,
         this.context
@@ -190,15 +190,17 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
       const particle = new AvatarParticle(
         Math.round(Math.random() * 30 + 20),
         this.avatarImages[i],
-        this.lines,
-        this.shadows,
+        this.animateLines,
+        this.animateShadows,
         this.particles,
         this.context
       );
       particle.x = Math.random() * this.canvasDimension.width;
       particle.y = Math.random() * this.canvasDimension.height;
-      particle.vx = Math.random() * this.speed - this.speed / 3;
-      particle.vy = Math.random() * this.speed - this.speed / 3;
+      particle.vx =
+        Math.random() * this.animationSpeed - this.animationSpeed / 3;
+      particle.vy =
+        Math.random() * this.animationSpeed - this.animationSpeed / 3;
 
       this.particles.push(particle);
     }
@@ -208,8 +210,11 @@ export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
     const particle: AvatarParticle = new AvatarParticle(
       90,
       centerAvatarImage,
-      this.lines,
-      this.shadows,
+      this.animateLines,
+      (!this.isMobile && !this.animateOnDesktop) ||
+      (this.isMobile && !this.animateOnMobile)
+        ? true
+        : this.animateShadows,
       this.particles,
       this.context
     );
