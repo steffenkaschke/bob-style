@@ -12,6 +12,8 @@ import { By } from '@angular/platform-browser';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../../lists/list-change/list-change';
 import { SimpleChange } from '@angular/core';
+import { InputMessageComponent } from '../input-message/input-message.component';
+import { FormElementLabelComponent } from '../form-element-label/form-element-label.component';
 
 describe('SplitInputSingleSelectComponent', () => {
   let component: SplitInputSingleSelectComponent;
@@ -41,6 +43,8 @@ describe('SplitInputSingleSelectComponent', () => {
         SplitInputSingleSelectComponent,
         MockComponent(SingleSelectComponent),
         MockComponent(InputComponent),
+        MockComponent(InputMessageComponent),
+        MockComponent(FormElementLabelComponent),
       ],
       imports: [NoopAnimationsModule, CommonModule],
     })

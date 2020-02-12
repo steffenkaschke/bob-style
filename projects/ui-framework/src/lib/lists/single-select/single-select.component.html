@@ -56,10 +56,12 @@
                    [maxHeight]="listElHeight*6"
                    [showSingleGroupHeader]="showSingleGroupHeader"
                    [startWithGroupsCollapsed]="startWithGroupsCollapsed"
-                   [showNoneOption]="!required"
+                   [showNoneOption]="!required && showNoneOption"
                    [readonly]="readonly"
                    [listActions]="listActions"
-                   (selectChange)="onSelect($event)">
+                   (selectChange)="onSelect($event)"
+                   (apply)="onApply()"
+                   (cancel)="onCancel()">
       <ng-content footerAction
                   select="[footerAction],[footerActionRight]"></ng-content>
     </b-single-list>

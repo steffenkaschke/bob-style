@@ -89,8 +89,9 @@
                *ngIf="hasFooter"
                [listActions]="!readonly ? listActions : {}"
                [listActionsState]="!readonly ? listActionsState : {}"
-               (clear)="clearList()"
                (apply)="onApply()"
+               (cancel)="onCancel()"
+               (clear)="clearList()"
                (reset)="resetList()">
   <ng-content footerAction
               select="[footerAction],[footerActionRight]"></ng-content>

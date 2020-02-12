@@ -4,6 +4,7 @@ import {
   ViewContainerRef,
   NgZone,
   ChangeDetectorRef,
+  Input,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
@@ -23,6 +24,8 @@ import { BaseFormElement } from '../../form-elements/base-form-element';
 import { isArray, arrayFlatten } from '../../services/utils/functional-utils';
 import { ListModelService } from '../list-service/list-model.service';
 import { SelectOption } from '../list.interface';
+import { SelectType } from '../list.enum';
+import { FormEvents } from '../../form-elements/form-elements.enum';
 
 @Component({
   selector: 'b-single-select',
@@ -68,52 +71,52 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
       zone,
       cd
     );
+    this.type = SelectType.single;
     this.value = null;
     this.panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
     this.listActions = {
-      clear: false,
       apply: false,
+      cancel: false,
+      clear: false,
       reset: false,
     };
   }
 
-  onSelect(listChange: ListChange) {
-    this.value = listChange.getSelectedIds();
-    this.displayValue = this.getDisplayValue(this.value) || null;
-    this.emitChange(listChange);
-    this.destroyPanel();
-  }
+  @Input() showNoneOption = true;
 
-  protected setDisplayValue(): void {
-    this.displayValue = this.getDisplayValue(this.value) || null;
-    this.cd.detectChanges();
-  }
-
-  private getDisplayValue(selectedIDs: (string | number)[]): string {
+  protected getDisplayValue(): string {
     const option =
-      selectedIDs &&
+      this.value &&
       this.options &&
-      arrayFlatten(this.options.map(group => group.options)).find(
-        (opt: SelectOption) => selectedIDs.includes(opt.id)
-      );
+      arrayFlatten(
+        this.options.map(group => group.options)
+      ).find((opt: SelectOption) => this.value.includes(opt.id));
     return option && option.value;
   }
 
-  private emitChange(listChange: ListChange): void {
+  protected emitChange(
+    event: FormEvents = FormEvents.selectChange,
+    listChange: ListChange = this.listChange
+  ): void {
     this.options = listChange.getSelectGroupOptions();
 
-    this.selectChange.emit(listChange);
+    if (this[event].observers.length > 0) {
+      this[event].emit(listChange);
+    }
 
     if (this.changed.observers.length > 0) {
       this.changed.emit(
         (isArray(this.value) ? this.value[0] : this.value) || null
       );
     }
+
     if (this.doPropagate) {
       this.propagateChange(
         (isArray(this.value) ? this.value[0] : this.value) || null
       );
       this.onTouched();
     }
+
+    this.destroyPanel();
   }
 }

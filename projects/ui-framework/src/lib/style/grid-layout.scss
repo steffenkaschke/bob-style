@@ -6,178 +6,183 @@
 
 .grid-layout-12-cols {
   @include gridLayout12Cols;
+
   > * {
-    grid-column: span 12;
+    grid-column: auto / span 12;
     min-width: 0;
   }
 }
 
 .col-1 {
-  grid-column: span 1;
+  grid-column: auto / span 1;
 }
 .col-2 {
-  grid-column: span 2;
+  grid-column: auto / span 2;
 }
 .col-3,
 .col-quarter {
-  grid-column: span 3;
+  grid-column: auto / span 3;
 }
 .col-4,
 .col-third {
-  grid-column: span 4;
+  grid-column: auto / span 4;
 }
 .col-5 {
-  grid-column: span 5;
+  grid-column: auto / span 5;
 }
 .col-6,
 .col-half {
-  grid-column: span 6;
+  grid-column: auto / span 6;
 }
 .col-7 {
-  grid-column: span 7;
+  grid-column: auto / span 7;
 }
 .col-8 {
-  grid-column: span 8;
+  grid-column: auto / span 8;
 }
 .col-9 {
-  grid-column: span 9;
+  grid-column: auto / span 9;
 }
 .col-10 {
-  grid-column: span 10;
+  grid-column: auto / span 10;
 }
 .col-11 {
-  grid-column: span 11;
+  grid-column: auto / span 11;
 }
 .col-12,
 .col-full {
-  grid-column: span 12;
+  grid-column: auto / span 12;
 }
 
 @media screen and (min-width: $breakpoint-device-sm) {
   .col-sm-1 {
-    grid-column: span 1;
+    grid-column: auto / span 1;
   }
   .col-sm-2 {
-    grid-column: span 2;
+    grid-column: auto / span 2;
   }
   .col-sm-3,
   .col-sm-quarter {
-    grid-column: span 3;
+    grid-column: auto / span 3;
   }
   .col-sm-4,
   .col-sm-third {
-    grid-column: span 4;
+    grid-column: auto / span 4;
   }
   .col-sm-5 {
-    grid-column: span 5;
+    grid-column: auto / span 5;
   }
   .col-sm-6,
   .col-sm-half {
-    grid-column: span 6;
+    grid-column: auto / span 6;
   }
   .col-sm-7 {
-    grid-column: span 7;
+    grid-column: auto / span 7;
   }
   .col-sm-8 {
-    grid-column: span 8;
+    grid-column: auto / span 8;
   }
   .col-sm-9 {
-    grid-column: span 9;
+    grid-column: auto / span 9;
   }
   .col-sm-10 {
-    grid-column: span 10;
+    grid-column: auto / span 10;
   }
   .col-sm-11 {
-    grid-column: span 11;
+    grid-column: auto / span 11;
   }
   .col-sm-12,
   .col-sm-full {
-    grid-column: span 12;
+    grid-column: auto / span 12;
   }
 }
 
 @media screen and (min-width: $breakpoint-device-md) {
   .col-md-1 {
-    grid-column: span 1;
+    grid-column: auto / span 1;
   }
   .col-md-2 {
-    grid-column: span 2;
+    grid-column: auto / span 2;
   }
   .col-md-3,
   .col-md-quarter {
-    grid-column: span 3;
+    grid-column: auto / span 3;
   }
   .col-md-4,
   .col-md-third {
-    grid-column: span 4;
+    grid-column: auto / span 4;
   }
   .col-md-5 {
-    grid-column: span 5;
+    grid-column: auto / span 5;
   }
   .col-md-6,
   .col-md-half {
-    grid-column: span 6;
+    grid-column: auto / span 6;
   }
   .col-md-7 {
-    grid-column: span 7;
+    grid-column: auto / span 7;
   }
   .col-md-8 {
-    grid-column: span 8;
+    grid-column: auto / span 8;
   }
   .col-md-9 {
-    grid-column: span 9;
+    grid-column: auto / span 9;
   }
   .col-md-10 {
-    grid-column: span 10;
+    grid-column: auto / span 10;
   }
   .col-md-11 {
-    grid-column: span 11;
+    grid-column: auto / span 11;
   }
   .col-md-12,
   .col-md-full {
-    grid-column: span 12;
+    grid-column: auto / span 12;
   }
 }
 
 @media screen and (min-width: $breakpoint-device-lg) {
   .col-lg-1 {
-    grid-column: span 1;
+    grid-column: auto / span 1;
   }
   .col-lg-2 {
-    grid-column: span 2;
+    grid-column: auto / span 2;
   }
   .col-lg-3,
   .col-lg-quarter {
-    grid-column: span 3;
+    grid-column: auto / span 3;
   }
   .col-lg-4,
   .col-lg-third {
-    grid-column: span 4;
+    grid-column: auto / span 4;
   }
   .col-lg-5 {
-    grid-column: span 5;
+    grid-column: auto / span 5;
   }
   .col-lg-6,
   .col-lg-half {
-    grid-column: span 6;
+    grid-column: auto / span 6;
   }
   .col-lg-7 {
-    grid-column: span 7;
+    grid-column: auto / span 7;
   }
   .col-lg-8 {
-    grid-column: span 8;
+    grid-column: auto / span 8;
   }
   .col-lg-9 {
-    grid-column: span 9;
+    grid-column: auto / span 9;
   }
   .col-lg-10 {
-    grid-column: span 10;
+    grid-column: auto / span 10;
   }
   .col-lg-11 {
-    grid-column: span 11;
+    grid-column: auto / span 11;
   }
   .col-lg-12,
   .col-lg-full {
-    grid-column: span 12;
+    grid-column: auto / span 12;
   }
+}
+
+.new-row-after + [class*='col'] {
+  grid-column-start: 1;
 }

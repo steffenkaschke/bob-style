@@ -2,47 +2,44 @@
 
 $selectFieldWidth: 140px;
 
-:host {
-  @include bFormElement-basics;
-  flex-direction: row;
+.bsiss-inputs-wrap {
+  @include bFormElement-basics(row);
 }
 
-:host ::ng-deep b-input {
-  width: calc(100% - #{$selectFieldWidth});
+.bfe-label {
+  @include bFormElement-label(false);
+}
 
-  .bfe-label {
-    z-index: 2;
-  }
+:host ::ng-deep {
+  //
 
-  .bfe-wrap {
-    border-right: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+  b-input {
+    min-width: calc(100% - #{$selectFieldWidth});
 
-    &.focused {
-      position: relative;
-      z-index: 1;
-      box-shadow: 1px 0 0 0 $input-focus-border-color;
+    .bfe-wrap {
+      border-right: 0;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+
+      &.focused {
+        position: relative;
+        z-index: 1;
+        box-shadow: 1px 0 0 0 $input-focus-border-color;
+      }
     }
   }
 
-  .bfe-label,
-  [b-input-message] {
-    width: calc(100% + #{$selectFieldWidth});
-  }
-}
+  b-single-select {
+    width: $selectFieldWidth;
 
-b-single-select {
-  @include align-to-input;
-  width: $selectFieldWidth;
-}
+    .bfe-wrap {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
 
-:host ::ng-deep b-single-select .bfe-wrap {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-
-  &.panel-open {
-    border-color: $input-focus-border-color;
+      &.panel-open {
+        border-color: $input-focus-border-color;
+      }
+    }
   }
 }
 
@@ -52,8 +49,11 @@ b-single-select {
 
 :host {
   &.error {
-    b-single-select::ng-deep .bfe-wrap {
-      border-color: $color-error;
+    b-input::ng-deep,
+    b-single-select::ng-deep {
+      .bfe-wrap {
+        border-color: $color-error;
+      }
     }
   }
 }

@@ -1,27 +1,41 @@
-<b-input #bInput
-         (inputEvents)="onInputChange($event)"
-         [value]="value?.inputValue"
-         [inputType]="inputType"
-         [label]="label"
-         [description]="description"
-         [placeholder]="placeholder"
-         [hideLabelOnFocus]="hideLabelOnFocus"
-         [required]="required"
-         [disabled]="disabled"
-         [readonly]="readonly"
-         [maxChars]="50"
-         [showCharCounter]="false"
-         [hintMessage]="hintMessage"
-         [errorMessage]="errorMessage"
-         [warnMessage]="errorMessage"
-         [doPropagate]="false">
-</b-input>
+<b-form-element-label *ngIf="label && !hideLabelOnFocus"
+                      class="bfe-label"
+                      [label]="label"
+                      [description]="description"
+                      [fieldId]="id">
+</b-form-element-label>
 
-<b-single-select (selectChange)="onSelectChange($event)"
-                 [disabled]="disabled"
-                 [readonly]="readonly"
-                 [options]="options"
-                 [showSingleGroupHeader]="false"
-                 [panelClass]="'bsiss-panel'"
-                 [doPropagate]="false">
-</b-single-select>
+<div class="bsiss-inputs-wrap"
+     [attr.id]="id">
+
+  <b-input #bInput
+           (inputEvents)="onInputChange($event)"
+           [value]="value?.inputValue"
+           [inputType]="inputType"
+           [placeholder]="hideLabelOnFocus ? label : placeholder"
+           [required]="required"
+           [disabled]="disabled"
+           [readonly]="readonly"
+           [maxChars]="50"
+           [showCharCounter]="false"
+           [doPropagate]="false">
+  </b-input>
+
+  <b-single-select (selectChange)="onSelectChange($event)"
+                   [disabled]="disabled"
+                   [readonly]="readonly"
+                   [options]="options"
+                   [showSingleGroupHeader]="false"
+                   [panelClass]="'bsiss-panel'"
+                   [doPropagate]="false">
+  </b-single-select>
+
+</div>
+
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled">
+</p>
