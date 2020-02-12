@@ -101,7 +101,7 @@ export const mockCitiesList = [
   'Brazilia',
   'Jeddah',
   'Phoenix',
-  "Ji'nan",
+  'Ji\'nan',
   'Montréal',
   'Shantou',
   'Nairobi',

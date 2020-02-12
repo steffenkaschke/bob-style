@@ -531,6 +531,8 @@ export {
 } from './lib/services/utils/eventManager.plugins';
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
+export * from './lib/eye-candy/floating-avatars/floating-avatars.interface';
+export * from './lib/eye-candy/floating-avatars/floating-avatars.const';
 export { FloatingAvatarsComponent } from './lib/eye-candy/floating-avatars/floating-avatars.component';
 export { ConfettiComponent } from './lib/eye-candy/confetti/confetti.component';
 export { SnowComponent } from './lib/eye-candy/snow/snow.component';
