@@ -7,6 +7,23 @@
 }
 
 .bfe-input,
-.bfe-label {
+.bfe-label,
+.input-message {
   user-select: initial;
+}
+
+.bfe-label,
+.input-message {
+  &:empty {
+    display: none;
+  }
+}
+
+.input-message {
+  width: 100%;
+  margin: $label-hint-margin 0 0;
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  @include b-caption($color: $grey-600, $addCssVars: false);
 }

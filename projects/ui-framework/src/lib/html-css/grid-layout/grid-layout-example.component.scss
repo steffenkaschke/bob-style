@@ -32,7 +32,7 @@ section {
   }
 }
 
-:host ::ng-deep .bfe-input span {
+:host ::ng-deep .bfe-input {
   transition: 0.3s;
 }
 
@@ -114,7 +114,7 @@ section {
         align-items: center;
         transition: none;
 
-        [data-max-lines='1'] {
+        &[data-max-lines='1'] {
           text-align: left;
           text-transform: uppercase;
           font-size: 105%;
