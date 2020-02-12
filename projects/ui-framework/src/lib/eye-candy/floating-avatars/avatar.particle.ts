@@ -86,7 +86,7 @@ export class AvatarParticle {
         this.context.lineWidth = this.lineWidth;
         this.context.strokeStyle = 'rgba(255,255,255,1)';
         if (this.shadows) {
-          this.context.shadowColor = 'grey';
+          this.context.shadowColor = 'rgb(67,68,70)';
           this.context.shadowBlur = SHADOW_BLUR;
         }
         this.context.stroke();
