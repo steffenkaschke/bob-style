@@ -23,7 +23,7 @@
 
 <header>
   <b-display-3>
-    Examples
+    Examples <b-body>(try resizing the window)</b-body>
   </b-display-3>
   <b-big-body>&lt;wrapper class="{{wrapper[0]}}"&gt;</b-big-body>
 </header>
@@ -34,7 +34,6 @@
 
     <b-pseudo-input *ngFor="let elem of elements; let index = index;"
                     [ngClass]="elem[0]"
-                    [label]="'Element '+(index+1)"
                     [value]="elem[0]"
                     [tooltip]="elem[1]">
     </b-pseudo-input>

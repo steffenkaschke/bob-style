@@ -19,19 +19,19 @@ const template = `
 <b-grid-layout-example
 [containerClass]="containerClass"
 [itemsClasses]="[
-  element1class + (element1break ? ' new-row-after' : '') + (element1newRow ? ' new-row-start' : ''),
-  element2class + (element2break ? ' new-row-after' : '') + (element2newRow ? ' new-row-start' : ''),
-  element3class + (element3break ? ' new-row-after' : '') + (element3newRow ? ' new-row-start' : ''),
-  element4class + (element4break ? ' new-row-after' : '') + (element4newRow ? ' new-row-start' : ''),
-  element5class + (element5break ? ' new-row-after' : '') + (element5newRow ? ' new-row-start' : ''),
-  element6class + (element6break ? ' new-row-after' : '') + (element6newRow ? ' new-row-start' : '')
+  element1class + (element1newRow ? ' row-start' : '') + (element1pushRight ? ' push-right' : ''),
+  element2class + (element2newRow ? ' row-start' : '') + (element2pushRight ? ' push-right' : ''),
+  element3class + (element3newRow ? ' row-start' : '') + (element3pushRight ? ' push-right' : ''),
+  element4class + (element4newRow ? ' row-start' : '') + (element4pushRight ? ' push-right' : ''),
+  element5class + (element5newRow ? ' row-start' : '') + (element5pushRight ? ' push-right' : ''),
+  element6class + (element6newRow ? ' row-start' : '') + (element6pushRight ? ' push-right' : '')
 ]"
 
 ></b-grid-layout-example>
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Grid layout example'">
+<b-story-book-layout [title]="'Grid Layout'">
   <div style="max-width: none;">${template}</div>
 </b-story-book-layout>
 `;
@@ -71,7 +71,7 @@ const note = `
 
   Name | Description
   --- | ---
-  grid-layout-12-cols | Container should always have this class.
+  <span style="white-space:nowrap;">grid-layout-12-cols</span> | Container should always have this class.
   &nbsp; | &nbsp;
   row-gap | Adds row-gap (spacing between rows) of 24px
   no-row-gap | Removes row-gap (spacing between rows)
@@ -84,25 +84,30 @@ const note = `
 
   Name | Description
   --- | ---
-  col-1... col-12 | Sets column width to 1/12 to 12/12 of container width
-  col-sm-1... col-sm-12 | Sets column width to 1/12 to 12/12 of container width - when the screen width is &gt;=768px.<br>\
+  col-1...<br>col-12 | *All resolutions / mobile*<br>Sets column width to 1/12 to 12/12 of \
+  container width.<br>If some col-NN-X classes are also applied, this becomes mobile (default) layout.
+  <span style="white-space:nowrap;">col-sm-1...</span><br><span style="white-space:nowrap;">col-sm-12</span> | *Not mobile*<br>Sets column width to 1/12 to 12/12 of container width - when the screen width is **&gt;=768px**.<br>\
   Below 768px, the column will be full width by default (unless col-X class is applied).
-  col-md-1... col-md-12 | Sets column width to 1/12 to 12/12 of container width - when the screen width is &gt;=992px.<br>\
+  col-md-1...<br>col-md-12 | *Small desktop*<br>Sets column width to 1/12 to 12/12 of container width - when the screen width is **&gt;=992px**.<br>\
   Below 992px, the column will be full width by default (unless col-X or col-sm-X class is applied).
-  col-lg-1... col-lg-12 | Sets column width to 1/12 to 12/12 of container width - when the screen width is &gt;=1200px.<br>\
+  col-lg-1...<br>col-lg-12 | *Desktop*<br>Sets column width to 1/12 to 12/12 of container width - when the screen width is **&gt;=1200px**.<br>\
   Below 1200px, the column will be full width by default (unless col-X, col-md-X or col-sm-X class is applied).
   &nbsp; | &nbsp;
-  col-quarter | same as \`col-3\` (1/3 width)
-  col-third | same as \`col-4\` (1/3 width)
-  col-half | same as \`col-6\` (1/2 width)
-  col-2-thirds | same as \`col-8\` (2/3 width)
-  col-3-quarters | same as \`col-9\` (3/4 width)
-  col-full | same as \`col-12\` (full width)
+  col-quarter,<br>col-*NN*-quarter | same as \`col-3\` & \`col-NN-3\` (1/3 width)
+  col-third,<br>col-*NN*-third | same as \`col-4\` & \`col-NN-4\` (1/3 width)
+  col-half,<br>col-*NN*-half | same as \`col-6\` & \`col-NN-6\` (1/2 width)
+  col-2-thirds,<br>col-*NN*-2-thirds | same as \`col-8\` & \`col-NN-8\` (2/3 width)
+  <span style="white-space:nowrap;">col-3-quarters,</span><br><span style="white-space:nowrap;">col-*NN*-3-quarters</span> | same as \`col-9\` & \`col-NN-9\` (3/4 width)
+  col-full,<br>col-*NN*-full | same as \`col-12\` & \`col-NN-12\` (full width)
   &nbsp; | &nbsp;
-  new-row-start | element with this class will create a new row (will start from new line)
+  row-start | element with this class will create a new row (will start from new line)
   &nbsp; | &nbsp;
+  push-right | element with this class will move to the end of the row \
+  (to rightmost position), possibly adding white space before itself.<br>\
+  \`push-right\` overrides \`row-start\`. Having both classes will not start (break to)\
+   a new row, unless the prevous row is complete, BUT \`push-right\` moves the next item to new row\
+    (there will always be a line break after \`push-right\` item).
 `;
-//   new-row-after | add this class to force new row (line break) <i>after</i> this element
 
 const colClasses = [
   'col-1',
@@ -117,7 +122,9 @@ const colClasses = [
   'col-10',
   'col-11',
   'col-12',
-  ...Object.values(GridItemClass),
+  ...Object.values(GridItemClass).filter(
+    i => i !== GridItemClass.rowStart && i !== GridItemClass.pushRight
+  ),
 ];
 
 const colClassDef = GridItemClass.third;
@@ -140,32 +147,32 @@ const toAdd = () => {
         colClasses,
         GridItemClass.twoThirds
       ),
-      // element1break: boolean('Elem 1 new-row-after', false),
-      element1newRow: boolean('Elem 1 new-row-start', false),
+      element1newRow: boolean('Elem 1 row-start', false),
+      element1pushRight: boolean('Elem 1 push-right', false),
 
       element2class: select('Elem 2 class', colClasses, GridItemClass.third),
-      // element2break: boolean('Elem 2 new-row-after', false),
-      element2newRow: boolean('Elem 2 new-row-start', false),
+      element2newRow: boolean('Elem 2 row-start', false),
+      element2pushRight: boolean('Elem 2 push-right', false),
 
       element3class: select('Elem 3 class', colClasses, GridItemClass.quarter),
-      // element3break: boolean('Elem 3 new-row-after', false),
-      element3newRow: boolean('Elem 3 new-row-start', false),
+      element3newRow: boolean('Elem 3 row-start', false),
+      element3pushRight: boolean('Elem 3 push-right', false),
 
       element4class: select(
         'Elem 4 class',
         colClasses,
-        GridItemClass.threeQuarters
+        GridItemClass.twoThirds
       ),
-      // element4break: boolean('Elem 4 new-row-after', false),
-      element4newRow: boolean('Elem 4 new-row-start', false),
+      element4newRow: boolean('Elem 4 row-start', false),
+      element4pushRight: boolean('Elem 4 push-right', true),
 
       element5class: select('Elem 5 class', colClasses, GridItemClass.half),
-      // element5break: boolean('Elem 5 new-row-after', false),
-      element5newRow: boolean('Elem 5 new-row-start', false),
+      element5newRow: boolean('Elem 5 row-start', false),
+      element5pushRight: boolean('Elem 5 push-right', false),
 
       element6class: select('Elem 6 class', colClasses, GridItemClass.half),
-      // element6break: boolean('Elem 6 new-row-after', false),
-      element6newRow: boolean('Elem 6 new-row-start', false),
+      element6newRow: boolean('Elem 6 row-start', false),
+      element6pushRight: boolean('Elem 6 push-right', false),
     },
     moduleMetadata: {
       imports: [

@@ -4,7 +4,6 @@ export enum GridContainerClass {
   noRowGap = 'no-row-gap',
   noColGap = 'no-col-gap',
   noGap = 'no-gap',
-  newRowStart = 'new-row-start',
 }
 
 export enum GridItemClass {
@@ -14,4 +13,6 @@ export enum GridItemClass {
   twoThirds = 'col-2-thirds',
   threeQuarters = 'col-3-quarters',
   full = 'col-full',
+  rowStart = 'row-start',
+  pushRight = 'push-right',
 }

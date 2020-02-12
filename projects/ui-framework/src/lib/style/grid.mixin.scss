@@ -12,23 +12,47 @@ $b-grid-gap: times8(3);
   }
 }
 
-@mixin grid-col($span: 12, $media: null) {
+@mixin grid-col($span: 12, $media: null, $push: null) {
   @if (not $media) {
     grid-column: auto / span #{$span};
+
+    @if $push {
+      &.push-#{$push} {
+        grid-column: span #{$span} / -1;
+      }
+    }
   }
   @if ($media == 'small' or $media == 'sm') {
     @media screen and (min-width: $breakpoint-device-sm) {
       grid-column: auto / span #{$span};
+
+      @if $push {
+        &.push-#{$push} {
+          grid-column: span #{$span} / -1;
+        }
+      }
     }
   }
   @if ($media == 'medium' or $media == 'md') {
     @media screen and (min-width: $breakpoint-device-md) {
       grid-column: auto / span #{$span};
+
+      @if $push {
+        &.push-#{$push} {
+          grid-column: span #{$span} / -1;
+        }
+      }
     }
   }
   @if ($media == 'large' or $media == 'lg') {
     @media screen and (min-width: $breakpoint-device-lg) {
       grid-column: auto / span #{$span};
+
+      @if $push {
+        &.push-#{$push} {
+          grid-column: span #{$span} / -1;
+        }
+      }
     }
   }
 }

@@ -20,13 +20,20 @@ export class GridLayoutExampleComponent {
   elements = [
     ['col-4'],
     ['col-4'],
-    //////
-    ['col-4 new-row-start'],
-    ['col-8'],
-    /////
-    ['col-10 col-sm-6 col-md-4 col-lg-3'],
-    ['col-10 col-sm-6 col-md-4 col-lg-3'],
-    /////
+
+    ['row-start col-4'],
+    ['col-8 col-lg-4'],
+
+    ['row-start col-sm-6 col-md-4 col-lg-2'],
+    ['col-sm-6 col-md-4 col-lg-2'],
+    ['col-sm-6 col-md-4 col-lg-2'],
+    ['col-sm-6 col-md-4 col-lg-2'],
+    ['col-sm-6 col-md-4 col-lg-2'],
+    ['col-sm-6 col-md-4 col-lg-2'],
+
+    ['col-10 col-sm-6 col-md-5 col-lg-6'],
+    ['col-10 col-sm-6 col-md-5 col-lg-6 push-right'],
+
     ['col-sm-8 col-md-6 col-lg-3'],
     ['col-sm-4 col-md-6 col-lg-3'],
   ];
