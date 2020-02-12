@@ -1,0 +1,64 @@
+<ng-template #mockInput
+             let-class="class"
+             let-tip="tooltip"
+             let-text="text">
+  <div [ngClass]="class">
+    <span class="bfe-label"
+          data-max-lines="1">
+      {{text}}
+    </span>
+    <span class="bfe-wrap focused"
+          [attr.data-tooltip]="tip || null">
+      <span class="bfe-input">
+        <span data-max-lines="1">{{class}}</span>
+      </span>
+    </span>
+  </div>
+</ng-template>
+
+<header>
+  <b-display-3>
+    Playground
+  </b-display-3>
+  <b-big-body>&lt;wrapper class="{{
+    'grid-layout-12-cols' + (containerClass ? ' ' + containerClass : '')
+  }}"&gt;
+  </b-big-body>
+</header>
+
+<section>
+  <div class="grid-layout-12-cols"
+       [ngClass]="containerClass">
+
+    <ng-container *ngFor="let elem of itemsClasses; let index = index;">
+      <ng-container *ngTemplateOutlet="
+      mockInput;
+      context: {class: elem, text: 'Element '+(index+1)}
+    ">
+      </ng-container>
+    </ng-container>
+
+  </div>
+</section>
+
+<header>
+  <b-display-3>
+    Examples
+  </b-display-3>
+  <b-big-body>&lt;wrapper class="{{wrapper[0]}}"&gt;</b-big-body>
+</header>
+
+<section>
+  <div [ngClass]="wrapper[0]"
+       [attr.data-tooltip]="wrapper[1] || null">
+
+    <ng-container *ngFor="let elem of elements; let index = index;">
+      <ng-container *ngTemplateOutlet="
+      mockInput;
+      context: {class: elem[0], tooltip: elem[1], text: 'Element '+(index+1)}
+    ">
+      </ng-container>
+    </ng-container>
+
+  </div>
+</section>

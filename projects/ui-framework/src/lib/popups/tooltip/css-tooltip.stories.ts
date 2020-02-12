@@ -16,6 +16,10 @@ const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
   withKnobs
 );
 
+const story2 = storiesOf(ComponentGroupType.HtmlCss, module).addDecorator(
+  withKnobs
+);
+
 const template = `
   <b-heading [attr.data-tooltip]="tooltipText"
      [attr.data-tooltip-position]="tooltipPosition"
@@ -86,36 +90,36 @@ const storyTemplate = `<b-story-book-layout [title]="'CSS Tooltip'">
   </div>
 </b-story-book-layout>`;
 
-story.add(
-  'CSS Tooltip',
-  () => ({
-    template: storyTemplate,
-    props: {
-      tooltipText: text('tooltipText', 'Works best for \n short text'),
-      tooltipPosition: radios(
-        'tooltipPosition',
-        Object.values(TooltipPosition) as any[],
-        TooltipPosition.above as any
-      ),
-      tooltipTextAlign: radios(
-        'tooltipTextAlign',
-        Object.values(CSSTooltipTextAlign) as any[],
-        CSSTooltipTextAlign.center as any
-      ),
-      tooltipWrap: radios(
-        'tooltipWrap',
-        Object.values(CSSTooltipWrap) as any[],
-        CSSTooltipWrap.normal as any
-      ),
-      tooltipShowOn: radios(
-        'tooltipShowOn',
-        Object.values(CSSTooltipShowOn) as any[],
-        CSSTooltipShowOn.hover as any
-      ),
-    },
-    moduleMetadata: {
-      imports: [StoryBookLayoutModule, DividerModule, TypographyModule],
-    },
-  }),
-  { notes: { markdown: note } }
-);
+const toAdd = () => ({
+  template: storyTemplate,
+  props: {
+    tooltipText: text('tooltipText', 'Works best for \n short text'),
+    tooltipPosition: radios(
+      'tooltipPosition',
+      Object.values(TooltipPosition) as any[],
+      TooltipPosition.above as any
+    ),
+    tooltipTextAlign: radios(
+      'tooltipTextAlign',
+      Object.values(CSSTooltipTextAlign) as any[],
+      CSSTooltipTextAlign.center as any
+    ),
+    tooltipWrap: radios(
+      'tooltipWrap',
+      Object.values(CSSTooltipWrap) as any[],
+      CSSTooltipWrap.normal as any
+    ),
+    tooltipShowOn: radios(
+      'tooltipShowOn',
+      Object.values(CSSTooltipShowOn) as any[],
+      CSSTooltipShowOn.hover as any
+    ),
+  },
+  moduleMetadata: {
+    imports: [StoryBookLayoutModule, DividerModule, TypographyModule],
+  },
+});
+
+story.add('CSS Tooltip', toAdd, { notes: { markdown: note } });
+
+story2.add('CSS Tooltip', toAdd, { notes: { markdown: note } });

@@ -1,0 +1,34 @@
+$b-grid-gap: times8(3);
+
+@mixin gridLayout12Cols($column-gap: $b-grid-gap, $row-gap: null) {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(12, 1fr);
+  @if $column-gap {
+    grid-column-gap: $column-gap;
+  }
+  @if $row-gap {
+    grid-row-gap: $row-gap;
+  }
+}
+
+@mixin grid-col($span: 12, $media: null) {
+  @if (not $media) {
+    grid-column: auto / span #{$span};
+  }
+  @if ($media == 'small' or $media == 'sm') {
+    @media screen and (min-width: $breakpoint-device-sm) {
+      grid-column: auto / span #{$span};
+    }
+  }
+  @if ($media == 'medium' or $media == 'md') {
+    @media screen and (min-width: $breakpoint-device-md) {
+      grid-column: auto / span #{$span};
+    }
+  }
+  @if ($media == 'large' or $media == 'lg') {
+    @media screen and (min-width: $breakpoint-device-lg) {
+      grid-column: auto / span #{$span};
+    }
+  }
+}

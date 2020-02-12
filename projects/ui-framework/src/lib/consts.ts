@@ -21,6 +21,7 @@ export enum ComponentGroupType {
   Typography = 'Typography',
   Services = 'Services',
   EyeCandy = 'Eye Candy',
+  HtmlCss = 'HTML-CSS',
 }
 
 export const mobileBreakpoint = 768;
