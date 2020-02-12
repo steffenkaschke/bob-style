@@ -45,23 +45,28 @@ export const AVATAR_LOCATIONS_DEF_DESK: AvatarLocation[] = [
 
 export const AVATAR_LOCATIONS_DEF_MOB: AvatarLocation[] = [
   {
-    avatarSize: 30,
-    x: 0.12,
-    y: 0.4,
-  },
-  {
     avatarSize: 17,
-    x: 0.15,
-    y: 0.65,
+    x: 0.14,
+    y: 0.35
   },
   {
-    avatarSize: 18,
-    x: 0.3,
-    y: 0.35,
+    avatarSize: 40,
+    x: 0.14,
+    y: 0.65
   },
   {
-    avatarSize: 50,
-    x: 0.3,
-    y: 0.65,
+    avatarSize: 30,
+    x: 0.8,
+    y: 0.75
   },
+  {
+    avatarSize: 36,
+    x: 0.9,
+    y: 0.5
+  },
+  {
+    avatarSize: 15,
+    x: 0.8,
+    y: 0.29
+  }
 ];
