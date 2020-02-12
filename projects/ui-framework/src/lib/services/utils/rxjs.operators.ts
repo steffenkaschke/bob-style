@@ -5,7 +5,7 @@ import { Subscription, Observable } from 'rxjs';
 
 export function outsideZone<T>(zone: NgZone) {
   return function(source: Observable<T>) {
-    return new Observable(observer => {
+    return new Observable<T>(observer => {
       let sub: Subscription;
       zone.runOutsideAngular(() => {
         sub = source.subscribe(observer);
@@ -18,7 +18,7 @@ export function outsideZone<T>(zone: NgZone) {
 
 export function insideZone<T>(zone: NgZone) {
   return function(source: Observable<T>) {
-    return new Observable(observer => {
+    return new Observable<T>(observer => {
       let sub: Subscription;
       zone.run(() => {
         sub = source.subscribe(observer);

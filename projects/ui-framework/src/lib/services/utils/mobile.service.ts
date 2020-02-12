@@ -6,14 +6,14 @@ import {
   shareReplay,
   map,
   startWith,
-  distinctUntilChanged
+  distinctUntilChanged,
 } from 'rxjs/operators';
 import { WindowRef } from './window-ref.service';
 import { isEqual } from 'lodash';
 
 export enum WidthMode {
   min = 'min',
-  max = 'max'
+  max = 'max',
 }
 
 export interface MediaEvent {
@@ -26,7 +26,7 @@ export interface MediaEvent {
 class DocumentTouch {}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MobileService {
   mediaEvent$: Observable<MediaEvent>;
@@ -43,7 +43,7 @@ export class MobileService {
       startWith(this.getMediaData()),
       map((e: Event) => this.getMediaData()),
       distinctUntilChanged(isEqual),
-      shareReplay(1),
+      shareReplay(1)
     );
   }
 
@@ -97,12 +97,12 @@ export class MobileService {
     return this.matchMedia(query);
   }
 
-  private getMediaData(): MediaEvent {
+  public getMediaData(): MediaEvent {
     return {
       matchMobile: this.matchBreakpoint(mobileBreakpoint, WidthMode.max),
       matchDesktop: this.matchBreakpoint(mobileBreakpoint + 1, WidthMode.min),
       isTouchDevice: this.isTouchDevice,
-      isMobileBrowser: this.isMobBrowser
+      isMobileBrowser: this.isMobBrowser,
     };
   }
 }
