@@ -26,7 +26,8 @@
                   [listActions]="listActions"
                   [readonly]="readonly"
                   (selectChange)="onSelect($event)"
-                  (apply)="onApply()">
+                  (apply)="onApply()"
+                  (cancel)="onCancel()">
       <ng-content footerAction
                   select="[footerAction],[footerActionRight]"></ng-content>
     </b-multi-list>
