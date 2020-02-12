@@ -21,36 +21,36 @@ import { cloneDeep } from 'lodash';
 import { SelectGroupOption } from '../list.interface';
 
 import listInterfaceDoc from '../list.interface.md';
+import listSelectsPropsDoc from '../lists-selects.properties.md';
+import selectPanelsPropsDoc from '../select-panels.properties.md';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
-const componentTemplate1 = `
-<b-multi-select-panel [chevronButtonText]="chevronButtonText"
-                      [disabled]="disabled"
-                      [options]="options"
-                      [optionsDefault]="optionsDefault"
-                      [readonly]="readonly"
-                      (selectChange)="selectChange($event)">
-</b-multi-select-panel>
-`;
+const componentTemplate1 = `<b-multi-select-panel [chevronButtonText]="chevronButtonText"
+                        [options]="options"
+                        [optionsDefault]="optionsDefault"
+                        [disabled]="disabled"
+                        [readonly]="readonly"
+                        (selectChange)="selectChange($event)">
+</b-multi-select-panel>`;
 
-const componentTemplate2 = `
-<b-multi-select-panel [options]="options"
-                      [disabled]="disabled"
-                      [listActions]="{
-                        clear: 'Clear selection',
-                        apply: 'Lets go'
-                      }"
-                      [readonly]="readonly"
-                      (selectChange)="selectChange($event)">
+const componentTemplate2 = `<b-multi-select-panel [options]="options"
+                        [listActions]="{
+                          clear: 'Clear selection',
+                          apply: 'Lets go'
+                        }"
+                        [disabled]="disabled"
+                        [readonly]="readonly"
+                        (selectChange)="selectChange($event)">
+
     <b-square-button  [disabled]="disabled"
-                      type="${ButtonType.secondary}"
-                      icon="${Icons.table}">
+                      [type]="buttonType.secondary"
+                      [icon]="icons.table">
     </b-square-button>
-</b-multi-select-panel>
-`;
+
+</b-multi-select-panel>`;
 
 const template = `
 <b-story-book-layout [title]="'Multi select panel'">
@@ -68,23 +68,6 @@ const note = `
   #### Module
   *MultiListMenuModule*
 
-  #### Properties
-  Name | Type | Description | Default value
-  --- | --- | ---
-  [chevronButtonText] | string | text to be displayed in chevron-button | null - can use transclude instead
-  [options] | SelectGroupOptions[] | select option | &nbsp;
-  [optionsDefault] |  SelectGroupOption[] | default options. \
-  if present, the Clear button (if enabled) will be replaced with Reset button, that will set the state \
-  to optionsDefault | &nbsp;
-  [listActions] | ListFooterActions / string | enable/disable footer action buttons\
-   (clear, apply, reset). If you provide a string, \
-   it will be used for button text, instead of default. | { clear:&nbsp;true, apply:&nbsp;true }
-  [disabled] | boolean | if panel is disabled | false
-  [readonly] | boolean | if true, will not emit events and not allow selection | false
-  (selectChange) | ListChange | output on select change | &nbsp;
-  (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
-  (closed) | EventEmitter<wbr>&lt;void&gt; | Emits panel Closed event | &nbsp;
-
   ~~~
   ${componentTemplate1}
   ~~~
@@ -93,6 +76,9 @@ const note = `
   ${componentTemplate2}
   ~~~
 
+  ${selectPanelsPropsDoc}
+
+  ${listSelectsPropsDoc}
 
   ${listInterfaceDoc}
 `;
@@ -109,6 +95,8 @@ story.add(
     return {
       template,
       props: {
+        icons: Icons,
+        buttonType: ButtonType,
         chevronButtonText: text('chevronButtonText', 'Select field', 'Props'),
         disabled: boolean('disabled', false, 'Props'),
         readonly: boolean('readonly', false, 'Props'),

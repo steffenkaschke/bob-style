@@ -14,6 +14,8 @@ import { cloneDeep } from 'lodash';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 import listInterfaceDoc from '../list.interface.md';
+import listSelectsPropsDoc from '../lists-selects.properties.md';
+import listsPropsDoc from '../lists.properties.md';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -35,8 +37,7 @@ const template = `
 </b-single-list>
 `;
 
-const templateForNotes = `
-<b-single-list [options]="options"
+const templateForNotes = `<b-single-list [options]="options"
                [showSingleGroupHeader]="showSingleGroupHeader"
                [startWithGroupsCollapsed]="startWithGroupsCollapsed"
                [showNoneOption]="showNoneOption"
@@ -47,8 +48,7 @@ const templateForNotes = `
         [text]="'Action'">
     </b-text-button>
 
-</b-single-list>
-`;
+</b-single-list>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Single list'">
@@ -64,27 +64,18 @@ const note = `
   #### Module
   *SingleListModule*
 
-  #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  [options] | SelectGroupOption[] | model of selection group | &nbsp;
-  [optionsDefault] |  SelectGroupOption[] | default options. \
-  if present, the Clear button (if enabled) will be replaced with Reset button, that will set the state \
-  to optionsDefault | &nbsp;
-  [showSingleGroupHeader] | boolean | displays single group with group header | false
-  [startWithGroupsCollapsed] | boolean | if should start with groups closed | true
-  [showNoneOption] | boolean | show -None- list option | false
-  [readonly] | boolean | if true, will not emit events and not allow selection | false
-  [maxHeight] | number | component max height | 352 (8 rows)
-  [listActions] | ListFooterActions / string | enable/disable footer action buttons\
-   (clear, apply, reset). If you provide a string, \
-   it will be used for button text, instead of default. | { clear:&nbsp;false, apply:&nbsp;false }
-  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
-  &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
-
   ~~~
   ${templateForNotes}
   ~~~
+
+  #### Properties
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  [showNoneOption] | boolean | show -None- list option | false
+
+  ${listSelectsPropsDoc}
+
+  ${listsPropsDoc}
 
   ${listInterfaceDoc}
 `;

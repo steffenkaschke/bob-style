@@ -22,6 +22,7 @@ import { ListModelService } from '../list-service/list-model.service';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 import listInterfaceDoc from '../list.interface.md';
+import listSelectsPropsDoc from '../lists-selects.properties.md';
 import selectsPropsDoc from '../selects.properties.md';
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 
@@ -60,8 +61,7 @@ const template = `
 </b-multi-select>
 `;
 
-const templateForNotes = `
-<b-multi-select [value]="value"
+const templateForNotes = `<b-multi-select [value]="value"
                 [options]="options"
                 [optionsDefault]="optionsDefault"
                 [label]="label"
@@ -81,8 +81,7 @@ const templateForNotes = `
         [text]="'Action'">
     </b-text-button>
 
-</b-multi-select>
-`;
+</b-multi-select>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Multi select'">
@@ -114,6 +113,8 @@ const note = `
   that emit on Apply (see doc below) | &nbsp;
   (selectCancelled) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange - on Cancel. \
   Only relevant if you use \`(selectModified)\` | &nbsp;
+
+  ${listSelectsPropsDoc}
 
   ${selectsPropsDoc}
 

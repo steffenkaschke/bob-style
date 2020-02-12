@@ -98,19 +98,21 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   onApply(): void {
     if (this.listChange) {
       this.emitChange(FormEvents.selectChange);
+      this.listChange = undefined;
     }
-    this.listChange = undefined;
     this.destroyPanel();
   }
 
   onCancel(): void {
-    this.value = this.modelSrvc.getSelectedIDs(this.options);
-    this.setDisplayValue();
-    this.emitChange(
-      FormEvents.selectCancelled,
-      this.listChangeSrvc.getListChange(this.options, this.value)
-    );
-    this.listChange = undefined;
+    if (this.listChange) {
+      this.value = this.modelSrvc.getSelectedIDs(this.options);
+      this.setDisplayValue();
+      this.emitChange(
+        FormEvents.selectCancelled,
+        this.listChangeSrvc.getListChange(this.options, this.value)
+      );
+      this.listChange = undefined;
+    }
     this.destroyPanel();
   }
 

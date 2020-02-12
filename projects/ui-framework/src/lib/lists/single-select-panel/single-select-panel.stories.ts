@@ -22,33 +22,33 @@ import {
 } from '../../services/utils/functional-utils';
 
 import listInterfaceDoc from '../list.interface.md';
+import listSelectsPropsDoc from '../lists-selects.properties.md';
+import selectPanelsPropsDoc from '../select-panels.properties.md';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
-const componentTemplate1 = `
-<b-single-select-panel [chevronButtonText]="chevronButtonText"
-                       [options]="options"
-                       [panelClass]="panelClass"
-                       [disabled]="disabled"
-                       [readonly]="readonly"
-                       (selectChange)="selectChange($event)">
-</b-single-select-panel>
-`;
+const componentTemplate1 = `<b-single-select-panel [chevronButtonText]="chevronButtonText"
+                         [options]="options"
+                         [panelClass]="panelClass"
+                         [disabled]="disabled"
+                         [readonly]="readonly"
+                         (selectChange)="selectChange($event)">
+</b-single-select-panel>`;
 
-const componentTemplate2 = `
-<b-single-select-panel [options]="options"
-                       [panelClass]="panelClass"
-                       [disabled]="disabled"
-                       [readonly]="readonly"
-                       (selectChange)="selectChange($event)">
+const componentTemplate2 = `<b-single-select-panel [options]="options"
+                         [panelClass]="panelClass"
+                         [disabled]="disabled"
+                         [readonly]="readonly"
+                         (selectChange)="selectChange($event)">
+
     <b-square-button [disabled]="disabled"
-                     type="${ButtonType.secondary}"
-                     icon="${Icons.table}">
+                     [type]="buttonType.secondary"
+                     [icon]="icons.table">
     </b-square-button>
-</b-single-select-panel>
-`;
+
+</b-single-select-panel>`;
 
 const template = `
 <b-story-book-layout [title]="'Single select panel'">
@@ -66,18 +66,6 @@ const note = `
   #### Module
   *SingleSelectPanelModule*
 
-  #### Properties
-  Name | Type | Description | Default value
-  --- | --- | ---
-  [chevronButtonText] | string | text to be displayed in\
-   chevron-button | null - can use transclude instead
-  [options] | SelectGroupOptions[] | select option | null
-  [disabled] | boolean | if panel is disabled | false
-  [readonly] | boolean | if true, will not emit events and not allow selection | false
-  (selectChange) | ListChange | output on select change | &nbsp;
-  (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | Emits panel Opened event | &nbsp;
-  (closed) | EventEmitter<wbr>&lt;void&gt; | Emits panel Closed event | &nbsp;
-
   ~~~
   ${componentTemplate1}
   ~~~
@@ -85,6 +73,10 @@ const note = `
   ~~~
   ${componentTemplate2}
   ~~~
+
+  ${selectPanelsPropsDoc}
+
+  ${listSelectsPropsDoc}
 
   ${listInterfaceDoc}
 `;
@@ -125,6 +117,8 @@ story.add(
     return {
       template,
       props: {
+        icons: Icons,
+        buttonType: ButtonType,
         chevronButtonText: text(
           'chevronButtonText',
           'Jump to section',

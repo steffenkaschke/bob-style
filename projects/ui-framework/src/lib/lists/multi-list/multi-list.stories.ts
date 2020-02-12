@@ -11,9 +11,11 @@ import { SelectGroupOption } from '../list.interface';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { optionsMock, optionsMockDef } from './multi-list.mock';
 import { cloneDeep } from 'lodash';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 
 import listInterfaceDoc from '../list.interface.md';
-import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import listSelectsPropsDoc from '../lists-selects.properties.md';
+import listsPropsDoc from '../lists.properties.md';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -35,6 +37,19 @@ const template = `
 </b-multi-list>
 `;
 
+const templateForNotes = `<b-multi-list [options]="options"
+              [optionsDefault]="optionsDefault"
+              [showSingleGroupHeader]="showSingleGroupHeader"
+              [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+              [readonly]="readonly"
+              (selectChange)="selectChange($event)">
+
+      <b-text-button footerAction
+        [text]="'Action'">
+      </b-text-button>
+
+</b-multi-list>`;
+
 const storyTemplate = `
 <b-story-book-layout [title]="'Multi list'">
   <div style="max-width: 350px;">
@@ -49,29 +64,15 @@ const note = `
   #### Module
   *MultiListModule*
 
-  #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
-  [options] | SelectGroupOption[] | model of selection group | &nbsp;
-  [optionsDefault] |  SelectGroupOption[] | default options. \
-  if present, the Clear button (if enabled) will be replaced with Reset button, that will set the state \
-  to optionsDefault | &nbsp;
-  [showSingleGroupHeader] | boolean | displays single group with group header | false
-  [startWithGroupsCollapsed] | boolean | if should start with groups closed | true
-  [readonly] | boolean | if true, will not emit events and not allow selection | false
-  [maxHeight] | number | component max height | 352 (8 rows)
-  [listActions] | ListFooterActions / string | enable/disable footer action buttons\
-   (clear, apply, reset). If you provide a string, \
-   it will be used for button text, instead of default. | { clear:&nbsp;true, apply:&nbsp;false }
-  (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits ListChange | &nbsp;
-  &lt;elem footerAction&gt; | ng-content | element with attribute \`footerAction\` will be placed in the footer | &nbsp;
+  ~~~
+  ${templateForNotes}
+  ~~~
 
-  ~~~
-  ${template}
-  ~~~
+  ${listSelectsPropsDoc}
+
+  ${listsPropsDoc}
 
   ${listInterfaceDoc}
-
 `;
 
 const options = cloneDeep(optionsMock);

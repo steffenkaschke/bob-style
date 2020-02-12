@@ -1,6 +1,6 @@
 <label [b-truncate-tooltip]="1"
        [trustCssVars]="true"
-       [attr.for]="fieldId || null"
+       [attr.for]="fieldId !== undefined ? fieldId : null"
        [ngClass]="{'has-description': description}">
   {{label}}
 </label>

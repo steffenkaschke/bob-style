@@ -24,6 +24,7 @@ import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-im
 import listInterfaceDoc from '../list.interface.md';
 import selectsPropsDoc from '../selects.properties.md';
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
+import listSelectsPropsDoc from '../lists-selects.properties.md';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -58,8 +59,7 @@ const template = `
 </b-single-select>
 `;
 
-const templateForNotes = `
-<b-single-select [value]="[value]"
+const templateForNotes = `<b-single-select [value]="[value]"
                  [options]="options"
                  [label]="label"
                  [placeholder]="placeholder"
@@ -79,8 +79,7 @@ const templateForNotes = `
           [text]="'Action'">
       </b-text-button>
 
-</b-single-select>
-`;
+</b-single-select>`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Single select'">
@@ -108,6 +107,8 @@ const note = `
    and instead \`[value]\` will be used to select option | &nbsp;
   [showNoneOption] | boolean | displays the no-selection option.<br>\
   **Note:** If \`[required]\` is true, \`[showNoneOption]\` will automatically set to false | true
+
+  ${listSelectsPropsDoc}
 
   ${selectsPropsDoc}
 
