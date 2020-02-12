@@ -26,42 +26,28 @@ section {
   padding: 16px;
 }
 
-.bfe-input span {
-  // opacity: 0;
-  text-align: center;
-  transition: 0.3s;
-}
-
 [data-tooltip] {
   &:after {
     white-space: pre-line;
   }
 }
 
-.grid-layout-12-cols::ng-deep {
-  [class*='col-'] {
-    @include bFormElement('&');
-    min-height: $wrap-height + $label-height + $label-hint-margin; // 44 + 18 + 6 = 68
-
-    .bfe-input,
-    .bfe-label {
-      user-select: initial;
-    }
-  }
+:host ::ng-deep .bfe-input span {
+  transition: 0.3s;
 }
 
 .grid-layout-12-cols {
   &:hover {
     &,
     b-big-body,
-    [class*='col-'] {
+    b-pseudo-input {
       position: relative;
     }
 
     &:after,
     &:before,
     b-big-body:before,
-    [class*='col-']:before {
+    b-pseudo-input:before {
       @include pseudo;
       @include size;
       @include position(0 0 0 0);
@@ -69,7 +55,7 @@ section {
     }
 
     b-big-body:before,
-    [class*='col-']:before {
+    b-pseudo-input:before {
       border: 1px solid blue;
     }
 
@@ -77,12 +63,12 @@ section {
       box-shadow: 0 0 0 1px white, 0 0 0 2px blue;
     }
 
-    .bfe-wrap {
+    ::ng-deep .bfe-wrap {
       border-color: silver;
       border-radius: 0;
     }
 
-    .bfe-input span {
+    ::ng-deep .bfe-input span {
       opacity: 1;
     }
 
@@ -120,11 +106,10 @@ section {
       }
     }
 
-    [class*='col-']:hover {
+    b-pseudo-input:hover ::ng-deep {
       .bfe-input {
         @include size;
         @include position(0 0 0 0);
-        // @include flex-align;
         display: flex;
         align-items: center;
         transition: none;

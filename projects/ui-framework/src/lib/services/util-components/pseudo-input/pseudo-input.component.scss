@@ -1,0 +1,12 @@
+@import '../../../style/common-imports';
+
+@include bFormElement();
+
+:host {
+  min-height: $wrap-height + $label-height + $label-hint-margin; // 44 + 18 + 6 = 68
+}
+
+.bfe-input,
+.bfe-label {
+  user-select: initial;
+}
