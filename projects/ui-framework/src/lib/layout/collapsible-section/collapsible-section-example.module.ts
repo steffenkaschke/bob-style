@@ -41,6 +41,7 @@ import { IconsModule } from '../../icons/icons.module';
       [expanded]="expanded"
       [disabled]="disabled"
       [divided]="divided"
+      (openedFirst)="onOpenedFirst()"
       (opened)="onOpened()"
       (closed)="onClosed()"
     >
@@ -205,6 +206,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   @Input() disabled = false;
   @Input() divided = true;
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
+  @Output() openedFirst: EventEmitter<void> = new EventEmitter<void>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
   readonly labelValueType = LabelValueType;
@@ -292,6 +294,10 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   onClosed(): void {
     this.closed.emit();
   }
+
+  onOpenedFirst(): void {
+    this.openedFirst.emit();
+  }
 }
 
 @Component({
@@ -304,6 +310,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
       [expanded]="expanded"
       [disabled]="disabled"
       [divided]="divided"
+      (openedFirst)="onOpenedFirst()"
       (opened)="onOpened()"
       (closed)="onClosed()"
       [options]="options"
@@ -352,6 +359,7 @@ export class CollapsibleSectionExample2Component implements OnChanges {
   @Input() description = mockText(randomNumber(3, 6));
 
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
+  @Output() openedFirst: EventEmitter<void> = new EventEmitter<void>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
   readonly labelValueType = LabelValueType;
@@ -381,6 +389,10 @@ export class CollapsibleSectionExample2Component implements OnChanges {
 
   onClosed(): void {
     this.closed.emit();
+  }
+
+  onOpenedFirst(): void {
+    this.openedFirst.emit();
   }
 }
 @NgModule({

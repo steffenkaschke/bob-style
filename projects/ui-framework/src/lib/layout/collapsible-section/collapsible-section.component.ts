@@ -56,6 +56,7 @@ export class CollapsibleSectionComponent
   public startsExpanded = false;
   private contentHeight = 0;
   private resizeSubscription: Subscription;
+  private firstExpand = false;
 
   @Input() panelID = simpleUID('bcp-');
   @Input() collapsible = false;
@@ -70,6 +71,7 @@ export class CollapsibleSectionComponent
   @Input() options: CollapsibleOptions = cloneObject(collapsibleOptionsDef);
 
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
+  @Output() openedFirst: EventEmitter<void> = new EventEmitter<void>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
   @ViewChild('headerContent', { static: false }) headerContent: ElementRef;
@@ -156,6 +158,7 @@ export class CollapsibleSectionComponent
 
       if (!this.contentLoaded) {
         this.contentLoaded = true;
+        this.firstExpand = true;
         this.cd.detectChanges();
 
         this.zone.runOutsideAngular(() => {
@@ -179,12 +182,7 @@ export class CollapsibleSectionComponent
       this.expanded = typeof state === 'boolean' ? state : !this.expanded;
       this.cd.detectChanges();
 
-      if (
-        this.opened.observers.length > 0 ||
-        this.closed.observers.length > 0
-      ) {
-        this.emitEvent();
-      }
+      this.emitEvent();
     }
   }
 
@@ -209,9 +207,14 @@ export class CollapsibleSectionComponent
   }
 
   private emitEvent(): void {
-    if (this.expanded) {
+    if (this.expanded && this.firstExpand && this.openedFirst.observers) {
+      this.firstExpand = false;
+      this.openedFirst.emit();
+    }
+    if (this.expanded && !this.firstExpand && this.opened.observers) {
       this.opened.emit();
-    } else {
+    }
+    if (!this.expanded && this.closed.observers) {
       this.closed.emit();
     }
   }

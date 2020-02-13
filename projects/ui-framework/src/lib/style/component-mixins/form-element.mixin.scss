@@ -4,7 +4,7 @@ $input-padding: 15px;
 $label-height: 18px;
 $label-color: $grey-800;
 $label-hint-margin: 6px;
-$input-border-color: $grey-500;
+$input-border-color: $border-color;
 $input-focus-border-color: $grey-700;
 
 @mixin form-element-margins {
