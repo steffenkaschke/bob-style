@@ -16,8 +16,7 @@
     "npm_pack": "cd dist/ui-framework && npm pack",
     "package": "npm run build && npm run copy-style && npm run npm_pack",
     "copy-style": "cpx \"projects/ui-framework/src/lib/style/**/*\" \"dist/ui-framework/style/\"",
-    "start-app-test": "ng serve --project=app-test",
-    "postinstall": "npm run schematics:install"
+    "start-app-test": "ng serve --project=app-test"
   },
   "private": false,
   "dependencies": {
