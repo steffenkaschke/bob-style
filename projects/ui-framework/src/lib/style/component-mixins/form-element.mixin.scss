@@ -111,12 +111,12 @@ $input-focus-border-color: $grey-700;
   }
 }
 
-@mixin bFormElement {
-  :host {
+@mixin bFormElement($sel: ':host') {
+  #{$sel} {
     @include bFormElement-basics;
   }
 
-  :host ::ng-deep {
+  #{$sel} ::ng-deep {
     //
     // wrap
 
@@ -232,21 +232,21 @@ $input-focus-border-color: $grey-700;
     }
   }
 
-  :host.disabled {
+  #{$sel}.disabled {
     @include disabled-state;
   }
 
-  :host.required ::ng-deep {
+  #{$sel}.required ::ng-deep {
     .bfe-label {
       @include input-required;
     }
   }
 
-  :host.readonly {
+  #{$sel}.readonly {
     cursor: default;
   }
 
-  :host {
+  #{$sel} {
     @include input-border-colors($add: '::ng-deep .bfe-wrap');
   }
 }

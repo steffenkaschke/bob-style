@@ -1,0 +1,42 @@
+<header>
+  <b-display-3>
+    Playground
+  </b-display-3>
+  <b-big-body>&lt;wrapper class="{{
+    'grid-layout-12-cols' + (containerClass ? ' ' + containerClass : '')
+  }}"&gt;
+  </b-big-body>
+</header>
+
+<section>
+  <div class="grid-layout-12-cols"
+       [ngClass]="containerClass">
+
+    <b-pseudo-input *ngFor="let elem of itemsClasses; let index = index;"
+                    [ngClass]="elem"
+                    [label]="'Element '+(index+1)"
+                    [value]="elem">
+    </b-pseudo-input>
+
+  </div>
+</section>
+
+<header>
+  <b-display-3>
+    Examples <b-body>(try resizing the window)</b-body>
+  </b-display-3>
+  <b-big-body>&lt;wrapper class="{{wrapper[0]}}"&gt;</b-big-body>
+</header>
+
+<section>
+  <div [ngClass]="wrapper[0]"
+       [attr.data-tooltip]="wrapper[1] || null">
+
+    <b-pseudo-input *ngFor="let elem of elements; let index = index;"
+                    [ngClass]="elem[0]"
+                    [value]="elem[0]"
+                    [tooltip]="elem[1]">
+    </b-pseudo-input>
+
+  </div>
+</section>

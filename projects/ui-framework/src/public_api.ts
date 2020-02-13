@@ -566,3 +566,9 @@ export { selectOptionsMock } from './lib/lists/multi-select-panel/multi-select-p
 * Animation
  */
 export { SLIDE_UP_DOWN } from './lib/style/animations';
+
+
+/*
+ * HTML/CSS
+ */
+export * from './lib/html-css/grid-layout/grid-layout.enum';
