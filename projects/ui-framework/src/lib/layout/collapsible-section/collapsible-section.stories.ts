@@ -22,8 +22,9 @@ const template = `
     [title]="title"
     [description]="description"
     [options]="options"
-    (closed)="onPanelClosed($event)"
-    (opened)="onPanelOpened($event)">
+    (openedFirst)="loadData()"
+    (opened)="onPanelOpened()"
+    (closed)="onPanelClosed()">
 
       <b-button header [text]="buttonText" (clicked)="onClick()"></b-button>
 
@@ -53,8 +54,9 @@ const storyTemplate = `
       [expanded]="expanded"
       [disabled]="disabled"
       [divided]="divided"
-      (closed)="onPanelClosed($event)"
-      (opened)="onPanelOpened($event)">
+      (openedFirst)="loadData()"
+      (closed)="onPanelClosed()"
+      (opened)="onPanelOpened()">
    </b-collapsible-section-example-1>
 
    <b-collapsible-section-example-2
@@ -64,8 +66,9 @@ const storyTemplate = `
       [expanded]="expanded"
       [disabled]="disabled"
       [divided]="divided"
-      (closed)="onPanelClosed($event)"
-      (opened)="onPanelOpened($event)">
+      (openedFirst)="loadData()"
+      (closed)="onPanelClosed()"
+      (opened)="onPanelOpened()">
    </b-collapsible-section-example-2>
 
 </div>
@@ -95,8 +98,9 @@ const note = `
      for example: \`color: var(--bcp-color)\`, or for rgba color with opacity \
      - \`color: rgba(var(--bcp-color-rgb), 0.2)\` \
      | collapsibleOptionsDef
-  (opened) |  EventEmitter | emits when collapsible panel was opened | &nbsp;
-  (closed) |  EventEmitter | emits when collapsible panel was closed | &nbsp;
+  **(openedFirst)** |  EventEmitter<wbr>&lt;void&gt; | emits when collapsible panel is *opened first time*. <br> Bind to this to fetch or init data. | &nbsp;
+  (opened) |  EventEmitter<wbr>&lt;void&gt; | emits when collapsible panel is opened | &nbsp;
+  (closed) |  EventEmitter<wbr>&lt;void&gt; | emits when collapsible panel is closed | &nbsp;
 
   <u>Content marked with [header] attribute</u> will be projected into the  header (if Title text \
     is present, the [header] content will be placed to the right of the Title, if no Title \
@@ -123,6 +127,7 @@ story.add(
         divided: boolean('divided', true),
         title: text('title', mockText(randomNumber(2, 5))),
         description: text('description', mockText(randomNumber(3, 6))),
+        loadData: action('Panel opened FIRST'),
         onPanelOpened: action('Panel opened'),
         onPanelClosed: action('Panel closed'),
       },

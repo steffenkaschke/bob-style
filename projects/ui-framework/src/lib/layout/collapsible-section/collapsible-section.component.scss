@@ -2,7 +2,7 @@
 
 $bcp-transition-length: 0.35s;
 $bcp-transition-easing: cubic-bezier(0.645, 0.045, 0.355, 1);
-$bcp-border-color: $grey-300;
+$bcp-border-color: $border-color-light;
 
 :host {
   display: block;
