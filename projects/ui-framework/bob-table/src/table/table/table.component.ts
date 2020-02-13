@@ -58,7 +58,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Input() maxHeight = 450;
   @Input() suppressColumnVirtualisation = true;
   @Input() tableGridOptions: Partial<GridOptions> = {};
-  @Input() suppressDragLeaveHidesColumns = false;
+  @Input() suppressDragLeaveHidesColumns = true;
   @Input() removeColumnButtonEnabled = false;
   @Input() shouldAutoSizeColumns = true;
 
@@ -194,6 +194,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       onCellClicked(event: CellClickedEvent): void {
         that.cellClicked.emit(event);
       },
+      accentedSort: true
     };
   }
 

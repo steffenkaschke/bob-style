@@ -191,8 +191,8 @@ const gridActions: GridActions = {
   ],
 };
 
-export const mockRowData = makeArray(200).map(i => ({
-  fullName: mockNames(1) as string,
+export const mockRowData = makeArray(100).map((i, index) => ({
+  fullName: index === 0 ? 'Érica Ûulrich' : mockNames(1),
   id: simpleUID(),
   email: mockText(1).toLowerCase() + '@' + mockText(1).toLowerCase() + '.com',
   internal: {

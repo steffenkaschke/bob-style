@@ -8,7 +8,7 @@
   margin-top: -1px;
   border-bottom-left-radius: $border-radius;
   border-bottom-right-radius: $border-radius;
-  z-index: 1;
+  position: relative;
   background-color: $white;
   height: 50px;
   user-select: none;
@@ -18,14 +18,17 @@
   }
 }
 
-:host ::ng-deep {
-  b-button,
-  b-text-button {
-    &[hidden] {
-      display: none;
-    }
-  }
+[hidden] {
+  display: none;
+}
 
+.cancel-apply {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+:host ::ng-deep {
   b-text-button {
     padding: 0 times8(1);
 
@@ -49,9 +52,22 @@
     }
   }
 
-  b-button,
-  b-square-button,
+  b-button {
+    margin-left: times8(1);
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+
+  & > b-button:last-child,
+  & > b-square-button:last-child,
+  .cancel-apply,
   [footerActionRight] {
     margin-left: auto;
+  }
+
+  [footerActionRight] + .cancel-apply {
+    margin-left: times8(1);
   }
 }

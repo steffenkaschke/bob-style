@@ -13,6 +13,7 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
+import { SelectType } from '../list.enum';
 
 @Component({
   selector: 'b-multi-select-panel',
@@ -45,20 +46,19 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement {
       zone,
       cd
     );
-
+    this.type = SelectType.multi;
     this.wrapEvent = false;
     this.doPropagate = false;
     this.panelClassList = ['b-select-panel-with-arrow'];
     this.listActions = {
+      apply: true,
+      cancel: true,
       clear: true,
       reset: false,
-      apply: true,
     };
   }
 
   @Input() chevronButtonText: string;
-
-  listChange: ListChange;
 
   onSelect(listChange: ListChange): void {
     this.listChange = listChange;

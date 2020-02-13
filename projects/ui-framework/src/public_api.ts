@@ -132,6 +132,9 @@ export * from './lib/indicators/progress/progress.enum';
 export * from './lib/indicators/progress/progress.interface';
 export { ProgressBarModule } from './lib/indicators/progress/progress-bar/progress-bar.module';
 export { ProgressBarComponent } from './lib/indicators/progress/progress-bar/progress-bar.component';
+// Progress Donut Bar
+export { ProgressDonutComponent } from './lib/indicators/progress/progress-donut/progress-donut.component';
+export { ProgressDonutModule } from './lib/indicators/progress/progress-donut/progress-donut.module';
 // Simple Bar Chart
 export * from './lib/indicators/simple-bar-chart/simple-bar-chart.interface';
 export { SimpleBarChartModule } from './lib/indicators/simple-bar-chart/simple-bar-chart.module';
@@ -528,6 +531,8 @@ export {
 } from './lib/services/utils/eventManager.plugins';
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
+export * from './lib/eye-candy/floating-avatars/floating-avatars.interface';
+export * from './lib/eye-candy/floating-avatars/floating-avatars.const';
 export { FloatingAvatarsComponent } from './lib/eye-candy/floating-avatars/floating-avatars.component';
 export { ConfettiComponent } from './lib/eye-candy/confetti/confetti.component';
 export { SnowComponent } from './lib/eye-candy/snow/snow.component';
@@ -561,3 +566,9 @@ export { selectOptionsMock } from './lib/lists/multi-select-panel/multi-select-p
 * Animation
  */
 export { SLIDE_UP_DOWN } from './lib/style/animations';
+
+
+/*
+ * HTML/CSS
+ */
+export * from './lib/html-css/grid-layout/grid-layout.enum';

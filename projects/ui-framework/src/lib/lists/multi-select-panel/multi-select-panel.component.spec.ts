@@ -107,7 +107,7 @@ describe('MultiSelectPanelComponent', () => {
       )[1] as HTMLElement).click();
       optionsMock[0].options[1].selected = true;
       const listChange = new ListChange(optionsMock);
-      expect(component.listChange).toEqual(listChange);
+      expect(component['listChange']).toEqual(listChange);
     });
   });
 

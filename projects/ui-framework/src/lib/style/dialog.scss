@@ -101,6 +101,7 @@ html.cdk-global-scrollblock {
 
       .confirmation-message {
         position: absolute;
+        z-index: 1;
         left: 0;
         width: 100%;
         box-sizing: border-box;

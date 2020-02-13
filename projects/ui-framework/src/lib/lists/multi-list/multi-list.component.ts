@@ -15,6 +15,7 @@ import {
   arrayDifference,
   joinArrays,
 } from '../../services/utils/functional-utils';
+import { SelectType } from '../list.enum';
 
 @Component({
   selector: 'b-multi-list',
@@ -36,10 +37,12 @@ export class MultiListComponent extends BaseListElement {
     host: ElementRef
   ) {
     super(renderer, keybrdSrvc, modelSrvc, listChangeSrvc, cd, zone, DOM, host);
+    this.type = SelectType.multi;
     this.listActions = {
+      apply: false,
+      cancel: false,
       clear: true,
       reset: false,
-      apply: false,
     };
   }
 

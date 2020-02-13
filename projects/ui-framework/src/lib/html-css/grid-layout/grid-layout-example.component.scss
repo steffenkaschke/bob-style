@@ -1,0 +1,142 @@
+@import '../../style/common-imports';
+
+:host {
+  display: block;
+  text-align: left;
+  width: 90%;
+  margin: 0 auto;
+}
+
+header {
+  margin: times8(5) 0 times8(3);
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  b-big-body {
+    display: block;
+    margin-top: times8(1);
+  }
+
+  b-body {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+section {
+  // border: 1px solid $grey-500;
+  // background-color: $white;
+  // padding: 16px;
+}
+
+[data-tooltip] {
+  &:after {
+    white-space: pre-line;
+  }
+}
+
+:host ::ng-deep .bfe-input {
+  transition: 0.3s;
+}
+
+.grid-layout-12-cols {
+  &:hover {
+    &,
+    b-big-body,
+    b-pseudo-input {
+      position: relative;
+    }
+
+    &:after,
+    &:before,
+    b-big-body:before,
+    b-pseudo-input:before {
+      @include pseudo;
+      @include size;
+      @include position(0 0 0 0);
+      z-index: 1;
+    }
+
+    b-big-body:before,
+    b-pseudo-input:before {
+      border: 1px solid blue;
+    }
+
+    &:before {
+      box-shadow: 0 0 0 1px white, 0 0 0 2px blue;
+    }
+
+    ::ng-deep .bfe-wrap {
+      border-color: silver;
+      border-radius: 0;
+    }
+
+    ::ng-deep .bfe-input span {
+      opacity: 1;
+    }
+
+    &,
+    &.no-gap,
+    &.no-col-gap {
+      &:after {
+        z-index: 2;
+        background-image: repeating-linear-gradient(
+          90deg,
+          transparent 0,
+          transparent calc(100% / 12 - 1px),
+          rgba(blue, 0.25) calc(100% / 12 - 1px),
+          rgba(blue, 0.25) calc(100% / 12)
+        );
+        background-position: 0 0;
+      }
+    }
+
+    &.row-gap {
+      &:after {
+        z-index: 2;
+        background-image: repeating-linear-gradient(
+          90deg,
+          transparent 0,
+          transparent calc((100% + 24px) / 12 - 24px - 1px),
+          rgba(blue, 0.25) calc((100% + 24px) / 12 - 24px - 1px),
+          rgba(blue, 0.25) calc((100% + 24px) / 12 - 24px),
+          transparent calc((100% + 24px) / 12 - 24px),
+          transparent calc((100% + 24px) / 12 - 1px),
+          rgba(blue, 0.25) calc((100% + 24px) / 12 - 1px),
+          rgba(blue, 0.25) calc((100% + 24px) / 12)
+        );
+        background-position: 0 0;
+      }
+    }
+
+    b-pseudo-input:hover ::ng-deep {
+      .bfe-input {
+        @include size;
+        @include position(0 0 0 0);
+        display: flex;
+        align-items: center;
+        transition: none;
+
+        &[data-max-lines='1'] {
+          text-align: left;
+          text-transform: uppercase;
+          font-size: 105%;
+          white-space: normal;
+          overflow-wrap: break-word;
+          word-wrap: break-word;
+          hyphens: auto;
+          line-height: 1.2;
+          transition: none;
+        }
+      }
+      .bfe-wrap {
+        border-color: transparent;
+      }
+      .bfe-label {
+        opacity: 0;
+      }
+    }
+  }
+}

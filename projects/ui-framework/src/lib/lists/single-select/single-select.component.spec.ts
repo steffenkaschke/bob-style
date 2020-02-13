@@ -135,10 +135,12 @@ describe('SingleSelectComponent', () => {
       (overlayContainerElement.querySelectorAll(
         'b-single-list .option'
       )[3] as HTMLElement).click();
+
       const listChange = component['listChangeSrvc'].getListChange(
         optionsMock,
         [12]
       );
+
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
       expect(component.propagateChange).toHaveBeenCalledWith(12);
       flush();

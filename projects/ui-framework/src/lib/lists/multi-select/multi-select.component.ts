@@ -15,7 +15,7 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListChange } from '../list-change/list-change';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListModelService } from '../list-service/list-model.service';
-import { ListFooterActions, SelectOption } from '../list.interface';
+import { SelectOption } from '../list.interface';
 import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate-tooltip.component';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { UtilsService } from '../../services/utils/utils.service';
@@ -28,6 +28,7 @@ import {
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import { FormEvents } from '../../form-elements/form-elements.enum';
 import { arrayFlatten } from '../../services/utils/functional-utils';
+import { SelectType } from '../list.enum';
 
 @Component({
   selector: 'b-multi-select',
@@ -74,11 +75,13 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
       zone,
       cd
     );
+    this.type = SelectType.multi;
     this.panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
     this.listActions = {
+      apply: true,
+      cancel: true,
       clear: true,
       reset: false,
-      apply: true,
     };
   }
 
@@ -92,49 +95,42 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
     ListChange
   >();
 
-  readonly listActions: ListFooterActions = {
-    clear: true,
-    apply: true,
-  };
-
-  onSelect(listChange: ListChange): void {
-    this.value = listChange.getSelectedIds();
-    this.emitChange(FormEvents.selectModified, listChange);
-  }
-
   onApply(): void {
-    this.setDisplayValue();
-    this.emitChange(FormEvents.selectChange);
+    if (this.listChange) {
+      this.emitChange(FormEvents.selectChange);
+      this.listChange = undefined;
+    }
     this.destroyPanel();
   }
 
   onCancel(): void {
-    this.value = this.modelSrvc.getSelectedIDs(this.options);
-    this.emitChange(FormEvents.selectCancelled);
+    if (this.listChange) {
+      this.value = this.modelSrvc.getSelectedIDs(this.options);
+      this.setDisplayValue();
+      this.emitChange(
+        FormEvents.selectCancelled,
+        this.listChangeSrvc.getListChange(this.options, this.value)
+      );
+      this.listChange = undefined;
+    }
     this.destroyPanel();
   }
 
-  protected setDisplayValue(): void {
-    this.displayValue = this.getDisplayValue(this.value) || null;
-    this.displayValueCount = this.value ? this.value.length : 0;
-    this.cd.detectChanges();
-  }
-
-  private getDisplayValue(selectedIDs: (string | number)[]): string {
+  protected getDisplayValue(): string {
     return (
-      selectedIDs &&
+      this.value &&
       this.options &&
       arrayFlatten(this.options.map(group => group.options))
-        .filter((option: SelectOption) => selectedIDs.includes(option.id))
+        .filter((option: SelectOption) => this.value.includes(option.id))
         .map((option: SelectOption) => option.value)
         .join(', ')
     );
   }
 
-  private emitChange(event: FormEvents, listChange: ListChange = null): void {
-    listChange =
-      listChange || this.listChangeSrvc.getListChange(this.options, this.value);
-
+  protected emitChange(
+    event: FormEvents,
+    listChange: ListChange = this.listChange
+  ): void {
     if (this[event].observers.length > 0) {
       this[event].emit(listChange);
     }
@@ -145,6 +141,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
       if (this.changed.observers.length > 0) {
         this.changed.emit(this.value);
       }
+
       if (this.doPropagate) {
         this.propagateChange(this.value);
         this.onTouched();

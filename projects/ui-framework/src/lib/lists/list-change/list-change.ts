@@ -1,5 +1,5 @@
-import { chain, assign, filter } from 'lodash';
 import { SelectGroupOption } from '../list.interface';
+import { arrayFlatten } from '../../services/utils/functional-utils';
 
 export class ListChange {
   public readonly selectGroupOptions: SelectGroupOption[];
@@ -10,7 +10,7 @@ export class ListChange {
     selectedIDsSrc: (string | number)[] = null
   ) {
     this.selectGroupOptions = selectedGroupOptionsSrc;
-    this.selectedIDs = selectedIDsSrc || this.getIds();
+    this.selectedIDs = selectedIDsSrc || this.getSelIds();
   }
 
   getSelectGroupOptions(): SelectGroupOption[] {
@@ -22,21 +22,24 @@ export class ListChange {
   }
 
   getSelectedGroupOptions(): SelectGroupOption[] {
-    return chain(this.selectGroupOptions)
-      .map((groupOptions: SelectGroupOption) =>
-        assign({}, groupOptions, {
-          options: filter(groupOptions.options, option => option.selected),
-        })
-      )
-      .filter(groupOption => groupOption.options.length)
-      .value();
+    return this.selectGroupOptions
+      .map((group: SelectGroupOption) => ({
+        ...group,
+        options: group.options.filter(option => option.selected),
+      }))
+      .filter(group => group.options.length);
   }
 
-  private getIds(): (number | string)[] {
-    return chain(this.selectGroupOptions)
-      .flatMap('options')
-      .filter(o => o.selected)
-      .flatMap('id')
-      .value();
+  getDisplayValue(): string {
+    return arrayFlatten(this.selectGroupOptions.map(group => group.options))
+      .filter(option => option.selected)
+      .map(option => option.value)
+      .join(', ');
+  }
+
+  private getSelIds(): (number | string)[] {
+    return arrayFlatten(this.selectGroupOptions.map(group => group.options))
+      .filter(option => option.selected)
+      .map(option => option.id);
   }
 }
