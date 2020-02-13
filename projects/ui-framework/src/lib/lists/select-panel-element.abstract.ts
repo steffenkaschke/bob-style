@@ -1,18 +1,4 @@
-import {
-  Input,
-  TemplateRef,
-  ViewChild,
-  ViewContainerRef,
-  ElementRef,
-  AfterViewInit,
-  NgZone,
-  ChangeDetectorRef,
-  OnDestroy,
-  EventEmitter,
-  Output,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { Input, TemplateRef, ViewChild, ViewContainerRef, ElementRef, AfterViewInit, NgZone, ChangeDetectorRef, OnDestroy, EventEmitter, Output, OnChanges, SimpleChanges, Directive } from '@angular/core';
 import {
   CdkOverlayOrigin,
   FlexibleConnectedPositionStrategy,
@@ -58,6 +44,7 @@ import { ScrollEvent } from '../services/utils/utils.interface';
 import { SelectType } from './list.enum';
 import { FormEvents } from '../form-elements/form-elements.enum';
 
+@Directive()
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements OnChanges, AfterViewInit, OnDestroy {
   protected constructor(
@@ -77,7 +64,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @ViewChild(CdkOverlayOrigin, { static: true })
   overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
-  @ViewChild('prefix', { static: false }) prefix: ElementRef;
+  @ViewChild('prefix') prefix: ElementRef;
 
   @Input() value: (number | string)[];
   @Input() options: SelectGroupOption[] = [];

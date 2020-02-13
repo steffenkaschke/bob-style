@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, EventEmitter, Input, NgZone, Output} from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, EventEmitter, Input, NgZone, Output, Directive } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import {Chart, ExportingMimeTypeValue, Options} from 'highcharts';
 import {ChartTypesEnum} from './chart.enum';
@@ -23,6 +23,7 @@ Boost(Highcharts);
 noData(Highcharts);
 More(Highcharts);
 
+@Directive()
 export abstract class ChartCore implements AfterViewInit  {
   @Input() abstract type: ChartTypesEnum;
   highChartRef: Chart;

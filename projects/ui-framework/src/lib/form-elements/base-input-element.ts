@@ -1,12 +1,4 @@
-import {
-  EventEmitter,
-  Input,
-  Output,
-  NgZone,
-  ChangeDetectorRef,
-  SimpleChanges,
-  HostBinding,
-} from '@angular/core';
+import { EventEmitter, Input, Output, NgZone, ChangeDetectorRef, SimpleChanges, HostBinding, Directive } from '@angular/core';
 import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
 import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
@@ -17,6 +9,7 @@ import { valueAsNumber, stringyOrFail } from '../services/utils/transformers';
 import { FormElementKeyboardCntrlService } from './services/keyboard-cntrl.service';
 import { DOMInputEvent } from '../types';
 
+@Directive()
 export abstract class BaseInputElement extends BaseFormElement {
   protected constructor(
     protected cd: ChangeDetectorRef,

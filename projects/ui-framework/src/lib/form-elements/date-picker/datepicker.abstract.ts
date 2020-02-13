@@ -1,19 +1,4 @@
-import {
-  ViewChild,
-  ChangeDetectorRef,
-  NgZone,
-  Input,
-  OnInit,
-  OnDestroy,
-  SimpleChanges,
-  ViewChildren,
-  QueryList,
-  ElementRef,
-  Output,
-  EventEmitter,
-  HostBinding,
-  AfterViewInit,
-} from '@angular/core';
+import { ViewChild, ChangeDetectorRef, NgZone, Input, OnInit, OnDestroy, SimpleChanges, ViewChildren, QueryList, ElementRef, Output, EventEmitter, HostBinding, AfterViewInit, Directive } from '@angular/core';
 import { BaseFormElement } from '../base-form-element';
 import { MobileService, MediaEvent } from '../../services/utils/mobile.service';
 import { Subscription, fromEvent, interval } from 'rxjs';
@@ -55,6 +40,7 @@ export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
   return strategy;
 }
 
+@Directive()
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, AfterViewInit, OnDestroy {
   constructor(

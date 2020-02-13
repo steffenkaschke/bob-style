@@ -1,15 +1,4 @@
-import {
-  SimpleChanges,
-  Input,
-  HostBinding,
-  Output,
-  EventEmitter,
-  ChangeDetectorRef,
-  ViewChild,
-  OnChanges,
-  OnInit,
-  ElementRef,
-} from '@angular/core';
+import { SimpleChanges, Input, HostBinding, Output, EventEmitter, ChangeDetectorRef, ViewChild, OnChanges, OnInit, ElementRef, Directive } from '@angular/core';
 import { merge, cloneDeep } from 'lodash';
 
 import {
@@ -61,6 +50,7 @@ import { TributeInstance, TributeItem } from './tribute.interface';
 import { initDirectionControl } from './rte.direction';
 import { initMentionsControl } from './rte.mentions';
 
+@Directive()
 export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges, OnInit {
   constructor(
@@ -91,7 +81,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   @ViewChild('editor', { read: FroalaEditorDirective, static: true })
   protected editorDirective: FroalaEditorDirective;
-  @ViewChild('placeholderPanel', { static: false })
+  @ViewChild('placeholderPanel')
   protected placeholderPanel: SingleSelectPanelComponent;
   public input: ElementRef<HTMLElement>;
 
