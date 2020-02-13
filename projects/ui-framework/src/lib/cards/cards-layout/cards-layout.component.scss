@@ -11,6 +11,7 @@
   display: grid;
   grid-gap: var(--card-grid-gap);
   grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
+  position: relative;
 }
 
 [data-align-center='false'][data-swiper-mode='false']::ng-deep {
