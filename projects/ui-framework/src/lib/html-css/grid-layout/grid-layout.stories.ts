@@ -17,14 +17,14 @@ const story2 = storiesOf(ComponentGroupType.HtmlCss, module).addDecorator(
 
 const template = `
 <b-grid-layout-example
-[containerClass]="containerClass"
+[containerClass]="contGapClass"
 [itemsClasses]="[
-  element1class + (element1newRow ? ' row-start' : '') + (element1pushRight ? ' push-right' : ''),
-  element2class + (element2newRow ? ' row-start' : '') + (element2pushRight ? ' push-right' : ''),
-  element3class + (element3newRow ? ' row-start' : '') + (element3pushRight ? ' push-right' : ''),
-  element4class + (element4newRow ? ' row-start' : '') + (element4pushRight ? ' push-right' : ''),
-  element5class + (element5newRow ? ' row-start' : '') + (element5pushRight ? ' push-right' : ''),
-  element6class + (element6newRow ? ' row-start' : '') + (element6pushRight ? ' push-right' : '')
+  element1contGap + (element1newRow ? ' row-start' : '') + (element1pushRight ? ' push-right' : ''),
+  element2contGap + (element2newRow ? ' row-start' : '') + (element2pushRight ? ' push-right' : ''),
+  element3contGap + (element3newRow ? ' row-start' : '') + (element3pushRight ? ' push-right' : ''),
+  element4contGap + (element4newRow ? ' row-start' : '') + (element4pushRight ? ' push-right' : ''),
+  element5contGap + (element5newRow ? ' row-start' : '') + (element5pushRight ? ' push-right' : ''),
+  element6contGap + (element6newRow ? ' row-start' : '') + (element6pushRight ? ' push-right' : '')
 ]"
 
 ></b-grid-layout-example>
@@ -129,7 +129,7 @@ const colClasses = [
 
 const colClassDef = GridItemClass.third;
 
-const containerClasses = [
+const containerGapClasses = [
   '',
   ...Object.values(GridContainerClass).filter(
     i => i !== GridContainerClass.container
@@ -140,9 +140,9 @@ const toAdd = () => {
   return {
     template: storyTemplate,
     props: {
-      containerClass: select('Container class', containerClasses, 'row-gap'),
+      contGapClass: select('Container gap', containerGapClasses, 'row-gap'),
 
-      element1class: select(
+      element1contGap: select(
         'Elem 1 class',
         colClasses,
         GridItemClass.twoThirds
@@ -150,15 +150,19 @@ const toAdd = () => {
       element1newRow: boolean('Elem 1 row-start', false),
       element1pushRight: boolean('Elem 1 push-right', false),
 
-      element2class: select('Elem 2 class', colClasses, GridItemClass.third),
+      element2contGap: select('Elem 2 class', colClasses, GridItemClass.third),
       element2newRow: boolean('Elem 2 row-start', false),
       element2pushRight: boolean('Elem 2 push-right', false),
 
-      element3class: select('Elem 3 class', colClasses, GridItemClass.quarter),
+      element3contGap: select(
+        'Elem 3 class',
+        colClasses,
+        GridItemClass.quarter
+      ),
       element3newRow: boolean('Elem 3 row-start', false),
       element3pushRight: boolean('Elem 3 push-right', false),
 
-      element4class: select(
+      element4contGap: select(
         'Elem 4 class',
         colClasses,
         GridItemClass.twoThirds
@@ -166,11 +170,11 @@ const toAdd = () => {
       element4newRow: boolean('Elem 4 row-start', false),
       element4pushRight: boolean('Elem 4 push-right', true),
 
-      element5class: select('Elem 5 class', colClasses, GridItemClass.half),
+      element5contGap: select('Elem 5 class', colClasses, GridItemClass.half),
       element5newRow: boolean('Elem 5 row-start', false),
       element5pushRight: boolean('Elem 5 push-right', false),
 
-      element6class: select('Elem 6 class', colClasses, GridItemClass.half),
+      element6contGap: select('Elem 6 class', colClasses, GridItemClass.half),
       element6newRow: boolean('Elem 6 row-start', false),
       element6pushRight: boolean('Elem 6 push-right', false),
     },
