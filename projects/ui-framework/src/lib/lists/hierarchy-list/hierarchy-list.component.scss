@@ -29,6 +29,7 @@ $bhl-icon-margin: 10px;
   padding: 0 $bhl-item-padding;
   position: relative;
   background-color: white;
+  border-bottom: 1px solid $border-color-light;
 
   &:before {
     @include size($b-checkbox-size);
