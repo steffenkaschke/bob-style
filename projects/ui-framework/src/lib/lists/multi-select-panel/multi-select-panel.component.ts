@@ -70,9 +70,11 @@ export class MultiSelectPanelComponent extends BaseSelectPanelElement {
   }
 
   onApply(): void {
-    this.options = this.listChange.getSelectGroupOptions();
-    this.selectChange.emit(this.listChange);
-    this.listChange = undefined;
+    if (this.listChange) {
+      this.options = this.listChange.getSelectGroupOptions();
+      this.selectChange.emit(this.listChange);
+      this.listChange = undefined;
+    }
     this.destroyPanel();
   }
 }
