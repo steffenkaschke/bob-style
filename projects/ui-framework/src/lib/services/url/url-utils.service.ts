@@ -6,12 +6,14 @@ import {
   naiveLinkTest,
   imageLinkTest,
   base64imageTest,
-  filestackTest
+  filestackTest,
 } from './url.const';
 import { VideoData } from './url.interface';
 import { URLtype } from './url.enum';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class URLutils {
   constructor(private sanitizer: DomSanitizer) {}
 
@@ -72,7 +74,7 @@ export class URLutils {
     }
 
     throw new Error(
-      `URL (${url}) is not allowed. Allowed URLs are [${stringify(
+      `[URLutils Service]: URL (${url}) is not allowed. Allowed URLs are [${stringify(
         Object.keys(allowedDomainsTest)
       )}]`
     );
@@ -104,7 +106,7 @@ export class URLutils {
           'https://www.youtube.com/embed/' +
           id +
           '?autoplay=1&rel=0&color=white&iv_load_policy=3&modestbranding=1',
-        thumb: 'https://img.youtube.com/vi/' + id + '/maxresdefault.jpg'
+        thumb: 'https://img.youtube.com/vi/' + id + '/maxresdefault.jpg',
       };
     }
 
@@ -117,10 +119,40 @@ export class URLutils {
           'https://player.vimeo.com/video/' +
           id +
           '?autoplay=1&title=0&byline=0&portrait=0',
-        thumb: 'https://i.vimeocdn.com/video/' + id + '_1280x720.jpg'
+        thumb: 'https://i.vimeocdn.com/video/' + id + '_1280x720.jpg',
       };
     }
 
     return undefined;
+  }
+
+  isValidImageURL(url: string): boolean {
+    if (base64imageTest.test(url)) {
+      return true;
+    }
+
+    const urlData = this.getData(url);
+    if (!urlData) {
+      return false;
+    }
+
+    return (
+      filestackTest.test(urlData.href) || imageLinkTest.test(urlData.pathname)
+    );
+  }
+
+  isValidVideoURL(url: string): boolean {
+    const urlData = this.getData(url);
+    if (!urlData) {
+      return false;
+    }
+
+    for (const key of Object.keys(allowedDomainsTest)) {
+      if (allowedDomainsTest[key].test(urlData.hostname)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
