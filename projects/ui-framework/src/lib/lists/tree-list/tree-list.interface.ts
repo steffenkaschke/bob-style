@@ -14,12 +14,12 @@ export interface ViewFilter {
   hide?: ViewFilterOptions;
 }
 
-export interface HierarchyListValue {
+export interface TreeListValue {
   selectedIDs: itemID[];
   selectedValues: string[];
 }
 
-export interface HierarchyListItem {
+export interface TreeListItem {
   id: itemID;
   name: string;
   value?: string;
@@ -43,13 +43,13 @@ export interface HierarchyListItem {
   [key: string]: any;
 }
 
-export type HierarchyListItemMap = Map<itemID, HierarchyListItem>;
+export type TreeListItemMap = Map<itemID, TreeListItem>;
 
-// export type HierarchyList = HierarchyListOption[];
+// export type TreeList = TreeListOption[];
 
-export interface HierarchyListOption {
+export interface TreeListOption {
   id: itemID;
   name: string;
-  children?: HierarchyListOption[];
+  children?: TreeListOption[];
   [key: string]: any;
 }

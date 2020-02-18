@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
-  HierarchyListItemMap,
-  HierarchyListOption,
-  HierarchyListItem,
+  TreeListItemMap,
+  TreeListOption,
+  TreeListItem,
   itemID,
   ViewFilter,
-} from './hierarchy-list.interface';
+} from '../tree-list.interface';
 import {
   isNotEmptyArray,
   isNullOrUndefined,
@@ -14,21 +14,21 @@ import {
   arrayIntersection,
   cloneDeepSimpleObject,
   objectRemoveKey,
-} from '../../services/utils/functional-utils';
-import { GenericObject } from '../../types';
+} from '../../../services/utils/functional-utils';
+import { GenericObject } from '../../../types';
 
 @Injectable()
-export class HierarchyListService {
+export class TreeListService {
   private counter = 0;
   private maxItems = 5000;
 
   public getListViewModel(
-    list: HierarchyListOption[],
-    map: HierarchyListItemMap,
+    list: TreeListOption[],
+    map: TreeListItemMap,
     viewFilter: ViewFilter = {},
     expand = false
   ): itemID[] {
-    const addIDs = (items: HierarchyListOption[]): itemID[] => {
+    const addIDs = (items: TreeListOption[]): itemID[] => {
       let model = [];
 
       for (const item of items) {
@@ -37,16 +37,16 @@ export class HierarchyListService {
         if (this.itemFilter(itemData, viewFilter)) {
           model.push(itemData.id);
 
-          console.log(
-            'id',
-            itemData.id,
-            'item',
-            item,
-            'item from map',
-            itemData
-          );
+          // console.log(
+          //   'id',
+          //   itemData.id,
+          //   'item',
+          //   item,
+          //   'item from map',
+          //   itemData
+          // );
 
-          if (item.children && (itemData.collapsed || expand)) {
+          if (item.children && (!itemData.collapsed || expand)) {
             const childrenModel = addIDs(item.children);
 
             if (childrenModel.length) {
@@ -65,18 +65,18 @@ export class HierarchyListService {
   }
 
   public getListItemsMap(
-    list: HierarchyListOption[],
-    map: HierarchyListItemMap = new Map(),
+    list: TreeListOption[],
+    map: TreeListItemMap = new Map(),
     separator = ' / ',
     collapsed = false
-  ): HierarchyListItemMap {
+  ): TreeListItemMap {
     this.counter = 0;
 
     if (!list) {
       return map;
     }
 
-    const rootItem: HierarchyListItem = {
+    const rootItem: TreeListItem = {
       id: '#root',
       name: '#root',
 
@@ -132,24 +132,24 @@ export class HierarchyListService {
   }
 
   private convertItem(
-    item: HierarchyListOption,
-    map: HierarchyListItemMap,
+    item: TreeListOption,
+    map: TreeListItemMap,
     parentIDs: itemID[] = null,
     collapsed = false,
     set: GenericObject = {}
-  ): HierarchyListItem {
+  ): TreeListItem {
     // let selectedCount = 0;
 
     if (this.counter > this.maxItems) {
       console.error(
-        `[HierarchyListService]: List too complex! List with more than ${this.maxItems} items are not supported. Truncating to first ${this.maxItems} items.`
+        `[TreeListService]: List too complex! List with more than ${this.maxItems} items are not supported. Truncating to first ${this.maxItems} items.`
       );
       return;
     }
 
     // console.log('item.id', item.id);
 
-    const converted: HierarchyListItem = {
+    const converted: TreeListItem = {
       ...objectRemoveKey(item, 'children'),
       id: this.getItemId(item), // add alt id from name/value/parentIDs!
       name: item.name,
@@ -201,10 +201,7 @@ export class HierarchyListService {
     return converted;
   }
 
-  private itemFilter(
-    item: HierarchyListItem,
-    viewFilter: ViewFilter = {}
-  ): boolean {
+  private itemFilter(item: TreeListItem, viewFilter: ViewFilter = {}): boolean {
     let result = true;
 
     if (viewFilter.hide) {
@@ -262,17 +259,17 @@ export class HierarchyListService {
   }
 
   private updateMap(
-    map: HierarchyListItemMap,
+    map: TreeListItemMap,
     key: itemID,
-    value: HierarchyListItem
-  ): HierarchyListItemMap {
+    value: TreeListItem
+  ): TreeListItemMap {
     return map.set(key, Object.assign(map.get(key) || {}, value));
   }
 
-  private getItemId(item: HierarchyListOption): itemID {
+  private getItemId(item: TreeListOption): itemID {
     if (isNullOrUndefined(item.id)) {
       console.error(
-        `[HierarchyListService]: Item "${item.name}" does not have a unique ID! Every item list should have one. Item name will be used in place of ID, but proper behaviour is not guaranteed.`
+        `[TreeListService]: Item "${item.name}" does not have a unique ID! Every item list should have one. Item name will be used in place of ID, but proper behaviour is not guaranteed.`
       );
     }
     return (!isNullOrUndefined(item.id) && item.id) || item.name;

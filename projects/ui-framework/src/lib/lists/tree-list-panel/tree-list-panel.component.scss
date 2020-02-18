@@ -1,0 +1,11 @@
+:host {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+::ng-deep {
+  .cdk-overlay-pane.b-select-panel.b-tree-list-panel {
+    min-width: 500px;
+    max-width: 90vw;
+  }
+}
