@@ -39,9 +39,6 @@ $bhl-max-depth: 5;
   max-height: calc(var(--list-max-items) * #{$bhl-item-height} - 1px);
   overflow-y: auto;
   will-change: scroll-position, transform;
-  // -webkit-transform: translateZ(0);
-  // -webkit-backface-visibility: hidden;
-  // -webkit-perspective: 1000;
 }
 
 // Item
@@ -53,14 +50,6 @@ $bhl-max-depth: 5;
   padding: 0 $bhl-item-padding;
   position: relative;
   background-color: white;
-
-  box-shadow: 0 1px 0 0 $border-color-light, 0 -1px 0 0 $border-color-light;
-  &:first-child {
-    box-shadow: 0 1px 0 0 $border-color-light;
-  }
-  &:last-child {
-    box-shadow: 0 -1px 0 0 $border-color-light;
-  }
 }
 
 .bhl-item-name {
@@ -78,7 +67,27 @@ $bhl-max-depth: 5;
   }
 }
 
+.bhl-item-option {
+  @for $i from 1 through $bhl-max-depth {
+    &[data-level='#{$i}'] + .bhl-item-option:not([data-level='#{$i}']) {
+      box-shadow: inset 0 1px 0 0 $border-color-light;
+    }
+  }
+}
+
 // Group
+
+.bhl-item-group {
+  box-shadow: inset 0 1px 0 0 $border-color-light, 0 1px 0 0 $border-color-light;
+
+  & + .bhl-item-option {
+    box-shadow: inset 0 1px 0 0 $border-color-light;
+  }
+
+  &:first-child {
+    box-shadow: none;
+  }
+}
 
 :host ::ng-deep {
   .bhl-item-group.expanded {
