@@ -36,6 +36,7 @@ const componentTemplate = `
       [readonly]="readonly"
       [hintMessage]="hintMessage"
       [errorMessage]="errorMessage">
+
 </b-tree-select>
 `;
 

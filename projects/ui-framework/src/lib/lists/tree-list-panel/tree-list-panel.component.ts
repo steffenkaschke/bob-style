@@ -112,7 +112,7 @@ export class TreeListPanelComponent implements OnChanges, OnDestroy {
     this.destroyPanel();
   }
 
-  openPanel(): void {
+  public openPanel(): void {
     if (!this.overlayRef && !this.disabled && !this.panelOpen) {
       this.panelOpen = true;
       this.panelConfig = this.getConfig();
@@ -129,13 +129,6 @@ export class TreeListPanelComponent implements OnChanges, OnDestroy {
         height: 360,
       });
 
-      const searchInput = this.overlayRef.overlayElement.querySelector(
-        'b-search .bfe-input'
-      ) as HTMLElement;
-      if (searchInput) {
-        searchInput.focus();
-      }
-
       if (this.opened.observers.length > 0) {
         this.opened.emit(this.overlayRef);
       }
@@ -144,7 +137,6 @@ export class TreeListPanelComponent implements OnChanges, OnDestroy {
         (this.panelConfig
           .positionStrategy as FlexibleConnectedPositionStrategy).positionChanges
           .pipe(
-            outsideZone(this.zone),
             throttleTime(200, undefined, {
               leading: true,
               trailing: true,
@@ -155,21 +147,6 @@ export class TreeListPanelComponent implements OnChanges, OnDestroy {
             this.positionClassList = this.panelPositionService.getPositionClassList(
               change
             );
-
-            if (!this.cd['destroyed']) {
-              this.cd.detectChanges();
-            }
-
-            if (this.overlayRef) {
-              const elem = this.overlayRef.overlayElement.children[0];
-              elem.classList.remove('panel-above', 'panel-below');
-
-              if (this.positionClassList['panel-above']) {
-                elem.classList.add('panel-above');
-              } else {
-                elem.classList.add('panel-below');
-              }
-            }
           })
       );
 
@@ -203,19 +180,19 @@ export class TreeListPanelComponent implements OnChanges, OnDestroy {
     }
   }
 
-  closePanel(): void {
+  public closePanel(): void {
     this.destroyPanel();
   }
 
-  onApply(): void {
+  public onApply(): void {
     this.destroyPanel();
   }
 
-  onCancel(): void {
+  public onCancel(): void {
     this.destroyPanel();
   }
 
-  onSelect(): void {}
+  public onSelect(): void {}
 
   protected destroyPanel(): void {
     this.panelOpen = false;

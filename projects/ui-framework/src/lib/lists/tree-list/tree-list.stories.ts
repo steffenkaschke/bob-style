@@ -38,7 +38,7 @@ const template = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Tree List'">
-  <div style="max-width: 350px;">
+  <div style="max-width: 500px;">
     ${template}
   </div>
 </b-story-book-layout>

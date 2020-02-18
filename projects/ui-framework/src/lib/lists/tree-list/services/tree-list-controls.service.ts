@@ -12,9 +12,9 @@ export class TreeListControlsService {
     config: {
       itemsMap: TreeListItemMap;
       listViewModel: itemID[];
-      toggleItemCollapsed: (item: TreeListItem, index: number) => void;
+      toggleItemCollapsed: (item: TreeListItem, element: HTMLElement) => void;
       toggleItemSelect: (item: TreeListItem, index: number) => void;
-      itemClick: (item: TreeListItem, index: number) => void;
+      itemClick: (item: TreeListItem, element: HTMLElement) => void;
     }
   ): void {
     const {
@@ -26,7 +26,7 @@ export class TreeListControlsService {
     } = config;
 
     const target = event.target as HTMLElement;
-    const itemElement = target.closest('.bhl-item');
+    const itemElement = target.closest('.bhl-item') as HTMLElement;
     const index = parseInt(itemElement.getAttribute('data-index'), 10);
     const item: TreeListItem = itemsMap.get(listViewModel[index]);
 
@@ -37,12 +37,12 @@ export class TreeListControlsService {
 
     if (target.matches('.bhl-item-chevron')) {
       event.stopPropagation();
-      return toggleItemCollapsed(item, index);
+      return toggleItemCollapsed(item, itemElement);
     }
 
     console.log(itemElement);
 
-    itemClick(item, index);
+    itemClick(item, itemElement);
   }
 
   public onListKeyDown(
@@ -50,7 +50,7 @@ export class TreeListControlsService {
     config: {
       itemsMap: TreeListItemMap;
       listViewModel: itemID[];
-      toggleItemCollapsed: (item: TreeListItem, index: number) => void;
+      toggleItemCollapsed: (item: TreeListItem, element: HTMLElement) => void;
       toggleItemSelect: (item: TreeListItem, index: number) => void;
     }
   ): void {
@@ -82,7 +82,7 @@ export class TreeListControlsService {
     event.stopPropagation();
 
     const target = event.target as HTMLElement;
-    const itemElement = target.closest('.bhl-item');
+    const itemElement = target.closest('.bhl-item') as HTMLElement;
     const index = parseInt(itemElement.getAttribute('data-index'), 10);
     const item: TreeListItem = itemsMap.get(listViewModel[index]);
 
@@ -117,7 +117,7 @@ export class TreeListControlsService {
       item.childrenCount &&
       item.collapsed
     ) {
-      return toggleItemCollapsed(item, index);
+      return toggleItemCollapsed(item, itemElement);
     }
 
     if (
@@ -125,7 +125,7 @@ export class TreeListControlsService {
       item.childrenCount &&
       !item.collapsed
     ) {
-      return toggleItemCollapsed(item, index);
+      return toggleItemCollapsed(item, itemElement);
     }
 
     if (isKey(event.key, Keys.space) || isKey(event.key, Keys.enter)) {

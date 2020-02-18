@@ -5,8 +5,8 @@
                       [fieldId]="id">
 </b-form-element-label>
 
-<b-tree-list-panel (click)="openPanel()"
-                   [type]="type"
+<!-- (click)="openPanel()" -->
+<b-tree-list-panel [type]="type"
                    [list]="list"
                    [maxHeightItems]="maxHeightItems"
                    [valueSeparatorChar]="valueSeparatorChar"
@@ -14,7 +14,9 @@
                    [showSingleGroupHeader]="showSingleGroupHeader"
                    [readonly]="readonly"
                    [disabled]="disabled"
-                   [hasArrow]="false">
+                   [hasArrow]="false"
+                   (opened)="onPanelOpen($event)"
+                   (closed)="onPanelClose()">
 
   <div class="bfe-wrap has-suffix"
        [ngClass]="{
@@ -23,6 +25,7 @@
                     'panel-open': panelOpen
                   }">
 
+    <!-- (focus)="openPanel()" -->
     <span #input
           class="bfe-input trigger-input"
           tabindex="0"
@@ -30,8 +33,7 @@
           [expectChanges]="true"
           [trustCssVars]="true"
           [type]="tooltipType"
-          [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ?label : placeholder) : null"
-          (focus)="openPanel()">
+          [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ?label : placeholder) : null">
       {{displayValue}}
     </span>
 
@@ -46,6 +48,8 @@
 
   </div>
 
+  <ng-content footerAction
+              select="[footerAction],[footerActionRight]"></ng-content>
 </b-tree-list-panel>
 
 <p b-input-message

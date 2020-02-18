@@ -1,4 +1,10 @@
-import { Component, NgZone, ChangeDetectorRef, Input } from '@angular/core';
+import {
+  Component,
+  NgZone,
+  ChangeDetectorRef,
+  Input,
+  ViewChild,
+} from '@angular/core';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import {
   TreeListOption,
@@ -8,6 +14,8 @@ import {
 import { SelectType } from '../list.enum';
 import { ListFooterActions } from '../list.interface';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { OverlayRef } from '@angular/cdk/overlay';
+import { TreeListPanelComponent } from '../tree-list-panel/tree-list-panel.component';
 
 @Component({
   selector: 'b-tree-select',
@@ -21,6 +29,9 @@ export class TreeSelectComponent extends BaseFormElement {
   constructor(zone: NgZone, cd: ChangeDetectorRef) {
     super(cd);
   }
+
+  @ViewChild(TreeListPanelComponent, { static: true })
+  listPanel: TreeListPanelComponent;
 
   @Input() list: TreeListOption[];
   @Input() value: itemID[];
@@ -41,6 +52,7 @@ export class TreeSelectComponent extends BaseFormElement {
   };
   @Input() tooltipType: TruncateTooltipType = TruncateTooltipType.auto;
 
+  public overlayRef: OverlayRef;
   public panelOpen = false;
   public displayValue: string;
   public displayValueCount: number;
@@ -48,9 +60,27 @@ export class TreeSelectComponent extends BaseFormElement {
 
   public writeValue(value: any): void {}
 
-  public openPanel(): void {}
+  public openPanel(): void {
+    if (this.listPanel) {
+      this.listPanel.openPanel();
+    }
+  }
 
-  public closePanel(): void {}
+  public closePanel(): void {
+    if (this.listPanel) {
+      this.listPanel.closePanel();
+    }
+  }
+
+  public onPanelOpen(overlayRef: OverlayRef): void {
+    this.overlayRef = overlayRef;
+    this.panelOpen = true;
+  }
+
+  public onPanelClose(): void {
+    this.overlayRef = null;
+    this.panelOpen = false;
+  }
 
   public onApply(): void {}
 
