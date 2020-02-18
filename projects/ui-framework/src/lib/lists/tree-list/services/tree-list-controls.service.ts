@@ -72,7 +72,7 @@ export class TreeListControlsService {
         Keys.space,
         Keys.enter,
         Keys.tab,
-        Keys.escape,
+        // Keys.escape,
       ].includes(event.key as Keys)
     ) {
       return;

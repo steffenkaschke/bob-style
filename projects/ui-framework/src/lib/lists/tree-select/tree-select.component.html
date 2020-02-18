@@ -1,0 +1,58 @@
+<b-form-element-label *ngIf="label && !hideLabelOnFocus"
+                      class="bfe-label"
+                      [label]="label"
+                      [description]="description"
+                      [fieldId]="id">
+</b-form-element-label>
+
+<b-tree-list-panel (click)="openPanel()"
+                   [type]="type"
+                   [list]="list"
+                   [maxHeightItems]="maxHeightItems"
+                   [valueSeparatorChar]="valueSeparatorChar"
+                   [startCollapsed]="startCollapsed"
+                   [showSingleGroupHeader]="showSingleGroupHeader"
+                   [readonly]="readonly"
+                   [disabled]="disabled"
+                   [hasArrow]="false">
+
+  <div class="bfe-wrap has-suffix"
+       [ngClass]="{
+                      'has-prefix': false,
+                      focused: panelOpen,
+                      'panel-open': panelOpen,
+                      'panel-above': positionClassList['panel-above'],
+                      'panel-below': positionClassList['panel-below']
+                    }">
+
+    <span #input
+          class="bfe-input trigger-input"
+          tabindex="0"
+          [b-truncate-tooltip]="1"
+          [expectChanges]="true"
+          [trustCssVars]="true"
+          [type]="tooltipType"
+          [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ?label : placeholder) : null"
+          (focus)="openPanel()">
+      {{displayValue}}
+    </span>
+
+    <div class="bfe-suffix">
+      <span *ngIf="displayValueCount"
+            class="total-values">
+        ({{displayValueCount}})
+      </span>
+      <span class="select-chevron b-icon-medium"
+            [ngClass]="{'b-icon-chevron-down': !panelOpen, 'b-icon-chevron-up': panelOpen}"></span>
+    </div>
+
+  </div>
+
+</b-tree-list-panel>
+
+<p b-input-message
+   *ngIf="hintMessage || warnMessage || errorMessage"
+   [hintMessage]="hintMessage"
+   [warnMessage]="warnMessage"
+   [errorMessage]="errorMessage"
+   [disabled]="disabled"></p>

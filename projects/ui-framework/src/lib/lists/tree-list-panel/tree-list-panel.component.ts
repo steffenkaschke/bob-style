@@ -11,6 +11,7 @@ import {
   ChangeDetectionStrategy,
   SimpleChanges,
   OnChanges,
+  OnDestroy,
 } from '@angular/core';
 import {
   Overlay,
@@ -54,7 +55,7 @@ import {
   styleUrls: ['./tree-list-panel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TreeListPanelComponent implements OnChanges {
+export class TreeListPanelComponent implements OnChanges, OnDestroy {
   constructor(
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
@@ -88,17 +89,13 @@ export class TreeListPanelComponent implements OnChanges {
   };
   @Input() panelPosition: PanelDefaultPosVer | ConnectedPosition[];
   @Input() panelClass: string;
+  @Input() hasArrow = true;
 
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
+  private panelClassList: string[] = ['b-select-panel', 'b-tree-list-panel'];
   private subscribtions: Subscription[] = [];
-
-  public panelClassList: string[] = [
-    'b-select-panel',
-    'b-tree-list-panel',
-    'b-select-panel-with-arrow',
-  ];
   public positionClassList: OverlayPositionClasses = {};
   public overlayRef: OverlayRef;
   private panelConfig: OverlayConfig;
@@ -106,9 +103,13 @@ export class TreeListPanelComponent implements OnChanges {
   public panelOpen = false;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
+    if (hasChanges(changes, ['disabled'])) {
       this.destroyPanel();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroyPanel();
   }
 
   openPanel(): void {
@@ -240,7 +241,11 @@ export class TreeListPanelComponent implements OnChanges {
   }
 
   private getPanelClass(): string[] {
-    return [...this.panelClassList, this.panelClass].filter(Boolean);
+    return [
+      ...this.panelClassList,
+      this.hasArrow ? 'b-select-panel-with-arrow' : null,
+      this.panelClass,
+    ].filter(Boolean);
   }
 
   private getConfig(): OverlayConfig {
