@@ -109,6 +109,9 @@ export abstract class BaseListElement
     });
 
     if (hasChanges(changes, ['options'])) {
+      this.options = this.options.filter((group: SelectGroupOption) =>
+        isNotEmptyArray(group.options)
+      );
       this.allGroupsCollapsed =
         this.startWithGroupsCollapsed && isNotEmptyArray(this.options, 1);
     }
@@ -289,6 +292,10 @@ export abstract class BaseListElement
       });
 
       this.updateActionButtonsState();
+
+      if (!this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
     }
   }
 
