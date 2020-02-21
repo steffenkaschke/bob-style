@@ -24,6 +24,7 @@ import {
   ViewFilter,
   TreeListValue,
   TreeListOption,
+  TreeListComponentIO,
 } from './tree-list.interface';
 import { TreeListService } from './services/tree-list-model.service';
 import { SelectType } from '../list.enum';
@@ -45,7 +46,7 @@ import { SearchComponent } from '../../search/search/search.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeListComponent
-  implements OnChanges, OnInit, AfterViewInit, OnDestroy {
+  implements TreeListComponentIO, OnChanges, OnInit, AfterViewInit, OnDestroy {
   constructor(
     private srvc: TreeListService,
     private cntrlsSrvc: TreeListControlsService,

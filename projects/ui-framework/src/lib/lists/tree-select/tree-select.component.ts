@@ -10,6 +10,7 @@ import {
   TreeListOption,
   itemID,
   ViewFilter,
+  TreeListComponentIO,
 } from '../tree-list/tree-list.interface';
 import { SelectType } from '../list.enum';
 import { ListFooterActions } from '../list.interface';
@@ -25,7 +26,8 @@ import { TreeListPanelComponent } from '../tree-list-panel/tree-list-panel.compo
     './tree-select.component.scss',
   ],
 })
-export class TreeSelectComponent extends BaseFormElement {
+export class TreeSelectComponent extends BaseFormElement
+  implements TreeListComponentIO {
   constructor(zone: NgZone, cd: ChangeDetectorRef) {
     super(cd);
   }

@@ -47,6 +47,7 @@ import {
   TreeListOption,
   itemID,
   ViewFilter,
+  TreeListComponentIO,
 } from '../tree-list/tree-list.interface';
 
 @Component({
@@ -55,7 +56,8 @@ import {
   styleUrls: ['./tree-list-panel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TreeListPanelComponent implements OnChanges, OnDestroy {
+export class TreeListPanelComponent
+  implements TreeListComponentIO, OnChanges, OnDestroy {
   constructor(
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
