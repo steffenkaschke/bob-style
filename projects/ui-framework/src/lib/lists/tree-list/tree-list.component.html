@@ -1,14 +1,10 @@
-<!--
-  if global index < 3, show tooltip below!
- -->
-
-
 <ng-template #listItem
+             let-index="index"
              let-item="item"
-             let-index="index">
-
-  <!--  expanded: getChevronIcon(item, index) === 'b-icon-chevron-down', -->
-  <!--  collapsed: item.childrenCount && getChevronIcon(item, index) !== 'b-icon-chevron-down' -->
+             let-nextItem="nextItem"
+             let-groupSelected="groupSelected"
+             let-firstInGroup="firstInGroup"
+             let-lastInGroup="lastInGroup">
 
   <li class="bhl-item"
       #itemElements
@@ -17,21 +13,20 @@
       [ngClass]="{
         'bhl-item-option': !item.childrenCount,
         'bhl-item-group': item.childrenCount,
-        disabled: item.disabled,
-        selected: item.selected,
+        disabled: item.disabled || groupSelected,
+        selected: item.selected || groupSelected,
         indeterminate: item.indeterminate,
         expanded: !item.collapsed,
-        collapsed: item.collapsed
+        collapsed: item.collapsed,
+        'first-option': firstInGroup,
+        'last-option': lastInGroup
       }"
       [attr.tabIndex]="!readonly && !item.disabled ? 0 : null"
       [attr.data-level]="item.parentCount || 1">
 
-    <!-- <span [attr.data-tooltip]="item.tooltipText"></span> -->
-
     <span *ngIf="item.childrenIDs"
           class="bhl-item-chevron"></span>
 
-    <!-- [hidden]="searchValue" -->
     <span *ngIf="showCheckbox(item)"
           class="bhl-item-checkbox"
           role="checkbox"
@@ -66,7 +61,7 @@
     (keydown)="onListKeyDown($event)">
 
   <ng-container *ngFor="let itemID of listViewModel; let index = index; trackBy: trackBy">
-    <ng-container *ngTemplateOutlet="listItem; context: {item: itemsMap.get(itemID), index: index}"></ng-container>
+    <ng-container *ngTemplateOutlet="listItem; context: getItemViewContext(itemID,index)"></ng-container>
   </ng-container>
 
 </ul>
@@ -86,6 +81,7 @@
 
 
 <div class="dev">
+  <p>Total items: {{ listViewModel.length }}</p>
   <p>Total selected: {{ itemsMap.get('#root') && itemsMap.get('#root').selectedCount }}</p>
   <button type="button"
           (click)="log()">Log data</button>

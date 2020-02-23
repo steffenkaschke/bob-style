@@ -25,14 +25,16 @@ import {
   TreeListValue,
   TreeListOption,
   TreeListComponentIO,
+  GetItemViewContext,
 } from './tree-list.interface';
-import { TreeListService } from './services/tree-list-model.service';
+import { TreeListModelService } from './services/tree-list-model.service';
 import { SelectType } from '../list.enum';
 import { ListFooterActions, ListFooterActionsState } from '../list.interface';
 import {
   objectHasTruthyValue,
   hasChanges,
   cloneDeepSimpleObject,
+  applyChanges,
 } from '../../services/utils/functional-utils';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { LIST_ACTIONS_STATE_DEF } from '../list-footer/list-footer.const';
@@ -48,7 +50,7 @@ import { SearchComponent } from '../../search/search/search.component';
 export class TreeListComponent
   implements TreeListComponentIO, OnChanges, OnInit, AfterViewInit, OnDestroy {
   constructor(
-    private srvc: TreeListService,
+    private modelSrvc: TreeListModelService,
     private cntrlsSrvc: TreeListControlsService,
     private DOM: DOMhelpers,
     private cd: ChangeDetectorRef,
@@ -101,20 +103,20 @@ export class TreeListComponent
   readonly selectType = SelectType;
 
   ngOnChanges(changes: SimpleChanges): void {
-    // applyChanges(this, changes, {
-    //   list: [],
-    // });
+    applyChanges(this, changes, {
+      list: [],
+    });
 
     // re-apply value after list/map ngOnChanges
 
     // console.log('=====ngOnChanges start=======');
 
-    if (changes.list) {
+    if (hasChanges(changes, ['list'], true)) {
       // console.log(this.list);
 
       console.log('changes.list');
 
-      this.srvc.getListItemsMap(
+      this.modelSrvc.getListItemsMap(
         this.list,
         this.itemsMap,
         this.valueSeparatorChar,
@@ -206,10 +208,12 @@ export class TreeListComponent
   }
 
   private updateListViewModel() {
-    this.listViewModel = this.srvc.getListViewModel(
+    this.listViewModel = this.modelSrvc.getListViewModel(
       this.list,
       this.itemsMap,
-      this.searchValue ? this.srvc.getSearchViewFilter(this.searchValue) : {},
+      this.searchValue
+        ? this.modelSrvc.getSearchViewFilter(this.searchValue)
+        : {},
       !!this.searchValue
     );
     this.cd.detectChanges();
@@ -313,10 +317,35 @@ export class TreeListComponent
     //       isEqual(this.selectedIDs.sort(), this.optionsDefaultIDs.sort());
   }
 
+  public isGroupSelected(item: TreeListItem): boolean {
+    return item.parentIDs.some(groupID => this.itemsMap.get(groupID).selected);
+  }
+
   public showCheckbox(item: TreeListItem): boolean {
     return (
       this.type === SelectType.multi && !this.readonly && !this.searchValue
     );
+  }
+
+  public getItemViewContext(id: itemID, index: number): GetItemViewContext {
+    const item = this.itemsMap.get(id);
+    const prevItem = this.itemsMap.get(this.listViewModel[index - 1]);
+    const nextItem = this.itemsMap.get(this.listViewModel[index + 1]);
+    return {
+      index,
+      item,
+      prevItem,
+      nextItem,
+      firstInGroup: Boolean(
+        !item.childrenCount &&
+          (!prevItem || (prevItem && prevItem.childrenCount))
+      ),
+      lastInGroup: Boolean(
+        !item.childrenCount &&
+          (!nextItem || (nextItem && nextItem.childrenCount))
+      ),
+      groupSelected: this.isGroupSelected(item),
+    };
   }
 
   public trackBy(index: number, id: itemID): itemID {
@@ -324,9 +353,9 @@ export class TreeListComponent
   }
 
   log() {
+    console.log('---------CMPNT---------\n', this);
     console.log('---------LIST---------\n', this.list);
     console.log('---------MAP---------\n', this.itemsMap);
-    // console.log('---------VIEWMODEL---------\n', this.listView$.getValue());
     console.log('---------VIEWMODEL---------\n', this.listViewModel);
   }
 }

@@ -18,7 +18,7 @@ import {
 import { GenericObject } from '../../../types';
 
 @Injectable()
-export class TreeListService {
+export class TreeListModelService {
   private counter = 0;
   private maxItems = 5000;
 
@@ -142,7 +142,7 @@ export class TreeListService {
 
     if (this.counter > this.maxItems) {
       console.error(
-        `[TreeListService]: List too complex! List with more than ${this.maxItems} items are not supported. Truncating to first ${this.maxItems} items.`
+        `[TreeListModelService]: List too complex! List with more than ${this.maxItems} items are not supported. Truncating to first ${this.maxItems} items.`
       );
       return;
     }
@@ -269,7 +269,7 @@ export class TreeListService {
   private getItemId(item: TreeListOption): itemID {
     if (isNullOrUndefined(item.id)) {
       console.error(
-        `[TreeListService]: Item "${item.name}" does not have a unique ID! Every item list should have one. Item name will be used in place of ID, but proper behaviour is not guaranteed.`
+        `[TreeListModelService]: Item "${item.name}" does not have a unique ID! Every item list should have one. Item name will be used in place of ID, but proper behaviour is not guaranteed.`
       );
     }
     return (!isNullOrUndefined(item.id) && item.id) || item.name;

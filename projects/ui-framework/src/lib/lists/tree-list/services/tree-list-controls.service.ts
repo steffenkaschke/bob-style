@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { Keys } from '../../../enums';
 import { isKey } from '../../../services/utils/functional-utils';
 import { TreeListItem, TreeListItemMap, itemID } from '../tree-list.interface';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 
 @Injectable()
 export class TreeListControlsService {
-  constructor() {}
+  constructor(private DOM: DOMhelpers) {}
 
   public onListClick(
     event: MouseEvent,
@@ -27,22 +28,32 @@ export class TreeListControlsService {
 
     const target = event.target as HTMLElement;
     const itemElement = target.closest('.bhl-item') as HTMLElement;
+    if (!itemElement) {
+      return;
+    }
+
     const index = parseInt(itemElement.getAttribute('data-index'), 10);
     const item: TreeListItem = itemsMap.get(listViewModel[index]);
 
-    if (target.matches('.bhl-item-checkbox')) {
-      event.stopPropagation();
-      return toggleItemSelect(item, index);
-    }
+    const isDisabled =
+      item.disabled || itemElement.classList.contains('disabled');
 
-    if (target.matches('.bhl-item-chevron')) {
+    if (
+      target.matches('.bhl-item-chevron') ||
+      (isDisabled && item.childrenCount)
+    ) {
       event.stopPropagation();
       return toggleItemCollapsed(item, itemElement);
     }
 
-    console.log(itemElement);
+    if (target.matches('.bhl-item-checkbox') && !isDisabled) {
+      event.stopPropagation();
+      return toggleItemSelect(item, index);
+    }
 
-    itemClick(item, itemElement);
+    if (!isDisabled) {
+      itemClick(item, itemElement);
+    }
   }
 
   public onListKeyDown(
@@ -54,8 +65,6 @@ export class TreeListControlsService {
       toggleItemSelect: (item: TreeListItem, index: number) => void;
     }
   ): void {
-    console.log(event);
-
     const {
       itemsMap,
       listViewModel,
@@ -72,7 +81,6 @@ export class TreeListControlsService {
         Keys.space,
         Keys.enter,
         Keys.tab,
-        // Keys.escape,
       ].includes(event.key as Keys)
     ) {
       return;
@@ -83,6 +91,10 @@ export class TreeListControlsService {
 
     const target = event.target as HTMLElement;
     const itemElement = target.closest('.bhl-item') as HTMLElement;
+    if (!itemElement) {
+      return;
+    }
+
     const index = parseInt(itemElement.getAttribute('data-index'), 10);
     const item: TreeListItem = itemsMap.get(listViewModel[index]);
 
@@ -92,7 +104,7 @@ export class TreeListControlsService {
       (isKey(event.key, Keys.arrowright) &&
         (!item.childrenCount || (item.childrenCount && !item.collapsed)))
     ) {
-      const nextItemElement = itemElement.nextElementSibling as HTMLElement;
+      const nextItemElement = this.DOM.getNextSibling(itemElement);
       if (nextItemElement) {
         nextItemElement.focus();
       }
@@ -105,31 +117,34 @@ export class TreeListControlsService {
       (isKey(event.key, Keys.arrowleft) &&
         (!item.childrenCount || item.collapsed))
     ) {
-      const prevItemElement = itemElement.previousElementSibling as HTMLElement;
+      const prevItemElement = this.DOM.getPrevSibling(itemElement);
       if (prevItemElement) {
         prevItemElement.focus();
       }
       return;
     }
 
+    const isDisabled =
+      item.disabled || itemElement.classList.contains('disabled');
+
     if (
-      isKey(event.key, Keys.arrowright) &&
-      item.childrenCount &&
-      item.collapsed
+      (isKey(event.key, Keys.arrowright) &&
+        item.childrenCount &&
+        item.collapsed) ||
+      (isKey(event.key, Keys.arrowleft) &&
+        item.childrenCount &&
+        !item.collapsed) ||
+      (isDisabled &&
+        (isKey(event.key, Keys.space) || isKey(event.key, Keys.enter)))
     ) {
       return toggleItemCollapsed(item, itemElement);
     }
 
     if (
-      isKey(event.key, Keys.arrowleft) &&
-      item.childrenCount &&
-      !item.collapsed
+      !isDisabled &&
+      (isKey(event.key, Keys.space) || isKey(event.key, Keys.enter))
     ) {
-      return toggleItemCollapsed(item, itemElement);
-    }
-
-    if (isKey(event.key, Keys.space) || isKey(event.key, Keys.enter)) {
-      return toggleItemSelect(item, index);
+      return !isDisabled && toggleItemSelect(item, index);
     }
   }
 }

@@ -33,6 +33,7 @@ export interface TreeListItem {
   selected?: boolean;
   indeterminate?: boolean;
   focused?: boolean;
+  disabled?: boolean;
 
   parentIDs?: itemID[] | null; // path
   childrenIDs?: itemID[] | null;
@@ -42,12 +43,22 @@ export interface TreeListItem {
   childrenCount?: number;
   selectedCount?: number;
 
-  tooltipText?: string | SafeHtml;
+  // tooltipText?: string | SafeHtml;
 
   [key: string]: any;
 }
 
 export type TreeListItemMap = Map<itemID, TreeListItem>;
+
+export interface GetItemViewContext {
+  index: number;
+  item: TreeListItem;
+  prevItem: TreeListItem;
+  nextItem: TreeListItem;
+  groupSelected: boolean;
+  firstInGroup: boolean;
+  lastInGroup: boolean;
+}
 
 // export type TreeList = TreeListOption[];
 

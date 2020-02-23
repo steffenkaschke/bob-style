@@ -74,7 +74,7 @@ story.add(
       // value
       // viewFilter
 
-      options: select('options', ['simple', 'random'], 'random', 'Options'),
+      options: select('options', ['simple', 'random'], 'simple', 'Options'),
       listRandom: object('listRandom', HListMock, 'Options'),
       listSimple: object('listSimple', HListMockSimple, 'Options'),
 
