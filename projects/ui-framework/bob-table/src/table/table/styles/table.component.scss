@@ -91,12 +91,6 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
       @include cell-border;
     }
 
-    .ag-header-cell:last-child {
-      .ag-header-cell-resize {
-        right: 0;
-      }
-    }
-
     .ag-header-icon {
       display: flex;
       margin-left: 2px;
