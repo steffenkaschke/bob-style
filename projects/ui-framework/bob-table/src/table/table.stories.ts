@@ -242,7 +242,7 @@ story.add(
       tableCols: treeColumnDefsMock,
       tableData: treeRowDataMock,
       props: {
-        isCollapsable: boolean('isCollapsable', false),
+        isCollapsable: boolean('isCollapsable', false, 'Props'),
         treeConfig: {
           colDef: {
             headerName: 'Hierarchy Tree',
