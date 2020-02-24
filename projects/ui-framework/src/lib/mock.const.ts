@@ -102,7 +102,7 @@ export const mockCitiesList = [
   'Brazilia',
   'Jeddah',
   'Phoenix',
-  'Ji\'nan',
+  "Ji'nan",
   'Montréal',
   'Shantou',
   'Nairobi',
@@ -1184,7 +1184,7 @@ export const mockText = (words = 100) => {
     .sort(() => 0.5 - Math.random())
     .slice(0, words)
     .join(' ')
-    .replace(/[\W\s]/g, ' ')
+    .replace(/[\W\s]+/g, ' ')
     .trim();
 
   text = text.charAt(0).toUpperCase() + text.toLocaleLowerCase().slice(1);

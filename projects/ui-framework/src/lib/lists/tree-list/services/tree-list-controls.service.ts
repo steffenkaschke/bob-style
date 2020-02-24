@@ -4,26 +4,38 @@ import { isKey } from '../../../services/utils/functional-utils';
 import { TreeListItem, TreeListItemMap, itemID } from '../tree-list.interface';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 
+interface TreeListClickConfig {
+  itemsMap: TreeListItemMap;
+  listViewModel: itemID[];
+  toggleItemCollapsed: (item: TreeListItem, element: HTMLElement) => void;
+  toggleItemSelect: (item: TreeListItem, index: number) => void;
+  itemClick: (item: TreeListItem, element: HTMLElement) => void;
+  readonly: boolean;
+  disabled: boolean;
+}
+
+interface TreeListKeydownConfig {
+  itemsMap: TreeListItemMap;
+  listViewModel: itemID[];
+  toggleItemCollapsed: (item: TreeListItem, element: HTMLElement) => void;
+  toggleItemSelect: (item: TreeListItem, index: number) => void;
+  readonly: boolean;
+  disabled: boolean;
+}
+
 @Injectable()
 export class TreeListControlsService {
   constructor(private DOM: DOMhelpers) {}
 
-  public onListClick(
-    event: MouseEvent,
-    config: {
-      itemsMap: TreeListItemMap;
-      listViewModel: itemID[];
-      toggleItemCollapsed: (item: TreeListItem, element: HTMLElement) => void;
-      toggleItemSelect: (item: TreeListItem, index: number) => void;
-      itemClick: (item: TreeListItem, element: HTMLElement) => void;
-    }
-  ): void {
+  public onListClick(event: MouseEvent, config: TreeListClickConfig): void {
     const {
       itemsMap,
       listViewModel,
       toggleItemCollapsed,
       toggleItemSelect,
       itemClick,
+      readonly,
+      disabled,
     } = config;
 
     const target = event.target as HTMLElement;
@@ -36,7 +48,10 @@ export class TreeListControlsService {
     const item: TreeListItem = itemsMap.get(listViewModel[index]);
 
     const isDisabled =
-      item.disabled || itemElement.classList.contains('disabled');
+      readonly ||
+      disabled ||
+      item.disabled ||
+      itemElement.classList.contains('disabled');
 
     if (
       target.matches('.bhl-item-chevron') ||
@@ -58,18 +73,15 @@ export class TreeListControlsService {
 
   public onListKeyDown(
     event: KeyboardEvent,
-    config: {
-      itemsMap: TreeListItemMap;
-      listViewModel: itemID[];
-      toggleItemCollapsed: (item: TreeListItem, element: HTMLElement) => void;
-      toggleItemSelect: (item: TreeListItem, index: number) => void;
-    }
+    config: TreeListKeydownConfig
   ): void {
     const {
       itemsMap,
       listViewModel,
       toggleItemCollapsed,
       toggleItemSelect,
+      readonly,
+      disabled,
     } = config;
 
     if (
@@ -125,7 +137,10 @@ export class TreeListControlsService {
     }
 
     const isDisabled =
-      item.disabled || itemElement.classList.contains('disabled');
+      readonly ||
+      disabled ||
+      item.disabled ||
+      itemElement.classList.contains('disabled');
 
     if (
       (isKey(event.key, Keys.arrowright) &&

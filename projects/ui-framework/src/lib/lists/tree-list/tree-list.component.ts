@@ -25,7 +25,8 @@ import {
   TreeListValue,
   TreeListOption,
   TreeListComponentIO,
-  GetItemViewContext,
+  TreeListItemViewContext,
+  TreeListKeyMap,
 } from './tree-list.interface';
 import { TreeListModelService } from './services/tree-list-model.service';
 import { SelectType } from '../list.enum';
@@ -40,6 +41,7 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { LIST_ACTIONS_STATE_DEF } from '../list-footer/list-footer.const';
 import { TreeListControlsService } from './services/tree-list-controls.service';
 import { SearchComponent } from '../../search/search/search.component';
+import { BTL_ROOT_ID, BTL_KEYMAP_DEF } from './tree-list.const';
 
 @Component({
   selector: 'b-tree-list',
@@ -69,9 +71,10 @@ export class TreeListComponent
   @Input() list: TreeListOption[];
   @Input() value: itemID[];
   @Input() viewFilter: ViewFilter;
+  @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
 
   @Input() type: SelectType = SelectType.multi;
-  @Input() valueSeparatorChar = '/';
+  @Input() valueSeparatorChar = ' / ';
   @Input() maxHeightItems = 8;
   @Input() showSingleGroupHeader = false;
   @Input() startCollapsed = true;
@@ -105,32 +108,32 @@ export class TreeListComponent
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes, {
       list: [],
+      keyMap: BTL_KEYMAP_DEF,
     });
 
     // re-apply value after list/map ngOnChanges
 
     // console.log('=====ngOnChanges start=======');
 
+    if (hasChanges(changes, ['keyMap'], true)) {
+      this.keyMap = { ...BTL_KEYMAP_DEF, ...this.keyMap };
+    }
+
     if (hasChanges(changes, ['list'], true)) {
       // console.log(this.list);
 
       console.log('changes.list');
 
-      this.modelSrvc.getListItemsMap(
-        this.list,
-        this.itemsMap,
-        this.valueSeparatorChar,
-        this.startCollapsed
-      );
+      this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
+        keyMap: this.keyMap,
+        separator: this.valueSeparatorChar,
+        collapsed: this.startCollapsed,
+      });
 
       this.showSearch = this.itemsMap.size > 10;
 
       this.updateListViewModel();
     }
-
-    // if (changes.startCollapsed) {
-    //   this.updateListViewModel(!this.startCollapsed, this.startCollapsed);
-    // }
 
     if (
       hasChanges(changes, ['startCollapsed']) &&
@@ -149,9 +152,12 @@ export class TreeListComponent
     //   this.updateActionButtonsState();
     // }
 
-    if (hasChanges(changes, ['maxHeightItems'])) {
+    if (hasChanges(changes, ['maxHeightItems', 'list'])) {
       this.DOM.setCssProps(this.host.nativeElement, {
-        '--list-max-items': this.maxHeightItems,
+        '--list-max-items': Math.max(
+          this.itemsMap.get(BTL_ROOT_ID).groupsCount + 3,
+          this.maxHeightItems
+        ),
       });
     }
 
@@ -195,6 +201,8 @@ export class TreeListComponent
       toggleItemCollapsed: this.toggleItemCollapsed.bind(this),
       toggleItemSelect: this.toggleItemSelect.bind(this),
       itemClick: this.itemClick.bind(this),
+      readonly: this.readonly,
+      disabled: this.disabled,
     });
   }
 
@@ -204,6 +212,8 @@ export class TreeListComponent
       listViewModel: this.listViewModel,
       toggleItemCollapsed: this.toggleItemCollapsed.bind(this),
       toggleItemSelect: this.toggleItemSelect.bind(this),
+      readonly: this.readonly,
+      disabled: this.disabled,
     });
   }
 
@@ -214,7 +224,10 @@ export class TreeListComponent
       this.searchValue
         ? this.modelSrvc.getSearchViewFilter(this.searchValue)
         : {},
-      !!this.searchValue
+      {
+        expand: !!this.searchValue,
+        keyMap: this.keyMap,
+      }
     );
     this.cd.detectChanges();
   }
@@ -234,7 +247,9 @@ export class TreeListComponent
 
   public toggleCollapseAll(force = null): void {
     for (const item of this.itemsMap.values()) {
-      item.collapsed = force !== null ? force : !item.collapsed;
+      if (item.childrenCount && item.id !== BTL_ROOT_ID) {
+        item.collapsed = force !== null ? force : !item.collapsed;
+      }
     }
     this.updateListViewModel();
   }
@@ -269,20 +284,20 @@ export class TreeListComponent
   }
 
   public toggleItemSelect(item: TreeListItem): void {
-    if (!item.disabled && !this.readonly) {
-      item.selected = !item.selected;
+    // if (!item.disabled && !this.readonly) {
+    item.selected = !item.selected;
 
-      for (const parenID of item.parentIDs) {
-        const parent = this.itemsMap.get(parenID);
-        parent.selectedCount = parent.selectedCount + (item.selected ? 1 : -1);
+    for (const parenID of item.parentIDs) {
+      const parent = this.itemsMap.get(parenID);
+      parent.selectedCount = parent.selectedCount + (item.selected ? 1 : -1);
 
-        parent.selected = parent.selectedCount === parent.childrenCount;
+      parent.selected = parent.selectedCount === parent.childrenCount;
 
-        parent.indeterminate = !parent.selected && !!parent.selectedCount;
-      }
-
-      this.cd.detectChanges();
+      parent.indeterminate = !parent.selected && !!parent.selectedCount;
     }
+
+    this.cd.detectChanges();
+    // }
   }
 
   public clearList(): void {
@@ -323,28 +338,25 @@ export class TreeListComponent
 
   public showCheckbox(item: TreeListItem): boolean {
     return (
-      this.type === SelectType.multi && !this.readonly && !this.searchValue
+      this.type === SelectType.multi &&
+      !this.readonly &&
+      !this.disabled &&
+      !this.searchValue
     );
   }
 
-  public getItemViewContext(id: itemID, index: number): GetItemViewContext {
+  public getItemViewContext(
+    id: itemID,
+    index: number
+  ): TreeListItemViewContext {
     const item = this.itemsMap.get(id);
-    const prevItem = this.itemsMap.get(this.listViewModel[index - 1]);
+    // const prevItem = this.itemsMap.get(this.listViewModel[index - 1]);
     const nextItem = this.itemsMap.get(this.listViewModel[index + 1]);
     return {
       index,
       item,
-      prevItem,
-      nextItem,
-      firstInGroup: Boolean(
-        !item.childrenCount &&
-          (!prevItem || (prevItem && prevItem.childrenCount))
-      ),
-      lastInGroup: Boolean(
-        !item.childrenCount &&
-          (!nextItem || (nextItem && nextItem.childrenCount))
-      ),
       groupSelected: this.isGroupSelected(item),
+      nextInViewIsGroup: Boolean(nextItem && nextItem.childrenCount),
     };
   }
 
