@@ -61,8 +61,14 @@ $bhl-max-depth: 5;
   background-color: white;
 }
 
-.bhl-item-name {
-  min-width: 0;
+:host ::ng-deep {
+  .bhl-item-name {
+    min-width: 0;
+
+    strong {
+      text-decoration: underline;
+    }
+  }
 }
 
 .bhl-item-name,
@@ -98,6 +104,14 @@ $bhl-max-depth: 5;
 .bhl-item-group {
   box-shadow: 0 -1px 0 0 $border-color-light,
     inset 0 -1px 0 0 $border-color-light;
+
+  &:first-child {
+    box-shadow: inset 0 -1px 0 0 $border-color-light;
+  }
+
+  &:last-child {
+    box-shadow: 0 -1px 0 0 $border-color-light;
+  }
 }
 
 :host ::ng-deep {
@@ -131,13 +145,9 @@ $bhl-max-depth: 5;
     }
   }
 
-  .bhl-item-group ::ng-deep {
+  .bhl-item-group {
     .bhl-item-name {
       font-weight: $font-weight-bold-body;
-
-      strong {
-        text-decoration: underline;
-      }
     }
   }
 }
@@ -165,6 +175,10 @@ $bhl-max-depth: 5;
   .expanded .bhl-item-chevron {
     @include b-icon(chevron-down, $size: null);
   }
+
+  .all-options-hidden .bhl-item-chevron {
+    @include disabled-state;
+  }
 }
 
 :host ::ng-deep {
@@ -185,8 +199,8 @@ $bhl-max-depth: 5;
 
 // Elements
 
-.bhl-search {
-  &::ng-deep {
+:host ::ng-deep {
+  .bhl-search {
     .bfe-wrap {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
@@ -201,6 +215,12 @@ $bhl-max-depth: 5;
       &.focused {
         border-color: $border-color;
       }
+    }
+
+    &.no-results .bfe-wrap {
+      border-bottom-left-radius: $border-radius;
+      border-bottom-right-radius: $border-radius;
+      border-width: 0;
     }
   }
 }
