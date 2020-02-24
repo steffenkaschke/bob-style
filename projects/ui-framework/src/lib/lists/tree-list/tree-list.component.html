@@ -1,10 +1,8 @@
 <ng-template #listItem
              let-index="index"
              let-item="item"
-             let-nextItem="nextItem"
              let-groupSelected="groupSelected"
-             let-firstInGroup="firstInGroup"
-             let-lastInGroup="lastInGroup">
+             let-nextInViewIsGroup="nextInViewIsGroup">
 
   <li class="bhl-item"
       #itemElements
@@ -16,10 +14,9 @@
         disabled: item.disabled || groupSelected,
         selected: item.selected || groupSelected,
         indeterminate: item.indeterminate,
-        expanded: !item.collapsed,
+        expanded: item.childrenCount && !item.collapsed,
         collapsed: item.collapsed,
-        'first-option': firstInGroup,
-        'last-option': lastInGroup
+        'next-is-group': nextInViewIsGroup
       }"
       [attr.tabIndex]="!readonly && !item.disabled ? 0 : null"
       [attr.data-level]="item.parentCount || 1">
@@ -57,6 +54,7 @@
     class="bhl-list"
     [attr.data-type]="type"
     [attr.aria-readonly]="readonly || null"
+    [attr.aria-disabled]="disabled || null"
     (click)="onListClick($event)"
     (keydown)="onListKeyDown($event)">
 

@@ -47,37 +47,38 @@ export const HListMockSimple: TreeListOption[] = makeArray(mxRootOptns).map(
   (i, indx) => {
     if (indx === 1 || indx === Math.max(2, mxRootOptns - 2)) {
       return ({
-        id: `option-${indx + 1}-group-${indx}`,
-        name: `0${indx + 1} Group ${indx}`,
-        selected: true,
-        animal: mockAnimals(1),
+        serverId: `option-${indx + 1}-group-${indx}`,
+        value: `0${indx + 1} Group ${indx}`,
+        canBeDeleted: true,
         children: [
           {
-            id: `option-${indx + 1}-group-${indx}-option-1`,
-            name: `0${indx + 1} G${indx} Option 1`,
-            animal: mockAnimals(1),
+            serverId: `option-${indx + 1}-group-${indx}-option-1`,
+            value: `0${indx + 1} G${indx} Option 1`,
+            canBeDeleted: true,
           },
           {
-            id: `option-${indx + 1}-group-${indx}-option-2-group-${indx + 1}`,
-            name: `O${indx + 1} G${indx} O2 Group ${indx + 1}`,
-            animal: mockAnimals(1),
+            serverId: `option-${indx + 1}-group-${indx}-option-2-group-${indx +
+              1}`,
+            value: `O${indx + 1} G${indx} O2 Group ${indx + 1}`,
+            canBeDeleted: true,
             children: makeArray(mxInsdOptns).map(
               (i, ndx) =>
                 ({
-                  id: `option-${indx + 1}-group-${indx}-option-2-group-${indx +
-                    1}-option-${ndx + 1}`,
-                  name: `O${indx + 1} G${indx} O2 G${indx + 1} Option ${ndx +
+                  serverId: `option-${indx +
+                    1}-group-${indx}-option-2-group-${indx + 1}-option-${ndx +
                     1}`,
-                  animal: mockAnimals(1),
+                  value: `O${indx + 1} G${indx} O2 G${indx + 1} Option ${ndx +
+                    1}`,
+                  canBeDeleted: true,
                 } as TreeListOption)
             ),
           } as TreeListOption,
           ...makeArray(mxInsdOptns - 2).map(
             (i, ndx) =>
               ({
-                id: `option-${indx + 1}-group-${indx}-option-${ndx + 3}`,
-                name: `02 G${indx} Option ${ndx + 3}`,
-                animal: mockAnimals(1),
+                serverId: `option-${indx + 1}-group-${indx}-option-${ndx + 3}`,
+                value: `02 G${indx} Option ${ndx + 3}`,
+                canBeDeleted: true,
               } as TreeListOption)
           ),
         ],
@@ -85,9 +86,9 @@ export const HListMockSimple: TreeListOption[] = makeArray(mxRootOptns).map(
     }
 
     return {
-      id: `option-${indx + 1}`,
-      name: `Option ${indx + 1}`,
-      animal: mockAnimals(1),
+      serverId: `option-${indx + 1}`,
+      value: `Option ${indx + 1}`,
+      canBeDeleted: true,
     } as TreeListOption;
   }
 );

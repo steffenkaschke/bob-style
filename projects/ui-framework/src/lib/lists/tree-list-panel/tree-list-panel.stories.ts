@@ -16,6 +16,7 @@ import { HListMock, HListMockSimple } from '../tree-list/tree-list.mock';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
+import { BTL_KEYMAP_SERVER } from '../tree-list/tree-list.const';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -25,6 +26,7 @@ const componentTemplate = `
 <b-tree-list-panel
       [type]="type"
       [list]="options === 'simple' ? listSimple : listRandom"
+      [keyMap]="options === 'simple' ? serverKeyMap : null"
       [maxHeightItems]="maxHeightItems"
       [valueSeparatorChar]="valueSeparatorChar"
       [startCollapsed]="startCollapsed"
@@ -67,7 +69,7 @@ story.add(
       props: {
         icons: Icons,
         buttonType: ButtonType,
-
+        serverKeyMap: BTL_KEYMAP_SERVER,
         type: select(
           'type',
           Object.values(SelectType),

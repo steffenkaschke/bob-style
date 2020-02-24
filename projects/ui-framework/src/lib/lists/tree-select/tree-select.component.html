@@ -8,21 +8,27 @@
 <!-- (click)="openPanel()" -->
 <b-tree-list-panel [type]="type"
                    [list]="list"
-                   [maxHeightItems]="maxHeightItems"
+                   [value]="value"
+                   [viewFilter]="viewFilter"
+                   [keyMap]="keyMap"
                    [valueSeparatorChar]="valueSeparatorChar"
-                   [startCollapsed]="startCollapsed"
+                   [maxHeightItems]="maxHeightItems"
                    [showSingleGroupHeader]="showSingleGroupHeader"
+                   [startCollapsed]="startCollapsed"
+                   [panelClass]="panelClass"
+                   [panelPosition]="panelPosition"
                    [readonly]="readonly"
                    [disabled]="disabled"
+                   [listActions]="listActions"
                    [hasArrow]="false"
                    (opened)="onPanelOpen($event)"
                    (closed)="onPanelClose()">
 
+  <!--  'panel-open': panelOpen -->
   <div class="bfe-wrap has-suffix"
        [ngClass]="{
                     'has-prefix': false,
-                    focused: panelOpen,
-                    'panel-open': panelOpen
+                    focused: panelOpen
                   }">
 
     <!-- (focus)="openPanel()" -->

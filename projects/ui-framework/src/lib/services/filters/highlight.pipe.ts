@@ -8,8 +8,8 @@ export class HighlightPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 
   transform(value: string, args: string): string | SafeHtml {
-    if (!args) {
-      return value.trim();
+    if (!args || !value) {
+      return value || '';
     }
 
     const re = new RegExp(args, 'gi');

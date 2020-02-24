@@ -48,7 +48,9 @@ import {
   itemID,
   ViewFilter,
   TreeListComponentIO,
+  TreeListKeyMap,
 } from '../tree-list/tree-list.interface';
+import { BTL_KEYMAP_DEF } from '../tree-list/tree-list.const';
 
 @Component({
   selector: 'b-tree-list-panel',
@@ -75,6 +77,7 @@ export class TreeListPanelComponent
   @Input() list: TreeListOption[];
   @Input() value: itemID[];
   @Input() viewFilter: ViewFilter;
+  @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
 
   @Input() type: SelectType = SelectType.multi;
   @Input() valueSeparatorChar = '/';
@@ -126,9 +129,18 @@ export class TreeListPanelComponent
 
       this.overlayRef.attach(this.templatePortal);
       this.overlayRef.updatePosition();
+
+      const inputWidth = this.overlayOrigin.elementRef.nativeElement
+        .offsetWidth;
       this.overlayRef.updateSize({
-        width: this.overlayOrigin.elementRef.nativeElement.offsetWidth,
+        width: inputWidth,
         height: 360,
+      });
+
+      const panelElem = this.overlayRef.overlayElement
+        .children[0] as HTMLElement;
+      this.DOM.setCssProps(panelElem, {
+        '--input-width': inputWidth + 'px',
       });
 
       if (this.opened.observers.length > 0) {
@@ -149,6 +161,9 @@ export class TreeListPanelComponent
             this.positionClassList = this.panelPositionService.getPositionClassList(
               change
             );
+            if (!this.cd['destroyed']) {
+              this.cd.detectChanges();
+            }
           })
       );
 

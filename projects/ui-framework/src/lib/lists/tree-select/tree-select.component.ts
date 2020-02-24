@@ -11,12 +11,20 @@ import {
   itemID,
   ViewFilter,
   TreeListComponentIO,
+  TreeListKeyMap,
 } from '../tree-list/tree-list.interface';
 import { SelectType } from '../list.enum';
 import { ListFooterActions } from '../list.interface';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { TreeListPanelComponent } from '../tree-list-panel/tree-list-panel.component';
+import { BTL_KEYMAP_DEF } from '../tree-list/tree-list.const';
+import {
+  BELOW_START,
+  ABOVE_START,
+  BELOW_END,
+  ABOVE_END,
+} from '../../popups/panel/panel-position-service/panel-position.const';
 
 @Component({
   selector: 'b-tree-select',
@@ -38,6 +46,7 @@ export class TreeSelectComponent extends BaseFormElement
   @Input() list: TreeListOption[];
   @Input() value: itemID[];
   @Input() viewFilter: ViewFilter;
+  @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
 
   @Input() type: SelectType = SelectType.multi;
   @Input() valueSeparatorChar = '/';
@@ -59,11 +68,13 @@ export class TreeSelectComponent extends BaseFormElement
   public displayValue: string;
   public displayValueCount: number;
   public positionClassList = {};
+  public panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
+  public panelClass = 'b-tree-select-panel';
 
   public writeValue(value: any): void {}
 
   public openPanel(): void {
-    if (this.listPanel) {
+    if (this.listPanel && !this.disabled) {
       this.listPanel.openPanel();
     }
   }
