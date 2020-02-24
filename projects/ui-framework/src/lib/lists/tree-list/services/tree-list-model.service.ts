@@ -22,7 +22,6 @@ interface TreeListConverterConfig {
   keyMap: TreeListKeyMap;
   separator: string;
   collapsed: boolean;
-  // expand?: boolean;
 }
 
 @Injectable()
@@ -60,7 +59,9 @@ export class TreeListModelService {
           break;
         }
 
-        if (this.itemFilter(itemData, viewFilter)) {
+        const filterResult = this.itemFilter(itemData, viewFilter);
+
+        if (filterResult !== false) {
           model.push(itemData.id);
 
           if (item[keyMap.children] && (!itemData.collapsed || expand)) {
@@ -71,8 +72,12 @@ export class TreeListModelService {
               itemData.allOptionsHidden = false;
               model = model.concat(childrenModel);
             } else {
-              itemData.collapsed = true;
-              itemData.allOptionsHidden = true;
+              if (!filterResult) {
+                model.pop();
+              } else {
+                itemData.collapsed = true;
+                itemData.allOptionsHidden = true;
+              }
             }
           }
         }
@@ -188,7 +193,6 @@ export class TreeListModelService {
           itm,
           map,
           {
-            // id: this.getItemId(itm, keyMap),
             value: this.concatValue(
               set.value || '',
               this.getItemName(itm, keyMap),
@@ -224,21 +228,15 @@ export class TreeListModelService {
     let result = true;
 
     if (viewFilter.hide) {
+      if (viewFilter.hide.id && viewFilter.hide.id.includes(item.id)) {
+        result = false;
+      }
+
       if (
         viewFilter.hide.prop &&
         item[viewFilter.hide.prop.key] === viewFilter.hide.prop.value
       ) {
         result = false;
-      }
-
-      if (viewFilter.hide.search) {
-        const regex: RegExp = isRegExp(viewFilter.show.search)
-          ? viewFilter.show.search
-          : stringToRegex(viewFilter.show.search);
-
-        if (regex.test(item[viewFilter.hide.searchBy || 'name'])) {
-          result = false;
-        }
       }
     }
 
@@ -253,19 +251,28 @@ export class TreeListModelService {
       ) {
         result = false;
       }
+    }
 
-      if (viewFilter.show.search) {
-        if (item.childrenCount) {
-          result = true;
-        } else {
-          const regex: RegExp = isRegExp(viewFilter.show.search)
-            ? viewFilter.show.search
-            : stringToRegex(viewFilter.show.search);
+    if (
+      (viewFilter.hide && viewFilter.hide.search) ||
+      (viewFilter.show && viewFilter.show.search)
+    ) {
+      const regex: RegExp = isRegExp(viewFilter.show.search)
+        ? viewFilter.show.search
+        : stringToRegex(viewFilter.show.search);
 
-          if (!regex.test(item[viewFilter.show.searchBy || 'name'])) {
-            result = false;
-          }
-        }
+      const searchBy =
+        (viewFilter.show && viewFilter.show.searchBy) ||
+        (viewFilter.hide && viewFilter.hide.searchBy) ||
+        'name';
+
+      const matches = regex.test(item[searchBy]);
+
+      if (
+        (viewFilter.show && viewFilter.show.search && !matches) ||
+        (viewFilter.hide && viewFilter.hide.search && matches)
+      ) {
+        result = item.childrenCount ? null : false;
       }
     }
 
