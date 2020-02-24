@@ -21,6 +21,7 @@ export interface MediaEvent {
   matchDesktop: boolean;
   isTouchDevice: boolean;
   isMobileBrowser: boolean;
+  mobileOS: MobileOS;
 }
 
 export enum MobileOS {
@@ -136,6 +137,7 @@ export class MobileService {
       matchDesktop: this.matchBreakpoint(mobileBreakpoint + 1, WidthMode.min),
       isTouchDevice: this.isTouchDevice,
       isMobileBrowser: this.isMobBrowser,
+      mobileOS: this.mobileOS
     };
   }
 }
