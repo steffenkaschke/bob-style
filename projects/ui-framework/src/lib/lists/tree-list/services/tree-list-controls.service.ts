@@ -54,7 +54,7 @@ export class TreeListControlsService {
       itemElement.classList.contains('disabled');
 
     if (
-      target.matches('.bhl-item-chevron') ||
+      (target.matches('.bhl-item-chevron') && !item.allOptionsHidden) ||
       (isDisabled && item.childrenCount)
     ) {
       event.stopPropagation();

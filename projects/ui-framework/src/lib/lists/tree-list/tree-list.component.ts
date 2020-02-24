@@ -96,6 +96,7 @@ export class TreeListComponent
   @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
 
   public searchValue = '';
+  private minSearchLength = 1;
   public showSearch = false;
   public hasFooter = true;
   public listActionsState: ListFooterActionsState = cloneDeepSimpleObject(
@@ -217,31 +218,32 @@ export class TreeListComponent
     });
   }
 
-  private updateListViewModel() {
+  private updateListViewModel(expand = false) {
+    console.log(this.viewFilter);
     this.listViewModel = this.modelSrvc.getListViewModel(
       this.list,
       this.itemsMap,
-      this.searchValue
-        ? this.modelSrvc.getSearchViewFilter(this.searchValue)
-        : {},
+      this.viewFilter,
       {
-        expand: !!this.searchValue,
+        expand,
         keyMap: this.keyMap,
       }
     );
+    console.log(this.listViewModel);
     this.cd.detectChanges();
   }
 
   public searchChange(value: string) {
-    const newSearchValue = value.length > 1 ? value : '';
+    const newSearchValue = value.length > this.minSearchLength ? value : '';
 
     if (newSearchValue !== this.searchValue) {
       this.searchValue = newSearchValue;
 
-      if (this.searchValue === '') {
-      }
+      this.viewFilter = this.searchValue
+        ? this.modelSrvc.getSearchViewFilter(this.searchValue)
+        : undefined;
 
-      this.updateListViewModel();
+      this.updateListViewModel(true);
     }
   }
 
@@ -255,7 +257,7 @@ export class TreeListComponent
   }
 
   public itemClick(item: TreeListItem, element: HTMLElement): void {
-    if (item.childrenCount) {
+    if (item.childrenCount && !item.allOptionsHidden) {
       this.toggleItemCollapsed(item, element);
     } else if (!this.readonly) {
       this.toggleItemSelect(item);
@@ -307,14 +309,23 @@ export class TreeListComponent
   public resetList(): void {}
 
   public onApply(): void {
-    this.apply.emit();
+    if (this.apply.observers.length > 0) {
+      this.apply.emit();
+    }
   }
 
   public onCancel(): void {
-    this.cancel.emit();
+    if (this.cancel.observers.length > 0) {
+      this.cancel.emit();
+    }
   }
 
-  private emitChange(): void {}
+  private emitChange(): void {
+    this.changed.emit({
+      selectedIDs: this.value,
+      selectedValues: [],
+    });
+  }
 
   protected updateActionButtonsState(
     forceClear: boolean = null,
@@ -337,12 +348,7 @@ export class TreeListComponent
   }
 
   public showCheckbox(item: TreeListItem): boolean {
-    return (
-      this.type === SelectType.multi &&
-      !this.readonly &&
-      !this.disabled &&
-      !this.searchValue
-    );
+    return this.type === SelectType.multi && !this.readonly && !this.disabled;
   }
 
   public getItemViewContext(

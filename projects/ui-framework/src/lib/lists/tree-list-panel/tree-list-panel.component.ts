@@ -49,6 +49,7 @@ import {
   ViewFilter,
   TreeListComponentIO,
   TreeListKeyMap,
+  TreeListValue,
 } from '../tree-list/tree-list.interface';
 import { BTL_KEYMAP_DEF } from '../tree-list/tree-list.const';
 
@@ -98,6 +99,11 @@ export class TreeListPanelComponent
 
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
+  @Output() changed: EventEmitter<TreeListValue> = new EventEmitter<
+    TreeListValue
+  >();
+  @Output() apply: EventEmitter<void> = new EventEmitter<void>();
+  @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
 
   private panelClassList: string[] = ['b-select-panel', 'b-tree-list-panel'];
   private subscribtions: Subscription[] = [];
@@ -202,14 +208,22 @@ export class TreeListPanelComponent
   }
 
   public onApply(): void {
+    if (this.apply.observers.length > 0) {
+      this.apply.emit();
+    }
     this.destroyPanel();
   }
 
   public onCancel(): void {
+    if (this.cancel.observers.length > 0) {
+      this.cancel.emit();
+    }
     this.destroyPanel();
   }
 
-  public onSelect(): void {}
+  public onSelect(value: TreeListValue): void {
+    this.changed.emit(value);
+  }
 
   protected destroyPanel(): void {
     this.panelOpen = false;

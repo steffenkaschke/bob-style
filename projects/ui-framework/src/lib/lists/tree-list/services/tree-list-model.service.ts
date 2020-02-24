@@ -67,9 +67,12 @@ export class TreeListModelService {
             const childrenModel = addIDs(item[keyMap.children]);
 
             if (childrenModel.length) {
+              itemData.collapsed = false;
+              itemData.allOptionsHidden = false;
               model = model.concat(childrenModel);
             } else {
-              model.pop();
+              itemData.collapsed = true;
+              itemData.allOptionsHidden = true;
             }
           }
         }
@@ -240,6 +243,10 @@ export class TreeListModelService {
     }
 
     if (viewFilter.show) {
+      if (viewFilter.show.id && !viewFilter.show.id.includes(item.id)) {
+        result = false;
+      }
+
       if (
         viewFilter.show.prop &&
         item[viewFilter.show.prop.key] !== viewFilter.show.prop.value
@@ -268,7 +275,7 @@ export class TreeListModelService {
   public getSearchViewFilter(searchValue: string): ViewFilter {
     return {
       show: {
-        search: stringToRegex(searchValue),
+        search: searchValue,
         searchBy: 'name',
       },
     };

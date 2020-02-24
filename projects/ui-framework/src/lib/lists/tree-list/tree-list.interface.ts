@@ -65,6 +65,7 @@ export interface TreeListItem {
   selectedCount?: number;
 
   // context
+  allOptionsHidden?: boolean;
 
   [key: string]: any;
 }
@@ -83,9 +84,9 @@ export interface TreeListValue {
 
 export interface ViewFilterOptions {
   id?: itemID[];
+  prop?: { key: string; value: any };
   search?: string | RegExp;
   searchBy?: 'name' | 'value';
-  prop?: { key: string; value: any };
 }
 
 export interface ViewFilter {

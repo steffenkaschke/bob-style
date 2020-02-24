@@ -16,7 +16,8 @@
         indeterminate: item.indeterminate,
         expanded: item.childrenCount && !item.collapsed,
         collapsed: item.collapsed,
-        'next-is-group': nextInViewIsGroup
+        'next-is-group': nextInViewIsGroup,
+        'all-options-hidden': item.allOptionsHidden
       }"
       [attr.tabIndex]="!readonly && !item.disabled ? 0 : null"
       [attr.data-level]="item.parentCount || 1">
@@ -47,6 +48,9 @@
 <b-search *ngIf="showSearch"
           #search
           class="bhl-search"
+          [ngClass]="{
+            'no-results': !listViewModel.length
+          }"
           (searchChange)="searchChange($event)">
 </b-search>
 
@@ -79,7 +83,8 @@
 
 
 <div class="dev">
-  <p>Total items: {{ listViewModel.length }}</p>
+  <p>Total items: {{ itemsMap.size }}</p>
+  <p>Total items in view: {{ listViewModel.length }}</p>
   <p>Total selected: {{ itemsMap.get('#root') && itemsMap.get('#root').selectedCount }}</p>
   <button type="button"
           (click)="log()">Log data</button>
