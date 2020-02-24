@@ -17,6 +17,7 @@ import { ButtonsModule } from '../../buttons/buttons.module';
 import { Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { BTL_KEYMAP_SERVER } from '../tree-list/tree-list.const';
+import { TreeListStoriesCommonProps } from '../tree-list/tree-list.stories.common';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -69,26 +70,8 @@ story.add(
       props: {
         icons: Icons,
         buttonType: ButtonType,
-        serverKeyMap: BTL_KEYMAP_SERVER,
-        type: select(
-          'type',
-          Object.values(SelectType),
-          SelectType.multi,
-          'Props'
-        ),
-        maxHeightItems: number('maxHeightItems', 8, {}, 'Props'),
-        valueSeparatorChar: text('valueSeparatorChar', '/', 'Props'),
-        startCollapsed: boolean('startCollapsed', true, 'Props'),
-        showSingleGroupHeader: boolean('showSingleGroupHeader', false, 'Props'),
-        readonly: boolean('readonly', false, 'Props'),
-        disabled: boolean('disabled', false, 'Props'),
 
-        // value
-        // viewFilter
-
-        options: select('options', ['simple', 'random'], 'random', 'Options'),
-        listRandom: object('listRandom', HListMock, 'Options'),
-        listSimple: object('listSimple', HListMockSimple, 'Options'),
+        ...TreeListStoriesCommonProps(),
       },
       moduleMetadata: {
         imports: [
