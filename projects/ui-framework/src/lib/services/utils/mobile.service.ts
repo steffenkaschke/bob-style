@@ -39,7 +39,7 @@ export class MobileService {
   mediaEvent$: Observable<MediaEvent>;
   isMobBrowser: boolean;
   isTouchDevice: boolean;
-  mobileOS: MobileOS;
+  mobileOS?: MobileOS;
 
   constructor(
     private windowRef: WindowRef,
