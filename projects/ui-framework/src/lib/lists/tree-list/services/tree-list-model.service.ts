@@ -34,8 +34,8 @@ export class TreeListModelService {
 
   public getIDtoValueMap(
     list: TreeListOption[],
-    keyMap = BTL_KEYMAP_DEF,
-    separator = ' / '
+    keyMap: TreeListKeyMap = BTL_KEYMAP_DEF,
+    separator: string = ' / '
   ): Map<itemID, string> {
     const map = (this.getListItemsMap(list, new Map(), {
       keyMap,
