@@ -24,6 +24,12 @@ export const TreeListStoriesCommonProps = () => ({
       HListMockSimple[1].children[0].serverId,
       HListMockSimple[1].children[1].children[2].serverId,
       HListMockSimple[2].children[1].serverId,
+      [
+        HListMockSimple[1].children[0].serverId,
+        HListMockSimple[1].children[1].children[0].serverId,
+        HListMockSimple[2].children[1].children[2].serverId,
+        HListMockSimple[2].children[2].serverId,
+      ],
     ],
     0,
     'Value'

@@ -38,6 +38,7 @@ import {
   applyChanges,
   joinArrays,
   notFirstChanges,
+  firstChanges,
 } from '../../services/utils/functional-utils';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { LIST_ACTIONS_STATE_DEF } from '../list-footer/list-footer.const';
@@ -130,8 +131,6 @@ export class TreeListComponent
       { list: 'setList', value: 'setValue' }
     );
 
-    console.log('CHANGES', changes);
-
     if (hasChanges(changes, ['keyMap'], true)) {
       this.keyMap = { ...BTL_KEYMAP_DEF, ...this.keyMap };
     }
@@ -143,8 +142,6 @@ export class TreeListComponent
       this.list = changes.list.currentValue;
       this.hidden = !this.list.length;
 
-      console.log('Changes: LIST');
-
       this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
         keyMap: this.keyMap,
         separator: this.valueSeparatorChar,
@@ -155,11 +152,15 @@ export class TreeListComponent
     }
 
     if (hasChanges(changes, ['list'], true) || hasChanges(changes, ['value'])) {
-      console.log('Changes: VALUE');
+      if (firstChanges(changes, ['list'])) {
+        this.updateListViewModel();
+        viewModelWasUpdated = true;
+      }
 
-      viewModelWasUpdated = this.applyValue(
-        changes.value ? changes.value.currentValue : this.value
-      );
+      viewModelWasUpdated =
+        this.applyValue(
+          changes.value ? changes.value.currentValue : this.value
+        ) || viewModelWasUpdated;
     }
 
     if (
@@ -253,7 +254,6 @@ export class TreeListComponent
   }
 
   private updateListViewModel(expand = false): void {
-    console.log('updateListViewModel viewFilter', this.viewFilter);
     this.listViewModel.length = 0;
 
     this.listViewModel.push(
@@ -281,7 +281,6 @@ export class TreeListComponent
         ? this.modelSrvc.getSearchViewFilter(this.searchValue)
         : undefined;
 
-      console.log('----- searchChange calls updateListViewModel ------');
       this.updateListViewModel(true);
     }
   }
@@ -293,7 +292,6 @@ export class TreeListComponent
       }
     }
     if (updateModel) {
-      console.log('----- toggleCollapseAll calls updateListViewModel ------');
       this.updateListViewModel();
     }
   }
@@ -324,7 +322,6 @@ export class TreeListComponent
         (elOffset - element.offsetTop);
     }
 
-    console.log('----- toggleItemCollapsed calls updateListViewModel ------');
     this.updateListViewModel();
   }
 
@@ -366,24 +363,18 @@ export class TreeListComponent
   private applyValue(newValue: itemID[]): boolean {
     let affectedIDs: itemID[] = this.value || [];
     this.value = selectValueOrFail(newValue);
+    let viewModelWasUpdated = false;
 
     if (!this.itemsMap.size) {
-      return false;
+      return viewModelWasUpdated;
     }
     affectedIDs = joinArrays(affectedIDs, newValue || []);
 
     let firstSelectedID: itemID;
 
-    console.log(
-      `
-      applyValue called with value: ${newValue}
-      this.value: ${this.value}
-      affectedIDs: ${affectedIDs}
-    `
-    );
-
     affectedIDs.forEach(id => {
       const item = this.itemsMap.get(id);
+
       if (!item) {
         return;
       }
@@ -397,15 +388,24 @@ export class TreeListComponent
     if (firstSelectedID) {
       const item = this.itemsMap.get(firstSelectedID);
 
-      return this.viewSrvc.scrollToItem(item, {
-        listViewModel: this.listViewModel,
-        listElement: this.listElement.nativeElement,
-        itemsMap: this.itemsMap,
-        updateListViewModel: this.updateListViewModel.bind(this),
-      });
+      this.viewSrvc.expandAllSelected(this.value, this.itemsMap);
+      this.updateListViewModel();
+      viewModelWasUpdated = true;
+
+      viewModelWasUpdated =
+        this.viewSrvc.scrollToItem(item, {
+          listViewModel: this.listViewModel,
+          listElement: this.listElement.nativeElement,
+          itemsMap: this.itemsMap,
+          updateListViewModel: this.updateListViewModel.bind(this),
+        }) || viewModelWasUpdated;
+    } else {
+      this.toggleCollapseAll(this.startCollapsed);
+      this.listElement.nativeElement.scrollTop = 0;
+      viewModelWasUpdated = true;
     }
 
-    return false;
+    return viewModelWasUpdated;
   }
 
   private emitChange(): void {

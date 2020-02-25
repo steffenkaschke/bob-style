@@ -22,6 +22,7 @@ interface TreeListConverterConfig {
   keyMap: TreeListKeyMap;
   separator: string;
   collapsed: boolean;
+  removeKeys?: string[];
 }
 
 @Injectable()
@@ -107,6 +108,8 @@ export class TreeListModelService {
     this.counter = 0;
     this.errorCounter = 0;
 
+    const removeKeys = [...Object.values(keyMap), 'selected', 'disabled'];
+
     if (isEmptyArray(list)) {
       return itemsMap;
     }
@@ -134,7 +137,7 @@ export class TreeListModelService {
           value: this.concatValue(this.getItemName(item, keyMap)),
           parentIDs: [rootItem.id],
         },
-        { keyMap, separator, collapsed }
+        { keyMap, separator, collapsed, removeKeys }
       );
 
       if (!converted) {
@@ -164,6 +167,7 @@ export class TreeListModelService {
       keyMap: BTL_KEYMAP_DEF,
       separator: ' / ',
       collapsed: false,
+      removeKeys: [],
     }
   ): TreeListItem {
     if (this.counter > this.maxItems) {
@@ -173,14 +177,10 @@ export class TreeListModelService {
       return;
     }
 
-    const { keyMap, separator, collapsed } = config;
+    const { keyMap, separator, collapsed, removeKeys } = config;
 
     const converted: TreeListItem = {
-      ...objectRemoveKeys(item, [
-        ...Object.values(keyMap),
-        'selected',
-        'disabled',
-      ]),
+      ...objectRemoveKeys(item, removeKeys),
       ...set,
       id: set.id || this.getItemId(item, keyMap),
       name: this.getItemName(item, keyMap),
@@ -209,6 +209,7 @@ export class TreeListModelService {
             keyMap,
             separator,
             collapsed,
+            removeKeys,
           }
         );
 

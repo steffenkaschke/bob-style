@@ -5,10 +5,7 @@ import {
   TreeListItemMap,
   TreeListItemViewContext,
 } from '../tree-list.interface';
-import {
-  isEmptyArray,
-  stringify,
-} from '../../../services/utils/functional-utils';
+import { isEmptyArray } from '../../../services/utils/functional-utils';
 import { LIST_EL_HEIGHT } from '../../list.consts';
 
 interface TreeListScrollToItemConfig {
@@ -20,6 +17,20 @@ interface TreeListScrollToItemConfig {
 
 @Injectable()
 export class TreeListViewService {
+  //
+  //
+  public expandAllSelected(selectedIDs: itemID[], itemsMap: TreeListItemMap) {
+    selectedIDs.forEach(id => {
+      const item = itemsMap.get(id);
+
+      if (item.parentCount > 1) {
+        item.parentIDs.forEach(groupID => {
+          itemsMap.get(groupID).collapsed = false;
+        });
+      }
+    });
+  }
+
   //
   // returns true if listViewModel was updated
   public scrollToItem(
@@ -41,21 +52,13 @@ export class TreeListViewService {
 
     let indexInView = listViewModel.findIndex(id => id === item.id);
 
-    console.log(`
-      scrollToItem: ${stringify(item)},
-      item.parentIDs.length: ${item.parentIDs.length}
-    `);
+    if (indexInView === -1 && item.parentCount > 1) {
+      this.expandAllSelected([item.id], itemsMap);
 
-    if (indexInView === -1 && item.parentIDs.length > 1) {
-      item.parentIDs.forEach(groupID => {
-        itemsMap.get(groupID).collapsed = false;
-      });
-      console.log('----- scrollToItem calls updateListViewModel ------');
       updateListViewModel(false);
       viewModelWasUpdated = true;
 
       indexInView = listViewModel.findIndex(id => {
-        console.log('checking id', id);
         return id === item.id;
       });
     }
@@ -67,37 +70,12 @@ export class TreeListViewService {
       return viewModelWasUpdated;
     }
 
-    const itemElement = listElement.children[indexInView] as HTMLElement;
-
-    const groupsBefore = listViewModel.slice(0, indexInView).filter(id => {
-      const itm = itemsMap.get(id);
-
-      return itm.childrenCount > 0 && (itm.parentCount || 0) < item.parentCount;
-    }).length;
-
-    console.log('item', item.id, 'has', groupsBefore, 'groups before it');
-
-    const elOffset = itemElement.offsetTop;
-    const scrollTop = listElement.scrollTop;
-
-    console.log(
-      `index: ${indexInView},
-      elOffset: ${elOffset},
-      scrollTop: ${scrollTop},
-      groupsBefore: ${groupsBefore},
-      parentCount: ${item.parentCount},
-      group offset: ${groupsBefore * 44},
-      new scrollTop: ${elOffset - groupsBefore * LIST_EL_HEIGHT},
-      new scrolltop by parents count: ${elOffset -
-        (item.parentCount - 1) * LIST_EL_HEIGHT}',
-      `
-    );
-
-    // listElement.scrollTop =
-    //   itemElement.offsetTop - groupsBefore * LIST_EL_HEIGHT;
-
-    listElement.scrollTop =
-      itemElement.offsetTop - (item.parentCount - 1) * LIST_EL_HEIGHT;
+    setTimeout(() => {
+      const itemElement = listElement.children[indexInView] as HTMLElement;
+      listElement.scrollTop =
+        itemElement.offsetTop - (item.parentCount - 1) * LIST_EL_HEIGHT;
+      console.log('actual scrollTop 2', listElement.scrollTop);
+    }, 0);
 
     return viewModelWasUpdated;
   }

@@ -55,7 +55,7 @@ export interface TreeListItem {
   indeterminate?: boolean;
   disabled?: boolean;
 
-  parentIDs?: itemID[] | null; // path
+  parentIDs?: itemID[] | null;
   childrenIDs?: itemID[] | null;
 
   // stats

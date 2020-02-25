@@ -13,13 +13,14 @@ $bhl-max-depth: 5;
   top: 105%;
   left: 0;
   right: 0;
+  display: none;
 
   p {
     margin: 0 0 5px 0;
   }
 }
 :host {
-  overflow: visible !important;
+  // overflow: visible !important;
 }
 //----------------
 
@@ -64,6 +65,10 @@ $bhl-max-depth: 5;
   padding: 0 $bhl-item-padding;
   position: relative;
   background-color: white;
+
+  // &:last-child {
+  //   margin-bottom: 100vh;
+  // }
 }
 
 :host ::ng-deep {
