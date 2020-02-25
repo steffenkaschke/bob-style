@@ -15,6 +15,7 @@ import { HListMock, HListMockSimple } from '../tree-list/tree-list.mock';
 import { TreeSelectModule } from './tree-select.module';
 import { mockText } from '../../mock.const';
 import { BTL_KEYMAP_SERVER } from '../tree-list/tree-list.const';
+import { TreeListStoriesCommonProps } from '../tree-list/tree-list.stories.common';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -67,38 +68,18 @@ story.add(
     return {
       template,
       props: {
-        serverKeyMap: BTL_KEYMAP_SERVER,
-
-        type: select(
-          'type',
-          Object.values(SelectType),
-          SelectType.multi,
-          'Props'
-        ),
-        maxHeightItems: number('maxHeightItems', 8, {}, 'Props'),
-        valueSeparatorChar: text('valueSeparatorChar', '/', 'Props'),
-        startCollapsed: boolean('startCollapsed', true, 'Props'),
-        showSingleGroupHeader: boolean('showSingleGroupHeader', false, 'Props'),
+        ...TreeListStoriesCommonProps(),
 
         label: text('label', 'label text', 'Props'),
         description: text('description', mockText(30), 'Props'),
         placeholder: text('placeholder', 'placeholder text', 'Props'),
-        disabled: boolean('disabled', false, 'Props'),
         required: boolean('required', false, 'Props'),
-        readonly: boolean('readonly', false, 'Props'),
         hintMessage: text(
           'hintMessage',
           'This field should contain something',
           'Props'
         ),
         errorMessage: text('errorMessage', '', 'Props'),
-
-        // value
-        // viewFilter
-
-        options: select('options', ['simple', 'random'], 'random', 'Options'),
-        listRandom: object('listRandom', HListMock, 'Options'),
-        listSimple: object('listSimple', HListMockSimple, 'Options'),
       },
       moduleMetadata: {
         imports: [

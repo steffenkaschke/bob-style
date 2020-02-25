@@ -36,12 +36,16 @@ import {
   hasChanges,
   cloneDeepSimpleObject,
   applyChanges,
+  isNotEmptyArray,
+  asArray,
 } from '../../services/utils/functional-utils';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { LIST_ACTIONS_STATE_DEF } from '../list-footer/list-footer.const';
 import { TreeListControlsService } from './services/tree-list-controls.service';
 import { SearchComponent } from '../../search/search/search.component';
 import { BTL_ROOT_ID, BTL_KEYMAP_DEF } from './tree-list.const';
+import { selectValueOrFail } from '../../services/utils/transformers';
+import { LIST_EL_HEIGHT } from '../list.consts';
 
 @Component({
   selector: 'b-tree-list',
@@ -68,7 +72,7 @@ export class TreeListComponent
   @ViewChild('footer', { static: false, read: ElementRef })
   private footer: ElementRef;
 
-  @Input() list: TreeListOption[];
+  @Input() list: TreeListOption[] = [];
   @Input() value: itemID[];
   @Input() viewFilter: ViewFilter;
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
@@ -105,25 +109,36 @@ export class TreeListComponent
   public itemsMap: TreeListItemMap = new Map();
   public listViewModel: itemID[] = [];
   readonly selectType = SelectType;
+  private listCacheRef: TreeListOption[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes, {
-      list: [],
-      keyMap: BTL_KEYMAP_DEF,
-    });
+    applyChanges(
+      this,
+      changes,
+      {
+        list: [],
+        keyMap: BTL_KEYMAP_DEF,
+      },
+      ['value']
+    );
 
-    // re-apply value after list/map ngOnChanges
-
-    // console.log('=====ngOnChanges start=======');
+    console.log('changes', changes);
 
     if (hasChanges(changes, ['keyMap'], true)) {
       this.keyMap = { ...BTL_KEYMAP_DEF, ...this.keyMap };
     }
 
-    if (hasChanges(changes, ['list'], true)) {
-      // console.log(this.list);
+    if (hasChanges(changes, ['value'])) {
+      this.value = selectValueOrFail(this.value);
+    }
 
-      console.log('changes.list');
+    if (
+      hasChanges(changes, ['list'], true) &&
+      changes.list.currentValue !== this.listCacheRef
+    ) {
+      this.listCacheRef = this.list;
+
+      console.log('Changes: LIST');
 
       this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
         keyMap: this.keyMap,
@@ -133,6 +148,24 @@ export class TreeListComponent
 
       this.showSearch = this.itemsMap.size > 10;
 
+      if (isNotEmptyArray(this.value)) {
+        this.applyValue(this.value);
+      }
+
+      this.updateListViewModel();
+    }
+
+    if (
+      hasChanges(changes, ['value']) &&
+      this.itemsMap.size > 0 &&
+      (!changes.list ||
+        (changes.list && changes.list.currentValue === this.listCacheRef))
+    ) {
+      console.log('Changes: VALUE');
+      this.applyValue(this.value);
+    }
+
+    if (hasChanges(changes, ['viewFilter'], true) && !changes.list) {
       this.updateListViewModel();
     }
 
@@ -153,7 +186,7 @@ export class TreeListComponent
     //   this.updateActionButtonsState();
     // }
 
-    if (hasChanges(changes, ['maxHeightItems', 'list'])) {
+    if (hasChanges(changes, ['maxHeightItems', 'list'], true)) {
       this.DOM.setCssProps(this.host.nativeElement, {
         '--list-max-items': Math.max(
           this.itemsMap.get(BTL_ROOT_ID).groupsCount + 3,
@@ -165,8 +198,6 @@ export class TreeListComponent
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
     }
-
-    // console.log('=====ngOnChanges end=======');
   }
 
   ngOnInit() {
@@ -286,7 +317,6 @@ export class TreeListComponent
   }
 
   public toggleItemSelect(item: TreeListItem): void {
-    // if (!item.disabled && !this.readonly) {
     item.selected = !item.selected;
 
     for (const parenID of item.parentIDs) {
@@ -299,10 +329,10 @@ export class TreeListComponent
     }
 
     this.cd.detectChanges();
-    // }
   }
 
   public clearList(): void {
+    this.applyValue(null);
     this.updateActionButtonsState();
   }
 
@@ -317,6 +347,71 @@ export class TreeListComponent
   public onCancel(): void {
     if (this.cancel.observers.length > 0) {
       this.cancel.emit();
+    }
+  }
+
+  private applyValue(value: itemID[]) {
+    let firstSelectedID: itemID;
+
+    this.itemsMap.forEach((item: TreeListItem, index: number) => {
+      item.selected = !!value && value.includes(item.id);
+      if (!firstSelectedID && item.selected) {
+        firstSelectedID = item.id;
+      }
+    });
+
+    if (firstSelectedID && this.itemElements) {
+      const item = this.itemsMap.get(firstSelectedID);
+
+      let index = this.listViewModel.findIndex(id => id === firstSelectedID);
+
+      if (index === -1 && item.parentIDs) {
+        item.parentIDs.forEach(id => {
+          this.itemsMap.get(id).collapsed = false;
+        });
+        this.updateListViewModel();
+
+        index = this.listViewModel.findIndex(id => id === firstSelectedID);
+      }
+
+      const element = this.listElement.nativeElement.children[index];
+
+      const groupsBefore = this.listViewModel.slice(0, index).filter(id => {
+        const itm = this.itemsMap.get(id);
+
+        return (
+          itm.childrenCount > 0 && (itm.parentCount || 0) < item.parentCount
+        );
+      }).length;
+
+      console.log(
+        'item',
+        firstSelectedID,
+        'has',
+        groupsBefore,
+        'groups before it'
+      );
+
+      const elOffset = element.offsetTop;
+      const scrollTop = this.listElement.nativeElement.scrollTop;
+
+      console.log(
+        // 'element',
+        // element,
+        'index',
+        index,
+        'elOffset',
+        elOffset,
+        'scrollTop',
+        scrollTop,
+        'group offset',
+        groupsBefore * 44,
+        'new scrollTop',
+        elOffset - groupsBefore * LIST_EL_HEIGHT
+      );
+
+      this.listElement.nativeElement.scrollTop =
+        element.offsetTop - groupsBefore * LIST_EL_HEIGHT;
     }
   }
 
