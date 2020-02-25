@@ -526,7 +526,7 @@ export { UtilsService } from './lib/services/utils/utils.service';
 export { ScrollEvent } from './lib/services/utils/utils.interface';
 export { WindowRef } from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
-export { MobileService, WidthMode, MediaEvent } from './lib/services/utils/mobile.service';
+export { MobileService, WidthMode, MediaEvent, MobileOS } from './lib/services/utils/mobile.service';
 export { simpleUID, isString, isArray, isRenderedComponent } from './lib/services/utils/functional-utils';
 // URL utils
 export { UrlUtilsModule } from './lib/services/url/url-utils.module';
