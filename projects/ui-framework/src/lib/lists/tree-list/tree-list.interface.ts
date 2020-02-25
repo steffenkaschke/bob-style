@@ -39,7 +39,7 @@ export interface TreeListKeyMap {
   id: string;
   name: string;
   children?: string;
-  [key: string]: string;
+  [targetKey: string]: string;
 }
 
 export type TreeListItemMap = Map<itemID, TreeListItem>;

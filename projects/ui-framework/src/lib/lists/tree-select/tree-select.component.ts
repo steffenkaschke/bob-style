@@ -4,6 +4,9 @@ import {
   ChangeDetectorRef,
   Input,
   ViewChild,
+  Output,
+  EventEmitter,
+  SimpleChanges,
 } from '@angular/core';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import {
@@ -12,6 +15,7 @@ import {
   ViewFilter,
   TreeListComponentIO,
   TreeListKeyMap,
+  TreeListValue,
 } from '../tree-list/tree-list.interface';
 import { SelectType } from '../list.enum';
 import { ListFooterActions } from '../list.interface';
@@ -63,6 +67,10 @@ export class TreeSelectComponent extends BaseFormElement
   };
   @Input() tooltipType: TruncateTooltipType = TruncateTooltipType.auto;
 
+  @Output() changed: EventEmitter<TreeListValue> = new EventEmitter<
+    TreeListValue
+  >();
+
   public overlayRef: OverlayRef;
   public panelOpen = false;
   public displayValue: string;
@@ -70,8 +78,6 @@ export class TreeSelectComponent extends BaseFormElement
   public positionClassList = {};
   public panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
   public panelClass = 'b-tree-select-panel';
-
-  public writeValue(value: any): void {}
 
   public openPanel(): void {
     if (this.listPanel && !this.disabled) {
@@ -99,7 +105,17 @@ export class TreeSelectComponent extends BaseFormElement
 
   public onCancel(): void {}
 
-  public onSelect(): void {}
+  public onSelect(value: TreeListValue): void {
+    this.emitChange(value);
+  }
 
-  private emitChange(): void {}
+  private emitChange(value: TreeListValue): void {
+    if (this.changed.observers.length > 0) {
+      this.changed.emit(value);
+    }
+    if (this.doPropagate) {
+      this.propagateChange(this.value);
+      this.onTouched();
+    }
+  }
 }

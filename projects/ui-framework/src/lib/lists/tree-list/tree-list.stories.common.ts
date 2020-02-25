@@ -14,7 +14,6 @@ export const TreeListStoriesCommonProps = () => ({
   readonly: boolean('readonly', false, 'Props'),
   disabled: boolean('disabled', false, 'Props'),
 
-  // value
   // viewFilter
 
   valueSimple: select(

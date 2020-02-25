@@ -38,6 +38,11 @@ $bhl-max-depth: 5;
     border: 1px solid $border-color;
     box-shadow: 0 2px 3px 0 $boxShadowColor;
   }
+
+  &[hidden] {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
 }
 
 .bhl-list {

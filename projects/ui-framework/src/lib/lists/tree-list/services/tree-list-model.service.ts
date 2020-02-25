@@ -32,23 +32,28 @@ export class TreeListModelService {
 
   public getListViewModel(
     list: TreeListOption[],
-    map: TreeListItemMap,
-    viewFilter: ViewFilter = {},
+    itemsMap: TreeListItemMap,
     config: {
+      viewFilter: ViewFilter;
       keyMap: TreeListKeyMap;
       expand: boolean;
     } = {
+      viewFilter: {},
       keyMap: BTL_KEYMAP_DEF,
       expand: false,
     }
   ): itemID[] {
-    const { keyMap, expand } = config;
+    const { keyMap, expand, viewFilter } = config;
+
+    if (!list || !itemsMap) {
+      return [];
+    }
 
     const addIDs = (items: TreeListOption[]): itemID[] => {
       let model = [];
 
       for (const item of items) {
-        const itemData = map.get(this.getItemId(item, keyMap));
+        const itemData = itemsMap.get(this.getItemId(item, keyMap));
 
         if (!itemData) {
           console.error(
@@ -91,7 +96,7 @@ export class TreeListModelService {
 
   public getListItemsMap(
     list: TreeListOption[],
-    map: TreeListItemMap = new Map(),
+    itemsMap: TreeListItemMap = new Map(),
     config: TreeListConverterConfig = {
       keyMap: BTL_KEYMAP_DEF,
       separator: ' / ',
@@ -103,7 +108,7 @@ export class TreeListModelService {
     this.errorCounter = 0;
 
     if (isEmptyArray(list)) {
-      return map;
+      return itemsMap;
     }
 
     const rootItem: TreeListItem = {
@@ -123,7 +128,7 @@ export class TreeListModelService {
 
       const converted = this.convertItem(
         item,
-        map,
+        itemsMap,
         {
           id: itemId,
           value: this.concatValue(this.getItemName(item, keyMap)),
@@ -140,18 +145,18 @@ export class TreeListModelService {
       if (converted.childrenCount) {
         ++rootItem.groupsCount;
       }
-      this.updateMap(map, itemId, converted);
+      this.updateMap(itemsMap, itemId, converted);
     }
 
     rootItem.childrenCount = rootItem.childrenIDs.length;
-    this.updateMap(map, rootItem.id, rootItem);
+    this.updateMap(itemsMap, rootItem.id, rootItem);
 
-    return map;
+    return itemsMap;
   }
 
   private convertItem(
     item: TreeListOption,
-    map: TreeListItemMap,
+    itemsMap: TreeListItemMap,
     set: Partial<TreeListItem> = {
       parentIDs: null,
     },
@@ -191,7 +196,7 @@ export class TreeListModelService {
 
         const cnvrtd = this.convertItem(
           itm,
-          map,
+          itemsMap,
           {
             value: this.concatValue(
               set.value || '',
@@ -213,7 +218,7 @@ export class TreeListModelService {
 
         cnvrtd.parentCount = cnvrtd.parentIDs.length;
         converted.childrenIDs.push(cnvrtd.id);
-        this.updateMap(map, cnvrtd.id, cnvrtd);
+        this.updateMap(itemsMap, cnvrtd.id, cnvrtd);
       }
 
       ++converted.groupsCount;
@@ -289,11 +294,11 @@ export class TreeListModelService {
   }
 
   private updateMap(
-    map: TreeListItemMap,
+    itemsMap: TreeListItemMap,
     key: itemID,
     value: TreeListItem
   ): TreeListItemMap {
-    return map.set(key, Object.assign(map.get(key) || {}, value));
+    return itemsMap.set(key, Object.assign(itemsMap.get(key) || {}, value));
   }
 
   private getItemId(item: TreeListOption, keyMap: TreeListKeyMap): itemID {

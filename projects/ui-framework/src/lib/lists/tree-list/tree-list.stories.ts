@@ -1,20 +1,9 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  withKnobs,
-  object,
-  select,
-  boolean,
-  number,
-} from '@storybook/addon-knobs/angular';
-import { action } from '@storybook/addon-actions';
+import { withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TreeListModule } from './tree-list.module';
-import { HListMock, HListMockSimple } from './tree-list.mock';
-import { SelectType } from '../list.enum';
-import { text } from '@storybook/addon-knobs';
-import { BTL_KEYMAP_SERVER } from './tree-list.const';
 import { TreeListStoriesCommonProps } from './tree-list.stories.common';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(

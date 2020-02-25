@@ -4,7 +4,7 @@ import {
   randomNumber,
   simpleUID,
 } from '../../services/utils/functional-utils';
-import { mockText, mockAnimals } from '../../mock.const';
+import { mockText } from '../../mock.const';
 
 const groupProbability = 40;
 const maxDepth = 5;
@@ -21,6 +21,7 @@ const genGroup = (depthCounter = 0) =>
     id: simpleUID('grp-', 7),
     name: mockText(randomNumber(1, 3)),
     children: makeArray(randomNumber(...groupItemsMinMax)).map(() =>
+      // tslint:disable-next-line: no-use-before-declare
       genGroupOrOption(depthCounter + 1)
     ) as TreeListOption[],
   } as TreeListOption);
@@ -62,7 +63,7 @@ export const HListMockSimple: TreeListOption[] = makeArray(mxRootOptns).map(
             value: `O${indx + 1} G${indx} O2 Group ${indx + 1}`,
             canBeDeleted: true,
             children: makeArray(mxInsdOptns).map(
-              (i, ndx) =>
+              (_i, ndx) =>
                 ({
                   serverId: `option-${indx +
                     1}-group-${indx}-option-2-group-${indx + 1}-option-${ndx +
@@ -74,7 +75,7 @@ export const HListMockSimple: TreeListOption[] = makeArray(mxRootOptns).map(
             ),
           } as TreeListOption,
           ...makeArray(mxInsdOptns - 2).map(
-            (i, ndx) =>
+            (_i, ndx) =>
               ({
                 serverId: `option-${indx + 1}-group-${indx}-option-${ndx + 3}`,
                 value: `02 G${indx} Option ${ndx + 3}`,

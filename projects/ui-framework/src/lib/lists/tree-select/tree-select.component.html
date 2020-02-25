@@ -21,6 +21,7 @@
                    [disabled]="disabled"
                    [listActions]="listActions"
                    [hasArrow]="false"
+                   (changed)="onSelect($event)"
                    (opened)="onPanelOpen($event)"
                    (closed)="onPanelClose()">
 

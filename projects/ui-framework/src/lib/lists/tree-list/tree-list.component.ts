@@ -36,8 +36,8 @@ import {
   hasChanges,
   cloneDeepSimpleObject,
   applyChanges,
-  isNotEmptyArray,
-  asArray,
+  joinArrays,
+  notFirstChanges,
 } from '../../services/utils/functional-utils';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { LIST_ACTIONS_STATE_DEF } from '../list-footer/list-footer.const';
@@ -45,7 +45,7 @@ import { TreeListControlsService } from './services/tree-list-controls.service';
 import { SearchComponent } from '../../search/search/search.component';
 import { BTL_ROOT_ID, BTL_KEYMAP_DEF } from './tree-list.const';
 import { selectValueOrFail } from '../../services/utils/transformers';
-import { LIST_EL_HEIGHT } from '../list.consts';
+import { TreeListViewService } from './services/tree-list-view.service';
 
 @Component({
   selector: 'b-tree-list',
@@ -58,6 +58,7 @@ export class TreeListComponent
   constructor(
     private modelSrvc: TreeListModelService,
     private cntrlsSrvc: TreeListControlsService,
+    private viewSrvc: TreeListViewService,
     private DOM: DOMhelpers,
     private cd: ChangeDetectorRef,
     private zone: NgZone,
@@ -72,8 +73,12 @@ export class TreeListComponent
   @ViewChild('footer', { static: false, read: ElementRef })
   private footer: ElementRef;
 
-  @Input() list: TreeListOption[] = [];
-  @Input() value: itemID[];
+  @Input('list') set setList(list: TreeListOption[]) {}
+  public list: TreeListOption[];
+
+  @Input('value') set setValue(value: itemID[]) {}
+  public value: itemID[];
+
   @Input() viewFilter: ViewFilter;
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
 
@@ -92,6 +97,7 @@ export class TreeListComponent
     reset: false,
   };
   @HostBinding('attr.data-embedded') @Input() public embedded = false;
+  @HostBinding('hidden') @Input() public hidden = true;
 
   @Output() changed: EventEmitter<TreeListValue> = new EventEmitter<
     TreeListValue
@@ -109,34 +115,33 @@ export class TreeListComponent
   public itemsMap: TreeListItemMap = new Map();
   public listViewModel: itemID[] = [];
   readonly selectType = SelectType;
-  private listCacheRef: TreeListOption[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
+    let viewModelWasUpdated = false;
+
     applyChanges(
       this,
       changes,
       {
-        list: [],
         keyMap: BTL_KEYMAP_DEF,
       },
-      ['value']
+      ['list', 'value'],
+      false,
+      { list: 'setList', value: 'setValue' }
     );
 
-    console.log('changes', changes);
+    console.log('CHANGES', changes);
 
     if (hasChanges(changes, ['keyMap'], true)) {
       this.keyMap = { ...BTL_KEYMAP_DEF, ...this.keyMap };
     }
 
-    if (hasChanges(changes, ['value'])) {
-      this.value = selectValueOrFail(this.value);
-    }
-
     if (
       hasChanges(changes, ['list'], true) &&
-      changes.list.currentValue !== this.listCacheRef
+      changes.list.currentValue !== this.list
     ) {
-      this.listCacheRef = this.list;
+      this.list = changes.list.currentValue;
+      this.hidden = !this.list.length;
 
       console.log('Changes: LIST');
 
@@ -147,33 +152,21 @@ export class TreeListComponent
       });
 
       this.showSearch = this.itemsMap.size > 10;
-
-      if (isNotEmptyArray(this.value)) {
-        this.applyValue(this.value);
-      }
-
-      this.updateListViewModel();
     }
 
-    if (
-      hasChanges(changes, ['value']) &&
-      this.itemsMap.size > 0 &&
-      (!changes.list ||
-        (changes.list && changes.list.currentValue === this.listCacheRef))
-    ) {
+    if (hasChanges(changes, ['list'], true) || hasChanges(changes, ['value'])) {
       console.log('Changes: VALUE');
-      this.applyValue(this.value);
-    }
 
-    if (hasChanges(changes, ['viewFilter'], true) && !changes.list) {
-      this.updateListViewModel();
+      viewModelWasUpdated = this.applyValue(
+        changes.value ? changes.value.currentValue : this.value
+      );
     }
 
     if (
-      hasChanges(changes, ['startCollapsed']) &&
+      notFirstChanges(changes, ['startCollapsed']) &&
       typeof this.startCollapsed === 'boolean'
     ) {
-      this.toggleCollapseAll(this.startCollapsed);
+      this.toggleCollapseAll(this.startCollapsed, false);
     }
 
     // if (
@@ -186,10 +179,20 @@ export class TreeListComponent
     //   this.updateActionButtonsState();
     // }
 
+    if (
+      !viewModelWasUpdated &&
+      (hasChanges(changes, ['list', 'viewFilter'], true) ||
+        hasChanges(changes, ['value', 'startCollapsed']))
+    ) {
+      this.updateListViewModel();
+    }
+
     if (hasChanges(changes, ['maxHeightItems', 'list'], true)) {
       this.DOM.setCssProps(this.host.nativeElement, {
         '--list-max-items': Math.max(
-          this.itemsMap.get(BTL_ROOT_ID).groupsCount + 3,
+          this.itemsMap.size > 0
+            ? this.itemsMap.get(BTL_ROOT_ID).groupsCount + 3
+            : 0,
           this.maxHeightItems
         ),
       });
@@ -209,7 +212,7 @@ export class TreeListComponent
       setTimeout(() => {
         this.hasFooter =
           (!this.readonly && objectHasTruthyValue(this.listActions)) ||
-          !this.DOM.isEmpty(this.footer.nativeElement);
+          !(this.footer && this.DOM.isEmpty(this.footer.nativeElement));
 
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
@@ -249,19 +252,23 @@ export class TreeListComponent
     });
   }
 
-  private updateListViewModel(expand = false) {
-    console.log(this.viewFilter);
-    this.listViewModel = this.modelSrvc.getListViewModel(
-      this.list,
-      this.itemsMap,
-      this.viewFilter,
-      {
+  private updateListViewModel(expand = false): void {
+    console.log('updateListViewModel viewFilter', this.viewFilter);
+    this.listViewModel.length = 0;
+
+    this.listViewModel.push(
+      ...this.modelSrvc.getListViewModel(this.list, this.itemsMap, {
+        viewFilter: this.viewFilter,
         expand,
         keyMap: this.keyMap,
-      }
+      })
     );
-    console.log(this.listViewModel);
-    this.cd.detectChanges();
+
+    console.log('updateListViewModel listViewModel', this.listViewModel);
+
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
   public searchChange(value: string) {
@@ -274,30 +281,34 @@ export class TreeListComponent
         ? this.modelSrvc.getSearchViewFilter(this.searchValue)
         : undefined;
 
+      console.log('----- searchChange calls updateListViewModel ------');
       this.updateListViewModel(true);
     }
   }
 
-  public toggleCollapseAll(force = null): void {
+  public toggleCollapseAll(force = null, updateModel = true): void {
     for (const item of this.itemsMap.values()) {
       if (item.childrenCount && item.id !== BTL_ROOT_ID) {
         item.collapsed = force !== null ? force : !item.collapsed;
       }
     }
-    this.updateListViewModel();
+    if (updateModel) {
+      console.log('----- toggleCollapseAll calls updateListViewModel ------');
+      this.updateListViewModel();
+    }
   }
 
-  public itemClick(item: TreeListItem, element: HTMLElement): void {
+  private itemClick(item: TreeListItem, element: HTMLElement): void {
     if (item.childrenCount && !item.allOptionsHidden) {
       this.toggleItemCollapsed(item, element);
-    } else if (!this.readonly) {
+    } else {
       this.toggleItemSelect(item);
     }
 
     this.updateActionButtonsState();
   }
 
-  public toggleItemCollapsed(item: TreeListItem, element: HTMLElement): void {
+  private toggleItemCollapsed(item: TreeListItem, element: HTMLElement): void {
     let elOffset: number;
 
     if (!item.collapsed) {
@@ -313,14 +324,15 @@ export class TreeListComponent
         (elOffset - element.offsetTop);
     }
 
+    console.log('----- toggleItemCollapsed calls updateListViewModel ------');
     this.updateListViewModel();
   }
 
-  public toggleItemSelect(item: TreeListItem): void {
+  private toggleItemSelect(item: TreeListItem): void {
     item.selected = !item.selected;
 
-    for (const parenID of item.parentIDs) {
-      const parent = this.itemsMap.get(parenID);
+    for (const groupID of item.parentIDs) {
+      const parent = this.itemsMap.get(groupID);
       parent.selectedCount = parent.selectedCount + (item.selected ? 1 : -1);
 
       parent.selected = parent.selectedCount === parent.childrenCount;
@@ -350,69 +362,50 @@ export class TreeListComponent
     }
   }
 
-  private applyValue(value: itemID[]) {
+  // returns true if listViewModel was updated
+  private applyValue(newValue: itemID[]): boolean {
+    let affectedIDs: itemID[] = this.value || [];
+    this.value = selectValueOrFail(newValue);
+
+    if (!this.itemsMap.size) {
+      return false;
+    }
+    affectedIDs = joinArrays(affectedIDs, newValue || []);
+
     let firstSelectedID: itemID;
 
-    this.itemsMap.forEach((item: TreeListItem, index: number) => {
-      item.selected = !!value && value.includes(item.id);
+    console.log(
+      `
+      applyValue called with value: ${newValue}
+      this.value: ${this.value}
+      affectedIDs: ${affectedIDs}
+    `
+    );
+
+    affectedIDs.forEach(id => {
+      const item = this.itemsMap.get(id);
+      if (!item) {
+        return;
+      }
+
+      item.selected = !!newValue && this.value.includes(item.id);
       if (!firstSelectedID && item.selected) {
         firstSelectedID = item.id;
       }
     });
 
-    if (firstSelectedID && this.itemElements) {
+    if (firstSelectedID) {
       const item = this.itemsMap.get(firstSelectedID);
 
-      let index = this.listViewModel.findIndex(id => id === firstSelectedID);
-
-      if (index === -1 && item.parentIDs) {
-        item.parentIDs.forEach(id => {
-          this.itemsMap.get(id).collapsed = false;
-        });
-        this.updateListViewModel();
-
-        index = this.listViewModel.findIndex(id => id === firstSelectedID);
-      }
-
-      const element = this.listElement.nativeElement.children[index];
-
-      const groupsBefore = this.listViewModel.slice(0, index).filter(id => {
-        const itm = this.itemsMap.get(id);
-
-        return (
-          itm.childrenCount > 0 && (itm.parentCount || 0) < item.parentCount
-        );
-      }).length;
-
-      console.log(
-        'item',
-        firstSelectedID,
-        'has',
-        groupsBefore,
-        'groups before it'
-      );
-
-      const elOffset = element.offsetTop;
-      const scrollTop = this.listElement.nativeElement.scrollTop;
-
-      console.log(
-        // 'element',
-        // element,
-        'index',
-        index,
-        'elOffset',
-        elOffset,
-        'scrollTop',
-        scrollTop,
-        'group offset',
-        groupsBefore * 44,
-        'new scrollTop',
-        elOffset - groupsBefore * LIST_EL_HEIGHT
-      );
-
-      this.listElement.nativeElement.scrollTop =
-        element.offsetTop - groupsBefore * LIST_EL_HEIGHT;
+      return this.viewSrvc.scrollToItem(item, {
+        listViewModel: this.listViewModel,
+        listElement: this.listElement.nativeElement,
+        itemsMap: this.itemsMap,
+        updateListViewModel: this.updateListViewModel.bind(this),
+      });
     }
+
+    return false;
   }
 
   private emitChange(): void {
@@ -438,10 +431,6 @@ export class TreeListComponent
     //       isEqual(this.selectedIDs.sort(), this.optionsDefaultIDs.sort());
   }
 
-  public isGroupSelected(item: TreeListItem): boolean {
-    return item.parentIDs.some(groupID => this.itemsMap.get(groupID).selected);
-  }
-
   public showCheckbox(item: TreeListItem): boolean {
     return this.type === SelectType.multi && !this.readonly && !this.disabled;
   }
@@ -450,15 +439,10 @@ export class TreeListComponent
     id: itemID,
     index: number
   ): TreeListItemViewContext {
-    const item = this.itemsMap.get(id);
-    // const prevItem = this.itemsMap.get(this.listViewModel[index - 1]);
-    const nextItem = this.itemsMap.get(this.listViewModel[index + 1]);
-    return {
-      index,
-      item,
-      groupSelected: this.isGroupSelected(item),
-      nextInViewIsGroup: Boolean(nextItem && nextItem.childrenCount),
-    };
+    return this.viewSrvc.getItemViewContext(id, index, {
+      itemsMap: this.itemsMap,
+      listViewModel: this.listViewModel,
+    });
   }
 
   public trackBy(index: number, id: itemID): itemID {
