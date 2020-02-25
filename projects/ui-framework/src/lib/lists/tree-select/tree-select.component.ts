@@ -6,7 +6,6 @@ import {
   ViewChild,
   Output,
   EventEmitter,
-  SimpleChanges,
 } from '@angular/core';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import {
@@ -29,6 +28,7 @@ import {
   BELOW_END,
   ABOVE_END,
 } from '../../popups/panel/panel-position-service/panel-position.const';
+import { InputEventType } from '../../form-elements/form-elements.enum';
 
 @Component({
   selector: 'b-tree-select',
@@ -42,6 +42,8 @@ export class TreeSelectComponent extends BaseFormElement
   implements TreeListComponentIO {
   constructor(zone: NgZone, cd: ChangeDetectorRef) {
     super(cd);
+    this.baseValue = [];
+    this.wrapEvent = false;
   }
 
   @ViewChild(TreeListPanelComponent, { static: true })
@@ -110,12 +112,6 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   private emitChange(value: TreeListValue): void {
-    if (this.changed.observers.length > 0) {
-      this.changed.emit(value);
-    }
-    if (this.doPropagate) {
-      this.propagateChange(this.value);
-      this.onTouched();
-    }
+    this.transmitValue(value);
   }
 }
