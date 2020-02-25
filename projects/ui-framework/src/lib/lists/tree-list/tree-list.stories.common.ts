@@ -16,6 +16,9 @@ export const TreeListStoriesCommonProps = () => ({
 
   // viewFilter
 
+  hideSelected: boolean('hideSelected', false, 'viewFilter'),
+  externalSearch: text('externalSearch', '', 'viewFilter'),
+
   valueSimple: select(
     'simple list value',
     [

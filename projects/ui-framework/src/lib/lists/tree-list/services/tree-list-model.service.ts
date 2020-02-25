@@ -23,6 +23,7 @@ interface TreeListConverterConfig {
   separator: string;
   collapsed: boolean;
   removeKeys?: string[];
+  onlyValue?: boolean;
 }
 
 @Injectable()
@@ -30,6 +31,21 @@ export class TreeListModelService {
   private counter = 0;
   private errorCounter = 0;
   private maxItems = 10000;
+
+  public getIDtoValueMap(
+    list: TreeListOption[],
+    keyMap = BTL_KEYMAP_DEF,
+    separator = ' / '
+  ): Map<itemID, string> {
+    const map = (this.getListItemsMap(list, new Map(), {
+      keyMap,
+      separator,
+      collapsed: false,
+      onlyValue: true,
+    }) as any) as Map<itemID, string>;
+    map.delete(BTL_ROOT_ID);
+    return map;
+  }
 
   public getListViewModel(
     list: TreeListOption[],
@@ -102,9 +118,10 @@ export class TreeListModelService {
       keyMap: BTL_KEYMAP_DEF,
       separator: ' / ',
       collapsed: false,
+      onlyValue: false,
     }
   ): TreeListItemMap {
-    const { keyMap, separator, collapsed } = config;
+    const { keyMap, separator, collapsed, onlyValue } = config;
     this.counter = 0;
     this.errorCounter = 0;
 
@@ -114,45 +131,29 @@ export class TreeListModelService {
       return itemsMap;
     }
 
-    const rootItem: TreeListItem = {
-      id: BTL_ROOT_ID,
-      name: BTL_ROOT_ID,
-      parentIDs: null,
-      childrenIDs: [],
-      parentCount: 0,
-      groupsCount: 0,
-      selectedCount: 0,
-    };
-
-    for (const item of list) {
-      ++this.counter;
-
-      const itemId = this.getItemId(item, keyMap);
-
-      const converted = this.convertItem(
-        item,
-        itemsMap,
-        {
-          id: itemId,
-          value: this.concatValue(this.getItemName(item, keyMap)),
-          parentIDs: [rootItem.id],
-        },
-        { keyMap, separator, collapsed, removeKeys }
-      );
-
-      if (!converted) {
-        break;
+    this.convertItem(
+      // item
+      {
+        [keyMap.children]: list,
+      },
+      // map
+      itemsMap,
+      // set
+      {
+        id: BTL_ROOT_ID,
+        name: BTL_ROOT_ID,
+        parentIDs: null,
+        parentCount: 0,
+      },
+      // config
+      {
+        keyMap,
+        separator,
+        collapsed,
+        removeKeys,
+        onlyValue,
       }
-
-      rootItem.childrenIDs.push(itemId);
-      if (converted.childrenCount) {
-        ++rootItem.groupsCount;
-      }
-      this.updateMap(itemsMap, itemId, converted);
-    }
-
-    rootItem.childrenCount = rootItem.childrenIDs.length;
-    this.updateMap(itemsMap, rootItem.id, rootItem);
+    );
 
     return itemsMap;
   }
@@ -168,6 +169,7 @@ export class TreeListModelService {
       separator: ' / ',
       collapsed: false,
       removeKeys: [],
+      onlyValue: false,
     }
   ): TreeListItem {
     if (this.counter > this.maxItems) {
@@ -177,13 +179,13 @@ export class TreeListModelService {
       return;
     }
 
-    const { keyMap, separator, collapsed, removeKeys } = config;
+    const { keyMap, separator, collapsed, removeKeys, onlyValue } = config;
 
     const converted: TreeListItem = {
       ...objectRemoveKeys(item, removeKeys),
       ...set,
       id: set.id || this.getItemId(item, keyMap),
-      name: this.getItemName(item, keyMap),
+      name: set.name || this.getItemName(item, keyMap),
       childrenIDs: null,
       groupsCount: 0,
     };
@@ -197,6 +199,7 @@ export class TreeListModelService {
         const cnvrtd = this.convertItem(
           itm,
           itemsMap,
+          // set
           {
             value: this.concatValue(
               set.value || '',
@@ -205,11 +208,13 @@ export class TreeListModelService {
             ),
             parentIDs: [...(set.parentIDs || []), converted.id],
           },
+          // config
           {
             keyMap,
             separator,
             collapsed,
             removeKeys,
+            onlyValue,
           }
         );
 
@@ -219,15 +224,30 @@ export class TreeListModelService {
 
         cnvrtd.parentCount = cnvrtd.parentIDs.length;
         converted.childrenIDs.push(cnvrtd.id);
-        this.updateMap(itemsMap, cnvrtd.id, cnvrtd);
+
+        if (cnvrtd.childrenCount) {
+          ++converted.groupsCount;
+        }
+
+        this.updateMap(itemsMap, cnvrtd.id, cnvrtd, onlyValue);
       }
 
-      ++converted.groupsCount;
       converted.collapsed = collapsed;
       converted.childrenCount = converted.childrenIDs.length;
     }
 
+    this.updateMap(itemsMap, converted.id, converted, onlyValue);
+
     return converted;
+  }
+
+  public getSearchViewFilter(searchValue: string): ViewFilter {
+    return {
+      show: {
+        search: searchValue,
+        searchBy: 'name',
+      },
+    };
   }
 
   private itemFilter(item: TreeListItem, viewFilter: ViewFilter = {}): boolean {
@@ -285,21 +305,18 @@ export class TreeListModelService {
     return result;
   }
 
-  public getSearchViewFilter(searchValue: string): ViewFilter {
-    return {
-      show: {
-        search: searchValue,
-        searchBy: 'name',
-      },
-    };
-  }
-
-  private updateMap(
-    itemsMap: TreeListItemMap,
+  private updateMap<T = TreeListItem>(
+    itemsMap: Map<itemID, T>,
     key: itemID,
-    value: TreeListItem
-  ): TreeListItemMap {
-    return itemsMap.set(key, Object.assign(itemsMap.get(key) || {}, value));
+    item: TreeListItem,
+    onlyValue = false
+  ): Map<itemID, T> {
+    return itemsMap.set(
+      key,
+      ((!onlyValue
+        ? Object.assign(itemsMap.get(key) || {}, item)
+        : item.value) as any) as T
+    );
   }
 
   private getItemId(item: TreeListOption, keyMap: TreeListKeyMap): itemID {

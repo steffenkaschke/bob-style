@@ -455,4 +455,11 @@ export class TreeListComponent
     console.log('---------MAP---------\n', this.itemsMap);
     console.log('---------VIEWMODEL---------\n', this.listViewModel);
   }
+
+  logValuesMap() {
+    console.log(
+      'IDs to Values map:\n',
+      this.modelSrvc.getIDtoValueMap(this.list, this.keyMap)
+    );
+  }
 }

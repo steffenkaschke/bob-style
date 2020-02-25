@@ -16,6 +16,15 @@ const template = `
       [keyMap]="options === 'simple' ? serverKeyMap : null"
       [list]="options === 'simple' ? listSimple : listRandom"
       [value]="options === 'simple' ? valueSimple : valueRandom"
+      [viewFilter]="hideSelected ? {
+        hide: {
+          prop: { selected: true }
+        }
+      } : externalSearch ? {
+        show: {
+          search: externalSearch
+        }
+      } : undefined"
       [maxHeightItems]="maxHeightItems"
       [valueSeparatorChar]="valueSeparatorChar"
       [startCollapsed]="startCollapsed"
