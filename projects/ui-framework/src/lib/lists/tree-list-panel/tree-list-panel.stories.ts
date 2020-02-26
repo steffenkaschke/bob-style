@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { ComponentGroupType } from '../../consts';
-import { withKnobs } from '@storybook/addon-knobs';
+import { withKnobs, object } from '@storybook/addon-knobs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TreeListPanelModule } from './tree-list-panel.module';
@@ -19,6 +19,7 @@ const componentTemplate = `
       [keyMap]="options === 'simple' ? serverKeyMap : null"
       [list]="options === 'simple' ? listSimple : listRandom"
       [value]="options === 'simple' ? valueSimple : valueRandom"
+      [listActions]="footerActions"
       [maxHeightItems]="maxHeightItems"
       [valueSeparatorChar]="valueSeparatorChar"
       [startCollapsed]="startCollapsed"
@@ -26,8 +27,8 @@ const componentTemplate = `
       [readonly]="readonly"
       [disabled]="disabled"
       (changed)="changed($event)"
-      (apply)="apply($event)"
-      (cancel)="cancel($event)"
+      (apply)="apply()"
+      (cancel)="cancel()"
       [debug]="debug">
 
     <b-square-button  [disabled]="disabled"
@@ -66,7 +67,12 @@ story.add(
         icons: Icons,
         buttonType: ButtonType,
 
-        ...TreeListStoriesCommonProps(),
+        ...TreeListStoriesCommonProps({
+          apply: true,
+          cancel: true,
+          clear: true,
+          reset: false,
+        }),
       },
       moduleMetadata: {
         imports: [

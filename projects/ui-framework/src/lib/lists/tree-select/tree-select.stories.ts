@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { ComponentGroupType } from '../../consts';
-import { withKnobs, text, boolean } from '@storybook/addon-knobs';
+import { withKnobs, text, boolean, object } from '@storybook/addon-knobs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TreeSelectModule } from './tree-select.module';
@@ -17,6 +17,7 @@ const componentTemplate = `
       [list]="options === 'simple' ? listSimple : listRandom"
       [keyMap]="options === 'simple' ? serverKeyMap : null"
       [value]="options === 'simple' ? valueSimple : valueRandom"
+      [listActions]="footerActions"
       [label]="label"
       [placeholder]="placeholder"
       [description]="description"
@@ -60,7 +61,12 @@ story.add(
     return {
       template,
       props: {
-        ...TreeListStoriesCommonProps(),
+        ...TreeListStoriesCommonProps({
+          apply: true,
+          cancel: true,
+          clear: true,
+          reset: false,
+        }),
 
         label: text('label', 'label text', 'Props'),
         description: text('description', mockText(30), 'Props'),

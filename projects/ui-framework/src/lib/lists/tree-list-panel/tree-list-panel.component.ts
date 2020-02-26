@@ -101,6 +101,7 @@ export class TreeListPanelComponent
 
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
+
   @Output() changed: EventEmitter<TreeListValue> = new EventEmitter<
     TreeListValue
   >();
@@ -116,8 +117,6 @@ export class TreeListPanelComponent
   public panelOpen = false;
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('---------------', 'Tree Panel ngOnChanges', changes);
-
     if (hasChanges(changes, ['disabled'])) {
       this.destroyPanel();
     }

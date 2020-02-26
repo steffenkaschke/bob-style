@@ -26,6 +26,7 @@ const template = `
           search: externalSearch
         }
       } : undefined"
+      [listActions]="footerActions"
       [maxHeightItems]="maxHeightItems"
       [valueSeparatorChar]="valueSeparatorChar"
       [startCollapsed]="startCollapsed"
@@ -33,8 +34,8 @@ const template = `
       [readonly]="readonly"
       [disabled]="disabled"
       (changed)="changed($event)"
-      (apply)="apply($event)"
-      (cancel)="cancel($event)"
+      (apply)="apply()"
+      (cancel)="cancel()"
       [debug]="debug">
 
 </b-tree-list>

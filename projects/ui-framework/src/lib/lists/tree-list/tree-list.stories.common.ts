@@ -9,7 +9,14 @@ import {
   makeRandomList,
 } from './tree-list.mock';
 
-export const TreeListStoriesCommonProps = () => ({
+export const TreeListStoriesCommonProps = (
+  footerActions = {
+    apply: false,
+    cancel: false,
+    clear: false,
+    reset: false,
+  }
+) => ({
   serverKeyMap: BTL_KEYMAP_SERVER,
   type: select('type', Object.values(SelectType), SelectType.multi, 'Props'),
   maxHeightItems: number('maxHeightItems', 8, {}, 'Props'),
@@ -23,6 +30,13 @@ export const TreeListStoriesCommonProps = () => ({
 
   hideSelected: boolean('hideSelected', false, 'viewFilter'),
   externalSearch: text('externalSearch', '', 'viewFilter'),
+
+  options: select(
+    'list',
+    ['simple', 'random', 'big', 'single group'],
+    'simple',
+    'Data'
+  ),
 
   valueSimple: select(
     'simple list value',
@@ -40,19 +54,14 @@ export const TreeListStoriesCommonProps = () => ({
       ],
     ],
     0,
-    'Value'
+    'Data'
   ),
-  valueRandom: select('random list value', [], undefined, 'Value'),
+  valueRandom: select('random list value', [], undefined, 'Data'),
 
-  options: select(
-    'list',
-    ['simple', 'random', 'big', 'single group'],
-    'simple',
-    'List'
-  ),
+  footerActions: object('footerActions', footerActions, 'Props'),
 
   listRandom: HListMock,
-  listSimple: object('listSimple', HListMockSimple, 'List'),
+  listSimple: HListMockSimple,
   listHuge: makeRandomList(5, 65, 4, [8, 15]),
   listSingleGroup: HListMockSingleGroup,
 
