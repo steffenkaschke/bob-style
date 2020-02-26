@@ -48,7 +48,7 @@ export class TreeListComponent extends BaseTreeListElement
     super(modelSrvc, cntrlsSrvc, viewSrvc, DOM, cd, zone, host);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     console.log('---------------', 'Tree LIST ngOnChanges', changes);
 
     console.time('ngOnChanges');
