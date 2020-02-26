@@ -65,7 +65,8 @@ export class TreeListViewService {
 
     if (indexInView === -1) {
       console.error(
-        `[TreeListComponent.scrollToItem]: Item ${item.id} was not found in view.`
+        `[TreeListViewService.scrollToItem]:
+        Item ${item.id} was not found in view.`
       );
       return viewModelWasUpdated;
     }
@@ -91,12 +92,10 @@ export class TreeListViewService {
     const { itemsMap, listViewModel } = config;
     const item = itemsMap.get(id);
 
-    const nextItem = itemsMap.get(listViewModel[index + 1]);
     return {
       index,
       item,
       groupSelected: this.isGroupSelected(item, itemsMap),
-      nextInViewIsGroup: Boolean(nextItem && nextItem.childrenCount),
     };
   }
 

@@ -39,6 +39,9 @@ import {
   joinArrays,
   notFirstChanges,
   firstChanges,
+  arrayDifference,
+  isNotEmptyArray,
+  stringify,
 } from '../../services/utils/functional-utils';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { LIST_ACTIONS_STATE_DEF } from '../list-footer/list-footer.const';
@@ -79,14 +82,14 @@ export class TreeListComponent
 
   @Input('value') set setValue(value: itemID[]) {}
   public value: itemID[];
-
+  @Input() valueDefault: itemID[];
   @Input() viewFilter: ViewFilter;
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
 
   @Input() type: SelectType = SelectType.multi;
   @Input() valueSeparatorChar = ' / ';
   @Input() maxHeightItems = 8;
-  @Input() showSingleGroupHeader = false;
+  @Input() showSingleGroupHeader = true;
   @Input() startCollapsed = true;
   @Input() focusOnInit = false;
   @Input() readonly = false;
@@ -97,8 +100,9 @@ export class TreeListComponent
     clear: false,
     reset: false,
   };
-  @HostBinding('attr.data-embedded') @Input() public embedded = false;
-  @HostBinding('hidden') @Input() public hidden = true;
+  @HostBinding('attr.data-embedded') @Input() embedded = false;
+  @HostBinding('hidden') @Input() hidden = true;
+  @HostBinding('attr.data-debug') @Input() debug = false;
 
   @Output() changed: EventEmitter<TreeListValue> = new EventEmitter<
     TreeListValue
@@ -118,6 +122,7 @@ export class TreeListComponent
   readonly selectType = SelectType;
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.time('ngOnChanges');
     let viewModelWasUpdated = false;
 
     applyChanges(
@@ -136,17 +141,36 @@ export class TreeListComponent
     }
 
     if (
-      hasChanges(changes, ['list'], true) &&
-      changes.list.currentValue !== this.list
+      hasChanges(changes, ['showSingleGroupHeader']) &&
+      isNotEmptyArray(this.list, 1)
     ) {
-      this.list = changes.list.currentValue;
-      this.hidden = !this.list.length;
+    }
 
+    if (
+      (hasChanges(changes, ['list'], true) &&
+        changes.list.currentValue !== this.list) ||
+      hasChanges(changes, ['showSingleGroupHeader'])
+    ) {
+      if (changes.list) {
+        this.list = changes.list.currentValue;
+        this.hidden = !this.list.length;
+      }
+
+      if (
+        !this.showSingleGroupHeader &&
+        this.list.length === 1 &&
+        this.list[0][this.keyMap.children]
+      ) {
+        this.list = this.list[0][this.keyMap.children];
+      }
+
+      console.time('getListItemsMap');
       this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
         keyMap: this.keyMap,
         separator: this.valueSeparatorChar,
         collapsed: this.startCollapsed,
       });
+      console.timeEnd('getListItemsMap');
 
       this.showSearch = this.itemsMap.size > 10;
     }
@@ -170,20 +194,27 @@ export class TreeListComponent
       this.toggleCollapseAll(this.startCollapsed, false);
     }
 
-    // if (
-    //   hasChanges(changes, [
-    //     'options',
-    //     'showSingleGroupHeader',
-    //     'optionsDefault',
-    //   ])
-    // ) {
-    //   this.updateActionButtonsState();
-    // }
+    if (hasChanges(changes, ['valueDefault'], true)) {
+      const defaultsExist = isNotEmptyArray(this.valueDefault);
+      this.listActions.clear = !defaultsExist;
+      this.listActions.reset = defaultsExist;
+    }
+
+    if (
+      hasChanges(changes, ['list', 'valueDefault'], true) ||
+      hasChanges(changes, ['showSingleGroupHeader', 'value'])
+    ) {
+      this.updateActionButtonsState();
+    }
 
     if (
       !viewModelWasUpdated &&
       (hasChanges(changes, ['list', 'viewFilter'], true) ||
-        hasChanges(changes, ['value', 'startCollapsed']))
+        hasChanges(changes, [
+          'value',
+          'startCollapsed',
+          'showSingleGroupHeader',
+        ]))
     ) {
       this.updateListViewModel();
     }
@@ -202,6 +233,7 @@ export class TreeListComponent
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
     }
+    console.timeEnd('ngOnChanges');
   }
 
   ngOnInit() {
@@ -254,6 +286,7 @@ export class TreeListComponent
   }
 
   private updateListViewModel(expand = false): void {
+    console.time('updateListViewModel');
     this.listViewModel.length = 0;
 
     this.listViewModel.push(
@@ -264,11 +297,12 @@ export class TreeListComponent
       })
     );
 
-    console.log('updateListViewModel listViewModel', this.listViewModel);
+    console.log('===> updateListViewModel', this.listViewModel);
 
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
     }
+    console.timeEnd('updateListViewModel');
   }
 
   public searchChange(value: string) {
@@ -302,8 +336,6 @@ export class TreeListComponent
     } else {
       this.toggleItemSelect(item);
     }
-
-    this.updateActionButtonsState();
   }
 
   private toggleItemCollapsed(item: TreeListItem, element: HTMLElement): void {
@@ -337,15 +369,23 @@ export class TreeListComponent
       parent.indeterminate = !parent.selected && !!parent.selectedCount;
     }
 
+    this.updateActionButtonsState();
     this.cd.detectChanges();
+    this.emitChange();
   }
 
   public clearList(): void {
     this.applyValue(null);
-    this.updateActionButtonsState();
+    this.updateActionButtonsState(true);
+    this.cd.detectChanges();
+    this.emitChange();
   }
 
-  public resetList(): void {}
+  public resetList(): void {
+    this.applyValue(this.valueDefault);
+    this.listActionsState.apply.disabled = false;
+    this.emitChange();
+  }
 
   public onApply(): void {
     if (this.apply.observers.length > 0) {
@@ -361,14 +401,16 @@ export class TreeListComponent
 
   // returns true if listViewModel was updated
   private applyValue(newValue: itemID[]): boolean {
+    console.time('applyValue');
     let affectedIDs: itemID[] = this.value || [];
     this.value = selectValueOrFail(newValue);
     let viewModelWasUpdated = false;
+    console.log('<=== applyValue:', this.value);
 
     if (!this.itemsMap.size) {
       return viewModelWasUpdated;
     }
-    affectedIDs = joinArrays(affectedIDs, newValue || []);
+    affectedIDs = joinArrays(affectedIDs, this.value || []);
 
     let firstSelectedID: itemID;
 
@@ -376,6 +418,11 @@ export class TreeListComponent
       const item = this.itemsMap.get(id);
 
       if (!item) {
+        console.error(
+          `[TreeListComponent.applyValue]:
+          No item data for ID: "${stringify(id)}". Removing ID from value.`
+        );
+        this.value = this.value.filter(valId => valId !== id);
         return;
       }
 
@@ -405,6 +452,7 @@ export class TreeListComponent
       viewModelWasUpdated = true;
     }
 
+    console.timeEnd('applyValue');
     return viewModelWasUpdated;
   }
 
@@ -413,22 +461,21 @@ export class TreeListComponent
       selectedIDs: this.value,
       selectedValues: [],
     });
+    // this.listActionsState.apply.disabled = false;
   }
 
   protected updateActionButtonsState(
     forceClear: boolean = null,
     forceReset: boolean = null
   ) {
-    // this.listActionsState.clear.hidden =
-    //   forceClear !== null
-    //     ? forceClear
-    //     : !this.selectedIDs || this.selectedIDs.length === 0;
-    // this.listActionsState.reset.hidden =
-    //   forceReset !== null
-    //     ? forceReset
-    //     : !this.selectedIDs ||
-    //       !this.optionsDefaultIDs ||
-    //       isEqual(this.selectedIDs.sort(), this.optionsDefaultIDs.sort());
+    this.listActionsState.clear.hidden =
+      forceClear !== null ? forceClear : !this.value || this.value.length === 0;
+    this.listActionsState.reset.hidden =
+      forceReset !== null
+        ? forceReset
+        : !this.value ||
+          !this.valueDefault ||
+          !arrayDifference(this.value, this.valueDefault).length;
   }
 
   public showCheckbox(item: TreeListItem): boolean {
@@ -449,17 +496,46 @@ export class TreeListComponent
     return id;
   }
 
-  log() {
-    console.log('---------CMPNT---------\n', this);
-    console.log('---------LIST---------\n', this.list);
-    console.log('---------MAP---------\n', this.itemsMap);
-    console.log('---------VIEWMODEL---------\n', this.listViewModel);
-  }
+  log(what = 'Data') {
+    switch (what) {
+      case 'Data':
+        console.log('---------CMPNT---------\n', this);
+        console.log('---------LIST---------\n', this.list);
+        console.log('---------MAP---------\n', this.itemsMap);
+        console.log('---------VIEWMODEL---------\n', this.listViewModel);
+        break;
 
-  logValuesMap() {
-    console.log(
-      'IDs to Values map:\n',
-      this.modelSrvc.getIDtoValueMap(this.list, this.keyMap)
-    );
+      case 'ValuesMap':
+        console.log(
+          '------------------\n',
+          'IDs to Values map:\n',
+          this.modelSrvc.getIDtoValueMap(this.list, this.keyMap)
+        );
+        break;
+
+      case 'ViewContext':
+        console.log(
+          '------------------\n',
+          'Items view context:\n',
+          this.listViewModel.map(id => {
+            const item = this.itemsMap.get(id);
+            return {
+              id: item.id,
+              collapsed: item.collapsed,
+              parentCount: item.parentCount,
+              childrenCount: item.childrenCount,
+              groupsCount: item.groupsCount,
+              selectedCount: item.selectedCount,
+              allOptionsHidden: item.allOptionsHidden,
+              nextInViewIsGroup: item.nextInViewIsGroup,
+            };
+          })
+        );
+        break;
+
+      case 'Value':
+        console.log('---------VALUE---------\n', this.value);
+        break;
+    }
   }
 }

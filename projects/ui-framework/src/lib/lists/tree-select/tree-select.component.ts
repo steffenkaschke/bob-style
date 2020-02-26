@@ -51,6 +51,7 @@ export class TreeSelectComponent extends BaseFormElement
 
   @Input() list: TreeListOption[];
   @Input() value: itemID[];
+  @Input() valueDefault: itemID[];
   @Input() viewFilter: ViewFilter;
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
 
@@ -68,6 +69,7 @@ export class TreeSelectComponent extends BaseFormElement
     reset: false,
   };
   @Input() tooltipType: TruncateTooltipType = TruncateTooltipType.auto;
+  @Input() debug = false;
 
   @Output() changed: EventEmitter<TreeListValue> = new EventEmitter<
     TreeListValue

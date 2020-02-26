@@ -24,7 +24,8 @@ const componentTemplate = `
       [startCollapsed]="startCollapsed"
       [showSingleGroupHeader]="showSingleGroupHeader"
       [readonly]="readonly"
-      [disabled]="disabled">
+      [disabled]="disabled"
+      [debug]="debug">
 
     <b-square-button  [disabled]="disabled"
                       [type]="buttonType.secondary"

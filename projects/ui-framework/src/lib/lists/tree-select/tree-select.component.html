@@ -9,6 +9,7 @@
 <b-tree-list-panel [type]="type"
                    [list]="list"
                    [value]="value"
+                   [valueDefault]="valueDefault"
                    [viewFilter]="viewFilter"
                    [keyMap]="keyMap"
                    [valueSeparatorChar]="valueSeparatorChar"
@@ -23,7 +24,8 @@
                    [hasArrow]="false"
                    (changed)="onSelect($event)"
                    (opened)="onPanelOpen($event)"
-                   (closed)="onPanelClose()">
+                   (closed)="onPanelClose()"
+                   [debug]="debug">
 
   <!--  'panel-open': panelOpen -->
   <div class="bfe-wrap has-suffix"

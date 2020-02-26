@@ -9,18 +9,22 @@ $bhl-max-depth: 5;
 
 //-------DEV---------
 .dev {
-  position: absolute;
-  top: 105%;
-  left: 0;
-  right: 0;
-  // display: none;
-
-  p {
-    margin: 0 0 5px 0;
-  }
+  display: none;
 }
-:host {
+:host[data-debug='true'] {
   overflow: visible !important;
+
+  .dev {
+    display: block;
+    position: absolute;
+    top: 105%;
+    left: 0;
+    right: 0;
+
+    p {
+      margin: 0 0 5px 0;
+    }
+  }
 }
 //----------------
 

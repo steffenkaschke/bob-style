@@ -28,7 +28,8 @@ const componentTemplate = `
       [required]="required"
       [readonly]="readonly"
       [hintMessage]="hintMessage"
-      [errorMessage]="errorMessage">
+      [errorMessage]="errorMessage"
+      [debug]="debug">
 
 </b-tree-select>
 `;

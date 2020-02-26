@@ -8,6 +8,7 @@ export type itemID = string | number;
 export interface TreeListComponentIO {
   list: TreeListOption[];
   value: itemID[];
+  valueDefault: itemID[];
   viewFilter: ViewFilter;
   keyMap: TreeListKeyMap;
 
@@ -66,6 +67,7 @@ export interface TreeListItem {
 
   // context
   allOptionsHidden?: boolean;
+  nextInViewIsGroup?: boolean;
 
   [key: string]: any;
 }

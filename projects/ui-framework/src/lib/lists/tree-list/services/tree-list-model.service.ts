@@ -30,7 +30,7 @@ interface TreeListConverterConfig {
 export class TreeListModelService {
   private counter = 0;
   private errorCounter = 0;
-  private maxItems = 10000;
+  private maxItems = 5000;
 
   public getIDtoValueMap(
     list: TreeListOption[],
@@ -74,19 +74,21 @@ export class TreeListModelService {
 
         if (!itemData) {
           console.error(
-            `[TreeListModelService]: Cannot find item data for ${stringify(
-              item
-            )}`
+            `[TreeListModelService.getListViewModel]:
+            Cannot find item data for ${stringify(item, 70)}.`
           );
-          break;
+          continue;
         }
+
+        itemData.nextInViewIsGroup = false;
 
         const filterResult = this.itemFilter(itemData, viewFilter);
 
         if (filterResult !== false) {
-          model.push(itemData.id);
+          const itemIndexInView = model.push(itemData.id) - 1;
+          const itemIsGroup = isNotEmptyArray(item[keyMap.children]);
 
-          if (item[keyMap.children] && (!itemData.collapsed || expand)) {
+          if (itemIsGroup && (!itemData.collapsed || expand)) {
             const childrenModel = addIDs(item[keyMap.children]);
 
             if (childrenModel.length) {
@@ -96,10 +98,17 @@ export class TreeListModelService {
             } else {
               if (!filterResult) {
                 model.pop();
+                continue;
               } else {
                 itemData.collapsed = true;
                 itemData.allOptionsHidden = true;
               }
+            }
+          }
+          if (itemIsGroup) {
+            const prevInViewItem = itemsMap.get(model[itemIndexInView - 1]);
+            if (prevInViewItem) {
+              prevInViewItem.nextInViewIsGroup = true;
             }
           }
         }
@@ -174,7 +183,8 @@ export class TreeListModelService {
   ): TreeListItem {
     if (this.counter > this.maxItems) {
       console.error(
-        `[TreeListModelService]: List too complex! List with more than ${this.maxItems} items are not supported. Truncating to first ${this.maxItems} items.`
+        `[TreeListModelService.convertItem]:
+        List too complex! List with more than ${this.maxItems} items are not supported. Truncating to first ${this.maxItems} items.`
       );
       return;
     }
@@ -322,10 +332,10 @@ export class TreeListModelService {
   private getItemId(item: TreeListOption, keyMap: TreeListKeyMap): itemID {
     if (isNullOrUndefined(item[keyMap.id]) && this.errorCounter < 5) {
       console.error(
-        `[TreeListModelService]:
+        `[TreeListModelService.getItemId]:
         Item ${stringify(item, 70)} does not have a unique ID (${keyMap.id})!
         Or your KeyMap (${stringify(keyMap)}) is wrong.
-        Every item list should have unique one. Item name will be used in place of ID, but proper behaviour is not guaranteed.`
+        Every item list should have unique ID. Item Name will be used in place of ID, but proper behaviour is not guaranteed.`
       );
       ++this.errorCounter;
     }
@@ -338,8 +348,8 @@ export class TreeListModelService {
   private getItemName(item: TreeListOption, keyMap: TreeListKeyMap): string {
     if (isNullOrUndefined(item[keyMap.name])) {
       throw new Error(
-        `[TreeListModelService]:
-        Item ${stringify(item, 70)} does not have a name (${keyMap.name})!
+        `[TreeListModelService.getItemName]:
+        Item ${stringify(item, 70)} does not have a Name (${keyMap.name})!
         Or your KeyMap (${stringify(keyMap)}) is wrong.
         Cannot continue.`
       );
