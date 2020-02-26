@@ -1,7 +1,6 @@
 <ng-template #listItem
              let-index="index"
-             let-item="item"
-             let-groupSelected="groupSelected">
+             let-item="item">
 
   <li class="bhl-item"
       #itemElements
@@ -10,8 +9,8 @@
       [ngClass]="{
         'bhl-item-option': !item.childrenCount,
         'bhl-item-group': item.childrenCount,
-        disabled: item.disabled || groupSelected,
-        selected: item.selected || groupSelected,
+        disabled: item.disabled || (type === selectType.multi && item.parentSelected),
+        selected: item.selected || (type === selectType.multi && item.parentSelected),
         indeterminate: item.indeterminate,
         expanded: item.childrenCount && !item.collapsed,
         collapsed: item.collapsed,
@@ -22,7 +21,7 @@
       [attr.data-level]="item.parentCount || 1">
 
     <span *ngIf="item.childrenIDs"
-          class="bhl-item-chevron"></span>
+          class="bhl-item-chevron has-hover"></span>
 
     <span *ngIf="showCheckbox(item)"
           class="bhl-item-checkbox"

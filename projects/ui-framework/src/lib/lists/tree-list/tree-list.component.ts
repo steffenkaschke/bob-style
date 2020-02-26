@@ -171,6 +171,10 @@ export class TreeListComponent
       this.showSearch = this.itemsMap.size > 10;
     }
 
+    if (hasChanges(changes, ['value'])) {
+      console.log('LIST CHNGES VALUE', changes.value.currentValue);
+    }
+
     if (hasChanges(changes, ['list'], true) || hasChanges(changes, ['value'])) {
       if (firstChanges(changes, ['list'])) {
         this.updateListViewModel();
@@ -201,6 +205,14 @@ export class TreeListComponent
       hasChanges(changes, ['showSingleGroupHeader', 'value'])
     ) {
       this.updateActionButtonsState();
+    }
+
+    if (
+      notFirstChanges(changes, ['type']) &&
+      this.type !== SelectType.multi &&
+      this.value.length
+    ) {
+      this.modelSrvc.deselectAllItemsInMap(this.itemsMap);
     }
 
     if (
@@ -335,7 +347,11 @@ export class TreeListComponent
       this.toggleItemCollapsed(item, element);
       return;
     }
-    if (!item.childrenCount || item.allOptionsHidden) {
+    if (
+      !item.childrenCount ||
+      item.allOptionsHidden ||
+      this.type === SelectType.single
+    ) {
       this.toggleItemSelect(item);
     }
   }
@@ -385,6 +401,8 @@ export class TreeListComponent
       } else {
         this.value = [];
       }
+
+      this.emitChange();
     }
 
     // this.cd.detectChanges();
@@ -479,7 +497,7 @@ export class TreeListComponent
     console.time('applyValue');
     let affectedIDs: itemID[] = this.value || [];
     this.value = selectValueOrFail(newValue);
-    if (this.type === SelectType.single) {
+    if (this.value && this.type === SelectType.single) {
       this.value = this.value.slice(0, 1);
     }
     let viewModelWasUpdated = false;
@@ -535,10 +553,14 @@ export class TreeListComponent
   }
 
   private emitChange(): void {
-    this.changed.emit({
-      selectedIDs: this.value,
-      selectedValues: [],
-    });
+    if (this.type === SelectType.single) {
+      this.changed.emit({
+        selectedIDs: this.value,
+        selectedValues: this.value[0]
+          ? [this.itemsMap.get(this.value[0]).value]
+          : [],
+      });
+    }
     // this.listActionsState.apply.disabled = false;
   }
 

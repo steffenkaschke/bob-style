@@ -174,6 +174,7 @@ $bhl-max-depth: 5;
 
   &:before {
     font-size: map-get($icon-sizes, 'medium');
+    color: map-get-deep($icon-colors, 'dark', color);
     @include size($b-checkbox-size);
     line-height: $b-checkbox-size;
     display: flex;
@@ -183,11 +184,15 @@ $bhl-max-depth: 5;
 
 :host ::ng-deep {
   .collapsed .bhl-item-chevron {
-    @include b-icon(chevron-right, $size: null);
+    @include b-icon(chevron-right, $size: null, $color: false, $hover: false) {
+      display: flex;
+    }
   }
 
   .expanded .bhl-item-chevron {
-    @include b-icon(chevron-down, $size: null);
+    @include b-icon(chevron-down, $size: null, $color: false, $hover: false) {
+      display: flex;
+    }
   }
 
   .all-options-hidden .bhl-item-chevron {
@@ -299,4 +304,18 @@ $bhl-max-depth: 5;
 
 [hidden] {
   display: none;
+}
+
+// Types
+
+:host ::ng-deep {
+  [data-type='single'] {
+    .bhl-item-chevron {
+      cursor: pointer;
+
+      &:hover:before {
+        color: map-get-deep($icon-colors, 'dark', hover);
+      }
+    }
+  }
 }

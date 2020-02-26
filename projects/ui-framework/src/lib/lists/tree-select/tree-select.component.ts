@@ -28,7 +28,10 @@ import {
   BELOW_END,
   ABOVE_END,
 } from '../../popups/panel/panel-position-service/panel-position.const';
-import { InputEventType } from '../../form-elements/form-elements.enum';
+import {
+  InputEventType,
+  FormEvents,
+} from '../../form-elements/form-elements.enum';
 
 @Component({
   selector: 'b-tree-select',
@@ -43,7 +46,7 @@ export class TreeSelectComponent extends BaseFormElement
   constructor(zone: NgZone, cd: ChangeDetectorRef) {
     super(cd);
     this.baseValue = [];
-    this.wrapEvent = false;
+    this.wrapEvent = true;
   }
 
   @ViewChild(TreeListPanelComponent, { static: true })
@@ -110,10 +113,24 @@ export class TreeSelectComponent extends BaseFormElement
   public onCancel(): void {}
 
   public onSelect(value: TreeListValue): void {
+    // this.value = value.selectedIDs;
+
     this.emitChange(value);
   }
 
   private emitChange(value: TreeListValue): void {
-    this.transmitValue(value);
+    console.log('====> Select emitChange', value);
+
+    this.transmitValue(value.selectedIDs, {
+      eventType: [InputEventType.onChange],
+      emitterName: FormEvents.changed,
+      doPropagate: true,
+      addToEventObj: {
+        selectedValues: value.selectedValues,
+      },
+      eventObjValueKey: 'selectedIDs',
+      eventObjOmitEventType: true,
+      updateValue: true,
+    });
   }
 }

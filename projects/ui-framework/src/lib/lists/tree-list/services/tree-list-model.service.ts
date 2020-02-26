@@ -26,7 +26,9 @@ interface TreeListConverterConfig {
   onlyValue?: boolean;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class TreeListModelService {
   private counter = 0;
   private errorCounter = 0;
@@ -255,7 +257,11 @@ export class TreeListModelService {
     return converted;
   }
 
-  private deselectItems() {}
+  public deselectAllItemsInMap(itemsMap: TreeListItemMap) {
+    itemsMap.forEach(item => {
+      item.selected = false;
+    });
+  }
 
   public getSearchViewFilter(searchValue: string): ViewFilter {
     return {
@@ -369,9 +375,14 @@ export class TreeListModelService {
     separator = ' / '
   ): string {
     const sprtrReg = stringToRegex(separator, 'gi');
+
     return (
-      (start ? start.replace(sprtrReg, '-') : '') +
-      (current ? (start ? separator : '') + current.replace(sprtrReg, '-') : '')
+      (start ? start : '') + (current ? (start ? separator : '') + current : '')
     );
+
+    // return (
+    //   (start ? start.replace(sprtrReg, '-') : '') +
+    //   (current ? (start ? separator : '') + current.replace(sprtrReg, '-') : '')
+    // );
   }
 }
