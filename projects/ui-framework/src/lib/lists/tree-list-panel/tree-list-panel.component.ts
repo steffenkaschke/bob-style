@@ -116,6 +116,8 @@ export class TreeListPanelComponent
   public panelOpen = false;
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log('---------------', 'Tree Panel ngOnChanges', changes);
+
     if (hasChanges(changes, ['disabled'])) {
       this.destroyPanel();
     }
@@ -209,6 +211,12 @@ export class TreeListPanelComponent
     this.destroyPanel();
   }
 
+  public onSelect(value: TreeListValue): void {
+    if (this.changed.observers.length > 0) {
+      this.changed.emit(value);
+    }
+  }
+
   public onApply(): void {
     if (this.apply.observers.length > 0) {
       this.apply.emit();
@@ -221,10 +229,6 @@ export class TreeListPanelComponent
       this.cancel.emit();
     }
     this.destroyPanel();
-  }
-
-  public onSelect(value: TreeListValue): void {
-    this.changed.emit(value);
   }
 
   protected destroyPanel(): void {

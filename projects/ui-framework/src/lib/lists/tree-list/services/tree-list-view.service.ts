@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  TreeListItem,
-  itemID,
-  TreeListItemMap,
-  TreeListItemViewContext,
-} from '../tree-list.interface';
+import { TreeListItem, itemID, TreeListItemMap } from '../tree-list.interface';
 import { isEmptyArray } from '../../../services/utils/functional-utils';
 import { LIST_EL_HEIGHT } from '../../list.consts';
 
@@ -81,28 +76,10 @@ export class TreeListViewService {
     return viewModelWasUpdated;
   }
 
-  public getItemViewContext(
-    id: itemID,
-    index: number,
-    config: {
-      itemsMap: TreeListItemMap;
-      listViewModel: itemID[];
-    }
-  ): TreeListItemViewContext {
-    const { itemsMap, listViewModel } = config;
-    const item = itemsMap.get(id);
-
-    return {
-      index,
-      item,
-      groupSelected: this.isGroupSelected(item, itemsMap),
-    };
-  }
-
-  private isGroupSelected(
-    item: TreeListItem,
-    itemsMap: TreeListItemMap
-  ): boolean {
-    return item.parentIDs.some(groupID => itemsMap.get(groupID).selected);
-  }
+  // private isGroupSelected(
+  //   item: TreeListItem,
+  //   itemsMap: TreeListItemMap
+  // ): boolean {
+  //   return item.parentIDs.some(groupID => itemsMap.get(groupID).selected);
+  // }
 }

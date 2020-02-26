@@ -14,12 +14,12 @@ export interface TreeListComponentIO {
 
   type: SelectType;
   valueSeparatorChar: string;
+  listActions: ListFooterActions;
   maxHeightItems: number;
   showSingleGroupHeader: boolean;
   startCollapsed: boolean;
   readonly: boolean;
   disabled: boolean;
-  listActions: ListFooterActions;
 
   embedded?: boolean;
   focusOnInit?: boolean;
@@ -39,7 +39,7 @@ export interface TreeListOption {
 export interface TreeListKeyMap {
   id: string;
   name: string;
-  children?: string;
+  children: string;
   [targetKey: string]: string;
 }
 
@@ -70,15 +70,9 @@ export interface TreeListItem {
   // context
   allOptionsHidden?: boolean;
   nextInViewIsGroup?: boolean;
+  originalIndex?: number;
 
   [key: string]: any;
-}
-
-export interface TreeListItemViewContext {
-  index: number;
-  item: TreeListItem;
-  groupSelected?: boolean;
-  nextInViewIsGroup?: boolean;
 }
 
 export interface TreeListValue {

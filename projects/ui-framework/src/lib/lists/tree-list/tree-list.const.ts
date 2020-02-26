@@ -20,4 +20,5 @@ export const BTL_KEYMAP_DEF: TreeListKeyMap = {
 export const BTL_KEYMAP_SERVER: TreeListKeyMap = {
   id: 'serverId',
   name: 'value',
+  children: 'children',
 };

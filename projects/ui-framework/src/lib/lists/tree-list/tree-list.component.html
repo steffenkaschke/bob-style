@@ -61,7 +61,10 @@
     (keydown)="onListKeyDown($event)">
 
   <ng-container *ngFor="let itemID of listViewModel; let index = index; trackBy: trackBy">
-    <ng-container *ngTemplateOutlet="listItem; context: getItemViewContext(itemID,index)"></ng-container>
+    <ng-container *ngTemplateOutlet="listItem; context: {
+      index: index,
+      item: itemsMap.get(itemID)
+    }"></ng-container>
   </ng-container>
 
 </ul>

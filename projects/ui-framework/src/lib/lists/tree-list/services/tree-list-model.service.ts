@@ -15,6 +15,7 @@ import {
   isEmptyArray,
   objectRemoveKeys,
   stringify,
+  isBoolean,
 } from '../../../services/utils/functional-utils';
 import { BTL_ROOT_ID, BTL_KEYMAP_DEF } from '../tree-list.const';
 
@@ -133,7 +134,7 @@ export class TreeListModelService {
     }
   ): TreeListItemMap {
     const { keyMap, separator, collapsed, onlyValue } = config;
-    this.counter = 0;
+    this.counter = -1;
     this.errorCounter = 0;
 
     const removeKeys = [...Object.values(keyMap), 'selected', 'disabled'];
@@ -202,6 +203,7 @@ export class TreeListModelService {
       name: set.name || this.getItemName(item, keyMap),
       childrenIDs: null,
       groupsCount: 0,
+      originalIndex: this.counter,
     };
 
     if (isNotEmptyArray(item[keyMap.children])) {
@@ -260,6 +262,17 @@ export class TreeListModelService {
   public deselectAllItemsInMap(itemsMap: TreeListItemMap) {
     itemsMap.forEach(item => {
       item.selected = false;
+    });
+  }
+
+  public toggleCollapseAllItemsInMap(
+    itemsMap: TreeListItemMap,
+    force: boolean = null
+  ) {
+    itemsMap.forEach(item => {
+      if (item.childrenCount && item.id !== BTL_ROOT_ID) {
+        item.collapsed = isBoolean(force) ? force : !item.collapsed;
+      }
     });
   }
 
@@ -325,6 +338,15 @@ export class TreeListModelService {
     }
 
     return result;
+  }
+
+  public sortIDlistByItemIndex(
+    itemsMap: TreeListItemMap,
+    IDlist: itemID[]
+  ): itemID[] {
+    return IDlist.sort((idA, idB) =>
+      itemsMap.get(idA).originalIndex > itemsMap.get(idB).originalIndex ? 1 : -1
+    );
   }
 
   private updateMap<T = TreeListItem>(

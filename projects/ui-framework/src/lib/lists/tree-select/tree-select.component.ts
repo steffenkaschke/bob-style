@@ -6,6 +6,7 @@ import {
   ViewChild,
   Output,
   EventEmitter,
+  forwardRef,
 } from '@angular/core';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import {
@@ -32,6 +33,7 @@ import {
   InputEventType,
   FormEvents,
 } from '../../form-elements/form-elements.enum';
+import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 
 @Component({
   selector: 'b-tree-select',
@@ -39,6 +41,19 @@ import {
   styleUrls: [
     '../../form-elements/input/input.component.scss',
     './tree-select.component.scss',
+  ],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => TreeSelectComponent),
+      multi: true,
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => TreeSelectComponent),
+      multi: true,
+    },
+    { provide: BaseFormElement, useExisting: TreeSelectComponent },
   ],
 })
 export class TreeSelectComponent extends BaseFormElement
@@ -86,6 +101,10 @@ export class TreeSelectComponent extends BaseFormElement
   public panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
   public panelClass = 'b-tree-select-panel';
 
+  ngOnChanges(changes) {
+    console.log('---------------', 'Tree Select ngOnChanges', changes);
+  }
+
   public openPanel(): void {
     if (this.listPanel && !this.disabled) {
       this.listPanel.openPanel();
@@ -115,7 +134,21 @@ export class TreeSelectComponent extends BaseFormElement
   public onSelect(value: TreeListValue): void {
     // this.value = value.selectedIDs;
 
+    // if (this.type === SelectType.single) {
+    //   this.displayValue =
+    //     (value && value.selectedValues && value.selectedValues[0]) || '';
+    // }
+
+    this.setDisplayValue(value);
+
     this.emitChange(value);
+  }
+
+  private setDisplayValue(value: TreeListValue = null) {
+    if (this.type === SelectType.single) {
+      this.displayValue =
+        (value && value.selectedValues && value.selectedValues[0]) || '';
+    }
   }
 
   private emitChange(value: TreeListValue): void {

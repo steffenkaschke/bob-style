@@ -25,6 +25,9 @@ const componentTemplate = `
       [showSingleGroupHeader]="showSingleGroupHeader"
       [readonly]="readonly"
       [disabled]="disabled"
+      (changed)="changed($event)"
+      (apply)="apply($event)"
+      (cancel)="cancel($event)"
       [debug]="debug">
 
     <b-square-button  [disabled]="disabled"

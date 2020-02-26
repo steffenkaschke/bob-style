@@ -30,6 +30,8 @@ $bhl-max-depth: 5;
 
 :host {
   display: block;
+  max-width: 100%;
+  min-width: 0;
   position: relative;
   text-align: left;
   user-select: none;

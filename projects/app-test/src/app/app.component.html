@@ -1,6 +1,36 @@
 <app-form-elements-test *ngIf="false"></app-form-elements-test>
 
-<form-elem-small-test *ngIf="true"></form-elem-small-test>
+<form-elem-small-test *ngIf="false"></form-elem-small-test>
 
 <b-stats [rootElem]="'b-story-book-layout'"
          [countChildren]="true"></b-stats>
+
+
+<form [formGroup]="testForm"
+      style="margin: 50px auto; max-width: 400px;">
+  <b-tree-select formControlName="treeSelect"
+                 [type]="'single'"
+                 [list]="list"
+                 [value]="listVal"
+                 [keyMap]="keymap"
+                 [label]="'Select stuff'"
+                 [placeholder]="'Placeholder'"
+                 [hintMessage]="'Please make it work'"
+                 (changed)="onListChanged($event)"
+                 [debug]="true">
+  </b-tree-select>
+  <button type="button"
+          (click)="setListValTo(null)">value = null</button>
+  <button type="button"
+          (click)="setListValTo(undefined)">value = undefined</button>
+  <button type="button"
+          (click)="setListValTo('option-2-group-1')">value = "option-2-group-1"</button>
+  <br><br>
+
+  <button type="button"
+          (click)="setFormValTo(null)">setValue = null</button>
+  <button type="button"
+          (click)="setFormValTo(undefined)">setValue = undefined</button>
+  <button type="button"
+          (click)="setFormValTo('option-2-group-1')">setValue = "option-2-group-1"</button>
+</form>
