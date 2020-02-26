@@ -165,6 +165,7 @@ export class TreeListComponent
       }
 
       console.time('getListItemsMap');
+      this.itemsMap.clear();
       this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
         keyMap: this.keyMap,
         separator: this.valueSeparatorChar,
