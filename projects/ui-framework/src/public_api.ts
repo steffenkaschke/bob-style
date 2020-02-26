@@ -234,7 +234,8 @@ export { TreeListComponent } from './lib/lists/tree-list/tree-list.component';
 export {TreeListPanelModule}from './lib/lists/tree-list-panel/tree-list-panel.module';
 export { TreeListPanelComponent } from './lib/lists/tree-list-panel/tree-list-panel.component';
 export { TreeSelectModule } from './lib/lists/tree-select/tree-select.module';
-export {TreeSelectComponent} from './lib/lists/tree-select/tree-select.component';
+export { TreeSelectComponent } from './lib/lists/tree-select/tree-select.component';
+export { TreeListModelService } from './lib/lists/tree-list/services/tree-list-model.service';
 
 // Chain select
 export {

@@ -53,11 +53,13 @@ export interface TreeListItem {
   // state
   collapsed?: boolean;
   selected?: boolean;
+  parentSelected?: boolean;
   indeterminate?: boolean;
   disabled?: boolean;
 
   parentIDs?: itemID[] | null;
   childrenIDs?: itemID[] | null;
+  selectedIDs?: itemID[] | null;
 
   // stats
   parentCount?: number;
