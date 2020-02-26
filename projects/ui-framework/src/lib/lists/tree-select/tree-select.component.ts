@@ -139,11 +139,15 @@ export class TreeSelectComponent extends BaseFormElement
     //     (value && value.selectedValues && value.selectedValues[0]) || '';
     // }
 
+    this.setDisplayValue(value);
+
     this.emitChange(value);
   }
 
-  private setDisplayValue() {
+  private setDisplayValue(value: TreeListValue = null) {
     if (this.type === SelectType.single) {
+      this.displayValue =
+        (value && value.selectedValues && value.selectedValues[0]) || '';
     }
   }
 
