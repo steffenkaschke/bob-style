@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormElementsTestModule } from './form-elements/form-elements.module';
 import { UrlTesterModule } from './url-tester/url-tester.module';
 import { TooltipTesterModule } from './truncate-tooltip/truncate-tooltip.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EventManagerModule } from './event-manager/event-manager.module';
 import { ClassBinderTesterModule } from './class-binder/class-binder.module';
 import { UrlUtilsModule } from '../../../ui-framework/src/lib/services/url/url-utils.module';
@@ -15,7 +15,10 @@ import { UtilsModule } from './utils/utils.module';
 import { FormElementsModule } from '../../../ui-framework/src/lib/form-elements/form-elements.module';
 import { StatsModule } from '../../../ui-framework/src/lib/services/util-components/stats.module';
 import { FilterBarTestModule } from './filter-bar/filter-bar.module';
-import { DatepickerModule } from '../../../ui-framework/src/public_api';
+import {
+  DatepickerModule,
+  TreeSelectModule,
+} from '../../../ui-framework/src/public_api';
 import { DateParseTesterModule } from './dateparser/dateparse-tester.module';
 import { CommonModule } from '@angular/common';
 
@@ -30,6 +33,7 @@ import { CommonModule } from '@angular/common';
     TooltipTesterModule,
     FormElementsModule,
     FormsModule,
+    ReactiveFormsModule,
     EventManagerModule,
     ClassBinderTesterModule,
     UrlUtilsModule,
@@ -40,6 +44,7 @@ import { CommonModule } from '@angular/common';
     FilterBarTestModule,
     DatepickerModule,
     DateParseTesterModule,
+    TreeSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

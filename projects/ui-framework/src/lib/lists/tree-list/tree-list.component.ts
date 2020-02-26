@@ -123,6 +123,8 @@ export class TreeListComponent
   readonly selectType = SelectType;
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log('---------------', 'Tree LIST ngOnChanges', changes);
+
     console.time('ngOnChanges');
     let viewModelWasUpdated = false;
 
@@ -387,13 +389,10 @@ export class TreeListComponent
     item.selected = newSelectedValue;
 
     if (this.type === SelectType.single) {
-      if (this.value[0] && this.value[0]) {
-      }
-
       if (item.selected) {
         console.log('single select');
 
-        if (this.value[0] && this.value[0] !== item.id) {
+        if (this.value && this.value[0] && this.value[0] !== item.id) {
           console.log('deselecting', this.value[0]);
           this.itemsMap.get(this.value[0]).selected = false;
         }
@@ -555,10 +554,11 @@ export class TreeListComponent
   private emitChange(): void {
     if (this.type === SelectType.single) {
       this.changed.emit({
-        selectedIDs: this.value,
-        selectedValues: this.value[0]
-          ? [this.itemsMap.get(this.value[0]).value]
-          : [],
+        selectedIDs: this.value || [],
+        selectedValues:
+          this.value && this.value[0]
+            ? [this.itemsMap.get(this.value[0]).value]
+            : [],
       });
     }
     // this.listActionsState.apply.disabled = false;
