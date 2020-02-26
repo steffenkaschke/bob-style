@@ -144,6 +144,8 @@ export abstract class BaseFormElement
       emitterName,
       doPropagate,
       addToEventObj,
+      eventObjValueKey,
+      eventObjOmitEventType,
       updateValue,
     } = options;
 
@@ -172,8 +174,8 @@ export abstract class BaseFormElement
           this[emitterName].emit(
             this.wrapEvent
               ? {
-                  event,
-                  value,
+                  ...(!eventObjOmitEventType && { event }),
+                  [eventObjValueKey]: value,
                   ...addToEventObj,
                 }
               : value

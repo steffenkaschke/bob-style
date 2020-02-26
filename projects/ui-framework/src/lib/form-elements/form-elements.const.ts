@@ -7,6 +7,8 @@ export const TRANSMIT_OPTIONS_DEF: Partial<TransmitOptions> = {
   emitterName: FormEvents.changed,
   doPropagate: true,
   addToEventObj: {},
+  eventObjValueKey: 'value',
+  eventObjOmitEventType: false,
   updateValue: false,
 };
 export const IGNORE_EVENTS_DEF: InputEventType[] = [
