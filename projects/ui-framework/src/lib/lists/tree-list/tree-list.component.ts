@@ -42,6 +42,7 @@ import {
   arrayDifference,
   isNotEmptyArray,
   stringify,
+  isBoolean,
 } from '../../services/utils/functional-utils';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { LIST_ACTIONS_STATE_DEF } from '../list-footer/list-footer.const';
@@ -138,12 +139,6 @@ export class TreeListComponent
 
     if (hasChanges(changes, ['keyMap'], true)) {
       this.keyMap = { ...BTL_KEYMAP_DEF, ...this.keyMap };
-    }
-
-    if (
-      hasChanges(changes, ['showSingleGroupHeader']) &&
-      isNotEmptyArray(this.list, 1)
-    ) {
     }
 
     if (
@@ -298,7 +293,7 @@ export class TreeListComponent
       })
     );
 
-    console.log('===> updateListViewModel', this.listViewModel);
+    console.log('===> updateListViewModel');
 
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
@@ -320,10 +315,10 @@ export class TreeListComponent
     }
   }
 
-  public toggleCollapseAll(force = null, updateModel = true): void {
+  public toggleCollapseAll(force: boolean = null, updateModel = true): void {
     for (const item of this.itemsMap.values()) {
       if (item.childrenCount && item.id !== BTL_ROOT_ID) {
-        item.collapsed = force !== null ? force : !item.collapsed;
+        item.collapsed = isBoolean(force) ? force : !item.collapsed;
       }
     }
     if (updateModel) {
@@ -332,9 +327,15 @@ export class TreeListComponent
   }
 
   private itemClick(item: TreeListItem, element: HTMLElement): void {
-    if (item.childrenCount && !item.allOptionsHidden) {
+    if (
+      item.childrenCount &&
+      !item.allOptionsHidden &&
+      this.type !== SelectType.single
+    ) {
       this.toggleItemCollapsed(item, element);
-    } else {
+      return;
+    }
+    if (!item.childrenCount || item.allOptionsHidden) {
       this.toggleItemSelect(item);
     }
   }
@@ -358,17 +359,90 @@ export class TreeListComponent
     this.updateListViewModel();
   }
 
-  private toggleItemSelect(item: TreeListItem): void {
-    item.selected = !item.selected;
-
-    for (const groupID of item.parentIDs) {
-      const parent = this.itemsMap.get(groupID);
-      parent.selectedCount = parent.selectedCount + (item.selected ? 1 : -1);
-
-      parent.selected = parent.selectedCount === parent.childrenCount;
-
-      parent.indeterminate = !parent.selected && !!parent.selectedCount;
+  private toggleItemSelect(
+    item: TreeListItem,
+    force: boolean = null,
+    set: Partial<TreeListItem> = {}
+  ): void {
+    const newSelectedValue = isBoolean(force) ? force : !item.selected;
+    if (newSelectedValue === item.selected) {
+      return;
     }
+    item.selected = newSelectedValue;
+
+    if (this.type === SelectType.single) {
+      if (this.value[0] && this.value[0]) {
+      }
+
+      if (item.selected) {
+        console.log('single select');
+
+        if (this.value[0] && this.value[0] !== item.id) {
+          console.log('deselecting', this.value[0]);
+          this.itemsMap.get(this.value[0]).selected = false;
+        }
+        this.value = [item.id];
+      } else {
+        this.value = [];
+      }
+    }
+
+    // this.cd.detectChanges();
+
+    if (this.type !== SelectType.multi) {
+      return;
+    }
+
+    item.selected = newSelectedValue;
+
+    // if group
+
+    if (item.childrenCount) {
+      if (item.selected && item.selectedCount) {
+        item.selectedIDs.forEach(id => {
+          this.toggleItemSelect(this.itemsMap.get(id), false, {
+            parentSelected: true,
+          });
+        });
+      }
+    }
+
+    // update parent counters
+
+    item.parentIDs.forEach(groupID => {
+      const parent = this.itemsMap.get(groupID);
+      parent.selectedCount = Math.max(
+        0,
+        (parent.selectedCount || 0) + (item.selected ? 1 : -1)
+      );
+
+      if (item.selected) {
+        parent.selectedIDs.push(item.id);
+      } else {
+        parent.selectedIDs = parent.selectedIDs.filter(id => id !== item.id);
+      }
+    });
+
+    // if option
+
+    if (!item.childrenCount) {
+      if (item.selected) {
+        this.value.push(item.id);
+      } else {
+        this.value = this.value.filter(id => id !== item.id);
+      }
+    }
+
+    // item.selected = !item.selected;
+
+    // for (const groupID of item.parentIDs) {
+    //   const parent = this.itemsMap.get(groupID);
+    //   parent.selectedCount = parent.selectedCount + (item.selected ? 1 : -1);
+
+    //   parent.selected = parent.selectedCount === parent.childrenCount;
+
+    //   parent.indeterminate = !parent.selected && !!parent.selectedCount;
+    // }
 
     this.updateActionButtonsState();
     this.cd.detectChanges();
@@ -405,6 +479,9 @@ export class TreeListComponent
     console.time('applyValue');
     let affectedIDs: itemID[] = this.value || [];
     this.value = selectValueOrFail(newValue);
+    if (this.type === SelectType.single) {
+      this.value = this.value.slice(0, 1);
+    }
     let viewModelWasUpdated = false;
     console.log('<=== applyValue:', this.value);
 
@@ -469,14 +546,14 @@ export class TreeListComponent
     forceClear: boolean = null,
     forceReset: boolean = null
   ) {
-    this.listActionsState.clear.hidden =
-      forceClear !== null ? forceClear : !this.value || this.value.length === 0;
-    this.listActionsState.reset.hidden =
-      forceReset !== null
-        ? forceReset
-        : !this.value ||
-          !this.valueDefault ||
-          !arrayDifference(this.value, this.valueDefault).length;
+    this.listActionsState.clear.hidden = isBoolean(forceClear)
+      ? forceClear
+      : !this.value || this.value.length === 0;
+    this.listActionsState.reset.hidden = isBoolean(forceReset)
+      ? forceReset
+      : !this.value ||
+        !this.valueDefault ||
+        !arrayDifference(this.value, this.valueDefault).length;
   }
 
   public showCheckbox(item: TreeListItem): boolean {

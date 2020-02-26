@@ -153,6 +153,8 @@ export class TreeListModelService {
         name: BTL_ROOT_ID,
         parentIDs: null,
         parentCount: 0,
+        selectedCount: 0,
+        childrenCount: 0,
       },
       // config
       {
@@ -202,6 +204,8 @@ export class TreeListModelService {
 
     if (isNotEmptyArray(item[keyMap.children])) {
       converted.childrenIDs = [];
+      converted.selectedIDs = [];
+      converted.selectedCount = 0;
 
       for (const itm of item[keyMap.children]) {
         ++this.counter;
@@ -250,6 +254,8 @@ export class TreeListModelService {
 
     return converted;
   }
+
+  private deselectItems() {}
 
   public getSearchViewFilter(searchValue: string): ViewFilter {
     return {
