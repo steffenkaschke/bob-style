@@ -7,6 +7,8 @@ import { TreeSelectModule } from './tree-select.module';
 import { mockText } from '../../mock.const';
 import { TreeListStoriesCommonProps } from '../tree-list/tree-list.stories.common';
 
+import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
+
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
@@ -53,6 +55,23 @@ const note = `
   ~~~
   ${componentTemplate}
   ~~~
+
+  ### Properties
+  Name | Type | Description | Default
+  --- | --- | --- | ---
+  [panelClass] | string | class to be added to select panel | &nbsp;
+  [panelPosition] | PanelDefaultPosVer / ConnectedPosition[] | defines the location of the select's panel | &nbsp;
+  [tooltipType] | TruncateTooltipType | you can use CSS or Material tooltip for truncated value text | CSS
+  &lt;elem footerAction&gt; | ng-content | element with attribute \`\`\`footerAction\`\`\` will be placed in the footer of the panel | &nbsp;
+  &lt;elem footerActionRight&gt; | ng-content | element with attribute \`\`\`footerActionRight\`\`\` will be placed in the footer and aligned to the right | &nbsp;
+
+  #### Methods
+  Name | Description
+  --- | ---
+  openPanel() | will open select panel
+  closePanel() | will close (destroy) select panel
+
+  ${formElemsPropsDoc}
 `;
 
 story.add(

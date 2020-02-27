@@ -232,7 +232,7 @@ const note = `
   ## Label-Value
 
   #### Module
-  *TypographyModule*
+  *LabelValueModule*
 
   #### Properties
   Name | Type | Description | Default value
@@ -288,7 +288,7 @@ story.add(
           IconPosition.left
         ),
         iconSize: select('iconSize', [0, ...Object.values(IconSize)], 0),
-        iconColor: select('iconColor', IconColor, IconColor.dark)
+        iconColor: select('iconColor', IconColor, IconColor.dark),
       },
       moduleMetadata: {
         imports: [

@@ -49,6 +49,11 @@ $bhl-max-depth: 5;
   &[hidden] {
     border: 0 !important;
     box-shadow: none !important;
+
+    .bhl-footer,
+    .dev {
+      display: none;
+    }
   }
 }
 

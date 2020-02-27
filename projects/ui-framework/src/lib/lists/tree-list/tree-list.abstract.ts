@@ -7,8 +7,8 @@ import {
   ViewChild,
   Input,
   HostBinding,
-  Output,
-  EventEmitter,
+  SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import { SearchComponent } from '../../search/search/search.component';
 import {
@@ -17,29 +17,24 @@ import {
   isBoolean,
   arrayDifference,
   isEmptyArray,
+  notFirstChanges,
+  applyChanges,
+  hasChanges,
+  isNotEmptyArray,
 } from '../../services/utils/functional-utils';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { SelectType } from '../list.enum';
-import { ListFooterActions, ListFooterActionsState } from '../list.interface';
-import {
-  TreeListComponentIO,
-  TreeListOption,
-  itemID,
-  ViewFilter,
-  TreeListKeyMap,
-  TreeListValue,
-  TreeListItemMap,
-  TreeListItem,
-} from './tree-list.interface';
+import { ListFooterActionsState } from '../list.interface';
+import { itemID, TreeListItemMap, TreeListItem } from './tree-list.interface';
+import { TreeListInputOutput } from './tree-list-IO.abstract';
 import { TreeListViewService } from './services/tree-list-view.service';
 import { TreeListModelService } from './services/tree-list-model.service';
 import { TreeListControlsService } from './services/tree-list-controls.service';
-
-import { BTL_KEYMAP_DEF } from './tree-list.const';
 import { LIST_ACTIONS_STATE_DEF } from '../list-footer/list-footer.const';
+import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from './tree-list.const';
 
-export abstract class BaseTreeListElement
-  implements TreeListComponentIO, AfterViewInit, OnDestroy {
+export abstract class BaseTreeListElement extends TreeListInputOutput
+  implements OnChanges, AfterViewInit, OnDestroy {
   constructor(
     protected modelSrvc: TreeListModelService,
     protected cntrlsSrvc: TreeListControlsService,
@@ -48,7 +43,9 @@ export abstract class BaseTreeListElement
     protected cd: ChangeDetectorRef,
     protected zone: NgZone,
     protected host: ElementRef
-  ) {}
+  ) {
+    super();
+  }
 
   @ViewChild('search', { static: false, read: SearchComponent })
   protected search: SearchComponent;
@@ -57,38 +54,9 @@ export abstract class BaseTreeListElement
   @ViewChild('footer', { static: false, read: ElementRef })
   protected footer: ElementRef;
 
-  @Input('list') set setList(list: TreeListOption[]) {}
-  public list: TreeListOption[];
-  @Input('value') set setValue(value: itemID[]) {}
-  public value: itemID[];
-  @Input() valueDefault: itemID[];
-  @Input() viewFilter: ViewFilter;
-  @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
-
-  @Input() type: SelectType = SelectType.multi;
-  @Input() valueSeparatorChar = ' / ';
-  @Input() maxHeightItems = 8;
-  @Input() showSingleGroupHeader = true;
-  @Input() startCollapsed = true;
-  @Input() focusOnInit = false;
-  @Input() readonly = false;
-  @Input() disabled = false;
-  @Input() listActions: ListFooterActions = {
-    apply: false,
-    cancel: false,
-    clear: false,
-    reset: false,
-  };
-
   @HostBinding('attr.data-embedded') @Input() embedded = false;
   @HostBinding('hidden') @Input() hidden = true;
   @HostBinding('attr.data-debug') @Input() debug = false;
-
-  @Output() changed: EventEmitter<TreeListValue> = new EventEmitter<
-    TreeListValue
-  >();
-  @Output() apply: EventEmitter<void> = new EventEmitter<void>();
-  @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
 
   public searchValue = '';
   protected minSearchLength = 1;
@@ -100,6 +68,67 @@ export abstract class BaseTreeListElement
   public itemsMap: TreeListItemMap = new Map();
   public listViewModel: itemID[] = [];
   readonly selectType = SelectType;
+
+  protected onNgChanges(changes: SimpleChanges): void {}
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    console.log('---------------', 'Tree LIST ngOnChanges', changes);
+
+    console.time('ngOnChanges');
+
+    applyChanges(
+      this,
+      changes,
+      {
+        keyMap: BTL_KEYMAP_DEF,
+      },
+      ['list', 'value'],
+      false,
+      {
+        keyMap: { list: 'setList', value: 'setValue' },
+      }
+    );
+
+    if (hasChanges(changes, ['keyMap'], true)) {
+      this.keyMap = { ...BTL_KEYMAP_DEF, ...this.keyMap };
+    }
+
+    this.onNgChanges(changes);
+
+    if (hasChanges(changes, ['valueDefault'], true)) {
+      const defaultsExist = isNotEmptyArray(this.valueDefault);
+      this.listActions.clear = !defaultsExist;
+      this.listActions.reset = defaultsExist;
+    }
+
+    if (
+      hasChanges(changes, ['list', 'valueDefault'], true) ||
+      hasChanges(changes, ['showSingleGroupHeader', 'value'])
+    ) {
+      this.updateActionButtonsState();
+    }
+
+    if (hasChanges(changes, ['maxHeightItems', 'list'], true)) {
+      this.DOM.setCssProps(this.host.nativeElement, {
+        '--list-max-items': Math.max(
+          this.itemsMap.size > 0
+            ? this.itemsMap.get(BTL_ROOT_ID).groupsCount + 3
+            : 0,
+          this.maxHeightItems
+        ),
+      });
+    }
+
+    if (notFirstChanges(changes, ['listActions'])) {
+      this.hasFooter = !this.readonly && objectHasTruthyValue(this.listActions);
+    }
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
+
+    console.timeEnd('ngOnChanges');
+  }
 
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
@@ -186,28 +215,28 @@ export abstract class BaseTreeListElement
   }
 
   public clearList(): void {
-    this.applyValue(null);
+    this.applyValue([]);
     this.updateActionButtonsState(true);
     this.cd.detectChanges();
     this.emitChange();
   }
 
   public resetList(): void {
-    this.applyValue(this.valueDefault);
+    this.applyValue(this.valueDefault || []);
     this.updateActionButtonsState(null, true);
     this.cd.detectChanges();
     this.emitChange();
   }
 
   public onApply(): void {
-    if (this.apply.observers.length > 0) {
+    if (this.apply.observers.length) {
       this.apply.emit();
     }
     this.listActionsState.apply.disabled = true;
   }
 
   public onCancel(): void {
-    if (this.cancel.observers.length > 0) {
+    if (this.cancel.observers.length) {
       this.cancel.emit();
     }
   }

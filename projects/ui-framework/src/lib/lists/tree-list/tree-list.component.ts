@@ -4,8 +4,8 @@ import {
   ChangeDetectorRef,
   NgZone,
   ElementRef,
-  OnChanges,
   SimpleChanges,
+  Input,
 } from '@angular/core';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
@@ -13,20 +13,18 @@ import {
   stringify,
   isBoolean,
   isNotEmptyArray,
-  applyChanges,
   hasChanges,
   firstChanges,
   notFirstChanges,
-  objectHasTruthyValue,
+  isEmptyArray,
 } from '../../services/utils/functional-utils';
 import { selectValueOrFail } from '../../services/utils/transformers';
 import { SelectType } from '../list.enum';
-import { itemID, TreeListItem } from './tree-list.interface';
+import { itemID, TreeListItem, TreeListOption } from './tree-list.interface';
 import { TreeListModelService } from './services/tree-list-model.service';
 import { TreeListControlsService } from './services/tree-list-controls.service';
 import { TreeListViewService } from './services/tree-list-view.service';
 import { BaseTreeListElement } from './tree-list.abstract';
-import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from './tree-list.const';
 
 @Component({
   selector: 'b-tree-list',
@@ -34,8 +32,7 @@ import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from './tree-list.const';
   styleUrls: ['./tree-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TreeListComponent extends BaseTreeListElement
-  implements OnChanges {
+export class TreeListComponent extends BaseTreeListElement {
   constructor(
     modelSrvc: TreeListModelService,
     cntrlsSrvc: TreeListControlsService,
@@ -48,26 +45,17 @@ export class TreeListComponent extends BaseTreeListElement
     super(modelSrvc, cntrlsSrvc, viewSrvc, DOM, cd, zone, host);
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    console.log('---------------', 'Tree LIST ngOnChanges', changes);
+  @Input('list') set setList(list: TreeListOption[]) {}
+  public list: TreeListOption[];
+  @Input('value') set setValue(value: itemID[]) {}
+  public value: itemID[];
 
-    console.time('ngOnChanges');
+  ngOnInit() {
+    console.log('***** Tree List INIT *****');
+  }
+
+  public onNgChanges(changes: SimpleChanges): void {
     let viewModelWasUpdated = false;
-
-    applyChanges(
-      this,
-      changes,
-      {
-        keyMap: BTL_KEYMAP_DEF,
-      },
-      ['list', 'value'],
-      false,
-      { list: 'setList', value: 'setValue' }
-    );
-
-    if (hasChanges(changes, ['keyMap'], true)) {
-      this.keyMap = { ...BTL_KEYMAP_DEF, ...this.keyMap };
-    }
 
     if (
       (hasChanges(changes, ['list'], true) &&
@@ -75,8 +63,13 @@ export class TreeListComponent extends BaseTreeListElement
       hasChanges(changes, ['showSingleGroupHeader'])
     ) {
       if (changes.list) {
-        this.list = changes.list.currentValue;
-        this.hidden = !this.list.length;
+        console.log(
+          'change has LIST, same?',
+          this.list === changes.list.currentValue
+        );
+
+        this.list = changes.list.currentValue || [];
+        this.hidden = isEmptyArray(this.list);
       }
 
       if (
@@ -101,6 +94,7 @@ export class TreeListComponent extends BaseTreeListElement
 
     if (hasChanges(changes, ['value'])) {
       console.log('LIST CHNGES VALUE', changes.value.currentValue);
+      console.log('Same value?', this.value === changes.value.currentValue);
     }
 
     if (hasChanges(changes, ['list'], true) || hasChanges(changes, ['value'])) {
@@ -111,7 +105,7 @@ export class TreeListComponent extends BaseTreeListElement
 
       viewModelWasUpdated =
         this.applyValue(
-          changes.value ? changes.value.currentValue : this.value
+          (changes.value ? changes.value.currentValue : this.value) || []
         ) || viewModelWasUpdated;
     }
 
@@ -122,29 +116,12 @@ export class TreeListComponent extends BaseTreeListElement
       this.toggleCollapseAll(this.startCollapsed, false);
     }
 
-    if (hasChanges(changes, ['valueDefault'], true)) {
-      const defaultsExist = isNotEmptyArray(this.valueDefault);
-      this.listActions.clear = !defaultsExist;
-      this.listActions.reset = defaultsExist;
-    }
-
-    if (
-      hasChanges(changes, ['list', 'valueDefault'], true) ||
-      hasChanges(changes, ['showSingleGroupHeader', 'value'])
-    ) {
-      this.updateActionButtonsState();
-    }
-
     if (
       notFirstChanges(changes, ['type']) &&
       this.type !== SelectType.multi &&
       isNotEmptyArray(this.value)
     ) {
       this.modelSrvc.deselectAllItemsInMap(this.itemsMap);
-    }
-
-    if (notFirstChanges(changes, ['listActions'])) {
-      this.hasFooter = !this.readonly && objectHasTruthyValue(this.listActions);
     }
 
     if (
@@ -158,22 +135,6 @@ export class TreeListComponent extends BaseTreeListElement
     ) {
       this.updateListViewModel();
     }
-
-    if (hasChanges(changes, ['maxHeightItems', 'list'], true)) {
-      this.DOM.setCssProps(this.host.nativeElement, {
-        '--list-max-items': Math.max(
-          this.itemsMap.size > 0
-            ? this.itemsMap.get(BTL_ROOT_ID).groupsCount + 3
-            : 0,
-          this.maxHeightItems
-        ),
-      });
-    }
-
-    if (!this.cd['destroyed']) {
-      this.cd.detectChanges();
-    }
-    console.timeEnd('ngOnChanges');
   }
 
   protected updateListViewModel(expand = false): void {
@@ -368,6 +329,8 @@ export class TreeListComponent extends BaseTreeListElement
   }
 
   protected emitChange(): void {
+    this.listActionsState.apply.disabled = false;
+
     if (this.type === SelectType.single) {
       this.changed.emit({
         selectedIDs: this.value || [],
@@ -394,7 +357,5 @@ export class TreeListComponent extends BaseTreeListElement
           : [],
       });
     }
-
-    this.listActionsState.apply.disabled = false;
   }
 }

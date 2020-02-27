@@ -56,6 +56,15 @@ const note = `
   ~~~
   ${componentTemplate}
   ~~~
+
+  ### Properties
+  Name | Type | Description | Default
+  --- | --- | --- | ---
+  [disabled] | boolean | if panel is disabled | false
+  [readonly] | boolean | if true, will not emit events and not allow selection | false
+  (opened) | EventEmitter<wbr>&lt;OverlayRef&gt; | emits OverlayRef on panel open | &nbsp;
+  (closed) | EventEmitter<wbr>&lt;void&gt; | emits on panel close | &nbsp;
+  &nbsp; | &nbsp; | &nbsp; | &nbsp;
 `;
 
 story.add(

@@ -11,7 +11,7 @@
        [ngClass]="positionClassList">
     <b-tree-list class="b-select-list"
                  [embedded]="true"
-                 [focusOnInit]="true"
+                 [focusOnInit]="focusOnInit"
                  [type]="type"
                  [list]="list"
                  [value]="value"
@@ -25,7 +25,7 @@
                  [readonly]="readonly"
                  [disabled]="disabled"
                  [listActions]="listActions"
-                 (changed)="onSelect($event)"
+                 (changed)="onSelectChange($event)"
                  (apply)="onApply()"
                  (cancel)="onCancel()"
                  [debug]="debug">

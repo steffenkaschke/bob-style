@@ -1,12 +1,12 @@
 import {
   Component,
-  NgZone,
   ChangeDetectorRef,
   Input,
   ViewChild,
   Output,
   EventEmitter,
   forwardRef,
+  SimpleChanges,
 } from '@angular/core';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import {
@@ -34,6 +34,10 @@ import {
   FormEvents,
 } from '../../form-elements/form-elements.enum';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
+import {
+  hasChanges,
+  isNotEmptyArray,
+} from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-tree-select',
@@ -58,9 +62,9 @@ import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 })
 export class TreeSelectComponent extends BaseFormElement
   implements TreeListComponentIO {
-  constructor(zone: NgZone, cd: ChangeDetectorRef) {
+  constructor(cd: ChangeDetectorRef) {
     super(cd);
-    this.baseValue = [];
+    // this.baseValue = [];
     this.wrapEvent = true;
   }
 
@@ -68,7 +72,11 @@ export class TreeSelectComponent extends BaseFormElement
   listPanel: TreeListPanelComponent;
 
   @Input() list: TreeListOption[];
-  @Input() value: itemID[];
+  @Input('value') set setValue(value: itemID[]) {
+    console.log('---------------', 'Tree Select setValue', value);
+    this.writeValue(value);
+  }
+  public value: itemID[];
   @Input() valueDefault: itemID[];
   @Input() viewFilter: ViewFilter;
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
@@ -76,7 +84,7 @@ export class TreeSelectComponent extends BaseFormElement
   @Input() type: SelectType = SelectType.multi;
   @Input() valueSeparatorChar = '/';
   @Input() maxHeightItems = 8;
-  @Input() showSingleGroupHeader = false;
+  @Input() showSingleGroupHeader = true;
   @Input() startCollapsed = true;
   @Input() readonly = false;
   @Input() disabled = false;
@@ -100,9 +108,64 @@ export class TreeSelectComponent extends BaseFormElement
   public positionClassList = {};
   public panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
   public panelClass = 'b-tree-select-panel';
+  private treeListValue: TreeListValue;
 
-  ngOnChanges(changes) {
+  public onNgChanges(changes: SimpleChanges): void {
     console.log('---------------', 'Tree Select ngOnChanges', changes);
+
+    if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
+      this.closePanel();
+    }
+  }
+
+  public onSelectChange(value: TreeListValue): void {
+    this.setDisplayValue(value);
+  }
+
+  public onApply(): void {
+    this.emitChange(this.treeListValue);
+    this.treeListValue = undefined;
+  }
+
+  public onCancel(): void {
+    this.setDisplayValue(this.treeListValue);
+    this.closePanel();
+    this.treeListValue = undefined;
+  }
+
+  private setDisplayValue(value: TreeListValue = null): void {
+    if (this.type === SelectType.single) {
+      this.displayValue =
+        (value && value.selectedValues && value.selectedValues[0]) || '';
+    }
+    if (this.type === SelectType.multi) {
+      this.displayValue =
+        value && isNotEmptyArray(value.selectedValues)
+          ? value.selectedValues.join(',\n')
+          : '';
+    }
+  }
+
+  public writeValue(value: itemID[]) {
+    console.log('---------------', 'Tree Select writeValue', value);
+    super.writeValue(value);
+    /// GET DISPLAY VALUE
+  }
+
+  private emitChange(value: TreeListValue): void {
+    console.log('====> Select emitChange', value);
+
+    this.transmitValue(value.selectedIDs, {
+      eventType: [InputEventType.onChange],
+      emitterName: FormEvents.changed,
+      doPropagate: true,
+      addToEventObj: {
+        selectedValues: value.selectedValues,
+      },
+      eventObjValueKey: 'selectedIDs',
+      eventObjOmitEventType: true,
+      updateValue: true,
+    });
   }
 
   public openPanel(): void {
@@ -125,45 +188,5 @@ export class TreeSelectComponent extends BaseFormElement
   public onPanelClose(): void {
     this.overlayRef = null;
     this.panelOpen = false;
-  }
-
-  public onApply(): void {}
-
-  public onCancel(): void {}
-
-  public onSelect(value: TreeListValue): void {
-    // this.value = value.selectedIDs;
-
-    // if (this.type === SelectType.single) {
-    //   this.displayValue =
-    //     (value && value.selectedValues && value.selectedValues[0]) || '';
-    // }
-
-    this.setDisplayValue(value);
-
-    this.emitChange(value);
-  }
-
-  private setDisplayValue(value: TreeListValue = null) {
-    if (this.type === SelectType.single) {
-      this.displayValue =
-        (value && value.selectedValues && value.selectedValues[0]) || '';
-    }
-  }
-
-  private emitChange(value: TreeListValue): void {
-    console.log('====> Select emitChange', value);
-
-    this.transmitValue(value.selectedIDs, {
-      eventType: [InputEventType.onChange],
-      emitterName: FormEvents.changed,
-      doPropagate: true,
-      addToEventObj: {
-        selectedValues: value.selectedValues,
-      },
-      eventObjValueKey: 'selectedIDs',
-      eventObjOmitEventType: true,
-      updateValue: true,
-    });
   }
 }
