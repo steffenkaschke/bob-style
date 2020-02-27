@@ -198,7 +198,7 @@ export abstract class BaseFormElement
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(this, changes, {}, ['value', 'options']);
+    applyChanges(this, changes, {}, ['value', 'options', 'setValue']);
 
     if (changes.value) {
       this.writeValue(changes.value.currentValue);

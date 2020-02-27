@@ -1,11 +1,13 @@
 import { storiesOf } from '@storybook/angular';
 import { ComponentGroupType } from '../../consts';
-import { withKnobs, text, boolean } from '@storybook/addon-knobs';
+import { withKnobs, text, boolean, object } from '@storybook/addon-knobs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TreeSelectModule } from './tree-select.module';
 import { mockText } from '../../mock.const';
 import { TreeListStoriesCommonProps } from '../tree-list/tree-list.stories.common';
+
+import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -17,6 +19,7 @@ const componentTemplate = `
       [list]="options === 'simple' ? listSimple : listRandom"
       [keyMap]="options === 'simple' ? serverKeyMap : null"
       [value]="options === 'simple' ? valueSimple : valueRandom"
+      [listActions]="footerActions"
       [label]="label"
       [placeholder]="placeholder"
       [description]="description"
@@ -52,6 +55,23 @@ const note = `
   ~~~
   ${componentTemplate}
   ~~~
+
+  ### Properties
+  Name | Type | Description | Default
+  --- | --- | --- | ---
+  [panelClass] | string | class to be added to select panel | &nbsp;
+  [panelPosition] | PanelDefaultPosVer / ConnectedPosition[] | defines the location of the select's panel | &nbsp;
+  [tooltipType] | TruncateTooltipType | you can use CSS or Material tooltip for truncated value text | CSS
+  &lt;elem footerAction&gt; | ng-content | element with attribute \`\`\`footerAction\`\`\` will be placed in the footer of the panel | &nbsp;
+  &lt;elem footerActionRight&gt; | ng-content | element with attribute \`\`\`footerActionRight\`\`\` will be placed in the footer and aligned to the right | &nbsp;
+
+  #### Methods
+  Name | Description
+  --- | ---
+  openPanel() | will open select panel
+  closePanel() | will close (destroy) select panel
+
+  ${formElemsPropsDoc}
 `;
 
 story.add(
@@ -60,7 +80,12 @@ story.add(
     return {
       template,
       props: {
-        ...TreeListStoriesCommonProps(),
+        ...TreeListStoriesCommonProps({
+          apply: true,
+          cancel: true,
+          clear: true,
+          reset: false,
+        }),
 
         label: text('label', 'label text', 'Props'),
         description: text('description', mockText(30), 'Props'),

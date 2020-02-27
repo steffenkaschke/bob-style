@@ -5,7 +5,7 @@
                       [fieldId]="id">
 </b-form-element-label>
 
-<!-- (click)="openPanel()" -->
+<!-- -->
 <b-tree-list-panel [type]="type"
                    [list]="list"
                    [value]="value"
@@ -22,22 +22,24 @@
                    [disabled]="disabled"
                    [listActions]="listActions"
                    [hasArrow]="false"
-                   (changed)="onSelect($event)"
+                   (changed)="onSelectChange($event)"
+                   (apply)="onApply()"
+                   (cancel)="onCancel()"
                    (opened)="onPanelOpen($event)"
                    (closed)="onPanelClose()"
                    [debug]="debug">
 
-  <!--  'panel-open': panelOpen -->
   <div class="bfe-wrap has-suffix"
        [ngClass]="{
-                    'has-prefix': false,
-                    focused: panelOpen
-                  }">
+          'has-prefix': false,
+          focused: panelOpen
+        }"
+       (click)="openPanel()">
 
-    <!-- (focus)="openPanel()" -->
     <div #input
          class="bfe-input trigger-input"
          tabindex="0"
+         (focus)="openPanel()"
          [b-truncate-tooltip]="1"
          [expectChanges]="true"
          [trustCssVars]="true"

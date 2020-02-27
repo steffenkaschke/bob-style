@@ -530,14 +530,30 @@ export const notFirstChanges = (
   return !!keys.find(i => changes[i] && !changes[i].firstChange);
 };
 
+interface ApplyChangesConfig {
+  keyMap?: { [targetKey: string]: string };
+  falseyCheck?: Function;
+}
+
+const APPLY_CHANGES_CONFIG_DEF: ApplyChangesConfig = {
+  keyMap: {},
+  falseyCheck: Boolean,
+};
+
 export const applyChanges = (
   target: any,
   changes: SimpleChanges,
   defaults: GenericObject = {},
   skip: string[] = [],
   discardAllFalsey = false,
-  keyMap: { [targetKey: string]: string } = {}
+  config: ApplyChangesConfig = {}
 ): SimpleChanges => {
+  config = {
+    ...APPLY_CHANGES_CONFIG_DEF,
+    ...(config || {}),
+  };
+  const { keyMap, falseyCheck } = config;
+
   Object.keys(keyMap).forEach((targetKey: string) => {
     changes[targetKey] = changes[keyMap[targetKey]];
     skip.push(keyMap[targetKey]);
@@ -549,7 +565,7 @@ export const applyChanges = (
         defaults[changeKey] &&
         ((!discardAllFalsey &&
           isNullOrUndefined(changes[changeKey].currentValue)) ||
-          (discardAllFalsey && !Boolean(changes[changeKey].currentValue)))
+          (discardAllFalsey && !falseyCheck(changes[changeKey].currentValue)))
           ? defaults[changeKey]
           : changes[changeKey].currentValue;
     }

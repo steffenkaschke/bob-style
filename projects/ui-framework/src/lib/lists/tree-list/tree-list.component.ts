@@ -4,21 +4,27 @@ import {
   ChangeDetectorRef,
   NgZone,
   ElementRef,
+  SimpleChanges,
+  Input,
 } from '@angular/core';
-import { itemID, TreeListItem } from './tree-list.interface';
-import { TreeListModelService } from './services/tree-list-model.service';
-import { SelectType } from '../list.enum';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
   joinArrays,
   stringify,
   isBoolean,
   isNotEmptyArray,
+  hasChanges,
+  firstChanges,
+  notFirstChanges,
+  isEmptyArray,
 } from '../../services/utils/functional-utils';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { BaseTreeListElement } from './tree-list.abstract';
-import { TreeListControlsService } from './services/tree-list-controls.service';
 import { selectValueOrFail } from '../../services/utils/transformers';
+import { SelectType } from '../list.enum';
+import { itemID, TreeListItem, TreeListOption } from './tree-list.interface';
+import { TreeListModelService } from './services/tree-list-model.service';
+import { TreeListControlsService } from './services/tree-list-controls.service';
 import { TreeListViewService } from './services/tree-list-view.service';
+import { BaseTreeListElement } from './tree-list.abstract';
 
 @Component({
   selector: 'b-tree-list',
@@ -39,6 +45,98 @@ export class TreeListComponent extends BaseTreeListElement {
     super(modelSrvc, cntrlsSrvc, viewSrvc, DOM, cd, zone, host);
   }
 
+  @Input('list') set setList(list: TreeListOption[]) {}
+  public list: TreeListOption[];
+  @Input('value') set setValue(value: itemID[]) {}
+  public value: itemID[];
+
+  ngOnInit() {
+    console.log('***** Tree List INIT *****');
+  }
+
+  public onNgChanges(changes: SimpleChanges): void {
+    let viewModelWasUpdated = false;
+
+    if (
+      (hasChanges(changes, ['list'], true) &&
+        changes.list.currentValue !== this.list) ||
+      hasChanges(changes, ['showSingleGroupHeader'])
+    ) {
+      if (changes.list) {
+        console.log(
+          'change has LIST, same?',
+          this.list === changes.list.currentValue
+        );
+
+        this.list = changes.list.currentValue || [];
+        this.hidden = isEmptyArray(this.list);
+      }
+
+      if (
+        !this.showSingleGroupHeader &&
+        isNotEmptyArray(this.list, 1) &&
+        this.list[0][this.keyMap.children]
+      ) {
+        this.list = this.list[0][this.keyMap.children];
+      }
+
+      console.time('getListItemsMap');
+      this.itemsMap.clear();
+      this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
+        keyMap: this.keyMap,
+        separator: this.valueSeparatorChar,
+        collapsed: this.startCollapsed,
+      });
+      console.timeEnd('getListItemsMap');
+
+      this.showSearch = this.itemsMap.size > 10;
+    }
+
+    if (hasChanges(changes, ['value'])) {
+      console.log('LIST CHNGES VALUE', changes.value.currentValue);
+      console.log('Same value?', this.value === changes.value.currentValue);
+    }
+
+    if (hasChanges(changes, ['list'], true) || hasChanges(changes, ['value'])) {
+      if (firstChanges(changes, ['list'])) {
+        this.updateListViewModel();
+        viewModelWasUpdated = true;
+      }
+
+      viewModelWasUpdated =
+        this.applyValue(
+          (changes.value ? changes.value.currentValue : this.value) || []
+        ) || viewModelWasUpdated;
+    }
+
+    if (
+      notFirstChanges(changes, ['startCollapsed']) &&
+      typeof this.startCollapsed === 'boolean'
+    ) {
+      this.toggleCollapseAll(this.startCollapsed, false);
+    }
+
+    if (
+      notFirstChanges(changes, ['type']) &&
+      this.type !== SelectType.multi &&
+      isNotEmptyArray(this.value)
+    ) {
+      this.modelSrvc.deselectAllItemsInMap(this.itemsMap);
+    }
+
+    if (
+      !viewModelWasUpdated &&
+      (hasChanges(changes, ['list', 'viewFilter'], true) ||
+        hasChanges(changes, [
+          'value',
+          'startCollapsed',
+          'showSingleGroupHeader',
+        ]))
+    ) {
+      this.updateListViewModel();
+    }
+  }
+
   protected updateListViewModel(expand = false): void {
     console.time('updateListViewModel');
     this.listViewModel.length = 0;
@@ -57,24 +155,6 @@ export class TreeListComponent extends BaseTreeListElement {
       this.cd.detectChanges();
     }
     console.timeEnd('updateListViewModel');
-  }
-
-  protected itemClick(item: TreeListItem, element: HTMLElement): void {
-    if (
-      item.childrenCount &&
-      !item.allOptionsHidden &&
-      this.type !== SelectType.single
-    ) {
-      this.toggleItemCollapsed(item, element);
-      return;
-    }
-    if (
-      !item.childrenCount ||
-      item.allOptionsHidden ||
-      this.type === SelectType.single
-    ) {
-      this.toggleItemSelect(item);
-    }
   }
 
   protected toggleItemCollapsed(
@@ -249,6 +329,8 @@ export class TreeListComponent extends BaseTreeListElement {
   }
 
   protected emitChange(): void {
+    this.listActionsState.apply.disabled = false;
+
     if (this.type === SelectType.single) {
       this.changed.emit({
         selectedIDs: this.value || [],
@@ -275,7 +357,5 @@ export class TreeListComponent extends BaseTreeListElement {
           : [],
       });
     }
-
-    this.listActionsState.apply.disabled = false;
   }
 }
