@@ -23,7 +23,6 @@ const componentTemplate = `
       [maxHeightItems]="maxHeightItems"
       [valueSeparatorChar]="valueSeparatorChar"
       [startCollapsed]="startCollapsed"
-      [showSingleGroupHeader]="showSingleGroupHeader"
       [readonly]="readonly"
       [disabled]="disabled"
       (changed)="changed($event)"

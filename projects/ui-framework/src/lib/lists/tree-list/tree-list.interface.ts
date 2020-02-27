@@ -16,7 +16,6 @@ export interface TreeListComponentIO {
   valueSeparatorChar: string;
   listActions: ListFooterActions;
   maxHeightItems: number;
-  showSingleGroupHeader: boolean;
   startCollapsed: boolean;
   readonly: boolean;
   disabled: boolean;

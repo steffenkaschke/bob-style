@@ -30,8 +30,6 @@ import { UtilsService } from '../../services/utils/utils.service';
 import {
   hasChanges,
   notFirstChanges,
-  isBoolean,
-  applyChanges,
 } from '../../services/utils/functional-utils';
 import { TreeListValue } from '../tree-list/tree-list.interface';
 import { TreeListInputOutput } from '../tree-list/tree-list-IO.abstract';
@@ -84,20 +82,6 @@ export class TreeListPanelComponent extends TreeListInputOutput
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('---------------', 'Tree Panel ngOnChanges', changes);
-
-    applyChanges(
-      this,
-      changes,
-      {
-        focusOnInit: true,
-        showSingleGroupHeader: true,
-      },
-      [],
-      true,
-      {
-        falseyCheck: isBoolean,
-      }
-    );
 
     if (hasChanges(changes, ['disabled'])) {
       this.destroyPanel();

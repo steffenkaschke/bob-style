@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { ComponentGroupType } from '../../consts';
-import { withKnobs, text, boolean, object } from '@storybook/addon-knobs';
+import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TreeSelectModule } from './tree-select.module';
@@ -26,7 +26,6 @@ const componentTemplate = `
       [maxHeightItems]="maxHeightItems"
       [valueSeparatorChar]="valueSeparatorChar"
       [startCollapsed]="startCollapsed"
-      [showSingleGroupHeader]="showSingleGroupHeader"
       [disabled]="disabled"
       [required]="required"
       [readonly]="readonly"

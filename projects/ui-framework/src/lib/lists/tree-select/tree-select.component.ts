@@ -85,7 +85,6 @@ export class TreeSelectComponent extends BaseFormElement
   @Input() type: SelectType = SelectType.multi;
   @Input() valueSeparatorChar = '/';
   @Input() maxHeightItems = 8;
-  @Input() showSingleGroupHeader = true;
   @Input() startCollapsed = true;
   @Input() readonly = false;
   @Input() disabled = false;
