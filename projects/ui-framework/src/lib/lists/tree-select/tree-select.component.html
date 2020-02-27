@@ -37,13 +37,14 @@
        (click)="openPanel()">
 
     <div #input
-         class="bfe-input trigger-input"
+         class="bfe-input"
          tabindex="0"
          (focus)="openPanel()"
          [b-truncate-tooltip]="1"
          [expectChanges]="true"
          [trustCssVars]="true"
          [type]="tooltipType"
+         [tooltipClass]="tooltipClass"
          [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ?label : placeholder) : null">
       {{displayValue}}
     </div>

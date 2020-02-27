@@ -1,30 +1,49 @@
 import { storiesOf } from '@storybook/angular';
-import { number, text, withKnobs, select } from '@storybook/addon-knobs/angular';
+import {
+  number,
+  text,
+  withKnobs,
+  select,
+} from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { TruncateTooltipModule } from './truncate-tooltip.module';
-import { TruncateTooltipType, TruncateTooltipPosition } from './truncate-tooltip.enum';
+import {
+  TruncateTooltipType,
+  TruncateTooltipPosition,
+} from './truncate-tooltip.enum';
+import { boolean } from '@storybook/addon-knobs';
 
-const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
+  withKnobs
+);
 
 const template1 = `
   <b-big-body *bTruncateTooltip="maxLines">
+    Structural directive tooltip example.
     <span class="span1">{{ text1 }}</span>
     <span class="span2">{{ text2 }}</span>
   </b-big-body>
 `;
 const template2 = `
   <b-truncate-tooltip [maxLines]="maxLines"
-                      [type]="type"
-                      [position]="position"
-                      [expectChanges]="true">
+      [type]="type"
+      [position]="position"
+      [expectChanges]="true"
+      [tooltipClass]="[
+        tooltipClass_TextLeft ? 'text-left' : '',
+        tooltipClass_TextRight ? 'text-right' : '',
+        tooltipClass_TextCenter ? 'text-center' : '',
+        tooltipClass_PreWrap ? 'pre-wrap' : '',
+        tooltipClass_NoWrap ? 'no-wrap' : ''
+      ]">
     <b-display-3>
       <span>
         <!-- this html comment should not be displayed -->
-        By default, the tooltip is initialized lazily - only after user hovers over the element for 200ms.
+        {{text4}}
       </span>
       <span>
         Text truncation / line-clamping, however, is set immidiately.
@@ -36,7 +55,14 @@ const template3 = `
   <p [b-truncate-tooltip]="maxLines"
         [type]="type"
         [position]="position"
-        [expectChanges]="true">
+        [expectChanges]="true"
+        [tooltipClass]="[
+          tooltipClass_TextLeft ? 'text-left' : '',
+          tooltipClass_TextRight ? 'text-right' : '',
+          tooltipClass_TextCenter ? 'text-center' : '',
+          tooltipClass_PreWrap ? 'pre-wrap' : '',
+          tooltipClass_NoWrap ? 'no-wrap' : ''
+        ]">
     <span>{{ text1 }}</span>
     <span>{{ text2 }}</span>
   </p>
@@ -44,10 +70,16 @@ const template3 = `
 
 const template4 = `
   <h3 [b-truncate-tooltip]="maxLines" [type]="truncateTooltipType.css"
-                              [position]="position"
-                              [expectChanges]="true">
-      This is a pure CSS tooltip! Looks and feels the same as matTooltip-based ones.
-      Can't be used inside overflow hidden containers.
+          [position]="position"
+          [expectChanges]="true"
+          [tooltipClass]="[
+            tooltipClass_TextLeft ? 'text-left' : '',
+            tooltipClass_TextRight ? 'text-right' : '',
+            tooltipClass_TextCenter ? 'text-center' : '',
+            tooltipClass_PreWrap ? 'pre-wrap' : '',
+            tooltipClass_NoWrap ? 'no-wrap' : ''
+          ]">
+     {{ text3 }}
   </h3>
 `;
 
@@ -55,13 +87,13 @@ const storyTemplate = `
 <b-story-book-layout [title]="'Truncate Tooltip'" style="background-color: rgb(247,247,247);">
 
 <div style="text-align: left; max-width: 500px;">
-  ${template1}
-  <br><br>
   ${template2}
   <br><br>
   ${template3}
-  <br><br>
+ <hr style="margin: 60px 0 50px 0; border: 0; height: 0; border-top: 2px dashed #d2d2d2;">
   ${template4}
+  <br><br>
+  ${template1}
 </div>
 
 
@@ -96,6 +128,7 @@ const note = `
   [expectChanges] | boolean | if text inside truncate-tooltip component will be changing, set to true | false
   [delay] | number | time in ms before tooltip shows | 300
   [lazyness] | number | if type is Material, it will be initialized lazyly after this many ms of hover | 200
+  [tooltipClass] | TooltipClass / TooltipClass[] | classes to control tooltip text-align and wrapping | &nbsp;
 
    --------
 
@@ -156,25 +189,49 @@ story.add(
       template: storyTemplate,
       props: {
         truncateTooltipType: TruncateTooltipType,
-        maxLines: number('bTruncateTooltip/maxLines', 2),
-        type: select('type', Object.values(TruncateTooltipType), TruncateTooltipType.auto),
-        position: select('position', Object.values(TruncateTooltipPosition), TruncateTooltipPosition.above),
-        text1: text(
-          'text1',
-          `If you’re trying to wear official headgear in a public setting, my advice is
+
+        maxLines: number('bTruncateTooltip/maxLines', 2, {}, 'Props'),
+        type: select(
+          'type',
+          Object.values(TruncateTooltipType),
+          TruncateTooltipType.auto,
+          'Props'
+        ),
+        position: select(
+          'position',
+          Object.values(TruncateTooltipPosition),
+          TruncateTooltipPosition.above,
+          'Props'
+        ),
+
+        text1: `If you’re trying to wear official headgear in a public setting, my advice is
         to take yourself as seriously as you expect others to take you.
           A photographer may not allow you to wear the colander
           if you’ve just pulled it out while giggling. But if you walk in wearing it – if it is clear that this
           headgear is truly a serious part of your traditional Pastafarian beliefs, as you are claiming –
-          then they are less likely to make trouble.`
-        ),
-        text2: text('text2', '😊 And this text too!')
+          then they are less likely to make trouble.`,
+        text2: '😊 And this text too!',
+        text3:
+          'This is a pure CSS tooltip!\nLooks and feels the same as matTooltip-based ones.\nCant be used inside overflow hidden containers.',
+        text4:
+          'By default, the tooltip is initialized lazily -\n only after user hovers over the element for 200ms.\n\n',
+
+        tooltipClass_TextLeft: boolean('TextLeft', false, 'tooltipClass'),
+        tooltipClass_TextRight: boolean('TextRight', false, 'tooltipClass'),
+        tooltipClass_TextCenter: boolean('TextCenter', false, 'tooltipClass'),
+        tooltipClass_PreWrap: boolean('PreWrap', false, 'tooltipClass'),
+        tooltipClass_NoWrap: boolean('NoWrap', false, 'tooltipClass'),
       },
       moduleMetadata: {
         declarations: [],
-        imports: [TypographyModule, StoryBookLayoutModule, BrowserAnimationsModule, TruncateTooltipModule],
-        entryComponents: []
-      }
+        imports: [
+          TypographyModule,
+          StoryBookLayoutModule,
+          BrowserAnimationsModule,
+          TruncateTooltipModule,
+        ],
+        entryComponents: [],
+      },
     };
   },
   { notes: { markdown: note } }

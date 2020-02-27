@@ -21,6 +21,8 @@ import { TextProps } from '../../services/html/html-helpers.interface';
 import { UtilsService } from '../../services/utils/utils.service';
 import { Subscription } from 'rxjs';
 import { outsideZone } from '../../services/utils/rxjs.operators';
+import { TooltipClass } from '../tooltip/tooltip.enum';
+import { asArray } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-truncate-tooltip, [b-truncate-tooltip]',
@@ -55,6 +57,8 @@ export class TruncateTooltipComponent
   @Input() type: TruncateTooltipType = TruncateTooltipType.auto;
   @Input() position = TruncateTooltipPosition.above;
 
+  @Input() tooltipClass: TooltipClass | string | (TooltipClass | string)[];
+
   private textElementTextProps: TextProps;
   private maxLinesDefault = 1;
   private maxLinesCache = this.maxLinesDefault;
@@ -76,6 +80,10 @@ export class TruncateTooltipComponent
   }
 
   ngOnInit(): void {
+    this.tooltipClass = asArray<string>(this.tooltipClass || []).concat(
+      'b-truncate-tooltip'
+    );
+
     if (this.lazyness !== 0 && this.type !== TruncateTooltipType.css) {
       this.addMouseListeners();
     }
@@ -248,14 +256,14 @@ export class TruncateTooltipComponent
         }
       }, this.lazyness);
     }
-  }
+  };
 
   private stopHoverTimer = () => {
     if (this.hoverTimer) {
       clearTimeout(this.hoverTimer);
       this.hoverTimer = null;
     }
-  }
+  };
 
   private addMouseListeners() {
     this.textContainer.nativeElement.addEventListener(

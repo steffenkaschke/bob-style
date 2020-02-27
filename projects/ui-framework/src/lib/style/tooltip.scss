@@ -52,12 +52,11 @@ $toolti-offset: 10px;
 
   // text align
 
-  &.text-left
-  {
+  &.text-left {
     text-align: left;
   }
 
-  &.text-right{
+  &.text-right {
     text-align: right;
   }
 
@@ -192,12 +191,14 @@ $toolti-offset: 10px;
 
   // text align
 
+  &.text-left,
   &[data-tooltip-align='left'] {
     &:after {
       text-align: left;
     }
   }
 
+  &.text-right,
   &[data-tooltip-align='right'] {
     &:after {
       text-align: right;
@@ -206,6 +207,7 @@ $toolti-offset: 10px;
 
   // wrap
 
+  &.no-wrap,
   &[data-tooltip-wrap='nowrap'] {
     &:after {
       white-space: nowrap;
@@ -213,6 +215,7 @@ $toolti-offset: 10px;
     }
   }
 
+  &.pre-wrap,
   &[data-tooltip-wrap='pre'] {
     &:after {
       white-space: pre-line;

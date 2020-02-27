@@ -38,6 +38,7 @@ import {
   hasChanges,
   isNotEmptyArray,
 } from '../../services/utils/functional-utils';
+import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
 
 @Component({
   selector: 'b-tree-select',
@@ -109,6 +110,7 @@ export class TreeSelectComponent extends BaseFormElement
   public panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
   public panelClass = 'b-tree-select-panel';
   private treeListValue: TreeListValue;
+  readonly tooltipClass = [TooltipClass.PreWrap];
 
   public onNgChanges(changes: SimpleChanges): void {
     console.log('---------------', 'Tree Select ngOnChanges', changes);
