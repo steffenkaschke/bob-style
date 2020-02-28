@@ -98,18 +98,18 @@ const jobTypes = randomFromArray(
   7
 );
 
-const optionsMock: SelectGroupOption[] = makeArray(groupCount).map(
-  (group, index) => ({
-    groupName: jobTypes[index],
-    options: jobs.slice(index * 5, index * 5 + 5).map(option => ({
-      value: option,
-      id: simpleUID(option + '-'),
-      selected: false,
-    })),
-  })
-);
+export const SSPjobsOptionsMock: SelectGroupOption[] = makeArray(
+  groupCount
+).map((group, index) => ({
+  groupName: jobTypes[index],
+  options: jobs.slice(index * 5, index * 5 + 5).map(option => ({
+    value: option,
+    id: simpleUID(option + '-'),
+    selected: false,
+  })),
+}));
 
-optionsMock[0].options[1].selected = true;
+SSPjobsOptionsMock[0].options[1].selected = true;
 
 story.add(
   'Single Select Panel',
@@ -127,7 +127,7 @@ story.add(
         disabled: boolean('disabled', false, 'Props'),
         readonly: boolean('readonly', false, 'Props'),
         panelClass: text('panelClass', 'some-class', 'Props'),
-        options: object('options', optionsMock, 'Options'),
+        options: object('options', SSPjobsOptionsMock, 'Options'),
         selectChange: action('Single select panel change'),
       },
       moduleMetadata: {

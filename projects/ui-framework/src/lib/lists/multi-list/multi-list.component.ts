@@ -55,7 +55,6 @@ export class MultiListComponent extends BaseListElement {
   }
 
   selectGroup(header: ListHeader, index: number): void {
-    console.log('selectGroup', index);
     header.selected = this.options[index].options
       .filter(option => !(option.disabled && !option.selected))
       .some(option => !option.selected);
@@ -88,7 +87,5 @@ export class MultiListComponent extends BaseListElement {
       updateListOptions: false,
       selectedIDs: this.selectedIDs,
     });
-
-    this.cd.detectChanges();
   }
 }

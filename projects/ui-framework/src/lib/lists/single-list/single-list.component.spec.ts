@@ -111,6 +111,7 @@ describe('SingleListComponent', () => {
           isPlaceHolder: false,
           selected: true,
           hidden: false,
+          groupIndex: 0,
         },
         {
           value: 'Basic Info 2',
@@ -119,6 +120,7 @@ describe('SingleListComponent', () => {
           isPlaceHolder: false,
           selected: false,
           hidden: false,
+          groupIndex: 0,
         },
         {
           isPlaceHolder: true,
@@ -132,6 +134,7 @@ describe('SingleListComponent', () => {
           selected: false,
           disabled: true,
           hidden: false,
+          groupIndex: 1,
         },
         {
           value: 'Personal 2',
@@ -140,6 +143,7 @@ describe('SingleListComponent', () => {
           isPlaceHolder: false,
           selected: false,
           hidden: false,
+          groupIndex: 1,
         },
       ] as any);
     });
@@ -364,10 +368,9 @@ describe('SingleListComponent', () => {
     it('should emit event when selecting an option', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
-      const listChange = component['listChangeSrvc'].getListChange(
-        component.options,
-        [12]
-      );
+      const listChange = component[
+        'listChangeSrvc'
+      ].getListChange(component.options, [12]);
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
     });
 

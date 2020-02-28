@@ -122,10 +122,10 @@ describe('MultiSelectPanelComponent', () => {
     });
     it('should indicate selected option', () => {
       const listOptionsCb = overlayContainerElement.querySelectorAll(
-        'b-multi-list .option .bchk-input'
+        'b-multi-list .option .checkbox'
       );
-      expect((listOptionsCb[0] as HTMLInputElement).checked).toEqual(false);
-      expect((listOptionsCb[1] as HTMLInputElement).checked).toEqual(true);
+      expect(listOptionsCb[0].classList).not.toContain('selected');
+      expect(listOptionsCb[1].classList).toContain('selected');
     });
     it('should emit listChange on selection', () => {
       optionsMock[0].options[1].selected = true;

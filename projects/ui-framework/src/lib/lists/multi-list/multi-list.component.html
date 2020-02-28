@@ -37,7 +37,7 @@
         <div class="header-option">
           <span *ngIf="!readonly && mode !== modes.radioGroups"
                 [hidden]="searchValue"
-                class="bml-checkbox"
+                class="checkbox bml-checkbox"
                 (click)="selectGroup(header, headerIndex)"></span>
 
           <span class="header-option-value"
@@ -73,6 +73,7 @@
            class="option-select">
 
         <span *ngIf="!option.isPlaceHolder && !readonly"
+              class="checkbox"
               [ngClass]="{
                 'bml-checkbox': mode !== modes.radioGroups,
                 'bml-radio': mode === modes.radioGroups,

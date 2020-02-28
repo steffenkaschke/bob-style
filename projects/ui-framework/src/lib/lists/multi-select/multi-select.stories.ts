@@ -26,6 +26,7 @@ import listSelectsPropsDoc from '../lists-selects.properties.md';
 import selectsPropsDoc from '../selects.properties.md';
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 import { SelectMode } from '../list.enum';
+import { SSPjobsOptionsMock } from '../single-select-panel/single-select-panel.stories';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -37,7 +38,7 @@ const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 
 const template = `
 <b-multi-select [value]="value"
-                [options]="options"
+                [options]="optns === 'plain' ? options_plain : options_avatars"
                 [optionsDefault]="optionsDefault"
                 [mode]="selectMode"
                 [label]="label"
@@ -189,13 +190,19 @@ const toAdd = () => ({
     ),
     errorMessage: text('errorMessage', '', 'Props'),
 
-    options: object<SelectGroupOption>('options', options, 'Options'),
-    optionsDefault: object<SelectGroupOption>(
-      'optionsDefault',
-      optionsDef,
+    optns: select(
+      'options',
+      ['plain', 'with avatars'],
+      'with avatars',
       'Options'
     ),
-
+    options_plain: SSPjobsOptionsMock,
+    options_avatars: object<SelectGroupOption>(
+      'options data',
+      options,
+      'Options'
+    ),
+    optionsDefault: optionsDef,
     opened: action('Panel opened'),
     closed: action('Panel closed'),
     selectChange: action('Change Applied'),

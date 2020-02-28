@@ -3,7 +3,7 @@ import {
   ComponentFixture,
   fakeAsync,
   TestBed,
-  tick
+  tick,
 } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogComponent } from './dialog.component';
@@ -28,14 +28,12 @@ describe('DialogComponent', () => {
     const dialogButtonsConfig: DialogButtons = {
       ok: {
         label: 'ok',
-        action: () => {
-        }
+        action: () => {},
       },
       cancel: {
         label: 'cancel',
-        action: () => {
-        }
-      }
+        action: () => {},
+      },
     };
 
     spyMatDialogRef = createSpyObj('spyMatDialogRef', ['close']);
@@ -43,16 +41,10 @@ describe('DialogComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         MockComponent(ButtonComponent),
-        MockComponent(SquareButtonComponent)
+        MockComponent(SquareButtonComponent),
       ],
-      imports: [
-        NoopAnimationsModule,
-        DialogModule,
-        MatDialogModule,
-      ],
-      providers: [
-        { provide: MatDialogRef, useValue: spyMatDialogRef },
-      ],
+      imports: [NoopAnimationsModule, DialogModule, MatDialogModule],
+      providers: [{ provide: MatDialogRef, useValue: spyMatDialogRef }],
     })
       .compileComponents()
       .then(() => {
@@ -81,7 +73,9 @@ describe('DialogComponent', () => {
       expect(dialogFooter).toBeFalsy();
     });
     it('should add no-buttons class to body', () => {
-      const dialogBody = fixture.debugElement.query(By.css('.dialog-content-wrapper'));
+      const dialogBody = fixture.debugElement.query(
+        By.css('.dialog-content-wrapper')
+      );
       expect(dialogBody.nativeElement.classList).toContain('no-footer');
     });
   });
@@ -114,7 +108,7 @@ describe('DialogComponent', () => {
     }));
     it('should close dialog immediately if no cancel action exists', () => {
       component.dialogButtons.cancel = {
-        label: 'cancel'
+        label: 'cancel',
       };
       const cancelButton = fixture.debugElement.query(By.css('.cancel-button'))
         .componentInstance;
@@ -125,9 +119,8 @@ describe('DialogComponent', () => {
       component.dialogButtons = {
         ok: {
           label: 'ok',
-          action: () => {
-          }
-        }
+          action: () => {},
+        },
       };
       fixture.detectChanges();
       const cancelButton = fixture.debugElement.query(By.css('.cancel-button'));
@@ -213,7 +206,7 @@ describe('DialogComponent', () => {
         component.dialogButtons.confirmation = {
           buttonLabel: 'confirm',
           title: 'are you sure?',
-          subTitle: 'click confirm to invoke method'
+          subTitle: 'click confirm to invoke method',
         };
       });
       it('should show confirm message if exists', () => {
@@ -282,11 +275,12 @@ describe('DialogComponent', () => {
           ok: {
             label: 'ok',
             action: () => {},
-            disabled: true
-          }
+            disabled: true,
+          },
         };
         fixture.detectChanges();
-        const okButton = fixture.debugElement.query(By.css('.ok-button')).componentInstance;
+        const okButton = fixture.debugElement.query(By.css('.ok-button'))
+          .componentInstance;
         expect(okButton.disabled).toBeTruthy();
       });
     });

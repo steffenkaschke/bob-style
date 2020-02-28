@@ -16,8 +16,6 @@ import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-im
 import listInterfaceDoc from '../list.interface.md';
 import listSelectsPropsDoc from '../lists-selects.properties.md';
 import listsPropsDoc from '../lists.properties.md';
-import { select } from '@storybook/addon-knobs';
-import { SelectMode } from '../list.enum';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs

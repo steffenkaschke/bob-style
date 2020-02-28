@@ -91,6 +91,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: true,
           hidden: false,
+          groupIndex: 0,
         },
         {
           value: 'Basic Info 2',
@@ -99,6 +100,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: false,
           hidden: false,
+          groupIndex: 0,
         },
         {
           isPlaceHolder: true,
@@ -111,6 +113,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: false,
           hidden: false,
+          groupIndex: 1,
         },
         {
           value: 'Personal 2',
@@ -119,6 +122,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: false,
           hidden: false,
+          groupIndex: 1,
         },
       ] as any);
     });
@@ -231,6 +235,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: true,
           hidden: false,
+          groupIndex: 0,
         },
         {
           value: 'Basic Info 2',
@@ -239,6 +244,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: false,
           hidden: false,
+          groupIndex: 0,
         },
         {
           isPlaceHolder: true,
@@ -251,6 +257,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: true,
           hidden: false,
+          groupIndex: 1,
         },
         {
           value: 'Personal 2',
@@ -259,6 +266,7 @@ describe('ListModelService', () => {
           isPlaceHolder: false,
           selected: true,
           hidden: false,
+          groupIndex: 1,
         },
       ] as any);
     });
