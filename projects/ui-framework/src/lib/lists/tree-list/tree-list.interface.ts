@@ -23,7 +23,7 @@ export interface TreeListComponentIO {
   embedded?: boolean;
   focusOnInit?: boolean;
   tooltipType?: TruncateTooltipType;
-  changed?: EventEmitter<TreeListValue>;
+  changed: EventEmitter<TreeListValue>;
   apply?: EventEmitter<void>;
   cancel?: EventEmitter<void>;
 }

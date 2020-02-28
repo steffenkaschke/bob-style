@@ -8,6 +8,7 @@ import { mockText } from '../../mock.const';
 import { TreeListStoriesCommonProps } from '../tree-list/tree-list.stories.common';
 
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
+import { action } from '@storybook/addon-actions';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -32,6 +33,8 @@ const componentTemplate = `
       [hintMessage]="hintMessage"
       [errorMessage]="errorMessage"
       (changed)="changed($event)"
+      (opened)="opened()"
+      (closed)="closed()"
       [debug]="debug">
 
 </b-tree-select>
@@ -96,6 +99,9 @@ story.add(
           'Props'
         ),
         errorMessage: text('errorMessage', '', 'Props'),
+
+        opened: action('List opened'),
+        closed: action('List closed'),
       },
       moduleMetadata: {
         imports: [
