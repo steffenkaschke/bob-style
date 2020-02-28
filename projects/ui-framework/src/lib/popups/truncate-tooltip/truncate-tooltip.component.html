@@ -3,9 +3,10 @@
    [matTooltip]="tooltipText"
    [matTooltipShowDelay]="delay"
    [matTooltipPosition]="position"
-   matTooltipClass="b-truncate-tooltip"></i>
+   [matTooltipClass]="tooltipClass"></i>
 <i *ngIf="type === types.css && tooltipEnabled"
    class="tooltip-trigger"
+   [ngClass]="tooltipClass"
    [attr.data-tooltip]="tooltipText"
    [attr.data-tooltip-position]="position"></i>
 <div #textContainer

@@ -20,7 +20,9 @@
             'clickable': options.length > 1,
             'collapsed': header.isCollapsed,
             'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header),
-            hidden: header.hidden
+            hidden: header.hidden,
+            'selected': header.selected,
+            'indeterminate': header.indeterminate
           }"
            class="option-select header has-hover">
         <span (click)="headerClick(header, headerIndex)"
@@ -33,14 +35,11 @@
                 'b-icon-chevron-right': header.isCollapsed
               }"></span>
         <div class="header-option">
-          <b-checkbox *ngIf="!readonly"
-                      [hidden]="searchValue"
-                      class="checkbox"
-                      [value]="header.selected"
-                      [indeterminate]="header.indeterminate"
-                      (click)="selectGroup(header, headerIndex)"
-                      [doPropagate]="false">
-          </b-checkbox>
+          <span *ngIf="!readonly && mode !== modes.radioGroups"
+                [hidden]="searchValue"
+                class="checkbox bml-checkbox"
+                (click)="selectGroup(header, headerIndex)"></span>
+
           <span class="header-option-value"
                 data-max-lines='3'
                 [innerHTML]="header.groupName | highlight: searchValue"></span>
@@ -73,11 +72,13 @@
            }"
            class="option-select">
 
-        <b-checkbox *ngIf="!option.isPlaceHolder && !readonly"
-                    class="checkbox"
-                    [value]="option.selected"
-                    [doPropagate]="false">
-        </b-checkbox>
+        <span *ngIf="!option.isPlaceHolder && !readonly"
+              class="checkbox"
+              [ngClass]="{
+                'bml-checkbox': mode !== modes.radioGroups,
+                'bml-radio': mode === modes.radioGroups,
+                'selected': option.selected
+              }"></span>
 
         <b-component-renderer *ngIf="option.prefixComponent
                         && option.prefixComponent.component"

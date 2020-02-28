@@ -51,7 +51,7 @@ export class ListPanelService {
         '--input-width': inputWidth + 'px',
       });
 
-      if (self.opened.observers.length > 0) {
+      if (self.opened.observers.length) {
         self.opened.emit(self.overlayRef);
       }
 
@@ -119,7 +119,7 @@ export class ListPanelService {
       });
       self.subscribtions = [];
 
-      if (self.closed.observers.length > 0 && !skipEmit) {
+      if (self.closed.observers.length && !skipEmit) {
         self.closed.emit();
       }
     }

@@ -23,6 +23,8 @@ import { SelectGroupOption } from '../list.interface';
 import listInterfaceDoc from '../list.interface.md';
 import listSelectsPropsDoc from '../lists-selects.properties.md';
 import selectPanelsPropsDoc from '../select-panels.properties.md';
+import { select } from '@storybook/addon-knobs';
+import { SelectMode } from '../list.enum';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -31,6 +33,7 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 const componentTemplate1 = `<b-multi-select-panel [chevronButtonText]="chevronButtonText"
                         [options]="options"
                         [optionsDefault]="optionsDefault"
+                        [mode]="selectMode"
                         [disabled]="disabled"
                         [readonly]="readonly"
                         (selectChange)="selectChange($event)">
@@ -98,6 +101,12 @@ story.add(
         icons: Icons,
         buttonType: ButtonType,
         chevronButtonText: text('chevronButtonText', 'Select field', 'Props'),
+        selectMode: select(
+          'selectMode',
+          Object.values(SelectMode),
+          SelectMode.classic,
+          'Props'
+        ),
         disabled: boolean('disabled', false, 'Props'),
         readonly: boolean('readonly', false, 'Props'),
         options: object<SelectGroupOption>('options', optionsMock, 'Options'),

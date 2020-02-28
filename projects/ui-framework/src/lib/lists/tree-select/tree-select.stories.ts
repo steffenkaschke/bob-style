@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/angular';
 import { ComponentGroupType } from '../../consts';
-import { withKnobs, text, boolean, object } from '@storybook/addon-knobs';
+import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TreeSelectModule } from './tree-select.module';
@@ -8,6 +8,7 @@ import { mockText } from '../../mock.const';
 import { TreeListStoriesCommonProps } from '../tree-list/tree-list.stories.common';
 
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
+import { action } from '@storybook/addon-actions';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -26,13 +27,14 @@ const componentTemplate = `
       [maxHeightItems]="maxHeightItems"
       [valueSeparatorChar]="valueSeparatorChar"
       [startCollapsed]="startCollapsed"
-      [showSingleGroupHeader]="showSingleGroupHeader"
       [disabled]="disabled"
       [required]="required"
       [readonly]="readonly"
       [hintMessage]="hintMessage"
       [errorMessage]="errorMessage"
       (changed)="changed($event)"
+      (opened)="opened()"
+      (closed)="closed()"
       [debug]="debug">
 
 </b-tree-select>
@@ -97,6 +99,9 @@ story.add(
           'Props'
         ),
         errorMessage: text('errorMessage', '', 'Props'),
+
+        opened: action('List opened'),
+        closed: action('List closed'),
       },
       moduleMetadata: {
         imports: [

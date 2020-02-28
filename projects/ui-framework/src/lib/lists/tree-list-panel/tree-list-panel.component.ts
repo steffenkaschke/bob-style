@@ -30,12 +30,11 @@ import { UtilsService } from '../../services/utils/utils.service';
 import {
   hasChanges,
   notFirstChanges,
-  isBoolean,
-  applyChanges,
 } from '../../services/utils/functional-utils';
 import { TreeListValue } from '../tree-list/tree-list.interface';
 import { TreeListInputOutput } from '../tree-list/tree-list-IO.abstract';
 import { ListPanelService } from '../list-panel.service';
+import { TreeListPanelIO } from './tree-list-panel.interface';
 
 @Component({
   selector: 'b-tree-list-panel',
@@ -44,7 +43,7 @@ import { ListPanelService } from '../list-panel.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeListPanelComponent extends TreeListInputOutput
-  implements OnChanges, OnDestroy {
+  implements TreeListPanelIO, OnChanges, OnDestroy {
   constructor(
     public DOM: DOMhelpers,
     protected zone: NgZone,
@@ -71,7 +70,7 @@ export class TreeListPanelComponent extends TreeListInputOutput
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
-  private treeListValue: TreeListValue;
+  public treeListValue: TreeListValue;
 
   // Used by ListPanelService:
   private panelClassList: string[] = ['b-select-panel', 'b-tree-list-panel'];
@@ -84,20 +83,6 @@ export class TreeListPanelComponent extends TreeListInputOutput
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('---------------', 'Tree Panel ngOnChanges', changes);
-
-    applyChanges(
-      this,
-      changes,
-      {
-        focusOnInit: true,
-        showSingleGroupHeader: true,
-      },
-      [],
-      true,
-      {
-        falseyCheck: isBoolean,
-      }
-    );
 
     if (hasChanges(changes, ['disabled'])) {
       this.destroyPanel();
@@ -120,17 +105,22 @@ export class TreeListPanelComponent extends TreeListInputOutput
   }
 
   public onApply(): void {
-    this.value = (this.treeListValue && this.treeListValue.selectedIDs) || [];
-    if (this.apply.observers.length > 0) {
-      this.apply.emit();
+    if (this.treeListValue) {
+      this.value = (this.treeListValue && this.treeListValue.selectedIDs) || [];
+      this.treeListValue = undefined;
+      if (this.apply.observers.length > 0) {
+        this.apply.emit();
+      }
     }
     this.destroyPanel();
   }
 
   public onCancel(): void {
-    this.treeListValue = undefined;
-    if (this.cancel.observers.length > 0) {
-      this.cancel.emit();
+    if (this.treeListValue) {
+      this.treeListValue = undefined;
+      if (this.cancel.observers.length > 0) {
+        this.cancel.emit();
+      }
     }
     this.destroyPanel();
   }

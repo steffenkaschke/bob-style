@@ -97,6 +97,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
 
   onApply(): void {
     if (this.listChange) {
+      this.dirty = true;
       this.emitChange(FormEvents.selectChange);
       this.listChange = undefined;
     }

@@ -16,6 +16,8 @@ import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-im
 import listInterfaceDoc from '../list.interface.md';
 import listSelectsPropsDoc from '../lists-selects.properties.md';
 import listsPropsDoc from '../lists.properties.md';
+import { select } from '@storybook/addon-knobs';
+import { SelectMode } from '../list.enum';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -26,6 +28,7 @@ const template = `
               [optionsDefault]="optionsDefault"
               [showSingleGroupHeader]="showSingleGroupHeader"
               [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+              [mode]="selectMode"
               [readonly]="readonly"
               (selectChange)="selectChange($event)">
 
@@ -83,6 +86,12 @@ story.add(
   () => ({
     template: storyTemplate,
     props: {
+      selectMode: select(
+        'selectMode',
+        Object.values(SelectMode),
+        SelectMode.classic,
+        'Props'
+      ),
       selectChange: action('Multi list change'),
       showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
       startWithGroupsCollapsed: boolean(

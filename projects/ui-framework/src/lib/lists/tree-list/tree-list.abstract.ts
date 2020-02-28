@@ -103,7 +103,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
 
     if (
       hasChanges(changes, ['list', 'valueDefault'], true) ||
-      hasChanges(changes, ['showSingleGroupHeader', 'value'])
+      hasChanges(changes, ['value'])
     ) {
       this.updateActionButtonsState();
     }

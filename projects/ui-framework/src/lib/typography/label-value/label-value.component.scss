@@ -117,6 +117,7 @@ $BLVTypeMap: (
 .blv-label,
 .blv-value {
   max-width: 100%;
+  min-width: 0;
 }
 
 :host::ng-deep > :not(.blv-icon):not(.blv-label):not(.blv-value) {

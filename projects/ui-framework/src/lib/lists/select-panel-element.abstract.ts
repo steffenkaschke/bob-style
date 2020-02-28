@@ -55,7 +55,7 @@ import { ListChangeService } from './list-change/list-change.service';
 import { selectValueOrFail } from '../services/utils/transformers';
 import { ListModelService } from './list-service/list-model.service';
 import { ScrollEvent } from '../services/utils/utils.interface';
-import { SelectType } from './list.enum';
+import { SelectType, SelectMode } from './list.enum';
 import { FormEvents } from '../form-elements/form-elements.enum';
 
 export abstract class BaseSelectPanelElement extends BaseFormElement
@@ -82,6 +82,7 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @Input() value: (number | string)[];
   @Input() options: SelectGroupOption[] = [];
   @Input() optionsDefault: SelectGroupOption[];
+  @Input() mode: SelectMode = SelectMode.classic;
   @Input() panelClass: string;
   @Input() isQuickFilter = false;
   @Input() hasPrefix = false;
@@ -124,6 +125,8 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   private panelConfig: OverlayConfig;
   private templatePortal: TemplatePortal;
   public panelOpen = false;
+  public touched = false;
+  public dirty = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
@@ -135,7 +138,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       ['value']
     );
 
-    if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
+    if (
+      hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage', 'mode'])
+    ) {
       this.destroyPanel();
     }
 
@@ -307,8 +312,9 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   }
 
   protected destroyPanel(): void {
-    this.panelOpen = false;
     if (this.overlayRef) {
+      this.panelOpen = false;
+      this.touched = true;
       this.overlayRef.dispose();
       this.panelConfig = {};
       this.templatePortal = null;
@@ -323,9 +329,10 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       if (this.closed.observers.length > 0) {
         this.closed.emit();
       }
-    }
-    if (!this.cd['destroyed']) {
-      this.cd.detectChanges();
+
+      if (!this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
     }
   }
 

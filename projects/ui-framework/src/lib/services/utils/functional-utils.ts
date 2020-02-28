@@ -1,4 +1,4 @@
-import { SimpleChanges } from '@angular/core';
+import { SimpleChanges, SimpleChange } from '@angular/core';
 import { metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
 import { isEqual } from 'lodash';
@@ -492,28 +492,50 @@ export const countChildren = (parentSelector, parent) => {
 // NGONCHANGES HELPERS
 // ----------------------
 
+interface ChangesHelperConfig {
+  keyMap?: { [targetKey: string]: string };
+  falseyCheck?: Function;
+}
+
+const CHANGES_HELPER_CONFIG_DEF: ChangesHelperConfig = {
+  falseyCheck: Boolean,
+};
+
+const simpleChangeFilter = (
+  change: SimpleChange,
+  discardAllFalsey = false,
+  falseyCheck: Function = Boolean
+): boolean => {
+  return (
+    change !== undefined &&
+    (change.currentValue !== undefined || change.previousValue !== undefined) &&
+    (!discardAllFalsey ||
+      (discardAllFalsey && falseyCheck(change.currentValue)))
+  );
+};
+
 export const hasChanges = (
   changes: SimpleChanges,
   keys: string[] = null,
-  discardAllFalsey = false
+  discardAllFalsey = false,
+  config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): boolean => {
+  const falseyCheck = config.falseyCheck || Boolean;
   if (!keys) {
     keys = Object.keys(changes);
   }
-  return !!keys.find(
-    i =>
-      changes[i] !== undefined &&
-      (changes[i].currentValue !== undefined ||
-        changes[i].previousValue !== undefined) &&
-      (!discardAllFalsey ||
-        (discardAllFalsey && Boolean(changes[i].currentValue)))
+  return !!keys.find(i =>
+    simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck)
   );
 };
 
 export const firstChanges = (
   changes: SimpleChanges,
-  keys: string[] = null
+  keys: string[] = null,
+  discardAllFalsey = false,
+  config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): boolean => {
+  const falseyCheck = config.falseyCheck || Boolean;
   if (!keys) {
     keys = Object.keys(changes);
   }
@@ -522,22 +544,15 @@ export const firstChanges = (
 
 export const notFirstChanges = (
   changes: SimpleChanges,
-  keys: string[] = null
+  keys: string[] = null,
+  discardAllFalsey = false,
+  config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): boolean => {
+  const falseyCheck = config.falseyCheck || Boolean;
   if (!keys) {
     keys = Object.keys(changes);
   }
   return !!keys.find(i => changes[i] && !changes[i].firstChange);
-};
-
-interface ApplyChangesConfig {
-  keyMap?: { [targetKey: string]: string };
-  falseyCheck?: Function;
-}
-
-const APPLY_CHANGES_CONFIG_DEF: ApplyChangesConfig = {
-  keyMap: {},
-  falseyCheck: Boolean,
 };
 
 export const applyChanges = (
@@ -546,18 +561,17 @@ export const applyChanges = (
   defaults: GenericObject = {},
   skip: string[] = [],
   discardAllFalsey = false,
-  config: ApplyChangesConfig = {}
+  config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): SimpleChanges => {
-  config = {
-    ...APPLY_CHANGES_CONFIG_DEF,
-    ...(config || {}),
-  };
-  const { keyMap, falseyCheck } = config;
+  const falseyCheck = config.falseyCheck || Boolean;
+  const keyMap = config.keyMap;
 
-  Object.keys(keyMap).forEach((targetKey: string) => {
-    changes[targetKey] = changes[keyMap[targetKey]];
-    skip.push(keyMap[targetKey]);
-  });
+  if (keyMap) {
+    Object.keys(keyMap).forEach((targetKey: string) => {
+      changes[targetKey] = changes[keyMap[targetKey]];
+      skip.push(keyMap[targetKey]);
+    });
+  }
 
   Object.keys(changes).forEach((changeKey: string) => {
     if (!skip.includes(changeKey)) {

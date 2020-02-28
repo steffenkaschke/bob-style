@@ -5,7 +5,6 @@
                       [fieldId]="id">
 </b-form-element-label>
 
-<!-- -->
 <b-tree-list-panel [type]="type"
                    [list]="list"
                    [value]="value"
@@ -14,7 +13,6 @@
                    [keyMap]="keyMap"
                    [valueSeparatorChar]="valueSeparatorChar"
                    [maxHeightItems]="maxHeightItems"
-                   [showSingleGroupHeader]="showSingleGroupHeader"
                    [startCollapsed]="startCollapsed"
                    [panelClass]="panelClass"
                    [panelPosition]="panelPosition"
@@ -37,13 +35,14 @@
        (click)="openPanel()">
 
     <div #input
-         class="bfe-input trigger-input"
+         class="bfe-input"
          tabindex="0"
          (focus)="openPanel()"
          [b-truncate-tooltip]="1"
          [expectChanges]="true"
          [trustCssVars]="true"
          [type]="tooltipType"
+         [tooltipClass]="tooltipClass"
          [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ?label : placeholder) : null">
       {{displayValue}}
     </div>

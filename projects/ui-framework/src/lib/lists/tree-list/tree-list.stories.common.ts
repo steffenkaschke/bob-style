@@ -22,7 +22,6 @@ export const TreeListStoriesCommonProps = (
   maxHeightItems: number('maxHeightItems', 8, {}, 'Props'),
   valueSeparatorChar: text('valueSeparatorChar', ' / ', 'Props'),
   startCollapsed: boolean('startCollapsed', true, 'Props'),
-  showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
   readonly: boolean('readonly', false, 'Props'),
   disabled: boolean('disabled', false, 'Props'),
 

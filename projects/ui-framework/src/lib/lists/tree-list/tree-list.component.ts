@@ -58,27 +58,16 @@ export class TreeListComponent extends BaseTreeListElement {
     let viewModelWasUpdated = false;
 
     if (
-      (hasChanges(changes, ['list'], true) &&
-        changes.list.currentValue !== this.list) ||
-      hasChanges(changes, ['showSingleGroupHeader'])
+      hasChanges(changes, ['list'], true) &&
+      changes.list.currentValue !== this.list
     ) {
-      if (changes.list) {
-        console.log(
-          'change has LIST, same?',
-          this.list === changes.list.currentValue
-        );
+      console.log(
+        'change has LIST, same?',
+        this.list === changes.list.currentValue
+      );
 
-        this.list = changes.list.currentValue || [];
-        this.hidden = isEmptyArray(this.list);
-      }
-
-      if (
-        !this.showSingleGroupHeader &&
-        isNotEmptyArray(this.list, 1) &&
-        this.list[0][this.keyMap.children]
-      ) {
-        this.list = this.list[0][this.keyMap.children];
-      }
+      this.list = changes.list.currentValue || [];
+      this.hidden = isEmptyArray(this.list);
 
       console.time('getListItemsMap');
       this.itemsMap.clear();
@@ -97,12 +86,13 @@ export class TreeListComponent extends BaseTreeListElement {
       console.log('Same value?', this.value === changes.value.currentValue);
     }
 
-    if (hasChanges(changes, ['list'], true) || hasChanges(changes, ['value'])) {
-      if (firstChanges(changes, ['list'])) {
-        this.updateListViewModel();
-        viewModelWasUpdated = true;
-      }
+    if (firstChanges(changes, ['list'])) {
+      console.log('first change updateListViewModel');
+      this.updateListViewModel();
+      viewModelWasUpdated = true;
+    }
 
+    if (hasChanges(changes, ['list'], true) || hasChanges(changes, ['value'])) {
       viewModelWasUpdated =
         this.applyValue(
           (changes.value ? changes.value.currentValue : this.value) || []
@@ -111,7 +101,7 @@ export class TreeListComponent extends BaseTreeListElement {
 
     if (
       notFirstChanges(changes, ['startCollapsed']) &&
-      typeof this.startCollapsed === 'boolean'
+      isBoolean(this.startCollapsed)
     ) {
       this.toggleCollapseAll(this.startCollapsed, false);
     }
@@ -127,11 +117,7 @@ export class TreeListComponent extends BaseTreeListElement {
     if (
       !viewModelWasUpdated &&
       (hasChanges(changes, ['list', 'viewFilter'], true) ||
-        hasChanges(changes, [
-          'value',
-          'startCollapsed',
-          'showSingleGroupHeader',
-        ]))
+        hasChanges(changes, ['value', 'startCollapsed']))
     ) {
       this.updateListViewModel();
     }

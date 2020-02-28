@@ -1,9 +1,9 @@
 @import '../../style/common-imports';
+@import '../../form-elements/radio-button/radio.mixin';
 
 .checkbox {
   position: relative;
   z-index: 2;
-  margin-right: 12px;
   cursor: pointer;
 
   &[hidden] {
@@ -16,11 +16,43 @@
 }
 
 :host ::ng-deep {
-  .header-option,
-  .option {
-    .bchk-label,
-    .bchk-label:before {
-      pointer-events: none;
+  @include checkbox(
+    $input-selector: null,
+    $checkbox-selector: '.bml-checkbox',
+    $checked-selector: '.selected .bml-checkbox, .bml-checkbox.selected',
+    $disabled-selector: null,
+    $required-selector: null,
+    $indeterminate-selector: '.indeterminate .bml-checkbox',
+    $hover-selector:
+      '.option-select:hover .bml-checkbox, .bml-checkbox:hover, .bml-checkbox:focus'
+  ) {
+    margin-right: 12px;
+  }
+
+  @include radio(
+    $size: $b-checkbox-size + 2px,
+    $checked-color: $grey-600,
+    $input-selector: null,
+    $radio-selector: '.bml-radio',
+    $checked-selector: '.selected .bml-radio, .bml-radio.selected',
+    $disabled-selector: null,
+    $required-selector: null,
+    $hover-selector:
+      '.option-select:hover .bml-radio, .bml-radio:hover, .bml-radio:focus',
+    $checked-hover-selector:
+      '.selected:hover .bml-radio, .option-select:hover .bml-radio.selected, .selected .bml-radio:hover, .selected .bml-radio:focus, .bml-radio.selected:hover, .bml-radio.selected:focus'
+  ) {
+    margin-left: -1px;
+    margin-right: 11px;
+  }
+
+  .disabled {
+    .bml-checkbox,
+    .bml-radio {
+      &,
+      &:before {
+        pointer-events: none;
+      }
     }
   }
 }

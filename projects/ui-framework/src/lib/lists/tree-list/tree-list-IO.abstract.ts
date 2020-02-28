@@ -21,7 +21,6 @@ export abstract class TreeListInputOutput implements TreeListComponentIO {
   @Input() type: SelectType = SelectType.multi;
   @Input() valueSeparatorChar = ' / ';
   @Input() maxHeightItems = 8;
-  @Input() showSingleGroupHeader = true;
   @Input() startCollapsed = true;
   @Input() focusOnInit = false;
   @Input() readonly = false;

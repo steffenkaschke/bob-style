@@ -98,6 +98,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
     event: FormEvents = FormEvents.selectChange,
     listChange: ListChange = this.listChange
   ): void {
+    this.dirty = true;
     this.options = listChange.getSelectGroupOptions();
 
     if (this[event].observers.length > 0) {

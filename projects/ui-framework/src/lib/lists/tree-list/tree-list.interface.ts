@@ -16,7 +16,6 @@ export interface TreeListComponentIO {
   valueSeparatorChar: string;
   listActions: ListFooterActions;
   maxHeightItems: number;
-  showSingleGroupHeader: boolean;
   startCollapsed: boolean;
   readonly: boolean;
   disabled: boolean;
@@ -24,7 +23,7 @@ export interface TreeListComponentIO {
   embedded?: boolean;
   focusOnInit?: boolean;
   tooltipType?: TruncateTooltipType;
-  changed?: EventEmitter<TreeListValue>;
+  changed: EventEmitter<TreeListValue>;
   apply?: EventEmitter<void>;
   cancel?: EventEmitter<void>;
 }

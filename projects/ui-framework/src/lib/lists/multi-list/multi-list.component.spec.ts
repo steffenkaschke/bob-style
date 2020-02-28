@@ -128,6 +128,7 @@ describe('MultiListComponent', () => {
           isPlaceHolder: false,
           selected: true,
           hidden: false,
+          groupIndex: 0,
         },
         {
           value: 'Basic Info 2',
@@ -136,6 +137,7 @@ describe('MultiListComponent', () => {
           isPlaceHolder: false,
           selected: false,
           hidden: false,
+          groupIndex: 0,
         },
         {
           isPlaceHolder: true,
@@ -149,6 +151,7 @@ describe('MultiListComponent', () => {
           selected: false,
           disabled: true,
           hidden: false,
+          groupIndex: 1,
         },
         {
           value: 'Personal 2',
@@ -157,6 +160,7 @@ describe('MultiListComponent', () => {
           isPlaceHolder: false,
           selected: false,
           hidden: false,
+          groupIndex: 1,
         },
       ] as any);
     });
@@ -173,15 +177,15 @@ describe('MultiListComponent', () => {
       const checkboxes = fixture.debugElement.queryAll(
         By.css('.option .checkbox')
       );
-      expect(checkboxes[0].componentInstance.value).toEqual(true);
+      expect(checkboxes[0].nativeElement.classList).toContain('selected');
     });
     it('should set the checkbox of options where (id=2,11,12) as unchecked', () => {
       const checkboxes = fixture.debugElement.queryAll(
         By.css('.option .checkbox')
       );
-      expect(checkboxes[1].componentInstance.value).not.toEqual(true);
-      expect(checkboxes[2].componentInstance.value).not.toEqual(true);
-      expect(checkboxes[3].componentInstance.value).not.toEqual(true);
+      expect(checkboxes[1].nativeElement.classList).not.toContain('selected');
+      expect(checkboxes[2].nativeElement.classList).not.toContain('selected');
+      expect(checkboxes[3].nativeElement.classList).not.toContain('selected');
     });
     it('should rerender lists if simpleChanges includes options', () => {
       let options = fixture.debugElement.queryAll(By.css('.option'));
@@ -394,10 +398,9 @@ describe('MultiListComponent', () => {
     it('should emit event when selecting an option', () => {
       const options = fixture.debugElement.queryAll(By.css('.option'));
       options[3].triggerEventHandler('click', null);
-      const listChange = component['listChangeSrvc'].getListChange(
-        component.options,
-        [1, 12]
-      );
+      const listChange = component[
+        'listChangeSrvc'
+      ].getListChange(component.options, [1, 12]);
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
     });
 
@@ -504,6 +507,7 @@ describe('MultiListComponent', () => {
           selected: false,
           disabled: true,
           hidden: false,
+          groupIndex: 1,
         },
         {
           value: 'Personal 2',
@@ -512,6 +516,7 @@ describe('MultiListComponent', () => {
           isPlaceHolder: false,
           selected: false,
           hidden: false,
+          groupIndex: 1,
         },
       ];
 
@@ -537,10 +542,9 @@ describe('MultiListComponent', () => {
       ).nativeElement;
       headerCheckbox.click();
       fixture.autoDetectChanges();
-      const listChange = component['listChangeSrvc'].getListChange(
-        component.options,
-        [1, 2]
-      );
+      const listChange = component[
+        'listChangeSrvc'
+      ].getListChange(component.options, [1, 2]);
       expect(component.selectChange.emit).toHaveBeenCalledWith(listChange);
     });
   });

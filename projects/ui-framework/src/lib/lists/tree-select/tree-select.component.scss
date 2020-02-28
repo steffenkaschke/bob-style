@@ -7,11 +7,21 @@
       border-bottom-right-radius: 0;
     }
   }
+
   .panel-open.panel-above {
     .bfe-wrap {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
     }
+  }
+
+  .bfe-wrap {
+    position: relative;
+  }
+
+  .bfe-input {
+    cursor: pointer;
+    position: static;
   }
 }
 

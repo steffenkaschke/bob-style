@@ -38,6 +38,8 @@ import {
   hasChanges,
   isNotEmptyArray,
 } from '../../services/utils/functional-utils';
+import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
+import { TreeListPanelIO } from '../tree-list-panel/tree-list-panel.interface';
 
 @Component({
   selector: 'b-tree-select',
@@ -61,7 +63,7 @@ import {
   ],
 })
 export class TreeSelectComponent extends BaseFormElement
-  implements TreeListComponentIO {
+  implements TreeListComponentIO, TreeListPanelIO {
   constructor(cd: ChangeDetectorRef) {
     super(cd);
     // this.baseValue = [];
@@ -84,7 +86,6 @@ export class TreeSelectComponent extends BaseFormElement
   @Input() type: SelectType = SelectType.multi;
   @Input() valueSeparatorChar = '/';
   @Input() maxHeightItems = 8;
-  @Input() showSingleGroupHeader = true;
   @Input() startCollapsed = true;
   @Input() readonly = false;
   @Input() disabled = false;
@@ -100,15 +101,17 @@ export class TreeSelectComponent extends BaseFormElement
   @Output() changed: EventEmitter<TreeListValue> = new EventEmitter<
     TreeListValue
   >();
+  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
+  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
   public overlayRef: OverlayRef;
   public panelOpen = false;
   public displayValue: string;
   public displayValueCount: number;
-  public positionClassList = {};
   public panelPosition = [BELOW_START, ABOVE_START, BELOW_END, ABOVE_END];
   public panelClass = 'b-tree-select-panel';
-  private treeListValue: TreeListValue;
+  public treeListValue: TreeListValue;
+  readonly tooltipClass = [TooltipClass.PreWrap];
 
   public onNgChanges(changes: SimpleChanges): void {
     console.log('---------------', 'Tree Select ngOnChanges', changes);
@@ -119,10 +122,12 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   public onSelectChange(value: TreeListValue): void {
+    this.treeListValue = value;
     this.setDisplayValue(value);
   }
 
   public onApply(): void {
+    this.value = (this.treeListValue && this.treeListValue.selectedIDs) || [];
     this.emitChange(this.treeListValue);
     this.treeListValue = undefined;
   }
@@ -183,10 +188,16 @@ export class TreeSelectComponent extends BaseFormElement
   public onPanelOpen(overlayRef: OverlayRef): void {
     this.overlayRef = overlayRef;
     this.panelOpen = true;
+    if (this.opened.observers.length) {
+      this.opened.emit(this.overlayRef);
+    }
   }
 
   public onPanelClose(): void {
     this.overlayRef = null;
     this.panelOpen = false;
+    if (this.closed.observers.length) {
+      this.closed.emit();
+    }
   }
 }
