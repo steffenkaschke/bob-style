@@ -14,6 +14,7 @@ export interface ListHeader {
 export interface ListOption {
   isPlaceHolder: boolean;
   groupName: string;
+  groupIndex: number;
   key?: string | number;
   value: string;
   id: number | string;

@@ -9,7 +9,8 @@
   $hover-selector: $input-selector + ':focus + label,' + $input-selector +
     '+ label:hover',
   $checked-hover-selector: $input-selector + ':checked:focus + label,' +
-    $input-selector + ':checked + label:hover'
+    $input-selector + ':checked + label:hover',
+  $checked-color: var(--primary-500)
 ) {
   $shadow-inset-size-def: $size/2;
   $shadow-inset-size-checked: floor($size / 2 - 1px - $checkmark-size / 2);
@@ -44,7 +45,7 @@
         pointer-events: auto;
         flex-shrink: 0;
         box-shadow: $shadow-def;
-        transition: box-shadow 0.2s;
+        transition: box-shadow 0.15s;
       }
 
       @content;
@@ -64,7 +65,7 @@
     #{$checked-selector} {
       &:before {
         content: '\2713';
-        background-color: var(--primary-500);
+        background-color: $checked-color;
         box-shadow: $shadow-checked;
       }
     }

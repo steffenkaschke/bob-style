@@ -25,6 +25,7 @@ import listInterfaceDoc from '../list.interface.md';
 import listSelectsPropsDoc from '../lists-selects.properties.md';
 import selectsPropsDoc from '../selects.properties.md';
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
+import { SelectMode } from '../list.enum';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -38,6 +39,7 @@ const template = `
 <b-multi-select [value]="value"
                 [options]="options"
                 [optionsDefault]="optionsDefault"
+                [mode]="selectMode"
                 [label]="label"
                 [placeholder]="placeholder"
                 [description]="description"
@@ -166,6 +168,12 @@ const toAdd = () => ({
     startWithGroupsCollapsed: boolean(
       'startWithGroupsCollapsed',
       true,
+      'Props'
+    ),
+    selectMode: select(
+      'selectMode',
+      Object.values(SelectMode),
+      SelectMode.classic,
       'Props'
     ),
     label: text('label', 'label text', 'Props'),

@@ -14,6 +14,8 @@ Name | Type | Description | Default
 &lt;elem input-prefix&gt; | ng-content | element with attribute `input-prefix` will be placed on the left of the 'input' box, before the value | &nbsp;
 &lt;elem footerAction&gt; | ng-content | element with attribute `footerAction` will be placed in the footer of the panel | &nbsp;
 &lt;elem footerActionRight&gt; | ng-content | element with attribute `footerActionRight` will be placed in the footer and aligned to the right | &nbsp;
+.dirty | boolean | public property, is true if value has been changed | false
+.touched | boolean | public property, is true if select was opened and closed (blurred) | false
 
 #### Single/Multi Select common methods
 Name | Description

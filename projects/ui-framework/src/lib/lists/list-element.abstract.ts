@@ -45,7 +45,7 @@ import { ListModelService } from './list-service/list-model.service';
 import { ListChangeService } from './list-change/list-change.service';
 import { simpleChange } from '../services/utils/test-helpers';
 import { LIST_ACTIONS_STATE_DEF } from './list-footer/list-footer.const';
-import { SelectType } from './list.enum';
+import { SelectType, SelectMode } from './list.enum';
 
 export abstract class BaseListElement
   implements OnChanges, OnInit, OnDestroy, AfterViewInit {
@@ -60,19 +60,22 @@ export abstract class BaseListElement
     protected host: ElementRef
   ) {}
 
-  @ViewChild('vScroll', { static: true }) vScroll: CdkVirtualScrollViewport;
+  @ViewChild('vScroll', { static: true })
+  vScroll: CdkVirtualScrollViewport;
   @ViewChild('headers', { static: false }) headers;
   @ViewChild('footer', { static: false, read: ElementRef })
   private footer: ElementRef;
 
   @Input() options: SelectGroupOption[] = [];
   @Input() optionsDefault: SelectGroupOption[];
+  @Input() mode: SelectMode = SelectMode.classic;
   @Input() listActions: ListFooterActions;
   @Input() maxHeight = LIST_EL_HEIGHT * 8;
   @Input() showSingleGroupHeader = false;
   @Input() startWithGroupsCollapsed = true;
   @Input() showNoneOption = false;
   @Input() readonly = false;
+  @Input() required = false;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
@@ -102,6 +105,7 @@ export abstract class BaseListElement
 
   private keyDownSubscriber: Subscription;
   readonly listElHeight = LIST_EL_HEIGHT;
+  readonly modes = SelectMode;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(this, changes, {
@@ -275,26 +279,57 @@ export abstract class BaseListElement
 
   optionClick(option: ListOption, allowMultiple = false): void {
     if (!option.disabled && !this.readonly) {
-      option.selected = !option.selected;
+      let newValue;
 
-      this.selectedIDs = allowMultiple
-        ? option.selected
-          ? this.selectedIDs.concat(option.id)
-          : this.selectedIDs.filter(id => id !== option.id)
-        : [option.id];
+      if (this.mode !== SelectMode.radioGroups) {
+        newValue = !option.selected;
 
-      this.emitChange();
+        if (newValue !== option.selected) {
+          this.selectedIDs = allowMultiple
+            ? newValue
+              ? this.selectedIDs.concat(option.id)
+              : this.selectedIDs.filter(id => id !== option.id)
+            : [option.id];
+        }
+      }
 
-      this.updateLists({
-        updateListHeaders: false,
-        updateListOptions: false,
-        selectedIDs: this.selectedIDs,
-      });
+      if (this.mode === SelectMode.radioGroups && allowMultiple) {
+        newValue =
+          this.required && option.selected ? option.selected : !option.selected;
 
-      this.updateActionButtonsState();
+        if (newValue !== option.selected && newValue) {
+          const groupIDsInSelected = this.options[option.groupIndex].options
+            .map(optn => optn.id)
+            .filter(id => this.selectedIDs.includes(id));
 
-      if (!this.cd['destroyed']) {
-        this.cd.detectChanges();
+          this.selectedIDs = this.selectedIDs
+            .filter(id => !groupIDsInSelected.includes(id))
+            .concat(option.id);
+        } else if (
+          newValue !== option.selected &&
+          !this.required &&
+          !newValue
+        ) {
+          this.selectedIDs = this.selectedIDs.filter(id => id !== option.id);
+        }
+      }
+
+      if (newValue !== option.selected) {
+        option.selected = newValue;
+
+        this.emitChange();
+
+        this.updateLists({
+          updateListHeaders: false,
+          updateListOptions: false,
+          selectedIDs: this.selectedIDs,
+        });
+
+        this.updateActionButtonsState();
+
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
       }
     }
   }

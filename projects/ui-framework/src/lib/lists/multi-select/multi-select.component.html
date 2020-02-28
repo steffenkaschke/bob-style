@@ -44,6 +44,7 @@
   </div>
 </div>
 
+
 <p b-input-message
    *ngIf="hintMessage || warnMessage || errorMessage"
    [hintMessage]="hintMessage"
@@ -55,11 +56,13 @@
   <div class="b-select-panel"
        [ngClass]="positionClassList">
     <b-multi-list class="b-select-list"
+                  [mode]="mode"
                   [options]="options"
                   [optionsDefault]="optionsDefault"
                   [maxHeight]="listElHeight*6"
                   [showSingleGroupHeader]="showSingleGroupHeader"
                   [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+                  [required]="required"
                   [readonly]="readonly"
                   [listActions]="listActions"
                   (selectChange)="onSelect($event)"

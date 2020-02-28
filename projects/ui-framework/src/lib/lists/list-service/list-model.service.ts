@@ -70,6 +70,7 @@ export class ListModelService {
               {
                 groupName: group.groupName,
                 isPlaceHolder: false,
+                groupIndex: index,
                 hidden: isBoolean(group.hidden)
                   ? group.hidden
                   : !!option.hidden,
@@ -89,6 +90,7 @@ export class ListModelService {
                 {
                   groupName: group.groupName,
                   isPlaceHolder: false,
+                  groupIndex: index,
                   hidden: isBoolean(group.hidden)
                     ? group.hidden
                     : !!option.hidden,
