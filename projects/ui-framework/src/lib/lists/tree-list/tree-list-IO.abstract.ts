@@ -6,6 +6,7 @@ import {
   ViewFilter,
   TreeListKeyMap,
   TreeListValue,
+  TreeListItemMap,
 } from './tree-list.interface';
 import { BTL_KEYMAP_DEF } from './tree-list.const';
 import { SelectType } from '../list.enum';
@@ -17,6 +18,7 @@ export abstract class TreeListInputOutput implements TreeListComponentIO {
   @Input() valueDefault: itemID[];
   @Input() viewFilter: ViewFilter;
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
+  @Input() itemsMap: TreeListItemMap = new Map();
 
   @Input() type: SelectType = SelectType.multi;
   @Input() valueSeparatorChar = ' / ';
