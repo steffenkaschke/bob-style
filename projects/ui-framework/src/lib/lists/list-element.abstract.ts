@@ -75,7 +75,6 @@ export abstract class BaseListElement
   @Input() startWithGroupsCollapsed = true;
   @Input() showNoneOption = false;
   @Input() readonly = false;
-  @Input() required = false;
 
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
@@ -281,7 +280,7 @@ export abstract class BaseListElement
     if (!option.disabled && !this.readonly) {
       let newValue;
 
-      if (this.mode !== SelectMode.radioGroups) {
+      if (this.mode !== SelectMode.radioGroups || !allowMultiple) {
         newValue = !option.selected;
 
         if (newValue !== option.selected) {
@@ -294,10 +293,9 @@ export abstract class BaseListElement
       }
 
       if (this.mode === SelectMode.radioGroups && allowMultiple) {
-        newValue =
-          this.required && option.selected ? option.selected : !option.selected;
+        newValue = true;
 
-        if (newValue !== option.selected && newValue) {
+        if (newValue !== option.selected) {
           const groupIDsInSelected = this.options[option.groupIndex].options
             .map(optn => optn.id)
             .filter(id => this.selectedIDs.includes(id));
@@ -305,12 +303,6 @@ export abstract class BaseListElement
           this.selectedIDs = this.selectedIDs
             .filter(id => !groupIDsInSelected.includes(id))
             .concat(option.id);
-        } else if (
-          newValue !== option.selected &&
-          !this.required &&
-          !newValue
-        ) {
-          this.selectedIDs = this.selectedIDs.filter(id => id !== option.id);
         }
       }
 

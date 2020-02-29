@@ -58,6 +58,8 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   @HostBinding('hidden') @Input() hidden = true;
   @HostBinding('attr.data-debug') @Input() debug = false;
 
+  public itemsMap: TreeListItemMap = new Map();
+  protected itemsMapFromAbove = false;
   public searchValue = '';
   protected minSearchLength = 1;
   public showSearch = false;
@@ -65,7 +67,6 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   public listActionsState: ListFooterActionsState = cloneDeepSimpleObject(
     LIST_ACTIONS_STATE_DEF
   );
-  public itemsMap: TreeListItemMap = new Map();
   public listViewModel: itemID[] = [];
   readonly selectType = SelectType;
 
@@ -82,10 +83,10 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
       {
         keyMap: BTL_KEYMAP_DEF,
       },
-      ['list', 'value'],
+      ['list', 'value', 'itemsMap'],
       false,
       {
-        keyMap: { list: 'setList', value: 'setValue' },
+        keyMap: { list: 'setList', value: 'setValue', itemsMap: 'setItemsMap' },
       }
     );
 
@@ -149,7 +150,9 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   }
 
   ngOnDestroy(): void {
-    this.itemsMap.clear();
+    if (!this.itemsMapFromAbove) {
+      this.itemsMap.clear();
+    }
   }
 
   public onListClick(event: MouseEvent): void {

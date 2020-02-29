@@ -16,6 +16,7 @@ import {
   TreeListComponentIO,
   TreeListKeyMap,
   TreeListValue,
+  TreeListItemMap,
 } from '../tree-list/tree-list.interface';
 import { SelectType } from '../list.enum';
 import { ListFooterActions } from '../list.interface';
@@ -37,9 +38,14 @@ import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import {
   hasChanges,
   isNotEmptyArray,
+  isNotEmptyMap,
+  isArray,
+  asArray,
 } from '../../services/utils/functional-utils';
 import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
 import { TreeListPanelIO } from '../tree-list-panel/tree-list-panel.interface';
+import { TreeListModelService } from '../tree-list/services/tree-list-model.service';
+import { selectValueOrFail } from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-tree-select',
@@ -64,9 +70,10 @@ import { TreeListPanelIO } from '../tree-list-panel/tree-list-panel.interface';
 })
 export class TreeSelectComponent extends BaseFormElement
   implements TreeListComponentIO, TreeListPanelIO {
-  constructor(cd: ChangeDetectorRef) {
+  constructor(private modelSrvc: TreeListModelService, cd: ChangeDetectorRef) {
     super(cd);
-    // this.baseValue = [];
+    this.baseValue = [];
+    this.inputTransformers = [selectValueOrFail];
     this.wrapEvent = true;
   }
 
@@ -104,6 +111,7 @@ export class TreeSelectComponent extends BaseFormElement
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
+  public itemsMap: TreeListItemMap = new Map();
   public overlayRef: OverlayRef;
   public panelOpen = false;
   public displayValue: string;
@@ -112,12 +120,31 @@ export class TreeSelectComponent extends BaseFormElement
   public panelClass = 'b-tree-select-panel';
   public treeListValue: TreeListValue;
   readonly tooltipClass = [TooltipClass.PreWrap];
+  public dirty = false;
+  public touched = false;
 
   public onNgChanges(changes: SimpleChanges): void {
     console.log('---------------', 'Tree Select ngOnChanges', changes);
 
     if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
       this.closePanel();
+    }
+
+    if (hasChanges(changes, ['list'], true)) {
+      console.log('????>>>>>><<<<<<<<<??????');
+      console.time('getListItemsMap (select)');
+
+      this.itemsMap.clear();
+      this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
+        keyMap: this.keyMap,
+        separator: this.valueSeparatorChar,
+        collapsed: this.startCollapsed,
+      });
+      console.timeEnd('getListItemsMap (select)');
+
+      if (isNotEmptyArray(this.value)) {
+        this.setDisplayValue(this.value);
+      }
     }
   }
 
@@ -128,6 +155,7 @@ export class TreeSelectComponent extends BaseFormElement
 
   public onApply(): void {
     this.value = (this.treeListValue && this.treeListValue.selectedIDs) || [];
+    this.dirty = true;
     this.emitChange(this.treeListValue);
     this.treeListValue = undefined;
   }
@@ -138,23 +166,33 @@ export class TreeSelectComponent extends BaseFormElement
     this.treeListValue = undefined;
   }
 
-  private setDisplayValue(value: TreeListValue = null): void {
-    if (this.type === SelectType.single) {
-      this.displayValue =
-        (value && value.selectedValues && value.selectedValues[0]) || '';
-    }
-    if (this.type === SelectType.multi) {
-      this.displayValue =
-        value && isNotEmptyArray(value.selectedValues)
-          ? value.selectedValues.join(',\n')
-          : '';
-    }
+  private setDisplayValue(value: TreeListValue | itemID[] = null): void {
+    const selectedValues =
+      value && (value as TreeListValue).selectedValues
+        ? (value as TreeListValue).selectedValues
+        : value && isNotEmptyMap(this.itemsMap)
+        ? asArray(value as itemID[])
+            .map(id =>
+              this.itemsMap.get(id) ? this.itemsMap.get(id).value : null
+            )
+            .filter(Boolean)
+        : [];
+
+    console.log('setDisplayValue', value, selectedValues);
+
+    this.displayValue =
+      (this.type === SelectType.single
+        ? selectedValues[0]
+        : selectedValues.join(',\n')) || '';
   }
 
   public writeValue(value: itemID[]) {
     console.log('---------------', 'Tree Select writeValue', value);
     super.writeValue(value);
-    /// GET DISPLAY VALUE
+
+    if (isNotEmptyMap(this.itemsMap)) {
+      this.setDisplayValue(this.value);
+    }
   }
 
   private emitChange(value: TreeListValue): void {
@@ -194,6 +232,7 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   public onPanelClose(): void {
+    this.touched = true;
     this.overlayRef = null;
     this.panelOpen = false;
     if (this.closed.observers.length) {

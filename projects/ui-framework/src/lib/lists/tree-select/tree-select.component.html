@@ -11,6 +11,7 @@
                    [valueDefault]="valueDefault"
                    [viewFilter]="viewFilter"
                    [keyMap]="keyMap"
+                   [itemsMap]="itemsMap"
                    [valueSeparatorChar]="valueSeparatorChar"
                    [maxHeightItems]="maxHeightItems"
                    [startCollapsed]="startCollapsed"
@@ -35,6 +36,7 @@
        (click)="openPanel()">
 
     <div #input
+         [id]="id"
          class="bfe-input"
          tabindex="0"
          (focus)="openPanel()"

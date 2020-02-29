@@ -11,6 +11,7 @@ export interface TreeListComponentIO {
   valueDefault: itemID[];
   viewFilter: ViewFilter;
   keyMap: TreeListKeyMap;
+  itemsMap: TreeListItemMap;
 
   type: SelectType;
   valueSeparatorChar: string;

@@ -22,7 +22,8 @@ export const isNotEmptyString = (val: any): boolean =>
 
 export const isEmptyString = (val: any): boolean => !isNotEmptyString(val);
 
-export const isArray = (val: any): boolean => val && Array.isArray(val);
+export const isArray = <T = any>(val: any): val is T[] =>
+  !!val && Array.isArray(val);
 
 export const isDate = (value: any): boolean =>
   String(value) !== 'Invalid Date' &&
@@ -36,13 +37,23 @@ export const isEmptyArray = (val: any): boolean =>
   isNullOrUndefined(val) || (Array.isArray(val) && val.length === 0);
 
 export const isObject = (val: any): boolean =>
-  val && !isArray(val) && typeof val !== 'function' && val === Object(val);
+  !!val && val === Object(val) && typeof val !== 'function' && !isArray(val);
 
 export const isNotEmptyObject = (val: any): boolean =>
   isObject(val) && Object.keys(val).length > 0;
 
 export const isEmptyObject = (val: any): boolean =>
   isNullOrUndefined(val) || (isObject(val) && Object.keys(val).length === 0);
+
+export const isMap = (val: any): boolean => {
+  return !!val && val instanceof Map;
+};
+
+export const isNotEmptyMap = (val: any, min = 0): boolean =>
+  isMap(val) && val.size > min;
+
+export const isEmptyMap = (val: any): boolean =>
+  isNullOrUndefined(val) || (isMap(val) && val.size === 0);
 
 export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
   isNullOrUndefined(smth) ||

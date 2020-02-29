@@ -20,7 +20,12 @@ import {
 } from '../../services/utils/functional-utils';
 import { selectValueOrFail } from '../../services/utils/transformers';
 import { SelectType } from '../list.enum';
-import { itemID, TreeListItem, TreeListOption } from './tree-list.interface';
+import {
+  itemID,
+  TreeListItem,
+  TreeListOption,
+  TreeListItemMap,
+} from './tree-list.interface';
 import { TreeListModelService } from './services/tree-list-model.service';
 import { TreeListControlsService } from './services/tree-list-controls.service';
 import { TreeListViewService } from './services/tree-list-view.service';
@@ -49,6 +54,14 @@ export class TreeListComponent extends BaseTreeListElement {
   public list: TreeListOption[];
   @Input('value') set setValue(value: itemID[]) {}
   public value: itemID[];
+  @Input('itemsMap') set setItemsMap(map: TreeListItemMap) {
+    console.log(' SET itemsMap', map);
+    if (map && map.size) {
+      this.itemsMap = map;
+      this.itemsMapFromAbove = true;
+      this.showSearch = this.itemsMap.size > 10;
+    }
+  }
 
   ngOnInit() {
     console.log('***** Tree List INIT *****');
@@ -69,16 +82,18 @@ export class TreeListComponent extends BaseTreeListElement {
       this.list = changes.list.currentValue || [];
       this.hidden = isEmptyArray(this.list);
 
-      console.time('getListItemsMap');
-      this.itemsMap.clear();
-      this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
-        keyMap: this.keyMap,
-        separator: this.valueSeparatorChar,
-        collapsed: this.startCollapsed,
-      });
-      console.timeEnd('getListItemsMap');
+      if (!this.itemsMapFromAbove) {
+        console.time('getListItemsMap');
+        this.itemsMap.clear();
+        this.modelSrvc.getListItemsMap(this.list, this.itemsMap, {
+          keyMap: this.keyMap,
+          separator: this.valueSeparatorChar,
+          collapsed: this.startCollapsed,
+        });
+        console.timeEnd('getListItemsMap');
 
-      this.showSearch = this.itemsMap.size > 10;
+        this.showSearch = this.itemsMap.size > 10;
+      }
     }
 
     if (hasChanges(changes, ['value'])) {
@@ -109,8 +124,10 @@ export class TreeListComponent extends BaseTreeListElement {
     if (
       notFirstChanges(changes, ['type']) &&
       this.type !== SelectType.multi &&
-      isNotEmptyArray(this.value)
+      isNotEmptyArray(this.value, 1)
     ) {
+      console.log('deselectAllItemsInMap@!');
+      this.value = [this.value[0]];
       this.modelSrvc.deselectAllItemsInMap(this.itemsMap);
     }
 
