@@ -7,6 +7,7 @@ import {
   EventEmitter,
   forwardRef,
   SimpleChanges,
+  OnDestroy,
 } from '@angular/core';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import {
@@ -41,6 +42,7 @@ import {
   isNotEmptyMap,
   isArray,
   asArray,
+  notFirstChanges,
 } from '../../services/utils/functional-utils';
 import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
 import { TreeListPanelIO } from '../tree-list-panel/tree-list-panel.interface';
@@ -69,7 +71,7 @@ import { selectValueOrFail } from '../../services/utils/transformers';
   ],
 })
 export class TreeSelectComponent extends BaseFormElement
-  implements TreeListComponentIO, TreeListPanelIO {
+  implements TreeListComponentIO, TreeListPanelIO, OnDestroy {
   constructor(private modelSrvc: TreeListModelService, cd: ChangeDetectorRef) {
     super(cd);
     this.baseValue = [];
@@ -130,6 +132,16 @@ export class TreeSelectComponent extends BaseFormElement
       this.closePanel();
     }
 
+    if (
+      notFirstChanges(changes, ['type']) &&
+      this.type !== SelectType.multi &&
+      isNotEmptyArray(this.value, 1)
+    ) {
+      console.log('select deselectAllItemsInMap');
+      this.value = [this.value[0]];
+      this.modelSrvc.deselectAllItemsInMap(this.itemsMap);
+    }
+
     if (hasChanges(changes, ['list'], true)) {
       console.log('????>>>>>><<<<<<<<<??????');
       console.time('getListItemsMap (select)');
@@ -146,6 +158,10 @@ export class TreeSelectComponent extends BaseFormElement
         this.setDisplayValue(this.value);
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.itemsMap.clear();
   }
 
   public onSelectChange(value: TreeListValue): void {

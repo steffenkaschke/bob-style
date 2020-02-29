@@ -126,7 +126,7 @@ export class TreeListComponent extends BaseTreeListElement {
       this.type !== SelectType.multi &&
       isNotEmptyArray(this.value, 1)
     ) {
-      console.log('deselectAllItemsInMap@!');
+      console.log('list deselectAllItemsInMap');
       this.value = [this.value[0]];
       this.modelSrvc.deselectAllItemsInMap(this.itemsMap);
     }
