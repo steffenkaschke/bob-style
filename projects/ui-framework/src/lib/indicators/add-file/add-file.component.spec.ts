@@ -4,7 +4,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IconsModule } from '../../icons/icons.module';
 import { Icons } from '../../icons/icons.enum';
 import { By } from '@angular/platform-browser';
-import { emptyImg } from '../../services/utils/test-helpers';
+import {
+  emptyImg,
+  emptyImgTestString,
+} from '../../services/utils/test-helpers';
 
 describe('AddFileComponent', () => {
   let fixture: ComponentFixture<AddFileComponent>;
@@ -76,7 +79,8 @@ describe('AddFileComponent', () => {
       const elementContainerStyle = fixture.debugElement
         .query(By.css('.container'))
         .nativeElement.getAttribute('style');
-      expect(elementContainerStyle).toEqual('background-image: url("url");');
+      expect(elementContainerStyle).toContain('background-image');
+      expect(elementContainerStyle).toContain(emptyImgTestString);
     });
   });
 });
