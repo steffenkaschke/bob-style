@@ -8,6 +8,23 @@ import {
 } from '../../enums';
 import { GenericObject } from '../../types';
 
+export const emptyImg =
+  // tslint:disable-next-line: max-line-length
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+
+export const emptyImgWithText = (addtext = '') => {
+  if (!addtext) {
+    return emptyImg;
+  }
+  const imgSplit = emptyImg.split(';');
+  imgSplit.splice(1, 0, addtext);
+  return imgSplit.join(';');
+};
+
+export const emptyFilestackImg = emptyImgWithText('filestack?align=faces');
+
+export const emptyImgTestString = '6kgAAAABJRU5ErkJggg';
+
 export const eventEmitterMock = {
   emit: value => value,
   observers: [1, 2, 3],

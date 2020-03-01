@@ -9,6 +9,7 @@ import { MockComponent } from '../util-components/mock.component';
 import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { emptyImg, emptyImgTestString } from '../utils/test-helpers';
 
 describe('ComponentRendererComponent', () => {
   let fixture: ComponentFixture<ComponentRendererComponent>;
@@ -26,7 +27,7 @@ describe('ComponentRendererComponent', () => {
       {
         component: AvatarComponent,
         attributes: {
-          imageSource: 'hello.jpg',
+          imageSource: emptyImg,
           size: AvatarSize.mini,
           isClickable: true,
         },
@@ -86,7 +87,7 @@ describe('ComponentRendererComponent', () => {
 
   describe('Component attributes', () => {
     it('should pass attributes to MockComponent', () => {
-      expect(avatarComponent.imageSource).toEqual('hello.jpg');
+      expect(avatarComponent.imageSource).toContain(emptyImgTestString);
     });
   });
 

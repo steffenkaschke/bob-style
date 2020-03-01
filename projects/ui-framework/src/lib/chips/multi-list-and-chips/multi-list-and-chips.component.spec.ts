@@ -3,6 +3,7 @@ import {
   elementFromFixture,
   simpleChange,
   elementsFromFixture,
+  emptyImg,
 } from '../../services/utils/test-helpers';
 import { MultiListAndChipsComponent } from './multi-list-and-chips.component';
 import { Icons } from '../../icons/icons.enum';
@@ -270,7 +271,7 @@ describe('MultiListAndChipsComponent', () => {
                 prefixComponent: {
                   component: AvatarImageComponent,
                   attributes: {
-                    imageSource: 'image' + ind,
+                    imageSource: emptyImg,
                   },
                 },
               })),

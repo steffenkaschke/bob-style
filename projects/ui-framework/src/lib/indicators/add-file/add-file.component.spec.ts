@@ -4,6 +4,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IconsModule } from '../../icons/icons.module';
 import { Icons } from '../../icons/icons.enum';
 import { By } from '@angular/platform-browser';
+import { emptyImg } from '../../services/utils/test-helpers';
 
 describe('AddFileComponent', () => {
   let fixture: ComponentFixture<AddFileComponent>;
@@ -13,7 +14,7 @@ describe('AddFileComponent', () => {
     TestBed.configureTestingModule({
       declarations: [AddFileComponent],
       imports: [IconsModule],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
@@ -32,7 +33,7 @@ describe('AddFileComponent', () => {
   });
   describe('icon', () => {
     it('Should set selectedIcon to pencil icon if image url ', () => {
-      component.imageUrl = 'file url';
+      component.imageUrl = emptyImg;
       fixture.detectChanges();
       const iconElement = fixture.debugElement.query(
         By.css('.' + Icons.edit_field_pencil)
@@ -53,7 +54,7 @@ describe('AddFileComponent', () => {
       expect(iconElement.className).toContain('normal');
     });
     it('Should set icon color to white if image url ', () => {
-      component.imageUrl = 'some url';
+      component.imageUrl = emptyImg;
       fixture.detectChanges();
       const iconElement = fixture.debugElement.query(By.css('.b-icon'))
         .nativeElement;
@@ -62,7 +63,7 @@ describe('AddFileComponent', () => {
   });
   describe('container', () => {
     it('Should add edit-mode class if image url', () => {
-      component.imageUrl = 'some url';
+      component.imageUrl = emptyImg;
       fixture.detectChanges();
       const elementContainerClasses = fixture.debugElement.query(
         By.css('.container')
@@ -70,7 +71,7 @@ describe('AddFileComponent', () => {
       expect(elementContainerClasses).toContain('edit-mode');
     });
     it('Should add background image url to style if backgroundImage', () => {
-      component.imageUrl = 'url';
+      component.imageUrl = emptyImg;
       fixture.detectChanges();
       const elementContainerStyle = fixture.debugElement
         .query(By.css('.container'))

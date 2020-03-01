@@ -15,6 +15,10 @@ import { SquareButtonComponent } from '../../buttons/square/square.component';
 import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
 import { TypographyModule } from '../../typography/typography.module';
 import { IconColor, Icons } from '../../icons/icons.enum';
+import {
+  emptyImg,
+  emptyImgTestString,
+} from '../../services/utils/test-helpers';
 
 describe('CardComponent', () => {
   let fixture: ComponentFixture<CardComponent>;
@@ -235,17 +239,17 @@ describe('CardComponent', () => {
     it('should show image if supplied', () => {
       component.card = {
         title: 'test',
-        imageUrl: 'some_image.png',
+        imageUrl: emptyImg,
       };
       fixture.detectChanges();
       const image = fixture.debugElement.query(By.css('.card-top'))
         .nativeElement;
-      expect(image.style.backgroundImage).toContain('some_image.png');
+      expect(image.style.backgroundImage).toContain(emptyImgTestString);
     });
     it('should change icon color to white when image is displayed', () => {
       component.card = {
         title: 'test',
-        imageUrl: 'some_image.png',
+        imageUrl: emptyImg,
         actionConfig: {
           icon: Icons.file_copy,
           action: () => console.log('action button'),

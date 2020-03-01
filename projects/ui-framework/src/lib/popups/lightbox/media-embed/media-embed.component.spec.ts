@@ -2,7 +2,11 @@ import { async, TestBed, ComponentFixture } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LightboxModule } from '../lightbox.module';
 import { MediaEmbedComponent } from './media-embed.component';
-import { simpleChange } from '../../../services/utils/test-helpers';
+import {
+  simpleChange,
+  emptyImg,
+  emptyImgTestString,
+} from '../../../services/utils/test-helpers';
 import { MediaType } from './media-embed.enum';
 import { OverlayModule } from '@angular/cdk/overlay';
 
@@ -16,7 +20,7 @@ describe('MediaEmbedComponent', () => {
       imports: [LightboxModule, OverlayModule],
       declarations: [],
       providers: [],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()
       .then(() => {
@@ -30,7 +34,7 @@ describe('MediaEmbedComponent', () => {
     beforeEach(() => {
       component.ngOnChanges(
         simpleChange({
-          url: 'https://www.youtube.com/watch?v=BvQ571eAOZE'
+          url: 'https://www.youtube.com/watch?v=BvQ571eAOZE',
         })
       );
       fixture.detectChanges();
@@ -72,9 +76,7 @@ describe('MediaEmbedComponent', () => {
     beforeEach(() => {
       component.ngOnChanges(
         simpleChange({
-          url:
-            // tslint:disable-next-line: max-line-length
-            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
+          url: emptyImg,
         })
       );
       fixture.detectChanges();
@@ -85,9 +87,7 @@ describe('MediaEmbedComponent', () => {
     });
 
     it('should set video as thumbnail', () => {
-      expect(compElement.style.backgroundImage).toContain(
-        '6kgAAAABJRU5ErkJggg'
-      );
+      expect(compElement.style.backgroundImage).toContain(emptyImgTestString);
     });
 
     it('should open lightbox on click', () => {
@@ -96,7 +96,7 @@ describe('MediaEmbedComponent', () => {
       fixture.detectChanges();
       expect(component.lightbox.overlayRef).toBeTruthy();
       expect(component.lightbox.lightboxComponentRef).toBeTruthy();
-      expect(component.lightbox.config.image).toContain('6kgAAAABJRU5ErkJggg');
+      expect(component.lightbox.config.image).toContain(emptyImgTestString);
     });
   });
 });
