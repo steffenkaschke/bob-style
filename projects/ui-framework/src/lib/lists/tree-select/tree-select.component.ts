@@ -88,7 +88,7 @@ export class TreeSelectComponent extends BaseFormElement
   @Input() viewFilter: ViewFilter;
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
 
-  @Input() type: SelectType = SelectType.multi;
+  @Input() type: SelectType = SelectType.single;
   @Input() valueSeparatorChar = '/';
   @Input() maxHeightItems = 8;
   @Input() startCollapsed = true;
