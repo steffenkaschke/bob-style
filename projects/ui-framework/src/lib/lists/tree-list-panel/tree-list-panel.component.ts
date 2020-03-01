@@ -82,8 +82,6 @@ export class TreeListPanelComponent extends TreeListInputOutput
   public panelOpen = false;
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('---------------', 'Tree Panel ngOnChanges', changes);
-
     if (hasChanges(changes, ['disabled'])) {
       this.destroyPanel();
     }
