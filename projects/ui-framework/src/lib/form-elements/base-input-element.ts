@@ -11,7 +11,7 @@ import {
 import { InputEvent } from './input/input.interface';
 import { BaseFormElement } from './base-form-element';
 import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
-import { FormEvents, InputEventType } from './form-elements.enum';
+import { InputEventType } from './form-elements.enum';
 import { isKey, notFirstChanges } from '../services/utils/functional-utils';
 import { Keys } from '../enums';
 import { valueAsNumber, stringyOrFail } from '../services/utils/transformers';
@@ -19,6 +19,7 @@ import { FormElementKeyboardCntrlService } from './services/keyboard-cntrl.servi
 import { DOMInputEvent } from '../types';
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class BaseInputElement extends BaseFormElement {
   protected constructor(
     protected cd: ChangeDetectorRef,
@@ -49,6 +50,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   @Input() min = 0;
   @Input() max: number;
 
+  // tslint:disable-next-line: no-output-rename
   @Output('inputEvents') changed: EventEmitter<InputEvent> = new EventEmitter<
     InputEvent
   >();

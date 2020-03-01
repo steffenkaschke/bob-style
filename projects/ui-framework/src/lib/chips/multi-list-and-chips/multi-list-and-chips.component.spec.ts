@@ -3,6 +3,7 @@ import {
   elementFromFixture,
   simpleChange,
   elementsFromFixture,
+  emptyImgWithText,
 } from '../../services/utils/test-helpers';
 import { MultiListAndChipsComponent } from './multi-list-and-chips.component';
 import { Icons } from '../../icons/icons.enum';
@@ -10,11 +11,8 @@ import { MockComponent } from 'ng-mocks';
 import { EmptyStateComponent } from '../../indicators/empty-state/empty-state.component';
 import { IconComponent } from '../../icons/icon.component';
 import { CommonModule } from '@angular/common';
-import { ChipComponent } from '../chip/chip.component';
 import { makeArray } from '../../services/utils/functional-utils';
 import { MultiListModule } from '../../lists/multi-list/multi-list.module';
-import { ChipListComponent } from '../chip-list/chip-list.component';
-import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { cloneDeep } from 'lodash';
 import { ListChange } from '../../lists/list-change/list-change';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
@@ -270,7 +268,7 @@ describe('MultiListAndChipsComponent', () => {
                 prefixComponent: {
                   component: AvatarImageComponent,
                   attributes: {
-                    imageSource: 'image' + ind,
+                    imageSource: emptyImgWithText('avatarImg' + ind),
                   },
                 },
               })),
@@ -292,7 +290,7 @@ describe('MultiListAndChipsComponent', () => {
 
       expect(chipEls.length).toEqual(4);
 
-      expect(chipEls[2].innerHTML).toContain('image2');
+      expect(chipEls[2].innerHTML).toContain('avatarImg2');
       expect(chipEls[2].innerHTML).toContain('Option2');
     });
   });

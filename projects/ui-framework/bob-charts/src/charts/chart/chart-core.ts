@@ -33,14 +33,15 @@ noData(Highcharts);
 More(Highcharts);
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class ChartCore implements AfterViewInit {
   @Input() abstract type: ChartTypesEnum;
   highChartRef: Chart;
   containerId: string = simpleUID();
   chartOptions: Options;
   options: Options;
-  private formatter = (function (component) {
-    return function () {
+  private formatter = (function(component) {
+    return function() {
       return component.tooltipFormatter(this, component);
     };
   })(this);
@@ -78,7 +79,7 @@ export abstract class ChartCore implements AfterViewInit {
     </div>`;
   @Input() tooltipValueFormatter = (val: number): number | string => val;
 
-  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) { }
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {}
 
   tooltipFormatter(chartThis: ChartFormatterThis, component: ChartCore) {
     return this.tooltipTemplate(component, chartThis);
@@ -87,7 +88,7 @@ export abstract class ChartCore implements AfterViewInit {
   formatValue(value: number): string {
     return `${this.preTooltipValue}${this.tooltipValueFormatter(value)}${
       this.postTooltipValue
-      }`;
+    }`;
   }
 
   exportChart(type: ExportingMimeTypeValue) {

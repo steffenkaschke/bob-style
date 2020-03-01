@@ -12,6 +12,10 @@ import { LightboxModule } from './lightbox.module';
 import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import {
+  emptyImg,
+  emptyImgTestString,
+} from '../../services/utils/test-helpers';
 
 describe('LightboxService', () => {
   let lightbox: LightboxData;
@@ -19,9 +23,7 @@ describe('LightboxService', () => {
   let overlayElement: HTMLElement;
 
   const testConfigImage = {
-    image:
-      // tslint:disable-next-line: max-line-length
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+    image: emptyImg,
     fillScreen: true,
   };
   const testConfigVideo = {
@@ -34,9 +36,7 @@ describe('LightboxService', () => {
         title: 'John Malkovich',
         subtitle: 'American actor',
         orientation: 'vertical',
-        imageSource:
-          // tslint:disable-next-line: max-line-length
-          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+        imageSource: emptyImg,
         size: AvatarSize.large,
       },
     },
@@ -74,9 +74,7 @@ describe('LightboxService', () => {
 
       expect(lightContainerEl.children.length).toEqual(1);
       expect(imageEl).toBeTruthy();
-      expect(imageEl.getAttribute('src')).toContain(
-        'iVBORw0KGgoAAAANSUhEUgAAAA'
-      );
+      expect(imageEl.getAttribute('src')).toContain(emptyImgTestString);
       lightboxService.closeLightbox();
     });
 
@@ -119,9 +117,7 @@ describe('LightboxService', () => {
 
       expect(lightContainerEl.children.length).toEqual(1);
       expect(avatarEl).toBeTruthy();
-      expect(avatarElImg.getAttribute('style')).toContain(
-        'iVBORw0KGgoAAAANSUhEUgAAAA'
-      );
+      expect(avatarElImg.getAttribute('style')).toContain(emptyImgTestString);
       expect(avatarElTitle.textContent).toContain('John Malkovich');
       lightboxService.closeLightbox();
     });

@@ -6,6 +6,8 @@ import {
   elementsFromFixture,
   simpleChange,
   emitNativeEvent,
+  emptyImg,
+  emptyImgTestString,
 } from '../../services/utils/test-helpers';
 import { ChipComponent } from '../chip/chip.component';
 import { NO_ERRORS_SCHEMA, ChangeDetectionStrategy } from '@angular/core';
@@ -20,10 +22,6 @@ describe('ChipListComponent', () => {
   let listElement: HTMLElement;
   let chipsElements: HTMLElement[];
   let chipsComponents: ChipComponent[];
-
-  const emptyImg =
-    // tslint:disable-next-line: max-line-length
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
 
   const chips = [
     {
@@ -292,7 +290,7 @@ describe('ChipListComponent', () => {
 
       expect(
         (chipsElements[0].children[0] as HTMLElement).getAttribute('style')
-      ).toContain('iVBORw0KGgoAAAANSUhEUgAAA');
+      ).toContain(emptyImgTestString);
     });
   });
 

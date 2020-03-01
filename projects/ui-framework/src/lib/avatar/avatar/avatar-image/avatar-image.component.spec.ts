@@ -11,6 +11,8 @@ import { isEqual } from 'lodash';
 import {
   simpleChange,
   emitNativeEvent,
+  emptyImg,
+  emptyFilestackImg,
 } from '../../../services/utils/test-helpers';
 import { AvatarSize, AvatarBadge } from '../avatar.enum';
 import { Icons, IconColor, IconSize } from '../../../icons/icons.enum';
@@ -34,8 +36,6 @@ interface AttrCheck {
   varImg: string;
 }
 
-const imgMock = '#filestack?align=faces';
-
 const defautlAttrs: AttrCheck = {
   role: 'img',
   disabled: null,
@@ -54,7 +54,7 @@ const defautlAttrs: AttrCheck = {
 };
 
 const defaultAttrsWithImg: Partial<AttrCheck> = {
-  varImg: `url(${imgMock})`,
+  varImg: `url(${emptyFilestackImg})`,
   iconBefore: null,
   iconBeforeColor: 'white',
 };
@@ -140,7 +140,7 @@ describe('AvatarImageComponent', () => {
       component.ngOnChanges(
         simpleChange({
           size: AvatarSize.large,
-          imageSource: imgMock,
+          imageSource: emptyFilestackImg,
         })
       );
 
@@ -166,7 +166,7 @@ describe('AvatarImageComponent', () => {
       component.ngOnChanges(
         simpleChange({
           size: AvatarSize.medium,
-          imageSource: imgMock,
+          imageSource: emptyFilestackImg,
           backgroundColor: 'red',
           disabled: true,
           iconAfterSize: 'large',
@@ -217,7 +217,7 @@ describe('AvatarImageComponent', () => {
     it('Should display mini Avatar with test image, Settings icon in white color and icon-on-hover class', fakeAsync(() => {
       component.ngOnChanges(
         simpleChange({
-          imageSource: imgMock,
+          imageSource: emptyFilestackImg,
           icon: Icons.settings,
         })
       );
@@ -266,7 +266,7 @@ describe('AvatarImageComponent', () => {
     it('Should display mini Avatar with test image, custom icon NOT in white color and icon-on-hover class', fakeAsync(() => {
       component.ngOnChanges(
         simpleChange({
-          imageSource: imgMock,
+          imageSource: emptyFilestackImg,
           icon: {
             icon: Icons.success,
             size: IconSize.large,
@@ -296,7 +296,7 @@ describe('AvatarImageComponent', () => {
     it('Should display mini Avatar with testImage and Pending badge', fakeAsync(() => {
       component.ngOnChanges(
         simpleChange({
-          imageSource: imgMock,
+          imageSource: emptyFilestackImg,
           badge: AvatarBadge.pending,
         })
       );
@@ -318,7 +318,7 @@ describe('AvatarImageComponent', () => {
     it('Should display mini Avatar with testImage and custom badge icon', fakeAsync(() => {
       component.ngOnChanges(
         simpleChange({
-          imageSource: imgMock,
+          imageSource: emptyFilestackImg,
           badge: {
             icon: Icons.question_mark,
             color: IconColor.positive,
@@ -379,7 +379,7 @@ describe('AvatarImageComponent', () => {
 
       component.ngOnChanges(
         simpleChange({
-          imageSource: imgMock,
+          imageSource: emptyFilestackImg,
           icon: Icons.settings,
         })
       );
@@ -404,7 +404,7 @@ describe('AvatarImageComponent', () => {
       component.ngOnChanges(
         simpleChange({
           text: 'Some text',
-          imageSource: imgMock,
+          imageSource: emptyFilestackImg,
           icon: Icons.settings,
         })
       );

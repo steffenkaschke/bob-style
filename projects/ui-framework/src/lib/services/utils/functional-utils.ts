@@ -503,12 +503,12 @@ export const countChildren = (parentSelector, parent) => {
 // NGONCHANGES HELPERS
 // ----------------------
 
-interface ChangesHelperConfig {
+export interface ChangesHelperConfig {
   keyMap?: { [targetKey: string]: string };
   falseyCheck?: Function;
 }
 
-const CHANGES_HELPER_CONFIG_DEF: ChangesHelperConfig = {
+export const CHANGES_HELPER_CONFIG_DEF: ChangesHelperConfig = {
   falseyCheck: Boolean,
 };
 
@@ -565,6 +565,13 @@ export const notFirstChanges = (
   }
   return !!keys.find(i => changes[i] && !changes[i].firstChange);
 };
+
+export interface ApplyChangesConfig {
+  defaults: GenericObject;
+  skip: string[];
+  discardAllFalsey: boolean;
+  config: ChangesHelperConfig;
+}
 
 export const applyChanges = (
   target: any,

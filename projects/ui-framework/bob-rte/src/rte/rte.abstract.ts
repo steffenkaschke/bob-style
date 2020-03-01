@@ -62,6 +62,7 @@ import { initMentionsControl } from './rte.mentions';
 import { FroalaEditorDirective } from './froala/editor.directive';
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class RTEbaseElement extends BaseFormElement
   implements OnChanges, OnInit {
   constructor(

@@ -7,6 +7,10 @@ import { CardType } from '../cards.enum';
 import { By } from '@angular/platform-browser';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import {
+  emptyImg,
+  emptyImgTestString,
+} from '../../services/utils/test-helpers';
 
 describe('CardEmployeeComponent', () => {
   let fixture: ComponentFixture<CardEmployeeComponent>;
@@ -31,7 +35,7 @@ describe('CardEmployeeComponent', () => {
   describe('Type', () => {
     beforeEach(() => {
       component.card = {
-        imageSource: 'employee_image.png',
+        imageSource: emptyImg,
         title: 'test',
       };
     });
@@ -53,15 +57,15 @@ describe('CardEmployeeComponent', () => {
   describe('avatar image', () => {
     beforeEach(() => {
       component.card = {
-        imageSource: 'employee_image.png',
+        imageSource: emptyImg,
         title: 'test',
       };
     });
     it('should set avatar image', () => {
       fixture.detectChanges();
       const avatar = fixture.debugElement.query(By.css('b-avatar-image'));
-      expect(avatar.componentInstance.imageSource).toEqual(
-        'employee_image.png'
+      expect(avatar.componentInstance.imageSource).toContain(
+        emptyImgTestString
       );
     });
     it('should set avatar size to medium if type is not small', () => {
@@ -80,7 +84,7 @@ describe('CardEmployeeComponent', () => {
   describe('title', () => {
     beforeEach(() => {
       component.card = {
-        imageSource: 'employee_image.png',
+        imageSource: emptyImg,
         title: 'test',
       };
     });
@@ -94,7 +98,7 @@ describe('CardEmployeeComponent', () => {
   describe('social', () => {
     it('should not display social elements if none are provided', () => {
       component.card = {
-        imageSource: 'employee_image.png',
+        imageSource: emptyImg,
         title: 'test',
       };
       fixture.detectChanges();
@@ -103,7 +107,7 @@ describe('CardEmployeeComponent', () => {
     });
     it('should display social elements that are provided', () => {
       component.card = {
-        imageSource: 'employee_image.png',
+        imageSource: emptyImg,
         title: 'test',
         social: {
           facebook: 'facebook_url',
@@ -119,7 +123,7 @@ describe('CardEmployeeComponent', () => {
         expect(linkEl.href).toContain(url);
       };
       component.card = {
-        imageSource: 'employee_image.png',
+        imageSource: emptyImg,
         title: 'test',
         social: {
           linkedin: 'linkedin_url',

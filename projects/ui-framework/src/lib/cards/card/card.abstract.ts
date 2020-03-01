@@ -11,6 +11,7 @@ import { CardType } from '../cards.enum';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class BaseCardElement {
   constructor(public cardElRef: ElementRef) {}
 

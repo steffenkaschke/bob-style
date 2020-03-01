@@ -19,7 +19,6 @@ import { InputEvent } from '../input/input.interface';
 import { ListChange } from '../../lists/list-change/list-change';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { BaseFormElement } from '../base-form-element';
-import { FormEvents } from '../form-elements.enum';
 import { objectHasKeyOrFail } from '../../services/utils/transformers';
 import { cloneObject } from '../../services/utils/functional-utils';
 import { InputComponent } from '../input/input.component';
@@ -68,6 +67,7 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
 
   public options: SelectGroupOption[] = [];
 
+  // tslint:disable-next-line: no-output-rename
   @Output('elementChange') changed: EventEmitter<
     InputSingleSelectValue
   > = new EventEmitter<InputSingleSelectValue>();

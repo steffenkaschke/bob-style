@@ -1,4 +1,16 @@
-import { Input, Output, EventEmitter, ElementRef, ViewChild, OnChanges, SimpleChanges, ChangeDetectorRef, OnInit, HostBinding, Directive } from '@angular/core';
+import {
+  Input,
+  Output,
+  EventEmitter,
+  ElementRef,
+  ViewChild,
+  OnChanges,
+  SimpleChanges,
+  ChangeDetectorRef,
+  OnInit,
+  HostBinding,
+  Directive,
+} from '@angular/core';
 import { ButtonType, ButtonSize, BackButtonType } from './buttons.enum';
 import { Icons, IconColor, IconSize } from '../icons/icons.enum';
 import {
@@ -7,6 +19,7 @@ import {
 } from '../services/utils/functional-utils';
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class BaseButtonElement implements OnChanges, OnInit {
   constructor(protected cd: ChangeDetectorRef) {}
 

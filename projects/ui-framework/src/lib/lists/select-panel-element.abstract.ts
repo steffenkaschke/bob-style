@@ -60,6 +60,7 @@ import { SelectType, SelectMode } from './list.enum';
 import { FormEvents } from '../form-elements/form-elements.enum';
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class BaseSelectPanelElement extends BaseFormElement
   implements OnChanges, AfterViewInit, OnDestroy {
   protected constructor(

@@ -1,4 +1,16 @@
-import { AfterViewInit, OnDestroy, ChangeDetectorRef, NgZone, ElementRef, ViewChild, Input, HostBinding, SimpleChanges, OnChanges, Directive } from '@angular/core';
+import {
+  AfterViewInit,
+  OnDestroy,
+  ChangeDetectorRef,
+  NgZone,
+  ElementRef,
+  ViewChild,
+  Input,
+  HostBinding,
+  SimpleChanges,
+  OnChanges,
+  Directive,
+} from '@angular/core';
 import { SearchComponent } from '../../search/search/search.component';
 import {
   cloneDeepSimpleObject,
@@ -23,6 +35,7 @@ import { LIST_ACTIONS_STATE_DEF } from '../list-footer/list-footer.const';
 import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from './tree-list.const';
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class BaseTreeListElement extends TreeListInputOutput
   implements OnChanges, AfterViewInit, OnDestroy {
   constructor(

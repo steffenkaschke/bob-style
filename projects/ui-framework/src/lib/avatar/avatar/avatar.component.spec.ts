@@ -15,6 +15,10 @@ import { AvatarImageComponent } from './avatar-image/avatar-image.component';
 import { MockComponent } from 'ng-mocks';
 import { ChipComponent } from '../../chips/chip/chip.component';
 import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate-tooltip.component';
+import {
+  emptyImg,
+  emptyImgTestString,
+} from '../../services/utils/test-helpers';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
@@ -43,7 +47,7 @@ describe('AvatarComponent', () => {
         component = fixture.componentInstance;
         componentElem = fixture.nativeElement;
         component.title = 'Title';
-        component.imageSource = 'testImage';
+        component.imageSource = emptyImg;
         component.backgroundColor = 'red';
         fixture.detectChanges();
 
@@ -62,7 +66,7 @@ describe('AvatarComponent', () => {
 
   describe('Avatar image', () => {
     it('Should put the image as background on .avatar element', () => {
-      expect(avatarElement.getAttribute('style')).toContain('testImage');
+      expect(avatarElement.getAttribute('style')).toContain(emptyImgTestString);
     });
   });
   describe('Avatar background color', () => {
