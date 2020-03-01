@@ -8,6 +8,8 @@ import {
   forwardRef,
   SimpleChanges,
   OnDestroy,
+  OnChanges,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { BaseFormElement } from '../../form-elements/base-form-element';
 import {
@@ -38,6 +40,7 @@ import {
   isNotEmptyMap,
   asArray,
   notFirstChanges,
+  applyChanges,
 } from '../../services/utils/functional-utils';
 import { TooltipClass } from '../../popups/tooltip/tooltip.enum';
 import { TreeListPanelIO } from '../tree-list-panel/tree-list-panel.interface';
@@ -64,9 +67,10 @@ import { selectValueOrFail } from '../../services/utils/transformers';
     },
     { provide: BaseFormElement, useExisting: TreeSelectComponent },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeSelectComponent extends BaseFormElement
-  implements TreeListComponentIO, TreeListPanelIO, OnDestroy {
+  implements TreeListComponentIO, TreeListPanelIO, OnChanges, OnDestroy {
   constructor(private modelSrvc: TreeListModelService, cd: ChangeDetectorRef) {
     super(cd);
     this.baseValue = [];
@@ -78,15 +82,13 @@ export class TreeSelectComponent extends BaseFormElement
   listPanel: TreeListPanelComponent;
 
   @Input() list: TreeListOption[];
-  @Input('value') set setValue(value: itemID[]) {
-    this.writeValue(value);
-  }
+  @Input('value') set setValue(value: itemID[]) {}
   public value: itemID[];
   @Input() valueDefault: itemID[];
   @Input() viewFilter: ViewFilter;
   @Input() keyMap: TreeListKeyMap = BTL_KEYMAP_DEF;
 
-  @Input() type: SelectType = SelectType.single;
+  @Input() type: SelectType = SelectType.multi;
   @Input() valueSeparatorChar = '/';
   @Input() maxHeightItems = 8;
   @Input() startCollapsed = true;
@@ -119,18 +121,13 @@ export class TreeSelectComponent extends BaseFormElement
   public dirty = false;
   public touched = false;
 
-  public onNgChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(this, changes, {}, ['value'], false, {
+      keyMap: { value: 'setValue' },
+    });
+
     if (hasChanges(changes, ['disabled', 'errorMessage', 'warnMessage'])) {
       this.closePanel();
-    }
-
-    if (
-      notFirstChanges(changes, ['type']) &&
-      this.type !== SelectType.multi &&
-      isNotEmptyArray(this.value, 1)
-    ) {
-      this.value = [this.value[0]];
-      this.modelSrvc.deselectAllItemsInMap(this.itemsMap);
     }
 
     if (hasChanges(changes, ['list'], true)) {
@@ -141,9 +138,27 @@ export class TreeSelectComponent extends BaseFormElement
         collapsed: this.startCollapsed,
       });
 
-      if (isNotEmptyArray(this.value)) {
+      if (isNotEmptyArray(this.value) && !changes.value) {
         this.setDisplayValue(this.value);
       }
+    }
+
+    if (hasChanges(changes, ['value'])) {
+      this.writeValue(changes.value.currentValue);
+    }
+
+    if (notFirstChanges(changes, ['type']) && this.type === SelectType.single) {
+      const newValue = isNotEmptyArray(this.value) ? [this.value[0]] : [];
+      this.deselectAllExcept(
+        this.treeListValue ? this.treeListValue.selectedIDs : this.value,
+        newValue
+      );
+      this.value = newValue;
+      this.setDisplayValue(this.value);
+    }
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 
@@ -153,7 +168,7 @@ export class TreeSelectComponent extends BaseFormElement
 
   public onSelectChange(value: TreeListValue): void {
     this.treeListValue = value;
-    this.setDisplayValue(value);
+    this.setDisplayValue(this.treeListValue);
   }
 
   public onApply(): void {
@@ -167,13 +182,7 @@ export class TreeSelectComponent extends BaseFormElement
 
   public onCancel(): void {
     if (this.treeListValue) {
-      this.treeListValue.selectedIDs
-        .filter(id => !this.value.includes(id))
-        .forEach(id => {
-          const item = this.itemsMap.get(id);
-          item.selected = false;
-        });
-
+      this.deselectAllExcept(this.treeListValue.selectedIDs, this.value);
       this.setDisplayValue(this.value);
       this.treeListValue = undefined;
     }
@@ -237,9 +246,7 @@ export class TreeSelectComponent extends BaseFormElement
     }
   }
 
-  private getDisplayValuesFromValue(
-    value: TreeListValue | itemID[] = null
-  ): string[] {
+  private getDisplayValuesFromValue(value: TreeListValue | itemID[]): string[] {
     return value && (value as TreeListValue).selectedValues
       ? (value as TreeListValue).selectedValues
       : value && isNotEmptyMap(this.itemsMap)
@@ -250,5 +257,14 @@ export class TreeSelectComponent extends BaseFormElement
           })
           .filter(Boolean)
       : [];
+  }
+
+  private deselectAllExcept(selectedIDs: itemID[], keepIDs: itemID[]): void {
+    selectedIDs
+      .filter(id => !keepIDs.includes(id))
+      .forEach(id => {
+        const item = this.itemsMap.get(id);
+        item.selected = false;
+      });
   }
 }
