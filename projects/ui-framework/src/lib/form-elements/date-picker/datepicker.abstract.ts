@@ -57,6 +57,7 @@ export function CLOSE_SCROLL_STRATEGY_FACTORY(overlay: Overlay) {
 }
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class BaseDatepickerElement extends BaseFormElement
   implements OnInit, AfterViewInit, OnDestroy {
   constructor(
@@ -116,6 +117,7 @@ export abstract class BaseDatepickerElement extends BaseFormElement
   @Input() dateFormat: DateFormatFullDate;
   @Input() panelClass: string;
 
+  // tslint:disable-next-line: no-output-rename
   @Output('dateChange') changed: EventEmitter<InputEvent> = new EventEmitter<
     InputEvent
   >();

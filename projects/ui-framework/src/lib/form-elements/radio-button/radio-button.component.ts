@@ -17,7 +17,6 @@ import { BaseFormElement } from '../base-form-element';
 import { RadioDirection } from './radio-button.enum';
 import { InputEventType } from '../form-elements.enum';
 import { RadioConfig } from './radio-button.interface';
-import { FormEvents } from '../form-elements.enum';
 import { InputEvent } from '../input/input.interface';
 import {
   valueInArrayOrFail,
@@ -79,6 +78,7 @@ export class RadioButtonComponent extends BaseFormElement
   readonly dir = RadioDirection;
   readonly key = 'id';
 
+  // tslint:disable-next-line: no-output-rename
   @Output('radioChange') changed: EventEmitter<InputEvent> = new EventEmitter<
     InputEvent
   >();

@@ -13,6 +13,7 @@ import { SelectType } from '../list.enum';
 import { ListFooterActions } from '../list.interface';
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class TreeListInputOutput implements TreeListComponentIO {
   @Input() list: TreeListOption[];
   @Input() value: itemID[];

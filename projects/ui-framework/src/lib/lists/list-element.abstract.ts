@@ -1,4 +1,19 @@
-import { AfterViewInit, OnDestroy, OnInit, Renderer2, ViewChild, ChangeDetectorRef, Input, Output, EventEmitter, ElementRef, NgZone, SimpleChanges, OnChanges, Directive } from '@angular/core';
+import {
+  AfterViewInit,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ChangeDetectorRef,
+  Input,
+  Output,
+  EventEmitter,
+  ElementRef,
+  NgZone,
+  SimpleChanges,
+  OnChanges,
+  Directive,
+} from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription } from 'rxjs';
 import {
@@ -34,6 +49,7 @@ import { LIST_ACTIONS_STATE_DEF } from './list-footer/list-footer.const';
 import { SelectType, SelectMode } from './list.enum';
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class BaseListElement
   implements OnChanges, OnInit, OnDestroy, AfterViewInit {
   protected constructor(
