@@ -157,10 +157,12 @@ export class TreeSelectComponent extends BaseFormElement
   }
 
   public onApply(): void {
-    this.value = (this.treeListValue && this.treeListValue.selectedIDs) || [];
-    this.dirty = true;
-    this.emitChange(this.treeListValue);
-    this.treeListValue = undefined;
+    if (this.treeListValue) {
+      this.value = this.treeListValue.selectedIDs || [];
+      this.dirty = true;
+      this.emitChange(this.treeListValue);
+      this.treeListValue = undefined;
+    }
   }
 
   public onCancel(): void {

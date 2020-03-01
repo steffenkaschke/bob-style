@@ -104,7 +104,7 @@ export class TreeListPanelComponent extends TreeListInputOutput
 
   public onApply(): void {
     if (this.treeListValue) {
-      this.value = (this.treeListValue && this.treeListValue.selectedIDs) || [];
+      this.value = this.treeListValue.selectedIDs || [];
       this.treeListValue = undefined;
       if (this.apply.observers.length > 0) {
         this.apply.emit();
