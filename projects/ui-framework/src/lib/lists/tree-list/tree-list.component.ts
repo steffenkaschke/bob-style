@@ -17,6 +17,7 @@ import {
   firstChanges,
   notFirstChanges,
   isEmptyArray,
+  isNotEmptyMap,
 } from '../../services/utils/functional-utils';
 import { selectValueOrFail } from '../../services/utils/transformers';
 import { SelectType } from '../list.enum';
@@ -56,15 +57,11 @@ export class TreeListComponent extends BaseTreeListElement {
   public value: itemID[];
   @Input('itemsMap') set setItemsMap(map: TreeListItemMap) {
     console.log(' SET itemsMap', map);
-    if (map && map.size) {
+    if (isNotEmptyMap(map)) {
       this.itemsMap = map;
       this.itemsMapFromAbove = true;
       this.showSearch = this.itemsMap.size > 10;
     }
-  }
-
-  ngOnInit() {
-    console.log('***** Tree List INIT *****');
   }
 
   public onNgChanges(changes: SimpleChanges): void {
