@@ -22,11 +22,12 @@ interface TreeListKeydownConfig {
   toggleItemSelect: (item: TreeListItem, index: number) => void;
   readonly: boolean;
   disabled: boolean;
+  maxHeightItems: number;
 }
 
 @Injectable()
 export class TreeListControlsService {
-  constructor(private DOM: DOMhelpers) {}
+  constructor(private DOM: DOMhelpers, private viewSrvc: TreeListViewService) {}
 
   public onListClick(event: MouseEvent, config: TreeListClickConfig): void {
     const {
@@ -83,6 +84,7 @@ export class TreeListControlsService {
       toggleItemSelect,
       readonly,
       disabled,
+      maxHeightItems,
     } = config;
 
     if (
@@ -119,12 +121,11 @@ export class TreeListControlsService {
     ) {
       const nextItemElement = this.DOM.getNextSibling(itemElement);
       if (nextItemElement) {
-        TreeListViewService.prototype.scrollToItem(
-          itemsMap.get(listViewModel[index + 1]),
-          listViewModel,
-          itemElement.closest('.bhl-list'),
-          8
-        );
+        this.viewSrvc.scrollToItem({
+          item: itemsMap.get(listViewModel[index + 1]),
+          itemElement: nextItemElement,
+          maxHeightItems,
+        });
         nextItemElement.focus();
       }
       return;
@@ -138,12 +139,11 @@ export class TreeListControlsService {
     ) {
       const prevItemElement = this.DOM.getPrevSibling(itemElement);
       if (prevItemElement) {
-        TreeListViewService.prototype.scrollToItem(
-          itemsMap.get(listViewModel[index - 1]),
-          listViewModel,
-          itemElement.closest('.bhl-list'),
-          8
-        );
+        this.viewSrvc.scrollToItem({
+          item: itemsMap.get(listViewModel[index - 1]),
+          itemElement: prevItemElement,
+          maxHeightItems,
+        });
         prevItemElement.focus();
       }
       return;
