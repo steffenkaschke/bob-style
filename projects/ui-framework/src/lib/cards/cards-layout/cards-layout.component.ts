@@ -145,7 +145,8 @@ export class CardsLayoutComponent
         (!this.isMobile
           ? CARD_TYPE_WIDTH[this.type]
           : CARD_TYPE_WIDTH_MOBILE[this.type]) + 'px',
-      '--card-grid-gap': GAP_SIZE + 'px'
+      '--card-grid-gap': GAP_SIZE + 'px',
+      '--cards-num': this.cards ? this.cards.length : 0
     });
   }
 

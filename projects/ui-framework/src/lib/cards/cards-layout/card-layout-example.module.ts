@@ -43,13 +43,13 @@ import { randomNumber } from '../../services/utils/functional-utils';
       [alignCenter]="alignCenter"
       [mobileSwiper]="mobileSwiper"
     >
-      <b-card-add
-        *ngIf="addCard"
-        [type]="type"
-        (clicked)="onAddCardClick()"
-        [card]="addCard"
-      >
-      </b-card-add>
+<!--      <b-card-add-->
+<!--        *ngIf="addCard"-->
+<!--        [type]="type"-->
+<!--        (clicked)="onAddCardClick()"-->
+<!--        [card]="addCard"-->
+<!--      >-->
+<!--      </b-card-add>-->
       <b-card
         *ngFor="let card of cards; let i = index"
         [type]="type"

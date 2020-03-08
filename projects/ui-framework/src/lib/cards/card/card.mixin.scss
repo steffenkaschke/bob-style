@@ -44,7 +44,7 @@ $cardPadding-small: times8(2);
 
     &:focus,
     &:hover {
-      z-index: 1;
+      //z-index: 1;
     }
 
     &:focus {
@@ -58,9 +58,10 @@ $cardPadding-small: times8(2);
 
         &.clickable {
           &:hover,
-          &:focus {
-            box-shadow: 0 2px 12px 0 $grey-500;
-            transform: translateY(-1px);
+          &:focus,
+          &[data-focus-inside='true'] {
+            //box-shadow: 0 2px 12px 0 $grey-500;
+            //transform: translateY(-1px);
           }
         }
       }

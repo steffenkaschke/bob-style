@@ -20,11 +20,11 @@ b-display-3 {
 }
 
 :host ::ng-deep .story-content {
-  flex: 1;
+  //display: flex;
+  //flex: 1;
   padding: 50px 30px 30px 30px;
   border-top: 1px solid $grey-500;
   position: relative;
-  display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
