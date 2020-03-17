@@ -1,10 +1,10 @@
 <b-search *ngIf="shouldDisplaySearch"
+          #search
           (searchChange)="searchChange($event)">
 </b-search>
 
 <div [ngStyle]="{
-        height: listOptions && (listOptions.length * listElHeight + 'px'),
-        maxHeight: maxHeight + 'px'
+        height: listOptions && (listOptions.length * listElHeight + 'px')
       }"
      [attr.aria-readonly]="readonly || null"
      [ngClass]="{
