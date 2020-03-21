@@ -1,16 +1,20 @@
 import { Icons } from '../../icons/icons.enum';
 
-export interface MenuItem {
-  children?: MenuItem[];
+export interface MenuItem<T = any> {
   label: string;
-  disabled?: boolean;
   key?: string;
   id?: string;
-  action?($event): void;
+  disabled?: boolean | ((item?: MenuItem) => boolean);
+  data?: T;
+  clickToOpenSub?: boolean;
+  openLeft?: boolean;
+  panelClass?: string;
+  action?: (item?: MenuItem) => void;
+  children?: MenuItem[];
 }
 
 export interface CommonActionButton {
   icon: Icons;
   tooltip?: string;
-  action?($event): void;
+  action?: (item?: MenuItem) => void;
 }

@@ -1,29 +1,38 @@
-<content [matMenuTriggerFor]="childMenu"
-         (menuOpened)="onOpenMenu()"
-         (menuClosed)="onCloseMenu()"
-         [ngClass]="{'disabled': disabled}"
-         class="menu-trigger-wrapper">
+<div [matMenuTriggerFor]="childMenu"
+     (menuOpened)="onOpenMenu()"
+     (menuClosed)="onCloseMenu()"
+     [ngClass]="{'disabled': disabled}"
+     class="menu-trigger-wrapper">
   <ng-content select="[menu-trigger]"></ng-content>
-</content>
+</div>
 
 <mat-menu #childMenu="matMenu"
-          [xPosition]="menuDir">
-  <ng-container *ngFor="let child of menu">
+          [xPosition]="menuDir"
+          [class]="panelClass">
+  <ng-container *ngFor="let child of menuViewModel; trackBy: trackBy">
 
     <!-- Handle branch node menu menu -->
-    <ng-container *ngIf="child.children && child.children.length > 0">
-      <button mat-menu-item
-              type="button"
-              class="{{child?.key}}"
-              [ngClass]="{'disabled': child.disabled}"
-              [matMenuTriggerFor]="menu.childMenu"
-              [disableRipple]="true">
-        <span>{{child.label}}</span>
-      </button>
+    <ng-container *ngIf="child.children?.length > 0">
+
+      <span class="menu-trigger-guard"
+            [attr.tabindex]="!child.disabled && child.clickToOpenSub ? 0 : null"
+            (click.outside-zone)="!child.disabled && child.clickToOpenSub && $event.stopPropagation()">
+        <button mat-menu-item
+                type="button"
+                class="{{child?.key}}"
+                [disabled]="child.disabled"
+                [matMenuTriggerFor]="menu.childMenu"
+                [disableRipple]="true">
+          <span>{{child.label}}</span>
+        </button>
+      </span>
       <b-menu #menu
               [id]="id"
+              [data]="data"
               [menu]="child.children"
-              [openLeft]="openLeft"
+              [openLeft]="openLeft || child.openLeft"
+              [panelClass]="child.panelClass"
+              [clickToOpenSub]="clickToOpenSub"
               (actionClick)="onClick($event, false)">
       </b-menu>
     </ng-container>
@@ -34,7 +43,7 @@
             type="button"
             class="{{child?.key}}"
             (click)="onClick(child)"
-            [ngClass]="{'disabled': child.disabled}"
+            [disabled]="child.disabled"
             [disableRipple]="true">
       <span>{{child.label}}</span>
     </button>

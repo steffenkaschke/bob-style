@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { array, boolean, number, object, select, text, withKnobs } from '@storybook/addon-knobs/angular';
+import { boolean, object, withKnobs } from '@storybook/addon-knobs/angular';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { ButtonType } from '../../buttons/buttons.enum';
@@ -11,17 +11,21 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { MenuItem } from './menu.interface';
 
-const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(withKnobs);
+const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
+  withKnobs
+);
 
 const template = `
 <b-menu [id]="'employee-menu'"
         [menu]="menu"
         [openLeft]="openLeft"
+        [clickToOpenSub]="clickToOpenSub"
         [disabled]="disabled"
         (actionClick)="onActionClick($event)"
         (openMenu)="onMenuOpen($event)"
         (closeMenu)="onMenuClose($event)">
   <b-square-button menu-trigger
+                   [disabled]="disabled"
                    type="${ButtonType.secondary}"
                    icon="${Icons.three_dots}">
   </b-square-button>
@@ -41,11 +45,14 @@ const note = `
   *MenuModule*
 
   #### Properties
-  Name | Type | Description | Default value
+  Name | Type | Description | Default
   --- | --- | --- | ---
   [id] | string | menu id (can be used to reference the item, that has the menu) | &nbsp;
   [menu] | MenuItem[] | array of menu items | &nbsp;
+  [data] | any | any data that will be included with each MenuItem (can be used for menu items actions etc) | &nbsp;
   [openLeft] | boolean | open left by default | false
+  [clickToOpenSub] | boolean | if true, sub-menus will open on click, not on hover | false
+  [panelClass] | string | class to be added to menu panel | &nbsp;
   [disabled] | boolean | disables menu | &nbsp;
   (actionClick) | &lt;MenuItem&gt; | notifies on action click, emits menu item, \
   enriched with menu id (if present) | &nbsp;
@@ -126,6 +133,22 @@ menu = [
     this[actionKey](itemID);
   }
 ~~~
+
+  #### interface: MenuItem&lt;T&gt;
+
+  Name | Type | Description | Default
+  --- | --- | --- | ---
+  label | string | menu item display name | &nbsp;
+  key? | string | menu item id | &nbsp;
+  id? | string | menu id | &nbsp;
+  disabled? | boolean | if menu item is disabled | false
+  data? | T | MenuItem will be enriched with any data from [data] input | &nbsp;
+  clickToOpenSub? | boolean | child menu to open on click (vs on hover, as by default) | false
+  openLeft? | boolean | child menu should open to the left | false
+  panelClass? | string | class to be added to child menu | &nbsp;
+  action? |  (item?: MenuItem) => void | function to be called on item click | &nbsp;
+  children | MenuItem[] | sub-menu items | &nbsp;
+
 `;
 
 const menuMock: MenuItem[] = [
@@ -142,20 +165,20 @@ const menuMock: MenuItem[] = [
           {
             label: 'Update site',
             action: action('update site'),
-            key: 'update.site'
+            key: 'update.site',
           },
           {
             label: 'Update email',
             action: action('update email'),
-            key: 'update.email'
+            key: 'update.email',
           },
           {
             label: 'Update reports to',
             disabled: true,
             action: action('update reports to'),
-            key: 'update.reportsto'
-          }
-        ]
+            key: 'update.reportsto',
+          },
+        ],
       },
 
       {
@@ -166,7 +189,7 @@ const menuMock: MenuItem[] = [
           {
             label: 'Terminate',
             action: action('terminate'),
-            key: 'terminate'
+            key: 'terminate',
           },
           {
             label: 'Rehire',
@@ -177,30 +200,30 @@ const menuMock: MenuItem[] = [
               {
                 label: 'Secret action',
                 action: action('Deep action'),
-                key: 'deep'
-              }
-            ]
-          }
-        ]
+                key: 'deep',
+              },
+            ],
+          },
+        ],
       },
       {
         label: 'Delete file',
         action: action('delete file'),
-        key: 'delete.file'
-      }
-    ]
+        key: 'delete.file',
+      },
+    ],
   },
   {
     label: 'View profile',
     action: action('view profile'),
-    key: 'view.profile'
+    key: 'view.profile',
   },
   {
     label: 'Request time-off',
     disabled: true,
     action: action('request time off'),
-    key: 'request.timeoff'
-  }
+    key: 'request.timeoff',
+  },
 ];
 
 story.add(
@@ -210,15 +233,22 @@ story.add(
       template: storyTemplate,
       props: {
         openLeft: boolean('openLeft', false),
+        clickToOpenSub: boolean('clickToOpenSub', false),
         disabled: boolean('disabled', false),
         menu: object('menu', menuMock),
         onActionClick: action('action click'),
         onMenuOpen: action('menu open'),
-        onMenuClose: action('menu close')
+        onMenuClose: action('menu close'),
       },
       moduleMetadata: {
-        imports: [StoryBookLayoutModule, BrowserAnimationsModule, MenuModule, ButtonsModule, IconsModule]
-      }
+        imports: [
+          StoryBookLayoutModule,
+          BrowserAnimationsModule,
+          MenuModule,
+          ButtonsModule,
+          IconsModule,
+        ],
+      },
     };
   },
   { notes: { markdown: note } }

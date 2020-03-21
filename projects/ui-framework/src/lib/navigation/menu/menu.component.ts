@@ -6,21 +6,39 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
+  OnInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  ViewChildren,
+  QueryList,
 } from '@angular/core';
 import { MenuItem } from './menu.interface';
-import { MenuPositionX } from '@angular/material/menu';
-import { has } from 'lodash';
+import { MenuPositionX, MatMenu } from '@angular/material/menu';
+import {
+  isFunction,
+  hasChanges,
+  applyChanges,
+  notFirstChanges,
+  isValuevy,
+} from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MenuComponent implements OnChanges {
+export class MenuComponent implements OnChanges, OnInit {
+  constructor(private cd: ChangeDetectorRef) {}
+
   @Input() id: string;
+  @Input() data: any;
   @Input() menu: MenuItem[];
   @Input() openLeft = false;
+  @Input() clickToOpenSub = false;
+  @Input() panelClass: string;
   @Input() disabled: boolean;
+
   @Output() actionClick: EventEmitter<MenuItem> = new EventEmitter<MenuItem>();
   @Output() openMenu: EventEmitter<string | void> = new EventEmitter<
     string | void
@@ -29,43 +47,84 @@ export class MenuComponent implements OnChanges {
     string | void
   >();
 
-  @ViewChild('childMenu', { static: true }) public childMenu;
+  @ViewChild('childMenu', { static: true }) public childMenu: MatMenu;
+  @ViewChildren(MenuComponent)
+  public submenus: QueryList<MenuComponent>;
 
-  menuDir: MenuPositionX = 'after';
-
-  constructor() {}
+  public menuDir: MenuPositionX = 'after';
+  public menuViewModel: MenuItem[];
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (has(changes, 'openLeft')) {
-      this.openLeft = changes.openLeft.currentValue;
+    applyChanges(this, changes);
+
+    if (hasChanges(changes, ['openLeft'])) {
       this.menuDir = this.openLeft ? 'before' : 'after';
     }
-    if (has(changes, 'disabled')) {
-      this.disabled = changes.disabled.currentValue;
+
+    if (
+      hasChanges(changes, ['menu', 'id', 'data', 'clickToOpenSub'], true, {
+        falseyCheck: isValuevy,
+      })
+    ) {
+      this.setViewModel();
+    }
+
+    if (notFirstChanges(changes) && !this.cd['destroyed']) {
+      this.cd.detectChanges();
     }
   }
 
-  onClick(child: MenuItem, triggerAction = true): void {
-    const childUpd = Object.assign({}, child, this.id ? { id: this.id } : {});
+  ngOnInit(): void {
+    if (this.menu && !this.menuViewModel) {
+      this.setViewModel();
+      this.cd.detectChanges();
+    }
+  }
 
+  public onClick(child: MenuItem, triggerAction = true): void {
     if (this.actionClick.observers.length > 0) {
-      this.actionClick.emit(childUpd);
+      this.actionClick.emit(child);
     }
 
     if (child.action && triggerAction) {
-      child.action(childUpd);
+      child.action(child);
     }
   }
 
-  onOpenMenu(): void {
+  public onOpenMenu(): void {
     if (this.openMenu.observers.length > 0) {
       this.openMenu.emit(this.id || null);
     }
   }
 
-  onCloseMenu(): void {
+  public onCloseMenu(): void {
     if (this.closeMenu.observers.length > 0) {
       this.closeMenu.emit(this.id || null);
     }
+  }
+
+  public itemIsDisabled(item: MenuItem): boolean {
+    return isFunction(item.disabled)
+      ? item.disabled(item)
+      : Boolean(item.disabled);
+  }
+
+  public trackBy(index: number, item: MenuItem): string {
+    return (
+      (item.key !== undefined && item.key) || item.label || JSON.stringify(item)
+    );
+  }
+
+  private setViewModel(): void {
+    this.menuViewModel = this.menu.map(item => {
+      const enrichedItem = {
+        ...item,
+        ...(this.id && { id: this.id }),
+        ...(this.data && { data: this.data }),
+        clickToOpenSub: Boolean(this.clickToOpenSub),
+      };
+      enrichedItem.disabled = this.itemIsDisabled(enrichedItem);
+      return enrichedItem;
+    });
   }
 }
