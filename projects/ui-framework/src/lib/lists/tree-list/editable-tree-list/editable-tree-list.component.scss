@@ -1,0 +1,180 @@
+@import '../../../style/common-imports';
+@import '../../../style/icons.mixin';
+
+$betl-max-depth: 5;
+$betl-item-height: 32px;
+$betl-item-indent: 20px;
+
+$betl-bgcolor: white;
+
+.dev {
+  display: block;
+  padding: 12px;
+  margin: 30px -12px 0 -12px;
+  border-top: 1px solid $border-color;
+
+  p {
+    margin: 0 0 5px 0;
+  }
+}
+// --------------
+
+:host {
+  display: block;
+  max-width: 100%;
+  min-width: 0;
+  text-align: left;
+  background-color: $betl-bgcolor;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  padding: 12px;
+}
+
+// List
+
+.betl-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  $line-width: 1px;
+  background-image: linear-gradient(
+    to right,
+    transparent 0,
+    transparent #{$betl-item-indent + $betl-item-indent / 2 - $line-width / 2},
+    $grey-500 #{$betl-item-indent + $betl-item-indent / 2 - $line-width / 2},
+    $grey-500 #{$betl-item-indent + $betl-item-indent / 2 + $line-width / 2},
+    transparent #{$betl-item-indent + $betl-item-indent / 2 + $line-width / 2},
+    transparent #{$betl-item-indent * 2}
+  );
+  background-size: ($betl-item-indent * 2) 100%;
+  background-repeat: repeat-x;
+  background-position: left top;
+}
+
+.betl-list-footer {
+  &:before {
+    @include pseudo;
+    width: $betl-item-indent;
+  }
+}
+
+// Item
+
+.betl-item,
+.betl-list-footer {
+  height: $betl-item-height;
+  display: grid;
+  grid-template-columns: $betl-item-indent $betl-item-indent auto;
+  align-items: center;
+}
+
+.betl-item-elmnt {
+  height: inherit;
+  @include flex-align;
+}
+
+.betl-item-chevron,
+.betl-item-menu {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.betl-item-dot {
+  grid-column: 2;
+  grid-row: 1;
+  background-color: $betl-bgcolor;
+
+  &:before {
+    @include pseudo;
+    @include size(8px);
+    background-color: $grey-700;
+    border-radius: 50%;
+  }
+}
+
+@for $i from 2 through $betl-max-depth {
+  [data-level='#{$i}'] {
+    padding-left: ($betl-item-indent * 2 * ($i - 1));
+  }
+}
+
+// Input
+
+.betl-item-input {
+  grid-column: 3;
+  flex-grow: 1;
+  height: inherit;
+  border: 0;
+  padding: 0 10px;
+  background-color: $betl-bgcolor;
+  color: $body-text-color;
+}
+
+// Controls
+
+.betl-item-chevron {
+  &:before {
+    font-size: map-get($icon-sizes, 'large');
+    color: map-get-deep($icon-colors, 'dark', color);
+    @include size(map-get($icon-sizes, 'medium'));
+    line-height: map-get($icon-sizes, 'medium');
+    display: flex;
+    justify-content: center;
+  }
+}
+
+:host ::ng-deep {
+  .collapsed .betl-item-chevron {
+    @include b-icon(chevron-right, $size: null, $color: false, $hover: false) {
+      display: flex;
+    }
+  }
+
+  .expanded .betl-item-chevron {
+    @include b-icon(chevron-down, $size: null, $color: false, $hover: false) {
+      display: flex;
+    }
+  }
+}
+
+:host ::ng-deep b-icon[data-type='circular'] {
+  background-color: $grey-500;
+
+  &:hover,
+  &:focus {
+    background-color: darken($grey-500, 10%);
+  }
+
+  &.betl-item-menu-trigger,
+  &.betl-list-add-item {
+    @include size($betl-item-indent);
+  }
+
+  &.betl-list-add-item {
+    .b-icon {
+      // margin-left: 1px;
+
+      &:before {
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+// Menu
+
+.betl-item-menu {
+  opacity: 0;
+
+  &:hover,
+  &[data-menu-open='true'] {
+    opacity: 1;
+  }
+}
+
+::ng-deep {
+  .betl-del-confirm {
+    left: -50%;
+  }
+}

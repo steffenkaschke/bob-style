@@ -49,12 +49,14 @@ export interface TreeListItem {
   id: itemID;
   name: string;
   value?: string;
+  canBeDeleted?: boolean;
 
   // state
   collapsed?: boolean;
   selected?: boolean;
   parentSelected?: boolean;
   disabled?: boolean;
+  deleted?: boolean;
 
   parentIDs?: itemID[] | null;
   childrenIDs?: itemID[] | null;
@@ -70,6 +72,8 @@ export interface TreeListItem {
   allOptionsHidden?: boolean;
   nextInViewIsGroup?: boolean;
   originalIndex?: number;
+
+  [key: string]: any;
 }
 
 export interface TreeListValue {

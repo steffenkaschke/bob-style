@@ -1,4 +1,5 @@
 import { Icons } from '../../icons/icons.enum';
+import { boolean } from '@storybook/addon-knobs';
 
 export interface MenuItem<T = any> {
   label: string;

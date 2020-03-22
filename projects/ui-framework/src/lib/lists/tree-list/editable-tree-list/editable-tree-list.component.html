@@ -1,0 +1,94 @@
+<ng-template #listItem
+             let-index="index"
+             let-item="item">
+
+  <li role="listitem"
+      class="betl-item "
+      [id]="item.id"
+      [attr.data-index]="index"
+      [attr.data-level]="item.parentCount || 1"
+      tabindex="0"
+      [ngClass]="{
+        'btl-item-option': !item.childrenCount,
+        'btl-item-group': item.childrenCount,
+        expanded: item.childrenCount && !item.collapsed,
+        collapsed: item.collapsed
+      }">
+
+    <span *ngIf="item.childrenCount"
+          class="betl-item-elmnt betl-item-chevron has-hover"
+          aria-hidden="true"></span>
+
+    <b-menu class="betl-item-elmnt betl-item-menu"
+            [id]="item.id"
+            [data]="item"
+            [menu]="itemMenu">
+
+      <b-icon menu-trigger
+              role="button"
+              class="betl-item-menu-trigger"
+              [type]="iconType.circular"
+              [size]="iconSize.small"
+              [color]="iconColor.white"
+              [icon]="icons.three_dots">
+      </b-icon>
+
+    </b-menu>
+
+    <span class="betl-item-elmnt betl-item-dot"
+          aria-hidden="true"
+          (click.outside-zone)="input.select()"></span>
+
+    <span class="betl-item-elmnt betl-item-input-wrap">
+      <input [(ngModel)]="item.name"
+             #input
+             class="betl-item-input"
+             type="text">
+    </span>
+
+  </li>
+
+</ng-template>
+
+<ul #listElement
+    role="list"
+    class="betl-list"
+    (click)="onListClick($event)"
+    (keydown)="onListKeyDown($event)">
+
+  <ng-container *ngFor="let itemID of listViewModel; let index = index; trackBy: trackBy">
+    <ng-container *ngTemplateOutlet="listItem; context: {
+      index: index,
+      item: itemsMap.get(itemID)
+    }"></ng-container>
+  </ng-container>
+
+</ul>
+
+<div class="betl-list-footer">
+  <b-icon role="button"
+          class="betl-item-elmnt betl-list-add-item"
+          [type]="iconType.circular"
+          [size]="iconSize.small"
+          [color]="iconColor.white"
+          [icon]="icons.add"
+          (click)="insertNewItem('lastChildOf', rootItem)">
+  </b-icon>
+</div>
+
+
+<div *ngIf="debug"
+     class="dev">
+  <p>Total items: {{ itemsMap.size - 1 }}</p>
+  <p>Total items in view: {{ listViewModel.length }}</p>
+
+  <button type="button"
+          (click)="clear()">Clear</button>
+
+  <button type="button"
+          (click)="log('Data')">Log data</button>
+
+  <button type="button"
+          (click)="log('ViewContext')">Log items View Context</button>
+
+</div>
