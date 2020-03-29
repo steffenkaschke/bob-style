@@ -76,15 +76,15 @@
     "karma-coverage-istanbul-reporter": "^2.1.1",
     "karma-jasmine": "^3.1.1",
     "karma-jasmine-html-reporter": "^1.5.2",
-    "ng-packagr": "^9.0.1",
+    "ng-packagr": "^9.1.0",
     "node-sass": "^4.13.1",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.2",
     "protractor": "^5.4.2",
     "ts-node": "^8.6.2",
     "tsconfig-paths": "^3.9.0",
     "tslint": "^6.0.0",
-    "typescript": "~3.7.5",
-    "ng-mocks": "^9.0.0"
+    "typescript": "~3.8.3",
+    "ng-mocks": "^9.2.0"
   },
   "publishConfig": {
     "registry": "https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/"
