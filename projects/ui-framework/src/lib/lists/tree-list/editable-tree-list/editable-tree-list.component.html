@@ -4,7 +4,7 @@
     cdkDropList
     [cdkDropListDisabled]="disableDragAndDrop"
     (cdkDropListDropped)="onItemDrop($event)"
-    [cdkDropListSortingDisabled]="true"
+    [cdkDropListSortingDisabled]="false"
     (click)="onListClick($event)"
     (keydown)="onListKeyDown($event)"
     (focusout)="onListBlur($event)"
@@ -87,6 +87,8 @@
                [placeholder]="translation.untitled"
                class="betl-item-input"
                type="text">
+        <span *ngIf="debug"
+              style="font-size:80%;">{{item.id}}</span>
       </span>
 
     </li>
