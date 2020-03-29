@@ -29,7 +29,6 @@ import { SelectType } from '../../list.enum';
 import { ListFooterActionsState } from '../../list.interface';
 import { itemID, TreeListItemMap, TreeListItem } from '../tree-list.interface';
 import { TreeListInputOutput } from '../tree-list-IO.abstract';
-import { TreeListViewService } from '../services/tree-list-view.service';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
 import { LIST_ACTIONS_STATE_DEF } from '../../list-footer/list-footer.const';
@@ -39,8 +38,8 @@ import {
   BTL_VALUE_SEPARATOR_DEF,
 } from '../tree-list.const';
 import { TreeListSearchUtils } from '../services/tree-list-search.static';
-import { TreeListModelUtils } from '../services/tree-list-model.static';
 import { MobileService } from '../../../services/utils/mobile.service';
+import { TreeListViewUtils } from '../services/tree-list-view.static';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -49,7 +48,6 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   constructor(
     protected modelSrvc: TreeListModelService,
     protected cntrlsSrvc: TreeListControlsService,
-    protected viewSrvc: TreeListViewService,
     protected mobileService: MobileService,
     protected DOM: DOMhelpers,
     protected cd: ChangeDetectorRef,
@@ -217,7 +215,7 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
   }
 
   public toggleCollapseAll(force: boolean = null, updateModel = true): void {
-    TreeListModelUtils.toggleCollapseAllItemsInMap(this.itemsMap, force);
+    TreeListViewUtils.toggleCollapseAllItemsInMap(this.itemsMap, force);
     if (updateModel) {
       this.updateListViewModel();
     }
@@ -303,12 +301,28 @@ export abstract class BaseTreeListElement extends TreeListInputOutput
 
   // Dev / Debug
 
+  private sortMapByOriginalIndex(itemsMap: TreeListItemMap): TreeListItemMap {
+    return new Map(
+      Array.from(itemsMap.entries()).sort((entryA, entryB) => {
+        const itemA = entryA[1],
+          itemB = entryB[1];
+        if (!itemA || !itemB) {
+          return 0;
+        }
+        return itemA.originalIndex > itemB.originalIndex ? 1 : -1;
+      })
+    );
+  }
+
   log(what = 'Data') {
     switch (what) {
       case 'Data':
         console.log('---------CMPNT---------\n', this);
         console.log('---------LIST---------\n', this.list);
-        console.log('---------MAP---------\n', this.itemsMap);
+        console.log(
+          '---------MAP---------\n',
+          this.sortMapByOriginalIndex(this.itemsMap)
+        );
         console.log('---------VIEWMODEL---------\n', this.listViewModel);
         break;
 

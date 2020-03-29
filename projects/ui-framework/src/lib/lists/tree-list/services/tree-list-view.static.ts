@@ -1,44 +1,94 @@
-import { Injectable } from '@angular/core';
 import { TreeListItem, itemID, TreeListItemMap } from '../tree-list.interface';
 import {
   isEmptyArray,
   isEmptyMap,
   isNullOrUndefined,
+  isBoolean,
 } from '../../../services/utils/functional-utils';
 import { LIST_EL_HEIGHT } from '../../list.consts';
 import { TreeListModelUtils } from './tree-list-model.static';
+import { BTL_ROOT_ID } from '../tree-list.const';
 
-interface TreeListScrollToItemConfig {
-  item?: TreeListItem;
-  itemElement?: HTMLElement;
-  listElement?: HTMLElement;
-  indexInView?: number;
+interface TreeListItemElementContext {
+  item: TreeListItem;
+  itemElement: HTMLElement;
+  indexInView: number;
+  listElement: HTMLElement;
   listViewModel?: itemID[];
   itemsMap?: TreeListItemMap;
   maxHeightItems?: number;
 }
 
-@Injectable()
-export class TreeListViewService {
-  constructor() {}
-
-  public expandTillItemsByID(IDs: itemID[] = [], itemsMap: TreeListItemMap) {
-    IDs.forEach(id => {
-      const item = itemsMap.get(id);
-      TreeListModelUtils.setPropToTreeUp(item, { collapsed: false }, itemsMap);
+export class TreeListViewUtils {
+  //
+  public static toggleCollapseAllItemsInMap(
+    itemsMap: TreeListItemMap,
+    force: boolean = null,
+    setHidden = false
+  ): void {
+    itemsMap.forEach(item => {
+      if (item.childrenCount && item.id !== BTL_ROOT_ID) {
+        this.toggleItemCollapsed(item, itemsMap, force, setHidden);
+      }
     });
   }
 
-  public scrollToItem(config: TreeListScrollToItemConfig): void {
+  public static toggleItemCollapsed(
+    item: TreeListItem,
+    itemsMap: TreeListItemMap,
+    force: boolean = null,
+    setHidden = false
+  ): void {
+    item.collapsed = isBoolean(force) ? force : !item.collapsed;
+
+    if (setHidden) {
+      TreeListModelUtils.walkTree(
+        'down',
+        item,
+        itm => {
+          if (
+            !itm.parentIDs.find(id => {
+              const i = itemsMap.get(id);
+              return i !== item && i.collapsed;
+            })
+          ) {
+            itm.hidden = item.collapsed;
+          }
+        },
+        itemsMap
+      );
+
+      item.hidden = false;
+    }
+  }
+
+  public static expandTillItemsByID(
+    IDs: itemID[] = [],
+    itemsMap: TreeListItemMap
+  ) {
+    IDs.forEach(id => {
+      const item = itemsMap.get(id);
+      TreeListModelUtils.walkTree(
+        'up',
+        item,
+        itm => (itm.collapsed = false),
+        itemsMap
+      );
+    });
+  }
+
+  public static scrollToItem(
+    config: Partial<TreeListItemElementContext>
+  ): void {
     const {
       item,
       itemElement,
       listElement,
       maxHeightItems,
-    } = this.findItemElement(config);
+    } = this.getItemElementContext(config);
 
     if (!itemElement) {
-      console.error(`[TreeListViewService.scrollToItem]:
+      console.error(`[TreeListViewUtils.scrollToItem]:
       No element to scroll to.`);
       return;
     }
@@ -60,13 +110,11 @@ export class TreeListViewService {
     }, 0);
   }
 
-  public findItemElement(
-    config: TreeListScrollToItemConfig
-  ): TreeListScrollToItemConfig {
+  public static getItemElementContext(
+    config: Partial<TreeListItemElementContext>
+  ): TreeListItemElementContext {
     let { item, itemElement, listElement, indexInView } = config;
     const { listViewModel, itemsMap } = config;
-
-    console.log('findItemElement', config);
 
     if (
       (!itemElement &&
@@ -75,7 +123,7 @@ export class TreeListViewService {
         !item &&
         (isEmptyMap(itemsMap) || isEmptyArray(listViewModel)))
     ) {
-      console.error(`[TreeListViewService.findItemElement]:
+      console.error(`[TreeListViewUtils.getItemElementContext]:
           Not enough data to find item/element`);
       return;
     }
@@ -89,7 +137,7 @@ export class TreeListViewService {
 
       if (!item) {
         console.error(
-          `[TreeListViewService.scrollToItem]:
+          `[TreeListViewUtils.scrollToItem]:
         Data for item ${itemElement.getAttribute('id')} was not found.`
         );
         return;
@@ -101,7 +149,7 @@ export class TreeListViewService {
 
       if (indexInView === -1) {
         console.error(
-          `[TreeListViewService.scrollToItem]:
+          `[TreeListViewUtils.scrollToItem]:
         Item ${item.id} was not found in view.`
         );
         return;
@@ -124,11 +172,11 @@ export class TreeListViewService {
     };
   }
 
-  public getItemFromEl(
+  public static getItemFromElement(
     itemElement: HTMLElement,
     itemsMap: TreeListItemMap,
     listViewModel: itemID[]
-  ): { itemElement: HTMLElement; indexInView: number; item: TreeListItem } {
+  ): Partial<TreeListItemElementContext> {
     itemElement = itemElement.closest('[data-index]');
 
     const indexInView: number =
@@ -139,11 +187,14 @@ export class TreeListViewService {
     return { itemElement, indexInView, item };
   }
 
-  public findInputInElement(itemElement: HTMLElement): HTMLInputElement {
+  public static findInputInElement(itemElement: HTMLElement): HTMLInputElement {
     return itemElement?.querySelector('.betl-item-input') as HTMLInputElement;
   }
 
-  public findAndFocusInput(element: HTMLElement, at: 'start' | 'end'): void {
+  public static findAndFocusInput(
+    element: HTMLElement,
+    at: 'start' | 'end'
+  ): void {
     const input = this.findInputInElement(element);
     if (!input) {
       console.warn('cant find input in element', element);

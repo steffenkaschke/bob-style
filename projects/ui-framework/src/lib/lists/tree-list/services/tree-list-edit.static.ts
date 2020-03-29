@@ -1,6 +1,6 @@
 import { TreeListItem, TreeListItemMap, itemID } from '../tree-list.interface';
 import {
-  TreeListGetItemEditContext,
+  TreeListItemEditContext,
   InsertItemLocation,
 } from '../editable-tree-list/editable-tree-list.interface';
 import { BTL_ROOT_ID } from '../tree-list.const';
@@ -13,21 +13,19 @@ import { TreeListModelUtils } from './tree-list-model.static';
 
 export class TreeListEditUtils {
   //
-
   public static deleteItem(
     item: TreeListItem,
-    context: TreeListGetItemEditContext = null,
+    context: TreeListItemEditContext = null,
     itemsMap: TreeListItemMap,
     listViewModel: itemID[]
   ): TreeListItem {
     const parent =
       context?.parent || itemsMap.get(item.parentIDs[item.parentCount - 1]);
 
-    const deletedItemIDs = TreeListModelUtils.withEachItemOfTreeDown(
+    const deletedItemIDs = TreeListModelUtils.walkTree(
+      'down',
       item,
-      itm => {
-        itemsMap.delete(itm.id);
-      },
+      itm => itemsMap.delete(itm.id),
       itemsMap
     );
 
@@ -58,7 +56,7 @@ export class TreeListEditUtils {
     target: TreeListItem,
     itemsMap: TreeListItemMap,
     listViewModel: itemID[]
-  ): TreeListGetItemEditContext {
+  ): TreeListItemEditContext {
     if (isNumber(where)) {
       if (where === 0) {
         target = itemsMap.get(BTL_ROOT_ID);
@@ -86,12 +84,17 @@ export class TreeListEditUtils {
         ? itemsMap.get(target.parentIDs[target.parentCount - 1])
         : target;
 
-    const sibling =
-      itemsMap.get(parent.childrenIDs && parent.childrenIDs[0]) ||
-      ({
-        parentIDs: [BTL_ROOT_ID],
-        parentCount: 1,
-      } as TreeListItem);
+    const sibling = parent.childrenCount
+      ? itemsMap.get(parent.childrenIDs[0])
+      : where === 'after'
+      ? ({
+          parentIDs: [BTL_ROOT_ID],
+          parentCount: 1,
+        } as TreeListItem)
+      : ({
+          parentIDs: (parent?.parentIDs || []).concat(parent.id),
+          parentCount: (parent.parentCount || 0) + 1,
+        } as TreeListItem);
 
     const targetIndexInParent = parent.childrenIDs.findIndex(
       id => id === target.id
@@ -101,7 +104,7 @@ export class TreeListEditUtils {
       where === 'after'
         ? targetIndexInParent + 1
         : where === 'lastChildOf'
-        ? parent.childrenCount
+        ? parent.childrenCount || 0
         : 0;
 
     const targetIndexInViewModel = listViewModel.findIndex(
@@ -175,13 +178,6 @@ export class TreeListEditUtils {
     if (indexInView === null) {
       indexInView = listViewModel.findIndex(id => id === item.id) || 0;
     }
-    console.log(
-      'findPossibleParentAmongPrevSiblings',
-      'item',
-      item.name,
-      'indexInView',
-      indexInView
-    );
 
     if (indexInView === 0) {
       return null;
@@ -191,8 +187,6 @@ export class TreeListEditUtils {
     let previtemID = listViewModel[indexInView - counter];
     let prevItem = itemsMap.get(previtemID);
 
-    console.log('findPossibleParentAmongPrevSiblings prevItem 1', prevItem.id);
-
     while (
       indexInView - counter > 0 &&
       prevItem.parentCount > item.parentCount
@@ -200,12 +194,6 @@ export class TreeListEditUtils {
       previtemID = listViewModel[indexInView - ++counter];
       prevItem = itemsMap.get(previtemID);
     }
-
-    console.log(
-      'findPossibleParentAmongPrevSiblings prevItem 2',
-      prevItem.id,
-      prevItem
-    );
 
     return !prevItem || item.parentIDs.includes(previtemID) ? null : prevItem;
   }

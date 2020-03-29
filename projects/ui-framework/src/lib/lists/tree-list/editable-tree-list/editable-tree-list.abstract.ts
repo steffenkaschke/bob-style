@@ -17,7 +17,6 @@ import {
   notFirstChanges,
 } from '../../../services/utils/functional-utils';
 import { BTL_KEYMAP_DEF, BTL_ROOT_ID } from '../tree-list.const';
-import { TreeListModelUtils } from '../services/tree-list-model.static';
 import {
   TreeListOption,
   TreeListKeyMap,
@@ -34,10 +33,9 @@ import {
 } from '../../../icons/icons.enum';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
-import { TreeListViewService } from '../services/tree-list-view.service';
 import { simpleChange } from '../../../services/utils/test-helpers';
 import {
-  TreeListGetItemEditContext,
+  TreeListItemEditContext,
   InsertItemLocation,
   EditableTreeListTranslation,
 } from './editable-tree-list.interface';
@@ -45,6 +43,7 @@ import { EDITABLE_TREELIST_TRANSLATION_DEF } from './editable-tree-list.const';
 import { TreeListEditUtils } from '../services/tree-list-edit.static';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { Styles } from '../../../services/html/html-helpers.interface';
+import { TreeListViewUtils } from '../services/tree-list-view.static';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -52,7 +51,6 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
   constructor(
     protected modelSrvc: TreeListModelService,
     protected cntrlsSrvc: TreeListControlsService,
-    protected viewSrvc: TreeListViewService,
     protected DOM: DOMhelpers,
     protected cd: ChangeDetectorRef,
     protected host: ElementRef
@@ -283,12 +281,12 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
     element: HTMLElement = null,
     force: boolean = null
   ): void {
-    TreeListModelUtils.toggleItemCollapsed(item, this.itemsMap, force, true);
+    TreeListViewUtils.toggleItemCollapsed(item, this.itemsMap, force, true);
     this.cd.detectChanges();
   }
 
   public toggleCollapseAll(force: boolean = null): void {
-    TreeListModelUtils.toggleCollapseAllItemsInMap(this.itemsMap, force, true);
+    TreeListViewUtils.toggleCollapseAllItemsInMap(this.itemsMap, force, true);
   }
 
   public onListClick(event: MouseEvent): void {
@@ -362,6 +360,9 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
 
     if (styles === 'width') {
       this.DOM.setCssProps(hostEl, {
+        '--list-min-width': null,
+      });
+      this.DOM.setCssProps(hostEl, {
         '--list-min-width': listEl.scrollWidth + 'px',
       });
       return;
@@ -379,7 +380,7 @@ export abstract class BaseEditableTreeListElement implements OnChanges {
 
   public deleteItem(
     item: TreeListItem,
-    context: TreeListGetItemEditContext = null
+    context: TreeListItemEditContext = null
   ): void {}
 
   public increaseIndent(

@@ -8,9 +8,9 @@ import {
 } from '../../../services/utils/functional-utils';
 import { TreeListItem, TreeListItemMap, itemID } from '../tree-list.interface';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
-import { TreeListViewService } from './tree-list-view.service';
+import { TreeListViewUtils } from './tree-list-view.static';
 import {
-  TreeListGetItemEditContext,
+  TreeListItemEditContext,
   InsertItemLocation,
 } from '../editable-tree-list/editable-tree-list.interface';
 
@@ -41,10 +41,7 @@ interface TreeListKeydownConfig {
   disabled?: boolean;
   maxHeightItems?: number;
   insertNewItem?: (where: InsertItemLocation, target: TreeListItem) => any;
-  deleteItem?: (
-    item: TreeListItem,
-    context?: TreeListGetItemEditContext
-  ) => any;
+  deleteItem?: (item: TreeListItem, context?: TreeListItemEditContext) => any;
   increaseIndent?: (item: TreeListItem, indexInView: number) => any;
   decreaseIndent?: (item: TreeListItem) => any;
 }
@@ -71,7 +68,7 @@ const TREELIST_EDIT_KEYCONTROL_KEYS = [
 
 @Injectable()
 export class TreeListControlsService {
-  constructor(private DOM: DOMhelpers, private viewSrvc: TreeListViewService) {}
+  constructor(private DOM: DOMhelpers) {}
 
   public onListClick(event: MouseEvent, config: TreeListClickConfig): void {
     const {
@@ -86,7 +83,7 @@ export class TreeListControlsService {
 
     const target = event.target as HTMLElement;
 
-    const { itemElement, item } = this.viewSrvc.getItemFromEl(
+    const { itemElement, item } = TreeListViewUtils.getItemFromElement(
       target,
       itemsMap,
       listViewModel
@@ -144,11 +141,11 @@ export class TreeListControlsService {
 
     const target = event.target as HTMLElement;
 
-    const { itemElement, indexInView, item } = this.viewSrvc.getItemFromEl(
-      target,
-      itemsMap,
-      listViewModel
-    );
+    const {
+      itemElement,
+      indexInView,
+      item,
+    } = TreeListViewUtils.getItemFromElement(target, itemsMap, listViewModel);
 
     if (!item) {
       return;
@@ -162,7 +159,7 @@ export class TreeListControlsService {
     ) {
       const nextItemElement = this.DOM.getNextSibling(itemElement);
       if (nextItemElement) {
-        this.viewSrvc.scrollToItem({
+        TreeListViewUtils.scrollToItem({
           item: itemsMap.get(listViewModel[indexInView + 1]),
           itemElement: nextItemElement,
           maxHeightItems,
@@ -180,7 +177,7 @@ export class TreeListControlsService {
     ) {
       const prevItemElement = this.DOM.getPrevSibling(itemElement);
       if (prevItemElement) {
-        this.viewSrvc.scrollToItem({
+        TreeListViewUtils.scrollToItem({
           item: itemsMap.get(listViewModel[indexInView - 1]),
           itemElement: prevItemElement,
           maxHeightItems,
@@ -239,17 +236,17 @@ export class TreeListControlsService {
 
     const target = event.target as HTMLElement;
 
-    const { itemElement, indexInView, item } = this.viewSrvc.getItemFromEl(
-      target,
-      itemsMap,
-      listViewModel
-    );
+    const {
+      itemElement,
+      indexInView,
+      item,
+    } = TreeListViewUtils.getItemFromElement(target, itemsMap, listViewModel);
 
     if (!item) {
       return;
     }
 
-    const itemInput = this.viewSrvc.findInputInElement(itemElement);
+    const itemInput = TreeListViewUtils.findInputInElement(itemElement);
     const nextItemElement = this.DOM.getNextSibling(itemElement);
     const prevItemElement = this.DOM.getPrevSibling(itemElement);
 
@@ -261,7 +258,7 @@ export class TreeListControlsService {
           itemInput.selectionStart === itemInput.value.length))
     ) {
       event.preventDefault();
-      this.viewSrvc.findAndFocusInput(nextItemElement, 'start');
+      TreeListViewUtils.findAndFocusInput(nextItemElement, 'start');
       return;
     }
 
@@ -272,7 +269,7 @@ export class TreeListControlsService {
         (isKey(event.key, Keys.arrowleft) && itemInput.selectionEnd === 0))
     ) {
       event.preventDefault();
-      this.viewSrvc.findAndFocusInput(
+      TreeListViewUtils.findAndFocusInput(
         prevItemElement,
         isKey(event.key, Keys.arrowup) ? 'start' : 'end'
       );
@@ -322,7 +319,6 @@ export class TreeListControlsService {
               (eventHasCntrlKey(event) && eventHasShiftlKey(event))))
         )
       ) {
-        console.log('will exit');
         return;
       }
 
@@ -331,7 +327,7 @@ export class TreeListControlsService {
       deleteItem(item);
 
       if (prevItemElement) {
-        this.viewSrvc.findAndFocusInput(prevItemElement, 'end');
+        TreeListViewUtils.findAndFocusInput(prevItemElement, 'end');
       }
     }
 

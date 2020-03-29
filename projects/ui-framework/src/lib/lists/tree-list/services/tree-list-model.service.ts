@@ -14,6 +14,7 @@ import {
   stringify,
   simpleArraysEqual,
   joinArrays,
+  arrayIntersection,
 } from '../../../services/utils/functional-utils';
 import {
   BTL_ROOT_ID,
@@ -38,6 +39,13 @@ interface TreeListConverterConfig {
   collapsed?: boolean;
   removeKeys?: string[];
   onlyValue?: boolean;
+}
+
+interface TreeListValueToMapResult {
+  value: itemID[];
+  previousValue: itemID[];
+  isSameValue: boolean;
+  firstSelectedItem: TreeListItem;
 }
 
 @Injectable({
@@ -285,19 +293,24 @@ export class TreeListModelService {
     value: itemID[],
     itemsMap: TreeListItemMap,
     selectType: SelectType
-  ) {
+  ): TreeListValueToMapResult {
     value = selectValueOrFail(value) || [];
     if (selectType === SelectType.single) {
       value = value.slice(0, 1);
     }
 
     if (itemsMap.size < 2) {
-      return { value };
+      return { value } as TreeListValueToMapResult;
     }
 
     const previousValue = Array.from(
       itemsMap.get(BTL_ROOT_ID).selectedIDs || []
     );
+
+    value = value.filter(
+      id => !arrayIntersection(value, itemsMap.get(id).parentIDs).length
+    );
+
     const isSameValue = simpleArraysEqual(previousValue, value);
     let firstSelectedItem: TreeListItem;
 
@@ -334,7 +347,7 @@ export class TreeListModelService {
         TreeListModelUtils.updateItemParentsSelectedCount(item, itemsMap);
 
         if (item.childrenCount) {
-          const deselected = TreeListModelUtils.updateChildrenParentSelected(
+          const deselected = TreeListModelUtils.updateItemChildrenParentSelected(
             item,
             itemsMap
           );
