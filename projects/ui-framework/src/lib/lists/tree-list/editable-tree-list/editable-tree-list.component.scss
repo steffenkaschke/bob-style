@@ -38,6 +38,8 @@ $betl-bg-line-width: 1px;
   display: block;
   max-width: 100%;
   min-width: 0;
+  min-height: 0;
+  flex-grow: 1;
   text-align: left;
 
   border-radius: $border-radius;
@@ -71,12 +73,20 @@ $betl-bg-line-width: 1px;
 }
 
 .betl-item.filler {
+  pointer-events: none;
   flex-grow: 1;
   min-height: var(--list-filler-height, 0);
 
   &:only-child {
     min-height: 20px;
   }
+}
+
+.betl-list-footer {
+  pointer-events: none;
+}
+.betl-list-add-item {
+  pointer-events: all;
 }
 
 // BG lines & identation
