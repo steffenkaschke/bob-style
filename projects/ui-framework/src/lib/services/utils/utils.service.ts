@@ -23,7 +23,10 @@ export class UtilsService {
   winKey$: Observable<KeyboardEvent>;
 
   constructor(private windowRef: WindowRef) {
-    this.winResize$ = fromEvent(this.windowRef.nativeWindow, 'resize').pipe(
+    this.winResize$ = fromEvent(
+      this.windowRef.nativeWindow as Window,
+      'resize'
+    ).pipe(
       throttleTime(500, undefined, {
         leading: true,
         trailing: true,
@@ -37,7 +40,10 @@ export class UtilsService {
       share()
     );
 
-    this.winScroll$ = fromEvent(this.windowRef.nativeWindow, 'scroll').pipe(
+    this.winScroll$ = fromEvent(
+      this.windowRef.nativeWindow as Window,
+      'scroll'
+    ).pipe(
       map((e: Event) => ({
         scrollY: (
           (e.currentTarget as any) || (document.scrollingElement as any)
@@ -49,13 +55,15 @@ export class UtilsService {
       share()
     );
 
-    this.winClick$ = fromEvent(this.windowRef.nativeWindow, 'click').pipe(
-      share()
-    ) as Observable<MouseEvent>;
+    this.winClick$ = fromEvent(
+      this.windowRef.nativeWindow as Window,
+      'click'
+    ).pipe(share()) as Observable<MouseEvent>;
 
-    this.winKey$ = fromEvent(this.windowRef.nativeWindow, 'keydown').pipe(
-      share()
-    ) as Observable<KeyboardEvent>;
+    this.winKey$ = fromEvent(
+      this.windowRef.nativeWindow as Window,
+      'keydown'
+    ).pipe(share()) as Observable<KeyboardEvent>;
   }
 
   public getResizeEvent(): Observable<any> {
@@ -80,7 +88,7 @@ export class UtilsService {
       !('IntersectionObserverEntry' in this.windowRef.nativeWindow) ||
       !(
         'intersectionRatio' in
-        this.windowRef.nativeWindow.IntersectionObserverEntry.prototype
+        (this.windowRef.nativeWindow as any).IntersectionObserverEntry.prototype
       )
     ) {
       return merge(this.winScroll$, this.winResize$).pipe(
@@ -95,7 +103,7 @@ export class UtilsService {
     }
 
     return new Observable((observer: Observer<IntersectionObserverEntry[]>) => {
-      const intersectionObserver = new IntersectionObserver(entries => {
+      const intersectionObserver = new IntersectionObserver((entries) => {
         observer.next(entries);
       });
       intersectionObserver.observe(element);

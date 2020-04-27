@@ -23,6 +23,7 @@ export interface MediaEvent {
   isMobileBrowser: boolean;
   mobileOS: MobileOS;
   isMobile: boolean;
+  width: number;
 }
 
 export enum MobileOS {
@@ -135,6 +136,7 @@ export class MobileService {
   public getMediaData(): MediaEvent {
     const matchMobile = this.matchBreakpoint(mobileBreakpoint, WidthMode.max);
     return {
+      width: this.windowRef.nativeWindow.innerWidth,
       matchMobile,
       matchDesktop: this.matchBreakpoint(mobileBreakpoint + 1, WidthMode.min),
       isTouchDevice: this.isTouchDevice,

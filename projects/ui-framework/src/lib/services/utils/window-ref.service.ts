@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 
-function _window(): any {
+export interface WindowLike extends Partial<Window> {
+  [key: string]: any;
+}
+
+function _window(): Window {
   // return the global native browser window object
   return window;
 }
@@ -9,7 +13,7 @@ function _window(): any {
   providedIn: 'root',
 })
 export class WindowRef {
-  get nativeWindow(): any {
+  get nativeWindow(): WindowLike {
     return _window();
   }
 }
