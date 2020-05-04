@@ -29,32 +29,25 @@ const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 const listOpts = MultiListAndChipsOptionsMock;
 const avatarListOpts = MultiListAndAvatarChipsOptionsMock;
 
-const template = `
-  <b-multi-list-and-chips
+const template = `<b-multi-list-and-chips
         [options]="options || listOpts"
         [listLabel]="listLabel"
         [chipsLabel]="chipsLabel"
         [showSingleGroupHeader]="showSingleGroupHeader"
+        [startWithGroupsCollapsed]="startWithGroupsCollapsed"
         [emptyState]="emptyStateConfig"
         (selectChange)="onSelectChange($event)">
-  </b-multi-list-and-chips>
-
-  <br><br>
-
-        <b-radio-button [radioConfig]="[
-          {id: 1, label: 'Hobbies'},
-          {id: 2, label: 'People'}
-        ]"
-        [value]="{id: 1}"
-        (radioChange)="options = $event === 1 ? listOpts : avatarListOpts">
-      </b-radio-button>
-`;
+  </b-multi-list-and-chips>`;
 
 const note = `
   ## Multi List And Chips
 
   #### Module
   *MultiListAndChipsModule*
+
+  ~~~
+  ${template}
+  ~~~
 
   #### Properties
   Name | Type | Description | Default value
@@ -63,13 +56,10 @@ const note = `
   [listLabel] | string | label text for the Multi List component | &nbsp;
   [chipsLabel] | string | label text for the Chips List component | &nbsp;
   [showSingleGroupHeader] | boolean | displays single group with group header | **false**
+  [startWithGroupsCollapsed] | boolean |  if true, will start with groups closed | true
   [emptyState] | EmptyStateConfig | config for the EmptyStateComponent to\
    be displayed when no options are selected | &nbsp;
   (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits on list change | &nbsp;
-
-  ~~~
-  ${template}
-  ~~~
 
   #### Example of SelectGroupOption[]
 \`\`\`
@@ -95,6 +85,15 @@ const storyTemplate = `
 <b-story-book-layout [title]="'Multi List And Chips'" style=" background: rgb(247,247,247);">
   <div style="max-width:900px;">
     ${template}
+
+    <br><br>
+    <b-radio-button [radioConfig]="[
+        {id: 1, label: 'Hobbies'},
+        {id: 2, label: 'People'}
+      ]"
+      [value]="{id: 1}"
+      (radioChange)="options = $event === 1 ? listOpts : avatarListOpts">
+    </b-radio-button>
   </div>
 </b-story-book-layout>
 `;
@@ -105,6 +104,11 @@ const toAdd = () => ({
     listLabel: text('chipsLabel', 'Select fields', 'Props'),
     chipsLabel: text('listLabel', 'Selected fields', 'Props'),
     showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
+    startWithGroupsCollapsed: boolean(
+      'startWithGroupsCollapsed',
+      true,
+      'Props'
+    ),
     listOpts: object('listOpts', listOpts, 'Data'),
     avatarListOpts: object('avatarListOpts', avatarListOpts, 'Data'),
     emptyStateConfig: object(
