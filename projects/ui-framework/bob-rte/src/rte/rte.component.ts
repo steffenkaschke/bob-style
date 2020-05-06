@@ -22,11 +22,11 @@ import {
   eventHasCntrlKey,
   DOMhelpers,
   EMOJI_DATA,
+  asArray,
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
-import { RTE_MAXHEIGHT_DEF } from './rte.const';
 
 @Component({
   selector: 'b-rich-text-editor',
@@ -49,23 +49,17 @@ import { RTE_MAXHEIGHT_DEF } from './rte.const';
 export class RichTextEditorComponent extends RTEbaseElement
   implements OnInit, OnDestroy {
   constructor(
-    public cd: ChangeDetectorRef,
-    public placeholdersConverter: PlaceholdersConverterService,
-    public parserService: HtmlParserHelpers,
-    private DOM: DOMhelpers,
-    private host: ElementRef
+    protected cd: ChangeDetectorRef,
+    protected placeholdersConverter: PlaceholdersConverterService,
+    protected parserService: HtmlParserHelpers,
+    protected DOM: DOMhelpers,
+    protected host: ElementRef
   ) {
-    super(cd, placeholdersConverter, parserService);
-
-    this.options.scrollableContainer = '.bfe-wrap#' + this.id;
+    super(cd, placeholdersConverter, parserService, DOM, host);
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     super.ngOnInit();
-
-    this.DOM.setCssProps(this.host.nativeElement, {
-      '--max-height': Math.max(150, this.maxHeight || RTE_MAXHEIGHT_DEF) + 'px',
-    });
 
     this.options.events = {
       //
@@ -102,10 +96,11 @@ export class RichTextEditorComponent extends RTEbaseElement
         );
 
         // init emojis
-        this.editor.opts.emoticonsSet.forEach((set, index) => {
-          set.code = EMOJI_DATA[index].code;
-        });
+
         if (this.editor.opts.emoticonsSet[6]['id'] === 'symbols') {
+          this.editor.opts.emoticonsSet.forEach((set, index) => {
+            set.code = EMOJI_DATA[index].code;
+          });
           this.editor.opts.emoticonsSet.splice(6, 1);
         }
 
@@ -301,10 +296,26 @@ export class RichTextEditorComponent extends RTEbaseElement
           return false;
         }
       },
+
+      // link popup mods
+      'popups.show.link.insert': () => {
+        const inputs = asArray(
+          this.getEditorElement(
+            '.fr-layer[class*="fr-link-insert"] input[type="text"]'
+          )
+        );
+        inputs.forEach((inputEl: HTMLInputElement) => {
+          inputEl.placeholder = inputEl.nextSibling.textContent;
+          inputEl.autocomplete = 'off';
+          inputEl.removeAttribute('id');
+          inputEl.blur();
+        });
+        inputs[0].focus();
+      },
     };
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     if (this.tribute) {
       this.tribute.detach(this.getEditorTextbox());
     }
