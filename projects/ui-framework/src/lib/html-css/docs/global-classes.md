@@ -140,6 +140,18 @@
       </td>
     </tr>
 
+    <tr>
+      <td>bg-grey-100
+      </td>
+      <td>Common background colors
+      </td>
+      <td>
+        <pre><code>&lt;div class="bg-grey-100"&gt;
+  Something
+&lt;/div&gt;</code></pre>
+      </td>
+    </tr>
+
   </tbody>
 
 

@@ -28,6 +28,7 @@ export const mockColumnsDefs: ColumnDef[] = [
   },
   {
     headerName: 'Display Name',
+    headerClass: 'test-class',
     field: 'fullName',
     sort: SortDirections.Asc,
     flex: 2,
@@ -75,62 +76,140 @@ export const treeColumnDefsMock: ColumnDef[] = [
 ];
 export const treeRowDataMock = [
   {
-    orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers']},
+    orgHierarchy: {
+      data: { imageSource: mockAvatar() },
+      hierarchy: ['Erica Rogers'],
+    },
     jobTitle: 'CEO',
     employmentType: 'Permanent',
   },
   {
-    orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett']},
+    orgHierarchy: {
+      data: { imageSource: mockAvatar() },
+      hierarchy: ['Erica Rogers', 'Malcolm Barrett'],
+    },
     jobTitle: 'Exec. Vice President',
     employmentType: 'Permanent',
   },
   {
-    orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker']},
+    orgHierarchy: {
+      data: { imageSource: mockAvatar() },
+      hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker'],
+    },
     jobTitle: 'Director of Operations',
     employmentType: 'Permanent',
   },
   {
-    orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker', 'Brittany Hanson']},
+    orgHierarchy: {
+      data: { imageSource: mockAvatar() },
+      hierarchy: [
+        'Erica Rogers',
+        'Malcolm Barrett',
+        'Esther Baker',
+        'Brittany Hanson',
+      ],
+    },
     jobTitle: 'Fleet Coordinator',
     employmentType: 'Permanent',
   },
   {
-    orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker', 'Brittany Hanson', 'Leah Flowers']},
+    orgHierarchy: {
+      data: { imageSource: mockAvatar() },
+      hierarchy: [
+        'Erica Rogers',
+        'Malcolm Barrett',
+        'Esther Baker',
+        'Brittany Hanson',
+        'Leah Flowers',
+      ],
+    },
     jobTitle: 'Parts Technician',
     employmentType: 'Contract',
   },
   {
-    orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker', 'Brittany Hanson', 'Tammy Sutton']},
+    orgHierarchy: {
+      data: { imageSource: mockAvatar() },
+      hierarchy: [
+        'Erica Rogers',
+        'Malcolm Barrett',
+        'Esther Baker',
+        'Brittany Hanson',
+        'Tammy Sutton',
+      ],
+    },
     jobTitle: 'Service Technician',
     employmentType: 'Contract',
   },
   {
-    orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Esther Baker', 'Derek Paul']},
+    orgHierarchy: {
+      data: { imageSource: mockAvatar() },
+      hierarchy: [
+        'Erica Rogers',
+        'Malcolm Barrett',
+        'Esther Baker',
+        'Derek Paul',
+      ],
+    },
     jobTitle: 'Inventory Control',
     employmentType: 'Permanent',
   },
   {
-    orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland']},
+    orgHierarchy: {
+      data: { imageSource: mockAvatar() },
+      hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland'],
+    },
     jobTitle: 'VP Sales',
     employmentType: 'Permanent',
   },
   {
-    orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland', 'Morris Hanson']},
+    orgHierarchy: {
+      data: { imageSource: mockAvatar() },
+      hierarchy: [
+        'Erica Rogers',
+        'Malcolm Barrett',
+        'Francis Strickland',
+        'Morris Hanson',
+      ],
+    },
     jobTitle: 'Sales Manager',
     employmentType: 'Permanent',
   },
   {
-    orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland', 'Todd Tyler']},
+    orgHierarchy: {
+      data: { imageSource: mockAvatar() },
+      hierarchy: [
+        'Erica Rogers',
+        'Malcolm Barrett',
+        'Francis Strickland',
+        'Todd Tyler',
+      ],
+    },
     jobTitle: 'Sales Executive',
     employmentType: 'Contract',
   },
   {
-    orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland', 'Bennie Wise']},
+    orgHierarchy: {
+      data: { imageSource: mockAvatar() },
+      hierarchy: [
+        'Erica Rogers',
+        'Malcolm Barrett',
+        'Francis Strickland',
+        'Bennie Wise',
+      ],
+    },
     jobTitle: 'Sales Executive',
     employmentType: 'Contract',
   },
   {
-    orgHierarchy: { data: {imageSource: mockAvatar()}, hierarchy: ['Erica Rogers', 'Malcolm Barrett', 'Francis Strickland', 'Joel Cooper']},
+    orgHierarchy: {
+      data: { imageSource: mockAvatar() },
+      hierarchy: [
+        'Erica Rogers',
+        'Malcolm Barrett',
+        'Francis Strickland',
+        'Joel Cooper',
+      ],
+    },
     jobTitle: 'Sales Executive',
     employmentType: 'Permanent',
   },
@@ -140,11 +219,11 @@ const gridActions: GridActions = {
   menuItems: [
     {
       label: 'menu item 1',
-      action: $event => console.log('menu item 1 clicked', $event),
+      action: ($event) => console.log('menu item 1 clicked', $event),
     },
     {
       label: 'menu item 2',
-      action: $event => console.log('menu item 2 clicked', $event),
+      action: ($event) => console.log('menu item 2 clicked', $event),
     },
   ],
 };
@@ -185,7 +264,7 @@ function generateTree() {
 }
 
 const tree = generateTree();
-export const mockRowDataTree = makeArray(200).map(i => ({
+export const mockRowDataTree = makeArray(200).map((i) => ({
   fullName: tree[i],
   id: simpleUID(),
   email: mockText(1).toLowerCase() + '@' + mockText(1).toLowerCase() + '.com',

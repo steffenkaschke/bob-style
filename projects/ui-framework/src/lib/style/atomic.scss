@@ -44,6 +44,12 @@ $acss-dirs: top right bottom left;
   }
 }
 
+// Colors
+
+.bg-grey-100 {
+  background-color: $grey-100;
+}
+
 // Misc
 
 .rounded {
