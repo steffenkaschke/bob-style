@@ -25,6 +25,7 @@ export interface ColumnDef {
   flex?: number;
   colSpan?: Function;
   autoHeight?: boolean;
+  [key: string]: any;
 }
 
 export interface RowClickedEvent {
