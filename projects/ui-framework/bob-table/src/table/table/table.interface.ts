@@ -3,6 +3,7 @@ import { IconColor, Icons } from 'bob-style';
 
 export interface ColumnDef {
   headerName: string;
+  headerClass?: string;
   field: string;
   sortable?: boolean;
   resizable?: boolean;
@@ -23,6 +24,8 @@ export interface ColumnDef {
   getQuickFilterText?: Function;
   flex?: number;
   colSpan?: Function;
+  autoHeight?: boolean;
+  [key: string]: any;
 }
 
 export interface RowClickedEvent {
