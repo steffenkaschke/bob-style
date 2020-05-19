@@ -77,7 +77,7 @@ describe('DateRangePickerComponent', () => {
         fixture.detectChanges();
 
         pickers = component.pickers.toArray();
-        inputElems = component.inputs.toArray().map(i => i.nativeElement);
+        inputElems = component.inputs.toArray().map((i) => i.nativeElement);
         iconElems = elementsFromFixture(fixture, '.bfe-suffix .b-icon');
         labelElems = elementsFromFixture(fixture, '.bfe-label');
         messageElem = elementFromFixture(fixture, '[b-input-message]');
