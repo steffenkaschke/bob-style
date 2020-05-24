@@ -4,7 +4,8 @@ import {
   TestBed,
   fakeAsync,
   tick,
-  flush
+  flush,
+  discardPeriodicTasks,
 } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA, Component, Input } from '@angular/core';
@@ -42,7 +43,7 @@ import { UtilsService } from '../../services/utils/utils.service';
       </div>
     </div>
   `,
-  providers: []
+  providers: [],
 })
 class TestComponent {
   constructor() {}
@@ -81,10 +82,10 @@ describe('TruncateTooltipComponent', () => {
         BrowserAnimationsModule,
         UtilsModule,
         MatTooltipModule,
-        TruncateTooltipModule
+        TruncateTooltipModule,
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [DOMhelpers, UtilsService]
+      providers: [DOMhelpers, UtilsService],
     })
       .compileComponents()
       .then(() => {
@@ -110,17 +111,21 @@ describe('TruncateTooltipComponent', () => {
         bttComp2.trustCssVars = false;
         bttComp2.delay = 0;
         bttComp2.lazyness = 0;
-
-        setTimeout(() => {
-          bttComp1textContainer = fixture.debugElement.query(
-            By.css('.test1 .btt')
-          ).nativeElement;
-          bttComp2textContainer = fixture.debugElement.query(
-            By.css('b-truncate-tooltip:not(.test1) .btt')
-          ).nativeElement;
-          fixture.detectChanges();
-        }, 0);
       });
+  }));
+
+  beforeEach(() => {
+    bttComp1textContainer = fixture.debugElement.query(By.css('.test1 .btt'))
+      .nativeElement;
+    bttComp2textContainer = fixture.debugElement.query(
+      By.css('b-truncate-tooltip:not(.test1) .btt')
+    ).nativeElement;
+    fixture.detectChanges();
+  });
+
+  afterEach(fakeAsync(() => {
+    flush();
+    discardPeriodicTasks();
   }));
 
   describe('Text truncation (1 line)', () => {
@@ -169,6 +174,7 @@ describe('TruncateTooltipComponent', () => {
   });
 
   describe('Structural directive', () => {
+    // tslint:disable-next-line: max-line-length
     it('should wrap element in b-truncate-tooltip component and display a single truncated line of text', fakeAsync(() => {
       const textContainerStyle = getComputedStyle(bttComp2textContainer);
       const testElement = bttComp2textContainer.querySelector('.test2');
