@@ -1,4 +1,9 @@
-import { ComponentFixture } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  flush,
+  flushMicrotasks,
+  discardPeriodicTasks,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SimpleChange, Type, SimpleChanges } from '@angular/core';
 import {
@@ -26,7 +31,7 @@ export const emptyFilestackImg = emptyImgWithText('filestack?align=faces');
 export const emptyImgTestString = '6kgAAAABJRU5ErkJggg';
 
 export const eventEmitterMock = {
-  emit: value => value,
+  emit: (value) => value,
   observers: [1, 2, 3],
   subscribe: () => {},
   complete: () => {},
@@ -47,7 +52,7 @@ export const elementsFromFixture = <T = HTMLElement>(
 ): T[] => {
   const debugElems = fixtr.debugElement.queryAll(By.css(selector));
 
-  return debugElems.map(de => {
+  return debugElems.map((de) => {
     return de ? de.nativeElement : null;
   });
 };
@@ -70,7 +75,7 @@ export const simpleChange = (
   firstChange = false
 ): SimpleChanges => {
   const simpleChanges = {};
-  Object.keys(changes).forEach(key => {
+  Object.keys(changes).forEach((key) => {
     simpleChanges[key] = new SimpleChange(undefined, changes[key], firstChange);
   });
   return simpleChanges;
@@ -144,4 +149,10 @@ export const getCssVariable = (elem: HTMLElement, variable: string): string => {
   return getComputedStyle(elem).getPropertyValue(
     '--' + variable.replace('--', '')
   );
+};
+
+export const fakeAsyncFlush = () => {
+  flush();
+  flushMicrotasks();
+  discardPeriodicTasks();
 };
