@@ -9,7 +9,7 @@ import {
   HostBinding,
   NgZone,
 } from '@angular/core';
-import { Icons, IconColor } from '../../icons/icons.enum';
+import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { SideMenuOption } from './side-menu.interface';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -40,6 +40,7 @@ export class SideMenuComponent implements OnChanges {
 
   readonly icons = Icons;
   readonly iconColor = IconColor;
+  readonly iconSize = IconSize;
   readonly buttonType = ButtonType;
   readonly avatarSize = AvatarSize;
 
@@ -150,9 +151,5 @@ export class SideMenuComponent implements OnChanges {
     return this.DOM.getElementIndex(
       this.DOM.getClosest(element, '.menu-option')
     );
-  }
-
-  public getIconData(icon: Icons): string {
-    return icon.replace('b-icon-', '');
   }
 }
