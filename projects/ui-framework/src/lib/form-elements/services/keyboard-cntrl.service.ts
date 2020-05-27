@@ -5,6 +5,18 @@ import {
   eventHasCntrlKey,
 } from '../../services/utils/functional-utils';
 
+export interface InputCursorState {
+  value: string;
+  valueLength: number;
+  selectionStart: number;
+  selectionEnd: number;
+  nextChar: string;
+  prevChar: string;
+  selection: string;
+  selectionLength: number;
+  positionMod: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -45,5 +57,32 @@ export class FormElementKeyboardCntrlService {
     inputEl.setSelectionRange(cursorPos + 1, cursorPos + 1);
 
     return inputEl.value;
+  }
+
+  public getInputCursorState(inputEl: HTMLInputElement): InputCursorState {
+    const value = inputEl.value,
+      valueLength = inputEl.value.length,
+      selectionStart = inputEl.selectionStart,
+      selectionEnd = inputEl.selectionEnd;
+
+    const nextChar = value[selectionEnd],
+      prevChar = value[selectionStart - 1],
+      selection = value.slice(selectionStart, selectionEnd);
+
+    return {
+      value,
+      valueLength,
+      selectionStart,
+      selectionEnd,
+      nextChar,
+      prevChar,
+      selection,
+      selectionLength: selection.length,
+      positionMod: 0,
+    };
+  }
+
+  public setCursorAtIndex(inputEl: HTMLInputElement, index?: number): void {
+    inputEl.selectionStart = inputEl.selectionEnd = Math.max(index || 0, 0);
   }
 }
