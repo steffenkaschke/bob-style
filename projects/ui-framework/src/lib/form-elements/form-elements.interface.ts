@@ -9,3 +9,5 @@ export interface TransmitOptions {
   eventObjOmitEventType?: boolean;
   updateValue?: boolean;
 }
+
+export type ForceElementValue = any | ((v: any) => any);
