@@ -1,17 +1,141 @@
-import { MultiSearchGroupOption } from './multi-search.interface';
-import { mockAnimals, mockHobbies } from '../../mock.const';
-import { optionsMock } from '../../lists/single-list/single-list.mock';
-import { HListMockSingleGroup } from '../../lists/tree-list/tree-list.mock';
+import {
+  MultiSearchGroupOption,
+  MultiSearchOption,
+} from './multi-search.interface';
+import {
+  mockAnimals,
+  mockHobbies,
+  mockThings,
+  mockDepartments,
+  adorableAvatar,
+  mockAvatar,
+  mockNames,
+  mockBadJobs,
+} from '../../mock.const';
+import { Icons } from '../../icons/icons.enum';
+import {
+  randomFromArray,
+  makeArray,
+} from '../../services/utils/functional-utils';
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
+
+const iconsAnimals = [
+  Icons.twitter,
+  Icons.notification,
+  Icons.at,
+  Icons.harmonise,
+  Icons.infinite,
+  Icons.location,
+  Icons.send,
+  Icons.share,
+  Icons.tag,
+  Icons.view_icon,
+  Icons.twitter,
+  Icons.notification,
+  Icons.at,
+  Icons.harmonise,
+  Icons.infinite,
+];
+
+const iconsThings = [
+  Icons.assignment,
+  Icons.at,
+  Icons.attachment,
+  Icons.attendance_link,
+  Icons.benefits_link,
+  Icons.benefits_alt,
+  Icons.cake,
+  Icons.calendar,
+  Icons.delete,
+  Icons.doc_description,
+  Icons.edit_field_pencil,
+  Icons.email,
+  Icons.folder,
+  Icons.harmonise,
+  Icons.home,
+  Icons.infinite,
+  Icons.location,
+  Icons.lock,
+  Icons.megaphone,
+  Icons.notification,
+  Icons.performance_link,
+  Icons.phone_link,
+  Icons.pin,
+  Icons.print,
+  Icons.save,
+  Icons.send,
+  Icons.settings,
+  Icons.tag,
+  Icons.timeline,
+];
+
+const hobbies = mockHobbies().filter((h) => h.split(' ').length < 3);
 
 export const mockSearchData: MultiSearchGroupOption[] = [
   {
+    groupName: 'People',
+    key: 'people',
+    icon: Icons.department_icon,
+    options: mockNames(15).map((name: string) => ({
+      value: name,
+      id: name,
+      prefixComponent: {
+        component: AvatarImageComponent,
+        attributes: {
+          imageSource: mockAvatar(),
+          badge: randomFromArray([
+            null,
+            null,
+            null,
+            AvatarBadge.approved,
+            AvatarBadge.pending,
+            AvatarBadge.rejected,
+            AvatarBadge.error,
+          ]),
+        },
+      },
+    })),
+    optionClickHandler: (option: MultiSearchOption) => {
+      console.log(`Handler for: ${option.value}`);
+    },
+  },
+  {
     groupName: 'Animals',
     key: 'animals',
-    options: mockAnimals(10).map((animal: string) => ({
+    icon: Icons.twitter,
+    options: mockAnimals(15).map((animal: string, index: number) => ({
       id: animal,
       value: animal,
+      prefixComponent: {
+        component: AvatarImageComponent,
+        attributes: {
+          imageSource: adorableAvatar(),
+          icon: iconsAnimals[index],
+        },
+      },
     })),
-    clickHandler: (option: MultiSearchGroupOption) => {
+    optionClickHandler: (option: MultiSearchOption) => {
+      console.log(`Handler for: ${option.value}`);
+    },
+  },
+  {
+    keyMap: {
+      key: 'serverId',
+      id: 'serverId',
+      groupName: 'name',
+      options: 'children',
+      value: 'name',
+    },
+    name: 'Things',
+    serverId: 'things',
+    icon: Icons.attachment,
+    children: mockThings(15).map((thing: string, index: number) => ({
+      serverId: thing,
+      name: thing,
+      icon: iconsThings[index],
+    })),
+    optionClickHandler: (option: MultiSearchOption) => {
       console.log(`Handler for: ${option.value}`);
     },
   },
@@ -23,20 +147,15 @@ export const mockSearchData: MultiSearchGroupOption[] = [
       value: 'name',
     },
     name: 'Hobbies',
-    children: mockHobbies(10).map((hobby: string) => ({
-      id: hobby,
-      name: hobby,
+    id: 'hobbies',
+
+    children: makeArray(15).map((_, index: number) => ({
+      id: hobbies[index],
+      name: hobbies[index],
+      label: hobbies[hobbies.length - index],
     })),
-    clickHandler: (option: MultiSearchGroupOption) => {
+    optionClickHandler: (option: MultiSearchOption) => {
       console.log(`Handler for: ${option.name}`);
-    },
-  },
-  {
-    groupName: 'People',
-    key: 'people',
-    options: [...optionsMock[0].options, ...optionsMock[1].options],
-    clickHandler: (option: MultiSearchGroupOption) => {
-      console.log(`Handler for: ${option.value}`);
     },
   },
   {
@@ -46,8 +165,14 @@ export const mockSearchData: MultiSearchGroupOption[] = [
       options: 'children',
       value: 'name',
     },
-    ...HListMockSingleGroup[0],
-    clickHandler: (option: MultiSearchGroupOption) => {
+    id: 'Jobs',
+    name: 'Jobs',
+    children: mockBadJobs(10).map((job: string) => ({
+      id: job,
+      name: job,
+      label: mockDepartments(1),
+    })),
+    optionClickHandler: (option: MultiSearchOption) => {
       console.log(`Handler for: ${option.name}`);
     },
   },
