@@ -24,9 +24,10 @@ import {
 import { cloneDeep, get, has, map } from 'lodash';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { AgGridWrapper } from './ag-grid-wrapper';
-import { RowSelection, TableType } from './table.enum';
+import { ColumnOrderStrategy, RowSelection, TableType } from './table.enum';
 import {
   ColumnDef,
+  ColumnDefConfig,
   ColumnsOrderChangedEvent,
   RowClickedEvent,
   SortChangedEvent,
@@ -66,6 +67,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   @Input() rowData: any[] = [];
   @Input() columnDefs: ColumnDef[] = [];
+  @Input() columnDefConfig: ColumnDefConfig = { columnDef: [], orderStrategy: ColumnOrderStrategy.Preserve };
   @Input() rowSelection: RowSelection = null;
   @Input() maxHeight = 450;
   @Input() suppressColumnVirtualisation = true;
@@ -140,7 +142,18 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (has(changes, 'columnDefs')) {
+    if (has(changes, 'columnDefConfig')) {
+      const columnDefs = (changes.columnDefConfig.currentValue as ColumnDefConfig).orderStrategy === ColumnOrderStrategy.AddToLast
+        ? this.tableUtilsService.getOrderedFields(this.gridColumnDefs, changes.columnDefConfig.currentValue.columnDef, )
+        : changes.columnDefConfig.currentValue.columnDef;
+
+      this.gridColumnDefs = this.tableUtilsService.getGridColumnDef(
+        columnDefs,
+        this.rowSelection
+      );
+    }
+
+    if (has(changes, 'columnDefs') && !this.columnDefConfig) {
       this.gridColumnDefs = this.tableUtilsService.getGridColumnDef(
         this.columnDefs,
         this.rowSelection

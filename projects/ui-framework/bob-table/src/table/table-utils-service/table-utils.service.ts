@@ -83,4 +83,16 @@ export class TableUtilsService {
       })
       : null;
   }
+
+  private getColumnsField(columnDef: ColumnDef[]): string[] {
+    return columnDef.map((colDef) => colDef.field);
+  }
+
+  getOrderedFields(existingColumns: ColumnDef[], newColumns: ColumnDef[]): ColumnDef[] {
+    const newColsFiels = this.getColumnsField(newColumns);
+    const existingColsFiels = this.getColumnsField(existingColumns);
+    const fieldsToKeep = existingColumns.filter(column => newColsFiels.includes(column.field));
+    const fieldsToAdd = newColumns.filter(column => !existingColsFiels.includes(column.field));
+    return [...fieldsToKeep, ...fieldsToAdd];
+  }
 }
