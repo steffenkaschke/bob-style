@@ -20,6 +20,6 @@ export enum PinDirection {
 }
 
 export enum ColumnOrderStrategy {
-  AddToLast = 'addToLast',
-  Preserve = 'preserve',
+  AppendNew = 'appendNew',
+  Reorder = 'reorder',
 }

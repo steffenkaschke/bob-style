@@ -67,7 +67,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   @Input() rowData: any[] = [];
   @Input() columnDefs: ColumnDef[] = [];
-  @Input() columnDefConfig: ColumnDefConfig = { columnDef: [], orderStrategy: ColumnOrderStrategy.Preserve };
+  @Input() columnDefConfig: ColumnDefConfig;
   @Input() rowSelection: RowSelection = null;
   @Input() maxHeight = 450;
   @Input() suppressColumnVirtualisation = true;
@@ -143,9 +143,16 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (has(changes, 'columnDefConfig')) {
-      const columnDefs = (changes.columnDefConfig.currentValue as ColumnDefConfig).orderStrategy === ColumnOrderStrategy.AddToLast
-        ? this.tableUtilsService.getOrderedFields(this.gridColumnDefs, changes.columnDefConfig.currentValue.columnDef, )
-        : changes.columnDefConfig.currentValue.columnDef;
+      this.columnDefConfig = changes.columnDefConfig.currentValue;
+      const existingColumns = changes.columnDefConfig.previousValue
+        ? (changes.columnDefConfig.previousValue as ColumnDefConfig).columnDef
+        : this.columnDefs;
+      const columnDefs = this.columnDefConfig.orderStrategy === ColumnOrderStrategy.AppendNew
+        ? this.tableUtilsService.getOrderedFields(
+          existingColumns,
+          this.columnDefConfig.columnDef,
+          this.columns)
+        : this.columnDefConfig.columnDef;
 
       this.gridColumnDefs = this.tableUtilsService.getGridColumnDef(
         columnDefs,
@@ -153,9 +160,19 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       );
     }
 
-    if (has(changes, 'columnDefs') && !this.columnDefConfig) {
+    if (has(changes, 'columnDefs')) {
+      this.columnDefConfig = {
+        columnDef: changes.columnDefs.currentValue,
+        orderStrategy: ColumnOrderStrategy.AppendNew,
+      };
+      const existingColumns = changes.columnDefs.previousValue ? changes.columnDefs.previousValue : this.columnDefs;
+      const columnDefs = this.tableUtilsService.getOrderedFields(
+        existingColumns,
+        this.columnDefConfig.columnDef,
+        this.columns
+      );
       this.gridColumnDefs = this.tableUtilsService.getGridColumnDef(
-        this.columnDefs,
+        columnDefs,
         this.rowSelection
       );
     }

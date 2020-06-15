@@ -21,7 +21,7 @@ export class TestTableComponent implements OnInit {
   rowData: any;
   selectOptions: SelectGroupOption[];
   selectValues: string[];
-  columnDefConfig: ColumnDefConfig = { columnDef: [], orderStrategy: ColumnOrderStrategy.Preserve };
+  columnDefConfig: ColumnDefConfig;
 
   constructor(
     private testTableService: TestTableService
@@ -44,7 +44,7 @@ export class TestTableComponent implements OnInit {
     this.selectValues = this.fields;
     this.columnDefConfig = {
       columnDef: this.testTableService.getColumnDef(this.fields),
-      orderStrategy: ColumnOrderStrategy.Preserve,
+      orderStrategy: ColumnOrderStrategy.AppendNew,
     };
     this.updateTable();
   }
@@ -53,7 +53,7 @@ export class TestTableComponent implements OnInit {
     this.fields = this.defaultFields;
     this.columnDefConfig = {
       columnDef: this.testTableService.getColumnDef(this.fields),
-      orderStrategy: ColumnOrderStrategy.Preserve,
+      orderStrategy: ColumnOrderStrategy.Reorder,
     };
     this.updateTable();
   }
@@ -62,7 +62,7 @@ export class TestTableComponent implements OnInit {
     this.fields = listChange.getSelectedIds() as string[];
     this.columnDefConfig = {
       columnDef: this.testTableService.getColumnDef(this.fields),
-      orderStrategy: ColumnOrderStrategy.AddToLast,
+      orderStrategy: ColumnOrderStrategy.AppendNew,
     };
     this.updateTable();
   }

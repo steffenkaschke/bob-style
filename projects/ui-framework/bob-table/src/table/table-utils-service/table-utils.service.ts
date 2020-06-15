@@ -5,7 +5,7 @@ import { SELECTION_COLUMN_DEF } from '../table/table.consts';
 import { GridOptions } from 'ag-grid-community';
 import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
 import { PinDirection, RowSelection } from '../table/table.enum';
-import { IconSize } from 'bob-style';
+import { IconSize, joinArrays } from 'bob-style';
 
 const ICON_CELL_STYLE = { 'padding': '0 15px 0 43px' };
 
@@ -84,15 +84,23 @@ export class TableUtilsService {
       : null;
   }
 
-  private getColumnsField(columnDef: ColumnDef[]): string[] {
+  private getColumnsField(columnDef: ColumnDef[] = []): string[] {
     return columnDef.map((colDef) => colDef.field);
   }
 
-  getOrderedFields(existingColumns: ColumnDef[], newColumns: ColumnDef[]): ColumnDef[] {
-    const newColsFiels = this.getColumnsField(newColumns);
-    const existingColsFiels = this.getColumnsField(existingColumns);
-    const fieldsToKeep = existingColumns.filter(column => newColsFiels.includes(column.field));
-    const fieldsToAdd = newColumns.filter(column => !existingColsFiels.includes(column.field));
-    return [...fieldsToKeep, ...fieldsToAdd];
+  getOrderedFields(
+    existingColumns: ColumnDef[],
+    newColumns: ColumnDef[],
+    columnsOrder: string[]): ColumnDef[] {
+    const newColsFields = this.getColumnsField(newColumns);
+    const sortedExistingCols = columnsOrder
+      ? existingColumns.sort((a, b) => {
+        return columnsOrder.indexOf(a.field) - columnsOrder.indexOf(b.field);
+      })
+      : existingColumns;
+    const existingColsFields = this.getColumnsField(sortedExistingCols);
+    const fieldsToKeep = existingColumns.filter(column => newColsFields.includes(column.field));
+    const fieldsToAdd = newColumns.filter(column => !existingColsFields.includes(column.field));
+    return joinArrays(fieldsToKeep, fieldsToAdd);
   }
 }
