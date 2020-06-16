@@ -142,40 +142,36 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    let updateColumns = false;
+    let previousColumnDefValue: ColumnDef[];
+    if (has(changes, 'columnDefs')) {
+      updateColumns = true;
+      this.columnDefConfig = {
+        columnDef: changes.columnDefs.currentValue,
+        orderStrategy: ColumnOrderStrategy.AppendNew
+      };
+      previousColumnDefValue = changes.columnDefs.previousValue;
+    }
     if (has(changes, 'columnDefConfig')) {
+      updateColumns = true;
       this.columnDefConfig = changes.columnDefConfig.currentValue;
-      const existingColumns = changes.columnDefConfig.previousValue
-        ? (changes.columnDefConfig.previousValue as ColumnDefConfig).columnDef
-        : this.columnDefs;
+      previousColumnDefValue = changes.columnDefConfig.previousValue?.columnDef;
+    }
+
+    if (updateColumns) {
+      const existingColumns = previousColumnDefValue ? previousColumnDefValue : this.columnDefs;
       const columnDefs = this.columnDefConfig.orderStrategy === ColumnOrderStrategy.AppendNew
         ? this.tableUtilsService.getOrderedFields(
           existingColumns,
           this.columnDefConfig.columnDef,
           this.columns)
         : this.columnDefConfig.columnDef;
-
       this.gridColumnDefs = this.tableUtilsService.getGridColumnDef(
         columnDefs,
         this.rowSelection
       );
     }
 
-    if (has(changes, 'columnDefs')) {
-      this.columnDefConfig = {
-        columnDef: changes.columnDefs.currentValue,
-        orderStrategy: ColumnOrderStrategy.AppendNew,
-      };
-      const existingColumns = changes.columnDefs.previousValue ? changes.columnDefs.previousValue : this.columnDefs;
-      const columnDefs = this.tableUtilsService.getOrderedFields(
-        existingColumns,
-        this.columnDefConfig.columnDef,
-        this.columns
-      );
-      this.gridColumnDefs = this.tableUtilsService.getGridColumnDef(
-        columnDefs,
-        this.rowSelection
-      );
-    }
     if (has(changes, 'maxHeight')) {
       this.maxHeight = changes.maxHeight.currentValue;
       this.setGridHeight(this.maxHeight);
