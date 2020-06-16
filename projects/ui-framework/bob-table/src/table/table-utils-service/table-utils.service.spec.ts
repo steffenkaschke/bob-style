@@ -14,10 +14,15 @@ describe('TableUtilsService', () => {
   let gridOptionsMock = {};
   let rowSelectionMock = null;
   let columnDefsMock: ColumnDef[] = [];
-  let newColumnDefsMock: ColumnDef[] = [];
+  let newColumnDefsMock;
   let tableColumnsMock = [];
+  let existingColsMock;
 
   beforeEach(() => {
+    existingColsMock = [
+      { field: 'about.avatar', }, { field: 'fullName', }, { field: 'email', },
+    ];
+
     columnDefsMock = [
       {
         headerName: '',
@@ -50,45 +55,7 @@ describe('TableUtilsService', () => {
         cellStyle: {},
       },
     ];
-    newColumnDefsMock = [
-      {
-        headerName: 'Display Name',
-        field: 'fullName',
-        sort: SortDirections.Asc,
-        resizable: true,
-        sortable: true,
-        menuTabs: [],
-        cellClass: [],
-        cellStyle: {},
-      },
-      {
-        headerName: 'Email',
-        field: 'email',
-        resizable: true,
-        sortable: true,
-        menuTabs: [],
-        cellClass: [],
-        cellStyle: {},
-      },
-      {
-        headerName: 'Site',
-        field: 'site',
-        resizable: true,
-        sortable: true,
-        menuTabs: [],
-        cellClass: [],
-        cellStyle: {},
-      },
-      {
-        headerName: 'Department',
-        field: 'department',
-        resizable: true,
-        sortable: true,
-        menuTabs: [],
-        cellClass: [],
-        cellStyle: {},
-      },
-    ];
+    newColumnDefsMock = [{ field: 'fullName' }, { field: 'email' }, { field: 'site' }, { field: 'department' }];
     tableColumnsMock = [
       {
         colId: 'about.avatar',
@@ -230,91 +197,19 @@ describe('TableUtilsService', () => {
     });
   });
 
-  fdescribe('getOrderedFields', () => {
+  describe('getOrderedFields', () => {
     it('Should sort existing columns according to order', () => {
       const columnOrder = ['about.avatar', 'email', 'fullName'];
-      const orderedColumns = tableUtilsService.getOrderedFields(columnDefsMock, newColumnDefsMock, columnOrder);
+      const orderedColumns = tableUtilsService.getOrderedFields(existingColsMock, newColumnDefsMock, columnOrder);
       expect(orderedColumns).toEqual([
-        {
-          headerName: 'Email',
-          field: 'email',
-          resizable: true,
-          sortable: true,
-          menuTabs: [],
-          cellClass: [],
-          cellStyle: {},
-        },
-        {
-          headerName: 'Display Name',
-          field: 'fullName',
-          sort: SortDirections.Asc,
-          resizable: true,
-          sortable: true,
-          menuTabs: [],
-          cellClass: [],
-          cellStyle: {},
-        },
-        {
-          headerName: 'Site',
-          field: 'site',
-          resizable: true,
-          sortable: true,
-          menuTabs: [],
-          cellClass: [],
-          cellStyle: {},
-        },
-        {
-          headerName: 'Department',
-          field: 'department',
-          resizable: true,
-          sortable: true,
-          menuTabs: [],
-          cellClass: [],
-          cellStyle: {},
-        },
-      ]);
+        { field: 'email' }, { field: 'fullName' }, { field: 'site' }, { field: 'department', }
+      ] as any);
     });
     it('Should kepp existing columns order is no order is passed', () => {
-      const orderedColumns = tableUtilsService.getOrderedFields(columnDefsMock, newColumnDefsMock, null);
+      const orderedColumns = tableUtilsService.getOrderedFields(existingColsMock, newColumnDefsMock, null);
       expect(orderedColumns).toEqual([
-        {
-          headerName: 'Display Name',
-          field: 'fullName',
-          sort: SortDirections.Asc,
-          resizable: true,
-          sortable: true,
-          menuTabs: [],
-          cellClass: [],
-          cellStyle: {},
-        },
-        {
-          headerName: 'Email',
-          field: 'email',
-          resizable: true,
-          sortable: true,
-          menuTabs: [],
-          cellClass: [],
-          cellStyle: {},
-        },
-        {
-          headerName: 'Site',
-          field: 'site',
-          resizable: true,
-          sortable: true,
-          menuTabs: [],
-          cellClass: [],
-          cellStyle: {},
-        },
-        {
-          headerName: 'Department',
-          field: 'department',
-          resizable: true,
-          sortable: true,
-          menuTabs: [],
-          cellClass: [],
-          cellStyle: {},
-        },
-      ]);
+        { field: 'fullName' }, { field: 'email' }, { field: 'site' }, { field: 'department' },
+      ] as any);
     });
   });
 });

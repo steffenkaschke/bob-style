@@ -286,7 +286,7 @@ describe('TableComponent', () => {
         }));
       });
     });
-    fdescribe('colDefOrder', () => {
+    describe('colDefOrder', () => {
       describe('columnDefs', () => {
         it('Should call getOrderedFields with current cols from current value if no previous value provided', () => {
           component['columns'] = [];
