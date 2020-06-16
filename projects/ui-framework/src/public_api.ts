@@ -379,6 +379,11 @@ export {
 export { QuickFilterSelectType } from './lib/search/quick-filter/quick-filter.enum';
 export { QuickFilterLayoutModule } from './lib/search/quick-filter-layout/quick-filter-layout.module';
 export { QuickFilterLayoutComponent } from './lib/search/quick-filter-layout/quick-filter-layout.component';
+// Multi-Search
+export * from './lib/search/multi-search/multi-search.interface';
+export * from  './lib/search/multi-search/multi-search.const';
+export { MultiSearchModule } from './lib/search/multi-search/multi-search.module';
+export { MultiSearchComponent } from './lib/search/multi-search/multi-search.component';
 
 /*
  * Navigation

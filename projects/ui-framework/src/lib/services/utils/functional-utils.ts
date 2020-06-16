@@ -595,6 +595,40 @@ export const compareAsStrings = (a: any, b: any, strict = true): boolean => {
 };
 
 // ----------------------
+// FILTERS
+// ----------------------
+
+/**
+ *
+ * @param array The array the filter is applied on
+ * @param childrenKey The recursive key in the object, i.e: children
+ * @param fn The function predicate for the filter
+ * // returns a copy of the array
+ const array = [
+ { v: 'a', archived: false,
+   y: [ {v: 'a-1', archived: true}, {v: 'a-2', archived: false } ]
+ },
+ { v: 'b', archived: true,
+   y: [ {v: 'b-1', archived: false} ]
+ }
+ ];
+ recursiveFilter(array, 'y', o => !o.archived); // [{ v: 'a', archived: false, y: [{v: 'a-2', x: false}]}]
+ */
+export const recursiveFilter = <T = any>(
+  array: T[],
+  childrenKey: string,
+  fn: (item: T) => boolean
+): T[] => {
+  return array.reduce((acc: T[], o) => {
+    if (fn(o)) {
+      const children = recursiveFilter(o[childrenKey] || [], childrenKey, fn);
+      acc.push(Object.assign({}, o, children.length && { children }));
+    }
+    return acc;
+  }, []);
+};
+
+// ----------------------
 // CLONES
 // ----------------------
 

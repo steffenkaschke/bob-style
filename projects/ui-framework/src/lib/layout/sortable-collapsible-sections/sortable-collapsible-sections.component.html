@@ -12,15 +12,16 @@
       (cdkDragStarted)="dragStart.emit(index); draggedSection=section"
       (cdkDragEnded)="dragEnd.emit(index)">
 
-    <b-collapsible-section class="section"
+    <b-collapsible-section id="{{section.id}}"
+                           class="section"
+                           [panelID]="section.id"
                            [collapsible]="true"
                            [expanded]="section.expanded || false"
                            [title]="section.title"
                            [description]="section.description"
                            [options]="section.collapsibleOptions"
                            (closed)="onClosed(index); section.expanded=false"
-                           (opened)="opened.emit(index); dragging=false"
-                           (openedFirst)="onOpenedFirst(section); openedFirst.emit(index)">
+                           (opened)="onOpened(section, index); dragging=false">
 
       <ng-container header>
         <div cdkDragHandle
