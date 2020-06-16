@@ -36,6 +36,7 @@ import {
 
 const CLOSE_BUTTON_DIAMETER = 20;
 const CLOSE_MARGIN_OFFSET = 6;
+const DEFAULT_COL_ORDER_STRATEGY = ColumnOrderStrategy.AppendNew;
 
 @Component({
   selector: 'b-table',
@@ -148,7 +149,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       updateColumns = true;
       this.columnDefConfig = {
         columnDef: changes.columnDefs.currentValue,
-        orderStrategy: ColumnOrderStrategy.AppendNew
+        orderStrategy: DEFAULT_COL_ORDER_STRATEGY,
       };
       previousColumnDefValue = changes.columnDefs.previousValue;
     }

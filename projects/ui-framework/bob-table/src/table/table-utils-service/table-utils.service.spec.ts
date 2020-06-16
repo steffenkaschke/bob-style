@@ -14,6 +14,7 @@ describe('TableUtilsService', () => {
   let gridOptionsMock = {};
   let rowSelectionMock = null;
   let columnDefsMock: ColumnDef[] = [];
+  let newColumnDefsMock: ColumnDef[] = [];
   let tableColumnsMock = [];
 
   beforeEach(() => {
@@ -42,6 +43,45 @@ describe('TableUtilsService', () => {
       {
         headerName: 'Email',
         field: 'email',
+        resizable: true,
+        sortable: true,
+        menuTabs: [],
+        cellClass: [],
+        cellStyle: {},
+      },
+    ];
+    newColumnDefsMock = [
+      {
+        headerName: 'Display Name',
+        field: 'fullName',
+        sort: SortDirections.Asc,
+        resizable: true,
+        sortable: true,
+        menuTabs: [],
+        cellClass: [],
+        cellStyle: {},
+      },
+      {
+        headerName: 'Email',
+        field: 'email',
+        resizable: true,
+        sortable: true,
+        menuTabs: [],
+        cellClass: [],
+        cellStyle: {},
+      },
+      {
+        headerName: 'Site',
+        field: 'site',
+        resizable: true,
+        sortable: true,
+        menuTabs: [],
+        cellClass: [],
+        cellStyle: {},
+      },
+      {
+        headerName: 'Department',
+        field: 'department',
         resizable: true,
         sortable: true,
         menuTabs: [],
@@ -187,6 +227,94 @@ describe('TableUtilsService', () => {
         rowSelectionMock
       );
       expect(columnDefs).toEqual(expectedColDefs);
+    });
+  });
+
+  fdescribe('getOrderedFields', () => {
+    it('Should sort existing columns according to order', () => {
+      const columnOrder = ['about.avatar', 'email', 'fullName'];
+      const orderedColumns = tableUtilsService.getOrderedFields(columnDefsMock, newColumnDefsMock, columnOrder);
+      expect(orderedColumns).toEqual([
+        {
+          headerName: 'Email',
+          field: 'email',
+          resizable: true,
+          sortable: true,
+          menuTabs: [],
+          cellClass: [],
+          cellStyle: {},
+        },
+        {
+          headerName: 'Display Name',
+          field: 'fullName',
+          sort: SortDirections.Asc,
+          resizable: true,
+          sortable: true,
+          menuTabs: [],
+          cellClass: [],
+          cellStyle: {},
+        },
+        {
+          headerName: 'Site',
+          field: 'site',
+          resizable: true,
+          sortable: true,
+          menuTabs: [],
+          cellClass: [],
+          cellStyle: {},
+        },
+        {
+          headerName: 'Department',
+          field: 'department',
+          resizable: true,
+          sortable: true,
+          menuTabs: [],
+          cellClass: [],
+          cellStyle: {},
+        },
+      ]);
+    });
+    it('Should kepp existing columns order is no order is passed', () => {
+      const orderedColumns = tableUtilsService.getOrderedFields(columnDefsMock, newColumnDefsMock, null);
+      expect(orderedColumns).toEqual([
+        {
+          headerName: 'Display Name',
+          field: 'fullName',
+          sort: SortDirections.Asc,
+          resizable: true,
+          sortable: true,
+          menuTabs: [],
+          cellClass: [],
+          cellStyle: {},
+        },
+        {
+          headerName: 'Email',
+          field: 'email',
+          resizable: true,
+          sortable: true,
+          menuTabs: [],
+          cellClass: [],
+          cellStyle: {},
+        },
+        {
+          headerName: 'Site',
+          field: 'site',
+          resizable: true,
+          sortable: true,
+          menuTabs: [],
+          cellClass: [],
+          cellStyle: {},
+        },
+        {
+          headerName: 'Department',
+          field: 'department',
+          resizable: true,
+          sortable: true,
+          menuTabs: [],
+          cellClass: [],
+          cellStyle: {},
+        },
+      ]);
     });
   });
 });
