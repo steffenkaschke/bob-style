@@ -107,6 +107,7 @@ p {
 
     & + * {
       margin-left: auto;
+      flex-shrink: 0;
     }
   }
   @include mobile {
