@@ -10,7 +10,7 @@ export class TableActionsWrapperComponent {
   @Input() menuItems: MenuItem[];
   @Input() buttonType: ButtonType = ButtonType.primary;
   @Input() icon: Icons = null;
-  @Input() tooltipSummary: string;
+  @Input() toolTipSummary: string;
   @Input() iconType: IconType = IconType.circular;
   public openLeft: boolean;
   readonly buttonSize = ButtonSize;
