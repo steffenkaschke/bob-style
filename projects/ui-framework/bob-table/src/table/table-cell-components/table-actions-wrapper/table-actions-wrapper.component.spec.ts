@@ -1,7 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {TableActionsWrapperComponent} from './table-actions-wrapper.component';
 import {By} from '@angular/platform-browser';
-import {MockComponent} from 'ng-mocks';
+import {MockComponent, MockDirective} from 'ng-mocks';
+import {MatTooltip} from '@angular/material/tooltip';
 import {ButtonComponent, ButtonType, IconComponent, Icons, MenuComponent, SquareButtonComponent} from 'bob-style';
 
 describe('TableActionsWrapperComponent', () => {
@@ -16,6 +17,7 @@ describe('TableActionsWrapperComponent', () => {
         MockComponent(MenuComponent),
         MockComponent(ButtonComponent),
         MockComponent(IconComponent),
+        MockDirective(MatTooltip),
       ],
     })
       .compileComponents()
