@@ -13,6 +13,7 @@ import {TableActionsWrapperComponent} from './table-cell-components/table-action
 import {TableUtilsService} from './table-utils-service/table-utils.service';
 import {TreeDirective} from './table/extensions/tree.directive';
 import {TableComponent} from './table/table.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import {TableComponent} from './table/table.component';
     ButtonsModule,
     IconsModule,
     MenuModule,
+    MatTooltipModule,
     AgGridModule.withComponents([
       AvatarCellComponent,
       ActionsCellComponent,
