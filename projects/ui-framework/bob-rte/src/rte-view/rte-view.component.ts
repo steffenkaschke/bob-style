@@ -6,22 +6,24 @@ import {
   SimpleChanges,
   OnChanges,
   HostBinding,
+  NgZone,
+  ChangeDetectionStrategy,
 } from '@angular/core';
-import { SanitizerService } from '../../services/utils/sanitizer.service';
 import { Router } from '@angular/router';
-import { SelectGroupOption } from '../../lists/list.interface';
-import { hasChanges } from '../../services/utils/functional-utils';
-import { PlaceholdersConverterService } from '../../../../bob-rte/src/rte/placeholders.service';
+import { SanitizerService, SelectGroupOption, hasChanges } from 'bob-style';
+import { PlaceholdersConverterService } from '../rte/placeholders.service';
 import { RteViewType } from './rte-view.enum';
 
 @Component({
   selector: 'b-rich-text-view',
   template: ``,
   styleUrls: ['./rte-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RteViewComponent implements OnChanges {
   constructor(
     private host: ElementRef,
+    private zone: NgZone,
     private sanitizer: SanitizerService,
     private router: Router,
     private placeholdersConverter: PlaceholdersConverterService
@@ -37,7 +39,7 @@ export class RteViewComponent implements OnChanges {
   @HostBinding('attr.data-type') @Input() type: RteViewType;
   @HostBinding('class.fr-view') frViewClass = true;
 
-  @HostListener('click', ['$event'])
+  @HostListener('click.outside-zone', ['$event'])
   onHostClick($event: MouseEvent) {
     const employeeId = ($event.target as HTMLElement).getAttribute(
       'mention-employee-id'
@@ -45,7 +47,9 @@ export class RteViewComponent implements OnChanges {
 
     if (employeeId) {
       $event.preventDefault();
-      this.router.navigate(['/employee-profile', employeeId]);
+      this.zone.run(() => {
+        this.router.navigate(['/employee-profile', employeeId]);
+      });
     }
   }
 
