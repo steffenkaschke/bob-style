@@ -1,16 +1,64 @@
 import { Injectable } from '@angular/core';
+import { isString, chainCall } from './functional-utils';
+import { HtmlParserHelpers } from '../html/html-parser.service';
 
 import * as xss from 'xss';
 import { ICSSFilter, IFilterXSSOptions } from 'xss';
-import { isString, chainCall } from './functional-utils';
 
-import {
-  RTE_OPTIONS_DEF,
-  RTE_ALLOWED_STYLE_PROPS,
-} from '../../../../bob-rte/src/rte/rte.const';
-import { HtmlParserHelpers } from '../html/html-parser.service';
+const SANITIZER_ALLOWED_TAGS = [
+  'a',
+  'br',
+  'div',
+  'b',
+  'strong',
+  'em',
+  'i',
+  'img',
+  'li',
+  'ol',
+  'ul',
+  'p',
+  'span',
+  'u',
+  'strike',
+  'sub',
+  'sup',
 
-const SANITIZER_HTML_ALLOWED_ATTRS_TESTS: RegExp[] = RTE_OPTIONS_DEF?.htmlAllowedAttrs?.reduce(
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+];
+const SANITIZER_ALLOWED_ATTRS = [
+  'alt',
+  'data-.*',
+  'dir',
+  'href',
+  'id',
+  'lang',
+  'rel',
+  'src',
+  'target',
+  'title',
+  'valign',
+  'style',
+  'class',
+  'contenteditable',
+  'spellcheck',
+  'tabindex',
+  '.*mention.*',
+];
+
+const SANITIZER_ALLOWED_STYLE_PROPS = [
+  'font-size',
+  'font-weight',
+  'text-align',
+  'direction',
+];
+
+const SANITIZER_HTML_ALLOWED_ATTRS_TESTS: RegExp[] = SANITIZER_ALLOWED_ATTRS.reduce(
   (testList: RegExp[], attr) => {
     if (attr.includes('*') || attr.includes('^') || attr.includes('.')) {
       testList.push(new RegExp(attr, 'i'));
@@ -21,13 +69,13 @@ const SANITIZER_HTML_ALLOWED_ATTRS_TESTS: RegExp[] = RTE_OPTIONS_DEF?.htmlAllowe
 );
 
 const SANITIZER_FILTER_XSS_OPTIONS: IFilterXSSOptions = {
-  whiteList: RTE_OPTIONS_DEF.htmlAllowedTags.reduce((listObj, tag) => {
-    listObj[tag] = RTE_OPTIONS_DEF.htmlAllowedAttrs;
+  whiteList: SANITIZER_ALLOWED_TAGS.reduce((listObj, tag) => {
+    listObj[tag] = SANITIZER_ALLOWED_ATTRS;
     return listObj;
   }, {}),
 
   css: {
-    whiteList: RTE_ALLOWED_STYLE_PROPS.reduce((listObj, prop) => {
+    whiteList: SANITIZER_ALLOWED_STYLE_PROPS.reduce((listObj, prop) => {
       listObj[prop] = true;
       return listObj;
     }, {}),

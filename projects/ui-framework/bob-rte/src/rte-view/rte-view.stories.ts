@@ -1,17 +1,15 @@
 import { storiesOf } from '@storybook/angular';
-import { ComponentGroupType } from '../../consts';
-import { withKnobs, text, object, select } from '@storybook/addon-knobs';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { RteViewModule } from './rte-view.module';
-import {
-  rteMockHtml,
-  placeholderMock,
-} from '../../../../bob-rte/src/rte/rte.mocks';
 import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
+import { withKnobs, select } from '@storybook/addon-knobs';
+import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
+
+import { rteMockHtml, placeholderMock } from '../rte/rte.mocks';
+import { ComponentGroupType } from '../../../src/lib/consts';
+import { xssMock } from '../../../src/lib/services/utils/xss.mock';
+
+import { RteViewModule } from './rte-view.module';
 import { RteViewComponent } from './rte-view.component';
-import { SelectGroupOption } from '../../lists/list.interface';
-import { xssMock } from '../../services/utils/xss.mock';
 import { RteViewType } from './rte-view.enum';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
