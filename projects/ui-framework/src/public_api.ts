@@ -522,6 +522,11 @@ export { TableCardCellComponent } from './lib/table/card-table/table-card-cell/t
 export { TableCardComponent } from './lib/table/card-table/table-card/table-card.component';
 export * from './lib/table/card-table/card-table.interface';
 
+// RTE Viewer
+export { RteViewModule } from './lib/layout/rte-view/rte-view.module';
+export { RteViewComponent } from './lib/layout/rte-view/rte-view.component';
+export * from './lib/layout/rte-view/rte-view.enum';
+
 /*
  * Misc
  */
@@ -594,6 +599,8 @@ export { HtmlParserHelpers } from './lib/services/html/html-parser.service';
 export * from './lib/services/utils/transformers';
 // Mocks
 export { selectOptionsMock } from './lib/lists/multi-select-panel/multi-select-panel.mock';
+// Sanitizer
+export { SanitizerService } from './lib/services/utils/sanitizer.service';
 
 /*
 * Animation

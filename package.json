@@ -46,6 +46,7 @@
     "rxjs": "^6.5.4",
     "tributejs": "^4.1.1",
     "tslib": "^1.10.0",
+    "xss": "^1.0.7",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

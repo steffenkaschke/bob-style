@@ -1,25 +1,9 @@
 import { BlotType } from './rte.enum';
-import { joinArrays } from 'bob-style';
 import { FroalaOptions } from './froala.interface';
 import { TributeOptions, TributeItem } from './tribute.interface';
 
-export const RTE_CONTROLS_DEF = joinArrays(
-  [
-    BlotType.size,
-    BlotType.bold,
-    BlotType.italic,
-    BlotType.underline,
-    BlotType.insertLink,
-    BlotType.formatUL,
-    BlotType.formatOL,
-    BlotType.align,
-    BlotType.rightToLeft,
-    BlotType.leftToRight,
-    BlotType.emoticons,
-    BlotType.mentions,
-    BlotType.placeholder,
-  ],
-  Object.values(BlotType)
+export const RTE_CONTROLS_DEF: BlotType[] = Array.from(
+  new Set(Object.values(BlotType))
 );
 
 export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [BlotType.placeholder];

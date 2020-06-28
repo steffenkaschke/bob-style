@@ -12,7 +12,7 @@ import { action } from '@storybook/addon-actions';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { values } from 'lodash';
 import { BlotType, RTEType } from './rte.enum';
-import { mentionsOptions, placeholderMock } from './rte.mocks';
+import { mentionsOptions, placeholderMock, rteMockHtml } from './rte.mocks';
 import { ComponentGroupType } from '../../../src/lib/consts';
 import { dedupeArray } from '../../../src/lib/services/utils/functional-utils';
 import { SelectGroupOption } from '../../../src/lib/lists/list.interface';
@@ -29,42 +29,7 @@ const controlsDef = dedupeArray(Object.values(BlotType)).filter(
   (cntrl) => !disableControlsDef.includes(cntrl)
 );
 
-const value = `<br><br> <br><br> <span> <br> </span> <div><br></div> <span><br></span>
-
-<div>
-  <span style="color: red;">Hello</span> http://Google.com!
-  Some <em>funky</em> <strong>bold</strong> text
-  of <span style="font-size: 18px;">large 🔍</span> size.
-</div>
-
-<div><br class="222"></div> <span><br></span> <div><br></div>
-
-<h1><em>Hooray!</em></h1>
-
-<p><br>
- {{root##%%firstName}} is {{work##%%title}} of the month!
- </p>
-
-<p>More details at: https://longlink.com/gohere/thenthere/onemore/page#hash?query=bigBen</p>
-
-<div><br></div>
-
-<h2>Here's an important list of things to remember:</h2>
-
-<ul>
-  <li> <br> <br>
-  Watch artist <a href="https://www.youtube.com/watch?v=k2JPwJuM8fE" \
-  mention-employee-id="777">@Jim lee</a> drawing \
-  <span style="font-size: 18px;">🦇👨 & 🐱👩</span> from his studio
-  <a href="https://www.youtube.com/watch?v=k2JPwJuM8fE" \
-  target="_blank">here!</a></li>
-  <li>All <b>bold</b> and <u>underline</u> emphasis.</li>
-  <li>танцуй пока молодой <span style="font-size: 18px;">💃</span></li>
-  <li>אם תרצו אין זו אגדה</li>
-</ul>
-
-<div><br></div> <span><br></span>
-`;
+const value = rteMockHtml;
 
 const template = `
   <b-rich-text-editor
