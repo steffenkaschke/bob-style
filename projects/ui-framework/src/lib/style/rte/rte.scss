@@ -13,11 +13,57 @@ $rte-hide-label: true;
 
 $rte-link-color: var(--primary-700);
 
+// font-sizes
+
+.fr-element,
 .fr-toolbar,
-.fr-wrapper,
+.fr-view {
+  --rte-font-size-small: #{$font-size-caption}; // 11px
+  --rte-font-size-normal: #{$font-size-body}; // 12px
+  --rte-font-size-large: #{$font-size-display-4}; // 18px
+  --rte-font-size-xlarge: #{$font-size-display-2}; // 28px
+}
+
+.fr-element,
+.fr-view {
+  [style*='small'],
+  [style*='11px'],
+  [style*='10px'] {
+    line-height: $font-size-body * $rte-lineheight;
+    font-size: var(--rte-font-size-small, $font-size-caption) !important;
+  }
+
+  [style*='medium'],
+  [style*='12px'] {
+    font-size: var(--rte-font-size-normal, $font-size-body) !important;
+  }
+
+  [style*='large'],
+  [style*='18px'] {
+    line-height: 1;
+    font-size: var(--rte-font-size-large, $font-size-display-4) !important;
+  }
+
+  [style*='x-large'],
+  [style*='28px'],
+  [style*='30px'] {
+    line-height: 0.8;
+    font-size: var(--rte-font-size-xlarge, $font-size-display-2) !important;
+  }
+}
+
+.fr-toolbar,
+.fr-wrapper {
+  @include b-body($color: $display-text-color, $lineHeight: null);
+}
+
 .fr-box[class] .fr-element,
 .fr-view {
-  @include b-body($color: $display-text-color, $lineHeight: null);
+  @include BodyFont(
+    $size: var(--rte-font-size-normal),
+    $color: $display-text-color,
+    $lineHeight: null
+  );
 }
 
 .fr-toolbar,
@@ -49,6 +95,8 @@ $rte-link-color: var(--primary-700);
     }
   }
 }
+
+// layout
 
 .fr-wrapper .fr-placeholder {
   font-family: inherit;
@@ -525,41 +573,6 @@ $empticons-panel-max-width: 235px;
   width: (100% / 6);
 }
 
-// font-sizes
-
-.fr-element,
-.fr-toolbar,
-.fr-view {
-  --rte-font-size-small: #{$font-size-caption}; // 11px
-  --rte-font-size-normal: #{$font-size-body}; // 12px
-  --rte-font-size-large: #{$font-size-display-4}; // 18px
-  --rte-font-size-xlarge: #{$font-size-display-2}; // 28px
-}
-
-.fr-element,
-.fr-view {
-  [style*='11px'],
-  [style*='10px'] {
-    line-height: $font-size-body * $rte-lineheight;
-    font-size: var(--rte-font-size-small, $font-size-caption) !important;
-  }
-
-  [style*='12px'] {
-    font-size: var(--rte-font-size-normal, $font-size-body) !important;
-  }
-
-  [style*='18px'] {
-    line-height: 1;
-    font-size: var(--rte-font-size-large, $font-size-display-4) !important;
-  }
-
-  [style*='28px'],
-  [style*='30px'] {
-    line-height: 0.8;
-    font-size: var(--rte-font-size-xlarge, $font-size-display-2) !important;
-  }
-}
-
 // font-size popup
 
 .fr-command.fr-btn
@@ -577,19 +590,23 @@ $empticons-panel-max-width: 235px;
     font-weight: normal;
   }
 
+  &[title='small']:before,
   &[title='11']:before {
     content: var(--translation-small, 'Small');
     font-size: var(--rte-font-size-small, $font-size-caption);
   }
+  &[title='medium']:before,
   &[title='12']:before {
     content: var(--translation-normal, 'Normal');
     font-size: var(--rte-font-size-normal, $font-size-body);
   }
+  &[title='large']:before,
   &[title='18']:before {
     content: var(--translation-large, 'Large');
     font-size: var(--rte-font-size-large, $font-size-display-4);
     line-height: 1;
   }
+  &[title='x-large']:before,
   &[title='28']:before {
     content: var(--translation-huge, 'Huge');
     font-size: var(--rte-font-size-xlarge, $font-size-display-2);

@@ -14,6 +14,7 @@
     padding: 0 11px;
     position: relative;
     user-select: all;
+    font-family: var(--body-font-family);
 
     em {
       @include size;
@@ -36,10 +37,14 @@
 
     &:before {
       content: attr(data-before);
-      font-weight: 500;
     }
     &:after {
       content: attr(data-after);
+    }
+
+    strong,
+    &:before {
+      font-weight: 500;
     }
   }
 
@@ -50,19 +55,5 @@
 
   span[style*='font'] [data-placeholder-id] {
     vertical-align: middle;
-  }
-}
-
-.b-select-panel.placeholder-panel {
-  @include overlayTopBottomBorders;
-  margin-top: -1px;
-  margin-right: -1px;
-
-  .panel-below {
-    border-top-right-radius: 0;
-  }
-
-  .b-select-panel:after {
-    display: none;
   }
 }

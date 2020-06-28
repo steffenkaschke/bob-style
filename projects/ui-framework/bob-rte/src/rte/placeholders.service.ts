@@ -12,7 +12,7 @@ export class PlaceholdersConverterService {
     const elm: HTMLElement = document.createElement('div');
     elm.innerHTML = rteInnerHtml + '';
     Array.from(elm.querySelectorAll('[data-placeholder-id]')).forEach(
-      existingElement => {
+      (existingElement) => {
         const placeholderId = existingElement.getAttribute(
           'data-placeholder-id'
         );
@@ -28,21 +28,26 @@ export class PlaceholdersConverterService {
     return elm.innerHTML;
   }
 
-  public toRte(value: string, placeholders: SelectGroupOption[]): string {
+  public toRte(
+    value: string,
+    placeholders: SelectGroupOption[],
+    mode: 'editor' | 'viewer' = 'editor'
+  ): string {
     const regex: RegExp = new RegExp(
       `{{((?:[^}]*)${this.separator}(?:[^}]*))}}`,
       'gim'
     );
     return value && isNotEmptyArray(placeholders)
       ? value.replace(regex, (field: string, id: string, ...args) =>
-          this.getPlaceholderHtml(placeholders, id)
+          this.getPlaceholderHtml(placeholders, id, mode)
         )
       : value || '';
   }
 
   public getPlaceholderHtml(
     placeholders: SelectGroupOption[],
-    id: string
+    id: string,
+    mode: 'editor' | 'viewer' = 'editor'
   ): string {
     id = id && id.trim();
     if (!id || !placeholders) {
@@ -52,22 +57,26 @@ export class PlaceholdersConverterService {
     const name = this.getOptionName(placeholders, id);
 
     return name
-      ? // prettier-ignore
-        // tslint:disable-next-line: max-line-length
-        ` <span contenteditable="false" class="fr-deletable" data-placeholder-id="${id}" data-before="${group || ''}" data-after="${(group ? ' - ' : '') + name}"><em>—</em></span> `
+      ? mode === 'editor'
+        ? // prettier-ignore
+          // tslint:disable-next-line: max-line-length
+          ` <span contenteditable="false" class="fr-deletable" data-placeholder-id="${id}" data-before="${group || ''}" data-after="${(group ? ' - ' : '') + name}"><em>—</em></span> `
+        : // prettier-ignore
+          // tslint:disable-next-line: max-line-length
+          ` <span data-placeholder-id="${id}">${this.padChar.repeat(3)}${(group ? '<strong>' + group + '</strong> - ' : '') + name}${this.padChar.repeat(3)}</span> `
       : id;
   }
 
   public getGroupName(placeholders: SelectGroupOption[], id: string): string {
     const groupId = id.split(this.separator).filter(Boolean)[0];
-    const group = placeholders.find(g => g.key === groupId);
+    const group = placeholders.find((g) => g.key === groupId);
     return group ? group.groupName : null;
   }
 
   public getOptionName(placeholders: SelectGroupOption[], id: string): string {
-    let allOptions: SelectOption[] = placeholders.map(g => g.options) as any;
+    let allOptions: SelectOption[] = placeholders.map((g) => g.options) as any;
     allOptions = allOptions.concat(...allOptions);
-    const option = allOptions.find(o => o.id === id);
+    const option = allOptions.find((o) => o.id === id);
     return option ? option.value : id;
   }
 }

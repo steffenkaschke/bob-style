@@ -9,6 +9,10 @@ import {
 } from 'bob-style';
 import { RichTextEditorComponent } from './rte.component';
 import { PlaceholdersConverterService } from './placeholders.service';
+import { FroalaEditorDirective } from './froala/editor.directive';
+import { FroalaViewDirective } from './froala/view.directive';
+import { TranslateModule } from '@ngx-translate/core';
+
 import 'froala-editor/js/plugins/font_size.min.js';
 import 'froala-editor/js/plugins/link.min.js';
 import 'froala-editor/js/plugins/align.min.js';
@@ -16,9 +20,6 @@ import 'froala-editor/js/plugins/lists.min.js';
 import 'froala-editor/js/plugins/char_counter.min.js';
 import 'froala-editor/js/plugins/url.min.js';
 import 'froala-editor/js/plugins/emoticons.min.js';
-import { FroalaEditorDirective } from './froala/editor.directive';
-import { FroalaViewDirective } from './froala/view.directive';
-import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [

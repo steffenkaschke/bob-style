@@ -176,3 +176,19 @@
     border-bottom-width: 1px;
   }
 }
+
+// Placeholders
+
+::ng-deep .b-select-panel.placeholder-panel {
+  @include overlayTopBottomBorders;
+  margin-top: -1px;
+  margin-right: -1px;
+
+  .panel-below {
+    border-top-right-radius: 0;
+  }
+
+  .b-select-panel:after {
+    display: none;
+  }
+}

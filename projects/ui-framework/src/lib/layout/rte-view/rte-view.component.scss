@@ -1,0 +1,65 @@
+@import '../../style/common-imports';
+
+:host ::ng-deep {
+  display: block;
+  text-align: left;
+
+  a {
+    @include b-link;
+  }
+}
+
+:host[data-type='shoutout'] ::ng-deep {
+  word-break: break-word;
+  font-family: var(--display-font-family);
+  --rte-font-size-normal: #{$font-size-big-body};
+  --rte-font-size-small: 90%;
+  --rte-font-size-xlarge: var(--rte-font-size-large);
+
+  @include mobile($breakpoint-device-lg, $mobile-media-width) {
+    --rte-font-size-normal: #{resp-val(
+        $min-width: $mobile-media-width,
+        $max-width: $breakpoint-device-lg,
+        $min-val: $font-size-big-body,
+        $max-val: $font-size-display-4
+      )};
+  }
+
+  @include desktop($breakpoint-device-lg) {
+    --rte-font-size-normal: #{$font-size-display-4};
+  }
+
+  a {
+    color: var(--primary-500);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  ul,
+  ol {
+    line-height: inherit;
+  }
+}
+
+:host ::ng-deep [data-placeholder-id] {
+  padding: 0;
+
+  &:before,
+  &:after {
+    display: none;
+  }
+}
+
+:host[data-type='shoutout'] ::ng-deep [data-placeholder-id] {
+  vertical-align: middle;
+
+  @include responsive-font(
+    $min-width: $mobile-media-width,
+    $max-width: $breakpoint-device-lg,
+    $min-val: $font-size-body,
+    $max-val: $font-size-big-body
+  );
+}

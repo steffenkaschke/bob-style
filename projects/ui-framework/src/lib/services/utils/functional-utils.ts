@@ -278,7 +278,7 @@ export const simpleArraysEqual = <T>(arr1: T[], arr2: T[]) => {
 
 export const dedupeArray = <T = any>(arr: T[]): T[] => Array.from(new Set(arr));
 
-export const joinArrays = <T = any>(arr1: T[], ...rest): T[] =>
+export const joinArrays = <T = any>(arr1: T[], ...rest: (T | T[])[]): T[] =>
   dedupeArray(arr1.concat(...rest));
 
 export const simpleArrayAddItemUnique = <T = any>(arr: T[], item: T): T[] =>

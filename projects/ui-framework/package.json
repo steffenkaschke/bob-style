@@ -18,7 +18,8 @@
     "date-fns": "^2.9.0",
     "tributejs": "^4.1.1",
     "ngx-smooth-dnd": "^0.4.1",
-    "froala-editor": "^3.1.1"
+    "froala-editor": "^3.1.1",
+    "xss": "^1.0.7"
   },
   "browserslist": [
     "> 1%",
