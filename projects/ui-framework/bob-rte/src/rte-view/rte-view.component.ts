@@ -7,6 +7,7 @@ import {
   OnChanges,
   HostBinding,
   NgZone,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { SanitizerService, SelectGroupOption, hasChanges } from 'bob-style';
