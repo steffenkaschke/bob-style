@@ -7,6 +7,35 @@
   a {
     @include b-link;
   }
+
+  [mention-employee-id] {
+    color: var(--primary-500);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  [data-placeholder-id] {
+    padding: 0;
+
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
+}
+
+:host {
+  &.b-big-body {
+    --rte-font-size-small: 90%;
+    --rte-font-size-normal: #{$font-size-big-body};
+  }
+
+  &.b-bold-body {
+    font-weight: $font-weight-bold-body;
+  }
 }
 
 :host[data-type='shoutout'] ::ng-deep {
@@ -29,37 +58,44 @@
     --rte-font-size-normal: #{$font-size-display-4};
   }
 
-  a {
-    color: var(--primary-500);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
   ul,
   ol {
     line-height: inherit;
   }
-}
 
-:host ::ng-deep [data-placeholder-id] {
-  padding: 0;
+  [data-placeholder-id] {
+    vertical-align: middle;
 
-  &:before,
-  &:after {
-    display: none;
+    @include responsive-font(
+      $min-width: $mobile-media-width,
+      $max-width: $breakpoint-device-lg,
+      $min-val: $font-size-body,
+      $max-val: $font-size-big-body
+    );
   }
 }
 
-:host[data-type='shoutout'] ::ng-deep [data-placeholder-id] {
-  vertical-align: middle;
+:host[data-type='inlineHtml'] ::ng-deep {
+  br {
+    display: none;
+  }
+  div,
+  p,
+  ul,
+  ol,
+  li {
+    display: inline;
+  }
+  ul,
+  ol {
+    padding: 0;
+  }
+  li {
+    margin-left: 4px;
 
-  @include responsive-font(
-    $min-width: $mobile-media-width,
-    $max-width: $breakpoint-device-lg,
-    $min-val: $font-size-body,
-    $max-val: $font-size-big-body
-  );
+    &:before {
+      content: '• ';
+      font-size: 110%;
+    }
+  }
 }
