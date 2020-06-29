@@ -94,7 +94,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'rel',
     'src',
     'target',
-    'title',
+    // 'title',
     'valign',
     'style',
     'class',
@@ -163,6 +163,20 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   toolbarButtons: RTE_CONTROLS_DEF,
   toolbarInline: false,
   toolbarVisibleWithoutSelection: true,
+
+  shortcutsEnabled: [
+    'show',
+    'bold',
+    'italic',
+    'underline',
+    'strikeThrough',
+    'indent',
+    'outdent',
+    'undo',
+    'redo',
+    'insertImage',
+    'createLink',
+  ],
 
   pluginsEnabled: [
     'align',
