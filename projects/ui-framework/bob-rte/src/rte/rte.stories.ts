@@ -19,6 +19,7 @@ import { SelectGroupOption } from '../../../src/lib/lists/list.interface';
 import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
 import { RichTextEditorModule } from './rte.module';
 import { mockText } from '../../../src/lib/mock.const';
+import { xssMock } from '../../../src/lib/services/utils/xss.mock';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -33,7 +34,7 @@ const value = rteMockHtml;
 
 const template = `
   <b-rich-text-editor
-      [value]="value"
+      [value]="html === 'rich text' ? rteMockHtml : xssTest"
       [type]="type"
       [label]="label"
       [placeholder]="placeholder"
@@ -58,6 +59,26 @@ const template = `
   </b-rich-text-editor>
 `;
 
+const notesTemplate = `<b-rich-text-editor
+      [value]="value"
+      [label]="label"
+      [placeholder]="placeholder"
+      [controls]="controls"
+      [disableControls]="disableControls"
+      [mentionsList]="mentionsList"
+      [placeholderList]="placeholderList"
+      [minChars]="minChars"
+      [maxChars]="maxChars"
+      [minHeight]="minHeight"
+      [maxHeight]="maxHeight"
+      [disabled]="disabled"
+      [required]="required"
+      [hintMessage]="hintMessage"
+      [errorMessage]="errorMessage"
+      (changed)="change($event)"
+      (blurred)="blur($event)">
+</b-rich-text-editor>`;
+
 const storyTemplate = `
 <b-story-book-layout [title]="'Rich text editor'" style="background-color: rgb(237,237,237);">
   <div>
@@ -79,7 +100,7 @@ const note = `
 
 
   ~~~
-  ${template}
+  ${notesTemplate}
   ~~~
 
   #### Properties
@@ -180,6 +201,10 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        rteMockHtml: rteMockHtml,
+        xssTest: xssMock,
+        html: select('value', ['rich text', 'xss test'], 'rich text', 'Props'),
+
         type: select('type', values(RTEType), RTEType.primary, 'Props'),
 
         placeholder: text('placeholder', 'Compose an epic...', 'Props'),
@@ -211,7 +236,6 @@ story.add(
           'Props'
         ),
 
-        value: text('value', value, 'Props'),
         placeholderList: object<SelectGroupOption>(
           'options',
           placeholderMock,

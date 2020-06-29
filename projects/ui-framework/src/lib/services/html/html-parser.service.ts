@@ -44,6 +44,9 @@ export class HtmlParserHelpers {
 
     processed = processed
 
+      // empty divs
+      .replace(/<div[^>]*>\s+<\/div>/gi, '<div><br></div>')
+
       // empty tags
       .replace(/<([^\/>\s]+)[^>]*>\s*<\/\1>/gi, ' ')
 

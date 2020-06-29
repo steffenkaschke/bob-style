@@ -23,12 +23,14 @@ import {
   DOMhelpers,
   EMOJI_DATA,
   asArray,
+  SanitizerService,
 } from 'bob-style';
 
 import { RTEbaseElement } from './rte.abstract';
 import { PlaceholdersConverterService } from './placeholders.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RteUtilsService } from './rte-utils.service';
+import { RTEType } from './rte.enum';
 
 @Component({
   selector: 'b-rich-text-editor',
@@ -57,9 +59,19 @@ export class RichTextEditorComponent extends RTEbaseElement
     protected DOM: DOMhelpers,
     protected host: ElementRef,
     protected translate: TranslateService,
-    protected rteUtilsService: RteUtilsService
+    protected rteUtilsService: RteUtilsService,
+    protected sanitizer: SanitizerService
   ) {
-    super(cd, placeholdersConverter, parserService, DOM, host, translate, rteUtilsService);
+    super(
+      cd,
+      placeholdersConverter,
+      parserService,
+      DOM,
+      host,
+      translate,
+      rteUtilsService,
+      sanitizer
+    );
   }
 
   ngOnInit(): void {
@@ -269,6 +281,14 @@ export class RichTextEditorComponent extends RTEbaseElement
       },
 
       'commands.before': (cmd: string, param1: string, param2: string) => {
+        if (
+          this.type === RTEType.singleLine &&
+          cmd !== 'undo' &&
+          cmd !== 'redo'
+        ) {
+          return false;
+        }
+
         //
         // mentions toolbar button
         if (cmd === 'mentions') {
@@ -317,7 +337,7 @@ export class RichTextEditorComponent extends RTEbaseElement
           inputEl.removeAttribute('id');
           inputEl.blur();
         });
-        inputs[0].focus();
+        inputs[0]?.focus();
       },
     };
   }

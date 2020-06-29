@@ -37,6 +37,8 @@ import {
   SelectGroupOption,
   SingleSelectPanelComponent,
   stringyOrFail,
+  SanitizerService,
+  firstChanges,
 } from 'bob-style';
 
 import {
@@ -71,7 +73,8 @@ export abstract class RTEbaseElement extends BaseFormElement
     protected DOM: DOMhelpers,
     protected host: ElementRef,
     protected translate: TranslateService,
-    protected rteUtilsService: RteUtilsService
+    protected rteUtilsService: RteUtilsService,
+    protected sanitizer: SanitizerService
   ) {
     super(cd);
     this.baseValue = '';
@@ -126,9 +129,20 @@ export abstract class RTEbaseElement extends BaseFormElement
     RTEType.primary;
 
   public writeValue(value: any, onChanges = false): void {
-    if (value !== undefined) {
+    if (value !== undefined && value !== this.editorValue) {
       try {
-        this.editorValue = chainCall(this.inputTransformers, value);
+        this.editorValue = chainCall(
+          [
+            (html: string) => this.sanitizer.filterXSS(html),
+            (html: string) =>
+              this.parserService.removeElements(
+                html,
+                'img:not([src]), img[src=""], a:not([href]), a[href=""]'
+              ),
+            ...this.inputTransformers,
+          ],
+          value
+        );
       } catch (error) {
         console.error(`${this.getElementIDdata()} threw an error:\n`, error);
         return;
@@ -165,9 +179,14 @@ export abstract class RTEbaseElement extends BaseFormElement
     );
 
     if (hasChanges(changes, ['options'], true)) {
-      this.updateEditorOptions(
-        merge(RTE_OPTIONS_DEF, this.options, changes.options.currentValue)
-      );
+      this.updateEditorOptions(merge(RTE_OPTIONS_DEF, this.options));
+    }
+
+    if (firstChanges(changes, ['type']) && this.type === RTEType.singleLine) {
+      this.updateEditorOptions({
+        shortcutsEnabled: [],
+        pluginsEnabled: [],
+      });
     }
 
     if (

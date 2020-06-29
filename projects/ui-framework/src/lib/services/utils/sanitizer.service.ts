@@ -41,7 +41,7 @@ const SANITIZER_ALLOWED_ATTRS = [
   'rel',
   'src',
   'target',
-  'title',
+  // 'title',
   'valign',
   'style',
   'class',
@@ -107,23 +107,37 @@ export class SanitizerService {
         value,
         'img:not([src]), img[src=""], a:not([href]), a[href=""]'
       ),
+
     (value: string): string =>
       this.htmlParser.cleanupHtml(value, { removeNbsp: true }),
+
+    (value: string): string =>
+      this.htmlParser.enforceAttributes(value, {
+        a: {
+          target: '_blank',
+          rel: 'noopener noreferrer',
+        },
+        '[mention-employee-id],[class*="mention"]': {
+          target: null,
+        },
+      }),
+
     (value: string): string =>
       this.htmlParser.linkify(value, 'rel="noopener noreferrer"'),
   ];
 
-  public sanitizeHtml(html: string): string {
-    if (!html || !isString(html)) {
-      return html;
-    }
+  public filterXSS(html: string): string {
+    return !html || !isString(html)
+      ? html
+      : (
+          this.htmlSanitizer ||
+          (this.htmlSanitizer = new xss.FilterXSS(SANITIZER_FILTER_XSS_OPTIONS))
+        ).process(html);
+  }
 
-    return chainCall(
-      this.htmlSanitizeChain,
-      (
-        this.htmlSanitizer ||
-        (this.htmlSanitizer = new xss.FilterXSS(SANITIZER_FILTER_XSS_OPTIONS))
-      ).process(html)
-    );
+  public sanitizeHtml(html: string): string {
+    return !html || !isString(html)
+      ? html
+      : chainCall(this.htmlSanitizeChain, this.filterXSS(html));
   }
 }
