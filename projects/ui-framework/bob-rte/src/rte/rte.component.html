@@ -8,7 +8,7 @@
 <div class="bfe-wrap"
      [id]="id"
      [ngClass]="{focused: inputFocused}"
-     [ngStyle]="{'min-height': minHeight + 'px'}">
+     [ngStyle]="{'min-height': minHeight ? minHeight + 'px' : null}">
   <div #editor
        console="brte-wrap"
        [froalaEditor]="options"
