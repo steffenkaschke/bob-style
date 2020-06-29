@@ -1,4 +1,5 @@
 @import '../../../src/lib/style/common-imports';
+@import '../rte/rte.mixin';
 
 :host ::ng-deep {
   display: block;
@@ -76,26 +77,5 @@
 }
 
 :host[data-type='inlineHtml'] ::ng-deep {
-  br {
-    display: none;
-  }
-  div,
-  p,
-  ul,
-  ol,
-  li {
-    display: inline;
-  }
-  ul,
-  ol {
-    padding: 0;
-  }
-  li {
-    margin-left: 4px;
-
-    &:before {
-      content: '• ';
-      font-size: 110%;
-    }
-  }
+  @include inline-html;
 }

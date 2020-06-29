@@ -1,4 +1,5 @@
 @import '../../../src/lib/style/common-imports';
+@import './rte.mixin';
 
 :host {
   display: block;
@@ -25,6 +26,7 @@
   border: 1px solid $input-border-color;
   border-radius: $border-radius;
   transition: box-shadow 0.2s, border-color 0.2s;
+  min-height: $wrap-height;
 }
 
 .bfe-wrap:focus,
@@ -190,5 +192,70 @@
 
   .b-select-panel:after {
     display: none;
+  }
+}
+
+// Type - Single Line
+
+:host[data-type='singleLine'] ::ng-deep {
+  .bfe-wrap,
+  .fr-element.fr-view {
+    min-height: 0 !important;
+    display: flex;
+  }
+
+  .bfe-wrap {
+    align-items: center;
+  }
+
+  .fr-box.fr-basic {
+    min-width: 0;
+    flex-grow: 1;
+  }
+
+  .fr-element.fr-view {
+    padding: 0 $input-padding;
+    max-height: $input-height;
+    align-items: center;
+
+    border-top-left-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+
+    @include inline-html;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow-y: hidden;
+
+    --rte-font-size-normal: #{$font-size-body};
+    --rte-font-size-large: #{$font-size-body};
+    --rte-font-size-xlarge: #{font-size-body};
+  }
+
+  .fr-placeholder {
+    bottom: 0;
+  }
+
+  .fr-toolbar {
+    display: none;
+  }
+
+  .placeholder-select {
+    position: static;
+    margin-left: auto;
+  }
+
+  .placeholder-panel-trigger {
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-bottom-right-radius: $border-radius;
+
+    .large.b-icon-large {
+      width: $input-height;
+      height: $input-height;
+
+      &:before {
+        font-size: 24px;
+      }
+    }
   }
 }

@@ -130,7 +130,7 @@ export abstract class RTEbaseElement extends BaseFormElement
       try {
         this.editorValue = chainCall(this.inputTransformers, value);
       } catch (error) {
-        console.error(`${ this.getElementIDdata() } threw an error:\n`, error);
+        console.error(`${this.getElementIDdata()} threw an error:\n`, error);
         return;
       }
     }
@@ -181,8 +181,8 @@ export abstract class RTEbaseElement extends BaseFormElement
           placeholderText:
             this.hideLabelOnFocus && this.label
               ? !this.required
-              ? this.label
-              : this.label + '*'
+                ? this.label
+                : this.label + '*'
               : this.placeholder || ' ',
         },
         () => {
@@ -197,15 +197,19 @@ export abstract class RTEbaseElement extends BaseFormElement
       });
     }
 
-    if (hasChanges(changes, ['minHeight', 'maxHeight'])) {
+    if (hasChanges(changes, ['minHeight', 'maxHeight', 'type'])) {
+      this.minHeight = this.type !== RTEType.singleLine && this.minHeight;
+
       this.updateEditorOptions(
         {
-          heightMin: this.minHeight
-            ? this.minHeight - RTE_TOOLBAR_HEIGHT
-            : null,
-          heightMax: this.maxHeight
-            ? this.maxHeight - RTE_TOOLBAR_HEIGHT
-            : null,
+          heightMin:
+            this.minHeight && this.type !== RTEType.singleLine
+              ? this.minHeight - RTE_TOOLBAR_HEIGHT
+              : null,
+          heightMax:
+            this.maxHeight && this.type !== RTEType.singleLine
+              ? this.maxHeight - RTE_TOOLBAR_HEIGHT
+              : null,
         },
         () => {
           this.editor.size.refresh();
@@ -213,11 +217,13 @@ export abstract class RTEbaseElement extends BaseFormElement
       );
       this.DOM.setCssProps(this.host.nativeElement, {
         '--popup-max-height':
-          Math.max(150, this.maxHeight || RTE_MAXHEIGHT_DEF) + 'px',
+          this.type !== RTEType.singleLine
+            ? Math.max(150, this.maxHeight || RTE_MAXHEIGHT_DEF) + 'px'
+            : null,
       });
     }
 
-    if (hasChanges(changes, ['controls', 'disableControls'])) {
+    if (hasChanges(changes, ['controls', 'disableControls', 'type'])) {
       this.initControls();
       this.updateToolbar();
       this.cntrlsInited = true;
@@ -277,18 +283,18 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
 
     this.DOM.setCssProps(this.host.nativeElement, {
-      '--translation-small': `'(${ this.translate.instant(
+      '--translation-small': `'(${this.translate.instant(
         'bob-style.rte.font-size.small'
-      ) })'`,
-      '--translation-normal': `'(${ this.translate.instant(
+      )})'`,
+      '--translation-normal': `'(${this.translate.instant(
         'bob-style.rte.font-size.normal'
-      ) })'`,
-      '--translation-large': `'(${ this.translate.instant(
+      )})'`,
+      '--translation-large': `'(${this.translate.instant(
         'bob-style.rte.font-size.large'
-      ) })'`,
-      '--translation-huge': `'(${ this.translate.instant(
+      )})'`,
+      '--translation-huge': `'(${this.translate.instant(
         'bob-style.rte.font-size.huge'
-      ) })'`,
+      )})'`,
     });
   }
 
@@ -307,6 +313,11 @@ export abstract class RTEbaseElement extends BaseFormElement
   }
 
   private initControls(): void {
+    if (this.type === RTEType.singleLine) {
+      this.controls = [BlotType.placeholder];
+      return;
+    }
+
     if (this.controls.includes(BlotType.list)) {
       this.controls = joinArrays(this.controls, [BlotType.ul, BlotType.ol]);
     }
@@ -450,7 +461,7 @@ export abstract class RTEbaseElement extends BaseFormElement
 
   protected updateToolbar(): void {
     if (this.toolbarButtons) {
-      if (isEmptyArray(this.controls)) {
+      if (isEmptyArray(this.controls) || this.type === RTEType.singleLine) {
         this.editor.toolbar.hide();
       } else {
         this.toolbarButtons.forEach((b) => {
