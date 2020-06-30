@@ -175,8 +175,8 @@ describe('DatepickerComponent', () => {
     });
 
     it('should set date for MatDatepicker', () => {
-      expect(isDate(picker._selected)).toBeTruthy();
-      expect(dateToString(picker._selected)).toEqual('2019-09-15');
+      expect(isDate(picker['_selected'])).toBeTruthy();
+      expect(dateToString(picker['_selected'])).toEqual('2019-09-15');
     });
 
     it('should select date in MatDatepicker panel', () => {
@@ -210,8 +210,8 @@ describe('DatepickerComponent', () => {
     });
 
     it('should pass properly entered date to MatDatepicker', () => {
-      expect(isDate(picker._selected)).toBeTruthy();
-      expect(dateToString(picker._selected)).toEqual('2012-12-24');
+      expect(isDate(picker['_selected'])).toBeTruthy();
+      expect(dateToString(picker['_selected'])).toEqual('2012-12-24');
     });
   });
 

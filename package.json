@@ -45,6 +45,7 @@
     "ngx-smooth-dnd": "^0.4.1",
     "rxjs": "^6.5.4",
     "tributejs": "^4.1.1",
+    "tslib": "^2.0.0",
     "xss": "^1.0.7",
     "zone.js": "~0.10.2"
   },
@@ -63,7 +64,7 @@
     "@storybook/addons": "^5.3.19",
     "@storybook/angular": "^5.3.19",
     "@storybook/storybook-deployer": "^2.8.3",
-    "@types/jasmine": "^3.5.1",
+    "@types/jasmine": "^3.5.11",
     "@types/jasminewd2": "^2.0.8",
     "@types/node": "^12.12.39",
     "babel-loader": "^8.0.6",
@@ -85,7 +86,7 @@
     "tsconfig-paths": "^3.9.0",
     "tslint": "~6.1.0",
     "typescript": "~3.9.5",
-    "ng-mocks": "^9.2.0"
+    "ng-mocks": "^9.6.3"
   },
   "publishConfig": {
     "registry": "https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/"
