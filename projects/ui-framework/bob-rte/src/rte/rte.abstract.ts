@@ -425,6 +425,11 @@ export abstract class RTEbaseElement extends BaseFormElement
         HtmlParserHelpers.prototype.cleanupHtml(value, {
           removeNbsp: true,
         }),
+
+      (value: string): string =>
+        this.type === RTEType.singleLine
+          ? this.parserService.getPlainText(value)
+          : value,
     ];
 
     if (this.placeholdersEnabled()) {
