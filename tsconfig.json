@@ -1,42 +1,23 @@
+/*
+  This is a "Solution Style" tsconfig.json file, and is used by editors and TypeScript’s language server to improve development experience.
+  It is not intended to be used to perform a compilation.
+
+  To learn more about this file see: https://angular.io/config/solution-tsconfig.
+*/
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./",
-    "downlevelIteration": true,
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2018",
-      "dom"
-    ],
-    "paths": {
-      "bob-style": [
-        "projects/ui-framework/src/public_api.ts"
-      ],
-      "bob-style/bob-charts": [
-        "projects/ui-framework/bob-charts/public_api.ts"
-      ],
-      "bob-style/bob-table": [
-        "projects/ui-framework/bob-table/public_api.ts"
-      ]
+  "files": [],
+  "references": [
+    {
+      "path": "./projects/ui-framework/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/ui-framework/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/app-test/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/app-test/tsconfig.spec.json"
     }
-  },
-  "angularCompilerOptions": {
-    "skipTemplateCodegen": true,
-    "strictMetadataEmit": true,
-    "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true,
-    "enableResourceInlining": true,
-    "enableIvy": false
-  },
+  ]
 }
