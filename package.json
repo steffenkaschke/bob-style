@@ -17,7 +17,7 @@
     "package": "npm run build && npm run copy-style && npm run npm_pack",
     "copy-style": "cpx \"projects/ui-framework/src/lib/style/**/*\" \"dist/ui-framework/style/\"",
     "start-app-test": "ng serve --project=app-test",
-    "postinstall": "npm run schematics:install"
+    "postinstall": "ngcc"
   },
   "private": false,
   "dependencies": {
@@ -45,7 +45,6 @@
     "ngx-smooth-dnd": "^0.4.1",
     "rxjs": "^6.5.4",
     "tributejs": "^4.1.1",
-    "tslib": "^1.10.0",
     "xss": "^1.0.7",
     "zone.js": "~0.10.2"
   },
