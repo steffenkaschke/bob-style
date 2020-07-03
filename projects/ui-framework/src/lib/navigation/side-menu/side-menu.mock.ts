@@ -38,6 +38,7 @@ export const sideMenuMock2: SideMenuOption[] = makeArray(3)
 
       textIcon: index === 0 ? Icons.person_reports : Icons.person_manager,
       textIconTooltip: index === 0 ? 'Raising to the top' : 'Going down',
+      textIconTooltipWrap: 'normal',
       textIconPosition:
         index === 0 ? IconPosition.label_after : IconPosition.value_after,
     },

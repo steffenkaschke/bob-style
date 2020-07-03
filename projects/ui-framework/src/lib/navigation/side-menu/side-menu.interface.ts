@@ -6,6 +6,7 @@ import { IconPosition } from '../../typography/label-value/label-value.enum';
 export interface SideMenuOptionAvatar extends Avatar {
   textIcon?: Icons;
   textIconTooltip?: string;
+  textIconTooltipWrap?: string;
   textIconPosition?: IconPosition;
 }
 export interface SideMenuOption {

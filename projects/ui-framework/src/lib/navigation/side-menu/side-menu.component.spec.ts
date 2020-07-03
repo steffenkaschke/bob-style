@@ -94,5 +94,8 @@ describe('SideMenuComponent', () => {
     it('should display text icon tooltip', () => {
       expect(iconEls[0].getAttribute('data-tooltip')).toBeTruthy();
     });
+    it('should display icon tooltip wrap', () => {
+      expect(iconEls[0].getAttribute('data-tooltip-wrap')).toBeTruthy();
+    });
   });
 });

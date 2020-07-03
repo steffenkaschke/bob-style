@@ -51,6 +51,9 @@ describe('IconElementComponent', () => {
     it('Should put tooltip text in attribute', () => {
       expect(componentElement.dataset.tooltip).toEqual('tooltip text');
     });
+    it('Should put tooltip wrap in attribute', () => {
+      expect(componentElement.dataset.tooltipWrap).toEqual('normal');
+    });
   });
 
   describe('attributes', () => {
