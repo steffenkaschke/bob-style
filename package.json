@@ -86,7 +86,7 @@
     "tsconfig-paths": "^3.9.0",
     "tslint": "~6.1.0",
     "typescript": "~3.9.5",
-    "ng-mocks": "^9.6.3"
+    "ng-mocks": "^9.6.4"
   },
   "publishConfig": {
     "registry": "https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/"
