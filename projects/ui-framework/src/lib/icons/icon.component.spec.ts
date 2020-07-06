@@ -4,6 +4,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IconColor, Icons, IconSize, IconType } from './icons.enum';
 import { By } from '@angular/platform-browser';
 import { simpleChange } from '../services/utils/test-helpers';
+import { TooltipClass } from '../popups/tooltip/tooltip.enum';
 
 describe('IconElementComponent', () => {
   let fixture: ComponentFixture<IconComponent>;
@@ -51,8 +52,13 @@ describe('IconElementComponent', () => {
     it('Should put tooltip text in attribute', () => {
       expect(componentElement.dataset.tooltip).toEqual('tooltip text');
     });
-    it('Should put tooltip wrap in attribute', () => {
-      expect(componentElement.dataset.tooltipWrap).toEqual('normal');
+    it('Should put no-wrap class', () => {
+      component.ngOnChanges(
+        simpleChange({
+           tooltipClass: TooltipClass.NoWrap
+         })
+      );
+      expect(component.iconClass).toContain(TooltipClass.NoWrap);
     });
   });
 
