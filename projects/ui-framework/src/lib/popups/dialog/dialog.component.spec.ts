@@ -251,7 +251,7 @@ describe('DialogComponent', () => {
         expect(okButtonEl.nativeElement.innerText).toContain('confirm');
       });
 
-      it('should remove confirmation when clicking cancel and not close dialog', () => {
+      it('should remove confirmation when clicking cancel and not close dialog', fakeAsync(() => {
         const okButton = fixture.debugElement.query(By.css('.ok-button'))
           .componentInstance;
         okButton.clicked.emit();
@@ -265,12 +265,13 @@ describe('DialogComponent', () => {
         ).componentInstance;
         cancelButton.clicked.emit();
         fixture.detectChanges();
+        tick(1000);
         confirmationMessage = fixture.debugElement.query(
           By.css('.confirmation-message')
         );
         expect(confirmationMessage).toBeFalsy();
         expect(spyMatDialogRef.close).not.toHaveBeenCalled();
-      });
+      }));
 
       it('should invoke ok button action method on second click', () => {
         spyOn(component.dialogButtons.ok, 'action');

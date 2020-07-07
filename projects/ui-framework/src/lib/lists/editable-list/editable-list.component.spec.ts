@@ -101,7 +101,7 @@ describe('EditableListComponent', () => {
       component.maxChars = 10;
       triggerChanges();
       const input = fixture.debugElement.query(By.css('.bel-item-input'));
-      expect(input.attributes.maxLength).toEqual('10');
+      expect(input.attributes.maxlength).toEqual('10');
     });
   });
 

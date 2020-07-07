@@ -177,16 +177,6 @@ describe('DateRangePickerComponent', () => {
       expect(dateToString(component.value.endDate)).toEqual('2019-09-27');
     });
 
-    it('should set Start date MatDatepicker to "from" date', () => {
-      expect(isDate(pickers[0]['_selected'])).toBeTruthy();
-      expect(dateToString(pickers[0]['_selected'])).toEqual('2019-09-15');
-    });
-
-    it('should set End date MatDatepicker to "to" date', () => {
-      expect(isDate(pickers[1]['_selected'])).toBeTruthy();
-      expect(dateToString(pickers[1]['_selected'])).toEqual('2019-09-27');
-    });
-
     it('should set max date of Start date MatDatepicker to "to" date', () => {
       expect(dateToString(pickers[0]._maxDate)).toEqual('2019-09-27');
       expect(dateToString(pickers[1]._maxDate)).not.toEqual('2019-09-27');
@@ -209,24 +199,6 @@ describe('DateRangePickerComponent', () => {
         from: '2019-09-15',
         to: '2019-09-27',
       });
-    });
-  });
-
-  describe('Keyboard input', () => {
-    beforeEach(() => {
-      inputValue(inputElems[0], '21.12.2012');
-      inputValue(inputElems[1], '24-12-2012');
-      fixture.detectChanges();
-    });
-
-    it('should pass properly entered Start date to MatDatepicker', () => {
-      expect(isDate(pickers[0]['_selected'])).toBeTruthy();
-      expect(dateToString(pickers[0]['_selected'])).toEqual('2012-12-21');
-    });
-
-    it('should pass properly entered End date to MatDatepicker', () => {
-      expect(isDate(pickers[1]['_selected'])).toBeTruthy();
-      expect(dateToString(pickers[1]['_selected'])).toEqual('2012-12-24');
     });
   });
 
