@@ -128,7 +128,7 @@ describe('LightboxService', () => {
       const lightContainerEl = overlayElement.querySelector(
         'b-lightbox'
       ) as HTMLElement;
-      expect(lightContainerEl.className).toEqual('type-image fill-cover');
+      expect(lightContainerEl.className).toEqual('fill-cover type-image');
       lightboxService.closeLightbox();
     });
 
