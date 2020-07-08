@@ -3,7 +3,10 @@ import { isString, chainCall } from './functional-utils';
 import { HtmlParserHelpers } from '../html/html-parser.service';
 
 import * as xss from 'xss';
-import { ICSSFilter, IFilterXSSOptions } from 'xss';
+
+export interface FilterXSSOptions extends XSS.IFilterXSSOptions {
+  css?: { whiteList: { [key: string]: boolean } };
+}
 
 const SANITIZER_ALLOWED_TAGS = [
   'a',
@@ -68,9 +71,9 @@ const SANITIZER_HTML_ALLOWED_ATTRS_TESTS: RegExp[] = SANITIZER_ALLOWED_ATTRS.red
   []
 );
 
-const SANITIZER_FILTER_XSS_OPTIONS: IFilterXSSOptions = {
+export const SANITIZER_FILTER_XSS_OPTIONS: FilterXSSOptions = {
   whiteList: SANITIZER_ALLOWED_TAGS.reduce((listObj, tag) => {
-    listObj[tag] = SANITIZER_ALLOWED_ATTRS;
+    listObj[tag] = SANITIZER_ALLOWED_ATTRS.slice();
     return listObj;
   }, {}),
 
@@ -98,7 +101,7 @@ const SANITIZER_FILTER_XSS_OPTIONS: IFilterXSSOptions = {
 export class SanitizerService {
   constructor(private htmlParser: HtmlParserHelpers) {}
 
-  private htmlSanitizer: ICSSFilter;
+  private htmlSanitizer: XSS.ICSSFilter;
 
   private htmlSanitizeChain = [
     //
@@ -120,8 +123,9 @@ export class SanitizerService {
           target: '_blank',
           rel: 'noopener noreferrer',
         },
-        '[mention-employee-id],[class*="mention"]': {
+        '[href*="/employee-profile/"]': {
           target: null,
+          rel: null,
         },
       }),
 
@@ -129,18 +133,26 @@ export class SanitizerService {
       this.htmlParser.linkify(value, 'rel="noopener noreferrer"'),
   ];
 
-  public filterXSS(html: string): string {
+  public filterXSS(
+    html: string,
+    options: Partial<FilterXSSOptions> = null
+  ): string {
     return !html || !isString(html)
       ? html
+      : options
+      ? xss.filterXSS(html, { ...SANITIZER_FILTER_XSS_OPTIONS, ...options })
       : (
           this.htmlSanitizer ||
           (this.htmlSanitizer = new xss.FilterXSS(SANITIZER_FILTER_XSS_OPTIONS))
         ).process(html);
   }
 
-  public sanitizeHtml(html: string): string {
+  public sanitizeHtml(
+    html: string,
+    options: Partial<FilterXSSOptions> = null
+  ): string {
     return !html || !isString(html)
       ? html
-      : chainCall(this.htmlSanitizeChain, this.filterXSS(html));
+      : chainCall(this.htmlSanitizeChain, this.filterXSS(html, options));
   }
 }
