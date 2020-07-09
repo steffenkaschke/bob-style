@@ -16,31 +16,31 @@ export class AgGridWrapper {
   }
 
   public getDisplayedRowCount(): number {
-    return this.gridOptions.api.getDisplayedRowCount();
+    return this.gridOptions?.api?.getDisplayedRowCount();
   }
 
   public addRows(rows: any[]): void {
-    this.gridOptions.api.updateRowData({ add: rows });
+    this.gridOptions?.api?.updateRowData({ add: rows });
   }
 
   public filterRows(filterQuery: string): void {
-    this.gridOptions.api.setQuickFilter(filterQuery);
+    this.gridOptions?.api?.setQuickFilter(filterQuery);
   }
 
   public resetFilter(): void {
-    this.gridOptions.api.resetQuickFilter();
+    this.gridOptions?.api?.resetQuickFilter();
   }
 
   public removeRows(rows: any[]): void {
-    this.gridOptions.api.updateRowData({ remove: rows });
+    this.gridOptions?.api?.updateRowData({ remove: rows });
   }
 
   public updateRows(rowsData: any[]): void {
-    this.gridOptions.api.updateRowData({ update: rowsData });
+    this.gridOptions?.api?.updateRowData({ update: rowsData });
   }
 
   public getRow(rowIndex: string): RowNode {
-    return this.gridOptions.api.getRowNode(rowIndex);
+    return this.gridOptions?.api?.getRowNode(rowIndex);
   }
 
   public deselectAll(): void {
