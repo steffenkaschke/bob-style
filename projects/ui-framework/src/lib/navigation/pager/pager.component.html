@@ -7,6 +7,7 @@
 </span>
 
 <div class="bpgr-page-buttons"
+     *ngIf="totalPages !== 1"
      role="navigation"
      (click.outside-zone)="onPageClick($event)">
 
