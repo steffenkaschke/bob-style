@@ -13,9 +13,13 @@ import { splitArrayToChunks } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
 import { throttleTime, filter, tap } from 'rxjs/operators';
 import { outsideZone } from '../../services/utils/rxjs.operators';
-import { InputSubject } from '../../services/utils/decorators';
-import { BehaviorSubject, merge, Subscription, Subject } from 'rxjs';
-import { WindowRef, WindowLike } from '../../services/utils/window-ref.service';
+import { InputObservable } from '../../services/utils/decorators';
+import { merge, Subscription, Subject, of, Observable } from 'rxjs';
+import {
+  WindowRef,
+  WindowLike,
+  ResizeObserverInstance,
+} from '../../services/utils/window-ref.service';
 import { MasonryService } from './masonry.service';
 import { MASONRY_CONFIG_DEF, MASONRY_ROW_DIVISION } from './masonry.const';
 
@@ -39,9 +43,9 @@ export class MasonryLayoutComponent
   }
 
   // tslint:disable-next-line: no-input-rename
-  @InputSubject({ ...MASONRY_CONFIG_DEF })
+  @InputObservable({ ...MASONRY_CONFIG_DEF })
   @Input('config')
-  public config$: BehaviorSubject<MasonryConfig>;
+  public config$: Observable<MasonryConfig>;
 
   private changeDetection$: Subject<void> = new Subject<void>();
 
@@ -49,7 +53,8 @@ export class MasonryLayoutComponent
   private hostEl: HTMLElement;
   private config: MasonryConfig;
   private state: MasonryState = {} as MasonryState;
-  private observer: MutationObserver;
+  private mutationObserver: MutationObserver;
+  private resizeObserver: ResizeObserverInstance;
   private updater: Subscription;
   private animationRequestID;
 
@@ -61,7 +66,10 @@ export class MasonryLayoutComponent
         })
       ),
       this.changeDetection$,
-      this.utilsService.getResizeEvent().pipe(outsideZone(this.zone))
+
+      this.nativeWindow.ResizeObserver
+        ? of(null)
+        : this.utilsService.getResizeEvent().pipe(outsideZone(this.zone))
     )
       .pipe(
         throttleTime(50, undefined, {
@@ -82,21 +90,33 @@ export class MasonryLayoutComponent
         });
       });
 
-    this.observer = new MutationObserver(() => {
-      this.state = {} as MasonryState;
-      this.changeDetection$.next();
-    });
+    if (this.nativeWindow.ResizeObserver) {
+      this.resizeObserver = new this.nativeWindow.ResizeObserver(() => {
+        this.state = {} as MasonryState;
+        this.changeDetection$.next();
+      });
 
-    this.observer.observe(this.hostEl, {
-      childList: true,
-      subtree: true,
-      characterData: true,
-      attributes: false,
-    });
+      this.resizeObserver.observe(this.hostEl);
+    }
+
+    if (this.nativeWindow.MutationObserver) {
+      this.mutationObserver = new MutationObserver(() => {
+        this.state = {} as MasonryState;
+        this.changeDetection$.next();
+      });
+
+      this.mutationObserver.observe(this.hostEl, {
+        childList: true,
+        subtree: true,
+        characterData: true,
+        attributes: false,
+      });
+    }
   }
 
   ngOnDestroy(): void {
-    this.observer?.disconnect();
+    this.resizeObserver?.disconnect();
+    this.mutationObserver?.disconnect();
     this.updater?.unsubscribe();
     if (this.animationRequestID) {
       this.nativeWindow.cancelAnimationFrame(this.animationRequestID);
