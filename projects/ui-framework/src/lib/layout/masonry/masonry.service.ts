@@ -17,6 +17,9 @@ export class MasonryService {
     config: MasonryConfig,
     hardcore = false
   ): void {
+    if (!element) {
+      return;
+    }
     element.style.removeProperty('grid-row-end');
 
     let contentHeight = 0;
