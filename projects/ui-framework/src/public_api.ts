@@ -526,6 +526,11 @@ export { TableCardCellComponent } from './lib/table/card-table/table-card-cell/t
 export { TableCardComponent } from './lib/table/card-table/table-card/table-card.component';
 export * from './lib/table/card-table/card-table.interface';
 
+// Masonry
+export { MasonryModule } from './lib/layout/masonry/masonry.module';
+export { MasonryComponent } from './lib/layout/masonry/masonry.component';
+export * from './lib/layout/masonry/masonry.interface';
+
 /*
  * Misc
  */
@@ -561,13 +566,15 @@ export { ComponentRendererModule } from './lib/services/component-renderer/compo
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';
 export { RenderedComponent } from './lib/services/component-renderer/component-renderer.interface';
 // RxJs operators
-export { outsideZone, insideZone } from './lib/services/utils/rxjs.operators';
+export * from './lib/services/utils/rxjs.operators';
 // Event Manager Plugins
 export {
   EventManagerPlugins,
   OutsideZonePlugin,
   MultiEventPlugin,
 } from './lib/services/utils/eventManager.plugins';
+// Decorators
+export * from './lib/services/utils/decorators';
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
 export * from './lib/eye-candy/floating-avatars/floating-avatars.interface';
