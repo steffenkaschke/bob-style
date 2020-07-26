@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { InputSubject } from '../../services/utils/decorators';
+import { InputObservable } from '../../services/utils/decorators';
 import { map, delay, tap } from 'rxjs/operators';
 import { randomNumber } from '../../services/utils/functional-utils';
 import { mockImage } from '../../mock.const';
@@ -53,7 +53,7 @@ import { mockImage } from '../../mock.const';
 })
 export class MasonryTestComponent implements OnInit {
   // tslint:disable-next-line: no-input-rename
-  @InputSubject(undefined)
+  @InputObservable(undefined)
   @Input('card')
   public card$: BehaviorSubject<{ title: string; text: string }>;
 
