@@ -387,6 +387,19 @@ export const joinWithAnd = (arr: string[], translation = 'and'): string => {
   return start ? `${start} ${translation} ${end}` : end;
 };
 
+export const splitArrayToChunks = <T = any>(
+  array: T[],
+  chunkLength: number
+): T[][] => {
+  const temparray: T[][] = [];
+
+  for (let i = 0, j = array.length; i < j; i += chunkLength) {
+    temparray.push(array.slice(i, i + chunkLength));
+  }
+
+  return temparray;
+};
+
 // ----------------------
 // MAPS
 // ----------------------

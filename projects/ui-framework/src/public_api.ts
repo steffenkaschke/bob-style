@@ -527,8 +527,8 @@ export { TableCardComponent } from './lib/table/card-table/table-card/table-card
 export * from './lib/table/card-table/card-table.interface';
 
 // Masonry
-export { MasonryModule } from './lib/layout/masonry/masonry.module';
-export { MasonryComponent } from './lib/layout/masonry/masonry.component';
+export { MasonryLayoutModule } from './lib/layout/masonry/masonry.module';
+export { MasonryLayoutComponent } from './lib/layout/masonry/masonry.component';
 export * from './lib/layout/masonry/masonry.interface';
 
 /*

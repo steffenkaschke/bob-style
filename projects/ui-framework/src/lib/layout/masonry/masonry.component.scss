@@ -1,13 +1,19 @@
 $b-masonry-gap-def: 16px;
-$b-masonry-row-devision: 4px;
+$b-masonry-row-division: 1px;
 
 :host {
+  width: 100%;
+  flex-grow: 1;
+  text-align: left;
   display: grid !important;
   grid-gap: var(--masonry-gap, #{$b-masonry-gap-def});
   grid-template-columns: repeat(
     auto-fill,
     minmax(var(--masonry-col-width, 30%), 1fr)
   );
-  grid-auto-rows: var(--masonry-row-div, #{$b-masonry-row-devision}px);
-  text-align: left;
+  grid-auto-rows: var(--masonry-row-div, #{$b-masonry-row-division}px);
+
+  & ::ng-deep > * {
+    overflow: hidden;
+  }
 }

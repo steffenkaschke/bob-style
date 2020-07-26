@@ -3,34 +3,33 @@ import { text, number, withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { MasonryModule } from './masonry.module';
+import { MasonryLayoutModule } from './masonry.module';
 import { masonryCardsMock } from './masonry.mock';
 import { CardsModule } from '../../cards/cards.module';
+import { MasonryTestModule } from './masonry-test.component';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
-const template1 = `<b-masonry [config]="{
+const template1 = `<b-masonry-layout [config]="{
       columns: columns,
       columnWidth: columnWidth,
       gap: gap
     }">
 
-    <div *ngFor="let card of cards" style="padding: 16px; border: 1px solid grey;">
-      <h3 style="margin-top:0;">{{card.title}}</h3>
-      <p style="margin:0;">{{card.text}}</p>
-    </div>
+    <b-masonry-test-card *ngFor="let card of cards" [card]="card">
+    </b-masonry-test-card>
 
-</b-masonry>`;
+</b-masonry-layout>`;
 
-const templateForNotes = `<b-masonry [config]="config">
+const templateForNotes = `<b-masonry-layout [config]="config">
     <b-card *ngFor="let card of cards" [card]="card">
     </b-card>
-</b-masonry>`;
+</b-masonry-layout>`;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Masonry'">
+<b-story-book-layout [title]="'Masonry Layout'">
 
   ${template1}
 
@@ -40,19 +39,31 @@ const storyTemplate = `
 const note = `
   ## Masonry Layout
   #### Module
-  *MasonryModule*
-
-  #### Properties
-  Name | Type | Description | Default value
-  --- | --- | --- | ---
+  *MasonryLayoutModule*
 
   ~~~
   ${templateForNotes}
   ~~~
+
+  #### Properties
+  Name | Type | Description
+  --- | --- | ---
+  [config] | MasonryConfig | defaults to 3 columns with 16px gap
+
+
+  #### interface: MasonryConfig
+  Name | Type | Description | Default value
+  --- | --- | --- | ---
+  columns | number | fixed number of equal-width colums in rows | 3
+  columnWidth | number | min-width of column (number of columns in row will be automatic)<br>\
+    Note: If columns prop is provided, columnWidth is ignored. | &nbsp;
+  gap | number | spacing between cells | 16
+
+
 `;
 
 story.add(
-  'Masonry',
+  'Masonry Layout',
   () => {
     return {
       template: storyTemplate,
@@ -66,8 +77,9 @@ story.add(
         imports: [
           BrowserAnimationsModule,
           StoryBookLayoutModule,
-          MasonryModule,
+          MasonryLayoutModule,
           CardsModule,
+          MasonryTestModule,
         ],
       },
     };
