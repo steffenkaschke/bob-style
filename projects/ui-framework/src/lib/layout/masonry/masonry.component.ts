@@ -9,25 +9,15 @@ import {
 } from '@angular/core';
 import { MasonryConfig, MasonryState } from './masonry.interface';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import {
-  isNumber,
-  splitArrayToChunks,
-} from '../../services/utils/functional-utils';
+import { splitArrayToChunks } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
 import { throttleTime, filter, tap } from 'rxjs/operators';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { InputSubject } from '../../services/utils/decorators';
 import { BehaviorSubject, merge, Subscription, Subject } from 'rxjs';
 import { WindowRef, WindowLike } from '../../services/utils/window-ref.service';
-
-const MASONRY_GAP_DEF = 16;
-const MASONRY_COLS_DEF = 3;
-const MASONRY_ROW_DIVISION = 1;
-
-const MASONRY_CONFIG_DEF: MasonryConfig = {
-  columns: MASONRY_COLS_DEF,
-  gap: MASONRY_GAP_DEF,
-};
+import { MasonryService } from './masonry.service';
+import { MASONRY_CONFIG_DEF, MASONRY_ROW_DIVISION } from './masonry.const';
 
 @Component({
   selector: 'b-masonry-layout',
@@ -41,7 +31,8 @@ export class MasonryLayoutComponent
     private utilsService: UtilsService,
     private DOM: DOMhelpers,
     private host: ElementRef,
-    private zone: NgZone
+    private zone: NgZone,
+    private service: MasonryService
   ) {
     this.hostEl = this.host.nativeElement;
     this.nativeWindow = this.windowRef.nativeWindow;
@@ -66,7 +57,7 @@ export class MasonryLayoutComponent
     this.updater = merge(
       this.config$.pipe(
         tap((config: MasonryConfig) => {
-          this.config = this.processConfig(config);
+          this.config = this.service.processConfig(config);
         })
       ),
       this.changeDetection$,
@@ -78,7 +69,11 @@ export class MasonryLayoutComponent
           trailing: true,
         }),
         filter(() => {
-          return this.stateChanged();
+          return this.service.stateChanged(
+            this.hostEl,
+            this.config,
+            this.state
+          );
         })
       )
       .subscribe(() => {
@@ -149,27 +144,7 @@ export class MasonryLayoutComponent
       }
 
       elementChunks[currentChunkIndex].forEach((el: HTMLElement) => {
-        el.style.removeProperty('grid-row-end');
-
-        let contentHeight = 0;
-
-        if (el.children.length === 1) {
-          const elStyle = getComputedStyle(el);
-          contentHeight =
-            (el.children[0] as HTMLElement).scrollHeight +
-            (parseFloat(elStyle.paddingTop) +
-              parseFloat(elStyle.paddingBottom) +
-              parseFloat(elStyle.borderTopWidth) +
-              parseFloat(elStyle.borderBottomWidth));
-        }
-
-        let rowSpan =
-          (Math.max(el.scrollHeight, el.offsetHeight, contentHeight) +
-            this.config.gap) /
-          (MASONRY_ROW_DIVISION + this.config.gap);
-        rowSpan = contentHeight ? Math.round(rowSpan) : Math.ceil(rowSpan);
-
-        el.style.gridRowEnd = 'span ' + rowSpan;
+        this.service.setElementRowSpan(el, this.config);
       });
 
       ++currentChunkIndex;
@@ -182,30 +157,5 @@ export class MasonryLayoutComponent
     this.animationRequestID = this.nativeWindow.requestAnimationFrame(() => {
       setElementsRowSpan();
     });
-  }
-
-  private processConfig(config: MasonryConfig): MasonryConfig {
-    if (!config) {
-      return { ...MASONRY_CONFIG_DEF };
-    }
-
-    config.gap = isNumber(config.gap) ? config.gap : MASONRY_GAP_DEF;
-    config.columns = isNumber(config.columns)
-      ? config.columns || null
-      : MASONRY_COLS_DEF;
-    config.columnWidth = isNumber(config.columnWidth)
-      ? config.columnWidth || null
-      : null;
-
-    return config;
-  }
-
-  private stateChanged(): boolean {
-    return Boolean(
-      !this.state ||
-        this.state.config !== this.config ||
-        this.state.childrenCount !== this.hostEl.children.length ||
-        Math.abs(this.state.hostWidth - this.hostEl.offsetWidth) > 20
-    );
   }
 }
