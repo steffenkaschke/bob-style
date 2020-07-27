@@ -20,7 +20,6 @@ import {
   GridColumnsChangedEvent,
   GridOptions,
   GridReadyEvent,
-  GridApi,
 } from 'ag-grid-community';
 import { cloneDeep, get, has, map } from 'lodash';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
@@ -32,9 +31,10 @@ import {
   ColumnsOrderChangedEvent,
   RowClickedEvent,
   SortChangedEvent,
+  TablePagerState,
   TableStyleConfig,
 } from './table.interface';
-import { PagerConfig, PAGER_CONFIG_DEF } from 'bob-style';
+import { hasChanges, PagerConfig, PAGER_CONFIG_DEF } from 'bob-style';
 
 const CLOSE_BUTTON_DIAMETER = 20;
 const CLOSE_MARGIN_OFFSET = 6;
@@ -109,7 +109,8 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   gridColumnDefs: ColumnDef[];
 
   private columns: string[];
-  private gridApi: GridApi;
+
+  public pagerState: TablePagerState;
 
   @HostListener('click', ['$event'])
   onHostClick(event: MouseEvent) {
@@ -151,7 +152,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     let updateColumns = false;
     let previousColumnDefValue: ColumnDef[];
 
-    if (has(changes, 'columnDefs')) {
+    if (hasChanges(changes, ['columnDefs'])) {
       updateColumns = true;
       this.columnDefConfig = {
         columnDef: changes.columnDefs.currentValue,
@@ -160,7 +161,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       previousColumnDefValue = changes.columnDefs.previousValue;
     }
 
-    if (has(changes, 'columnDefConfig')) {
+    if (hasChanges(changes, ['columnDefConfig'])) {
       updateColumns = true;
       this.columnDefConfig = changes.columnDefConfig.currentValue;
       previousColumnDefValue = changes.columnDefConfig.previousValue?.columnDef;
@@ -184,7 +185,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       );
     }
 
-    if (has(changes, 'maxHeight')) {
+    if (hasChanges(changes, ['maxHeight'])) {
       this.maxHeight = changes.maxHeight.currentValue;
       this.setGridHeight(this.maxHeight);
     }
@@ -249,7 +250,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         get(params.data, 'isClickable', false) ? 'row-clickable' : '',
       onGridReady: (event: GridReadyEvent) => {
         this.gridReady = true;
-        this.gridApi = event.api;
+        this.gridApi = event.api || this.gridApi;
         if (this.shouldAutoSizeColumns) {
           event.columnApi.autoSizeAllColumns();
         }
@@ -271,6 +272,17 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       onCellClicked(event: CellClickedEvent): void {
         that.cellClicked.emit(event);
       },
+      onModelUpdated: () => {
+        const newPagerState = this.getPagerState();
+
+        if (
+          newPagerState.totalItems !== this.pagerState?.totalItems ||
+          newPagerState.currentPage !== this.pagerState?.currentPage
+        ) {
+          this.pagerState = newPagerState;
+          this.cdr.detectChanges();
+        }
+      },
       accentedSort: true,
     };
   }
@@ -280,11 +292,15 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     this.cdr.detectChanges();
   }
 
-  onPageChange(page: number): void {
-    this.gridApi.paginationGoToPage(page);
-  }
-
-  onPageSizeChange(pageSize: number): void {
-    this.gridApi.paginationSetPageSize(pageSize);
+  private getPagerState(): TablePagerState {
+    return (
+      (this.gridApi && {
+        totalItems: this.getDisplayedRowCount(),
+        currentPage: this.paginationGetCurrentPage(),
+      }) || {
+        totalItems: this.rowData?.length || 0,
+        currentPage: 0,
+      }
+    );
   }
 }
