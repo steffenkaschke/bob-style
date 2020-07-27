@@ -25,12 +25,17 @@ export class MasonryService {
     config: MasonryConfig,
     state: MasonryState
   ): void {
-    state.hostWidth = host.offsetWidth;
-    state.childrenCount = host.children.length;
-    state.config = config;
+    if (state) {
+      state.hostWidth = host.offsetWidth;
+      state.childrenCount = host.children.length;
+      state.config = config;
+    }
+
+    if (!host) {
+      return;
+    }
 
     this.DOM.setCssProps(host, {
-      display: 'grid',
       '--masonry-row-div': MASONRY_ROW_DIVISION + 'px',
       '--masonry-gap': config.gap + 'px',
       '--masonry-col-width': config.columns
@@ -39,6 +44,8 @@ export class MasonryService {
           } / ${config.columns})`
         : config.columnWidth && config.columnWidth + 'px',
     });
+
+    host.classList.remove('single-column');
 
     this.updateElementsRowSpan(
       Array.from(host.children) as HTMLElement[],
@@ -138,11 +145,11 @@ export class MasonryService {
     }
 
     this.DOM.setCssProps(host, {
-      display: null,
       '--masonry-row-div': null,
-      '--masonry-gap': null,
       '--masonry-col-width': null,
     });
+
+    host.classList.add('single-column');
 
     (Array.from(host.children) as HTMLElement[]).forEach((el) => {
       this.DOM.setCssProps(el, {

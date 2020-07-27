@@ -106,20 +106,16 @@ export class MasonryLayoutComponent
           this.disabled ===
             this.config.columnWidth * 2 + this.config.gap > this.state.hostWidth
         ) {
-          console.log(
-            `Masonry: host hostWidth (${this.state.hostWidth}) too narrow for more than 1 column (of min-width ${this.config.columnWidth}), converting to single column`
-          );
+          if (this.debug) {
+            console.log(
+              `Masonry: hostWidth (${this.state.hostWidth}) too narrow for more than 1 column (of min-width ${this.config.columnWidth}), converting to single column`
+            );
+          }
 
           this.observer?.disconnect();
           this.service.cleanupMasonry(this.hostEl);
 
-          console.log('this.observer', this.observer);
-
-          this.DOM.setCssProps(this.hostEl, {
-            display: 'grid',
-            'grid-template-columns': '100%',
-            '--masonry-gap': this.config.gap + 'px',
-          });
+          this.hostEl.classList.add('single-column');
 
           return;
         }
