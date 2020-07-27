@@ -16,7 +16,7 @@ import { InputObservable } from '../../services/utils/decorators';
 import { merge, Subscription, Subject, Observable } from 'rxjs';
 import { WindowRef, WindowLike } from '../../services/utils/window-ref.service';
 import { MasonryService } from './masonry.service';
-import { MASONRY_CONFIG_DEF } from './masonry.const';
+import { MASONRY_CONFIG_DEF, MASONRY_OBSERVER_CONFIG } from './masonry.const';
 
 @Component({
   selector: 'b-masonry-layout',
@@ -37,6 +37,8 @@ export class MasonryLayoutComponent
     this.nativeWindow = this.windowRef.nativeWindow;
   }
 
+  @Input() debug = false;
+
   // tslint:disable-next-line: no-input-rename
   @InputObservable({ ...MASONRY_CONFIG_DEF })
   @Input('config')
@@ -53,14 +55,17 @@ export class MasonryLayoutComponent
 
   private elementsToUpdate: Set<HTMLElement> = new Set();
 
-  private elementsToUpdate: Set<HTMLElement> = new Set();
-  firstRun = true;
+  private disabled = false;
 
   ngOnInit() {
     this.updater = merge(
       this.config$.pipe(
         tap((config: MasonryConfig) => {
           this.config = this.service.processConfig(config);
+
+          if (this.debug) {
+            console.log('Masonry: new config:', this.config);
+          }
         })
       ),
       this.utilsService.getResizeEvent().pipe(
@@ -71,7 +76,16 @@ export class MasonryLayoutComponent
             this.hostEl &&
             this.state.hostWidth &&
             Math.abs(this.state.hostWidth - this.hostEl.offsetWidth) > 20
-        )
+        ),
+        tap(() => {
+          if (this.debug) {
+            console.log(
+              `Masonry: window resized, prev hostWidth: ${this.state.hostWidth}, new hostWidth: ${this.hostEl.offsetWidth}`
+            );
+          }
+
+          this.state.hostWidth = this.hostEl.offsetWidth;
+        })
       ),
       this.changeDetection$
     )
@@ -86,11 +100,41 @@ export class MasonryLayoutComponent
           return;
         }
 
+        if (
+          this.config.columnWidth &&
+          this.state.hostWidth &&
+          this.disabled ===
+            this.config.columnWidth * 2 + this.config.gap > this.state.hostWidth
+        ) {
+          console.log(
+            `Masonry: host hostWidth (${this.state.hostWidth}) too narrow for more than 1 column (of min-width ${this.config.columnWidth}), converting to single column`
+          );
+
+          this.observer?.disconnect();
+          this.service.cleanupMasonry(this.hostEl);
+
+          console.log('this.observer', this.observer);
+
+          this.DOM.setCssProps(this.hostEl, {
+            display: 'grid',
+            'grid-template-columns': '100%',
+            '--masonry-gap': this.config.gap + 'px',
+          });
+
+          return;
+        }
+
         this.zone.runOutsideAngular(() => {
           if (!this.state.config || this.elementsToUpdate.size === 0) {
             this.elementsToUpdate.clear();
-            this.service.initMasonry(this.hostEl, this.config, this.state);
+            this.init(this.config);
             return;
+          }
+
+          if (this.debug) {
+            console.log(
+              'Masonry update: ' + this.elementsToUpdate.size + ' items.'
+            );
           }
 
           const elements = Array.from(this.elementsToUpdate);
@@ -118,12 +162,7 @@ export class MasonryLayoutComponent
           this.changeDetection$.next();
         });
 
-        this.observer.observe(this.hostEl, {
-          childList: true,
-          subtree: true,
-          characterData: true,
-          attributeFilter: ['src', 'data-loaded'],
-        });
+        this.observer.observe(this.hostEl, MASONRY_OBSERVER_CONFIG);
       }
     });
   }
@@ -133,7 +172,30 @@ export class MasonryLayoutComponent
   }
 
   ngOnDestroy(): void {
+    this.destroy(false);
+  }
+
+  public init(config: MasonryConfig = this.config): void {
+    if (this.debug) {
+      console.log('Masonry: init');
+    }
+    if (!this.updater && !this.observer) {
+      this.ngOnInit();
+    }
+    this.service.initMasonry(this.hostEl, config, this.state);
+  }
+
+  public destroy(fullCleanup = true): void {
+    if (this.debug) {
+      console.log('Masonry: destroy');
+    }
     this.observer?.disconnect();
     this.updater?.unsubscribe();
+
+    if (fullCleanup) {
+      this.state = {};
+      this.updater = this.observer = undefined;
+      this.service.cleanupMasonry(this.hostEl);
+    }
   }
 }

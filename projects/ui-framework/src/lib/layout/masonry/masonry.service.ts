@@ -30,6 +30,7 @@ export class MasonryService {
     state.config = config;
 
     this.DOM.setCssProps(host, {
+      display: 'grid',
       '--masonry-row-div': MASONRY_ROW_DIVISION + 'px',
       '--masonry-gap': config.gap + 'px',
       '--masonry-col-width': config.columns
@@ -114,13 +115,39 @@ export class MasonryService {
     }
 
     config.gap = isNumber(config.gap) ? config.gap : MASONRY_GAP_DEF;
-    config.columns = isNumber(config.columns)
-      ? config.columns || null
-      : MASONRY_COLS_DEF;
-    config.columnWidth = isNumber(config.columnWidth)
-      ? config.columnWidth || null
-      : null;
+
+    config.columnWidth =
+      (isNumber(config.columnWidth) && config.columnWidth) || null;
+
+    config.columns =
+      (isNumber(config.columns) && config.columns) ||
+      (!config.columnWidth && MASONRY_COLS_DEF) ||
+      null;
 
     return config;
+  }
+
+  public cleanupMasonry(host: HTMLElement, state: MasonryState = null): void {
+    if (!host) {
+      return;
+    }
+    if (state) {
+      delete state.hostWidth;
+      delete state.childrenCount;
+      delete state.config;
+    }
+
+    this.DOM.setCssProps(host, {
+      display: null,
+      '--masonry-row-div': null,
+      '--masonry-gap': null,
+      '--masonry-col-width': null,
+    });
+
+    (Array.from(host.children) as HTMLElement[]).forEach((el) => {
+      this.DOM.setCssProps(el, {
+        'grid-row-end': null,
+      });
+    });
   }
 }

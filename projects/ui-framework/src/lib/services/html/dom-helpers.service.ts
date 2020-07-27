@@ -112,6 +112,10 @@ export class DOMhelpers {
         element.style.removeProperty(prop);
       }
     }
+
+    if (element.getAttribute('style')?.trim() === '') {
+      element.removeAttribute('style');
+    }
   }
 
   public setAttributes(element: HTMLElement, attrs: GenericObject): void {

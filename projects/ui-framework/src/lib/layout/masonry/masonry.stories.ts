@@ -12,16 +12,24 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
-const template1 = `<b-masonry-layout [config]="{
+const template1 = `<b-masonry-layout #masonry [config]="{
       columns: columns,
       columnWidth: columnWidth,
       gap: gap
-    }">
+    }" [debug]="true">
 
     <b-masonry-test-card *ngFor="let card of cards" [card]="card">
     </b-masonry-test-card>
 
-</b-masonry-layout>`;
+
+</b-masonry-layout>
+
+<div style="margin: 30px auto;">
+    <button (click)="masonry.init()" type="button">init</button>
+    <button (click)="masonry.destroy()" type="button">destroy</button>
+</div>
+
+`;
 
 const templateForNotes = `<b-masonry-layout [config]="config">
     <b-card *ngFor="let card of cards" [card]="card">
