@@ -20,8 +20,10 @@ import {
   GridColumnsChangedEvent,
   GridOptions,
   GridReadyEvent,
+  AgGridEvent,
+  RowEvent,
 } from 'ag-grid-community';
-import { cloneDeep, get, has, map } from 'lodash';
+import { cloneDeep, get, map } from 'lodash';
 import { TableUtilsService } from '../table-utils-service/table-utils.service';
 import { AgGridWrapper } from './ag-grid-wrapper';
 import { ColumnOrderStrategy, RowSelection, TableType } from './table.enum';
@@ -104,13 +106,13 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   readonly rowHeight: number = 56;
   readonly autoSizePadding: number = 30;
   readonly tableType = TableType;
-  gridReady = false;
-  gridOptions: GridOptions;
-  gridColumnDefs: ColumnDef[];
+
+  public gridReady = false;
+  public gridOptions: GridOptions;
+  public gridColumnDefs: ColumnDef[];
+  public pagerState: TablePagerState;
 
   private columns: string[];
-
-  public pagerState: TablePagerState;
 
   @HostListener('click', ['$event'])
   onHostClick(event: MouseEvent) {
@@ -140,7 +142,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.setGridHeight(this.maxHeight);
     this.setGridOptions({
       ...this.initGridOptions(),
@@ -191,18 +193,18 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     }
   }
 
-  onSortChanged($event): void {
+  onSortChanged($event: AgGridEvent): void {
     this.sortChanged.emit({
       colId: get($event.api.getSortModel(), '[0].colId'),
       sort: get($event.api.getSortModel(), '[0].sort'),
     });
   }
 
-  onSelectionChanged($event): void {
+  onSelectionChanged($event: AgGridEvent): void {
     this.selectionChanged.emit($event.api.getSelectedRows());
   }
 
-  onRowClicked($event): void {
+  onRowClicked($event: RowEvent): void {
     this.rowClicked.emit({
       rowIndex: $event.rowIndex,
       data: $event.data,
@@ -211,7 +213,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   private setOrderedColumns(columns: Column[]): void {
-    this.columns = map(columns, (col) => col.colDef.field);
+    this.columns = map(columns, (col: Column) => col['colDef'].field);
     this.columnsOrderChanged.emit({ columns: cloneDeep(this.columns) });
   }
 
@@ -224,7 +226,6 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   private initGridOptions(): GridOptions {
-    const that = this;
     return {
       suppressAutoSize: true,
       suppressRowClickSelection: true,
@@ -266,11 +267,11 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         this.cdr.markForCheck();
         this.columnsChanged.emit();
       },
-      onDragStopped(event: DragStoppedEvent): void {
-        that.setOrderedColumns(event.columnApi.getAllGridColumns());
+      onDragStopped: (event: DragStoppedEvent) => {
+        this.setOrderedColumns(event.columnApi.getAllGridColumns());
       },
-      onCellClicked(event: CellClickedEvent): void {
-        that.cellClicked.emit(event);
+      onCellClicked: (event: CellClickedEvent) => {
+        this.cellClicked.emit(event);
       },
       onModelUpdated: () => {
         const newPagerState = this.getPagerState();
