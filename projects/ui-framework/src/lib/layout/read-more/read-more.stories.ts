@@ -8,30 +8,75 @@ import { ReadMoreModule } from './read-more.module';
 import { APP_BASE_HREF } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { RteViewComponent } from '../../../../bob-rte/src/rte-view/rte-view.component';
+import {
+  makeArray,
+  randomNumber,
+  randomFromArray,
+} from '../../services/utils/functional-utils';
+import {
+  mockText,
+  mockLinkHtml,
+  mockBadJobs,
+  mockAnimals,
+  mockThings,
+} from '../../mock.const';
 
-const rteMockHtml = `<div><span style="">Seville (Spanish: Sevilla) [16] is the capital of Andalucia and the cultural and financial centre of southern Spain. A city of just over 700,000 inhabitants (1.6 million in the metropolitan area, making it Spain's 4th largest city), Seville is Andalucia's top destination, with much to offer the traveler.</span></div> <div><a href="https://en.wikipedia.org/wiki/Metropol_Parasol" target="_blank" rel="noopener noreferrer">Metropol Parasol</a> is a wooden structure located at La Encarnación square, in the old quarter of Seville, Spain. It was designed by the German architect <a href="http://www.jmayerh.de/" target="_blank" rel="noopener noreferrer">Jürgen Mayer</a> and completed in April 2011.</div>`;
+const rteMockHtml =
+  'Imagine ' +
+  makeArray(randomNumber(10, 15))
+    .map((_) => mockText(randomNumber(12, 20)))
+    .reduce((str, i: string, ind) => {
+      return (str +=
+        i.toLowerCase() +
+        randomFromArray([
+          ` ${mockLinkHtml()}${randomFromArray([
+            '. Luckily, ',
+            '... <br>Also, ',
+            '! And so, ',
+          ])} `,
+          ` <strong>${mockLinkHtml()}</strong>${randomFromArray([
+            '! <br>Luckily, ',
+            '. Also, ',
+            '!!!! And so, ',
+          ])} `,
+          `. <br><span style="font-size: 18px">AND THEN HE</span> `,
+          `. <br><span style="font-size: 18px">AND THEN HE</span> `,
+          `. <br><span style="font-size: 18px"> UNFORTUNATELY, </span> `,
+          `. <br><span style="font-size: 18px"> BUT!!! </span> `,
+          ` <strong>${mockBadJobs(1)}</strong> `,
+          ` <strong>${mockBadJobs(1)}</strong> `,
+          ` <strong>${mockBadJobs(1)}</strong> `,
+          ` <em><u>${mockAnimals(1)}</u></em> `,
+          ` <em><u>${mockThings(1)}</u></em> `,
+          ` <em><u>${mockThings(1)}</u></em> `,
+        ]));
+    }, '') +
+  ' ' +
+  mockText(randomNumber(3, 5)).toLowerCase() +
+  ' and that was the end.';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
-const template1 = `<b-rich-text-view [type]="'shoutout'"
-          [value]="rteMockHtml"
-          [bReadMore]="maxLines">
-</b-rich-text-view>`;
+const template1 = `<b-read-more [maxHeight]="maxHeight">
+<b-rich-text-view [type]="'shoutout'"
+          [value]="rteMockHtml">
+</b-rich-text-view>
+</b-read-more>`;
 
 const templateForNotes = ``;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'Read More Directive'">
-<div style="max-width: 350px">
+<b-story-book-layout [title]="'Read More'">
+<div style="max-width: 450px">
   ${template1}
 </div>
 </b-story-book-layout>
 `;
 
 const note = `
-  ## Read More Directive
+  ## Read More
   #### Module
   *MasonryLayoutModule*
 
@@ -48,13 +93,14 @@ const note = `
 `;
 
 story.add(
-  'Read More Directive',
+  'Read More',
   () => {
     return {
       template: storyTemplate,
       props: {
         rteMockHtml: rteMockHtml,
         maxLines: number('maxLines', 5),
+        maxHeight: number('maxHeight', 300),
       },
       moduleMetadata: {
         imports: [

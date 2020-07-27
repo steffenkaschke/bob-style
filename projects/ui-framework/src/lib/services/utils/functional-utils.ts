@@ -152,6 +152,12 @@ export const roundToDecimals = (num: number, decmls: number = 2): number => {
         Math.pow(10, decmls);
 };
 
+export const closestDivisable = (val: number, step: number): number => {
+  const c1 = val - (val % step);
+  const c2 = val + step - (val % step);
+  return val - c1 > c2 - val ? c2 : c1;
+};
+
 // ----------------------
 // CONVERTERS
 // ----------------------

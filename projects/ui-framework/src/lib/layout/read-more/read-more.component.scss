@@ -1,0 +1,21 @@
+@import '../../style/common-imports';
+
+:host {
+  display: block;
+  text-align: left;
+}
+
+.container {
+  max-height: var(--max-height, 0px);
+  overflow: hidden;
+  position: relative;
+
+  @include mask-image(
+    $img:
+      'linear-gradient(to right, white 0%, white 50%, rgba(255, 255, 255, 0) 80%), linear-gradient(white, white)',
+    $size:
+      '100% calc(var(--font-size) * var(--line-height)), 100% calc(100% - var(--font-size) * var(--line-height))',
+    $align: 'center bottom, center top',
+    $fallback: false
+  );
+}
