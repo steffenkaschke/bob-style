@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { MasonryLayoutModule } from './masonry.module';
 import { masonryCardsMock } from './masonry.mock';
-import { CardsModule } from '../../cards/cards.module';
 import { MasonryTestModule } from './masonry-test.component';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
@@ -78,7 +77,6 @@ story.add(
           BrowserAnimationsModule,
           StoryBookLayoutModule,
           MasonryLayoutModule,
-          CardsModule,
           MasonryTestModule,
         ],
       },
