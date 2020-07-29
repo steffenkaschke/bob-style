@@ -209,28 +209,28 @@
 ) {
   @if $fallback {
     @supports not ((-webkit-mask-image: url('')) or (mask-image: url(''))) {
-      background-image: $img;
+      background-image: unquote($img);
       background-repeat: no-repeat;
-      background-position: $align;
-      background-size: $size;
+      background-position: unquote($align);
+      background-size: unquote($size);
     }
     @supports (-webkit-mask-image: url('')) or (mask-image: url('')) {
       background-image: none;
       background-color: $color;
-      -webkit-mask-image: $img;
+      -webkit-mask-image: unquote($img);
       -webkit-mask-repeat: no-repeat;
-      -webkit-mask-position: $align;
-      -webkit-mask-size: $size;
+      -webkit-mask-position: unquote($align);
+      -webkit-mask-size: unquote($size);
     }
   } @else {
-    mask-image: $img;
+    mask-image: unquote($img);
     mask-repeat: no-repeat;
-    mask-position: $align;
+    mask-position: unquote($align);
     mask-size: $size;
-    -webkit-mask-image: $img;
+    -webkit-mask-image: unquote($img);
     -webkit-mask-repeat: no-repeat;
-    -webkit-mask-position: $align;
-    -webkit-mask-size: $size;
+    -webkit-mask-position: unquote($align);
+    -webkit-mask-size: unquote($size);
   }
 }
 

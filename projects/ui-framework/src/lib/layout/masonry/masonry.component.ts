@@ -47,7 +47,7 @@ export class MasonryLayoutComponent
   private changeDetection$: Subject<any> = new Subject<any>();
 
   private nativeWindow: WindowLike;
-  private hostEl: HTMLElement;
+  public hostEl: HTMLElement;
   private config: MasonryConfig;
   private state: MasonryState = {};
   private observer: MutationObserver;

@@ -152,6 +152,12 @@ export const roundToDecimals = (num: number, decmls: number = 2): number => {
         Math.pow(10, decmls);
 };
 
+export const closestDivisable = (val: number, step: number): number => {
+  const c1 = val - (val % step);
+  const c2 = val + step - (val % step);
+  return val - c1 > c2 - val ? c2 : c1;
+};
+
 // ----------------------
 // CONVERTERS
 // ----------------------
@@ -1020,4 +1026,34 @@ export const isSelectGroupOptions = (
       options[0] &&
       isArray((options as SelectGroupOption[])[0].options)
   );
+};
+
+export const batchProcessWithAnimationFrame = <T = any>(
+  items: T[],
+  processItem: (arg: T) => void,
+  batchSize = 15
+): void => {
+  const chunks: T[][] = splitArrayToChunks(items, batchSize);
+
+  let currentChunkIndex = 0;
+
+  const processBatch = () => {
+    if (!chunks[currentChunkIndex]) {
+      return;
+    }
+
+    chunks[currentChunkIndex].forEach((el: T) => {
+      processItem(el);
+    });
+
+    ++currentChunkIndex;
+
+    window.requestAnimationFrame(() => {
+      processBatch();
+    });
+  };
+
+  window.requestAnimationFrame(() => {
+    processBatch();
+  });
 };

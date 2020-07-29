@@ -1225,4 +1225,7 @@ export const mockUrl = (type = 'any') => {
   }
 };
 
+export const mockLinkHtml = () =>
+  `<a href="${uselessSite()}">${mockThings(1)}</a>`;
+
 export const randomIcon = () => randomFromArray(Object.values(Icons));
