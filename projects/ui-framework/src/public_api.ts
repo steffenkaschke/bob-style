@@ -496,6 +496,15 @@ export { SortableCollapsibleSection, SortableCollapsibleDropped } from './lib/la
 export { CollapsibleHeaderDirective } from './lib/layout/sortable-collapsible-sections/collapsible-header.directive';
 export { CollapsibleContentDirective } from './lib/layout/sortable-collapsible-sections/collapsible-content.directive';
 
+// Masonry
+export { MasonryLayoutModule } from './lib/layout/masonry/masonry.module';
+export { MasonryLayoutComponent } from './lib/layout/masonry/masonry.component';
+export * from './lib/layout/masonry/masonry.interface';
+
+// Read More
+export { ReadMoreModule } from './lib/layout/read-more/read-more.module';
+export { ReadMoreComponent } from './lib/layout/read-more/read-more.component';
+
 /*
  * Cards
  */
@@ -525,11 +534,6 @@ export { CellWidthsService } from './lib/table/card-table/cell-widths-service/ce
 export { TableCardCellComponent } from './lib/table/card-table/table-card-cell/table-card-cell.component';
 export { TableCardComponent } from './lib/table/card-table/table-card/table-card.component';
 export * from './lib/table/card-table/card-table.interface';
-
-// Masonry
-export { MasonryLayoutModule } from './lib/layout/masonry/masonry.module';
-export { MasonryLayoutComponent } from './lib/layout/masonry/masonry.component';
-export * from './lib/layout/masonry/masonry.interface';
 
 /*
  * Misc

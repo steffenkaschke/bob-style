@@ -46,63 +46,6 @@ export class MutationObservableService {
 
   private nativeWindow: WindowLike;
 
-  private processMutations(
-    mutations: MutationRecord[],
-    observedElement: HTMLElement,
-    config: MutationObservableConfig
-  ): Set<HTMLElement> {
-    let affectedElements: Set<HTMLElement> = new Set();
-
-    mutations.forEach((mutation: MutationRecord) => {
-      //
-      if (mutation.type === 'childList' && config.childList) {
-        if (mutation.addedNodes.length) {
-          affectedElements = new Set([
-            ...affectedElements,
-            ...Array.from(mutation.addedNodes),
-          ]) as Set<HTMLElement>;
-        }
-      }
-
-      if (
-        mutation.type === 'characterData' &&
-        config.characterData &&
-        mutation.target.nodeType !== 8
-      ) {
-        affectedElements.add(
-          isDomElement(mutation.target)
-            ? mutation.target
-            : mutation.target.parentElement
-        );
-      }
-
-      if (
-        mutation.type === 'attributes' &&
-        (config.attributes || config.attributeFilter)
-      ) {
-        affectedElements.add(mutation.target as HTMLElement);
-      }
-    });
-
-    const filteredElements: Set<HTMLElement> = new Set();
-
-    if (config.filterSelector) {
-      affectedElements.forEach((el) => {
-        const target = this.DOM.getClosestUntil(
-          el,
-          config.filterSelector,
-          observedElement
-        );
-
-        if (target && target !== observedElement && document.contains(target)) {
-          filteredElements.add(target);
-        }
-      });
-    }
-
-    return config.filterSelector ? filteredElements : affectedElements;
-  }
-
   public getMutationObservable(
     element: HTMLElement,
     config: MutationObservableConfig = MUTATION_OBSERVABLE_CONFIG_DEF
@@ -131,19 +74,6 @@ export class MutationObservableService {
 
       return unsubscribe;
     });
-  }
-
-  private compareDOMRects(
-    rectA: Partial<DOMRectReadOnly>,
-    rectB: Partial<DOMRectReadOnly>,
-    config: ResizeObservableConfig = RESIZE_OBSERVERVABLE_CONFIG_DEF
-  ): boolean {
-    return (
-      (config.watch !== 'height' &&
-        Math.abs(rectA.width - rectB.width) > (config.threshold || 0)) ||
-      (config.watch !== 'width' &&
-        Math.abs(rectA.height - rectB.height) > (config.threshold || 0))
-    );
   }
 
   public getResizeObservervable(
@@ -201,5 +131,75 @@ export class MutationObservableService {
 
       return unsubscribe;
     });
+  }
+
+  private compareDOMRects(
+    rectA: Partial<DOMRectReadOnly>,
+    rectB: Partial<DOMRectReadOnly>,
+    config: ResizeObservableConfig = RESIZE_OBSERVERVABLE_CONFIG_DEF
+  ): boolean {
+    return (
+      (config.watch !== 'height' &&
+        Math.abs(rectA.width - rectB.width) > (config.threshold || 0)) ||
+      (config.watch !== 'width' &&
+        Math.abs(rectA.height - rectB.height) > (config.threshold || 0))
+    );
+  }
+
+  private processMutations(
+    mutations: MutationRecord[],
+    observedElement: HTMLElement,
+    config: MutationObservableConfig
+  ): Set<HTMLElement> {
+    let affectedElements: Set<HTMLElement> = new Set();
+
+    mutations.forEach((mutation: MutationRecord) => {
+      //
+      if (mutation.type === 'childList' && config.childList) {
+        if (mutation.addedNodes.length) {
+          affectedElements = new Set([
+            ...affectedElements,
+            ...Array.from(mutation.addedNodes),
+          ]) as Set<HTMLElement>;
+        }
+      }
+
+      if (
+        mutation.type === 'characterData' &&
+        config.characterData &&
+        mutation.target.nodeType !== 8
+      ) {
+        affectedElements.add(
+          isDomElement(mutation.target)
+            ? mutation.target
+            : mutation.target.parentElement
+        );
+      }
+
+      if (
+        mutation.type === 'attributes' &&
+        (config.attributes || config.attributeFilter)
+      ) {
+        affectedElements.add(mutation.target as HTMLElement);
+      }
+    });
+
+    const filteredElements: Set<HTMLElement> = new Set();
+
+    if (config.filterSelector) {
+      affectedElements.forEach((el) => {
+        const target = this.DOM.getClosestUntil(
+          el,
+          config.filterSelector,
+          observedElement
+        );
+
+        if (target && target !== observedElement && document.contains(target)) {
+          filteredElements.add(target);
+        }
+      });
+    }
+
+    return config.filterSelector ? filteredElements : affectedElements;
   }
 }
