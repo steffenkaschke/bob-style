@@ -70,6 +70,7 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
   private updater: Subscription;
   public needsReadMoreButton = false;
 
+  // tslint:disable-next-line: no-input-rename
   @InputObservable({ ...READ_MORE_CONFIG_DEF })
   @Input('config')
   config$: Observable<ReadMoreConfig>;

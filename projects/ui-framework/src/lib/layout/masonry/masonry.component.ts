@@ -17,6 +17,7 @@ import { merge, Subscription, Subject, Observable } from 'rxjs';
 import { WindowRef, WindowLike } from '../../services/utils/window-ref.service';
 import { MasonryService } from './masonry.service';
 import { MASONRY_CONFIG_DEF, MASONRY_OBSERVER_CONFIG } from './masonry.const';
+import { MutationObservableService } from '../../services/utils/mutation-observable';
 
 @Component({
   selector: 'b-masonry-layout',
@@ -31,6 +32,7 @@ export class MasonryLayoutComponent
     private DOM: DOMhelpers,
     private host: ElementRef,
     private zone: NgZone,
+    private mutationObservableService: MutationObservableService,
     private service: MasonryService
   ) {
     this.hostEl = this.host.nativeElement;
@@ -50,7 +52,6 @@ export class MasonryLayoutComponent
   public hostEl: HTMLElement;
   private config: MasonryConfig;
   private state: MasonryState = {};
-  private observer: MutationObserver;
   private updater: Subscription;
 
   private elementsToUpdate: Set<HTMLElement> = new Set();
@@ -68,57 +69,59 @@ export class MasonryLayoutComponent
           }
         })
       ),
-      this.utilsService.getResizeEvent().pipe(
-        outsideZone(this.zone),
-        skip(1),
-        filter(
-          () =>
-            this.hostEl &&
-            this.state.hostWidth &&
-            Math.abs(this.state.hostWidth - this.hostEl.offsetWidth) > 20
-        ),
-        tap(() => {
-          if (this.debug) {
-            console.log(
-              `Masonry: window resized, prev hostWidth: ${this.state.hostWidth}, new hostWidth: ${this.hostEl.offsetWidth}`
-            );
-          }
 
-          this.state.hostWidth = this.hostEl.offsetWidth;
+      this.mutationObservableService.getMutationObservable(this.hostEl, {
+        characterData: true,
+        childList: true,
+        subtree: true,
+        attributeFilter: ['src', 'data-loaded', 'data-updated'],
+        mutations: 'processed',
+        filterSelector: 'b-masonry-layout > *',
+      }),
+
+      this.mutationObservableService
+        .getResizeObservervable(this.hostEl, {
+          watch: 'width',
+          threshold: 20,
         })
-      ),
-      this.changeDetection$
+        .pipe(
+          tap((rect: Partial<DOMRectReadOnly>) => {
+            console.log(
+              `Masonry: host resized, prev hostWidth: ${this.state.hostWidth}, new hostWidth: ${this.hostEl.offsetWidth}`
+            );
+
+            this.state.hostWidth = this.hostEl.offsetWidth;
+          })
+        )
     )
       .pipe(
         throttleTime(100, undefined, {
           leading: false,
           trailing: true,
-        })
+        }),
+
+        filter(() => Boolean(this.hostEl?.children.length))
       )
       .subscribe(() => {
-        if (!this.hostEl?.children.length) {
-          return;
-        }
+        // if (
+        //   this.config.columnWidth &&
+        //   this.state.hostWidth &&
+        //   this.disabled ===
+        //     this.config.columnWidth * 2 + this.config.gap > this.state.hostWidth
+        // ) {
+        //   if (this.debug) {
+        //     console.log(
+        //       `Masonry: hostWidth (${this.state.hostWidth}) too narrow for more than 1 column (of min-width ${this.config.columnWidth}), converting to single column`
+        //     );
+        //   }
 
-        if (
-          this.config.columnWidth &&
-          this.state.hostWidth &&
-          this.disabled ===
-            this.config.columnWidth * 2 + this.config.gap > this.state.hostWidth
-        ) {
-          if (this.debug) {
-            console.log(
-              `Masonry: hostWidth (${this.state.hostWidth}) too narrow for more than 1 column (of min-width ${this.config.columnWidth}), converting to single column`
-            );
-          }
+        //   this.observer?.disconnect();
+        //   this.service.cleanupMasonry(this.hostEl);
 
-          this.observer?.disconnect();
-          this.service.cleanupMasonry(this.hostEl);
+        //   this.hostEl.classList.add('single-column');
 
-          this.hostEl.classList.add('single-column');
-
-          return;
-        }
+        //   return;
+        // }
 
         this.zone.runOutsideAngular(() => {
           if (!this.state.config || this.elementsToUpdate.size === 0) {
@@ -140,31 +143,31 @@ export class MasonryLayoutComponent
         });
       });
 
-    this.zone.runOutsideAngular(() => {
-      if (this.nativeWindow.MutationObserver) {
-        //
-        this.observer = new MutationObserver((mutations) => {
-          mutations.forEach((mutation: MutationRecord) => {
-            const target = this.DOM.getClosestUntil(
-              mutation.target,
-              'b-masonry-layout > *',
-              this.hostEl
-            );
+    // this.zone.runOutsideAngular(() => {
+    //   if (this.nativeWindow.MutationObserver) {
+    //     //
+    //     this.observer = new MutationObserver((mutations) => {
+    //       mutations.forEach((mutation: MutationRecord) => {
+    //         const target = this.DOM.getClosestUntil(
+    //           mutation.target,
+    //           'b-masonry-layout > *',
+    //           this.hostEl
+    //         );
 
-            if (target && target !== this.hostEl) {
-              this.elementsToUpdate.add(target);
-            }
-          });
-          this.changeDetection$.next();
-        });
+    //         if (target && target !== this.hostEl) {
+    //           this.elementsToUpdate.add(target);
+    //         }
+    //       });
+    //       this.changeDetection$.next();
+    //     });
 
-        this.observer.observe(this.hostEl, MASONRY_OBSERVER_CONFIG);
-      }
-    });
+    //     this.observer.observe(this.hostEl, MASONRY_OBSERVER_CONFIG);
+    //   }
+    // });
   }
 
   ngAfterViewInit(): void {
-    this.changeDetection$.next();
+    // this.changeDetection$.next();
   }
 
   ngOnDestroy(): void {
@@ -175,7 +178,7 @@ export class MasonryLayoutComponent
     if (this.debug) {
       console.log('Masonry: init');
     }
-    if (!this.updater && !this.observer) {
+    if (!this.updater) {
       this.ngOnInit();
     }
     this.service.initMasonry(this.hostEl, config, this.state);
@@ -185,12 +188,11 @@ export class MasonryLayoutComponent
     if (this.debug) {
       console.log('Masonry: destroy');
     }
-    this.observer?.disconnect();
     this.updater?.unsubscribe();
 
     if (fullCleanup) {
       this.state = {};
-      this.updater = this.observer = undefined;
+      this.updater = undefined;
       this.service.cleanupMasonry(this.hostEl);
     }
   }
