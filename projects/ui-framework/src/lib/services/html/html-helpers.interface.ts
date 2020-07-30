@@ -3,6 +3,9 @@ export interface Styles {
 }
 
 export interface TextProps {
+  fontSize: number;
+  lineHeight: number;
+  lineHeightPx?: number;
   [key: string]: number;
 }
 

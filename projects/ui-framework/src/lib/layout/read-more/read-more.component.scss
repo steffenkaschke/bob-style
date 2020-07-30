@@ -1,7 +1,9 @@
 @import '../../style/common-imports';
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   text-align: left;
 }
 

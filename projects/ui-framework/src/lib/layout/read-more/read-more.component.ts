@@ -10,33 +10,22 @@ import {
   HostListener,
 } from '@angular/core';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { closestDivisable } from '../../services/utils/functional-utils';
-import { Subscription, merge, of, Observable } from 'rxjs';
-import { tap, throttleTime, filter, take, skip } from 'rxjs/operators';
+import {
+  closestDivisable,
+  simpleUID,
+} from '../../services/utils/functional-utils';
+import { Subscription, merge, Observable } from 'rxjs';
+import { throttleTime, filter, take, skip, tap } from 'rxjs/operators';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
 import { UtilsService } from '../../services/utils/utils.service';
 import { outsideZone } from '../../services/utils/rxjs.operators';
 import { InputObservable } from '../../services/utils/decorators';
-
-export interface ReadMoreConfig {
-  maxLines?: number;
-  maxHeight?: number;
-  expandable?: boolean;
-  watchClicks?: 'text' | 'read-more' | boolean;
-  expectChanges?: boolean;
-  trustCssVars?: boolean;
-  dynamicFontSize?: boolean;
-}
-
-export const READ_MORE_CONFIG_DEF: ReadMoreConfig = {
-  maxLines: 10,
-  maxHeight: null,
-  expandable: true,
-  watchClicks: false,
-  expectChanges: false,
-  trustCssVars: true,
-  dynamicFontSize: false,
-};
+import {
+  ReadMoreClickEvent,
+  ReadMoreConfig,
+  ReadMoreState,
+  READ_MORE_CONFIG_DEF,
+} from './read-more.interface';
 
 @Component({
   selector: 'b-read-more',
@@ -46,8 +35,9 @@ export const READ_MORE_CONFIG_DEF: ReadMoreConfig = {
       <ng-content></ng-content>
     </div>
     <b-text-button
-      *ngIf="needsReadMoreButton"
+      *ngIf="state.enabled && config.showReadMoreButton !== false"
       class="read-more-button mrg-t-8"
+      [ngStyle]="config.readMoreButtonCss"
       [color]="'primary'"
       [text]="'Read More'"
       (clicked)="onReadMoreClicked($event)"
@@ -65,26 +55,29 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
     this.hostEl = this.host.nativeElement;
   }
 
-  private hostEl: HTMLElement;
+  public hostEl: HTMLElement;
   private contentEl: HTMLElement;
   private updater: Subscription;
-  public needsReadMoreButton = false;
+  public state: ReadMoreState = {};
+  public id = simpleUID('brm-', 7);
 
   @InputObservable({ ...READ_MORE_CONFIG_DEF })
   @Input('config')
   config$: Observable<ReadMoreConfig>;
-  private config: ReadMoreConfig = READ_MORE_CONFIG_DEF;
+  public config: ReadMoreConfig = READ_MORE_CONFIG_DEF;
 
-  @Output() clicked: EventEmitter<'text' | 'read-more'> = new EventEmitter<
-    'text' | 'read-more'
+  @Input() debug = false;
+
+  @Output() clicked: EventEmitter<ReadMoreClickEvent> = new EventEmitter<
+    ReadMoreClickEvent
   >();
 
   @HostListener('click.outside-zone')
   onHostClick() {
     if (
       this.clicked.observers.length &&
-      this.config?.watchClicks !== 'read-more' &&
-      this.config?.watchClicks !== false
+      this.config.watchClicks !== 'read-more' &&
+      this.config.watchClicks !== false
     ) {
       this.zone.run(() => {
         this.clicked.emit('text');
@@ -95,13 +88,24 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.contentEl = this.hostEl.children[0] as HTMLElement;
 
+    if (this.debug) {
+      console.log(
+        `---------------------\nReadMore ${this.id}: Init on element`,
+        this.hostEl
+      );
+    }
+
     this.updater = merge(
       this.config$.pipe(
         tap((config: ReadMoreConfig) => {
           this.config = { ...READ_MORE_CONFIG_DEF, ...config };
           this.DOM.setAttributes(this.hostEl, {
-            'data-clickable': this.config.watchClicks,
+            'data-clickable': this.config.watchClicks + '',
           });
+
+          if (this.debug) {
+            console.log(`ReadMore ${this.id}: new config:`, this.config);
+          }
         })
       ),
 
@@ -113,17 +117,17 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
           attributes: false,
           mutations: 'processed',
         })
-        .pipe(this.config?.expectChanges ? tap() : take(3)),
+        .pipe(this.config.expectChanges ? tap() : take(3)),
 
       this.mutationObservableService.getResizeObservervable(this.hostEl, {
-        watch: this.config?.dynamicFontSize ? 'both' : 'height',
+        watch: this.config.dynamicFontSize ? 'both' : 'height',
         threshold: 5,
       }),
 
       this.utilsService.getResizeEvent().pipe(
         outsideZone(this.zone),
         skip(1),
-        filter(() => Boolean(this.config?.dynamicFontSize))
+        filter(() => Boolean(this.config.dynamicFontSize))
       )
     )
       .pipe(
@@ -138,62 +142,153 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
       });
   }
 
-  checkStuff() {
-    this.DOM.setAttributes(this.hostEl, {
-      'data-readmore':
-        (this.needsReadMoreButton =
-          this.contentEl.scrollHeight > this.contentEl.offsetHeight) + '',
-    });
-
-    let deepEl = this.contentEl;
-    while (deepEl.children.length === 1) {
-      deepEl = deepEl.children[0] as HTMLElement;
+  ngOnDestroy(): void {
+    if (this.debug) {
+      console.log(`ReadMore ${this.id}: ngOnDestroy`);
     }
-    const textProps = this.DOM.getElementTextProps(deepEl);
+    this.updater?.unsubscribe();
+  }
 
-    this.DOM.setCssProps(this.contentEl, {
-      '--max-height':
-        Math.floor(
-          closestDivisable(
-            this.config.maxHeight ||
-              Math.floor(
-                textProps.lineHeight * textProps.fontSize * this.config.maxLines
-              ),
-            Math.floor(textProps.fontSize * textProps.lineHeight)
+  private checkStuff() {
+    if (this.state.expanded) {
+      if (this.debug) {
+        console.log(
+          `ReadMore ${this.id}: skipping checkStuff, because expanded is true`
+        );
+      }
+
+      return;
+    }
+
+    if (!this.state.textElement) {
+      this.state.textElement = this.contentEl;
+      while (this.state.textElement.children.length === 1) {
+        this.state.textElement = this.state.textElement
+          .children[0] as HTMLElement;
+      }
+      this.state.textElementCss = {
+        marginTop: parseFloat(
+          getComputedStyle(this.state.textElement).marginTop
+        ),
+      };
+    }
+
+    if (this.config.dynamicFontSize || !this.state.textProps) {
+      this.state.textProps = this.DOM.getElementTextProps(
+        this.state.textElement
+      );
+
+      this.state.maxHeight = this.config.maxHeight
+        ? Math.floor(
+            closestDivisable(
+              this.config.maxHeight,
+              this.state.textProps.lineHeightPx
+            ) + this.state.textElementCss.marginTop
           )
-        ) + 'px',
-      '--line-height': textProps.lineHeight,
-      '--font-size': textProps.fontSize + 'px',
+        : this.config.maxLines
+        ? Math.floor(
+            this.state.textProps.lineHeightPx * this.config.maxLines +
+              this.state.textElementCss.marginTop
+          )
+        : null;
+
+      this.DOM.setCssProps(this.contentEl, {
+        '--max-height': this.state.maxHeight && this.state.maxHeight + 'px',
+        '--line-height':
+          this.state.maxHeight && this.state.textProps.lineHeight,
+        '--font-size':
+          this.state.maxHeight && this.state.textProps.fontSize + 'px',
+      });
+    }
+
+    if (this.debug) {
+      console.log(`ReadMore ${this.id}: checkStuff, state:`, this.state);
+    }
+
+    if (
+      this.contentEl.scrollHeight <= this.contentEl.offsetHeight ||
+      (this.config.linesThreshold &&
+        Math.floor(
+          Math.abs(
+            this.state.maxHeight / this.state.textProps.lineHeightPx -
+              this.contentEl.scrollHeight / this.state.textProps.lineHeightPx
+          )
+        ) <= this.config.linesThreshold)
+    ) {
+      if (this.debug) {
+        console.log(
+          `ReadMore ${this.id}: should not need readMore - `,
+          'scrollHeight:',
+          this.contentEl.scrollHeight,
+          ', offsetHeight:',
+          this.contentEl.offsetHeight,
+          ', will fit lines:',
+          Math.floor(
+            Math.abs(
+              this.state.maxHeight / this.state.textProps.lineHeightPx -
+                this.contentEl.scrollHeight / this.state.textProps.lineHeightPx
+            )
+          )
+        );
+      }
+
+      this.disableReadMore(false);
+      this.ngOnDestroy();
+      return;
+    }
+
+    this.state.enabled = true;
+
+    this.DOM.setAttributes(this.hostEl, {
+      'data-readmore': 'true',
+      'data-expanded': 'false',
     });
   }
 
-  onReadMoreClicked(event: MouseEvent) {
+  public onReadMoreClicked(event: MouseEvent) {
+    if (this.debug) {
+      console.log(`ReadMore ${this.id}: onReadMoreClicked`);
+    }
+
     if (
       this.clicked.observers.length &&
-      this.config?.watchClicks !== 'text' &&
-      this.config?.watchClicks !== false
+      this.config.watchClicks !== 'text' &&
+      this.config.watchClicks !== false
     ) {
       event.stopPropagation();
       this.clicked.emit('read-more');
     }
 
-    if (!this.config?.expandable) {
+    if (!this.config.expandable) {
       return;
     }
 
+    this.disableReadMore(true);
     this.ngOnDestroy();
+  }
+
+  private disableReadMore(animate = false) {
+    if (this.debug) {
+      console.log(`ReadMore ${this.id}: disableReadMore`);
+    }
+
+    this.state.expanded = true;
+    this.state.enabled = false;
 
     this.DOM.setCssProps(this.contentEl, {
-      transition: 'max-height 0.3s',
-      '--max-height': this.contentEl.scrollHeight + 100 + 'px',
+      transition:
+        animate && this.config.animateExpand ? 'max-height 0.3s' : null,
+      '--max-height':
+        animate && this.config.animateExpand
+          ? this.contentEl.scrollHeight + 100 + 'px'
+          : 'none',
+      '--line-height': null,
+      '--font-size': null,
     });
 
     this.DOM.setAttributes(this.hostEl, {
-      'data-readmore': this.needsReadMoreButton = false,
+      'data-readmore': 'false',
+      'data-expanded': 'true',
     });
-  }
-
-  ngOnDestroy(): void {
-    this.updater?.unsubscribe();
   }
 }

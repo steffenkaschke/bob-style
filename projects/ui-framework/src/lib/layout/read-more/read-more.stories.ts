@@ -27,7 +27,9 @@ import {
 } from '../../mock.const';
 import { action } from '@storybook/addon-actions';
 
-const rteMockHtml =
+// const rteMockHtml =
+
+const getMockHtml = () =>
   'Imagine ' +
   makeArray(randomNumber(10, 15))
     .map((_) => mockText(randomNumber(12, 20)))
@@ -59,30 +61,79 @@ const rteMockHtml =
     }, '') +
   ' ' +
   mockText(randomNumber(3, 5)).toLowerCase() +
-  ' and that was the end.';
+  ' and that was the #end';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
-const template1 = `<b-read-more [config]="{
+const template1 = `
+<b-read-more [config]="{
   maxLines: maxLines,
   maxHeight: maxHeight,
   expandable: expandable,
   watchClicks: true,
-  dynamicFontSize: true
+  dynamicFontSize: true,
+  readMoreButtonCss: {
+    marginLeft: 'auto'
+  }
 }"
-(clicked)="onClick($event)">
+(clicked)="onClick($event)" [debug]="true">
 <b-rich-text-view [type]="'shoutout'"
           [value]="rteMockHtml">
 </b-rich-text-view>
-</b-read-more>`;
+</b-read-more>
+
+<button (click)="rteMockHtml = getMockHtml()">new html</button>
+
+<br><br>
+
+<b-read-more [config]="{
+  maxLines: maxLines,
+  maxHeight: maxHeight,
+  expandable: expandable,
+  watchClicks: true,
+  dynamicFontSize: false,
+  readMoreButtonCss: {
+    marginLeft: 'auto'
+  }
+}"
+(clicked)="onClick($event)" [debug]="true">
+
+<div class="b-big-body">
+<p>This should not need read-more. ${mockText(90)}. #end</p>
+</div>
+
+</b-read-more>
+
+<br><br>
+
+<b-read-more [config]="{
+  maxLines: 6,
+  maxHeight: null,
+  expandable: true,
+  animateExpand: false,
+  watchClicks: true,
+  dynamicFontSize: false,
+  readMoreButtonCss: {
+    marginLeft: 'auto'
+  }
+}"
+(clicked)="onClick($event)" [debug]="true">
+
+<div class="b-big-body">
+<p class="pad-t-8 pad-b-8">${mockText(190)}. #end</p>
+</div>
+
+</b-read-more>
+
+`;
 
 const templateForNotes = ``;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Read More'">
-<div>
+<div style="text-align:left">
   ${template1}
 </div>
 </b-story-book-layout>
@@ -111,7 +162,8 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        rteMockHtml: rteMockHtml,
+        rteMockHtml: getMockHtml(),
+        getMockHtml: getMockHtml,
         expandable: boolean('expandable', false),
         maxLines: number('maxLines', 5),
         maxHeight: number('maxHeight', 300),

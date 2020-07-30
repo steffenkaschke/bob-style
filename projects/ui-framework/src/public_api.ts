@@ -504,6 +504,7 @@ export * from './lib/layout/masonry/masonry.interface';
 // Read More
 export { ReadMoreModule } from './lib/layout/read-more/read-more.module';
 export { ReadMoreComponent } from './lib/layout/read-more/read-more.component';
+export * from './lib/layout/read-more/read-more.interface';
 
 /*
  * Cards

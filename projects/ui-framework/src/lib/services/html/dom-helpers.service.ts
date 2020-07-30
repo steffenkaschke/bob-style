@@ -126,17 +126,13 @@ export class DOMhelpers {
 
   // returns line-height and font-size as unitless numbers
   public getElementTextProps(element: HTMLElement): TextProps {
-    const computedStyle = getComputedStyle(element),
-      fontSize = parseFloat(computedStyle.fontSize),
-      lineHeight =
-        computedStyle.lineHeight.indexOf('px') !== -1
-          ? parseFloat(computedStyle.lineHeight) / fontSize
-          : computedStyle.lineHeight.indexOf('%') !== -1
-          ? parseFloat(computedStyle.lineHeight) / 100
-          : undefined;
+    const computedStyle = getComputedStyle(element);
     return {
-      fontSize: fontSize,
-      lineHeight: lineHeight,
+      fontSize: parseFloat(computedStyle.fontSize),
+      lineHeightPx: parseFloat(computedStyle.lineHeight),
+      lineHeight:
+        parseFloat(computedStyle.lineHeight) /
+        parseFloat(computedStyle.fontSize),
     };
   }
 
