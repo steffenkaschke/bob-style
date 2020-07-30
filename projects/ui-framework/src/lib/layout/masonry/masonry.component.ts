@@ -5,18 +5,14 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
-  AfterViewInit,
 } from '@angular/core';
 import { MasonryConfig, MasonryState } from './masonry.interface';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { UtilsService } from '../../services/utils/utils.service';
-import { throttleTime, filter, tap, skip } from 'rxjs/operators';
-import { outsideZone } from '../../services/utils/rxjs.operators';
+import { throttleTime, filter, tap } from 'rxjs/operators';
 import { InputObservable } from '../../services/utils/decorators';
-import { merge, Subscription, Subject, Observable } from 'rxjs';
-import { WindowRef, WindowLike } from '../../services/utils/window-ref.service';
+import { merge, Subscription, Observable } from 'rxjs';
 import { MasonryService } from './masonry.service';
-import { MASONRY_CONFIG_DEF, MASONRY_OBSERVER_CONFIG } from './masonry.const';
+import { MASONRY_CONFIG_DEF } from './masonry.const';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
 
 @Component({
@@ -24,11 +20,8 @@ import { MutationObservableService } from '../../services/utils/mutation-observa
   templateUrl: './masonry.component.html',
   styleUrls: ['./masonry.component.scss'],
 })
-export class MasonryLayoutComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+export class MasonryLayoutComponent implements OnInit, OnDestroy {
   constructor(
-    private windowRef: WindowRef,
-    private utilsService: UtilsService,
     private DOM: DOMhelpers,
     private host: ElementRef,
     private zone: NgZone,
@@ -36,7 +29,6 @@ export class MasonryLayoutComponent
     private service: MasonryService
   ) {
     this.hostEl = this.host.nativeElement;
-    this.nativeWindow = this.windowRef.nativeWindow;
   }
 
   @Input() debug = false;
@@ -46,9 +38,6 @@ export class MasonryLayoutComponent
   @Input('config')
   public config$: Observable<MasonryConfig>;
 
-  private changeDetection$: Subject<any> = new Subject<any>();
-
-  private nativeWindow: WindowLike;
   public hostEl: HTMLElement;
   private config: MasonryConfig;
   private state: MasonryState = {};
@@ -70,14 +59,23 @@ export class MasonryLayoutComponent
         })
       ),
 
-      this.mutationObservableService.getMutationObservable(this.hostEl, {
-        characterData: true,
-        childList: true,
-        subtree: true,
-        attributeFilter: ['src', 'data-loaded', 'data-updated'],
-        mutations: 'processed',
-        filterSelector: 'b-masonry-layout > *',
-      }),
+      this.mutationObservableService
+        .getMutationObservable(this.hostEl, {
+          characterData: true,
+          childList: true,
+          subtree: true,
+          attributeFilter: ['src', 'data-loaded', 'data-updated'],
+          mutations: 'processed',
+          filterSelector: 'b-masonry-layout > *',
+        })
+        .pipe(
+          tap((elementsToUpdate) => {
+            this.elementsToUpdate = new Set([
+              ...this.elementsToUpdate,
+              ...elementsToUpdate,
+            ]);
+          })
+        ),
 
       this.mutationObservableService
         .getResizeObservervable(this.hostEl, {
@@ -85,7 +83,7 @@ export class MasonryLayoutComponent
           threshold: 20,
         })
         .pipe(
-          tap((rect: Partial<DOMRectReadOnly>) => {
+          tap(() => {
             console.log(
               `Masonry: host resized, prev hostWidth: ${this.state.hostWidth}, new hostWidth: ${this.hostEl.offsetWidth}`
             );
@@ -142,32 +140,6 @@ export class MasonryLayoutComponent
           this.service.updateElementsRowSpan(elements, this.config);
         });
       });
-
-    // this.zone.runOutsideAngular(() => {
-    //   if (this.nativeWindow.MutationObserver) {
-    //     //
-    //     this.observer = new MutationObserver((mutations) => {
-    //       mutations.forEach((mutation: MutationRecord) => {
-    //         const target = this.DOM.getClosestUntil(
-    //           mutation.target,
-    //           'b-masonry-layout > *',
-    //           this.hostEl
-    //         );
-
-    //         if (target && target !== this.hostEl) {
-    //           this.elementsToUpdate.add(target);
-    //         }
-    //       });
-    //       this.changeDetection$.next();
-    //     });
-
-    //     this.observer.observe(this.hostEl, MASONRY_OBSERVER_CONFIG);
-    //   }
-    // });
-  }
-
-  ngAfterViewInit(): void {
-    // this.changeDetection$.next();
   }
 
   ngOnDestroy(): void {
