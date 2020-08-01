@@ -11,9 +11,15 @@ $b-masonry-row-division: 1px;
     auto-fill,
     minmax(var(--masonry-col-width, 30%), 1fr)
   );
-  grid-auto-rows: var(--masonry-row-div, #{$b-masonry-row-division}px);
+  grid-auto-rows: var(--masonry-row-div, #{$b-masonry-row-division});
 
   & ::ng-deep > * {
     overflow: hidden;
+    will-change: grid-row-end;
+  }
+
+  &.single-column {
+    grid-template-columns: 100%;
+    grid-auto-rows: auto;
   }
 }

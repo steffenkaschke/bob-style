@@ -159,11 +159,16 @@ export class DOMhelpers {
         element.style.removeProperty(prop);
       }
     }
+
     const currStyleAttr = element.getAttribute('style');
-    if (currStyleAttr && currStyleAttr.trim() === '') {
+    if (!currStyleAttr) {
+      return;
+    }
+
+    if (currStyleAttr.trim() === '') {
       element.removeAttribute('style');
     }
-    if (currStyleAttr && currStyleAttr !== currStyleAttr.trim()) {
+    if (currStyleAttr !== currStyleAttr.trim()) {
       element.setAttribute('style', currStyleAttr.trim());
     }
   }

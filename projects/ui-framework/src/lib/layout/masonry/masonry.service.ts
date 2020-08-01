@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MasonryConfig, MasonryState } from './masonry.interface';
 import {
   isNumber,
-  splitArrayToChunks,
+  batchProcessWithAnimationFrame,
 } from '../../services/utils/functional-utils';
 import {
   MASONRY_CONFIG_DEF,
@@ -11,23 +11,26 @@ import {
   MASONRY_ROW_DIVISION,
 } from './masonry.const';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { WindowLike, WindowRef } from '../../services/utils/window-ref.service';
 
 @Injectable()
 export class MasonryService {
-  constructor(private DOM: DOMhelpers, private windowRef: WindowRef) {
-    this.nativeWindow = this.windowRef.nativeWindow;
-  }
-  private nativeWindow: WindowLike;
+  constructor(private DOM: DOMhelpers) {}
 
   public initMasonry(
     host: HTMLElement,
     config: MasonryConfig,
     state: MasonryState
   ): void {
-    state.hostWidth = host.offsetWidth;
-    state.childrenCount = host.children.length;
-    state.config = config;
+    if (state) {
+      state.hostWidth = host.offsetWidth;
+      state.childrenCount = host.children.length;
+      state.config = config;
+      state.singleColumn = false;
+    }
+
+    if (!host) {
+      return;
+    }
 
     this.DOM.setCssProps(host, {
       '--masonry-row-div': MASONRY_ROW_DIVISION + 'px',
@@ -39,6 +42,8 @@ export class MasonryService {
         : config.columnWidth && config.columnWidth + 'px',
     });
 
+    host.classList.remove('single-column');
+
     this.updateElementsRowSpan(
       Array.from(host.children) as HTMLElement[],
       config
@@ -49,32 +54,13 @@ export class MasonryService {
     elements: HTMLElement[],
     config: MasonryConfig
   ): void {
-    const elementChunks: HTMLElement[][] = splitArrayToChunks(
+    batchProcessWithAnimationFrame(
       elements,
+      (el: HTMLElement) => {
+        this.setElementRowSpan(el, config);
+      },
       (config.columns || 5) * 3
     );
-
-    let currentChunkIndex = 0;
-
-    const setElementsRowSpan = () => {
-      if (!elementChunks[currentChunkIndex]) {
-        return;
-      }
-
-      elementChunks[currentChunkIndex].forEach((el: HTMLElement) => {
-        this.setElementRowSpan(el, config);
-      });
-
-      ++currentChunkIndex;
-
-      this.nativeWindow.requestAnimationFrame(() => {
-        setElementsRowSpan();
-      });
-    };
-
-    this.nativeWindow.requestAnimationFrame(() => {
-      setElementsRowSpan();
-    });
   }
 
   public setElementRowSpan(
@@ -114,13 +100,40 @@ export class MasonryService {
     }
 
     config.gap = isNumber(config.gap) ? config.gap : MASONRY_GAP_DEF;
-    config.columns = isNumber(config.columns)
-      ? config.columns || null
-      : MASONRY_COLS_DEF;
-    config.columnWidth = isNumber(config.columnWidth)
-      ? config.columnWidth || null
-      : null;
+
+    config.columnWidth =
+      (isNumber(config.columnWidth) && config.columnWidth) || null;
+
+    config.columns =
+      (isNumber(config.columns) && config.columns) ||
+      (!config.columnWidth && MASONRY_COLS_DEF) ||
+      null;
 
     return config;
+  }
+
+  public cleanupMasonry(host: HTMLElement, state: MasonryState = null): void {
+    if (!host) {
+      return;
+    }
+    if (state) {
+      delete state.hostWidth;
+      delete state.childrenCount;
+      delete state.config;
+      delete state.singleColumn;
+    }
+
+    this.DOM.setCssProps(host, {
+      '--masonry-row-div': null,
+      '--masonry-col-width': null,
+    });
+
+    host.classList.add('single-column');
+
+    (Array.from(host.children) as HTMLElement[]).forEach((el) => {
+      this.DOM.setCssProps(el, {
+        'grid-row-end': null,
+      });
+    });
   }
 }
