@@ -19,7 +19,8 @@ export class MasonryService {
   public initMasonry(
     host: HTMLElement,
     config: MasonryConfig,
-    state: MasonryState
+    state: MasonryState,
+    debug = false
   ): void {
     if (state) {
       state.hostWidth = host.offsetWidth;
@@ -30,6 +31,27 @@ export class MasonryService {
 
     if (!host) {
       return;
+    }
+
+    if (
+      host.children[0]?.tagName !== 'B-MASONRY-ITEM' ||
+      host.children[0]?.children.length !== 1
+    ) {
+      console.error(
+        `[MasonryLayoutComponent]: ${
+          host.children[0]?.tagName !== 'B-MASONRY-ITEM'
+            ? '<b-masonry-layout> should use <b-masonry-item> for children (you have ' +
+              host.children[0]?.tagName +
+              ')'
+            : ''
+        } ${
+          host.children[0]?.children.length !== 1
+            ? ' and <b-masonry-item> should have a single child (you have ' +
+              host.children[0]?.children.length +
+              ')'
+            : ''
+        }.`
+      );
     }
 
     this.DOM.setCssProps(host, {
@@ -46,52 +68,55 @@ export class MasonryService {
 
     this.updateElementsRowSpan(
       Array.from(host.children) as HTMLElement[],
-      config
+      config,
+      debug
     );
   }
 
   public updateElementsRowSpan(
     elements: HTMLElement[],
-    config: MasonryConfig
-  ): void {
-    batchProcessWithAnimationFrame(
-      elements,
-      (el: HTMLElement) => {
-        this.setElementRowSpan(el, config);
-      },
-      (config.columns || 5) * 3
-    );
-  }
-
-  public setElementRowSpan(
-    element: HTMLElement,
     config: MasonryConfig,
-    hardcore = false
+    debug = false
   ): void {
-    if (!element) {
-      return;
-    }
-    element.style.removeProperty('grid-row-end');
+    const elmsLength = elements.length;
+    let batchSize = 15;
+    batchSize = batchSize * 2 < elmsLength ? batchSize : elmsLength;
 
-    let contentHeight = 0;
-
-    if (hardcore && element.children.length === 1) {
-      const elStyle = getComputedStyle(element);
-      contentHeight =
-        (element.children[0] as HTMLElement).scrollHeight +
-        (parseFloat(elStyle.paddingTop) +
-          parseFloat(elStyle.paddingBottom) +
-          parseFloat(elStyle.borderTopWidth) +
-          parseFloat(elStyle.borderBottomWidth));
+    if (debug) {
+      console.log(
+        `updateElementsRowSpan: will process in ${Math.ceil(
+          elements.length / batchSize
+        )} batches of ${batchSize} items`
+      );
     }
 
-    let rowSpan =
-      (Math.max(element.scrollHeight, element.offsetHeight, contentHeight) +
-        config.gap) /
-      (MASONRY_ROW_DIVISION + config.gap);
-    rowSpan = hardcore ? Math.round(rowSpan) : Math.ceil(rowSpan);
+    batchProcessWithAnimationFrame(elements, {
+      batchSize,
 
-    element.style.gridRowEnd = 'span ' + rowSpan;
+      processBatch: (elbatch: HTMLElement[]) => {
+        elbatch
+          .map((el) => {
+            el.classList.add('recalc');
+            return {
+              offsetHeight: ((el.children[0] as HTMLElement) || el)
+                .offsetHeight,
+              scrollHeight: ((el.children[0] as HTMLElement) || el)
+                .scrollHeight,
+            };
+          })
+          .forEach((elHeight, i) => {
+            const el = elbatch[i];
+
+            let rowSpan = Math.ceil(
+              (Math.max(elHeight.scrollHeight, elHeight.offsetHeight) +
+                config.gap) /
+                (MASONRY_ROW_DIVISION + config.gap)
+            );
+            el.style.gridRowEnd = 'span ' + rowSpan;
+            el.classList.remove('recalc');
+          });
+      },
+    });
   }
 
   public processConfig(config: MasonryConfig): MasonryConfig {

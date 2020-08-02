@@ -17,8 +17,10 @@ const template1 = `<b-masonry-layout #masonry [config]="{
       gap: gap
     }" [debug]="true">
 
-    <b-masonry-test-card *ngFor="let card of cards" [card]="card">
-    </b-masonry-test-card>
+    <b-masonry-item *ngFor="let card of cards">
+      <b-masonry-test-card  [card]="card">
+      </b-masonry-test-card>
+    </b-masonry-item>
 
 
 </b-masonry-layout>
@@ -26,6 +28,7 @@ const template1 = `<b-masonry-layout #masonry [config]="{
 <div style="margin: 30px auto;">
     <button (click)="masonry.init()" type="button">init</button>
     <button (click)="masonry.destroy()" type="button">destroy</button>
+    <button (click)="cards = cards.concat(masonryCardsMock())" type="button">more data</button>
 </div>
 
 `;
@@ -116,7 +119,8 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        cards: masonryCardsMock,
+        cards: masonryCardsMock(),
+        masonryCardsMock: masonryCardsMock,
         columns: number('columns', undefined),
         columnWidth: number('columnWidth', 250),
         gap: number('gap', 16),
