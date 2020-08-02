@@ -390,39 +390,44 @@ export abstract class RTEbaseElement extends BaseFormElement
         ? [(value: string): string => this.parserService.getPlainText(value)]
         : [
             (value: string): string =>
-              HtmlParserHelpers.prototype.enforceAttributes(value, {
-                '*': {
-                  '^on.*': null,
+              this.parserService.enforceAttributes(
+                value,
+                {
+                  '*': {
+                    '^on.*': null,
+                  },
+                  br: {
+                    '.*': null,
+                  },
                 },
-                br: {
-                  '.*': null,
-                },
-              }),
+                false
+              ) as string,
+
+            (value: string): string => this.parserService.cleanupHtml(value),
 
             (value: string): string =>
-              HtmlParserHelpers.prototype.cleanupHtml(value, {
-                removeNbsp: false,
-              }),
-
-            (value: string): string =>
-              this.parserService.enforceAttributes(value, {
-                a: {
-                  class: 'fr-deletable',
-                  target: '_blank',
-                  spellcheck: 'false',
-                  rel: 'noopener noreferrer',
-                  tabindex: '-1',
-                  style: null,
+              this.parserService.enforceAttributes(
+                value,
+                {
+                  a: {
+                    class: 'fr-deletable',
+                    target: '_blank',
+                    spellcheck: 'false',
+                    rel: 'noopener noreferrer',
+                    tabindex: '-1',
+                    style: null,
+                  },
+                  // '[mention-employee-id],[class*="mention"]'
+                  '[href*="/employee-profile/"]': {
+                    class: 'fr-deletable',
+                    target: null,
+                    spellcheck: 'false',
+                    rel: null,
+                    contenteditable: false,
+                  },
                 },
-                // '[mention-employee-id],[class*="mention"]'
-                '[href*="/employee-profile/"]': {
-                  class: 'fr-deletable',
-                  target: null,
-                  spellcheck: 'false',
-                  rel: null,
-                  contenteditable: false,
-                },
-              }),
+                false
+              ) as string,
 
             (value: string): string =>
               this.parserService.linkify(
@@ -437,30 +442,31 @@ export abstract class RTEbaseElement extends BaseFormElement
         ? [(value: string): string => this.parserService.getPlainText(value)]
         : [
             (value: string): string =>
-              this.parserService.enforceAttributes(value, {
-                'span,p,div,a': {
-                  contenteditable: null,
-                  tabindex: null,
-                  spellcheck: null,
-                  class: {
-                    'fr-.*': false,
+              this.parserService.enforceAttributes(
+                value,
+                {
+                  'span,p,div,a': {
+                    contenteditable: null,
+                    tabindex: null,
+                    spellcheck: null,
+                    class: {
+                      'fr-.*': false,
+                    },
                   },
+
+                  ...(this.mode === RTEMode.htmlInlineCSS
+                    ? {
+                        a: {
+                          style:
+                            'color: #fea54a; font-weight: 600; text-decoration: none;',
+                        },
+                      }
+                    : {}),
                 },
+                false
+              ) as string,
 
-                ...(this.mode === RTEMode.htmlInlineCSS
-                  ? {
-                      a: {
-                        style:
-                          'color: #fea54a; font-weight: 600; text-decoration: none;',
-                      },
-                    }
-                  : {}),
-              }),
-
-            (value: string): string =>
-              HtmlParserHelpers.prototype.cleanupHtml(value, {
-                removeNbsp: true,
-              }),
+            (value: string): string => this.parserService.cleanupHtml(value),
           ];
 
     if (this.placeholdersEnabled()) {
@@ -484,9 +490,13 @@ export abstract class RTEbaseElement extends BaseFormElement
         let html = `<a href="${item.original.link}" class="fr-deletable" spellcheck="false" contenteditable="false" tabindex="-1">@${item.original.displayName}</a>`;
 
         if (isNotEmptyObject(item.original.attributes)) {
-          html = this.parserService.enforceAttributes(html, {
-            a: item.original.attributes,
-          });
+          html = this.parserService.enforceAttributes(
+            html,
+            {
+              a: item.original.attributes,
+            },
+            false
+          ) as string;
         }
 
         return html;

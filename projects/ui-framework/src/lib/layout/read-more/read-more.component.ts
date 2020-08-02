@@ -61,6 +61,7 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
   public state: ReadMoreState = {};
   public id = simpleUID('brm-', 7);
 
+  // tslint:disable-next-line: no-input-rename
   @InputObservable({ ...READ_MORE_CONFIG_DEF })
   @Input('config')
   config$: Observable<ReadMoreConfig>;
