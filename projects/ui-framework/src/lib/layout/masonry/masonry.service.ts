@@ -145,39 +145,14 @@ export class MasonryService {
       delete state.hostWidth;
       delete state.childrenCount;
       delete state.config;
-      delete state.singleColumn;
     }
+
+    host.classList.add('single-column');
 
     this.DOM.setCssProps(host, {
       '--masonry-row-div': null,
       '--masonry-col-width': null,
     });
-
-    host.classList.add('single-column');
-
-    (Array.from(host.children) as HTMLElement[]).forEach((el) => {
-      this.DOM.setCssProps(el, {
-        'grid-row-end': null,
-      });
-    });
-  }
-
-  public cleanupMasonry(host: HTMLElement, state: MasonryState = null): void {
-    if (!host) {
-      return;
-    }
-    if (state) {
-      delete state.hostWidth;
-      delete state.childrenCount;
-      delete state.config;
-    }
-
-    this.DOM.setCssProps(host, {
-      '--masonry-row-div': null,
-      '--masonry-col-width': null,
-    });
-
-    host.classList.add('single-column');
 
     (Array.from(host.children) as HTMLElement[]).forEach((el) => {
       this.DOM.setCssProps(el, {

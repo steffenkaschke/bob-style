@@ -37,6 +37,7 @@ $b-masonry-row-division: 1px;
 
     &::ng-deep b-masonry-item {
       display: block;
+      grid-row-end: auto !important;
     }
   }
 }
