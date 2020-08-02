@@ -26,6 +26,10 @@ import {
   ReadMoreState,
   READ_MORE_CONFIG_DEF,
 } from './read-more.interface';
+import {
+  TreeWalkerFilter,
+  TreeWalkerTake,
+} from '../../services/html/dom-helpers.enum';
 
 @Component({
   selector: 'b-read-more',
@@ -160,6 +164,21 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
 
       return;
     }
+
+    const viewBox: DOMRect = this.contentEl.getBoundingClientRect();
+
+    const elOutOfVIew = this.DOM.walkNodeTree(this.contentEl, {
+      take: TreeWalkerTake.elements,
+
+      filter: (node: Node) =>
+        this.DOM.isBlockElement(node, true) && node
+          ? TreeWalkerFilter.accept
+          : TreeWalkerFilter.reject,
+
+      forEach: (element: HTMLElement) => {},
+    });
+
+    return;
 
     if (!this.state.textElement) {
       this.state.textElement = this.contentEl;
