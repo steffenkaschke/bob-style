@@ -64,13 +64,13 @@ export class MasonryService {
         : config.columnWidth && config.columnWidth + 'px',
     });
 
-    host.classList.remove('single-column');
-
     this.updateElementsRowSpan(
       Array.from(host.children) as HTMLElement[],
       config,
       debug
     );
+
+    host.classList.remove('single-column');
   }
 
   public updateElementsRowSpan(
@@ -78,21 +78,15 @@ export class MasonryService {
     config: MasonryConfig,
     debug = false
   ): void {
-    const elmsLength = elements.length;
-    let batchSize = 15;
-    batchSize = batchSize * 2 < elmsLength ? batchSize : elmsLength;
-
     if (debug) {
       console.log(
         `updateElementsRowSpan: will process in ${Math.ceil(
-          elements.length / batchSize
-        )} batches of ${batchSize} items`
+          elements.length / Math.min(elements.length, 15)
+        )} batches of ${Math.min(elements.length, 15)} items`
       );
     }
 
     batchProcessWithAnimationFrame(elements, {
-      batchSize,
-
       processBatch: (elbatch: HTMLElement[]) => {
         elbatch
           .map((el) => {
@@ -112,8 +106,8 @@ export class MasonryService {
                 config.gap) /
                 (MASONRY_ROW_DIVISION + config.gap)
             );
-            el.style.gridRowEnd = 'span ' + rowSpan;
             el.classList.remove('recalc');
+            el.style.gridRowEnd = 'span ' + rowSpan;
           });
       },
     });
@@ -145,6 +139,7 @@ export class MasonryService {
       delete state.hostWidth;
       delete state.childrenCount;
       delete state.config;
+      delete state.singleColumn;
     }
 
     host.classList.add('single-column');

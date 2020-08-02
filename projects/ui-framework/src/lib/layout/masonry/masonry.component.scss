@@ -13,11 +13,6 @@ $b-masonry-row-division: 1px;
   );
   grid-auto-rows: var(--masonry-row-div, #{$b-masonry-row-division});
 
-  &.single-column {
-    grid-template-columns: 100%;
-    grid-auto-rows: auto;
-  }
-
   &::ng-deep > * {
     overflow: hidden;
     will-change: grid-row-end;
@@ -37,6 +32,9 @@ $b-masonry-row-division: 1px;
 
     &::ng-deep b-masonry-item {
       display: block;
+    }
+
+    &::ng-deep > * {
       grid-row-end: auto !important;
     }
   }

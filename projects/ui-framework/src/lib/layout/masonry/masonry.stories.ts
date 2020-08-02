@@ -34,8 +34,13 @@ const template1 = `<b-masonry-layout #masonry [config]="{
 `;
 
 const templateForNotes = `<b-masonry-layout [config]="config">
-    <b-card *ngFor="let card of cards" [card]="card">
-    </b-card>
+
+    <b-masonry-item *ngFor="let card of cards">
+
+      <b-card [card]="card"></b-card>
+
+    </b-masonry-item>
+
 </b-masonry-layout>`;
 
 const storyTemplate = `
@@ -47,7 +52,8 @@ const storyTemplate = `
 `;
 
 const note = `
-  ## Masonry Layout
+  ## Masonry Layout Component <br><span style="font-size:85%">+ Masonry Item Component</span>
+
   #### Module
   *MasonryLayoutModule*
 
@@ -74,6 +80,16 @@ const note = `
   --- | ---
   init() | (re)initialize Masonry Layout
   destroy() | This will add \`single-column\` class on host element (which will remove the masonry layout) + remove masonry-related inline CSS on items + stop all observers/listeners.
+
+  ------------------------
+
+  #### Note
+
+  - You should always use \`b-masonry-item\` component as a wrapper for your actual item.
+  - \`b-masonry-item\`'s should be direct children of \`b-masonry-layout\`
+  - \`b-masonry-item\` should have only 1 child
+
+  ------------------------
 
   #### How it works
 
