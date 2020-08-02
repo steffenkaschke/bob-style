@@ -35,7 +35,7 @@
 }
 
 :host[data-type='shoutout'] ::ng-deep {
-  word-break: break-word;
+  @include text-hyphenate;
   font-family: var(--display-font-family);
   --rte-font-size-normal: #{$font-size-big-body};
   --rte-font-size-small: 90%;

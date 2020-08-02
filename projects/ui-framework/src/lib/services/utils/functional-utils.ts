@@ -78,7 +78,8 @@ export const isRegExp = (val: any): val is RegExp =>
 
 export const isNode = (val: any, nodeType: number = null): val is Node =>
   !!val &&
-  typeof val === 'object' &&
+  // typeof val === 'object' &&
+  val instanceof Node &&
   typeof val.nodeName === 'string' &&
   ((nodeType !== null && val.nodeType === nodeType) ||
     (nodeType === null && typeof val.nodeType === 'number'));
@@ -152,6 +153,22 @@ export const roundToDecimals = (num: number, decmls: number = 2): number => {
         Math.pow(10, decmls);
 };
 
+export const closestNumber = (val: number, from: number[]): number => {
+  return from[
+    from
+      .map(function (a, key) {
+        return [Math.abs(a - val), key];
+      })
+      .sort((a, b) => a[0] - b[0])[0][1]
+  ];
+};
+
+export const closestDivisable = (val: number, step: number): number => {
+  const c1 = val - (val % step);
+  const c2 = val + step - (val % step);
+  return val - c1 > c2 - val ? c2 : c1;
+};
+
 // ----------------------
 // CONVERTERS
 // ----------------------
@@ -161,6 +178,8 @@ export const asArray = <T = any>(smth: T | T[], castFalsey = true): T[] =>
     ? []
     : isArray(smth)
     ? (smth as T[])
+    : isIterable(smth)
+    ? Array.from(smth)
     : ([smth] as T[]);
 
 export const asNumber = (smth: any, roundToDcmls = null): number => {
@@ -279,7 +298,7 @@ export const objectStringID = (
 // ARRAYS
 // ----------------------
 
-export const isIterable = (smth: any): boolean => {
+export const isIterable = <T = any>(smth: any): smth is Iterable<T> => {
   if (!smth || isNumber(smth) || isString(smth)) {
     return false;
   }
@@ -1020,4 +1039,34 @@ export const isSelectGroupOptions = (
       options[0] &&
       isArray((options as SelectGroupOption[])[0].options)
   );
+};
+
+export const batchProcessWithAnimationFrame = <T = any>(
+  items: T[],
+  processItem: (arg: T) => void,
+  batchSize = 15
+): void => {
+  const chunks: T[][] = splitArrayToChunks(items, batchSize);
+
+  let currentChunkIndex = 0;
+
+  const processBatch = () => {
+    if (!chunks[currentChunkIndex]) {
+      return;
+    }
+
+    chunks[currentChunkIndex].forEach((el: T) => {
+      processItem(el);
+    });
+
+    ++currentChunkIndex;
+
+    window.requestAnimationFrame(() => {
+      processBatch();
+    });
+  };
+
+  window.requestAnimationFrame(() => {
+    processBatch();
+  });
 };
