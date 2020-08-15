@@ -550,6 +550,7 @@ export { FiltersModule } from './lib/services/filters/filters.module';
 export { LinkifyPipe } from './lib/services/filters/linkify.pipe';
 export { HighlightPipe } from './lib/services/filters/highlight.pipe';
 export { FormatNumberPipe } from './lib/services/filters/formatNumber.pipe';
+export * from './lib/services/filters/trackByProp.pipe';
 
 // Utils Module
 export { UtilsModule } from './lib/services/utils/utils.module';
@@ -585,6 +586,10 @@ export * from './lib/services/utils/decorators';
 export * from './lib/services/utils/mutation-observable';
 // Image Dimensions
 export { ImageDimensionsService } from './lib/services/utils/image-dimensions.service';
+// NgLet
+export * from './lib/services/utils/nglet.directive';
+// NgSubscribe
+export * from './lib/services/utils/ngsubscribe.directive';
 
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
