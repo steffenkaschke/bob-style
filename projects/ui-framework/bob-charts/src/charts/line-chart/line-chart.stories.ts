@@ -25,6 +25,7 @@ const template = `
     [type]="type"
     [preTooltipValue]="preTooltipValue"
     [postTooltipValue]="postTooltipValue"
+    [tooltipOutside]="tooltipOutside"
     [showDataLabels]="showDataLabels"
     [legend]="legend"
     [legendPosition]="legendPosition"
@@ -108,6 +109,7 @@ story.add(
         name: text('name', 'employees'),
         preTooltipValue: text('preTooltipValue', ''),
         postTooltipValue: text('postTooltipValue', ' PEOPLE'),
+        tooltipOutside: boolean('tooltipOutside', true),
         title: text('title', ''),
         height: number('height', 200),
         data: object('data', LINE_CHART_DATA_MOCK),

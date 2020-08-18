@@ -69,6 +69,7 @@ export abstract class ChartCore implements AfterViewInit {
   @Input() showDataLabels = false;
   @Input() pointFormat = '{series.name}: <b>{point.percentage:.1f}%</b>';
   @Input() extraOptions: HighChartOptions = {};
+  @Input() tooltipOutside = true;
   @Output() legendChanged = new EventEmitter();
   @Input() tooltipTemplate = <ChartTooltipTemplateFormatter>(
     component: ChartCore,
@@ -117,7 +118,7 @@ export abstract class ChartCore implements AfterViewInit {
         },
         legend: this.getLegendPositioning(this.legendPosition),
         tooltip: {
-          outside: true,
+          outside: this.tooltipOutside,
           useHTML: true,
           style: {
             textAlign: 'center',
