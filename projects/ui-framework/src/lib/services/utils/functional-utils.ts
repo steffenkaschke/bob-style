@@ -5,7 +5,7 @@ import { isEqual, cloneDeep } from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
 import { SelectGroupOption } from '../../lists/list.interface';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { delay, take } from 'rxjs/operators';
 
 // ----------------------
 // TYPES
@@ -39,9 +39,9 @@ export const isArray = <T = any>(val: any): val is T[] =>
   !!val && Array.isArray(val);
 
 export const isDate = (value: any): boolean =>
-  String(value) !== 'Invalid Date' &&
   value instanceof Date &&
-  typeof value.getMonth === 'function';
+  typeof value.getMonth === 'function' &&
+  String(value) !== 'Invalid Date';
 
 export const isNotEmptyArray = (val: any, min = 0): boolean =>
   isArray(val) && val.length > min;
@@ -95,11 +95,15 @@ export const isDomElement = (val: any): val is HTMLElement =>
   isNode(val, Node.ELEMENT_NODE);
 
 export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
-  isNullOrUndefined(smth) ||
-  smth === false ||
-  (fuzzy && !Boolean(smth)) ||
-  isEmptyArray(smth) ||
-  (isEmptyObject(smth) && !isDate(smth));
+  (!Boolean(smth) && (fuzzy || (!isString(smth) && !isNumber(smth)))) ||
+  (Array.isArray(smth) && smth.length === 0) ||
+  (smth === Object(smth) &&
+    smth.constructor === Object &&
+    Object.getPrototypeOf(smth) === Object.prototype &&
+    Object.keys(smth).length === 0);
+
+export const isEmpty = (smth: any, fuzzy = false): boolean =>
+  isFalsyOrEmpty(smth, true);
 
 // truthy, string, number or null
 export const isValuevy = (smth: any): boolean =>
@@ -206,8 +210,8 @@ export const parseToNumber = asNumber;
 // OBJECTS
 // ----------------------
 
-export const hasProp = (
-  obj: GenericObject,
+export const hasProp = <T = GenericObject>(
+  obj: T,
   key: string,
   strict = true
 ): boolean =>
@@ -317,12 +321,12 @@ export const objectStringID = <T = GenericObject>(
 ): string => {
   const { key, limit, addId, primitives, ignoreProps } = config;
 
-  if (isArray(ignoreProps)) {
+  if (isArray(ignoreProps) && isObject(obj)) {
     obj = objectRemoveKeys<T>(obj, ignoreProps);
   }
 
   const str = String(
-    primitives ? JSON.stringify(obj) : stringify(obj, null)
+    primitives ? JSON.stringify(obj) : stringify(obj, null, 1)
   ).replace(/[\s\//'"\.,:\-_\+={}()\[\]]+/gi, '');
   const len = str.length;
   const slice =
@@ -531,7 +535,7 @@ export const mapSplice = <K = any, V = any>(
 // STRINGS
 // ----------------------
 
-export const stringify = (smth: any, limit = 200): string => {
+export const stringify = (smth: any, limit = 300, limitKeys = null): string => {
   const stringified = isPrimitive(smth)
     ? String(smth)
     : isArray(smth)
@@ -539,7 +543,7 @@ export const stringify = (smth: any, limit = 200): string => {
       smth
         .reduce((str, i) => {
           if (!limit || str.length < limit * 0.7) {
-            str += `${stringify(i, limit)}, `;
+            str += `${stringify(i, limit, limitKeys)}, `;
           }
           return str;
         }, '')
@@ -552,7 +556,11 @@ export const stringify = (smth: any, limit = 200): string => {
       Object.keys(smth)
         .reduce((str, k) => {
           if ((!limit || str.length < limit * 0.7) && smth[k] !== undefined) {
-            str += `${k}: ${stringify(smth[k], limit)}, `;
+            str += `${limitKeys ? k.slice(0, limitKeys) : k}: ${stringify(
+              smth[k],
+              limit,
+              limitKeys
+            )}, `;
           }
           return str;
         }, '')
@@ -727,20 +735,32 @@ export const arrOfObjSortByProp = <T = GenericObject>(
   return arr;
 };
 
-export const objectSortKeys = <T = GenericObject>(obj: T): T => {
+export const objectSortKeys = <T = GenericObject>(
+  obj: T,
+  removeKeys: string[] = null
+): T => {
   if (!isPlainObject(obj)) {
     return obj;
   }
   return Object.keys(obj)
     .sort()
     .reduce((newObj: T, key: string) => {
+      if (
+        (isArray(removeKeys) && removeKeys.includes(key)) ||
+        obj[key] === undefined
+      ) {
+        return newObj;
+      }
       newObj[key] = obj[key];
       return newObj;
     }, {} as T);
 };
 
-export const dataDeepSort = <T = any>(data: T | T[]): T | T[] => {
-  if (isPrimitive(data) || isFalsyOrEmpty(data)) {
+export const dataDeepSort = <T = any>(
+  data: T | T[],
+  removeKeys = null
+): T | T[] => {
+  if (isPrimitive(data) || isEmpty(data)) {
     return data;
   }
 
@@ -751,7 +771,7 @@ export const dataDeepSort = <T = any>(data: T | T[]): T | T[] => {
       }
 
       if (isPlainObject(di)) {
-        const srtd: T = objectSortKeys<T>(di);
+        const srtd: T = objectSortKeys<T>(di, removeKeys);
         Object.keys(srtd).forEach((key) => {
           srtd[key] = dataDeepSort<T>(srtd[key]);
         });
@@ -832,8 +852,11 @@ export const isEqualByValues = <T = any>(
   }
 
   return (
-    objectStringID(dataDeepSort<T>(dataA), config) ===
-    objectStringID(dataDeepSort<T>(dataB), config)
+    objectStringID(
+      dataDeepSort<T>(dataA, config?.ignoreProps || null),
+      config
+    ) ===
+    objectStringID(dataDeepSort<T>(dataB, config?.ignoreProps || null), config)
   );
 };
 
@@ -1087,7 +1110,7 @@ export const prefetchSharedObservables = (
 
   return new Promise((resolve, reject) => {
     asArray(observables).forEach((o) => {
-      o.pipe(take(1)).subscribe(
+      o.pipe(take(1), delay(0)).subscribe(
         () => {
           if (++counter === total) {
             resolve();
