@@ -999,24 +999,34 @@ export const countChildren = (parentSelector, parent) => {
 
 export interface ChangesHelperConfig {
   keyMap?: { [targetKey: string]: string };
-  falseyCheck?: Function;
+  checkEquality?: boolean;
+  truthyCheck?: Function;
+  equalCheck?: Function;
+  firstChange?: boolean | null;
+  transform?: { [prop: string]: (val: any) => any };
 }
 
 export const CHANGES_HELPER_CONFIG_DEF: ChangesHelperConfig = {
-  falseyCheck: Boolean,
+  truthyCheck: Boolean,
+  equalCheck: isEqualByValues,
+  firstChange: null,
 };
 
 const simpleChangeFilter = (
   change: SimpleChange,
   discardAllFalsey = false,
-  falseyCheck: Function = Boolean
+  truthyCheck: Function = Boolean,
+  checkEquality = false,
+  equalCheck: Function = isEqualByValues
 ): boolean => {
   return (
     change !== undefined &&
     // (change.currentValue !== undefined || change.previousValue !== undefined)
     change.currentValue !== change.previousValue &&
     (!discardAllFalsey ||
-      (discardAllFalsey && falseyCheck(change.currentValue)))
+      (discardAllFalsey && truthyCheck(change.currentValue))) &&
+    (!checkEquality ||
+      (checkEquality && !equalCheck(change.currentValue, change.previousValue)))
   );
 };
 
@@ -1026,12 +1036,26 @@ export const hasChanges = (
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): boolean => {
-  const falseyCheck = config.falseyCheck || Boolean;
+  const truthyCheck = config?.truthyCheck || Boolean;
+  const equalCheck = config?.equalCheck || isEqualByValues;
   if (!keys) {
     keys = Object.keys(changes);
   }
-  return !!keys.find((i) =>
-    simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck)
+  return Boolean(
+    keys.find(
+      (i) =>
+        changes[i] &&
+        (!isBoolean(config?.firstChange) ||
+          (config?.firstChange === true && changes[i].firstChange) ||
+          (config?.firstChange === false && !changes[i].firstChange)) &&
+        simpleChangeFilter(
+          changes[i],
+          discardAllFalsey,
+          truthyCheck,
+          config?.checkEquality,
+          equalCheck
+        )
+    )
   );
 };
 
@@ -1040,41 +1064,22 @@ export const firstChanges = (
   keys: string[] = null,
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
-): boolean => {
-  const falseyCheck = config.falseyCheck || Boolean;
-  if (!keys) {
-    keys = Object.keys(changes);
-  }
-  return !!keys.find(
-    (i) =>
-      changes[i]?.firstChange &&
-      simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck)
-  );
-};
+): boolean =>
+  hasChanges(changes, keys, discardAllFalsey, {
+    ...config,
+    firstChange: true,
+  });
 
 export const notFirstChanges = (
   changes: SimpleChanges,
   keys: string[] = null,
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
-): boolean => {
-  const falseyCheck = config.falseyCheck || Boolean;
-  if (!keys) {
-    keys = Object.keys(changes);
-  }
-  return !!keys.find(
-    (i) =>
-      !changes[i]?.firstChange &&
-      simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck)
-  );
-};
-
-export interface ApplyChangesConfig {
-  defaults: GenericObject;
-  skip: string[];
-  discardAllFalsey: boolean;
-  config: ChangesHelperConfig;
-}
+): boolean =>
+  hasChanges(changes, keys, discardAllFalsey, {
+    ...config,
+    firstChange: false,
+  });
 
 export const applyChanges = (
   target: any,
@@ -1084,13 +1089,16 @@ export const applyChanges = (
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): SimpleChanges => {
-  const falseyCheck = config.falseyCheck || Boolean;
+  const truthyCheck = config.truthyCheck || Boolean;
   const keyMap = config.keyMap;
 
   if (keyMap) {
     Object.keys(keyMap).forEach((targetKey: string) => {
-      changes[targetKey] = changes[keyMap[targetKey]];
-      skip.push(keyMap[targetKey]);
+      if (changes[keyMap[targetKey]]) {
+        changes[targetKey] = changes[keyMap[targetKey]];
+        delete changes[keyMap[targetKey]];
+        skip.push(keyMap[targetKey]);
+      }
     });
   }
 
@@ -1108,8 +1116,10 @@ export const applyChanges = (
       defaults.hasOwnProperty(changeKey) &&
       ((!discardAllFalsey &&
         isNullOrUndefined(changes[changeKey]?.currentValue)) ||
-        (discardAllFalsey && !falseyCheck(changes[changeKey].currentValue)))
+        (discardAllFalsey && !truthyCheck(changes[changeKey].currentValue)))
         ? defaults[changeKey]
+        : config?.transform && isFunction(config.transform[changeKey])
+        ? config.transform[changeKey](changes[changeKey]?.currentValue)
         : changes[changeKey]?.currentValue;
   });
 
@@ -1123,20 +1133,26 @@ export const applyChanges = (
 export const prefetchSharedObservables = (
   observables: Observable<any> | Observable<any>[]
 ): Promise<void> => {
+  if (isEmptyArray(observables)) {
+    return;
+  }
   observables = asArray(observables);
   const total = observables.length;
   let counter = 0;
 
   return new Promise((resolve, reject) => {
     asArray(observables).forEach((o) => {
-      o.pipe(take(1), delay(0)).subscribe(
+      o?.pipe(take(1), delay(0)).subscribe(
         () => {
           if (++counter === total) {
             resolve();
           }
         },
         (err) => {
-          console.warn('[prefetchSharedObservables] failed:', err);
+          console.warn(
+            '[prefetchSharedObservables] failed:',
+            err?.error?.error || err?.error || err
+          );
           reject();
         }
       );
