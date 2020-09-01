@@ -1,4 +1,4 @@
-import { SimpleChanges, SimpleChange } from '@angular/core';
+import { SimpleChanges, SimpleChange, ElementRef } from '@angular/core';
 import { metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
 import { isEqual, cloneDeep } from 'lodash';
@@ -37,6 +37,9 @@ export const isEmptyString = (val: any): boolean => !isNotEmptyString(val);
 
 export const isArray = <T = any>(val: any): val is T[] =>
   !!val && Array.isArray(val);
+
+export const isArrayOrNull = (val: any) => isArray(val) || val === null;
+export const isObjectOrNull = (val: any) => isObject(val) || val === null;
 
 export const isDate = (value: any): boolean =>
   value instanceof Date &&
@@ -93,6 +96,9 @@ export const isTextNode = (val: any): val is Node =>
 
 export const isDomElement = (val: any): val is HTMLElement =>
   isNode(val, Node.ELEMENT_NODE);
+
+export const isElementRef = (val: any): val is ElementRef =>
+  isDomElement(val?.nativeElement);
 
 export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
   (!Boolean(smth) && (fuzzy || (!isString(smth) && !isNumber(smth)))) ||
