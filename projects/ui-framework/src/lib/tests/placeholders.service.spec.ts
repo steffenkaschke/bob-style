@@ -100,6 +100,13 @@ describe('PlachholderRteConverterService', () => {
         'data-placeholder-id="work' + separator + 'title"'
       );
       expect(converted).toContain('data-before="Work" data-after=" - Title"');
+    })
+    it('Should convert in textual mode', () => {
+      const textIn = 'hi {{root' +
+        separator +
+        'firstName}}'
+      const converted = converter.toRte(textIn, options, 'textual');
+      expect(converted).toEqual('hi {Basic - First name}');
     });
   });
 
