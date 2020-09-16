@@ -18,7 +18,7 @@ import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 @Component({
   selector: 'b-single-list',
   templateUrl: 'single-list.component.html',
-  styleUrls: ['single-list.component.scss'],
+  styleUrls: ['single-list.component.scss', 'single-list-extended.scss'],
 })
 export class SingleListComponent extends BaseListElement {
   constructor(
@@ -47,8 +47,17 @@ export class SingleListComponent extends BaseListElement {
     this.listActions = { ...SINGLE_LIST_LIST_ACTIONS_DEF };
   }
 
-  headerClick(header: ListHeader): void {
-    if (this.options.length > 1) {
+  headerClick(header: ListHeader, index: number): void {
+    if (!header) {
+      return;
+    }
+
+    if (header.groupIsOption) {
+      super.headerClick(header, index);
+      return;
+    }
+
+    if (this.options.length > 1 && !header.groupIsOption) {
       this.toggleGroupCollapse(header);
     }
   }

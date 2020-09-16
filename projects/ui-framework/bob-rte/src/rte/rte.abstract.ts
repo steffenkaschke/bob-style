@@ -11,8 +11,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { cloneDeep, merge } from 'lodash';
-
+import { merge } from 'lodash';
 import {
   applyChanges,
   BaseFormElement,
@@ -31,14 +30,14 @@ import {
   isNotEmptyArray,
   isNotEmptyObject,
   isNullOrUndefined,
-  joinArrays,
   notFirstChanges,
   PanelDefaultPosVer,
   SelectGroupOption,
   SingleSelectPanelComponent,
-  stringyOrFail,
   SanitizerService,
   firstChanges,
+  Func,
+  cloneDeepSimpleObject,
 } from 'bob-style';
 
 import {
@@ -61,6 +60,8 @@ import { initMentionsControl } from './rte.mentions';
 import { FroalaEditorDirective } from './froala/editor.directive';
 import { TranslateService } from '@ngx-translate/core';
 import { RteUtilsService } from './rte-utils.service';
+
+// import { HtmlParserHelpers } from '../../../../ui-framework/src/lib/services/html/html-parser.service';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -86,6 +87,7 @@ export abstract class RTEbaseElement extends BaseFormElement
   public tribute: TributeInstance;
   public editor: FroalaEditorInstance;
   protected toolbarButtons: HTMLElement[];
+  protected pasteTransformers: Func[] = [];
 
   public length = 0;
   public editorValue: string;
@@ -116,7 +118,9 @@ export abstract class RTEbaseElement extends BaseFormElement
   @Input() public minHeight = RTE_MINHEIGHT_DEF;
   @Input() public maxHeight = RTE_MAXHEIGHT_DEF;
 
-  @Input() public options: FroalaOptions = cloneDeep(RTE_OPTIONS_DEF);
+  @Input() public options: FroalaOptions = cloneDeepSimpleObject(
+    RTE_OPTIONS_DEF
+  );
 
   @Input() public mentionsList: RteMentionsOption[];
   @Input() public placeholderList: SelectGroupOption[];
@@ -148,13 +152,14 @@ export abstract class RTEbaseElement extends BaseFormElement
 
             ...this.inputTransformers,
           ],
-          value
+          value || ''
         );
       } catch (error) {
         console.error(`${this.getElementIDdata()} threw an error:\n`, error);
         return;
       }
     }
+
     if (
       (value === undefined || isNullOrUndefined(this.editorValue)) &&
       this.baseValue !== undefined
@@ -313,18 +318,33 @@ export abstract class RTEbaseElement extends BaseFormElement
     }
 
     this.DOM.setCssProps(this.host.nativeElement, {
-      '--translation-small': `'(${this.translate.instant(
+      '--translation-small': `'${this.translate.instant(
         'bob-style.rte.font-size.small'
-      )})'`,
-      '--translation-normal': `'(${this.translate.instant(
+      )}'`,
+      '--translation-normal': `'${this.translate.instant(
         'bob-style.rte.font-size.normal'
-      )})'`,
-      '--translation-large': `'(${this.translate.instant(
+      )}'`,
+      '--translation-large': `'${this.translate.instant(
         'bob-style.rte.font-size.large'
-      )})'`,
-      '--translation-huge': `'(${this.translate.instant(
+      )}'`,
+      '--translation-huge': `'${this.translate.instant(
         'bob-style.rte.font-size.huge'
-      )})'`,
+      )}'`,
+      '--translation-insert': `'${this.translate.instant(
+        'bob-style.rte.link.insert'
+      )}'`,
+      '--translation-url': `'${this.translate.instant(
+        'bob-style.rte.link.url'
+      )}'`,
+      '--translation-text': `'${this.translate.instant(
+        'bob-style.rte.link.text'
+      )}'`,
+
+      '--link-label-wch':
+        Math.max(
+          this.translate.instant('bob-style.rte.link.url').length,
+          this.translate.instant('bob-style.rte.link.text').length
+        ) + 1,
     });
   }
 
@@ -343,133 +363,25 @@ export abstract class RTEbaseElement extends BaseFormElement
   }
 
   private initControls(): void {
-    if (this.mode === RTEMode.plainText) {
-      this.controls = [BlotType.placeholder];
-      return;
-    } else if (
-      this.controls.length === 1 &&
-      this.controls[0] === BlotType.placeholder
-    ) {
-      this.controls = Object.values(BlotType);
-    }
-
-    if (this.controls.includes(BlotType.list)) {
-      this.controls = joinArrays(this.controls, [BlotType.ul, BlotType.ol]);
-    }
-    if (this.controls.includes(BlotType.direction)) {
-      this.controls = joinArrays(this.controls, [
-        BlotType.rightToLeft,
-        BlotType.leftToRight,
-      ]);
-    }
-    if (this.disableControls.includes(BlotType.list)) {
-      this.disableControls = joinArrays(this.disableControls, [
-        BlotType.ul,
-        BlotType.ol,
-      ]);
-    }
-    if (this.disableControls.includes(BlotType.direction)) {
-      this.disableControls = joinArrays(this.disableControls, [
-        BlotType.rightToLeft,
-        BlotType.leftToRight,
-      ]);
-    }
-
-    this.controls = RTE_CONTROLS_DEF.filter(
-      (cntrl: BlotType) =>
-        (this.controls || RTE_CONTROLS_DEF).includes(cntrl) &&
-        !(this.disableControls || RTE_DISABLE_CONTROLS_DEF).includes(cntrl)
+    Object.assign(
+      this,
+      this.rteUtilsService.getControls(
+        this.mode,
+        this.controls,
+        this.disableControls
+      )
     );
   }
 
   private initTransformers(): void {
-    this.inputTransformers = [
-      stringyOrFail,
-
-      ...(this.mode === RTEMode.plainText
-        ? [(value: string): string => this.parserService.getPlainText(value)]
-        : [
-            (value: string): string =>
-              HtmlParserHelpers.prototype.enforceAttributes(value, {
-                '*': {
-                  '^on.*': null,
-                },
-                br: {
-                  '.*': null,
-                },
-              }),
-
-            (value: string): string =>
-              HtmlParserHelpers.prototype.cleanupHtml(value, {
-                removeNbsp: false,
-              }),
-
-            (value: string): string =>
-              this.parserService.enforceAttributes(value, {
-                a: {
-                  class: 'fr-deletable',
-                  target: '_blank',
-                  spellcheck: 'false',
-                  rel: 'noopener noreferrer',
-                  tabindex: '-1',
-                  style: null,
-                },
-                // '[mention-employee-id],[class*="mention"]'
-                '[href*="/employee-profile/"]': {
-                  class: 'fr-deletable',
-                  target: null,
-                  spellcheck: 'false',
-                  rel: null,
-                  contenteditable: false,
-                },
-              }),
-
-            (value: string): string =>
-              this.parserService.linkify(
-                value,
-                'class="fr-deletable" spellcheck="false" rel="noopener noreferrer"'
-              ),
-          ]),
-    ];
-
-    this.outputTransformers =
-      this.mode === RTEMode.plainText
-        ? [(value: string): string => this.parserService.getPlainText(value)]
-        : [
-            (value: string): string =>
-              this.parserService.enforceAttributes(value, {
-                'span,p,div,a': {
-                  contenteditable: null,
-                  tabindex: null,
-                  spellcheck: null,
-                  class: {
-                    'fr-.*': false,
-                  },
-                },
-
-                ...(this.mode === RTEMode.htmlInlineCSS
-                  ? {
-                      a: {
-                        style:
-                          'color: #fea54a; font-weight: 600; text-decoration: none;',
-                      },
-                    }
-                  : {}),
-              }),
-
-            (value: string): string =>
-              HtmlParserHelpers.prototype.cleanupHtml(value, {
-                removeNbsp: true,
-              }),
-          ];
-
-    if (this.placeholdersEnabled()) {
-      this.inputTransformers.push((value: string): string =>
-        this.placeholdersConverter.toRte(value, this.placeholderList)
-      );
-
-      this.outputTransformers.unshift(this.placeholdersConverter.fromRte);
-    }
+    Object.assign(
+      this,
+      this.rteUtilsService.getTransformers(
+        this.mode,
+        this.placeholdersEnabled(),
+        this.placeholderList
+      )
+    );
   }
 
   private initMentions(): void {
@@ -484,9 +396,13 @@ export abstract class RTEbaseElement extends BaseFormElement
         let html = `<a href="${item.original.link}" class="fr-deletable" spellcheck="false" contenteditable="false" tabindex="-1">@${item.original.displayName}</a>`;
 
         if (isNotEmptyObject(item.original.attributes)) {
-          html = this.parserService.enforceAttributes(html, {
-            a: item.original.attributes,
-          });
+          html = this.parserService.enforceAttributes(
+            html,
+            {
+              a: item.original.attributes,
+            },
+            false
+          ) as string;
         }
 
         return html;

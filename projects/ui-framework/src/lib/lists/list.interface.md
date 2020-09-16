@@ -14,7 +14,7 @@ id | number / string | option ID - **Must be unique!**
 selected | boolean | if option is selected
 prefixComponent |  RenderedComponent | object, describing component to be rendered in the option (see [Component Renderer](https://hibobio.github.io/bob-style/?path=/story/services--component-renderer))
 disabled | boolean | if option is disabled
-hidden | boolean | if options is hidden, it will not be displayed in the list
+exclusive | boolean | when selected, will unselect all other options in the list
  + | any | you can pass any additional properties in the SelectOption object
 
 #### interface: ListFooterActions
@@ -29,6 +29,6 @@ reset | boolean | enable Reset button.<br> Defaults to <u>false</u>.<br> **Note:
 Name | Type | Description
 --- | --- | ---
 getSelectedIds | (): (number / string)[] | returns array of selected option **IDs**
-getSelectedGroupOptions | (): SelectGroupOption[] | returns **selected** options
-getSelectGroupOptions | (): SelectGroupOption[] | returns all options
-getDisplayValue | (): string | returns of selected options' values, joined with ',' (same as displayed in select input field)
+getSelectGroupOptions | (): SelectGroupOption[] | returns all groups/options
+getSelectedGroupOptions | (): SelectGroupOption[] | returns **selected** groups/options (with additional data per group: selectedCount, groupSelectedIDs, groupSelectedValues)
+getDisplayValue | (): string | returns selected options' values, joined with ',' (same as displayed in select input field)

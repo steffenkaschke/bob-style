@@ -1,3 +1,8 @@
+@mixin single-list-option-selected {
+  background-color: $color-option-selected-solid;
+  font-weight: bold;
+}
+
 @mixin listOption {
   @include b-body($color: $grey-700, $addCssVars: false, $lineHeight: 1.2);
   padding: 0 $input-padding;
@@ -11,11 +16,10 @@
   }
   &:hover,
   &.focus {
-    background-color: $grey-100;
+    background-color: $color-option-hover-solid;
   }
   &.selected {
-    background-color: $color-option-selected;
-    font-weight: bold;
+    @include single-list-option-selected;
   }
   &.disabled {
     @include disabled-state;
@@ -54,7 +58,7 @@
     &.clickable {
       &:hover,
       &.focus {
-        background-color: $grey-100;
+        background-color: $color-option-hover-solid;
       }
     }
 
@@ -76,16 +80,5 @@
         margin-right: 7px;
       }
     }
-  }
-}
-
-[aria-readonly='true'] ::ng-deep {
-  .option:not(.selected):hover,
-  .option:not(.selected).focus {
-    background-color: transparent;
-  }
-  .headers .headers-group .header:hover,
-  .headers .headers-group .header.focus {
-    background-color: white;
   }
 }

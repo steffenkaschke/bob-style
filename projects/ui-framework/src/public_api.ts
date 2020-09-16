@@ -31,6 +31,7 @@ export { BodyComponent } from './lib/typography/body/body.component';
 export { LabelValueModule } from './lib/typography/label-value/label-value.module';
 export { LabelValueComponent } from './lib/typography/label-value/label-value.component';
 export { LabelValueType, TextAlign, IconPosition } from './lib/typography/label-value/label-value.enum';
+export * from './lib/typography/label-value/label-value.interface';
 
 /*
  * Buttons
@@ -43,6 +44,9 @@ export {
 export {
   SquareButtonComponent
 } from './lib/buttons/square/square.component';
+export {
+  RoundButtonComponent
+} from './lib/buttons/round/round.component';
 export {
   GroupComponent
 } from './lib/buttons/group/group.component';
@@ -63,9 +67,7 @@ export {
 export {
   ActionMenuButtonComponent
 } from './lib/buttons/action-menu-button/action-menu-button.component';
-export {
-  ButtonConfig
-} from './lib/buttons/buttons.interface';
+export * from './lib/buttons/buttons.interface';
 /*
  * Avatar
  */
@@ -496,6 +498,15 @@ export { SortableCollapsibleSection, SortableCollapsibleDropped } from './lib/la
 export { CollapsibleHeaderDirective } from './lib/layout/sortable-collapsible-sections/collapsible-header.directive';
 export { CollapsibleContentDirective } from './lib/layout/sortable-collapsible-sections/collapsible-content.directive';
 
+// Masonry
+export { MasonryLayoutModule } from './lib/layout/masonry/masonry.module';
+export { MasonryLayoutComponent, MasonryItemComponent } from './lib/layout/masonry/masonry.component';
+export * from './lib/layout/masonry/masonry.interface';
+
+// Read More
+export { ReadMoreModule } from './lib/layout/read-more/read-more.module';
+export { ReadMoreComponent } from './lib/layout/read-more/read-more.component';
+
 /*
  * Cards
  */
@@ -540,10 +551,12 @@ export { FiltersModule } from './lib/services/filters/filters.module';
 export { LinkifyPipe } from './lib/services/filters/linkify.pipe';
 export { HighlightPipe } from './lib/services/filters/highlight.pipe';
 export { FormatNumberPipe } from './lib/services/filters/formatNumber.pipe';
+export * from './lib/services/filters/trackByProp.pipe';
+
 // Utils Module
 export { UtilsModule } from './lib/services/utils/utils.module';
 export { SpyDirective } from './lib/services/utils/spy.directive';
-export { UtilsService } from './lib/services/utils/utils.service';
+export * from './lib/services/utils/utils.service';
 export { ScrollEvent } from './lib/services/utils/utils.interface';
 export * from './lib/services/utils/window-ref.service';
 export { DocumentRef } from './lib/services/utils/document-ref.service';
@@ -561,13 +574,24 @@ export { ComponentRendererModule } from './lib/services/component-renderer/compo
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';
 export { RenderedComponent } from './lib/services/component-renderer/component-renderer.interface';
 // RxJs operators
-export { outsideZone, insideZone } from './lib/services/utils/rxjs.operators';
+export * from './lib/services/utils/rxjs.operators';
 // Event Manager Plugins
 export {
   EventManagerPlugins,
   OutsideZonePlugin,
   MultiEventPlugin,
 } from './lib/services/utils/eventManager.plugins';
+// Decorators
+export * from './lib/services/utils/decorators';
+// Mutation Observable
+export * from './lib/services/utils/mutation-observable';
+// Image Dimensions
+export { ImageDimensionsService } from './lib/services/utils/image-dimensions.service';
+// NgLet
+export * from './lib/services/utils/nglet.directive';
+// NgSubscribe
+export * from './lib/services/utils/ngsubscribe.directive';
+
 // Eye Candy
 export { EyeCandyModule } from './lib/eye-candy/eye-candy.module';
 export * from './lib/eye-candy/floating-avatars/floating-avatars.interface';
@@ -594,6 +618,8 @@ export { HtmlHelpersModule } from './lib/services/html/html-helpers.module';
 export * from './lib/services/html/html-helpers.interface';
 export { DOMhelpers } from './lib/services/html/dom-helpers.service';
 export { HtmlParserHelpers } from './lib/services/html/html-parser.service';
+export * from './lib/services/html/html-parser.const';
+export * from './lib/services/html/html-parser.interface';
 // Transformers
 export * from './lib/services/utils/transformers';
 // Mocks

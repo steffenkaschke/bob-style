@@ -1,9 +1,11 @@
-import { SimpleChanges, SimpleChange } from '@angular/core';
+import { SimpleChanges, SimpleChange, ElementRef } from '@angular/core';
 import { metaKeys } from '../../enums';
 import { GenericObject } from '../../types';
 import { isEqual, cloneDeep } from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
 import { SelectGroupOption } from '../../lists/list.interface';
+import { Observable } from 'rxjs';
+import { delay, take } from 'rxjs/operators';
 
 // ----------------------
 // TYPES
@@ -23,6 +25,8 @@ export const isNumber = (val: any): val is number =>
 
 export const isBoolean = (val: any): val is boolean => typeof val === 'boolean';
 
+export const isFalsey = (val: any): boolean => !val;
+
 export const isFunction = (val: any): val is Function =>
   !!val && typeof val === 'function';
 
@@ -34,10 +38,13 @@ export const isEmptyString = (val: any): boolean => !isNotEmptyString(val);
 export const isArray = <T = any>(val: any): val is T[] =>
   !!val && Array.isArray(val);
 
+export const isArrayOrNull = (val: any) => isArray(val) || val === null;
+export const isObjectOrNull = (val: any) => isObject(val) || val === null;
+
 export const isDate = (value: any): boolean =>
-  String(value) !== 'Invalid Date' &&
   value instanceof Date &&
-  typeof value.getMonth === 'function';
+  typeof value.getMonth === 'function' &&
+  String(value) !== 'Invalid Date';
 
 export const isNotEmptyArray = (val: any, min = 0): boolean =>
   isArray(val) && val.length > min;
@@ -48,7 +55,7 @@ export const isEmptyArray = (val: any): boolean =>
 export const isObject = (val: any): val is object =>
   !!val && val === Object(val) && typeof val !== 'function' && !isArray(val);
 
-export const isPlainObject = (val: any): val is object =>
+export const isPlainObject = <T = any>(val: any): val is { [key: string]: T } =>
   isObject(val) &&
   val.constructor === Object &&
   Object.getPrototypeOf(val) === Object.prototype;
@@ -78,7 +85,8 @@ export const isRegExp = (val: any): val is RegExp =>
 
 export const isNode = (val: any, nodeType: number = null): val is Node =>
   !!val &&
-  typeof val === 'object' &&
+  // typeof val === 'object' &&
+  val instanceof Node &&
   typeof val.nodeName === 'string' &&
   ((nodeType !== null && val.nodeType === nodeType) ||
     (nodeType === null && typeof val.nodeType === 'number'));
@@ -89,12 +97,21 @@ export const isTextNode = (val: any): val is Node =>
 export const isDomElement = (val: any): val is HTMLElement =>
   isNode(val, Node.ELEMENT_NODE);
 
+export const isElementRef = (val: any): val is ElementRef =>
+  isDomElement(val?.nativeElement);
+
 export const isFalsyOrEmpty = (smth: any, fuzzy = false): boolean =>
-  isNullOrUndefined(smth) ||
-  smth === false ||
-  (fuzzy && !Boolean(smth)) ||
-  isEmptyArray(smth) ||
-  (isEmptyObject(smth) && !isDate(smth));
+  (!Boolean(smth) && (fuzzy || (!isString(smth) && !isNumber(smth)))) ||
+  (Array.isArray(smth) && smth.length === 0) ||
+  (smth instanceof Map && smth.size === 0) ||
+  (smth instanceof Set && smth.size === 0) ||
+  (smth === Object(smth) &&
+    Object.keys(smth).length === 0 &&
+    smth.constructor === Object &&
+    Object.getPrototypeOf(smth) === Object.prototype);
+
+export const isEmpty = (smth: any, fuzzy = false): boolean =>
+  isFalsyOrEmpty(smth, true);
 
 // truthy, string, number or null
 export const isValuevy = (smth: any): boolean =>
@@ -145,23 +162,41 @@ export const isInteger = (num: number): boolean => {
   return isNumber(num) && Math.floor(num) === num;
 };
 
-export const roundToDecimals = (num: number, decmls: number = 2): number => {
+export const roundToDecimals = (num: number, decmls: number = 3): number => {
   return isInteger(num)
     ? num
     : Math.round((num + Number.EPSILON) * Math.pow(10, decmls)) /
         Math.pow(10, decmls);
 };
 
+export const closestNumber = (val: number, from: number[]): number => {
+  return from[
+    from
+      .map(function (a, key) {
+        return [Math.abs(a - val), key];
+      })
+      .sort((a, b) => a[0] - b[0])[0][1]
+  ];
+};
+
+export const closestDivisable = (val: number, step: number): number => {
+  const c1 = val - (val % step);
+  const c2 = val + step - (val % step);
+  return val - c1 > c2 - val ? c2 : c1;
+};
+
 // ----------------------
 // CONVERTERS
 // ----------------------
 
-export const asArray = <T = any>(smth: T | T[]): T[] =>
-  !isNullOrUndefined(smth)
-    ? isArray(smth)
-      ? (smth as T[])
-      : ([smth] as T[])
-    : [];
+export const asArray = <T = any>(smth: T | T[], castFalsey = true): T[] =>
+  isNullOrUndefined(smth) && castFalsey
+    ? []
+    : isArray(smth)
+    ? (smth as T[])
+    : isIterable(smth)
+    ? Array.from(smth)
+    : ([smth] as T[]);
 
 export const asNumber = (smth: any, roundToDcmls = null): number => {
   if (!smth) {
@@ -183,8 +218,8 @@ export const parseToNumber = asNumber;
 // OBJECTS
 // ----------------------
 
-export const hasProp = (
-  obj: GenericObject,
+export const hasProp = <T = GenericObject>(
+  obj: T,
   key: string,
   strict = true
 ): boolean =>
@@ -224,31 +259,105 @@ export const onlyUpdatedProps = (
     }, {});
 };
 
-export const objectRemoveKey = (
-  object: GenericObject,
+export const objectRemoveKey = <T = GenericObject>(
+  object: T,
   key: string
-): GenericObject => {
-  const { [key]: deletedKey, ...otherKeys } = object;
-  return otherKeys;
+): T => {
+  if (!isObject(object)) {
+    return object;
+  }
+  const { [key]: deletedKey, ...otherKeys } = object as GenericObject;
+  return otherKeys as T;
 };
 
-export const objectRemoveKeys = (
-  object: GenericObject,
+export const objectRemoveKeys = <T = GenericObject>(
+  object: T,
   keys: string[]
-): GenericObject => {
+): T => {
   return Object.keys(object)
-    .filter((key) => !keys.includes(key))
+    .filter((key) => !asArray(keys).includes(key))
     .reduce((acc, key) => {
       acc[key] = object[key];
       return acc;
-    }, {});
+    }, {} as T);
+};
+
+export const objectRemoveEntriesByValue = <T = GenericObject>(
+  object: T,
+  values: any[]
+): T => {
+  return Object.keys(object)
+    .filter((key) => !asArray(values).includes(object[key]))
+    .reduce((acc, key) => {
+      acc[key] = object[key];
+      return acc;
+    }, {} as T);
+};
+
+export const objectRemoveEntriesWithFalseyValue = <T = GenericObject>(
+  object: T,
+  config: { remove?: any | any[]; allow?: any | any[] } = {}
+): T => {
+  const allow = asArray(config?.allow, false);
+  const remove = asArray(config?.remove, false);
+
+  return Object.keys(object)
+    .filter((key) => {
+      return remove
+        ? !remove.includes(object[key])
+        : allow
+        ? Boolean(object[key]) || allow.includes(object[key])
+        : Boolean(object[key]);
+    })
+    .reduce((acc, key) => {
+      acc[key] = object[key];
+      return acc;
+    }, {} as T);
+};
+
+export interface ObjectStringIDConfig {
+  key?: string;
+  limit?: number;
+  addId?: boolean;
+  primitives?: boolean;
+  ignoreProps?: string[];
+}
+
+export const objectStringID = <T = GenericObject>(
+  obj: T,
+  config: ObjectStringIDConfig = { limit: 400, primitives: true }
+): string => {
+  const { key, limit, addId, primitives, ignoreProps } = config;
+
+  if (isArray(ignoreProps) && isObject(obj)) {
+    obj = objectRemoveKeys<T>(obj, ignoreProps);
+  }
+
+  const str = String(
+    primitives ? JSON.stringify(obj) : stringify(obj, null, 1)
+  ).replace(/[\s\//'"\.,:\-_\+={}()\[\]]+/gi, '');
+  const len = str.length;
+  const slice =
+    limit && len > limit
+      ? [Math.floor((len - limit) / 2), Math.floor((len - limit) / 2) + limit]
+      : null;
+
+  const sliced = slice
+    ? str.slice(0, 30) + '__' + str.slice(...slice) + '__' + str.slice(-30)
+    : str;
+
+  return (
+    (key ? key + '__' : '') +
+    (sliced || typeof obj + (addId ? '__' + simpleUID() : '[empty]')) +
+    ('__' + len)
+  ).toLowerCase();
 };
 
 // ----------------------
 // ARRAYS
 // ----------------------
 
-export const isIterable = (smth: any): boolean => {
+export const isIterable = <T = any>(smth: any): smth is Iterable<T> => {
   if (!smth || isNumber(smth) || isString(smth)) {
     return false;
   }
@@ -266,7 +375,8 @@ export const arrayIntersection = <T = any>(arrA: T[], arrB: T[]): T[] =>
 
 export const arrayCommon = arrayIntersection;
 
-export const simpleArraysEqual = <T>(arr1: T[], arr2: T[]) => {
+// compares by values, ignoring order and if !strict - letter case
+export const simpleArraysEqual = <T>(arr1: T[], arr2: T[], strict = true) => {
   if (!isArray(arr1) || !isArray(arr2) || arr1.length !== arr2.length) {
     return false;
   }
@@ -274,7 +384,18 @@ export const simpleArraysEqual = <T>(arr1: T[], arr2: T[]) => {
     return true;
   }
 
-  return arrayDifference(arr1, arr2).length === 0;
+  return strict
+    ? arrayDifference(arr1, arr2).length === 0
+    : arr1
+        .map((i) => stringify(i))
+        .sort()
+        .join('|')
+        .toLowerCase() ===
+        arr2
+          .map((i) => stringify(i))
+          .sort()
+          .join('|')
+          .toLowerCase();
 };
 
 export const dedupeArray = <T = any>(arr: T[]): T[] => Array.from(new Set(arr));
@@ -336,26 +457,13 @@ export const arrayRemoveItemsMutate = <T = any>(arr: T[], items: T[]): T[] => {
 export const lastItem = <T = any>(arr: T[]): T =>
   !isIterable(arr) ? ((arr as any) as T) : arr[arr.length - 1];
 
-export const arrayFlatten = <T = any>(arr: any[]): T[] =>
-  asArray(arr).reduce((acc, val) => acc.concat(val), []);
+// export const arrayFlatten = <T = any>(arr: any[]): T[] =>
+//   asArray(arr).reduce((acc, val) => acc.concat(val), []);
 
-export const arrOfObjSortByProp = (
-  arr: GenericObject[],
-  prop: string,
-  asc = true
-): GenericObject[] => {
-  arr.sort((a: GenericObject, b: GenericObject) => {
-    const x = a[prop].toLowerCase();
-    const y = b[prop].toLowerCase();
-    return x < y ? -1 : x > y ? 1 : 0;
-  });
-
-  if (!asc) {
-    arr.reverse();
-  }
-
-  return arr;
-};
+export const arrayFlatten = <T = any>(smth: any[]): T[] =>
+  Array.isArray(smth)
+    ? smth.reduce((result, val) => result.concat(arrayFlatten(val)), [])
+    : smth;
 
 export const arrayMode = <T = any>(arr: T[]): T =>
   isArray(arr) &&
@@ -372,6 +480,19 @@ export const joinWithAnd = (arr: string[], translation = 'and'): string => {
   const start = arr.join(', ');
 
   return start ? `${start} ${translation} ${end}` : end;
+};
+
+export const splitArrayToChunks = <T = any>(
+  array: T[],
+  chunkLength: number
+): T[][] => {
+  const temparray: T[][] = [];
+
+  for (let i = 0, j = array.length; i < j; i += chunkLength) {
+    temparray.push(array.slice(i, i + chunkLength));
+  }
+
+  return temparray;
 };
 
 // ----------------------
@@ -427,13 +548,37 @@ export const mapSplice = <K = any, V = any>(
 // STRINGS
 // ----------------------
 
-export const stringify = (smth: any, limit: number = undefined): string => {
-  const stringified = isString(smth)
-    ? smth
+export const stringify = (smth: any, limit = 300, limitKeys = null): string => {
+  const stringified = isPrimitive(smth)
+    ? String(smth)
     : isArray(smth)
-    ? smth.map((i) => stringify(i)).join(', ')
+    ? '[' +
+      smth
+        .reduce((str, i) => {
+          if (!limit || str.length < limit * 0.7) {
+            str += `${stringify(i, limit, limitKeys)}, `;
+          }
+          return str;
+        }, '')
+        .replace(/[\s,]+$/, '') +
+      ']'
+    : isFunction(smth)
+    ? String(smth).split('{')[0].trim().replace('function', 'fnc')
     : isObject(smth)
-    ? JSON.stringify(smth)
+    ? '{' +
+      Object.keys(smth)
+        .reduce((str, k) => {
+          if ((!limit || str.length < limit * 0.7) && smth[k] !== undefined) {
+            str += `${limitKeys ? k.slice(0, limitKeys) : k}: ${stringify(
+              smth[k],
+              limit,
+              limitKeys
+            )}, `;
+          }
+          return str;
+        }, '')
+        .replace(/[\s,]+$/, '') +
+      '}'
     : String(smth);
 
   return limit && stringified.length > limit
@@ -467,6 +612,23 @@ export const chainCall = <A = any>(
 ): A => {
   return funcs.reduce(
     (previousResult, fn) => fn(previousResult, ...args),
+    value
+  );
+};
+
+export const pipe = <T = any>(...functions: ((val: T) => T)[]) => (
+  value: T
+) => {
+  return functions.reduce((currentValue, currentFunction) => {
+    return currentFunction(currentValue);
+  }, value);
+};
+
+export const compose = <T = any>(...functions: ((val: T) => T)[]) => (
+  value: T
+) => {
+  return functions.reduceRight(
+    (currentValue, currentFunction) => currentFunction(currentValue),
     value
   );
 };
@@ -582,6 +744,101 @@ export const randomFromArray = (array: any[] = [], num: number = 1) => {
 };
 
 // ----------------------
+// SORTERS
+// ----------------------
+
+export const arrOfObjSortByProp = <T = GenericObject>(
+  arr: T[],
+  prop: string,
+  asc = true
+): T[] => {
+  arr.sort((a: GenericObject, b: GenericObject) => {
+    const x = a[prop].toLowerCase();
+    const y = b[prop].toLowerCase();
+    return x < y ? -1 : x > y ? 1 : 0;
+  });
+
+  if (!asc) {
+    arr.reverse();
+  }
+
+  return arr;
+};
+
+export const objectSortKeys = <T = GenericObject>(
+  obj: T,
+  removeKeys: string[] = null
+): T => {
+  if (!isPlainObject(obj)) {
+    return obj;
+  }
+  return Object.keys(obj)
+    .sort()
+    .reduce((newObj: T, key: string) => {
+      if (
+        (isArray(removeKeys) && removeKeys.includes(key)) ||
+        obj[key] === undefined
+      ) {
+        return newObj;
+      }
+      newObj[key] = obj[key];
+      return newObj;
+    }, {} as T);
+};
+
+export const dataDeepSort = <T = any>(
+  data: T | T[],
+  removeKeys = null
+): T | T[] => {
+  if (isPrimitive(data) || isEmpty(data)) {
+    return data;
+  }
+
+  const sortedData: T[] = asArray(data, false)
+    .map((di: T) => {
+      if (isArray(di)) {
+        return dataDeepSort<T>(di) as T;
+      }
+
+      if (isPlainObject(di)) {
+        const srtd: T = objectSortKeys<T>(di, removeKeys);
+        Object.keys(srtd).forEach((key) => {
+          srtd[key] = dataDeepSort<T>(srtd[key]);
+        });
+        return srtd;
+      }
+
+      return di;
+    })
+    .sort((a: T, b: T) => {
+      if (a === b) {
+        return 0;
+      }
+      if (isNumber(a) && isNumber(b)) {
+        return a - b;
+      }
+      if (isPrimitive(a) && isPrimitive(b)) {
+        return String(a).localeCompare(String(b));
+      }
+      if (!a || !b) {
+        return Boolean(a) ? 1 : -1;
+      }
+
+      return objectStringID<T>(a, {
+        limit: 30,
+        primitives: true,
+      }).localeCompare(
+        objectStringID<T>(b, {
+          limit: 30,
+          primitives: true,
+        })
+      );
+    });
+
+  return isArray(data) ? (sortedData as T[]) : (sortedData[0] as T);
+};
+
+// ----------------------
 // COMPARATORS
 // ----------------------
 
@@ -601,6 +858,36 @@ export const compareAsStrings = (a: any, b: any, strict = true): boolean => {
           .trim()
           .toLowerCase()
           .replace(/[./\\()\"':,.;<>~!@#$%^&*|+=[\]{}`~\?-]/g, '');
+};
+
+// ignores order in arrays, only cares about values
+export const isEqualByValues = <T = any>(
+  dataA: T,
+  dataB: T,
+  config: ObjectStringIDConfig = { limit: 5000, primitives: true }
+): boolean => {
+  const truthyA = Boolean(dataA),
+    truthyB = Boolean(dataB);
+
+  if (dataA === dataB) {
+    return true;
+  }
+  if (
+    truthyA !== truthyB ||
+    typeof dataA !== typeof dataB ||
+    dataA.constructor !== dataB.constructor ||
+    ((isPrimitive(dataA) || isPrimitive(dataB)) && dataA !== dataB)
+  ) {
+    return false;
+  }
+
+  return (
+    objectStringID(
+      dataDeepSort<T>(dataA, config?.ignoreProps || null),
+      config
+    ) ===
+    objectStringID(dataDeepSort<T>(dataB, config?.ignoreProps || null), config)
+  );
 };
 
 // ----------------------
@@ -660,7 +947,7 @@ export const cloneValue = (value: any) =>
     ? cloneArray(value)
     : value;
 
-export const cloneDeepSimpleObject = <T = any>(obj: T): T => {
+export const cloneDeepSimpleObject = <T = GenericObject>(obj: T): T => {
   if (!obj || obj !== obj || isPrimitive(obj)) {
     return obj;
   }
@@ -723,24 +1010,34 @@ export const countChildren = (parentSelector, parent) => {
 
 export interface ChangesHelperConfig {
   keyMap?: { [targetKey: string]: string };
-  falseyCheck?: Function;
+  checkEquality?: boolean;
+  truthyCheck?: Function;
+  equalCheck?: Function;
+  firstChange?: boolean | null;
+  transform?: { [prop: string]: (val: any) => any };
 }
 
 export const CHANGES_HELPER_CONFIG_DEF: ChangesHelperConfig = {
-  falseyCheck: Boolean,
+  truthyCheck: Boolean,
+  equalCheck: isEqualByValues,
+  firstChange: null,
 };
 
 const simpleChangeFilter = (
   change: SimpleChange,
   discardAllFalsey = false,
-  falseyCheck: Function = Boolean
+  truthyCheck: Function = Boolean,
+  checkEquality = false,
+  equalCheck: Function = isEqualByValues
 ): boolean => {
   return (
     change !== undefined &&
     // (change.currentValue !== undefined || change.previousValue !== undefined)
     change.currentValue !== change.previousValue &&
     (!discardAllFalsey ||
-      (discardAllFalsey && falseyCheck(change.currentValue)))
+      (discardAllFalsey && truthyCheck(change.currentValue))) &&
+    (!checkEquality ||
+      (checkEquality && !equalCheck(change.currentValue, change.previousValue)))
   );
 };
 
@@ -750,12 +1047,26 @@ export const hasChanges = (
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): boolean => {
-  const falseyCheck = config.falseyCheck || Boolean;
+  const truthyCheck = config?.truthyCheck || Boolean;
+  const equalCheck = config?.equalCheck || isEqualByValues;
   if (!keys) {
     keys = Object.keys(changes);
   }
-  return !!keys.find((i) =>
-    simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck)
+  return Boolean(
+    keys.find(
+      (i) =>
+        changes[i] &&
+        (!isBoolean(config?.firstChange) ||
+          (config?.firstChange === true && changes[i].firstChange) ||
+          (config?.firstChange === false && !changes[i].firstChange)) &&
+        simpleChangeFilter(
+          changes[i],
+          discardAllFalsey,
+          truthyCheck,
+          config?.checkEquality,
+          equalCheck
+        )
+    )
   );
 };
 
@@ -764,73 +1075,100 @@ export const firstChanges = (
   keys: string[] = null,
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
-): boolean => {
-  const falseyCheck = config.falseyCheck || Boolean;
-  if (!keys) {
-    keys = Object.keys(changes);
-  }
-  return !!keys.find(
-    (i) =>
-      changes[i]?.firstChange &&
-      simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck)
-  );
-};
+): boolean =>
+  hasChanges(changes, keys, discardAllFalsey, {
+    ...config,
+    firstChange: true,
+  });
 
 export const notFirstChanges = (
   changes: SimpleChanges,
   keys: string[] = null,
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
-): boolean => {
-  const falseyCheck = config.falseyCheck || Boolean;
-  if (!keys) {
-    keys = Object.keys(changes);
-  }
-  return !!keys.find(
-    (i) =>
-      !changes[i]?.firstChange &&
-      simpleChangeFilter(changes[i], discardAllFalsey, falseyCheck)
-  );
-};
-
-export interface ApplyChangesConfig {
-  defaults: GenericObject;
-  skip: string[];
-  discardAllFalsey: boolean;
-  config: ChangesHelperConfig;
-}
+): boolean =>
+  hasChanges(changes, keys, discardAllFalsey, {
+    ...config,
+    firstChange: false,
+  });
 
 export const applyChanges = (
   target: any,
   changes: SimpleChanges,
   defaults: GenericObject = {},
-  skip: string[] = [],
+  skip: string[] = ['setProps'],
   discardAllFalsey = false,
   config: ChangesHelperConfig = CHANGES_HELPER_CONFIG_DEF
 ): SimpleChanges => {
-  const falseyCheck = config.falseyCheck || Boolean;
+  const truthyCheck = config.truthyCheck || Boolean;
   const keyMap = config.keyMap;
 
   if (keyMap) {
     Object.keys(keyMap).forEach((targetKey: string) => {
-      changes[targetKey] = changes[keyMap[targetKey]];
-      skip.push(keyMap[targetKey]);
+      if (changes[keyMap[targetKey]]) {
+        changes[targetKey] = changes[keyMap[targetKey]];
+        delete changes[keyMap[targetKey]];
+        skip.push(keyMap[targetKey]);
+      }
     });
   }
 
   Object.keys(changes).forEach((changeKey: string) => {
-    if (!skip.includes(changeKey)) {
-      target[changeKey] =
-        defaults.hasOwnProperty(changeKey) &&
-        ((!discardAllFalsey &&
-          isNullOrUndefined(changes[changeKey]?.currentValue)) ||
-          (discardAllFalsey && !falseyCheck(changes[changeKey].currentValue)))
-          ? defaults[changeKey]
-          : changes[changeKey]?.currentValue;
+    if (
+      skip?.includes(changeKey) ||
+      Object.getOwnPropertyDescriptor(target, changeKey)?.set ||
+      Object.getOwnPropertyDescriptor(Object.getPrototypeOf(target), changeKey)
+        ?.set
+    ) {
+      return;
     }
+
+    target[changeKey] =
+      defaults?.hasOwnProperty(changeKey) &&
+      ((!discardAllFalsey &&
+        isNullOrUndefined(changes[changeKey]?.currentValue)) ||
+        (discardAllFalsey && !truthyCheck(changes[changeKey].currentValue)))
+        ? defaults[changeKey]
+        : config?.transform && isFunction(config.transform[changeKey])
+        ? config.transform[changeKey](changes[changeKey]?.currentValue)
+        : changes[changeKey]?.currentValue;
   });
 
   return changes;
+};
+
+// ----------------------
+// OBSERVABLES
+// ----------------------
+
+export const prefetchSharedObservables = (
+  observables: Observable<any> | Observable<any>[]
+): Promise<void> => {
+  if (isEmptyArray(observables)) {
+    return;
+  }
+  observables = asArray(observables);
+  const total = observables.length;
+  let counter = 0;
+
+  return new Promise((resolve, reject) => {
+    asArray(observables).forEach((o) => {
+      o?.pipe(take(1), delay(0)).subscribe(
+        () => {
+          if (++counter === total) {
+            resolve();
+          }
+        },
+        (err) => {
+          console.warn(
+            '[prefetchSharedObservables] failed:',
+            err?.error?.error || err?.error || err
+          );
+          reject();
+        }
+      );
+    });
+  });
 };
 
 // ----------------------
@@ -870,4 +1208,60 @@ export const isSelectGroupOptions = (
       options[0] &&
       isArray((options as SelectGroupOption[])[0].options)
   );
+};
+
+export const batchProcessWithAnimationFrame = <T = any>(
+  items: T[],
+  config: {
+    batchSize?: number;
+    processItem?: (itm: T) => void;
+    processBatch?: (chnk: T[]) => void;
+    beforeAll?: (itms?: T[]) => void;
+    afterAll?: (itms?: T[]) => void;
+  }
+): void => {
+  const processItem = isFunction(config.processItem)
+      ? config.processItem
+      : null,
+    processBatch = isFunction(config.processBatch) ? config.processBatch : null,
+    beforeAll = isFunction(config.beforeAll) ? config.beforeAll : null,
+    afterAll = isFunction(config.afterAll) ? config.afterAll : null,
+    batchSize = isNumber(config.batchSize) ? config.batchSize : 15;
+
+  const chunks: T[][] = splitArrayToChunks(items, batchSize);
+
+  let currentChunkIndex = 0;
+
+  if (beforeAll) {
+    beforeAll(items);
+  }
+
+  const process = () => {
+    if (!chunks[currentChunkIndex]) {
+      if (afterAll) {
+        afterAll(items);
+      }
+      return;
+    }
+
+    if (processBatch) {
+      processBatch(chunks[currentChunkIndex]);
+    }
+
+    if (!processBatch && processItem) {
+      chunks[currentChunkIndex].forEach((el: T) => {
+        processItem(el);
+      });
+    }
+
+    ++currentChunkIndex;
+
+    window.requestAnimationFrame(() => {
+      process();
+    });
+  };
+
+  window.requestAnimationFrame(() => {
+    process();
+  });
 };

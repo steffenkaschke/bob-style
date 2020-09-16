@@ -86,6 +86,9 @@ export abstract class BaseListElement
   @Input() readonly = false;
   @Input() focusOnInit = false;
 
+  @Input() min: number;
+  @Input() max: number;
+
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
     ListChange
   >();
@@ -121,6 +124,8 @@ export abstract class BaseListElement
     applyChanges(this, changes, {
       options: [],
       mode: SelectMode.classic,
+      startWithGroupsCollapsed: true,
+      maxHeight: LIST_EL_HEIGHT * 8,
     });
 
     if (this.mode === SelectMode.tree) {
@@ -131,8 +136,11 @@ export abstract class BaseListElement
       this.options = this.options.filter((group: SelectGroupOption) =>
         isNotEmptyArray(group.options)
       );
-      this.allGroupsCollapsed =
-        this.startWithGroupsCollapsed && isNotEmptyArray(this.options, 1);
+    }
+
+    if (hasChanges(changes, ['startWithGroupsCollapsed', 'options'])) {
+      this.startWithGroupsCollapsed =
+        this.startWithGroupsCollapsed && this.options.length > 1;
     }
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
@@ -147,8 +155,24 @@ export abstract class BaseListElement
       this.noGroupHeaders =
         !this.options ||
         (this.options.length < 2 && !this.showSingleGroupHeader);
+    }
+
+    if (
+      hasChanges(changes, [
+        'options',
+        'showSingleGroupHeader',
+        'mode',
+        'min',
+        'max',
+      ])
+    ) {
+      this.allGroupsCollapsed =
+        this.allGroupsCollapsed ||
+        (this.startWithGroupsCollapsed && isNotEmptyArray(this.options, 1));
 
       this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
+    } else if (hasChanges(changes, ['startWithGroupsCollapsed'])) {
+      this.toggleCollapseAll(this.startWithGroupsCollapsed);
     }
 
     if (hasChanges(changes, ['optionsDefault'])) {
@@ -170,21 +194,6 @@ export abstract class BaseListElement
       ])
     ) {
       this.updateActionButtonsState();
-    }
-
-    if (
-      hasChanges(changes, ['startWithGroupsCollapsed', 'options']) &&
-      typeof this.startWithGroupsCollapsed === 'boolean'
-    ) {
-      this.startWithGroupsCollapsed =
-        this.startWithGroupsCollapsed && this.options.length > 1;
-    }
-
-    if (
-      hasChanges(changes, ['startWithGroupsCollapsed']) &&
-      typeof this.startWithGroupsCollapsed === 'boolean'
-    ) {
-      this.toggleCollapseAll(this.startWithGroupsCollapsed);
     }
 
     if (hasChanges(changes, ['maxHeight', 'options'], true)) {
@@ -243,13 +252,17 @@ export abstract class BaseListElement
             if (!this.focusOption) {
               break;
             }
-            this.focusOption.isPlaceHolder
-              ? this.headerClick(
-                  find(this.listHeaders, {
-                    groupName: this.focusOption.groupName,
-                  })
-                )
-              : this.optionClick(this.focusOption);
+            if (this.focusOption.isPlaceHolder) {
+              const headerIndex = this.listHeaders.findIndex(
+                (header) => header.groupName === this.focusOption.groupName
+              );
+              if (headerIndex > -1) {
+                this.headerClick(this.listHeaders[headerIndex], headerIndex);
+              }
+            } else {
+              this.optionClick(this.focusOption);
+            }
+
             break;
           default:
             break;
@@ -302,9 +315,18 @@ export abstract class BaseListElement
     });
   }
 
-  optionClick(option: ListOption, allowMultiple = false): void {
+  optionClick(
+    option: ListOption,
+    allowMultiple = this.type === SelectType.multi
+  ): void {
     if (!option.disabled && !this.readonly) {
-      let newValue;
+      let newValue: boolean;
+
+      if (option.exclusive && !option.selected && allowMultiple) {
+        option.selected = true;
+        this.clearList([option.id]);
+        return;
+      }
 
       if (!this.mode || this.mode === SelectMode.classic || !allowMultiple) {
         newValue = !option.selected;
@@ -355,7 +377,16 @@ export abstract class BaseListElement
     }
   }
 
-  headerClick(header: ListHeader, ...args): void {}
+  headerClick(header: ListHeader, index: number): void {
+    if (header.groupIsOption && !this.readonly) {
+      this.optionClick({
+        ...this.options[index].options[0],
+        isPlaceHolder: false,
+        groupName: header.groupName,
+        groupIndex: index,
+      } as ListOption);
+    }
+  }
 
   toggleGroupCollapse(header: ListHeader): void {
     header.isCollapsed = !header.isCollapsed;
@@ -373,12 +404,15 @@ export abstract class BaseListElement
     if (this.options && this.options.length > 1) {
       this.allGroupsCollapsed =
         force !== null ? force : !this.allGroupsCollapsed;
+
       this.updateLists({ collapseHeaders: this.allGroupsCollapsed });
     }
   }
 
-  clearList(): void {
-    this.selectedIDs = this.getSelectedIDs(this.options, 'disabled');
+  clearList(setSelectedIDs: (string | number)[] = null): void {
+    this.selectedIDs = this.getSelectedIDs(this.options, 'disabled').concat(
+      setSelectedIDs || []
+    );
 
     this.emitChange();
 
@@ -389,6 +423,8 @@ export abstract class BaseListElement
     );
 
     this.updateActionButtonsState(true);
+
+    this.cd.detectChanges();
   }
 
   resetList(): void {
@@ -400,6 +436,8 @@ export abstract class BaseListElement
 
     this.emitChange();
     this.listActionsState.apply.disabled = false;
+
+    this.cd.detectChanges();
   }
 
   onApply(): void {
@@ -417,9 +455,18 @@ export abstract class BaseListElement
     };
 
     if (config.updateListHeaders) {
+      const isClassic =
+        (!this.mode || this.mode === SelectMode.classic) &&
+        !this.max &&
+        !this.min;
+
       this.listHeaders = this.modelSrvc.getHeadersModel(
         this.filteredOptions,
-        config.collapseHeaders
+        config.collapseHeaders,
+        this.type === SelectType.multi && isClassic,
+        isClassic &&
+          !this.noGroupHeaders &&
+          (this.options.length > 1 || this.showSingleGroupHeader)
       );
     }
 

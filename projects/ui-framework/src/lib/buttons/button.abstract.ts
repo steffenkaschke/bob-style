@@ -16,7 +16,10 @@ import { Icons, IconColor, IconSize } from '../icons/icons.enum';
 import {
   notFirstChanges,
   applyChanges,
+  isObject,
+  objectRemoveEntriesByValue,
 } from '../services/utils/functional-utils';
+import { Button } from './buttons.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -25,12 +28,17 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
 
   @ViewChild('button', { static: true }) public button: ElementRef;
 
+  @Input('button') set setProps(button: Button) {
+    if (isObject(button)) {
+      Object.assign(this, objectRemoveEntriesByValue(button, [undefined]));
+    }
+  }
+
   @Input() text: string;
-  @Input() disabled = false;
-  @Input() size: ButtonSize;
   @Input() icon: Icons;
   @Input() active = false;
   @Input() color: any;
+  @Input() preloader = false;
 
   @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
@@ -45,6 +53,8 @@ export abstract class BaseButtonElement implements OnChanges, OnInit {
   @HostBinding('attr.data-type') @Input() public type:
     | ButtonType
     | BackButtonType;
+  @HostBinding('attr.data-size') @Input() public size: ButtonSize = null;
+  @HostBinding('attr.data-disabled') @Input() public disabled = false;
 
   ngOnInit(): void {
     if (!this.buttonClass) {

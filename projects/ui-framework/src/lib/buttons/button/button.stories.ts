@@ -23,15 +23,21 @@ const template = `
           [type]="type"
           [size]="size"
           [text]="text"
-          [disabled]="disabled">
+          [disabled]="disabled"
+          [active]="active"
+          [ngClass]="{preloading: preloader}">
 </b-button>
 
 <b-button (clicked)="onClick($event)"
-          [type]="type"
-          [size]="size"
-          [text]="text"
-          [disabled]="disabled"
-          [icon]="icon">
+          [button]="{
+            type: type,
+            size: size,
+            text: text,
+            icon: icon,
+            disabled: disabled,
+            active: active,
+            preloader: preloader
+          }">
 </b-button>
 `;
 
@@ -41,6 +47,14 @@ const templForNotes = `<b-button [type]="type"
             [disabled]="disabled"
             (clicked)="onClick($event)">
     Click me
+</b-button>
+
+<b-button [button]="{
+              text: text,
+              icon: icon,
+              preloader: preloader
+            }"
+            (clicked)="onClick($event)">
 </b-button>`;
 
 const note = `
@@ -58,6 +72,7 @@ const note = `
   [type] | ButtonType | button type | primary
   [size] | ButtonSize | button size | medium
   [icon] | Icons | button icon | &nbsp;
+  [preloader] | Boolean | if true, will hide text and show preloader animation
 
   ${buttonsProps}
 `;
@@ -83,7 +98,9 @@ story.add(
       type: select('type', Object.values(ButtonType), ButtonType.primary),
       size: select('size', Object.values(ButtonSize), ButtonSize.medium),
       disabled: boolean('disabled', false),
+      active: boolean('active', false),
       icon: select('icon', Object.values(Icons), Icons.timeline),
+      preloader: boolean('preloader', false),
     },
     moduleMetadata: {
       imports: [ButtonsModule, StoryBookLayoutModule],

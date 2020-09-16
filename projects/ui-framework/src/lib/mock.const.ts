@@ -1199,6 +1199,9 @@ export const mockText = (words = 100) => {
 
 export const uselessSite = () => randomFromArray(uselessURLs);
 
+export const uselessDomain = () =>
+  uselessSite().replace(/(http:)|(www.)|\//g, '');
+
 export const mockUrl = (type = 'any') => {
   const pref = 'http://www.';
   switch (type) {
@@ -1221,5 +1224,8 @@ export const mockUrl = (type = 'any') => {
       return uselessSite();
   }
 };
+
+export const mockLinkHtml = () =>
+  `<a href="${uselessSite()}">${mockThings(1)}</a>`;
 
 export const randomIcon = () => randomFromArray(Object.values(Icons));

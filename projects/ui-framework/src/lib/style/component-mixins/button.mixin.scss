@@ -34,8 +34,12 @@ $button-size-large: 44px;
       &:focus {
         background-color: var(--primary-500);
       }
-      &:active {
+      &:active,
+      &.active {
         background-color: var(--primary-700);
+      }
+      &.active {
+        pointer-events: none;
       }
     }
 
@@ -51,8 +55,12 @@ $button-size-large: 44px;
       &:focus {
         background-color: var(--negative-500);
       }
-      &:active {
+      &:active,
+      &.active {
         background-color: var(--negative-700);
+      }
+      &.active {
+        pointer-events: none;
       }
     }
 
@@ -62,8 +70,12 @@ $button-size-large: 44px;
       &:focus {
         background-color: $grey-300;
       }
-      &:active {
+      &:active,
+      &.active {
         background-color: $grey-500;
+      }
+      &.active {
+        pointer-events: none;
       }
     }
 
@@ -77,7 +89,7 @@ $button-size-large: 44px;
   }
 }
 
-@mixin button-basic-types {
+@mixin button-basic-types($disabled: true) {
   @include Button($type: false, $basics: true);
 
   &.primary {
@@ -92,9 +104,11 @@ $button-size-large: 44px;
   &.negative {
     @include Button(negative, $basics: false);
   }
-  &.disabled,
-  &[disabled] {
-    @include Button(disabled, $basics: false);
+  @if ($disabled) {
+    &.disabled,
+    &[disabled] {
+      @include Button(disabled, $basics: false);
+    }
   }
 }
 

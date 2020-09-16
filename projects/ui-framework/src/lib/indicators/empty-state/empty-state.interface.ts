@@ -5,4 +5,6 @@ export interface EmptyStateConfig {
   icon: Icons;
   iconSize?: IconSize;
   buttonLabel?: string;
+  imgSrc?: string;
+  buttonClick?: () => void;
 }

@@ -8,7 +8,6 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
-
 import {
   InputEventType,
   FormEvents,
@@ -103,7 +102,7 @@ export class RichTextEditorComponent extends RTEbaseElement
               const selection = this.getNativeRange();
               if (selection.startOffset === selection.endOffset) {
                 event.preventDefault();
-                console.log('Copy prevented, because selection is empty');
+                console.warn('Copy prevented, because selection is empty');
                 return false;
               }
             }
@@ -246,12 +245,54 @@ export class RichTextEditorComponent extends RTEbaseElement
             this.parserService.removeElements(content, '.fr-marker')
           ) + '<span data-bob-rte="true"></span>';
 
-        const plainText = this.parserService.getPlainText(content);
+        const plainText = this.parserService.getPlainText(html);
 
-        clipboardData.setData('text/plain', plainText);
         clipboardData.setData('text/html', html);
+        clipboardData.setData('text/plain', plainText);
 
         this.editor.selection.restore();
+      },
+
+      'paste.before': (event: ClipboardEvent) => {
+        const clipboardData: DataTransfer =
+          event.clipboardData || event['originalEvent'].clipboardData;
+
+        let html =
+          clipboardData.getData('text/html') ||
+          clipboardData.getData('text/plain');
+        const isFromRte = html.indexOf('data-bob-rte') > -1;
+
+        event.preventDefault();
+
+        html = chainCall(
+          [
+            (value: string) =>
+              this.parserService.removeElements(
+                value,
+                '[data-bob-rte], head, meta, title, style'
+              ),
+
+            ...(!isFromRte
+              ? this.pasteTransformers
+              : [
+                  (value: string): string =>
+                    this.placeholdersConverter.toRte(
+                      value,
+                      this.placeholderList
+                    ),
+                ]),
+          ],
+          html
+        );
+
+        try {
+          this.editor.html.insert(html, true);
+        } catch (error) {
+          return;
+        }
+        this.editor.undo.saveStep();
+
+        return false;
       },
 
       'paste.afterCleanup': (html: string): string => {

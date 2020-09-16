@@ -20,6 +20,7 @@
 
 .bpgr-slice-size-select {
   margin-left: auto;
+  min-width: 100px;
 }
 
 .bpgr-page-buttons ::ng-deep {
@@ -49,4 +50,17 @@
       text-decoration: none;
     }
   }
+
+  .b-icon-chevron-right,
+  .b-icon-chevron-left {
+    &[disabled] {
+      &:before {
+        color: $grey-600;
+      }
+    }
+  }
+}
+
+[hidden] {
+  display: none;
 }

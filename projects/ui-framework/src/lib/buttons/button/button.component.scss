@@ -7,6 +7,7 @@ $minWidthLarge: 110px;
 
 :host {
   display: inline-flex;
+  border-radius: $border-radius;
 }
 
 button {
@@ -52,5 +53,69 @@ button {
     &.icon-after {
       @include button-icon-right($padding);
     }
+  }
+}
+
+// Preloader
+
+:host.preloading ::ng-deep button,
+:host::ng-deep button.preloader {
+  opacity: 1;
+  visibility: visible !important;
+  pointer-events: none;
+
+  &,
+  &:before,
+  &:after {
+    color: transparent !important;
+  }
+
+  @include mini-preloader(
+    $base-selector: '&',
+    $pseudo: null,
+    $full-size-selector: null,
+    $color: null
+  ) {
+    background-size: nth($preloader-size, 1) * 0.7 auto;
+  }
+
+  &.disabled,
+  &[disabled] {
+    opacity: 0.5;
+  }
+}
+
+:host.preloading[data-type='primary']::ng-deep button,
+:host.preloading[data-type='secondary']::ng-deep button,
+:host.preloading[data-type='negative']::ng-deep button,
+:host[data-type='primary']::ng-deep button.preloader,
+:host[data-type='secondary']::ng-deep button.preloader,
+:host[data-type='negative']::ng-deep button.preloader {
+  @include preloader-mod-white($base-selector: '&', $pseudo: null);
+}
+
+:host.preloading[data-type='primary']::ng-deep button,
+:host[data-type='primary']::ng-deep button.preloader {
+  background-color: var(--primary-700);
+}
+
+:host.preloading[data-type='secondary']::ng-deep button,
+:host[data-type='secondary']::ng-deep button.preloader {
+  background-color: $grey-500;
+}
+
+:host.preloading[data-type='negative']::ng-deep button,
+:host[data-type='negative']::ng-deep button.preloader {
+  background-color: var(--negative-700);
+}
+
+:host.preloading[data-type='tertiary']::ng-deep button,
+:host[data-type='tertiary']::ng-deep button.preloader {
+  @include preloader-mod-grey($base-selector: '&', $pseudo: null);
+}
+
+:host.preloading {
+  &:before {
+    display: none !important;
   }
 }

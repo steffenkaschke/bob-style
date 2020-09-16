@@ -4,7 +4,6 @@ import {
   ChangeDetectorRef,
   NgZone,
   ElementRef,
-  Input,
 } from '@angular/core';
 import { ListModelService } from '../list-service/list-model.service';
 import { ListHeader } from '../list.interface';
@@ -55,10 +54,13 @@ export class MultiListComponent extends BaseListElement {
     this.listActions = { ...MULTI_LIST_LIST_ACTIONS_DEF };
   }
 
-  @Input() max: number;
-
   headerClick(header: ListHeader, index: number): void {
-    if (this.options.length > 1) {
+    if (header.groupIsOption) {
+      super.headerClick(header, index);
+      return;
+    }
+
+    if (this.options.length > 1 && !header.groupIsOption) {
       this.toggleGroupCollapse(header);
     } else if (!this.readonly) {
       this.selectGroup(header, index);
@@ -66,6 +68,11 @@ export class MultiListComponent extends BaseListElement {
   }
 
   selectGroup(header: ListHeader, index: number): void {
+    if (header.groupIsOption) {
+      super.headerClick(header, index);
+      return;
+    }
+
     header.selected = this.options[index].options
       .filter((option) => !(option.disabled && !option.selected))
       .some((option) => !option.selected);

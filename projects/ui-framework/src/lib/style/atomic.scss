@@ -87,6 +87,25 @@ $acss-dirs: top right bottom left;
   }
 }
 
+@each $size in $acss-sizes {
+  .mrg-x-#{$size} {
+    margin-left: $size * 1px;
+    margin-right: $size * 1px;
+  }
+  .mrg-y-#{$size} {
+    margin-top: $size * 1px;
+    margin-bottom: $size * 1px;
+  }
+  .pad-x-#{$size} {
+    padding-left: $size * 1px;
+    padding-right: $size * 1px;
+  }
+  .pad-y-#{$size} {
+    padding-top: $size * 1px;
+    padding-bottom: $size * 1px;
+  }
+}
+
 .uppercase {
   text-transform: uppercase;
 }
@@ -97,7 +116,7 @@ $acss-dirs: top right bottom left;
   border: 1px solid $border-color;
 }
 .brd-alt {
-  border: 1px solid $border-color;
+  border: 1px solid $border-color-light;
 }
 @each $dir in $acss-dirs {
   $dir-short: str-slice($dir, 0, 1);
@@ -206,7 +225,7 @@ $acss-dirs: top right bottom left;
 }
 
 .flx,
-.flex {
+.b-flex {
   display: flex;
 }
 

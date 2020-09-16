@@ -12,6 +12,7 @@ import { storiesOf } from '@storybook/angular';
 import { AgGridModule } from 'ag-grid-angular';
 import { AvatarModule, ComponentGroupType, SearchModule } from 'bob-style';
 import { values } from 'lodash';
+import { Icons } from '../../../src/lib/icons/icons.enum';
 import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
 import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
@@ -20,6 +21,7 @@ import {
   mockRowData,
   treeColumnDefsMock,
   treeRowDataMock,
+  mockColumnsDefsExtended,
 } from './table-mocks/table-story.mock';
 import { TableModule } from './table.module';
 import {
@@ -29,6 +31,8 @@ import {
 import { TableComponent } from './table/table.component';
 import { RowSelection, TableType } from './table/table.enum';
 import { ColumnDef } from './table/table.interface';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'b-tree-cell-avatar',
@@ -46,11 +50,10 @@ const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
   withKnobs
 );
 
-const template = `
-<b-table #table
+const template = `<b-table #table
     [type]="type"
-    [rowData]="rowData"
-    [columnDefs]="columnDefs"
+    [rowData]="rowData | async"
+    [columnDefs]="columnDefs | async"
     [maxHeight]="maxHeight"
     [rowSelection]="rowSelection"
     [removeColumnButtonEnabled]="removeColumnButtonEnabled"
@@ -60,19 +63,20 @@ const template = `
         showColumnBorders: showColumnBorders
     }"
     [enablePager]="enablePager"
+    [emptyStateConfig]="emptyStateConfig"
     (rowClicked)="rowClicked($event)"
     (cellClicked)="cellClicked($event)"
     (selectionChanged)="selectionChanged($event); onSelectionChanged($event)"
     (sortChanged)="sortChanged($event)"
+    (pagerPageSizeChange)="pagerPageSizeChange($event)"
     (columnsOrderChanged)="columnsOrderChanged($event)"
     (columnRemoved)="columnRemoved($event)">
-</b-table>
-`;
+</b-table>`;
 const treeTemplate = `<b-table
     [type]="type"
     [treeConfig]="treeConfig"
-    [rowData]="rowData"
-    [columnDefs]="columnDefs"
+    [rowData]="rowData | async"
+    [columnDefs]="columnDefs | async"
     [isCollapsable]="isCollapsable"
     [maxHeight]="maxHeight"
     [rowSelection]="rowSelection"
@@ -147,11 +151,13 @@ const note = `
   [styleConfig] | TableStyleConfig | style config (disableRowHoverBgColor, showColumnBorders) | {}
   [enablePager] | boolean | enable pagination
   [pagerConfig] | PagerConfig | config for pagination (sliceStep, sliceMax, sliceSize)
+  [emptyStateConfig] | EmptyStateConfig | config for the no-row-data state
+  (pagerPageSizeChange) | EventEmitter<wbr>&lt;number&gt; | emits when page size changes | &nbsp;
   (rowClicked) | EventEmitter<wbr>&lt;RowClickedEvent&gt; | Row clicked event | &nbsp;
   (gridInit) | EventEmitter<wbr>&lt;void&gt;  | Grid init event | &nbsp;
   (selectionChanged) | EventEmitter<wbr>&lt;any[]&gt; | All selected rows | &nbsp;
   (sortChanged) | EventEmitter<wbr>&lt;SortChangedEvent&gt; | Sort changed event | &nbsp;
-  (columnsChanged) | EventEmitter<wbr>&lt;void&gt; | emits when columns change | &nbsp;
+  (columnsChanged) | EventEmitter<wbr>&lt;ColumnsChangedEvent&gt; | emits when columns change | &nbsp;
   (columnsOrderChanged) | EventEmitter<wbr>&lt;ColumnsOrderChangedEvent&gt; | emits when column order changes | &nbsp;
   (cellClicked) | EventEmitter<wbr>&lt;CellClickedEvent&gt; | emits on cell click | &nbsp;
   (columnRemoved) | EventEmitter<wbr>&lt;string&gt; | Emits Cell ID,\
@@ -227,16 +233,28 @@ function tableStoryFactory({
     disableRowHoverBgColor: boolean('disableRowHoverBgColor', false, 'Props'),
     showColumnBorders: boolean('showColumnBorders', false, 'Props'),
     enablePager: boolean('enablePager', true, 'Props'),
-    columnDefs: object(`${title} columnDefs`, tableCols, 'Data'),
-    rowData: object(`${title} rowData`, tableData, 'Data'),
+    emptyStateConfig: object(
+      'emptyStateConfig',
+      {
+        text: 'Surprise party',
+        icon: Icons.cake,
+        buttonLabel: 'Eat cake',
+      },
+      'Data'
+    ),
+    // columnDefs: object(`${title} columnDefs`, tableCols, 'Data'),
+    // rowData: object(`${title} rowData`, tableData, 'Data'),
+    columnDefs: of(object(`${title} columnDefs`, tableCols, 'Data')),
+    rowData: of(object(`${title} rowData`, tableData, 'Data')),
     rowClicked: action('Row clicked'),
     cellClicked: action('Cell clicked'),
     selectionChanged: action('Selection changed'),
     sortChanged: action('Sort changed'),
+    pagerPageSizeChange: action('Page size changed'),
     columnsOrderChanged: action('Column order changed'),
     columnRemoved: action('Column remove button clicked'),
     totalSelected: 0,
-    onSearchChange: (str, table) => table.gridOptions.api.setQuickFilter(str),
+    onSearchChange: (str, table) => table.filterRows(str),
     onSelectionChanged: function ($event) {
       this.totalSelected = $event.length;
     },
@@ -273,7 +291,7 @@ story.add(
     tableStoryFactory({
       title: 'Data Table',
       HTMLTemplate: storyTemplate,
-      tableCols: mockColumnsDefs,
+      tableCols: mockColumnsDefsExtended,
       tableData: mockRowData,
     }),
   { notes: { markdown: note } }

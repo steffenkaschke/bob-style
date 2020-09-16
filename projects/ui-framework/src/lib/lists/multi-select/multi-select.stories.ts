@@ -29,6 +29,8 @@ import selectsPropsDoc from '../selects.properties.md';
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { number } from '@storybook/addon-knobs';
+import { MultiSelectComponent } from './multi-select.component';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -39,7 +41,7 @@ const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 );
 
 const template = `
-<b-multi-select [value]="value"
+<b-multi-select #bms [value]="value"
                 [options]="optns === 'plain' ? options_plain : options_avatars"
                 [optionsDefault]="optionsDefault"
                 [mode]="selectMode"
@@ -48,6 +50,8 @@ const template = `
                 [description]="description"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
+                [min]="min"
+                [max]="max"
                 [disabled]="disabled"
                 [required]="required"
                 [readonly]="readonly"
@@ -65,6 +69,9 @@ const template = `
         [text]="'Action'">
     </b-text-button>
 </b-multi-select>
+
+<br><br>
+<button (click)="logData(bms)" type="button">log</button>
 `;
 
 const templateForNotes = `<b-multi-select [value]="value"
@@ -139,17 +146,27 @@ const optionsDef = cloneDeep(optionsMockDef);
 const toAdd = () => ({
   template: storyTemplate,
   props: {
+    logData: (bms: MultiSelectComponent) => {
+      console.log('Options:', bms['options']);
+      console.log('Value (Selected IDs):', bms['value']);
+      console.log(
+        'Selected Group Options:',
+        bms['listChangeSrvc']
+          .getListChange(bms.options, bms.value)
+          .getSelectedGroupOptions()
+      );
+    },
     value: select(
       'value',
       [
         [
-          options[0].options[0].id,
+          options[2].options[0].id,
           options[1].options[2].id,
           options[3].options[3].id,
-          options[0].options[2].id,
+          options[2].options[2].id,
         ],
         [
-          options[0].options[1].id,
+          options[3].options[1].id,
           options[1].options[3].id,
           options[2].options[2].id,
           options[4].options[0].id,
@@ -162,10 +179,10 @@ const toAdd = () => ({
         ],
       ],
       [
-        options[0].options[0].id,
+        options[2].options[0].id,
         options[1].options[2].id,
         options[3].options[3].id,
-        options[0].options[2].id,
+        options[2].options[2].id,
       ],
       'Props'
     ),
@@ -182,6 +199,8 @@ const toAdd = () => ({
       SelectMode.classic,
       'Props'
     ),
+    min: number('min', 0, {}, 'Props'),
+    max: number('max', 0, {}, 'Props'),
     label: text('label', 'label text', 'Props'),
     description: text('description', mockText(30), 'Props'),
     placeholder: text('placeholder', 'placeholder text', 'Props'),

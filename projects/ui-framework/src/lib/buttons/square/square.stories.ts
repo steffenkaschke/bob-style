@@ -21,6 +21,7 @@ const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
 
 const template = `<b-square-button [type]="type"
                    [size]="size"
+                   [round]="round"
                    [icon]="icon"
                    [color]="color"
                    [toolTipSummary]="toolTipSummary"
@@ -45,6 +46,7 @@ const note = `
   [size] | ButtonSize | button size | medium
   [icon] | Icons | button icon | &nbsp;
   [color] | IconColor | button icon color | dark
+  [round] | boolean | make it round! | &nbsp;
   [toolTipSummary] | string | Tooltip text | &nbsp;
   [text] | string | same as toolTipSummary - text will be displayed as tooltip | &nbsp;
 
@@ -67,6 +69,7 @@ story.add(
       size: select('size', Object.values(ButtonSize), ButtonSize.medium),
       icon: select('icon', Object.values(Icons), Icons.phone_link),
       color: select('color', Object.values(IconColor), IconColor.dark),
+      round: boolean('round', false),
       toolTipSummary: text('toolTipSummary', 'Call me'),
       disabled: boolean('disabled', false),
       onClick: action('Square button'),

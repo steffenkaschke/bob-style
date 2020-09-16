@@ -9,6 +9,8 @@ export interface ListHeader {
   indeterminate?: boolean;
   selectedCount?: number;
   hidden?: boolean;
+  groupIsOption?: boolean;
+  hasCheckbox?: boolean;
 }
 
 export interface ListOption {
@@ -22,6 +24,7 @@ export interface ListOption {
   prefixComponent?: ListComponentPrefix | RenderedComponent;
   disabled?: boolean;
   hidden?: boolean;
+  exclusive?: boolean;
   [key: string]: any;
 }
 
@@ -31,6 +34,9 @@ export interface SelectGroupOption {
   options: SelectOption[];
   selected?: boolean;
   hidden?: boolean;
+  groupSelectedIDs?: (number | string)[];
+  groupSelectedValues?: string[];
+  selectedCount?: number;
   [key: string]: any;
 }
 

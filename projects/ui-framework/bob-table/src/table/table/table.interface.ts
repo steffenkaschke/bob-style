@@ -1,4 +1,8 @@
-import { ColumnOrderStrategy, PinDirection, SortDirections } from './table.enum';
+import {
+  ColumnOrderStrategy, TableEventName,
+  PinDirection,
+  SortDirections,
+} from './table.enum';
 import { IconColor, Icons } from 'bob-style';
 
 export interface ColumnDef {
@@ -44,8 +48,12 @@ export interface RowNodeDef {
   data: any;
 }
 
-export interface ColumnsOrderChangedEvent {
+export interface ColumnsChangedEvent {
   columns: string[];
+}
+
+export interface ColumnsOrderChangedEvent extends ColumnsChangedEvent {
+  eventName?: TableEventName;
 }
 
 export interface TableStyleConfig {
@@ -56,4 +64,9 @@ export interface TableStyleConfig {
 export interface ColumnDefConfig {
   columnDef: ColumnDef[];
   orderStrategy: ColumnOrderStrategy;
+}
+
+export interface TablePagerState {
+  totalItems: number;
+  currentPage: number;
 }

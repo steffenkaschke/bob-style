@@ -13,11 +13,18 @@ import { WindowRef } from './window-ref.service';
 import { ScrollEvent } from './utils.interface';
 import { DOMhelpers } from '../html/dom-helpers.service';
 
+export interface WinResizeEvent {
+  innerWidth: number;
+  innerHeight: number;
+  outerHeight: number;
+  outerWidth: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class UtilsService {
-  winResize$: Observable<any>;
+  winResize$: Observable<WinResizeEvent>;
   winScroll$: Observable<ScrollEvent>;
   winClick$: Observable<MouseEvent>;
   winKey$: Observable<KeyboardEvent>;
@@ -25,7 +32,10 @@ export class UtilsService {
   constructor(private windowRef: WindowRef) {
     this.winResize$ = fromEvent(
       this.windowRef.nativeWindow as Window,
-      'resize'
+      'resize',
+      {
+        passive: true,
+      }
     ).pipe(
       throttleTime(500, undefined, {
         leading: true,
@@ -42,7 +52,10 @@ export class UtilsService {
 
     this.winScroll$ = fromEvent(
       this.windowRef.nativeWindow as Window,
-      'scroll'
+      'scroll',
+      {
+        passive: true,
+      }
     ).pipe(
       map((e: Event) => ({
         scrollY: (
@@ -66,7 +79,7 @@ export class UtilsService {
     ).pipe(share()) as Observable<KeyboardEvent>;
   }
 
-  public getResizeEvent(): Observable<any> {
+  public getResizeEvent(): Observable<WinResizeEvent> {
     return this.winResize$;
   }
 

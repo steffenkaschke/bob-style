@@ -1,5 +1,12 @@
 import { BlotType } from './rte.enum';
-import { joinArrays } from 'bob-style';
+import {
+  joinArrays,
+  HTML_CLEANUP_REPLACERS,
+  HtmlCleanupReplacer,
+  SANITIZER_ALLOWED_ATTRS,
+  SANITIZER_ALLOWED_TAGS,
+  SANITIZER_ALLOWED_STYLE_PROPS,
+} from 'bob-style';
 import { FroalaOptions } from './froala.interface';
 import { TributeOptions, TributeItem } from './tribute.interface';
 
@@ -28,17 +35,10 @@ export const RTE_MINHEIGHT_DEF = 185;
 export const RTE_MAXHEIGHT_DEF = 350;
 export const RTE_TOOLBAR_HEIGHT = 41;
 
-export const RTE_ALLOWED_STYLE_PROPS = [
-  'font-size',
-  'font-weight',
-  'text-align',
-  'direction',
-];
-
 const RTE_DISALLOWED_STYLE_PROPS = [
   'font-family',
   'font-style',
-  'text-decoration',
+  // 'text-decoration',
 ];
 
 export const RTE_ALLOWED_FONTSIZES = [11, 12, 18, 28];
@@ -47,6 +47,34 @@ export const RTE_ALLOWED_FONTSIZE_KEYWORDS = [
   'medium',
   'large',
   'x-large',
+];
+
+export const RTE_HTML_CLEANUP_REPLACERS_INPUT: HtmlCleanupReplacer[] = [
+  HTML_CLEANUP_REPLACERS.blockToDiv,
+  // HTML_CLEANUP_REPLACERS.biToStrongEM,
+  HTML_CLEANUP_REPLACERS.headings,
+  HTML_CLEANUP_REPLACERS.nbsp,
+  // HTML_CLEANUP_REPLACERS.blockStyleTagsUsedAsBR,
+  // HTML_CLEANUP_REPLACERS.emptyDivs,
+  HTML_CLEANUP_REPLACERS.emptyTags,
+  HTML_CLEANUP_REPLACERS.unnecessaryWrappers,
+  HTML_CLEANUP_REPLACERS.whiteSpace,
+  HTML_CLEANUP_REPLACERS.BRs,
+  // HTML_CLEANUP_REPLACERS.emptyTags,
+  HTML_CLEANUP_REPLACERS.spacesBetweenTextAndTag,
+  HTML_CLEANUP_REPLACERS.spacesBetweenTags,
+];
+
+export const RTE_HTML_CLEANUP_REPLACERS_OUTPUT: HtmlCleanupReplacer[] = [
+  HTML_CLEANUP_REPLACERS.nbsp,
+  // HTML_CLEANUP_REPLACERS.emptyDivs,
+  // HTML_CLEANUP_REPLACERS.emptyTags,
+  HTML_CLEANUP_REPLACERS.unnecessaryWrappers,
+  HTML_CLEANUP_REPLACERS.whiteSpace,
+  HTML_CLEANUP_REPLACERS.BRs,
+  HTML_CLEANUP_REPLACERS.emptyTags,
+  HTML_CLEANUP_REPLACERS.spacesBetweenTextAndTag,
+  HTML_CLEANUP_REPLACERS.spacesBetweenTags,
 ];
 
 export const RTE_OPTIONS_DEF: FroalaOptions = {
@@ -84,60 +112,16 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   videoMaxSize: 1024 * 1024 * 30,
 
   htmlAllowComments: false,
-  htmlAllowedAttrs: [
-    'alt',
-    'data-.*',
-    'dir',
-    'href',
-    'id',
-    'lang',
-    'rel',
-    'src',
-    'target',
-    // 'title',
-    'valign',
-    'style',
-    'class',
-    'contenteditable',
-    'spellcheck',
-    'tabindex',
-    '.*mention.*',
-  ],
+  htmlAllowedAttrs: SANITIZER_ALLOWED_ATTRS,
   htmlAllowedEmptyTags: ['.fa', '.fr-emoticon', '.fr-inner'],
-  htmlAllowedStyleProps: RTE_ALLOWED_STYLE_PROPS,
-  htmlAllowedTags: [
-    'a',
-    'br',
-    'div',
-    'b',
-    'strong',
-    'em',
-    'i',
-    // 'hr',
-    'img',
-    'li',
-    'ol',
-    'ul',
-    'p',
-    'span',
-    'u',
-    'strike',
-    'sub',
-    'sup',
-
-    'h1',
-    'h2',
-    'h3',
-    'h4',
-    'h5',
-    'h6',
-  ],
+  htmlAllowedStyleProps: SANITIZER_ALLOWED_STYLE_PROPS,
+  htmlAllowedTags: SANITIZER_ALLOWED_TAGS,
   htmlExecuteScripts: false,
   htmlIgnoreCSSProperties: RTE_DISALLOWED_STYLE_PROPS,
   htmlRemoveTags: ['script', 'style'],
   htmlUntouched: false,
 
-  pasteAllowedStyleProps: RTE_ALLOWED_STYLE_PROPS,
+  pasteAllowedStyleProps: SANITIZER_ALLOWED_STYLE_PROPS,
   pasteDeniedAttrs: ['^on.*', 'type', 'value', 'id', 'class'],
   pasteDeniedTags: ['script', 'style', 'img', 'hr'],
   imagePaste: false,

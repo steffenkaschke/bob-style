@@ -1,6 +1,7 @@
 import {ChangeDetectorRef, Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {Options, SeriesPieDataOptions} from 'highcharts';
-import {ChartLegendPositionEnum} from '../chart/chart.interface';
+import { ChartFormatterThis, ChartLegendPositionEnum } from '../chart/chart.interface';
+import { ChartCore } from '../chart/chart-core';
 
 export const ANIMATION_DURATION = 400;
 
@@ -51,6 +52,16 @@ export class DonutChartTextComponent {
   @ViewChild('chart', { read: ElementRef }) chartComponent: ElementRef;
   @ViewChild('text', { read: ElementRef }) textContainer: ElementRef;
   @Input() tooltipValueFormatter: Function = (val) => val;
+  @Input() tooltipTemplate = <ChartTooltipTemplateFormatter>(
+    component: ChartCore,
+    chartPoint: ChartFormatterThis
+  ) => `<div class="chart-tooltip">
+          <div class="value" style="color:${chartPoint.color};">
+            ${component.formatValue(chartPoint.y)}
+          </div>
+          <div class="key">${chartPoint.key}</div>
+        </div>`;
+
   constructor(
     private cdr: ChangeDetectorRef
   ) {}
