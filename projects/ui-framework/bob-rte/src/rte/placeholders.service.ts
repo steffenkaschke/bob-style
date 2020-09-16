@@ -31,7 +31,7 @@ export class PlaceholdersConverterService {
   public toRte(
     value: string,
     placeholders: SelectGroupOption[],
-    mode: 'editor' | 'viewer' = 'editor'
+    mode: 'editor' | 'viewer' | 'textual' = 'editor'
   ): string {
     const regex: RegExp = new RegExp(
       `{{((?:[^}]*)${this.separator}(?:[^}]*))}}`,
@@ -47,7 +47,7 @@ export class PlaceholdersConverterService {
   public getPlaceholderHtml(
     placeholders: SelectGroupOption[],
     id: string,
-    mode: 'editor' | 'viewer' = 'editor'
+    mode: 'editor' | 'viewer' | 'textual' = 'editor'
   ): string {
     id = id && id.trim();
     if (!id || !placeholders) {
@@ -56,15 +56,22 @@ export class PlaceholdersConverterService {
     const group = this.getGroupName(placeholders, id);
     const name = this.getOptionName(placeholders, id);
 
-    return name
-      ? mode === 'editor'
-        ? // prettier-ignore
-          // tslint:disable-next-line: max-line-length
-          ` <span contenteditable="false" class="fr-deletable" data-placeholder-id="${id}" data-before="${group || ''}" data-after="${(group ? ' - ' : '') + name}"><em>—</em></span> `
-        : // prettier-ignore
-          // tslint:disable-next-line: max-line-length
-          ` <span data-placeholder-id="${id}">${this.padChar.repeat(3)}${(group ? '<strong>' + group + '</strong> - ' : '') + name}${this.padChar.repeat(3)}</span> `
-      : id;
+    return name ? this.getDisplayByMode(id, group, name, mode) : id;
+  }
+
+  private getDisplayByMode(id: string, group: string, name: string, mode: 'editor' | 'viewer' | 'textual') {
+    switch (mode) {
+      case 'editor':
+        // prettier-ignore
+        // tslint:disable-next-line: max-line-length
+        return ` <span contenteditable="false" class="fr-deletable" data-placeholder-id="${ id }" data-before="${ group || '' }" data-after="${ (group ? ' - ' : '') + name }"><em>—</em></span> `;
+      case 'viewer':
+        // prettier-ignore
+        // tslint:disable-next-line: max-line-length
+        return ` <span data-placeholder-id="${ id }">${ this.padChar.repeat(3) }${ (group ? '<strong>' + group + '</strong> - ' : '') + name }${ this.padChar.repeat(3) }</span> `;
+      case 'textual':
+        return `{${ group } - ${ name }}`;
+    }
   }
 
   public getGroupName(placeholders: SelectGroupOption[], id: string): string {
