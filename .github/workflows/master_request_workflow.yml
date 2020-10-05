@@ -45,7 +45,10 @@ jobs:
         run: npm install bob-style --no-save
       - name: build storybook
         run: npm run build-storybook
-      - name: deploy storybook
-        env:
-          GITHUB_TOKEN: ${{github.token}}
-        run: npm run deploy-storybook --  --out=.out --ci --host-token-env-variable=GITHUB_TOKEN
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@3.6.2
+          with:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            BRANCH: gh-pages-ido # The branch the action should deploy to.
+            FOLDER: .out # The folder the action should deploy.
+            CLEAN: true # Automatically remove deleted files from the deploy branch
