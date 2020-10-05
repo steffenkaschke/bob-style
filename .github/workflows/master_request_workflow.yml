@@ -96,12 +96,7 @@ jobs:
       - name: package
         run: npm run package
       - name: Deploy to npm 🚀
-        run: |
-          echo "registry=https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/
-          _auth = ${secrets.JFROG_NPM_TOKEN}
-          always-auth = true
-          email = deploy-js@hibob.io" > .npmrc
-          npm publish ./dist/ui-framework/*.tgz --scope=hibob
+        run: npm publish ./dist/ui-framework/*.tgz --scope=hibob
       - name: Commit new version
         run: |
           git config credential.helper 'cache --timeout=120'
