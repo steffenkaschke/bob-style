@@ -47,8 +47,8 @@ jobs:
         run: npm run build-storybook
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@3.6.2
-          with:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            BRANCH: gh-pages-ido # The branch the action should deploy to.
-            FOLDER: .out # The folder the action should deploy.
-            CLEAN: true # Automatically remove deleted files from the deploy branch
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages-ido # The branch the action should deploy to.
+          FOLDER: .out # The folder the action should deploy.
+          CLEAN: true # Automatically remove deleted files from the deploy branch
