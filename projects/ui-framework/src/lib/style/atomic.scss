@@ -299,6 +299,9 @@ $acss-dirs: top right bottom left;
   font: inherit;
   color: inherit;
   text-decoration: inherit;
+  &:hover {
+    text-decoration: inherit;
+  }
 }
 
 .b-reset-button {
