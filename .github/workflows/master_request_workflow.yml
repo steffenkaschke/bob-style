@@ -96,11 +96,12 @@ jobs:
         run: npm run package
       - name: Deploy to npm 🚀
         run: npm publish ./dist/ui-framework/*.tgz --scope=hibob
-      - name: Commit new version
-        run: |
-          git config credential.helper 'cache --timeout=120'
-          git config user.email "bot@hibob.io"
-          git config user.name "Deployment Bot"
-          git add .
-          git commit --allow-empty -m "bump version [skip ci]"
-          git push origin master
+      - name: Commit new version changes
+          uses: EndBug/add-and-commit@v5
+          with:
+            author_name: Deployment Bot
+            author_email: bot@hibob.io
+            message: "bump version"
+            add: "*.json"
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
