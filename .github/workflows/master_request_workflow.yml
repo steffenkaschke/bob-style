@@ -103,4 +103,4 @@ jobs:
           git config user.name "Deployment Bot"
           git add .
           git commit --allow-empty -m "bump version [skip ci]"
-          git push -q https://${{ secrets.GITHUB_TOKEN }}@github.com/hibobio/bob-style.git master
+          git push origin master
