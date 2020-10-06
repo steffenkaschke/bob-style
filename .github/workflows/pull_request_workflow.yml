@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-     - name: jfrog
+      - name: jfrog
         run: printf "registry=https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/\n_auth = ${{ secrets.JFROG_NPM_TOKEN }}\nalways-auth = true\nemail = deploy-js@hibob.io" > .npmrc
         shell: bash
       - name: Cache node modules
