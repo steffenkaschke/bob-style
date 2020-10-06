@@ -33,6 +33,14 @@ jobs:
           cd ./projects/ui-framework
           npm version patch --no-git-tag-version
           cd ../..
+      - name: comit new version
+        if: steps.new-version.outputs.changed != 'true'
+        run: |
+          git config user.email "bot@hibob.io"
+          git config user.name "Deployment Bot"
+          git add .
+          git commit --allow-empty -m "bump version [skip ci]"
+          git push
       - name: jfrog
         run: printf "registry=https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/\n_auth = ${{ secrets.JFROG_NPM_TOKEN }}\nalways-auth = true\nemail = deploy-js@hibob.io" > .npmrc
         shell: bash
