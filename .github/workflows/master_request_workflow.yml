@@ -97,11 +97,11 @@ jobs:
       - name: Deploy to npm 🚀
         run: npm publish ./dist/ui-framework/*.tgz --scope=hibob
       - name: Commit new version changes
-          uses: EndBug/add-and-commit@v5
-          with:
-            author_name: Deployment Bot
-            author_email: bot@hibob.io
-            message: "bump version"
-            add: "*.json"
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: EndBug/add-and-commit@v5
+        with:
+          author_name: Deployment Bot
+          author_email: bot@hibob.io
+          message: "bump version"
+          add: "*.json"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
