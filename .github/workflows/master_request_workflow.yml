@@ -85,6 +85,15 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
+      - name: Commit new version changes
+        run: |
+          date > generated.txt
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "bumo version"
+          git push
+
       - name: npm install
         run: npm ci
       - name: Bump version locally
@@ -97,11 +106,10 @@ jobs:
       - name: Deploy to npm 🚀
         run: npm publish ./dist/ui-framework/*.tgz --scope=hibob
       - name: Commit new version changes
-        uses: EndBug/add-and-commit@v5
-        with:
-          author_name: Deployment Bot
-          author_email: bot@hibob.io
-          message: "bump version"
-          add: "*.json"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          date > generated.txt
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "bumo version"
+          git push
