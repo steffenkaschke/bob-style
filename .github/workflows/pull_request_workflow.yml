@@ -41,8 +41,8 @@ jobs:
           author_email: bot@hibob.io
           message: "bump version"
           add: "*.json"
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: jfrog
         run: printf "registry=https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/\n_auth = ${{ secrets.JFROG_NPM_TOKEN }}\nalways-auth = true\nemail = deploy-js@hibob.io" > .npmrc
         shell: bash
