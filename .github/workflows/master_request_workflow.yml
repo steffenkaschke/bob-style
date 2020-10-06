@@ -84,31 +84,9 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - name: Commit test
-        run: |
-          date > generated.txt
-          git config --global user.name github-actions
-          git config --global user.email github-actions@github.com
-          git add .
-          git commit -m "bump version"
-          git push -q -f https://bot:${{secrets.GITHUB_TOKEN}}@github.com/hibobio/bob-style.git master
-
       - name: npm install
         run: npm ci
-      - name: Bump version locally
-        run: |
-          cd ./projects/ui-framework
-          npm version patch --no-git-tag-version
-          cd ../..
       - name: package
         run: npm run package
       - name: Deploy to npm 🚀
         run: npm publish ./dist/ui-framework/*.tgz --scope=hibob
-      - name: Commit new version changes
-        run: |
-          date > generated.txt
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m "bumo version"
-          git push
