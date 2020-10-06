@@ -85,14 +85,14 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - name: Commit new version changes
+      - name: Commit test
         run: |
           date > generated.txt
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config --global user.name github-actions
+          git config --global user.email github-actions@github.com
           git add .
           git commit -m "bumo version"
-          git push
+          git push origin master
 
       - name: npm install
         run: npm ci
