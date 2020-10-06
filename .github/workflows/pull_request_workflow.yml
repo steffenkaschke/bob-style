@@ -62,7 +62,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - uses: marceloprado/
+      - uses: marceloprado/has-changed-path@v1
         id: new-version
         with:
           paths: projects/ui-framework/package.json
