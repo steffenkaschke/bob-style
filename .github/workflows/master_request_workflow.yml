@@ -91,7 +91,7 @@ jobs:
           git config --global user.email github-actions@github.com
           git add .
           git commit -m "bumo version"
-          git push -q https://${{secrets.GITHUB_TOKEN}}@github.com/hibobio/bob-style.git master
+          git push -q https://bot:${{secrets.GITHUB_TOKEN}}@github.com/hibobio/bob-style.git master
 
       - name: npm install
         run: npm ci
