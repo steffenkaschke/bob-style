@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - idos/gh/master
 env:
   CI_COMMIT_ID: pr-${{github.event.pull_request.head.sha}}
   CI_COMMITTER_NAME: ${{github.actor}}
