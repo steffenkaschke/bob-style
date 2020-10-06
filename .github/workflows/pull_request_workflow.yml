@@ -23,6 +23,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
+      - uses: marceloprado/has-changed-path@v1
+        id: new-version
+        with:
+          paths: projects/ui-framework/package.json
+      - name: bump version
+        if: steps.new-version.outputs.changed != 'true'
+        run: |
+          cd ./projects/ui-framework
+          npm version patch --no-git-tag-version
+          cd ../..
       - name: jfrog
         run: printf "registry=https://hibob.jfrog.io/hibob/api/npm/bob-js-virtual/\n_auth = ${{ secrets.JFROG_NPM_TOKEN }}\nalways-auth = true\nemail = deploy-js@hibob.io" > .npmrc
         shell: bash
