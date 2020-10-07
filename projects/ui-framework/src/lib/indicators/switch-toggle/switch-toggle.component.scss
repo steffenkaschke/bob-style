@@ -1,9 +1,33 @@
 @import '../../style/common-imports';
 
 :host {
-  display: block;
-  min-width: 0;
+  display: flex;
+  flex-direction: column;
   text-align: left;
+  min-width: 0;
+
+  @include form-element-margins;
+}
+
+.bfe-label {
+  @include bFormElement-label;
+}
+:host.required.has-label {
+  .bfe-label {
+    @include input-required;
+  }
+}
+
+:host[data-form-element='true'] {
+  .bfe-wrap {
+    display: flex;
+    align-items: center;
+    min-height: $wrap-height;
+  }
+
+  &[data-size='smaller'] {
+    min-height: $wrap-height-smaller;
+  }
 }
 
 :host ::ng-deep {
