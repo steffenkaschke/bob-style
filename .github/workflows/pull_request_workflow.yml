@@ -81,5 +81,5 @@ jobs:
           message: "bump version"
           add: "*.json"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BUMP_VERSION_PERSONAL_TOKEN }}
 
