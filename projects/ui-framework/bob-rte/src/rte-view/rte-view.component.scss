@@ -41,6 +41,10 @@
   --rte-font-size-small: 90%;
   --rte-font-size-xlarge: var(--rte-font-size-large);
 
+  [lang] {
+    font-family: var(--display-font-family);
+  }
+
   @include mobile($breakpoint-device-lg, $mobile-media-width) {
     --rte-font-size-normal: #{resp-val(
         $min-width: $mobile-media-width,
