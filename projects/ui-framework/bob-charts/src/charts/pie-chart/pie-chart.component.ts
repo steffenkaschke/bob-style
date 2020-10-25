@@ -8,14 +8,18 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ChartCore } from '../chart/chart-core';
-import { ChartTypesEnum } from '../chart/chart.enum';
+import { ChartTypesEnum } from '../charts.enum';
 import { Options, SeriesPieDataOptions } from 'highcharts';
 import { DonutSize } from '../charts.enum';
-import { DONUT_SIZES } from '../charts.const';
-
-export const minDonutWidth = 3,
-  pieLegendHeight = 37,
-  piePadding = 50;
+import {
+  DONUT_DIAMETERS,
+  DONUT_SIZES,
+  PIE_CHART_LEGENT_HEIGHT,
+  PIE_CHART_MIN_DONUT_WIDTH,
+  PIE_CHART_PIE_PADDING,
+  PIE_CHART_SIZE_DEFS,
+} from '../charts.const';
+import { applyChanges, closestNumber, getKeyByValue } from 'bob-style';
 
 @Component({
   selector: 'b-pie-chart',
@@ -25,20 +29,58 @@ export const minDonutWidth = 3,
 export class PieChartComponent extends ChartCore implements OnChanges {
   constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
     super(cdr, zone);
-    this.height = 150;
+    this.sizeDefaults = [...PIE_CHART_SIZE_DEFS];
   }
 
   @Input() data: SeriesPieDataOptions[];
   @Input() name: string;
   @Input() donut = false;
-  @Input() donutInnerSize = 60;
+  @Input() donutInnerSize = this.sizeDefaults[1];
   @Input() donutWidth: number;
+  @Input() donutSize: DonutSize = null;
 
-  @HostBinding('attr.data-donut-size') @Input() donutSize: DonutSize = null;
+  @HostBinding('attr.data-donut-size') get getDonutSize() {
+    return (
+      this.donutSize ||
+      (this.donut
+        ? (() => {
+            const key = `${this.donutWidth}-${this.donutInnerSize}`;
+            if (!this.donutSizeCache.has(key)) {
+              this.donutSizeCache.set(
+                key,
+                getKeyByValue(
+                  DONUT_DIAMETERS,
+                  closestNumber(
+                    this.donutWidth || this.donutInnerSize / (1 - 0.14),
+                    Object.values(DONUT_DIAMETERS)
+                  )
+                ) as DonutSize
+              );
+            }
+            return this.donutSizeCache.get(key);
+          })()
+        : null)
+    );
+  }
 
+  private donutSizeCache: Map<string, DonutSize> = new Map();
   readonly type = ChartTypesEnum.Pie;
 
   ngOnChanges(changes: SimpleChanges): void {
+    applyChanges(
+      this,
+      changes,
+      {
+        height: PIE_CHART_SIZE_DEFS[0],
+        donutInnerSize: PIE_CHART_SIZE_DEFS[1],
+        donutSize: null,
+      },
+      [],
+      true
+    );
+
+    super.ngOnChanges(changes);
+
     if (this.donutSize) {
       this.donut = true;
       this.legend = this.showDataLabels = false;
@@ -84,19 +126,21 @@ export class PieChartComponent extends ChartCore implements OnChanges {
         ? Math.max(
             0,
             this.setInnerSize(
-              piePadding - minDonutWidth + Math.abs(this.donutWidth)
+              PIE_CHART_PIE_PADDING -
+                PIE_CHART_MIN_DONUT_WIDTH +
+                Math.abs(this.donutWidth)
             )
           )
         : Math.min(
             Math.abs(this.donutInnerSize),
-            this.setInnerSize(piePadding)
+            this.setInnerSize(PIE_CHART_PIE_PADDING)
           );
     }
   }
 
   private setInnerSize(offset: number) {
     return this.legend
-      ? Math.abs(this.height) - pieLegendHeight - offset
+      ? Math.abs(this.height) - PIE_CHART_LEGENT_HEIGHT - offset
       : Math.abs(this.height) - offset;
   }
 

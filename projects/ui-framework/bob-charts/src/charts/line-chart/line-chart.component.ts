@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ChartCore } from '../chart/chart-core';
 import { SeriesLineOptions } from 'highcharts';
-import { LineChartTypes } from '../chart/chart.interface';
+import { LineChartTypes } from '../charts.interface';
 
 @Component({
   selector: 'b-line-chart',
@@ -21,10 +21,12 @@ export class LineChartComponent extends ChartCore implements OnChanges {
   @Input() name: string;
   constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
     super(cdr, zone);
-    this.height = 450;
+    this.sizeDefaults[0] = 450;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+
     this.updateOptions();
     this.applyOnChange();
   }

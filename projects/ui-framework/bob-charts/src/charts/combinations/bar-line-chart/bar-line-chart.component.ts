@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ChartCore } from '../../chart/chart-core';
 import { SeriesOptionsType } from 'highcharts';
-import { ChartTypesEnum } from '../../chart/chart.enum';
+import { ChartTypesEnum } from '../../charts.enum';
 
 @Component({
   selector: 'b-bar-line-chart',
@@ -16,18 +16,22 @@ import { ChartTypesEnum } from '../../chart/chart.enum';
   styleUrls: ['../../chart/chart.component.scss'],
 })
 export class BarLineChartComponent extends ChartCore implements OnChanges {
-  type: ChartTypesEnum = ChartTypesEnum.Column;
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
+    super(cdr, zone);
+    this.sizeDefaults[0] = 450;
+  }
+
   @Input() categories: string[];
   @Input() stacked = false;
   @Input() stackedPercent = false;
   @Input() data: SeriesOptionsType[];
   @Input() name: string;
-  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
-    super(cdr, zone);
-    this.height = 450;
-  }
+
+  readonly type: ChartTypesEnum = ChartTypesEnum.Column;
 
   ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+
     this.updateChartOptions();
     this.applyOnChange();
   }

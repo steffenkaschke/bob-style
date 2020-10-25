@@ -6,7 +6,7 @@ import {
   SimpleChanges,
   NgZone,
 } from '@angular/core';
-import { ChartTypesEnum } from '../../chart/chart.enum';
+import { ChartTypesEnum } from '../../charts.enum';
 import { SeriesColumnOptions } from 'highcharts';
 import { ChartCore } from '../../chart/chart-core';
 
@@ -19,17 +19,21 @@ import { ChartCore } from '../../chart/chart-core';
   ],
 })
 export class StackedBarChartComponent extends ChartCore implements OnChanges {
-  type = ChartTypesEnum.Column;
+  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
+    super(cdr, zone);
+    this.sizeDefaults[0] = 450;
+  }
+
   @Input() categories: string[];
   @Input() data: SeriesColumnOptions[];
   @Input() stackedDataLabels = true;
   @Input() name: string;
-  constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
-    super(cdr, zone);
-    this.height = 450;
-  }
+
+  readonly type = ChartTypesEnum.Column;
 
   ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+
     this.updateChartOptions();
     this.applyOnChange();
   }
