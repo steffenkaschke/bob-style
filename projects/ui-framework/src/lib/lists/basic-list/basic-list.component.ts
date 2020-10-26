@@ -10,7 +10,7 @@ import {
   ChangeDetectionStrategy,
   AfterContentInit,
 } from '@angular/core';
-import { BasicListItem } from './basic-list.interface';
+import { BasicListConfig, BasicListItem } from './basic-list.interface';
 import { BasicListActionDirective } from './basic-list-action.directive';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import {
@@ -49,8 +49,6 @@ export class BasicListComponent implements AfterContentInit {
   @HostBinding('attr.data-type') @Input() public type: BasicListType =
     BasicListType.primary;
 
-  @Input() public showActionOnHover = false;
-
   @Input('items') set setItems(items: BasicListItem[]) {
     this.items = (items || []).map((item) => ({
       ...item,
@@ -86,6 +84,16 @@ export class BasicListComponent implements AfterContentInit {
       }
     }
   }
+
+  @Input('config') set setConfig(config: BasicListConfig) {
+    if (isObject(config)) {
+      this.showActionOnHover =
+        config.showActionOnHover || this.showActionOnHover;
+      this.maxLines = config.maxLines || this.maxLines;
+    }
+  }
+  public maxLines = 2;
+  @Input() public showActionOnHover = false;
 
   @Input('emptyStateConfig') set setEmptyStateConfig(config: EmptyStateConfig) {
     if (isObject(config)) {
