@@ -87,7 +87,9 @@ export class ComponentRendererComponent implements OnChanges, OnDestroy {
     attributes: GenericObject
   ): SimpleChanges {
     const changes = simpleChange(attributes, true);
-    applyChanges(component.instance, changes);
+    applyChanges(component.instance, changes, {}, [], false, {
+      skipSetters: false,
+    });
     return changes;
   }
 

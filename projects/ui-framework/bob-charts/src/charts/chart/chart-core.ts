@@ -13,7 +13,13 @@ import * as Highcharts from 'highcharts';
 import { ExportingMimeTypeValue, Options, Chart } from 'highcharts';
 import { ChartTypesEnum } from '../charts.enum';
 import { merge } from 'lodash';
-import { applyChanges, pass, simpleUID } from 'bob-style';
+import {
+  applyChanges,
+  COLOR_GREY_700,
+  COLOR_GREY_500,
+  pass,
+  simpleUID,
+} from 'bob-style';
 import {
   ChartFormatterThis,
   ChartLegendAlignEnum,
@@ -116,6 +122,34 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
   initialOptions(): void {
     this.options = merge(
       {
+        yAxis: {
+          labels: {
+            style: {
+              'font-family': 'var(--body-font-family)',
+              color: COLOR_GREY_700,
+            },
+          },
+          stackLabels: {
+            style: {
+              'font-family': 'var(--body-font-family)',
+              color: COLOR_GREY_700,
+            },
+          },
+        },
+        xAxis: {
+          labels: {
+            style: {
+              'font-family': 'var(--body-font-family)',
+              color: COLOR_GREY_700,
+            },
+          },
+          stackLabels: {
+            style: {
+              'font-family': 'var(--body-font-family)',
+              color: COLOR_GREY_700,
+            },
+          },
+        },
         colors: this.colorPalette,
         chart: {
           events: {
@@ -129,20 +163,68 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
           animation: {
             duration: 200,
           },
+          style: {
+            'font-family': 'var(--body-font-family)',
+            color: COLOR_GREY_700,
+          },
         },
         title: {
           text: this.title,
+          style: {
+            color: COLOR_GREY_700,
+          },
         },
-        legend: this.getLegendPositioning(this.legendPosition),
+        subtitle: {
+          style: {
+            color: COLOR_GREY_700,
+          },
+        },
+        caption: {
+          style: {
+            color: COLOR_GREY_700,
+          },
+        },
+        legend: {
+          ...this.getLegendPositioning(this.legendPosition),
+          itemStyle: {
+            'font-family': 'var(--body-font-family)',
+            color: COLOR_GREY_700,
+          },
+          navigation: {
+            style: {
+              'font-family': 'var(--body-font-family)',
+              color: COLOR_GREY_700,
+            },
+          },
+        },
         tooltip: {
+          borderColor: COLOR_GREY_500,
+          borderRadius: 4,
+          borderWidth: 1,
           outside: true,
           useHTML: true,
           style: {
+            'font-family': 'var(--body-font-family)',
+            color: COLOR_GREY_700,
             textAlign: 'center',
             shadow: false,
             opacity: 1,
           },
           formatter: this.formatter,
+        },
+        labels: {
+          style: {
+            'font-family': 'var(--body-font-family)',
+            color: COLOR_GREY_700,
+          },
+        },
+        annotations: {
+          labels: {
+            style: {
+              'font-family': 'var(--body-font-family)',
+              color: COLOR_GREY_700,
+            },
+          },
         },
         plotOptions: {
           [this.type]: {
@@ -153,6 +235,10 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
             showInLegend: this.legend,
             dataLabels: {
               enabled: this.showDataLabels,
+              style: {
+                'font-family': 'var(--body-font-family)',
+                color: COLOR_GREY_700,
+              },
             },
           },
         },
@@ -162,6 +248,11 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
         series: [],
         exporting: {
           enabled: false,
+          chartOptions: {
+            chart: {
+              backgroundColor: '#fff',
+            },
+          },
         },
       },
       this.chartOptions,
@@ -177,12 +268,17 @@ export abstract class ChartCore implements OnChanges, AfterViewInit {
     });
   }
 
-  applyOnChange() {
+  applyOnChange(destroy = false) {
     if (this.highChartRef) {
       this.cdr.markForCheck();
       this.initialOptions();
       this.zone.runOutsideAngular(() => {
-        this.highChartRef.update(this.options, true, true);
+        if (destroy) {
+          this.highChartRef.destroy();
+          this.highChartRef = Highcharts.chart(this.containerId, this.options);
+        } else {
+          this.highChartRef.update(this.options, true, true);
+        }
       });
     }
   }
