@@ -20,11 +20,10 @@
          [value]="value"
          [attr.placeholder]="hideLabelOnFocus && label ? label : placeholder"
          [autocomplete]="enableBrowserAutoComplete"
-         (input)="onInput($event)"
          (focus)="onFocus()"
          (blur)="onBlur($event)">
 
-  <span *ngIf="value && value.length > 0"
+  <span *ngIf="value?.length"
         class="bfe-suffix">
     <b-icon class="clear-input"
             role="button"

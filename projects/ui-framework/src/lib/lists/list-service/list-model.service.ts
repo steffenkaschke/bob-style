@@ -16,7 +16,18 @@ import {
   isEmptyArray,
   isBoolean,
   objectRemoveKey,
+  isNumber,
 } from '../../services/utils/functional-utils';
+
+interface GetHeadersModelConfig {
+  collapseHeaders?: boolean;
+  hasCheckbox?: boolean;
+  allowGroupIsOption?: boolean;
+}
+
+interface GetOptionsModelConfig {
+  noGroupHeaders?: boolean;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -26,9 +37,11 @@ export class ListModelService {
 
   getHeadersModel(
     options: SelectGroupOption[],
-    collapseHeaders = false,
-    hasCheckbox = true,
-    allowGroupIsOption = false
+    {
+      collapseHeaders = false,
+      hasCheckbox = true,
+      allowGroupIsOption = false,
+    }: GetHeadersModelConfig = {}
   ): ListHeader[] {
     return options.map((group) => {
       const selectedCount = this.countOptions(group.options, 'selected');
@@ -40,13 +53,14 @@ export class ListModelService {
 
       return {
         ...objectRemoveKey(group, 'options'),
+        key: this.getGroupKey(group),
         isCollapsed: collapseHeaders || groupIsOption,
         placeHolderSize: group.options.length * LIST_EL_HEIGHT,
         selected: isBoolean(group.selected)
           ? group.selected
           : selectedCount === group.options.length,
         indeterminate: this.isIndeterminate(group.options, selectedCount),
-        selectedCount: selectedCount,
+        selectedCount,
         hasCheckbox,
         groupIsOption,
       };
@@ -56,10 +70,10 @@ export class ListModelService {
   getOptionsModel(
     options: SelectGroupOption[],
     listHeaders: ListHeader[],
-    noGroupHeaders: boolean
+    { noGroupHeaders }: GetOptionsModelConfig
   ): ListOption[] {
     const groupOptions = options.map(
-      (group: SelectGroupOption, index: number) => {
+      (group: SelectGroupOption, groupIndex: number) => {
         const placeholder = {
           isPlaceHolder: true,
           selected: false,
@@ -71,13 +85,15 @@ export class ListModelService {
           virtualOptions = group.options.map((option) => ({
             ...option,
             groupName: group.groupName,
-            key: group.key,
-            groupIndex: index,
+            key: this.getGroupKey(group),
+            groupIndex: isNumber(group.groupIndex)
+              ? group.groupIndex
+              : groupIndex,
             isPlaceHolder: false,
           }));
         } else if (
-          listHeaders[index].isCollapsed ||
-          listHeaders[index].groupIsOption
+          listHeaders[groupIndex].isCollapsed ||
+          listHeaders[groupIndex].groupIsOption
         ) {
           virtualOptions = [placeholder];
         } else {
@@ -86,8 +102,10 @@ export class ListModelService {
             group.options.map((option) => ({
               ...option,
               groupName: group.groupName,
-              key: group.key,
-              groupIndex: index,
+              key: this.getGroupKey(group),
+              groupIndex: isNumber(group.groupIndex)
+                ? group.groupIndex
+                : groupIndex,
               isPlaceHolder: false,
             }))
           );
@@ -114,7 +132,13 @@ export class ListModelService {
     });
 
     listHeaders.forEach((header: ListHeader, index: number) => {
-      const groupOptions = options[index].options;
+      const groupOptions = (
+        options[header.groupIndex] ||
+        options.find(
+          (group) =>
+            group.key === header.key || group.groupName === header.groupName
+        )
+      ).options;
 
       header.selectedCount = this.countOptions(groupOptions, 'selected');
       header.selected = header.selectedCount === groupOptions.length;
@@ -228,5 +252,13 @@ export class ListModelService {
 
   totalOptionsCount(options: SelectGroupOption[]): number {
     return arrayFlatten(options.map((group) => group.options)).length;
+  }
+
+  getGroupKey(group: SelectGroupOption | ListHeader): string {
+    return group.key
+      ? group.key + ''
+      : `${isNumber(group.groupIndex) ? group.groupIndex + '__' : ''}${
+          group.groupName
+        }`;
   }
 }
