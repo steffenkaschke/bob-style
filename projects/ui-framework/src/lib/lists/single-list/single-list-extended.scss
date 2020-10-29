@@ -12,3 +12,14 @@
 .headers .groupIsOption.clickable {
   cursor: default;
 }
+
+.header-selected-count {
+  font-size: 0px;
+
+  &:before {
+    content: '●';
+    color: $grey-600;
+    font-size: 13px;
+    line-height: 10px;
+  }
+}
