@@ -153,6 +153,7 @@ $list-max-items: 8;
     margin-right: -10px;
     margin-left: auto;
     visibility: hidden;
+    z-index: 2;
   }
 
   .option-select:hover,
