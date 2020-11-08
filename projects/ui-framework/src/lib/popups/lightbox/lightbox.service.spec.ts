@@ -4,7 +4,6 @@ import {
   flush,
   inject,
   TestBed,
-  tick,
 } from '@angular/core/testing';
 import { LightboxService } from './lightbox.service';
 import { LightboxData } from './lightbox.interface';
@@ -25,11 +24,15 @@ import {
 import {
   DOMhelpersProvideMock,
   MockCompsModule,
+  WindowRefProvideMock,
 } from '../../tests/services.stub.spec';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { TruncateTooltipComponent } from '../truncate-tooltip/truncate-tooltip.component';
 import { MockComponent } from 'ng-mocks';
 import { IconComponent } from '../../icons/icon.component';
+
+const detectChanges = (lightbox: LightboxData) => {
+  lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+};
 
 describe('LightboxService', () => {
   let lightbox: LightboxData;
@@ -64,7 +67,11 @@ describe('LightboxService', () => {
         AvatarImageComponent,
         MockComponent(IconComponent),
       ],
-      providers: [LightboxService, DOMhelpersProvideMock()],
+      providers: [
+        LightboxService,
+        DOMhelpersProvideMock(),
+        WindowRefProvideMock(),
+      ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     });
 
@@ -81,7 +88,7 @@ describe('LightboxService', () => {
   describe('Lightbox Service', () => {
     it('should open Lightbox with image', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
-      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+      detectChanges(lightbox);
 
       const lightContainerEl = overlayElement.querySelector(
         '.lightbox-container'
@@ -98,7 +105,7 @@ describe('LightboxService', () => {
 
     it('should open Lightbox with video', () => {
       lightbox = lightboxService.showLightbox(testConfigVideo);
-      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+      detectChanges(lightbox);
 
       const lightContainerEl = overlayElement.querySelector(
         '.lightbox-container'
@@ -117,7 +124,7 @@ describe('LightboxService', () => {
 
     it('should open Lightbox with Avatar component', fakeAsync(() => {
       lightbox = lightboxService.showLightbox(testConfigComponent);
-      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+      detectChanges(lightbox);
 
       flush();
 
@@ -144,7 +151,7 @@ describe('LightboxService', () => {
 
     it('should add the right classnames and respect fillScreen property', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
-      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+      detectChanges(lightbox);
       const lightContainerEl = overlayElement.querySelector(
         'b-lightbox'
       ) as HTMLElement;
@@ -154,7 +161,7 @@ describe('LightboxService', () => {
 
     it('should close Lightbox with Close button', () => {
       lightbox = lightboxService.showLightbox(testConfigImage);
-      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
+      detectChanges(lightbox);
 
       const closeButEl = overlayElement.querySelector(
         '.close-button'
@@ -194,21 +201,6 @@ describe('LightboxService', () => {
       } catch (e) {
         expect(e).toBeTruthy();
       }
-      lightboxService.closeLightbox();
-    });
-  });
-
-  describe('LightboxComponent windowKeydownSubscriber', () => {
-    it('should unsubscribe windowKeydownSubscriber', () => {
-      lightbox = lightboxService.showLightbox(testConfigImage);
-      lightbox.lightboxComponentRef.changeDetectorRef.detectChanges();
-      expect(
-        lightbox.lightboxComponentRef.instance['windowKeydownSubscriber'].closed
-      ).toBe(false);
-      lightbox.lightboxComponentRef.instance.ngOnDestroy();
-      expect(
-        lightbox.lightboxComponentRef.instance['windowKeydownSubscriber'].closed
-      ).toBe(true);
       lightboxService.closeLightbox();
     });
   });

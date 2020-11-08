@@ -5,6 +5,8 @@ import {
   OnDestroy,
   Output,
   EventEmitter,
+  OnInit,
+  HostListener,
 } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Icons } from '../../icons/icons.enum';
@@ -13,6 +15,7 @@ import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { SLIDE_UP_DOWN } from '../../style/animations';
 import { isBoolean, isFunction } from '../../services/utils/functional-utils';
+import { WindowRef } from '../../services/utils/window-ref.service';
 
 @Component({
   selector: 'b-dialog',
@@ -35,10 +38,11 @@ import { isBoolean, isFunction } from '../../services/utils/functional-utils';
     ]),
   ],
 })
-export class DialogComponent implements OnDestroy {
+export class DialogComponent implements OnInit, OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private windowRef: WindowRef
   ) {}
 
   @Input() dialogTitle: string;
@@ -71,7 +75,25 @@ export class DialogComponent implements OnDestroy {
 
   private confirmationControlFromAbove = false;
 
+  @HostListener('window:popstate', ['$event'])
+  closeModalOnHistoryBack() {
+    this.closeDialog();
+  }
+
+  ngOnInit(): void {
+    this.windowRef.nativeWindow.history.pushState(
+      {
+        modal: true,
+        desc: 'modal is open',
+      },
+      null
+    );
+  }
+
   ngOnDestroy(): void {
+    if (this.windowRef.nativeWindow.history.state?.modal) {
+      this.windowRef.nativeWindow.history.back();
+    }
     this.dialogRef.close();
   }
 
