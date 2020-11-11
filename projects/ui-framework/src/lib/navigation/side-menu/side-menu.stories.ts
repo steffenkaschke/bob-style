@@ -16,10 +16,11 @@ import { IconsModule } from '../../icons/icons.module';
 import { sideMenuMock1, sideMenuMock2 } from './side-menu.mock';
 import { ButtonsModule } from '../../../lib/buttons/buttons.module';
 import { SideMenuOption } from './side-menu.interface';
-import { Icons } from '../../icons/icons.enum';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { select } from '@storybook/addon-knobs';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const story = storiesOf(ComponentGroupType.Navigation, module)
   .addDecorator(withNotes)
@@ -66,6 +67,30 @@ const storyTemplate = `
         <b-square-button [icon]="icons.download"
                         [type]="buttonType.tertiary">
         </b-square-button>
+    </b-side-menu>
+
+  </div>
+
+  <hr style="width: 100%; margin: 60px 0 50px 0; border: 0; height: 0; border-top: 2px dashed #d2d2d2;">
+
+  <div style="max-width: 300px;">
+
+    <b-side-menu [options]="menuWithIcons"
+                [headerLabel]="headerLabel || 'Menu with custom icon template'"
+                [selectedId]="selectedId"
+                [tooltipType]="tooltipType"
+                (selectOption)="selectOption($event)">
+        <b-square-button [icon]="icons.download"
+                        [type]="buttonType.tertiary">
+        </b-square-button>
+        <ng-template let-option let-selected="selected">
+          <b-icon style="margin-right: 8px;"
+                  [matTooltip]="'Custom tooltip'"
+                  [icon]="icons.folder"
+                  [size]="iconSize.large"
+                  [color]="selected ? iconColor.dark : iconColor.normal">
+          </b-icon>
+        </ng-template>
     </b-side-menu>
 
   </div>
@@ -180,6 +205,8 @@ story.add(
       template: storyTemplate,
       props: {
         icons: Icons,
+        iconSize: IconSize,
+        iconColor: IconColor,
         buttonType: ButtonType,
         headerLabel: text('headerLabel', '', 'Props'),
         menuWithIcons: object<SideMenuOption[]>(
@@ -209,6 +236,7 @@ story.add(
           StoryBookLayoutModule,
           IconsModule,
           ButtonsModule,
+          MatTooltipModule,
         ],
       },
     };

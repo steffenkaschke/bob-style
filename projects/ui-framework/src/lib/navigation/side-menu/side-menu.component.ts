@@ -8,6 +8,8 @@ import {
   OnChanges,
   HostBinding,
   NgZone,
+  TemplateRef,
+  ContentChild
 } from '@angular/core';
 import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
@@ -32,6 +34,7 @@ export class SideMenuComponent implements OnChanges {
     private cd: ChangeDetectorRef
   ) {}
 
+  @ContentChild(TemplateRef) iconTemplate;
   @HostBinding('attr.role') role = 'navigation';
 
   @Input() options: SideMenuOption[];
