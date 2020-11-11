@@ -39,9 +39,8 @@
 
     <ng-template #icon>
       <div
-        class="icon {{
-          option.icon && !iconTemplate && !option.avatar ? option.icon : null
-        }}"
+        *ngIf="option.icon && !iconTemplate && !option.avatar"
+        class="icon {{option.icon}}"
         [matTooltip]="option.iconTooltip"
         [matTooltipClass]="option.iconTooltipClass"
         [matTooltipPosition]="option.iconTooltipPosition || tooltipPosition.above"
