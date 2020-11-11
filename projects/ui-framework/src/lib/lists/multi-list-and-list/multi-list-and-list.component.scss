@@ -1,0 +1,52 @@
+@import '../../style/common-imports';
+
+$gap: 20px;
+
+:host {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  --translation-all: '(all)';
+}
+
+.mlac-list {
+  display: flex;
+  flex-direction: column;
+  width: calc(50% - #{$gap / 2});
+}
+
+.mlac-list-label {
+  @include bFormElement-label(false);
+}
+
+
+b-basic-list{
+  flex-grow: 5;
+  min-height: 300px;
+  max-height: 360px;
+  box-shadow: none;
+  background-color: white;
+  overflow-y: scroll;
+}
+
+b-multi-list {
+  flex-grow: 5;
+  min-height: 300px;
+  max-height: 360px;
+  box-shadow: none;
+  background-color: white;
+  overflow-y: scroll;
+}
+//
+//:host ::ng-deep b-basic-list {
+//  min-height: 300px;
+//  max-height: 360px;
+//}
+
+b-empty-state {
+  align-self: center;
+  margin: auto;
+  justify-content: center;
+  text-align: center;
+  padding: inherit;
+}
