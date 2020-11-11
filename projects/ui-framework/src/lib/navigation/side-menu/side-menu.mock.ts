@@ -23,6 +23,7 @@ export const sideMenuMock1: SideMenuOption[] = makeArray(4).map((i, index) => ({
   id: index,
   displayName: mockText(1),
   icon: Icons.folder,
+  iconTooltip: index === 0 ? 'Tooltip only in first item' : null,
   actions: menuMock,
 }));
 

@@ -21,12 +21,32 @@
         'selected': option.id === selectedId && !option.disabled,
         'has-menu': option.actions?.length
       }"
-      class="{{option.icon && !iconTemplate && !option.avatar ? option.icon : null}}"
       [attr.tabindex]="!option.disabled ? 0 : null"
       [attr.role]="!option.disabled ? 'button' : null"
       [attr.data-icon-before-color]="option.id === selectedId && !option.disabled ? iconColor.dark : iconColor.normal">
 
-    <ng-container *ngTemplateOutlet="iconTemplate; context: {$implicit: option, selected: option.id === selectedId && !option.disabled}"></ng-container>
+    <ng-container *ngIf="iconTemplate; else icon">
+      <ng-container
+        *ngTemplateOutlet="
+          iconTemplate;
+          context: {
+            $implicit: option,
+            selected: option.id === selectedId && !option.disabled
+          }
+        "
+      ></ng-container>
+    </ng-container>
+
+    <ng-template #icon>
+      <div
+        class="icon {{
+          option.icon && !iconTemplate && !option.avatar ? option.icon : null
+        }}"
+        [matTooltip]="option.iconTooltip"
+        [matTooltipClass]="option.iconTooltipClass"
+        [matTooltipPosition]="option.iconTooltipPosition || tooltipPosition.above"
+      ></div>
+    </ng-template>
 
     <p class="option-display-name"
        *ngIf="option.displayName && !option.avatar"
