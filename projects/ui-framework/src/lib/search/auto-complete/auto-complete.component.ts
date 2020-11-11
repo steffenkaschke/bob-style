@@ -91,6 +91,9 @@ export class AutoCompleteComponent implements OnInit, OnChanges, OnDestroy {
     if (has(changes, 'options')) {
       this.options = changes.options.currentValue;
       this.filteredOptions = this.getFilteredOptions();
+      if (this.skipOptionsFiltering) {
+        this.openPanel();
+      }
     }
   }
 
