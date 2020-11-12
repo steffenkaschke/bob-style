@@ -51,7 +51,8 @@ const template = `<b-multi-list-and-list
         [startWithGroupsCollapsed]="options === 2 ? false : startWithGroupsCollapsed"
         [min]="min"
         [max]="max"
-        (selectChange)="onSelectChange($event)">
+        (selectChange)="onSelectChange($event)"
+        (menuAction)="onEmitMenuAction($event)">
   </b-multi-list-and-list>`;
 
 const templateForNotes = `<b-multi-list-and-list
@@ -63,6 +64,7 @@ const templateForNotes = `<b-multi-list-and-list
       [startWithGroupsCollapsed]="startWithGroupsCollapsed"
       [min]="min"
       [max]="max"
+      (menuAction)="onEmitMenuAction($event)"
       (selectChange)="onSelectChange($event)">
 </b-multi-list-and-list>`;
 
@@ -84,6 +86,7 @@ const note = `
   [emptyState] | EmptyStateConfig | config for the EmptyStateComponent to\
    be displayed when no options are selected | &nbsp;
   (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits on list change | &nbsp;
+<!--  (EmitMenuAction) | EventEmitter<wbr>&lt;onSelectChange&gt; | emits on list change | &nbsp;-->
 
   ${listSelectsPropsDoc}
 
@@ -134,6 +137,7 @@ const toAdd = () => ({
     ),
 
     onSelectChange: action('ListChange'),
+    onEmitMenuAction: action('EmitMenuAction'),
   },
   moduleMetadata: {
     imports: [

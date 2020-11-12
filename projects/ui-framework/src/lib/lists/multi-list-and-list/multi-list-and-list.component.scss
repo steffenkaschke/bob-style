@@ -46,7 +46,8 @@ b-empty-state {
 }
 
 :host ::ng-deep table {
-  min-height: 360px;
+  min-height: 300px;
+  overflow-y: scroll;
 
   tbody {
     width: 100%;
@@ -56,11 +57,12 @@ b-empty-state {
       width: 100%;
     }
 
-    //td:nth-child(2) {
-    //  alignment: right;
-    //  position: absolute;
-    //  right: 100px;
-    //  padding-top: 14px;
-    //}
+    td:nth-last-child(2) {
+      text-align: right;
+    }
+
+    td:last-child {
+      width: 10px;
+    }
   }
 }

@@ -82,9 +82,9 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
   @Input() startWithGroupsCollapsed = true;
   @Input() listActions: ListFooterActions;
   // use this group
-  @Input() mode: SelectMode = SelectMode.checkGroups;
+  // @Input() mode: SelectMode = SelectMode.checkGroups;
   // for testing
-  // @Input() mode: SelectMode = SelectMode.classic;
+  @Input() mode: SelectMode = SelectMode.classic;
 
   @Input() public type: BasicListType = BasicListType.primary;
   @Input() public showActionOnHover = false;
@@ -99,6 +99,7 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
   @Input() options: SelectGroupOption[] = [];
   @Input() optionsDefault: SelectGroupOption[];
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  @Output() menuAction: EventEmitter<any> = new EventEmitter<any>();
   @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   public listOptions: SelectGroupOption[] = [];
@@ -131,7 +132,6 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
           isNotEmptyArray(group.options),
         ) || [];
 
-      console.log('optionsToList INIT');
       this.optionsToList(this.options);
       this.cd.detectChanges();
     }
@@ -175,11 +175,16 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
         }
         // set row action icon if any
         if (this.listViewConfig?.rowAction) {
-          option.actionIcon = this.listViewConfig.rowAction.icon;
+          option.actionIcon = this.listViewConfig?.rowAction?.icon;
         }
         // set row menu icon if any
         if (this.listViewConfig.rowAction?.menu) {
-          option.menu = this.listViewConfig.rowAction.menu;
+          option.menu = this.listViewConfig?.rowAction?.menu.map(menu => ({
+            label: menu.label,
+            action: () => {
+              this.emitMenuAction(menu.label, op);
+            },
+          }));
         }
         listItems.push(option);
       }
@@ -208,6 +213,10 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
 
   private emitChange(): void {
     this.selectChange.emit(new ListChange(this.listOptions));
+  }
+
+  private emitMenuAction(action: string, item: SelectOption) {
+    this.menuAction.emit({ action, item });
   }
 
 }
