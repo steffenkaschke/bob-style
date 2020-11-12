@@ -35,15 +35,12 @@ export enum RowActionType {
 }
 
 export interface ListViewConfig {
-  rowStartIcon?: {
-    isIcon: boolean;
-    icon: Icons;
-  };
+  rowStartIcon?: Icons;
   rowAction?: {
-    isIcon: boolean;
     actionType: RowActionType;
     icon: Icons;
   };
+  rowTableView?: boolean;
 }
 
 export interface ListRow extends BasicListItem {
@@ -82,7 +79,10 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
   @Input() showSingleGroupHeader = false;
   @Input() startWithGroupsCollapsed = true;
   @Input() listActions: ListFooterActions;
+  // use this group
   @Input() mode: SelectMode = SelectMode.checkGroups;
+  // for testing
+  // @Input() mode: SelectMode = SelectMode.classic;
 
   @Input() public type: BasicListType = BasicListType.primary;
   @Input() public showActionOnHover = false;
@@ -90,20 +90,17 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
 
   @Input() public emptyStateConfig: EmptyStateConfig = { icon: Icons.three_dots };
   @Input() public listViewConfig: ListViewConfig = {
-    rowStartIcon: {
-      isIcon: false,
-      icon: Icons.doc,
+    rowStartIcon: Icons.doc,
+    rowTableView: true,
+    rowAction: {
+      actionType: RowActionType.icon,
+      icon: Icons.delete,
     },
     // rowAction: {
     //   isIcon: true,
     //   actionType: RowActionType.menu,
     //   icon: Icons.three_dots,
     // },
-    rowAction: {
-      isIcon: true,
-      actionType: RowActionType.icon,
-      icon: Icons.delete,
-    },
   };
 
   @Input() min: number;
@@ -144,6 +141,7 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
           isNotEmptyArray(group.options),
         ) || [];
 
+      console.log('optionsToList INIT');
       this.optionsToList(this.options);
       this.cd.detectChanges();
     }
@@ -161,10 +159,10 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
 
   private optionsToList(options: SelectGroupOption[]): ListRow[] {
     const listItems: ListRow[] = [];
+
     options.forEach(optionGroup => optionGroup.options.forEach(op => {
 
       if (op.selected) {
-        console.log(op);
         const option: ListRow = {
           id: op.id,
           label: [op.value],
@@ -177,19 +175,20 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
         // set sub value in any
         if (op.subValue) {
           option.label = [...option.label, op.subValue];
-        } else {
-          option.label = [...option.label, '  '];
+          // set empty ele to support table view
+        } else if (this.listViewConfig?.rowTableView) {
+          option.label = [...option.label, ''];
         }
         // set row start icon if any
-        if (this.listViewConfig.rowStartIcon?.isIcon && this.listViewConfig.rowStartIcon?.icon) {
-          option.icon = this.listViewConfig.rowStartIcon.icon;
+        if (this.listViewConfig?.rowStartIcon) {
+          option.icon = this.listViewConfig.rowStartIcon;
         }
         // set row action icon if any
-        if (this.listViewConfig.rowAction.isIcon) {
+        if (this.listViewConfig?.rowAction) {
           option.actionIcon = this.listViewConfig.rowAction.icon;
         }
         // set row menu icon if any
-        if (this.listViewConfig.rowAction.actionType === RowActionType.menu) {
+        if (this.listViewConfig.rowAction?.actionType === RowActionType.menu) {
           option.menu = [
             {
               label: 'Edit',

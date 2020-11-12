@@ -4,7 +4,6 @@
                 [mode]="mode"
                 [listActions]="listActions"
                 [options]="listOptions"
-                [optionsDefault]="optionsDefault"
                 [maxHeight]="listElHeight*6"
                 [showSingleGroupHeader]="showSingleGroupHeader"
                 [startWithGroupsCollapsed]="startWithGroupsCollapsed"
@@ -16,7 +15,8 @@
 
 <div class="mlac-list">
 
-  <b-basic-list [type]="type" [items]="selectedListOptions"
+  <b-basic-list [type]="type"
+                [items]="selectedListOptions"
                 [config]="{
                   showActionOnHover: showActionOnHover,
                   maxLines: maxLines

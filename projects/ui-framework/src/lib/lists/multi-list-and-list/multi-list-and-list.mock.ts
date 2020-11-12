@@ -28,61 +28,55 @@ const mayBeSelected = (perc = 80) => {
 
 export const MultiListAndListTimeOffOptionsMock: SelectGroupOption[] = [
   {
-    groupIndex: 0,
     groupName: 'Holiday',
-    key: '0__Holiday',
     options: [
       {
-        strongParent: true,
+        // strongParent: true,
         id: 6936222,
         value: 'Holiday policy',
-        exclusive: true,
+        selected: false,
+        description: `Balance tracking \n Balance tracked \n\n Annual allowence \n 12 \n\n Cycle \n Annual Cycle - Jan ❯ Dec ❯ no cut off ❯ Carry over Jan 1st`
       },
     ],
   },
   {
-    groupIndex: 1,
     groupName: 'Sick',
-    key: '1__Sick',
     options: [
       {
-        strongParent: true,
+        // strongParent: true,
         id: 6923623,
         value: 'Sick policy',
-        exclusive: true,
+        selected: false
       },
     ],
   },
   {
-    groupIndex: 2,
     groupName: 'Time off in lieu',
-    key: '2__Time off in lieu',
     options: [
       {
-        strongParent: true,
+        // strongParent: true,
         value: 'Time Off in Lieu policy',
         id: 6932624,
+        selected: true
       },
     ],
   },
   {
-    groupIndex: 3,
     groupName: 'test1',
-    key: '3__test1',
     options: [
       {
-        selected: false,
-        strongParent: true,
+        // strongParent: true,
         value: 'test1.sub',
         subValue: '16 days',
         id: 7423814,
+        selected: true
       },
       {
-        selected: true,
-        strongParent: true,
+        // strongParent: true,
         value: 'sub2',
         subValue: '10 days',
         id: 7432822,
+        selected: true
       },
     ],
   },
