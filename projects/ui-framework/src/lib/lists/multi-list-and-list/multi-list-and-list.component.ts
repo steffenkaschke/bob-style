@@ -39,6 +39,7 @@ export interface ListViewConfig {
   rowAction?: {
     actionType: RowActionType;
     icon: Icons;
+    menu?: MenuItem[];
   };
   rowTableView?: boolean;
 }
@@ -76,6 +77,7 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
   @ViewChild(BasicListComponent, { static: true }) basicList: BasicListComponent;
 
   @Input() listLabel: string;
+  @Input() selectedLabel: string;
   @Input() showSingleGroupHeader = false;
   @Input() startWithGroupsCollapsed = true;
   @Input() listActions: ListFooterActions;
@@ -89,19 +91,7 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
   @Input() public maxLines: number = null;
 
   @Input() public emptyStateConfig: EmptyStateConfig = { icon: Icons.three_dots };
-  @Input() public listViewConfig: ListViewConfig = {
-    rowStartIcon: Icons.doc,
-    rowTableView: true,
-    rowAction: {
-      actionType: RowActionType.icon,
-      icon: Icons.delete,
-    },
-    // rowAction: {
-    //   isIcon: true,
-    //   actionType: RowActionType.menu,
-    //   icon: Icons.three_dots,
-    // },
-  };
+  @Input() public listViewConfig: ListViewConfig;
 
   @Input() min: number;
   @Input() max: number;
@@ -176,7 +166,7 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
         if (op.subValue) {
           option.label = [...option.label, op.subValue];
           // set empty ele to support table view
-        } else if (this.listViewConfig?.rowTableView) {
+        } else if (this.listViewConfig.rowTableView) {
           option.label = [...option.label, ''];
         }
         // set row start icon if any
@@ -188,15 +178,8 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
           option.actionIcon = this.listViewConfig.rowAction.icon;
         }
         // set row menu icon if any
-        if (this.listViewConfig.rowAction?.actionType === RowActionType.menu) {
-          option.menu = [
-            {
-              label: 'Edit',
-            },
-            {
-              label: 'Delete',
-            },
-          ];
+        if (this.listViewConfig.rowAction?.menu) {
+          option.menu = this.listViewConfig.rowAction.menu;
         }
         listItems.push(option);
       }

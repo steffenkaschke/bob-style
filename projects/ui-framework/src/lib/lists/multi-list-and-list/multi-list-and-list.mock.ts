@@ -9,6 +9,7 @@ import { mockHobbies, mockNames, mockAvatar } from '../../mock.const';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { Icons } from '../../icons/icons.enum';
 import { BasicListItem } from 'bob-style';
+import { ListViewConfig, RowActionType } from './multi-list-and-list.component';
 
 const maxOpts = 10;
 
@@ -31,11 +32,11 @@ export const MultiListAndListTimeOffOptionsMock: SelectGroupOption[] = [
     groupName: 'Holiday',
     options: [
       {
-        // strongParent: true,
+        strongParent: true,
         id: 6936222,
         value: 'Holiday policy',
         selected: false,
-        description: `Balance tracking \n Balance tracked \n\n Annual allowence \n 12 \n\n Cycle \n Annual Cycle - Jan ❯ Dec ❯ no cut off ❯ Carry over Jan 1st`
+        description: `Balance tracking \n Balance tracked \n\n Annual allowence \n 12 \n\n Cycle \n Annual Cycle - Jan ❯ Dec ❯ no cut off ❯ Carry over Jan 1st`,
       },
     ],
   },
@@ -43,10 +44,10 @@ export const MultiListAndListTimeOffOptionsMock: SelectGroupOption[] = [
     groupName: 'Sick',
     options: [
       {
-        // strongParent: true,
+        strongParent: true,
         id: 6923623,
         value: 'Sick policy',
-        selected: false
+        selected: false,
       },
     ],
   },
@@ -54,10 +55,10 @@ export const MultiListAndListTimeOffOptionsMock: SelectGroupOption[] = [
     groupName: 'Time off in lieu',
     options: [
       {
-        // strongParent: true,
+        strongParent: true,
         value: 'Time Off in Lieu policy',
         id: 6932624,
-        selected: true
+        selected: true,
       },
     ],
   },
@@ -65,18 +66,18 @@ export const MultiListAndListTimeOffOptionsMock: SelectGroupOption[] = [
     groupName: 'test1',
     options: [
       {
-        // strongParent: true,
+        strongParent: true,
         value: 'test1.sub',
         subValue: '16 days',
         id: 7423814,
-        selected: true
+        selected: true,
       },
       {
-        // strongParent: true,
+        strongParent: true,
         value: 'sub2',
         subValue: '10 days',
         id: 7432822,
-        selected: true
+        selected: true,
       },
     ],
   },
@@ -229,3 +230,26 @@ export const listData: BasicListItem[] = [{
     label: 'label only',
   },
 ];
+
+export const listViewConfigMock: ListViewConfig = {
+  // rowStartIcon: Icons.doc,
+  rowTableView: true,
+  rowAction: {
+    actionType: RowActionType.icon,
+    icon: Icons.delete,
+    menu: [{
+      label: 'Edit', action($event) {
+        console.log($event);
+      },
+    }, {
+      label: 'Delete', action($event) {
+        console.log($event);
+      },
+    }],
+  },
+  // rowAction: {
+  //   isIcon: true,
+  //   actionType: RowActionType.menu,
+  //   icon: Icons.three_dots,
+  // },
+};

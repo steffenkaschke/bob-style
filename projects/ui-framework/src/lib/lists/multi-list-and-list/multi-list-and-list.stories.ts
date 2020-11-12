@@ -11,7 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MultiListAndListPepopleOptionsMock,
   MultiListAndListOptionsMock,
-  MultiListAndListTimeOffOptionsMock
+  MultiListAndListTimeOffOptionsMock,
+  listViewConfigMock,
 } from './multi-list-and-list.mock';
 import { action } from '@storybook/addon-actions';
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
@@ -36,7 +37,7 @@ import { MultiListAndListModule } from './multi-list-and-list.module';
 const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs,
 );
-
+const listViewConfig = listViewConfigMock;
 const listOpts = MultiListAndListOptionsMock;
 const policeies = MultiListAndListTimeOffOptionsMock;
 const avatarListOpts = MultiListAndListPepopleOptionsMock;
@@ -44,6 +45,8 @@ const avatarListOpts = MultiListAndListPepopleOptionsMock;
 const template = `<b-multi-list-and-list
         [options]="options === 2 ? listOpts : policeies"
         [listLabel]="listLabel"
+        [selectedLabel]="selectedLabel"
+        [listViewConfig]="listViewConfig"
         [showSingleGroupHeader]="showSingleGroupHeader"
         [startWithGroupsCollapsed]="options === 2 ? false : startWithGroupsCollapsed"
         [min]="min"
@@ -54,6 +57,8 @@ const template = `<b-multi-list-and-list
 const templateForNotes = `<b-multi-list-and-list
       [options]="options"
       [listLabel]="listLabel"
+      [selectedLabel]="selectedLabel"
+      [listViewConfig]="listViewConfig"
       [showSingleGroupHeader]="showSingleGroupHeader"
       [startWithGroupsCollapsed]="startWithGroupsCollapsed"
       [min]="min"
@@ -106,7 +111,8 @@ const toAdd = () => ({
   template: storyTemplate,
   props: {
     listLabel: text('chipsLabel', 'Select fields', 'Props'),
-    chipsLabel: text('listLabel', 'Selected fields', 'Props'),
+    selectedLabel: text('selectedLabel', 'Selected fields', 'Props'),
+    listViewConfig: object('listViewConfig', listViewConfig, 'Props'),
     showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
     startWithGroupsCollapsed: boolean(
       'startWithGroupsCollapsed',

@@ -1,4 +1,8 @@
 <div class="mlac-list">
+  <p class="mlac-list-label"
+     [attr.id]="listID"
+     [attr.aria-hidden]="!listLabel"
+     *ngIf="listLabel">{{listLabel}}</p>
 
   <b-multi-list [attr.aria-labelledby]="listLabel ? listID : null"
                 [mode]="mode"
@@ -14,6 +18,10 @@
 </div>
 
 <div class="mlac-list">
+  <p class="mlac-list-label"
+     [attr.id]="listID"
+     [attr.aria-hidden]="!listLabel"
+     *ngIf="selectedLabel">{{selectedLabel}}</p>
 
   <b-basic-list [type]="type"
                 [items]="selectedListOptions"

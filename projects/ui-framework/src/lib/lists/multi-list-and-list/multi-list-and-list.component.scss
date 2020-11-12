@@ -19,14 +19,13 @@ $gap: 20px;
   @include bFormElement-label(false);
 }
 
-
-b-basic-list{
+b-basic-list {
   flex-grow: 5;
   min-height: 300px;
   max-height: 360px;
-  box-shadow: none;
   background-color: white;
   overflow-y: scroll;
+  box-shadow: none;
 }
 
 b-multi-list {
@@ -37,11 +36,6 @@ b-multi-list {
   background-color: white;
   overflow-y: scroll;
 }
-//
-//:host ::ng-deep b-basic-list {
-//  min-height: 300px;
-//  max-height: 360px;
-//}
 
 b-empty-state {
   align-self: center;
@@ -49,4 +43,24 @@ b-empty-state {
   justify-content: center;
   text-align: center;
   padding: inherit;
+}
+
+:host ::ng-deep table {
+  min-height: 360px;
+
+  tbody {
+    width: 100%;
+
+    tr {
+      display: table;
+      width: 100%;
+    }
+
+    //td:nth-child(2) {
+    //  alignment: right;
+    //  position: absolute;
+    //  right: 100px;
+    //  padding-top: 14px;
+    //}
+  }
 }
