@@ -144,7 +144,6 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
     const listItems: ListRow[] = [];
     options.forEach(optionGroup => optionGroup.options.map(op => {
       if (op.selected) {
-
         listItems.push({
           id: op.id,
           label: [`<strong>${optionGroup.groupName}</strong> - ${op.value}`, op.subValue] || ' ',
@@ -160,48 +159,6 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
         });
       }
     }));
-
-    // options.forEach(optionGroup => optionGroup.options.forEach(op => {
-    //
-    //   if (op.selected) {
-    //     const option: ListRow = {
-    //       id: op.id,
-    //       label: [op.value],
-    //       disabled: op.disabled,
-    //     };
-    //
-    //     // set row strong tag if any
-    //     if (op.strongParent) {
-    //       option.label = [`<strong>${optionGroup.groupName}</strong> - ${op.value}`];
-    //     }
-    //     // set sub value in any
-    //     if (op.subValue) {
-    //       option.label = [...option.label, op.subValue];
-    //       // set empty ele to support table view
-    //     } else if (this.listViewConfig.rowTableView) {
-    //       option.label = [...option.label, ''];
-    //     }
-    //     // set row start icon if any
-    //     if (this.listViewConfig?.rowStartIcon) {
-    //       option.icon = this.listViewConfig.rowStartIcon;
-    //     }
-    //     // set row action icon if any
-    //     if (this.listViewConfig?.rowAction) {
-    //       option.actionIcon = this.listViewConfig?.rowAction?.icon;
-    //     }
-    //     // set row menu icon if any
-    //     if (this.listViewConfig.rowAction?.menu) {
-    //       option.menu = this.listViewConfig?.rowAction?.menu.map(menu => ({
-    //         label: menu.label,
-    //         action: () => {
-    //           this.emitMenuAction(menu.label, op);
-    //         },
-    //       }));
-    //     }
-    //     listItems.push(option);
-    //   }
-    // }));
-
     this.selectedListOptions = listItems;
     return this.selectedListOptions;
   }
