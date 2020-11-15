@@ -146,7 +146,7 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
       if (op.selected) {
         listItems.push({
           id: op.id,
-          label: [`<strong>${optionGroup.groupName}</strong> - ${op.value}`, op.subValue] || ' ',
+          label: [`<strong>${optionGroup.groupName}</strong> - ${op.value}`, ...(op.subValue ? [op.subValue] : [])],
           icon: this.listViewConfig?.rowStartIcon,
           actionIcon: this.listViewConfig?.rowAction?.icon,
           disabled: op.disabled,
