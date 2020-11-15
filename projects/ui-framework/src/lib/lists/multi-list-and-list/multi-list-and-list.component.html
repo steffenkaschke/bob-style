@@ -1,5 +1,5 @@
-<div class="mlac-list">
-  <p class="mlac-list-label"
+<div class="mlal-list">
+  <p class="mlal-list-label"
      [attr.id]="listID"
      [attr.aria-hidden]="!listLabel"
      *ngIf="listLabel">{{listLabel}}</p>
@@ -17,8 +17,8 @@
   </b-multi-list>
 </div>
 
-<div class="mlac-list">
-  <p class="mlac-list-label"
+<div class="mlal-list">
+  <p class="mlal-list-label"
      [attr.id]="listID"
      [attr.aria-hidden]="!listLabel"
      *ngIf="selectedLabel">{{selectedLabel}}</p>
@@ -33,19 +33,17 @@
 
     <ng-container *bBasicListAction="let item=item">
 
-      <b-menu *ngIf="listViewConfig.rowAction.actionType === 'menu'" [menu]="item.menu">
+      <b-menu *ngIf="listViewConfig.rowAction.menu" [menu]="item.menu">
         <b-square-button menu-trigger
                          [type]="buttonType"
-                         [icon]="item.actionIcon"
-                         [color]="iconColor">
+                         [icon]="item.actionIcon">
         </b-square-button>
       </b-menu>
 
-      <b-square-button *ngIf="listViewConfig.rowAction.actionType === 'icon'"
+      <b-square-button *ngIf="listViewConfig.rowAction.icon && !listViewConfig.rowAction.menu"
                        [disabled]="item.disabled"
                        [type]="buttonType"
                        [icon]="item.actionIcon"
-                       [color]="iconColor"
                        (clicked)="onListRowRemove(item)"
       >
       </b-square-button>

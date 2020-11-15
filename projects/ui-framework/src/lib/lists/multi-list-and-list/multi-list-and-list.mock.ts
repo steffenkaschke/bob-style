@@ -233,19 +233,15 @@ export const listData: BasicListItem[] = [{
 
 export const listViewConfigMock: ListViewConfig = {
   rowStartIcon: Icons.doc,
-  rowTableView: true,
   rowAction: {
-    actionType: RowActionType.icon,
     icon: Icons.delete,
-    menu: [{
-      label: 'Edit',
-    }, {
-      label: 'Delete',
-    }],
   },
   // rowAction: {
-  //   isIcon: true,
-  //   actionType: RowActionType.menu,
   //   icon: Icons.three_dots,
+  //     menu: [{
+  //       label: 'Edit',
+  //     }, {
+  //       label: 'Delete',
+  //     }],
   // },
 };

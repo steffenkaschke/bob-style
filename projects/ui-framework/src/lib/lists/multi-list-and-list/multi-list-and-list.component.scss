@@ -9,13 +9,13 @@ $gap: 20px;
   --translation-all: '(all)';
 }
 
-.mlac-list {
+.mlal-list {
   display: flex;
   flex-direction: column;
   width: calc(50% - #{$gap / 2});
 }
 
-.mlac-list-label {
+.mlal-list-label {
   @include bFormElement-label(false);
 }
 
@@ -24,8 +24,9 @@ b-basic-list {
   min-height: 300px;
   max-height: 360px;
   background-color: white;
-  overflow-y: scroll;
-  box-shadow: none;
+  overflow-y: auto;
+  border: solid 1px $border-color;
+  border-radius: $border-radius;
 }
 
 b-multi-list {
@@ -45,24 +46,14 @@ b-empty-state {
   padding: inherit;
 }
 
-:host ::ng-deep table {
-  min-height: 300px;
-  overflow-y: scroll;
+:host ::ng-deep b-basic-list > table {
 
   tbody {
-    width: 100%;
+    box-shadow: none !important;
 
-    tr {
-      display: table;
-      width: 100%;
-    }
-
-    td:nth-last-child(2) {
+    .bbl-list-label + .bbl-list-label {
       text-align: right;
     }
-
-    td:last-child {
-      width: 10px;
-    }
   }
+
 }

@@ -37,15 +37,12 @@ export enum RowActionType {
 export interface ListViewConfig {
   rowStartIcon?: Icons;
   rowAction?: {
-    actionType: RowActionType;
     icon: Icons;
     menu?: MenuItem[];
   };
-  rowTableView?: boolean;
 }
 
 export interface ListRow extends BasicListItem {
-  icon?: Icons;
   actionIcon?: Icons;
   menu?: MenuItem[];
   id: number | string;
@@ -70,9 +67,6 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
 
   readonly buttonType: ButtonType = ButtonType.tertiary;
 
-  @Input() icon: Icons = Icons.three_dots;
-  @Input() iconColor: IconColor;
-
   @ViewChild(MultiListComponent, { static: true }) list: MultiListComponent;
   @ViewChild(BasicListComponent, { static: true }) basicList: BasicListComponent;
 
@@ -85,8 +79,6 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
   // @Input() mode: SelectMode = SelectMode.checkGroups;
   // for testing
   @Input() mode: SelectMode = SelectMode.classic;
-
-  @Input() public type: BasicListType = BasicListType.primary;
   @Input() public showActionOnHover = false;
   @Input() public maxLines: number = null;
 
@@ -102,6 +94,7 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
   @Output() menuAction: EventEmitter<any> = new EventEmitter<any>();
   @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
+  public type: BasicListType = BasicListType.primary;
   public listOptions: SelectGroupOption[] = [];
   public selectedListOptions: ListRow[] = [];
 
@@ -149,46 +142,65 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
 
   private optionsToList(options: SelectGroupOption[]): ListRow[] {
     const listItems: ListRow[] = [];
-
-    options.forEach(optionGroup => optionGroup.options.forEach(op => {
-
+    options.forEach(optionGroup => optionGroup.options.map(op => {
       if (op.selected) {
-        const option: ListRow = {
+
+        listItems.push({
           id: op.id,
-          label: [op.value],
+          label: [`<strong>${optionGroup.groupName}</strong> - ${op.value}`, op.subValue] || ' ',
+          icon: this.listViewConfig?.rowStartIcon,
+          actionIcon: this.listViewConfig?.rowAction?.icon,
           disabled: op.disabled,
-        };
-        // set row strong tag if any
-        if (op.strongParent) {
-          option.label = [`<strong>${optionGroup.groupName}</strong> - ${op.value}`];
-        }
-        // set sub value in any
-        if (op.subValue) {
-          option.label = [...option.label, op.subValue];
-          // set empty ele to support table view
-        } else if (this.listViewConfig.rowTableView) {
-          option.label = [...option.label, ''];
-        }
-        // set row start icon if any
-        if (this.listViewConfig?.rowStartIcon) {
-          option.icon = this.listViewConfig.rowStartIcon;
-        }
-        // set row action icon if any
-        if (this.listViewConfig?.rowAction) {
-          option.actionIcon = this.listViewConfig?.rowAction?.icon;
-        }
-        // set row menu icon if any
-        if (this.listViewConfig.rowAction?.menu) {
-          option.menu = this.listViewConfig?.rowAction?.menu.map(menu => ({
+          menu: this.listViewConfig?.rowAction?.menu?.map(menu => ({
             label: menu.label,
             action: () => {
               this.emitMenuAction(menu.label, op);
             },
-          }));
-        }
-        listItems.push(option);
+          })),
+        });
       }
     }));
+
+    // options.forEach(optionGroup => optionGroup.options.forEach(op => {
+    //
+    //   if (op.selected) {
+    //     const option: ListRow = {
+    //       id: op.id,
+    //       label: [op.value],
+    //       disabled: op.disabled,
+    //     };
+    //
+    //     // set row strong tag if any
+    //     if (op.strongParent) {
+    //       option.label = [`<strong>${optionGroup.groupName}</strong> - ${op.value}`];
+    //     }
+    //     // set sub value in any
+    //     if (op.subValue) {
+    //       option.label = [...option.label, op.subValue];
+    //       // set empty ele to support table view
+    //     } else if (this.listViewConfig.rowTableView) {
+    //       option.label = [...option.label, ''];
+    //     }
+    //     // set row start icon if any
+    //     if (this.listViewConfig?.rowStartIcon) {
+    //       option.icon = this.listViewConfig.rowStartIcon;
+    //     }
+    //     // set row action icon if any
+    //     if (this.listViewConfig?.rowAction) {
+    //       option.actionIcon = this.listViewConfig?.rowAction?.icon;
+    //     }
+    //     // set row menu icon if any
+    //     if (this.listViewConfig.rowAction?.menu) {
+    //       option.menu = this.listViewConfig?.rowAction?.menu.map(menu => ({
+    //         label: menu.label,
+    //         action: () => {
+    //           this.emitMenuAction(menu.label, op);
+    //         },
+    //       }));
+    //     }
+    //     listItems.push(option);
+    //   }
+    // }));
 
     this.selectedListOptions = listItems;
     return this.selectedListOptions;
