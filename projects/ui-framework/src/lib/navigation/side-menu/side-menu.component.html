@@ -22,8 +22,7 @@
         'has-menu': option.actions?.length
       }"
       [attr.tabindex]="!option.disabled ? 0 : null"
-      [attr.role]="!option.disabled ? 'button' : null"
-      [attr.data-icon-before-color]="option.id === selectedId && !option.disabled ? iconColor.dark : iconColor.normal">
+      [attr.role]="!option.disabled ? 'button' : null">
 
     <ng-container *ngIf="iconTemplate; else icon">
       <ng-container
@@ -44,6 +43,7 @@
         [matTooltip]="option.iconTooltip"
         [matTooltipClass]="option.iconTooltipClass"
         [matTooltipPosition]="option.iconTooltipPosition || tooltipPosition.above"
+        [attr.data-icon-before-color]="option.id === selectedId && !option.disabled ? iconColor.dark : iconColor.normal"
       ></div>
     </ng-template>
 
