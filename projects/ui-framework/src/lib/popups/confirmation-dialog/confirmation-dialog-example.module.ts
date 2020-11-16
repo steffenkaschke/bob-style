@@ -14,6 +14,9 @@ import { ConfirmationDialogConfig } from './confirmation-dialog.interface';
     <b-button (clicked)="openDialog()" style="margin-right: 10px;"
       >Delete</b-button
     >
+    <b-button (clicked)="openDeleteConfirmationDialog()" style="margin-right: 10px;"
+    >Confirm And Delete</b-button
+    >
   `
 })
 export class ConfirmationDialogExampleComponent {
@@ -39,6 +42,34 @@ export class ConfirmationDialogExampleComponent {
     const dialogRef: MatDialogRef<
       ConfirmationDialogComponent
     > = this.confirmationDialogService.openDialog(dialogConfig);
+  }
+
+  openDeleteConfirmationDialog(): void {
+    const dialogConfig: ConfirmationDialogConfig = {
+      title: 'Are you sure?',
+      message:
+        'Deleting the data cannot be undone, please make sure you have back up to sensitive data',
+      buttonConfig: {
+        ok: {
+          label: 'ok',
+          action: () => true
+        },
+        cancel: {
+          label: 'Cancel'
+        }
+      },
+      confirmationData: {
+        label: 'Type the word DELETE',
+        placeholder: 'Type the word DELETE',
+        confirmationText: 'DELETE',
+        errorMessage: 'You need to type DELETE'
+      },
+      class: 'confirmation-example-dialog'
+    };
+
+    const dialogRef: MatDialogRef<
+      ConfirmationDialogComponent
+      > = this.confirmationDialogService.openDeleteConfirmationDialog(dialogConfig);
   }
 }
 
