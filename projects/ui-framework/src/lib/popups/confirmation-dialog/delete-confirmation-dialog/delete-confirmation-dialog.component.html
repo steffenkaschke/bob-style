@@ -1,0 +1,15 @@
+<b-dialog [dialogTitle]="config.title"
+          [dialogButtons]="config.buttonConfig">
+  <div b-dialog-content>
+    <p [innerHTML]="config.message"></p>
+
+    <b-input #bInput
+      [label]="config.confirmationData.label"
+      [placeholder]="config.confirmationData.placeholder"
+      [required]="true"
+      [hintMessage]="config.confirmationData.hintMessage"
+      [errorMessage]="errMessage"
+      (inputEvents)="onInputEvent($event)">
+    </b-input>
+  </div>
+</b-dialog>

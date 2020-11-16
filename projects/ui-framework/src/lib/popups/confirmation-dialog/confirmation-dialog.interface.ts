@@ -5,6 +5,7 @@ export interface ConfirmationDialogConfig {
   title: string;
   class: string;
   message?: string;
+  confirmationData?: any;
 }
 
 export interface ConfirmationDialogButtons {
