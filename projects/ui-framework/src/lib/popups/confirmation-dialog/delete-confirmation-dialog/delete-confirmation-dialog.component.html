@@ -1,7 +1,7 @@
 <b-dialog [dialogTitle]="config.title"
           [dialogButtons]="config.buttonConfig">
   <div b-dialog-content>
-    <p [innerHTML]="config.message"></p>
+    <p *ngIf="config.message" [innerHTML]="config.message"></p>
 
     <b-input #bInput
       [label]="config.confirmationData.label"
