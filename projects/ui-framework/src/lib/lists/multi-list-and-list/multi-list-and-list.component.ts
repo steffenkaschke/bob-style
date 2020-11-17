@@ -29,11 +29,6 @@ import { MULTI_LIST_LIST_ACTIONS_DEF } from '../../lists/list-footer/list-footer
 import { MultiListComponent } from '../../lists/multi-list/multi-list.component';
 import { BasicListComponent, BasicListItem, BasicListType, ButtonType, IconColor, Icons, MenuItem } from 'bob-style';
 
-export enum RowActionType {
-  menu = 'menu',
-  icon = 'icon'
-}
-
 export interface ListViewConfig {
   rowStartIcon?: Icons;
   rowAction?: {

@@ -9,7 +9,7 @@ import { mockHobbies, mockNames, mockAvatar } from '../../mock.const';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { Icons } from '../../icons/icons.enum';
 import { BasicListItem } from 'bob-style';
-import { ListViewConfig, RowActionType } from './multi-list-and-list.component';
+import { ListViewConfig } from './multi-list-and-list.component';
 
 const maxOpts = 10;
 
