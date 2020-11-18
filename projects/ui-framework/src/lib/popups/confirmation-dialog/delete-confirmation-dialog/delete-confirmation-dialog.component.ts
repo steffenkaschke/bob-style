@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ButtonSize, ButtonType, ConfirmationDialogConfig, Icons, InputComponent, InputEvent } from 'bob-style';
+import { ConfirmationDialogConfig, InputComponent } from 'bob-style';
 
 @Component({
   selector: 'b-delete-confirmation-dialog',
@@ -15,22 +15,10 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy {
 
   @ViewChild('bInput') bInput: InputComponent;
 
-  readonly buttonSize = ButtonSize;
-  readonly buttonType = ButtonType;
-  readonly icons = Icons;
-
   errMessage = '';
 
   ngOnInit() {
-    const okCb = this.config.buttonConfig.ok.action;
-    this.config.buttonConfig.ok.action = () => {
-      if (this.isValid()) {
-        return okCb();
-      }
-
-      this.errMessage = this.config.confirmationData.errorMessage;
-      return Promise.resolve(false);
-    };
+    this.config.buttonConfig.ok.disabled = true;
   }
 
   ngOnDestroy(): void {
@@ -38,14 +26,16 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy {
   }
 
   isValid(): boolean {
-    return this.bInput.value.length > 0 && this.errMessage.length === 0;
+    return this.bInput.value === this.config.confirmationData.confirmationText;
   }
 
-  onInputEvent(input: InputEvent) {
-    if (this.config.confirmationData.confirmationText === input.value) {
+  onInputEvent() {
+    if (this.isValid()) {
+      this.config.buttonConfig.ok.disabled = false;
       return this.errMessage = '';
     }
 
     this.errMessage = this.config.confirmationData.errorMessage;
+    this.config.buttonConfig.ok.disabled = true;
   }
 }

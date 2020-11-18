@@ -15,7 +15,7 @@ export interface ConfirmationDialogButtons {
 
 export interface ConfirmationData {
   confirmationText: string;
-  label?: string;
+  label: string;
   placeholder?: string;
   hintMessage?: string;
   errorMessage?: string;
