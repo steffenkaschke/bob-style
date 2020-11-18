@@ -32,7 +32,6 @@ import { BasicListType } from '../../lists/basic-list/basic-list.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { Icons } from '../../icons/icons.enum';
 import { MenuItem } from '../../navigation/menu/menu.interface';
-
 import { BasicListComponent } from '../../lists/basic-list/basic-list.component';
 
 export interface ListViewConfig {
