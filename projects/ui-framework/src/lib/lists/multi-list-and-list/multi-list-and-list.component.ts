@@ -27,7 +27,12 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { SelectMode } from '../../lists/list.enum';
 import { MULTI_LIST_LIST_ACTIONS_DEF } from '../../lists/list-footer/list-footer.const';
 import { MultiListComponent } from '../../lists/multi-list/multi-list.component';
-import { BasicListComponent, BasicListItem, BasicListType, ButtonType, Icons, MenuItem } from 'bob-style';
+import { BasicListItem } from '../../lists/basic-list/basic-list.interface';
+import { BasicListType } from '../../lists/basic-list/basic-list.enum';
+import { ButtonType } from '../../buttons/buttons.enum';
+import { Icons } from '../../icons/icons.enum';
+import { MenuItem } from '../../navigation/menu/menu.interface';
+import { BasicListComponent } from '../../lists/basic-list/basic-list.component';
 
 export interface ListViewConfig {
   rowStartIcon?: Icons;
