@@ -14,7 +14,7 @@ import {
 import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog.component';
 import { InputComponent } from 'bob-style';
 
-fdescribe('DeleteConfirmationDialogComponent', () => {
+describe('DeleteConfirmationDialogComponent', () => {
   let component: DeleteConfirmationDialogComponent;
   let fixture: ComponentFixture<DeleteConfirmationDialogComponent>;
   let spyMatDialogRef: SpyObj<MatDialogRef<any>>;
