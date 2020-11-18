@@ -8,7 +8,7 @@ import {
 import { mockHobbies, mockNames, mockAvatar } from '../../mock.const';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { Icons } from '../../icons/icons.enum';
-import { BasicListItem } from 'bob-style';
+import { BasicListItem } from '../../lists/basic-list/basic-list.interface';
 import { ListViewConfig } from './multi-list-and-list.component';
 
 const maxOpts = 10;
