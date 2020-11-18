@@ -1,18 +1,13 @@
 import { storiesOf } from '@storybook/angular';
-import {
-  object,
-  withKnobs,
-  text,
-  boolean,
-} from '@storybook/addon-knobs/angular';
+import { boolean, object, text, withKnobs } from '@storybook/addon-knobs/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MultiListAndListPepopleOptionsMock,
-  MultiListAndListOptionsMock,
-  MultiListAndListTimeOffOptionsMock,
   listViewConfigMock,
+  MultiListAndListOptionsMock,
+  MultiListAndListPepopleOptionsMock,
+  MultiListAndListTimeOffOptionsMock,
 } from './multi-list-and-list.mock';
 import { action } from '@storybook/addon-actions';
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
@@ -23,16 +18,11 @@ import { number } from '@storybook/addon-knobs';
 import listInterfaceDoc from '../../lists/list.interface.md';
 // @ts-ignore: md file and not a module
 import listSelectsPropsDoc from '../../lists/lists-selects.properties.md';
-import { CommonModule } from '@angular/common';
 import { MultiListModule } from '../multi-list/multi-list.module';
 import { EmptyStateModule } from '../../indicators/empty-state/empty-state.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { MultiListAndListComponent } from './multi-list-and-list.component';
 import { MultiListAndListModule } from './multi-list-and-list.module';
-//
-// const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
-//   withKnobs
-// );
+
 
 const story2 = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs,
@@ -82,11 +72,12 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [listLabel] | string | label text for the Multi List component | &nbsp;
+  [listViewConfig] | ListViewConfig | init state config | { rowStartIcon: Icons.doc, rowAction: { icon: Icons.delete,} |
   [chipsLabel] | string | label text for the Chips List component | &nbsp;
   [emptyState] | EmptyStateConfig | config for the EmptyStateComponent to\
    be displayed when no options are selected | &nbsp;
   (selectChange) | EventEmitter<wbr>&lt;ListChange&gt; | emits on list change | &nbsp;
-<!--  (EmitMenuAction) | EventEmitter<wbr>&lt;onSelectChange&gt; | emits on list change | &nbsp;-->
+  (EmitMenuAction) | EventEmitter<wbr>&lt;any&gt; | emits on menu click | &nbsp;
 
   ${listSelectsPropsDoc}
 
@@ -113,7 +104,7 @@ const storyTemplate = `
 const toAdd = () => ({
   template: storyTemplate,
   props: {
-    listLabel: text('chipsLabel', 'Select fields', 'Props'),
+    listLabel: text('listLabel', 'Select fields', 'Props'),
     selectedLabel: text('selectedLabel', 'Selected fields', 'Props'),
     listViewConfig: object('listViewConfig', listViewConfig, 'Props'),
     showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
@@ -151,7 +142,5 @@ const toAdd = () => ({
     ],
   },
 });
-
-// story.add('Multi List And List', toAdd, { notes: { markdown: note } });
 
 story2.add('Multi List And List', toAdd, { notes: { markdown: note } });

@@ -27,7 +27,7 @@ import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { SelectMode } from '../../lists/list.enum';
 import { MULTI_LIST_LIST_ACTIONS_DEF } from '../../lists/list-footer/list-footer.const';
 import { MultiListComponent } from '../../lists/multi-list/multi-list.component';
-import { BasicListComponent, BasicListItem, BasicListType, ButtonType, IconColor, Icons, MenuItem } from 'bob-style';
+import { BasicListComponent, BasicListItem, BasicListType, ButtonType, Icons, MenuItem } from 'bob-style';
 
 export interface ListViewConfig {
   rowStartIcon?: Icons;
@@ -47,7 +47,7 @@ export interface ListRow extends BasicListItem {
 @Component({
   selector: 'b-multi-list-and-list',
   templateUrl: './multi-list-and-list.component.html',
-  styleUrls: ['./multi-list-and-list.component.scss'],
+  styleUrls: ['../../chips/multi-list-and-chips/multi-list-and-chips.component.scss', './multi-list-and-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiListAndListComponent implements OnChanges, OnInit {
@@ -67,12 +67,11 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
 
   @Input() listLabel: string;
   @Input() selectedLabel: string;
+
   @Input() showSingleGroupHeader = false;
   @Input() startWithGroupsCollapsed = true;
   @Input() listActions: ListFooterActions;
-  // use this group
-  // @Input() mode: SelectMode = SelectMode.checkGroups;
-  // for testing
+
   @Input() mode: SelectMode = SelectMode.classic;
   @Input() public showActionOnHover = false;
   @Input() public maxLines: number = null;
@@ -85,9 +84,9 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
 
   @Input() options: SelectGroupOption[] = [];
   @Input() optionsDefault: SelectGroupOption[];
+
   @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
   @Output() menuAction: EventEmitter<any> = new EventEmitter<any>();
-  @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   public type: BasicListType = BasicListType.primary;
   public listOptions: SelectGroupOption[] = [];
@@ -137,7 +136,7 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
 
   private optionsToList(options: SelectGroupOption[]): ListRow[] {
     const listItems: ListRow[] = [];
-    options.forEach(optionGroup => optionGroup.options.map(op => {
+    options.forEach(optionGroup => optionGroup.options.forEach(op => {
       if (op.selected) {
         listItems.push({
           id: op.id,
