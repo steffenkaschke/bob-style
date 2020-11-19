@@ -3,7 +3,7 @@
   <div b-dialog-content>
     <p class="message" *ngIf="config.message" [innerHTML]="config.message"></p>
 
-    <b-input #bInput
+    <b-input
       [label]="config.confirmationData.label"
       [placeholder]="config.confirmationData.placeholder"
       [required]="true"

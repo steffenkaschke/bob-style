@@ -13,7 +13,7 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public config: ConfirmationDialogConfig
   ) {}
 
-  @ViewChild('bInput') bInput: InputComponent;
+  @ViewChild(InputComponent) bInput: InputComponent;
 
   errMessage = '';
 
