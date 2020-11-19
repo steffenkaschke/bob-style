@@ -23,13 +23,24 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy, Aft
   valid$: Observable<boolean>;
   buttonConfig$: Observable<ConfirmationDialogButtons>;
 
+  defaultLabel: string;
+  defaultConfirmationText: string;
+
   private validitySubject: Subject<boolean> = new Subject();
   private sub: Subscription;
 
   ngOnInit() {
-    this.config.buttonConfig.ok.disabled = true;
     this.valid$ = this.validitySubject.asObservable();
     this.setButtonsConfig();
+
+    this.defaultConfirmationText = this.config.confirmationData.confirmationText ?
+      this.config.confirmationData.confirmationText :
+      this.translateService.instant('common.delete');
+    this.defaultLabel = this.translateService.instant('bob-style.delete-confirmation.default-label', {
+      confirmationText: this.config.confirmationData.label ?
+        this.config.confirmationData.label :
+        this.defaultConfirmationText
+    });
   }
 
   ngOnDestroy(): void {
@@ -51,7 +62,7 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy, Aft
         (event) =>
           event.value ===
           (this.config.confirmationData?.confirmationText ||
-            this.translateService.instant('some.default.translation'))
+            this.defaultConfirmationText)
       ),
       distinctUntilChanged()
     ).subscribe(this.validitySubject);

@@ -4,7 +4,7 @@
     <p class="message" [innerHTML]="config.message || ('default.message' | translate)"></p>
 
     <b-input
-      [label]="config.confirmationData.label || ('default.label' | translate)"
+      [label]="config.confirmationData.label || defaultLabel"
       [placeholder]="config.confirmationData.placeholder || ('default.placeholder' | translate)"
       [hintMessage]="config.confirmationData.hintMessage || ('default.hint' | translate)"
       [errorMessage]="(valid$ | async) === false && (config.confirmationData.errorMessage || ('default.error' | translate))">

@@ -49,20 +49,8 @@ export class ConfirmationDialogExampleComponent {
       title: 'Are you sure?',
       message:
         'Deleting the data cannot be undone, please make sure you have back up to sensitive data',
-      buttonConfig: {
-        ok: {
-          label: 'ok',
-          action: () => true
-        },
-        cancel: {
-          label: 'Cancel'
-        }
-      },
+      buttonConfig: {},
       confirmationData: {
-        label: 'Type the word DELETE',
-        placeholder: 'Type the word DELETE',
-        confirmationText: 'DELETE',
-        errorMessage: 'You need to type DELETE',
         hintMessage: ' '
       },
       class: 'confirmation-example-dialog'

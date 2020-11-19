@@ -9,13 +9,13 @@ export interface ConfirmationDialogConfig {
 }
 
 export interface ConfirmationDialogButtons {
-  ok: DialogButton;
+  ok?: DialogButton;
   cancel?: DialogButton;
 }
 
 export interface ConfirmationData {
-  confirmationText: string;
-  label: string;
+  confirmationText?: string;
+  label?: string;
   placeholder?: string;
   hintMessage?: string;
   errorMessage?: string;
