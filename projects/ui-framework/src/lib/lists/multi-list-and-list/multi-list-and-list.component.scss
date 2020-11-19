@@ -10,6 +10,10 @@ b-basic-list {
   border-radius: $border-radius;
 }
 
+:host ::ng-deep b-empty-state {
+  border: none !important;
+}
+
 :host ::ng-deep b-basic-list > table {
 
   tbody {
