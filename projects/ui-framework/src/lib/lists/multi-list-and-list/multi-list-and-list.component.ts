@@ -180,7 +180,7 @@ export class MultiListAndListComponent implements OnChanges, OnInit {
   }
 
   private emitChange(): void {
-    this.selectChange.emit(new ListChange(this.listOptions));
+    this.selectChange.emit(new ListChange(this.options));
   }
 
   private emitMenuAction(action: string, item: SelectOption) {
