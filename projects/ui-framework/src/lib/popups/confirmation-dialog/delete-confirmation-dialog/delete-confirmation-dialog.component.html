@@ -1,15 +1,13 @@
-<b-dialog [dialogTitle]="config.title"
-          [dialogButtons]="config.buttonConfig">
+<b-dialog [dialogTitle]="config.title || ('default.title' | translate)"
+          [dialogButtons]="buttonConfig$ | async">
   <div b-dialog-content>
-    <p class="message" *ngIf="config.message" [innerHTML]="config.message"></p>
+    <p class="message" [innerHTML]="config.message || ('default.message' | translate)"></p>
 
     <b-input
-      [label]="config.confirmationData.label"
-      [placeholder]="config.confirmationData.placeholder"
-      [required]="true"
-      [hintMessage]="config.confirmationData.hintMessage"
-      [errorMessage]="errMessage"
-      (inputEvents)="onInputEvent()">
+      [label]="config.confirmationData.label || ('default.label' | translate)"
+      [placeholder]="config.confirmationData.placeholder || ('default.placeholder' | translate)"
+      [hintMessage]="config.confirmationData.hintMessage || ('default.hint' | translate)"
+      [errorMessage]="(valid$ | async) === false && (config.confirmationData.errorMessage || ('default.error' | translate))">
     </b-input>
   </div>
 </b-dialog>

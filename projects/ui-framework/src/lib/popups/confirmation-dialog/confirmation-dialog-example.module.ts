@@ -62,7 +62,8 @@ export class ConfirmationDialogExampleComponent {
         label: 'Type the word DELETE',
         placeholder: 'Type the word DELETE',
         confirmationText: 'DELETE',
-        errorMessage: 'You need to type DELETE'
+        errorMessage: 'You need to type DELETE',
+        hintMessage: ' '
       },
       class: 'confirmation-example-dialog'
     };
