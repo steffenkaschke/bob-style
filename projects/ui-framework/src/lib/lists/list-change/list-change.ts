@@ -21,8 +21,10 @@ export class ListChange {
     return this.selectedIDs;
   }
 
-  getSelectedGroupOptions(): SelectGroupOption[] {
-    return this.selectGroupOptions.reduce(
+  getSelectedGroupOptions(
+    options: SelectGroupOption[] = this.selectGroupOptions
+  ): SelectGroupOption[] {
+    return options.reduce(
       (sgo: SelectGroupOption[], group: SelectGroupOption) => {
         const groupSelectedOptions: SelectOption[] = [],
           groupSelectedIDs: itemID[] = [],
@@ -52,15 +54,19 @@ export class ListChange {
     );
   }
 
-  getDisplayValue(): string {
-    return arrayFlatten(this.selectGroupOptions.map((group) => group.options))
+  getDisplayValue(
+    options: SelectGroupOption[] = this.selectGroupOptions
+  ): string {
+    return arrayFlatten<SelectOption>(options.map((group) => group.options))
       .filter((option) => option.selected)
       .map((option) => option.value)
       .join(', ');
   }
 
   private getSelIds(): itemID[] {
-    return arrayFlatten(this.selectGroupOptions.map((group) => group.options))
+    return arrayFlatten<SelectOption>(
+      this.selectGroupOptions.map((group) => group.options)
+    )
       .filter((option) => option.selected)
       .map((option) => option.id);
   }

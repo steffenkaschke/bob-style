@@ -13,7 +13,7 @@ import {
   SimpleChanges,
   OnChanges,
   HostBinding,
-  Injectable,
+  Directive,
 } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription } from 'rxjs';
@@ -24,6 +24,7 @@ import {
   SelectGroupOption,
   ListFooterActionsState,
   UpdateListsConfig,
+  SelectOption,
   itemID,
 } from './list.interface';
 import { cloneDeep, isEqual } from 'lodash';
@@ -59,7 +60,7 @@ import { FormElementSize } from '../form-elements/form-elements.enum';
 import { AvatarSize } from '../avatar/avatar/avatar.enum';
 import { FORM_ELEMENT_HEIGHT } from '../form-elements/form-elements.const';
 
-@Injectable()
+@Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseListElement
   implements OnChanges, OnInit, OnDestroy, AfterViewInit {
@@ -98,7 +99,7 @@ export abstract class BaseListElement
   @Input() min: number;
   @Input() max: number;
 
-  @Input('value') set setValue(value: itemID[]) {
+  @Input() set value(value: itemID[]) {
     if (
       isArray(value) &&
       isNotEmptyArray(this.options) &&
@@ -119,6 +120,9 @@ export abstract class BaseListElement
         this.selectedIDs
       );
     }
+  }
+  get value() {
+    return this.selectedIDs;
   }
 
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
@@ -191,10 +195,6 @@ export abstract class BaseListElement
       this.options = this.options.filter((group: SelectGroupOption) =>
         isNotEmptyArray(group.options)
       );
-      this.options.forEach((group, index) => {
-        group.groupIndex = index;
-        group.key = this.modelSrvc.getGroupKey(group);
-      });
     }
 
     if (hasChanges(changes, ['startWithGroupsCollapsed', 'options'])) {
@@ -205,7 +205,7 @@ export abstract class BaseListElement
 
     if (hasChanges(changes, ['options', 'showSingleGroupHeader'])) {
       this.selectedIDs = this.getSelectedIDs(this.options);
-      this.filteredOptions = cloneDeep(this.options) || [];
+      this.filteredOptions = this.options || [];
 
       this.shouldDisplaySearch =
         this.options &&
@@ -566,6 +566,7 @@ export abstract class BaseListElement
         this.listHeaders,
         {
           noGroupHeaders: this.noGroupHeaders,
+          size: this.size,
         }
       );
       this.listHeight = this.getListHeight();

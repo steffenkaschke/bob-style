@@ -21,6 +21,10 @@ import {
 } from '../../services/utils/functional-utils';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { FORM_ELEMENT_HEIGHT } from '../../form-elements/form-elements.const';
+import { Icon } from '../../icons/icon.interface';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { Avatar } from '../../avatar/avatar/avatar.interface';
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 
 interface GetHeadersModelConfig {
   collapseHeaders?: boolean;
@@ -31,6 +35,7 @@ interface GetHeadersModelConfig {
 
 interface GetOptionsModelConfig {
   noGroupHeaders?: boolean;
+  size?: FormElementSize;
 }
 
 @Injectable({
@@ -49,7 +54,7 @@ export class ListModelService {
     }: GetHeadersModelConfig = {}
   ): ListHeader[] {
     return options.map(
-      (group): ListHeader => {
+      (group, index): ListHeader => {
         const selectedCount = this.countOptions(group.options, 'selected');
 
         const groupIsOption =
@@ -57,9 +62,11 @@ export class ListModelService {
           group.options.length === 1 &&
           group.options[0].value === group.groupName;
 
+        group.groupIndex = index;
+        group.key = this.getGroupKey(group);
+
         return {
           ...objectRemoveKey(group, 'options'),
-          key: this.getGroupKey(group),
           isCollapsed: collapseHeaders || groupIsOption,
           placeHolderSize:
             group.options.length *
@@ -76,10 +83,38 @@ export class ListModelService {
     );
   }
 
+  private mapSelectOptionToListOption({
+    group,
+    option,
+    groupIndex,
+    size,
+  }: {
+    group: SelectGroupOption;
+    option: SelectOption;
+    groupIndex: number;
+    size: FormElementSize;
+  }): ListOption {
+    const avatar = this.getOptionAvatar(option, size);
+    const opt: ListOption = {
+      ...option,
+      groupName: group.groupName,
+      key: this.getGroupKey(group),
+      groupIndex: isNumber(group.groupIndex) ? group.groupIndex : groupIndex,
+      isPlaceHolder: false,
+      ...(avatar && { avatar }),
+    };
+
+    if (avatar) {
+      option.avatar = avatar;
+    }
+
+    return opt;
+  }
+
   getOptionsModel(
     options: SelectGroupOption[],
     listHeaders: ListHeader[],
-    { noGroupHeaders }: GetOptionsModelConfig
+    { noGroupHeaders, size = FormElementSize.regular }: GetOptionsModelConfig
   ): ListOption[] {
     const groupOptions = options.map(
       (group: SelectGroupOption, groupIndex: number) => {
@@ -91,15 +126,14 @@ export class ListModelService {
         let virtualOptions: Partial<ListOption>[];
 
         if (noGroupHeaders) {
-          virtualOptions = group.options.map((option) => ({
-            ...option,
-            groupName: group.groupName,
-            key: this.getGroupKey(group),
-            groupIndex: isNumber(group.groupIndex)
-              ? group.groupIndex
-              : groupIndex,
-            isPlaceHolder: false,
-          }));
+          virtualOptions = group.options.map((option) => {
+            return this.mapSelectOptionToListOption({
+              group,
+              option,
+              groupIndex,
+              size,
+            });
+          });
         } else if (
           listHeaders[groupIndex].isCollapsed ||
           listHeaders[groupIndex].groupIsOption
@@ -108,15 +142,14 @@ export class ListModelService {
         } else {
           virtualOptions = [].concat(
             placeholder,
-            group.options.map((option) => ({
-              ...option,
-              groupName: group.groupName,
-              key: this.getGroupKey(group),
-              groupIndex: isNumber(group.groupIndex)
-                ? group.groupIndex
-                : groupIndex,
-              isPlaceHolder: false,
-            }))
+            group.options.map((option) => {
+              return this.mapSelectOptionToListOption({
+                group,
+                option,
+                groupIndex,
+                size,
+              });
+            })
           );
         }
         return virtualOptions;
@@ -257,14 +290,63 @@ export class ListModelService {
   }
 
   totalOptionsCount(options: SelectGroupOption[]): number {
-    return arrayFlatten(options.map((group) => group.options)).length;
+    return arrayFlatten<SelectOption>(options.map((group) => group.options))
+      .length;
   }
 
   getGroupKey(group: SelectGroupOption | ListHeader): string {
-    return group.key
-      ? group.key + ''
-      : `${isNumber(group.groupIndex) ? group.groupIndex + '__' : ''}${
-          group.groupName
-        }`;
+    return (
+      group.key ||
+      `${isNumber(group.groupIndex) ? group.groupIndex + '__' : ''}${
+        group.groupName
+      }`
+    );
+  }
+
+  getOptionIcon(option: SelectOption, size: FormElementSize): Icon {
+    const optionIcon: Icon | Icons =
+      option?.icon || option?.prefixComponent?.attributes?.icon;
+    const iconSize =
+      size === FormElementSize.smaller ? IconSize.medium : IconSize.large;
+
+    return !optionIcon
+      ? undefined
+      : (optionIcon as Icon).icon
+      ? {
+          ...(optionIcon as Icon),
+          size: iconSize,
+          color: IconColor.dark,
+        }
+      : {
+          size: iconSize,
+          color: IconColor.dark,
+          icon: optionIcon as Icons,
+        };
+  }
+
+  getOptionAvatar(option: SelectOption, size: FormElementSize): Avatar {
+    const prefixComponent = option?.prefixComponent?.attributes;
+    let optionAvatar: Avatar =
+      option?.avatar ||
+      ((prefixComponent?.imageSource || prefixComponent?.icon) &&
+        prefixComponent);
+
+    optionAvatar = optionAvatar && {
+      ...optionAvatar,
+      size:
+        size === FormElementSize.smaller ? AvatarSize.micro : AvatarSize.mini,
+      icon: this.getOptionIcon(option, size),
+      border: size !== FormElementSize.smaller,
+      backgroundColor: 'transparent',
+    };
+
+    if (optionAvatar?.icon) {
+      optionAvatar.imageSource = null;
+    }
+    if (optionAvatar?.imageSource && !optionAvatar.icon) {
+      optionAvatar.icon = null;
+    }
+
+    return optionAvatar;
   }
 }

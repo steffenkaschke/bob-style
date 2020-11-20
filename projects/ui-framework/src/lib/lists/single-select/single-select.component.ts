@@ -99,17 +99,13 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
     const option: SelectOption =
       this.value &&
       this.options &&
-      arrayFlatten(
+      arrayFlatten<SelectOption>(
         this.options.map((group) => group.options)
-      ).find((opt: SelectOption) => this.value.includes(opt.id));
+      ).find((opt) => this.value.includes(opt.id));
 
-    this.valueAvatar =
-      option?.prefixComponent?.attributes.imageSource ||
-      option?.prefixComponent?.attributes.icon
-        ? option.prefixComponent.attributes
-        : null;
+    this.valueAvatar = this.modelSrvc.getOptionAvatar(option, this.size);
 
-    return option && option.value;
+    return option?.value;
   }
 
   protected emitChange(

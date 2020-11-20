@@ -24,25 +24,20 @@
 
   <div *ngIf="valueAvatar"
        class="bfe-prefix">
-    <b-avatar-image [avatar]="valueAvatar"
-                    [border]="size !== formElementSize.smaller"
-                    [backgroundColor]="'transparent'"
-                    [icon]="valueAvatar.icon"
-                    [imageSource]="valueAvatar.imageSource"
-                    [size]="size === formElementSize.smaller ? avatarSize.micro : avatarSize.mini"></b-avatar-image>
+    <b-avatar-image [avatar]="valueAvatar"></b-avatar-image>
   </div>
 
-  <span #input
-        class="bfe-input trigger-input"
-        tabindex="0"
-        [b-truncate-tooltip]="1"
-        [expectChanges]="true"
-        [trustCssVars]="true"
-        [type]="tooltipType"
-        [tooltipClass]="tooltipClass"
-        [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ? label : placeholder) : null"
-        [text]="displayValue"
-        (focus)="openPanel()"></span>
+  <div #input
+       class="bfe-input trigger-input capitalize"
+       tabindex="0"
+       [b-truncate-tooltip]="1"
+       [expectChanges]="true"
+       [trustCssVars]="true"
+       [type]="tooltipType"
+       [tooltipClass]="tooltipClass"
+       [attr.data-placeholder]="!displayValue ? (hideLabelOnFocus ? label : placeholder) : null"
+       [text]="displayValue"
+       (focus)="openPanel()"></div>
 
   <div class="bfe-suffix">
     <span class="select-chevron b-icon-medium"
