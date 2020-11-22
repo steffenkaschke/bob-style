@@ -36,7 +36,7 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy, Aft
     this.defaultConfirmationText = this.config.confirmationData.confirmationText ?
       this.config.confirmationData.confirmationText :
       this.translateService.instant('common.delete');
-    this.defaultLabel = this.translateService.instant('bob-style.delete-confirmation.default-label', {
+    this.defaultLabel = this.translateService.instant('bob-style.delete-confirmation.default.label', {
       confirmationText: this.config.confirmationData.label ?
         this.config.confirmationData.label :
         this.defaultConfirmationText
