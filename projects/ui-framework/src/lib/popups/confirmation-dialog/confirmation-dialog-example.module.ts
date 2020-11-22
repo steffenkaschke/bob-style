@@ -46,13 +46,7 @@ export class ConfirmationDialogExampleComponent {
 
   openDeleteConfirmationDialog(): void {
     const dialogConfig: ConfirmationDialogConfig = {
-      title: 'Are you sure?',
-      message:
-        'Deleting the data cannot be undone, please make sure you have back up to sensitive data',
       buttonConfig: {},
-      confirmationData: {
-        hintMessage: ' '
-      },
       class: 'confirmation-example-dialog'
     };
 
