@@ -15,7 +15,7 @@ import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog.
 import { ButtonType, InputComponent } from 'bob-style';
 import { mockTranslatePipe, TranslateServiceProvideMock } from '../../../tests/services.stub.spec';
 
-fdescribe('DeleteConfirmationDialogComponent', () => {
+describe('DeleteConfirmationDialogComponent', () => {
   let component: DeleteConfirmationDialogComponent;
   let fixture: ComponentFixture<DeleteConfirmationDialogComponent>;
   let spyMatDialogRef: SpyObj<MatDialogRef<any>>;
@@ -75,13 +75,16 @@ fdescribe('DeleteConfirmationDialogComponent', () => {
     });
     it('should set dialog buttonConfig', () => {
       const dialog = fixture.debugElement.query(By.css('b-dialog'));
-      expect(dialog.componentInstance.dialogButtons).toEqual({
-        ...config.buttonConfig,
-        ok: {
-          valid: false,
+      const bConfig = {
+        cancel: {
+          label: 'translated common.cancel'
+        },
+        ok: Object.assign({}, config.buttonConfig.ok, {
+          disabled: true,
           type: ButtonType.negative
-        }
-      });
+        })
+      };
+      expect(dialog.componentInstance.dialogButtons).toEqual(bConfig);
     });
     it('should render message', () => {
       const message = fixture.debugElement.query(By.css('.message'));
