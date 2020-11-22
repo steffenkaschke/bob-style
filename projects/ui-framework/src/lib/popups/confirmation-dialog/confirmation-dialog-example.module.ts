@@ -44,14 +44,9 @@ export class ConfirmationDialogExampleComponent {
   }
 
   openDeleteConfirmationDialog(): void {
-    const dialogConfig: ConfirmationDialogConfig = {
-      buttonConfig: {},
-      class: 'confirmation-example-dialog'
-    };
-
     const dialogRef: MatDialogRef<
       ConfirmationDialogComponent
-      > = this.confirmationDialogService.openDeleteConfirmationDialog(dialogConfig);
+      > = this.confirmationDialogService.openDeleteConfirmationDialog();
   }
 }
 

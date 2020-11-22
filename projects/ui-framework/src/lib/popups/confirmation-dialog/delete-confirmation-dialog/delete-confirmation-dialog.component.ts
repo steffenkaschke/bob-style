@@ -51,12 +51,12 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy {
           ...this.config?.buttonConfig,
           cancel: {
             label: this.translateService.instant('common.cancel'),
-            ...this.config?.buttonConfig.cancel,
+            ...this.config?.buttonConfig?.cancel,
           },
           ok: {
             label: this.translateService.instant('common.ok'),
             type: ButtonType.negative,
-            ...this.config?.buttonConfig.ok,
+            ...this.config?.buttonConfig?.ok,
             disabled: !valid,
           },
         };
