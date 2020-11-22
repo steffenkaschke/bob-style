@@ -2,7 +2,7 @@ import { DialogButton } from '../dialog/dialog.interface';
 
 export interface ConfirmationDialogConfig {
   buttonConfig: ConfirmationDialogButtons;
-  title: string;
+  title?: string;
   class: string;
   message?: string;
   confirmationData?: ConfirmationData;
