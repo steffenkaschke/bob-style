@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ConfirmationDialogConfig, InputComponent, InputEventType } from 'bob-style';
+import { ButtonType, ConfirmationDialogConfig, InputComponent, InputEventType } from 'bob-style';
 import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, startWith } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
@@ -74,6 +74,7 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy, Aft
             label: this.translateService.instant('common.ok'),
             ...this.config.buttonConfig.ok,
             disabled: !valid,
+            type: ButtonType.negative
           },
         };
       })

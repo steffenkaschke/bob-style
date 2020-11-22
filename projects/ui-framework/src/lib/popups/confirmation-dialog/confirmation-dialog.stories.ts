@@ -100,7 +100,7 @@ const note = `
   Name | Type | Description | Default Value
   --- | --- | ---
   confirmationText | string | text to type in input | Delete
-  label | string | input label | type '{{confirmationText}}' to confirm
+  label | string | input label | type 'Delete' to confirm
   placeholder | string | input placeholder | &nbsp;
   hintMessage | string | input hint message | &nbsp;
   errorMessage | string | input error message | Please enter the confirmation text
