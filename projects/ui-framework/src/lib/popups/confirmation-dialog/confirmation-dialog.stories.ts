@@ -67,7 +67,7 @@ const note = `
 
   #### Methods & properties
 
-  Name | Type | description
+  Name | Returns | description
   --- | ---
   openDialog | MatDialogRef&lt;ConfirmationDialogComponent&gt; |
   openDeleteConfirmationDialog | MatDialogRef&lt;DeleteConfirmationDialogComponent&gt; | will open with default ok/cancel buttons, title and message - if not provided. config object is <strong>optional.</strong>
