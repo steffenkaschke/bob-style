@@ -20,10 +20,10 @@ export class ConfirmationDialogService {
     });
   }
 
-  openDeleteConfirmationDialog(config: ConfirmationDialogConfig): MatDialogRef<any> {
+  openDeleteConfirmationDialog(config: ConfirmationDialogConfig = {}): MatDialogRef<any> {
     return this.dialogService.openDialog(DeleteConfirmationDialogComponent, {
       size: DialogSize.small,
-      panelClass: config.class,
+      panelClass: config.class || 'delete-confirm-dialog',
       data: config,
     });
   }

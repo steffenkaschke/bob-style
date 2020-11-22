@@ -69,8 +69,8 @@ const note = `
 
   Name | Type | description
   --- | ---
-  openDialog | MatDialogRef<ConfirmationDialogComponent> |
-  openDeleteConfirmationDialog | MatDialogRef<DeleteConfirmationDialogComponent> | will open with default ok/cancel buttons, title and message - if not provided
+  openDialog | MatDialogRef&lt;ConfirmationDialogComponent&gt; |
+  openDeleteConfirmationDialog | MatDialogRef&lt;DeleteConfirmationDialogComponent&gt; | will open with default ok/cancel buttons, title and message - if not provided. config object is <strong>optional.</strong>
 
   #### interface ConfirmationDialogConfig
   Name | Type | Description
@@ -79,7 +79,7 @@ const note = `
   title | string | Dialog title
   message | string | Dialog message
   class | string | Class to be added to the dialog panel
-  confirmationData | ConfirmationData | confirmation data config
+  confirmationData | ConfirmationData | confirmation data config - <strong>Optional</strong>
 
   #### interface ConfirmationDialogButtons
   Name | Type | Description

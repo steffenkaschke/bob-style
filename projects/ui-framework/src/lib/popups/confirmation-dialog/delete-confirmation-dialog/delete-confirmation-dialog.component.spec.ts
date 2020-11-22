@@ -12,9 +12,10 @@ import {
   MatDialogModule,
 } from '@angular/material/dialog';
 import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog.component';
-import { InputComponent } from 'bob-style';
+import { ButtonType, InputComponent } from 'bob-style';
+import { mockTranslatePipe, TranslateServiceProvideMock } from '../../../tests/services.stub.spec';
 
-describe('DeleteConfirmationDialogComponent', () => {
+fdescribe('DeleteConfirmationDialogComponent', () => {
   let component: DeleteConfirmationDialogComponent;
   let fixture: ComponentFixture<DeleteConfirmationDialogComponent>;
   let spyMatDialogRef: SpyObj<MatDialogRef<any>>;
@@ -31,6 +32,9 @@ describe('DeleteConfirmationDialogComponent', () => {
           label: 'Ok',
           action: () => true,
         },
+        cancel: {
+          label: 'translated common.cancel'
+        }
       },
       confirmationData: {
         confirmationText: 'test',
@@ -45,11 +49,13 @@ describe('DeleteConfirmationDialogComponent', () => {
         DeleteConfirmationDialogComponent,
         MockComponent(DialogComponent),
         MockComponent(InputComponent),
+        mockTranslatePipe
       ],
       imports: [NoopAnimationsModule, MatDialogModule],
       providers: [
         { provide: MatDialogRef, useValue: spyMatDialogRef },
         { provide: MAT_DIALOG_DATA, useValue: config },
+        TranslateServiceProvideMock()
       ],
     })
       .compileComponents()
@@ -69,9 +75,13 @@ describe('DeleteConfirmationDialogComponent', () => {
     });
     it('should set dialog buttonConfig', () => {
       const dialog = fixture.debugElement.query(By.css('b-dialog'));
-      expect(dialog.componentInstance.dialogButtons).toEqual(
-        config.buttonConfig
-      );
+      expect(dialog.componentInstance.dialogButtons).toEqual({
+        ...config.buttonConfig,
+        ok: {
+          valid: false,
+          type: ButtonType.negative
+        }
+      });
     });
     it('should render message', () => {
       const message = fixture.debugElement.query(By.css('.message'));
@@ -83,24 +93,30 @@ describe('DeleteConfirmationDialogComponent', () => {
       const input = fixture.debugElement.query(By.css('b-input'));
       expect(input.context.label).toEqual('delete confirmation test');
     });
-    it('should show error msg', () => {
+    it('should show error msg', (done) => {
       const input = fixture.debugElement.query(By.css('b-input'));
       input.context.value = 'asd';
       const event = {
         value: 'asd'
       };
+      component.valid$.subscribe(valid => {
+        expect(valid).toBeFalse();
+        done();
+      });
       input.componentInstance.changed.emit(event);
-      expect(component.errMessage).toEqual('error message');
     });
 
-    it('should not show error msg', () => {
+    it('should not show error msg', (done) => {
       const input = fixture.debugElement.query(By.css('b-input'));
       input.context.value = 'test';
       const event = {
         value: 'test'
       };
+      component.valid$.subscribe(valid => {
+        expect(valid).toBeTrue();
+        done();
+      });
       input.componentInstance.changed.emit(event);
-      expect(component.errMessage).toEqual('');
     });
   });
 

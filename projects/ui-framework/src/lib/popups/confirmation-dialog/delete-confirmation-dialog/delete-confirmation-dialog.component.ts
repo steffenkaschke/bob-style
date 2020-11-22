@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ButtonType, ConfirmationDialogConfig, InputComponent, InputEventType } from 'bob-style';
-import { merge, Observable, Subject, Subscription } from 'rxjs';
+import { merge, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, startWith } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationDialogButtons } from '../confirmation-dialog.interface';
@@ -11,37 +11,61 @@ import { ConfirmationDialogButtons } from '../confirmation-dialog.interface';
   templateUrl: './delete-confirmation-dialog.component.html'
 })
 
-export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy, AfterViewInit {
+export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<DeleteConfirmationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public config: ConfirmationDialogConfig,
     private translateService: TranslateService
-  ) {}
+  ) {
+    this.confirmationText = config?.confirmationData?.confirmationText ??
+      this.translateService.instant('common.delete');
+    this.defaultLabel = this.translateService.instant('bob-style.delete-confirmation.default.label', {
+      confirmationText: config?.confirmationData?.label ??
+        this.confirmationText
+    });
+  }
 
-  @ViewChild(InputComponent) bInput: InputComponent;
+  @ViewChild(InputComponent, {static: true}) bInput: InputComponent;
 
   valid$: Observable<boolean>;
   buttonConfig$: Observable<ConfirmationDialogButtons>;
 
   defaultLabel: string;
-  defaultConfirmationText: string;
+  private readonly confirmationText: string;
 
-  private validitySubject: Subject<boolean> = new Subject();
-  private sub: Subscription;
 
   ngOnInit() {
-    this.valid$ = this.validitySubject.asObservable();
-    this.setButtonsConfig();
-    this.setDefaultValues();
+    this.valid$ = this.getIsValidObservable();
+    this.buttonConfig$ = this.getButtonConfigObservable();
   }
 
   ngOnDestroy(): void {
     this.dialogRef.close();
-    this.sub.unsubscribe();
   }
 
-  ngAfterViewInit() {
-    this.sub = merge(
+  private getButtonConfigObservable(): Observable<ConfirmationDialogButtons> {
+    return this.getIsValidObservable().pipe(
+      startWith(false),
+      map((valid) => {
+        return {
+          ...this.config?.buttonConfig,
+          cancel: {
+            label: this.translateService.instant('common.cancel'),
+            ...this.config?.buttonConfig.cancel,
+          },
+          ok: {
+            label: this.translateService.instant('common.ok'),
+            type: ButtonType.negative,
+            ...this.config?.buttonConfig.ok,
+            disabled: !valid,
+          },
+        };
+      })
+    );
+  }
+
+  private getIsValidObservable(): Observable<boolean> {
+    return merge(
       this.bInput.changed.pipe(
         filter((event) => event.event !== InputEventType.onBlur),
         debounceTime(500)
@@ -52,43 +76,9 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy, Aft
     ).pipe(
       map(
         (event) =>
-          event.value ===
-          (this.config.confirmationData?.confirmationText ||
-            this.defaultConfirmationText)
+          event.value === this.confirmationText
       ),
       distinctUntilChanged()
-    ).subscribe(this.validitySubject);
-  }
-
-  private setButtonsConfig(): void {
-    this.buttonConfig$ = this.valid$.pipe(
-      startWith(false),
-      map((valid) => {
-        return {
-          ...this.config.buttonConfig,
-          cancel: {
-            label: this.translateService.instant('common.cancel'),
-            ...this.config.buttonConfig.cancel,
-          },
-          ok: {
-            label: this.translateService.instant('common.ok'),
-            ...this.config.buttonConfig.ok,
-            disabled: !valid,
-            type: ButtonType.negative
-          },
-        };
-      })
     );
-  }
-
-  setDefaultValues(): void {
-    this.defaultConfirmationText = this.config.confirmationData?.confirmationText ?
-      this.config.confirmationData.confirmationText :
-      this.translateService.instant('common.delete');
-    this.defaultLabel = this.translateService.instant('bob-style.delete-confirmation.default.label', {
-      confirmationText: this.config.confirmationData?.label ?
-        this.config.confirmationData.label :
-        this.defaultConfirmationText
-    });
   }
 }

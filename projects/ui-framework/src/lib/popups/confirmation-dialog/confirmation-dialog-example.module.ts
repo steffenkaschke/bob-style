@@ -1,7 +1,6 @@
 import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
-import { DialogSize } from '../dialog/dialog.enum';
 import { ConfirmationDialogComponent } from './confirmation-dialog.component';
 import { ConfirmationDialogService } from './confirmation-dialog.service';
 import { ConfirmationDialogModule } from './confirmation-dialog.module';
