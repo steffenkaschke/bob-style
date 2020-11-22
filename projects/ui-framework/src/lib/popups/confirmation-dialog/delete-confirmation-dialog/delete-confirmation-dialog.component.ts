@@ -32,15 +32,7 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy, Aft
   ngOnInit() {
     this.valid$ = this.validitySubject.asObservable();
     this.setButtonsConfig();
-
-    this.defaultConfirmationText = this.config.confirmationData.confirmationText ?
-      this.config.confirmationData.confirmationText :
-      this.translateService.instant('common.delete');
-    this.defaultLabel = this.translateService.instant('bob-style.delete-confirmation.default.label', {
-      confirmationText: this.config.confirmationData.label ?
-        this.config.confirmationData.label :
-        this.defaultConfirmationText
-    });
+    this.setDefaultValues();
   }
 
   ngOnDestroy(): void {
@@ -86,5 +78,16 @@ export class DeleteConfirmationDialogComponent implements OnInit, OnDestroy, Aft
         };
       })
     );
+  }
+
+  setDefaultValues(): void {
+    this.defaultConfirmationText = this.config.confirmationData?.confirmationText ?
+      this.config.confirmationData.confirmationText :
+      this.translateService.instant('common.delete');
+    this.defaultLabel = this.translateService.instant('bob-style.delete-confirmation.default.label', {
+      confirmationText: this.config.confirmationData?.label ?
+        this.config.confirmationData.label :
+        this.defaultConfirmationText
+    });
   }
 }
