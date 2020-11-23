@@ -12,10 +12,11 @@ import {
   MatDialogModule,
 } from '@angular/material/dialog';
 import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog.component';
-import { ButtonType, InputComponent } from 'bob-style';
+import { ButtonType } from '../../.././buttons/buttons.enum';
 import { mockTranslatePipe, TranslateServiceProvideMock } from '../../../tests/services.stub.spec';
+import { InputComponent } from '../../../form-elements/input/input.component';
 
-describe('DeleteConfirmationDialogComponent', () => {
+fdescribe('DeleteConfirmationDialogComponent', () => {
   let component: DeleteConfirmationDialogComponent;
   let fixture: ComponentFixture<DeleteConfirmationDialogComponent>;
   let spyMatDialogRef: SpyObj<MatDialogRef<any>>;
