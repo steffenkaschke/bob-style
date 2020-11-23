@@ -16,7 +16,7 @@ import { ButtonType } from '../../.././buttons/buttons.enum';
 import { mockTranslatePipe, TranslateServiceProvideMock } from '../../../tests/services.stub.spec';
 import { InputComponent } from '../../../form-elements/input/input.component';
 
-fdescribe('DeleteConfirmationDialogComponent', () => {
+describe('DeleteConfirmationDialogComponent', () => {
   let component: DeleteConfirmationDialogComponent;
   let fixture: ComponentFixture<DeleteConfirmationDialogComponent>;
   let spyMatDialogRef: SpyObj<MatDialogRef<any>>;
