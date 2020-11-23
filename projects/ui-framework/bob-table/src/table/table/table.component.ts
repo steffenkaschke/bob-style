@@ -87,6 +87,7 @@ const DEFAULT_PROP_VALUES = {
   styleUrls: [
     './styles/table.component.scss',
     './styles/table-checkbox.scss',
+    './styles/table-dnd.scss',
     './styles/tree-table.component.scss',
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -210,7 +211,6 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       ...this.initGridOptions(),
       ...this.tableGridOptions,
     });
-    this.addClass('ag-theme-alpine');
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -283,19 +283,22 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   onRowDragMove(event: RowDragEvent) {
     const movingNode = event.node;
     const overNode = event.overNode;
-    const rowNeedsToMove = movingNode !== overNode;
-    
+    const rowNeedsToMove = movingNode.id !== overNode.id;
+
     if (rowNeedsToMove) {
-      const movingData = movingNode.data;
+      const movingData = movingNode.data ;
       const overData = overNode.data;
       const fromIndex = this.rowData.indexOf(movingData);
       const toIndex = this.rowData.indexOf(overData);
-      const newRowData = this.rowData.slice();
-      const element = newRowData[fromIndex];
-      newRowData.splice(fromIndex, 1)
-      newRowData.splice(toIndex, 0, element);
-      this.rowData = newRowData;
-      this.gridApi.setRowData(newRowData);
+      this.rowData.splice(fromIndex, 1);
+      this.rowData.splice(toIndex, 0, movingData);
+      this.gridApi.updateRowData({
+        remove: [movingData]
+      });
+      this.gridApi.updateRowData({
+        add: [movingData],
+        addIndex: toIndex
+      });
       this.gridApi.clearFocusedCell();
     }
   }
