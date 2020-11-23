@@ -69,7 +69,8 @@ const template = `<b-table #table
     (sortChanged)="sortChanged($event)"
     (pagerPageSizeChange)="pagerPageSizeChange($event)"
     (columnsOrderChanged)="columnsOrderChanged($event)"
-    (columnRemoved)="columnRemoved($event)">
+    (columnRemoved)="columnRemoved($event)"
+    (rowDragEnd)="rowDragEnd($event)">
 </b-table>`;
 const treeTemplate = `<b-table
     [type]="type"
@@ -162,6 +163,7 @@ const note = `
   (columnRemoved) | EventEmitter<wbr>&lt;string&gt; | Emits Cell ID,\
    when remove coulumn button is clicked in column header. \
    <br>**Note** the column is not removed - consumer has to provide this functionality. | &nbsp;
+  (rowDragEnd) | EventEmitter<wbr>&lt;BRowDragEvent&gt; | emits on row drag end | &nbsp;
 
   #### Methods
   Name | Type | Description
@@ -252,6 +254,7 @@ function tableStoryFactory({
     pagerPageSizeChange: action('Page size changed'),
     columnsOrderChanged: action('Column order changed'),
     columnRemoved: action('Column remove button clicked'),
+    rowDragEnd: action('Row dragged'),
     totalSelected: 0,
     onSearchChange: (str, table) => table.filterRows(str),
     onSelectionChanged: function ($event) {

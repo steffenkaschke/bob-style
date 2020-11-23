@@ -58,6 +58,14 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     border-radius: $border-radius;
   }
 
+  .ag-root-wrapper {
+    border: none;
+  }
+
+  .ag-pinned-right-header, .ag-pinned-left-header {
+    border: none;
+  }
+
   .ag-root-wrapper-body.ag-layout-normal {
     height: auto;
     overflow: hidden;
@@ -71,6 +79,10 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     .ag-header-row {
       display: flex;
       overflow: visible;
+
+      &:after {
+        content: none !important;
+      }
     }
 
     .ag-header-cell {
@@ -108,6 +120,10 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
       width: 5px;
       cursor: move;
       @include cell-border;
+
+      &:after {
+        content: none;
+      }
     }
 
     .ag-header-icon {
@@ -141,9 +157,11 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
     border-bottom: 1px solid $border-color-light;
     display: flex;
     align-items: center;
+    font-size: unset;
 
     .ag-cell {
       @include cell;
+      border: none !important;
 
       &[role='presentation'] {
         overflow: visible;
@@ -207,6 +225,10 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
 
     &.ag-row-selected {
       background-color: $color-select-yellow;
+    }
+
+    &:not(.ag-row-first) {
+      border-top-style: unset;
     }
   }
 }

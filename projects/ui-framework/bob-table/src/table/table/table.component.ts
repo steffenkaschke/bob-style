@@ -23,6 +23,7 @@ import {
   GridReadyEvent,
   AgGridEvent,
   RowEvent,
+  RowDragEvent,
   FirstDataRenderedEvent,
 } from 'ag-grid-community';
 import { get, map } from 'lodash';
@@ -35,6 +36,7 @@ import {
   TableType,
 } from './table.enum';
 import {
+  BRowDragEvent,
   ColumnDef,
   ColumnDefConfig,
   ColumnsChangedEvent,
@@ -146,6 +148,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Output() rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<
     RowClickedEvent
   >();
+  @Output() rowDragEnd: EventEmitter<BRowDragEvent> = new EventEmitter<BRowDragEvent>();
   @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
   @Output() columnsChanged: EventEmitter<
@@ -207,6 +210,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       ...this.initGridOptions(),
       ...this.tableGridOptions,
     });
+    this.addClass('ag-theme-alpine');
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -268,12 +272,43 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     this.selectionChanged.emit($event.api.getSelectedRows());
   }
 
-  onRowClicked($event: RowEvent): void {
+  onRowClicked($event: RowEvent) {
     this.rowClicked.emit({
       rowIndex: $event.rowIndex,
       data: $event.data,
       agGridId: get($event, 'node.id', null),
     });
+  }
+
+  onRowDragMove(event: RowDragEvent) {
+    const movingNode = event.node;
+    const overNode = event.overNode;
+    const rowNeedsToMove = movingNode !== overNode;
+    
+    if (rowNeedsToMove) {
+      const movingData = movingNode.data;
+      const overData = overNode.data;
+      const fromIndex = this.rowData.indexOf(movingData);
+      const toIndex = this.rowData.indexOf(overData);
+      const newRowData = this.rowData.slice();
+      const element = newRowData[fromIndex];
+      newRowData.splice(fromIndex, 1)
+      newRowData.splice(toIndex, 0, element);
+      this.rowData = newRowData;
+      this.gridApi.setRowData(newRowData);
+      this.gridApi.clearFocusedCell();
+    }
+  }
+
+  onRowDragEnd(event: RowDragEvent) {
+    this.rowDragEnd.emit({
+      node: event.node.data,
+      overNode: event.overNode.data
+    });
+  }
+
+  getRowNodeId(data) {
+    return data.id;
   }
 
   private setOrderedColumns(
