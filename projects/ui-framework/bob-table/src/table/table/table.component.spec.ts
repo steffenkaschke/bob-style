@@ -272,7 +272,7 @@ describe('TableComponent', () => {
       expect(component.rowClicked.emit).toHaveBeenCalledWith({
         rowIndex: 0,
         data: ROW_DATA_MOCK[0],
-        agGridId: '1',
+        agGridId: '0',
       });
       fakeAsyncFlush();
     }));

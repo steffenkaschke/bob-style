@@ -141,6 +141,9 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   @Input('emptyStateConfig') set setEmptyStateConfig(config: EmptyStateConfig) {
     this.emptyStateConfig = { ...this.emptyStateConfig, ...config };
   }
+
+  @Input() getRowNodeId?: Function;
+
   public emptyStateConfig: EmptyStateConfig;
 
   @Output() sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<
@@ -309,10 +312,6 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       node: event.node.data,
       overNode: event.overNode.data
     });
-  }
-
-  getRowNodeId(data) {
-    return data.id;
   }
 
   private setOrderedColumns(
