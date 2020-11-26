@@ -286,20 +286,21 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     const rowNeedsToMove = movingNode.id !== overNode.id;
 
     if (rowNeedsToMove) {
+      const gridApi = this.getGridApi();
       const movingData = movingNode.data ;
       const overData = overNode.data;
       const fromIndex = this.rowData.indexOf(movingData);
       const toIndex = this.rowData.indexOf(overData);
       this.rowData.splice(fromIndex, 1);
       this.rowData.splice(toIndex, 0, movingData);
-      this.gridApi.updateRowData({
+      gridApi.updateRowData({
         remove: [movingData]
       });
-      this.gridApi.updateRowData({
+      gridApi.updateRowData({
         add: [movingData],
         addIndex: toIndex
       });
-      this.gridApi.clearFocusedCell();
+      gridApi.clearFocusedCell();
     }
   }
 
