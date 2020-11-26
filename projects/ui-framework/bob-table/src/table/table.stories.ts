@@ -69,8 +69,7 @@ const template = `<b-table #table
     (sortChanged)="sortChanged($event)"
     (pagerPageSizeChange)="pagerPageSizeChange($event)"
     (columnsOrderChanged)="columnsOrderChanged($event)"
-    (columnRemoved)="columnRemoved($event)"
-    (rowDragEnd)="rowDragEnd($event)">
+    (columnRemoved)="columnRemoved($event)">
 </b-table>`;
 const treeTemplate = `<b-table
     [type]="type"
@@ -254,7 +253,6 @@ function tableStoryFactory({
     pagerPageSizeChange: action('Page size changed'),
     columnsOrderChanged: action('Column order changed'),
     columnRemoved: action('Column remove button clicked'),
-    rowDragEnd: action('Row dragged'),
     totalSelected: 0,
     onSearchChange: (str, table) => table.filterRows(str),
     onSelectionChanged: function ($event) {
