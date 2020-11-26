@@ -309,8 +309,8 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
 
   onRowDragEnd(event: RowDragEvent) {
     this.rowDragEnd.emit({
-      node: event.node.data,
-      overNode: event.overNode.data
+      nodeData: event.node.data,
+      overNodeData: event.overNode.data
     });
   }
 
