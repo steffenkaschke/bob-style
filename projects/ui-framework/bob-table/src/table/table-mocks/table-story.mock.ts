@@ -49,7 +49,6 @@ export const mockColumnsDefs: ColumnDef[] = [
     field: 'fullName',
     sort: SortDirections.Asc,
     flex: 2,
-    rowDrag: true
   },
   {
     headerName: 'Email',
