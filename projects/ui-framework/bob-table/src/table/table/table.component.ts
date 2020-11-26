@@ -65,6 +65,7 @@ import {
   TABLE_ROW_HEIGHT,
 } from './table.consts';
 import { TranslateService } from '@ngx-translate/core';
+import { isFunction } from '../../../../src/lib/services/utils/functional-utils';
 
 const CLOSE_BUTTON_DIAMETER = 20;
 const CLOSE_MARGIN_OFFSET = 6;
@@ -282,9 +283,14 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   onRowDragMove(event: RowDragEvent) {
+    if (!isFunction(this.tableGridOptions.getRowNodeId)) {
+      return;
+    }
     const movingNode = event.node;
+    const movingNodeId = this.tableGridOptions.getRowNodeId(movingNode);
     const overNode = event.overNode;
-    const rowNeedsToMove = movingNode.id !== overNode.id;
+    const overNodeId = this.tableGridOptions.getRowNodeId(overNode);
+    const rowNeedsToMove = movingNodeId !== overNodeId;
 
     if (rowNeedsToMove) {
       const gridApi = this.getGridApi();
@@ -306,10 +312,14 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   }
 
   onRowDragEnd(event: RowDragEvent) {
-    this.rowDragEnd.emit({
-      nodeData: event.node.data,
-      overNodeData: event.overNode.data
-    });
+    if (!isFunction(this.tableGridOptions.getRowNodeId)) {
+      console.warn('No getRowNodeId function was set in table grid options, dragging is disabled.');
+    } else {
+      this.rowDragEnd.emit({
+        nodeData: event.node.data,
+        overNodeData: event.overNode.data
+      });
+    }
   }
 
   private setOrderedColumns(
