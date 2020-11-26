@@ -2,36 +2,22 @@
 @import '../../../../../src/lib/style/icons.mixin';
 @import './table.mixin';
 
-:host {
-  ::ng-deep {
-    .ag-icon-grip {
-      display: block;
-      @include ag-icon('chevron-right');
-    }
-  }
+:host ::ng-deep .ag-icon-grip {
+  display: block;
+  @include ag-icon('drag');
 }
 
-:host-context(body) {
-
-  .ag-dnd-ghost {
-    background: #2d3436;
-    border-radius: 2px;
-    box-shadow: none;
-    padding: 4px;
-    border: 1px solid #424242;
-    color: rgba(245, 245, 245, 0.64);
-    font-weight: 600;
-    font-size: 12px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    height: 32px !important;
-    line-height: 32px;
-    margin: 0;
-    padding: 0 8px;
-    transform: translateY(8px);
-
-    .ag-dnd-ghost-icon {
-      display: block;
-      @include ag-icon('chevron-right');
-    }
-  }
+::ng-deep .ag-dnd-ghost {
+  background: $white;
+  border-radius: 2px;
+  box-shadow: none;
+  padding: 4px;
+  border: 1px solid #424242;
+  font-weight: 600;
+  font-size: 12px;
+  height: 32px !important;
+  line-height: 32px;
+  margin: 0;
+  padding: 0 8px;
+  transform: translateY(8px);
 }
