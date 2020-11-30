@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Input, NgZone, OnChanges, SimpleChanges }
 import { ChartTypesEnum } from '../../charts.enum';
 import { SeriesColumnOptions } from 'highcharts';
 import { ChartCore } from '../../chart/chart-core';
-import { COLUMN_BAR_WIDTH, MULTI_COLUMN_WIDTH } from '../../combinations/bar-line-chart/bar-line-chart.component';
+import { COLUMN_BAR_WIDTH, MULTI_COLUMN_WIDTH } from '../../charts.const';
 
 @Component({
   selector: 'b-multi-bar-chart',
@@ -54,16 +54,13 @@ export class MultiBarChartComponent extends ChartCore implements OnChanges {
   private getChartPlotOptionsObj() {
     let plotOptionsObj;
     switch (this.stackType) {
-      case 'normal':
-        plotOptionsObj = { ...MULTI_COLUMN_WIDTH, stacking: undefined };
-        break;
       case 'stack':
         plotOptionsObj = { ...COLUMN_BAR_WIDTH, stacking: 'normal' };
         break;
       case 'stack-percent':
         plotOptionsObj = { ...COLUMN_BAR_WIDTH, stacking: 'percent' };
         break;
-      default:
+      default: // 'normal' or any other
         plotOptionsObj = { ...MULTI_COLUMN_WIDTH, stacking: undefined };
         break;
     }
