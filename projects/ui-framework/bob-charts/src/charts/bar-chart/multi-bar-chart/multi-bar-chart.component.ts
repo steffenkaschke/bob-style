@@ -1,14 +1,8 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  NgZone,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, NgZone, OnChanges, SimpleChanges } from '@angular/core';
 import { ChartTypesEnum } from '../../charts.enum';
 import { SeriesColumnOptions } from 'highcharts';
 import { ChartCore } from '../../chart/chart-core';
+import { COLUMN_BAR_WIDTH, MULTI_COLUMN_WIDTH } from '../../combinations/bar-line-chart/bar-line-chart.component';
 
 @Component({
   selector: 'b-multi-bar-chart',
@@ -24,11 +18,15 @@ export class MultiBarChartComponent extends ChartCore implements OnChanges {
     this.sizeDefaults[0] = 450;
   }
 
+  type: ChartTypesEnum.Column | ChartTypesEnum.Bar = ChartTypesEnum.Column;
+  @Input() set direction(direction: 'vertical' | 'horizontal') {
+    this.type = direction === 'horizontal' ? ChartTypesEnum.Bar : ChartTypesEnum.Column;
+  }
   @Input() categories: string[];
+  @Input() stackType: 'normal' | 'stack' | 'stack-percent';
   @Input() data: SeriesColumnOptions[];
   @Input() name: string;
 
-  readonly type = ChartTypesEnum.Column;
 
   ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);
@@ -46,7 +44,29 @@ export class MultiBarChartComponent extends ChartCore implements OnChanges {
         categories: this.categories,
         crosshair: true,
       },
+      plotOptions: {
+        [this.type]: this.getChartPlotOptionsObj(),
+      },
       series: this.data,
     };
+  }
+
+  private getChartPlotOptionsObj() {
+    let plotOptionsObj;
+    switch (this.stackType) {
+      case 'normal':
+        plotOptionsObj = { ...MULTI_COLUMN_WIDTH, stacking: undefined };
+        break;
+      case 'stack':
+        plotOptionsObj = { ...COLUMN_BAR_WIDTH, stacking: 'normal' };
+        break;
+      case 'stack-percent':
+        plotOptionsObj = { ...COLUMN_BAR_WIDTH, stacking: 'percent' };
+        break;
+      default:
+        plotOptionsObj = { ...MULTI_COLUMN_WIDTH, stacking: undefined };
+        break;
+    }
+    return plotOptionsObj;
   }
 }

@@ -46,6 +46,9 @@ const storyTemplate = `
 `;
 
 const note = `
+  # Deprecated, use multi-bar-chart with [stackType] input \'stack\' or \'stack-percent\'
+  \n\n
+
   ## Single Chart
 
   #### Module
