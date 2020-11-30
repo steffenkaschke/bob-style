@@ -23,7 +23,7 @@ export class MultiBarChartComponent extends ChartCore implements OnChanges {
     this.type = direction === 'horizontal' ? ChartTypesEnum.Bar : ChartTypesEnum.Column;
   }
   @Input() categories: string[];
-  @Input() stackType: 'normal' | 'stack' | 'stack-percent';
+  @Input() stackType: 'normal' | 'stack' | 'stack-percent' = 'normal';
   @Input() data: SeriesColumnOptions[];
   @Input() name: string;
 
