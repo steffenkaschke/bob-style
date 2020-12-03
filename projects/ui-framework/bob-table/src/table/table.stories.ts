@@ -293,6 +293,7 @@ story.add(
       HTMLTemplate: storyTemplate,
       tableCols: mockColumnsDefsExtended,
       tableData: mockRowData,
+      props: { tableGridOptions: { getRowNodeId: data => data.id } }
     }),
   { notes: { markdown: note } }
 );

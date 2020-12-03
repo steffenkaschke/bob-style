@@ -281,7 +281,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     });
   }
 
-  onRowDragMove(event: RowDragEvent) {
+  onRowDragEnd(event: RowDragEvent) {
     const movingNode = event.node;
     const overNode = event.overNode;
     const rowNeedsToMove = movingNode.id !== overNode.id;
@@ -305,9 +305,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       });
       gridApi.clearFocusedCell();
     }
-  }
 
-  onRowDragEnd(event: RowDragEvent) {
     this.rowDragEnd.emit({
       nodeData: event.node.data,
       overNodeData: event.overNode.data,
