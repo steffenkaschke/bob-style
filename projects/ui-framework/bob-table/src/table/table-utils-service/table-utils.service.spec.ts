@@ -34,6 +34,7 @@ describe('TableUtilsService', () => {
         menuTabs: [],
         cellClass: [],
         cellStyle: {},
+        rowDrag: true
       },
       {
         headerName: 'Display Name',
@@ -44,6 +45,7 @@ describe('TableUtilsService', () => {
         menuTabs: [],
         cellClass: [],
         cellStyle: {},
+        rowDrag: false
       },
       {
         headerName: 'Email',
@@ -53,6 +55,7 @@ describe('TableUtilsService', () => {
         menuTabs: [],
         cellClass: [],
         cellStyle: {},
+        rowDrag: false
       },
     ];
     newColumnDefsMock = [{ field: 'fullName' }, { field: 'email' }, { field: 'site' }, { field: 'department' }];
@@ -95,7 +98,8 @@ describe('TableUtilsService', () => {
       rowSelectionMock = null;
       const columnDefs = tableUtilsService.getGridColumnDef(
         columnDefsMock,
-        rowSelectionMock
+        rowSelectionMock,
+        true
       );
       expect(columnDefs).toEqual(columnDefsMock);
     });
@@ -113,7 +117,8 @@ describe('TableUtilsService', () => {
       };
       const columnDefs = tableUtilsService.getGridColumnDef(
         columnDefsMock,
-        rowSelectionMock
+        rowSelectionMock,
+        true
       );
       expect(columnDefs).toEqual(concat(multiColumnDef, columnDefsMock));
     });
@@ -131,7 +136,8 @@ describe('TableUtilsService', () => {
       };
       const columnDefs = tableUtilsService.getGridColumnDef(
         columnDefsMock,
-        rowSelectionMock
+        rowSelectionMock,
+        true
       );
       expect(columnDefs).toEqual(concat(multiColumnDef, columnDefsMock));
     });
@@ -156,11 +162,13 @@ describe('TableUtilsService', () => {
           menuTabs: [],
           cellClass: ['b-icon-email', 'b-icon-normal', 'b-icon-medium'],
           cellStyle: { padding: '0 15px 0 43px' },
+          rowDrag: false
         },
       ];
       const columnDefs = tableUtilsService.getGridColumnDef(
         colDefIconMock,
-        rowSelectionMock
+        rowSelectionMock,
+        false
       );
       expect(columnDefs).toEqual(expectedColDefs);
     });
@@ -187,11 +195,13 @@ describe('TableUtilsService', () => {
           menuTabs: [],
           cellClass: ['b-icon-email', 'b-icon-inform', 'b-icon-medium'],
           cellStyle: { padding: '0 15px 0 43px' },
+          rowDrag: false
         },
       ];
       const columnDefs = tableUtilsService.getGridColumnDef(
         colDefIconMock,
-        rowSelectionMock
+        rowSelectionMock,
+        false
       );
       expect(columnDefs).toEqual(expectedColDefs);
     });

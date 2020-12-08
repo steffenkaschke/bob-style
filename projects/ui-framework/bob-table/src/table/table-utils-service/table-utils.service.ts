@@ -19,12 +19,13 @@ export class TableUtilsService {
 
   getGridColumnDef(
     columnDefs: ColumnDef[],
-    rowSelection: RowSelection
+    rowSelection: RowSelection,
+    rowDragEnabled: boolean
   ): ColumnDef[] {
     return compact(
       concat(
         this.getRowSelectionColumnDef(rowSelection),
-        this.getEnrichColumnDef(columnDefs)
+        this.getEnrichColumnDef(columnDefs, rowDragEnabled)
       )
     );
   }
@@ -42,16 +43,16 @@ export class TableUtilsService {
     };
   }
 
-  private getEnrichColumnDef(columnDefs: ColumnDef[]): ColumnDef[] {
-    return map(columnDefs, (colDef) =>
-      assign({}, colDef, {
-        resizable: get(colDef, 'resizable', true),
-        sortable: get(colDef, 'sortable', true),
-        menuTabs: [],
-        cellClass: this.getCellClass(colDef),
-        cellStyle: this.getCellStyle(colDef),
-      })
-    );
+  private getEnrichColumnDef(columnDefs: ColumnDef[], enableRowDrag: boolean): ColumnDef[] {
+    return columnDefs.map((colDef, i) => ({
+      ...colDef,
+      resizable: get(colDef, 'resizable', true),
+      sortable: get(colDef, 'sortable', true),
+      menuTabs: [],
+      cellClass: this.getCellClass(colDef),
+      cellStyle: this.getCellStyle(colDef),
+      rowDrag: enableRowDrag && i === 0
+    }));
   }
 
   private getCellClass(colDef: ColumnDef): string[] {

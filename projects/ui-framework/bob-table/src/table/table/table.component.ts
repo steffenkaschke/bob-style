@@ -133,6 +133,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
     DEFAULT_PROP_VALUES.suppressDragLeaveHidesColumns;
   @Input() removeColumnButtonEnabled = false;
   @Input() shouldAutoSizeColumns = DEFAULT_PROP_VALUES.shouldAutoSizeColumns;
+  @Input() enableRowDrag = false;
 
   @Input() enablePager = false;
   @Input() pagerConfig: PagerConfig = DEFAULT_PROP_VALUES.pagerConfig;
@@ -177,8 +178,6 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   public gridOptions: GridOptions;
   public gridColumnDefs: ColumnDef[];
   public pagerState: TablePagerState;
-
-  public rowDragEnabled = false;
   public rowIsDragged = false;
 
   private columns: string[];
@@ -230,15 +229,13 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
         orderStrategy: DEFAULT_COL_ORDER_STRATEGY,
       };
       previousColumnDefValue = changes.columnDefs.previousValue;
-
-      this.rowDragEnabled = Boolean(this.columnDefs.find((def) => def.rowDrag));
     }
 
     if (hasChanges(changes, ['columnDefConfig'], true)) {
       previousColumnDefValue = changes.columnDefConfig.previousValue?.columnDef;
     }
 
-    if (hasChanges(changes, ['columnDefs', 'columnDefConfig'], true)) {
+    if (hasChanges(changes, ['columnDefs', 'columnDefConfig', 'enableRowDrag'], true)) {
       const existingColumns = previousColumnDefValue
         ? previousColumnDefValue
         : this.columnDefs;
@@ -252,7 +249,8 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
           : this.columnDefConfig.columnDef;
       this.gridColumnDefs = this.tableUtilsService.getGridColumnDef(
         columnDefs,
-        this.rowSelection
+        this.rowSelection,
+        this.enableRowDrag
       );
     }
 
