@@ -284,6 +284,7 @@ const note = `
   which allow to put the icon inside label or value | left
   [iconSize] | IconSize | icon size | large (small if positioned inside label or value)
   [iconColor] | IconColor | icon color | null
+  [labelDescription] | InfoTooltip | All properties needed for the <b-info-tooltip> component | undefined
   (clicked) | EventEmitter | emits when component is clicked
   (labelClicked) | EventEmitter | emits when label is clicked
   (valueClicked) | EventEmitter | emits when value is clicked
