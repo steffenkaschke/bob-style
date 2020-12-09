@@ -57,6 +57,7 @@ import {
   notFirstChanges,
   PagerConfig,
   PAGER_CONFIG_DEF,
+  log,
 } from 'bob-style';
 import {
   TABLE_AUTOSIZE_PADDING,
@@ -235,7 +236,7 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       previousColumnDefValue = changes.columnDefConfig.previousValue?.columnDef;
     }
 
-    if (hasChanges(changes, ['columnDefs', 'columnDefConfig', 'enableRowDrag'], true)) {
+    if (hasChanges(changes, ['columnDefs', 'columnDefConfig', 'enableRowDrag'], false)) {
       const existingColumns = previousColumnDefValue
         ? previousColumnDefValue
         : this.columnDefs;
@@ -247,6 +248,11 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
               this.columns
             )
           : this.columnDefConfig.columnDef;
+
+      if (this.enableRowDrag && columnDefs.find(colDef => colDef.sortable || colDef.sort)) {
+        log.wrn(['Sorting disabled, because row drag is enabled'], 'TableComponent');
+      }
+
       this.gridColumnDefs = this.tableUtilsService.getGridColumnDef(
         columnDefs,
         this.rowSelection,

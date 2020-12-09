@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ColumnDef } from '../table/table.interface';
-import { assign, chain, compact, concat, flatMap, get, has, map } from 'lodash';
+import { assign, chain, compact, concat, flatMap, get, has } from 'lodash';
 import { SELECTION_COLUMN_DEF } from '../table/table.consts';
 import { GridOptions } from 'ag-grid-community';
 import { ActionsCellComponent } from '../table-cell-components/actions-cell/actions-cell.component';
@@ -20,12 +20,12 @@ export class TableUtilsService {
   getGridColumnDef(
     columnDefs: ColumnDef[],
     rowSelection: RowSelection,
-    rowDragEnabled: boolean
+    enableRowDrag: boolean
   ): ColumnDef[] {
     return compact(
       concat(
         this.getRowSelectionColumnDef(rowSelection),
-        this.getEnrichColumnDef(columnDefs, rowDragEnabled)
+        this.getEnrichColumnDef(columnDefs, enableRowDrag)
       )
     );
   }
@@ -47,7 +47,7 @@ export class TableUtilsService {
     return columnDefs.map((colDef, i) => ({
       ...colDef,
       resizable: get(colDef, 'resizable', true),
-      sortable: get(colDef, 'sortable', true),
+      sortable: !enableRowDrag && get(colDef, 'sortable', true),
       menuTabs: [],
       cellClass: this.getCellClass(colDef),
       cellStyle: this.getCellStyle(colDef),

@@ -2,11 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { TableUtilsService } from './table-utils.service';
 import { ColumnDef } from '../table/table.interface';
 import { concat } from 'lodash';
-import {
-  PinDirection,
-  RowSelection,
-  SortDirections,
-} from '../table/table.enum';
+import { PinDirection, RowSelection, SortDirections } from '../table/table.enum';
 import { IconColor, Icons } from 'bob-style';
 
 describe('TableUtilsService', () => {
@@ -34,7 +30,7 @@ describe('TableUtilsService', () => {
         menuTabs: [],
         cellClass: [],
         cellStyle: {},
-        rowDrag: true
+        rowDrag: false
       },
       {
         headerName: 'Display Name',
@@ -99,7 +95,7 @@ describe('TableUtilsService', () => {
       const columnDefs = tableUtilsService.getGridColumnDef(
         columnDefsMock,
         rowSelectionMock,
-        true
+        false
       );
       expect(columnDefs).toEqual(columnDefsMock);
     });
@@ -202,6 +198,50 @@ describe('TableUtilsService', () => {
         colDefIconMock,
         rowSelectionMock,
         false
+      );
+      expect(columnDefs).toEqual(expectedColDefs);
+    });
+    it('Should disable sorting when enableRowDrag is true', () => {
+      const colDefMock: ColumnDef[] = [
+        {
+          headerName: 'Name',
+          field: 'name',
+          sortable: true,
+          sort: SortDirections.Asc
+        },
+        {
+          headerName: 'Email',
+          field: 'email',
+          sortable: true
+        },
+      ];
+      const expectedColDefs: ColumnDef[] = [
+        {
+          headerName: 'Name',
+          field: 'name',
+          menuTabs: [],
+          cellClass: [],
+          cellStyle: {},
+          resizable: true,
+          sortable: false,
+          sort: SortDirections.Asc,
+          rowDrag: true
+        },
+        {
+          headerName: 'Email',
+          field: 'email',
+          menuTabs: [],
+          cellClass: [],
+          cellStyle: {},
+          resizable: true,
+          sortable: false,
+          rowDrag: false
+        },
+      ];
+      const columnDefs = tableUtilsService.getGridColumnDef(
+        colDefMock,
+        null,
+        true
       );
       expect(columnDefs).toEqual(expectedColDefs);
     });
