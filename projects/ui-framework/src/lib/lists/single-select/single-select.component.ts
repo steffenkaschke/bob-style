@@ -90,6 +90,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
   }
 
   @Input() showNoneOption = true;
+  @Input() ghost = false;
 
   public valueAvatar: Avatar;
 
