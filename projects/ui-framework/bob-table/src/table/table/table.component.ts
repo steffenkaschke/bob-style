@@ -58,6 +58,7 @@ import {
   PagerConfig,
   PAGER_CONFIG_DEF,
   log,
+  isValuevy,
 } from 'bob-style';
 import {
   TABLE_AUTOSIZE_PADDING,
@@ -236,7 +237,14 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
       previousColumnDefValue = changes.columnDefConfig.previousValue?.columnDef;
     }
 
-    if (hasChanges(changes, ['columnDefs', 'columnDefConfig', 'enableRowDrag'], false)) {
+    if (
+      hasChanges(
+        changes,
+        ['columnDefs', 'columnDefConfig', 'enableRowDrag'],
+        true,
+        { truthyCheck: isValuevy }
+      )
+    ) {
       const existingColumns = previousColumnDefValue
         ? previousColumnDefValue
         : this.columnDefs;
