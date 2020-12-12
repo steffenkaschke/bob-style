@@ -1,6 +1,17 @@
+@import '../../style/common-imports';
+
 .trigger-input {
   cursor: pointer;
   position: static;
+}
+
+.ghost {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  .select-chevron {
+    color: $grey-700;
+  }
 }
 
 .bfe-wrap {
