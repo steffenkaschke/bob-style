@@ -63,7 +63,7 @@
 
 <ng-template #templateRef>
   <div class="b-select-panel"
-       [ngClass]="positionClassList">
+       [ngClass]="!ghost && positionClassList">
     <b-single-list class="b-select-list"
                    [options]="options"
                    [optionsDefault]="optionsDefault"
