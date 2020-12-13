@@ -12,6 +12,12 @@
   .select-chevron {
     color: $grey-700;
   }
+  .label,
+  .value {
+    &:not(:empty) {
+      margin-right: times8(1);
+    }
+  }
 }
 
 .bfe-wrap {
@@ -58,6 +64,8 @@
   b-avatar-image[data-size='micro'] {
     --avatar-gap: -15px;
   }
+
+
 }
 
 :host[data-size='smaller'] ::ng-deep {
@@ -67,6 +75,27 @@
     & > b-avatar-image,
     & > b-employees-showcase {
       margin-left: -8px;
+    }
+  }
+}
+
+::ng-deep {
+  // ghost
+  .b-select-panel-no-arrow.panel-ghost {
+    .panel-below,
+    .panel-below .b-select-list,
+    .panel-below b-search .bfe-wrap,
+    .panel-above,
+    .panel-above .b-select-list,
+    .panel-above b-list-footer {
+      border-radius: $border-radius;
+    }
+  }
+
+  .b-select-panel.panel-ghost {
+    .b-select-panel:after,
+    .panel-position:after {
+      display: none;
     }
   }
 }

@@ -4,7 +4,7 @@ import {
   ViewContainerRef,
   NgZone,
   ChangeDetectorRef,
-  Input,
+  Input, OnInit, OnChanges,
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
@@ -53,7 +53,7 @@ import { IconColor } from '../../icons/icons.enum';
     { provide: BaseFormElement, useExisting: SingleSelectComponent },
   ],
 })
-export class SingleSelectComponent extends BaseSelectPanelElement {
+export class SingleSelectComponent extends BaseSelectPanelElement implements OnChanges {
   constructor(
     protected listChangeSrvc: ListChangeService,
     protected modelSrvc: ListModelService,
@@ -109,6 +109,15 @@ export class SingleSelectComponent extends BaseSelectPanelElement {
       this.showValueShowcase !== false && this.getValueAvatar(option);
 
     return option?.value;
+  }
+
+  ngOnChanges(changes) {
+    if (!!this.ghost) {
+      this.panelClassList.push('panel-ghost');
+    } else {
+      this.panelClassList = [...this.panelClassList.filter(className => className !== 'panel-ghost')];
+    }
+    super.ngOnChanges(changes);
   }
 
   protected emitChange(

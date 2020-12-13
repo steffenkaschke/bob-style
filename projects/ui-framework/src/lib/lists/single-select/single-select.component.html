@@ -48,8 +48,8 @@
 
 <ng-template #ghostTmp>
   <div class="ghost">
-    <strong class="mrg-r-8">{{label}}</strong> <span>{{displayValue}}</span>
-    <span class="mrg-l-8 select-chevron b-icon-medium"
+    <strong class="label">{{label}}</strong> <span class="value">{{displayValue}}</span>
+    <span class="select-chevron b-icon-medium"
           [ngClass]="{'b-icon-chevron-down': !panelOpen, 'b-icon-chevron-up': panelOpen}"></span>
   </div>
 </ng-template>
