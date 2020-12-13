@@ -312,13 +312,13 @@ $min-table-height: $table-header-height + $table-overlay-height + times8(3) * 2;
   .ag-row {
 
     .b-actions-cell {
-      display: none;
+      visibility: hidden;
     }
 
     &.ag-row-hover {
 
       .b-actions-cell {
-        display: flex;
+        visibility: visible;
       }
     }
   }
