@@ -47,13 +47,14 @@
 </div>
 
 <ng-template #ghostTmp>
-  <div class="ghost">
+  <div class="flx flx-row-align-y">
     <strong *ngIf="label" class="mrg-r-8">{{label}}</strong>
     <span *ngIf="displayValue">{{displayValue}}</span>
     <b-icon
       class="select-chevron"
       [icon]="icons.arrow_drop_down"
       [size]="iconSize.medium"
+      [color]="iconColor.dark"
       [rotate]="panelOpen ? '180' : null"
     ></b-icon>
   </div>

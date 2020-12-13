@@ -56,6 +56,7 @@ import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 export class SingleSelectComponent extends BaseSelectPanelElement implements OnChanges {
   readonly icons = Icons;
   readonly iconSize = IconSize;
+  readonly iconColor = IconColor;
   constructor(
     protected listChangeSrvc: ListChangeService,
     protected modelSrvc: ListModelService,
