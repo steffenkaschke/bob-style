@@ -240,6 +240,7 @@ html:not(.cdk-global-scrollblock) {
 }
 
 .panel-ghost {
+  margin-top: 4px;
   .b-select-panel:after,
   .panel-position:after {
     display: none;
