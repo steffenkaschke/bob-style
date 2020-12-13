@@ -5,15 +5,6 @@
   position: static;
 }
 
-.ghost {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  .select-chevron {
-    color: $grey-700;
-  }
-}
-
 .bfe-wrap {
   position: relative;
 
@@ -58,6 +49,8 @@
   b-avatar-image[data-size='micro'] {
     --avatar-gap: -15px;
   }
+
+
 }
 
 :host[data-size='smaller'] ::ng-deep {

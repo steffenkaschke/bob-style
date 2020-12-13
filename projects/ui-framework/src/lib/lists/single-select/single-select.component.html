@@ -47,10 +47,16 @@
 </div>
 
 <ng-template #ghostTmp>
-  <div class="ghost">
-    <strong class="mrg-r-8">{{label}}</strong> <span>{{displayValue}}</span>
-    <span class="mrg-l-8 select-chevron b-icon-medium"
-          [ngClass]="{'b-icon-chevron-down': !panelOpen, 'b-icon-chevron-up': panelOpen}"></span>
+  <div class="flx flx-row-align-y">
+    <strong *ngIf="label" class="mrg-r-4">{{label}}</strong>
+    <span *ngIf="displayValue" class="mrg-r-4">{{displayValue}}</span>
+    <b-icon
+      class="select-chevron"
+      [icon]="icons.arrow_drop_down"
+      [size]="iconSize.medium"
+      [color]="iconColor.dark"
+      [rotate]="panelOpen ? '180' : null"
+    ></b-icon>
   </div>
 </ng-template>
 
@@ -63,7 +69,7 @@
 
 <ng-template #templateRef>
   <div class="b-select-panel"
-       [ngClass]="positionClassList">
+       [ngClass]="!ghost && positionClassList">
     <b-single-list class="b-select-list"
                    [options]="options"
                    [optionsDefault]="optionsDefault"
