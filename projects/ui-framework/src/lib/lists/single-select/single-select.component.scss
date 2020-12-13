@@ -84,7 +84,10 @@
   .b-select-panel-no-arrow.panel-ghost {
     .panel-below,
     .panel-below .b-select-list,
-    .panel-below b-search .bfe-wrap,
+    .panel-below b-search .bfe-wrap {
+      border-top-right-radius: $border-radius;
+      border-top-left-radius: $border-radius;
+    }
     .panel-above,
     .panel-above .b-select-list,
     .panel-above b-list-footer {
