@@ -48,9 +48,14 @@
 
 <ng-template #ghostTmp>
   <div class="ghost">
-    <strong class="label">{{label}}</strong> <span class="value">{{displayValue}}</span>
-    <span class="select-chevron b-icon-medium"
-          [ngClass]="{'b-icon-chevron-down': !panelOpen, 'b-icon-chevron-up': panelOpen}"></span>
+    <strong *ngIf="label" class="mrg-r-8">{{label}}</strong>
+    <span *ngIf="displayValue">{{displayValue}}</span>
+    <b-icon
+      class="select-chevron"
+      [icon]="icons.arrow_drop_down"
+      [size]="iconSize.medium"
+      [rotate]="panelOpen ? '180' : null"
+    ></b-icon>
   </div>
 </ng-template>
 

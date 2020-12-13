@@ -30,7 +30,7 @@ import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 import { TranslateService } from '@ngx-translate/core';
 import { Avatar } from '../../avatar/avatar/avatar.interface';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
-import { IconColor } from '../../icons/icons.enum';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 
 @Component({
   selector: 'b-single-select',
@@ -54,6 +54,8 @@ import { IconColor } from '../../icons/icons.enum';
   ],
 })
 export class SingleSelectComponent extends BaseSelectPanelElement implements OnChanges {
+  readonly icons = Icons;
+  readonly iconSize = IconSize;
   constructor(
     protected listChangeSrvc: ListChangeService,
     protected modelSrvc: ListModelService,
@@ -112,10 +114,9 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
   }
 
   ngOnChanges(changes) {
-    if (this.ghost) {
-      this.panelClassList.push('panel-ghost');
-    } else {
-      this.panelClassList = [...this.panelClassList.filter(className => className !== 'panel-ghost')];
+    if (changes.ghost) {
+      this.panelClassList = this.panelClassList.filter(className => className !== 'panel-ghost');
+      this.ghost && this.panelClassList.push('panel-ghost');
     }
     super.ngOnChanges(changes);
   }

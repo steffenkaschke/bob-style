@@ -12,12 +12,6 @@
   .select-chevron {
     color: $grey-700;
   }
-  .label,
-  .value {
-    &:not(:empty) {
-      margin-right: times8(1);
-    }
-  }
 }
 
 .bfe-wrap {
@@ -75,15 +69,6 @@
     & > b-avatar-image,
     & > b-employees-showcase {
       margin-left: -8px;
-    }
-  }
-}
-
-::ng-deep {
-  .b-select-panel.panel-ghost {
-    .b-select-panel:after,
-    .panel-position:after {
-      display: none;
     }
   }
 }
