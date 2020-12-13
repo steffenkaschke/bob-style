@@ -112,7 +112,7 @@ export class SingleSelectComponent extends BaseSelectPanelElement implements OnC
   }
 
   ngOnChanges(changes) {
-    if (!!this.ghost) {
+    if (this.ghost) {
       this.panelClassList.push('panel-ghost');
     } else {
       this.panelClassList = [...this.panelClassList.filter(className => className !== 'panel-ghost')];
