@@ -399,6 +399,8 @@ export * from './lib/search/multi-search/multi-search.interface';
 export * from  './lib/search/multi-search/multi-search.const';
 export { MultiSearchModule } from './lib/search/multi-search/multi-search.module';
 export { MultiSearchComponent } from './lib/search/multi-search/multi-search.component';
+// Compact Search
+export { CompactSearchModule } from './lib/search/compact-search/compact-search.module';
 
 /*
  * Navigation
