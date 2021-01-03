@@ -31,6 +31,7 @@ $transitionDuration: 0.3s;
   &.as-icon ::ng-deep {
     .bfe-wrap {
       border: 0;
+      background-color: transparent;
     }
 
     .bfe-prefix.input-icon {
