@@ -26,19 +26,18 @@ $transitionDuration: 0.3s;
       border-radius: $wrap-height-smaller/2;
       transition: border-radius $transitionDuration;
     }
+    .bfe-prefix.input-icon {
+      padding: 0;
+      width: 36px;
+    }
   }
 
   &.as-icon ::ng-deep {
     .bfe-wrap {
-      border: 0;
+      border-color: transparent;
       background-color: transparent;
     }
-
-    .bfe-prefix.input-icon {
-      padding: 0;
-      width: 100%;
-    }
-
+    
     .bfe-suffix {
       visibility: hidden;
     }
