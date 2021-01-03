@@ -25,6 +25,11 @@ export class CompactSearchComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  private focusSearchInput(): void {
+    this.search['skipFocusEvent'] = true;
+    this.search.input.nativeElement.focus();
+  }
+
   onSearchOpen(): void {
     this.open = true;
     setTimeout(() => {
@@ -32,9 +37,17 @@ export class CompactSearchComponent implements OnInit {
     }, 300);
   }
 
-  onSearchClose(): void {
-    this.search.inputFocused = false;
-    this.open = false;
+  onSearchClose(event: FocusEvent): void {
+    const relatedTarget = event.relatedTarget as HTMLElement;
+    if (!relatedTarget || !relatedTarget.matches('.clear-input')) {
+      this.search.inputFocused = false;
+      this.open = false;
+      return;
+    }
+    if (relatedTarget.matches('.clear-input')) {
+      this.focusSearchInput();
+      return;
+    }
   }
 
   onSearchChange(event: string): void {

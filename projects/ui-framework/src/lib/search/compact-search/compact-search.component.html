@@ -8,7 +8,7 @@
           class="search"
           [size]="formElementSize.smaller"
           [placeholder]="placeholder"
-          (searchBlur)="onSearchClose()"
+          (searchBlur)="onSearchClose($event)"
           (searchChange)="onSearchChange($event)"
           [ngClass]="{'open': open, 'as-icon': !open}">
 </b-search>
