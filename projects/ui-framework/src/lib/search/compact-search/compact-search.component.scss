@@ -1,0 +1,58 @@
+@import '../../style/common-imports';
+
+$transitionDuration: 0.3s;
+
+:host {
+  display: block;
+  position: relative;
+}
+
+.search-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.search {
+  width: $wrap-height-smaller;
+  transition: width $transitionDuration;
+
+  ::ng-deep {
+    .bfe-wrap {
+      border-radius: $wrap-height-smaller/2;
+      transition: border-radius $transitionDuration;
+    }
+  }
+
+  &.as-icon ::ng-deep {
+    .bfe-wrap {
+      border-color: $border-color;
+    }
+
+    .bfe-prefix.input-icon {
+      padding: 0;
+      width: 100%;
+    }
+
+    .bfe-suffix {
+      visibility: hidden;
+    }
+
+    .b-icon-normal:before {
+      color: $grey-600;
+    }
+  }
+
+  &.open {
+    width: 280px;
+
+    ::ng-deep {
+      .bfe-wrap {
+        border-radius: $border-radius;
+      }
+    }
+  }
+}
