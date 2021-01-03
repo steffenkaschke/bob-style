@@ -236,14 +236,17 @@ export const closestDivisable = (val: number, step: number = 1): number => {
 // CONVERTERS
 // ----------------------
 
-export const asArray = <T = any>(smth: T | T[], castFalsey = true): T[] =>
+export const asArray = <T = unknown>(
+  smth: T | T[] | Iterable<T>,
+  castFalsey = true
+): T[] =>
   isNullOrUndefined(smth) && castFalsey
     ? []
     : isArray(smth)
-    ? (smth as T[])
+    ? smth
     : isIterable(smth)
     ? Array.from(smth)
-    : ([smth] as T[]);
+    : [smth];
 
 export const asNumber = (smth: any, roundToDcmls = null): number => {
   if (!smth) {
@@ -606,6 +609,32 @@ export const splitArrayToChunks = <T = any>(
 };
 
 // ----------------------
+// SETS
+// ----------------------
+
+export const addToSet = <T = unknown>(
+  targetSet: Set<T>,
+  values: T | T[] | Set<T> | Iterable<T>
+): Set<T> => {
+  if (!targetSet) {
+    return new Set(asArray<T>(values));
+  }
+  asArray<T>(values).forEach((v) => targetSet.add(v));
+  return targetSet;
+};
+
+export const removeFromSet = <T = unknown>(
+  targetSet: Set<T>,
+  values: T | T[] | Set<T> | Iterable<T>
+): Set<T> => {
+  if (!targetSet) {
+    return new Set();
+  }
+  asArray<T>(values).forEach((v) => targetSet.delete(v));
+  return targetSet;
+};
+
+// ----------------------
 // MAPS
 // ----------------------
 
@@ -656,6 +685,10 @@ export const mapSplice = <K = unknown, V = unknown>(
 
 export const getMapValues = <K = string, V = unknown>(map: Map<K, V>): V[] => {
   return Array.from(map.values());
+};
+
+export const getMapKeys = <K = string, V = unknown>(map: Map<K, V>): K[] => {
+  return Array.from(map.keys());
 };
 
 // ----------------------
