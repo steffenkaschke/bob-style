@@ -8,17 +8,13 @@ import { SearchComponent } from '../search/search.component';
   styleUrls: ['./compact-search.component.scss']
 })
 export class CompactSearchComponent implements OnInit {
-  // @ViewChild('input', { static: true }) input: ElementRef<HTMLInputElement>;
   @ViewChild('search') search: SearchComponent;
 
   @Input() value = '';
-  @Input() label: string;
   @Input() placeholder: string;
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() searchFocus: EventEmitter<string> = new EventEmitter<string>();
-
-  @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
 
   readonly formElementSize = FormElementSize;
 

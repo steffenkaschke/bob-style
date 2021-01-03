@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CompactSearchComponent } from './compact-search.component';
 import { SearchModule } from '../search/search.module';
-import { ButtonsModule } from '../../buttons/buttons.module';
 
 
 
@@ -12,7 +11,6 @@ import { ButtonsModule } from '../../buttons/buttons.module';
   imports: [
     CommonModule,
     SearchModule,
-    ButtonsModule,
   ],
 })
 export class CompactSearchModule { }

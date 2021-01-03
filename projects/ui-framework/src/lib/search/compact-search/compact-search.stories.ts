@@ -13,7 +13,6 @@ const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
 
 const template = `
 <b-compact-search [value]="value"
-                  [label]="label"
                   [placeholder]="placeholder"
                   [size]="size"
                   (searchChange)="searchChange($event)"
@@ -39,11 +38,7 @@ const note = `
   Name | Type | Description | Default value
   --- | --- | --- | ---
   [value] | string | input value | &nbsp;
-  [label] | string | label text | &nbsp;
   [placeholder] | string | placeholder text | &nbsp;
-  [hideLabelOnFocus] | boolean | make label behave as placeholder | true
-  [enableBrowserAutoComplete] | InputAutoCompleteOptions | enable/disable autocomplete | off
-  [size] | FormElementSize | regular height (44px), smaller height (36px) | regular
   (searchFocus) | EventEmitter<wbr>&lt;string&gt;  | emits on input focus | &nbsp;
   (searchChange) | EventEmitter<wbr>&lt;string&gt;  | emits on input value change | &nbsp;
 
@@ -58,15 +53,9 @@ story.add(
       template: storyTemplate,
       props: {
         value: text('value', ''),
-        label: text('label', ''),
         placeholder: text('placeholder', 'Search'),
         searchChange: action('searchChange'),
         searchFocus: action('searchFocus'),
-        size: select(
-          'size',
-          Object.values(FormElementSize),
-          FormElementSize.regular
-        ),
       },
       moduleMetadata: {
         imports: [BrowserAnimationsModule, CompactSearchModule, StoryBookLayoutModule],
