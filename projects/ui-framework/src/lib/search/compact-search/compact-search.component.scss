@@ -3,7 +3,7 @@
 $transitionDuration: 0.3s;
 
 :host {
-  display: block;
+  display: inline-block;
   position: relative;
 }
 
@@ -29,7 +29,7 @@ $transitionDuration: 0.3s;
 
   &.as-icon ::ng-deep {
     .bfe-wrap {
-      border-color: $border-color;
+      border: 0;
     }
 
     .bfe-prefix.input-icon {
