@@ -28,7 +28,7 @@ $transitionDuration: 0.3s;
     }
     .bfe-prefix.input-icon {
       padding: 0;
-      width: 36px;
+      width: $wrap-height-smaller;
     }
   }
 
@@ -37,7 +37,7 @@ $transitionDuration: 0.3s;
       border-color: transparent;
       background-color: transparent;
     }
-    
+
     .bfe-suffix {
       visibility: hidden;
     }
