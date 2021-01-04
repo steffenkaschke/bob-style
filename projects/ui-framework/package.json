@@ -9,7 +9,7 @@
     "@angular/core": "^11.0.5",
     "@angular/forms": "^11.0.5",
     "@angular/material": "^11.0.3",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.20",
     "rxjs": "^6.5.4",
     "@types/node": "^12.12.39",
     "@types/highcharts": "^5.0.44",
