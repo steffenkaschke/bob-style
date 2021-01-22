@@ -9,6 +9,7 @@ import {
   merge as _merge,
   pick as _pick,
   omit as _omit,
+  assign as _assign,
 } from 'lodash';
 import { RenderedComponent } from '../component-renderer/component-renderer.interface';
 import { SelectGroupOption } from '../../lists/list.interface';
@@ -882,6 +883,9 @@ export const isDateISO8601 = (date: string): boolean => {
   );
 };
 
+export const isDateOrDateString = (value: Date | string) =>
+  value && isDate(new Date(value));
+
 export const isDateFormat = (frmt: string): boolean => {
   if (!isString(frmt)) {
     return false;
@@ -1744,23 +1748,46 @@ export const get = <T = unknown, V = unknown>(
   return _get(source, path, defVal);
 };
 
-export const merge = <T = unknown>(
-  target: Partial<T>,
-  ...sources: Partial<T>[]
-): T => {
-  return _merge(target, ...sources) as T;
+export const merge = <
+  T extends GenericObject,
+  S extends Partial<T> & GenericObject,
+  O extends T & S
+>(
+  target: T,
+  ...sources: S[]
+): O => {
+  return _merge(target, ...sources);
 };
 
-export const pick = <T extends GenericObject, K extends keyof T>(
+export const assign = <
+  T extends GenericObject,
+  S extends Partial<T> & GenericObject,
+  O extends T & S
+>(
+  target: T,
+  ...sources: S[]
+): O => {
+  return _assign(target, ...sources);
+};
+
+export const pick = <
+  T extends GenericObject,
+  K extends Extract<keyof T, string>,
+  O extends Pick<T, K> & GenericObject
+>(
   object: T,
   props: K | K[]
-): Pick<T, K> => {
+): O => {
   return _pick(object, props);
 };
 
-export const omit = <T extends GenericObject, K extends keyof T>(
+export const omit = <
+  T extends GenericObject,
+  K extends Extract<keyof T, string>,
+  O extends Omit<T, K> & GenericObject
+>(
   object: T,
   props: K | K[]
-): Omit<T, K> => {
+): O => {
   return _omit(object, props);
 };
