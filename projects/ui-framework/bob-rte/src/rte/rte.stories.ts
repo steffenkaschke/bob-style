@@ -26,9 +26,13 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 );
 
 const disableControlsDef = [];
-const controlsDef = dedupeArray(Object.values(BlotType)).filter(
-  (cntrl) => !disableControlsDef.includes(cntrl)
-);
+const controlsDef = [
+  ...dedupeArray(Object.values(BlotType)).filter(
+    (cntrl) => !disableControlsDef.includes(cntrl)
+  ),
+  BlotType.removeFormat,
+  BlotType.pasteAsText,
+];
 
 const value = rteMockHtml;
 
@@ -234,11 +238,7 @@ story.add(
           'Props'
         ),
 
-        placeholderList: object<SelectGroupOption[]>(
-          'options',
-          placeholderMock,
-          'Data'
-        ),
+        placeholderList: object('options', placeholderMock, 'Data'),
         mentionsList: object('mentionsList', mentionsOptions, 'Data'),
 
         change: action('Value changed'),

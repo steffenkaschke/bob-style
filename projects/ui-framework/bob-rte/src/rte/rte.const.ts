@@ -26,10 +26,16 @@ export const RTE_CONTROLS_DEF = joinArrays(
     BlotType.mentions,
     BlotType.placeholder,
   ],
-  Object.values(BlotType)
+  Object.values(BlotType).filter((v) =>
+    [BlotType.removeFormat, BlotType.pasteAsText].includes(v)
+  )
 );
 
-export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [BlotType.placeholder];
+export const RTE_DISABLE_CONTROLS_DEF: BlotType[] = [
+  BlotType.placeholder,
+  BlotType.removeFormat,
+  BlotType.pasteAsText,
+];
 
 export const RTE_MINHEIGHT_DEF = 185;
 export const RTE_MAXHEIGHT_DEF = 350;
@@ -53,7 +59,7 @@ export const RTE_HTML_CLEANUP_REPLACERS_INPUT: HtmlCleanupReplacer[] = [
   HTML_CLEANUP_REPLACERS.blockToDiv,
   // HTML_CLEANUP_REPLACERS.biToStrongEM,
   HTML_CLEANUP_REPLACERS.headings,
-  // HTML_CLEANUP_REPLACERS.nbsp,
+  HTML_CLEANUP_REPLACERS.nbsp,
   // HTML_CLEANUP_REPLACERS.blockStyleTagsUsedAsBR,
   // HTML_CLEANUP_REPLACERS.emptyDivs,
   HTML_CLEANUP_REPLACERS.emptyTags,
