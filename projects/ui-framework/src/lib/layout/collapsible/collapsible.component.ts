@@ -9,12 +9,14 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { Icons } from '../../icons/icons.enum';
 import {
   applyChanges,
+  hasChanges,
   isBoolean,
   simpleUID,
 } from '../../services/utils/functional-utils';
-import { CHEVRON_ICONS, COLLAPSIBLE_STYLE_DEF } from './collapsible.const';
+import { COLLAPSIBLE_STYLE_DEF } from './collapsible.const';
 import { CollapsibleStyle } from './collapsible.interface';
 
 @Component({
@@ -32,7 +34,7 @@ export class CollapsibleComponent implements OnChanges {
 
   @Input() id: string = simpleUID('bcl');
   @Input() title: string;
-  @Input() style: CollapsibleStyle = COLLAPSIBLE_STYLE_DEF;
+  @Input() config: CollapsibleStyle = COLLAPSIBLE_STYLE_DEF;
   @Input() animate = false;
 
   @Input('startExpaned') set setStartExpaned(startExpaned: boolean) {
@@ -43,7 +45,7 @@ export class CollapsibleComponent implements OnChanges {
 
   public expanded = false;
   public shouldAnimate = false;
-  readonly chevronIcon = CHEVRON_ICONS;
+  public chevronIcon: string;
   private timeout: any;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -51,11 +53,21 @@ export class CollapsibleComponent implements OnChanges {
       this,
       changes,
       {
-        style: COLLAPSIBLE_STYLE_DEF,
+        config: COLLAPSIBLE_STYLE_DEF,
       },
       [],
       true
     );
+
+    if (hasChanges(changes, ['config'], true)) {
+      this.config = { ...COLLAPSIBLE_STYLE_DEF, ...this.config };
+    }
+
+    this.chevronIcon = (
+      this.config?.chevronIcon?.icon || Icons.chevron_right
+    ).replace('b-icon-', '');
+
+    console.log(changes, this.chevronIcon);
   }
 
   public onExpand(event: Event) {
@@ -65,7 +77,7 @@ export class CollapsibleComponent implements OnChanges {
   }
 
   private addAnimation() {
-    if (this.shouldAnimate !== true) {
+    if (this.animate !== true) {
       return;
     }
     this.shouldAnimate = true;
