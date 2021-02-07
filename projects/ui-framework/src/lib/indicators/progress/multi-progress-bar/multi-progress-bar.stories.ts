@@ -6,6 +6,7 @@ import { ProgressType, ProgressSize } from '../progress.enum';
 import { MultiProgressBarModule } from './multi-progress-bar.module';
 import { ButtonsModule } from '../../../buttons/buttons.module';
 import { action } from '@storybook/addon-actions';
+import { ColorPaletteService } from '../../../services/color-service/color-palette.service';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -54,7 +55,7 @@ const note = `
   --- | --- | --- | ---
   [type] | ProgressType | theme | primary
   [size] | ProgressSize | theme size | medium
-  [data] | MultiProgressBarData[] | \`\`\`color: ColorPalette/string\`\`\` - bar color (if color is not passed, color for the Palette will be used),<br>\
+  [data] | MultiProgressBarData[] | \`\`\`color: ColorPalette/string\`\`\` - bar section color (if color is not passed, color from the Palette will be used),<br>\
   \`\`\`value: number\`\`\` -  progress value;<br>\
   **Note:** If the sum of all values does not add up to 100, then the sum of all values will be taken for 100%, and all the progress bars will display relative to that. |  &nbsp;
   [config] | MultiProgressBarConfig |  \`\`\`total: boolean\`\`\` - number to be considered as 100% instead of the sum of values <br>\
@@ -68,6 +69,8 @@ const note = `
   ${template}
   ~~~
 `;
+
+const colorGenerator = new ColorPaletteService().paletteColorGenerator();
 
 const toAdd = () => ({
   template: storyTemplate,
@@ -85,10 +88,10 @@ const toAdd = () => ({
     ],
 
     data: object('data', [
-      { value: 13 },
-      { value: 27 },
-      { value: 5 },
-      { value: 67 },
+      { value: 13, color: colorGenerator.next() },
+      { value: 27, color: colorGenerator.next() },
+      { value: 5, color: colorGenerator.next() },
+      { value: 67, color: colorGenerator.next() },
     ]),
 
     trackColor: select(
