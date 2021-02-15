@@ -66,7 +66,6 @@ const note = `
   *name | string | name of series | &nbsp;
   *data | | series data array for chart | &nbsp;
   legend (optional) | boolean | shows legend | false
-  colorPalette (optional) | string[] | color palette array | default array of colors
   height (optional) | number | height of chart | 500
   title (optional) | string | title of chart | &nbsp;
   pointFormat (optional) | string | tooltip formatter | {series.name}: <b>{point.percentage:.1f}%</b>
@@ -110,31 +109,6 @@ story.add(
         yLabels: object('yLabels', BUBBLE_CHART_CATEGORIES_MOCK),
         color: text('color', '#A4C9EF'),
         data: object('data', BUBBLE_CHART_DATA_MOCK),
-        colorPalette: object('colorPalette', [
-          '#CC2E4E',
-          '#87233D',
-          '#DB8962',
-          '#FEA54A',
-          '#FECC4A',
-          '#8F4A67',
-          '#D2728A',
-          '#D295A4',
-          '#E0ACAC',
-          '#BF8A78',
-          '#C0755A',
-          '#866161',
-          '#663E4E',
-          '#574285',
-          '#6969C6',
-          '#556E8A',
-          '#789BC2',
-          '#9BC7FA',
-          '#6DC3BC',
-          '#82D9B1',
-          '#959595',
-          '#616161',
-          '#313131',
-        ]),
       },
       moduleMetadata: {
         imports: [StoryBookLayoutModule, BrowserAnimationsModule, ChartsModule],

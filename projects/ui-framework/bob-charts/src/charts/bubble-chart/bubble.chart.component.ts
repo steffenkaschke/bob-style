@@ -4,7 +4,7 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
-  NgZone,
+  NgZone, ChangeDetectionStrategy
 } from '@angular/core';
 import { ChartCore } from '../chart/chart-core';
 import { SeriesBubbleOptions } from 'highcharts';
@@ -14,6 +14,7 @@ import { ChartTypesEnum } from '../charts.enum';
   selector: 'b-bubble-chart',
   templateUrl: '../chart/chart.component.html',
   styleUrls: ['../chart/chart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BubbleChartComponent extends ChartCore implements OnChanges {
 
