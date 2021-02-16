@@ -43,7 +43,7 @@ describe('InfoStripComponent', () => {
     };
 
     it('should have warning icon with primary color', () => {
-      testIcon(InfoStripIconType.warning, Icons.warning, IconColor.primary);
+      testIcon(InfoStripIconType.warning, Icons.error_alt, IconColor.primary_alt);
     });
 
     it('should have success icon with positive color', () => {
@@ -51,7 +51,7 @@ describe('InfoStripComponent', () => {
     });
 
     it('should have error icon with negative color', () => {
-      testIcon(InfoStripIconType.error, Icons.error, IconColor.negative);
+      testIcon(InfoStripIconType.error, Icons.warning, IconColor.negative);
     });
 
     it('should have information icon with inform color', () => {
