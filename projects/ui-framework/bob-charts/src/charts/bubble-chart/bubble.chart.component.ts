@@ -7,8 +7,8 @@ import {
   NgZone, ChangeDetectionStrategy
 } from '@angular/core';
 import { ChartCore } from '../chart/chart-core';
-import { SeriesBubbleOptions } from 'highcharts';
 import { ChartTypesEnum } from '../charts.enum';
+import { BubbleChartSeriesOptionsWithData } from '../charts.interface';
 
 @Component({
   selector: 'b-bubble-chart',
@@ -27,7 +27,7 @@ export class BubbleChartComponent extends ChartCore implements OnChanges {
   @Input() xSize: number;
   @Input() ySize: number;
   @Input() color: string;
-  @Input() data: SeriesBubbleOptions[];
+  @Input() data: BubbleChartSeriesOptionsWithData;
 
   constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
     super(cdr, zone);
@@ -80,9 +80,7 @@ export class BubbleChartComponent extends ChartCore implements OnChanges {
           }
         }
       },
-      series: [
-        { data: this.data }
-      ] as any
+      series: [ this.data as any ],
     };
   }
 }
