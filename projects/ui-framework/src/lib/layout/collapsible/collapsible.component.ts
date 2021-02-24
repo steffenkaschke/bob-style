@@ -2,10 +2,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
+  ElementRef, EventEmitter,
   Input,
   NgZone,
-  OnChanges,
+  OnChanges, Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -31,7 +31,8 @@ export class CollapsibleComponent implements OnChanges {
   @ViewChild('section', { static: true }) section: ElementRef<
     HTMLDetailsElement
   >;
-
+  @Output() onCollapsed: EventEmitter<void> = new EventEmitter<void>();
+  @Output() onExpanded: EventEmitter<void> = new EventEmitter<void>();
   @Input() id: string = simpleUID('bcl');
   @Input() title: string;
   @Input() config: CollapsibleStyle = COLLAPSIBLE_STYLE_DEF;
@@ -76,12 +77,14 @@ export class CollapsibleComponent implements OnChanges {
 
   public collapse(collapse = true) {
     this.section.nativeElement.open = this.expanded = !collapse;
+    this.onCollapsed.emit();
   }
 
   public onExpand(event: Event) {
     this.addAnimation();
     this.expanded = event.target['open'];
     this.cd.detectChanges();
+    this.onExpanded.emit();
   }
 
   private addAnimation() {
