@@ -31,8 +31,8 @@ export class CollapsibleComponent implements OnChanges {
   @ViewChild('section', { static: true }) section: ElementRef<
     HTMLDetailsElement
   >;
-  @Output() onCollapsed: EventEmitter<void> = new EventEmitter<void>();
-  @Output() onExpanded: EventEmitter<void> = new EventEmitter<void>();
+  @Output() collapsed: EventEmitter<void> = new EventEmitter<void>();
+  @Output() expanded: EventEmitter<void> = new EventEmitter<void>();
   @Input() id: string = simpleUID('bcl');
   @Input() title: string;
   @Input() config: CollapsibleStyle = COLLAPSIBLE_STYLE_DEF;
@@ -40,11 +40,11 @@ export class CollapsibleComponent implements OnChanges {
 
   @Input('startExpaned') set setStartExpaned(startExpaned: boolean) {
     if (isBoolean(startExpaned) && this.section) {
-      this.section.nativeElement.open = this.expanded = startExpaned;
+      this.section.nativeElement.open = this.isExpanded = startExpaned;
     }
   }
 
-  public expanded = false;
+  public isExpanded = false;
   public shouldAnimate = false;
   public chevronIcon: string = Icons.chevron_right.replace('b-icon-', '');
   private timeout: any;
@@ -72,19 +72,19 @@ export class CollapsibleComponent implements OnChanges {
   }
 
   public expand(expand = true) {
-    this.section.nativeElement.open = this.expanded = expand;
+    this.section.nativeElement.open = this.isExpanded = expand;
   }
 
   public collapse(collapse = true) {
-    this.section.nativeElement.open = this.expanded = !collapse;
-    this.onCollapsed.emit();
+    this.section.nativeElement.open = this.isExpanded = !collapse;
+    this.collapsed.emit();
   }
 
   public onExpand(event: Event) {
     this.addAnimation();
-    this.expanded = event.target['open'];
+    this.isExpanded = event.target['open'];
     this.cd.detectChanges();
-    this.onExpanded.emit();
+    this.expanded.emit();
   }
 
   private addAnimation() {
