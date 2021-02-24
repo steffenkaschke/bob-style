@@ -84,7 +84,7 @@ export class CollapsibleComponent implements OnChanges {
     this.addAnimation();
     this.isExpanded = event.target['open'];
     this.cd.detectChanges();
-    this.expanded.emit();
+    this.isExpanded ? this.expanded.emit() : this.collapsed.emit()
   }
 
   private addAnimation() {
