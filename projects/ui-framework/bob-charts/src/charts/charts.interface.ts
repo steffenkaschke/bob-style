@@ -1,4 +1,4 @@
-import { Options, ExportingMimeTypeValue, SeriesBubbleOptions, SeriesBubbleDataOptions } from 'highcharts';
+import { Options, ExportingMimeTypeValue, SeriesBubbleDataOptions } from 'highcharts';
 import { ChartTypesEnum } from './charts.enum';
 import { ChartCore } from './chart/chart-core';
 
