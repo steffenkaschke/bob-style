@@ -1,4 +1,4 @@
-import { BubbleChartSeriesOptionsWithData } from './charts.interface';
+import { ExtendedSeriesBubbleDataOptions } from './charts.interface';
 
 export const LINE_CHART_DATA_MOCK = [
   ['Human Resources', 3],
@@ -11,8 +11,7 @@ export const LINE_CHART_DATA_MOCK = [
   ['Sales', 6],
 ];
 
-export const BUBBLE_CHART_DATA_MOCK: BubbleChartSeriesOptionsWithData = {
-  data: [
+export const BUBBLE_CHART_DATA_MOCK: ExtendedSeriesBubbleDataOptions[] = [
     { x: 0, y: 0, z: 10, name: 'BE', country: 'Belgium' },
     { x: 0, y: 1, z: 20, name: 'DE', country: 'Germany' },
     { x: 0, y: 2, z: 10, name: 'FI', country: 'Finland' },
@@ -22,9 +21,7 @@ export const BUBBLE_CHART_DATA_MOCK: BubbleChartSeriesOptionsWithData = {
     { x: 2, y: 0, z: 30, name: 'FR', country: 'France' },
     { x: 2, y: 1, z: 10, name: 'NO', country: 'Norway' },
     { x: 2, y: 2, z: 20, name: 'UK', country: 'United Kingdom' },
-  ],
-  type: 'bubble',
-};
+];
 
 export const BUBBLE_CHART_CATEGORIES_MOCK = [
   'Low', 'Medium', 'High'

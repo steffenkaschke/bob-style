@@ -1,4 +1,4 @@
-import { Options, ExportingMimeTypeValue, SeriesBubbleOptions, SeriesBubbleDataOptions } from 'highcharts';
+import { Options, ExportingMimeTypeValue, SeriesBubbleDataOptions } from 'highcharts';
 import { ChartTypesEnum } from './charts.enum';
 import { ChartCore } from './chart/chart-core';
 
@@ -53,10 +53,6 @@ export enum ChartLegendVerticalAlignEnum {
 export enum ChartLegendLayoutEnum {
   VERTICAL = 'vertical',
   HORIZONTAL = 'horizontal',
-}
-
-export interface BubbleChartSeriesOptionsWithData extends SeriesBubbleOptions {
-  data: ExtendedSeriesBubbleDataOptions[];
 }
 
 export interface ExtendedSeriesBubbleDataOptions extends SeriesBubbleDataOptions {
