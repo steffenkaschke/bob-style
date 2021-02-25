@@ -55,10 +55,6 @@ export enum ChartLegendLayoutEnum {
   HORIZONTAL = 'horizontal',
 }
 
-export interface BubbleChartSeriesOptionsWithData extends SeriesBubbleOptions {
-  data: ExtendedSeriesBubbleDataOptions[];
-}
-
 export interface ExtendedSeriesBubbleDataOptions extends SeriesBubbleDataOptions {
   [key: string]: any;
 }
