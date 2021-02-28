@@ -1,1 +1,11 @@
-<mutation-observers-test></mutation-observers-test>
+<div style="width: 325px" [formGroup]="formGroup">
+  <b-color-picker-input
+    [label]="'Some label'"
+    [description]="'The description'"
+    [placeholder]="'The placeholder'"
+    [warnMessage]="''"
+    formControlName="tester"
+    [errorMessage]="''"
+    (inputEvents)="inputEventHandler($event)">
+  </b-color-picker-input>
+</div>
