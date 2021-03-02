@@ -20,6 +20,17 @@
   }
 }
 
+.color-circle {
+  border-radius: 50%;
+  height: times8(3);
+  width: times8(3);
+}
+
+.bfe-wrap .bfe-prefix {
+  margin-left: 6px;
+  display: block;
+}
+
 .select-chevron {
   &:before {
     width: 12px;
