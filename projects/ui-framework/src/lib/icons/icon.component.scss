@@ -11,10 +11,8 @@ $circularIconSizes: (
 );
 
 :host {
-  display: inline-flex;
+  @include flex-align(inline-flex);
   vertical-align: middle;
-  justify-content: center;
-  align-items: center;
   position: relative;
   flex-shrink: 0;
 
@@ -28,20 +26,16 @@ $circularIconSizes: (
       }
     }
   }
+}
 
-  &[data-rotate='90'] {
-    .b-icon {
-      transform: rotate(90deg);
-    }
+[data-icon-before-color='custom'] {
+  @include icon-color(var(--icon-color));
+
+  &.has-hover:hover {
+    filter: brightness(0.8);
   }
-  &[data-rotate='180'] {
-    .b-icon {
-      transform: rotate(180deg);
-    }
-  }
-  &[data-rotate='-90'] {
-    .b-icon {
-      transform: rotate(-90deg);
-    }
-  }
+}
+
+[data-icon-before-size='custom'] {
+  @include icon-size(var(--icon-size));
 }
