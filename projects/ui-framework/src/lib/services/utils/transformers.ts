@@ -26,13 +26,24 @@ import { itemID } from '../../lists/list.interface';
 // Transformers
 // -------------------------------
 
+export const TRUTHY_LOOKING_STRINGS = [
+  'true',
+  '1',
+  'on',
+  'yes',
+  'ja',
+  'oui',
+  'si',
+  'da',
+];
+
 export const truthyOrFalse = (value) => {
-  const truthy = ['true', '1', 1, 'on', 'yes'];
-  if (typeof value !== 'boolean') {
-    value = truthy.includes(value) ? true : false;
-  }
-  return value;
+  return typeof value === 'boolean'
+    ? value
+    : TRUTHY_LOOKING_STRINGS.includes(String(value).toLowerCase());
 };
+
+export const parseBooleanString = truthyOrFalse;
 
 export const stringListToArray = (
   list: string,
