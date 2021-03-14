@@ -20,7 +20,10 @@
   margin-top: times8(3);
   display: flex;
   justify-content: center;
-  font-weight: 700;
+  
+  button.medium {
+    font-weight: 700;
+  }
 }
 
 .empty-state-image {
