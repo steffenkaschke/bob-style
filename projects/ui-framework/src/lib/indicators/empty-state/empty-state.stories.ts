@@ -40,6 +40,21 @@ const note = `
   ~~~
   ${template}
   ~~~
+
+  #### (interface) EmptyStateConfig
+  Name | Type
+  --- | ---
+  title | string
+  text | string
+  icon | Icons
+  iconSize | IconSize
+  buttonLabel |  string
+  imgSrc | string / SafeResourceUrl
+  button | Button
+  buttonClick | () => void
+  titleClass | string / string[] / NgClass
+  textClass | string / string[] / NgClass
+  buttonClass | string / string[] / NgClass
 `;
 
 const toAdd = () => {
@@ -53,10 +68,7 @@ const toAdd = () => {
       buttonLabel: text('buttonLabel', 'CLICK HERE'),
       imgSrc: select(
         'imgSrc',
-        [
-          0,
-          'https://raw.githubusercontent.com/hibobio/hibob-files/master/img/emptyState_ee_profile_summary.png?token=AAP3IOWBZDZ6CYVRQ2QNWXK7FJW5A',
-        ],
+        [0, 'http://images.hibob.com/img/emptyState_ee_profile_summary.png'],
         0
       ),
     },
