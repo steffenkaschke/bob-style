@@ -87,6 +87,7 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
   @ViewChild(MultiListComponent, { static: true }) list: MultiListComponent;
 
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
+  @HostBinding('attr.data-disabled') @Input() disabled = null;
 
   @Input() optionsDefault: SelectGroupOption[];
   @Input() mode: SelectMode = SelectMode.classic;
@@ -143,7 +144,7 @@ export abstract class BaseMultiListAndSomethingElement<T = any>
     this.listValue$.next(value);
   }
 
-  protected subs: Subscription[] = [];
+  protected readonly subs: Subscription[] = [];
 
   ngOnInit(): void {
     //
