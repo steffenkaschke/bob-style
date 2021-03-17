@@ -18,7 +18,6 @@ import {
 } from 'bob-style';
 import { ListPanelService, OverlayEnabledComponent } from '../../lists/list-panel.service';
 import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
-import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 
@@ -60,7 +59,6 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
   public panelPosition = PanelDefaultPosVer.belowLeftRight;
   public panelClassList: string[] = ['b-select-panel'];
   public positionClassList: OverlayPositionClasses = {};
-  public subscribtions: Subscription[] = [];
 
   public get overlayRef(): OverlayRef {
     return this.panel?.overlayRef;
@@ -104,6 +102,7 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
   }
 
   ngOnDestroy(): void {
+    super.ngOnDestroy();
     this.destroyPanel(true);
   }
 
