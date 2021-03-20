@@ -342,6 +342,8 @@ export { Social } from './lib/form-elements/social/social.enum';
 // Timepicker
 export { TimePickerModule } from './lib/form-elements/timepicker/timepicker.module';
 export { TimePickerComponent } from './lib/form-elements/timepicker/timepicker.component';
+// Colorpicker
+export { ColorPickerModule } from './lib/form-elements/color-picker/color-picker.module';
 // Password Input
 export { PasswordInputModule } from './lib/form-elements/password-input/password-input.module';
 export { PasswordInputComponent } from './lib/form-elements/password-input/password-input.component';
