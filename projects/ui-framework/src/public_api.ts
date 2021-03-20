@@ -342,8 +342,6 @@ export { Social } from './lib/form-elements/social/social.enum';
 // Timepicker
 export { TimePickerModule } from './lib/form-elements/timepicker/timepicker.module';
 export { TimePickerComponent } from './lib/form-elements/timepicker/timepicker.component';
-// Colorpicker
-export { ColorPickerModule } from './lib/form-elements/color-picker/color-picker.module';
 // Password Input
 export { PasswordInputModule } from './lib/form-elements/password-input/password-input.module';
 export { PasswordInputComponent } from './lib/form-elements/password-input/password-input.component';
@@ -364,6 +362,9 @@ export {
   RadioDirection
 } from './lib/form-elements/radio-button/radio-button.enum';
 export * from './lib/form-elements/radio-button/radio-button.interface';
+// Colorpicker
+export { ColorPickerModule } from './lib/form-elements/color-picker/color-picker.module';
+export { ColorPickerComponent } from './lib/form-elements/color-picker/color-picker.component';
 
 
 /*
