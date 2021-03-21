@@ -70,13 +70,13 @@ export class EditCommentComponent implements OnChanges, AfterViewInit, OnDestroy
     return Boolean(this.tribute || this.mentionsList?.length);
   }
 
-  private _value: string;
-  public get value(): string {
-    return this._value || (this.input && this.input[this.isHtml ? 'innerHTML' : 'value']);
+  public value: string;
+
+  public get inputValue(): string {
+    return this.input && this.input[this.isHtml ? 'innerHTML' : 'value'];
   }
 
-  public set value(value: string) {
-    this._value = value;
+  public set inputValue(value: string) {
     this.input && (this.input[this.isHtml ? 'innerHTML' : 'value'] = value);
   }
 
@@ -84,7 +84,7 @@ export class EditCommentComponent implements OnChanges, AfterViewInit, OnDestroy
 
   ngOnChanges(changes: SimpleChanges): void {
     if (hasChanges(changes, ['comment'])) {
-      this.value = !this.isHtml
+      this.value = this.inputValue = !this.isHtml
         ? this.comment.content
         : this.sanitizer.sanitizeHtml(this.comment.content, HTML_COMMENT_SANITIZER_OPTIONS);
     }
@@ -107,11 +107,15 @@ export class EditCommentComponent implements OnChanges, AfterViewInit, OnDestroy
     if (this.autoFocus) {
       this.focus();
     }
-    this.value = this.value;
+    this.inputValue = this.value;
   }
 
   focus() {
     this.input.focus();
+  }
+
+  onInputChange(): void {
+    this.value = this.inputValue;
   }
 
   enterPress(event: KeyboardEvent): void {
@@ -147,9 +151,11 @@ export class EditCommentComponent implements OnChanges, AfterViewInit, OnDestroy
 
   private updateCommentAndResetValue(): void {
     this.sendComment.emit({
-      content: !this.isHtml ? this.value : this.sanitizer.sanitizeHtml(this.value, HTML_COMMENT_SANITIZER_OPTIONS),
+      content: !this.isHtml
+        ? this.inputValue
+        : this.sanitizer.sanitizeHtml(this.inputValue, HTML_COMMENT_SANITIZER_OPTIONS),
     });
-    this.value = '';
+    this.value = this.inputValue = '';
   }
 
   ngOnDestroy(): void {
