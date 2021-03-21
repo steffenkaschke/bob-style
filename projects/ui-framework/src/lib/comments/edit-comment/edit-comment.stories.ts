@@ -24,9 +24,18 @@ const mentionsOptions = mockNames(200).map(
   })
 );
 
+const avatar = mockAvatar();
+const name = mockName();
+
+const contentHTML = `Hello! This is a comment with a mention! <span contenteditable="false"><a href="https://www.google.com/search?q=Earum" spellcheck="false" tabindex="-1" mention-employee-id="e6c3f-0194" class="employee-mention" target="_blank" rel="noopener noreferrer">@Laine Ostler</a></span> is the best!`;
+
 const template = `
 <b-edit-comment
-  [comment]="comment"
+  [comment]="{
+    content: mentionsList?.length ? contentHTML : content,
+    avatar: avatar,
+    name: name
+  }"
   [updateOnBlur]="updateOnBlur"
   [placeholder]="placeholder"
   [autoFocus]="autoFocus"
@@ -78,13 +87,16 @@ story.add(
         comment: object(
           'comment',
           {
-            content: 'input value',
-            avatar: mockAvatar(),
-            name: mockName(),
+            content: 'First comment!',
+            avatar: avatar,
+            name: name,
           },
           'Props'
         ),
         mentionsList: object('mentionsList', mentionsOptions, 'Data'),
+        contentHTML: contentHTML,
+        content: 'First comment!',
+        avatar: avatar,
       },
       moduleMetadata: {
         imports: [StoryBookLayoutModule, BrowserAnimationsModule, CommentsModule],

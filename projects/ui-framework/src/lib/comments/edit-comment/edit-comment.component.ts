@@ -67,14 +67,16 @@ export class EditCommentComponent implements OnChanges, AfterViewInit, OnDestroy
   }
 
   public get isHtml(): boolean {
-    return Boolean(this.tribute || this.mentionsList);
+    return Boolean(this.tribute || this.mentionsList?.length);
   }
 
+  private _value: string;
   public get value(): string {
-    return this.input && this.input[this.isHtml ? 'innerHTML' : 'value'];
+    return this._value || (this.input && this.input[this.isHtml ? 'innerHTML' : 'value']);
   }
 
   public set value(value: string) {
+    this._value = value;
     this.input && (this.input[this.isHtml ? 'innerHTML' : 'value'] = value);
   }
 
@@ -89,20 +91,23 @@ export class EditCommentComponent implements OnChanges, AfterViewInit, OnDestroy
     if (notFirstChanges(changes, ['mentionsList'])) {
       if (!this.tribute) {
         this.initMentions();
-      } else {
+      } else if (this.mentionsList?.length) {
         this.tribute.hideMenu();
         this.tribute.collection[0].values = this.mentionsList;
+      } else {
+        this.ngOnDestroy();
       }
     }
   }
 
   ngAfterViewInit(): void {
-    if (this.mentionsList && !this.tribute) {
+    if (this.mentionsList?.length && !this.tribute) {
       this.initMentions();
     }
     if (this.autoFocus) {
       this.focus();
     }
+    this.value = this.value;
   }
 
   focus() {
@@ -149,5 +154,6 @@ export class EditCommentComponent implements OnChanges, AfterViewInit, OnDestroy
 
   ngOnDestroy(): void {
     this.tribute?.detach(this.input);
+    this.mentionsList = this.tribute = undefined;
   }
 }
