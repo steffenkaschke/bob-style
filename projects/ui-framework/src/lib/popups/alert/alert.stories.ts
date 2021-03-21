@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { select, text, withKnobs } from '@storybook/addon-knobs';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
 import { AlertModule } from './alert.module';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -12,10 +12,13 @@ const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
 );
 const alertTypes = values(AlertType);
 
-const template = `<b-alert-example
+const template = `
+<b-alert-example
   [title]="title"
   [alertType]="alertType"
-  [text]="text"></b-alert-example>`;
+  [text]="text"
+  [isAutoClose]="isAutoClose">
+</b-alert-example>`;
 
 const storyTemplate = `<b-story-book-layout [title]="'Alert'">
     ${template}
@@ -35,7 +38,8 @@ const note = `
         .showAlert({
           alertType: this.alertType,
           title: this.title,
-          text: this.text
+          text: this.text,
+          isAutoClose: this.isAutoClose,
       });
     }
   }
@@ -50,6 +54,7 @@ const note = `
   alertType | AlertType | types - success, error, information, warning
   title | string | alert title
   text | string | alert content
+  isAutoClose | boolean | a flag for auto close the alert after timeout (default true)
 `;
 
 story.add(
@@ -61,6 +66,7 @@ story.add(
         alertType: select('alertType', alertTypes, AlertType.success),
         title: text('title', 'Alert title'),
         text: text('text', 'The alert text appear here'),
+        isAutoClose: boolean('isAutoClose', true),
       },
       moduleMetadata: {
         imports: [AlertModule, AlertExampleModule, StoryBookLayoutModule],

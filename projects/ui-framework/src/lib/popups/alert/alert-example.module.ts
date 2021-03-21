@@ -6,20 +6,19 @@ import { AlertType } from './alert.enum';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import {
   BrowserAnimationsModule,
-  NoopAnimationsModule
+  NoopAnimationsModule,
 } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'b-alert-example',
-  template: `
-    <b-button (clicked)="showAlert()">Show alert</b-button>
-  `,
-  providers: []
+  template: ` <b-button (clicked)="showAlert()">Show alert</b-button> `,
+  providers: [],
 })
 export class AlertExampleComponent {
   @Input() public alertType: AlertType;
   @Input() public text: string;
   @Input() public title: string;
+  @Input() public isAutoClose: boolean;
 
   constructor(private alertService: AlertService) {}
 
@@ -27,7 +26,8 @@ export class AlertExampleComponent {
     const alertConfig: AlertConfig = {
       alertType: this.alertType,
       title: this.title,
-      text: this.text
+      text: this.text,
+      isAutoClose: this.isAutoClose,
     };
     this.alertService.showAlert(alertConfig);
   }
@@ -39,9 +39,9 @@ export class AlertExampleComponent {
     CommonModule,
     ButtonsModule,
     NoopAnimationsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   exports: [AlertExampleComponent],
-  providers: [AlertService]
+  providers: [AlertService],
 })
 export class AlertExampleModule {}
