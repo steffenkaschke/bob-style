@@ -15,7 +15,6 @@ import { Panel } from '../../popups/panel/panel.interface';
 import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
 import { ListPanelService, OverlayEnabledComponent } from '../../lists/list-panel.service';
 import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
-import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -41,13 +40,11 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
     public cd: ChangeDetectorRef,
     public viewContainerRef: ViewContainerRef,
     private listPanelService: ListPanelService,
-    private translateService: TranslateService,
   ) {
     super(cd);
     this.baseValue = '';
     this.wrapEvent = false;
   }
-  // test
 
   @ViewChild(CdkOverlayOrigin, { static: true }) overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
@@ -74,8 +71,7 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
     const value = event.target.value;
 
     // tslint:disable-next-line: triple-equals
-    if (value != this.value && this.isValidValue(value)) {
-      this.errorMessage = '';
+    if (value != this.value) {
       this.writeValue(value, this.forceElementValue);
       this.transmitValue(this.value, {
         eventType: [InputEventType.onChange]
@@ -83,19 +79,8 @@ export class ColorPickerComponent extends BaseFormElement implements OnDestroy, 
     }
   }
 
-  private isValidValue(value: string): boolean {
-    const regExp = new RegExp('^#(?:[0-9a-fA-F]{3}){1,2}$');
-    if (regExp.test(value) || value === '') {
-      this.errorMessage = '';
-      return true;
-    }
-    this.errorMessage = this.translateService.instant('bob-style.lists.empty-state-default');
-    return false;
-  }
-
   public onColorPickerChange(color) {
     this.value = color;
-    this.errorMessage = '';
     this.transmitValue(this.value, { eventType: [InputEventType.onBlur] });
   }
 
