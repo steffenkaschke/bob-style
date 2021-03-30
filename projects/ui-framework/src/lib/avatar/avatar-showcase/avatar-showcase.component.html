@@ -20,7 +20,7 @@
     </b-avatar-image>
 
     <b-avatar-image class="show-more"
-                    *ngIf="showTotalButton"
+                    *ngIf="showTotalButton && !showEmptyTotalLabel"
                     [size]="avatarSize"
                     [icon]="dotsIcon"
                     [text]="totalAvatars < 10000
