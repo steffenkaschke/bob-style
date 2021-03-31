@@ -33,6 +33,17 @@ $bes-avatar-count-default: 3;
   align-items: center;
 }
 
+.total-label {
+  &.single-avatar {
+    margin-left: calc(
+      -1 * var(--avatar-gap, #{$bes-avatar-gap-default}) + #{times8(1)}
+    );
+  }
+  &.multiple-avatars {
+    margin-left: times8(1);
+  }
+}
+
 .avatar {
   margin-left: var(--avatar-gap, #{$bes-avatar-gap-default});
 
