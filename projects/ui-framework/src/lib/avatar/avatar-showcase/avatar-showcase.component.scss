@@ -29,24 +29,21 @@ $bes-avatar-count-default: 3;
 }
 
 .avatar-showcase {
-  display: flex;
-  align-items: center;
+  &:empty {
+    display: none;
+  }
 }
 
-.total-label {
-  &.single-avatar {
-    margin-left: calc(
-      -1 * var(--avatar-gap, #{$bes-avatar-gap-default}) + #{times8(1)}
-    );
-  }
-  &.multiple-avatars {
-    margin-left: times8(1);
-  }
+:host ::ng-deep [cdkoverlayorigin],
+.avatar-showcase {
+  display: flex;
+  align-items: center;
 }
 
 .avatar {
   margin-left: var(--avatar-gap, #{$bes-avatar-gap-default});
 
+  &:only-child,
   &:first-child {
     margin-left: 0;
   }
@@ -106,6 +103,10 @@ $bes-avatar-count-default: 3;
     margin-left: 0;
     margin-right: var(--avatar-gap, #{$bes-avatar-gap-default});
     z-index: 30;
+
+    &:only-child {
+      margin-right: 0;
+    }
   }
 }
 
