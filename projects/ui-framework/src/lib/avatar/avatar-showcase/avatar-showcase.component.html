@@ -28,16 +28,13 @@
                       totalAvatars : null"
                     [border]="true">
     </b-avatar-image>
-
-    <span
-      *ngIf="showTotalLabel && (showEmptyTotalLabel || totalAvatars)"
-      class="b-body"
-      [ngClass]="{
-        'mrg-l-8': totalAvatars
-      }"
-    >
-      {{ totalAvatars }} {{ 'bob-style.avatar-showcase.employees' | translate }}
-    </span>
   </div>
+
+  <span *ngIf="showTotalLabel"
+        class="total-label b-body"
+        [class.mrg-l-8]="totalAvatars || showTotalButton">
+    {{ totalAvatars }}
+    {{ 'bob-style.avatar-showcase.employees' | translate }}
+  </span>
 
 </b-single-select-panel>

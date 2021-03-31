@@ -29,6 +29,13 @@ $bes-avatar-count-default: 3;
 }
 
 .avatar-showcase {
+  &:empty {
+    display: none;
+  }
+}
+
+:host ::ng-deep [cdkoverlayorigin],
+.avatar-showcase {
   display: flex;
   align-items: center;
 }
@@ -36,6 +43,7 @@ $bes-avatar-count-default: 3;
 .avatar {
   margin-left: var(--avatar-gap, #{$bes-avatar-gap-default});
 
+  &:only-child,
   &:first-child {
     margin-left: 0;
   }
@@ -95,6 +103,10 @@ $bes-avatar-count-default: 3;
     margin-left: 0;
     margin-right: var(--avatar-gap, #{$bes-avatar-gap-default});
     z-index: 30;
+
+    &:only-child {
+      margin-right: 0;
+    }
   }
 }
 

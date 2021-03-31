@@ -1,27 +1,28 @@
-import { storiesOf } from '@storybook/angular';
+import { cloneDeep, zipObject } from 'lodash';
+
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
 import {
+  boolean,
+  number,
   object,
   select,
-  boolean,
   withKnobs,
-  number,
 } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
+import { storiesOf } from '@storybook/angular';
+
 import { ComponentGroupType } from '../../consts';
+import { SelectGroupOption } from '../../lists/list.interface';
+import { cloneDeepSimpleObject } from '../../services/utils/functional-utils';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EmployeesShowcaseModule } from './avatar-showcase.module';
 import { AvatarSize } from '../avatar/avatar.enum';
-import { zipObject } from 'lodash';
+import { AvatarShowcase } from './avatar-showcase.interface';
 import {
   EMPLOYEE_SHOWCASE_MOCK,
   EMPLOYEE_SHOWCASE_OPTIONS_MOCK,
 } from './avatar-showcase.mock';
-import { SelectGroupOption } from '../../lists/list.interface';
-import { AvatarShowcase } from './avatar-showcase.interface';
-import { cloneDeepSimpleObject } from '../../services/utils/functional-utils';
-import { cloneDeep } from 'lodash';
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import { EmployeesShowcaseModule } from './avatar-showcase.module';
 
 const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
@@ -37,13 +38,12 @@ const sizeOptions = zipObject(sizeOptionsKeys, sizeOptionsValues);
 
 const template1 = `
   <b-avatar-showcase
-            [employees]="employees"
+            [employees]="employees.slice(0,numOfMockAvatars)"
             [avatarSize]="avatarSize"
             [min]="min"
             [max]="max"
             [showTotal]="showTotal"
             [showTotalLabel]="showTotalLabel"
-            [showEmptyTotalLabel]="showEmptyTotalLabel"
             [expandOnClick]="expandOnClick"
             [inverseStack]="inverseStack"
             [fadeOut]="fadeOut"
@@ -63,7 +63,6 @@ const template1ForNotes = `
             [max]="max"
             [showTotal]="showTotal"
             [showTotalLabel]="showTotalLabel"
-            [showEmptyTotalLabel]="showEmptyTotalLabel"
             [expandOnClick]="expandOnClick"
             [inverseStack]="inverseStack"
             [fadeOut]="fadeOut"
@@ -82,7 +81,6 @@ const template2 = `
             [max]="8"
             [showTotal]="true"
             [showTotalLabel]="showTotalLabel"
-            [showEmptyTotalLabel]="showEmptyTotalLabel"
             [expandOnClick]="true"
             [inverseStack]="true"
             [fadeOut]="true"
@@ -131,7 +129,6 @@ const note = `
   [showTotal] | boolean | show the total counter circle \
    - only valid for avatar size < medium; will be disabled if [fadeOut] is true) | true
   [showTotalLabel] | boolean | show total text ("X Employees") to the right of the showcase | false
-  [showEmptyTotalLabel] | boolean | show total text when employees are empty ("0 Employees") to the right of the showcase | false
   [inverseStack] | boolean | the 'front', uppermost avatar \
   will be on the left, and not on the right, as in defauult mode | false
   [fadeOut] | boolean | make avatars fade out, from front to back | false
@@ -173,6 +170,12 @@ story.add(
     return {
       template: storyTemplate,
       props: {
+        numOfMockAvatars: number(
+          'number of mock avatars (0-30)',
+          30,
+          {},
+          'Props'
+        ),
         avatarSizes: AvatarSize,
         avatarSize: select(
           'avatarSize',
@@ -185,7 +188,6 @@ story.add(
         expandOnClick: boolean('expandOnClick', true, 'Props'),
         showTotal: boolean('showTotal', true, 'Props'),
         showTotalLabel: boolean('showTotalLabel', false, 'Props'),
-        showEmptyTotalLabel:  boolean('showEmptyTotalLabel', false, 'Props'),
         inverseStack: boolean('inverseStack', false, 'Props'),
         fadeOut: boolean('fadeOut', false, 'Props'),
         zoomOnHover: boolean('zoomOnHover', false, 'Props'),

@@ -1,45 +1,10 @@
 import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  NgZone,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ChangeDetectionStrategy,
-  HostBinding,
-  ViewChild,
-} from '@angular/core';
-import { ShowcaseInputItem } from './avatar-showcase.interface';
-import { AvatarSize } from '../avatar/avatar.enum';
-import {
-  AvatarGap,
-  AVATAR_SHOWCASE_SHUFFLE_INTERVAL,
-} from './avatar-showcase.const';
-import { Icons, IconColor } from '../../icons/icons.enum';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import {
   BehaviorSubject,
   combineLatest,
   Observable,
   of,
   Subscription,
 } from 'rxjs';
-import { SelectGroupOption } from '../../lists/list.interface';
-import { ListChange } from '../../lists/list-change/list-change';
-import { insideZone, timedSlice } from '../../services/utils/rxjs.operators';
-import {
-  applyChanges,
-  hasChanges,
-} from '../../services/utils/functional-utils';
-import { AvatarShowcaseService } from './avatar-showcase.service';
-import { Avatar } from '../avatar/avatar.interface';
-import { SingleSelectPanelComponent } from '../../lists/single-select-panel/single-select-panel.component';
-import { MutationObservableService } from '../../services/utils/mutation-observable';
-import { InputObservable } from '../../services/utils/decorators';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -47,7 +12,44 @@ import {
   switchMap,
   tap,
 } from 'rxjs/operators';
+
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
+
 import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { IconColor, Icons } from '../../icons/icons.enum';
+import { ListChange } from '../../lists/list-change/list-change';
+import { SelectGroupOption } from '../../lists/list.interface';
+import { SingleSelectPanelComponent } from '../../lists/single-select-panel/single-select-panel.component';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { InputObservable } from '../../services/utils/decorators';
+import {
+  applyChanges,
+  hasChanges,
+} from '../../services/utils/functional-utils';
+import { MutationObservableService } from '../../services/utils/mutation-observable';
+import { insideZone, timedSlice } from '../../services/utils/rxjs.operators';
+import { AvatarSize } from '../avatar/avatar.enum';
+import { Avatar } from '../avatar/avatar.interface';
+import {
+  AVATAR_SHOWCASE_SHUFFLE_INTERVAL,
+  AvatarGap,
+} from './avatar-showcase.const';
+import { ShowcaseInputItem } from './avatar-showcase.interface';
+import { AvatarShowcaseService } from './avatar-showcase.service';
 
 @Component({
   selector: 'b-employees-showcase, b-avatar-showcase',
@@ -77,7 +79,7 @@ export class EmployeesShowcaseComponent
 
   @Input() showTotal = true;
   @Input() showTotalLabel = false;
-  @Input() showEmptyTotalLabel = false;
+
   @Input() readonly = false;
   @Input() hasBackdrop: boolean;
   @Input() doShuffle = false;
