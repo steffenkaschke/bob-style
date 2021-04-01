@@ -14,9 +14,9 @@ $primary-500: #fea54a; // rgb(254,165,74)
 $primary-600: #ff962b; // rgb(255,150,43)
 $primary-700: #ff8100; // rgb(255,129,0)
 
-$secondary-500: #fecc4a; // rgb(254,204,74)
-$secondary-600: #f8bc20; // rgb(248,188,32)
-$secondary-700: #f0ad00; // rgb(240,173,0)
+$secondary-500: var(--secondary-500); // rgb(243,242,242)
+$secondary-600: var(--secondary-600); // rgb(226,226,226)
+$secondary-700: var(--secondary-700); // rgb(210,210,210)
 
 $positive-500: #1bd164; // rgb(27,209,100)
 $positive-600: #17b456; // rgb(23,180,86)
