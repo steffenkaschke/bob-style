@@ -18,13 +18,13 @@
 @import './rte/rte';
 
 :root {
-  --primary-500: #{$primary-500};
-  --primary-600: #{$primary-600};
-  --primary-700: #{$primary-700};
+  --primary-500: #fea54a; // rgb(254,165,74)
+  --primary-600: #ff962b; // rgb(255,150,43)
+  --primary-700: #ff8100; // rgb(255,129,0)
 
-  --secondary-500: #{$secondary-500};
-  --secondary-600: #{$secondary-600};
-  --secondary-700: #{$secondary-700};
+  --secondary-500: #{$grey-300};
+  --secondary-600: #{$grey-400};
+  --secondary-700: #{$grey-500};
 
   --positive-500: #{$positive-500};
   --positive-600: #{$positive-600};

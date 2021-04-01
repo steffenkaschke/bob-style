@@ -55,13 +55,13 @@ $button-size-large: 44px;
     }
 
     @if $type == 'secondary' {
-      background-color: $grey-400;
+      background-color: var(--secondary-600);
       &:hover,
       &:focus {
-        background-color: $grey-300;
+        background-color: var(--secondary-500);
       }
       &:active {
-        background-color: $grey-500;
+        background-color: var(--secondary-700);
       }
     }
 
