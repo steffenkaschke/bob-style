@@ -1,13 +1,19 @@
-import { storiesOf } from '@storybook/angular';
-import { number, withKnobs, select } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  boolean,
+  number,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
-import { TruncateTooltipModule } from './truncate-tooltip.module';
-import { TruncateTooltipType } from './truncate-tooltip.enum';
-import { boolean } from '@storybook/addon-knobs';
 import { TooltipPosition } from '../tooltip/tooltip.enum';
+import { TruncateTooltipType } from './truncate-tooltip.enum';
+import { TruncateTooltipModule } from './truncate-tooltip.module';
 
 const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
   withKnobs
@@ -15,13 +21,13 @@ const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
 
 const template1 = `
   <b-big-body *bTruncateTooltip="maxLines">
-    Structural directive tooltip example.
-    <span class="span1">{{ text1 }}</span>
-    <span class="span2">{{ text2 }}</span>
+    {{ testText || 'Structural directive tooltip example.' }}
+    <span class="span1" *ngIf="!testText">{{ testText || text1 }}</span>
+    <span class="span2" *ngIf="!testText">{{ text2 }}</span>
   </b-big-body>
 `;
 const template2 = `
-  <b-truncate-tooltip [maxLines]="maxLines"
+  <b-truncate-tooltip *ngIf="!testText" [maxLines]="maxLines"
       [type]="type"
       [position]="position"
       [expectChanges]="true"
@@ -35,13 +41,28 @@ const template2 = `
     <b-display-3>
       <span>
         <!-- this html comment should not be displayed -->
-        {{text4}}
+        {{testText || text4}}
       </span>
-      <span>
+      <span *ngIf="!testText">
         Text truncation / line-clamping, however, is set immidiately.
       </span>
     </b-display-3>
   </b-truncate-tooltip>
+
+  <b-truncate-tooltip *ngIf="testText"
+      class="b-display-3"
+      [maxLines]="maxLines"
+      [text]="testText"
+      [type]="type"
+      [position]="position"
+        [tooltipClass]="[
+        tooltipClass_TextLeft ? 'text-left' : '',
+        tooltipClass_TextRight ? 'text-right' : '',
+        tooltipClass_TextCenter ? 'text-center' : '',
+        tooltipClass_PreWrap ? 'pre-wrap' : '',
+        tooltipClass_NoWrap ? 'no-wrap' : ''
+      ]"
+  ></b-truncate-tooltip>
 `;
 const template3 = `
   <p [b-truncate-tooltip]="maxLines"
@@ -55,8 +76,8 @@ const template3 = `
           tooltipClass_PreWrap ? 'pre-wrap' : '',
           tooltipClass_NoWrap ? 'no-wrap' : ''
         ]">
-    <span>{{ text1 }}</span>
-    <span>{{ text2 }}</span>
+    <span>{{ testText || text1 }}</span>
+    <span *ngIf="!testText">{{ text2 }}</span>
   </p>
 `;
 
@@ -71,7 +92,7 @@ const template4 = `
             tooltipClass_PreWrap ? 'pre-wrap' : '',
             tooltipClass_NoWrap ? 'no-wrap' : ''
           ]">
-     {{ text3 }}
+     {{ testText || text3 }}
   </h3>
 `;
 
@@ -215,6 +236,8 @@ story.add(
         tooltipClass_TextCenter: boolean('TextCenter', false, 'tooltipClass'),
         tooltipClass_PreWrap: boolean('PreWrap', false, 'tooltipClass'),
         tooltipClass_NoWrap: boolean('NoWrap', false, 'tooltipClass'),
+
+        testText: text('testText', ``),
       },
       moduleMetadata: {
         declarations: [],
