@@ -77,7 +77,7 @@ export class ColorService {
     // color = rgb/rgba color
     // offset = a number in the range of -1(=darkest) to 1(=brightest)
     public linearShade(color: string, offset: number) {
-      let isNegative = offset < 0; 
+      const isNegative = offset < 0; 
       const [a,b,c,d] = color.split(",");
       const t = isNegative ? 0 : 255 * offset
       const P = (isNegative ? 1 + offset : 1 - offset);
