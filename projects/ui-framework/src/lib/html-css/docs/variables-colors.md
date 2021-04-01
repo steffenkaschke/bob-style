@@ -246,7 +246,7 @@
     </tr>
 
     <tr>
-      <td>$color-select-red</td>
+      <td>$primary-indication</td>
       <td style="background-color: #e52c51;"></td>
       <td>var(--negative-600)</td>
     </tr>
