@@ -61,7 +61,7 @@ $side-menu-selected-border: 4px;
   }
 
   &.selected {
-    border-left-color: $color-select-red;
+    border-left-color: $primary-indication;
     background-color: $color-option-selected;
 
     .option-display-name {

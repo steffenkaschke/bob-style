@@ -38,6 +38,8 @@
   --inform-600: #{$inform-600};
   --inform-700: #{$inform-700};
 
+  --primary-indication: #{$negative-600};
+
   --body-font-family: #{$body-font-family}, #{$sans-serif-font-family},
     #{$emoji-font-family}, sans-serif;
   --display-font-family: #{$display-font-family}, #{$serif-font-family},

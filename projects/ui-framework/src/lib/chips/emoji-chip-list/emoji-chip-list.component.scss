@@ -35,11 +35,11 @@
   margin: calc(var(--emoji-size, 18px) / 4.5) calc(var(--emoji-size, 18px) / 9);
 
   &.selected {
-    box-shadow: 0 0 0 2px $color-select-red;
+    box-shadow: 0 0 0 2px $primary-indication;
     margin: calc(var(--emoji-size, 18px) / 4.5);
 
     @include mobile($breakpoint-device-lg) {
-      box-shadow: 0 0 0 1px $color-select-red;
+      box-shadow: 0 0 0 1px $primary-indication;
     }
   }
 }
